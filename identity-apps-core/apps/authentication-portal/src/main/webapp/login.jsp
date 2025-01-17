@@ -52,6 +52,11 @@
 <%-- Include tenant context --%>
 <jsp:directive.include file="includes/init-url.jsp"/>
 
+<%
+    // Add the login screen to the list to retrieve text branding customizations.
+    screenNames.add("login");
+%>
+
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
@@ -170,7 +175,7 @@
     boolean hasLocalLoginOptions = false;
     boolean isBackChannelBasicAuth = false;
     List<String> localAuthenticatorNames = new ArrayList<String>();
-    List<String> registeredLocalAuthenticators = Arrays.asList(   
+    List<String> registeredLocalAuthenticators = Arrays.asList(
         BACKUP_CODE_AUTHENTICATOR, TOTP_AUTHENTICATOR, EMAIL_OTP_AUTHENTICATOR,
         MAGIC_LINK_AUTHENTICATOR,SMS_OTP_AUTHENTICATOR,OPEN_ID_AUTHENTICATOR,
         IDENTIFIER_EXECUTOR,JWT_BASIC_AUTHENTICATOR,BASIC_AUTHENTICATOR,
@@ -296,13 +301,14 @@
         loginContextRequestUrl += "&tenantDomain=" + tenantDomain;
     }
 
-    String t = Encode.forUriComponent(request.getParameter("t"));
-    String ut = Encode.forUriComponent(request.getParameter("ut"));
+    String t = request.getParameter("t");
+    String ut = request.getParameter("ut");
+
     if (StringUtils.isNotBlank(t)) {
-        loginContextRequestUrl += "&t=" + t;
+        loginContextRequestUrl += "&t=" + Encode.forUriComponent(t);
     }
     if (StringUtils.isNotBlank(ut)) {
-        loginContextRequestUrl += "&ut=" + ut;
+        loginContextRequestUrl += "&ut=" + Encode.forUriComponent(ut);
     }
 
     if (StringUtils.isNotBlank(usernameIdentifier)) {
@@ -1265,6 +1271,12 @@
     <script src="util/string-utils.js"></script>
 
     <script>
+
+        <% if (Boolean.parseBoolean(request.getParameter("isSelfRegistration"))) { %>
+                $(".ui.segment").hide();
+                window.location = "<%=getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING))%>";
+        <% } %>
+
         function onMoment(notification) {
             displayGoogleSignIn(notification.isNotDisplayed() || notification.isSkippedMoment());
 

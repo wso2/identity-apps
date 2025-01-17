@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,9 +17,22 @@
  */
 
 import { AsgardeoSPAClient, DecodedIDTokenPayload } from "@asgardeo/auth-react";
+import Chip from "@oxygen-ui/react/Chip";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
-import { ArrowLeftArrowRightIcon, BuildingCircleCheckIcon, HierarchyIcon, PlusIcon } from "@oxygen-ui/react-icons";
-import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
+import {
+    ArrowLeftArrowRightIcon,
+    BuildingAltIcon,
+    BuildingCircleCheckIcon,
+    BuildingPenIcon,
+    HierarchyIcon,
+    PlusIcon
+} from "@oxygen-ui/react-icons";
+import {
+    FeatureAccessConfigInterface,
+    FeatureStatus,
+    useCheckFeatureStatus,
+    useRequiredScopes
+} from "@wso2is/access-control";
 import { getMiscellaneousIcons } from "@wso2is/admin.core.v1/configs";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -59,14 +72,18 @@ import {
     SemanticICONS
 } from "semantic-ui-react";
 import { getAssociatedTenants, makeTenantDefault } from "../../api";
+import TenantConstants from "../../constants/tenant-constants";
 import { TenantInfo, TenantRequestResponse, TriggerPropTypesInterface } from "../../models";
 import { handleTenantSwitch } from "../../utils";
 import { AddTenantWizard } from "../add-modal";
+import "./tenant-dropdown.scss";
 
 /**
  * Dashboard layout Prop types.
  */
-interface TenantDropdownLinkInterface extends Omit<ReusableHeaderPropsInterface, "basicProfileInfo" | "profileInfo"> {
+interface TenantDropdownLinkInterface extends Omit<
+    ReusableHeaderPropsInterface, "basicProfileInfo" | "profileInfo" | "primaryUserStoreDomainName"
+> {
     /**
      * Content of dropdown item.
      */
@@ -101,11 +118,38 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     const username: string = useSelector((state: AppState) => state.auth.username);
     const email: string = useSelector((state: AppState) => state.auth.email);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+
+    const organizationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.organizations
+    );
+    const hasOrganizationReadPermissions: boolean = useRequiredScopes(organizationsFeatureConfig?.scopes?.read);
+
+    const isMakingTenantsDefaultEnabled: boolean = useSelector((state: AppState) => {
+        return !state?.config?.ui?.features?.tenants?.disabledFeatures?.includes(
+            TenantConstants.FEATURE_DICTIONARY.MAKING_TENANTS_DEFAULT
+        );
+    });
+    const isManagingTenantsFromDropdownEnabled: boolean = useSelector((state: AppState) => {
+        return !state?.config?.ui?.features?.tenants?.disabledFeatures?.includes(
+            TenantConstants.FEATURE_DICTIONARY.MANAGING_TENANTS_FROM_DROPDOWN
+        );
+    });
+    const isAddingTenantsFromDropdownEnabled: boolean = useSelector((state: AppState) => {
+        return !state?.config?.ui?.features?.tenants?.disabledFeatures?.includes(
+            TenantConstants.FEATURE_DICTIONARY.ADD_TENANTS_FROM_DROPDOWN
+        );
+    });
+    const isOrganizationsQuickNavFromDropdownEnabled: boolean = useSelector((state: AppState) => {
+        return !state?.config?.ui?.features?.tenants?.disabledFeatures?.includes(
+            TenantConstants.FEATURE_DICTIONARY.ORGANIZATIONS_QUICK_NAV_FROM_DROPDOWN
+        );
+    });
 
     const [ tenantAssociations, setTenantAssociations ] = useState<TenantAssociationsInterface>(undefined);
     const [ tempTenantAssociationsList, setTempTenantAssociationsList ] = useState<string[]>(undefined);
@@ -444,6 +488,110 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         setIsDropDownOpen(!isDropDownOpen);
     };
 
+    const renderDropdownOptions = (): ReactElement[] => {
+        const options: ReactElement[] = [];
+
+        if (
+            isMakingTenantsDefaultEnabled &&
+            !isSubOrg &&
+            organizationType !== OrganizationType.SUBORGANIZATION &&
+            tenantAssociations
+        ) {
+            if (tenantAssociations.currentTenant === tenantAssociations.defaultTenant) {
+                options.push(
+                    <Dropdown.Item className="action-panel" data-testid={ "default-button" } disabled={ true }>
+                        <BuildingCircleCheckIcon fill="black" />
+                        { t("extensions:manage.features.tenant.header.makeDefaultOrganization") }
+                    </Dropdown.Item>
+                );
+            } else {
+                options.push(
+                    <Dropdown.Item
+                        className="action-panel"
+                        onClick={ () => setDefaultTenantInDropdown(tenantAssociations.currentTenant) }
+                        data-testid={ "default-button" }
+                        disabled={ isSetDefaultTenantInProgress }
+                    >
+                        <BuildingCircleCheckIcon fill="black" />
+                        { t("extensions:manage.features.tenant.header.makeDefaultOrganization") }
+                    </Dropdown.Item>
+                );
+            }
+        }
+
+        if (
+            !isSubOrg &&
+            tenantAssociations &&
+            tenantAssociations.associatedTenants &&
+            Array.isArray(tenantAssociations.associatedTenants) &&
+            tenantAssociations.associatedTenants.length > 0
+        ) {
+            options.push(
+                <Dropdown.Item
+                    className="action-panel"
+                    onClick={ () => setIsSwitchTenantsSelected(true) }
+                    data-testid={ "tenant-switch-menu" }
+                >
+                    <ArrowLeftArrowRightIcon fill="black" />
+                    { t("extensions:manage.features.tenant.header.tenantSwitchHeader") }
+                </Dropdown.Item>
+            );
+        }
+
+        if (isAddingTenantsFromDropdownEnabled && !isSubOrg && tenantDropdownLinks && tenantDropdownLinks.length > 0) {
+            tenantDropdownLinks.forEach((link: TenantDropdownLinkInterface, index: number) => {
+                const { content, icon, name, onClick } = link;
+
+                options.push(
+                    <Dropdown.Item
+                        key={ index }
+                        className="action-panel"
+                        onClick={ onClick }
+                        // Temporarily hiding dropdown item until
+                        // modal is implemented.
+                        // style={{display:'none'}}
+                        data-testid={ `tenant-dropdown-link-${name.replace(" ", "-")}` }
+                    >
+                        { icon }
+                        { name }
+                        { content }
+                    </Dropdown.Item>
+                );
+            });
+        }
+
+        if (isManagingTenantsFromDropdownEnabled && isSuperOrganization()) {
+            options.push(
+                <Dropdown.Item
+                    className="action-panel"
+                    onClick={ (): void => {
+                        history.push(AppConstants.getPaths().get("TENANTS"));
+                    } }
+                    data-compnentid="manage-root-organizations"
+                >
+                    <BuildingPenIcon />
+                    { t("tenants:tenantDropdown.options.manage.label") }
+                </Dropdown.Item>
+            );
+        }
+
+        if (isOrganizationsQuickNavFromDropdownEnabled && !isSubOrg && hasOrganizationReadPermissions) {
+            options.push(<Divider />);
+            options.push(
+                <Dropdown.Item
+                    className="action-panel"
+                    onClick={ handleOrganizationsPageRoute }
+                    data-componentid={ "sub-organizations-menu" }
+                >
+                    <HierarchyIcon fill="black" />
+                    Organizations
+                </Dropdown.Item>
+            );
+        }
+
+        return options;
+    };
+
     const tenantDropdownMenu: ReactElement = (
         <Menu.Item
             compact
@@ -470,20 +618,16 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                             <Dropdown.Menu className="tenant-dropdown-menu" onClick={ handleDropdownClick }>
                                 <Item.Group className="current-tenant" unstackable>
                                     <Item
-                                        className={ isSubOrg || !organizationConfigs.showOrganizationDropdown
-                                            ? "header sub-org-header" : "header" }
+                                        className={
+                                            isSubOrg ||
+                                            !organizationConfigs.showOrganizationDropdown ||
+                                            renderDropdownOptions()?.length <= 0
+                                                ? "header sub-org-header"
+                                                : "header"
+                                        }
                                         key={ "current-tenant" }
                                     >
-                                        {
-                                            <GenericIcon
-                                                transparent
-                                                inline
-                                                className="associated-tenant-icon"
-                                                data-testid="associated-tenant-icon"
-                                                icon={ getMiscellaneousIcons().tenantIcon }
-                                                size="mini"
-                                            />
-                                        }
+                                        <BuildingAltIcon size={ 30 } />
                                         <Item.Content verticalAlign="middle">
                                             <Item.Description>
                                                 <div
@@ -503,6 +647,13 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                                     </Placeholder>
                                                                 )
                                                     }
+                                                    { isSuperOrganization() && (
+                                                        <Chip
+                                                            className="primary-tenant-chip"
+                                                            label="Primary"
+                                                            color="info"
+                                                        />
+                                                    ) }
                                                 </div>
                                                 <Grid className="middle aligned content">
                                                     <Grid.Row>
@@ -542,131 +693,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                         </Item.Content>
                                     </Item>
                                 </Item.Group>
-                                {
-                                    organizationConfigs.showOrganizationDropdown &&  (
-                                        <>
-                                            {
-                                                !isSubOrg && (
-                                                    <Dropdown.Header
-                                                        className="tenant-dropdown-links-category-header"
-                                                        content="Primary organizations"
-                                                    />
-                                                )
-                                            }
-                                            {
-                                                !isSubOrg &&
-                                                organizationType !== OrganizationType.SUBORGANIZATION &&
-                                            tenantAssociations ? (
-                                                        tenantAssociations.currentTenant ===
-                                                    tenantAssociations.defaultTenant ? (
-                                                                <Dropdown.Item
-                                                                    className="action-panel"
-                                                                    data-testid={ "default-button" }
-                                                                    disabled={ true }
-                                                                >
-                                                                    <BuildingCircleCheckIcon fill="black" />
-                                                                    {
-                                                                        t("extensions:manage.features.tenant." +
-                                                                        "header.makeDefaultOrganization")
-                                                                    }
-                                                                </Dropdown.Item>
-                                                            ) : (
-                                                                <Dropdown.Item
-                                                                    className="action-panel"
-                                                                    onClick={ () =>
-                                                                        setDefaultTenantInDropdown(tenantAssociations.
-                                                                            currentTenant)
-                                                                    }
-                                                                    data-testid={ "default-button" }
-                                                                    disabled={ isSetDefaultTenantInProgress }
-                                                                >
-                                                                    <BuildingCircleCheckIcon fill="black" />
-                                                                    {
-                                                                        t("extensions:manage.features.tenant." +
-                                                                        "header.makeDefaultOrganization")
-                                                                    }
-                                                                </Dropdown.Item>
-                                                            )
-                                                    ) : null
-                                            }
-                                            {
-                                                !isSubOrg &&
-                                            tenantAssociations &&
-                                            tenantAssociations.associatedTenants &&
-                                            Array.isArray(tenantAssociations.associatedTenants) &&
-                                            tenantAssociations.associatedTenants.length > 0
-                                                    ? (
-                                                        <Dropdown.Item
-                                                            className="action-panel"
-                                                            onClick={ () => setIsSwitchTenantsSelected(true) }
-                                                            data-testid={ "tenant-switch-menu" }
-                                                        >
-                                                            <ArrowLeftArrowRightIcon fill="black" />
-                                                            {
-                                                                t("extensions:manage.features." +
-                                                                "tenant.header.tenantSwitchHeader")
-                                                            }
-                                                        </Dropdown.Item>
-                                                    )
-                                                    : null
-                                            }
-                                            {
-                                                !isSubOrg &&
-                                            (tenantDropdownLinks
-                                                && tenantDropdownLinks.length
-                                                && tenantDropdownLinks.length > 0)
-                                                    ? tenantDropdownLinks.map(
-                                                        (link: TenantDropdownLinkInterface, index: number) => {
-
-                                                            const {
-                                                                content,
-                                                                icon,
-                                                                name,
-                                                                onClick
-                                                            } = link;
-
-                                                            return (
-                                                                <Dropdown.Item
-                                                                    key={ index }
-                                                                    className="action-panel"
-                                                                    onClick={ onClick }
-                                                                    // Temporarily hiding dropdown item until
-                                                                    // modal is implemented.
-                                                                    // style={{display:'none'}}
-                                                                    data-testid={
-                                                                        `tenant-dropdown-link-${
-                                                                            name.replace(" ", "-") }`
-                                                                    }
-                                                                >
-                                                                    {
-                                                                        icon
-                                                                    }
-                                                                    { name }
-                                                                    { content }
-                                                                </Dropdown.Item>
-                                                            );
-                                                        }
-                                                    )
-                                                    : null
-                                            }
-                                            {
-                                                !isSubOrg && (
-                                                    <>
-                                                        <Divider />
-                                                        <Dropdown.Item
-                                                            className="action-panel"
-                                                            onClick={ handleOrganizationsPageRoute }
-                                                            data-componentid={ "sub-organizations-menu" }
-                                                        >
-                                                            <HierarchyIcon fill="black" />
-                                                        Organizations
-                                                        </Dropdown.Item>
-                                                    </>
-                                                )
-                                            }
-                                        </>
-                                    )
-                                }
+                                { organizationConfigs.showOrganizationDropdown &&  renderDropdownOptions() }
                             </Dropdown.Menu>
                         ) : (
                             <Dropdown.Menu onClick={ handleDropdownClick }>

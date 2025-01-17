@@ -112,7 +112,44 @@
                 "id": "QWNjb3VudERpc2FibGU"
             }
         ],
-        "outboundProvisioningConnectors": []
+        "outboundProvisioningConnectors": [],
+        "smsTemplates": [
+            {
+                "description": "This SMS is sent when a user registers and needs to confirm their account.",
+                "displayName": "Account Confirmation",
+                "id": "YWNjb3VudGNvbmZpcm1hdGlvbg"
+            },
+            {
+                "description": "This SMS is sent when a user requests to recover their username.",
+                "displayName": "Account ID Recovery",
+                "id": "YWNjb3VudElkUmVjb3Zlcnk"
+            },
+            {
+                "description": "This SMS is sent to notify the user of a successful password reset.",
+                "displayName": "Password Reset Success",
+                "id": "cGFzc3dvcmRSZXNldFN1Y2Vzcw"
+            },
+            {
+                "description": "This SMS is sent when a user initiates a password reset.",
+                "displayName": "Password Reset",
+                "id": "cGFzc3dvcmRSZXNldA"
+            },
+            {
+                "description": "This SMS is sent when a user requests to resend the OTP for password reset.",
+                "displayName": "Resend Password Reset",
+                "id": "cmVzZW5kUGFzc3dvcmRSZXNldA"
+            },
+            {
+                "description": "This SMS is sent to provide a one-time password for verification.",
+                "displayName": "SMS OTP",
+                "id": "U01TT1RQ"
+            },
+            {
+                "description": "This SMS is sent to verify the user's mobile number after an update.",
+                "displayName": "Verify Mobile On Update",
+                "id": "dmVyaWZ5TW9iaWxlT25VcGRhdGU"
+            }
+        ]
     },
     "getProfileInfoFromIDToken": false,
     "i18nResourcePath": "",
@@ -169,6 +206,7 @@
             "defaultWhiteLogoUrl": "/libs/themes/default/assets/images/branding/logo-inverted.svg"
         },
         "enableCustomEmailTemplates": true,
+        "enableCustomSmsTemplates": true,
         "enableEmailDomain": false,
         "enableIdentityClaims": true,
         "features": {
@@ -436,7 +474,7 @@
             },
             "certificates": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "create": [
                         "internal_keystore_update"
@@ -684,6 +722,23 @@
                 "enabled": false,
                 "scopes": {}
             },
+            "internalNotificationSending": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
+                    "read": [
+                        "internal_governance_view"
+                    ],
+                    "update": [
+                        "internal_governance_update"
+                    ]
+                }
+            },
             "loginAndRegistration": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -694,9 +749,7 @@
                         "console:loginAndRegistration"
                     ],
                     "read": [
-                        "internal_governance_view",
-                        "internal_group_mgt_view",
-                        "internal_role_mgt_view"
+                        "internal_governance_view"
                     ],
                     "update": [
                         "internal_config_update",
@@ -832,6 +885,17 @@
                     ]
                 }
             },
+            "policyAdministration":{
+                "disabledFeatures": [],
+                "enabled": false,
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
+                }
+            },
             "remoteFetchConfig": {
                 "disabledFeatures": [],
                 "enabled": false,
@@ -882,6 +946,25 @@
                     ],
                     "update": [
                         "internal_application_mgt_update"
+                    ]
+                }
+            },
+            "ruleBasedPasswordExpiry": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [
+                        "internal_governance_view",
+                        "internal_group_mgt_view",
+                        "internal_role_mgt_view"
+                    ],
+                    "update": [
+                        "internal_config_update",
+                        "internal_governance_update",
+                        "internal_validation_rule_mgt_update"
                     ]
                 }
             },
@@ -963,6 +1046,50 @@
                     ]
                 }
             },
+            "smsTemplates": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_template_mgt_create"
+                    ],
+                    "delete": [
+                        "internal_template_mgt_delete"
+                    ],
+                    "feature": [
+                        "console:smsTemplates"
+                    ],
+                    "read": [
+                        "internal_template_mgt_view"
+                    ],
+                    "update": [
+                        "internal_template_mgt_update"
+                    ]
+                }
+            },
+            "tenants": {
+                "disabledFeatures": [
+                    "tenants.add.tenant.from.dropdown",
+                    "tenants.deletion",
+                    "tenants.make.default",
+                    "tenants.organizations.quick.nav.from.dropdown"
+                ],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_create_tenants"
+                    ],
+                    "delete": [
+                        "internal_modify_tenants"
+                    ],
+                    "read": [
+                        "internal_list_tenants"
+                    ],
+                    "update": [
+                        "internal_modify_tenants"
+                    ]
+                }
+            },
             "tryIt": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -1031,7 +1158,9 @@
                 }
             },
             "userStores": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                   "userStores.type.remote"
+                ],
                 "enabled": true,
                 "scopes": {
                     "create": [
@@ -1150,6 +1279,7 @@
                 "enabled": true
             }
         },
+        "isClaimUniquenessValidationEnabled": false,
         "isClientSecretHashEnabled": false,
         "isCookieConsentBannerEnabled": true,
         "isCustomClaimMappingEnabled": true,
@@ -1163,6 +1293,7 @@
         "isHeaderAvatarLabelAllowed": false,
         "isLeftNavigationCategorized": true,
         "isMarketingConsentBannerEnabled": false,
+        "isMultipleEmailsAndMobileNumbersEnabled": true,
         "isPasswordInputValidationEnabled": true,
         "isRequestPathAuthenticationEnabled": false,
         "isSAASDeployment": false,
@@ -1175,6 +1306,9 @@
             "roleMapping": false
         },
         "listAllAttributeDialects": true,
+        "passwordPolicyConfigs": {
+            "maxPasswordAllowedLength": 64
+        },
         "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {

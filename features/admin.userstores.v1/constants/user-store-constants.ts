@@ -48,6 +48,13 @@ export class UserStoreManagementConstants {
 
     // Name of the readonly DEFAULT userstore property.
     public static readonly USER_STORE_PROPERTY_READ_ONLY: string = "ReadOnly";
+
+    /**
+     * Set of keys used to enable/disable features.
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("USER_STORE_REMOTE", "userStores.type.remote")
+        .set("USER_STORE_PRIMARY", "PRIMARY");
 }
 
 /**
@@ -196,3 +203,34 @@ export const PRIMARY_USERSTORE: string = "PRIMARY";
  * Character limit for userstore name.
  */
 export const USERSTORE_NAME_CHARACTER_LIMIT: number = 50;
+
+/**
+ * Name of the remote userstore type.
+ */
+export const REMOTE_USERSTORE_TYPE_NAME: string = "WSOutboundUserStoreManager";
+
+/**
+ * Enum for user store types.
+ *
+ * @readonly
+ */
+export enum UserStoreTypes {
+    DIRECT = "direct",
+    REMOTE = "remote"
+}
+
+/**
+ * Remote user store types.
+ */
+export const REMOTE_USER_STORE_TYPES: string[] = [
+    "WSOutboundUserStoreManager", "AsgardeoBusinessUserStoreManager"
+];
+
+/**
+ * Enum for user store manager types.
+ */
+export enum RemoteUserStoreManagerType {
+    WSOutboundUserStoreManager = "WSOutboundUserStoreManager",
+    RemoteUserStoreManager = "RemoteUserStoreManager",
+    AsgardeoBusinessUserStoreManager = "AsgardeoBusinessUserStoreManager"
+}

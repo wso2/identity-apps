@@ -439,6 +439,11 @@ export class RouteUtils {
                 parent: branding
             },
             {
+                category: build,
+                id: "smsTemplates",
+                parent: branding
+            },
+            {
                 category: preferences,
                 id: "loginAndRegistration",
                 selected: loginAndRegPathsToCheck.some((path: string) => history.location.pathname.startsWith(path))

@@ -20,94 +20,6 @@ import { FormAttributes, Notification, NotificationItem } from "@wso2is/i18n";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Extensions {
-    common: {
-        community: string;
-        help: {
-            communityLinks: {
-                discord: string;
-                stackOverflow: string;
-            };
-            docSiteLink: string;
-            helpCenterLink: {
-                title: string;
-                subtitle: string;
-            };
-            helpDropdownLink: string;
-        };
-        learnMore: string;
-        quickStart: {
-            greeting: {
-                alternativeHeading: string;
-                heading: string;
-                subHeading: string;
-            };
-            sections: {
-                addSocialLogin: {
-                    actions: {
-                        setup: string;
-                        view: string;
-                    };
-                    description: string;
-                    heading: string;
-                };
-                integrateApps: {
-                    actions: {
-                        create: string;
-                        manage: string;
-                        view: string;
-                    };
-                    capabilities: {
-                        sso: string;
-                        mfa: string;
-                        social: string;
-                    };
-                    description: string;
-                    heading: string;
-                };
-                learn: {
-                    actions: {
-                        view: string;
-                    };
-                    description: string;
-                    heading: string;
-                };
-                manageUsers: {
-                    actions: {
-                        create: string;
-                        manage: string;
-                        view: string;
-                    };
-                    capabilities: {
-                        collaborators: string;
-                        customers: string;
-                        groups: string;
-                    };
-                    description: string;
-                    heading: string;
-                };
-                asgardeoTryIt: {
-                    errorMessages: {
-                        appCreateGeneric: {
-                            message: string;
-                            description: string;
-                        };
-                        appCreateDuplicate: {
-                            message: string;
-                            description: string;
-                        };
-                    }
-                }
-            };
-        };
-        upgrade: string;
-        dropdown: {
-            footer: {
-                privacyPolicy: string;
-                cookiePolicy: string;
-                termsOfService: string;
-            }
-        };
-    };
     console: {
         application: {
             quickStart: {
@@ -327,6 +239,7 @@ export interface Extensions {
         apiResource: {
             pageHeader: {
                 description: string;
+                subOrgDescription: string;
                 title: string;
             };
             empty: string;
@@ -618,6 +531,7 @@ export interface Extensions {
                                     identifier: {
                                         emptyValidate: string;
                                         alreadyExistsError: string;
+                                        errorOccurred: string;
                                         invalid: string;
                                         hint: string;
                                         label: string;
@@ -657,6 +571,7 @@ export interface Extensions {
                                     permission: {
                                         emptyValidate: string;
                                         uniqueValidate: string;
+                                        errorOccurred: string;
                                         invalid: string;
                                         label: string;
                                         placeholder: string;
@@ -1711,6 +1626,7 @@ export interface Extensions {
                 };
                 fetch: {
                     customLayoutNotFound: {
+                        appBrandingDescription: string;
                         description: string;
                         message: string;
                     };
@@ -2675,6 +2591,11 @@ export interface Extensions {
                 replicateContent: {
                     header: string;
                     message: string;
+                },
+                updateFromRootOrg: {
+                    header: string,
+                    message: string,
+                    content: string
                 }
             },
             dangerZone: {
@@ -2683,7 +2604,7 @@ export interface Extensions {
                 action: string;
                 actionDisabledHint: string;
             }
-        }
+        };
     };
     manage: {
         accountLogin: {
@@ -2735,6 +2656,13 @@ export interface Extensions {
                 };
                 claimUpdateNotification: {
                     error: NotificationItem;
+                    success: NotificationItem;
+                };
+                claimUpdateConfirmation: {
+                    header: string;
+                    message: string;
+                    content: string;
+                    assertionHint: string;
                 };
             };
             pageTitle: string;
@@ -3115,6 +3043,17 @@ export interface Extensions {
                     };
                     subHeading: string;
                 };
+                usernameRecovery: {
+                    form: {
+                        fields: {
+                            enableEmailBasedRecovery: FormAttributes;
+                            enableSMSBasedRecovery: FormAttributes;
+                        },
+                        smsProviderWarning: string;
+                        recoveryOptionHeading: string;
+                    },
+                    heading: string;
+                }
             };
             accountSecurity: {
                 heading: string;
@@ -3225,6 +3164,7 @@ export interface Extensions {
                             expiryTime: FormAttributes;
                             signUpConfirmation: FormAttributes;
                             activateImmediately: FormAttributes;
+                            showUsernameUnavailability: FormAttributes;
                             enable: FormAttributes;
                         };
                     };

@@ -153,6 +153,11 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                                 useClientIdAsSubClaimOfAppTokens: {
                                     documentationLink: undefined
                                 }
+                            },
+                            version200: {
+                                addAllRequestedClaimsInJWTAccessToken: {
+                                    documentationLink: undefined
+                                }
                             }
                         }
                     },
@@ -363,6 +368,23 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
             },
             eventPublishing: {
                 learnMore: undefined
+            },
+            multiTenancy: {
+                addTenant: {
+                    learnMore: undefined
+                },
+                learnMore: undefined,
+                systemSettings: {
+                    learnMore: undefined
+                }
+            },
+            smsCustomization: {
+                form: {
+                    smsBody: {
+                        learnMore: undefined
+                    }
+                },
+                learnMore: undefined
             }
         },
         manage: {
@@ -370,6 +392,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 passwordRecovery: {
                     learnMore: undefined
                 }
+            },
+            administrators: {
+                learnMore: undefined
             },
             attributes: {
                 attributes: {

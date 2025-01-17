@@ -92,6 +92,10 @@ interface DesignFormPropsInterface extends IdentifiableComponentInterface {
      */
     readOnly?: boolean;
     /**
+     * Application name.
+     */
+    appName?: string;
+    /**
      * Ref for the form.
      */
     ref: Ref<FormPropsInterface>;
@@ -149,6 +153,7 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
         isLoading,
         onSubmit,
         readOnly,
+        appName,
         ["data-componentid"]: componentId
     } = props;
 
@@ -191,13 +196,19 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
     const [ layoutDesignExtensionsName, setLayoutDesignExtensionsName ] = useState<string>(null);
 
     const {
-        data: customLayoutBlob,
-        isLoading: customLayoutLoading
-    } = useLayout(PredefinedLayouts.CUSTOM, tenantDomain, commonConfig?.checkCustomLayoutExistanceBeforeEnabling);
-
-    const {
         brandingMode
     } = useBrandingPreference();
+
+    const {
+        data: customLayoutBlob,
+        isLoading: customLayoutLoading
+    } = useLayout(
+        PredefinedLayouts.CUSTOM,
+        tenantDomain,
+        commonConfig?.checkCustomLayoutExistanceBeforeEnabling,
+        brandingMode as BrandingModes,
+        appName
+    );
 
     /**
      * Set the internal initial theme state.
@@ -351,8 +362,12 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
             } else {
                 dispatch(addAlert<AlertInterface>({
                     description:
-                        t("extensions:develop.branding.notifications.fetch.customLayoutNotFound.description",
-                            { tenant: tenantDomain }),
+                        brandingMode === BrandingModes.APPLICATION
+                            ? t("extensions:develop.branding.notifications.fetch.customLayoutNotFound."
+                                + "appBrandingDescription")
+                            : t("extensions:develop.branding.notifications.fetch.customLayoutNotFound.description",
+                                { tenant: tenantDomain })
+                    ,
                     level: AlertLevels.ERROR,
                     message: t("extensions:develop.branding.notifications.fetch.customLayoutNotFound.message")
                 }));
@@ -540,6 +555,14 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
                     <ImagePreview
                         label={ t("extensions:develop.branding.forms.design.theme.images.favicon.preview") }
                         data-componentid={ `${componentId}-favicon-image-preview` }
+                        style={
+                            layout.activeLayout !== PredefinedLayouts.CUSTOM
+                                ? {
+                                    background: theme[ theme?.activeTheme ]?.colors?.background?.body?.main,
+                                    color: theme[theme.activeTheme]?.colors?.text?.primary
+                                }
+                                : null
+                        }
                     >
                         <GenericIcon
                             square
@@ -632,8 +655,8 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
                                     style={
                                         layout.activeLayout !== PredefinedLayouts.CUSTOM
                                             ? {
-                                                background: theme[ theme?.activeTheme ]?.
-                                                    colors?.background?.surface?.inverted
+                                                background: theme[ theme?.activeTheme ]?.colors?.background?.body?.main,
+                                                color: `${theme[theme.activeTheme]?.colors?.text?.primary} !important`
                                             }
                                             : null
                                     }

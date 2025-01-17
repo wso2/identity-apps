@@ -88,7 +88,7 @@ export const getSignatureAlgorithmOptionsMapped = (
     metadata: FederatedAuthenticatorMetaInterface
 ): Array<SamlIdPListItemOption> => {
 
-    const property: CommonPluggableComponentMetaPropertyInterface = 
+    const property: CommonPluggableComponentMetaPropertyInterface =
         metadata.properties.find(({ key }: { key: string }) => key === "SignatureAlgorithm");
     const displayNameMapper = (algorithmPlainString: string): string => {
         switch (algorithmPlainString) {
@@ -139,7 +139,7 @@ export const getDigestAlgorithmOptionsMapped = (
     metadata: FederatedAuthenticatorMetaInterface
 ): Array<SamlIdPListItemOption> => {
 
-    const property: CommonPluggableComponentMetaPropertyInterface = 
+    const property: CommonPluggableComponentMetaPropertyInterface =
         metadata.properties.find(({ key }: { key: string }) => key === "DigestAlgorithm");
     const displayNameMapper = (algorithmPlainString: string): string => {
         switch (algorithmPlainString) {
@@ -204,12 +204,12 @@ export const fastSearch = (
 
     const propertyMap: Map<string, any> = new Map<string, any>();
 
-    authenticator.data?.properties.forEach(({ key, value }: { 
+    authenticator.data?.properties.forEach(({ key, value }: {
         key: string;
         value: string;
     }) => propertyMap.set(key, value));
 
-    const metadataMap: Map<string, CommonPluggableComponentMetaPropertyInterface> = 
+    const metadataMap: Map<string, CommonPluggableComponentMetaPropertyInterface> =
         new Map<string, CommonPluggableComponentMetaPropertyInterface>();
 
     authenticator.meta?.properties.forEach(
@@ -289,6 +289,7 @@ export const LOGOUT_URL_LENGTH: MinMaxLength = { max: 2048, min: 10 };
 export const IDENTITY_PROVIDER_ENTITY_ID_LENGTH: MinMaxLength = { max: 2048, min: 5 };
 export const IDENTITY_PROVIDER_NAME_LENGTH: MinMaxLength = { max: 120, min: 3 };
 export const IDENTITY_PROVIDER_AUTHORIZED_REDIRECT_URL_LENGTH: MinMaxLength = { max: 2048, min: 10 };
+export const IDENTITY_PROVIDER_AUTHENTICATION_REQUEST_PROVIDER_NAME_LENGTH: MinMaxLength = { max: 240, min: 0 };
 
 /**
  * Given a {@link FormErrors} object, it will check whether
@@ -301,13 +302,6 @@ export const IDENTITY_PROVIDER_AUTHORIZED_REDIRECT_URL_LENGTH: MinMaxLength = { 
  */
 export const ifFieldsHave = (errors: FormErrors): boolean => {
     return !Object.keys(errors).every((k: string) => !errors[ k ]);
-};
-
-export const composeValidators = (...validators: any[]) => (value: string): any => {
-    return validators.reduce(
-        (error: any, validator: any) => error || validator(value),
-        undefined
-    );
 };
 
 export const required = (value: string | any): string | undefined => {

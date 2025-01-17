@@ -62,20 +62,18 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Form, Grid, Menu, TabProps } from "semantic-ui-react";
-import { InboundProtocolsMeta } from "./meta";
+import { InboundProtocolsMeta } from "./meta/inbound-protocols.meta";
 import MyAccountOverview from "./my-account/my-account-overview";
-import {
-    AccessConfiguration,
-    AdvancedSettings,
-    AttributeSettings,
-    GeneralApplicationSettings,
-    ProvisioningSettings,
-    SharedAccess,
-    SignOnMethods
-} from "./settings";
+import { AccessConfiguration } from "./settings/access-configuration";
+import { AdvancedSettings } from "./settings/advanced-settings";
+import { AttributeSettings } from "./settings/attribute-management/attribute-settings";
+import { GeneralApplicationSettings } from "./settings/general-application-settings";
 import { Info } from "./settings/info";
-import { disableApplication, getInboundProtocolConfig } from "../api";
-import { ApplicationManagementConstants } from "../constants";
+import { ProvisioningSettings } from "./settings/provisioning/provisioning-settings";
+import { SharedAccess } from "./settings/shared-access";
+import { SignOnMethods } from "./settings/sign-on-methods/sign-on-methods";
+import { disableApplication, getInboundProtocolConfig } from "../api/application";
+import { ApplicationManagementConstants } from "../constants/application-management";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
@@ -83,13 +81,15 @@ import {
     ApplicationTabTypes,
     ApplicationTemplateIdTypes,
     ApplicationTemplateInterface,
-    AuthProtocolMetaListItemInterface,
     InboundProtocolListItemInterface,
     OIDCApplicationConfigurationInterface,
+    SAMLApplicationConfigurationInterface
+} from "../models/application";
+import {
+    AuthProtocolMetaListItemInterface,
     OIDCDataInterface,
-    SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolTypes
-} from "../models";
+} from "../models/application-inbound";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 
 /**
@@ -229,6 +229,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     const handleApplicationUpdate = (id: string): void => {
         setIsApplicationUpdated(true);
+        handleProtocolUpdate();
         onUpdate(id);
     };
 
@@ -385,7 +386,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * @param data - Checkbox data.
      */
     const handleAppEnableDisableToggleChange = (event: FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
-        setEnableStatus(data?.checked);
+        setEnableStatus(!data?.checked);
         setShowDisableConfirmationModal(true);
     };
 
@@ -446,16 +447,12 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         sectionHeader={ t("applications:dangerZoneGroup.header") }
                     >
                         <DangerZone
-                            actionTitle={ t("applications:dangerZoneGroup.disableApplication.actionTitle",
-                                { state: application.applicationEnabled ? t("common:disable") : t("common:enable") }) }
-                            header={ t("applications:dangerZoneGroup.disableApplication.header",
-                                { state: application.applicationEnabled ? t("common:disable") : t("common:enable") } ) }
-                            subheader={ application.applicationEnabled
-                                ? t("applications:dangerZoneGroup.disableApplication.subheader")
-                                : t("applications:dangerZoneGroup.disableApplication.subheader2") }
+                            actionTitle={ t("applications:dangerZoneGroup.disableApplication.actionTitle") }
+                            header={ t("applications:dangerZoneGroup.disableApplication.header") }
+                            subheader={ t("applications:dangerZoneGroup.disableApplication.subheader") }
                             onActionClick={ undefined }
                             toggle={ {
-                                checked: application.applicationEnabled,
+                                checked: !application.applicationEnabled,
                                 onChange: handleAppEnableDisableToggleChange
                             } }
                             data-testid={ `${ componentId }-danger-zone-disable` }
@@ -593,6 +590,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         <ResourceTab.Pane controlledSegmentation>
             <AttributeSettings
                 appId={ application.id }
+                appVersion={ application?.applicationVersion }
                 technology={ application.inboundProtocols }
                 claimConfigurations={ application.claimConfiguration }
                 featureConfig={ featureConfig }

@@ -48,6 +48,11 @@
 <%-- Include tenant context --%>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
+<%
+    // Add the password-recovery screen to the list to retrieve text branding customizations.
+    screenNames.add("password-recovery");
+%>
+
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 

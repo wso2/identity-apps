@@ -23,9 +23,9 @@ import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { getAPIResourcePermissions } from "../../../api";
-import { APIResourcesConstants } from "../../../constants";
-import { APIResourcePermissionInterface } from "../../../models";
+import { getAPIResourcePermissions } from "../../../api/api-resources";
+import { APIResourcesConstants } from "../../../constants/api-resources-constants";
+import { APIResourcePermissionInterface } from "../../../models/api-resources";
 
 /**
  * Prop-types for the API resources page component.
@@ -128,18 +128,29 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                                     } else {
                                         const filter: string = "name eq " + value;
 
-                                        const response: APIResourcePermissionInterface[] =
-                                            await getAPIResourcePermissions(filter);
+                                        try {
+                                            const response: APIResourcePermissionInterface[] =
+                                                await getAPIResourcePermissions(filter);
 
-                                        if (response?.length > 0) {
+                                            if (response?.length > 0) {
+                                                validation.isValid = false;
+                                                validation.errorMessages.push(
+                                                    t("extensions:develop.apiResource.wizard.addApiResource." +
+                                                    "steps.permissions.form.fields.permission.uniqueValidate")
+                                                );
+                                            }
+                                        } catch (error) {
                                             validation.isValid = false;
-                                            validation.errorMessages.push(t("extensions:develop.apiResource.wizard." +
-                                            "addApiResource.steps.permissions.form.fields.permission.uniqueValidate"));
+                                            validation.errorMessages.push(
+                                                t("extensions:develop.apiResource.wizard.addApiResource." +
+                                                    "steps.permissions.form.fields.permission.errorOccurred")
+                                            );
+                                            setPermissionValidationLoading(false);
                                         }
                                     }
-
-                                    setPermissionValidationLoading(false);
                                 }
+
+                                setPermissionValidationLoading(false);
                             } }
                             data-testid={ `${componentId}-identifier` }
                             loading={ permissionValidationLoading }

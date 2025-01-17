@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,7 @@ import {
     useCheckFeatureStatus
 } from "@wso2is/access-control";
 import { useOrganizationConfigV2 } from "@wso2is/admin.administrators.v1/api/useOrganizationConfigV2";
+import { GuestUsersList } from "@wso2is/admin.administrators.v1/components/guests/guest-users-list";
 import { AdministratorConstants } from "@wso2is/admin.administrators.v1/constants/users";
 import { UseOrganizationConfigType } from "@wso2is/admin.administrators.v1/models/organization";
 import { AddAdministratorWizard } from "@wso2is/admin.administrators.v1/wizard/add-administrator-wizard";
@@ -45,8 +46,8 @@ import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/adminis
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { useInvitedUsersList } from "@wso2is/admin.users.v1/api/invite";
-import { AdminAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
-import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { UserInviteInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
+import { AdminAccountTypes, InvitationStatus, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
 import {
     AlertInterface,
@@ -55,7 +56,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Button, EmptyPlaceholder, ListLayout, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -124,7 +125,7 @@ enum AddAdministratorModes {
  * @param props - Props injected to the component.
  * @returns Administrators list component.
  */
-const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
+const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
     props: AdministratorsListProps
 ): ReactElement => {
     const {
@@ -146,8 +147,11 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-    const consoleSettingsFeatureConfig: FeatureAccessConfigInterface =
-        useSelector((state: AppState) => state.config.ui.features.consoleSettings);
+    const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features.consoleSettings
+    );
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const isPrivilegedUsersInConsoleSettingsEnabled: boolean =
         !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
@@ -167,13 +171,18 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
     const [ showAddExistingUserWizard, setShowAddExistingUserWizard ] = useState<boolean>(false);
     const [ showInviteNewAdministratorModal, setShowInviteNewAdministratorModal ] = useState<boolean>(false);
     const [ isEnterpriseLoginEnabled, setIsEnterpriseLoginEnabled ] = useState<boolean>(false);
+    const [ invitationStatusOption, setInvitationStatusOption ] = useState<string>(InvitationStatus.ACCEPTED);
 
     const [ showAddExternalAdminWizard, setShowAddExternalAdminWizard ] = useState(false);
-    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(
-        isPrivilegedUsersInConsoleSettingsEnabled
-            ? undefined
-            : userstoresConfig?.primaryUserstoreName
-    );
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(undefined);
+
+    useEffect(() => {
+        setSelectedUserStore(
+            isPrivilegedUsersInConsoleSettingsEnabled && selectedAdministratorGroup === "administrators"
+                ? primaryUserStoreDomainName
+                : userstoresConfig?.primaryUserstoreName
+        );
+    },[ isPrivilegedUsersInConsoleSettingsEnabled, selectedAdministratorGroup ]);
 
     const {
         administrators,
@@ -186,7 +195,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
         listOffset,
         searchQuery,
         null,
-        selectedUserStore ?? selectedAdministratorGroup === "administrators" ? PRIMARY_USERSTORE : CONSUMER_USERSTORE,
+        selectedUserStore,
         UserManagementConstants.GROUPS_ATTRIBUTE
     );
 
@@ -194,8 +203,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
 
     const organizationName: string = store.getState().auth.tenantDomain;
 
-    const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(
-        FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+    const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
     const {
         data: OrganizationConfig,
@@ -210,10 +218,28 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
     );
 
     const {
+        data: guestUserList,
+        isLoading: isGuestUserListFetchRequestLoading,
         mutate: mutateGuestUserListFetchRequest
-    } = useInvitedUsersList(
-        administratorConfig.enableAdminInvite
-    );
+    } = useInvitedUsersList(administratorConfig.enableAdminInvite);
+
+    const invitationStatusOptions: DropdownItemProps[] = [
+        {
+            key: 1,
+            text: t("consoleSettings:invitations.filterOptions.accepted"),
+            value: "Accepted"
+        },
+        {
+            key: 2,
+            text: t("consoleSettings:invitations.filterOptions.pending"),
+            value: "Pending"
+        },
+        {
+            key: 3,
+            text: t("consoleSettings:invitations.filterOptions.expired"),
+            value: "Expired"
+        }
+    ];
 
     const [ loading, setLoading ] = useState(false);
 
@@ -257,7 +283,11 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
         );
     };
 
-    const handleSelectedUserStoreChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+    const handleAccountStatusChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
+        setInvitationStatusOption(data.value as string);
+    };
+
+    const handleSelectedUserStoreChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setSelectedUserStore(data.value as string);
     };
 
@@ -265,12 +295,12 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
         setSearchQuery(query);
     };
 
-    const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
+    const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
         setListOffset(((data.activePage as number) - 1) * listItemLimit);
     };
 
     const handleItemsPerPageDropdownChange = (
-        event: React.MouseEvent<HTMLAnchorElement>,
+        event: MouseEvent<HTMLAnchorElement>,
         data: DropdownProps
     ): void => {
         setListItemLimit(data.value as number);
@@ -332,7 +362,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                         </PrimaryButton>
                     ) }
                 >
-                    <Dropdown.Menu >
+                    <Dropdown.Menu>
                         { addAdminOptions.map((option: DropdownItemProps) => (
                             <Dropdown.Item
                                 key={ option.value as string }
@@ -369,9 +399,26 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
     };
 
     const renderRightActionPanel = () => {
-
-        if (isPrivilegedUsersInConsoleSettingsEnabled) {
-            return null;
+        if (
+            isPrivilegedUsersInConsoleSettingsEnabled &&
+            isFirstLevelOrganization() &&
+            administratorConfig.enableAdminInvite &&
+            selectedAdministratorGroup === "administrators"
+        ) {
+            return (
+                <Dropdown
+                    data-componentid={ `${componentId}-list-userstore-dropdown` }
+                    selection
+                    options={ invitationStatusOptions }
+                    onChange={ handleAccountStatusChange }
+                    text={ `Filter by: ${invitationStatusOption}` }
+                    disabled={
+                        (invitationStatusOption === InvitationStatus.ACCEPTED &&
+                            isAdministratorsListFetchRequestLoading) ||
+                        (administratorConfig.enableAdminInvite && isGuestUserListFetchRequestLoading)
+                    }
+                />
+            );
         }
 
         if (isFirstLevelOrganization() || isSuperOrganization()) {
@@ -381,7 +428,8 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                     selection
                     options={ availableUserStores }
                     onChange={ handleSelectedUserStoreChange }
-                    defaultValue={ PRIMARY_USERSTORE }
+                    value={ selectedUserStore }
+                    defaultValue={ primaryUserStoreDomainName }
                 />
             );
         }
@@ -454,9 +502,12 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
             } }
             rightActionPanel={ renderRightActionPanel() }
             topActionPanelExtension={ (
-                <Show when={ [ ...featureConfig?.users?.scopes?.create, ...featureConfig?.userRoles?.scopes?.update ] }>
-                    { !isSubOrganization() &&
-                      isPrivilegedUsersInConsoleSettingsEnabled && (
+                <Show
+                    when={
+                        [ ...featureConfig?.users?.scopes?.create,
+                            ...featureConfig?.userRoles?.scopes?.update
+                        ] }>
+                    { !isSubOrganization() && isPrivilegedUsersInConsoleSettingsEnabled && (
                         <Button
                             data-componentid={ `${componentId}-admin-settings-button` }
                             icon={ GearIcon }
@@ -468,35 +519,61 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                 </Show>
             ) }
         >
-            { adminUserListFetchError
-                ? (
-                    <EmptyPlaceholder
-                        subtitle={ [ t("users:placeholders.userstoreError.subtitles.0"),
-                            t("users:placeholders.userstoreError.subtitles.1") ] }
-                        title={ t("users:placeholders.userstoreError.title") }
-                        image={ getEmptyPlaceholderIllustrations().genericError }
-                        imageSize="tiny"
-                    />
-                ) : (
-                    <AdministratorsTable
-                        defaultListItemLimit={ defaultListItemLimit }
-                        administrators={ administrators }
-                        onUserEdit={ handleUserEdit }
-                        onUserDelete={ handleUserDelete }
-                        isLoading={ loading }
-                        readOnlyUserStores={ readOnlyUserStores }
-                        onSearchQueryClear={ handleSearchQueryClear }
-                        searchQuery={ searchQuery }
-                        triggerClearQuery={ triggerClearQuery }
-                        onEmptyListPlaceholderActionClick={ () => null }
-                        onIsLoading={ setLoading }
-                        selection={ selection }
-                        showListItemActions={ showListItemActions }
-                        showMetaContent={ showMetaContent }
-                        data-componentid={ `${componentId}-table` }
-                    />
-                )
-            }
+            { invitationStatusOption === InvitationStatus.ACCEPTED ? adminUserListFetchError ? (
+                <EmptyPlaceholder
+                    subtitle={ [ t("users:placeholders.userstoreError.subtitles.0"),
+                        t("users:placeholders.userstoreError.subtitles.1") ] }
+                    title={ t("users:placeholders.userstoreError.title") }
+                    image={ getEmptyPlaceholderIllustrations().genericError }
+                    imageSize="tiny"
+                />
+            ) : (
+                <AdministratorsTable
+                    defaultListItemLimit={ defaultListItemLimit }
+                    administrators={ administrators }
+                    onUserEdit={ handleUserEdit }
+                    onUserDelete={ handleUserDelete }
+                    isLoading={ loading }
+                    readOnlyUserStores={ readOnlyUserStores }
+                    onSearchQueryClear={ handleSearchQueryClear }
+                    searchQuery={ searchQuery }
+                    triggerClearQuery={ triggerClearQuery }
+                    onEmptyListPlaceholderActionClick={ () => null }
+                    onIsLoading={ setLoading }
+                    selection={ selection }
+                    showListItemActions={ showListItemActions }
+                    showMetaContent={ showMetaContent }
+                    data-componentid={ `${componentId}-table` }
+                />
+            ) : null }
+            { invitationStatusOption === InvitationStatus.PENDING && (
+                <GuestUsersList
+                    invitationStatusOption={ invitationStatusOption }
+                    onEmptyListPlaceholderActionClick={ () => setShowAddExternalAdminWizard(true) }
+                    onboardedGuestUserList={ administrators }
+                    onSearchQueryClear={ handleSearchQueryClear }
+                    guestUsersList={ guestUserList?.filter(
+                        (invitation: UserInviteInterface) =>
+                            invitation.status === InvitationStatus.PENDING.toUpperCase()
+                    ) }
+                    getGuestUsersList={ () => mutateGuestUserListFetchRequest() }
+                    searchQuery={ searchQuery }
+                />
+            ) }
+            { invitationStatusOption === InvitationStatus.EXPIRED && (
+                <GuestUsersList
+                    invitationStatusOption={ invitationStatusOption }
+                    onEmptyListPlaceholderActionClick={ () => setShowAddExternalAdminWizard(true) }
+                    onboardedGuestUserList={ administrators }
+                    onSearchQueryClear={ handleSearchQueryClear }
+                    guestUsersList={ guestUserList?.filter(
+                        (invitation: UserInviteInterface) =>
+                            invitation.status === InvitationStatus.EXPIRED.toUpperCase()
+                    ) }
+                    getGuestUsersList={ () => mutateGuestUserListFetchRequest() }
+                    searchQuery={ searchQuery }
+                />
+            ) }
             { showAddExistingUserWizard && (
                 <AddExistingUserWizard
                     onSuccess={ () => mutateAdministratorsListFetchRequest() }
@@ -508,33 +585,32 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                     onClose={ () => setShowInviteNewAdministratorModal(false) }
                 />
             ) }
-            {
-                showAddExternalAdminWizard && (
-                    <AddAdministratorWizard
-                        data-componentid={ `${ componentId }-add-admin-wizard-modal` }
-                        closeWizard={ () => {
-                            setShowAddExternalAdminWizard(false);
-                        } }
-                        updateList={ () => mutateGuestUserListFetchRequest() }
-                        rolesList={ [] }
-                        emailVerificationEnabled={ true }
-                        onInvitationSendSuccessful={ () => {
-                            mutateGuestUserListFetchRequest();
-                            eventPublisher.publish("manage-users-finish-creating-collaborator-user");
-                        } }
-                        adminTypeSelection={ AdminAccountTypes.EXTERNAL }
-                        onUserUpdate={ () => {
-                            // do something
-                            mutateAdministratorsListFetchRequest();
-                        } }
-                    />
-                )
+            { showAddExternalAdminWizard && (
+                <AddAdministratorWizard
+                    data-componentid={ `${ componentId }-add-admin-wizard-modal` }
+                    closeWizard={ () => {
+                        setShowAddExternalAdminWizard(false);
+                    } }
+                    updateList={ () => mutateGuestUserListFetchRequest() }
+                    rolesList={ [] }
+                    emailVerificationEnabled={ true }
+                    onInvitationSendSuccessful={ () => {
+                        mutateGuestUserListFetchRequest();
+                        eventPublisher.publish("manage-users-finish-creating-collaborator-user");
+                    } }
+                    adminTypeSelection={ AdminAccountTypes.EXTERNAL }
+                    onUserUpdate={ () => {
+                        mutateAdministratorsListFetchRequest();
+                    } }
+                />
+            )
             }
         </ListLayout>
     );
 };
 
 AdministratorsList.defaultProps = {
+    "data-componentid": "administrators",
     selection: true,
     showListItemActions: true,
     showMetaContent: true

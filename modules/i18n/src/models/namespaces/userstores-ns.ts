@@ -124,6 +124,10 @@ export interface userstoresNS {
         list: {
             title: string;
             description: string;
+            newUserStoreDropdown: {
+                connectDirectly: string;
+                connectRemotely: string;
+            };
             primaryAction: string;
         };
         templates: {

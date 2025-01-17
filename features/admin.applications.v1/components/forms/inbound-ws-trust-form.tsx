@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,23 +20,26 @@ import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
-import { Field, Forms, Validation } from "@wso2is/forms";
+import { DropdownChild, Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Heading, Hint, LinkButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import {
     CertificateInterface,
-    CertificateTypeInterface,
+    CertificateTypeInterface
+} from "../../models/application";
+import {
     MetadataPropertyInterface,
     WSTrustConfigurationInterface,
     WSTrustMetaDataInterface
-} from "../../models";
-import { CertificateFormFieldModal } from "../modals";
+} from "../../models/application-inbound";
+import { CertificateFormFieldModal } from "../modals/certificate-form-field-modal";
 
 /**
  * Proptypes for the inbound WS Trust form component.
@@ -62,9 +65,9 @@ interface InboundWSTrustFormPropsInterface extends TestableComponentInterface {
 /**
  * Inbound WS Trust protocol configurations form.
  *
- * @param {InboundWSTrustFormPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Inbound WS Trust protocol configurations form
  */
 export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterface> = (
     props: InboundWSTrustFormPropsInterface
@@ -82,7 +85,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ isPEMSelected, setPEMSelected ] = useState<boolean>(false);
     const [ showCertificateModal, setShowCertificateModal ] = useState<boolean>(false);
@@ -103,13 +106,13 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
 
     /**
      * Create drop down options.
-     * @param metadataProp metadata property to create the option.
+     * @param metadataProp - metadata property to create the option.
      */
     const getCertificateOptions = (metadataProp: MetadataPropertyInterface) => {
-        const allowedOptions = [];
+        const allowedOptions: DropdownChild[] = [];
 
         if (metadataProp) {
-            metadataProp.options.map((ele) => {
+            metadataProp.options.map((ele: string) => {
                 allowedOptions.push({ key: metadataProp.options.indexOf(ele), text: ele, value: ele });
             });
         }
@@ -121,7 +124,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
      * Prepares form values for submit.
      *
      * @param values - Form values.
-     * @return {any} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const updateConfiguration = (values: any): any => {
 
@@ -172,7 +175,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
         metadata ?
             (
                 <Forms
-                    onSubmit={ (values) => {
+                    onSubmit={ (values: Map<string, FormValue>) => {
                         onSubmit(updateConfiguration(values));
                     } }
                 >
@@ -254,7 +257,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                     name="type"
                                     default={ CertificateTypeInterface.JWKS }
                                     listen={
-                                        (values) => {
+                                        (values: any) => {
                                             setPEMSelected(values.get("type") === "PEM");
                                         }
                                     }
@@ -304,7 +307,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                                         && certificate?.value
                                                     }
                                                     listen={
-                                                        (values) => {
+                                                        (values: any) => {
                                                             setPEMValue(
                                                                 values.get("certificateValue") as string
                                                             );

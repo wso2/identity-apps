@@ -54,8 +54,8 @@ import { RenderChip } from "./edit-role-common/render-chip";
 import { RoleAPIResourcesListItem } from "./edit-role-common/role-api-resources-list-item";
 import { getAPIResourceDetailsBulk, updateRoleDetails, useAPIResourceDetails } from "../../api";
 import { RoleAudienceTypes } from "../../constants/role-constants";
-import { PatchRoleDataInterface, PermissionUpdateInterface, SelectedPermissionsInterface } from "../../models";
 import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../models/apiResources";
+import { PatchRoleDataInterface, PermissionUpdateInterface, SelectedPermissionsInterface } from "../../models/roles";
 
 /**
  * Interface to capture permission edit props.
@@ -666,7 +666,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                     option={ option }
                     activeOption={ null }
                     setActiveOption={ () => null }
-                    variant="solid"
+                    variant="filled"
                 />
             )) }
         />

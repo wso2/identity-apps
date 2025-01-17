@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,6 @@ import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import TextField from "@oxygen-ui/react/TextField";
 import React, { FunctionComponent, ReactElement } from "react";
 import { FieldRenderProps } from "react-final-form";
-import "./text-field-adapter.scss";
 
 /**
  * Props for the TextFieldAdapter component.
@@ -60,6 +59,7 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
         required,
         readOnly,
         endAdornment,
+        uppercase,
         ...rest
     } = props;
 
@@ -68,7 +68,6 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
     return (
         <>
             <TextField
-                className="text-field-adapter"
                 fullWidth={ fullWidth }
                 variant="outlined"
                 error={ isError }
@@ -82,6 +81,9 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
                 InputProps={ {
                     endAdornment,
                     readOnly
+                } }
+                inputProps={ {
+                    style: { textTransform: uppercase ? "uppercase" : "none" }
                 } }
                 { ...rest }
             />

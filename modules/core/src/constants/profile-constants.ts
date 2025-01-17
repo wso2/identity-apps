@@ -84,7 +84,12 @@ export class ProfileConstants {
         .set("IDP_TYPE", "idpType")
         .set("IMS", "ims")
         .set("PHOTOS", "photos")
-        .set("META_VERSION", "meta.version");
+        .set("META_VERSION", "meta.version")
+        .set("MOBILE", "phoneNumbers.mobile")
+        .set("EMAIL_ADDRESSES", "emailAddresses")
+        .set("MOBILE_NUMBERS", "mobileNumbers")
+        .set("VERIFIED_EMAIL_ADDRESSES", "verifiedEmailAddresses")
+        .set("VERIFIED_MOBILE_NUMBERS", "verifiedMobileNumbers");
 
     /**
      * States if the SCIM schema is mutable.
@@ -95,6 +100,10 @@ export class ProfileConstants {
      * Default max length for a claim without a max length defined in schemas.
      */
     public static readonly CLAIM_VALUE_MAX_LENGTH: number = 255;
+
+    public static readonly URI_CLAIM_VALUE_MAX_LENGTH: number = 1024;
+    public static readonly MAX_MOBILE_NUMBERS_ALLOWED: number = 10;
+    public static readonly MAX_EMAIL_ADDRESSES_ALLOWED: number = 10;
 
     // Mobile and email verification
 

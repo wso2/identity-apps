@@ -60,10 +60,10 @@ export const userstores: userstoresNS = {
     },
     forms: {
         connection: {
-            updatePassword: "Update connection password",
             connectionErrorMessage: "Please ensure the provided connection "
                 + "URL, name, password and driver name are correct",
-            testButton: "Test Connection"
+            testButton: "Test Connection",
+            updatePassword: "Update connection password"
         },
         custom: {
             placeholder: "Enter a {{name}}",
@@ -83,8 +83,8 @@ export const userstores: userstoresNS = {
                 requiredErrorMessage: "Name is a required field",
                 validationErrorMessages: {
                     alreadyExistsErrorMessage: "A user store with this name already exists.",
-                    maxCharLimitErrorMessage: "User store name cannot exceed {{maxLength}} characters.",
-                    invalidInputErrorMessage: "User store name cannot contain the pattern {{invalidString}}."
+                    invalidInputErrorMessage: "User store name cannot contain the pattern {{invalidString}}.",
+                    maxCharLimitErrorMessage: "User store name cannot exceed {{maxLength}} characters."
                 }
             },
             type: {
@@ -187,6 +187,10 @@ export const userstores: userstoresNS = {
         },
         list: {
             description: "Create and manage user stores.",
+            newUserStoreDropdown: {
+                connectDirectly: "Connect directly",
+                connectRemotely: "Connect via agent"
+            },
             primaryAction: "New User Store",
             title: "User Stores"
         },

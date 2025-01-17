@@ -35,6 +35,11 @@
 <%-- Include tenant context --%>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
+<%
+    // Add the password-reset screen to the list to retrieve text branding customizations.
+    screenNames.add("password-reset");
+%>
+
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
@@ -89,7 +94,7 @@
     }
 
     String resetCode = (String) request.getAttribute("resetCode");
-    String flowConfirmationCode = request.getParameter("flowConfirmationCode"); 
+    String flowConfirmationCode = request.getParameter("flowConfirmationCode");
     boolean isForgotPasswordFlow = StringUtils.isNotBlank(resetCode);
 %>
 

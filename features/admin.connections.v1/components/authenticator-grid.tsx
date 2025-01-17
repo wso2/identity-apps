@@ -20,7 +20,7 @@ import Divider from "@oxygen-ui/react/Divider";
 import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import { useRequiredScopes } from "@wso2is/access-control";
-import { getApplicationDetails } from "@wso2is/admin.applications.v1/api";
+import { getApplicationDetails } from "@wso2is/admin.applications.v1/api/application";
 import { AppState, EventPublisher, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import {
     getEmptyPlaceholderIllustrations

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,63 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+/**
+ * Type of user store type.
+ */
+export interface UserStoreType {
+    typeId: string;
+    typeName: string;
+    className: string;
+    isLocal: boolean;
+    self: string;
+}
+
+/**
+ * Type of user store type details.
+ */
+export interface UserStoreTypeDetails extends UserStoreType {
+    properties: UserStoreTypeProperties;
+}
+
+export interface UserStoreTypeProperties {
+    Mandatory: UserStorePropertyMeta[];
+    Optional: UserStorePropertyMeta[];
+    Advanced: UserStorePropertyMeta[];
+}
+
+export interface UserStorePropertyMeta {
+    name: string;
+    defaultValue: string;
+    description: string;
+    attributes: PropertyAttribute[];
+}
+
+export interface PropertyAttribute {
+    name: "category" | "type" | "required";
+    value: string;
+}
+
+export interface UserStoreDetails {
+    typeName: string;
+    typeId: string;
+    name: string;
+    description: string;
+    className: string;
+    isLocal: boolean;
+    properties: UserStoreProperty[];
+    claimAttributeMappings: ClaimAttributeMapping[];
+}
+
+export interface UserStoreProperty {
+    name: string;
+    value: string;
+}
+
+export interface ClaimAttributeMapping {
+    claimURI: string;
+    mappedAttribute: string;
+}
 
 /**
  * Type of query param objects
@@ -35,6 +92,16 @@ export interface UserStoreListItem {
     description: string;
     self: string;
     enabled: boolean;
+    typeName?: string;
+}
+
+/**
+ * User store basic details object.
+ */
+export interface UserStoreBasicData {
+    id: string;
+    name: string;
+    enabled?: boolean;
 }
 
 /**
@@ -43,14 +110,6 @@ export interface UserStoreListItem {
 export interface UserStoreDropdownItem {
     key: number;
     text: string;
-    value: string;
-}
-
-/**
- * Type of a userstore property
- */
-export interface UserStoreProperty {
-    name: string;
     value: string;
 }
 
@@ -136,14 +195,6 @@ export interface PatchData {
 }
 
 /**
- * Model of the key-value pair attribute object of properties.
- */
-export interface PropertyAttribute {
-    name: "category" | "type" | "required";
-    value: string;
-}
-
-/**
  *  Model to split the property into required and optional.
  */
 export interface RequiredBinary {
@@ -208,25 +259,5 @@ export interface UserStoreItem {
     key: number;
     text: string;
     value: string;
-}
-
-/**
- * Type of a userstore property
- */
-export interface UserStoreProperty {
-    name: string;
-    value: string;
-}
-
-/**
- * User store details object
- */
-export interface UserStoreDetails {
-    id?: string,
-    enabled?: boolean,
-    typeName: string;
-    typeId: string;
-    name: string;
-    className: string;
-    properties: UserStoreProperty[];
+    disabled?: boolean;
 }

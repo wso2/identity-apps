@@ -951,13 +951,17 @@ export const myAccount: MyAccountNS = {
             "submitMobile": {
                 "heading": "Geben Sie Ihre neue Handynummer ein"
             },
+            "verificationSent": {
+                "heading": "Sie erhalten in Kürze ein OTP auf Ihre Handynummer zur Verifizierung"
+            },
             "verifySmsOtp": {
+                "didNotReceive": "Sie haben keinen Code erhalten?",
                 "error": "Verifizierung fehlgeschlagen. Bitte versuche es erneut.",
-                "generate": "Senden Sie erneut einen neuen Bestätigungscode",
-                "heading": "Geben Sie den Bestätigungscode ein, der an Ihre Handynummer gesendet wurde",
-                "label": "Bestätigungs-Code",
+                "heading": "Überprüfen Sie Ihre Handynummer",
+                "label": "Geben Sie den an Ihre Handynummer gesendeten Bestätigungscode ein",
                 "placeholder": "Geben Sie Ihren Bestätigungs-Code ein",
-                "requiredError": "Geben Sie den Bestätigungscode ein"
+                "requiredError": "Geben Sie den Bestätigungscode ein",
+                "resend": "Erneut senden"
             }
         },
         "overview": {
@@ -1154,6 +1158,12 @@ export const myAccount: MyAccountNS = {
             }
         },
         "profile": {
+            "actions": {
+                "deleteEmail": "E-Mail-Adresse löschen",
+                "deleteMobile": "Handy löschen",
+                "verifyEmail": "Überprüfen Sie die E-Mail-Adresse",
+                "verifyMobile": "Mobilgerät überprüfen"
+            },
             "fields": {
                 "Account Confirmed Time": "Konto bestätigte Zeit",
                 "Account Disabled": "Account deaktiviert",
@@ -1171,6 +1181,7 @@ export const myAccount: MyAccountNS = {
                 "Disable SMSOTP": "Deaktivieren Sie SMSOTP",
                 "Display Name": "Anzeigename",
                 "Email": "Email",
+                "Email Addresses": "E-mailadressen",
                 "Email Verified": "Email überprüft",
                 "Enabled Authenticators": "Aktivierte Authentifikatoren",
                 "Existing Lite User": "Bestehende Lite-Benutzer",
@@ -1203,6 +1214,7 @@ export const myAccount: MyAccountNS = {
                 "Manager - Name": "Der Name des Managers",
                 "Middle Name": "Zweiter Vorname",
                 "Mobile": "Handy, Mobiltelefon",
+                "Mobile Numbers": "Handynummern",
                 "Nick Name": "Spitzname",
                 "Phone Verified": "Telefon verifiziert",
                 "Photo - Thumbnail": "Foto - Miniaturansicht",
@@ -1226,6 +1238,8 @@ export const myAccount: MyAccountNS = {
                 "Username": "Nutzername",
                 "Verification Pending Email": "E-Mail mit ausstehender Bestätigung",
                 "Verification Pending Mobile Number": "Handynummer zur Überprüfung ausstehend",
+                "Verified Email Addresses": "Verifizierte E-Mail-Adressen",
+                "Verified Mobile Numbers": "Verifizierte Mobiltelefonnummern",
                 "Verify Email": "E-Mail bestätigen",
                 "Verify Mobile": "Handy bestätigen",
                 "Verify Secret Key": "Verifizieren Sie den geheimen Schlüssel",
@@ -1337,6 +1351,20 @@ export const myAccount: MyAccountNS = {
                     "content": "Diese Mobiltelefonnummer wird zum Senden von SMS-OTP verwendet, wenn die Zwei-Faktor-Authentifizierung aktiviert ist, und zum Senden von Wiederherstellungscodes im Falle einer Wiederherstellung von Benutzername/Passwort. Um diese Nummer zu aktualisieren, müssen Sie die neue Nummer verifizieren, indem Sie den Bestätigungscode eingeben, der an Ihre neue Nummer gesendet wurde. Klicken Sie auf Aktualisieren, wenn Sie fortfahren möchten."
                 }
             },
+            "modals": {
+                "emailAddressDeleteConfirmation": {
+                    "assertionHint": "Bitte bestätigen Sie Ihre Aktion.",
+                    "content": "Diese Aktion ist irreversibel und löscht die E -Mail -Adresse dauerhaft.",
+                    "description": "Wenn Sie diese E -Mail -Adresse löschen, wird sie dauerhaft aus Ihrem Profil entfernt.",
+                    "heading": "Bist du sicher?"
+                },
+                "mobileNumberDeleteConfirmation": {
+                    "assertionHint": "Bitte bestätigen Sie Ihre Aktion.",
+                    "content": "Diese Aktion ist irreversibel und löscht die Mobiltelefonnummer dauerhaft.",
+                    "description": "Wenn Sie diese Handynummer löschen, wird sie dauerhaft aus Ihrem Profil entfernt.",
+                    "heading": "Bist du sicher?"
+                }
+            },
             "notifications": {
                 "getProfileCompletion": {
                     "error": {
@@ -1384,6 +1412,34 @@ export const myAccount: MyAccountNS = {
                     "success": {
                         "description": "Die erforderlichen Benutzerprofildetails wurden erfolgreich aktualisiert",
                         "message": "Benutzerprofil erfolgreich aktualisiert"
+                    }
+                },
+                "verifyEmail": {
+                    "error": {
+                        "description": "{{description}}",
+                        "message": "Beim Senden der Überprüfungs -E -Mail trat ein Fehler auf"
+                    },
+                    "genericError": {
+                        "description": "Beim Senden der Überprüfungs -E -Mail trat ein Fehler auf",
+                        "message": "Etwas ist schief gelaufen"
+                    },
+                    "success": {
+                        "description": "Die Überprüfungs -E -Mail wurde erfolgreich gesendet. Bitte überprüfen Sie Ihren Posteingang",
+                        "message": "Überprüfungs -E -Mail erfolgreich gesendet "
+                    }
+                },
+                "verifyMobile": {
+                    "error": {
+                        "description": "{{description}}",
+                        "message": "Beim Senden des Verifizierungscodes ist ein Fehler aufgetreten"
+                    },
+                    "genericError": {
+                        "description": "Beim Senden des Verifizierungscodes ist ein Fehler aufgetreten",
+                        "message": "Etwas ist schief gelaufen"
+                    },
+                    "success": {
+                        "description": "Der Überprüfungscode wurde erfolgreich gesendet. Bitte überprüfen Sie Ihr Handy",
+                        "message": "Überprüfungscode erfolgreich gesendet"
                     }
                 }
             },

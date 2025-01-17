@@ -17,6 +17,7 @@
  */
 
 import { BasicUserInfo } from "@asgardeo/auth-react";
+import { CloneIcon } from "@oxygen-ui/react-icons";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
 import { AppConstants, AppState, OrganizationType } from "@wso2is/admin.core.v1";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -48,6 +49,7 @@ import {
     GenericOrganization
 } from "../../models";
 import { OrganizationUtils } from "../../utils";
+import "./organization-switch-breadcrumb.scss";
 
 /**
  * Interface for component dropdown.
@@ -324,13 +326,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                 return (
                                     <>
                                         { generateSuperBreadcrumbItem(breadcrumb) }
-                                        {
-                                            breadcrumbList.length !== 1 && (
-                                                <Breadcrumb.Divider
-                                                    className="organization-breadcrumb-item-divider"
-                                                />
-                                            )
-                                        }
+                                        { resolveBreadcrumbIcon(index) }
                                     </>
                                 );
                             }
@@ -471,9 +467,14 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                 onClick={ () => setIsDropDownOpen(!isDropDownOpen) }
                             >
                                 <p className="organization-breadcrumb-label">
-                                    { t("organizations:switching.switchLabel") }
+                                    { organizationType === OrganizationType.SUPER_ORGANIZATION ||
+                                    organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION
+                                        ? t("organizations:switching.switchLabel")
+                                        : t("organizations:switching.switchLabelAlt")
+                                    }
                                 </p>
-                                <Breadcrumb>
+                                <Breadcrumb className="organization-breadcrumb-main">
+                                    <CloneIcon size={ 14 } />
                                     { generateBreadcrumb() }
                                 </Breadcrumb>
                             </div>

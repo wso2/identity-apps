@@ -30,6 +30,13 @@ export interface ConsoleSettingsNS {
         };
         tabLabel: string;
     };
+    invitations: {
+        filterOptions: {
+            accepted: string;
+            pending: string;
+            expired: string;
+        }
+    };
     loginFlow: {
         tabLabel: string;
     };

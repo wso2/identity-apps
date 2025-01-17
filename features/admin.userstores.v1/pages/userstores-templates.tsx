@@ -32,6 +32,7 @@ import { getUserstoreTemplateIllustrations } from "../configs";
 import {
     DEFAULT_DESCRIPTION_CUSTOM_USERSTORE,
     DEFAULT_USERSTORE_TYPE_IMAGE,
+    REMOTE_USER_STORE_TYPES,
     USERSTORE_TYPE_DISPLAY_NAMES,
     USERSTORE_TYPE_IMAGES,
     USER_STORE_TYPE_DESCRIPTIONS
@@ -108,11 +109,18 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                 }))
             );
 
+            let filteredResults: (UserstoreType | void)[] = [];
+
+            filteredResults = results.filter(
+                (type: UserstoreType) =>
+                    !REMOTE_USER_STORE_TYPES.includes(type?.typeName)
+            );
+
             const userstoreTypes: UserstoreTypeListItem[] = [];
             const uniqueUserstoreTypes: UserstoreTypeListItem[] = [];
             const rawUserstoreTypes: UserstoreType[] = [];
 
-            results.forEach((type: UserstoreType) => {
+            filteredResults.forEach((type: UserstoreType) => {
                 if (type && !userstoresConfig.shouldShowUserstore(type.typeName)) {
                     rawUserstoreTypes.push(type);
                     if (type.typeName.toLowerCase().includes("unique")) {

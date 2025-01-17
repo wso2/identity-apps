@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,7 @@
 
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
 import { I18nConstants } from "../constants";
+import { AppConstants } from "../constants/app-constants";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { SCIMConfigs } from "../extensions/configs/scim";
 import { AppUtils } from "../init/app-utils";
@@ -159,8 +160,12 @@ export class Config {
             i18nConfigs: window["AppUtils"]?.getConfig()?.ui?.i18nConfigs,
             isCookieConsentBannerEnabled: window["AppUtils"]?.getConfig()?.ui?.isCookieConsentBannerEnabled,
             isHeaderAvatarLabelAllowed: window["AppUtils"]?.getConfig()?.ui?.isHeaderAvatarLabelAllowed,
+            isMultipleEmailsAndMobileNumbersEnabled:
+                window["AppUtils"]?.getConfig()?.ui?.isMultipleEmailsAndMobileNumbersEnabled,
             isPasswordInputValidationEnabled: window["AppUtils"]?.getConfig()?.ui?.isPasswordInputValidationEnabled,
             isProfileUsernameReadonly: window["AppUtils"]?.getConfig()?.ui?.isProfileUsernameReadonly,
+            primaryUserStoreDomainName: window[ "AppUtils" ]?.getConfig()?.ui?.primaryUserStoreDomainName?.toUpperCase()
+                ?? AppConstants.PRIMARY_USER_STORE_IDENTIFIER,
             privacyPolicyConfigs: window["AppUtils"]?.getConfig()?.ui?.privacyPolicyConfigs,
             productName: window["AppUtils"]?.getConfig()?.ui?.productName,
             productVersionConfig: window["AppUtils"]?.getConfig()?.ui?.productVersionConfig,

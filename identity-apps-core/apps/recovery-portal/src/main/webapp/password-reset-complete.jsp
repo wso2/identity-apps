@@ -44,6 +44,7 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="javax.servlet.http.Cookie" %>
 <%@ page import="java.util.Base64" %>
 <%@ page import="org.wso2.carbon.core.util.SignatureUtil" %>
@@ -124,6 +125,16 @@
                 // Ignored and fallback to my account page url.
             }
         }
+    }
+
+    Boolean appEnabledStatus = false;
+
+    // Temporary fix for application name not retrieving from the applicationDataRetrievalClient.
+    if (StringUtils.isBlank(applicationName) || applicationName.equals("null")) {
+        // If application name is not available, fallback to My Account application.
+        appEnabledStatus = applicationDataRetrieval.getApplicationEnabledStatus(tenantDomain, MY_ACCOUNT_APP_NAME);
+    } else {
+        appEnabledStatus = applicationDataRetrieval.getApplicationEnabledStatus(tenantDomain, applicationName);
     }
 
     // Retrieve application access url to redirect user back to the application.
@@ -216,7 +227,7 @@
 
                 JSONObject cookieValueInJson = new JSONObject();
                 cookieValueInJson.put("content", content);
-                String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(content));
+                String signature = Base64.getEncoder().encodeToString(IdentityUtil.signWithTenantKey(content, tenantDomain));
                 cookieValueInJson.put("signature", signature);
                 String cookieValue = Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes());
 
@@ -321,14 +332,16 @@
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "successfully.set.a.password")%>.
                         <br/>
                         <br/>
-                        <% if (StringUtils.isNotBlank(applicationName) && applicationName.equals(MY_ACCOUNT_APP_NAME)) {%>
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "manage.profile.via")%>
-                            <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
-                                applicationAccessURLWithoutEncoding)%>"><%=MY_ACCOUNT_APP_NAME%></a>.
-                        <% } else { %>
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "can.sign.in.to")%>
-                            <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
-                                applicationAccessURLWithoutEncoding)%>"><%=APPLICATION%></a>.
+                        <% if (appEnabledStatus) { %>
+                            <% if (StringUtils.isNotBlank(applicationName) && applicationName.equals(MY_ACCOUNT_APP_NAME)) {%>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "manage.profile.via")%>
+                                <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
+                                    applicationAccessURLWithoutEncoding)%>"><%=MY_ACCOUNT_APP_NAME%></a>.
+                            <% } else { %>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "can.sign.in.to")%>
+                                <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
+                                    applicationAccessURLWithoutEncoding)%>"><%=APPLICATION%></a>.
+                            <% } %>
                         <% } %>
                     <% } else { %>
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "successfully.set.a.password.you.can.sign.in.now")%>.

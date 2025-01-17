@@ -32,6 +32,8 @@ import Chip from "@oxygen-ui/react/Chip";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import AIBanner from "@wso2is/common.ai.v1/components/ai-banner";
 import AIBannerTall from "@wso2is/common.ai.v1/components/ai-banner-tall";
@@ -40,7 +42,7 @@ import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, DocumentationLink, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { v4 as uuidv4 } from "uuid";
 import useAvailableAuthenticators from "../api/use-available-authenticators";
@@ -59,6 +61,10 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
     } = props;
 
     const { t } = useTranslation();
+
+    const applicationsFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state.config.ui.features.applications);
+    const hasApplicationUpdatePermissions: boolean = useRequiredScopes(applicationsFeatureConfig?.scopes?.update);
 
     const dispatch: Dispatch = useDispatch();
 
@@ -164,7 +170,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
         return null;
     }
 
-    return (
+    return hasApplicationUpdatePermissions ? (
         <>
             <Collapse in={ bannerState === BannerState.FULL }>
                 <AIBanner
@@ -192,7 +198,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                                 link={ getLink("develop.applications.editApplication.common.signInMethod." +
                                     "conditionalAuthenticaion.ai.learnMore") }
                             >
-                                <Trans i18nKey={ "extensions:common.learnMore" }>
+                                <Trans i18nKey={ "common:learnMore" }>
                                     Learn more
                                 </Trans>
                             </DocumentationLink>
@@ -367,7 +373,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                 </AIBannerTall>
             </Collapse>
         </>
-    );
+    ) : null;
 };
 
 /**

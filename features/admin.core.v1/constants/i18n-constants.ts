@@ -190,6 +190,11 @@ export class I18nConstants {
     public static readonly SMS_PROVIDERS_NAMESPACE: string = I18nModuleConstants.SMS_PROVIDERS_NAMESPACE;
 
     /**
+     * SMS Templates namespace.
+     */
+    public static readonly SMS_TEMPLATES_NAMESPACE: string = I18nModuleConstants.SMS_TEMPLATES_NAMESPACE;
+
+    /**
      * Claims namespace.
      */
     public static readonly CLAIMS_NAMESPACE: string = I18nModuleConstants.CLAIMS_NAMESPACE;
@@ -262,6 +267,22 @@ export class I18nConstants {
     public static readonly ACTIONS_NAMESPACE: string = I18nModuleConstants.ACTIONS_NAMESPACE;
 
     /**
+     * Tenants namespace.
+     */
+    public static readonly TENANTS_NAMESPACE: string = I18nModuleConstants.TENANTS_NAMESPACE;
+
+    /**
+     * Remote User Stores namespace.
+     */
+    public static readonly REMOTE_USER_STORES_NAMESPACE: string = I18nModuleConstants.REMOTE_USER_STORES_NAMESPACE;
+
+
+    /**
+     * Policy Administration namespace.
+     */
+    public static readonly POLICY_ADMINISTRATION_NAMESPACE: string = I18nModuleConstants.POLICY_ADMINISTRATION_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
@@ -290,6 +311,7 @@ export class I18nConstants {
         [ I18nConstants.WS_FEDERATION_CONFIG_NAMESPACE, "portals" ],
         [ I18nConstants.INSIGHTS_NAMESPACE, "portals" ],
         [ I18nConstants.SMS_PROVIDERS_NAMESPACE, "portals" ],
+        [ I18nConstants.SMS_TEMPLATES_NAMESPACE, "portals" ],
         [ I18nConstants.CLAIMS_NAMESPACE, "portals" ],
         [ I18nConstants.EMAIL_LOCALE_NAMESPACE, "portals" ],
         [ I18nConstants.HELP_PANEL_NAMESPACE, "portals" ],
@@ -309,7 +331,10 @@ export class I18nConstants {
         [ I18nConstants.APPLICATION_TEMPLATES_NAMESPACE, "portals" ],
         [ I18nConstants.TEMPLATE_CORE_NAMESPACE, "portals" ],
         [ I18nConstants.IMPERSONATION_CONFIGURATION_NAMESPACE, "portals" ],
-        [ I18nConstants.ACTIONS_NAMESPACE, "portals" ]
+        [ I18nConstants.ACTIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.TENANTS_NAMESPACE, "portals" ],
+        [ I18nConstants.POLICY_ADMINISTRATION_NAMESPACE, "portals" ],
+        [ I18nConstants.REMOTE_USER_STORES_NAMESPACE, "portals" ]
     ]);
 
     /**

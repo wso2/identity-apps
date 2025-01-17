@@ -192,6 +192,14 @@ export class I18nModuleConstants {
     public static readonly SMS_PROVIDERS_NAMESPACE: string = "smsProviders";
 
     /**
+     * SMS Templates namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly SMS_TEMPLATES_NAMESPACE: string = "smsTemplates";
+
+    /**
      * Claims namespace.
      * @constant
      */
@@ -320,4 +328,19 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly ACTIONS_NAMESPACE: string = "actions";
+
+    /**
+     * Tenants namespace.
+     */
+    public static readonly TENANTS_NAMESPACE: string = "tenants";
+
+    /**
+     * Policy Administration namespace.
+     */
+    public static readonly POLICY_ADMINISTRATION_NAMESPACE: string = "policyAdministration";
+
+    /**
+     * Remote User Stores namespace.
+     */
+    public static readonly REMOTE_USER_STORES_NAMESPACE: string = "remoteUserStores";
 }

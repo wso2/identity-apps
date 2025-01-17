@@ -19,9 +19,9 @@
 export class ServerConfigurationsConstants {
 
     /**
-	 * Private constructor to avoid object instantiation from outside the class.
-	 *
-	 */
+     * Private constructor to avoid object instantiation from outside the class.
+     *
+     */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
@@ -191,6 +191,8 @@ export class ServerConfigurationsConstants {
      * User email verification API Keyword constants.
      */
     public static readonly EMAIL_VERIFICATION_ENABLED: string = "EmailVerification.Enable";
+    public static readonly EMAIL_VERIFICATION_NOTIFICATIONS_INTERNALLY_MANAGED: string =
+        "EmailVerification.Notification.InternallyManage";
 
     /**
 	 * Self registration API Keyword constants.
@@ -210,6 +212,8 @@ export class ServerConfigurationsConstants {
 	 * Account recovery API Keyword constants.
 	 */
     public static readonly USERNAME_RECOVERY_ENABLE: string = "Recovery.Notification.Username.Enable";
+    public static readonly USERNAME_RECOVERY_EMAIL_ENABLE: string = "Recovery.Notification.Username.Email.Enable";
+    public static readonly USERNAME_RECOVERY_SMS_ENABLE : string = "Recovery.Notification.Username.SMS.Enable";
     public static readonly USERNAME_RECOVERY_RE_CAPTCHA: string = "Recovery.ReCaptcha.Username.Enable";
     public static readonly PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE: string =
         "Recovery.Notification.Password.Enable";
@@ -316,6 +320,17 @@ export class ServerConfigurationsConstants {
     public static readonly PASSWORD_POLICY_ERROR_MESSAGE: string = "passwordPolicy.errorMsg";
 
     /**
+     * User claim update - API Keyword constants.
+     */
+    public static readonly ENABLE_MOBILE_VERIFICATION: string = "UserClaimUpdate.MobileNumber.EnableVerification";
+    public static readonly ENABLE_EMAIL_VERIFICATION: string = "UserClaimUpdate.Email.EnableVerification";
+    public static readonly ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER: string
+        = "UserClaimUpdate.MobileNumber.EnableVerificationByPrivilegedUser";
+
+    public static readonly ENABLE_MULTIPLE_EMAILS_AND_MOBILE_NUMBERS: string =
+        "UserClaimUpdate.EnableMultipleEmailsAndMobileNumbers";
+
+    /**
 	 * Real Configurations constants.
 	 */
     public static readonly HOME_REALM_IDENTIFIER: string = "homeRealmIdentifiers";
@@ -336,7 +351,7 @@ export class ServerConfigurationsConstants {
 		"configurations.";
 
     public static readonly ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred " +
-		"while updating the admin advisory banner configurations.";
+        "while updating the admin advisory banner configurations.";
 
     public static readonly ADMIN_ADVISORY_BANNER_CONFIGS_INVALID_INPUT_ERROR: string = "An invalid input value " +
 		"in the request.";
@@ -394,6 +409,8 @@ export class ServerConfigurationsConstants {
     public static readonly LOGIN_SECURITY_SETTINGS_CATEGORY_ID: string = "login-security";
     public static readonly PROVISIONING_SETTINGS_CATEGORY_ID: string = "provider-settings";
     public static readonly OUTBOUND_PROVISIONING_SETTINGS_CONNECTOR_ID: string = "outbound-provisioning-settings";
+    public static readonly NOTIFICATION_SETTINGS_CATEGORY_ID: string = "notification-settings";
+    public static readonly NOTIFICATION_SETTINGS_CONNECTOR_ID: string = "internal-notification-settings";
 
     /**
 	 * Multi Attribute Login Constants.

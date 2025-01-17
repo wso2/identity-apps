@@ -26,9 +26,9 @@ import FormGroup from "@oxygen-ui/react/FormGroup";
 import Radio from "@oxygen-ui/react/Radio";
 import TextField from "@oxygen-ui/react/TextField";
 import { useRequiredScopes } from "@wso2is/access-control";
-import { updateApplicationDetails } from "@wso2is/admin.applications.v1/api";
+import { updateApplicationDetails } from "@wso2is/admin.applications.v1/api/application";
 import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
-import { ApplicationInterface } from "@wso2is/admin.applications.v1/models";
+import { ApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
 import { OrganizationType } from "@wso2is/admin.core.v1";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
@@ -307,7 +307,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                 <DocumentationLink
                                     link={ getLink("develop.applications.roles.learnMore") }
                                 >
-                                    { t("extensions:common.learnMore") }
+                                    { t("common:learnMore") }
                                 </DocumentationLink>
                             </Heading>
                         </Grid.Column>
@@ -429,20 +429,26 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                         value: BasicRoleInterface[],
                                         getTagProps: AutocompleteRenderGetTagProps
                                     ) => value.map((option: BasicRoleInterface, index: number) => (
-                                        <Chip
-                                            { ...getTagProps({ index }) }
-                                            key={ index }
-                                            label={ option.name }
-                                            activeOption={ activeOption }
-                                            setActiveOption={ setActiveOption }
-                                            variant={
-                                                initialSelectedRoles?.find(
-                                                    (role: BasicRoleInterface) => role.id === option.id
-                                                )
-                                                    ? "solid"
-                                                    : "outlined"
-                                            }
-                                        />
+                                        <>
+                                            { /* `activeOption` and `setActiveOption` are not part of Chip API */ }
+                                            { /* TODO: Tracker: https://github.com/wso2/product-is/issues/21351 */ }
+                                            { /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */ }
+                                            { /* @ts-ignore */ }
+                                            <Chip
+                                                { ...getTagProps({ index }) }
+                                                key={ index }
+                                                label={ option.name }
+                                                activeOption={ activeOption }
+                                                setActiveOption={ setActiveOption }
+                                                variant={
+                                                    initialSelectedRoles?.find(
+                                                        (role: BasicRoleInterface) => role.id === option.id
+                                                    )
+                                                        ? "filled"
+                                                        : "outlined"
+                                                }
+                                            />
+                                        </>
                                     )) }
                                     renderOption={ (
                                         props: HTMLAttributes<HTMLLIElement>,
@@ -480,7 +486,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             </EmphasizedSegment>
             <ConfirmationModal
                 onClose={ (): void => {
-                    setTempRoleAudience(undefined);
+                    setTempRoleAudience(roleAudience);
                     setShowSwitchAudienceWarning(false);
                 } }
                 type="negative"
@@ -491,7 +497,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ (): void => {
-                    setTempRoleAudience(undefined);
+                    setTempRoleAudience(roleAudience);
                     setShowSwitchAudienceWarning(false);
                 } }
                 onPrimaryActionClick={ (): void => {

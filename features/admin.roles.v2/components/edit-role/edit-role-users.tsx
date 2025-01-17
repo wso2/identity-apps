@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,11 +27,11 @@ import Grid from "@oxygen-ui/react/Grid";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
+import { AppState } from "@wso2is/admin.core.v1";
 import { updateResources } from "@wso2is/admin.core.v1/api/bulk-operations";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
-import { AppState } from "@wso2is/admin.core.v1/store";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
-import { RemoteUserStoreConstants } from "@wso2is/admin.remote-userstores.v1/constants/remote-user-stores";
 import { useUsersList } from "@wso2is/admin.users.v1/api";
 import {
     PatchBulkUserDataInterface,
@@ -40,10 +40,13 @@ import {
     PatchUserRemoveOpInterface,
     UserBasicInterface
 } from "@wso2is/admin.users.v1/models";
-import { useUserStores } from "@wso2is/admin.userstores.v1/api";
-import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
+import { getAUserStore, useUserStores } from "@wso2is/admin.userstores.v1/api";
+import {
+    UserStoreDropdownItem, UserStoreListItem, UserStorePostData, UserStoreProperty
+} from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertLevels, IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { StringUtils } from "@wso2is/core/utils";
 import { EmphasizedSegment, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
@@ -68,8 +71,6 @@ import { RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils/role-management-utils";
 import "./edit-role.scss";
 
-type UserstoreDisplayItem = Omit<UserStoreListItem,"description" | "self" | "enabled">
-
 type RoleUsersPropsInterface = IdentifiableComponentInterface & RoleEditSectionsInterface;
 
 export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
@@ -88,19 +89,16 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const disabledUserstores: string[] = useSelector(
-        (state: AppState) => state.config.ui.features.userStores.disabledFeatures);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ userSearchValue, setUserSearchValue ] = useState<string>(undefined);
     const [ isUserSearchLoading, setUserSearchLoading ] = useState<boolean>(false);
     const [ users, setUsers ] = useState<UserBasicInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ activeOption, setActiveOption ] = useState<GroupsInterface|UserBasicInterface>(undefined);
-    const [ availableUserStores, setAvailableUserStores ] = useState<UserstoreDisplayItem[]>([]);
-    const [ selectedUserStoreDomainName, setSelectedUserStoreDomainName ] = useState<string>(
-        activeUserStore ??
-        disabledUserstores.includes(RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME) ? "DEFAULT" : "PRIMARY"
-    );
+    const [ availableUserStores, setAvailableUserStores ] = useState<UserStoreDropdownItem[]>([]);
+    const [ selectedUserStoreDomainName, setSelectedUserStoreDomainName ] = useState<string>();
     const [ isPlaceholderVisible, setIsPlaceholderVisible ] = useState<boolean>(true);
     const [ selectedUsersFromUserStore, setSelectedUsersFromUserStore ] = useState<UserBasicInterface[]>([]);
     const [ selectedAllUsers, setSelectedAllUsers ] = useState<Record<string, UserBasicInterface[] | undefined>>({});
@@ -109,6 +107,44 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         data: userStores,
         isLoading: isUserStoresLoading
     } = useUserStores(null);
+
+    useEffect(() => {
+        if (userStores && !isUserStoresLoading) {
+            const storeOptions: UserStoreDropdownItem[] = [
+                {
+                    key: -1,
+                    text: userstoresConfig?.primaryUserstoreName,
+                    value: userstoresConfig?.primaryUserstoreName
+                }
+            ];
+
+            let storeOption: UserStoreDropdownItem = {
+                key: null,
+                text: "",
+                value: ""
+            };
+
+            userStores?.forEach((store: UserStoreListItem, index: number) => {
+                if (store?.name?.toUpperCase() !== userstoresConfig?.primaryUserstoreName) {
+                    getAUserStore(store.id).then((response: UserStorePostData) => {
+                        const isDisabled: boolean = response.properties.find(
+                            (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
+
+                        if (!isDisabled) {
+                            storeOption = {
+                                key: index,
+                                text: store.name,
+                                value: store.name
+                            };
+                            storeOptions.push(storeOption);
+                        }
+                    });
+                }
+            });
+
+            setAvailableUserStores(storeOptions);
+        }
+    }, [ userStores, isUserStoresLoading ]);
 
     const {
         data: userResponse,
@@ -127,12 +163,17 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const isUserBelongToSelectedUserStore = (user: UserBasicInterface, userStoreName: string) => {
         const userNameChunks: string[] = user.userName.split("/");
 
-        return (userNameChunks.length === 1 && userStoreName === "PRIMARY")
-        || (userNameChunks.length === 2 && userNameChunks[0] === userStoreName.toUpperCase());
+        return (userNameChunks.length === 1 &&
+            StringUtils.isEqualCaseInsensitive(userStoreName, primaryUserStoreDomainName))
+        || (userNameChunks.length === 2 && StringUtils.isEqualCaseInsensitive(userNameChunks[0], userStoreName));
     };
 
     useEffect(() => {
-        setSelectedUserStoreDomainName(activeUserStore);
+        if (activeUserStore) {
+            setSelectedUserStoreDomainName(activeUserStore);
+        } else {
+            setSelectedUserStoreDomainName(userstoresConfig.primaryUserstoreName);
+        }
     }, [ activeUserStore ]);
 
     useEffect(() => {
@@ -159,34 +200,6 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
         setSelectedUsersFromUserStore(usersFromSelectedStore);
     },[ role, selectedUserStoreDomainName ]);
-
-    useEffect(() => {
-        if (!userStores) {
-            return;
-        }
-
-        if (userStores) {
-            const availableUserStoreList: UserstoreDisplayItem[] = disabledUserstores?.includes(
-                RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME)
-                ? []
-                : [
-                    {
-                        id: RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME,
-                        name: t("users:userstores.userstoreOptions.primary")
-                    }
-                ];
-
-            setAvailableUserStores(
-                [
-                    ...availableUserStoreList,
-                    ...userStores.map((userStore: UserStoreListItem) => ({
-                        id: userStore.id,
-                        name: userStore.name
-                    }))
-                ]
-            );
-        }
-    }, [ userStores ]);
 
     /**
      * Set available to select users.
@@ -312,8 +325,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         }).filter((user: RolesMemberInterface) => {
             const userNameChunks: string[] = user.display.split("/");
 
-            return (userNameChunks.length === 1 && selectedUserStoreDomainName === "PRIMARY")
-            || (userNameChunks.length === 2 && userNameChunks[0] === selectedUserStoreDomainName.toUpperCase());
+            return (userNameChunks.length === 1 &&
+                StringUtils.isEqualCaseInsensitive(selectedUserStoreDomainName, primaryUserStoreDomainName))
+            || (userNameChunks.length === 2 &&
+                StringUtils.isEqualCaseInsensitive(userNameChunks[0], selectedUserStoreDomainName));
         }) ?? [];
 
 
@@ -423,13 +438,14 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                     >
                                                         { isUserStoresLoading
                                                             ? <p>{ t("common:loading") }</p>
-                                                            : availableUserStores?.map((userstore: UserStoreListItem) =>
-                                                                (<MenuItem
-                                                                    key={ userstore.name }
-                                                                    value={ userstore.name }
-                                                                >
-                                                                    { userstore.name }
-                                                                </MenuItem>)
+                                                            : availableUserStores?.map(
+                                                                (userstore: UserStoreDropdownItem) =>
+                                                                    (<MenuItem
+                                                                        key={ userstore.key }
+                                                                        value={ userstore.value }
+                                                                    >
+                                                                        { userstore.text }
+                                                                    </MenuItem>)
                                                             )
                                                         }
                                                     </Select>
@@ -486,7 +502,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                         option={ option }
                                                         activeOption={ activeOption }
                                                         setActiveOption={ setActiveOption }
-                                                        variant={ "solid" }
+                                                        variant="filled"
                                                     />
                                                 )) }
                                                 renderOption={ (

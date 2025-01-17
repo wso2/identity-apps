@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,7 +28,7 @@ import { FieldRenderProps } from "react-final-form";
  * Props for the CheckboxAdapter component.
  */
 export interface CheckboxAdapterPropsInterface
-    extends FieldRenderProps<string, HTMLElement, string>,
+    extends FieldRenderProps<boolean, HTMLElement, boolean>,
         CheckboxProps,
         IdentifiableComponentInterface {
     /**
@@ -62,12 +62,18 @@ const CheckboxAdapter: FunctionComponent<CheckboxAdapterPropsInterface> = (
         <FormControl required error={ isError } component="fieldset" variant="standard" { ...FormControlProps }>
             <FormControlLabel
                 control={ (
-                    <Checkbox
-                        color="primary"
-                        { ...input }
-                        { ...rest }
-                        checked={ (input.value as unknown) as boolean }
-                    />
+                    <>
+                        { /* `autocomplete`, `capture`, etc. are not part of TextField API */ }
+                        { /* TODO: Tracker: https://github.com/wso2/oxygen-ui/issues/292 */ }
+                        { /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */ }
+                        { /* @ts-ignore */ }
+                        <Checkbox
+                            color="primary"
+                            { ...input }
+                            { ...rest }
+                            checked={ (input.value as unknown) as boolean }
+                        />
+                    </>
                 ) }
                 label={ label }
             />

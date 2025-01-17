@@ -26,101 +26,6 @@ import { Extensions } from "../../models";
 /* eslint-disable max-len */
 /* eslint-disable sort-keys */
 export const extensions: Extensions = {
-    common: {
-        community: "Community",
-        help: {
-            communityLinks: {
-                discord: "Ask on Discord",
-                stackOverflow: "Ask on Stack Overflow"
-            },
-            docSiteLink: "Documentation",
-            helpCenterLink: {
-                title: "Contact Support",
-                subtitle: "Talk to the {{productName}} team to obtain personalized assistance."
-            },
-            helpDropdownLink: "Get Help"
-        },
-        learnMore: "Learn More",
-        quickStart: {
-            greeting: {
-                alternativeHeading: "Welcome back, {{username}}!",
-                heading: "Welcome, {{username}}!",
-                subHeading: "Here’s how you can get started"
-            },
-            sections: {
-                addSocialLogin: {
-                    actions: {
-                        setup: "Set Up Social Connections",
-                        view: "View Social Connections"
-                    },
-                    description:
-                        "Let your users log in to your applications with an Identity Provider of " + "their choice",
-                    heading: "Add social login"
-                },
-                integrateApps: {
-                    actions: {
-                        create: "Register Application",
-                        manage: "Explore Applications",
-                        view: "View Applications"
-                    },
-                    capabilities: {
-                        sso: "SSO",
-                        mfa: "MFA",
-                        social: "Social Login"
-                    },
-                    description:
-                        "Register your app and design the user login experience you want by configuring " +
-                        "SSO, MFA, social login, and various flexible authentication rules.",
-                    heading: "Add login to your apps"
-                },
-                learn: {
-                    actions: {
-                        view: "View Docs"
-                    },
-                    description:
-                        "Get started using Asgardeo. Implement authentication for any kind of application " +
-                        "in minutes.",
-                    heading: "Learn"
-                },
-                manageUsers: {
-                    actions: {
-                        create: "Add Users",
-                        manage: "Manage Users",
-                        view: "View Users"
-                    },
-                    capabilities: {
-                        collaborators: "Administrators",
-                        customers: "Users",
-                        groups: "User Groups"
-                    },
-                    description:
-                        "Create user accounts for users and invite administrators to your organization. " +
-                        "Allow your users to securely self-manage their profiles.",
-                    heading: "Manage users and groups"
-                },
-                asgardeoTryIt: {
-                    errorMessages: {
-                        appCreateGeneric: {
-                            message: "Something went wrong!",
-                            description: "Failed to initialize the Try It app."
-                        },
-                        appCreateDuplicate: {
-                            message: "Application already exists!",
-                            description: "Please delete the existing {{productName}} Try It application."
-                        }
-                    }
-                }
-            }
-        },
-        upgrade: "Upgrade",
-        dropdown: {
-            footer: {
-                privacyPolicy: "Privacy",
-                cookiePolicy: "Cookies",
-                termsOfService: "Terms"
-            }
-        }
-    },
     console: {
         application: {
             quickStart: {
@@ -473,6 +378,7 @@ export const extensions: Extensions = {
         apiResource: {
             pageHeader: {
                 description: "Create and manage the APIs used to define the API scopes/permissions that can be consumed by your applications.",
+                subOrgDescription: "View the APIs that define scopes and permissions for your applications.",
                 title: "API Resources"
             },
             empty: "There are no API resources available at the moment.",
@@ -766,6 +672,7 @@ export const extensions: Extensions = {
                                     identifier: {
                                         emptyValidate: "Identifier cannot be empty",
                                         alreadyExistsError: "Identifier already exists in the organization. Please choose a different one.",
+                                        errorOccurred: "An error occurred while validating the identifier.",
                                         invalid: "Identifier cannot contain spaces",
                                         hint: "We recommend using a URI as the identifier, but you do not need to make the URI publicly available since {{ productName }} will not access your API. {{ productName }} will use this identifier value as the audience(aud) claim in the issued JWT tokens. <1>This field should be unique; once created, it is not editable.</1>",
                                         label: "Identifier",
@@ -805,6 +712,7 @@ export const extensions: Extensions = {
                                     permission: {
                                         emptyValidate: "Permission(scope) cannot be empty",
                                         uniqueValidate: "This permission (scope) already exists in the organization. Please choose a different one.",
+                                        errorOccurred: "An error occurred while validating the permission.",
                                         invalid: "Permission (scope) cannot contain spaces",
                                         label: "Permission (scope)",
                                         placeholder: "read_bookings",
@@ -1935,6 +1843,7 @@ export const extensions: Extensions = {
                 fetch: {
                     customLayoutNotFound: {
                         description: "There is no deployed custom layout for {{ tenant }}.",
+                        appBrandingDescription: "There is no deployed custom layout for this application.",
                         message: "Couldn't activate the custom layout"
                     },
                     genericError: {
@@ -2964,6 +2873,11 @@ export const extensions: Extensions = {
                 replicateContent: {
                     header: "Replicate content?",
                     message: "Seems like you don't have any content for this locale. Do you need to populate the previous locale's content here as a quick start?"
+                },
+                updateFromRootOrg: {
+                    header: "Template not available",
+                    message: "Template is not available for selected locale.",
+                    content: "The selected locale is not available for the selected template currently. Please contact admins for more infomation."
                 }
             },
             dangerZone: {
@@ -3035,7 +2949,20 @@ export const extensions: Extensions = {
                     error: {
                         description: "Error updating the attribute as an unique attribute. Please try again.",
                         message: "Error updating claim"
+                    },
+                    success: {
+                        description: "Successfully updated the {{claimName}} uniqueness validation scope.",
+                        message: "Update successful"
                     }
+                },
+                claimUpdateConfirmation: {
+                    header: "Before you proceed",
+                    message: "Uniqueness validation for the selected attribute(s) will be applied across user stores.",
+                    content: "This setting ensures values of selected attribute(s) remain unique across the " +
+                    "organization for new users, which is required for alternate login identifiers to work. " +
+                    "However, it does not guarantee uniqueness for attribute(s) of existing users that remain " +
+                    "unchanged.",
+                    assertionHint: "I understand and wish to proceed"
                 }
             },
             pageTitle: "Account Login",
@@ -3721,6 +3648,21 @@ export const extensions: Extensions = {
                     subHeading:
                     "Enable self-service password recovery for users on the login page."
                 },
+                usernameRecovery: {
+                    form: {
+                        fields: {
+                            enableEmailBasedRecovery: {
+                                label: "Enable email based recovery"
+                            },
+                            enableSMSBasedRecovery: {
+                                label: "Enable SMS based recovery"
+                            }
+                        },
+                        smsProviderWarning: "Ensure that an <1>SMS Provider</1> is configured for the SMS feature to work properly.",
+                        recoveryOptionHeading: "Select Recovery Option"
+                    },
+                    heading: "Enable self-service username recovery for users on the login page."
+                },
                 subHeading: "Account Recovery related settings."
             },
             accountSecurity: {
@@ -3981,6 +3923,11 @@ export const extensions: Extensions = {
                                     "without waiting for account confirmation.",
                                 hint: "This will enable email verification at the self-registration.",
                                 label: "Activate account immediately"
+                            },
+                            showUsernameUnavailability: {
+                                msg: "If selected, a descriptive error message will be shown to the user if the chosen username is already taken. However, this may lead to username enumeration.",
+                                hint: "This will enable a descriptive error message to be displayed when the username is unavailable at the self-registration.",
+                                label: "Display message if username unavailable"
                             },
                             signUpConfirmation: {
                                 recommendationMsg:

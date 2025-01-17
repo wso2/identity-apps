@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import AdaptiveAuthTemplateInfoModal from "@wso2is/admin.authentication-flow-builder.v1/components/predefined-flows-side-panel/adaptive-auth-template-info-modal";
+import AdaptiveAuthTemplateInfoModal from "@wso2is/admin.authentication-flow-builder.v1/\
+components/predefined-flows-side-panel/adaptive-auth-template-info-modal";
 import {
     ELK_RISK_BASED_TEMPLATE_NAME
 } from "@wso2is/admin.authentication-flow-builder.v1/constants/template-constants";
@@ -64,7 +65,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Accordion,  Grid, Icon, Menu, Modal, Segment, Sidebar } from "semantic-ui-react";
 // eslint-disable-next-line max-len
-import { AdaptiveAuthTemplateCategoryInterface, AdaptiveAuthTemplateInterface } from "../../../../models";
+import { AdaptiveAuthTemplateCategoryInterface, AdaptiveAuthTemplateInterface } from "../../../../models/application";
 
 /**
  * Component ref interface.

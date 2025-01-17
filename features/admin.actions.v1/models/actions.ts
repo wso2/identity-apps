@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { HttpMethod } from "@asgardeo/auth-react";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { ReactNode } from "react";
 
@@ -103,6 +104,31 @@ interface AuthenticationInterface {
 }
 
 /**
+ * Link Relation type.
+ */
+enum Relation {
+    SELF = "self"
+}
+
+/**
+ * Link Interface.
+ */
+interface LinkInterface {
+    /**
+     * Url of the endpoint.
+     */
+    href: string;
+    /**
+     * Http method.
+     */
+    method: HttpMethod
+    /**
+     * Relation to the resource.
+     */
+    rel: Relation;
+}
+
+/**
  * Authentication Properties.
  */
 export interface AuthenticationPropertiesInterface {
@@ -129,9 +155,9 @@ export interface AuthenticationPropertiesInterface {
 }
 
 /**
- *  Action Basic Response.
+ *  Action Base Response.
  */
-export interface ActionBasicResponseInterface {
+export interface ActionBaseResponseInterface {
     /**
      * ID of the Action.
      */
@@ -155,9 +181,19 @@ export interface ActionBasicResponseInterface {
 }
 
 /**
+ *  Action Basic Response.
+ */
+export interface ActionBasicResponseInterface extends ActionBaseResponseInterface {
+    /**
+     * Links of the Action.
+     */
+    links: LinkInterface[];
+}
+
+/**
  *  Action Response.
  */
-export interface ActionResponseInterface extends ActionBasicResponseInterface {
+export interface ActionResponseInterface extends ActionBaseResponseInterface {
     /**
      * Endpoint configuration of the Action.
      */

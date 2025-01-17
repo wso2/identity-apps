@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,6 @@ export * from "./advanced-search-with-basic-filters";
 export * from "./alert";
 export * from "./app-avatar";
 export * from "./header";
-export * from "./danger-zone";
 export * from "./edit-section";
 export * from "./empty-placeholder";
 export * from "./global-loader";

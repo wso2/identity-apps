@@ -483,7 +483,11 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                         ? (
                                                             <Field
                                                                 name={ property.name }
-                                                                value={ property.value ?? property.defaultValue }
+                                                                value={ !property.value
+                                                                    ? property.defaultValue
+                                                                    : property.value === "false"
+                                                                        ? "false"
+                                                                        : "true" }
                                                                 type="toggle"
                                                                 key={ index }
                                                                 required={ false }

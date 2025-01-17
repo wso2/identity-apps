@@ -16,7 +16,10 @@
  * under the License.
  */
 
-import { Theme as OxygenTheme } from "@oxygen-ui/react/models";
+// TODO: Take this from `@oxygen-ui/react/style` once the following issue is sorted.
+// https://github.com/wso2/oxygen-ui/issues/290
+// eslint-disable-next-line no-restricted-imports
+import { Theme as OxygenTheme } from "@oxygen-ui/react";
 import { extendTheme } from "@oxygen-ui/react/theme";
 
 const Theme: OxygenTheme = extendTheme({
@@ -103,11 +106,30 @@ const Theme: OxygenTheme = extendTheme({
         },
         MuiOutlinedInput: {
             styleOverrides: {
-                input: {
-                    padding: "0.67857143em 1em"
-                },
                 root: {
                     fontFamily: "Gilmer, sans-serif"
+                }
+            }
+        },
+        MuiStepConnector: {
+            styleOverrides: {
+                root: {
+                    marginLeft: "16px"
+                }
+            }
+        },
+        MuiStepContent: {
+            styleOverrides: {
+                root: {
+                    marginLeft: "16px"
+                }
+            }
+        },
+        MuiStepIcon: {
+            styleOverrides: {
+                root: {
+                    height: "30px",
+                    width: "30px"
                 }
             }
         }

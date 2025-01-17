@@ -1,15 +1,4 @@
 .console-settings-tabs {
-    /* TODO: Bump OUI & Remove */
-    .oxygen-tab {
-        font-size: 1rem;
-        font-weight: 400;
-
-        &:not(.Mui-selected) {
-            color: var(--oxygen-palette-text-primary);
-        }
-    }
-    /* TODO: Bump OUI & Remove */
-
     .oxygen-tab-panel {
         .list-layout {
             margin-top: 2rem;

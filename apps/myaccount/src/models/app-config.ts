@@ -169,7 +169,11 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
     /**
      * Show App Switch button in the Header for Super Tenant User.
      */
-     showAppSwitchButton?: boolean;
+    showAppSwitchButton?: boolean;
+    /**
+     * Config to check whether the multiple emails and mobile numbers per user feature is enabled.
+     */
+    isMultipleEmailsAndMobileNumbersEnabled?: boolean;
     }
 
 /**

@@ -50,6 +50,10 @@ interface SelfRegistrationFormInitialValuesInterface {
      */
     verificationLinkExpiryTime: string;
     /**
+     * Show a descriptive error message to the user if the username is already taken.
+     */
+    showUsernameUnavailability: boolean;
+    /**
      * Account lock on creation.
      */
     accountActivateImmediately: boolean;
@@ -94,6 +98,7 @@ const NOTIFY_ACCOUNT_CONFIRMATION: string = "SelfRegistration.NotifyAccountConfi
 const AUTO_LOGIN_ENABLE: string = "SelfRegistration.AutoLogin.Enable";
 const LOCK_ON_CREATION: string = "SelfRegistration.LockOnCreation";
 const ACCOUNT_CONFIRMATION: string = "SelfRegistration.SendConfirmationOnCreation";
+const SHOW_USERNAME_UNAVAILABILITY: string = "SelfRegistration.ShowUsernameUnavailability";
 
 const allowedConnectorFields: string[] = [
     ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
@@ -102,7 +107,8 @@ const allowedConnectorFields: string[] = [
     ServerConfigurationsConstants.RE_CAPTCHA,
     NOTIFY_ACCOUNT_CONFIRMATION,
     AUTO_LOGIN_ENABLE,
-    LOCK_ON_CREATION
+    LOCK_ON_CREATION,
+    SHOW_USERNAME_UNAVAILABILITY
 ];
 
 const FORM_ID: string = "governance-connectors-self-registration-form";
@@ -133,6 +139,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
     const [ initialFormValues, setInitialFormValues ]
         = useState<SelfRegistrationFormInitialValuesInterface>(undefined);
     const [ enableAccountConfirmation, setEnableAccountConfirmation ] = useState<boolean>(false);
+    const [ showUsernameAvailability, setShowUsernameAvailability ] = useState<boolean>(false);
     const [ enableAccountActivateImmediately, setEnableAccountActivateImmediately ] = useState<boolean>(false);
     const [ enableAutoLogin, setEnableAutoLogin ] = useState<boolean>(false);
     const [ enableConfirmationNotification, setEnableConfirmationNotification ] = useState<boolean>(false);
@@ -244,6 +251,13 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                     };
                 }
             }
+            if (property.name === SHOW_USERNAME_UNAVAILABILITY) {
+                setShowUsernameAvailability(property.value === "true");
+                resolvedInitialFormValues = {
+                    ...resolvedInitialFormValues,
+                    showUsernameUnavailability: property.value === "true"
+                };
+            }
             if (property.name === NOTIFY_ACCOUNT_CONFIRMATION) {
                 setEnableConfirmationNotification(property.value === "true");
                 resolvedInitialFormValues = {
@@ -282,6 +296,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             "SelfRegistration.LockOnCreation": string | boolean;
             "SelfRegistration.NotifyAccountConfirmation": string | boolean;
             "SelfRegistration.SendConfirmationOnCreation": string | boolean;
+            "SelfRegistration.ShowUsernameUnavailability": string | boolean;
             "SelfRegistration.VerificationCode.ExpiryTime": string | boolean | unknown;
             "SelfRegistration.Notification.InternallyManage"?: string | boolean;
         } = {
@@ -298,6 +313,9 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             "SelfRegistration.SendConfirmationOnCreation": enableAccountConfirmation !== undefined
                 ? !!enableAccountConfirmation
                 : initialConnectorValues?.get("SelfRegistration.SendConfirmationOnCreation").value,
+            "SelfRegistration.ShowUsernameUnavailability": showUsernameAvailability !== undefined
+                ? !!showUsernameAvailability
+                : initialConnectorValues?.get("SelfRegistration.ShowUsernameUnavailability").value,
             "SelfRegistration.VerificationCode.ExpiryTime": values.verificationLinkExpiryTime !== undefined
                 ? values.verificationLinkExpiryTime
                 : initialConnectorValues?.get("SelfRegistration.VerificationCode.ExpiryTime").value
@@ -317,6 +335,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 "autoLogin",
                 "accountActivateImmediately",
                 "verificationLinkExpiryTime",
+                "showUsernameUnavailability",
                 "signUpConfirmation",
                 "notifyAccountConfirmation",
                 "SelfRegistration.LockOnCreation",
@@ -622,6 +641,27 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                         {
                             content: t("extensions:manage.serverConfigurations.userOnboarding." +
                                 "selfRegistration.form.fields.activateImmediately.msg"),
+                            type: "info"
+                        }
+                    }
+                />
+            ) }
+            { enableAccountConfirmation && (
+                <Field.Checkbox
+                    ariaLabel="showUsernameUnavailability"
+                    className="toggle"
+                    name="showUsernameUnavailability"
+                    label={ t("extensions:manage.serverConfigurations.userOnboarding." +
+                        "selfRegistration.form.fields.showUsernameUnavailability.label") }
+                    required={ false }
+                    listen={ (value: boolean) => setShowUsernameAvailability(value) }
+                    readOnly={ readOnly }
+                    disabled={ !isConnectorEnabled || isSubmitting }
+                    data-testid={ `${testId}-handle-existing-username` }
+                    message={
+                        {
+                            content: t("extensions:manage.serverConfigurations.userOnboarding." +
+                                "selfRegistration.form.fields.showUsernameUnavailability.msg"),
                             type: "info"
                         }
                     }

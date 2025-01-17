@@ -37,6 +37,7 @@ import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/m
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
+    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     LoadableComponentInterface,
     SBACInterface,
@@ -56,20 +57,21 @@ import {
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { deleteApplication } from "../api";
-import { ApplicationManagementConstants } from "../constants";
+import { deleteApplication } from "../api/application";
+import { ApplicationManagementConstants } from "../constants/application-management";
 import {
     ApplicationAccessTypes,
     ApplicationInboundTypes,
     ApplicationListInterface,
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
-} from "../models";
+} from "../models/application";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 
@@ -187,6 +189,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state.config.ui.features?.applications
+    );
 
     /**
      * Fetch the application templates if list is not available in redux.
@@ -435,6 +441,27 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                                         className="choreo-label no-margin-left"
                                                     >
                                                         { t("extensions:develop.apiResource.managedByChoreoText") }
+                                                    </Label>
+                                                </div>
+                                            </Grid>)
+                                    }
+                                    {
+                                        isFeatureEnabled(
+                                            applicationFeatureConfig,
+                                            ApplicationManagementConstants.FEATURE_DICTIONARY
+                                                .get("APPLICATION_OUTDATED_APP_BANNER")
+                                        ) &&
+                                        ApplicationManagementUtils
+                                            .isApplicationOutdated(app.applicationVersion,
+                                                app.clientId != undefined && !isEmpty(app.clientId))
+                                            && (<Grid>
+                                                <div>
+                                                    <Label
+                                                        size="mini"
+                                                        className="outdated-app-label"
+                                                    >
+                                                        { t("applications:forms.inboundOIDC.sections."
+                                                                + "outdatedApplications.label") }
                                                     </Label>
                                                 </div>
                                             </Grid>)

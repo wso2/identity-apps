@@ -16,10 +16,9 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface, history } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -36,13 +35,13 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider } from "semantic-ui-react";
-import { deleteApplication, disableApplication, updateApplicationDetails } from "../../api";
+import { deleteApplication, disableApplication, updateApplicationDetails } from "../../api/application";
 import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface
-} from "../../models";
+} from "../../models/application";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
-import { GeneralDetailsForm } from "../forms";
+import { GeneralDetailsForm } from "../forms/general-details-form";
 
 /**
  * Proptypes for the applications general details component.
@@ -145,8 +144,11 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
 
     const { t } = useTranslation();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
+
+    const hasApplicationsUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.applications?.scopes?.update
+    );
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
@@ -247,7 +249,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
      * @param data - Checkbox data.
      */
     const handleAppEnableDisableToggleChange = (event: FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
-        setEnableStatus(data.checked);
+        setEnableStatus(!data.checked);
         setShowDisableConfirmationModal(true);
     };
 
@@ -300,8 +302,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
      * @returns React.ReactElement DangerZoneGroup element.
      */
     const resolveDangerActions = (): ReactElement => {
-        if (!hasRequiredScopes(
-            featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)) {
+        if (!hasApplicationsUpdatePermissions) {
             return null;
         }
 
@@ -323,19 +324,12 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     >
                         <Show when={ featureConfig?.applications?.scopes?.update }>
                             <DangerZone
-                                actionTitle={ t("applications:dangerZoneGroup.disableApplication.actionTitle",
-                                    { state: application.applicationEnabled ?
-                                        t("common:disable") : t("common:enable") }) }
-                                header={ t("applications:dangerZoneGroup.disableApplication.header",
-                                    { state: application.applicationEnabled ?
-                                        t("common:disable") : t("common:enable") } ) }
-                                subheader={ application.applicationEnabled ?
-                                    t("applications:dangerZoneGroup.disableApplication.subheader")
-                                    : t("applications:dangerZoneGroup.disableApplication.subheader2") }
-
+                                actionTitle={ t("applications:dangerZoneGroup.disableApplication.actionTitle") }
+                                header={ t("applications:dangerZoneGroup.disableApplication.header") }
+                                subheader={ t("applications:dangerZoneGroup.disableApplication.subheader") }
                                 onActionClick={ undefined }
                                 toggle={ {
-                                    checked: application.applicationEnabled,
+                                    checked: !application.applicationEnabled,
                                     onChange: handleAppEnableDisableToggleChange
                                 } }
                                 data-testid={ `${ componentId }-danger-zone-disable` }
@@ -382,14 +376,9 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             accessUrl={ accessUrl }
                             readOnly={
                                 readOnly
-                                || !hasRequiredScopes(
-                                    featureConfig?.applications, featureConfig?.applications?.scopes?.update,
-                                    allowedScopes
-                                )
+                                || !hasApplicationsUpdatePermissions
                             }
-                            hasRequiredScope={ hasRequiredScopes(
-                                featureConfig?.applications, featureConfig?.applications?.scopes?.update,
-                                allowedScopes) }
+                            hasRequiredScope={ hasApplicationsUpdatePermissions }
                             isBrandingSectionHidden={ isBrandingSectionHidden }
                             data-testid={ `${ componentId }-form` }
                             isSubmitting={ isSubmitting }

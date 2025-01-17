@@ -65,6 +65,15 @@ export class AppConstants {
     }
 
     /**
+     * Get the default layout base path.
+     *
+     * @returns The default layout base path.
+     */
+    public static getDefaultLayoutBasePath(): string {
+        return `${this.getMainViewBasePath()}/root`;
+    }
+
+    /**
      * Get the developer view base path.
      *
      * @returns The developer view base path.
@@ -301,6 +310,7 @@ export class AppConstants {
             [ "EMAIL_AND_SMS", `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms` ],
             [ "EMAIL_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/email-management` ],
             [ "SMS_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/sms-provider` ],
+            [ "SMS_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/sms-management` ],
             [ "EMAIL_TEMPLATE_TYPES", `${ AppConstants.getAdminViewBasePath() }/email-templates` ],
             [ "EMAIL_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId` ],
             [
@@ -365,7 +375,7 @@ export class AppConstants {
                 "ATTRIBUTE_MAPPINGS",
                 `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type/:customAttributeMappingID?`
             ],
-            [ "CREATE_TENANT", `${AppConstants.getMainViewBasePath()}/create-tenant` ],
+            [ "CREATE_TENANT", `${AppConstants.getAppBasePath()}/create-tenant` ],
             [ "ORGANIZATIONS", `${AppConstants.getAdminViewBasePath()}/organizations` ],
             [ "ORGANIZATION_UPDATE", `${AppConstants.getAdminViewBasePath()}/organizations/:id` ],
             [ "ORGANIZATION_ROLES", `${AppConstants.getAdminViewBasePath()}/roles/organization-roles` ],
@@ -390,17 +400,20 @@ export class AppConstants {
             [ "CONSOLE_ROLES_EDIT", `${AppConstants.getAdminViewBasePath()}/settings/roles/:id` ],
             [ "WSFED_CONFIGURATION",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/wsfed-configuration` ],
-            [ "SERVER",
-                `${AppConstants.getAdminViewBasePath()}/server` ],
             [ "INTERNAL_NOTIFICATION_SENDING",
-                `${AppConstants.getAdminViewBasePath()}/server/internal-notification-sending` ],
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/internal-notification-sending` ],
             [ "OUTBOUND_PROVISIONING_SETTINGS",
                 `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ],
             [ "IMPERSONATION", `${AppConstants.getAdminViewBasePath()}/login-and-registration/impersonation` ],
             [ "ACTIONS",
                 `${AppConstants.getAdminViewBasePath()}/actions` ],
             [ "PRE_ISSUE_ACCESS_TOKEN_EDIT",
-                `${ AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ]
+                `${ AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ],
+            [ "TENANTS", `${AppConstants.getDefaultLayoutBasePath()}/organizations` ],
+            [ "EDIT_TENANT", `${AppConstants.getDefaultLayoutBasePath()}/organizations/:id` ],
+            [ "SYSTEM_SETTINGS", `${AppConstants.getDefaultLayoutBasePath()}/organizations/system-settings` ],
+            [ "POLICY_ADMINISTRATION", `${AppConstants.getAdminViewBasePath()}/policy-administration` ],
+            [ "EDIT_POLICY", `${AppConstants.getAdminViewBasePath()}/policy-administration/edit-policy/:id` ]
         ]);
 
         return paths;
@@ -467,9 +480,11 @@ export class AppConstants {
         "userRoles",
         "applications",
         "emailTemplates",
+        "smsTemplates",
         "governanceConnectors",
         "branding",
-        "consoleSettings"
+        "consoleSettings",
+        "apiResources"
     ];
 
     /**
@@ -495,7 +510,6 @@ export class AppConstants {
     public static readonly SUPER_ADMIN_ONLY_ROUTES: string[] = [
         "admin-session-advisory-banner-edit",
         "remote-logging",
-        "internal-notification-sending",
         "server"
     ];
 

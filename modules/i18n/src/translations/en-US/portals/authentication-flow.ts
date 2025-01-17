@@ -256,7 +256,7 @@ export const authenticationFlow: AuthenticationFlowNS = {
             },
             emptyPlaceholder: {
                 header: "No secrets available.",
-                description: "Securely store access keys as secrets. A secret can replace the consumer secret in <1>callChoreo()</1> function in the conditional authentication scripts."
+                description: "You can securely store sensitive information, such as API keys and other secrets, for use in conditional authentication scripts. Once stored, these secrets can be referenced in your scripts using the syntax <1>secrets.{secret name}</1>."
             },
             label: "Add Secret"
         },

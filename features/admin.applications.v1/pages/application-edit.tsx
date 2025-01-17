@@ -37,15 +37,16 @@ import {
     history
 } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
-import useExtensionTemplates from "@wso2is/admin.template-core.v1/hooks/use-extension-templates";
-import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
+import useGetExtensionTemplates from "@wso2is/admin.template-core.v1/api/use-get-extension-templates";
+import { ExtensionTemplateListInterface, ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Forms } from "@wso2is/forms";
 import {
     AnimatedAvatar,
     AppAvatar,
+    Code,
     ConfirmationModal,
     DocumentationLink,
     LabelWithPopup,
@@ -56,6 +57,7 @@ import {
 import { AxiosError, AxiosResponse } from "axios";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -67,18 +69,20 @@ import { useGetApplication } from "../api/use-get-application";
 import useGetApplicationInboundConfigs from "../api/use-get-application-inbound-configs";
 import { EditApplication } from "../components/edit-application";
 import { InboundProtocolDefaultFallbackTemplates } from "../components/meta/inbound-protocols.meta";
-import { ApplicationManagementConstants } from "../constants";
+import { ApplicationManagementConstants } from "../constants/application-management";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationAccessTypes,
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
+    idpInfoTypeInterface
+} from "../models/application";
+import {
     State,
     SupportedAuthProtocolName,
-    SupportedAuthProtocolTypes,
-    idpInfoTypeInterface
-} from "../models";
+    SupportedAuthProtocolTypes
+} from "../models/application-inbound";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 import "./application-edit.scss";
@@ -116,8 +120,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const appDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const {
-        templates: extensionApplicationTemplates
-    } = useExtensionTemplates();
+        data: extensionApplicationTemplates
+    } = useGetExtensionTemplates(ResourceTypes.APPLICATIONS);
 
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
@@ -159,10 +163,14 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ showConfirmationModal, setShowConfirmationModal ] = useState<boolean>(false);
     const [ formData, setFormdata ] = useState<ApplicationInterface>(undefined);
 
+    const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state.config.ui.features?.applications
+    );
+
     useEffect(() => {
         if (application && applicationInboundConfigs) {
             const isAppOutdated: boolean = ApplicationManagementUtils.isApplicationOutdated(
-                application?.applicationVersion, applicationInboundConfigs?.grantTypes);
+                application?.applicationVersion, true);
 
             setDisplayBanner(isAppOutdated);
         }
@@ -555,7 +563,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         const classes: any = classNames( { "application-outdated-alert-expanded-view": viewBannerDetails } );
 
         return (
-            displayBanner &&
+            isFeatureEnabled(
+                applicationFeatureConfig,
+                ApplicationManagementConstants.FEATURE_DICTIONARY
+                    .get("APPLICATION_OUTDATED_APP_BANNER")
+            ) && displayBanner &&
                 (
                     <div className="banner-wrapper">
                         <Alert
@@ -581,9 +593,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                             className="ignore-once-button"
                                             onClick={ () => setDisplayBanner(false) }>
                                             <Icon
-                                                link={ true }
+                                                link
                                                 onClick={ () => setDisplayBanner(false) }
-                                                className=""
                                                 size="small"
                                                 color="grey"
                                                 name="close"
@@ -627,6 +638,57 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 <Grid className="banner-grid">
                     <List dense>
                         {
+                            !ApplicationManagementUtils.isAppVersionAllowed(
+                                application?.applicationVersion,
+                                ApplicationManagementConstants.APP_VERSION_1
+                            ) &&
+                            applicationInboundConfigs?.grantTypes
+                                .includes(ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT) && (
+                                <ListItem
+                                    sx={ {
+                                        display: "list-item",
+                                        listStyleType: "disc"
+                                    } }>
+                                    <ListItemText>
+                                        <Typography variant="body2" >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                    + ".outdatedApplications.fields.versions"
+                                                    + ".version100.useClientIdAsSubClaimOfAppTokens.instruction")
+                                                }
+                                            >
+                                                The <Code withBackground>sub</Code> attribute of
+                                                an application access token now returns the
+                                                <Code withBackground>client_id</Code> generated for the application,
+                                                instead of the <Code withBackground>userid</Code>
+                                                of the application owner.
+                                            </Trans>
+                                        </Typography>
+                                        <DocumentationLink
+                                            link={
+                                                getLink("develop.applications.editApplication.outdatedApplications."
+                                                + "versions.version100.useClientIdAsSubClaimOfAppTokens."
+                                                + "documentationLink")
+                                            }
+                                            showEmptyLink={ false }
+                                        >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                    + ".outdatedApplications.documentationHint")
+                                                }
+                                            />
+                                        </DocumentationLink>
+                                    </ListItemText>
+                                </ListItem>
+                            )
+                        }
+                        {
+                            !ApplicationManagementUtils.isAppVersionAllowed(
+                                application?.applicationVersion,
+                                ApplicationManagementConstants.APP_VERSION_1
+                            ) &&
                             applicationInboundConfigs?.grantTypes
                                 .includes(ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT) && (
                                 <ListItem
@@ -643,9 +705,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                                         + "removeUsernameFromIntrospectionRespForAppTokens.instruction")
                                                 }
                                             >
-                                                The <code>sub</code> attribute of an application access token now
-                                                returns the <code>client_id</code> generated for the application,
-                                                instead of the <code>userid</code> of the application owner.
+                                                The introspection responses for application access tokens no longer
+                                                return the <Code withBackground>username</Code> attribute.
                                             </Trans>
                                         </Typography>
                                         <DocumentationLink
@@ -668,8 +729,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                             )
                         }
                         {
-                            applicationInboundConfigs?.grantTypes
-                                .includes(ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT) && (
+                            !ApplicationManagementUtils.isAppVersionAllowed(
+                                application?.applicationVersion,
+                                ApplicationManagementConstants.APP_VERSION_2
+                            ) && applicationInboundConfigs && (
                                 <ListItem
                                     sx={ {
                                         display: "list-item",
@@ -681,17 +744,18 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                                 i18nKey={
                                                     t("applications:forms.inboundOIDC.sections"
                                                     + ".outdatedApplications.fields.versions"
-                                                    + ".version100.useClientIdAsSubClaimOfAppTokens.instruction")
+                                                    + ".version200.addAllRequestedClaimsInJWTAccessToken.instruction")
                                                 }
                                             >
-                                                The introspection responses for application access tokens no longer
-                                                return the <code>username</code> attribute.
+                                                Irrespective of the <Code withBackground>scopes</Code> requested,
+                                                all the <Code withBackground> requested attributes</Code> will
+                                                be included in the JWT Access Token.
                                             </Trans>
                                         </Typography>
                                         <DocumentationLink
                                             link={
                                                 getLink("develop.applications.editApplication.outdatedApplications."
-                                                + "versions.version100.useClientIdAsSubClaimOfAppTokens."
+                                                + "versions.version200.addAllRequestedClaimsInJWTAccessToken."
                                                 + "documentationLink")
                                             }
                                             showEmptyLink={ false }
@@ -855,6 +919,31 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     ?? (
                         <div className="with-label ellipsis" ref={ appDescElement }>
                             { resolveTemplateLabel() }
+                            {
+                                isFeatureEnabled(
+                                    applicationFeatureConfig,
+                                    ApplicationManagementConstants.FEATURE_DICTIONARY
+                                        .get("APPLICATION_OUTDATED_APP_BANNER")
+                                ) &&
+                                ApplicationManagementUtils.isApplicationOutdated(
+                                    moderatedApplicationData?.applicationVersion,
+                                    moderatedApplicationData?.clientId
+                                    && !isEmpty(moderatedApplicationData?.clientId)) && (
+                                    <>
+                                        <Label
+                                            className="outdated-app-label"
+                                            size="small"
+                                        >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                    + ".outdatedApplications.label")
+                                                }
+                                            />
+                                        </Label>
+                                    </>
+                                )
+                            }
                             {
                                 ApplicationManagementUtils.isChoreoApplication(moderatedApplicationData)
                                     && (<Label

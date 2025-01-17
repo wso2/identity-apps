@@ -66,7 +66,7 @@ import {
     Grid,
     Radio
 } from "semantic-ui-react";
-import { ApplicationInterface, additionalSpProperty } from "../../models";
+import { ApplicationInterface, additionalSpProperty } from "../../models/application";
 
 enum ShareType {
     SHARE_ALL,

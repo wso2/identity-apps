@@ -27,13 +27,17 @@ import Select from "@oxygen-ui/react/Select";
 import Toolbar from "@oxygen-ui/react/Toolbar";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { SecretModel } from "@wso2is/admin.secrets.v1/models/secret";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import classNames from "classnames";
+import cloneDeep from "lodash-es/cloneDeep";
+import isEmpty from "lodash-es/isEmpty";
+import set from "lodash-es/set";
 import React, {
     ChangeEvent,
     HTMLAttributes,
@@ -115,18 +119,40 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
 
     const { t } = useTranslation();
 
+    const secretMgtFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state?.config?.ui?.features?.secretsManagement);
+    const hasSecretReadPermissions: boolean = useRequiredScopes(secretMgtFeatureConfig?.scopes?.read);
+
     const monacoEditorRef: MutableRefObject<any> = useRef(null);
 
     const { authenticationSequence, updateAuthenticationSequence } = useAuthenticationFlow();
+    const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
 
-    const [ editorTheme, setEditorTheme ] = useState<SupportedEditorThemes>(SupportedEditorThemes.DARK);
+    const [ editorTheme, setEditorTheme ] = useState<SupportedEditorThemes>(
+        userPreferences?.identityAppsSettings?.userPreferences
+            ?.[ApplicationManagementConstants.CONDITIONAL_AUTH_EDITOR_THEME_STORAGE_KEY]
+        ?? SupportedEditorThemes.DARK
+    );
     const [ isSecretSelectionDropdownOpen, setIsSecretSelectionDropdownOpen ] = useState<boolean>(false);
     const [ scriptEditorPanelSizeMode, setScriptEditorPanelSizeMode ] = useState<ScriptEditorPanelSizeModes>(
         ScriptEditorPanelSizeModes.Minimized
     );
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const persistConditionalAuthEditorTheme = (theme: any): void => {
+
+        const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
+
+        if (isEmpty(userPreferences)) {
+            return;
+        }
+
+        const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
+
+        set(newPref?.identityAppsSettings?.userPreferences,
+            ApplicationManagementConstants.CONDITIONAL_AUTH_EDITOR_THEME_STORAGE_KEY, theme);
+
+        AppUtils.setUserPreferences(newPref);
+    };
 
     /**
      * Callback function to handle the editor theme change.
@@ -242,6 +268,9 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
                                         value={ editorTheme }
                                         onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                                             setEditorTheme(event.target.value as SupportedEditorThemes);
+                                            persistConditionalAuthEditorTheme(
+                                                event.target.value as SupportedEditorThemes
+                                            );
                                         } }
                                     >
                                         <MenuItem value={ SupportedEditorThemes.LIGHT }>
@@ -257,9 +286,8 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
                                 </FormControl>
                             </div>
                             <div className="secret-selection-menu-wrapper">
-                                { featureConfig?.secretsManagement?.enabled &&
-                                    hasRequiredScopes(featureConfig?.secretsManagement,
-                                        featureConfig?.secretsManagement?.scopes?.read, allowedScopes) && (
+                                { secretMgtFeatureConfig?.enabled &&
+                                    hasSecretReadPermissions && (
                                     <SecretSelectionDropdown
                                         open={ isSecretSelectionDropdownOpen }
                                         onClose={ () => setIsSecretSelectionDropdownOpen(false) }

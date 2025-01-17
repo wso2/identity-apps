@@ -21,8 +21,8 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
-import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
+import { getConsoleSettingsResourceEndpoints } from "../configs/endpoints";
 import { APIResourceCollectionResponseInterface } from "../models/console-roles";
 
 /**
@@ -50,7 +50,7 @@ const useGetAPIResourceCollections = <
             attributes,
             filter
         },
-        url: store.getState().config.endpoints.apiResourceCollections
+        url: getConsoleSettingsResourceEndpoints().apiResourceCollections
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch? requestConfig : null, {

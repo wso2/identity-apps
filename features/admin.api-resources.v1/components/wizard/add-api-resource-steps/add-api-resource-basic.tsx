@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,9 +25,9 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { getAPIResourcesForIdenitifierValidation } from "../../../api";
-import { APIResourcesConstants } from "../../../constants";
-import { APIResourcesListInterface, BasicAPIResourceInterface } from "../../../models";
+import { getAPIResourcesForIdenitifierValidation } from "../../../api/api-resources";
+import { APIResourcesConstants } from "../../../constants/api-resources-constants";
+import { APIResourcesListInterface, BasicAPIResourceInterface } from "../../../models/api-resources";
 
 /**
  * Prop-types for the API resources page component.
@@ -131,13 +131,22 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                                 } else {
                                     const filter: string = "identifier eq " + value;
 
-                                    const response: APIResourcesListInterface =
+                                    try {
+                                        const response: APIResourcesListInterface =
                                         await getAPIResourcesForIdenitifierValidation(filter);
 
-                                    if (response?.apiResources?.length > 0) {
+                                        if (response?.apiResources?.length > 0) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(
+                                                t("extensions:develop.apiResource.wizard.addApiResource." +
+                                                "steps.basic.form.fields.identifier.alreadyExistsError")
+                                            );
+                                        }
+                                    } catch (error) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(t("extensions:develop.apiResource.wizard." +
-                                            "addApiResource.steps.basic.form.fields.identifier.alreadyExistsError"));
+                                            "addApiResource.steps.basic.form.fields.identifier.errorOccurred"));
+                                        setIdentifierValidationLoading(false);
                                     }
                                 }
 

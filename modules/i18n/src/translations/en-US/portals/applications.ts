@@ -303,12 +303,10 @@ export const applications: ApplicationsNS = {
                 "using this application will no longer work."
         },
         disableApplication: {
-            actionTitle: "{{ state }} application",
-            header: "{{ state }} application",
+            actionTitle: "Disable application",
+            header: "Disable application",
             subheader: "Once the application is disabled, it will not be accessible by the consumers." +
-                " And the application also can not access consumer data.",
-            subheader2: "Enable the application to be accessible by the consumers. " +
-            "After enabling, application can access consumer data"
+                " And the application also can not access consumer data."
         },
         header: "Danger Zone"
     },
@@ -400,7 +398,9 @@ export const applications: ApplicationsNS = {
                                 }
                             }
                         },
-                        subHeading: "Select which user attributes you want to share with the application."
+                        subHeading: "Select which user attributes you want to share with the application.",
+                        note: "Please note that the user attributes added from this section will only be "
+                            + "included in the ID token."
                     },
                     attributeComponentHint: "Use <1>OpenID Connect Scopes</1> to manage user attribute in a scope. " +
                         "You can add new attributes by navigating to <3>Attributes.</3>",
@@ -643,9 +643,10 @@ export const applications: ApplicationsNS = {
                                     emptyPlaceholder: "No secrets available",
                                     search: "Search by secret name",
                                     tooltips: {
-                                        keyIcon: "Securely store access keys as secrets. A secret can " +
-                                            "replace the consumer secret in <1>callChoreo()</1> function " +
-                                            "in the conditional authentication scripts.",
+                                        keyIcon: "You can securely store sensitive information, such as " +
+                                            "API keys and other secrets, for use in conditional " +
+                                            "authentication scripts. Once stored, these secrets can " +
+                                            "be referenced in your scripts using the syntax <1>secrets.{secret name}</1>",
                                         plusIcon: "Add to the script"
                                     }
                                 }
@@ -1257,6 +1258,7 @@ export const applications: ApplicationsNS = {
         },
 
         applicationsSettings: {
+            title: "Application Settings",
             fields: {
                 dcrEndpoint: {
                     label: "DCR Endpoint",
@@ -1574,6 +1576,11 @@ export const applications: ApplicationsNS = {
                                 empty: "Please fill the audience",
                                 invalid: "Please avoid special characters like commas (,)"
                             }
+                        },
+                        accessTokenAttributes: {
+                            hint : "Select the attributes that should be included in the <1>access_token</1>.",
+                            label: "Access Token Attributes",
+                            placeholder: "Search by attribute name"
                         }
                     },
                     heading: "Access Token",
@@ -1663,14 +1670,20 @@ export const applications: ApplicationsNS = {
                         commonInstruction: "Following behavioral changes will be applied upon update.",
                         versions: {
                             version100: {
-                                removeUsernameFromIntrospectionRespForAppTokens: {
+                                useClientIdAsSubClaimOfAppTokens: {
                                     instruction: "The <1>sub</1> attribute of an application access token now returns the "
                                         + "<3>client_id</3> generated for the application, instead of the <5>userid</5> of "
                                         + "the application owner."
                                 },
-                                useClientIdAsSubClaimOfAppTokens: {
+                                removeUsernameFromIntrospectionRespForAppTokens: {
                                     instruction: "The introspection responses for application access tokens no longer "
                                         + "return the <1>username</1> attribute."
+                                }
+                            },
+                            version200: {
+                                addAllRequestedClaimsInJWTAccessToken: {
+                                    instruction: "Irrespective of the <1>scopes</1> requested, all the <3>Requested Attributes</3> will "
+                                        + "be included in the JWT Access Token."
                                 }
                             }
                         }
@@ -2461,6 +2474,7 @@ export const applications: ApplicationsNS = {
         description: "Self-service portal for your users.",
         popup: "Share this link with your users to allow access to My Account" +
         " and to manage their accounts.",
+        settings: "My Account Settings",
         title: "My Account",
         enable: {
             0: "Enabled",

@@ -17,6 +17,9 @@
  */
 import { pagesNS } from "../../../models";
 
+/**
+ * @deprecated Add the relevant page title and description in the respective feature's i18n file.
+ */
 export const pages: pagesNS = {
     actions: {
         subTitle: "Create actions to extend login & registration flows.",
@@ -38,7 +41,7 @@ export const pages: pagesNS = {
     },
     emailDomainDiscovery: {
         subTitle: "Configure email domain discovery for organizations.",
-        title: "Email Domain Discovery"
+        title: "Organization Discovery"
     },
     emailLocaleAdd: {
         backButton: "Go back to {{name}} template",

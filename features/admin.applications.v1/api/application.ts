@@ -27,7 +27,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import { ApplicationManagementConstants } from "../constants";
+import { ApplicationManagementConstants } from "../constants/application-management";
 import {
     AdaptiveAuthTemplateCategoryListItemInterface,
     AdaptiveAuthTemplatesListInterface,
@@ -36,15 +36,17 @@ import {
     ApplicationListInterface,
     ApplicationTemplateInterface,
     ApplicationTemplateListInterface,
-    AuthProtocolMetaListItemInterface,
     MainApplicationInterface,
     MyAccountPortalStatusInterface,
     OIDCApplicationConfigurationInterface,
+    SAMLApplicationConfigurationInterface
+} from "../models/application";
+import {
+    AuthProtocolMetaListItemInterface,
     OIDCDataInterface,
-    SAMLApplicationConfigurationInterface,
-    SupportedAuthProtocolTypes,
-    UpdateClaimConfiguration
-} from "../models";
+    SupportedAuthProtocolTypes
+} from "../models/application-inbound";
+import { UpdateClaimConfiguration  } from "../models/endpoints";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 
 /**
@@ -213,8 +215,12 @@ export const updateApplicationDetails = (
  *
  * @returns A promise containing the response.
  */
-export const getApplicationList = (limit: number, offset: number,
-    filter: string): Promise<ApplicationListInterface> => {
+export const getApplicationList = (
+    limit: number,
+    offset: number,
+    filter: string,
+    excludeSystemPortals:boolean = false
+): Promise<ApplicationListInterface> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -223,6 +229,7 @@ export const getApplicationList = (limit: number, offset: number,
         },
         method: HttpMethods.GET,
         params: {
+            excludeSystemPortals,
             filter,
             limit,
             offset
@@ -255,7 +262,8 @@ export const useApplicationList = <Data = ApplicationListInterface, Error = Requ
     limit?: number,
     offset?: number,
     filter?: string,
-    shouldFetch: boolean = true
+    shouldFetch: boolean = true,
+    excludeSystemPortals:boolean = false
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: AxiosRequestConfig = shouldFetch
@@ -267,6 +275,7 @@ export const useApplicationList = <Data = ApplicationListInterface, Error = Requ
             method: HttpMethods.GET,
             params: {
                 attributes,
+                excludeSystemPortals,
                 filter,
                 limit,
                 offset

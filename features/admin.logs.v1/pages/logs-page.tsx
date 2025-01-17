@@ -17,6 +17,7 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
@@ -63,6 +64,8 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
+    const hasAuditLogAccessPermissions: boolean = useRequiredScopes(featureConfig?.auditLogs?.scopes?.feature);
+
     const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
         setActiveTabIndex(data.activeIndex as number);
     };
@@ -94,7 +97,7 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
         }); }
 
 
-        { featureConfig.auditLogs?.enabled && panes.push({
+        { featureConfig.auditLogs?.enabled && hasAuditLogAccessPermissions && panes.push({
             componentId: "audit-logs",
             menuItem: (
                 <MenuItem key="text" className="item-with-chip">
@@ -138,7 +141,7 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
                         <DocumentationLink
                             link={ getLink("manage.logs.learnMore") }
                         >
-                            { t("extensions:common.learnMore") }
+                            { t("common:learnMore") }
                         </DocumentationLink>
                     </>
                 ) }

@@ -276,7 +276,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                             initialSelectedGroupsOptions?.find(
                                                 (group: IdentityProviderGroupInterface) => group.id === option.id
                                             )
-                                                ? "solid"
+                                                ? "filled"
                                                 : "outlined"
                                         }
                                     />

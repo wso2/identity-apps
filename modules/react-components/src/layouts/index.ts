@@ -19,7 +19,6 @@
 export * from "./app";
 export * from "./base";
 export * from "./auth";
-export * from "./default";
 export * from "./error";
 export * from "./full-screen";
 export * from "./grid";

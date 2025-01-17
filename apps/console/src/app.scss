@@ -1,0 +1,31 @@
+/**
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+:root {
+    // TODO: Move this to `@oxygen` and set the values from MUI theme spacing.
+    --oxygen-spacing: 8px;
+    --oxygen-spacing-1: calc(var(--oxygen-spacing) * 1);
+    --oxygen-spacing-2: calc(var(--oxygen-spacing) * 2);
+    --oxygen-spacing-3: calc(var(--oxygen-spacing) * 3);
+    --oxygen-spacing-4: calc(var(--oxygen-spacing) * 4);
+    --oxygen-spacing-5: calc(var(--oxygen-spacing) * 5);
+    --oxygen-spacing-6: calc(var(--oxygen-spacing) * 6);
+
+    --wso2is-admin-modal-form-max-width: 600px;
+    --wso2is-admin-form-max-width: 750px;
+}

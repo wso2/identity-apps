@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,15 +18,20 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { DropdownChild, Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
-import { getAuthProtocolMetadata } from "../../api";
-import { MetadataPropertyInterface, SupportedAuthProtocolMetaTypes, WSTrustMetaDataInterface } from "../../models";
+import { getAuthProtocolMetadata } from "../../api/application";
+import {
+    MetadataPropertyInterface,
+    SupportedAuthProtocolMetaTypes,
+    WSTrustMetaDataInterface
+} from "../../models/application-inbound";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -41,9 +46,9 @@ interface WSTrustSettingsWizardFormPropsInterface extends TestableComponentInter
 /**
  * SAML protocol settings wizard form component.
  *
- * @param {WSTrustSettingsWizardFormPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns the SAML protocol settings wizard form component.
  */
 export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSettingsWizardFormPropsInterface> = (
     props: WSTrustSettingsWizardFormPropsInterface
@@ -59,16 +64,16 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ showWSTrustMetaData, setShowWSTrustMetaData ] = useState<WSTrustMetaDataInterface>(undefined);
 
     const getMetaData = (() => {
         getAuthProtocolMetadata(SupportedAuthProtocolMetaTypes.WS_TRUST)
-            .then((response) => {
+            .then((response: unknown) => {
                 setShowWSTrustMetaData(response as WSTrustMetaDataInterface);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -90,13 +95,13 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
 
     /**
      * Create drop down options.
-     * @param metadataProp metadata property to create the option.
+     * @param metadataProp - metadata property to create the option.
      */
     const getCertificateOptions = (metadataProp: MetadataPropertyInterface) => {
-        const allowedOptions = [];
+        const allowedOptions: DropdownChild[] = [];
 
         if (metadataProp) {
-            metadataProp.options.map((ele) => {
+            metadataProp.options.map((ele: string) => {
                 allowedOptions.push({ key: metadataProp.options.indexOf(ele), text: ele, value: ele });
             });
         }
@@ -108,7 +113,7 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
      * Sanitizes and prepares the form values for submission.
      *
      * @param values - Form values.
-     * @return {object} Prepared values.
+     * @returns Prepared values.
      */
     const getFormValues = (values: Map<string, FormValue>): any => {
         return {
@@ -201,7 +206,7 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
                         </Grid.Row>
                     </Grid>
                 </Forms>
-            ) 
+            )
             : <ContentLoader/>
     );
 };

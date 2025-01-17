@@ -17,6 +17,8 @@
  */
 import { serverConfigsNS } from "../../../models";
 
+/* eslint-disable max-len */
+/* eslint-disable sort-keys */
 export const serverConfigs: serverConfigsNS = {
     adminAdvisory: {
         configurationEditSection: {
@@ -96,11 +98,8 @@ export const serverConfigs: serverConfigsNS = {
             }
         },
         pageHeading: "Admin Advisory Banner",
-        pageSubheading: "Configure the admin advisory banner to be displayed on the login page."
-    },
-    manageNotificationSendingInternally: {
-        title: "Internal Notification Sending",
-        description: "Manage notification sending internally."
+        pageSubheading: "Configure the admin advisory banner to be displayed on the login page.",
+        title: "Admin Advisory Banner"
     },
     remoteLogPublishing: {
         title: "Remote Log Publishing",

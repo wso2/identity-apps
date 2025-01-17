@@ -72,6 +72,7 @@
 
         .sub-header {
             margin-top: 5px;
+            color: @textColor !important;
         }
     }
 }

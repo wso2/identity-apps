@@ -17,23 +17,14 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
-<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EncodedControl" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.challenge.questions.ui.IdentityManagementAdminClient" %>
 <%@ page import="org.wso2.carbon.identity.challenge.questions.recovery.model.ChallengeQuestion" %>
 <%@ page import="org.wso2.carbon.utils.ServerConstants" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
-<%@ page import="java.nio.charset.StandardCharsets" %>
-<%@ page import="java.util.ResourceBundle" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.Iterator" %>
-<%@ page import="java.util.HashMap" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %>
 <%@ page import="java.io.File" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
+<%@ include file="includes/localize.jsp" %>
 
 <%-- Include tenant context --%>
 <jsp:directive.include file="includes/init-url.jsp"/>
@@ -42,9 +33,6 @@
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
-    String BUNDLE = "org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources";
-    ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE, request.getLocale(), new
-            EncodedControl(StandardCharsets.UTF_8.toString()));
     String urlData = request.getParameter("data");
     // Extract the challenge questions from the request and add them into an array
     String[] questionSets = null;

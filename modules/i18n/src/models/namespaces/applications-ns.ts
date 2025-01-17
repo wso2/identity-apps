@@ -267,7 +267,6 @@ export interface ApplicationsNS {
             actionTitle: string
             header: string;
             subheader: string;
-            subheader2: string
         },
     };
     edit: {
@@ -330,6 +329,7 @@ export interface ApplicationsNS {
                     addWizard: {
                         header: string;
                         subHeading: string;
+                        note: string;
                         steps: {
                             select: {
                                 transfer: {
@@ -1053,6 +1053,7 @@ export interface ApplicationsNS {
             };
         };
         applicationsSettings: {
+            title: string;
             fields :{
                 dcrEndpoint: {
                     label: string,
@@ -1323,6 +1324,11 @@ export interface ApplicationsNS {
                                 invalid: string;
                             };
                         };
+                        accessTokenAttributes: {
+                            hint: string;
+                            label:string;
+                            placeholder: string;
+                        };
                     };
                 };
                 idToken: {
@@ -1401,6 +1407,11 @@ export interface ApplicationsNS {
                                     instruction: string;
                                 },
                                 useClientIdAsSubClaimOfAppTokens: {
+                                    instruction: string;
+                                }
+                            },
+                            version200: {
+                                addAllRequestedClaimsInJWTAccessToken: {
                                     instruction: string;
                                 }
                             }
@@ -2126,6 +2137,7 @@ export interface ApplicationsNS {
         };
     };
     myaccount: {
+        settings: string;
         title: string;
         description: string;
         popup: string;

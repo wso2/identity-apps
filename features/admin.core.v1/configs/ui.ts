@@ -250,6 +250,7 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
  */
 export type GetSidePanelIconsInterface = {
     adminAdvisoryBanner: FunctionComponent | ReactNode,
+    policyAdministration: FunctionComponent | ReactNode,
     administrators: FunctionComponent | ReactNode,
     apiResources: FunctionComponent | ReactNode,
     applicationRoles: FunctionComponent | ReactNode,
@@ -294,6 +295,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
     return {
         adminAdvisoryBanner: AdminAdvisoryBannerIcon,
         administrators: AdminOutlineIcon,
+        policyAdministration: AdminOutlineIcon,
         apiResources: CloudConnectionOutlineIcon,
         appLogs: IDPMetadataIcon,
         applicationRoles: ApplicationRolesIcon,

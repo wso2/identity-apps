@@ -339,6 +339,23 @@ export interface userNS {
         };
     };
     profile: {
+        confirmationModals: {
+            deleteAttributeConfirmation: {
+                assertionHint: string;
+                content: string;
+                description: string;
+                heading: string;
+            }
+        },
+        accountLockReason: {
+            adminInitiated: string;
+            default: string;
+            maxAttemptsExceeded: string;
+            pendingAdminForcedUserPasswordReset: string;
+            pendingAskPassword: string;
+            pendingEmailVerification: string;
+            pendingSelfRegistration: string;
+        };
         fields: {
             createdDate: string;
             generic: {
@@ -541,6 +558,34 @@ export interface userNS {
             };
             noPasswordResetOptions: {
                 error: {
+                    message: string;
+                    description: string;
+                };
+            };
+            verifyEmail: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+                success: {
+                    message: string;
+                    description: string;
+                };
+            };
+            verifyMobile: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+                success: {
                     message: string;
                     description: string;
                 };

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -120,6 +120,42 @@ export interface ProfileSchema {
      * Maximum length limit.
      */
     maxLength?: number;
+    excludedUserStores?: string;
+    /**
+     * Schema attribute profiles
+     */
+    profiles?: {
+        /**
+         * Attribute profile for console user profile
+         */
+        console?: ProfileAttributeInterface;
+        /**
+         * Attribute profile for end user profile (My Account)
+         */
+        endUser?: ProfileAttributeInterface;
+        /**
+         * Attribute profile for self registration
+         */
+        selfRegister?: ProfileAttributeInterface;
+    }
+}
+
+/**
+ *  Profile attribute interface.
+ */
+export interface ProfileAttributeInterface {
+    /**
+     * Flag to set mutability.
+     */
+    mutability?: string;
+    /**
+     * Flag to set if the attribute is required.
+     */
+    required?: boolean;
+    /**
+     * Flag to set if the attribute is shown.
+     */
+    supportedByDefault?: boolean;
 }
 
 /**
@@ -218,3 +254,11 @@ export const createEmptyProfile = (): BasicProfileInterface => ({
     userImage: "",
     userName: ""
 });
+
+/**
+ * Interface for the profile patch operation value.
+ */
+export type ProfilePatchOperationValue = Record<string, string
+    | Record<string, string | string[]>
+    | Array<string>
+    | Array<Record<string, string>>>;

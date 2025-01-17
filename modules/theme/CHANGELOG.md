@@ -1,5 +1,85 @@
 # @wso2is/theme
 
+## 2.6.0
+
+### Minor Changes
+
+- [#7292](https://github.com/wso2/identity-apps/pull/7292) [`cd827d04f98a519804f1f9996a1dc3a831278df1`](https://github.com/wso2/identity-apps/commit/cd827d04f98a519804f1f9996a1dc3a831278df1) Thanks [@savindi7](https://github.com/savindi7)! - Add RTL support for Authentication and Recovery portals.
+
+## 2.5.1
+
+### Patch Changes
+
+- [#7286](https://github.com/wso2/identity-apps/pull/7286) [`f1173193bb885f71c7d25fae5bfd011dfb70d79a`](https://github.com/wso2/identity-apps/commit/f1173193bb885f71c7d25fae5bfd011dfb70d79a) Thanks [@savindi7](https://github.com/savindi7)! - Bump apps
+
+## 2.5.0
+
+### Minor Changes
+
+- [#7220](https://github.com/wso2/identity-apps/pull/7220) [`664b1ec3c513595cdcc91216af4371dbe70ab996`](https://github.com/wso2/identity-apps/commit/664b1ec3c513595cdcc91216af4371dbe70ab996) Thanks [@savindi7](https://github.com/savindi7)! - Add RTL support.
+
+## 2.4.6
+
+### Patch Changes
+
+- [#6440](https://github.com/wso2/identity-apps/pull/6440) [`f0da57190bcbe263e54df65ca04087fb832b70d6`](https://github.com/wso2/identity-apps/commit/f0da57190bcbe263e54df65ca04087fb832b70d6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Make custom idp image in the sign in page contain within the specified dimensions
+
+## 2.4.5
+
+### Patch Changes
+
+- [#7196](https://github.com/wso2/identity-apps/pull/7196) [`e698589ee572899b0fa7c4c70407b740d7dbec2d`](https://github.com/wso2/identity-apps/commit/e698589ee572899b0fa7c4c70407b740d7dbec2d) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update the facebook logo
+
+## 2.4.4
+
+### Patch Changes
+
+- [#7099](https://github.com/wso2/identity-apps/pull/7099) [`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce new remote user store implementation
+
+## 2.4.3
+
+### Patch Changes
+
+- [#7122](https://github.com/wso2/identity-apps/pull/7122) [`cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453`](https://github.com/wso2/identity-apps/commit/cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update user profile lock icon
+
+## 2.4.2
+
+### Patch Changes
+
+- [#7113](https://github.com/wso2/identity-apps/pull/7113) [`7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70`](https://github.com/wso2/identity-apps/commit/7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add locked status for locked users in user list
+
+## 2.4.1
+
+### Patch Changes
+
+- [#6993](https://github.com/wso2/identity-apps/pull/6993) [`33dbbd9f8461a6a2001aa8a8189a48d24991e87b`](https://github.com/wso2/identity-apps/commit/33dbbd9f8461a6a2001aa8a8189a48d24991e87b) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add Access Token Attributes
+
+## 2.4.0
+
+### Minor Changes
+
+- [#7022](https://github.com/wso2/identity-apps/pull/7022) [`8ee127818ea4c8aac46296a1c93b45806ee887c2`](https://github.com/wso2/identity-apps/commit/8ee127818ea4c8aac46296a1c93b45806ee887c2) Thanks [@brionmario](https://github.com/brionmario)! - - Update `@oxygen-ui` version to `v1.15.2`.
+  - Remove unwanted padding in the Oxygen UI text field in the theme config.
+  - Fix typo in tenants feature.
+
+## 2.3.0
+
+### Minor Changes
+
+- [#6962](https://github.com/wso2/identity-apps/pull/6962) [`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52) Thanks [@brionmario](https://github.com/brionmario)! - Introduce Multi-Tenancy feature
+
+## 2.2.0
+
+### Minor Changes
+
+- [#7012](https://github.com/wso2/identity-apps/pull/7012) [`2bae555318c94d93b0e38304c2781e0b5cd8b5b1`](https://github.com/wso2/identity-apps/commit/2bae555318c94d93b0e38304c2781e0b5cd8b5b1) Thanks [@brionmario](https://github.com/brionmario)! - Bump `@oxygen-ui` to `v1.15.1`
+
+## 2.1.6
+
+### Patch Changes
+
+- [#7009](https://github.com/wso2/identity-apps/pull/7009) [`86e236e6bb3fb65bbc186b24d39a8bfead33f30a`](https://github.com/wso2/identity-apps/commit/86e236e6bb3fb65bbc186b24d39a8bfead33f30a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix subheader in danger zone in myaccount inheriting header color
+
 ## 2.1.5
 
 ### Patch Changes

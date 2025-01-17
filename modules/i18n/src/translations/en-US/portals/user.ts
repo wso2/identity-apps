@@ -17,6 +17,11 @@
  */
 import { userNS } from "../../../models";
 
+/**
+ * NOTE: No need to care about the max-len for this file since it's easier to
+ * translate the strings to other languages easily with editor translation tools.
+ */
+/* eslint-disable max-len */
 export const user: userNS = {
     deleteJITUser: {
         confirmationModal: {
@@ -45,6 +50,12 @@ export const user: userNS = {
     },
     editUser: {
         dangerZoneGroup: {
+            deleteAdminPriviledgeZone: {
+                actionTitle: "Revoke Privileges",
+                header: "Revoke admin privileges",
+                subheader: "This action will remove the user's admin privileges, " +
+                    "but the user will continue to be in the organization."
+            },
             deleteUserZone: {
                 actionTitle: "Delete User",
                 buttonDisableHint: "Delete option is disabled because this user is managed in a remote " +
@@ -70,12 +81,6 @@ export const user: userNS = {
                 header: "Reset password",
                 subheader: "Once you change the password, the user will no longer be able to log in to " +
                     "any application using the current password."
-            },
-            deleteAdminPriviledgeZone: {
-                actionTitle: "Revoke Privileges",
-                header: "Revoke admin privileges",
-                subheader: "This action will remove the user's admin privileges, " +
-                    "but the user will continue to be in the organization."
             }
         },
         dateOfBirth: {
@@ -196,7 +201,8 @@ export const user: userNS = {
                 alphanumericUsernameEnabled: "To invite users to set the password, disable " +
                     "alphanumeric username feature.",
                 emailInvalid: "To invite users to set the password, please enter a valid email address.",
-                emailVerificationDisabled: "To invite users to set the password, enable email invitations for user password setup from <1>Login & Registration settings</1>.",
+                emailVerificationDisabled: "To invite users to set the password, enable email invitations " +
+                    "for user password setup from <1>Login & Registration settings</1>.",
                 inviteOffline: "Invite offline",
                 inviteViaEmail: "Invite via email"
             },
@@ -208,9 +214,9 @@ export const user: userNS = {
             steps: {
                 basicDetails: "Basic Details",
                 groups: "User Groups",
-                roles: "User Roles",
                 invitation: "Invitation",
-                method: "Method"
+                method: "Method",
+                roles: "User Roles"
             },
             subTitle: "Follow the steps to create the new user",
             title: "Create User",
@@ -230,56 +236,46 @@ export const user: userNS = {
             }
         },
         bulkImportUserWizard: {
-            title: "Add multiple users",
+            buttons: {
+                import: "Import"
+            },
+            sidePanel: {
+                fileBased: "File Based",
+                fileFormatContent: "Headers of the CSV file should be user attributes that are " +
+                "mapped to <1>local attributes</1>.",
+                fileFormatSampleHeading: "Sample CSV file format:",
+                fileFormatTitle: "CSV File Format",
+                manual: "Manual"
+            },
             subTitle: "Add multiple users manually or using a CSV file.",
+            title: "Add multiple users",
             wizardSummary: {
-                inviteEmailInfo: "An email with a confirmation link will be sent to the provided email address for the user to set their own password.",
-                successCount: "Successful Imports",
-                failedCount: "Failed Imports",
-                totalUserCreationCount: "Total user creation count",
-                totalUserAssignmentCount: "Total group assigment count ",
-                tableHeaders: {
-                    username: "Username",
-                    status: "Status",
-                    message: "Message"
-                },
-                tableMessages: {
-                    userCreatedMessage: "User imported successfully",
-                    invalidDataMessage: "Invalid data provided",
-                    invalidUserNameFormatMessage: "Username does not match the specified format",
-                    userAlreadyExistsMessage: "User already exists",
-                    userCreationAcceptedMessage: "User creation accepted",
-                    internalErrorMessage: "Error occured while importing users",
-                    userAssignmentSuccessMessage: "Users were successfully assigned to {{resource}}",
-                    userAssignmentFailedMessage: "User assignment to {{resource}} failed",
-                    userAssignmentInternalErrorMessage: "An error occurred while assigning users to " +
-                        "{{resource}}"
-                },
-                tableStatus: {
-                    success: "Success",
-                    warning: "Warning",
-                    failed: "Failed"
+                advanceSearch: {
+                    roleGroupFilterAttributePlaceHolder: "Group Name",
+                    searchByGroup: "Search by Group",
+                    searchByUsername: "Search by Username"
                 },
                 alerts: {
-                    importSuccess: {
-                        description: "The user accounts were imported successfully.",
-                        message: "Import Successful"
-                    },
                     importFailed: {
-                        userCreation: "Issues encountered in <1>{{failedUserCreationCount}} user " +
-                            "creation operations(s)</1>",
                         groupAssignment: "Issues encountered in <1>{{failedUserAssignmentCount}} group " +
                             "assignment(s)</1>. Users in the affected groups were created but not assigned. " +
                             "Please navigate to User Management section to review  and assign groups to " +
                             "the users.",
-                        message: "Review Required"
+                        message: "Review Required",
+                        userCreation: "Issues encountered in <1>{{failedUserCreationCount}} user " +
+                            "creation operations(s)</1>"
+                    },
+                    importSuccess: {
+                        description: "The user accounts were imported successfully.",
+                        message: "Import Successful"
                     }
                 },
-                advanceSearch: {
-                    searchByUsername: "Search by Username",
-                    searchByGroup: "Search by Group",
-                    roleGroupFilterAttributePlaceHolder: "Group Name"
+                failedCount: "Failed Imports",
+                fileBased: {
+                    hint: "Bulk invite multiple users using a CSV file."
                 },
+                inviteEmailInfo: "An email with a confirmation link will be " +
+                    "sent to the provided email address for the user to set their own password.",
                 manualCreation: {
                     alerts: {
                         creationSuccess: {
@@ -287,56 +283,51 @@ export const user: userNS = {
                             message: "User Creation Successful"
                         }
                     },
-                    hint: "Add the email address of the user you wish to invite and press enter.",
+                    disabledHint: "The manual option is disabled due to the usage of " +
+                        "alphanumeric usernames in your organization.",
                     emailsLabel: "Emails",
                     emailsPlaceholder: "Enter email addresses",
-                    disabledHint: "The manual option is disabled due to the usage of alphanumeric usernames in your organization.",
+                    groupsLabel: "Groups",
+                    groupsPlaceholder: "Enter groups",
+                    hint: "Add the email address of the user you wish to invite and press enter.",
+                    primaryButton: "Add",
                     upload: {
                         buttonText: "Upload CSV File",
                         description: "Drag and drop a CSV file here."
                     },
-                    primaryButton: "Add",
-                    groupsLabel: "Groups",
-                    groupsPlaceholder: "Enter groups",
                     warningMessage: "This option can only be used when email address is configured " +
                         "as the username."
                 },
-                fileBased: {
-                    hint: "Bulk invite multiple users using a CSV file."
-                },
                 responseOperationType: {
-                    userCreation: "User Creation",
-                    roleAssignment: "Group Assignment"
+                    roleAssignment: "Group Assignment",
+                    userCreation: "User Creation"
                 },
+                successCount: "Successful Imports",
+                tableHeaders: {
+                    message: "Message",
+                    status: "Status",
+                    username: "Username"
+                },
+                tableMessages: {
+                    internalErrorMessage: "Error occured while importing users",
+                    invalidDataMessage: "Invalid data provided",
+                    invalidUserNameFormatMessage: "Username does not match the specified format",
+                    userAlreadyExistsMessage: "User already exists",
+                    userAssignmentFailedMessage: "User assignment to {{resource}} failed",
+                    userAssignmentInternalErrorMessage: "An error occurred while assigning users to " +
+                        "{{resource}}",
+                    userAssignmentSuccessMessage: "Users were successfully assigned to {{resource}}",
+                    userCreatedMessage: "User imported successfully",
+                    userCreationAcceptedMessage: "User creation accepted"
+                },
+                tableStatus: {
+                    failed: "Failed",
+                    success: "Success",
+                    warning: "Warning"
+                },
+                totalUserAssignmentCount: "Total group assigment count ",
+                totalUserCreationCount: "Total user creation count",
                 userstoreMessage: "The created users will be added to the <1>{{ userstore }}</1> user store."
-            },
-            buttons: {
-                import: "Import"
-            },
-            sidePanel: {
-                manual: "Manual",
-                fileBased: "File Based",
-                fileFormatTitle: "CSV File Format",
-                fileFormatContent: "Headers of the CSV file should be user attributes that are " +
-                        "mapped to <1>local attributes</1>.",
-                fileFormatSampleHeading: "Sample CSV file format:"
-            }
-        },
-        inviteParentUserWizard: {
-            totalInvitations: "Total Invitation(s)",
-            successAlert: {
-                description: "Successfully invited the user(s).",
-                message: "Invitation(s) Sent"
-            },
-            errorAlert: {
-                description: "An error occurred while inviting {{ failedCount }} user(s).",
-                message: "Review Required"
-            },
-            tableMessages: {
-                userNotFound: "User not found",
-                activeInvitationExists: "An active invitation for the user already exists",
-                userEmailNotFound: "Could not find the email of the invited user",
-                userAlreadyExist: "User already exists"
             }
         },
         changePasswordModal: {
@@ -355,9 +346,45 @@ export const user: userNS = {
                 forceReset: "Invite user to reset the password",
                 setPassword: "Set a new password for the user"
             }
+        },
+        inviteParentUserWizard: {
+            errorAlert: {
+                description: "An error occurred while inviting {{ failedCount }} user(s).",
+                message: "Review Required"
+            },
+            successAlert: {
+                description: "Successfully invited the user(s).",
+                message: "Invitation(s) Sent"
+            },
+            tableMessages: {
+                activeInvitationExists: "An active invitation for the user already exists",
+                userAlreadyExist: "User already exists",
+                userEmailNotFound: "Could not find the email of the invited user",
+                userNotFound: "User not found"
+            },
+            totalInvitations: "Total Invitation(s)"
         }
     },
     profile: {
+        accountLockReason: {
+            adminInitiated: "The account has been manually locked by an administrator.",
+            default: "The account is locked.",
+            maxAttemptsExceeded: "The account is locked due to multiple failed login attempts.",
+            pendingAdminForcedUserPasswordReset: "The account is locked until the user completes an " +
+                "administrator-initiated password reset.",
+            pendingAskPassword: "The account is locked until the user creates a password via the setup email sent.",
+            pendingEmailVerification: "The account is locked and requires email verification from the " +
+                "user to be activated.",
+            pendingSelfRegistration: "The account is locked pending user verification via the self-registration email."
+        },
+        confirmationModals: {
+            deleteAttributeConfirmation: {
+                assertionHint: "Please confirm your action.",
+                content: "This action is irreversible and will permanently delete the {{attributeDisplayName}}.",
+                description: "If you delete this {{attributeDisplayName}}, it will be permanently removed from the user profile.",
+                heading: "Are you sure?"
+            }
+        },
         fields: {
             createdDate: "Created Date",
             emails: "Email",
@@ -390,8 +417,8 @@ export const user: userNS = {
             },
             generic: {
                 inputs: {
-                    placeholder: "Enter your {{fieldName}}",
                     dropdownPlaceholder: "Select your {{fieldName}}",
+                    placeholder: "Enter your {{fieldName}}",
                     validations: {
                         empty: "{{fieldName}} is a required field",
                         invalidFormat: "The {{fieldName}} is not of the correct format"
@@ -563,6 +590,34 @@ export const user: userNS = {
                     description: "The required user profile details were successfully updated.",
                     message: "User profile updated successfully"
                 }
+            },
+            verifyEmail: {
+                error: {
+                    description: "{{description}}",
+                    message: "An error occurred while sending the verification email."
+                },
+                genericError: {
+                    description: "An error occurred while sending the verification email.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "The verification email was sent successfully.",
+                    message: "Verification email sent successfully"
+                }
+            },
+            verifyMobile: {
+                error: {
+                    description: "{{description}}",
+                    message: "An error occurred while sending the verification code."
+                },
+                genericError: {
+                    description: "An error occurred while sending the verification code.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "The verification code was sent successfully.",
+                    message: "Verification code sent successfully"
+                }
             }
         },
         placeholders: {
@@ -688,14 +743,14 @@ export const user: userNS = {
                     header: "Are you sure?",
                     message: "This action will modify the role of this user."
                 },
+                heading: "Assigned Roles",
                 infoMessage: "Roles inherited via groups are not shown here.",
                 placeholders: {
                     emptyPlaceholder: {
-                        title: "No roles assigned",
-                        subtitles: "There are no roles assigned to the user at the moment."
+                        subtitles: "There are no roles assigned to the user at the moment.",
+                        title: "No roles assigned"
                     }
                 },
-                heading: "Assigned Roles",
                 popups: {
                     viewPermissions: "View Permissions"
                 },

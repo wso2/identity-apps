@@ -34,6 +34,11 @@
 <%@ include file="includes/localize.jsp" %>
 <%@ include file="includes/init-url.jsp" %>
 
+<%
+    // Add the sms-otp screen to the list to retrieve text branding customizations.
+    screenNames.add("sms-otp");
+%>
+
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 

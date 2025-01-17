@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { getGroupById } from "../api";
 import { EditGroup } from "../components";
-import { GroupsInterface } from "../models";
+import { GroupsInterface } from "../models/groups";
 import GroupManagementProvider from "../providers/group-management-provider";
 
 const GroupEditPage: FunctionComponent<any> = (): ReactElement => {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,7 @@
 import { FormValidation } from "@wso2is/validation";
 import {
     CommonPluggableComponentMetaPropertyInterface,
+    CommonPluggableComponentPropertyInterface,
     FederatedAuthenticatorMetaInterface,
     FederatedAuthenticatorWithMetaInterface
 } from "../../models";
@@ -41,7 +42,7 @@ export const supportedSchemes: string[] = [
     "urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos"
 ];
 
-export const DEFAULT_NAME_ID_FORMAT = "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified";
+export const DEFAULT_NAME_ID_FORMAT: string = "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified";
 
 /**
  * Returns the available nameid formats with the correct urn scheme.
@@ -63,7 +64,7 @@ export const getAvailableProtocolBindingTypes = (): Array<SamlIdPListItemOption>
     ];
 };
 
-export const DEFAULT_PROTOCOL_BINDING = "redirect";
+export const DEFAULT_PROTOCOL_BINDING: string = "redirect";
 
 /**
  * From this point onwards we have some metadata mapping functions.
@@ -82,13 +83,15 @@ export const DEFAULT_PROTOCOL_BINDING = "redirect";
 
 /**
  * Returns the mapped signature algorithm value with readable string.
- * @param {FederatedAuthenticatorMetaInterface} metadata
+ * @param metadata - Metadata object.
  */
 export const getSignatureAlgorithmOptionsMapped = (
     metadata: FederatedAuthenticatorMetaInterface
 ): Array<SamlIdPListItemOption> => {
 
-    const property = metadata.properties.find(({ key }) => key === "SignatureAlgorithm");
+    const property: CommonPluggableComponentMetaPropertyInterface = metadata.properties.find(
+        ({ key }: CommonPluggableComponentMetaPropertyInterface) => key === "SignatureAlgorithm"
+    );
     const displayNameMapper = (algorithmPlainString: string): string => {
         switch (algorithmPlainString) {
             case "DSA with SHA1":
@@ -132,13 +135,15 @@ export const getSignatureAlgorithmOptionsMapped = (
 
 /**
  * Returns the mapped digest algorithm values with readable string.
- * @param {FederatedAuthenticatorMetaInterface} metadata
+ * @param metadata - Metadata object.
  */
 export const getDigestAlgorithmOptionsMapped = (
     metadata: FederatedAuthenticatorMetaInterface
 ): Array<SamlIdPListItemOption> => {
 
-    const property = metadata.properties.find(({ key }) => key === "DigestAlgorithm");
+    const property: CommonPluggableComponentMetaPropertyInterface = metadata.properties.find(
+        ({ key }: CommonPluggableComponentMetaPropertyInterface) => key === "DigestAlgorithm"
+    );
     const displayNameMapper = (algorithmPlainString: string): string => {
         switch (algorithmPlainString) {
             case "MD5":
@@ -165,8 +170,8 @@ export const getDigestAlgorithmOptionsMapped = (
             };
         }), {
             key: -1,
-            text: '',
-            value: ''
+            text: "",
+            value: ""
         } ];
     }
 
@@ -186,40 +191,50 @@ type FindMetaFunction = (args: FindMetaArgs) => CommonPluggableComponentMetaProp
  *
  * Why? to do a faster search we need a constant access time data structure to
  * find the current value by key. This is because `data.properties` is a array of
- * object { key, value } pairs which makes find operation exhaustive
+ * object `{ key, value }` pairs which makes find operation exhaustive
  * when dealing with larger objects.
  *
  * Usage:
  *      const [ findPropVal, findMetaVal ] = fastSearch(authenticator);
- *      i.e., findPropVal<string>({ defaultValue: "SHA1", key: "DigestAlgorithm" }),
- *      i.e., findMetaVal<number>({ key: "displayOrder" }),
+ *      i.e., `findPropVal<string>({ defaultValue: "SHA1", key: "DigestAlgorithm" })`,
+ *      i.e., `findMetaVal<number>({ key: "displayOrder" })`,
  *
- * @param authenticator
+ * @param authenticator - Authenticator object.
  */
 export const fastSearch = (
     authenticator: FederatedAuthenticatorWithMetaInterface
 ): [ FindPropValFunction, FindMetaFunction ] => {
 
-    const propertyMap = new Map<string, any>();
-    authenticator.data?.properties.forEach(({ key, value }) => propertyMap.set(key, value));
+    const propertyMap: Map<string, any> = new Map<string, any>();
 
-    const metadataMap = new Map<string, CommonPluggableComponentMetaPropertyInterface>();
-    authenticator.meta?.properties.forEach((meta) => metadataMap.set(meta.key, meta));
+    authenticator.data?.properties.forEach(({ key, value }: CommonPluggableComponentPropertyInterface) =>
+        propertyMap.set(key, value)
+    );
+
+    const metadataMap: Map<string, CommonPluggableComponentMetaPropertyInterface> = new Map<
+        string,
+        CommonPluggableComponentMetaPropertyInterface
+    >();
+
+    authenticator.meta?.properties.forEach((meta: CommonPluggableComponentMetaPropertyInterface) =>
+        metadataMap.set(meta.key, meta)
+    );
 
     return [
         /**
          * When you call it like below:
-         *      findPropVal<string>({ defaultValue: "SHA1", key: "DigestAlgorithm" });
+         *      `findPropVal<string>({ defaultValue: "SHA1", key: "DigestAlgorithm" })`;
          *
          * It will get the property value from {@link propertyMap}
          * If it's not in the property map then the {@link defaultValue}
          * will be returned instead.
          *
-         * @param key {string}
-         * @param defaultValue {T}
+         * @param key - Key.
+         * @param defaultValue - Default value.
          */<T>({ key, defaultValue }: FindPropValArgs<T>): T => {
             if (propertyMap.has(key)) {
-                const value = propertyMap.get(key);
+                const value: string = propertyMap.get(key);
+
                 if (metadataMap.get(key)?.type === "BOOLEAN" &&
                     booleanSentAsAStringValue(value)) {
                     return (castToBool(value) as unknown) as T;
@@ -227,8 +242,9 @@ export const fastSearch = (
                 if (!value)
                     return defaultValue;
 
-                return value;
+                return value as T;
             }
+
             return defaultValue;
         },
         ({ key }: FindMetaArgs): CommonPluggableComponentMetaPropertyInterface | null => {
@@ -247,7 +263,7 @@ export const fastSearch = (
  * booleans for boolean default values. Its good
  * if we can address them in the API with issue #4288.
  *
- * @param value {string}
+ * @param value - Value to cast.
  */
 export const castToBool = (value: string): boolean => {
     if (!value) return false;
@@ -257,12 +273,13 @@ export const castToBool = (value: string): boolean => {
 
 /**
  * Test for boolean toString value.
- * @param value {string | any}
+ * @param value - Value to test.
  */
 export const booleanSentAsAStringValue = (value: any): boolean => {
     if (typeof value === "string") {
         return /true|false/g.test(value);
     }
+
     return false;
 };
 
@@ -279,27 +296,21 @@ export const IDENTITY_PROVIDER_AUTHORIZED_REDIRECT_URL_LENGTH: MinMaxLength = { 
 /**
  * Given a {@link FormErrors} object, it will check whether
  * every key has a assigned truthy value. {@link Array.every}
- * will return {@code true} if one of the object member has
+ * will return `true` if one of the object member has
  * a truthy value. In other words, it will check a field has
  * a error message attached to it or not.
  *
- * @param errors {FormErrors}
+ * @param errors - Form errors object.
  */
 export const ifFieldsHave = (errors: FormErrors): boolean => {
-    return !Object.keys(errors).every((k) => !errors[ k ]);
-};
-
-export const composeValidators = (...validators: any[]) => (value: string) => {
-    return validators.reduce(
-        (error, validator) => error || validator(value),
-        undefined
-    );
+    return !Object.keys(errors).every((k: string) => !errors[ k ]);
 };
 
 export const required = (value: string | any) => {
     if (!value) {
         return "This is a required field";
     }
+
     return undefined;
 };
 
@@ -313,6 +324,7 @@ export const hasLength = (minMax: MinMaxLength) => (value: string) => {
     if (value?.length < minMax.min) {
         return `Should have at least ${ minMax.min } characters.`;
     }
+
     return undefined;
 };
 
