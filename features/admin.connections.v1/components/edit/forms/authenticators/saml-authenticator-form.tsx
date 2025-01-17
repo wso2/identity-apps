@@ -341,6 +341,9 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
     }, [ isLogoutReqSigned, isAuthnReqSigned ]);
 
     const onFormSubmit = (values: { [ key: string ]: any }): void => {
+        
+        debugger;
+        
         const manualOverride: { [key: string]: boolean | string | string[] } = {
             "AuthnContextClassRef": selectedAuthnContextClasses?.map(
                 (authnContextClass: DropdownChild) => authnContextClass.value
