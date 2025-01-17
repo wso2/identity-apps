@@ -75,7 +75,6 @@ const EditPolicyAlgorithm: FunctionComponent<EditPolicyAlgorithmProps> = (
         };
 
         updateAlgorithm(data).then(() => {
-
             dispatch(addAlert({
                 description: "The policy combining algorithm has been updated successfully",
                 level: AlertLevels.SUCCESS,
