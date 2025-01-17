@@ -92,7 +92,6 @@ const EditPolicyAlgorithm: FunctionComponent<EditPolicyAlgorithmProps> = (
         });
     };
 
-
     return (
         <Dialog
             aria-labelledby="policy-algorithm--modal"
