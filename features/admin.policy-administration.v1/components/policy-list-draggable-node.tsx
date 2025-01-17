@@ -66,7 +66,6 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-
     const handleEdit = (policyId: string) => {
         history.push(`${AppConstants.getPaths().get("EDIT_POLICY").replace(":id", kebabCase(policyId))}`);
     };
