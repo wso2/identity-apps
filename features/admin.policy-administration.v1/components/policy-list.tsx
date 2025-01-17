@@ -25,7 +25,6 @@ import PolicyListNode from "./policy-list-node";
 import { PolicyInterface } from "../models/policies";
 import "./policy-list.scss";
 
-
 interface PolicyListProps extends IdentifiableComponentInterface {
     onDrop?: (containerId: string) => void;
     policies?: PolicyInterface[]; // Use PolicyInterface[]
