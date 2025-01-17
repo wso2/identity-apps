@@ -315,7 +315,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                                     <CircularProgress />
                                 </div>)
                             }
-                            dataLength={ inactivePolicies.length }
+                            dataLength={ inactivePolicies?.length }
                             scrollableTarget={ "inactive-policy-list-container" }
                             style={ { overflow: "unset" } }
                         >
