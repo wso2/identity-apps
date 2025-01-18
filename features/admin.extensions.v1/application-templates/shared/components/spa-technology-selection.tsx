@@ -50,7 +50,7 @@ interface TechnologyInterface<T> extends TestableComponentInterface, Identifiabl
  */
 export const SPATechnologySelection: <T>(
     props: SPATechnologySelectionPropsInterface<T>
-) => ReactElement = <T extends unknown>(
+) => ReactElement = <T,>(
     props: SPATechnologySelectionPropsInterface<T>
 ): ReactElement => {
 

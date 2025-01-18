@@ -16,10 +16,9 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -60,10 +59,6 @@ import { ConnectionGroupInterface } from "../../../../models/connection";
 interface IdentityProviderGroupsPropsInterface extends SBACInterface<FeatureConfigInterface>,
     IdentifiableComponentInterface {
     /**
-     * Scopes allowed for the user.
-     */
-    allowedScopes: string;
-    /**
      * IDP Id.
      */
     idpId: string;
@@ -87,7 +82,6 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
 ): ReactElement => {
 
     const {
-        allowedScopes,
         featureConfig,
         readOnly,
         idpId,
@@ -97,6 +91,10 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const hasGroupCreatePermissions: boolean = useRequiredScopes(featureConfig?.groups?.scopes?.create);
+    const hasIdentityProviderUpdatePermissions: boolean =
+        useRequiredScopes(featureConfig?.identityProviders?.scopes?.update);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -222,7 +220,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
         }
 
         if (groupsList?.length === 0) {
-            if (hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.create, allowedScopes)) {
+            if (hasGroupCreatePermissions) {
                 return (
                     <EmptyPlaceholder
                         data-testid={ `${ componentId }-empty-list-empty-placeholder` }
@@ -275,9 +273,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
 
         const actions: TableActionsInterface[] = [ {
             hidden: (): boolean => {
-                return !hasRequiredScopes(
-                    featureConfig?.identityProviders,
-                    featureConfig?.identityProviders?.scopes?.update, allowedScopes) || readOnly;
+                return !hasIdentityProviderUpdatePermissions || readOnly;
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, group: ConnectionGroupInterface): void => {
