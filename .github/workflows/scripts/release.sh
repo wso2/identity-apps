@@ -235,8 +235,10 @@ for package in $(echo "$PACKAGES" | jq -c '.[]'); do
     esac
 done
 
-# Merge the release branch back to master.
-merge_to_master
+if [ "$IS_HOTFIX" = "false" ]; then
+    # Merge the release branch back to master.
+    merge_to_master
+fi
 
 # Delete the release branch from both local and remote.
 delete_release_branch
