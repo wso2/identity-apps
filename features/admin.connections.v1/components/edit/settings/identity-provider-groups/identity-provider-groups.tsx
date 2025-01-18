@@ -88,7 +88,6 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
         [ "data-componentid" ]: componentId
     } = props;
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const { UIConfig } = useUIConfig();
     const dispatch: Dispatch = useDispatch();
@@ -319,7 +318,6 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                             idpId={ editingIDP?.id }
                             featureConfig={ featureConfig }
                             readOnly={ isReadOnly }
-                            allowedScopes={ allowedScopes }
                             isGroupListLoading={ false }
                         />
                     </EmphasizedSegment>
