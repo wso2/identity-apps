@@ -25,7 +25,7 @@ import {
     ApplicationEditTabContentType,
     ApplicationEditTabMetadataInterface
 } from "@wso2is/admin.application-templates.v1/models/templates";
-import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants";
+import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants/branding-preferences-constants";
 import {
     AppConstants,
     AppState,
