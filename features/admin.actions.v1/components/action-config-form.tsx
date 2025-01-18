@@ -61,9 +61,6 @@ import {
     AuthenticationType,
     AuthenticationTypeDropdownOption
 } from "../models/actions";
-import RulesComponent from "@wso2is/admin.rules.v1/components/rules-component";
-import { getRuleContextValue } from "@wso2is/admin.rules.v1/providers/rules-provider";
-import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import "./action-config-form.scss";
 
 /**
@@ -121,9 +118,6 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     const {
         data: RuleExpressionsMetaData
     } = useGetRulesMeta(actionTypeApiPath);
-
-    // TODO: Remove this temporary boolean once the management API is ready.
-    const showRulesComponent: boolean = true;
 
     // TODO: Use this function to get the rule value.
     /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -748,7 +742,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     { t("actions:fields.authentication.label") }
                 </Heading>
                 { renderAuthenticationSection() }
-                { (RuleExpressionsMetaData && showRulesComponent) && (
+                { (RuleExpressionsMetaData) && (
                     <>
                         <Divider className="divider-container"/>
                         <RulesComponent conditionExpressionsMetaData={ RuleExpressionsMetaData } />
