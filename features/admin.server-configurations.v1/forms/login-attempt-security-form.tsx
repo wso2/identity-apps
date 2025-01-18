@@ -23,7 +23,7 @@ import { Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import toInteger from "lodash-es/toInteger";
-import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, AccordionTitleProps, Divider, Icon, Label, List, Message } from "semantic-ui-react";
 import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
