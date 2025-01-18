@@ -22,7 +22,6 @@ import RuleExecutionComponent from "./rules";
 import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "../models/meta";
 import { RuleExecuteCollectionInterface, RuleInterface } from "../models/rules";
 import { RulesProvider } from "../providers/rules-provider";
-import Rules from "./rules";
 import "./rules-component.scss";
 
 /**

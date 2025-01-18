@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { SelectChangeEvent } from "@mui/material";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
@@ -24,18 +27,13 @@ import FormControl from "@oxygen-ui/react/FormControl";
 import Grid from "@oxygen-ui/react/Grid";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from "@oxygen-ui/react/Typography";
-import { SelectChangeEvent } from '@mui/material';
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import RuleConditions from "./rule-conditions";
 import { useRulesContext } from "../hooks/use-rules-context";
 import { ListDataInterface } from "../models/meta";
 import { RuleInterface } from "../models/rules";
-import { useRulesContext } from "../providers/rules-provider";
-import RuleConditions from "./rule-conditions";
 import "./rules.scss";
 
 /**
@@ -76,7 +74,7 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                         variant="contained"
                         color="secondary"
                         onClick={ addNewRule }
-                        startIcon={<AddIcon />}
+                        startIcon={ <AddIcon /> }
                     >
                         New Rule
                     </Button>
@@ -173,7 +171,7 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                 </Card>
             ) }
         </div>
-    )
+    );
 };
 
 export default RuleExecutionComponent;

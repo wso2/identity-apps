@@ -30,70 +30,6 @@ import {
     RuleExecuteCollectionInterface,
     RuleInterface
 } from "../models/rules";
-import { v4 as uuidv4 } from "uuid";
-
-/**
- * Interface for the RulesContext.
- */
-interface RulesContextInterface {
-    /**
-     * Rules instance.
-     */
-    rulesInstance: RuleInterface[];
-
-    /**
-     * Conditions meta.
-     */
-    conditionsMeta: any;
-
-    /**
-     * Condition expressions meta.
-     */
-    conditionExpressionsMeta: any;
-
-    /**
-     * Method to add a new rule.
-     */
-    addNewRule: () => void;
-
-    /**
-     * Method to remove a rule.
-     */
-    removeRule: (id: string) => void;
-
-    /**
-     * Method to add a new rule condition.
-     */
-    addNewRuleCondition: (
-        ruleId: string,
-        previousConditionInstanceId: string,
-        conditionType: ConditionTypes) => void;
-
-    /**
-     * Method to remove a rule condition.
-     */
-    removeRuleCondition: (ruleId: string, conditionId: string) => void;
-
-    /**
-     * Method to update the rule execution type.
-     */
-    updateRuleExecution: (event: SelectChangeEvent, id: string) => void;
-
-    /**
-     * Method to update the rule condition expression value.
-     */
-    updateRuleConditionExpression: (
-        changedValue: string,
-        ruleId: string,
-        conidtionId: string,
-        expressionId: string,
-        fieldName: keyof ExpressionInterface) => void;
-}
-
-/**
- * Create the context
- */
-const RulesContext = createContext<RulesContextInterface | undefined>(undefined);
 
 // Refference to hold the latest context value
 const RuleContextRef: { ruleInstance: RuleExecuteCollectionInterface | undefined } = {
@@ -102,14 +38,14 @@ const RuleContextRef: { ruleInstance: RuleExecuteCollectionInterface | undefined
 
 /**
  * Method to get the context value
- * 
+ *
  * @returns RuleInstanceData
  */
 export const getRuleInstanceValue = () => Object.freeze(RuleContextRef.ruleInstance);
 
 /**
  * Provider for the RulesContext
- * 
+ *
  * @param children - ReactNode
  * @param conditionExpressionsMetaData - ConditionExpressionsMetaDataInterface
  * @param initialData - RuleExecutionInterface
@@ -181,7 +117,7 @@ export const RulesProvider = ({
             order: orderIndex
         };
     };
-    
+
     /**
      * Method to get a new rule execute instance.
      *
@@ -221,7 +157,7 @@ export const RulesProvider = ({
 
     /**
      * Method to remove a rule.
-     * 
+     *
      * @param id - string
      */
     const handleRemoveRule = (id: string) => {
@@ -444,8 +380,7 @@ export const RulesProvider = ({
                 updateRulesFallbackExecution: handleRulesFallbackExecutionTypeChange
             } }
         >
-            {children}
+            { children }
         </RulesContext.Provider>
     );
 };
- 

@@ -90,28 +90,25 @@ export const sampleRuleExecuteInstances: RuleExecuteCollectionInterface = {
     ]
 };
 
-export const sampleApplicationList = {
-    "totalResults": 2,
-    "startIndex": 1,
-    "count": 2,
-    "applications": [
+export const sampleApplicationList: any = {
+    applications: [
         {
-            "id": "e028224b-51d1-4b26-a0f0-6e41f45472aa",
-            "name": "Console",
-            "description": "This is the console application.",
-            "applicationVersion": "v2.0.0",
-            "accessUrl": "https://localhost:9443/console",
-            "access": "READ",
-            "self": "/api/server/v1/applications/e028224b-51d1-4b26-a0f0-6e41f45472aa"
+            access: "READ",
+            accessUrl: "https://localhost:9443/console",
+            applicationVersion: "v2.0.0",
+            description: "This is the console application.",
+            id: "e028224b-51d1-4b26-a0f0-6e41f45472aa",
+            name: "Console",
+            self: "/api/server/v1/applications/e028224b-51d1-4b26-a0f0-6e41f45472aa"
         },
         {
-            "id": "dc2bf156-008e-4cd2-afb1-e31825277429",
-            "name": "My Account",
-            "description": "This is the my account application.",
-            "applicationVersion": "v2.0.0",
-            "accessUrl": "https://localhost:9443/myaccount",
-            "access": "WRITE",
-            "self": "/api/server/v1/applications/dc2bf156-008e-4cd2-afb1-e31825277429"
+            access: "WRITE",
+            accessUrl: "https://localhost:9443/myaccount",
+            applicationVersion: "v2.0.0",
+            description: "This is the my account application.",
+            id: "dc2bf156-008e-4cd2-afb1-e31825277429",
+            name: "My Account",
+            self: "/api/server/v1/applications/dc2bf156-008e-4cd2-afb1-e31825277429"
         }
     ],
     count: 2,
@@ -146,8 +143,8 @@ export const sampleRuleExecutionMeta: RuleExecutionMetaDataInterface = {
 export const sampleExpressionsMeta: ConditionExpressionsMetaDataInterface = [
     {
         field: {
-            name: "application",
-            displayName: "application"
+            displayName: "application",
+            name: "application"
         },
         operators: [
             {
@@ -161,9 +158,6 @@ export const sampleExpressionsMeta: ConditionExpressionsMetaDataInterface = [
         ],
         value: {
             inputType: "options",
-            valueType: "reference",
-            valueReferenceAttribute: "id",
-            valueDisplayAttribute: "name",
             links: [
                 {
                     href: "/applications?offset=0&limit=10",
@@ -243,8 +237,8 @@ export const sampleExpressionsMeta: ConditionExpressionsMetaDataInterface = [
     },
     {
         field: {
-            name: "grantType",
-            displayName: "grant type"
+            displayName: "grant type",
+            name: "grantType"
         },
         operators: [
             {
@@ -261,53 +255,26 @@ export const sampleExpressionsMeta: ConditionExpressionsMetaDataInterface = [
             valueType: "string",
             values: [
                 {
-                    name: "authorization_code",
-                    displayName: "authorization code"
+                    displayName: "authorization code",
+                    name: "authorization_code"
                 },
                 {
-                    name: "password",
-                    displayName: "password"
+                    displayName: "password",
+                    name: "password"
                 },
                 {
-                    name: "refresh_token",
-                    displayName: "refresh token"
+                    displayName: "refresh token",
+                    name: "refresh_token"
                 },
                 {
-                    name: "client_credentials",
-                    displayName: "client credentials"
+                    displayName: "client credentials",
+                    name: "client_credentials"
                 },
                 {
-                    name: "urn:ietf:params:oauth:grant-type:token-exchange",
-                    displayName: "token exchange"
+                    displayName: "token exchange",
+                    name: "urn:ietf:params:oauth:grant-type:token-exchange"
                 }
             ]
         }
     }
 ];
-
-export const dummyMeta = {
-    checkValues : [
-        {
-            "displayName": "User Role",
-            "value": "userRole"
-        },
-        {
-            "displayName": "Application",
-            "value": "application"
-        },
-        {
-            "displayName": "Grant Type",
-            "value": "grantType"
-        }
-    ],
-    operators : [
-        {
-            "displayName": "= Equals",
-            "value": "equals"
-        },
-        {
-            "displayName": "!= Not equals",
-            "value": "notEquals"
-        },
-    ]
-}

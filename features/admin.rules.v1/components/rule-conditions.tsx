@@ -16,19 +16,19 @@
  * under the License.
  */
 
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import { SelectChangeEvent } from "@mui/material";
 import Autocomplete from "@oxygen-ui/react/Autocomplete";
-import Button from "@oxygen-ui/react/Button";
 import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
-import Fab from "@oxygen-ui/react/Fab";
 import Divider from "@oxygen-ui/react/Divider";
+import Fab from "@oxygen-ui/react/Fab";
 import FormControl from "@oxygen-ui/react/FormControl";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import { SelectChangeEvent } from '@mui/material';
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import debounce from "lodash-es/debounce";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -156,8 +156,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
          * @param metaValue - Meta value.
          * @param resourceType - Resource type.
          * @returns Value input autocomplete component.
-         * @constructor
-         * @return {ReactElement}
          */
         const ValueInputAutocomplete: FunctionComponent<ValueInputAutocompleteProps> = ({
             localValue,
@@ -187,14 +185,14 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     }
                 }
             }, [ inputValue, initialResources, filteredResources, filterUrl ]);
-          
+
             return (
                 <Autocomplete
                     open={ open }
                     onOpen={ () => setOpen(true) }
                     onClose={ () => setOpen(false) }
                     options={ options || [] }
-                    getOptionLabel={ (option) => option.name || '' }
+                    getOptionLabel={ (option: { name: string }) => option.name || "" }
                     loading={ isInitialLoading || isFiltering }
                     value={ (options || []).some((option: any) => option.name === inputValue)
                         ? options.find((option: any) => option.name === inputValue)
@@ -210,8 +208,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             );
                         }
                     } }
-                    onInputChange={ (e, value) => setInputValue(value) }
-                    renderInput={ (params) => (
+                    onInputChange={ (event: React.ChangeEvent, value: string) => setInputValue(value) }
+                    renderInput={ (params: any) => (
                         <TextField
                             { ...params }
                             variant="outlined"
@@ -225,7 +223,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                         ) : null }
                                         { params.InputProps.endAdornment }
                                     </>
-                                ),
+                                )
                             } }
                         />
                     ) }
@@ -323,9 +321,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             }
 
             if (metaValue?.inputType === "options") {
-
                 if (metaValue?.values?.length > 1) {
-
                     return (
                         <Select
                             value={ expression.value }
@@ -445,7 +441,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             );
                         } }
                         className="add-button"
-                        startIcon={<AddIcon />}
+                        startIcon={ <AddIcon /> }
                     >
                         And
                     </Button>
@@ -455,15 +451,15 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     <Fab
                         aria-label="delete"
                         size="small"
-                        sx={ { position: 'absolute' } }
+                        sx={ { position: "absolute" } }
                         className="remove-button"
                         onClick={ () => removeRuleConditionExpression(ruleId, expression.id) }
                     >
                         <RemoveIcon className="remove-button-icon" />
                     </Fab>
-                }
+                ) }
             </Box>
-        )
+        );
     };
 
     return (
