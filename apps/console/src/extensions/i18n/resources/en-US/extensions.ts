@@ -263,16 +263,6 @@ export const extensions: Extensions = {
                 },
                 searchByName: "Search by name"
             }
-        },
-        organizationInfo: {
-            notifications: {
-                getConfiguration: {
-                    error: {
-                        description: "Error occurred while retrieving organization information",
-                        message: "An error occurred"
-                    }
-                }
-            }
         }
     },
     develop: {

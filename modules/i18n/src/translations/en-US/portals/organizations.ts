@@ -229,6 +229,12 @@ export const organizations: organizationsNS = {
                 message: "Organization fetched successfully"
             }
         },
+        getConfiguration: {
+            error: {
+                description: "Error occurred while retrieving organization information",
+                message: "An error occurred"
+            }
+        },
         getMetaAttributesList: {
             error: {
                 description: "{{description}}",

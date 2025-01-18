@@ -146,11 +146,6 @@ export interface Extensions {
                 searchByName: string;
             };
         };
-        organizationInfo: {
-            notifications: {
-                getConfiguration: Notification;
-            }
-        }
     };
     develop: {
         apiResource: {

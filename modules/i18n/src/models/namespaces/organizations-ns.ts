@@ -150,6 +150,12 @@ export interface organizationsNS {
                 description: string;
             };
         };
+        getConfiguration: {
+            error: {
+                description: string;
+                message: string;
+            }
+        };
         getOrganizationList: {
             error: {
                 message: string;
