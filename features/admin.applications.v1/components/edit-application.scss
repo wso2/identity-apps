@@ -1,0 +1,17 @@
+.info-tab-icon {
+    .icon {
+        color: #767676;
+    }
+
+    &.active {
+        .icon {
+            color: var(--oxygen-palette-primary-main);
+        }
+    }
+
+    &:hover {
+        .icon {
+            color: #767676;
+        }
+    }
+}

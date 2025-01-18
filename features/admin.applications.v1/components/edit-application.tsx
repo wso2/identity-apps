@@ -91,6 +91,7 @@ import {
     SupportedAuthProtocolTypes
 } from "../models/application-inbound";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
+import "./edit-application.scss";
 
 /**
  * Proptypes for the applications edit component.
@@ -941,8 +942,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                      componentId: "info",
                      "data-tabid": ApplicationTabIDs.INFO,
                      menuItem: {
+                         className: "info-tab-icon",
                          content: t("applications:edit.sections.info.tabName"),
-                         icon: "info circle grey"
+                         icon: "info circle"
                      },
                      render: InfoTabPane
                  });
