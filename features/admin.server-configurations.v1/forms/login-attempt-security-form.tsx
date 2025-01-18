@@ -32,7 +32,7 @@ import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
 } from "../models";
-import "./login-attempt-security-form/login-attempt-security-form.scss";
+import "./login-attempt-security-form.scss";
 
 /**
  * Interface for Login Attempt Security Configuration Form props.
@@ -147,7 +147,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
     const [ lockDuration, setLockDuration ] = useState<string>(undefined);
     const [ lockIncrementRatio, setLockIncrementRatio ] = useState<string>(undefined);
     const [ notifyUserOnAccountLockIncrement, setNotifyUserOnAccountLockIncrement ] = useState<boolean>(undefined);
-    const [ enableIndefiniteUserLockduration, setEnableIndefiniteUserLockduration ] = useState<boolean>(undefined);
+    const [ enableIndefiniteUserLockDuration, setEnableIndefiniteUserLockDuration ] = useState<boolean>(undefined);
     const [ accordionActiveIndex, setAccordionActiveIndex ] = useState<string | number>(undefined);
 
     /**
@@ -177,7 +177,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                     };
                     setLockDuration(parseInt(property.value) === 0 ?
                         ServerConfigurationsConstants.ACCOUNT_LOCK_TIME_DEFAULT : property.value );
-                    setEnableIndefiniteUserLockduration(parseInt(property.value) === 0);
+                    setEnableIndefiniteUserLockDuration(parseInt(property.value) === 0);
                 } else if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_TIME_INCREMENT_FACTOR) {
                     resolvedInitialValues = {
                         ...resolvedInitialValues,
@@ -210,7 +210,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
             "account.lock.handler.On.Failure.Max.Attempts": values.maxFailedAttempts !== undefined
                 ? values.maxFailedAttempts
                 : initialConnectorValues?.maxFailedAttempts,
-            "account.lock.handler.Time": enableIndefiniteUserLockduration
+            "account.lock.handler.Time": enableIndefiniteUserLockDuration
                 ? 0
                 : (values.accountLockTime !== undefined
                     ? values.accountLockTime
@@ -278,7 +278,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                 "loginAttemptSecurity.form.fields.accountLockTime.validations.invalid");
         } else if (((parseInt(values.accountLockTime, 10) < GovernanceConnectorConstants
             .LOGINS_ATTEMPT_SECURITY_FORM_FIELD_CONSTRAINTS.ACCOUNT_LOCK_TIME_MIN_VALUE) &&
-            !enableIndefiniteUserLockduration)
+            !enableIndefiniteUserLockDuration)
             || (parseInt(values.accountLockTime, 10) > GovernanceConnectorConstants
                 .LOGINS_ATTEMPT_SECURITY_FORM_FIELD_CONSTRAINTS.ACCOUNT_LOCK_TIME_MAX_VALUE)) {
             // Check for invalid range.
@@ -334,7 +334,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
     };
 
     const updateEnableIndefiniteAccountLockDuration = (value: any) => {
-        setEnableIndefiniteUserLockduration(value);
+        setEnableIndefiniteUserLockDuration(value);
         if (value) {
             setLockDuration("0");
         }
@@ -354,7 +354,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                 <p>
                     <strong>Note : </strong> The following example is based on the above configurations.<br />
                     <br />
-                    { enableIndefiniteUserLockduration
+                    { enableIndefiniteUserLockDuration
                         ? `User tries to login with an incorrect password ${toInteger(maxAttempts) === 1 ? "once"
                             : `in ${maxAttempts} consecutive attempts`}. User account will be locked indefinitely until 
                         the account is manually unlocked by an admin.`: `User tries to login with an incorrect 
@@ -362,7 +362,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                         User account will be locked for ${lockDuration} ${toInteger(lockDuration) === 1 ? "minute" :
                 "minutes"}.`
                     }
-                    { !enableIndefiniteUserLockduration ? sampleInfoAccordion() : null }`
+                    { !enableIndefiniteUserLockDuration ? sampleInfoAccordion() : null }`
                 </p>
             </Message>
         );
@@ -494,7 +494,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                 </Hint>
                 <Heading as="h5">
                     { t("extensions:manage.serverConfigurations.accountSecurity." +
-                            "loginAttemptSecurity.accountLockDurationHeading") as ReactNode }
+                            "loginAttemptSecurity.accountLockDurationHeading") }
                 </Heading>
                 <Divider hidden className="mb-0 mt-0"/>
                 <Field.Radio
@@ -505,15 +505,16 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                     label={ t("extensions:manage.serverConfigurations.accountSecurity." +
                             "loginAttemptSecurity.form.fields.lockAccountForSpecifiedTime.label"
                     ) }
-                    checked={ !enableIndefiniteUserLockduration }
+                    checked={ !enableIndefiniteUserLockDuration }
                     disabled= { !isConnectorEnabled }
+                    data-testid={ `${testId}-lock-account-specified-time` }
                     listen={ () => updateEnableIndefiniteAccountLockDuration(false) }
                 />
                 <Field.Input
                     ariaLabel="accountLockTime"
                     inputType="number"
                     name="accountLockTime"
-                    className="account-lock-time"
+                    className="account-lock-field"
                     min={
                         GovernanceConnectorConstants.LOGINS_ATTEMPT_SECURITY_FORM_FIELD_CONSTRAINTS
                             .ACCOUNT_LOCK_TIME_MIN_VALUE
@@ -539,25 +540,25 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                             .LOGINS_ATTEMPT_SECURITY_FORM_FIELD_CONSTRAINTS.ACCOUNT_LOCK_TIME_MIN_LENGTH
                     }
                     width={ 10 }
-                    disabled={ !isConnectorEnabled || enableIndefiniteUserLockduration }
+                    disabled={ !isConnectorEnabled || enableIndefiniteUserLockDuration }
                     labelPosition="right"
                     data-testid={ `${testId}-account-lock-time` }
                     readOnly={ readOnly }
-                    hidden= { enableIndefiniteUserLockduration }
+                    hidden= { enableIndefiniteUserLockDuration }
                 >
                     <input/>
                     <Label
                         content={ "mins" }
                     />
                 </Field.Input>
-                <Hint className={ "mb-5 account-lock-time" } hidden= { enableIndefiniteUserLockduration }>
+                <Hint className={ "mb-5 account-lock-field" } hidden= { enableIndefiniteUserLockDuration }>
                     {
                         t("extensions:manage.serverConfigurations.accountSecurity." +
                             "loginAttemptSecurity.form.fields.accountLockTime.hint")
                     }
                 </Hint>
                 <Field.Input
-                    className="account-lock-time"
+                    className="account-lock-field"
                     ariaLabel="accountLockIncrementFactor"
                     inputType="number"
                     name="accountLockIncrementFactor"
@@ -586,12 +587,12 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                             .ACCOUNT_LOCK_INCREMENT_FACTOR_MIN_LENGTH
                     }
                     width={ 10 }
-                    disabled={ !isConnectorEnabled || enableIndefiniteUserLockduration }
+                    disabled={ !isConnectorEnabled || enableIndefiniteUserLockDuration }
                     data-testid={ `${testId}-account-lock-increment` }
                     readOnly={ readOnly }
-                    hidden= { enableIndefiniteUserLockduration }
+                    hidden= { enableIndefiniteUserLockDuration }
                 />
-                <Hint className={ "mb-5 account-lock-time" } hidden= { enableIndefiniteUserLockduration }>
+                <Hint className={ "mb-5 account-lock-field" } hidden= { enableIndefiniteUserLockDuration }>
                     {
                         t("extensions:manage.serverConfigurations.accountSecurity." +
                             "loginAttemptSecurity.form.fields.accountLockIncrementFactor.hint")
@@ -599,14 +600,15 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                 </Hint>
                 <Field.Radio
                     className="account-lock-duration-option"
-                    key="1"
-                    name="lockAccountForSpecifiedTime"
-                    ariaLabel="lockAccountForSpecifiedTime"
+                    key="2"
+                    name="lockAccountIndefiniteTime"
+                    ariaLabel="lockAccountIndefiniteTime"
                     label={ t("extensions:manage.serverConfigurations.accountSecurity." +
-                            "loginAttemptSecurity.form.fields.lockAccountindefiniteTime.label"
+                            "loginAttemptSecurity.form.fields.lockAccountIndefiniteTime.label"
                     ) }
-                    checked={ enableIndefiniteUserLockduration }
+                    checked={ enableIndefiniteUserLockDuration }
                     disabled= { !isConnectorEnabled }
+                    data-testid={ `${testId}-lock-account-indefinite-time` }
                     listen={ () => updateEnableIndefiniteAccountLockDuration(true) }
                 />
                 {

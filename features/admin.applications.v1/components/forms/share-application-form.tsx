@@ -216,7 +216,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                 level: AlertLevels.ERROR,
                 message: t(
                     "organizations:notifications." +
-                        "getOrganizationList.genericError.mupdateEnableIndefiniteAccountLockDurationessage"
+                        "getOrganizationList.genericError.message"
                 )
             })
         );
