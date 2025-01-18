@@ -15,6 +15,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import { Notification } from "../common";
+
 export interface IdpNS {
     advancedSearch: {
         form: {
@@ -337,6 +340,45 @@ export interface IdpNS {
                 };
                 heading: string;
             };
+        };
+    };
+    identityProviderGroups: {
+        claimConfigs: {
+            groupAttributeLabel: string;
+            groupAttributeHint: string;
+            groupAttributePlaceholder: string;
+            groupAttributeMessage1: string;
+            groupAttributeMessage2: string;
+            groupAttributeMessageOIDC: string;
+            groupAttributeMessageSAML: string;
+            notifications: {
+                fetchConfigs: Notification;
+            };
+        };
+        createGroupWizard: {
+            groupNameLabel: string;
+            groupNamePlaceHolder: string;
+            groupNameHint: string;
+            subHeading: string;
+            notifications: {
+                createIdentityProviderGroup: Notification;
+                duplicateGroupError: Notification;
+            };
+        };
+        groupsList: {
+            confirmation: {
+                deleteGroup: {
+                    message: string;
+                    content: string;
+                };
+            };
+            newGroup: string;
+            noGroupsAvailable: string;
+            notifications: {
+                fetchGroups: Notification;
+                deleteGroup: Notification;
+            };
+            searchByName: string;
         };
     };
     templates: {

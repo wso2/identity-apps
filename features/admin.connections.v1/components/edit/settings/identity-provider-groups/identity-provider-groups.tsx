@@ -123,10 +123,10 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
     const handleRetrieveError = (): void => {
         dispatch(
             addAlert({
-                description: t("extensions:console.identityProviderGroups.claimConfigs." +
+                description: t("idp:identityProviderGroups.claimConfigs." +
                     "notifications.fetchConfigs.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("extensions:console.identityProviderGroups.claimConfigs." +
+                message: t("idp:identityProviderGroups.claimConfigs." +
                     "notifications.fetchConfigs.genericError.message")
             })
         );
@@ -168,7 +168,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
         if (UIConfig.useRoleClaimAsGroupClaim) {
             return (
                 <Message
-                    header={ t("extensions:console.identityProviderGroups.claimConfigs.groupAttributeLabel") }
+                    header={ t("idp:identityProviderGroups.claimConfigs.groupAttributeLabel") }
                     content={
                         (<>
                             <p>
@@ -196,11 +196,11 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
         // Construct the default dialect group claim message.
         const defaultDialectMessage: ReactElement = (
             <Message
-                header={ t("extensions:console.identityProviderGroups.claimConfigs.groupAttributeLabel") }
+                header={ t("idp:identityProviderGroups.claimConfigs.groupAttributeLabel") }
                 content={ isOIDC ? (
                     <Trans
                         i18nKey={
-                            "extensions:console.identityProviderGroups.claimConfigs.groupAttributeMessageOIDC"
+                            "idp:identityProviderGroups.claimConfigs.groupAttributeMessageOIDC"
                         }
                         tOptions={ {
                             attribute: groupClaim
@@ -213,7 +213,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                 ) : (
                     <Trans
                         i18nKey={
-                            "extensions:console.identityProviderGroups.claimConfigs.groupAttributeMessageSAML"
+                            "idp:identityProviderGroups.claimConfigs.groupAttributeMessageSAML"
                         }
                         tOptions={ {
                             attribute: groupClaim
@@ -251,9 +251,9 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                                 >
                                     <Form.Input
                                         name="groupAttribute"
-                                        label={ t("extensions:console.identityProviderGroups.claimConfigs." +
+                                        label={ t("idp:identityProviderGroups.claimConfigs." +
                                             "groupAttributeLabel") }
-                                        placeholder={ t("extensions:console.identityProviderGroups.claimConfigs." +
+                                        placeholder={ t("idp:identityProviderGroups.claimConfigs." +
                                             "groupAttributePlaceholder") }
                                         readOnly={ true }
                                         maxLength={ ConnectionUIConstants.GROUP_CLAIM_LENGTH.max }
@@ -286,7 +286,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
             && !UIConfig.isCustomClaimMappingMergeEnabled) {
             return (
                 <Message
-                    header={ t("extensions:console.identityProviderGroups.claimConfigs.groupAttributeLabel") }
+                    header={ t("idp:identityProviderGroups.claimConfigs.groupAttributeLabel") }
                     content={
                         (<p>
                             Please note that you have enabled custom attribute mapping, but have not added a custom

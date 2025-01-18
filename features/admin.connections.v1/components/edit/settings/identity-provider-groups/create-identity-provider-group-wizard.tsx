@@ -75,10 +75,10 @@ export const CreateIdPGroupWizard: FunctionComponent<CreateGroupProps> = (props:
         // Check if the group name is aleady present in the groupsList
         if (groupsList.some((group: ConnectionGroupInterface) => group.name === groupName.trim())) {
             dispatch(addAlert({
-                description: t("extensions:console.identityProviderGroups.createGroupWizard.notifications." +
+                description: t("idp:identityProviderGroups.createGroupWizard.notifications." +
                     "duplicateGroupError.description"),
                 level: AlertLevels.ERROR,
-                message: t("extensions:console.identityProviderGroups.createGroupWizard.notifications." +
+                message: t("idp:identityProviderGroups.createGroupWizard.notifications." +
                     "duplicateGroupError.message")
             }));
             closeWizard();
@@ -90,10 +90,10 @@ export const CreateIdPGroupWizard: FunctionComponent<CreateGroupProps> = (props:
         updateConnectionGroup(idpId, newIdpGroupList)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("extensions:console.identityProviderGroups.createGroupWizard.notifications." +
+                    description: t("idp:identityProviderGroups.createGroupWizard.notifications." +
                         "createIdentityProviderGroup.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("extensions:console.identityProviderGroups.createGroupWizard.notifications." +
+                    message: t("idp:identityProviderGroups.createGroupWizard.notifications." +
                         "createIdentityProviderGroup.success.message")
                 }));
                 closeWizard();
@@ -101,10 +101,10 @@ export const CreateIdPGroupWizard: FunctionComponent<CreateGroupProps> = (props:
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("extensions:console.identityProviderGroups.createGroupWizard.notifications." +
+                    description: t("idp:identityProviderGroups.createGroupWizard.notifications." +
                         "createIdentityProviderGroup.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("extensions:console.identityProviderGroups.createGroupWizard.notifications." +
+                    message: t("idp:identityProviderGroups.createGroupWizard.notifications." +
                         "createIdentityProviderGroup.genericError.message")
                 }));
             }).finally(() => {
@@ -131,7 +131,7 @@ export const CreateIdPGroupWizard: FunctionComponent<CreateGroupProps> = (props:
                     t("roles:addRoleWizard.heading", { type: "Group" })
                 }
                 <Heading as="h6">
-                    { t("extensions:console.identityProviderGroups.createGroupWizard.subHeading") }
+                    { t("idp:identityProviderGroups.createGroupWizard.subHeading") }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="pb-6" scrolling>
@@ -140,9 +140,9 @@ export const CreateIdPGroupWizard: FunctionComponent<CreateGroupProps> = (props:
                         <Grid.Column  mobile={ 16 } tablet={ 16 } computer={ 10 } key="identityProviderGroupName">
                             <Form.Input
                                 name="identityProviderGroupName"
-                                label={ t("extensions:console.identityProviderGroups.createGroupWizard." +
+                                label={ t("idp:identityProviderGroups.createGroupWizard." +
                                     "groupNameLabel") }
-                                placeholder={ t("extensions:console.identityProviderGroups.createGroupWizard." +
+                                placeholder={ t("idp:identityProviderGroups.createGroupWizard." +
                                     "groupNamePlaceHolder") }
                                 onChange={ (e: any) => setGroupName(e.target.value) }
                                 value={ groupName }
@@ -153,7 +153,7 @@ export const CreateIdPGroupWizard: FunctionComponent<CreateGroupProps> = (props:
                                 data-componentid={ `${ componentId }-group-name` }
                             />
                             <Hint>
-                                { t("extensions:console.identityProviderGroups.createGroupWizard." +
+                                { t("idp:identityProviderGroups.createGroupWizard." +
                                     "groupNameHint") }
                             </Hint>
                         </Grid.Column>

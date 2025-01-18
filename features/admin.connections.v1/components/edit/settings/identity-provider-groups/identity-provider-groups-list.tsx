@@ -149,10 +149,10 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
     const handleRetrieveError = (): void => {
         dispatch(
             addAlert({
-                description: t("extensions:console.identityProviderGroups.groupsList.notifications.fetchGroups." +
+                description: t("idp:identityProviderGroups.groupsList.notifications.fetchGroups." +
                     "genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("extensions:console.identityProviderGroups.groupsList.notifications.fetchGroups." +
+                message: t("idp:identityProviderGroups.groupsList.notifications.fetchGroups." +
                     "genericError.message")
             })
         );
@@ -169,10 +169,10 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
         return updateConnectionGroup(idpId, newIdpGroupList)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("extensions:console.identityProviderGroups.groupsList.notifications.deleteGroup." +
+                    description: t("idp:identityProviderGroups.groupsList.notifications.deleteGroup." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("extensions:console.identityProviderGroups.groupsList.notifications.deleteGroup." +
+                    message: t("idp:identityProviderGroups.groupsList.notifications.deleteGroup." +
                         "success.message")
                 }));
                 mutateIdentityProviderGroupsFetchRequest();
@@ -181,10 +181,10 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("extensions:console.identityProviderGroups.groupsList.notifications.deleteGroup." +
+                    description: t("idp:identityProviderGroups.groupsList.notifications.deleteGroup." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("extensions:console.identityProviderGroups.groupsList.notifications.deleteGroup." +
+                    message: t("idp:identityProviderGroups.groupsList.notifications.deleteGroup." +
                         "genericError.message")
                 }));
 
@@ -253,7 +253,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                         data-testid={ `${ componentId }-empty-list-empty-placeholder` }
                         image={ getEmptyPlaceholderIllustrations().newList }
                         imageSize="tiny"
-                        title={ t("extensions:console.identityProviderGroups.groupsList.noGroupsAvailable") }
+                        title={ t("idp:identityProviderGroups.groupsList.noGroupsAvailable") }
                         subtitle={ [
                             t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.0",
                                 { type: "groups" })
@@ -358,7 +358,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                             icon="search"
                             iconPosition="left"
                             onChange={ (e: ChangeEvent<HTMLInputElement>)  => setSearchQuery(e.target.value) }
-                            placeholder={ t("extensions:console.identityProviderGroups.groupsList.searchByName") }
+                            placeholder={ t("idp:identityProviderGroups.groupsList.searchByName") }
                             value={ searchQuery }
                             floated="right"
                             size="small"
@@ -375,7 +375,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                                 onClick={ () => setShowWizard(true) }
                             >
                                 <Icon name="add" />
-                                { t("extensions:console.identityProviderGroups.groupsList.newGroup") }
+                                { t("idp:identityProviderGroups.groupsList.newGroup") }
                             </PrimaryButton>
                         </Show>
                     </div>
@@ -431,10 +431,10 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                     attached
                     negative
                 >
-                    { t("extensions:console.identityProviderGroups.groupsList.confirmation.deleteGroup.message") }
+                    { t("idp:identityProviderGroups.groupsList.confirmation.deleteGroup.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content>
-                    { t("extensions:console.identityProviderGroups.groupsList.confirmation.deleteGroup.content",
+                    { t("idp:identityProviderGroups.groupsList.confirmation.deleteGroup.content",
                         { groupName: deleteGroup?.name }) }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
