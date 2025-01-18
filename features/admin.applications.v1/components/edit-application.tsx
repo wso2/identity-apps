@@ -942,7 +942,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                      componentId: "info",
                      "data-tabid": ApplicationTabIDs.INFO,
                      menuItem: {
-                         className: "info-tab-icon",
                          content: t("applications:edit.sections.info.tabName"),
                          icon: "info circle"
                      },
