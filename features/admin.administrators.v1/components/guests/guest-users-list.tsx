@@ -16,15 +16,12 @@
  * under the License.
  */
 
-import {
-    
-    FeatureConfigInterface,
-    UserListInterface,
-    getEmptyPlaceholderIllustrations
-} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { UserListInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { deleteInvite, resendInvite, updateInvite } from "@wso2is/admin.users.v1/api";
-import { InvitationStatus, UserInviteInterface } from "@wso2is/admin.users.v1/models";
+import { InvitationStatus, UserInviteInterface } from "@wso2is/admin.users.v1/models/user";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

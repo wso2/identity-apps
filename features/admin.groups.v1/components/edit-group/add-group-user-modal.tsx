@@ -17,7 +17,7 @@
  */
 
 import Button from "@oxygen-ui/react/Button";
-import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1";
+import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { useUsersList } from "@wso2is/admin.users.v1/api";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
