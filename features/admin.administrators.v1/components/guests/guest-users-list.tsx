@@ -17,11 +17,12 @@
  */
 
 import {
-    AppState,
+    
     FeatureConfigInterface,
     UserListInterface,
     getEmptyPlaceholderIllustrations
 } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { deleteInvite, resendInvite, updateInvite } from "@wso2is/admin.users.v1/api";
 import { InvitationStatus, UserInviteInterface } from "@wso2is/admin.users.v1/models";
 import { hasRequiredScopes } from "@wso2is/core/helpers";

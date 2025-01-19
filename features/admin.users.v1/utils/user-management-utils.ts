@@ -28,7 +28,7 @@ import {
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import { UserManagementConstants } from "../constants/user-management-constants";
-import { MultipleInviteMode, MultipleInvitesDisplayNames, UserBasicInterface } from "../models";
+import { MultipleInviteMode, MultipleInvitesDisplayNames, UserBasicInterface } from "../models/user";
 
 /**
  * Utility class for user management operations.

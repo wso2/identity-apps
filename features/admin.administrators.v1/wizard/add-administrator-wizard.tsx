@@ -19,7 +19,7 @@
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
-import { AppState, UserBasicInterface } from "@wso2is/admin.core.v1";
+import {  UserBasicInterface } from "@wso2is/admin.core.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
@@ -28,6 +28,7 @@ import { sendInvite, useUsersList } from "@wso2is/admin.users.v1/api";
 import { getUserWizardStepIcons } from "@wso2is/admin.users.v1/configs/ui";
 import { AdminAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     AlertLevels,
     IdentifiableComponentInterface,

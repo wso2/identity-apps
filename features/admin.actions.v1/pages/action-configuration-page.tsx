@@ -17,7 +17,8 @@
  */
 
 import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { store } from "@wso2is/admin.core.v1/store";
 import orderBy from "lodash-es/orderBy";
 import pull from "lodash-es/pull";

@@ -18,9 +18,9 @@
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
-import { EventPublisher, PreLoader } from "@wso2is/admin.core.v1";
-import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
-import { Config, DocumentationLinks } from "@wso2is/admin.core.v1/configs";
+import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
+import { Config, DocumentationLinks } from "@wso2is/admin.core.v1/configs/app";
+import { DocumentationLinks } from "@wso2is/admin.core.v1/configs/app";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { history } from "@wso2is/admin.core.v1/helpers";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
@@ -31,6 +31,7 @@ import {
     ServiceResourceEndpointsInterface
 } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher, PreLoader } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { featureGateConfig } from "@wso2is/admin.extensions.v1/configs/feature-gate";
 import useGetAllFeatures from "@wso2is/admin.feature-gate.v1/api/use-get-all-features";

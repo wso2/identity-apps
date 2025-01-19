@@ -67,7 +67,7 @@ import {
     PayloadInterface,
     UserDetailsInterface,
     WizardStepInterface,
-    createEmptyUserDetails } from "../../models";
+    createEmptyUserDetails } from "../../models/user";
 import { generatePassword, getConfiguration, getUsernameConfiguration } from "../../utils";
 
 interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {

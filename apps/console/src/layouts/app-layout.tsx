@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { AppState, AppUtils, PreLoader } from "@wso2is/admin.core.v1";
+import {  AppUtils, PreLoader } from "@wso2is/admin.core.v1";
+
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";

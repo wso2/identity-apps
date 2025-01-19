@@ -18,13 +18,16 @@
 
 import { useRequiredScopes } from "@wso2is/access-control";
 import {
-    AppConstants,
-    AppState,
+    AppConstants 
+} from "@wso2is/admin.core.v1/constants/app-constants";
+import {
+    
     FeatureConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "@wso2is/admin.core.v1";
+} from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";

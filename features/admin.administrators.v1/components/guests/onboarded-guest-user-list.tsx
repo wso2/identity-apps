@@ -18,13 +18,14 @@
 
 import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import {
-    AppState,
+    
     FeatureConfigInterface,
     UIConstants,
     UserRoleInterface,
     getEmptyPlaceholderIllustrations,
     history
 } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";

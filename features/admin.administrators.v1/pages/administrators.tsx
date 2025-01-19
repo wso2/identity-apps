@@ -27,7 +27,7 @@ import {
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import {
     AdvancedSearchWithBasicFilters,
-    AppState,
+    
     EventPublisher,
     FeatureConfigInterface,
     UIConstants,
@@ -37,6 +37,7 @@ import {
     history,
     store
 } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { getAgentConnections } from "@wso2is/admin.remote-userstores.v1/api/remote-user-stores";

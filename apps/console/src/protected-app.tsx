@@ -25,7 +25,7 @@ import {
 } from "@asgardeo/auth-react";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
 import {
-    AppState,
+    
     AppUtils,
     Config,
     DeploymentConfigInterface,
@@ -36,6 +36,7 @@ import {
     setSanitizedDevelopRoutes,
     store
 } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { MultitenantConstants } from "@wso2is/admin.core.v1/constants/multitenant-constants";
 import { history } from "@wso2is/admin.core.v1/helpers";

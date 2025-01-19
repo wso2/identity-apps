@@ -18,13 +18,14 @@
 
 import {
     AppConstants,
-    AppState,
+    
     AppUtils,
     FeatureConfigInterface,
     ProtectedRoute,
     RouteUtils,
     getEmptyPlaceholderIllustrations
 } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { RouteInterface } from "@wso2is/core/models";
 import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
 import {

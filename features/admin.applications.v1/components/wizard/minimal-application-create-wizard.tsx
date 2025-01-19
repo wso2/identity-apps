@@ -21,7 +21,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import { Show } from "@wso2is/access-control";
 import {
     AppConstants,
-    AppState,
+    
     CORSOriginsListInterface,
     EventPublisher,
     FeatureConfigInterface,
@@ -31,6 +31,7 @@ import {
     history,
     store
 } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";

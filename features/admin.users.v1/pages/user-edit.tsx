@@ -21,13 +21,14 @@ import { useRequiredScopes } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
 import {
     AppConstants,
-    AppState,
+    
     FeatureConfigInterface,
     SharedUserStoreUtils,
     getEmptyPlaceholderIllustrations,
     getSidePanelIcons,
     history
 } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import { useGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api";

@@ -18,11 +18,12 @@
 
 import { Show } from "@wso2is/access-control";
 import {
-    AppState,
+    
     ConfigReducerStateInterface,
     FeatureConfigInterface,
     getEmptyPlaceholderIllustrations
 } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";

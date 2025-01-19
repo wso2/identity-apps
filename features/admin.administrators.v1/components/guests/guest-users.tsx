@@ -18,11 +18,12 @@
 
 import {
     AdvancedSearchWithBasicFilters,
-    AppState,
+    
     FeatureConfigInterface,
     UIConstants,
     UserListInterface
 } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { InvitationStatus, UserInviteInterface } from "@wso2is/admin.users.v1/models";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { DocumentationLink, ListLayout, Message, Text, useDocumentation } from "@wso2is/react-components";

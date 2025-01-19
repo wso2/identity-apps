@@ -21,16 +21,17 @@ import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
-    AppState,
+    
     EventPublisher,
     FeatureConfigInterface,
     SharedUserStoreUtils,
     UIConstants,
     UserBasicInterface,
-    getAUserStore,
     getEmptyPlaceholderIllustrations,
     history
 } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { getAUserStore } from "@wso2is/admin.core.v1/api/user-store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
@@ -101,7 +102,7 @@ import {
     UserAddOptionTypes,
     UserManagementConstants
 } from "../constants";
-import { InvitationStatus, UserListInterface } from "../models";
+import { InvitationStatus, UserListInterface } from "../models/user";
 import "./users.scss";
 
 /**

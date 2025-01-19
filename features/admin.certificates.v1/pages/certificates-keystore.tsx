@@ -19,12 +19,13 @@
 import { Show } from "@wso2is/access-control";
 import {
     AdvancedSearchWithBasicFilters,
-    AppState,
+    
     FeatureConfigInterface,
     UIConstants,
     filterList,
     sortList
 } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, Certificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
