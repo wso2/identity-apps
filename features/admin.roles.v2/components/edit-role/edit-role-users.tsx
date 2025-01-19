@@ -27,9 +27,9 @@ import Grid from "@oxygen-ui/react/Grid";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
-import { AppState } from "@wso2is/admin.core.v1";
 import { updateResources } from "@wso2is/admin.core.v1/api/bulk-operations";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useUsersList } from "@wso2is/admin.users.v1/api";
@@ -39,7 +39,7 @@ import {
     PatchUserOpInterface,
     PatchUserRemoveOpInterface,
     UserBasicInterface
-} from "@wso2is/admin.users.v1/models";
+} from "@wso2is/admin.users.v1/models/user";
 import { getAUserStore, useUserStores } from "@wso2is/admin.userstores.v1/api";
 import {
     UserStoreDropdownItem, UserStoreListItem, UserStorePostData, UserStoreProperty

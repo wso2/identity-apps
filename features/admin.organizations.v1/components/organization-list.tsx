@@ -19,15 +19,13 @@
 import { BasicUserInfo } from "@asgardeo/auth-react";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
-import {
-    AppConstants,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConstants,
-    history
-} from "@wso2is/admin.core.v1";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
