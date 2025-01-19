@@ -1,6 +1,6 @@
 # WSO2 Identity Server Apps
 
-End-user apps in WSO2 Identity Server
+Frontend apps in WSO2 Identity Server
 
 [![Stackoverflow](https://img.shields.io/badge/Ask%20for%20help%20on-Stackoverflow-orange)](https://stackoverflow.com/questions/tagged/wso2is)
 [![Discord](https://img.shields.io/badge/Join%20us%20on-Discord-%23e01563.svg)](https://discord.gg/wso2)
