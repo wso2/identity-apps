@@ -69,6 +69,7 @@
         "react-top-loading-bar": "^1.2.0",
         "redux": "^4.0.4",
         "redux-thunk": "^2.3.0",
+        "ts-morph": "^25.0.0",
         "tslib": "^2.3.0"
     },
     "devDependencies": {
