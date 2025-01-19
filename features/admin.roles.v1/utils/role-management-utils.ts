@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppConstants } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import { getPermissionList, searchRoleList } from "../api/roles";

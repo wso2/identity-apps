@@ -18,13 +18,13 @@
 
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import {
-    AppConstants,
     AppState,
     FeatureConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
 } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { applicationListConfig } from "@wso2is/admin.extensions.v1/configs/application-list";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, RoleConnectedApplicationInterface, RolesInterface } from "@wso2is/core/models";

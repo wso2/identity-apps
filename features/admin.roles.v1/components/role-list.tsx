@@ -18,13 +18,13 @@
 
 import { Show } from "@wso2is/access-control";
 import {
-    AppConstants,
     AppState,
     FeatureConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
 } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {

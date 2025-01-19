@@ -17,7 +17,6 @@
  */
 
 import {
-    AppConstants,
     AppState,
     SharedUserStoreConstants,
     SharedUserStoreUtils,
@@ -25,6 +24,7 @@ import {
     UserStoreProperty,
     history
 } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
     AlertInterface,

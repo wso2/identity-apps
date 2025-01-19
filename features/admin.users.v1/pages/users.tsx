@@ -20,8 +20,6 @@ import Chip from "@oxygen-ui/react/Chip";
 import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import {
     AdvancedSearchWithBasicFilters,
-    AppConstants,
-    
     EventPublisher,
     FeatureConfigInterface,
     SharedUserStoreUtils,
@@ -30,6 +28,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { getAUserStore } from "@wso2is/admin.core.v1/api/user-store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";

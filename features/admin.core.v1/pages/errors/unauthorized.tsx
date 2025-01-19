@@ -20,8 +20,8 @@ import { EmptyPlaceholder, LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, RouteComponentProps } from "react-router-dom";
-import { getEmptyPlaceholderIllustrations } from "../../configs";
-import { AppConstants } from "../../constants";
+import { getEmptyPlaceholderIllustrations } from "../../configs/ui";
+import { AppConstants } from "../../constants/app-constants";
 
 /**
  * Unauthorized error page.

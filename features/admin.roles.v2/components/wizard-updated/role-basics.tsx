@@ -24,7 +24,7 @@ import { useApplicationList } from "@wso2is/admin.applications.v1/api/applicatio
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models/application";
 import { OrganizationType, history, store } from "@wso2is/admin.core.v1";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";

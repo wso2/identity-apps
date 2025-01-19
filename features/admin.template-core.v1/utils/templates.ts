@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppConstants } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import { ExtensionTemplateConstants } from "../constants/templates";
 import { ResourceTypes } from "../models/templates";

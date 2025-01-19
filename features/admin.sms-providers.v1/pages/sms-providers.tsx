@@ -18,10 +18,10 @@
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import {
-    AppConstants,
     AppState,
     FeatureConfigInterface
 } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers";
 import smsProviderConfig from "@wso2is/admin.extensions.v1/configs/sms-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
