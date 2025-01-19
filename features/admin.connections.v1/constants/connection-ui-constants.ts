@@ -18,6 +18,7 @@
 
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
+import { AvailableCustomAuthentications } from "../models/connection";
 
 /**
  * This class contains the constants for the Connections feature UIs.
@@ -337,4 +338,19 @@ export class ConnectionUIConstants {
     public static readonly USER_ID_IN_CLAIMS: string = "IsUserIdInClaims";
 
     public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
+
+    /**
+     * Custom authentication constants.
+     */
+    public static readonly CUSTOM_AUTHENTICATION_CONSTANTS: {
+        EMPTY_STRING: string,
+        EXTERNAL_AUTHENTICATOR: AvailableCustomAuthentications,
+        INTERNAL_AUTHENTICATOR: AvailableCustomAuthentications,
+        TWO_FACTOR_AUTHENTICATOR: AvailableCustomAuthentications
+    } = {
+            EMPTY_STRING: "",
+            EXTERNAL_AUTHENTICATOR: "external",
+            INTERNAL_AUTHENTICATOR: "internal",
+            TWO_FACTOR_AUTHENTICATOR: "two-factor"
+        };
 }

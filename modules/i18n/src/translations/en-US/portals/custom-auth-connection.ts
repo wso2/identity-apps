@@ -23,19 +23,19 @@ export const customAuthentication: customAuthenticationNS = {
         createWizard: {
             authenticationTypeStep: {
                 externalAuthenticationCard: {
-                    examples: "Eg: Social Login, Enterprise IdP",
+                    examples: "E.g., Social Login, Enterprise IdP",
                     header: "External (Federated) User Authentication",
                     mainDescription: "Authenticate and provision federated users."
                 },
                 internalUserAuthenticationCard: {
-                    examples: "Eg: Username & Password, Email OTP",
+                    examples: "E.g., Username & Password, Email OTP",
                     header: "Internal User Authentication",
                     mainDescription: "Collect identifier and authenticate user accounts managed in the organization."
                 },
                 label: "Select the authentication type you are implementing",
                 title: "Authentication Type",
                 twoFactorAuthenticationCard: {
-                    examples: "Eg: TOTP",
+                    examples: "E.g., TOTP",
                     header: "2FA Authentication",
                     mainDescription: "Only verify users in a second or later step in the login flow."
                 }
@@ -83,6 +83,7 @@ export const customAuthentication: customAuthenticationNS = {
                     hint: "Once added, these secrets will not be displayed. You will only be able to reset them.",
                     label: "Authentication Scheme",
                     placeholder: "Select Authentication Type",
+                    title: "Endpoint Authentication",
                     validations: {
                         required: "Authentication Type is a required field."
                     }
@@ -102,11 +103,27 @@ export const customAuthentication: customAuthenticationNS = {
             generalSettingsStep: {
                 displayName: {
                     hint: "",
-                    label: "Identifier",
+                    label: "Display Name",
                     placeholder: "ABC Authenticator",
                     validations: {
                         empty: "",
                         invalid: "Invalid Display Name"
+                    }
+                },
+                helpPanel: {
+                    displayName: {
+                        description: "Provide a meaningful name to identify the connection.",
+                        header: "Display Name",
+                        hint: "Must be a string containing only letters (a-z, A-Z) numbers (0-9), spaces, " +
+                        "underscore (_) and hyphen (-). "
+                    },
+                    identifier: {
+                        description: "Provide a unique name to refer in authentication scripts and " +
+                        "authentication parameters.",
+                        header: "Identifier",
+                        hint: "Must be a string containing only letters (a-z, A-Z) numbers (0-9), spaces, " +
+                        "underscore (_) and hyphen (-). ",
+                        warning: "This field should be unique; once created, it is not editable. "
                     }
                 },
                 identifier: {
@@ -119,15 +136,6 @@ export const customAuthentication: customAuthenticationNS = {
                     }
                 },
                 title: "General Settings"
-            },
-            helpPanel: {
-                hint: {
-                    description: "We recommend using a URI as the identifier, but you do not need to make the URI" +
-                    "publicly available since WSO2 Identity Server will not access your API. WSO2 Identity Server" +
-                    "will use this identifier value as the audience(aud) claim in the issued JWT tokens.",
-                    header: "Identifier",
-                    warning: "This field should be unique; once created, it is not editable. "
-                }
             }
         }
     }

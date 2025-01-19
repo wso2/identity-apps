@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIconProps } from "@wso2is/react-components";
 import { ComponentType, LazyExoticComponent, ReactElement } from "react";
 import { AuthenticatorSettingsFormModes } from "./authenticators";
@@ -918,7 +918,7 @@ export enum ConnectionTypes {
 }
 
 /**
- * Authentication Types.
+ * Enum for the endpoint authentication types.
  */
 export enum AuthenticationType {
     NONE = "NONE",
@@ -926,3 +926,24 @@ export enum AuthenticationType {
     API_KEY = "API_KEY",
     BEARER = "BEARER",
 }
+
+export interface CustomAuthenticationCreateWizardProps extends GenericConnectionCreateWizardPropsInterface,
+    IdentifiableComponentInterface {}
+
+/**
+ * Enum for the steps of the custom authentication create wizard.
+ */
+export enum WizardStepsCustomAuth {
+    AUTHENTICATION_TYPE = "Authentication Type",
+    GENERAL_SETTINGS = "General Settings",
+    CONFIGURATION = "Configuration"
+}
+export interface WizardStepInterface {
+    icon: any;
+    title: string;
+    submitCallback: any;
+    name: WizardStepsCustomAuth;
+}
+
+export type AvailableCustomAuthentications = "external" | "internal" | "two-factor";
+export type FormErrors = { [key: string]: string };

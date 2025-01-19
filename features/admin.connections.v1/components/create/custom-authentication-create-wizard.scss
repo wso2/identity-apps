@@ -22,18 +22,6 @@
         margin-bottom: 0px;
     }
 
-    .box-container {
-        background-color: #f9fafb;
-        border-radius: 8px;
-        padding: 30px;
-
-        .box-field {
-            margin-top: 20px;
-            margin-left: 10px;
-            margin-right: 10px;
-        }
-    }
-
     .text-field-container {
         margin-top: 8px;
         margin-bottom: 8px;
@@ -46,16 +34,6 @@
     .hint-text {
         margin-top: 0px;
         margin-bottom: 8px;
-    }
-
-    .divider-container {
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-
-    .heading-container {
-        margin-top: 20px;
-        margin-bottom: 20px;
     }
 
     .button-container {
@@ -130,5 +108,27 @@
         .sub-template-selection-card:first-child {
             margin-top: 14px; // semantic-ui-react Card has set top margin of the first child to zero. We are overriding it.
         }
+    }
+}
+
+.divider-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.heading-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.box-container {
+    background-color: #f9fafb;
+    border-radius: 8px;
+    padding: 30px;
+
+    .box-field {
+        margin-top: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
     }
 }

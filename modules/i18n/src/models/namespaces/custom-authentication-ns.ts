@@ -58,6 +58,19 @@ export interface customAuthenticationNS {
                         invalid: string
                     };
                 };
+                helpPanel: {
+                    identifier: {
+                        header: string;
+                        description: string;
+                        hint: string;
+                        warning: string;
+                    };
+                    displayName: {
+                        header: string;
+                        description: string;
+                        hint: string;
+                    };
+                };
             };
             configurationsStep: {
                 title: string;
@@ -72,6 +85,7 @@ export interface customAuthenticationNS {
                     };
                 };
                 authenticationTypeDropdown: {
+                    title: string;
                     label: string;
                     placeholder: string;
                     hint: string;
@@ -116,13 +130,6 @@ export interface customAuthenticationNS {
                     validations: {
                         required: string;
                     };
-                }
-            }
-            helpPanel: {
-                hint: {
-                    header: string;
-                    description: string;
-                    warning: string;
                 }
             }
         };
