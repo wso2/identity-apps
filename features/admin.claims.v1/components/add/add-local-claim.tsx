@@ -16,12 +16,13 @@
  * under the License.
  */
 
-import { AppState, EventPublisher } from "@wso2is/admin.core.v1";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
-import { history } from "@wso2is/admin.core.v1/helpers";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
-import { WizardStepInterface } from "@wso2is/admin.users.v1/models";
+import { WizardStepInterface } from "@wso2is/admin.users.v1/models/user";
 import { useUserStores } from "@wso2is/admin.userstores.v1/api";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
