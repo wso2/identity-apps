@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -522,7 +522,7 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                                 direction={ { sm: "row", xs: "column" } }
                                 alignItems="center"
                             >
-                                <div className="inline-flex-field" style={ { height: "90px" } }>
+                                <div className="inline-flex-field password-input-btn">
                                     <FinalFormField
                                         key="password"
                                         width={ 16 }
