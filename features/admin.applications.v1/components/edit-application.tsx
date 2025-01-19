@@ -91,7 +91,6 @@ import {
     SupportedAuthProtocolTypes
 } from "../models/application-inbound";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
-import "./edit-application.scss";
 
 /**
  * Proptypes for the applications edit component.
