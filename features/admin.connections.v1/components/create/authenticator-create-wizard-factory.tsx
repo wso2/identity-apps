@@ -338,8 +338,8 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
             case "custom-authentication":
                 return (
                     <CustomAuthenticationCreateWizard
-                        title= { "Custom Authentication" }
-                        subTitle= { "Register externally implemented authentication service." }
+                        title={ t("customAuthentication:fields.createWizard.title") }
+                        subTitle= { t("customAuthentication:fields.createWizard.subTitle") }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);
