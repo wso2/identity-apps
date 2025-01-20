@@ -47,9 +47,9 @@ export interface PolicyListDraggableNodePropsInterface
     policy: PolicyInterface;
     mutateActivePolicyList?: () => void;
     mutateInactivePolicyList?: () => void;
-    setInactivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
-    setPageInactive: React.Dispatch<React.SetStateAction<number>>;
-    setHasMoreInactivePolicies: React.Dispatch<React.SetStateAction<boolean>>;
+    setActivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
+    setPageActive: React.Dispatch<React.SetStateAction<number>>;
+    setHasMoreActivePolicies: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInterface> = ({
@@ -58,9 +58,9 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
     policy,
     mutateActivePolicyList,
     mutateInactivePolicyList,
-    setInactivePolicies,
-    setPageInactive,
-    setHasMoreInactivePolicies,
+    setActivePolicies,
+    setPageActive,
+    setHasMoreActivePolicies,
     ...rest
 }: PolicyListDraggableNodePropsInterface): ReactElement => {
     const { t } = useTranslation();
@@ -86,6 +86,10 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                 level: AlertLevels.SUCCESS,
                 message: "Delete successful"
             }));
+
+            setActivePolicies([]);
+            setPageActive(0);
+            setHasMoreActivePolicies(true);
 
             mutateActivePolicyList();
             mutateInactivePolicyList();
@@ -115,10 +119,6 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                 level: AlertLevels.SUCCESS,
                 message: "Deactivation successful"
             }));
-
-            setPageInactive(0);
-            setHasMoreInactivePolicies(true);
-            setInactivePolicies([]);
 
             mutateActivePolicyList();
             mutateInactivePolicyList();
