@@ -446,7 +446,11 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
             } }
             render={ ({ form, handleSubmit }: FormRenderProps) => {
                 return (
-                    <form id={ TenantConstants.ADD_TENANT_FORM_ID } onSubmit={ handleSubmit } className="add-tenant-form">
+                    <form
+                        id={ TenantConstants.ADD_TENANT_FORM_ID }
+                        onSubmit={ handleSubmit }
+                        className="add-tenant-form"
+                    >
                         <FinalFormField
                             key="domain"
                             width={ 16 }
