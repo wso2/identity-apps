@@ -77,6 +77,7 @@ export const tenants: TenantsNS = {
                         domainInvalidCharPattern: "The domain contains one or more illegal characters.",
                         domainInvalidPattern: "The domain doesn't match the valid pattern.",
                         domainMandatoryExtension: "The domain should have a dot extension. E.g,: abc.com",
+                        domainStartingWithDot: "The domain name cannot start with a dot.",
                         domainUnavailable: "A domain with the same name already exists.",
                         required: "A domain name is required."
                     }

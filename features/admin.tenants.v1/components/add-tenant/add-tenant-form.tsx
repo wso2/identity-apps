@@ -155,6 +155,10 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
 
     /**
      * Form validator to validate the tenant domain availability.
+     *
+     * @remarks
+     * Implements the same validation logic that's set in the backend.
+     * @see `https://github.com/wso2/carbon-multitenancy -> TenantMgtUtil.java -> validateDomain`
      * @param value - Input value.
      * @returns An error if the value is not valid else undefined.
      */
@@ -189,6 +193,12 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
             if (!regex.test(value)) {
                 return t("tenants:common.form.fields.domain.validations.domainInvalidPattern");
             }
+        }
+
+        const indexOfDot: number = value.indexOf(".");
+
+        if (indexOfDot == 0) {
+            return t("tenants:common.form.fields.domain.validations.domainStartingWithDot");
         }
 
         if (tenantDomainIllegalCharactersRegex) {

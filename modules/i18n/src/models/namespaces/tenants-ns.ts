@@ -73,6 +73,7 @@ export interface TenantsNS {
                         domainInvalidCharPattern: string;
                         domainInvalidPattern: string;
                         domainMandatoryExtension: string;
+                        domainStartingWithDot: string;
                         domainUnavailable: string;
                         required: string;
                     };
