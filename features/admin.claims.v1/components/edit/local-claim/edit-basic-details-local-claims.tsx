@@ -142,11 +142,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ accountVerificationEnabled, setAccountVerificationEnabled ] = useState<boolean>(false);
     const [ selfRegistrationEnabled, setSelfRegistrationEnabledEnabled ] = useState<boolean>(false);
     const [ isSystemClaim, setIsSystemClaim ] = useState<boolean>(false);
-
     const [ isConsoleRequired, setIsConsoleRequired ] = useState<boolean>(false);
     const [ isEndUserRequired, setIsEndUserRequired ] = useState<boolean>(false);
     const [ isSelfRegistrationRequired, setIsSelfRegistrationRequired ] = useState<boolean>(false);
-
     const [ isConsoleReadOnly, setIsConsoleReadOnly ] = useState<boolean>(false);
     const [ isEndUserReadOnly, setIsEndUserReadOnly ] = useState<boolean>(false);
     const [ isSelfRegistrationReadOnly, setIsSelfRegistrationReadOnly ] = useState<boolean>(false);
@@ -461,7 +459,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 displayName: values?.name !== undefined ? values.name?.toString() : claim?.displayName,
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
-                properties: claim.properties,
+                properties: claim?.properties,
                 readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
                 regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
                 required: values?.required !== undefined && !values?.readOnly ? !!values.required : false,
@@ -513,7 +511,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             : claim?.profiles?.selfRegistration?.supportedByDefault
                     }
                 },
-                properties: claim.properties,
+                properties: claim?.properties,
                 readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
                 regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
                 required: values?.required !== undefined && !values?.readOnly ? !!values.required : false,
@@ -585,7 +583,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         name="consoleSupportedByDefault"
                         required={ false }
                         defaultValue={ claim?.profiles?.console?.supportedByDefault ?? claim?.supportedByDefault }
-                        data-testid={
+                        data-componentid={
                             `${ testId }-form-console-supported-by-default-checkbox` }
                         readOnly={ isReadOnly }
                         disabled={ isSupportedByDefaultCheckboxDisabled }
@@ -604,7 +602,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         name="endUserSupportedByDefault"
                         required={ false }
                         defaultValue={ claim?.profiles?.endUser?.supportedByDefault ?? claim?.supportedByDefault }
-                        data-testid={ `${ testId }-form-end-user-supported-by-default-checkbox` }
+                        data-componentid={ `${ testId }-form-end-user-supported-by-default-checkbox` }
                         readOnly={ isReadOnly }
                         disabled={ isSupportedByDefaultCheckboxDisabled }
                         {
@@ -623,7 +621,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         required={ false }
                         defaultValue={ claim?.profiles?.selfRegistration?.supportedByDefault ??
                             claim?.supportedByDefault }
-                        data-testid={
+                        data-componentid={
                             `${ testId }-form-self-registration-supported-by-default-checkbox` }
                         readOnly={ isReadOnly }
                         disabled={ isSupportedByDefaultCheckboxDisabled }
@@ -669,7 +667,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         name="consoleRequired"
                         required={ false }
                         defaultValue={ claim?.profiles?.console?.required ?? claim?.required }
-                        data-testid={ `${ testId }-form-console-required-checkbox` }
+                        data-componentid={ `${ testId }-form-console-required-checkbox` }
                         readOnly={ isReadOnly }
                         disabled={ isRequiredCheckboxDisabled || isConsoleReadOnly }
                         listen ={ (value: boolean) => {
@@ -689,7 +687,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         name="endUserRequired"
                         required={ false }
                         defaultValue={ claim?.profiles?.endUser?.required ?? claim?.required }
-                        data-testid={ `${ testId }-form-end-user-required-checkbox` }
+                        data-componentid={ `${ testId }-form-end-user-required-checkbox` }
                         readOnly={ isReadOnly }
                         disabled={ isRequiredCheckboxDisabled || isEndUserReadOnly }
                         listen ={ (value: boolean) => {
@@ -709,7 +707,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         name="selfRegistrationRequired"
                         required={ false }
                         defaultValue={ claim?.profiles?.selfRegistration?.required ?? claim?.required }
-                        data-testid={ `${ testId }-form-self-registration-required-checkbox` }
+                        data-componentid={ `${ testId }-form-self-registration-required-checkbox` }
                         readOnly={ isReadOnly }
                         disabled={ isRequiredCheckboxDisabled || isSelfRegistrationReadOnly }
                         listen ={ (value: boolean) => {
@@ -751,7 +749,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         required={ false }
                         requiredErrorMessage=""
                         defaultValue={ claim?.profiles?.console?.readOnly ?? claim?.readOnly }
-                        data-testid={ `${ testId }-form-console-readOnly-checkbox` }
+                        data-componentid={ `${ testId }-form-console-readOnly-checkbox` }
                         readOnly={ isReadOnly }
                         disabled={ isReadOnlyCheckboxDisabled }
                         listen ={ (value: boolean) => {
@@ -766,7 +764,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         required={ false }
                         requiredErrorMessage=""
                         defaultValue={ claim?.profiles?.endUser?.readOnly ?? claim?.readOnly }
-                        data-testid={ `${ testId }-form-end-user-readOnly-checkbox` }
+                        data-componentid={ `${ testId }-form-end-user-readOnly-checkbox` }
                         readOnly={ isReadOnly }
                         disabled={ isReadOnlyCheckboxDisabled }
                         listen ={ (value: boolean) => {
@@ -781,7 +779,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         required={ false }
                         requiredErrorMessage=""
                         defaultValue={ claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
-                        data-testid={ `${ testId }-form-self-registration-readOnly-checkbox` }
+                        data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
                         readOnly={ isReadOnly }
                         disabled={ isReadOnlyCheckboxDisabled }
                         listen ={ (value: boolean) => {
