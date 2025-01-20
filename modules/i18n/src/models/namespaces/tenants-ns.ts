@@ -70,6 +70,9 @@ export interface TenantsNS {
                     label: string;
                     placeholder: string;
                     validations: {
+                        domainInvalidCharPattern: string;
+                        domainInvalidPattern: string;
+                        domainMandatoryExtension: string;
                         domainUnavailable: string;
                         required: string;
                     };

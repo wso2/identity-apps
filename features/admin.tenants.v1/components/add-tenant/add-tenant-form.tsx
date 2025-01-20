@@ -81,6 +81,15 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
     const { data: validationData } = useValidationConfigData();
 
     const enableEmailDomain: boolean = useSelector((state: AppState) => state.config?.ui?.enableEmailDomain);
+    const tenantDomainRegex: string = useSelector(
+        (state: AppState) => state.config?.ui?.multiTenancy?.tenantDomainRegex
+    );
+    const tenantDomainIllegalCharactersRegex: string = useSelector(
+        (state: AppState) => state.config?.ui?.multiTenancy?.tenantDomainIllegalCharactersRegex
+    );
+    const isTenantDomainDotExtensionMandatory: boolean = useSelector(
+        (state: AppState) => state.config?.ui?.multiTenancy?.isTenantDomainDotExtensionMandatory
+    );
 
     const [ isPasswordValid, setIsPasswordValid ] = useState<boolean>(false);
 
@@ -149,7 +158,7 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
      * @param value - Input value.
      * @returns An error if the value is not valid else undefined.
      */
-    const validateTenantDomainAvailability = async (value: string): Promise<string | undefined> => {
+    const validateDomain = async (value: string): Promise<string | undefined> => {
         if (!value) {
             return undefined;
         }
@@ -164,6 +173,30 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
 
         if (!isAvailable) {
             return t("tenants:common.form.fields.domain.validations.domainUnavailable");
+        }
+
+        if (isTenantDomainDotExtensionMandatory) {
+            const lastIndexOfDot: number = value.lastIndexOf(".");
+
+            if (lastIndexOfDot <= 0) {
+                return t("tenants:common.form.fields.domain.validations.domainMandatoryExtension");
+            }
+        }
+
+        if (tenantDomainRegex) {
+            const regex: RegExp = new RegExp(tenantDomainRegex);
+
+            if (!regex.test(value)) {
+                return t("tenants:common.form.fields.domain.validations.domainInvalidPattern");
+            }
+        }
+
+        if (tenantDomainIllegalCharactersRegex) {
+            const regex: RegExp = new RegExp(tenantDomainIllegalCharactersRegex);
+
+            if (regex.test(value)) {
+                return t("tenants:common.form.fields.domain.validations.domainInvalidCharPattern");
+            }
         }
     };
 
@@ -403,11 +436,7 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
             } }
             render={ ({ form, handleSubmit }: FormRenderProps) => {
                 return (
-                    <form
-                        id={ TenantConstants.ADD_TENANT_FORM_ID }
-                        onSubmit={ handleSubmit }
-                        className="add-tenant-form"
-                    >
+                    <form id={ TenantConstants.ADD_TENANT_FORM_ID } onSubmit={ handleSubmit } className="add-tenant-form">
                         <FinalFormField
                             key="domain"
                             width={ 16 }
@@ -441,7 +470,7 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                                     <GlobeIcon />
                                 </InputAdornment>)
                             }
-                            validate={ validateTenantDomainAvailability }
+                            validate={ validateDomain }
                         />
                         <Typography variant="h5" className="add-tenant-form-sub-title">
                             { t("tenants:addTenant.form.adminDetails.title") }

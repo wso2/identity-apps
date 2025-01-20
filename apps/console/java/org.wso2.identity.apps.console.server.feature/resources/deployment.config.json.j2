@@ -1957,6 +1957,11 @@
         {% if tenant_mgt.enable_email_domain is defined %}
         "enableEmailDomain": {{ tenant_mgt.enable_email_domain }},
         {% endif %}
+        "multiTenancy": {
+            "isTenantDomainDotExtensionMandatory": {% if console.ui.multi_tenancy.is_tenant_domain_dot_extension_mandatory is defined %} {{ console.ui.multi_tenancy.is_tenant_domain_dot_extension_mandatory }} {% else %} {{ multi_tenancy.stratos.public_cloud_setup }} {% endif %},
+            "tenantDomainIllegalCharactersRegex": "{{ console.ui.multi_tenancy.tenant_domain_illegal_characters_regex }}",
+            "tenantDomainRegex": "{{ console.ui.multi_tenancy.tenant_domain_regex or multi_tenancy.stratos.tenant_domain_regex }}"
+        },
         "privacyPolicyConfigs": {
             {% if console.privacy_policy_configs.items() is defined %}
             {% for key, value in console.privacy_policy_configs.items() %}

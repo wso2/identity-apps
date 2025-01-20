@@ -268,6 +268,11 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isSignatureValidationCertificateAliasEnabled: undefined,
             isTrustedAppConsentRequired: undefined,
             listAllAttributeDialects: undefined,
+            multiTenancy: {
+                isTenantDomainDotExtensionMandatory: true,
+                tenantDomainIllegalCharactersRegex: "",
+                tenantDomainRegex: ""
+            },
             passwordPolicyConfigs: null,
             primaryUserStoreDomainName: "",
             privacyPolicyConfigs: null,

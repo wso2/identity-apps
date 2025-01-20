@@ -70,10 +70,13 @@ export const tenants: TenantsNS = {
                     }
                 },
                 domain: {
-                    helperText: "Enter a unique domain name for your organization. The domain name should be in the format of <1>abc.com</1>.",
+                    helperText: "Enter a unique domain name for your organization. The domain name should be in the format of <1>abc.com</1>. The valid characters are lowercase letters, numbers, '.', '-', and '_'.",
                     label: "Domain",
                     placeholder: "Enter a Domain name",
                     validations: {
+                        domainInvalidCharPattern: "The domain contains one or more illegal characters.",
+                        domainInvalidPattern: "The domain doesn't match the valid pattern.",
+                        domainMandatoryExtension: "The domain should have a dot extension. E.g,: abc.com",
                         domainUnavailable: "A domain with the same name already exists.",
                         required: "A domain name is required."
                     }

@@ -346,6 +346,7 @@ export class Config {
             isXacmlConnectorEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isXacmlConnectorEnabled,
             legacyMode: window[ "AppUtils" ]?.getConfig()?.ui?.legacyMode,
             listAllAttributeDialects: window[ "AppUtils" ]?.getConfig()?.ui?.listAllAttributeDialects,
+            multiTenancy: window[ "AppUtils" ]?.getConfig()?.ui?.multiTenancy,
             passwordPolicyConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.passwordPolicyConfigs,
             primaryUserStoreDomainName: window[ "AppUtils" ]?.getConfig()?.ui?.primaryUserStoreDomainName?.toUpperCase()
                 ?? PRIMARY_USERSTORE,

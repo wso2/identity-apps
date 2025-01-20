@@ -1305,6 +1305,11 @@
             "roleMapping": false
         },
         "listAllAttributeDialects": true,
+        "multiTenancy": {
+            "isTenantDomainDotExtensionMandatory": true,
+            "tenantDomainIllegalCharactersRegex": ".*[^a-z0-9._-].*",
+            "tenantDomainRegex": ""
+        },
         "passwordPolicyConfigs": {
             "maxPasswordAllowedLength": 64
         },
