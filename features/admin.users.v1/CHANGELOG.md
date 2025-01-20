@@ -1,5 +1,27 @@
 # @wso2is/admin.users.v1
 
+## 2.29.46
+
+### Patch Changes
+
+- [#7328](https://github.com/wso2/identity-apps/pull/7328) [`ed6e0a5dfe66c7ef786cff892008fd74fac10e2b`](https://github.com/wso2/identity-apps/commit/ed6e0a5dfe66c7ef786cff892008fd74fac10e2b) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove index files in `@wso2is/admin.groups.v1` module
+
+- Updated dependencies [[`ed6e0a5dfe66c7ef786cff892008fd74fac10e2b`](https://github.com/wso2/identity-apps/commit/ed6e0a5dfe66c7ef786cff892008fd74fac10e2b), [`2f8f76721d2aa45da98bfde4db21f279510a7f28`](https://github.com/wso2/identity-apps/commit/2f8f76721d2aa45da98bfde4db21f279510a7f28)]:
+  - @wso2is/admin.validation.v1@2.27.25
+  - @wso2is/admin.groups.v1@2.26.46
+  - @wso2is/admin.users.v1@2.29.46
+  - @wso2is/admin.tenants.v1@2.28.61
+  - @wso2is/admin.core.v1@2.35.25
+  - @wso2is/admin.extensions.v1@2.36.12
+  - @wso2is/admin.identity-providers.v1@2.26.87
+  - @wso2is/admin.organizations.v1@2.26.87
+  - @wso2is/admin.roles.v2@2.27.31
+  - @wso2is/admin.claims.v1@2.26.46
+  - @wso2is/admin.server-configurations.v1@2.32.12
+  - @wso2is/admin.authentication.v1@2.25.87
+  - @wso2is/admin.feature-gate.v1@1.4.87
+  - @wso2is/admin.userstores.v1@2.26.46
+
 ## 2.29.45
 
 ### Patch Changes
