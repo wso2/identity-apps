@@ -169,18 +169,18 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         setActivePolicies([]);
     }, []);
 
-    if (isLoadingActivePolicies || isLoadingInactivePolicies) {
-        return (
-            <PageLayout
-                pageTitle={ t("policyAdministration:title") }
-                title={ t("policyAdministration:title") }
-                description={ t("policyAdministration:subtitle") }
-                className="policy-administration-page"
-            >
-                <CircularProgress />
-            </PageLayout>
-        );
-    }
+    // if (isLoadingActivePolicies || isLoadingInactivePolicies) {
+    //     return (
+    //         <PageLayout
+    //             pageTitle={ t("policyAdministration:title") }
+    //             title={ t("policyAdministration:title") }
+    //             description={ t("policyAdministration:subtitle") }
+    //             className="policy-administration-page"
+    //         >
+    //             <CircularProgress />
+    //         </PageLayout>
+    //     );
+    // }
 
     if (activePolicyError || inactivePolicyError) {
         return (
@@ -221,8 +221,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                     </DocumentationLink>
                 </>)
             }
-            action={ (
-                !(inactivePolicies?.length <= 0)) &&
+            action={
                 (
                     <Grid container spacing={ 3 } alignItems={ "center" }>
                         <Grid xs={ 6 }>
