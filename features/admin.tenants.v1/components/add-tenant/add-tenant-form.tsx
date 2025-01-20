@@ -82,6 +82,15 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
     const { data: validationData } = useValidationConfigData();
 
     const enableEmailDomain: boolean = useSelector((state: AppState) => state.config?.ui?.enableEmailDomain);
+    const tenantDomainRegex: string = useSelector(
+        (state: AppState) => state.config?.ui?.multiTenancy?.tenantDomainRegex
+    );
+    const tenantDomainIllegalCharactersRegex: string = useSelector(
+        (state: AppState) => state.config?.ui?.multiTenancy?.tenantDomainIllegalCharactersRegex
+    );
+    const isTenantDomainDotExtensionMandatory: boolean = useSelector(
+        (state: AppState) => state.config?.ui?.multiTenancy?.isTenantDomainDotExtensionMandatory
+    );
 
     const [ isPasswordValid, setIsPasswordValid ] = useState<boolean>(false);
     const [ isPasswordVisible, setIsPasswordVisible ] = useState(false);
@@ -148,10 +157,14 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
 
     /**
      * Form validator to validate the tenant domain availability.
+     *
+     * @remarks
+     * Implements the same validation logic that's set in the backend.
+     * @see `https://github.com/wso2/carbon-multitenancy -> TenantMgtUtil.java -> validateDomain`
      * @param value - Input value.
      * @returns An error if the value is not valid else undefined.
      */
-    const validateTenantDomainAvailability = async (value: string): Promise<string | undefined> => {
+    const validateDomain = async (value: string): Promise<string | undefined> => {
         if (!value) {
             return undefined;
         }
@@ -166,6 +179,36 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
 
         if (!isAvailable) {
             return t("tenants:common.form.fields.domain.validations.domainUnavailable");
+        }
+
+        if (isTenantDomainDotExtensionMandatory) {
+            const lastIndexOfDot: number = value.lastIndexOf(".");
+
+            if (lastIndexOfDot <= 0) {
+                return t("tenants:common.form.fields.domain.validations.domainMandatoryExtension");
+            }
+        }
+
+        if (tenantDomainRegex) {
+            const regex: RegExp = new RegExp(tenantDomainRegex);
+
+            if (!regex.test(value)) {
+                return t("tenants:common.form.fields.domain.validations.domainInvalidPattern");
+            }
+        }
+
+        const indexOfDot: number = value.indexOf(".");
+
+        if (indexOfDot == 0) {
+            return t("tenants:common.form.fields.domain.validations.domainStartingWithDot");
+        }
+
+        if (tenantDomainIllegalCharactersRegex) {
+            const regex: RegExp = new RegExp(tenantDomainIllegalCharactersRegex);
+
+            if (regex.test(value)) {
+                return t("tenants:common.form.fields.domain.validations.domainInvalidCharPattern");
+            }
         }
     };
 
@@ -457,7 +500,7 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                                     <GlobeIcon />
                                 </InputAdornment>)
                             }
-                            validate={ validateTenantDomainAvailability }
+                            validate={ validateDomain }
                         />
                         <Typography variant="h5" className="add-tenant-form-sub-title">
                             { t("tenants:addTenant.form.adminDetails.title") }
