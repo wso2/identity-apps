@@ -17,7 +17,9 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
-import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
     PasswordRecoveryConfigurationFormPropsInterface,
@@ -35,7 +37,6 @@ import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState 
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Icon } from "semantic-ui-react";
-import { AppState } from "../../../admin.core.v1";
 import { GovernanceConnectorConstants } from "../../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 import { ConnectorPropertyInterface } from "../../models/governance-connectors";

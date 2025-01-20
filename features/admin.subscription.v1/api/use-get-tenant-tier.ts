@@ -16,12 +16,13 @@
  * under the License.
  */
 
-import { AppState, Config, store } from "@wso2is/admin.core.v1";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { HttpMethods } from "@wso2is/core/models";
 import { useSelector } from "react-redux";

@@ -17,12 +17,9 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import {
-    
-    FeatureConfigInterface,
-    UserListInterface,
-    getEmptyPlaceholderIllustrations
-} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { UserListInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -42,7 +39,7 @@ import { Dispatch } from "redux";
 import { Header, SemanticICONS } from "semantic-ui-react";
 import { deleteInvite, resendInvite } from "../../../api/invite";
 import { UserAccountTypesMain } from "../../../constants";
-import { InvitationStatus } from "../../../models";
+import { InvitationStatus } from "../../../models/user";
 import { deleteParentOrgInvite } from "../api/invite";
 import { UserInviteInterface } from "../models/invite";
 
