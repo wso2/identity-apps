@@ -104,9 +104,9 @@ export const NewPolicyWizard: FunctionComponent<NewPolicyWizardPropsInterface> =
 
             dispatch(
                 addAlert({
-                    description: t("policyAdministration:createPolicy.notifications.success.description"),
+                    description: t("policyAdministration:alerts.createSuccess.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("policyAdministration:createPolicy.notifications.success.message")
+                    message: t("policyAdministration:alerts.createSuccess.message")
                 })
             );
 
@@ -115,9 +115,9 @@ export const NewPolicyWizard: FunctionComponent<NewPolicyWizardPropsInterface> =
         } catch (error) {
             dispatch(
                 addAlert({
-                    description: t("policyAdministration:createPolicy.notifications.error.description"),
+                    description: t("policyAdministration:alerts.createFailure.description"),
                     level: AlertLevels.ERROR,
-                    message: t("policyAdministration:createPolicy.notifications.error.message")
+                    message: t("policyAdministration:alerts.createFailure.message")
                 })
             );
         } finally {

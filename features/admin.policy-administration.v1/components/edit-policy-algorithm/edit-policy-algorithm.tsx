@@ -76,18 +76,18 @@ const EditPolicyAlgorithm: FunctionComponent<EditPolicyAlgorithmProps> = (
 
         updateAlgorithm(data).then(() => {
             dispatch(addAlert({
-                description: "The policy combining algorithm has been updated successfully",
+                description: t("policyAdministration:alerts.updateAlgorithmSuccess.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Update successful"
+                message: t("policyAdministration:alerts.updateAlgorithmSuccess.message")
             }));
 
             mutateAlgorithm();
             closeModal();
         }).catch( () => {
             dispatch(addAlert({
-                description: t("idvp:create.notifications.create.genericError.description"),
+                description: t("policyAdministration:alerts.updateAlgorithmFailure.description"),
                 level: AlertLevels.ERROR,
-                message: t("idvp:create.notifications.create.genericError.message")
+                message: t("policyAdministration:alerts.updateAlgorithmFailure.message")
             }));
         });
     };
