@@ -73,20 +73,21 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
     const [ pageActive, setPageActive ] = useState<number>(0);
     const [ hasMoreActivePolicies, setHasMoreActivePolicies ] = useState<boolean>(true);
     const [ activePolicies, setActivePolicies ] = useState<PolicyInterface[]>([]);
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
 
     const {
         data: inactivePolicyArray,
         isLoading: isLoadingInactivePolicies,
         error: inactivePolicyError,
         mutate: mutateInactivePolicy
-    } = useGetPolicies(true, pageInactive, false, "*", "ALL");
+    } = useGetPolicies(true, pageInactive, false, searchQuery && searchQuery.trim() !== "" ? searchQuery : "*", "ALL");
 
     const {
         data: activePolicyArray,
         isLoading: isLoadingActivePolicies,
         error: activePolicyError,
         mutate: mutateActivePolicy
-    } = useGetPolicies(true, pageActive, true, "*", "ALL");
+    } = useGetPolicies(true, pageActive, true, searchQuery && searchQuery.trim() !== "" ? searchQuery : "*", "ALL");
 
     const {
         data: algorithm,
@@ -167,7 +168,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
     }, []);
 
     const handleListFilter = (query: string): void => {
-        // TODO: Add search functionality here
+        setSearchQuery(query);
     };
 
     if (isLoadingActivePolicies || isLoadingInactivePolicies) {
@@ -263,13 +264,13 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                             {
                                 key: 0,
                                 text: t("tenants:listing.advancedSearch.form.dropdown.filterAttributeOptions.domain"),
-                                value: "domainName"
+                                value: "policyName"
                             }
                         ] }
 
                         placeholder={ t("policyAdministration:advancedSearch.placeholder") }
                         defaultSearchAttribute={ "policyName" }
-                        defaultSearchOperator="co"
+                        defaultSearchOperator="sw"
                     />
                 </Grid>
             </Grid>
@@ -298,6 +299,9 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                                         isDraggable={ true }
                                         mutateInactivePolicyList={ mutateInactivePolicy }
                                         mutateActivePolicyList={ mutateActivePolicy }
+                                        setActivePolicies={ setActivePolicies }
+                                        setPageActive={ setPageActive }
+                                        setHasMoreActivePolicies={ setHasMoreActivePolicies }
                                     />
                                 </CardContent>
                             </InfiniteScroll>
