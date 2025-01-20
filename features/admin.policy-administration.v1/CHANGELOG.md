@@ -1,5 +1,21 @@
 # @wso2is/admin.policy-administration.v1
 
+## 1.0.5
+
+### Patch Changes
+
+- [#7340](https://github.com/wso2/identity-apps/pull/7340) [`f2c7a35ce347d4ac7e3e15f3f50404c9d701d212`](https://github.com/wso2/identity-apps/commit/f2c7a35ce347d4ac7e3e15f3f50404c9d701d212) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Add policy search, deactivation of policy and move strings to i18n
+
+- Updated dependencies [[`cfe475febd8e3972a545cf12bb86e7fd08d344ea`](https://github.com/wso2/identity-apps/commit/cfe475febd8e3972a545cf12bb86e7fd08d344ea), [`f2c7a35ce347d4ac7e3e15f3f50404c9d701d212`](https://github.com/wso2/identity-apps/commit/f2c7a35ce347d4ac7e3e15f3f50404c9d701d212), [`f6939061baec44323111cd5a09164d1e7a441324`](https://github.com/wso2/identity-apps/commit/f6939061baec44323111cd5a09164d1e7a441324)]:
+  - @wso2is/admin.core.v1@2.35.27
+  - @wso2is/i18n@2.15.2
+  - @wso2is/admin.applications.v1@2.30.89
+  - @wso2is/admin.extensions.v1@2.36.14
+  - @wso2is/admin.feature-gate.v1@1.4.89
+  - @wso2is/admin.organizations.v1@2.26.89
+  - @wso2is/admin.users.v1@2.29.48
+  - @wso2is/admin.validation.v1@2.27.27
+
 ## 1.0.4
 
 ### Patch Changes
