@@ -25,7 +25,6 @@ import Grid from "@oxygen-ui/react/Grid";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { GearIcon } from "@oxygen-ui/react-icons";
-import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
@@ -74,20 +73,23 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
     const [ hasMoreActivePolicies, setHasMoreActivePolicies ] = useState<boolean>(true);
     const [ activePolicies, setActivePolicies ] = useState<PolicyInterface[]>([]);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const [ submittedSearchQuery, setSubmittedSearchQuery ] = useState<string>("");
 
     const {
         data: inactivePolicyArray,
         isLoading: isLoadingInactivePolicies,
         error: inactivePolicyError,
         mutate: mutateInactivePolicy
-    } = useGetPolicies(true, pageInactive, false, searchQuery && searchQuery.trim() !== "" ? searchQuery : "*", "ALL");
+    } = useGetPolicies(true, pageInactive, false, submittedSearchQuery &&
+    submittedSearchQuery.trim() !== "" ? submittedSearchQuery : "*", "ALL");
 
     const {
         data: activePolicyArray,
         isLoading: isLoadingActivePolicies,
         error: activePolicyError,
         mutate: mutateActivePolicy
-    } = useGetPolicies(true, pageActive, true, searchQuery && searchQuery.trim() !== "" ? searchQuery : "*", "ALL");
+    } = useGetPolicies(true, pageActive, true, submittedSearchQuery &&
+    submittedSearchQuery.trim() !== "" ? submittedSearchQuery : "*", "ALL");
 
     const {
         data: algorithm,
@@ -167,10 +169,6 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         setActivePolicies([]);
     }, []);
 
-    const handleListFilter = (query: string): void => {
-        setSearchQuery(query);
-    };
-
     if (isLoadingActivePolicies || isLoadingInactivePolicies) {
         return (
             <PageLayout
@@ -203,6 +201,12 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
 
     const fetchMoreInactivePolicies = (): void => {
         setPageInactive((prevPage: number) => prevPage + 1);
+    };
+
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setSubmittedSearchQuery(searchQuery);
     };
 
     return (
@@ -257,25 +261,40 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         >
             <Grid container>
                 <Grid xs={ 12 } sm={ 12 } md={ 12 } lg={ 12 } xl={ 12 }>
-                    <AdvancedSearchWithBasicFilters
-                        fill="white"
-                        onFilter={ handleListFilter }
-                        filterAttributeOptions={ [
-                            {
-                                key: 0,
-                                text: t("tenants:listing.advancedSearch.form.dropdown.filterAttributeOptions.domain"),
-                                value: "policyName"
-                            }
-                        ] }
+                    <form
+                        className="advance-search-form"
+                        onSubmit={ handleSubmit }
+                    >
+                        <div className="search-input-wrapper">
+                            <div className="search-box ui left icon input advanced-search">
+                                <input
+                                    autoComplete="off"
+                                    placeholder={ t("policyAdministration:advancedSearch.placeholder") }
+                                    maxLength={ 120 }
+                                    name="query"
+                                    type="text"
+                                    className="search-input fluid"
+                                    value={ searchQuery }
+                                    onChange={ (e: React.FormEvent<HTMLInputElement> ) =>
+                                        setSearchQuery((e.target as HTMLInputElement).value)
+                                    }
+                                    data-componentid={ `${componentId}-search-input` }
+                                />
+                                <Icon name="search" color="grey"/>
+                            </div>
+                            <input
+                                hidden
+                                type="submit"
+                                value="Submit"
+                                data-componentid={ `${componentId}-search-input-submit` }
+                            />
+                        </div>
+                    </form>
 
-                        placeholder={ t("policyAdministration:advancedSearch.placeholder") }
-                        defaultSearchAttribute={ "policyName" }
-                        defaultSearchOperator="sw"
-                    />
                 </Grid>
             </Grid>
 
-            <Grid container spacing={ 2 } marginTop={ 2 } >
+            <Grid container spacing={ 2 } marginTop={ 2 }>
                 <Grid xs={ 6 }>
                     <DnDProvider>
                         <Typography variant="h5" className="policy-list-header">Active Policies</Typography>
