@@ -51,7 +51,7 @@ const useGetSmsTemplate = <Data = SMSTemplate, Error = RequestErrorInterface>(
         method: HttpMethods.GET,
         url:
             store.getState().config.endpoints.smsTemplates +
-            `/template-types/${templateType}/org-templates/${smsLocale}`
+            `/template-types/${templateType}/org-templates/${smsLocale}?resolve=true`
     };
 
     if (fetchSystemTemplate) {
