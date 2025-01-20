@@ -25,7 +25,7 @@ import {
 import { FormState } from "@wso2is/form";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Context, createContext } from "react";
-import { BrandingModes } from "../constants";
+import { BrandingModes } from "../constants/branding-preferences-constants";
 import {
     CustomTextConfigurationModes,
     CustomTextInterface,

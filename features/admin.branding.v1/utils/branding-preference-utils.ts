@@ -26,8 +26,9 @@ import {
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import merge from "lodash-es/merge";
-import { BrandingPreferencesConstants } from "../constants";
-import { BrandingPreferenceMeta, LAYOUTS, PredefinedLayouts } from "../meta";
+import { BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
+import { BrandingPreferenceMeta } from "../meta/branding-preference-meta";
+import { LAYOUTS, PredefinedLayouts } from "../meta/layouts";
 
 /**
  * Utility class for Branding Preference related operations.

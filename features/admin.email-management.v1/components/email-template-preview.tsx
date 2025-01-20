@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants";
+import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants/branding-preferences-constants";
 import useBrandingPreference from "@wso2is/admin.branding.v1/hooks/use-branding-preference";
-import { BrandingPreferenceUtils } from "@wso2is/admin.branding.v1/utils";
+import { BrandingPreferenceUtils } from "@wso2is/admin.branding.v1/utils/branding-preference-utils";
 import { AppState } from "@wso2is/admin.core.v1";
 import { BrandingPreferenceThemeInterface } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
