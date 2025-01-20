@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import { UploadCertificate } from "@wso2is/admin.core.v1";
 import { Certificate, TestableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
-import { Forms } from "@wso2is/forms";
 import * as forge from "node-forge";
 import React, { ReactElement, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
+import { UploadCertificate } from "./upload-certificate";
+import { Forms } from "../../../modules/forms";
 
 /**
  * Proptypes for the add Application certificate form component.
  */
-interface AddApplicationCertificateFormProps extends TestableComponentInterface {
+interface AddCertificateFormProps extends TestableComponentInterface {
     triggerCertificateUpload: boolean;
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
@@ -42,10 +42,10 @@ interface AddApplicationCertificateFormProps extends TestableComponentInterface 
 /**
  * Add Application certificate form component.
  *
- * @return {ReactElement}
+ * @returns ReactElement
  */
-export const AddApplicationCertificateFormComponent: React.FunctionComponent<AddApplicationCertificateFormProps> = (
-    props: AddApplicationCertificateFormProps): ReactElement => {
+export const AddCertificateFormComponent: React.FunctionComponent<AddCertificateFormProps> = (
+    props: AddCertificateFormProps): ReactElement => {
 
     const {
         triggerCertificateUpload,
@@ -75,12 +75,12 @@ export const AddApplicationCertificateFormComponent: React.FunctionComponent<Add
      *      2. the state of the first step component
      *       so that they can be sent back if previous is clicked.
      *
-     * @param {Certificate} data The alias and the PEM-encoded certificate string.
-     * @param {string} name The alias of the certificate.
-     * @param {string} pem The PEM-encoded string.
-     * @param {string} fileDecoded The decoded `.cer` file content.
-     * @param {File} file The File object.
-     * @param {forge.pki.Certificate} forgeCertificate The forge certificate object.
+     * @param data - The alias and the PEM-encoded certificate string.
+     * @param name - The alias of the certificate.
+     * @param pem - The PEM-encoded string.
+     * @param fileDecoded - The decoded `.cer` file content.
+     * @param file - The File object.
+     * @param forgeCertificate - The forge certificate object.
      */
     const onSubmitCertificate = (
         data: Certificate,
@@ -134,6 +134,6 @@ export const AddApplicationCertificateFormComponent: React.FunctionComponent<Add
 /**
  * Default props for the add application certificate form component.
  */
-AddApplicationCertificateFormComponent.defaultProps = {
+AddCertificateFormComponent.defaultProps = {
     "data-testid": "add-application-certificate-form"
 };

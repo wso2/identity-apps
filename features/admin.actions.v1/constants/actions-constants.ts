@@ -18,7 +18,12 @@
 
 import { IdentityAppsError } from "@wso2is/core/errors";
 import ActionType from "../models/action-type";
-import { AuthenticationType, AuthenticationTypeDropdownOption } from "../models/actions";
+import {
+    AuthenticationType,
+    AuthenticationTypeDropdownOption,
+    PasswordFormat,
+    PasswordSharingTypeDropdownOption
+} from "../models/actions";
 
 /**
  * Class containing Actions constants.
@@ -46,6 +51,9 @@ export class ActionsConstants {
     public static readonly DELETE: string = "delete";
     public static readonly FETCH: string = "fetch";
     public static readonly FETCH_TYPES: string = "typesFetch";
+    public static readonly DELETE_CERTIFICATE: string = "certificate.delete";
+    public static readonly ADD_CERTIFICATE: string = "certificate.add";
+    public static readonly CHANGE_CERTIFICATE: string = "certificate.change";
 
     public static readonly PRE_ISSUE_ACCESS_TOKEN_URL_PATH: string = "pre-issue-access-token";
     public static readonly PRE_UPDATE_PASSWORD_URL_PATH: string = "pre-update-password";
@@ -62,25 +70,25 @@ export class ActionsConstants {
         DELETE_ACTION_INVALID_STATUS_CODE_ERROR: IdentityAppsError;
         UPDATE_ACTION_INVALID_STATUS_CODE_ERROR: IdentityAppsError;
     } = {
-        CREATE_ACTION_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
-            ActionsConstants.CREATE_ACTION_ERROR_CODE,
-            "An error occurred while creating the action.",
-            "Error while creating the action.",
-            null
-        ),
-        DELETE_ACTION_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
-            ActionsConstants.DELETE_ACTION_ERROR_CODE,
-            "An error occurred while deleting the action.",
-            "Error while deleting the action",
-            null
-        ),
-        UPDATE_ACTION_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
-            ActionsConstants.UPDATE_ACTION_ERROR_CODE,
-            "An error occurred while updating the action.",
-            "Error while updating the action",
-            null
-        )
-    };
+            CREATE_ACTION_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+                ActionsConstants.CREATE_ACTION_ERROR_CODE,
+                "An error occurred while creating the action.",
+                "Error while creating the action.",
+                null
+            ),
+            DELETE_ACTION_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+                ActionsConstants.DELETE_ACTION_ERROR_CODE,
+                "An error occurred while deleting the action.",
+                "Error while deleting the action",
+                null
+            ),
+            UPDATE_ACTION_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+                ActionsConstants.UPDATE_ACTION_ERROR_CODE,
+                "An error occurred while updating the action.",
+                "Error while updating the action",
+                null
+            )
+        };
 
     public static readonly ACTION_TYPES: {
         PRE_ISSUE_ACCESS_TOKEN: ActionType;
@@ -88,15 +96,15 @@ export class ActionsConstants {
         PRE_UPDATE_PROFILE: ActionType;
         PRE_REGISTRATION: ActionType;
     } = {
-        PRE_ISSUE_ACCESS_TOKEN: new ActionType(
-            ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH, ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH),
-        PRE_REGISTRATION: new ActionType(
-            ActionsConstants.PRE_REGISTRATION_URL_PATH, ActionsConstants.PRE_REGISTRATION_API_PATH),
-        PRE_UPDATE_PASSWORD: new ActionType(
-            ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH, ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH),
-        PRE_UPDATE_PROFILE: new ActionType(
-            ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH, ActionsConstants.PRE_UPDATE_PROFILE_API_PATH)
-    };
+            PRE_ISSUE_ACCESS_TOKEN: new ActionType(
+                ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH, ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH),
+            PRE_REGISTRATION: new ActionType(
+                ActionsConstants.PRE_REGISTRATION_URL_PATH, ActionsConstants.PRE_REGISTRATION_API_PATH),
+            PRE_UPDATE_PASSWORD: new ActionType(
+                ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH, ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH),
+            PRE_UPDATE_PROFILE: new ActionType(
+                ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH, ActionsConstants.PRE_UPDATE_PROFILE_API_PATH)
+        };
 
     public static readonly AUTH_TYPES: AuthenticationTypeDropdownOption[] = [
         {
@@ -118,6 +126,19 @@ export class ActionsConstants {
             key: AuthenticationType.API_KEY,
             text: "actions:fields.authentication.types.apiKey.name",
             value: AuthenticationType.API_KEY
+        }
+    ];
+
+    public static readonly PASSWORD_SHARING_TYPES: PasswordSharingTypeDropdownOption[] = [
+        {
+            key: PasswordFormat.SHA_256_HASHED,
+            text: "SHA 256 Hashed",
+            value: PasswordFormat.SHA_256_HASHED
+        },
+        {
+            key: PasswordFormat.PLAIN_TEXT,
+            text: "Plain Text",
+            value: PasswordFormat.PLAIN_TEXT
         }
     ];
 }

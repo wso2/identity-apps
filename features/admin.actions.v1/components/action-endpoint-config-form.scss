@@ -16,5 +16,8 @@
  * under the License.
  */
 
-export { default as ActionTypesListingPage } from "./pages/actions";
-export { default as ActionConfigForm } from "./components/pre-issue-access-token-action-config-form";
+.heading-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-weight: normal;
+}

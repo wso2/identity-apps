@@ -23,7 +23,11 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { ActionsConstants } from "../constants/actions-constants";
-import { ActionResponseInterface, ActionUpdateInterface } from "../models/actions";
+import {
+    ActionResponseInterface,
+    ActionUpdateInterface,
+    PreUpdatePasswordActionUpdateInterface
+} from "../models/actions";
 
 /**
  * Get an axios instance.
@@ -43,7 +47,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 const updateAction = (
     actionType: string,
     actionId: string,
-    actionUpdateRequestBody: ActionUpdateInterface
+    actionUpdateRequestBody: ActionUpdateInterface | PreUpdatePasswordActionUpdateInterface
 ): Promise<ActionResponseInterface> => {
 
     const requestConfig: RequestConfigInterface = {

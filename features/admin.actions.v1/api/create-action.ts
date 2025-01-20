@@ -23,7 +23,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { ActionsConstants } from "../constants/actions-constants";
-import { ActionInterface, ActionResponseInterface } from "../models/actions";
+import { ActionInterface, ActionResponseInterface, PreUpdatePasswordActionInterface } from "../models/actions";
 
 /**
  * Get an axios instance.
@@ -39,7 +39,8 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * @returns Promise containing the response.
  * @throws Throws an IdentityAppsApiException if the request fails.
  */
-const createAction = (actionType: string, actionBody: ActionInterface): Promise<ActionResponseInterface> => {
+const createAction = (actionType: string, actionBody: ActionInterface |
+    PreUpdatePasswordActionInterface): Promise<ActionResponseInterface> => {
 
     const requestConfig: RequestConfigInterface = {
         data: actionBody,

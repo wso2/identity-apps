@@ -20,10 +20,23 @@ import { actionsNS } from "../../../models";
 
 export const actions: actionsNS = {
     buttons: {
+        addCertificate: "Add Certificate",
         cancel: "Cancel",
         changeAuthentication: "Change Authentication",
         create: "Create",
         update: "Update"
+    },
+    certificateDeleteConfirmationModal: {
+        assertionHint: "Please confirm your action.",
+        content: "N/A",
+        header: "Are you sure?",
+        message: "This action is irreversible and will permanently delete the certificate.",
+        primaryAction: "Delete",
+        secondaryAction: "Cancel"
+    },
+    certificateWizard: {
+        heading: "Add New Certificate",
+        subHeading: "Add new certificate to the application"
     },
     confirmationModal: {
         assertionHint: "Please confirm your action.",
@@ -141,6 +154,23 @@ export const actions: actionsNS = {
                 empty: "Action Name is a required field.",
                 invalid: "Please choose a valid name that adheres to the given guidelines."
             }
+        },
+        passwordSharing: {
+            certificate: {
+                info: {
+                    description: "To minimize the risk of credential exposure, it is strongly recommended to encrypt " +
+                        "any shared credentials. Following certificate will be used to encrypt the password when " +
+                        "sharing it to the external service.",
+                    header: "Secure Credential Handling"
+                },
+                label: "Certificate"
+            },
+            format: {
+                label: "Format",
+                placeholder: "Select Password Sharing",
+                validations: "Password Sharing format is a required field"
+            },
+            label: "Password Sharing"
         }
     },
     goBackActions: "Go back to Actions",
@@ -149,6 +179,20 @@ export const actions: actionsNS = {
             activate: {
                 description: "{{description}}",
                 message: "Error activating the new action."
+            },
+            certificate: {
+                add : {
+                    description: "{{description}}",
+                    message: "Error adding the certificate"
+                },
+                change: {
+                    description: "{{description}}",
+                    message : "Error changing the certificate"
+                },
+                delete: {
+                    description: "{{description}}",
+                    message: "Error deleting the certificate"
+                }
             },
             create: {
                 description: "{{description}}",
@@ -184,6 +228,20 @@ export const actions: actionsNS = {
                 description: "Couldn't activate the new action.",
                 message: "Something went wrong."
             },
+            certificate: {
+                add : {
+                    description: "Couldn't add the certificate.",
+                    message: "Something went wrong."
+                },
+                change: {
+                    description: "Couldn't change the certificate",
+                    message : "Something went wrong."
+                },
+                delete: {
+                    description: "Couldn't delete the certificate",
+                    message: "Something went wrong."
+                }
+            },
             create: {
                 description: "Couldn't add the new action.",
                 message: "Something went wrong."
@@ -217,6 +275,20 @@ export const actions: actionsNS = {
             activate: {
                 description: "The action was activated successfully.",
                 message: "Action activated successfully."
+            },
+            certificate: {
+                add : {
+                    description: "Certificate was added successfully",
+                    message: "Certificate added successfully."
+                },
+                change: {
+                    description: "Certificate was changed successfully",
+                    message : "Certificate changed successfully."
+                },
+                delete: {
+                    description: "Certificate was deleted successfully",
+                    message: "Certificate deleted successfully"
+                }
             },
             create: {
                 description: "The new action was added successfully.",

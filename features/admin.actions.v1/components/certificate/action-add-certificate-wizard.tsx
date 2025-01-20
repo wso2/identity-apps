@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,40 +17,57 @@
  */
 import { AddCertificateFormComponent } from "@wso2is/admin.core.v1/components/add-certificate-form";
 import { getAddIDPCertificateWizardStepIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Modal } from "semantic-ui-react";
+import updateAction from "../../api/update-action";
+import { ActionsConstants } from "../../constants/actions-constants";
+import { PreUpdatePasswordActionUpdateInterface } from "../../models/actions";
+import { useHandleError, useHandleSuccess } from "../../util/alert-util";
 
 /**
- * Interface for the Add application certificate wizard component props.
+ * Interface for the Add action certificate wizard component props.
  */
-interface AddApplicationCertificateWizardPropsInterface extends TestableComponentInterface {
-    applicationName?: string;
+interface AddActionCertificateWizardPropsInterface extends IdentifiableComponentInterface {
     closeWizard: () => void;
     currentStep?: number;
     updatePEMValue: (value: string) => void;
+    updateSubmit: (value: boolean) => void;
+    currentPEMValue: string;
+    isCreateFormState: boolean;
+    actionTypeApiPath: string;
+    actionId: string;
 }
 
 /**
- *  Add Application certificate wizard form component.
+ *  Add Action certificate wizard form component.
  *
  * @param props - Props injected to the component.
- * @returns Add application certificate wizard form component.
+ * @returns Add action certificate wizard form component.
  */
-export const AddApplicationCertificateWizard: FunctionComponent<AddApplicationCertificateWizardPropsInterface> = (
-    props: AddApplicationCertificateWizardPropsInterface): ReactElement => {
+export const AddActionCertificateWizard: FunctionComponent<AddActionCertificateWizardPropsInterface> = (
+    props: AddActionCertificateWizardPropsInterface): ReactElement => {
 
     const {
         closeWizard,
         currentStep,
         updatePEMValue,
-        ["data-testid"]: testId
+        updateSubmit,
+        currentPEMValue,
+        isCreateFormState,
+        actionTypeApiPath,
+        actionId,
+        ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
+
+    const handleSuccess: (operation: string) => void = useHandleSuccess();
+    const handleError: (error: AxiosError, operation: string) => void = useHandleError();
 
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
     const [ triggerUpload, setTriggerUpload ] = useTrigger();
@@ -58,7 +75,6 @@ export const AddApplicationCertificateWizard: FunctionComponent<AddApplicationCe
     const [ partiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ showFinishButton, setShowFinishButton ] = useState<boolean>(false);
-
     const [ alert, , alertComponent ] = useWizardAlert();
 
     /**
@@ -73,7 +89,7 @@ export const AddApplicationCertificateWizard: FunctionComponent<AddApplicationCe
         setCurrentWizardStep(currentWizardStep - 1);
     }, [ partiallyCompletedStep ]);
 
-    const navigateToNext = () => {
+    const finish = () => {
         switch (currentWizardStep) {
             case 0:
                 setTriggerUpload();
@@ -81,16 +97,42 @@ export const AddApplicationCertificateWizard: FunctionComponent<AddApplicationCe
         }
     };
 
-    const addCertificate = (values: any) => {
-        updatePEMValue(values);
-        closeWizard();
-    };
-
     /**
      * Handles the final wizard submission.
      */
     const handleWizardFormFinish = (values: any): void => {
-        addCertificate(values);
+        updatePEMValue(values);
+
+        if(!isCreateFormState) {
+
+            const updatingValues: PreUpdatePasswordActionUpdateInterface = {
+                passwordSharing: {
+                    certificate: values
+                }
+            };
+
+            updateSubmit(true);
+            updateAction(actionTypeApiPath, actionId, updatingValues)
+                .then(() => {
+                    if (currentPEMValue) {
+                        handleSuccess(ActionsConstants.CHANGE_CERTIFICATE);
+                    }else {
+                        handleSuccess(ActionsConstants.ADD_CERTIFICATE);
+                    }
+                })
+                .catch((error: AxiosError) => {
+                    if (currentPEMValue) {
+                        handleError(error, ActionsConstants.CHANGE_CERTIFICATE);
+                    }else {
+                        handleError(error, ActionsConstants.ADD_CERTIFICATE);
+                    }
+                })
+                .finally(() => {
+                    updateSubmit(false);
+                });
+        }
+
+        closeWizard();
     };
 
     /**
@@ -106,7 +148,7 @@ export const AddApplicationCertificateWizard: FunctionComponent<AddApplicationCe
                 <AddCertificateFormComponent
                     triggerCertificateUpload={ triggerUpload }
                     triggerSubmit={ finishSubmit }
-                    onSubmit={ handleWizardFormFinish }
+                    onSubmit= { handleWizardFormFinish }
                     setShowFinishButton={ setShowFinishButton }
                 />
             ),
@@ -118,18 +160,18 @@ export const AddApplicationCertificateWizard: FunctionComponent<AddApplicationCe
     return (
         <Modal
             open={ true }
-            className="wizard application-create-wizard"
+            className="wizard action-create-wizard"
             dimmer="blurring"
             size="small"
             onClose={ closeWizard }
-            data-testid={ testId }
+            data-componentid={ componentId }
             closeOnDimmerClick={ false }
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
-                { t("applications:wizards.applicationCertificateWizard.heading") }
+                { t("actions:certificateWizard.heading") }
                 <Heading as="h6">
-                    { t("applications:wizards.applicationCertificateWizard.subHeading") }
+                    { t("actions:certificateWizard.subHeading") }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
@@ -143,7 +185,7 @@ export const AddApplicationCertificateWizard: FunctionComponent<AddApplicationCe
                             <LinkButton
                                 floated="left"
                                 onClick={ () => closeWizard() }
-                                data-testid={ `${testId}-cancel-button` }
+                                data-componentid={ `${componentId}-cancel-button` }
                             >
                                 { t("common:cancel") }
                             </LinkButton>
@@ -153,8 +195,8 @@ export const AddApplicationCertificateWizard: FunctionComponent<AddApplicationCe
                                 <PrimaryButton
                                     disabled={ !showFinishButton }
                                     floated="right"
-                                    onClick={ navigateToNext }
-                                    data-testid={ `${testId}-finish-button` }
+                                    onClick={ finish }
+                                    data-componentid={ `${componentId}-finish-button` }
                                 >
                                     { t("common:finish") }
                                 </PrimaryButton>
@@ -168,9 +210,9 @@ export const AddApplicationCertificateWizard: FunctionComponent<AddApplicationCe
 };
 
 /**
- * Default props for the add application certificate wizard.
+ * Default props for the add action certificate wizard.
  */
-AddApplicationCertificateWizard.defaultProps = {
+AddActionCertificateWizard.defaultProps = {
     currentStep: 0,
-    "data-testid": "add-application-certificate-wizard"
+    "data-componentid": "add-action-certificate-wizard"
 };

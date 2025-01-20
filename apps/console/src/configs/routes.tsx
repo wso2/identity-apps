@@ -1293,6 +1293,17 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.actions.v1/pages/action-configuration-page")
+                    ),
+                    exact: true,
+                    id: "pre-update-password",
+                    name: "Pre Update Password",
+                    path: AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() =>

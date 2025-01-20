@@ -246,8 +246,8 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             },
             {
                 description: t("actions:types.preUpdatePassword.description.shortened"),
-                disabled: true,
-                featureStatusLabel: FeatureStatusLabel.COMING_SOON,
+                disabled: false,
+                featureStatusLabel: FeatureStatusLabel.BETA,
                 heading: t("actions:types.preUpdatePassword.heading"),
                 icon: <PadlockAsteriskFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH,

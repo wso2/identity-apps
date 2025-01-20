@@ -24,7 +24,7 @@ import useRequest, {
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
-import { ActionResponseInterface } from "../models/actions";
+import { ActionResponseInterface, PreUpdatePasswordActionResponseInterface } from "../models/actions";
 
 /**
  * Hook to get the action configurations by id.
@@ -33,7 +33,8 @@ import { ActionResponseInterface } from "../models/actions";
  * @param actionId - ID of the action.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetActionById = <Data = ActionResponseInterface, Error = RequestErrorInterface>
+const useGetActionById = <Data = ActionResponseInterface |
+    PreUpdatePasswordActionResponseInterface , Error = RequestErrorInterface>
     (actionType: string, actionId: string): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {

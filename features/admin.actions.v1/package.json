@@ -14,6 +14,7 @@
         "@wso2is/admin.core.v1": "^2.34.56",
         "@wso2is/admin.extensions.v1": "^2.35.15",
         "@wso2is/admin.feature-gate.v1": "^1.4.56",
+        "@wso2is/admin.identity-providers.v1": "^2.26.56",
         "@wso2is/core": "^2.5.1",
         "@wso2is/form": "^2.6.3",
         "@wso2is/i18n": "^2.13.4",

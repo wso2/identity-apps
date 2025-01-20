@@ -160,7 +160,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
     }, [ certificate ]);
 
     /**
-     * Change related to cert type changne.
+     * Change related to cert type change.
      */
     useEffect(() => {
         handleCertificateTypeChange(selectedCertType);
