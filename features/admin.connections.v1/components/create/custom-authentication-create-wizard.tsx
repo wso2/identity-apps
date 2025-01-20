@@ -20,7 +20,6 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@oxygen-ui/react/Box";
 import Divider from "@oxygen-ui/react/Divider";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
-import { setAvailableCustomInboundAuthProtocolMeta } from "@wso2is/admin.applications.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components";
 import { IdentityAppsError } from "@wso2is/core/errors";
@@ -161,12 +160,12 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                 title: t("customAuthentication:fields.createWizard.authenticationTypeStep.title")
             },
             {
-                icon: getConnectionWizardStepIcons().authenticatorSettings,
+                icon: getConnectionWizardStepIcons().general,
                 name: WizardStepsCustomAuth.GENERAL_SETTINGS,
                 title: t("customAuthentication:fields.createWizard.generalSettingsStep.title")
             },
             {
-                icon: getConnectionWizardStepIcons().general,
+                icon: getConnectionWizardStepIcons().authenticatorSettings,
                 name: WizardStepsCustomAuth.CONFIGURATION,
                 title: t("customAuthentication:fields.createWizard.configurationsStep.title")
             }
