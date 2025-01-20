@@ -169,19 +169,6 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         setActivePolicies([]);
     }, []);
 
-    // if (isLoadingActivePolicies || isLoadingInactivePolicies) {
-    //     return (
-    //         <PageLayout
-    //             pageTitle={ t("policyAdministration:title") }
-    //             title={ t("policyAdministration:title") }
-    //             description={ t("policyAdministration:subtitle") }
-    //             className="policy-administration-page"
-    //         >
-    //             <CircularProgress />
-    //         </PageLayout>
-    //     );
-    // }
-
     if (activePolicyError || inactivePolicyError) {
         return (
             <PageLayout
