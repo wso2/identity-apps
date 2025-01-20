@@ -94,4 +94,5 @@ export class CommonAuthenticatorConstants {
 
     public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY: string = "displayName";
     public static readonly PROVISIONING_CONNECTOR_GOOGLE: string = "googleapps";
+    public static readonly API_KEY_HEADER_REGEX: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9-.]+$/;
 }

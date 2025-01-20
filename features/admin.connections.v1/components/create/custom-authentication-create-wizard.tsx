@@ -51,6 +51,7 @@ import { useTranslation } from "react-i18next";
 import { DropdownProps, Icon, Message, Grid as SemanticGrid } from "semantic-ui-react";
 import { useGetConnectionTemplate } from "../../api/connections";
 import { getConnectionWizardStepIcons } from "../../configs/ui";
+import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import { LocalAuthenticatorConstants } from "../../constants/local-authenticator-constants";
 import {
@@ -185,7 +186,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 size="small"
                 color="grey"
                 name={ !showSecret ? "eye" : "eye slash" }
-                data-componentid={ `${_componentId}-authentication-property-secret1-view-button` }
+                data-componentid={ `${ _componentId }-authentication-property-secret1-view-button` }
                 onClick={ onClick }
             />
         </InputAdornment>
@@ -236,12 +237,12 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                                 "customAuthentication:fields.createWizard.configurationsStep." +
                                     "authenticationTypeDropdown.authProperties.username.placeholder"
                             ) }
-                            inputType="name"
+                            inputType="password"
                             type={ isShowSecret1 ? "text" : "password" }
                             InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(isShowSecret1, () =>
-                                    setIsShowSecret1(!isShowSecret1)
-                                )
+                                endAdornment: renderInputAdornmentOfSecret(
+                                    isShowSecret1,
+                                    () => setIsShowSecret1(!isShowSecret1))
                             } }
                             required={ true }
                             maxLength={ 100 }
@@ -283,12 +284,12 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                             ariaLabel="accessToken"
                             className="addon-field-wrapper"
                             name="accessTokenAuthProperty"
-                            inputType="text"
+                            inputType="password"
                             type={ isShowSecret1 ? "text" : "password" }
                             InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(isShowSecret1, () =>
-                                    setIsShowSecret1(!isShowSecret1)
-                                )
+                                endAdornment: renderInputAdornmentOfSecret(
+                                    isShowSecret1,
+                                    () => setIsShowSecret1(!isShowSecret1))
                             } }
                             label={ t(
                                 "customAuthentication:fields.createWizard.configurationsStep." +
@@ -323,11 +324,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                                 "customAuthentication:fields.createWizard.configurationsStep." +
                                     "authenticationTypeDropdown.authProperties.header.placeholder"
                             ) }
-                            helperText={
-                                (<Hint className="hint" compact>
-                                    Hint
-                                </Hint>)
-                            }
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
@@ -338,12 +334,12 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                             ariaLabel="value"
                             className="addon-field-wrapper"
                             name="valueAuthProperty"
-                            inputType="text"
+                            inputType="password"
                             type={ isShowSecret2 ? "text" : "password" }
                             InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(isShowSecret2, () =>
-                                    setIsShowSecret2(!isShowSecret2)
-                                )
+                                endAdornment: renderInputAdornmentOfSecret(
+                                    isShowSecret2,
+                                    () => setIsShowSecret2(!isShowSecret2))
                             } }
                             label={ t(
                                 "customAuthentication:fields.createWizard.configurationsStep." +
@@ -366,48 +362,51 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
         }
     };
 
+    /**
+     * This method validates the endpoint configurations.
+     * @param values - values to be validated.
+     * @returns errors object.
+     */
     const validateEndpointConfigs = (
         values: EndpointConfigFormPropertyInterface
     ): Partial<EndpointConfigFormPropertyInterface> => {
-        const error: Partial<EndpointConfigFormPropertyInterface> = {};
+        const errors: Partial<EndpointConfigFormPropertyInterface> = {};
 
         if (!values?.endpointUri) {
-            error.endpointUri = t(
+            errors.endpointUri = t(
                 "customAuthentication:fields.createWizard.configurationsStep." + "endpoint.validations.empty"
             );
         }
         if (URLUtils.isURLValid(values?.endpointUri)) {
             if (!URLUtils.isHttpsUrl(values?.endpointUri)) {
-                error.endpointUri = t(
+                errors.endpointUri = t(
                     "customAuthentication:fields.createWizard.configurationsStep." + "endpoint.validations.invalid"
                 );
             }
         } else {
-            error.endpointUri = t(
+            errors.endpointUri = t(
                 "customAuthentication:fields.createWizard.configurationsStep." + "endpoint.validations.general"
             );
         }
 
         if (!authenticationType) {
-            error.authenticationType = t(
+            errors.authenticationType = t(
                 "customAuthentication:fields.createWizard.configurationsStep." +
                     "authenticationTypeDropdown.validations.required"
             );
         }
 
-        const apiKeyHeaderRegex: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9-.]+$/;
-
         switch (authenticationType) {
             case AuthenticationType.BASIC:
                 if (values?.usernameAuthProperty || values?.passwordAuthProperty) {
                     if (!values?.usernameAuthProperty) {
-                        error.usernameAuthProperty = t(
+                        errors.usernameAuthProperty = t(
                             "customAuthentication:fields.createWizard.configurationsStep." +
                                 "authenticationTypeDropdown.authProperties.username.validations.required"
                         );
                     }
                     if (!values?.passwordAuthProperty) {
-                        error.passwordAuthProperty = t(
+                        errors.passwordAuthProperty = t(
                             "customAuthentication:fields.createWizard.configurationsStep." +
                                 "authenticationTypeDropdown.authProperties.password.validations.required"
                         );
@@ -417,7 +416,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 break;
             case AuthenticationType.BEARER:
                 if (!values?.accessTokenAuthProperty) {
-                    error.accessTokenAuthProperty = t(
+                    errors.accessTokenAuthProperty = t(
                         "customAuthentication:fields.createWizard.configurationsStep." +
                             "authenticationTypeDropdown.authProperties.accessToken.validations.required"
                     );
@@ -427,19 +426,19 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             case AuthenticationType.API_KEY:
                 if (values?.headerAuthProperty || values?.valueAuthProperty) {
                     if (!values?.headerAuthProperty) {
-                        error.headerAuthProperty = t(
+                        errors.headerAuthProperty = t(
                             "customAuthentication:fields.createWizard.configurationsStep." +
                                 "authenticationTypeDropdown.authProperties.header.validations.required"
                         );
                     }
-                    if (!apiKeyHeaderRegex.test(values?.headerAuthProperty)) {
-                        error.headerAuthProperty = t(
+                    if (!CommonAuthenticatorConstants.API_KEY_HEADER_REGEX.test(values?.headerAuthProperty)) {
+                        errors.headerAuthProperty = t(
                             "customAuthentication:fields.createWizard.configurationsStep." +
                                 "authenticationTypeDropdown.authProperties.header.validations.invalid"
                         );
                     }
                     if (!values?.valueAuthProperty) {
-                        error.valueAuthProperty = t(
+                        errors.valueAuthProperty = t(
                             "customAuthentication:fields.createWizard.configurationsStep." +
                                 "authenticationTypeDropdown.authProperties.value.validations.required"
                         );
@@ -451,7 +450,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 break;
         }
 
-        return error;
+        return errors;
     };
 
     const wizardCommonFirstPage = () => (
