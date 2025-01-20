@@ -20,7 +20,7 @@ import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
 import Divider from "@oxygen-ui/react/Divider";
-import OxygenHeader from "@oxygen-ui/react/Header";
+import OxygenHeader, { HeaderProps } from "@oxygen-ui/react/Header";
 import Image from "@oxygen-ui/react/Image";
 import Link from "@oxygen-ui/react/Link";
 import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
@@ -62,9 +62,7 @@ import "./header.scss";
 /**
  * Dashboard layout Prop types.
  */
-interface HeaderPropsInterface extends IdentifiableComponentInterface {
-    handleSidePanelToggleClick?: () => void;
-}
+export type HeaderPropsInterface = HeaderProps & IdentifiableComponentInterface;
 
 /**
  * Implementation of the Reusable Header component.
@@ -72,9 +70,11 @@ interface HeaderPropsInterface extends IdentifiableComponentInterface {
  * @param props - Props injected to the component.
  * @returns react element containing the Reusable Header component.
  */
-export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPropsInterface): ReactElement => {
-    const { handleSidePanelToggleClick } = props;
-
+const Header: FunctionComponent<HeaderPropsInterface> = ({
+    "data-componentid": _componentId = "app-header",
+    onCollapsibleHamburgerClick = () => null,
+    ...rest
+}: HeaderPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
@@ -348,7 +348,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                 name: resolveUsername()
             } }
             showCollapsibleHamburger
-            onCollapsibleHamburgerClick={ handleSidePanelToggleClick }
+            onCollapsibleHamburgerClick={ onCollapsibleHamburgerClick }
             position="fixed"
             leftAlignedElements={ [ isOrgSwitcherEnabled ? <OrganizationSwitchBreadcrumb /> : null ] }
             rightAlignedElements={ generateHeaderButtons() }
@@ -429,14 +429,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                     "data-testid": "app-header-user-avatar"
                 }
             } }
+            { ...rest }
         />
     );
 };
 
-/**
- * Default props for the component.
- */
-Header.defaultProps = {
-    "data-componentid": "app-header",
-    handleSidePanelToggleClick: () => null
-};
+export default Header;
