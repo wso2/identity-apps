@@ -1,5 +1,96 @@
 # @wso2is/form
 
+## 2.6.13
+
+### Patch Changes
+
+- [#7318](https://github.com/wso2/identity-apps/pull/7318) [`23bd7d4f6d6d70d789ad7115ffd1fbec742455a6`](https://github.com/wso2/identity-apps/commit/23bd7d4f6d6d70d789ad7115ffd1fbec742455a6) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Bump oxygen version and enable active policy view.
+
+- Updated dependencies [[`23bd7d4f6d6d70d789ad7115ffd1fbec742455a6`](https://github.com/wso2/identity-apps/commit/23bd7d4f6d6d70d789ad7115ffd1fbec742455a6), [`ad63bbe54541ed6b28e1f254f3e7f5e7b6767d7b`](https://github.com/wso2/identity-apps/commit/ad63bbe54541ed6b28e1f254f3e7f5e7b6767d7b), [`5a5577aacf0a12d03246c9b829c8168296b37dcf`](https://github.com/wso2/identity-apps/commit/5a5577aacf0a12d03246c9b829c8168296b37dcf)]:
+  - @wso2is/react-components@2.8.20
+
+## 2.6.12
+
+### Patch Changes
+
+- Updated dependencies [[`f9db643943377216b8525a183f3ad4855a3bd4af`](https://github.com/wso2/identity-apps/commit/f9db643943377216b8525a183f3ad4855a3bd4af)]:
+  - @wso2is/react-components@2.8.19
+
+## 2.6.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.8.18
+
+## 2.6.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.8.17
+
+## 2.6.9
+
+### Patch Changes
+
+- Updated dependencies [[`c01fab399c1832cfe7551229f608a8ff1020b7e8`](https://github.com/wso2/identity-apps/commit/c01fab399c1832cfe7551229f608a8ff1020b7e8)]:
+  - @wso2is/core@2.5.5
+  - @wso2is/react-components@2.8.16
+
+## 2.6.8
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.8.15
+
+## 2.6.7
+
+### Patch Changes
+
+- Updated dependencies [[`398c39ec452d460994a3a0a6425115678538e49b`](https://github.com/wso2/identity-apps/commit/398c39ec452d460994a3a0a6425115678538e49b)]:
+  - @wso2is/react-components@2.8.14
+  - @wso2is/core@2.5.4
+
+## 2.6.6
+
+### Patch Changes
+
+- Updated dependencies [[`97aae1b9168c49e72cd544ded82d53c8fa16fff0`](https://github.com/wso2/identity-apps/commit/97aae1b9168c49e72cd544ded82d53c8fa16fff0)]:
+  - @wso2is/core@2.5.3
+  - @wso2is/react-components@2.8.13
+
+## 2.6.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.8.12
+
+## 2.6.4
+
+### Patch Changes
+
+- Updated dependencies [[`0057877859bdf3d91475cf3d1865382a88a1e9e7`](https://github.com/wso2/identity-apps/commit/0057877859bdf3d91475cf3d1865382a88a1e9e7)]:
+  - @wso2is/core@2.5.2
+  - @wso2is/react-components@2.8.11
+
+## 2.6.3
+
+### Patch Changes
+
+- Updated dependencies [[`1d03b454bd2dcd03ea3c9af5fb78a7320e7b47aa`](https://github.com/wso2/identity-apps/commit/1d03b454bd2dcd03ea3c9af5fb78a7320e7b47aa)]:
+  - @wso2is/core@2.5.1
+  - @wso2is/react-components@2.8.10
+
+## 2.6.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.8.9
+
 ## 2.6.1
 
 ### Patch Changes

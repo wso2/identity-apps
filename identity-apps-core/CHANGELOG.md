@@ -1,5 +1,114 @@
 # @wso2is/identity-apps-core
 
+## 2.10.2
+
+### Patch Changes
+
+- [#7318](https://github.com/wso2/identity-apps/pull/7318) [`23bd7d4f6d6d70d789ad7115ffd1fbec742455a6`](https://github.com/wso2/identity-apps/commit/23bd7d4f6d6d70d789ad7115ffd1fbec742455a6) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Bump oxygen version and enable active policy view.
+
+* [#7313](https://github.com/wso2/identity-apps/pull/7313) [`ad63bbe54541ed6b28e1f254f3e7f5e7b6767d7b`](https://github.com/wso2/identity-apps/commit/ad63bbe54541ed6b28e1f254f3e7f5e7b6767d7b) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Bump oxygen version
+
+## 2.10.1
+
+### Patch Changes
+
+- [#7303](https://github.com/wso2/identity-apps/pull/7303) [`27e635a2d54c78228e63fde1360b68a8d03a0b10`](https://github.com/wso2/identity-apps/commit/27e635a2d54c78228e63fde1360b68a8d03a0b10) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Fix input field value retention issue in self-registration form
+
+## 2.10.0
+
+### Minor Changes
+
+- [#7292](https://github.com/wso2/identity-apps/pull/7292) [`cd827d04f98a519804f1f9996a1dc3a831278df1`](https://github.com/wso2/identity-apps/commit/cd827d04f98a519804f1f9996a1dc3a831278df1) Thanks [@savindi7](https://github.com/savindi7)! - Add RTL support for Authentication and Recovery portals.
+
+### Patch Changes
+
+- [#7293](https://github.com/wso2/identity-apps/pull/7293) [`22de328e49a00d5ce9cdb9bb24a703f867ea1998`](https://github.com/wso2/identity-apps/commit/22de328e49a00d5ce9cdb9bb24a703f867ea1998) Thanks [@sumedhe](https://github.com/sumedhe)! - Fix tenant null issue in self registration flow
+
+- Updated dependencies [[`cd827d04f98a519804f1f9996a1dc3a831278df1`](https://github.com/wso2/identity-apps/commit/cd827d04f98a519804f1f9996a1dc3a831278df1)]:
+  - @wso2is/theme@2.6.0
+
+## 2.9.2
+
+### Patch Changes
+
+- [#7030](https://github.com/wso2/identity-apps/pull/7030) [`d8ac25af8c462eac2d2bb5c949f32996ad83a000`](https://github.com/wso2/identity-apps/commit/d8ac25af8c462eac2d2bb5c949f32996ad83a000) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Remove unnecessary org qualified callback url regex for portal apps
+
+## 2.9.1
+
+### Patch Changes
+
+- [#7286](https://github.com/wso2/identity-apps/pull/7286) [`f1173193bb885f71c7d25fae5bfd011dfb70d79a`](https://github.com/wso2/identity-apps/commit/f1173193bb885f71c7d25fae5bfd011dfb70d79a) Thanks [@savindi7](https://github.com/savindi7)! - Bump apps
+
+- Updated dependencies [[`f1173193bb885f71c7d25fae5bfd011dfb70d79a`](https://github.com/wso2/identity-apps/commit/f1173193bb885f71c7d25fae5bfd011dfb70d79a)]:
+  - @wso2is/theme@2.5.1
+
+## 2.9.0
+
+### Minor Changes
+
+- [#7220](https://github.com/wso2/identity-apps/pull/7220) [`664b1ec3c513595cdcc91216af4371dbe70ab996`](https://github.com/wso2/identity-apps/commit/664b1ec3c513595cdcc91216af4371dbe70ab996) Thanks [@savindi7](https://github.com/savindi7)! - Add RTL support.
+
+### Patch Changes
+
+- Updated dependencies [[`664b1ec3c513595cdcc91216af4371dbe70ab996`](https://github.com/wso2/identity-apps/commit/664b1ec3c513595cdcc91216af4371dbe70ab996)]:
+  - @wso2is/theme@2.5.0
+
+## 2.8.14
+
+### Patch Changes
+
+- [#7275](https://github.com/wso2/identity-apps/pull/7275) [`d934324e367ed709486106030b5e4d0200dff4c3`](https://github.com/wso2/identity-apps/commit/d934324e367ed709486106030b5e4d0200dff4c3) Thanks [@KD23243](https://github.com/KD23243)! - Revert callback validation logic
+
+## 2.8.13
+
+### Patch Changes
+
+- [#7263](https://github.com/wso2/identity-apps/pull/7263) [`57cf9b69ddf277e2367b913dbc56a65169c96f4c`](https://github.com/wso2/identity-apps/commit/57cf9b69ddf277e2367b913dbc56a65169c96f4c) Thanks [@KD23243](https://github.com/KD23243)! - Change validation from backToUrl to callback
+
+## 2.8.12
+
+### Patch Changes
+
+- [#7103](https://github.com/wso2/identity-apps/pull/7103) [`b78b82365f002fbe98971a642793058b4ff479d7`](https://github.com/wso2/identity-apps/commit/b78b82365f002fbe98971a642793058b4ff479d7) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Add missing changes from unification
+
+## 2.8.11
+
+### Patch Changes
+
+- [#7250](https://github.com/wso2/identity-apps/pull/7250) [`79a63a6187da0c01415ea5bac2ca2ec2f56ce87a`](https://github.com/wso2/identity-apps/commit/79a63a6187da0c01415ea5bac2ca2ec2f56ce87a) Thanks [@KD23243](https://github.com/KD23243)! - Validate and Sanitize backToUrl in self-registration-username-request.jsp
+
+## 2.8.10
+
+### Patch Changes
+
+- [#7223](https://github.com/wso2/identity-apps/pull/7223) [`1664078748a9b89cbe3b1ac8d41b6c3f718efe9b`](https://github.com/wso2/identity-apps/commit/1664078748a9b89cbe3b1ac8d41b6c3f718efe9b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a null check for the username field value
+
+## 2.8.9
+
+### Patch Changes
+
+- Updated dependencies [[`f0da57190bcbe263e54df65ca04087fb832b70d6`](https://github.com/wso2/identity-apps/commit/f0da57190bcbe263e54df65ca04087fb832b70d6)]:
+  - @wso2is/theme@2.4.6
+
+## 2.8.8
+
+### Patch Changes
+
+- [#7131](https://github.com/wso2/identity-apps/pull/7131) [`3cb1d7e7e2632971ec67647f233b8068016858fd`](https://github.com/wso2/identity-apps/commit/3cb1d7e7e2632971ec67647f233b8068016858fd) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Use getRoleBasicInfoById when checking Administrator role
+
+## 2.8.7
+
+### Patch Changes
+
+- Updated dependencies [[`e698589ee572899b0fa7c4c70407b740d7dbec2d`](https://github.com/wso2/identity-apps/commit/e698589ee572899b0fa7c4c70407b740d7dbec2d)]:
+  - @wso2is/theme@2.4.5
+
+## 2.8.6
+
+### Patch Changes
+
+- [#7191](https://github.com/wso2/identity-apps/pull/7191) [`a0850641919b1060808df7cf193885bb678464b3`](https://github.com/wso2/identity-apps/commit/a0850641919b1060808df7cf193885bb678464b3) Thanks [@Sachin-Mamoru](https://github.com/Sachin-Mamoru)! - Reflect branding in dismiss button of the timeout modal
+
 ## 2.8.5
 
 ### Patch Changes

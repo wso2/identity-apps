@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -48,7 +48,6 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { useInvitedUsersList } from "@wso2is/admin.users.v1/api/invite";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { AdminAccountTypes, InvitationStatus, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
 import {
     AlertInterface,
@@ -151,6 +150,8 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.consoleSettings
     );
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const isPrivilegedUsersInConsoleSettingsEnabled: boolean =
         !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
@@ -178,7 +179,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
     useEffect(() => {
         setSelectedUserStore(
             isPrivilegedUsersInConsoleSettingsEnabled && selectedAdministratorGroup === "administrators"
-                ? PRIMARY_USERSTORE
+                ? primaryUserStoreDomainName
                 : userstoresConfig?.primaryUserstoreName
         );
     },[ isPrivilegedUsersInConsoleSettingsEnabled, selectedAdministratorGroup ]);
@@ -428,7 +429,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                     options={ availableUserStores }
                     onChange={ handleSelectedUserStoreChange }
                     value={ selectedUserStore }
-                    defaultValue={ PRIMARY_USERSTORE }
+                    defaultValue={ primaryUserStoreDomainName }
                 />
             );
         }

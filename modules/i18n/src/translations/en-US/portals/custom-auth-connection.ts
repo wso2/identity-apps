@@ -136,7 +136,9 @@ export const customAuthentication: customAuthenticationNS = {
                     }
                 },
                 title: "General Settings"
-            }
+            },
+            subTitle: "Register externally implemented authentication service.",
+            title: "Custom Authentication"
         }
     }
 };

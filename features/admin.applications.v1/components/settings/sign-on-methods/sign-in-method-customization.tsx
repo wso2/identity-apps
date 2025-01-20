@@ -54,17 +54,17 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Icon  } from "semantic-ui-react";
-import { ScriptBasedFlow } from "./script-based-flow";
-import { StepBasedFlow } from "./step-based-flow";
+import { ScriptBasedFlow } from "./script-based-flow/script-based-flow";
+import { StepBasedFlow } from "./step-based-flow/step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
-import { updateAuthenticationSequence } from "../../../api";
+import { updateAuthenticationSequence } from "../../../api/application";
 import {
     AdaptiveAuthTemplateInterface,
     AuthenticationSequenceInterface,
     AuthenticationStepInterface,
     AuthenticatorInterface,
     FederatedConflictWithSMSOTPReturnValueInterface
-} from "../../../models";
+} from "../../../models/application";
 import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
 import { ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from "../../../utils/sign-in-method-utils";
 

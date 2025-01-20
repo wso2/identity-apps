@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,18 @@
  * under the License.
  */
 
+import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { RolesInterface } from "@wso2is/core/models";
+import { StringUtils } from "@wso2is/core/utils";
 import { Forms } from "@wso2is/forms";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { AppState } from "../../store";
 
 /**
  * Proptypes for the assign group component.
@@ -40,7 +45,7 @@ interface AssignGroupsPropsInterface {
 /**
  * Assign Group component.
  *
- * @return {ReactElement}
+ * @returns ReactElement
  */
 export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
     props: AssignGroupsPropsInterface): ReactElement => {
@@ -56,6 +61,9 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
+
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesInterface[]>([]);
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<RolesInterface[]>([]);
@@ -86,14 +94,14 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
      * @param e - Click event.
      * @param value - Input value of the field
      */
-    const handleUnselectedListSearch = (e, { value }) => {
-        let isMatch = false;
-        const filteredGroupList = [];
+    const handleUnselectedListSearch = (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
+        let isMatch: boolean = false;
+        const filteredGroupList: GroupsInterface[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            initialValues.groupList && initialValues.groupList.map((group) => {
+            initialValues.groupList && initialValues.groupList.map((group: GroupsInterface) => {
                 isMatch = re.test(group.displayName);
                 if (isMatch) {
                     filteredGroupList.push(group);
@@ -105,14 +113,14 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
         }
     };
 
-    const handleSelectedListSearch = (e, { value }) => {
-        let isMatch = false;
-        const filteredGroupList = [];
+    const handleSelectedListSearch = (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
+        let isMatch: boolean = false;
+        const filteredGroupList: GroupsInterface[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            initialValues.tempGroupList && initialValues.tempGroupList.map((group) => {
+            initialValues.tempGroupList && initialValues.tempGroupList.map((group: GroupsInterface) => {
                 isMatch = re.test(group.displayName);
                 if (isMatch) {
                     filteredGroupList.push(group);
@@ -143,10 +151,10 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
      * roles list to the assigned roles list.
      */
     const addGroups = () => {
-        const addedGroups = [ ...initialValues?.tempGroupList ];
+        const addedGroups: GroupsInterface[] = [ ...initialValues?.tempGroupList ];
 
         if (checkedUnassignedListItems?.length > 0) {
-            checkedUnassignedListItems.map((group) => {
+            checkedUnassignedListItems.map((group: GroupsInterface) => {
                 if (!(initialValues?.tempGroupList?.includes(group))) {
                     addedGroups.push(group);
                 }
@@ -155,8 +163,9 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
 
         handleTempListChange(addedGroups);
         handleInitialTempListChange(addedGroups);
-        handleGroupListChange(initialValues?.groupList.filter(x => !addedGroups?.includes(x)));
-        handleInitialGroupListChange(initialValues?.groupList.filter(x => !addedGroups?.includes(x)));
+        handleGroupListChange(initialValues?.groupList.filter((x: GroupsInterface) => !addedGroups?.includes(x)));
+        handleInitialGroupListChange(initialValues?.groupList.filter(
+            (x: GroupsInterface) => !addedGroups?.includes(x)));
         setIsSelectUnassignedAllGroupsChecked(false);
     };
 
@@ -165,10 +174,10 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
      * roles list to the initial role list.
      */
     const removeGroups = () => {
-        const removedGroups = [ ...initialValues?.groupList ];
+        const removedGroups: GroupsInterface[] = [ ...initialValues?.groupList ];
 
         if (checkedAssignedListItems?.length > 0) {
-            checkedAssignedListItems.map((group) => {
+            checkedAssignedListItems.map((group: GroupsInterface) => {
                 if (!(initialValues?.groupList?.includes(group))) {
                     removedGroups.push(group);
                 }
@@ -176,8 +185,9 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
         }
         handleGroupListChange(removedGroups);
         handleInitialGroupListChange(removedGroups);
-        handleTempListChange(initialValues?.tempGroupList?.filter(x => !removedGroups.includes(x)));
-        handleInitialTempListChange(initialValues?.tempGroupList?.filter(x => !removedGroups.includes(x)));
+        handleTempListChange(initialValues?.tempGroupList?.filter((x: GroupsInterface) => !removedGroups.includes(x)));
+        handleInitialTempListChange(initialValues?.tempGroupList?.filter(
+            (x: GroupsInterface) => !removedGroups.includes(x)));
         setCheckedUnassignedListItems([]);
         setIsSelectAssignedAllGroupsChecked(false);
     };
@@ -186,8 +196,8 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
      * The following method handles the onChange event of the
      * checkbox field of an unassigned item.
      */
-    const handleUnassignedItemCheckboxChange = (group) => {
-        const checkedGroups = [ ...checkedUnassignedListItems ];
+    const handleUnassignedItemCheckboxChange = (group: GroupsInterface) => {
+        const checkedGroups: GroupsInterface[] = [ ...checkedUnassignedListItems ];
 
         if (checkedGroups?.includes(group)) {
             checkedGroups.splice(checkedGroups.indexOf(group), 1);
@@ -202,8 +212,8 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
      * The following method handles the onChange event of the
      * checkbox field of an assigned item.
      */
-    const handleAssignedItemCheckboxChange = (group) => {
-        const checkedGroups = [ ...checkedAssignedListItems ];
+    const handleAssignedItemCheckboxChange = (group: GroupsInterface) => {
+        const checkedGroups: GroupsInterface[] = [ ...checkedAssignedListItems ];
 
         if (checkedGroups?.includes(group)) {
             checkedGroups.splice(checkedGroups.indexOf(group), 1);
@@ -217,15 +227,20 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
     /**
      * The following method handles creating a label for the list item.
      *
-     * @param groupName: string
+     * @param groupName - string
      */
     const createGroupLabel = (groupName: string): any => {
-        const group = groupName.split("/");
+        const group: string[] = groupName.split("/");
 
         if (group.length > 1) {
             return { labelColor: "teal", labelText: group[0].toString() };
         } else {
-            return { labelColor: "olive", labelText: "Primary" };
+            return {
+                labelColor: "olive",
+                labelText: StringUtils.isEqualCaseInsensitive(primaryUserStoreDomainName, PRIMARY_USERSTORE)
+                    ? t("console:manage.features.users.userstores.userstoreOptions.primary")
+                    : primaryUserStoreDomainName
+            };
         }
     };
 
@@ -261,8 +276,8 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
                         + "emptyPlaceholders.default") }
                 >
                     {
-                        initialValues?.groupList?.map((group, index)=> {
-                            const groupName = group?.displayName?.split("/");
+                        initialValues?.groupList?.map((group: GroupsInterface, index: number)=> {
+                            const groupName: string[] = group?.displayName?.split("/");
 
                             return (
                                 <TransferListItem
@@ -296,8 +311,8 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
                         + "emptyPlaceholders.default") }
                 >
                     {
-                        initialValues?.tempGroupList?.map((group, index)=> {
-                            const groupName = group?.displayName?.split("/");
+                        initialValues?.tempGroupList?.map((group: GroupsInterface, index: number)=> {
+                            const groupName: string[] = group?.displayName?.split("/");
 
                             return (
                                 <TransferListItem

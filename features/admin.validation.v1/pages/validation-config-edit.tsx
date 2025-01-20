@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
 import { useGroupList } from "@wso2is/admin.groups.v1/api";
-import { useRolesList } from "@wso2is/admin.roles.v2/api";
+import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
@@ -97,8 +97,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         state?.config?.ui?.isPasswordInputValidationEnabled);
     const disabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.loginAndRegistration?.disabledFeatures);
-    const isRuleBasedPasswordExpiryDisabled: boolean = disabledFeatures?.includes("ruleBasedPasswordExpiry");
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const maxPasswordLengthLimit: number = useSelector((state: AppState) =>
+        state?.config?.ui?.passwordPolicyConfigs?.maxPasswordAllowedLength);
+    const maxPasswordLengthLimitLength: number = maxPasswordLengthLimit?.toString()?.length;
 
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<
@@ -137,6 +139,11 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const [ legacyPasswordPolicies, setLegacyPasswordPolicies ] = useState<ConnectorPropertyInterface[]>([]);
 
     const isReadOnly: boolean = !useRequiredScopes(featureConfig?.governanceConnectors?.scopes?.update);
+    const hasRuleBasedPasswordExpiryReadPermissions: boolean =
+        useRequiredScopes(featureConfig?.ruleBasedPasswordExpiry?.scopes?.read);
+    const isRuleBasedPasswordExpiryDisabled: boolean =
+        disabledFeatures?.includes(ValidationConfigConstants.FEATURE_DICTIONARY.get("RULE_BASED_PASSWORD_EXPIRY"))
+        || !hasRuleBasedPasswordExpiryReadPermissions;
 
     const {
         data: passwordHistoryCountData,
@@ -171,7 +178,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         data: currentRoleList,
         isLoading: isRolesListLoading,
         error: rolesListError
-    } = useRolesList(
+    } = useGetRolesList(
         rolesListItemLimit,
         roleListOffset,
         null,
@@ -509,11 +516,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                 description = t(
                     "validation:validationError.minLimitError"
                 );
-            } else if (Number(values.maxLength) >
-                ValidationConfigConstants.VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS.PASSWORD_MAX_VALUE) {
+            } else if (Number(values.maxLength) > maxPasswordLengthLimit) {
                 error = true;
                 description = t(
-                    "validation:validationError.maxLimitError"
+                    "validation:validationError.maxLimitError", { maxPasswordValue: maxPasswordLengthLimit }
                 );
             } else if (Number(values.minLength) > Number(values.maxLength)) {
                 error = true;
@@ -602,11 +608,14 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
 
         const processedFormValues: ValidationFormInterface = {
             ...values,
-            passwordExpiryEnabled: passwordExpiryEnabled,
-            passwordExpiryRules: processPasswordExpiryRules(),
-            passwordExpirySkipFallback: passwordExpirySkipFallback,
-            passwordExpiryTime: defaultPasswordExpiryTime
+            passwordExpiryEnabled: passwordExpiryEnabled
         };
+
+        if (!isRuleBasedPasswordExpiryDisabled) {
+            processedFormValues.passwordExpiryRules = processPasswordExpiryRules();
+            processedFormValues.passwordExpirySkipFallback = passwordExpirySkipFallback;
+            processedFormValues.passwordExpiryTime = defaultPasswordExpiryTime;
+        }
 
         const updatePasswordPolicies: Promise<void> = serverConfigurationConfig.processPasswordPoliciesSubmitData(
             processedFormValues,
@@ -741,9 +750,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 }
                                 const max: number = allValues.maxLength
                                     ? parseInt(allValues.maxLength as string)
-                                    : ValidationConfigConstants
-                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                        .PASSWORD_MAX_VALUE;
+                                    : maxPasswordLengthLimit;
 
                                 if (numValue > max) {
                                     return t("common:maxValidation", { max });
@@ -757,9 +764,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                             max={
                                 currentValues.maxLength
                                     ? currentValues.maxLength
-                                    : ValidationConfigConstants
-                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                        .PASSWORD_MAX_VALUE
+                                    : maxPasswordLengthLimit
                             }
                             listen={ (
                                 value: string
@@ -776,11 +781,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                             required
                             hidden={ false }
                             placeholder={ "min" }
-                            maxLength={
-                                ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_LENGTH
-                            }
+                            maxLength={ maxPasswordLengthLimitLength }
                             minLength={
                                 ValidationConfigConstants
                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
@@ -812,12 +813,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                     return t("common:minValidation", { min });
                                 }
 
-                                const max: number = ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_VALUE;
-
-                                if (numValue > max) {
-                                    return t("common:maxValidation", { max });
+                                if (numValue > maxPasswordLengthLimit) {
+                                    return t("common:maxValidation", { max: maxPasswordLengthLimit });
                                 }
                             } }
                             min={
@@ -827,11 +824,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                         .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                         .PASSWORD_MIN_VALUE
                             }
-                            max={
-                                ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_VALUE
-                            }
+                            max={ maxPasswordLengthLimit }
                             width={ 2 }
                             required
                             hidden={ false }
@@ -847,11 +840,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                     }
                                 );
                             } }
-                            maxLength={
-                                ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_LENGTH
-                            }
+                            maxLength={ maxPasswordLengthLimitLength }
                             labelPosition="top"
                             minLength={
                                 ValidationConfigConstants
@@ -1022,9 +1011,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                             }
                             const max: number = allValues.maxLength
                                 ? parseInt(allValues.maxLength as string)
-                                : ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_VALUE;
+                                : maxPasswordLengthLimit;
 
                             if (numValue > max) {
                                 return t("common:maxValidation", { max });
@@ -1038,19 +1025,13 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         max={
                             currentValues.maxLength
                                 ? currentValues.maxLength
-                                : ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_VALUE
+                                : maxPasswordLengthLimit
                         }
                         width={ 2 }
                         required
                         hidden={ false }
                         placeholder={ "min" }
-                        maxLength={
-                            ValidationConfigConstants
-                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                .PASSWORD_MAX_LENGTH
-                        }
+                        maxLength={ maxPasswordLengthLimitLength }
                         minLength={
                             ValidationConfigConstants
                                 .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
@@ -1090,12 +1071,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 return t("common:minValidation", { min });
                             }
 
-                            const max: number = ValidationConfigConstants
-                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                .PASSWORD_MAX_VALUE;
-
-                            if (numValue > max) {
-                                return t("common:maxValidation", { max });
+                            if (numValue > maxPasswordLengthLimit) {
+                                return t("common:maxValidation", { max: maxPasswordLengthLimit });
                             }
                         } }
                         min={
@@ -1105,11 +1082,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                     .PASSWORD_MIN_VALUE
                         }
-                        max={
-                            ValidationConfigConstants
-                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                .PASSWORD_MAX_VALUE
-                        }
+                        max={ maxPasswordLengthLimit }
                         width={ 2 }
                         required
                         hidden={ false }
@@ -1124,11 +1097,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 }
                             );
                         } }
-                        maxLength={
-                            ValidationConfigConstants
-                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                .PASSWORD_MAX_LENGTH
-                        }
+                        maxLength={ maxPasswordLengthLimitLength }
                         labelPosition="top"
                         minLength={
                             ValidationConfigConstants
@@ -1172,9 +1141,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
 
                             const max: number = allValues.minLength
                                 ? parseInt(allValues.minLength as string)
-                                : ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_VALUE;
+                                : maxPasswordLengthLimit;
 
                             if (numValue > max) {
                                 return t("common:maxValidation", { max });
@@ -1188,9 +1155,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         max={
                             currentValues.minLength
                                 ? currentValues.minLength
-                                : ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_VALUE
+                                : maxPasswordLengthLimit
                         }
                         width={ 2 }
                         required
@@ -1206,11 +1171,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 }
                             );
                         } }
-                        maxLength={
-                            ValidationConfigConstants
-                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                .PASSWORD_MAX_LENGTH
-                        }
+                        maxLength={ maxPasswordLengthLimitLength }
                         minLength={
                             ValidationConfigConstants
                                 .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
@@ -1244,9 +1205,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
 
                             const max: number = allValues.minLength
                                 ? parseInt(allValues.minLength as string)
-                                : ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_VALUE;
+                                : maxPasswordLengthLimit;
 
                             if (numValue > max) {
                                 return t("common:maxValidation", { max });
@@ -1260,9 +1219,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         max={
                             currentValues.minLength
                                 ? currentValues.minLength
-                                : ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_VALUE
+                                : maxPasswordLengthLimit
                         }
                         width={ 2 }
                         required
@@ -1278,11 +1235,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 }
                             );
                         } }
-                        maxLength={
-                            ValidationConfigConstants
-                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                .PASSWORD_MAX_LENGTH
-                        }
+                        maxLength={ maxPasswordLengthLimitLength }
                         minLength={
                             ValidationConfigConstants
                                 .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
@@ -1317,9 +1270,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
 
                             const max: number = allValues.minLength
                                 ? parseInt(allValues.minLength as string)
-                                : ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_VALUE;
+                                : maxPasswordLengthLimit;
 
                             if (numValue > max) {
                                 return t("common:maxValidation", { max });
@@ -1333,9 +1284,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         max={
                             currentValues.minLength
                                 ? currentValues.minLength
-                                : ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_VALUE
+                                : maxPasswordLengthLimit
                         }
                         width={ 2 }
                         required
@@ -1351,11 +1300,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 }
                             );
                         } }
-                        maxLength={
-                            ValidationConfigConstants
-                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                .PASSWORD_MAX_LENGTH
-                        }
+                        maxLength={ maxPasswordLengthLimitLength }
                         minLength={
                             ValidationConfigConstants
                                 .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
@@ -1390,9 +1335,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
 
                             const max: number = allValues.minLength
                                 ? parseInt(allValues.minLength as string)
-                                : ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_VALUE;
+                                : maxPasswordLengthLimit;
 
                             if (numValue > max) {
                                 return t("common:maxValidation", { max });
@@ -1406,9 +1349,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         max={
                             currentValues.minLength
                                 ? currentValues.minLength
-                                : ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_VALUE
+                                : maxPasswordLengthLimit
                         }
                         width={ 2 }
                         required
@@ -1478,9 +1419,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
 
                             const max: number = allValues.minLength
                                 ? parseInt(allValues.minLength as string)
-                                : ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_VALUE;
+                                : maxPasswordLengthLimit;
 
                             if (numValue > max) {
                                 return t("common:maxValidation", { max });
@@ -1490,9 +1429,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         max={
                             currentValues.minLength
                                 ? currentValues.minLength
-                                : ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_VALUE
+                                : maxPasswordLengthLimit
                         }
                         width={ 2 }
                         required
@@ -1571,9 +1508,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
 
                             const max: number = allValues.minLength
                                 ? parseInt(allValues.minLength as string)
-                                : ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_VALUE;
+                                : maxPasswordLengthLimit;
 
                             if (numValue > max) {
                                 return t("common:maxValidation", { max });
@@ -1583,9 +1518,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         max={
                             currentValues.minLength
                                 ? currentValues.minLength
-                                : ValidationConfigConstants
-                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                    .PASSWORD_MAX_VALUE
+                                : maxPasswordLengthLimit
                         }
                         width={ 2 }
                         required

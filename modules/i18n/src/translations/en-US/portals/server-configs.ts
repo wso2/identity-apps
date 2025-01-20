@@ -101,10 +101,6 @@ export const serverConfigs: serverConfigsNS = {
         pageSubheading: "Configure the admin advisory banner to be displayed on the login page.",
         title: "Admin Advisory Banner"
     },
-    manageNotificationSendingInternally: {
-        title: "Internal Notification Sending",
-        description: "Manage notification sending internally."
-    },
     remoteLogPublishing: {
         title: "Remote Log Publishing",
         pageTitle: "Remote Log Publishing",

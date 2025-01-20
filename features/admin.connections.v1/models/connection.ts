@@ -293,7 +293,7 @@ export interface ExternalEndpoint {
  */
 export interface ExternalEndpointAuthentication {
     type?: AuthenticationType;
-    properties?: string[] //TODO: check the object
+    properties?: string[]
 }
 
 /**
@@ -479,7 +479,7 @@ export interface ConnectionTemplateItemInterface {
     category?: string;
     displayOrder?: number;
     idp?: ConnectionInterface;
-    customAuth?: CustomAuthenticatorInterface; // TODO; check this object
+    customAuth?: CustomAuthenticatorInterface;
     disabled?: boolean;
     provisioning?: ProvisioningInterface;
     type?: string;

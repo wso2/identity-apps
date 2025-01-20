@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -33,7 +33,6 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import {
     CONSUMER_USERSTORE,
-    PRIMARY_USERSTORE,
     RemoteUserStoreManagerType
 } from "@wso2is/admin.userstores.v1/constants";
 import { UserStorePostData } from "@wso2is/admin.userstores.v1/models/user-stores";
@@ -57,7 +56,7 @@ import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } fro
 import { deleteGroupById, useGroupList } from "../api";
 import { GroupList } from "../components";
 import { CreateGroupWizard } from "../components/wizard/create-group-wizard";
-import { GroupsInterface, WizardStepsFormTypes } from "../models";
+import { GroupsInterface, WizardStepsFormTypes } from "../models/groups";
 
 const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -88,6 +87,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const { getLink } = useDocumentation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -96,7 +97,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ isUserStoresListRequestLoading, setUserStoresListRequestLoading ] = useState<boolean>(false);
     const [ isUserStoreRequestLoading, setUserStoreRequestLoading ] = useState<boolean>(false);
     const [ userStore, setUserStore ] = useState(
-        commonConfig?.primaryUserstoreOnly ? PRIMARY_USERSTORE : CONSUMER_USERSTORE);
+        commonConfig?.primaryUserstoreOnly ? primaryUserStoreDomainName : CONSUMER_USERSTORE);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
@@ -332,7 +333,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     <DocumentationLink
                         link={ getLink("manage.groups.learnMore") }
                     >
-                        { t("extensions:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </>
             ) }

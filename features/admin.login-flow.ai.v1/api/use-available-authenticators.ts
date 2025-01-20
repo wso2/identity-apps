@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models";
 import {

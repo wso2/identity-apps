@@ -19,11 +19,10 @@
 import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
 import { attributeConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { UserStoreBasicData } from "@wso2is/admin.userstores.v1/models";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AnimatedAvatar, ResourceTab, TabPageLayout } from "@wso2is/react-components";
+import { AnimatedAvatar, ResourceTab, ResourceTabPaneInterface, TabPageLayout } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -37,6 +36,7 @@ import {
     EditBasicDetailsLocalClaims,
     EditMappedAttributesLocalClaims
 } from "../components";
+import { ClaimTabIDs } from "../constants/claim-management-constants";
 
 /**
  * Props for the Local Claims edit page.
@@ -68,10 +68,13 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
 
     const claimID: string = match.params.id;
     const hiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ claim, setClaim ] = useState<Claim>(null);
     const [ isLocalClaimDetailsRequestLoading, setIsLocalClaimDetailsRequestLoading ] = useState<boolean>(false);
     const [ userStores, setUserStores ] = useState<UserStoreBasicData[]>([]);
+    const defaultActiveIndex: string = ClaimTabIDs.GENERAL;
 
     const dispatch: Dispatch = useDispatch();
 
@@ -109,10 +112,10 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
     useEffect(() => {
         const userStores: UserStoreBasicData[] = [];
 
-        if (userstoresConfig?.primaryUserstoreName === PRIMARY_USERSTORE) {
+        if (userstoresConfig?.primaryUserstoreName === primaryUserStoreDomainName) {
             userStores.push({
-                id: PRIMARY_USERSTORE,
-                name: PRIMARY_USERSTORE
+                id: primaryUserStoreDomainName,
+                name: primaryUserStoreDomainName
             });
         }
 
@@ -136,11 +139,10 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
     /**
      * Contains the data of the panes.
      */
-    const panes: {
-        menuItem: string;
-        render: () => JSX.Element;
-    }[] = [
+    const panes: ResourceTabPaneInterface[] = [
         {
+            componentId: "general",
+            "data-tabid": ClaimTabIDs.GENERAL,
             menuItem: t("claims:local.pageLayout.edit.tabs.general"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation>
@@ -153,6 +155,8 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
             )
         },
         {
+            componentId: "attribute-mappings",
+            "data-tabid": ClaimTabIDs.ATTRIBUTE_MAPPINGS,
             menuItem: t("claims:local.pageLayout.edit.tabs.mappedAttributes"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation>
@@ -166,6 +170,8 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
             )
         },
         {
+            componentId: "additional-properties",
+            "data-tabid": ClaimTabIDs.ADDITIONAL_PROPERTIES,
             menuItem: t("claims:local.pageLayout.edit.tabs.additionalProperties"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation>
@@ -182,11 +188,10 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
     /**
      * Contains the data of the basic panes.
      */
-    const basicPanes: {
-        menuItem: string;
-        render: () => JSX.Element;
-    }[] = [
+    const basicPanes: ResourceTabPaneInterface[] = [
         {
+            componentId: "general",
+            "data-tabid": ClaimTabIDs.GENERAL,
             menuItem: t("claims:local.pageLayout.edit.tabs.general"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation>
@@ -199,6 +204,8 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
             )
         },
         {
+            componentId: "attribute-mappings",
+            "data-tabid": ClaimTabIDs.ATTRIBUTE_MAPPINGS,
             menuItem: t("claims:local.pageLayout.edit.tabs.mappedAttributes"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation>
@@ -260,12 +267,16 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                         <ResourceTab
                             isLoading={ isLocalClaimDetailsRequestLoading }
                             panes={  panes }
+                            controlTabRedirectionInternally
+                            defaultActiveIndex={ defaultActiveIndex }
                             data-testid={ `${testId}-tabs` } />)
                     : userStores?.length >= 1
                         ? (
                             <ResourceTab
                                 isLoading={ isLocalClaimDetailsRequestLoading }
                                 panes={ basicPanes }
+                                controlTabRedirectionInternally
+                                defaultActiveIndex={ defaultActiveIndex }
                                 data-testid={ `${testId}-tabs` } />)
                         : (
                             <EditBasicDetailsLocalClaims

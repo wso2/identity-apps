@@ -36,7 +36,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Icon, Label } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../../../constants/application-management";
-import { AuthenticationStepInterface } from "../../../../models";
+import { AuthenticationStepInterface } from "../../../../models/application";
 import { SignInMethodUtils } from "../../../../utils/sign-in-method-utils";
 
 /**

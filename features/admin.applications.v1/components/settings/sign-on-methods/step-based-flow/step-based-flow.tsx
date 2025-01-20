@@ -39,13 +39,13 @@ import { Dispatch } from "redux";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
 import { getSignInFlowIcons } from "../../../../configs/ui";
-import { ApplicationManagementConstants } from "../../../../constants";
+import { ApplicationManagementConstants } from "../../../../constants/application-management";
 import {
     AuthenticationSequenceInterface,
     AuthenticationSequenceType,
     AuthenticationStepInterface,
     AuthenticatorInterface
-} from "../../../../models";
+} from "../../../../models/application";
 import { SignInMethodUtils } from "../../../../utils/sign-in-method-utils";
 
 /**

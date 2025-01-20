@@ -247,8 +247,8 @@
                             }
                             break;
                         }
-                    }   
-                
+                    }
+
                 if (federatedAuthenticators.length() > 0) {
                     isFederated = true;
                 }
@@ -483,7 +483,7 @@
                                     "Enter.your.username.here")%>
                             </label>
                             <input id="username" name="username" type="text" required
-                                <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
+                                <% if(skipSignUpEnableCheck && StringUtils.isNotBlank(username)) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
                         </div>
                         <% if (isSaaSApp) { %>
                         <p class="ui tiny compact info message">
@@ -743,7 +743,7 @@
                             <div class="field external-link-container text-small">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                         "Already.have.an.account")%>
-                                <a href="<%=backToUrl%>">
+                                <a href="<%= StringEscapeUtils.escapeHtml4(backToUrl) %>">
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Sign.in")%>
                                 </a>
                             </div>
@@ -1302,7 +1302,7 @@
                             <div class="field external-link-container text-small">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                         "Already.have.an.account")%>
-                                <a href="<%=backToUrl%>">
+                                <a href="<%= StringEscapeUtils.escapeHtml4(backToUrl) %>">
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Sign.in")%>
                                 </a>
                             </div>
@@ -1574,7 +1574,7 @@
             var isSSOLoginAuthenticatorConfigured = JSON.parse(<%=isSSOLoginAuthenticatorConfigured%>);
             var emailDomainDiscoveryEnabled = JSON.parse(<%=emailDomainDiscoveryEnabled%>);
             var emailDomainBasedSelfSignupEnabled = JSON.parse(<%=emailDomainBasedSelfSignupEnabled%>);
-            
+
             if (isSSOLoginAuthenticatorConfigured && emailDomainDiscoveryEnabled && emailDomainBasedSelfSignupEnabled) {
                 var params = new URLSearchParams({
                     idp: 'SSO',
@@ -1589,7 +1589,7 @@
             } else {
                 $("#continue-with-email").hide();
                 $("#federated-authenticators").hide();
-                $("#basic-form").show();        
+                $("#basic-form").show();
             }
 
             var container;

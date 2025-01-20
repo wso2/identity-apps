@@ -27,20 +27,21 @@ export class ValidationConfigConstants {
     public static readonly VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS: {
         MIN_LENGTH: number,
         MIN_VALUE: number;
-        PASSWORD_MAX_LENGTH: number;
-        PASSWORD_MAX_VALUE: number;
         PASSWORD_MIN_LENGTH: number;
         PASSWORD_MIN_VALUE: number;
     } = {
 
         MIN_LENGTH: 1,
         MIN_VALUE: 0,
-        PASSWORD_MAX_LENGTH: 2,
-        PASSWORD_MAX_VALUE: 30,
         PASSWORD_MIN_LENGTH: 1,
         PASSWORD_MIN_VALUE: 5
     };
 
+    /**
+     * Set of keys used to enable/disable features.
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("RULE_BASED_PASSWORD_EXPIRY", "validation.ruleBasedPasswordExpiry");;
 }
 
 /**

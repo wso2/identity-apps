@@ -37,8 +37,8 @@ import {
     history
 } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
-import useExtensionTemplates from "@wso2is/admin.template-core.v1/hooks/use-extension-templates";
-import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
+import useGetExtensionTemplates from "@wso2is/admin.template-core.v1/api/use-get-extension-templates";
+import { ExtensionTemplateListInterface, ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -69,18 +69,20 @@ import { useGetApplication } from "../api/use-get-application";
 import useGetApplicationInboundConfigs from "../api/use-get-application-inbound-configs";
 import { EditApplication } from "../components/edit-application";
 import { InboundProtocolDefaultFallbackTemplates } from "../components/meta/inbound-protocols.meta";
-import { ApplicationManagementConstants } from "../constants";
+import { ApplicationManagementConstants } from "../constants/application-management";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationAccessTypes,
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
+    idpInfoTypeInterface
+} from "../models/application";
+import {
     State,
     SupportedAuthProtocolName,
-    SupportedAuthProtocolTypes,
-    idpInfoTypeInterface
-} from "../models";
+    SupportedAuthProtocolTypes
+} from "../models/application-inbound";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 import "./application-edit.scss";
@@ -118,8 +120,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const appDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const {
-        templates: extensionApplicationTemplates
-    } = useExtensionTemplates();
+        data: extensionApplicationTemplates
+    } = useGetExtensionTemplates(ResourceTypes.APPLICATIONS);
 
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);

@@ -21,7 +21,7 @@ import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { useOrganizationConfigV2 } from "@wso2is/admin.administrators.v1/api/useOrganizationConfigV2";
-import { UseOrganizationConfigType } from "@wso2is/admin.administrators.v1/models";
+import { UseOrganizationConfigType } from "@wso2is/admin.administrators.v1/models/organization";
 import { AppState, OrganizationType, store } from "@wso2is/admin.core.v1";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
@@ -79,6 +79,8 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
     const userRolesFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles
     );
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
     const hasRolesUpdatePermissions: boolean = useRequiredScopes(userRolesFeatureConfig?.scopes?.update);
 
     const administratorRoleDisplayName: string = useSelector(
@@ -98,7 +100,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
     const [ isEnterpriseLoginEnabled, setIsEnterpriseLoginEnabled ] = useState<boolean>(false);
-    const [ activeUserStore, setActiveUserStore ] = useState<string>("PRIMARY");
+    const [ activeUserStore, setActiveUserStore ] = useState<string>(primaryUserStoreDomainName);
 
     const organizationName: string = store.getState().auth.tenantDomain;
 
@@ -199,14 +201,18 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                                 row
                                 aria-labelledby="console-administrators-radio-group"
                                 className="multi-option-radio-group"
-                                defaultValue="PRIMARY"
+                                defaultValue={ primaryUserStoreDomainName }
                                 name="console-administrators-radio-group-2"
                                 value={ activeUserStore }
                                 onChange={ (_: ChangeEvent<HTMLInputElement>, value: string) => {
                                     setActiveUserStore(value);
                                 } }
                             >
-                                <FormControlLabel value="PRIMARY" control={ <Radio /> } label="Asgardeo" />
+                                <FormControlLabel
+                                    value={ primaryUserStoreDomainName }
+                                    control={ <Radio /> }
+                                    label="Asgardeo"
+                                />
                                 <FormControlLabel
                                     value="DEFAULT"
                                     control={ <Radio /> }

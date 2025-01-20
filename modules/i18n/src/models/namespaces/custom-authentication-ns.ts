@@ -19,6 +19,8 @@
 export interface customAuthenticationNS {
     fields: {
         createWizard: {
+            title: string;
+            subTitle: string;
             authenticationTypeStep: {
                 label: string;
                 externalAuthenticationCard: {

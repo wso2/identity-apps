@@ -335,7 +335,6 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                     />
                 );
 
-            // TODO: use local for headings
             case "custom-authentication":
                 return (
                     <CustomAuthenticationCreateWizard

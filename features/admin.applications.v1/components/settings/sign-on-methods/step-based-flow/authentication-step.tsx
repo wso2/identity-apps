@@ -36,7 +36,7 @@ import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Checkbox, Form, Icon, Label, Radio } from "semantic-ui-react";
-import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../../models";
+import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../../models/application";
 
 /**
  * Proptypes for the authentication step component.

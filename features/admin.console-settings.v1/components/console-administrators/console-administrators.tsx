@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,6 +27,7 @@ import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { useUserStores } from "@wso2is/admin.userstores.v1/api";
+import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { UserStoreDropdownItem, UserStoreListItem, UserStorePostData } from "@wso2is/admin.userstores.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
@@ -118,6 +119,11 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
             };
 
             userStoreList?.forEach((store: UserStoreListItem, index: number) => {
+                // Skip the remote user store in administrators listing as it is not supporting user listing.
+                if (store?.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager) {
+                    return;
+                }
+
                 if (store?.name?.toUpperCase() !== userstoresConfig?.primaryUserstoreName) {
                     getAUserStore(store.id).then((response: UserStorePostData) => {
                         const isDisabled: boolean = response.properties.find(
