@@ -1,0 +1,32 @@
+<!--
+ * Copyright (c) 2025, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg class="icon" width="14" height="14" viewBox="0 0 14 14" fill="none"
+    xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_2022_136)">
+        <rect width="14" height="14" fill="white" />
+        <path class="path primary"
+            d="M1.2441 14C0.899129 14 0.605498 13.8697 0.363211 13.6091C0.12107 13.3483 0 13.0323 0 12.661V1.33899C0 0.967703 0.12107 0.651679 0.363211 0.390913C0.605498 0.130305 0.899129 0 1.2441 0H11.7693C11.9138 0 12.0512 0.0279049 12.1817 0.0837157C12.3123 0.139527 12.4271 0.207399 12.5263 0.287332L11.9719 0.883987C11.9381 0.847725 11.8958 0.817454 11.8451 0.793175C11.7944 0.768896 11.7353 0.756757 11.6676 0.756757H1.2441C1.08634 0.756757 0.956698 0.811306 0.855183 0.920405C0.753815 1.02966 0.703131 1.16919 0.703131 1.33899V12.661C0.703131 12.8308 0.753815 12.9703 0.855183 13.0796C0.956698 13.1887 1.08634 13.2432 1.2441 13.2432H11.7638C11.9216 13.2432 12.0512 13.1887 12.1527 13.0796C12.2541 12.9703 12.3048 12.8308 12.3048 12.661V7.06007L13.0079 6.30331V12.661C13.0079 13.0323 12.8869 13.3483 12.6447 13.6091C12.4024 13.8697 12.1088 14 11.7638 14H1.2441ZM6.52594 10.8675L2.74331 6.7725L3.25528 6.22149L6.54286 9.78321L13.5217 2.29581L14 2.84682L6.52594 10.8675Z"
+            fill="black" />
+    </g>
+    <defs>
+        <clipPath id="clip0_2022_136">
+            <rect width="14" height="14" fill="white" />
+        </clipPath>
+    </defs>
+</svg>

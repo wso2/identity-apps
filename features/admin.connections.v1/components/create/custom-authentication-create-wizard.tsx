@@ -155,7 +155,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     const getWizardSteps: () => WizardStepInterface[] = () => {
         return [
             {
-                icon: getConnectionWizardStepIcons().general,
+                icon: getConnectionWizardStepIcons().selectAuthentication,
                 name: WizardStepsCustomAuth.AUTHENTICATION_TYPE,
                 title: t("customAuthentication:fields.createWizard.authenticationTypeStep.title")
             },

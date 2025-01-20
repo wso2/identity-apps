@@ -33,6 +33,8 @@ import YahooLogo from "../../themes/default/assets/images/identity-providers/yah
 import JWTLogo from "../../themes/default/assets/images/technologies/jwt-logo.svg";
 import AppleLogo from "../../themes/default/assets/images/third-party/apple-logo.svg";
 import MicrosoftLogo from "../../themes/default/assets/images/third-party/microsoft-logo.svg";
+import { ReactComponent as SelectCheckBoxIcon } from
+    "../../themes/wso2is/assets/images/icons/outline-icons/select-check-box-outline.svg";
 import { SupportedServices } from "../models/connection";
 import ConnectionIcon from "../resources/assets/images/icons/connection.svg";
 import { ReactComponent as DefaultConnectionIcon
@@ -60,6 +62,7 @@ export const getConnectionWizardStepIcons = (): any => {
         authenticatorSettings: GearsIcon,
         general: DocumentIcon,
         outboundProvisioningSettings: GearsIcon,
+        selectAuthentication: SelectCheckBoxIcon,
         summary: ReportIcon
     };
 };
