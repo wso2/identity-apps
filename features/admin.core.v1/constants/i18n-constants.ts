@@ -283,7 +283,7 @@ export class I18nConstants {
     public static readonly POLICY_ADMINISTRATION_NAMESPACE: string = I18nModuleConstants.POLICY_ADMINISTRATION_NAMESPACE;
 
     /**
-     * Remote User Stores namespace.
+     * Custom Authentication namespace.
      */
     public static readonly CUSTOM_AUTHENTICATION_NAMESPACE: string = I18nModuleConstants.
         CUSTOM_AUTHENTICATION_NAMESPACE;

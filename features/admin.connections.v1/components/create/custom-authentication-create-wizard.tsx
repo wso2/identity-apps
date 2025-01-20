@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,14 +22,10 @@ import Divider from "@oxygen-ui/react/Divider";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import { EventPublisher } from "@wso2is/admin.core.v1";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components";
-import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import { EncodeDecodeUtils, URLUtils } from "@wso2is/core/utils";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import {
     ContentLoader,
-    EmphasizedSegment,
     GenericIcon,
     Heading,
     Hint,
@@ -40,10 +36,6 @@ import {
     useWizardAlert
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { AxiosError, AxiosResponse } from "axios";
-import cloneDeep from "lodash-es/cloneDeep";
-import isEmpty from "lodash-es/isEmpty";
-import kebabCase from "lodash-es/kebabCase";
 import React, {
     FC,
     MutableRefObject,
@@ -60,7 +52,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon, Message, Grid as SemanticGrid } from "semantic-ui-react";
-import { createConnection, useGetConnectionTemplate } from "../../api/connections";
+import { useGetConnectionTemplate } from "../../api/connections";
 import { getConnectionWizardStepIcons } from "../../configs/ui";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import { LocalAuthenticatorConstants } from "../../constants/local-authenticator-constants";
@@ -68,18 +60,15 @@ import {
     AuthenticationType,
     AuthenticationTypeDropdownOption,
     AvailableCustomAuthentications,
-    ConnectionInterface,
     CustomAuthenticationCreateWizardGeneralFormValuesInterface,
     CustomAuthenticationCreateWizardProps,
     EndpointConfigFormPropertyInterface,
     FormErrors,
-    GenericConnectionCreateWizardPropsInterface,
     WizardStepInterface,
     WizardStepsCustomAuth
 } from "../../models/connection";
 import "./custom-authentication-create-wizard.scss";
 import { ConnectionsManagementUtils } from "../../utils/connection-utils";
-import { FormSpy } from "@wso2is/form/src";
 
 /**
  * Custom authenticator create wizard component.
@@ -90,7 +79,7 @@ import { FormSpy } from "@wso2is/form/src";
 export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWizardProps> = (
     props: PropsWithChildren<CustomAuthenticationCreateWizardProps>
 ): ReactElement => {
-    const { onWizardClose, onIDPCreate, title, subTitle, ["data-componentid"]: componentId } = props;
+    const { onWizardClose, title, subTitle, ["data-componentid"]: componentId } = props;
 
     const wizardRef: MutableRefObject<any> = useRef(null);
 
@@ -101,7 +90,8 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(0);
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
     const [ selectedAuthenticator, setSelectedAuthenticator ] = useState<AvailableCustomAuthentications>(
-        CustomAuthConstants.EXTERNAL_AUTHENTICATOR);
+        CustomAuthConstants.EXTERNAL_AUTHENTICATOR
+    );
     const [ selectedTemplateId, setSelectedTemplateId ] = useState<string>(null);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isShowSecret1, setIsShowSecret1 ] = useState(false);
@@ -109,10 +99,8 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
 
-    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const { data: connectionTemplate, isLoading: isConnectionTemplateFetchRequestLoading } = useGetConnectionTemplate(
         selectedTemplateId,
@@ -645,8 +633,8 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                 data-componentid={ `${componentId}-form-wizard-display-name` }
                 width={ 15 }
             />
-            <Hint>{ t("customAuthentication:fields.createWizard.generalSettingsStep.helpPanel." +
-                "displayName.hint") }
+            <Hint>
+                { t("customAuthentication:fields.createWizard.generalSettingsStep.helpPanel." + "displayName.hint") }
             </Hint>
         </WizardPage>
     );
@@ -659,8 +647,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                 inputType="url"
                 name="endpointUri"
                 label={ t("customAuthentication:fields.createWizard.configurationsStep.endpoint.label") }
-                placeholder={ t("customAuthentication:fields.createWizard.configurationsStep.endpoint." +
-                    "placeholder") }
+                placeholder={ t("customAuthentication:fields.createWizard.configurationsStep.endpoint.placeholder") }
                 hint={ t("customAuthentication:fields.createWizard.configurationsStep.endpoint.hint") }
                 required={ true }
                 maxLength={ 100 }
@@ -670,7 +657,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
             />
             <Divider className="divider-container" />
             <Heading className="heading-container" as="h5">
-                { t("customAuthentication:fields.createWizard.configurationsStep." + "authenticationTypeDropdown.title") }
+                { t("customAuthentication:fields.createWizard.configurationsStep.authenticationTypeDropdown.title") }
             </Heading>
             <Box className="box-container">
                 <Field.Dropdown
@@ -724,17 +711,21 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                     { t("customAuthentication:fields.createWizard.generalSettingsStep.helpPanel.identifier.header") }
                 </Heading>
                 <p>
-                    { t("customAuthentication:fields.createWizard.generalSettingsStep.helpPanel." +
-                        "identifier.description") }
+                    { t(
+                        "customAuthentication:fields.createWizard.generalSettingsStep.helpPanel." +
+                            "identifier.description"
+                    ) }
                 </p>
                 <Message className="display-flex" size="small" warning header="Hello there">
                     <Icon name="warning sign" color="orange" corner />
                     <Message.Content className="tiny">
-                        { t("customAuthentication:fields.createWizard.generalSettingsStep.helpPanel." +
-                            "identifier.warning") }
+                        { t(
+                            "customAuthentication:fields.createWizard.generalSettingsStep.helpPanel." +
+                                "identifier.warning"
+                        ) }
                     </Message.Content>
                 </Message>
-                <Divider/>
+                <Divider />
                 <Heading as="h5">
                     { t("customAuthentication:fields.createWizard.generalSettingsStep.helpPanel.displayName.header") }
                 </Heading>
@@ -796,7 +787,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                             { subTitle && (
                                 <Heading as="h6">
                                     { subTitle }
-                                    { /* { resolveDocumentationLink() } */ }
                                 </Heading>
                             ) }
                         </div>
