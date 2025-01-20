@@ -173,11 +173,6 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ env.GH_TOKEN }}
 
-            - name: 👷 Build Project
-              if: ${{ env.IS_HOTFIX == 'true' }}
-              id: build-project
-              run:  pnpm build
-
             - name: 🚀 Perform Release
               id: perform-release
               working-directory: .github/workflows

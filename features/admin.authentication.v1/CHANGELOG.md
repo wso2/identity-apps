@@ -1,5 +1,43 @@
 # @wso2is/admin.authentication.v1
 
+## 2.25.85
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.35.23
+  - @wso2is/admin.extensions.v1@2.36.10
+  - @wso2is/admin.organizations.v1@2.26.85
+  - @wso2is/admin.users.v1@2.29.44
+  - @wso2is/admin.userstores.v1@2.26.44
+
+## 2.25.84
+
+### Patch Changes
+
+- [#7318](https://github.com/wso2/identity-apps/pull/7318) [`23bd7d4f6d6d70d789ad7115ffd1fbec742455a6`](https://github.com/wso2/identity-apps/commit/23bd7d4f6d6d70d789ad7115ffd1fbec742455a6) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Bump oxygen version and enable active policy view.
+
+- Updated dependencies [[`9ecf97c14319c2af32a0ef375c02c4b70cf159d5`](https://github.com/wso2/identity-apps/commit/9ecf97c14319c2af32a0ef375c02c4b70cf159d5), [`23bd7d4f6d6d70d789ad7115ffd1fbec742455a6`](https://github.com/wso2/identity-apps/commit/23bd7d4f6d6d70d789ad7115ffd1fbec742455a6), [`ad63bbe54541ed6b28e1f254f3e7f5e7b6767d7b`](https://github.com/wso2/identity-apps/commit/ad63bbe54541ed6b28e1f254f3e7f5e7b6767d7b), [`5a5577aacf0a12d03246c9b829c8168296b37dcf`](https://github.com/wso2/identity-apps/commit/5a5577aacf0a12d03246c9b829c8168296b37dcf)]:
+  - @wso2is/i18n@2.15.0
+  - @wso2is/admin.authorization.v1@2.25.34
+  - @wso2is/admin.organizations.v1@2.26.84
+  - @wso2is/admin.extensions.v1@2.36.9
+  - @wso2is/admin.userstores.v1@2.26.43
+  - @wso2is/admin.users.v1@2.29.43
+  - @wso2is/admin.core.v1@2.35.22
+
+## 2.25.83
+
+### Patch Changes
+
+- Updated dependencies [[`f9db643943377216b8525a183f3ad4855a3bd4af`](https://github.com/wso2/identity-apps/commit/f9db643943377216b8525a183f3ad4855a3bd4af), [`afd3f3bb5aae4dab8dc85ea58fb529af057e9095`](https://github.com/wso2/identity-apps/commit/afd3f3bb5aae4dab8dc85ea58fb529af057e9095)]:
+  - @wso2is/admin.authorization.v1@2.25.33
+  - @wso2is/admin.organizations.v1@2.26.83
+  - @wso2is/admin.extensions.v1@2.36.8
+  - @wso2is/admin.userstores.v1@2.26.42
+  - @wso2is/admin.users.v1@2.29.42
+  - @wso2is/admin.core.v1@2.35.21
+
 ## 2.25.82
 
 ### Patch Changes

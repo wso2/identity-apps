@@ -287,7 +287,7 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
                             </div>
                             <div className="secret-selection-menu-wrapper">
                                 { secretMgtFeatureConfig?.enabled &&
-hasSecretReadPermissions && (
+                                    hasSecretReadPermissions && (
                                     <SecretSelectionDropdown
                                         open={ isSecretSelectionDropdownOpen }
                                         onClose={ () => setIsSecretSelectionDropdownOpen(false) }

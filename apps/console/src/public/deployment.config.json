@@ -887,6 +887,17 @@
                     ]
                 }
             },
+            "policyAdministration":{
+                "disabledFeatures": [],
+                "enabled": false,
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
+                }
+            },
             "remoteFetchConfig": {
                 "disabledFeatures": [],
                 "enabled": false,
