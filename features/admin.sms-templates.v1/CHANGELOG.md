@@ -1,5 +1,16 @@
 # @wso2is/admin.sms-templates.v1
 
+## 1.0.86
+
+### Patch Changes
+
+- [#7334](https://github.com/wso2/identity-apps/pull/7334) [`57b18bca988a2b72865027c1d21250fd482cf6b9`](https://github.com/wso2/identity-apps/commit/57b18bca988a2b72865027c1d21250fd482cf6b9) Thanks [@Avarjana](https://github.com/Avarjana)! - Add resolve logic to SMS template GET API
+
+- Updated dependencies [[`cbe83e7ecee7bd19053fdb554e4f73ab279ec2e8`](https://github.com/wso2/identity-apps/commit/cbe83e7ecee7bd19053fdb554e4f73ab279ec2e8)]:
+  - @wso2is/admin.branding.v1@2.27.60
+  - @wso2is/admin.core.v1@2.35.25
+  - @wso2is/common.branding.v1@2.25.60
+
 ## 1.0.85
 
 ### Patch Changes
