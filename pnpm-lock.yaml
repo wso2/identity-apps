@@ -16781,6 +16781,9 @@ importers:
       '@wso2is/admin.core.v1':
         specifier: ^2.35.26
         version: link:../admin.core.v1
+      '@wso2is/admin.organizations.v1':
+        specifier: ^2.26.88
+        version: link:../admin.organizations.v1
       '@wso2is/common.branding.v1':
         specifier: ^2.25.61
         version: link:../common.branding.v1

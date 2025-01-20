@@ -39,6 +39,7 @@ const useGetSmsTemplate = <Data = SMSTemplate, Error = RequestErrorInterface>(
     templateType: string,
     locale: string = SMSTemplateConstants.DEAFULT_LOCALE,
     fetchSystemTemplate: boolean = false,
+    fetchInheritedTemplate: boolean = false,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     const smsLocale: string = locale.replace("-", "_");
@@ -51,8 +52,14 @@ const useGetSmsTemplate = <Data = SMSTemplate, Error = RequestErrorInterface>(
         method: HttpMethods.GET,
         url:
             store.getState().config.endpoints.smsTemplates +
-            `/template-types/${templateType}/org-templates/${smsLocale}?resolve=true`
+            `/template-types/${templateType}/org-templates/${smsLocale}`
     };
+
+    if (fetchInheritedTemplate) {
+        requestConfig.url =
+                store.getState().config.endpoints.smsTemplates +
+                `/template-types/${templateType}/org-templates/${smsLocale}?resolve=true`
+    }
 
     if (fetchSystemTemplate) {
         requestConfig.url =

@@ -23,6 +23,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import {
     AlertInterface,
     AlertLevels,
@@ -65,6 +66,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     const [ availableSmsTemplatesList, setAvailableSmsTemplatesList ] = useState<SMSTemplateType[]>([]);
     const [ currentSmsTemplate, setCurrentSmsTemplate ] = useState<SMSTemplate>();
     const [ isSystemTemplate, setIsSystemTemplate ] = useState(false);
+    const [ isInheritedTemplate, setIsInheritedTemplate ] = useState(false);
     const [ shouldFetch, setShouldFetch ] = useState(true);
     const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
     const [ selectedLocale, setSelectedLocale ] = useState(SMSTemplateConstants.DEAFULT_LOCALE);
@@ -93,6 +95,9 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     const isReadOnly: boolean = !smsFeatureConfig.enabled || !hasUpdatePermission;
     const hasSmsTemplateCreatePermissions: boolean = smsFeatureConfig.enabled && hasCreatePermission;
 
+    const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
+    const isSubOrgUser: boolean = (organizationType === OrganizationType.SUBORGANIZATION);
+
     const {
         data: smsTemplatesList,
         isLoading: isSmsTemplatesListLoading,
@@ -108,6 +113,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         selectedSmsTemplateId,
         selectedLocale,
         isSystemTemplate,
+        isInheritedTemplate,
         shouldFetch
     );
 
@@ -180,7 +186,11 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
 
         if (smsTemplateError.response.status === 404) {
             setIsTemplateNotAvailable(true);
-            if (!isSystemTemplate || selectedLocale !== SMSTemplateConstants.DEAFULT_LOCALE) {
+            if (isSubOrgUser && !isInheritedTemplate) {
+                setIsInheritedTemplate(true);
+
+                return;
+            } else if (!isSystemTemplate || selectedLocale !== SMSTemplateConstants.DEAFULT_LOCALE) {
                 setIsSystemTemplate(true);
 
                 return;
@@ -196,7 +206,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 message: t("smsTemplates:notifications.getSmsTemplate.error.message")
             })
         );
-    }, [ smsTemplateError, isSystemTemplate ]);
+    }, [ smsTemplateError, isSystemTemplate, isInheritedTemplate ]);
 
     const handleTemplateIdChange = (event: SelectChangeEvent<string>): void => {
         const templateId: string = event.target.value;
@@ -204,6 +214,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         setShouldFetch(false);
         setIsTemplateNotAvailable(false);
         setIsSystemTemplate(false);
+        setIsInheritedTemplate(false);
         setCurrentSmsTemplate(undefined);
         setSelectedLocale(SMSTemplateConstants.DEAFULT_LOCALE);
         setSelectedSmsTemplateId(templateId);
@@ -226,6 +237,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         setCurrentSmsTemplate({ ...selectedSmsTemplate });
         setIsTemplateNotAvailable(true);
         setIsSystemTemplate(false);
+        setIsInheritedTemplate(false);
         setSelectedLocale(locale);
         setShouldFetch(true);
         mutateSmsTemplate();
@@ -238,7 +250,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
             id: selectedLocale.replace("-", "_")
         };
 
-        if (isSystemTemplate) {
+        if (isSystemTemplate || isInheritedTemplate) {
             createSmsTemplate(selectedSmsTemplateId, template)
                 .then((_response: SMSTemplate) => {
                     dispatch(
@@ -249,6 +261,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                         })
                     );
                     setIsSystemTemplate(false);
+                    setIsInheritedTemplate(false);
                     setShouldFetch(true);
                     mutateSmsTemplate();
                 })
@@ -272,6 +285,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                         })
                     );
                     setIsSystemTemplate(false);
+                    setIsInheritedTemplate(false);
                     setShouldFetch(true);
                     mutateSmsTemplate();
                 })
@@ -288,6 +302,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
 
         setIsTemplateNotAvailable(false);
         setIsSystemTemplate(false);
+        setIsInheritedTemplate(false);
     };
 
     const handleDeleteRequest = (): void => {
@@ -303,6 +318,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 );
                 setSelectedLocale(SMSTemplateConstants.DEAFULT_LOCALE);
                 setIsSystemTemplate(false);
+                setIsInheritedTemplate(false);
                 setShouldFetch(true);
                 mutateSmsTemplate();
             })
@@ -320,7 +336,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     const renderDangerZone = (): ReactElement => {
         let zoneType: string = "revert";
 
-        if (isSystemTemplate) {
+        if (isSystemTemplate || isInheritedTemplate) {
             return null;
         } else if (selectedLocale !== SMSTemplateConstants.DEAFULT_LOCALE) {
             zoneType = "remove";
