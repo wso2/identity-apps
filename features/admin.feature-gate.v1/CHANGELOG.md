@@ -1,5 +1,13 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.4.87
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.35.25
+  - @wso2is/admin.organizations.v1@2.26.87
+
 ## 1.4.86
 
 ### Patch Changes

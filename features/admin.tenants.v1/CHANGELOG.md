@@ -1,5 +1,19 @@
 # @wso2is/admin.tenants.v1
 
+## 2.28.61
+
+### Patch Changes
+
+- [#7331](https://github.com/wso2/identity-apps/pull/7331) [`2f8f76721d2aa45da98bfde4db21f279510a7f28`](https://github.com/wso2/identity-apps/commit/2f8f76721d2aa45da98bfde4db21f279510a7f28) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Fix missing show password button in the create root organization ui
+
+- Updated dependencies [[`ed6e0a5dfe66c7ef786cff892008fd74fac10e2b`](https://github.com/wso2/identity-apps/commit/ed6e0a5dfe66c7ef786cff892008fd74fac10e2b)]:
+  - @wso2is/admin.validation.v1@2.27.25
+  - @wso2is/admin.users.v1@2.29.46
+  - @wso2is/admin.core.v1@2.35.25
+  - @wso2is/admin.extensions.v1@2.36.12
+  - @wso2is/admin.organizations.v1@2.26.87
+  - @wso2is/admin.feature-gate.v1@1.4.87
+
 ## 2.28.60
 
 ### Patch Changes

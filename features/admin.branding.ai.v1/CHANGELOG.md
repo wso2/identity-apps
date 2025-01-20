@@ -1,5 +1,19 @@
 # @wso2is/admin.branding.ai.v1
 
+## 2.26.87
+
+### Patch Changes
+
+- [#7321](https://github.com/wso2/identity-apps/pull/7321) [`cbe83e7ecee7bd19053fdb554e4f73ab279ec2e8`](https://github.com/wso2/identity-apps/commit/cbe83e7ecee7bd19053fdb554e4f73ab279ec2e8) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove barrel files in @wso2is/admin.branding.v1 module
+
+- Updated dependencies [[`cbe83e7ecee7bd19053fdb554e4f73ab279ec2e8`](https://github.com/wso2/identity-apps/commit/cbe83e7ecee7bd19053fdb554e4f73ab279ec2e8)]:
+  - @wso2is/admin.branding.v1@2.27.60
+  - @wso2is/admin.core.v1@2.35.25
+  - @wso2is/admin.organizations.v1@2.26.87
+  - @wso2is/admin.feature-gate.v1@1.4.87
+  - @wso2is/common.ai.v1@2.25.87
+  - @wso2is/common.branding.v1@2.25.60
+
 ## 2.26.86
 
 ### Patch Changes
