@@ -271,12 +271,12 @@ export interface FederatedAuthenticatorInterface extends CommonPluggableComponen
  * Captures the properties of a externally implemented local authenticator.
  */
 export interface CustomAuthenticatorInterface extends StrictConnectionInterface {
-    name?: string;
-    displayName?: string;
+    name: string;
+    displayName: string;
     isEnabled?: boolean;
     isDefault?: boolean;
-    endpoint?: ExternalEndpoint;
-    authenticationType?: string;
+    endpoint: ExternalEndpoint;
+    authenticationType: string;
     description?: string;
 }
 
