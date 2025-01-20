@@ -1074,10 +1074,6 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 description: "An error occurred while creating the connection.",
                 message: "Create error"
             },
-            serverError: {
-                description: "You are trying to add a provider with an existing Identity Provider Entity ID or a Service Provider Entity ID.",
-                message: "There's a Conflicting Entity"
-            },
             success: {
                 description: "Successfully created the connection.",
                 message: "Create successful"
