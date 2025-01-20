@@ -588,7 +588,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         defaultValue={ claim?.profiles?.console?.supportedByDefault ?? claim?.supportedByDefault }
                         data-componentid={
                             `${ testId }-form-console-supported-by-default-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isSupportedByDefaultCheckboxDisabled }
                         {
                             ...( isConsoleRequired && !isConsoleReadOnly
@@ -606,7 +606,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         required={ false }
                         defaultValue={ claim?.profiles?.endUser?.supportedByDefault ?? claim?.supportedByDefault }
                         data-componentid={ `${ testId }-form-end-user-supported-by-default-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isSupportedByDefaultCheckboxDisabled }
                         {
                             ...( isEndUserRequired && !isEndUserReadOnly
@@ -626,7 +626,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             claim?.supportedByDefault }
                         data-componentid={
                             `${ testId }-form-self-registration-supported-by-default-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isSupportedByDefaultCheckboxDisabled }
                         {
                             ...( isSelfRegistrationRequired && !isSelfRegistrationReadOnly
@@ -671,7 +671,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         required={ false }
                         defaultValue={ claim?.profiles?.console?.required ?? claim?.required }
                         data-componentid={ `${ testId }-form-console-required-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isRequiredCheckboxDisabled || isConsoleReadOnly }
                         listen ={ (value: boolean) => {
                             setIsConsoleRequired(value);
@@ -691,7 +691,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         required={ false }
                         defaultValue={ claim?.profiles?.endUser?.required ?? claim?.required }
                         data-componentid={ `${ testId }-form-end-user-required-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isRequiredCheckboxDisabled || isEndUserReadOnly }
                         listen ={ (value: boolean) => {
                             setIsEndUserRequired(value);
@@ -711,7 +711,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         required={ false }
                         defaultValue={ claim?.profiles?.selfRegistration?.required ?? claim?.required }
                         data-componentid={ `${ testId }-form-self-registration-required-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isRequiredCheckboxDisabled || isSelfRegistrationReadOnly }
                         listen ={ (value: boolean) => {
                             setIsSelfRegistrationRequired(value);
@@ -753,7 +753,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         requiredErrorMessage=""
                         defaultValue={ claim?.profiles?.console?.readOnly ?? claim?.readOnly }
                         data-componentid={ `${ testId }-form-console-readOnly-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isReadOnlyCheckboxDisabled }
                         listen ={ (value: boolean) => {
                             setIsConsoleReadOnly(value);
@@ -768,7 +768,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         requiredErrorMessage=""
                         defaultValue={ claim?.profiles?.endUser?.readOnly ?? claim?.readOnly }
                         data-componentid={ `${ testId }-form-end-user-readOnly-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isReadOnlyCheckboxDisabled }
                         listen ={ (value: boolean) => {
                             setIsEndUserReadOnly(value);
@@ -783,7 +783,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         requiredErrorMessage=""
                         defaultValue={ claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
                         data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isReadOnlyCheckboxDisabled }
                         listen ={ (value: boolean) => {
                             setIsSelfRegistrationReadOnly(value);
