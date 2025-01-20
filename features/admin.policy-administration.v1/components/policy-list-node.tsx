@@ -78,9 +78,9 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
             setInactivePolicies([]);
 
             dispatch(addAlert({
-                description: "The policy has been deleted successfully",
+                description: t("policyAdministration:alerts.deleteSuccess.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Delete successful"
+                message: t("policyAdministration:alerts.deleteSuccess.message")
             }));
 
             mutateInactivePolicyList();
@@ -88,9 +88,9 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
         } catch (error) {
             // Dispatch the error alert.
             dispatch(addAlert({
-                description: "An error occurred while deleting the policy",
+                description: t("policyAdministration:alerts.deleteFailure.description"),
                 level: AlertLevels.ERROR,
-                message: "Delete error"
+                message: t("policyAdministration:alerts.deleteFailure.message")
             }));
         }
     };
@@ -109,6 +109,12 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
                 subscriberIds: [ "PDP Subscriber" ]
             });
 
+            dispatch(addAlert({
+                description: t("policyAdministration:alerts.activateSuccess.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("policyAdministration:alerts.activateSuccess.message")
+            }));
+
             setPageInactive(0);
             setHasMoreInactivePolicies(true);
             setInactivePolicies([]);
@@ -118,9 +124,9 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
 
         } catch ( error ) {
             dispatch(addAlert({
-                description: "An error occurred while activating the policy",
+                description: t("policyAdministration:alerts.activateFailure.description"),
                 level: AlertLevels.ERROR,
-                message: "Activation error"
+                message: t("policyAdministration:alerts.activateFailure.message")
             }));
         }
     };
