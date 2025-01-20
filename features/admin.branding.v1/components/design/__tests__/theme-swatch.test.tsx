@@ -20,8 +20,8 @@ import { PredefinedThemes } from "@wso2is/common.branding.v1/models";
 import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
-import { BrandingPreferenceMeta } from "../../../meta";
-import { ThemeSwatch } from "../theme-swatch";
+import { BrandingPreferenceMeta } from "../../../meta/branding-preference-meta";
+import { ThemeSwatch } from "../theme-swatch/theme-swatch";
 
 describe.skip("Test if the Theme Swatch component  is working as expected", () => {
 

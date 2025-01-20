@@ -91,6 +91,11 @@ export class RoleConstants {
      * filter query for audience type organization.
      */
     public static readonly ROLE_AUDIENCE_ORGANIZATION_FILTER: string = "audience.type eq organization";
+
+    /**
+     * Property key for shared role.
+     */
+    public static readonly IS_SHARED_ROLE: string = "isSharedRole";
 }
 
 /**

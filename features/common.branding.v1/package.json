@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/common.branding.v1",
-    "version": "2.25.46",
+    "version": "2.25.59",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -13,10 +13,10 @@
         "@mui/material": "^5.13.0",
         "@mui/system": "^5.12.3",
         "@mui/utils": "^5.12.3",
-        "@oxygen-ui/react": "^2.0.0",
-        "@wso2is/core": "^2.5.4",
-        "@wso2is/admin.core.v1": "^2.35.11",
-        "@wso2is/admin.organizations.v1": "^2.26.73",
+        "@oxygen-ui/react": "^2.3.1",
+        "@wso2is/core": "^2.5.6",
+        "@wso2is/admin.core.v1": "^2.35.24",
+        "@wso2is/admin.organizations.v1": "^2.26.86",
         "lodash-es": "^4.17.21",
         "react-helmet": "^5.2.1"
     },

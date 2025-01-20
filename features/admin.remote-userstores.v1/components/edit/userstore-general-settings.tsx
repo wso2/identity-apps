@@ -758,7 +758,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                                             <DocumentationLink
                                                 link={ getLink("manage.userStores.highAvailability.learnMore") }
                                             >
-                                                { t("extensions:common.learnMore") }
+                                                { t("common:learnMore") }
                                             </DocumentationLink>
                                         </List.Description>
                                     </List.Content>

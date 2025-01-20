@@ -81,7 +81,7 @@ export const AuthorizationAPIResource: FunctionComponent<AuthorizationAPIResourc
                                                 link={ getLink("develop.apiResources.addAPIResource." +
                                                     "requiredAuthorization.learnMore") }
                                             >
-                                                { t("extensions:common.learnMore") }
+                                                { t("common:learnMore") }
                                             </DocumentationLink>
                                         </>)
                                     }

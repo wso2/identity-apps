@@ -729,7 +729,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                                                     .documentationLink())
                                                                         }
                                                                     >
-                                                                        { t("extensions:common.learnMore") }
+                                                                        { t("common:learnMore") }
                                                                     </DocumentationLink>
                                                                 </>)
                                                             }

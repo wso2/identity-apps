@@ -422,7 +422,7 @@ export const ConfigurationSettings: FunctionComponent<ConfigurationSettingsProps
                                     <DocumentationLink
                                         link={ getLink("manage.userStores.attributeMappings.learnMore") }
                                     >
-                                        { t("extensions:common.learnMore") }
+                                        { t("common:learnMore") }
                                     </DocumentationLink>
                                 </Heading>
                             </Heading>

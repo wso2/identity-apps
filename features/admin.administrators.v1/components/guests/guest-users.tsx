@@ -307,7 +307,7 @@ const GuestUsersPage: FunctionComponent<GuestUsersPageInterface> = (
                             <DocumentationLink
                                 link={ getLink("manage.users.collaboratorAccounts.learnMore") }
                             >
-                                { t("extensions:common.learnMore") }
+                                { t("common:learnMore") }
                             </DocumentationLink>
                         </>
                     </Text>

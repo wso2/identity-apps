@@ -375,7 +375,7 @@ export class AppConstants {
                 "ATTRIBUTE_MAPPINGS",
                 `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type/:customAttributeMappingID?`
             ],
-            [ "CREATE_TENANT", `${AppConstants.getMainViewBasePath()}/create-tenant` ],
+            [ "CREATE_TENANT", `${AppConstants.getAppBasePath()}/create-tenant` ],
             [ "ORGANIZATIONS", `${AppConstants.getAdminViewBasePath()}/organizations` ],
             [ "ORGANIZATION_UPDATE", `${AppConstants.getAdminViewBasePath()}/organizations/:id` ],
             [ "ORGANIZATION_ROLES", `${AppConstants.getAdminViewBasePath()}/roles/organization-roles` ],
@@ -411,7 +411,9 @@ export class AppConstants {
                 `${ AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ],
             [ "TENANTS", `${AppConstants.getDefaultLayoutBasePath()}/organizations` ],
             [ "EDIT_TENANT", `${AppConstants.getDefaultLayoutBasePath()}/organizations/:id` ],
-            [ "SYSTEM_SETTINGS", `${AppConstants.getDefaultLayoutBasePath()}/organizations/system-settings` ]
+            [ "SYSTEM_SETTINGS", `${AppConstants.getDefaultLayoutBasePath()}/organizations/system-settings` ],
+            [ "POLICY_ADMINISTRATION", `${AppConstants.getAdminViewBasePath()}/policy-administration` ],
+            [ "EDIT_POLICY", `${AppConstants.getAdminViewBasePath()}/policy-administration/edit-policy/:id` ]
         ]);
 
         return paths;

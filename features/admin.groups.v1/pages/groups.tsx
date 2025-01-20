@@ -52,10 +52,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { deleteGroupById, useGroupList } from "../api";
-import { GroupList } from "../components";
+import { deleteGroupById, useGroupList } from "../api/groups";
+import { GroupList } from "../components/group-list";
 import { CreateGroupWizard } from "../components/wizard/create-group-wizard";
-import { GroupsInterface, WizardStepsFormTypes } from "../models";
+import { GroupsInterface, WizardStepsFormTypes } from "../models/groups";
 
 const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -330,7 +330,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     <DocumentationLink
                         link={ getLink("manage.groups.learnMore") }
                     >
-                        { t("extensions:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </>
             ) }

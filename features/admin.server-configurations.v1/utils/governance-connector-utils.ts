@@ -17,6 +17,7 @@
  */
 
 import { AppConstants, store } from "@wso2is/admin.core.v1";
+import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
@@ -172,6 +173,24 @@ export class GovernanceConnectorUtils {
                 });
 
                 return connector;
+            }
+        });
+    }
+
+    public static getCombinedPredefinedConnectorCategories(): Array<any> {
+
+        return this.getPredefinedConnectorCategories().map((category: any) => {
+
+            const additionalConnectors: any = serverConfigurationConfig.getConnectorCategoryExtension()
+                .find((el: any) => el.id === category.id);
+
+            if (additionalConnectors) {
+                return {
+                    ...category,
+                    connectors: [ ...category.connectors, ...additionalConnectors.connectors ]
+                };
+            } else {
+                return category;
             }
         });
     }

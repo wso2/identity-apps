@@ -90,7 +90,7 @@ export const NewUserView: FC<NewUserViewContextCardPropsInterface> = (props: New
                                     </Placeholder.Header>
                                 </Placeholder>
                             )
-                            : t("extensions:common.quickStart.greeting.heading", {
+                            : t("console:common.quickStart.greeting.heading", {
                                 username: isPrivilegedUser ? username : resolveUserDisplayName(profileInfo)
                             })
                     }

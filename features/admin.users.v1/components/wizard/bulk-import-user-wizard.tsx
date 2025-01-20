@@ -41,10 +41,10 @@ import {
     history
 } from "@wso2is/admin.core.v1";
 import { userConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
-import { getGroupList, useGroupList } from "@wso2is/admin.groups.v1/api";
-import { GroupsInterface } from "@wso2is/admin.groups.v1/models";
+import { getGroupList, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
+import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { getAUserStore, getUserStores } from "@wso2is/admin.userstores.v1/api";
 import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
