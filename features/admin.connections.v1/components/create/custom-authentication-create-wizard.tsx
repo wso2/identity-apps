@@ -20,8 +20,8 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@oxygen-ui/react/Box";
 import Divider from "@oxygen-ui/react/Divider";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
-import { EventPublisher } from "@wso2is/admin.core.v1";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import {
@@ -37,9 +37,8 @@ import {
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, {
-    FC,
+    FunctionComponent,
     MutableRefObject,
-    PropsWithChildren,
     ReactElement,
     ReactNode,
     Suspense,
@@ -49,8 +48,6 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { DropdownProps, Icon, Message, Grid as SemanticGrid } from "semantic-ui-react";
 import { useGetConnectionTemplate } from "../../api/connections";
 import { getConnectionWizardStepIcons } from "../../configs/ui";
@@ -60,8 +57,8 @@ import {
     AuthenticationType,
     AuthenticationTypeDropdownOption,
     AvailableCustomAuthentications,
+    ConnectionTemplateInterface,
     CustomAuthenticationCreateWizardGeneralFormValuesInterface,
-    CustomAuthenticationCreateWizardProps,
     EndpointConfigFormPropertyInterface,
     FormErrors,
     WizardStepInterface,
@@ -70,17 +67,38 @@ import {
 import "./custom-authentication-create-wizard.scss";
 import { ConnectionsManagementUtils } from "../../utils/connection-utils";
 
+export interface CustomAuthenticationCreateWizardPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Connection template interface.
+     */
+    template: ConnectionTemplateInterface
+    /**
+     * Title of the wizard.
+     */
+    title: string;
+    /**
+     * Sub title of the wizard.
+     */
+    subTitle: string;
+    /**
+     * Callback triggered when closing the wizard.
+     */
+    onWizardClose: () => void;
+}
+
 /**
  * Custom authenticator create wizard component.
  *
  * @param props - Props injected to the component.
  * @returns React Element
  */
-export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWizardProps> = (
-    props: PropsWithChildren<CustomAuthenticationCreateWizardProps>
-): ReactElement => {
-    const { onWizardClose, title, subTitle, ["data-componentid"]: componentId } = props;
-
+const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCreateWizardPropsInterface> = ({
+    template,
+    title,
+    subTitle,
+    onWizardClose,
+    "data-componentid": _componentId = "application-creation-adapter"
+}: CustomAuthenticationCreateWizardPropsInterface): ReactElement => {
     const wizardRef: MutableRefObject<any> = useRef(null);
 
     const { CUSTOM_AUTHENTICATION_CONSTANTS: CustomAuthConstants } = ConnectionUIConstants;
@@ -100,7 +118,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
 
     const { t } = useTranslation();
-
 
     const { data: connectionTemplate, isLoading: isConnectionTemplateFetchRequestLoading } = useGetConnectionTemplate(
         selectedTemplateId,
@@ -168,7 +185,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                 size="small"
                 color="grey"
                 name={ !showSecret ? "eye" : "eye slash" }
-                data-componentid={ `${componentId}-authentication-property-secret1-view-button` }
+                data-componentid={ `${_componentId}-authentication-property-secret1-view-button` }
                 onClick={ onClick }
             />
         </InputAdornment>
@@ -229,7 +246,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
-                            data-componentid={ `${componentId}-authentication-property-username` }
+                            data-componentid={ `${_componentId}-authentication-property-username` }
                             width={ 15 }
                         />
                         <Field.Input
@@ -254,7 +271,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
-                            data-componentid={ `${componentId}-authentication-property-password` }
+                            data-componentid={ `${_componentId}-authentication-property-password` }
                             width={ 15 }
                         />
                     </>
@@ -284,7 +301,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
-                            data-componentid={ `${componentId}-authentication-property-accessToken` }
+                            data-componentid={ `${_componentId}-authentication-property-accessToken` }
                             width={ 15 }
                         />
                     </>
@@ -314,7 +331,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
-                            data-componentid={ `${componentId}-authentication-property-header` }
+                            data-componentid={ `${_componentId}-authentication-property-header` }
                             width={ 15 }
                         />
                         <Field.Input
@@ -339,7 +356,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
-                            data-componentid={ `${componentId}-authentication-property-value` }
+                            data-componentid={ `${_componentId}-authentication-property-value` }
                             width={ 15 }
                         />
                     </>
@@ -491,7 +508,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                         showTooltips={ true }
                         overlay={ renderDimmerOverlay() }
                         overlayOpacity={ 0.6 }
-                        data-componentid={ `${componentId}-form-wizard-external-custom-authentication-
+                        data-componentid={ `${_componentId}-form-wizard-external-custom-authentication-
                         selection-card` }
                     />
                     <SelectionCard
@@ -532,7 +549,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                         contentTopBorder={ false }
                         overlay={ renderDimmerOverlay() }
                         overlayOpacity={ 0.6 }
-                        data-componentid={ `${componentId}-form-wizard-internal-custom-authentication-
+                        data-componentid={ `${_componentId}-form-wizard-internal-custom-authentication-
                         selection-card` }
                     />
                     <SelectionCard
@@ -573,7 +590,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                         overlay={ renderDimmerOverlay() }
                         overlayOpacity={ 0.6 }
                         contentTopBorder={ false }
-                        data-componentid={ `${componentId}-form-wizard-two-factor-custom-authentication-
+                        data-componentid={ `${_componentId}-form-wizard-two-factor-custom-authentication-
                         selection-card` }
                     />
                 </div>
@@ -614,7 +631,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                 required={ true }
                 maxLength={ 100 }
                 minLength={ 3 }
-                data-componentid={ `${componentId}-form-wizard-identifier` }
+                data-componentid={ `${_componentId}-form-wizard-identifier` }
                 width={ 15 }
             />
             <Hint>{ t("customAuthentication:fields.createWizard.generalSettingsStep.helpPanel.identifier.hint") }</Hint>
@@ -630,7 +647,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                 required={ true }
                 maxLength={ 100 }
                 minLength={ 3 }
-                data-componentid={ `${componentId}-form-wizard-display-name` }
+                data-componentid={ `${_componentId}-form-wizard-display-name` }
                 width={ 15 }
             />
             <Hint>
@@ -652,7 +669,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                 required={ true }
                 maxLength={ 100 }
                 minLength={ 0 }
-                data-componentid={ `${componentId}-endpointUri` }
+                data-componentid={ `${_componentId}-endpointUri` }
                 width={ 15 }
             />
             <Divider className="divider-container" />
@@ -685,7 +702,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                     ] }
                     onChange={ handleDropdownChange }
                     enableReinitialize={ true }
-                    data-componentid={ `${componentId}-endpoint_authentication-dropdown` }
+                    data-componentid={ `${_componentId}-endpoint_authentication-dropdown` }
                     width={ 15 }
                 />
                 <div className="box-field">{ renderEndpointAuthPropertyFields() }</div>
@@ -746,7 +763,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         return (
             <ModalWithSidePanel.SidePanel>
                 <ModalWithSidePanel.Header
-                    data-componentid={ `${componentId}-modal-side-panel-header` }
+                    data-componentid={ `${_componentId}-modal-side-panel-header` }
                     className="wizard-header help-panel-header muted"
                 ></ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
@@ -767,10 +784,12 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
             onClose={ onWizardClose }
             closeOnDimmerClick={ false }
             closeOnEscape
-            data-componentid={ `${componentId}-modal` }
+            data-componentid={ `${_componentId}-modal` }
         >
             <ModalWithSidePanel.MainPanel>
-                <ModalWithSidePanel.Header className="wizard-header" data-componentid={ `${componentId}-modal-header` }>
+                <ModalWithSidePanel.Header
+                    className="wizard-header"
+                    data-componentid={ `${_componentId}-modal-header` }>
                     <div className={ "display-flex" }>
                         <GenericIcon
                             icon={ ConnectionsManagementUtils.resolveConnectionResourcePath(
@@ -780,22 +799,18 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                             size="x30"
                             transparent
                             spaced={ "right" }
-                            data-componentid={ `${componentId}-image` }
+                            data-componentid={ `${_componentId}-image` }
                         />
                         <div>
                             { title }
-                            { subTitle && (
-                                <Heading as="h6">
-                                    { subTitle }
-                                </Heading>
-                            ) }
+                            { subTitle && <Heading as="h6">{ subTitle }</Heading> }
                         </div>
                     </div>
                 </ModalWithSidePanel.Header>
                 <React.Fragment>
                     <ModalWithSidePanel.Content
                         className="steps-container"
-                        data-componentid={ `${componentId}-modal-content-1` }
+                        data-componentid={ `${_componentId}-modal-content-1` }
                     >
                         <Steps.Group current={ currentWizardStep }>
                             { wizardSteps.map((step: any, index: number) => (
@@ -805,7 +820,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                     </ModalWithSidePanel.Content>
                     <ModalWithSidePanel.Content
                         className="content-container"
-                        data-componentid={ `${componentId}-modal-content-2` }
+                        data-componentid={ `${_componentId}-modal-content-2` }
                     >
                         { alert && alertComponent }
                         <Wizard2
@@ -814,13 +829,13 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                             // onSubmit={ handleFormSubmit }
                             uncontrolledForm={ true }
                             pageChanged={ (index: number) => setCurrentWizardStep(index) }
-                            data-componentid={ componentId }
+                            data-componentid={ _componentId }
                         >
                             { resolveWizardPages() }
                         </Wizard2>
                     </ModalWithSidePanel.Content>
                 </React.Fragment>
-                <ModalWithSidePanel.Actions data-componentid={ `${componentId}-modal-actions` }>
+                <ModalWithSidePanel.Actions data-componentid={ `${_componentId}-modal-actions` }>
                     <SemanticGrid>
                         <SemanticGrid.Row column={ 1 }>
                             <SemanticGrid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
@@ -849,9 +864,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                                 ) }
                                 { /*Check whether its the last step*/ }
                                 { currentWizardStep === wizardSteps.length - 1 && (
-                                    // Note that we use the same logic as the next button
-                                    // element. This is because we pass a callback to
-                                    // onSubmit which triggers a dedicated handler.
                                     <PrimaryButton
                                         disabled={ nextShouldBeDisabled || isSubmitting }
                                         type="submit"
@@ -886,10 +898,4 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     );
 };
 
-/**
- * Default props for the custom authenticator create wizard.
- */
-CustomAuthenticationCreateWizard.defaultProps = {
-    currentStep: 0,
-    "data-componentid": "custom-authentication"
-};
+export default CustomAuthenticationCreateWizard;

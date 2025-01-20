@@ -23,7 +23,7 @@ import React, { FC, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { CreateConnectionWizard } from "./add-connection-wizard";
-import { CustomAuthenticationCreateWizard } from "./custom-authentication-create-wizard";
+import CustomAuthenticationCreateWizard from "./custom-authentication-create-wizard";
 import {
     EnterpriseConnectionCreateWizard
 } from "./enterprise-connection-create-wizard";
