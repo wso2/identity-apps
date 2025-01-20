@@ -398,7 +398,9 @@
                 }
             },
             "attributeDialects": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "attributeDialects.distinct.attribute.profiles"
+                ],
                 "enabled": true,
                 "scopes": {
                     "create": [

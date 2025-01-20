@@ -58,6 +58,12 @@ export class ClaimManagementConstants {
     public static readonly NEW_LOCAL_CLAIM_URL_SEARCH_PARAM: string = `?${
         ClaimManagementConstants.LOCAL_CLAIM_STATE_URL_SEARCH_PARAM_KEY }=new`;
 
+    /**
+     *  The feature flag to enable/disable the distinct attribute profiles feature.
+     */
+    public static readonly DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG: string =
+        "attributeDialects.distinct.attribute.profiles";
+
     // API errors
     public static readonly ADD_DIALECT_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while adding a new dialect.";

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,12 @@
  * under the License.
  */
 
+import Paper from "@oxygen-ui/react/Paper";
+import Table from "@oxygen-ui/react/Table";
+import TableBody from "@oxygen-ui/react/TableBody";
+import TableCell from "@oxygen-ui/react/TableCell";
+import TableHead from "@oxygen-ui/react/TableHead";
+import TableRow from "@oxygen-ui/react/TableRow";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
@@ -50,9 +56,11 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
+    Heading,
     Hint,
     Link,
-    Message
+    Message,
+    Tooltip
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
@@ -134,6 +142,16 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ accountVerificationEnabled, setAccountVerificationEnabled ] = useState<boolean>(false);
     const [ selfRegistrationEnabled, setSelfRegistrationEnabledEnabled ] = useState<boolean>(false);
     const [ isSystemClaim, setIsSystemClaim ] = useState<boolean>(false);
+    const [ isConsoleRequired, setIsConsoleRequired ] = useState<boolean>(false);
+    const [ isEndUserRequired, setIsEndUserRequired ] = useState<boolean>(false);
+    const [ isSelfRegistrationRequired, setIsSelfRegistrationRequired ] = useState<boolean>(false);
+    const [ isConsoleReadOnly, setIsConsoleReadOnly ] = useState<boolean>(false);
+    const [ isEndUserReadOnly, setIsEndUserReadOnly ] = useState<boolean>(false);
+    const [ isSelfRegistrationReadOnly, setIsSelfRegistrationReadOnly ] = useState<boolean>(false);
+
+    const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.attributeDialects?.disabledFeatures?.includes(
+        ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
+    );
 
     const { t } = useTranslation();
 
@@ -430,21 +448,78 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     };
 
     const onSubmit = (values: Record<string, unknown>) => {
-        const data: Claim = {
-            attributeMapping: claim.attributeMapping,
-            claimURI: claim.claimURI,
-            description: values?.description !== undefined ? values.description?.toString() : claim?.description,
-            displayName: values?.name !== undefined ? values.name?.toString() : claim?.displayName,
-            displayOrder: attributeConfig.editAttributes.getDisplayOrder(
-                claim.displayOrder, values.displayOrder?.toString()),
-            properties: claim.properties,
-            readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
-            regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
-            required: values?.required !== undefined && !values?.readOnly ? !!values.required : false,
-            supportedByDefault: values?.supportedByDefault !== undefined
-                ? !!values.supportedByDefault : claim?.supportedByDefault,
-            uniquenessScope: values?.uniquenessScope as UniquenessScope || UniquenessScope.NONE
-        };
+        let data: Claim;
+
+        if (isDistinctAttributeProfilesDisabled) {
+            // Use the legacy configuration.
+            data = {
+                attributeMapping: claim.attributeMapping,
+                claimURI: claim.claimURI,
+                description: values?.description !== undefined ? values.description?.toString() : claim?.description,
+                displayName: values?.name !== undefined ? values.name?.toString() : claim?.displayName,
+                displayOrder: attributeConfig.editAttributes.getDisplayOrder(
+                    claim.displayOrder, values.displayOrder?.toString()),
+                properties: claim?.properties,
+                readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
+                regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
+                required: values?.required !== undefined && !values?.readOnly ? !!values.required : false,
+                supportedByDefault: values?.supportedByDefault !== undefined
+                    ? !!values.supportedByDefault : claim?.supportedByDefault,
+                uniquenessScope: values?.uniquenessScope as UniquenessScope || UniquenessScope.NONE
+            };
+        } else {
+            // Use the new configuration.
+            data = {
+                attributeMapping: claim.attributeMapping,
+                claimURI: claim.claimURI,
+                description: values?.description !== undefined ? values.description?.toString() : claim?.description,
+                displayName: values?.name !== undefined ? values.name?.toString() : claim?.displayName,
+                displayOrder: attributeConfig.editAttributes.getDisplayOrder(
+                    claim.displayOrder, values.displayOrder?.toString()),
+                profiles: {
+                    console: {
+                        readOnly: values?.consoleReadOnly !== undefined ?
+                            !!values.consoleReadOnly
+                            : claim?.profiles?.console?.readOnly,
+                        required: values?.consoleRequired !== undefined ?
+                            !!values.consoleRequired
+                            : claim?.profiles?.console?.required,
+                        supportedByDefault: values?.consoleSupportedByDefault !== undefined ?
+                            !!values.consoleSupportedByDefault
+                            : claim?.profiles?.console?.supportedByDefault
+                    },
+                    endUser: {
+                        readOnly: values?.endUserReadOnly !== undefined ?
+                            !!values.endUserReadOnly
+                            : claim?.profiles?.endUser?.readOnly,
+                        required: values?.endUserRequired !== undefined ?
+                            !!values.endUserRequired
+                            : claim?.profiles?.endUser?.required,
+                        supportedByDefault: values?.endUserSupportedByDefault !== undefined ?
+                            !!values.endUserSupportedByDefault
+                            : claim?.profiles?.endUser?.supportedByDefault
+                    },
+                    selfRegistration: {
+                        readOnly: values?.selfRegistrationReadOnly !== undefined
+                            ? !!values.selfRegistrationReadOnly
+                            : claim?.profiles?.selfRegistration?.readOnly,
+                        required: values?.selfRegistrationRequired !== undefined ?
+                            !!values.selfRegistrationRequired
+                            : claim?.profiles?.selfRegistration?.required,
+                        supportedByDefault: values?.selfRegistrationSupportedByDefault !== undefined ?
+                            !!values.selfRegistrationSupportedByDefault
+                            : claim?.profiles?.selfRegistration?.supportedByDefault
+                    }
+                },
+                properties: claim?.properties,
+                readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
+                regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
+                required: values?.required !== undefined && !values?.readOnly ? !!values.required : false,
+                supportedByDefault: values?.supportedByDefault !== undefined
+                    ? !!values.supportedByDefault : claim?.supportedByDefault,
+                uniquenessScope: values?.uniquenessScope as UniquenessScope || UniquenessScope.NONE
+            };
+        }
 
         setIsSubmitting(true);
 
@@ -476,6 +551,244 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             .finally(() => {
                 setIsSubmitting(false);
             });
+    };
+
+    const resolveAttributeSupportedByDefaultRow = (): ReactElement => {
+        const isSupportedByDefaultCheckboxDisabled: boolean = !hasMapping
+            || (
+                accountVerificationEnabled
+                && selfRegistrationEnabled
+                && claim?.claimURI ===
+                    ClaimManagementConstants.EMAIL_CLAIM_URI
+                && usernameConfig?.enableValidator === "true"
+            );
+
+        return (
+            <TableRow>
+                <TableCell>
+                    { t("claims:local.forms.profiles.displayByDefault") }
+                    <Tooltip
+                        compact
+                        trigger={ (
+                            <Icon name="info circle" color="grey" className="ml-1" />
+                        ) }
+                        content={
+                            t("claims:local.forms.profiles.displayByDefaultHint")
+                        }
+                    />
+                </TableCell>
+                <TableCell align="center">
+                    <Field.Checkbox
+                        ariaLabel="Display by default in console"
+                        name="consoleSupportedByDefault"
+                        required={ false }
+                        defaultValue={ claim?.profiles?.console?.supportedByDefault ?? claim?.supportedByDefault }
+                        data-componentid={
+                            `${ testId }-form-console-supported-by-default-checkbox` }
+                        readOnly={ isReadOnly }
+                        disabled={ isSupportedByDefaultCheckboxDisabled }
+                        {
+                            ...( isConsoleRequired && !isConsoleReadOnly
+                                ? { checked: true }
+                                : { defaultValue : claim?.profiles?.console?.supportedByDefault
+                                    ?? claim?.supportedByDefault }
+                            )
+                        }
+                    />
+                </TableCell>
+                <TableCell align="center">
+                    <Field.Checkbox
+                        ariaLabel="Display by default in My Account"
+                        name="endUserSupportedByDefault"
+                        required={ false }
+                        defaultValue={ claim?.profiles?.endUser?.supportedByDefault ?? claim?.supportedByDefault }
+                        data-componentid={ `${ testId }-form-end-user-supported-by-default-checkbox` }
+                        readOnly={ isReadOnly }
+                        disabled={ isSupportedByDefaultCheckboxDisabled }
+                        {
+                            ...( isEndUserRequired && !isEndUserReadOnly
+                                ? { checked: true }
+                                : { defaultValue : claim?.profiles?.endUser?.supportedByDefault
+                                    ?? claim?.supportedByDefault }
+                            )
+                        }
+                    />
+                </TableCell>
+                <TableCell align="center">
+                    <Field.Checkbox
+                        ariaLabel="Display by default in self-registration"
+                        name="selfRegistrationSupportedByDefault"
+                        required={ false }
+                        defaultValue={ claim?.profiles?.selfRegistration?.supportedByDefault ??
+                            claim?.supportedByDefault }
+                        data-componentid={
+                            `${ testId }-form-self-registration-supported-by-default-checkbox` }
+                        readOnly={ isReadOnly }
+                        disabled={ isSupportedByDefaultCheckboxDisabled }
+                        {
+                            ...( isSelfRegistrationRequired && !isSelfRegistrationReadOnly
+                                ? { checked: true }
+                                : { defaultValue : claim?.profiles?.selfRegistration?.supportedByDefault ??
+                                    claim?.supportedByDefault }
+                            )
+                        }
+                    />
+                </TableCell>
+            </TableRow>
+        );
+    };
+
+    const resolveAttributeRequiredRow = (): ReactElement => {
+        const isRequiredCheckboxDisabled: boolean = !hasMapping
+            || (
+                accountVerificationEnabled
+                && selfRegistrationEnabled
+                && claim?.claimURI === ClaimManagementConstants.EMAIL_CLAIM_URI
+                && usernameConfig?.enableValidator === "true"
+            );
+
+        return (
+            <TableRow>
+                <TableCell>
+                    { t("claims:local.forms.profiles.required") }
+                    <Tooltip
+                        compact
+                        trigger={ (
+                            <Icon name="info circle" color="grey" className="ml-1" />
+                        ) }
+                        content={
+                            t("claims:local.forms.profiles.requiredHint")
+                        }
+                    />
+                </TableCell>
+                <TableCell align="center">
+                    <Field.Checkbox
+                        ariaLabel="Required in console"
+                        name="consoleRequired"
+                        required={ false }
+                        defaultValue={ claim?.profiles?.console?.required ?? claim?.required }
+                        data-componentid={ `${ testId }-form-console-required-checkbox` }
+                        readOnly={ isReadOnly }
+                        disabled={ isRequiredCheckboxDisabled || isConsoleReadOnly }
+                        listen ={ (value: boolean) => {
+                            setIsConsoleRequired(value);
+                        } }
+                        {
+                            ...( isConsoleReadOnly
+                                ? { value: false }
+                                : { defaultValue : claim?.profiles?.console?.required ?? claim?.required }
+                            )
+                        }
+                    />
+                </TableCell>
+                <TableCell align="center">
+                    <Field.Checkbox
+                        ariaLabel="Required in My Account"
+                        name="endUserRequired"
+                        required={ false }
+                        defaultValue={ claim?.profiles?.endUser?.required ?? claim?.required }
+                        data-componentid={ `${ testId }-form-end-user-required-checkbox` }
+                        readOnly={ isReadOnly }
+                        disabled={ isRequiredCheckboxDisabled || isEndUserReadOnly }
+                        listen ={ (value: boolean) => {
+                            setIsEndUserRequired(value);
+                        } }
+                        {
+                            ...( isEndUserReadOnly
+                                ? { value: false }
+                                : { defaultValue : claim?.profiles?.endUser?.required ?? claim?.required }
+                            )
+                        }
+                    />
+                </TableCell>
+                <TableCell align="center">
+                    <Field.Checkbox
+                        ariaLabel="Required in self-registration"
+                        name="selfRegistrationRequired"
+                        required={ false }
+                        defaultValue={ claim?.profiles?.selfRegistration?.required ?? claim?.required }
+                        data-componentid={ `${ testId }-form-self-registration-required-checkbox` }
+                        readOnly={ isReadOnly }
+                        disabled={ isRequiredCheckboxDisabled || isSelfRegistrationReadOnly }
+                        listen ={ (value: boolean) => {
+                            setIsSelfRegistrationRequired(value);
+                        } }
+                        {
+                            ...( isSelfRegistrationReadOnly
+                                ? { value: false }
+                                : { defaultValue : claim?.profiles?.selfRegistration?.required ?? claim?.required }
+                            )
+                        }
+                    />
+                </TableCell>
+            </TableRow>
+        );
+    };
+
+    const resolveAttributeReadOnlyRow = (): ReactElement => {
+        const isReadOnlyCheckboxDisabled: boolean = !hasMapping;
+
+        return (
+            <TableRow hideBorder>
+                <TableCell>
+                    { t("claims:local.forms.profiles.readonly") }
+                    <Tooltip
+                        compact
+                        trigger={ (
+                            <Icon name="info circle" color="grey" className="ml-1" />
+                        ) }
+                        content={
+                            t("claims:local.forms.profiles.readonlyHint")
+                        }
+                    />
+                </TableCell>
+                <TableCell align="center">
+                    <Field.Checkbox
+                        ariaLabel="Read-only in console"
+                        name="consoleReadOnly"
+                        required={ false }
+                        requiredErrorMessage=""
+                        defaultValue={ claim?.profiles?.console?.readOnly ?? claim?.readOnly }
+                        data-componentid={ `${ testId }-form-console-readOnly-checkbox` }
+                        readOnly={ isReadOnly }
+                        disabled={ isReadOnlyCheckboxDisabled }
+                        listen ={ (value: boolean) => {
+                            setIsConsoleReadOnly(value);
+                        } }
+                    />
+                </TableCell>
+                <TableCell align="center">
+                    <Field.Checkbox
+                        ariaLabel="Read-only in My Account"
+                        name="endUserReadOnly"
+                        required={ false }
+                        requiredErrorMessage=""
+                        defaultValue={ claim?.profiles?.endUser?.readOnly ?? claim?.readOnly }
+                        data-componentid={ `${ testId }-form-end-user-readOnly-checkbox` }
+                        readOnly={ isReadOnly }
+                        disabled={ isReadOnlyCheckboxDisabled }
+                        listen ={ (value: boolean) => {
+                            setIsEndUserReadOnly(value);
+                        } }
+                    />
+                </TableCell>
+                <TableCell align="center">
+                    <Field.Checkbox
+                        ariaLabel="Read-only in self-registration"
+                        name="selfRegistrationReadOnly"
+                        required={ false }
+                        requiredErrorMessage=""
+                        defaultValue={ claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
+                        data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
+                        readOnly={ isReadOnly }
+                        disabled={ isReadOnlyCheckboxDisabled }
+                        listen ={ (value: boolean) => {
+                            setIsSelfRegistrationReadOnly(value);
+                        } }
+                    />
+                </TableCell>
+            </TableRow>
+        );
     };
 
     return (
@@ -596,35 +909,31 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             />
                         )
                     }
-                    { !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI) &&  mappingChecked
+                    { !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI) && mappingChecked
                         ? (
-                            !hideSpecialClaims &&
+                            !hideSpecialClaims && !hasMapping &&
                             (<Grid.Row columns={ 1 } >
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                     <Message
                                         type="info"
-                                        content={
-                                            !hasMapping ? (
-                                                <>
-                                                    { t("claims:local.forms.infoMessages." +
-                                                        "disabledConfigInfo") }
-                                                    <div>
-                                                        Add SCIM mapping from
-                                                        <Link
-                                                            external={ false }
-                                                            onClick={ () =>
-                                                                history.push(
-                                                                    AppConstants.getPaths().get("SCIM_MAPPING")
-                                                                )
-                                                            }
-                                                        > here
-                                                        </Link>.
-                                                    </div>
-                                                </>
-                                            ):(
-                                                t("claims:local.forms.infoMessages." +
-                                                    "configApplicabilityInfo")
-                                            )
+                                        content={ (
+                                            <>
+                                                { t("claims:local.forms.infoMessages." +
+                                                    "disabledConfigInfo") }
+                                                <div>
+                                                    Add SCIM mapping from
+                                                    <Link
+                                                        external={ false }
+                                                        onClick={ () =>
+                                                            history.push(
+                                                                AppConstants.getPaths().get("SCIM_MAPPING")
+                                                            )
+                                                        }
+                                                    > here
+                                                    </Link>.
+                                                </div>
+                                            </>
+                                        )
                                         }
                                     />
                                 </Grid.Column>
@@ -634,6 +943,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     {
                         //Hides on user_id, username and groups claims
+                        isDistinctAttributeProfilesDisabled &&
                         claim && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                             && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
@@ -697,6 +1007,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         )
                     }
                     {
+                        isDistinctAttributeProfilesDisabled &&
                         claim && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                             && attributeConfig.editAttributes.showRequiredCheckBox
                             && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI
@@ -747,6 +1058,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     {
                         //Hides on user_id, username and groups claims
+                        isDistinctAttributeProfilesDisabled &&
                         claim && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                             && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
@@ -771,6 +1083,62 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     disabled={ !hasMapping }
                                 />
                             )
+                    }
+                    {
+                        // Hides on groups claim
+                        !isDistinctAttributeProfilesDisabled && claim && !hideSpecialClaims && mappingChecked
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI && (
+                            <>
+                                <Divider />
+                                <Heading as="h4">
+                                    { t("claims:local.forms.profiles.attributeConfigurations.title") }
+                                </Heading>
+                                <Heading as="h6" color="grey" compact>
+                                    { t("claims:local.forms.profiles.attributeConfigurations.description") }
+                                </Heading>
+                                <Divider hidden />
+                                <Paper variant="outlined" elevation={ 0 }>
+                                    <Table>
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell></TableCell>
+                                                <TableCell align="center">
+                                                    { t("claims:local.forms.profiles.administratorConsole") }
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    { t("claims:local.forms.profiles.endUserProfile") }
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    { t("claims:local.forms.profiles.selfRegistration") }
+                                                </TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {
+                                                // Hides on user_id, username claims
+                                                !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                                                    && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
+                                                    && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
+                                                    && resolveAttributeSupportedByDefaultRow()
+                                            }
+                                            {
+                                                !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                                                    && attributeConfig.editAttributes.showRequiredCheckBox
+                                                    && resolveAttributeRequiredRow()
+                                            }
+                                            {
+                                                // Hides on user_id, username and email claims
+                                                !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                                                    && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
+                                                    && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
+                                                    && claim.claimURI !== ClaimManagementConstants.EMAIL_CLAIM_URI
+                                                    && resolveAttributeReadOnlyRow()
+                                            }
+                                        </TableBody>
+                                    </Table>
+                                </Paper>
+                            </>
+                        )
                     }
                     {
                         !hideSpecialClaims &&
