@@ -34,7 +34,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
-import { searchGroupList } from "../../api";
+import { searchGroupList } from "../../api/groups";
 import { CreateGroupFormData, SearchGroupInterface } from "../../models/groups";
 
 /**

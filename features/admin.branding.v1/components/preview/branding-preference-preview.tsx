@@ -49,9 +49,10 @@ import { ReactComponent as CustomLayoutSuccessImg } from
     "../../../themes/wso2is/assets/images/branding/custom-layout-success.svg";
 import { ReactComponent as CustomLayoutWarningImg } from
     "../../../themes/wso2is/assets/images/branding/custom-layout-warning.svg";
-import { useLayout, useLayoutStyle } from "../../api";
+import { useLayout, useLayoutStyle } from "../../api/layout";
 import { usePreviewContent, usePreviewStyle } from "../../api/preview-skeletons";
-import { BrandingPreferenceMeta, LAYOUT_DATA, PredefinedLayouts } from "../../meta";
+import { BrandingPreferenceMeta } from "../../meta/branding-preference-meta";
+import { LAYOUT_DATA, PredefinedLayouts } from "../../meta/layouts";
 
 /**
  * Proptypes for the Branding preference preview component.
