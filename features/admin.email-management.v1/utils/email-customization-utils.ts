@@ -17,14 +17,14 @@
  */
 
 import { CustomTextInterface } from "@wso2is/admin.branding.v1/models/custom-text-preference";
-import { BrandingPreferenceUtils } from "@wso2is/admin.branding.v1/utils";
+import { BrandingPreferenceUtils } from "@wso2is/admin.branding.v1/utils/branding-preference-utils";
 import processCustomTextTemplateLiterals from "@wso2is/admin.branding.v1/utils/process-custom-text-template-literals";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceThemeInterface,
     PredefinedThemes,
     ThemeConfigInterface
-} from "@wso2is/common.branding.v1/models";
+} from "@wso2is/common.branding.v1/models/branding-preferences";
 
 export class EmailCustomizationUtils {
 
@@ -41,7 +41,7 @@ export class EmailCustomizationUtils {
         light_border_color: "transparent",
         light_logo_url: "",
         primary_color: "#FF7300"
-    }
+    };
 
     /**
      * Private constructor to avoid object instantiation from outside

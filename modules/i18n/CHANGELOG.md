@@ -1,5 +1,22 @@
 # @wso2is/i18n
 
+## 2.15.2
+
+### Patch Changes
+
+- [#7340](https://github.com/wso2/identity-apps/pull/7340) [`f2c7a35ce347d4ac7e3e15f3f50404c9d701d212`](https://github.com/wso2/identity-apps/commit/f2c7a35ce347d4ac7e3e15f3f50404c9d701d212) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Add policy search, deactivation of policy and move strings to i18n
+
+* [#7338](https://github.com/wso2/identity-apps/pull/7338) [`f6939061baec44323111cd5a09164d1e7a441324`](https://github.com/wso2/identity-apps/commit/f6939061baec44323111cd5a09164d1e7a441324) Thanks [@brionmario](https://github.com/brionmario)! - Add the missing validations in Tenant Domain input.
+
+## 2.15.1
+
+### Patch Changes
+
+- [#7312](https://github.com/wso2/identity-apps/pull/7312) [`4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98`](https://github.com/wso2/identity-apps/commit/4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add support to distinct attribute profiles in the console
+
+- Updated dependencies [[`4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98`](https://github.com/wso2/identity-apps/commit/4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98)]:
+  - @wso2is/core@2.5.6
+
 ## 2.15.0
 
 ### Minor Changes

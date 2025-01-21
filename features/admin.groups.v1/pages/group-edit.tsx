@@ -22,8 +22,8 @@ import { TabPageLayout } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getGroupById } from "../api";
-import { EditGroup } from "../components";
+import { getGroupById } from "../api/groups";
+import { EditGroup } from "../components/edit-group/edit-group";
 import { GroupsInterface } from "../models/groups";
 import GroupManagementProvider from "../providers/group-management-provider";
 

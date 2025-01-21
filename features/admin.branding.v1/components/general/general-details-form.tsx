@@ -24,7 +24,7 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, Ref, forwardR
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Placeholder } from "semantic-ui-react";
-import { BrandingModes, BrandingPreferencesConstants } from "../../constants";
+import { BrandingModes, BrandingPreferencesConstants } from "../../constants/branding-preferences-constants";
 import useBrandingPreference from "../../hooks/use-branding-preference";
 
 /**

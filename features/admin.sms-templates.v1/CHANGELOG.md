@@ -1,5 +1,60 @@
 # @wso2is/admin.sms-templates.v1
 
+## 1.0.88
+
+### Patch Changes
+
+- Updated dependencies [[`cfe475febd8e3972a545cf12bb86e7fd08d344ea`](https://github.com/wso2/identity-apps/commit/cfe475febd8e3972a545cf12bb86e7fd08d344ea), [`f2c7a35ce347d4ac7e3e15f3f50404c9d701d212`](https://github.com/wso2/identity-apps/commit/f2c7a35ce347d4ac7e3e15f3f50404c9d701d212), [`f6939061baec44323111cd5a09164d1e7a441324`](https://github.com/wso2/identity-apps/commit/f6939061baec44323111cd5a09164d1e7a441324)]:
+  - @wso2is/admin.core.v1@2.35.27
+  - @wso2is/i18n@2.15.2
+  - @wso2is/admin.branding.v1@2.27.62
+  - @wso2is/common.branding.v1@2.25.62
+
+## 1.0.87
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.27.61
+  - @wso2is/admin.core.v1@2.35.26
+  - @wso2is/common.branding.v1@2.25.61
+
+## 1.0.86
+
+### Patch Changes
+
+- [#7334](https://github.com/wso2/identity-apps/pull/7334) [`57b18bca988a2b72865027c1d21250fd482cf6b9`](https://github.com/wso2/identity-apps/commit/57b18bca988a2b72865027c1d21250fd482cf6b9) Thanks [@Avarjana](https://github.com/Avarjana)! - Add resolve logic to SMS template GET API
+
+- Updated dependencies [[`cbe83e7ecee7bd19053fdb554e4f73ab279ec2e8`](https://github.com/wso2/identity-apps/commit/cbe83e7ecee7bd19053fdb554e4f73ab279ec2e8)]:
+  - @wso2is/admin.branding.v1@2.27.60
+  - @wso2is/admin.core.v1@2.35.25
+  - @wso2is/common.branding.v1@2.25.60
+
+## 1.0.85
+
+### Patch Changes
+
+- Updated dependencies [[`4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98`](https://github.com/wso2/identity-apps/commit/4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98)]:
+  - @wso2is/core@2.5.6
+  - @wso2is/i18n@2.15.1
+  - @wso2is/admin.core.v1@2.35.24
+  - @wso2is/admin.branding.v1@2.27.59
+  - @wso2is/common.branding.v1@2.25.59
+  - @wso2is/access-control@3.3.10
+  - @wso2is/dynamic-forms@2.4.21
+  - @wso2is/form@2.6.14
+  - @wso2is/forms@2.3.11
+  - @wso2is/react-components@2.8.21
+
+## 1.0.84
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.35.23
+  - @wso2is/admin.branding.v1@2.27.58
+  - @wso2is/common.branding.v1@2.25.58
+
 ## 1.0.83
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.5.6
+
+### Patch Changes
+
+- [#7312](https://github.com/wso2/identity-apps/pull/7312) [`4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98`](https://github.com/wso2/identity-apps/commit/4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add support to distinct attribute profiles in the console
+
 ## 2.5.5
 
 ### Patch Changes

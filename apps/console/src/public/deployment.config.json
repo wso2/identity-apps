@@ -398,7 +398,9 @@
                 }
             },
             "attributeDialects": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "attributeDialects.distinct.attribute.profiles"
+                ],
                 "enabled": true,
                 "scopes": {
                     "create": [
@@ -1306,6 +1308,11 @@
             "roleMapping": false
         },
         "listAllAttributeDialects": true,
+        "multiTenancy": {
+            "isTenantDomainDotExtensionMandatory": true,
+            "tenantDomainIllegalCharactersRegex": ".*[^a-z0-9._-].*",
+            "tenantDomainRegex": ""
+        },
         "passwordPolicyConfigs": {
             "maxPasswordAllowedLength": 64
         },
@@ -1313,6 +1320,26 @@
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {
             "productVersion": ""
+        },
+        "routes": {
+            "organizationEnabledRoutes": [
+                "apiResources",
+                "applications",
+                "attributeDialects",
+                "branding",
+                "consoleSettings",
+                "emailTemplates",
+                "gettingStarted",
+                "governanceConnectors",
+                "groups",
+                "identityProviders",
+                "organizations",
+                "roles",
+                "smsTemplates",
+                "userRoles",
+                "userStores",
+                "users"
+            ]
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,

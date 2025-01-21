@@ -28,7 +28,7 @@ import { TabProps } from "semantic-ui-react";
 import { BasicGroupDetails } from "./edit-group-basic";
 import { EditGroupRoles } from "./edit-group-roles";
 import { GroupUsersList } from "./edit-group-users";
-import { GroupConstants } from "../../constants";
+import { GroupConstants } from "../../constants/group-constants";
 import useGroupManagement from "../../hooks/use-group-management";
 import { GroupsInterface } from "../../models/groups";
 

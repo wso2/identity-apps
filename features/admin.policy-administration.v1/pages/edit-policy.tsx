@@ -105,10 +105,9 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
             .then(() => {
                 dispatch(
                     addAlert({
-                        description: t("policyAdministration:editPolicy.notifications.updatePolicy." +
-                            "success.description"),
+                        description:  t("policyAdministration:alerts.updateSuccess.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("policyAdministration:editPolicy.notifications.updatePolicy.success.message")
+                        message: t("policyAdministration:alerts.updateSuccess.message")
                     })
                 );
 
@@ -116,9 +115,9 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
             .catch(() => {
                 dispatch(
                     addAlert({
-                        description: t("policyAdministration:editPolicy.notifications.updatePolicy.error.description"),
+                        description: t("policyAdministration:alerts.updateFailure.description"),
                         level: AlertLevels.ERROR,
-                        message: t("policyAdministration:editPolicy.notifications.updatePolicy.error.message")
+                        message: t("policyAdministration:alerts.updateFailure.message")
                     })
                 );
             });

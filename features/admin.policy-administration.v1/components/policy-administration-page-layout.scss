@@ -43,3 +43,14 @@
 .policy-list-header {
     margin-bottom: 15px;
 }
+
+.search-input-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    .search-box {
+        flex: 1;
+    }
+}
+
