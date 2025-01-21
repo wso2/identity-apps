@@ -1,5 +1,29 @@
 # @wso2is/admin.connections.v1
 
+## 2.32.0
+
+### Minor Changes
+
+- [#7269](https://github.com/wso2/identity-apps/pull/7269) [`066e6a556b348a29874119fdd30e7779e644db84`](https://github.com/wso2/identity-apps/commit/066e6a556b348a29874119fdd30e7779e644db84) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Enable UI to manage secondary userstores in sub-organizations.
+
+### Patch Changes
+
+- Updated dependencies [[`066e6a556b348a29874119fdd30e7779e644db84`](https://github.com/wso2/identity-apps/commit/066e6a556b348a29874119fdd30e7779e644db84)]:
+  - @wso2is/admin.connections.v1@2.32.0
+  - @wso2is/admin.claims.v1@2.27.0
+  - @wso2is/admin.core.v1@2.36.0
+  - @wso2is/admin.applications.v1@2.30.90
+  - @wso2is/admin.extensions.v1@2.36.15
+  - @wso2is/admin.identity-providers.v1@2.26.90
+  - @wso2is/admin.identity-verification-providers.v1@2.27.90
+  - @wso2is/admin.organizations.v1@2.26.90
+  - @wso2is/admin.roles.v2@2.27.34
+  - @wso2is/admin.console-settings.v1@2.25.90
+  - @wso2is/admin.application-templates.v1@1.4.90
+  - @wso2is/admin.feature-gate.v1@1.4.90
+  - @wso2is/admin.template-core.v1@1.5.44
+  - @wso2is/admin.userstores.v1@2.26.49
+
 ## 2.31.5
 
 ### Patch Changes
