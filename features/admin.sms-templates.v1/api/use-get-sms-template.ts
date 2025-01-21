@@ -56,9 +56,9 @@ const useGetSmsTemplate = <Data = SMSTemplate, Error = RequestErrorInterface>(
     };
 
     if (fetchInheritedTemplate) {
-        requestConfig.url =
-                store.getState().config.endpoints.smsTemplates +
-                `/template-types/${templateType}/org-templates/${smsLocale}?resolve=true`
+        requestConfig.params = {
+            resolve: true
+        };
     }
 
     if (fetchSystemTemplate) {

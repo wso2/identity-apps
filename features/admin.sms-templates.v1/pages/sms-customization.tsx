@@ -23,7 +23,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
-import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     AlertInterface,
     AlertLevels,
@@ -95,8 +95,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     const isReadOnly: boolean = !smsFeatureConfig.enabled || !hasUpdatePermission;
     const hasSmsTemplateCreatePermissions: boolean = smsFeatureConfig.enabled && hasCreatePermission;
 
-    const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
-    const isSubOrgUser: boolean = (organizationType === OrganizationType.SUBORGANIZATION);
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const {
         data: smsTemplatesList,
@@ -186,7 +185,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
 
         if (smsTemplateError.response.status === 404) {
             setIsTemplateNotAvailable(true);
-            if (isSubOrgUser && !isInheritedTemplate) {
+            if (isSubOrganization() && !isInheritedTemplate) {
                 setIsInheritedTemplate(true);
 
                 return;
