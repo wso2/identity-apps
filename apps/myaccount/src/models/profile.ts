@@ -122,6 +122,10 @@ export interface ProfileSchema {
     maxLength?: number;
     excludedUserStores?: string;
     /**
+    * Supported by default. Used to display in the attribute in the UI.
+    */
+    supportedByDefault?: string;
+    /**
      * Schema attribute profiles
      */
     profiles?: {
