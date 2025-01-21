@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { AlertLevels, CertificateValidity, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
