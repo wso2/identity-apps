@@ -66,6 +66,12 @@
             <param-value>{{ downtime_banner.enabled }}</param-value>
         </context-param>
     {% endif %}
+    {% if identity_mgt.user_self_registration.enable_detailed_api_response is defined %}
+        <context-param>
+            <param-name>isSelfRegistrationDetailedApiResponseEnabled</param-name>
+            <param-value>{{ identity_mgt.user_self_registration.enable_detailed_api_response }}</param-value>
+        </context-param>
+    {% endif %}
     <!-- *************** End of Global configurations ********************** -->
     <!--  End of Custom Page configurations -->
     <context-param>
