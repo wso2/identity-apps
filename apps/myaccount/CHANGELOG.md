@@ -1,5 +1,51 @@
 # @wso2is/myaccount
 
+## 2.14.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.90
+  - @wso2is/common.branding.v1@2.25.63
+
+## 2.14.9
+
+### Patch Changes
+
+- Updated dependencies [[`f2c7a35ce347d4ac7e3e15f3f50404c9d701d212`](https://github.com/wso2/identity-apps/commit/f2c7a35ce347d4ac7e3e15f3f50404c9d701d212), [`f6939061baec44323111cd5a09164d1e7a441324`](https://github.com/wso2/identity-apps/commit/f6939061baec44323111cd5a09164d1e7a441324)]:
+  - @wso2is/i18n@2.15.2
+  - @wso2is/admin.organizations.v1@2.26.89
+  - @wso2is/common.branding.v1@2.25.62
+
+## 2.14.8
+
+### Patch Changes
+
+- Updated dependencies [[`ad9d93a8a57e076b40ef78674ed0242e8bbeca91`](https://github.com/wso2/identity-apps/commit/ad9d93a8a57e076b40ef78674ed0242e8bbeca91)]:
+  - @wso2is/admin.organizations.v1@2.26.88
+  - @wso2is/common.branding.v1@2.25.61
+
+## 2.14.7
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.87
+  - @wso2is/common.branding.v1@2.25.60
+
+## 2.14.6
+
+### Patch Changes
+
+- Updated dependencies [[`4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98`](https://github.com/wso2/identity-apps/commit/4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98)]:
+  - @wso2is/core@2.5.6
+  - @wso2is/i18n@2.15.1
+  - @wso2is/admin.organizations.v1@2.26.86
+  - @wso2is/common.branding.v1@2.25.59
+  - @wso2is/access-control@3.3.10
+  - @wso2is/forms@2.3.11
+  - @wso2is/react-components@2.8.21
+
 ## 2.14.5
 
 ### Patch Changes

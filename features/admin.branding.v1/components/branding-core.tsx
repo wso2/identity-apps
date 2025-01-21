@@ -50,15 +50,17 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { deleteBrandingPreference, updateBrandingPreference } from "../api";
+import { deleteBrandingPreference, updateBrandingPreference } from "../api/branding-preferences";
 import deleteAllCustomTextPreferences from "../api/delete-all-custom-text-preference";
 import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
-import { BrandingPreferenceTabs, DesignFormValuesInterface } from "../components";
-import { BrandingModes, BrandingPreferencesConstants } from "../constants";
+import { BrandingPreferenceTabs } from "../components/branding-preference-tabs";
+import { DesignFormValuesInterface } from "../components/design/design-form";
+import { BrandingModes, BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import useBrandingPreference from "../hooks/use-branding-preference";
-import { BrandingPreferenceMeta, LAYOUT_PROPERTY_KEYS } from "../meta";
-import { BrandingPreferenceUtils } from "../utils";
+import { BrandingPreferenceMeta } from "../meta/branding-preference-meta";
+import { LAYOUT_PROPERTY_KEYS } from "../meta/layouts";
+import { BrandingPreferenceUtils } from "../utils/branding-preference-utils";
 
 /**
  * Prop-types for the branding core component.

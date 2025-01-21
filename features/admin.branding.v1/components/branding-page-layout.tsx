@@ -40,8 +40,8 @@ import BrandingCore from "./branding-core";
 import { useApplicationList } from "../../admin.applications.v1/api/application";
 import { ApplicationManagementConstants } from "../../admin.applications.v1/constants/application-management";
 import { ApplicationListItemInterface } from "../../admin.applications.v1/models/application";
-import { BrandingModes, BrandingPreferencesConstants } from "../constants";
 import { AI_BRANDING_FEATURE_ID } from "../constants/ai-branding-constants";
+import { BrandingModes, BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import useBrandingPreference from "../hooks/use-branding-preference";
 import "./branding-page-layout.scss";
 

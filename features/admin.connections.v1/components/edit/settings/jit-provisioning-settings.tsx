@@ -18,7 +18,6 @@
 
 import { SimpleUserStoreListItemInterface } from "@wso2is/admin.applications.v1/models/application";
 import { AppState } from "@wso2is/admin.core.v1";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -85,7 +84,6 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
         state?.config?.ui?.primaryUserStoreDomainName);
 
     const dispatch: Dispatch = useDispatch();
-    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
     const { t } = useTranslation();
 
     const [ userStore, setUserStore ] = useState<SimpleUserStoreListItemInterface[]>([]);
@@ -127,16 +125,12 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
             name: primaryUserStoreDomainName
         });
 
-        if (isSuperOrganization() || isFirstLevelOrganization()) {
-            getUserStoreList().then((response: AxiosResponse) => {
-                userstore.push(...response.data);
-                setUserStore(userstore);
-            }).catch(() => {
-                setUserStore(userstore);
-            });
-        } else {
+        getUserStoreList().then((response: AxiosResponse) => {
+            userstore.push(...response.data);
             setUserStore(userstore);
-        }
+        }).catch(() => {
+            setUserStore(userstore);
+        });
     }, []);
 
     return (

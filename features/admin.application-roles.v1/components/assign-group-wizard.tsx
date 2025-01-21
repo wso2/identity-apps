@@ -17,7 +17,7 @@
  */
 
 import { AppState } from "@wso2is/admin.core.v1";
-import { getGroupList } from "@wso2is/admin.groups.v1/api";
+import { getGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
