@@ -719,6 +719,93 @@ export const myAccount: MyAccountNS = {
                 },
                 "regenerate": "Regenerado"
             },
+            "pushAuthenticatorApp": {
+                "addHint": "Configurar",
+                "configuredDescription": "Puede usar los códigos TOTP de su aplicación de autenticación configurada para la autenticación de dos factores. Si no tiene acceso a la aplicación, puede configurar una nueva aplicación de autenticación desde aquí.",
+                "deleteHint": "Eliminar",
+                "description": "Puede usar la aplicación de autenticación para obtener códigos de verificación para la autenticación de dos factores.",
+                "enableHint": "Habilitar/deshabilitar el autenticador TOTP",
+                "heading": "Aplicación Authenticator",
+                "hint": "Vista",
+                "modals": {
+                    "delete": {
+                        "heading": "Confirmación",
+                        "message": "Esta acción eliminará el código QR agregado a su perfil. Desea continuar ?"
+                    },
+                    "done": "¡Éxito! Ahora puede usar su aplicación Authenticator para la autenticación de dos factores",
+                    "heading": "Configurar una aplicación de autenticación",
+                    "scan": {
+                        "additionNote": "¡El código QR se ha agregado con éxito a su perfil!",
+                        "authenticatorApps": "Aplicaciones de autenticación",
+                        "generate": "Generar un nuevo código",
+                        "heading": "Escanee el código QR a continuación usando una aplicación de autenticación",
+                        "messageBody": "Puede encontrar una lista de aplicaciones de autenticación disponibles aquí.",
+                        "messageHeading": "¿No tienes instalada una aplicación de autenticación?",
+                        "regenerateConfirmLabel": "Confirmar la regeneración de un nuevo código QR",
+                        "regenerateWarning": {
+                            "extended": "Cuando regenera un nuevo código QR, debe escanearlo y volver a configurar su aplicación de autenticación. Ya no podrá iniciar sesión con el código QR anterior.",
+                            "generic": "Cuando regenera un nuevo código QR, debe escanearlo y volver a configurar su aplicación de autenticación. Su configuración anterior ya no funcionará."
+                        }
+                    },
+                    "toolTip": "¿No tienes una aplicación de autenticación? Descarga una aplicación de autenticación como Google Authenticator desde <1>App Store</1> o <3>>Google Play</3>",
+                    "verify": {
+                        "error": "Fallo en la verificación. Inténtalo de nuevo.",
+                        "heading": "Ingrese el código generado para la verificación",
+                        "label": "Código de verificación",
+                        "placeholder": "Ingrese su código de verificación",
+                        "reScan": "volver a escanear",
+                        "reScanQuestion": "¿Quieres escanear el código QR de nuevo?",
+                        "requiredError": "Introduzca el código de verificación"
+                    }
+                },
+                "notifications": {
+                    "deleteError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "Algo salió mal"
+                        },
+                        "genericError": {
+                            "description": "Ocurrió un error al eliminar el código QR",
+                            "message": "Algo salió mal"
+                        }
+                    },
+                    "deleteSuccess": {
+                        "genericMessage": "Eliminado con éxito",
+                        "message": "Se eliminó con éxito la configuración TOTP."
+                    },
+                    "initError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "Algo salió mal"
+                        },
+                        "genericError": {
+                            "description": "Ocurrió un error al recuperar el código QR",
+                            "message": "Algo salió mal"
+                        }
+                    },
+                    "refreshError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "Algo salió mal"
+                        },
+                        "genericError": {
+                            "description": "Se produjo un error al intentar obtener un nuevo código QR",
+                            "message": "Algo salió mal"
+                        }
+                    },
+                    "updateAuthenticatorError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "Algo salió mal"
+                        },
+                        "genericError": {
+                            "description": "Se produjo un error al intentar actualizar la lista de autenticadores habilitados",
+                            "message": "Algo salió mal"
+                        }
+                    }
+                },
+                "regenerate": "Regenerado"
+            },
             "backupCode": {
                 "actions": {
                     "add": "Agregar códigos de respaldo",

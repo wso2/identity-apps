@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, LinkButton, Popup } from "@wso2is/react-components";
 import QRCode from "qrcode.react";
-import React, { FormEvent, PropsWithChildren, SyntheticEvent, useEffect, useRef, useState } from "react";
+import React, { FormEvent, PropsWithChildren, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
@@ -35,15 +35,14 @@ import {
     Modal,
     Segment
 } from "semantic-ui-react";
+import { updateEnabledAuthenticators } from "../../../api";
 import {
-    checkIfTOTPEnabled,
-    deleteTOTP,
-    initTOTPCode,
-    refreshTOTPCode,
-    updateEnabledAuthenticators,
-    validateTOTPCode,
-    viewTOTPCode
-} from "../../../api";
+    checkIfPushEnabled,
+    deletePushAuthenticator,
+    initPushAuthenticatorQRCode,
+    refreshPushAuthenticatorCode,
+    viewPushAuthenticatorSetupCode
+} from "../../../api/multi-factor-push";
 import { getMFAIcons } from "../../../configs";
 import { commonConfig } from "../../../extensions";
 import {
@@ -54,10 +53,9 @@ import {
 import { AppState } from "../../../store";
 
 /**
- * Property types for the TOTP component.
- * Also see {@link TOTPAuthenticator.defaultProps}
+ * Property types for the push authenticator component.
  */
-interface TOTPProps extends TestableComponentInterface {
+interface PushAuthenticatorProps extends IdentifiableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
     isSuperTenantLogin: boolean;
     enabledAuthenticators: Array<string>;
@@ -70,139 +68,56 @@ interface TOTPProps extends TestableComponentInterface {
 }
 
 /**
- * TOTP Authenticator.
+ * Push Authenticator.
  *
  * @param props - Props injected to the component.
  * @returns React element.
  */
-export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
-    props: PropsWithChildren<TOTPProps>
+export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> = (
+    props: PropsWithChildren<PushAuthenticatorProps>
 ): React.ReactElement => {
     const {
         isSuperTenantLogin,
-        enabledAuthenticators,
+        enabledAuthenticators = [],
         onEnabledAuthenticatorsUpdated,
         onAlertFired,
         handleSessionTerminationModalVisibility,
-        ["data-testid"]: testId
+        ["data-componentid"]: testId = "push-authenticator"
     } = props;
 
     const { t } = useTranslation();
 
-    const translateKey: string = "myAccount:components.mfa.authenticatorApp.";
-    const totpAuthenticatorName: string = "totp";
+    const translateKey: string = "myAccount:components.mfa.pushAuthenticatorApp.";
+    const pushAuthenticatorName: string = "push";
 
     const enableMFAUserWise: boolean = useSelector((state: AppState) => state?.config?.ui?.enableMFAUserWise);
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
-    const [ isTOTPConfigured, setIsTOTPConfigured ] = useState<boolean>(false);
-    const [ isTOTPEnabled, setIsTOTPEnabled ] = useState<boolean>(false);
-    const [ isConfigTOTPModalOpen, setIsConfigTOTPModalOpen ] = useState<boolean>(false);
+    const [ isPushAuthenticatorConfigured, setPushAuthenticatorConfigured ] = useState<boolean>(false);
+    const [ isPushAuthenticatorEnabled, setPushAuthenticatorEnabled ] = useState<boolean>(false);
+    const [ isConfigPushAuthenticatorModalOpen, setIsConfigPushAuthenticatorModalOpen ] = useState<boolean>(false);
     const [ qrCode, setQrCode ] = useState<string>(null);
-    const [ TOTPModalCurrentStep, setTOTPModalCurrentStep ] = useState<number>(0);
-    const [ isTOTPError, setIsTOTPError ] = useState<boolean>(false);
-    const [ isRevokeTOTPModalOpen, setIsRevokeTOTPModalOpen ] = useState<boolean>(false);
-    const [ isViewTOTPModalOpen, setIsViewTOTPModalOpen ] = useState<boolean>(false);
-    const [ viewTOTPModalCurrentStep, setViewTOTPModalCurrentStep ] = useState<number>(0);
+    const [ PushAuthenticatorModalCurrentStep, setPushAuthenticatorModalCurrentStep ] = useState<number>(0);
+    const [ isRevokePushAuthenticatorModalOpen, setIsRevokePushAuthenticatorModalOpen ] = useState<boolean>(false);
+    const [ isViewPushAuthenticatorModalOpen, setIsViewPushAuthenticatorModalOpen ] = useState<boolean>(false);
+    const [ viewPushAuthenticatorModalCurrentStep, setViewPushAuthenticatorModalCurrentStep ] = useState<number>(0);
     const [ isConfirmRegenerate, setIsConfirmRegenerate ] = useState<boolean>(false);
 
-    const pinCode1: React.MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>();
-    const pinCode2: React.MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>();
-    const pinCode3: React.MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>();
-    const pinCode4: React.MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>();
-    const pinCode5: React.MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>();
-    const pinCode6: React.MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>();
-
     /**
-     * Check whether the TOTP is configured.
+     * Check whether the push authenticator is configured.
      */
     useEffect(() => {
-        checkIfTOTPEnabled().then((response: boolean) => {
-            setIsTOTPConfigured(response);
+        checkIfPushEnabled().then((response: boolean) => {
+            setPushAuthenticatorConfigured(response);
         });
     }, []);
 
     /**
-     * Check whether the TOTP is enabled.
+     * Check whether the push authentication is enabled.
      */
     useEffect(() => {
-        setIsTOTPEnabled(enabledAuthenticators?.includes(totpAuthenticatorName) ?? false);
+        setPushAuthenticatorEnabled(enabledAuthenticators?.includes(pushAuthenticatorName) ?? false);
     }, [ enabledAuthenticators ]);
-
-    /**
-     * Focus to next pin code after enter a value.
-     *
-     * @param field - The name of the field.
-     */
-    const focusInToNextPinCode = (field: string): void => {
-        switch (field) {
-            case "pincode-1":
-                pinCode2.current.focus();
-
-                break;
-            case "pincode-2":
-                pinCode3.current.focus();
-
-                break;
-            case "pincode-3":
-                pinCode4.current.focus();
-
-                break;
-            case "pincode-4":
-                pinCode5.current.focus();
-
-                break;
-            case "pincode-5":
-                pinCode6.current.focus();
-
-                break;
-        }
-    };
-
-    /**
-     * Focus to previous pin code after enter Backspace or Delete.
-     *
-     * @param field - The name of the field.
-     */
-    const focusInToPreviousPinCode = (field: string): void => {
-        switch (field) {
-            case "pincode-2":
-                pinCode1.current.focus();
-
-                break;
-            case "pincode-3":
-                pinCode2.current.focus();
-
-                break;
-            case "pincode-4":
-                pinCode3.current.focus();
-
-                break;
-            case "pincode-5":
-                pinCode4.current.focus();
-
-                break;
-            case "pincode-6":
-                pinCode5.current.focus();
-
-                break;
-        }
-    };
-
-    /**
-     * Reset pin code value in Error state.
-     */
-    const resetPinCodeFields = () => {
-        if (pinCode1.current) {
-            pinCode1.current.value = "";
-            pinCode2.current.value = "";
-            pinCode3.current.value = "";
-            pinCode4.current.value = "";
-            pinCode5.current.value = "";
-            pinCode6.current.value = "";
-            pinCode1.current.focus();
-        }
-    };
 
     /**
      * Update enabled authenticator list based on the update action.
@@ -214,15 +129,15 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
         switch(action) {
             case EnabledAuthenticatorUpdateAction.ADD : {
-                if (!authenticatorsList.includes(totpAuthenticatorName)) {
-                    authenticatorsList.push(totpAuthenticatorName);
+                if (!authenticatorsList.includes(pushAuthenticatorName)) {
+                    authenticatorsList.push(pushAuthenticatorName);
                 }
 
                 break;
             }
             case EnabledAuthenticatorUpdateAction.REMOVE : {
-                if (authenticatorsList.includes(totpAuthenticatorName)) {
-                    authenticatorsList.splice(authenticatorsList.indexOf(totpAuthenticatorName), 1);
+                if (authenticatorsList.includes(pushAuthenticatorName)) {
+                    authenticatorsList.splice(authenticatorsList.indexOf(pushAuthenticatorName), 1);
                 }
 
                 break;
@@ -247,20 +162,18 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Initiate the TOTP configuration flow.
+     * Initiate the push authenticator configuration flow.
      */
-    const initTOTPFlow = () => {
+    const initPushAuthenticatorRegFlow = () => {
         setIsLoading(true);
 
-        initTOTPCode()
+        initPushAuthenticatorQRCode()
             .then((response: any) => {
-                console.log(response?.data?.qrCodeUrl);
-                
-                const qrCodeUrl: string = window.atob(response?.data?.qrCodeUrl);
+                const qrCode: string = window.btoa(JSON.stringify(response?.data));
 
-                setIsConfigTOTPModalOpen(true);
-                setQrCode(qrCodeUrl);
-                setIsTOTPConfigured(true);
+                setIsConfigPushAuthenticatorModalOpen(true);
+                setQrCode(qrCode);
+                setPushAuthenticatorConfigured(true);
                 handleUpdateEnabledAuthenticators(EnabledAuthenticatorUpdateAction.ADD);
             })
             .catch((error: any) => {
@@ -278,14 +191,14 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Handle cancelling TOTP configuration flow.
+     * Handle cancelling push authenticator configuration flow.
      */
-    const handleTOTPInitCancel = () => {
-        deleteTOTP()
+    const handlePushAuthenticatorInitCancel = () => {
+        deletePushAuthenticator()
             .then(() => {
-                setIsConfigTOTPModalOpen(false);
+                setIsConfigPushAuthenticatorModalOpen(false);
                 setQrCode(null);
-                setIsTOTPConfigured(false);
+                setPushAuthenticatorConfigured(false);
                 handleUpdateEnabledAuthenticators(EnabledAuthenticatorUpdateAction.REMOVE);
             })
             .catch((error: any) => {
@@ -300,45 +213,25 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Handle TOTP submit flow.
+     * Handle Push Authenticator configuration flow.
      *
      * @param event - Form submit event.
-     * @param isRegenerated - Whether the TOTP is regenerated or not.
+     * @param isRegenerated - Whether the push authenticator QR code is regenerated or not.
      */
-    const handleTOTPSubmit = (event: React.FormEvent<HTMLFormElement>, isRegenerated: boolean = false): void => {
-        let verificationCode: string =  event.target[0].value;
-
-        for (let pinCodeIndex: number = 1; pinCodeIndex < 6; pinCodeIndex++){
-            verificationCode = verificationCode + event.target[pinCodeIndex].value;
-        }
-
-        validateTOTPCode(verificationCode)
-            .then((response: any) => {
-                if (response?.data?.isValid) {
-                    if (isRegenerated) {
-                        setViewTOTPModalCurrentStep(2);
-                    } else {
-                        setTOTPModalCurrentStep(1);
-                    }
-                } else {
-                    setIsTOTPError(true);
-                }
-            })
-            .catch(() => {
-                setIsTOTPError(true);
-            })
-            .finally(() => {
-                resetPinCodeFields();
-            });
+    const handlePushAuthenticatorSetupSubmit = (
+        event: React.FormEvent<HTMLFormElement>,
+        isRegenerated: boolean = false
+    ): void => {
+        const verificationCode: string =  event.target[0].value;
     };
 
     /**
-     * Handle TOTP enable/disable flow.
+     * Handle push authenticator enable/disable flow.
      *
      * @param _ - Radio button toggle event.
      * @param data - Data related to the toggle event.
      */
-    const handleTOTPToggle = (_: SyntheticEvent, data: CheckboxProps): void => {
+    const handlePushAuthenticatorToggle = (_: SyntheticEvent, data: CheckboxProps): void => {
         if (data.checked) {
             handleUpdateEnabledAuthenticators(EnabledAuthenticatorUpdateAction.ADD);
         } else {
@@ -347,157 +240,29 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Render TOTP form to shown in TOTP modal.
+     * Render push authenticator form to shown in the push authenticator configuration modal.
      *
-     * @param isRegenerated - Whether the TOTP is regenerated or not.
+     * @param isRegenerated - Whether the push authenticator QR is regenerated or not.
      * @returns Rendered form component.
      */
-    const renderTOTPVerifyForm = (isRegenerated: boolean = false): React.ReactElement => {
+    const renderPushAuthenticatorVerifyForm = (isRegenerated: boolean = false): React.ReactElement => {
         return (
             <>
-                <h5 className=" text-center"> { t(translateKey + "modals.verify.heading") }</h5>
                 <Segment basic className="pl-0">
-                    {
-                        isTOTPError
-                            ? (
-                                <Message
-                                    error
-                                    data-testid={ `${ testId }-code-verification-form-field-error` }>
-                                    { t(translateKey + "modals.verify.error") }
-                                </Message>
-                            ) : null
-                    }
                     <Form
                         onSubmit={
-                            (event: React.FormEvent<HTMLFormElement>) => handleTOTPSubmit(event, isRegenerated)
+                            (event: React.FormEvent<HTMLFormElement>) =>
+                                handlePushAuthenticatorSetupSubmit(event, isRegenerated)
                         }>
                         <Container>
                             <Grid className="ml-3 mr-3">
-                                <Grid.Row textAlign="center" centered columns={ 6 } >
-                                    <Grid.Column >
-                                        <Form.Field >
-                                            <input
-                                                autoFocus
-                                                ref = { pinCode1 }
-                                                name = "pincode-1"
-                                                placeholder = "."
-                                                className = "text-center totp-input"
-                                                type = "text"
-                                                maxLength = { 1 }
-                                                onKeyUp = { (event: React.KeyboardEvent<HTMLInputElement>) => {
-                                                    if (event.currentTarget.value.length !== 0) {
-                                                        focusInToNextPinCode("pincode-1");
-                                                    }
-                                                    if ((event.key === "Backspace") || (event.key === "Delete")) {
-                                                        focusInToPreviousPinCode("pincode-1");
-                                                    }
-                                                } }
-                                            />
-                                        </Form.Field>
-                                    </Grid.Column>
-                                    <Grid.Column >
-                                        <Form.Field>
-                                            <input
-                                                ref = { pinCode2 }
-                                                name = "pincode-2"
-                                                placeholder = "."
-                                                className = "text-center totp-input"
-                                                type = "text"
-                                                maxLength = { 1 }
-                                                onKeyUp = { (event: React.KeyboardEvent<HTMLInputElement>) => {
-                                                    if (event.currentTarget.value.length !== 0) {
-                                                        focusInToNextPinCode("pincode-2");
-                                                    }
-                                                    if ((event.key === "Backspace") || (event.key === "Delete")) {
-                                                        focusInToPreviousPinCode("pincode-2");
-                                                    }
-                                                } }/>
-                                        </Form.Field>
-                                    </Grid.Column>
-                                    <Grid.Column >
-                                        <Form.Field >
-                                            <input
-                                                ref = { pinCode3 }
-                                                name ="pincode-3"
-                                                placeholder ="."
-                                                className ="text-center totp-input"
-                                                type ="text"
-                                                maxLength = { 1 }
-                                                onKeyUp = { (event: React.KeyboardEvent<HTMLInputElement>) => {
-                                                    if (event.currentTarget.value.length !== 0) {
-                                                        focusInToNextPinCode("pincode-3");
-                                                    }
-                                                    if ((event.key === "Backspace") || (event.key === "Delete")) {
-                                                        focusInToPreviousPinCode("pincode-3");
-                                                    }
-                                                } }/>
-                                        </Form.Field>
-                                    </Grid.Column>
-                                    <Grid.Column>
-                                        <Form.Field>
-                                            <input
-                                                ref = { pinCode4 }
-                                                name ="pincode-4"
-                                                placeholder = "."
-                                                className = "text-center totp-input"
-                                                type = "text"
-                                                maxLength = { 1 }
-                                                onKeyUp = { (event: React.KeyboardEvent<HTMLInputElement>) => {
-                                                    if (event.currentTarget.value.length !== 0) {
-                                                        focusInToNextPinCode("pincode-4");
-                                                    }
-                                                    if ((event.key === "Backspace") || (event.key === "Delete")) {
-                                                        focusInToPreviousPinCode("pincode-4");
-                                                    }
-                                                } }/>
-                                        </Form.Field>
-                                    </Grid.Column>
-                                    <Grid.Column >
-                                        <Form.Field>
-                                            <input
-                                                ref = { pinCode5 }
-                                                name = "pincode-5"
-                                                placeholder = "."
-                                                className = "text-center totp-input"
-                                                type = "text"
-                                                maxLength = { 1 }
-                                                onKeyUp = { (event: React.KeyboardEvent<HTMLInputElement>) => {
-                                                    if (event.currentTarget.value.length !== 0) {
-                                                        focusInToNextPinCode("pincode-5");
-                                                    }
-                                                    if ((event.key === "Backspace") || (event.key === "Delete")) {
-                                                        focusInToPreviousPinCode("pincode-5");
-                                                    }
-                                                } }/>
-                                        </Form.Field>
-                                    </Grid.Column>
-                                    <Grid.Column >
-                                        <Form.Field>
-                                            <input
-                                                ref = { pinCode6 }
-                                                name = "pincode-6"
-                                                placeholder = "."
-                                                className = "text-center totp-input"
-                                                type = "text"
-                                                maxLength = { 1 }
-                                                onKeyUp = { (event: React.KeyboardEvent<HTMLInputElement>) => {
-                                                    if (event.currentTarget.value.length !== 0) {
-                                                        focusInToNextPinCode("pincode-6");
-                                                    }
-                                                    if ((event.key === "Backspace") || (event.key === "Delete")) {
-                                                        focusInToPreviousPinCode("pincode-6");
-                                                    }
-                                                } }/>
-                                        </Form.Field>
-                                    </Grid.Column>
-                                </Grid.Row>
                                 <div className = "totp-verify-step-btn">
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                             <Button
                                                 primary
                                                 type="submit"
-                                                className=" totp-verify-action-button"
+                                                className="totp-verify-action-button"
                                                 data-testid={ `${ testId }-modal-actions-primary-button` }
                                             >
                                                 { t("common:verify") }
@@ -512,7 +277,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                     <Button
                                                         type="button"
-                                                        onClick={ handleTOTPInitCancel }
+                                                        onClick={ handlePushAuthenticatorInitCancel }
                                                         className="link-button totp-verify-action-button"
                                                         data-testid={ `${ testId }-modal-actions-cancel-button` }>
                                                         { t("common:cancel") }
@@ -531,14 +296,14 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Render TOTP configuration modal content.
+     * Render push authenticator configuration modal content.
      *
-     * @returns Modal content based on TOTPModalCurrentStep.
+     * @returns Modal content based on PushAuthenticatorModalCurrentStep.
      */
-    const renderTOTPWizardContent = (): React.ReactElement => {
-        if (TOTPModalCurrentStep === 0) {
+    const renderPushAuthenticatorWizardContent = (): React.ReactElement => {
+        if (PushAuthenticatorModalCurrentStep === 0) {
             return (
-                <Segment basic >
+                <Segment basic>
                     <h5 className=" text-center"> { t(translateKey + "modals.scan.heading") }</h5>
                     <Segment textAlign="center" basic className="qr-code">
                         { qrCode
@@ -546,7 +311,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                             : null
                         }
                     </Segment>
-                    { renderTOTPVerifyForm() }
+                    { renderPushAuthenticatorVerifyForm() }
                 </Segment>
             );
         }
@@ -581,12 +346,12 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Render TOTP configuration modal actions.
+     * Render push authenticator configuration modal actions.
      *
-     * @returns Modal action based on TOTPModalCurrentStep.
+     * @returns Modal action based on PushAuthenticatorModalCurrentStep.
      */
-    const renderTOTPWizardActions = (): React.ReactElement => {
-        if (TOTPModalCurrentStep === 0) {
+    const renderPushAuthenticatorWizardActions = (): React.ReactElement => {
+        if (PushAuthenticatorModalCurrentStep === 0) {
             return (
                 <Message className="totp-tooltip display-flex">
                     <Icon name="info circle" />
@@ -617,9 +382,9 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 className = "totp-verify-done-button"
                 data-testid={ `${ testId }-modal-actions-primary-button` }
                 onClick= { () => {
-                    setIsConfigTOTPModalOpen(false);
+                    setIsConfigPushAuthenticatorModalOpen(false);
                     setQrCode(null);
-                    setTOTPModalCurrentStep(0);
+                    setPushAuthenticatorModalCurrentStep(0);
                     handleSessionTerminationModalVisibility(true);
                 } }
             >
@@ -629,17 +394,17 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Renders the TOTP configuration Modal.
+     * Renders the push authenticator configuration Modal.
      *
      * @returns Rendered modal component
      */
-    const renderTOTPWizard = (): React.ReactElement => {
+    const renderPushAuthenticatorWizard = (): React.ReactElement => {
         return (
             <Modal
                 data-testid={ `${ testId }-modal` }
                 dimmer="blurring"
                 size="tiny"
-                open={ isConfigTOTPModalOpen }
+                open={ isConfigPushAuthenticatorModalOpen }
                 className="totp"
                 closeOnDimmerClick={ false }
             >
@@ -647,26 +412,26 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     { t(translateKey + "modals.heading") }
                 </Modal.Header>
                 <Modal.Content data-testid={ `${ testId }-modal-content` } scrolling>
-                    { renderTOTPWizardContent() }
+                    { renderPushAuthenticatorWizardContent() }
                 </Modal.Content>
                 <Modal.Actions data-testid={ `${ testId }-modal-actions` } className ="actions">
-                    { renderTOTPWizardActions() }
+                    { renderPushAuthenticatorWizardActions() }
                 </Modal.Actions>
             </Modal>
         );
     };
 
     /**
-     * Handle view TOTP event.
+     * Handle view Push Authenticator event.
      */
-    const handleViewTOTP = (): void => {
+    const handleViewPushAuthenticator = (): void => {
         setIsLoading(true);
-        viewTOTPCode()
+        viewPushAuthenticatorSetupCode()
             .then((response: any) => {
                 const qrCodeUrl: string = window.atob(response?.data?.qrCodeUrl);
 
                 setQrCode(qrCodeUrl);
-                setIsViewTOTPModalOpen(true);
+                setIsViewPushAuthenticatorModalOpen(true);
             })
             .catch((error: any) => {
                 onAlertFired({
@@ -694,12 +459,12 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
      */
     const handleRegenerateQRCode = (): void => {
         setIsLoading(true);
-        refreshTOTPCode()
+        refreshPushAuthenticatorCode()
             .then((response: any) => {
                 const qrCodeUrl: string = window.atob(response?.data?.qrCodeUrl);
 
                 setQrCode(qrCodeUrl);
-                setViewTOTPModalCurrentStep(1);
+                setViewPushAuthenticatorModalCurrentStep(1);
             })
             .catch((errorMessage: any) => {
                 onAlertFired({
@@ -718,10 +483,10 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     /**
      * Renders modal content.
      *
-     * @returns Modal content based on viewTOTPModalCurrentStep.
+     * @returns Modal content based on viewPushAuthenticatorModalCurrentStep.
      */
-    const renderViewTOTPWizardContent = (): React.ReactElement => {
-        switch (viewTOTPModalCurrentStep) {
+    const renderViewPushAuthenticatorWizardContent = (): React.ReactElement => {
+        switch (viewPushAuthenticatorModalCurrentStep) {
             case 0:
                 return (
                     <Segment basic >
@@ -778,7 +543,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                             type="button"
                                             onClick={ () => {
                                                 setIsConfirmRegenerate(false);
-                                                setIsViewTOTPModalOpen(false);
+                                                setIsViewPushAuthenticatorModalOpen(false);
                                             } }
                                             className="link-button totp-verify-action-button"
                                             data-testid={ `${ testId }-view-modal-actions-cancel-button` }>
@@ -798,7 +563,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         <Segment textAlign="center" basic className="qr-code">
                             <QRCode value={ qrCode } data-testid={ `${ testId }-modals-scan-qrcode` }/>
                         </Segment>
-                        { renderTOTPVerifyForm(true) }
+                        { renderPushAuthenticatorVerifyForm(true) }
                     </Segment>
                 );
 
@@ -833,8 +598,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
         }
     };
 
-    const renderViewTOTPWizardActions = (): React.ReactElement => {
-        if (viewTOTPModalCurrentStep === 0 || viewTOTPModalCurrentStep === 1) {
+    const renderViewPushAuthenticatorWizardActions = (): React.ReactElement => {
+        if (viewPushAuthenticatorModalCurrentStep === 0 || viewPushAuthenticatorModalCurrentStep === 1) {
             return (
                 <Message className="totp-tooltip display-flex">
                     <Icon name="info circle" />
@@ -866,8 +631,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 data-testid={ `${ testId }-modal-actions-primary-button` }
                 onClick= { () => {
                     setIsConfirmRegenerate(false);
-                    setIsViewTOTPModalOpen(false);
-                    setViewTOTPModalCurrentStep(0);
+                    setIsViewPushAuthenticatorModalOpen(false);
+                    setViewPushAuthenticatorModalCurrentStep(0);
                     handleSessionTerminationModalVisibility(true);
                 } }
             >
@@ -877,15 +642,15 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Renders the TOTP wizard.
+     * Renders the push authenticator wizard.
      */
-    const renderViewTOTPWizard = (): React.ReactElement => {
+    const renderViewPushAuthenticatorWizard = (): React.ReactElement => {
         return (
             <Modal
                 data-testid={ `${ testId }-view-modal` }
                 dimmer="blurring"
                 size="tiny"
-                open={ isViewTOTPModalOpen }
+                open={ isViewPushAuthenticatorModalOpen }
                 className="totp compact"
                 closeOnDimmerClick={ false }
             >
@@ -893,22 +658,22 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     { t(translateKey + "modals.heading") }
                 </Modal.Header>
                 <Modal.Content data-testid={ `${ testId }-view-modal-content` } scrolling>
-                    { renderViewTOTPWizardContent() }
+                    { renderViewPushAuthenticatorWizardContent() }
                 </Modal.Content>
                 <Modal.Actions data-testid={ `${ testId }-view-modal-actions` } className ="actions">
-                    { renderViewTOTPWizardActions() }
+                    { renderViewPushAuthenticatorWizardActions() }
                 </Modal.Actions>
             </Modal>
         );
     };
 
     /**
-     *  Initiate deletion of TOTP configuration.
+     *  Initiate deletion of push authenticator configuration.
      */
-    const initDeleteTOTP = (): void => {
-        deleteTOTP()
+    const initDeletePushAuthenticator = (): void => {
+        deletePushAuthenticator()
             .then(() => {
-                setIsTOTPConfigured(false);
+                setPushAuthenticatorConfigured(false);
                 handleUpdateEnabledAuthenticators(EnabledAuthenticatorUpdateAction.REMOVE);
 
                 onAlertFired({
@@ -928,27 +693,27 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 });
             })
             .finally(() => {
-                setIsRevokeTOTPModalOpen(false);
+                setIsRevokePushAuthenticatorModalOpen(false);
             });
     };
 
     /**
-     * Handle the revoke TOTP Configuration modal close event.
+     * Handle the revoke push authenticator Configuration modal close event.
      */
-    const handleRevokeTOTPModalClose = (): void => {
-        setIsRevokeTOTPModalOpen(false);
+    const handleRevokePushAuthenticatorModalClose = (): void => {
+        setIsRevokePushAuthenticatorModalOpen(false);
     };
 
     /**
-     * This renders the TOTP Authenticator delete Modal.
+     * This renders the push Authenticator delete Modal.
      */
-    const renderRevokeTOTPModal = () => {
+    const renderRevokePushAuthenticatorModal = () => {
         return (
             <Modal
                 data-testid={ `${testId}-termination-modal` }
                 size="mini"
-                open={ isRevokeTOTPModalOpen }
-                onClose={ handleRevokeTOTPModalClose }
+                open={ isRevokePushAuthenticatorModalOpen }
+                onClose={ handleRevokePushAuthenticatorModalClose }
                 closeOnDimmerClick={ false }
                 dimmer="blurring"
             >
@@ -962,13 +727,13 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 <Modal.Actions data-testid={ `${testId}-termination-modal-actions` }>
                     <LinkButton
                         color="red"
-                        onClick={ handleRevokeTOTPModalClose }
+                        onClick={ handleRevokePushAuthenticatorModalClose }
                         data-testid={ `${testId}-termination-modal-actions-cancel-button` }>
                         { t("common:cancel") }
                     </LinkButton>
                     <Button
                         color="red"
-                        onClick={ initDeleteTOTP }
+                        onClick={ initDeletePushAuthenticator }
                         data-testid={ `${testId}-termination-modal-actions-terminate-button` }>
                         { t("common:remove") }
                     </Button>
@@ -979,8 +744,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     return (
         <>
-            { renderTOTPWizard() }
-            { !isTOTPConfigured
+            { renderPushAuthenticatorWizard() }
+            { !isPushAuthenticatorConfigured
                 ? (
                     <Grid padded={ true } data-testid={ testId }>
                         <Grid.Row columns={ 2 }>
@@ -1011,7 +776,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                         trigger={
                                             (<Icon
                                                 link={ true }
-                                                onClick={ initTOTPFlow }
+                                                onClick={ initPushAuthenticatorRegFlow }
                                                 className="list-icon padded-icon"
                                                 size="small"
                                                 color="grey"
@@ -1029,8 +794,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     </Grid>
                 ) : (
                     <>
-                        { renderViewTOTPWizard() }
-                        { renderRevokeTOTPModal() }
+                        { renderViewPushAuthenticatorWizard() }
+                        { renderRevokePushAuthenticatorModal() }
                         <Grid padded={ true } data-testid={ testId }>
                             <Grid.Row columns={ 3 }>
                                 <Grid.Column width={ 1 } className="first-column">
@@ -1067,8 +832,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                                 <Checkbox
                                                                     toggle
                                                                     data-testid={ `${testId}-conditional-auth` }
-                                                                    onChange={ handleTOTPToggle }
-                                                                    checked={ isTOTPEnabled }
+                                                                    onChange={ handlePushAuthenticatorToggle }
+                                                                    checked={ isPushAuthenticatorEnabled }
                                                                     className="conditional-auth-accordion-toggle"
                                                                 />
                                                             )
@@ -1092,7 +857,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 (
                                                     <Icon
                                                         link={ true }
-                                                        onClick={ handleViewTOTP }
+                                                        onClick={ handleViewPushAuthenticator }
                                                         className="list-icon padded-icon"
                                                         size="small"
                                                         color="grey"
@@ -1110,7 +875,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 (
                                                     <Icon
                                                         link={ true }
-                                                        onClick={ () => setIsRevokeTOTPModalOpen(true) }
+                                                        onClick={ () => setIsRevokePushAuthenticatorModalOpen(true) }
                                                         className="list-icon padded-icon"
                                                         size="small"
                                                         color="grey"
@@ -1132,13 +897,4 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
             }
         </>
     );
-};
-
-/**
- * Default properties for {@link TOTPAuthenticator}
- * See type definitions in {@link TOTPProps}
- */
-TOTPAuthenticator.defaultProps = {
-    "data-testid": "totp-authenticator",
-    enabledAuthenticators: []
 };

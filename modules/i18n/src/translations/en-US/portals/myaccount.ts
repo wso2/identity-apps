@@ -656,7 +656,7 @@ export const myAccount: MyAccountNS = {
                 description: "You can use the authenticator app to get verification codes for " +
                     "two-factor authentication.",
                 enableHint: "Enable/Disable TOTP Authenticator",
-                heading: "Authenticator App",
+                heading: "TOTP Authenticator",
                 hint: "View",
                 modals: {
                     delete : {
@@ -680,6 +680,97 @@ export const myAccount: MyAccountNS = {
                     },
                     toolTip: "Don't have an authenticator app? Download an authenticator app like " +
                         "Google Authenticator from <1>App Store</1> or <3>Google Play</3>",
+                    verify: {
+                        error: "Verification failed. Please try again.",
+                        heading: "Enter the generated code for verification",
+                        label: "Verification Code",
+                        placeholder: "Enter your verification code",
+                        reScan: "Re-scan",
+                        reScanQuestion: "Want to scan the QR code again?",
+                        requiredError: "Enter the verification code"
+                    }
+                },
+                notifications: {
+                    deleteError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "Error occurred while deleting QR code",
+                            message: "Something went wrong"
+                        }
+                    },
+                    deleteSuccess: {
+                        genericMessage: "Successfully removed",
+                        message: "Successfully removed TOTP configuration."
+                    },
+                    initError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving the QR code",
+                            message: "Something went wrong"
+                        }
+                    },
+                    refreshError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "An error occurred while trying to get a new QR code",
+                            message: "Something went wrong"
+                        }
+                    },
+                    updateAuthenticatorError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "An error occurred while trying to update the enabled authenticator list",
+                            message: "Something went wrong"
+                        }
+                    }
+                },
+                regenerate: "Regenerate"
+            },
+            pushAuthenticatorApp: {
+                addHint:"Configure",
+                configuredDescription: "You can use the login prompts generated from your configured " +
+                    "push authenticator app for two-factor authentication. If you don't have " +
+                    "access to the application you can set up a new authenticator app from here.",
+                deleteHint: "Remove",
+                description: "You can use the push authenticator app to get login prompts as push notifications for " +
+                    "two-factor authentication.",
+                enableHint: "Enable/Disable Push Authenticator",
+                heading: "Push Authenticator",
+                hint: "View",
+                modals: {
+                    delete : {
+                        heading: "Confirmation",
+                        message: "This action will remove the QR code added to your profile. Do you wish to continue ? "
+                    },
+                    done: "Success! Now you can use your Push Authenticator App for two-factor authentication",
+                    heading: "Set up the Push Authenticator App",
+                    scan: {
+                        additionNote: "QR code has been successfully added to your profile!",
+                        authenticatorApps: "Authenticator Apps",
+                        generate: "Generate a new code",
+                        heading: "Scan the QR code below using the push authenticator app",
+                        messageBody: "You can find a list of Authenticator Apps available here.",
+                        messageHeading: "Don't have an Authenticator App installed?",
+                        regenerateConfirmLabel: "Confirm regenerating a new QR code",
+                        regenerateWarning: {
+                            extended: "When you regenerate a new QR code, you must scan it and re-setup your authenticator app. You won't be able to login with the previous QR code anymore.",
+                            generic: "When you regenerate a new QR code, you must scan it and re-setup your authenticator app. Your previous setup won't work anymore."
+                        }
+                    },
+                    toolTip: "Don't have the push authenticator app? Download WSO2 " +
+                        "Push Authenticator from <1>App Store</1> or <3>Google Play</3>",
                     verify: {
                         error: "Verification failed. Please try again.",
                         heading: "Enter the generated code for verification",

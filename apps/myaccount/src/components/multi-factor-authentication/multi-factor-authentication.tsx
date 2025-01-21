@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, List } from "semantic-ui-react";
 import { BackupCodeAuthenticator, FIDOAuthenticator, SMSOTPAuthenticator, TOTPAuthenticator } from "./authenticators";
+import { PushAuthenticator } from "./authenticators/push-authenticator";
 import { getEnabledAuthenticators } from "../../api";
 import { AppConstants } from "../../constants";
 import { commonConfig } from "../../extensions";
@@ -210,6 +211,33 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                             />
                         </List.Item>
                     ) : null }
+
+                { hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes) &&
+                    isFeatureEnabled(
+                        featureConfig?.security,
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_PUSH")
+                    ) ? (
+                        <List.Item className="inner-list-item">
+                            <PushAuthenticator
+                                enabledAuthenticators={ enabledAuthenticators }
+                                onAlertFired={ onAlertFired }
+                                isSuperTenantLogin={ isSuperTenantLogin() }
+                                onEnabledAuthenticatorsUpdated={ handleEnabledAuthenticatorsUpdated }
+                                handleSessionTerminationModalVisibility={ () => {
+                                    // Show the session termination modal only if the backup code flow is not activated
+                                    // to stop showing duplicate modals.
+                                    if (isSuperTenantLogin() && isTOTPEnabled) {
+                                        setShowSessionTerminationModal(false);
+
+                                        return;
+                                    }
+
+                                    setShowSessionTerminationModal(true);
+                                } }
+                            />
+                        </List.Item>
+                    ) : null }
+
                 { hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         featureConfig?.security,

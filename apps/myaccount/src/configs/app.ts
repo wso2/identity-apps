@@ -118,6 +118,7 @@ export class Config {
             mfaEnabledAuthenticators: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/mfa/authenticators`,
             preference: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/identity-governance/preferences`,
             profileSchemas: `${this.getDeploymentConfig()?.serverHost}/scim2/Schemas`,
+            push: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/push`,
             revoke: `${this.getDeploymentConfig()?.serverHost}/oauth2/revoke`,
             sessions: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/sessions`,
             smsOtpResend: `${this.getDeploymentConfig()?.serverHost}/api/identity/user/v1.0/me/resend-code`,

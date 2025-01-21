@@ -719,6 +719,93 @@ export const myAccount: MyAccountNS = {
                 },
                 "regenerate": "Regenerieren"
             },
+            "pushAuthenticatorApp": {
+                "addHint": "Konfigurieren",
+                "configuredDescription": "Sie können TOTP-Codes aus Ihrer konfigurierten Authentifizierungs-App für die Zwei-Faktor-Authentifizierung verwenden. Wenn Sie keinen Zugriff auf die Anwendung haben, können Sie hier eine neue Authentifizierungs-App einrichten.",
+                "deleteHint": "Entfernen",
+                "description": "Sie können die Authentifizierungs-App verwenden, um Bestätigungscodes für die Zwei-Faktor-Authentifizierung zu erhalten.",
+                "enableHint": "TOTP-Authentifikator aktivieren/deaktivieren",
+                "heading": "Authentifizierungs-App",
+                "hint": "Aussicht",
+                "modals": {
+                    "delete": {
+                        "heading": "Bestätigung",
+                        "message": "Diese Aktion entfernt den Ihrem Profil hinzugefügten QR-Code. Möchten Sie fortfahren ?"
+                    },
+                    "done": "Erfolg! Jetzt können Sie Ihre Authenticator-App für die Zwei-Faktor-Authentifizierung verwenden",
+                    "heading": "Richten Sie eine Authenticator-App ein",
+                    "scan": {
+                        "additionNote": "Der QR-Code wurde Ihrem Profil erfolgreich hinzugefügt!",
+                        "authenticatorApps": "Authentifizierungs-Apps",
+                        "generate": "Generieren Sie einen neuen Code",
+                        "heading": "Scannen Sie den QR-Code unten mit einer Authentifizierungs-App",
+                        "messageBody": "Eine Liste der verfügbaren Authenticator-Apps finden Sie hier.",
+                        "messageHeading": "Sie haben keine Authenticator-App installiert?",
+                        "regenerateConfirmLabel": "Bestätigen Sie die Generierung eines neuen QR-Codes",
+                        "regenerateWarning": {
+                            "extended": "Wenn Sie einen neuen QR-Code regenerieren, müssen Sie ihn scannen und Ihre Authentifizierungs-App neu einrichten. Sie können sich nicht mehr mit dem vorherigen QR-Code anmelden.",
+                            "generic": "Wenn Sie einen neuen QR-Code regenerieren, müssen Sie ihn scannen und Ihre Authentifizierungs-App neu einrichten. Ihre bisherige Einrichtung funktioniert nicht mehr."
+                        }
+                    },
+                    "toolTip": "Sie haben keine Authentifizierungs-App? Laden Sie eine Authentifizierungs-App wie Google Authenticator aus dem <1>App Store herunter</1> oder <3>Google Play</3>",
+                    "verify": {
+                        "error": "Verifizierung fehlgeschlagen. Bitte versuche es erneut.",
+                        "heading": "Geben Sie den generierten Code zur Verifizierung ein",
+                        "label": "Bestätigungs-Code",
+                        "placeholder": "Geben Sie Ihren Bestätigungs-Code ein",
+                        "reScan": "Scannen Sie erneut",
+                        "reScanQuestion": "Möchten Sie den QR-Code erneut scannen?",
+                        "requiredError": "Geben Sie den Bestätigungscode ein"
+                    }
+                },
+                "notifications": {
+                    "deleteError": {
+                        "error": {
+                            "description": "{{Fehler}}",
+                            "message": "Etwas ist schief gelaufen"
+                        },
+                        "genericError": {
+                            "description": "Beim Löschen des QR-Codes ist ein Fehler aufgetreten",
+                            "message": "Etwas ist schief gelaufen"
+                        }
+                    },
+                    "deleteSuccess": {
+                        "genericMessage": "Erfolgreich entfernt",
+                        "message": "Die TOTP-Konfiguration wurde erfolgreich entfernt."
+                    },
+                    "initError": {
+                        "error": {
+                            "description": "{{Fehler}}",
+                            "message": "Etwas ist schief gelaufen"
+                        },
+                        "genericError": {
+                            "description": "Beim Abrufen des QR-Codes ist ein Fehler aufgetreten",
+                            "message": "Etwas ist schief gelaufen"
+                        }
+                    },
+                    "refreshError": {
+                        "error": {
+                            "description": "{{Fehler}}",
+                            "message": "Etwas ist schief gelaufen"
+                        },
+                        "genericError": {
+                            "description": "Beim Versuch, einen neuen QR-Code abzurufen, ist ein Fehler aufgetreten",
+                            "message": "Etwas ist schief gelaufen"
+                        }
+                    },
+                    "updateAuthenticatorError": {
+                        "error": {
+                            "description": "{{Fehler}}",
+                            "message": "Etwas ist schief gelaufen"
+                        },
+                        "genericError": {
+                            "description": "Beim Versuch, die Liste der aktivierten Authentifikatoren zu aktualisieren, ist ein Fehler aufgetreten",
+                            "message": "Etwas ist schief gelaufen"
+                        }
+                    }
+                },
+                "regenerate": "Regenerieren"
+            },
             "backupCode": {
                 "actions": {
                     "add": "Sicherungscodes hinzufügen",

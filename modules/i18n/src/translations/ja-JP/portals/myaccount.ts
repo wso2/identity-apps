@@ -719,6 +719,93 @@ export const myAccount: MyAccountNS = {
                 },
                 "regenerate": "再生"
             },
+            "pushAuthenticatorApp": {
+                "addHint": "構成、設定",
+                "configuredDescription": "2要素認証のために、構成されたAuthenticatorアプリのTOTPコードを使用できます。アプリケーションにアクセスできない場合は、ここから新しいAuthenticatorアプリを設定できます。",
+                "deleteHint": "取り除く",
+                "description": "Authenticatorアプリを使用して、2要素認証のために確認コードを取得できます。",
+                "enableHint": "TOTP Authenticatorを有効/無効にします",
+                "heading": "Authenticatorアプリ",
+                "hint": "ビュー",
+                "modals": {
+                    "delete": {
+                        "heading": "確認",
+                        "message": "このアクションにより、プロファイルに追加されたQRコードが削除されます。続けたいですか？"
+                    },
+                    "done": "成功！これで、2要素認証に認証アプリを使用できます",
+                    "heading": "Authenticatorアプリを設定します",
+                    "scan": {
+                        "additionNote": "QRコードはプロフィールに正常に追加されました！",
+                        "authenticatorApps": "Authenticatorアプリ",
+                        "generate": "新しいコードを生成します",
+                        "heading": "Authenticatorアプリを使用して、以下のQRコードをスキャンします",
+                        "messageBody": "ここでは、Authenticatorアプリのリストを見つけることができます。",
+                        "messageHeading": "Authenticatorアプリをインストールしていませんか？",
+                        "regenerateConfirmLabel": "新しいQRコードの再生を確認します",
+                        "regenerateWarning": {
+                            "extended": "新しいQRコードを再生するときは、スキャンして認証アプリを再設定する必要があります。以前のQRコードでログインすることはできません。",
+                            "generic": "新しいQRコードを再生するときは、スキャンして認証アプリを再設定する必要があります。以前のセットアップはもう機能しません。"
+                        }
+                    },
+                    "toolTip": "Authenticatorアプリを持っていませんか？<1> App Storeまたは<3> Google PlayからGoogle Authenticatorのような認証アプリをダウンロードする",
+                    "verify": {
+                        "error": "検証に失敗しました。もう一度やり直してください。",
+                        "heading": "検証のために生成されたコードを入力します",
+                        "label": "検証コード",
+                        "placeholder": "確認コードを入力します",
+                        "reScan": "再スキャン",
+                        "reScanQuestion": "QRコードをもう一度スキャンしたいですか？",
+                        "requiredError": "確認コードを入力します"
+                    }
+                },
+                "notifications": {
+                    "deleteError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "何かがうまくいかなかった"
+                        },
+                        "genericError": {
+                            "description": "QRコードの削除中にエラーが発生しました",
+                            "message": "何かがうまくいかなかった"
+                        }
+                    },
+                    "deleteSuccess": {
+                        "genericMessage": "正常に削除されました",
+                        "message": "TOTP構成を正常に削除しました。"
+                    },
+                    "initError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "何かがうまくいかなかった"
+                        },
+                        "genericError": {
+                            "description": "QRコードの取得中にエラーが発生しました",
+                            "message": "何かがうまくいかなかった"
+                        }
+                    },
+                    "refreshError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "何かがうまくいかなかった"
+                        },
+                        "genericError": {
+                            "description": "新しいQRコードを取得しようとしているときにエラーが発生しました",
+                            "message": "何かがうまくいかなかった"
+                        }
+                    },
+                    "updateAuthenticatorError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "何かがうまくいかなかった"
+                        },
+                        "genericError": {
+                            "description": "有効な認証リストを更新しようとしているときにエラーが発生しました",
+                            "message": "何かがうまくいかなかった"
+                        }
+                    }
+                },
+                "regenerate": "再生"
+            },
             "backupCode": {
                 "actions": {
                     "add": "バックアップコードを追加します",

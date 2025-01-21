@@ -19,7 +19,7 @@
 import { UserAgentParser } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
-import { ConfirmationModal, GenericIcon, Popup } from "@wso2is/react-components";
+import { ConfirmationModal, GenericIcon, Message, Popup } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, useEffect, useState } from "react";
@@ -522,7 +522,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-                { deviceList ? (
+                { deviceList?.length > 0 ? (
                     <List
                         data-testid={ `${ testId }-devices-list` }
                         divided
@@ -663,12 +663,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                         ) }
                     </List>
                 ) : (
-                    <>
-                        <p style={ { fontSize: "12px" } }>
-                            <Icon color="grey" floated="left" name="info circle" />
-                            You don&apos;t have any passkey enrolled yet.
-                        </p>
-                    </>
+                    <Message type="info" className="m-3" content={ "You don't have any passkeys enrolled yet." } />
                 ) }
             </div>
             <>{ deviceErrorModal() }</>

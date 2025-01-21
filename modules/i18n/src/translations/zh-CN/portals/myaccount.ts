@@ -719,6 +719,93 @@ export const myAccount: MyAccountNS = {
                 },
                 "regenerate": "再生"
             },
+            "pushAuthenticatorApp": {
+                "addHint": "配置",
+                "configuredDescription": "您可以使用已配置的Authenticator应用程序中的TOTP代码进行两因素身份验证。如果您无法访问该应用程序，则可以从此处设置一个新的Authenticator应用程序。",
+                "deleteHint": "消除",
+                "description": "您可以使用Authenticator应用程序获取两因素身份验证的验证代码。",
+                "enableHint": "启用/禁用TOTP身份验证器",
+                "heading": "身份验证器应用程序",
+                "hint": "看法",
+                "modals": {
+                    "delete": {
+                        "heading": "确认",
+                        "message": "此操作将删除添加到您的个人资料中的QR码。你想继续吗 ？"
+                    },
+                    "done": "成功！现在，您可以将Authenticator应用程序用于两因素身份验证",
+                    "heading": "设置一个身份验证器应用程序",
+                    "scan": {
+                        "additionNote": "QR码已成功添加到您的个人资料中！",
+                        "authenticatorApps": "身份验证器应用程序",
+                        "generate": "生成新代码",
+                        "heading": "使用Authenticator应用扫描下面的QR码",
+                        "messageBody": "您可以在此处找到可用的身份验证应用程序列表。",
+                        "messageHeading": "没有安装Authenticator应用程序？",
+                        "regenerateConfirmLabel": "确认再生新的QR码",
+                        "regenerateWarning": {
+                            "extended": "当您重新生成新的QR码时，必须扫描并重新设置Authenticator应用程序。您将无法使用以前的QR码登录。",
+                            "generic": "当您重新生成新的QR码时，必须扫描并重新设置Authenticator应用程序。您以前的设置将不再起作用。"
+                        }
+                    },
+                    "toolTip": "没有身份验证器应用程序？从<1> App Store或Google Play下载诸如Google Authenticator之类的身份验证器应用程序",
+                    "verify": {
+                        "error": "验证失败。 请再试一次。",
+                        "heading": "输入生成的代码进行验证",
+                        "label": "验证码",
+                        "placeholder": "输入您的验证代码",
+                        "reScan": "重新扫描",
+                        "reScanQuestion": "想再次扫描QR码吗？",
+                        "requiredError": "输入验证码"
+                    }
+                },
+                "notifications": {
+                    "deleteError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "出了些问题"
+                        },
+                        "genericError": {
+                            "description": "删除QR代码时发生错误",
+                            "message": "出了些问题"
+                        }
+                    },
+                    "deleteSuccess": {
+                        "genericMessage": "成功删除",
+                        "message": "成功删除了TOTP配置。"
+                    },
+                    "initError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "出了些问题"
+                        },
+                        "genericError": {
+                            "description": "检索QR码时发生错误",
+                            "message": "出了些问题"
+                        }
+                    },
+                    "refreshError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "出了些问题"
+                        },
+                        "genericError": {
+                            "description": "尝试获取新的QR代码时发生了错误",
+                            "message": "出了些问题"
+                        }
+                    },
+                    "updateAuthenticatorError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "出了些问题"
+                        },
+                        "genericError": {
+                            "description": "试图更新启用的身份验证列表时发生了错误",
+                            "message": "出了些问题"
+                        }
+                    }
+                },
+                "regenerate": "再生"
+            },
             "backupCode": {
                 "actions": {
                     "add": "添加备份代码",

@@ -466,6 +466,69 @@ export interface MyAccountNS {
                     };
                 };
             };
+            pushAuthenticatorApp: {
+                description: string;
+                configuredDescription:string;
+                heading: string;
+                hint: string;
+                enableHint: string;
+                addHint: string;
+                deleteHint: string;
+                regenerate: string;
+                modals: {
+                    heading: string;
+                    scan: {
+                        heading: string;
+                        generate: string;
+                        additionNote:string;
+                        messageHeading: string;
+                        messageBody: string;
+                        authenticatorApps: string;
+                        regenerateWarning: {
+                            extended: string;
+                            generic: string;
+                        };
+                        regenerateConfirmLabel: string;
+                    };
+                    verify: {
+                        heading: string;
+                        label: string;
+                        placeholder: string;
+                        error: string;
+                        requiredError: string;
+                        reScanQuestion: string;
+                        reScan: string;
+                    };
+                    delete: {
+                        heading: string;
+                        message: string;
+                    };
+                    done: string;
+                    toolTip: string;
+                };
+                notifications: {
+                    initError: {
+                        genericError: NotificationItem;
+                        error: NotificationItem;
+                    };
+                    refreshError: {
+                        genericError: NotificationItem;
+                        error: NotificationItem;
+                    };
+                    deleteError: {
+                        genericError: NotificationItem;
+                        error: NotificationItem;
+                    };
+                    updateAuthenticatorError: {
+                        error: NotificationItem;
+                        genericError: NotificationItem;
+                    };
+                    deleteSuccess: {
+                        genericMessage: string;
+                        message: string;
+                    };
+                };
+            },
             backupCode: {
                 actions: {
                     add: string;

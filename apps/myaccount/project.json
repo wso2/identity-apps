@@ -147,6 +147,7 @@
                 "baseHref": "/myaccount/",
                 "open": true,
                 "hmr": true,
+                "liveReload": true,
                 "ssl": true
             },
             "configurations": {

@@ -82,6 +82,7 @@ export interface ServiceResourceEndpointsInterface {
     mfaEnabledAuthenticators: string
     preference: string;
     profileSchemas: string;
+    push: string;
     sessions: string;
     smsOtpResend: string;
     smsOtpValidate: string;
