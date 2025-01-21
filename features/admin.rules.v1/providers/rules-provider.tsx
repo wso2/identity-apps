@@ -30,6 +30,7 @@ import {
     RuleExecuteCollectionInterface,
     RuleInterface
 } from "../models/rules";
+import { addIds, removeIds } from "../utils/add-remove-ids";
 
 // Refference to hold the latest context value
 const RuleContextRef: { ruleInstance: RuleExecuteCollectionInterface | undefined } = {
@@ -41,7 +42,7 @@ const RuleContextRef: { ruleInstance: RuleExecuteCollectionInterface | undefined
  *
  * @returns RuleInstanceData
  */
-export const getRuleInstanceValue = () => Object.freeze(RuleContextRef.ruleInstance);
+export const getRuleInstanceValue = () => removeIds(Object.freeze(RuleContextRef.ruleInstance));
 
 /**
  * Provider for the RulesContext
@@ -63,7 +64,7 @@ export const RulesProvider = ({
     initialData: RuleExecuteCollectionInterface | RuleInterface;
     ruleExecutionMetaData: RuleExecutionMetaDataInterface;
 }) => {
-    let RuleExecutionData: any = initialData;
+    let RuleExecutionData: any = addIds(initialData);
 
     // Check if initialData is a single rule object and if it doesn't have fallbackExecution
     // transform it to a collection
@@ -95,7 +96,6 @@ export const RulesProvider = ({
             field: conditionExpressionsMetaData?.[0]?.field?.name,
             id: uuidv4(),
             operator: conditionExpressionsMetaData?.[0]?.operators?.[0]?.name,
-            order: 0,
             value: ""
         };
     };
@@ -107,14 +107,12 @@ export const RulesProvider = ({
      * @returns Rule
      */
     const getNewRuleConditionInstance = (
-        condition: AdjoiningOperatorTypes,
-        orderIndex: number = 0
+        condition: AdjoiningOperatorTypes
     ): RuleConditionInterface => {
         return {
             condition: condition,
             expressions: [ getNewConditionExpressionInstance() ],
-            id: uuidv4(),
-            order: orderIndex
+            id: uuidv4()
         };
     };
 
@@ -166,6 +164,22 @@ export const RulesProvider = ({
                 ...prev,
                 rules: prev.rules?.filter(
                     (ruleExecution: RuleInterface) => ruleExecution?.id !== id)
+            };
+        });
+    };
+
+    /**
+     * Method to clear a rule.
+     *
+     * @param id - string
+     */
+    const handleClearRule = (id: string) => {
+        setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
+            return {
+                ...prev,
+                rules: prev.rules?.map((rule: RuleInterface) =>
+                    rule.id === id ? getNewRuleInstance() : rule
+                )
             };
         });
     };
@@ -370,6 +384,7 @@ export const RulesProvider = ({
             value={ {
                 addNewRule: handleAddNewRule,
                 addNewRuleConditionExpression: handleAddConditionExpression,
+                clearRule: handleClearRule,
                 conditionExpressionsMeta: ruleComponentInstanceConditionExpressionsMeta,
                 removeRule: handleRemoveRule,
                 removeRuleConditionExpression: handleRemoveConditionExpression,

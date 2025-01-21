@@ -41,7 +41,6 @@ export interface ConditionExpressionInterface {
     field: string;
     operator: string;
     value: string;
-    order: number;
 }
 
 /**
@@ -55,7 +54,6 @@ export type ConditionExpressionsInterface = ConditionExpressionInterface[];
 export interface RuleConditionInterface {
     id: string;
     condition: string;
-    order: number;
     expressions: ConditionExpressionsInterface;
 }
 

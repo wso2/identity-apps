@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,19 +31,16 @@ export const sampleRuleExecuteInstance: RuleInterface = {
                     field: "groups",
                     id: "2cf9e8cc-1f28-4ae5-ac18-06a5c144db6b",
                     operator: "equal",
-                    order: 1,
                     value: "employee"
                 },
                 {
                     field: "roles",
                     id: "8cbe103e-4c86-4021-91e4-83c37fe893a9",
                     operator: "equal",
-                    order: 2,
                     value: "staff"
                 }
             ],
-            id: "c90293c7-3fc1-465e-a946-adab6170e2dc",
-            order: 1
+            id: "c90293c7-3fc1-465e-a946-adab6170e2dc"
         },
         {
             condition: "AND",
@@ -52,12 +49,10 @@ export const sampleRuleExecuteInstance: RuleInterface = {
                     field: "groups",
                     id: "2f20d40f-f1a8-4ffc-bd88-6040592495fc",
                     operator: "equal",
-                    order: 1,
                     value: "guest"
                 }
             ],
-            id: "b21cbf6c-985f-47fc-ba88-dfbbed7a38d0",
-            order: 2
+            id: "b21cbf6c-985f-47fc-ba88-dfbbed7a38d0"
         }
     ]
 };
@@ -78,12 +73,10 @@ export const sampleRuleExecuteInstances: RuleExecuteCollectionInterface = {
                             field: "groups",
                             id: "2cf9e8cc-1f28-4ae5-ac18-06a5dfc144db6b",
                             operator: "equal",
-                            order: 1,
                             value: "employee"
                         }
                     ],
-                    id: "c90293c7-3fc1-465e-a946-adab6170fge2dc",
-                    order: 1
+                    id: "c90293c7-3fc1-465e-a946-adab6170fge2dc"
                 }
             ]
         }

@@ -30,6 +30,7 @@ import Select from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import RuleConditions from "./rule-conditions";
 import { useRulesContext } from "../hooks/use-rules-context";
 import { ListDataInterface } from "../models/meta";
@@ -56,14 +57,18 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
     ["data-componentid"]: componentId = "rules-render-component",
     isMultipleRules = false
 }: RulesPropsInterface): ReactElement => {
+
     const {
         ruleExecuteCollection,
         ruleExecutionsMeta,
         addNewRule,
+        clearRule,
         removeRule,
         updateRulesFallbackExecution,
         updateRuleExecution
     } = useRulesContext();
+
+    const { t } = useTranslation();
 
     return (
         <div className="rules-component" data-componentid={ componentId }>
@@ -76,7 +81,7 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                         onClick={ addNewRule }
                         startIcon={ <AddIcon /> }
                     >
-                        New Rule
+                        { t("rules:buttons.newRule") }
                     </Button>
                 </Box>
             ) }
@@ -89,9 +94,9 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                         } }
                         key={ index }
                     >
-                        <Grid container alignItems="center">
+                        <Grid container alignItems="center" sx={ { mb: 2 } }>
                             <Grid>
-                                <Typography variant="body2">Execute</Typography>
+                                <Typography variant="body2">{ t("rules:texts.execute") }</Typography>
                             </Grid>
                             { ruleExecutionsMeta?.executions ? (
                                 <Grid>
@@ -114,10 +119,14 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                                     </FormControl>
                                 </Grid>
                             ) : (
-                                <Grid>&nbsp;</Grid>
+                                <Grid>
+                                    <FormControl sx={ { mb: 1, minWidth: 0, mt: 1 } } size="small">
+                                        &nbsp;
+                                    </FormControl>
+                                </Grid>
                             ) }
                             <Grid>
-                                <Typography variant="body2">If</Typography>
+                                <Typography variant="body2">{ t("rules:texts.if") }</Typography>
                             </Grid>
                         </Grid>
                         <RuleConditions rule={ rule } />
@@ -136,6 +145,22 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                             >
                                 <DeleteIcon className="delete-button-icon" />
                             </Fab>
+                        ) }
+                        { !isMultipleRules && (
+                            <Button
+                                aria-label="Clear rule"
+                                variant="outlined"
+                                size="small"
+                                className="clear-button"
+                                sx={ {
+                                    position: "absolute",
+                                    right: 14,
+                                    top: 14
+                                } }
+                                onClick={ () => clearRule(rule.id) }
+                            >
+                                { t("rules:buttons.clearRule") }
+                            </Button>
                         ) }
                     </Card>
                 )

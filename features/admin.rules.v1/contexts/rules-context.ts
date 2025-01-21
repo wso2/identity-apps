@@ -46,6 +46,11 @@ export interface RulesContextInterface {
     addNewRule: () => void;
 
     /**
+     * Method to clear rule
+     */
+    clearRule: (id: string) => void;
+
+    /**
      * Method to remove a rule.
      */
     removeRule: (id: string) => void;
