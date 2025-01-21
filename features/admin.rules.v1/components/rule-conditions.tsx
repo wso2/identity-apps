@@ -16,9 +16,6 @@
  * under the License.
  */
 
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import { SelectChangeEvent } from "@mui/material";
 import Autocomplete from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
@@ -27,8 +24,9 @@ import Divider from "@oxygen-ui/react/Divider";
 import Fab from "@oxygen-ui/react/Fab";
 import FormControl from "@oxygen-ui/react/FormControl";
 import MenuItem from "@oxygen-ui/react/MenuItem";
-import Select from "@oxygen-ui/react/Select";
+import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
+import { MinusIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import debounce from "lodash-es/debounce";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -446,7 +444,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             );
                         } }
                         className="add-button"
-                        startIcon={ <AddIcon /> }
+                        startIcon={ <PlusIcon /> }
                     >
                         { t("rules:buttons.and") }
                     </Button>
@@ -460,7 +458,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         className="remove-button"
                         onClick={ () => removeRuleConditionExpression(ruleId, expression.id) }
                     >
-                        <RemoveIcon className="remove-button-icon" />
+                        <MinusIcon className="remove-button-icon" />
                     </Fab>
                 ) }
             </Box>
@@ -506,7 +504,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                                 AdjoiningOperatorTypes.Or
                                             )
                                         }
-                                        startIcon={ <AddIcon /> }
+                                        startIcon={ <PlusIcon /> }
                                     >
                                         { t("rules:buttons.or") }
                                     </Button>

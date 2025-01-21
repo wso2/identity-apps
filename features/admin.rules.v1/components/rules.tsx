@@ -16,9 +16,6 @@
  * under the License.
  */
 
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { SelectChangeEvent } from "@mui/material";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
@@ -26,8 +23,9 @@ import Fab from "@oxygen-ui/react/Fab";
 import FormControl from "@oxygen-ui/react/FormControl";
 import Grid from "@oxygen-ui/react/Grid";
 import MenuItem from "@oxygen-ui/react/MenuItem";
-import Select from "@oxygen-ui/react/Select";
+import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
+import { PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -79,7 +77,7 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                         variant="contained"
                         color="secondary"
                         onClick={ addNewRule }
-                        startIcon={ <AddIcon /> }
+                        startIcon={ <PlusIcon /> }
                     >
                         { t("rules:buttons.newRule") }
                     </Button>
@@ -143,7 +141,7 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                                 } }
                                 onClick={ () => removeRule(rule.id) }
                             >
-                                <DeleteIcon className="delete-button-icon" />
+                                <TrashIcon className="delete-button-icon" />
                             </Fab>
                         ) }
                         { !isMultipleRules && (

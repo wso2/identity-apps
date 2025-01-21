@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { SelectChangeEvent } from "@mui/material";
+import { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import React, { ReactNode, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import RulesContext from "../contexts/rules-context";

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { SelectChangeEvent } from "@mui/material";
+import { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import { createContext } from "react";
 import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "../models/meta";
 import { AdjoiningOperatorTypes, ExpressionFieldTypes, RuleExecuteCollectionInterface } from "../models/rules";
