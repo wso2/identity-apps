@@ -59,7 +59,7 @@ export class CommonAuthenticatorConstants {
             GITHUB: "github-idp",
             GOOGLE: "google-idp",
             HYPR: "hypr-idp",
-            INTERNAL_CUSTOM_AUTHENTICATION: "internal-custom-authentication",
+            INTERNAL_CUSTOM_AUTHENTICATION: "internal-user-custom-authentication",
             IPROOV: "iproov-idp",
             LINKEDIN: "linkedin-idp",
             MICROSOFT: "microsoft-idp",
