@@ -38,4 +38,54 @@ export interface policyAdministrationNS {
         actionText: string;
         primaryBtn: string;
     }
+    alerts: {
+        deleteSuccess: {
+            message: string;
+            description: string;
+        };
+        deleteFailure: {
+            message: string;
+            description: string;
+        };
+        activateSuccess: {
+            message: string;
+            description: string;
+        };
+        activateFailure: {
+            message: string;
+            description: string;
+        };
+        deactivateSuccess: {
+            message: string;
+            description: string;
+        };
+        deactivateFailure: {
+            message: string;
+            description: string;
+        };
+        updateSuccess: {
+            message: string;
+            description: string;
+        };
+        updateFailure: {
+            message: string;
+            description: string;
+        };
+        updateAlgorithmSuccess: {
+            message: string;
+            description: string;
+        };
+        updateAlgorithmFailure: {
+            message: string;
+            description: string;
+        };
+        createSuccess: {
+            message: string;
+            description: string;
+        };
+        createFailure: {
+            message: string;
+            description: string;
+        };
+    };
 }

@@ -27,13 +27,13 @@ import {
     AppState,
     AppUtils,
     ConfigReducerStateInterface,
-    Header,
     ProtectedRoute,
     RouteUtils,
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
 } from "@wso2is/admin.core.v1";
+import Header from "@wso2is/admin.core.v1/components/header";
 import { CommonUtils as ConsoleCommonUtils } from "@wso2is/admin.core.v1/utils";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
@@ -389,7 +389,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
             <AppShell
                 header={
                     (<Header
-                        handleSidePanelToggleClick={ handleSidePanelToggleClick }
+                        onCollapsibleHamburgerClick={ handleSidePanelToggleClick }
                     />)
                 }
                 navigation={
