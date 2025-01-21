@@ -1,5 +1,54 @@
 # @wso2is/admin.identity-providers.v1
 
+## 2.26.89
+
+### Patch Changes
+
+- Updated dependencies [[`cfe475febd8e3972a545cf12bb86e7fd08d344ea`](https://github.com/wso2/identity-apps/commit/cfe475febd8e3972a545cf12bb86e7fd08d344ea), [`f2c7a35ce347d4ac7e3e15f3f50404c9d701d212`](https://github.com/wso2/identity-apps/commit/f2c7a35ce347d4ac7e3e15f3f50404c9d701d212), [`f6939061baec44323111cd5a09164d1e7a441324`](https://github.com/wso2/identity-apps/commit/f6939061baec44323111cd5a09164d1e7a441324)]:
+  - @wso2is/admin.core.v1@2.35.27
+  - @wso2is/i18n@2.15.2
+  - @wso2is/admin.applications.v1@2.30.89
+  - @wso2is/admin.claims.v1@2.26.48
+  - @wso2is/admin.connections.v1@2.31.5
+  - @wso2is/admin.extensions.v1@2.36.14
+  - @wso2is/admin.identity-providers.v1@2.26.89
+  - @wso2is/admin.organizations.v1@2.26.89
+  - @wso2is/admin.roles.v2@2.27.33
+  - @wso2is/admin.server-configurations.v1@2.32.14
+  - @wso2is/admin.userstores.v1@2.26.48
+
+## 2.26.88
+
+### Patch Changes
+
+- Updated dependencies [[`ad9d93a8a57e076b40ef78674ed0242e8bbeca91`](https://github.com/wso2/identity-apps/commit/ad9d93a8a57e076b40ef78674ed0242e8bbeca91)]:
+  - @wso2is/admin.organizations.v1@2.26.88
+  - @wso2is/admin.applications.v1@2.30.88
+  - @wso2is/admin.connections.v1@2.31.4
+  - @wso2is/admin.core.v1@2.35.26
+  - @wso2is/admin.extensions.v1@2.36.13
+  - @wso2is/admin.identity-providers.v1@2.26.88
+  - @wso2is/admin.roles.v2@2.27.32
+  - @wso2is/admin.server-configurations.v1@2.32.13
+  - @wso2is/admin.claims.v1@2.26.47
+  - @wso2is/admin.userstores.v1@2.26.47
+
+## 2.26.87
+
+### Patch Changes
+
+- Updated dependencies [[`cbe83e7ecee7bd19053fdb554e4f73ab279ec2e8`](https://github.com/wso2/identity-apps/commit/cbe83e7ecee7bd19053fdb554e4f73ab279ec2e8)]:
+  - @wso2is/admin.applications.v1@2.30.87
+  - @wso2is/admin.core.v1@2.35.25
+  - @wso2is/admin.connections.v1@2.31.3
+  - @wso2is/admin.extensions.v1@2.36.12
+  - @wso2is/admin.identity-providers.v1@2.26.87
+  - @wso2is/admin.organizations.v1@2.26.87
+  - @wso2is/admin.roles.v2@2.27.31
+  - @wso2is/admin.claims.v1@2.26.46
+  - @wso2is/admin.server-configurations.v1@2.32.12
+  - @wso2is/admin.userstores.v1@2.26.46
+
 ## 2.26.86
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.10.4
+
+### Patch Changes
+
+- [#7333](https://github.com/wso2/identity-apps/pull/7333) [`8b5c00139cafcda59b5d0dd7fbd8a56d7e623d87`](https://github.com/wso2/identity-apps/commit/8b5c00139cafcda59b5d0dd7fbd8a56d7e623d87) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Introduce error code for invalid response type in hybrid flow
+
 ## 2.10.3
 
 ### Patch Changes
