@@ -197,13 +197,15 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     options={ options || [] }
                     getOptionLabel={ (option: { name: string }) => option.name || "" }
                     loading={ isInitialLoading || isFiltering }
-                    value={ (options || []).some((option: any) => option.name === inputValue)
-                        ? options.find((option: any) => option.name === inputValue)
-                        : null }
-                    onChange={ (event: React.SyntheticEvent, value: { name: string } | null) => {
+                    value={
+                        (options || []).some((option: { id: string }) => option.id === inputValue)
+                            ? options.find((option: { id: string }) => option.id === inputValue)
+                            : null
+                    }
+                    onChange={ (event: React.SyntheticEvent, value: { id: string; name: string } | null) => {
                         if (value) {
                             handleExpressionChangeDebounced(
-                                value.name,
+                                value.id,
                                 ruleId,
                                 conditionId,
                                 expression.id,
@@ -230,8 +232,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             } }
                         />
                     ) }
-                    renderOption={ (props: any, option: { name: string }) => (
-                        <li { ...props } key={ option.name }>
+                    renderOption={ (props: any, option: { name: string; id: string }) => (
+                        <li { ...props } key={ option.id }>
                             { option.name }
                         </li>
                     ) }
@@ -263,7 +265,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             }
 
             if (resourcesList) {
-                if (resourcesList.count < 10) {
+                if (resourcesList.count > 10) {
                     return (
                         <ValueInputAutocomplete
                             localValue={ expression.value }
