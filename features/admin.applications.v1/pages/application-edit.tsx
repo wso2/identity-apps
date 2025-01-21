@@ -83,6 +83,7 @@ import {
     SupportedAuthProtocolName,
     SupportedAuthProtocolTypes
 } from "../models/application-inbound";
+import ApplicationProvider from "../providers/application-provider";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 import "./application-edit.scss";
@@ -1013,32 +1014,35 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 </>
             ) }
         >
-            <ApplicationTemplateProvider
-                template={ extensionApplicationTemplate }
-            >
-                <ApplicationTemplateMetadataProvider
+            <ApplicationProvider template={ applicationTemplate } application={ application }>
+                <ApplicationTemplateProvider
                     template={ extensionApplicationTemplate }
                 >
-                    <EditApplication
-                        application={ moderatedApplicationData }
-                        featureConfig={ featureConfig }
-                        isLoading={ isApplicationRequestLoading }
-                        setIsLoading={ setApplicationRequestLoading }
-                        onDelete={ handleApplicationDelete }
-                        onUpdate={ handleApplicationUpdate }
-                        template={ applicationTemplate }
-                        data-componentid={ componentId }
-                        urlSearchParams={ urlSearchParams }
-                        getConfiguredInboundProtocolsList={ (list: string[]) => {
-                            setInboundProtocolList(list);
-                        } }
-                        getConfiguredInboundProtocolConfigs={ (configs: Record<string, unknown>) => {
-                            setInboundProtocolConfigs(configs);
-                        } }
-                        readOnly={ resolveReadOnlyState() }
-                    />
-                </ApplicationTemplateMetadataProvider>
-            </ApplicationTemplateProvider>
+                    <ApplicationTemplateMetadataProvider
+                        template={ extensionApplicationTemplate }
+                    >
+                        <EditApplication
+                            application={ moderatedApplicationData }
+                            featureConfig={ featureConfig }
+                            isLoading={ isApplicationRequestLoading }
+                            setIsLoading={ setApplicationRequestLoading }
+                            onDelete={ handleApplicationDelete }
+                            onUpdate={ handleApplicationUpdate }
+                            template={ applicationTemplate }
+                            data-componentid={ componentId }
+                            urlSearchParams={ urlSearchParams }
+                            getConfiguredInboundProtocolsList={ (list: string[]) => {
+                                setInboundProtocolList(list);
+                            } }
+                            getConfiguredInboundProtocolConfigs={ (configs: Record<string, unknown>) => {
+                                setInboundProtocolConfigs(configs);
+                            } }
+                            readOnly={ resolveReadOnlyState() }
+                        />
+                    </ApplicationTemplateMetadataProvider>
+                </ApplicationTemplateProvider>
+            </ApplicationProvider>
+
         </TabPageLayout>
     );
 };

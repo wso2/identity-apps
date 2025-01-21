@@ -29,10 +29,7 @@ import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { ImpersonationConfigConstants } from "@wso2is/admin.impersonation.v1/constants/impersonation-configuration";
-import { getSharedOrganizations } from "@wso2is/admin.organizations.v1/api";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
-import { OrganizationInterface, OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -61,7 +58,6 @@ import {
     URLInput
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { AxiosResponse } from "axios";
 import get from "lodash-es/get";
 import intersection from "lodash-es/intersection";
 import isEmpty from "lodash-es/isEmpty";
@@ -75,33 +71,28 @@ import React, {
     MutableRefObject,
     ReactElement,
     SyntheticEvent,
+    useContext,
     useEffect,
-    useRef,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Container, Divider, DropdownProps, Form, Grid, Label, List, Table } from "semantic-ui-react";
+import useInboundOidcForm from "./use-inbound-oidc-form";
 import { OIDCScopesManagementConstants } from "../../../admin.oidc-scopes.v1/constants";
 import { getGeneralIcons } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants/application-management";
+import ApplicationContext from "../../context/application-context";
 import CustomApplicationTemplate from
     "../../data/application-templates/templates/custom-application/custom-application.json";
-import M2MApplicationTemplate from "../../data/application-templates/templates/m2m-application/m2m-application.json";
-import MobileTemplate from "../../data/application-templates/templates/mobile-application/mobile-application.json";
-import OIDCWebApplicationTemplate from
-    "../../data/application-templates/templates/oidc-web-application/oidc-web-application.json";
-import SinglePageApplicationTemplate from
-    "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
     ApplicationInterface,
     ApplicationTemplateIdTypes,
     ApplicationTemplateListItemInterface,
     ApplicationTemplateNames,
     CertificateInterface,
-    CertificateTypeInterface,
-    additionalSpProperty
+    CertificateTypeInterface
 } from "../../models/application";
 import {
     GrantTypeInterface,
@@ -209,11 +200,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         containerRef,
         isDefaultApplication,
         isSystemApplication,
-        [ "data-testid" ]: testId,
-        [ "data-componentid" ]: componentId
+        [ "data-testid" ]: testId = "inbound-oidc-form",
+        [ "data-componentid" ]: componentId = "inbound-oidc-form"
     } = props;
 
     const { t } = useTranslation();
+
+    const {
+        isAppShared,
+        isSpaApplication,
+        isOIDCWebApplication,
+        isM2MApplication,
+        isMobileApplication
+    } = useContext(ApplicationContext);
+
+    const { refs: inboundOidcFormFieldRefs } = useInboundOidcForm();
 
     const dispatch: Dispatch = useDispatch();
 
@@ -221,8 +222,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         state.config.ui.isClientSecretHashEnabled);
     const orgType: OrganizationType = useSelector((state: AppState) =>
         state?.organization?.organizationType);
-    const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) =>
-        state.organization.organization);
     const disabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.applications?.disabledFeatures);
 
@@ -272,57 +271,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ isSubjectTokenFeatureAvailable, setIsSubjectTokenFeatureAvailable ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-    const clientSecret: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const grant: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const url: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
-    const allowedOrigin: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
-    const supportPublicClients: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const pkce: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const hybridFlowEnableConfig: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const hybridFlow: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const bindingType: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const type: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const validateTokenBinding: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const revokeAccessToken: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const userAccessTokenExpiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const applicationAccessTokenExpiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const refreshToken: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const expiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const audience: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const encryption: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const algorithm: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const method: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const idTokenSignedResponseAlg: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const idExpiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const backChannelLogoutUrl: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const frontChannelLogoutUrl: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const enableRequestObjectSignatureValidation: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const scopeValidator: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const formRef: MutableRefObject<HTMLFormElement> = useRef<HTMLFormElement>();
-    const updateRef: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const tokenEndpointAuthMethod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const tokenEndpointAllowReusePvtKeyJwt: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const tokenEndpointAuthSigningAlg: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const tlsClientAuthSubjectDn: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const requirePushedAuthorizationRequests: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const requestObjectSigningAlg: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const requestObjectEncryptionAlgorithm: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const requestObjectEncryptionMethod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const subjectToken: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const applicationSubjectTokenExpiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-
-    const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
-    const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
-    const [ isMobileApplication, setMobileApplication ] = useState<boolean>(false);
-    const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
     const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
 
     const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
     const [ isCertAvailableForEncrypt, setCertAvailableForEncrypt ] = useState(false);
 
-    const [ isAppShared, setIsAppShared ] = useState<boolean>(false);
-    const [ sharedOrganizationsList, setSharedOrganizationsList ] = useState<Array<OrganizationInterface>>(undefined);
     const [ enableHybridFlowResponseTypeField , setEnableHybridFlowResponseTypeField ] = useState<boolean>(undefined);
 
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
@@ -418,42 +372,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const PRIVATE_KEY_JWT: string = "private_key_jwt";
     const TLS_CLIENT_AUTH: string = "tls_client_auth";
 
-    useEffect(() => {
-        if (sharedOrganizationsList) {
-            return;
-        }
 
-        getSharedOrganizations(
-            currentOrganization.id,
-            application.id
-        ).then((response: AxiosResponse) => {
-            setSharedOrganizationsList(response.data.organizations);
-        }).catch((error: IdentityAppsApiException) => {
-            if (error.response.data.description) {
-                dispatch(
-                    addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("applications:edit.sections.shareApplication" +
-                                ".getSharedOrganizations.genericError.message")
-                    })
-                );
-
-                return;
-            }
-
-            dispatch(
-                addAlert({
-                    description: t("applications:edit.sections.shareApplication" +
-                            ".getSharedOrganizations.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("applications:edit.sections.shareApplication" +
-                            ".getSharedOrganizations.genericError.message")
-                })
-            );
-        }
-        );
-    }, [ application ]);
 
     const fetchLocalClaims = () => {
         getAllLocalClaims(null)
@@ -524,79 +443,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             application?.applicationVersion, ApplicationManagementConstants.APP_VERSION_2));
     }, [ accessTokenAttributes, application ]);
 
-    useEffect(() => {
-        const isSharedWithAll: additionalSpProperty[] = application?.advancedConfigurations
-            ?.additionalSpProperties?.filter((property: additionalSpProperty) =>
-                property?.name === "shareWithAllChildren");
 
-        if ((sharedOrganizationsList?.length > 0) || (isSharedWithAll?.length > 0 &&
-            JSON.parse(isSharedWithAll[ 0 ].value))) {
-
-            setIsAppShared(true);
-        }
-
-    }, [ sharedOrganizationsList ]);
-
-    /**
-     * Check whether the application is a Single Page Application
-     */
-    useEffect(() => {
-        if (!template?.id || !SinglePageApplicationTemplate?.id) {
-            setIsLoading(false);
-
-            return;
-        }
-
-        if (template.id == SinglePageApplicationTemplate.id) {
-            setSPAApplication(true);
-        }
-        setIsLoading(false);
-    }, [ template ]);
-
-    /**
-     * Check whether the application is an OIDC Web Application
-     */
-    useEffect(() => {
-        if (!template?.id || !OIDCWebApplicationTemplate?.id) {
-            return;
-        }
-
-        if (template.id == OIDCWebApplicationTemplate.id) {
-            setOIDCWebApplication(true);
-        }
-    }, [ template ]);
-
-    /**
-     * Check whether the application is a Mobile Application
-     */
-    useEffect(() => {
-        if (!template?.id || !MobileTemplate?.id) {
-            setIsLoading(false);
-
-            return;
-        }
-
-        if (template?.id == MobileTemplate?.id) {
-            setMobileApplication(true);
-        }
-        setIsLoading(false);
-    }, [ template ]);
-
-    /**
-     * Check whether the application is an M2M Application.
-     */
-    useEffect(() => {
-        if (!template || !M2MApplicationTemplate) {
-            setIsLoading(true);
-
-            return;
-        }
-
-        if (template.id === M2MApplicationTemplate.id) {
-            setM2MApplication(true);
-        }
-        setIsLoading(false);
-    }, [ template ]);
 
     /**
      * Check whether to show the callback url or not
@@ -946,7 +793,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     });
                 // Cookie binding was hidden from the UI for SPAs & Traditional OIDC with
                 // https://github.com/wso2/identity-apps/pull/2254
-                } else if ((isSPAApplication || isOIDCWebApplication) && isBinding && ele === "cookie") {
+                } else if ((isSpaApplication || isOIDCWebApplication) && isBinding && ele === "cookie") {
                     return false;
                 } else {
                     allowedList.push({
@@ -1632,12 +1479,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }, [ initialValues ]
     );
 
-    useEffect(
-        () => {
-            setPublicClient(initialValues?.publicClient);
-        }, [ initialValues ]
-    );
-
     /**
     The following function is used to reset the client authentication method if public client is selected
     *
@@ -1677,108 +1518,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             block: "center"
         };
 
-        switch (field) {
-            case "clientSecret":
-                clientSecret.current.scrollIntoView(options);
-
-                break;
-            case "grant":
-                grant.current.scrollIntoView(options);
-
-                break;
-            case "url":
-                url.current.scrollIntoView(options);
-
-                break;
-            case "allowedOrigin":
-                allowedOrigin.current.scrollIntoView(options);
-
-                break;
-            case "supportPublicClients":
-                supportPublicClients.current.scrollIntoView(options);
-
-                break;
-            case "pkce":
-                pkce.current.scrollIntoView(options);
-
-                break;
-            case "bindingType":
-                bindingType.current.scrollIntoView(options);
-
-                break;
-            case "type":
-                type.current.scrollIntoView(options);
-
-                break;
-            case "validateTokenBinding":
-                validateTokenBinding.current.scrollIntoView(options);
-
-                break;
-            case "revokeAccessToken":
-                revokeAccessToken.current.scrollIntoView(options);
-
-                break;
-            case "userAccessTokenExpiryInSeconds":
-                userAccessTokenExpiryInSeconds.current.scrollIntoView(options);
-
-                break;
-            case "refreshToken":
-                refreshToken.current.scrollIntoView(options);
-
-                break;
-            case "expiryInSeconds":
-                expiryInSeconds.current.scrollIntoView(options);
-
-                break;
-            case "subjectToken":
-                subjectToken.current.scrollIntoView(options);
-
-                break;
-            case "applicationSubjectTokenExpiryInSeconds":
-                applicationSubjectTokenExpiryInSeconds.current.scrollIntoView(options);
-
-                break;
-            case "audience":
-                audience.current.scrollIntoView(options);
-
-                break;
-            case "encryption":
-                encryption.current.scrollIntoView(options);
-
-                break;
-            case "algorithm":
-                algorithm.current.scrollIntoView(options);
-
-                break;
-            case "method":
-                method.current.scrollIntoView(options);
-
-                break;
-            case "idExpiryInSeconds":
-                idExpiryInSeconds.current.scrollIntoView(options);
-
-                break;
-            case "backChannelLogoutUrl":
-                backChannelLogoutUrl.current.scrollIntoView(options);
-
-                break;
-            case "frontChannelLogoutUrl":
-                frontChannelLogoutUrl.current.scrollIntoView(options);
-
-                break;
-            case "enableRequestObjectSignatureValidation":
-                enableRequestObjectSignatureValidation.current.scrollIntoView(options);
-
-                break;
-            case "scopeValidator":
-                scopeValidator.current.scrollIntoView(options);
-
-                break;
-            case "hybridFlow":
-                hybridFlow.current.scrollIntoView(options);
-
-                break;
-        }
+        inboundOidcFormFieldRefs[field].current.scrollIntoView(options);
     };
 
     /**
@@ -1802,7 +1542,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         return (numberValue !== Infinity && String(numberValue) === value && numberValue > 0);
     };
 
-    const isPublicClientFieldEnabled: boolean = !isSPAApplication
+    const isPublicClientFieldEnabled: boolean = !isSpaApplication
         && !isMobileApplication
         && !isFAPIApplication
         && (
@@ -1835,7 +1575,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             {
                 !readOnly &&  (
                     <StickyBar
-                        updateButtonRef={ updateRef }
+                        updateButtonRef={ inboundOidcFormFieldRefs.updateRef }
                         isFormStale={ isFormStale }
                         containerRef={ containerRef }
                     >
@@ -1858,7 +1598,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Field
-                                ref={ grant }
+                                ref={ inboundOidcFormFieldRefs.grant }
                                 name="grant"
                                 label={
                                     t("applications:forms.inboundOIDC.fields.grant.label")
@@ -1898,9 +1638,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
-                                <div ref={ url } />
+                                <div ref={ inboundOidcFormFieldRefs.url } />
                                 <URLInput
-                                    isAllowEnabled={ isSPAApplication }
+                                    isAllowEnabled={ isSpaApplication }
                                     handleAddAllowedOrigin={ (url: string) => handleAllowOrigin(url) }
                                     handleRemoveAllowedOrigin={ () => { return; } }
                                     tenantDomain={ tenantDomain }
@@ -2022,7 +1762,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
-                                <div ref={ allowedOrigin } />
+                                <div ref={ inboundOidcFormFieldRefs.allowedOrigin } />
                                 <URLInput
                                     handleAddAllowedOrigin={ (url: string) => handleAllowOrigin(url) }
                                     urlState={ allowedOrigins }
@@ -2124,7 +1864,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         ".heading") }
                                 </Heading>
                                 <Field
-                                    ref={ pkce }
+                                    ref={ inboundOidcFormFieldRefs.pkce }
                                     name={ PKCE_KEY }
                                     label=""
                                     required={ false }
@@ -2135,7 +1875,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     type="checkbox"
                                     value={ initialValues?.pkce && findPKCE(initialValues.pkce) }
                                     listen={ pkceValuesChangeListener }
-                                    children={ (!isSPAApplication && !isMobileApplication)
+                                    children={ (!isSpaApplication && !isMobileApplication)
                                         ? [
                                             {
                                                 label: t("applications:forms.inboundOIDC" +
@@ -2203,7 +1943,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     ) }
                                 </Box>
                                 <Field
-                                    ref={ hybridFlowEnableConfig }
+                                    ref={ inboundOidcFormFieldRefs.hybridFlowEnableConfig }
                                     name={ ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG }
                                     required={ false }
                                     children={
@@ -2236,7 +1976,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Field
-                                ref={ hybridFlow }
+                                ref={ inboundOidcFormFieldRefs.hybridFlow }
                                 label={
                                     t("applications:forms.inboundOIDC.sections" +
                                         ".hybridFlow.hybridFlowResponseType.label")
@@ -2289,7 +2029,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         <Grid.Row columns={ 1 }>
                                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                 <Field
-                                                    ref={ supportPublicClients }
+                                                    ref={ inboundOidcFormFieldRefs.supportPublicClients }
                                                     name="supportPublicClients"
                                                     label=""
                                                     required={ false }
@@ -2335,7 +2075,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     isClientAuthenticationMethodFieldEnabled && (
                                         <>
                                             <Field
-                                                ref={ tokenEndpointAuthMethod }
+                                                ref={ inboundOidcFormFieldRefs.tokenEndpointAuthMethod }
                                                 name="tokenEndpointAuthMethod"
                                                 label={
                                                     t("applications:forms.inboundOIDC" +
@@ -2343,7 +2083,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 }
                                                 required={ false }
                                                 type="dropdown"
-                                                disabled={ isPublicClient }
+                                                disabled={ initialValues.publicClient }
                                                 placeholder={
                                                     t("applications:forms.inboundOIDC" +
                                                       ".sections.clientAuthentication.fields.authenticationMethod" +
@@ -2373,11 +2113,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Field
-                                            ref={ tokenEndpointAllowReusePvtKeyJwt }
+                                            ref={ inboundOidcFormFieldRefs.tokenEndpointAllowReusePvtKeyJwt }
                                             name="tokenEndpointAllowReusePvtKeyJwt"
                                             required={ false }
                                             type="checkbox"
-                                            disabled={ isPublicClient }
+                                            disabled={ initialValues.publicClient }
                                             value={
                                                 initialValues?.clientAuthentication?.tokenEndpointAllowReusePvtKeyJwt ?
                                                     [ "tokenEndpointAllowReusePvtKeyJwt" ]
@@ -2406,7 +2146,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Field
-                                            ref={ tokenEndpointAuthSigningAlg }
+                                            ref={ inboundOidcFormFieldRefs.tokenEndpointAuthSigningAlg }
                                             name="tokenEndpointAuthSigningAlg"
                                             label={
                                                 t("applications:forms.inboundOIDC.sections" +
@@ -2414,7 +2154,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             }
                                             required={ false }
                                             type="dropdown"
-                                            disabled={ isPublicClient }
+                                            disabled={ initialValues.publicClient }
                                             default={
                                                 initialValues?.clientAuthentication ?
                                                     initialValues.clientAuthentication.tokenEndpointAuthSigningAlg
@@ -2445,14 +2185,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Form.Input
-                                            ref={ tlsClientAuthSubjectDn }
+                                            ref={ inboundOidcFormFieldRefs.tlsClientAuthSubjectDn }
                                             ariaLabel="TLS client auth subject DN"
                                             inputType="name"
                                             name="tlsClientAuthSubjectDn"
                                             label={ t("applications:forms.inboundOIDC" +
                                                 ".sections.clientAuthentication.fields.subjectDN.label")
                                             }
-                                            disabled = { isPublicClient }
+                                            disabled = { initialValues.publicClient }
                                             required={ false }
                                             placeholder={
                                                 t("applications:forms.inboundOIDC.sections" +
@@ -2498,7 +2238,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     ".pushedAuthorization.heading") }
                             </Heading>
                             <Field
-                                ref={ requirePushedAuthorizationRequests }
+                                ref={ inboundOidcFormFieldRefs.requirePushedAuthorizationRequests }
                                 name={ "requirePushAuthorizationRequest" }
                                 required={ false }
                                 type="checkbox"
@@ -2542,7 +2282,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         "requestObject.heading") }
                                 </Heading>
                                 <Field
-                                    ref={ requestObjectSigningAlg }
+                                    ref={ inboundOidcFormFieldRefs.requestObjectSigningAlg }
                                     name="requestObjectSigningAlg"
                                     label={
                                         t("applications:forms.inboundOIDC.sections" +
@@ -2581,7 +2321,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
-                                    ref={ requestObjectEncryptionAlgorithm }
+                                    ref={ inboundOidcFormFieldRefs.requestObjectEncryptionAlgorithm }
                                     name="requestObjectEncryptionAlgorithm"
                                     label={
                                         t("applications:forms.inboundOIDC.sections" +
@@ -2620,7 +2360,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
-                                    ref={ requestObjectEncryptionMethod }
+                                    ref={ inboundOidcFormFieldRefs.requestObjectEncryptionMethod }
                                     name="requestObjectEncryptionMethod"
                                     label={
                                         t("applications:forms.inboundOIDC.sections" +
@@ -2673,7 +2413,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     ".accessToken.heading") }
                             </Heading>
                             <Field
-                                ref={ type }
+                                ref={ inboundOidcFormFieldRefs.type }
                                 label={
                                     t("applications:forms.inboundOIDC.sections" +
                                         ".accessToken.fields.type.label")
@@ -2793,7 +2533,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Field
-                                ref={ bindingType }
+                                ref={ inboundOidcFormFieldRefs.bindingType }
                                 label={
                                     t("applications:forms.inboundOIDC.sections" +
                                         ".accessToken.fields.bindingType.label")
@@ -2837,7 +2577,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 )
             }
             {
-                (!isSPAApplication)
+                (!isSpaApplication)
                 && !isMobileApplication
                 && isTokenBindingTypeSelected
                 && !isSystemApplication
@@ -2847,7 +2587,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
-                                    ref={ validateTokenBinding }
+                                    ref={ inboundOidcFormFieldRefs.validateTokenBinding }
                                     name="ValidateTokenBinding"
                                     label=""
                                     required={ false }
@@ -2883,7 +2623,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
-                                    ref={ revokeAccessToken }
+                                    ref={ inboundOidcFormFieldRefs.revokeAccessToken }
                                     name="RevokeAccessToken"
                                     label=""
                                     required={ false }
@@ -2930,9 +2670,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Field
-                                ref={ userAccessTokenExpiryInSeconds }
+                                ref={ inboundOidcFormFieldRefs.userAccessTokenExpiryInSeconds }
                                 name="userAccessTokenExpiryInSeconds"
-                                label={ !isSPAApplication
+                                label={ !isSpaApplication
                                     ? t("applications:forms.inboundOIDC.sections" +
                                         ".accessToken.fields.expiry.label") :
                                     t("applications:forms.inboundOIDC.sections" +
@@ -2993,7 +2733,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     name="applicationAccessTokenExpiryInSeconds"
-                                    ref={ applicationAccessTokenExpiryInSeconds }
+                                    ref={ inboundOidcFormFieldRefs.applicationAccessTokenExpiryInSeconds }
                                     label={
                                         t("applications:forms.inboundOIDC.sections" +
                                             ".accessToken.fields.applicationTokenExpiry.label")
@@ -3138,7 +2878,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         ".refreshToken.heading") }
                                 </Heading>
                                 <Field
-                                    ref={ refreshToken }
+                                    ref={ inboundOidcFormFieldRefs.refreshToken }
                                     name="RefreshToken"
                                     label=""
                                     required={ false }
@@ -3179,7 +2919,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
-                                    ref={ expiryInSeconds }
+                                    ref={ inboundOidcFormFieldRefs.expiryInSeconds }
                                     name="expiryInSeconds"
                                     label={
                                         t("applications:forms.inboundOIDC.sections" +
@@ -3245,7 +2985,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     { t("applications:forms.inboundOIDC.sections.subjectToken.heading") }
                                 </Heading>
                                 <Field
-                                    ref={ subjectToken }
+                                    ref={ inboundOidcFormFieldRefs.subjectToken }
                                     name="SubjectToken"
                                     label=""
                                     required={ false }
@@ -3293,7 +3033,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Field
-                                            ref={ applicationSubjectTokenExpiryInSeconds }
+                                            ref={ inboundOidcFormFieldRefs.applicationSubjectTokenExpiryInSeconds }
                                             name="applicationSubjectTokenExpiryInSeconds"
                                             label={
                                                 t("applications:forms.inboundOIDC.sections" +
@@ -3453,7 +3193,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
-                                    ref={ encryption }
+                                    ref={ inboundOidcFormFieldRefs.encryption }
                                     name="encryption"
                                     label=""
                                     required={ false }
@@ -3507,7 +3247,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
-                                    ref={ algorithm }
+                                    ref={ inboundOidcFormFieldRefs.algorithm }
                                     name="algorithm"
                                     label={
                                         t("applications:forms.inboundOIDC.sections.idToken" +
@@ -3551,7 +3291,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
-                                    ref={ method }
+                                    ref={ inboundOidcFormFieldRefs.method }
                                     name="method"
                                     disabled={ !isEncryptionEnabled || !isCertAvailableForEncrypt }
                                     label={
@@ -3601,7 +3341,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Field
-                                ref={ idTokenSignedResponseAlg }
+                                ref={ inboundOidcFormFieldRefs.idTokenSignedResponseAlg }
                                 name="idTokenSignedResponseAlg"
                                 label={
                                     t("applications:forms.inboundOIDC.sections.idToken" +
@@ -3645,7 +3385,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Field
-                                ref={ idExpiryInSeconds }
+                                ref={ inboundOidcFormFieldRefs.idExpiryInSeconds }
                                 name="idExpiryInSeconds"
                                 label={
                                     t("applications:forms.inboundOIDC.sections.idToken" +
@@ -3696,7 +3436,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* Logout */ }
             {
-                !isSPAApplication
+                !isSpaApplication
                 && applicationConfig.inboundOIDCForm.showBackChannelLogout
                 && !isSystemApplication
                 && !isDefaultApplication
@@ -3711,7 +3451,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Heading as="h4">Logout URLs</Heading>
                                 <Divider hidden />
                                 <Field
-                                    ref={ backChannelLogoutUrl }
+                                    ref={ inboundOidcFormFieldRefs.backChannelLogoutUrl }
                                     name="backChannelLogoutUrl"
                                     label={
                                         t("applications:forms.inboundOIDC.sections" +
@@ -3758,7 +3498,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Field
-                                ref={ frontChannelLogoutUrl }
+                                ref={ inboundOidcFormFieldRefs.frontChannelLogoutUrl }
                                 name="frontChannelLogoutUrl"
                                 label={
                                     t("applications:forms.inboundOIDC.sections" +
@@ -3792,7 +3532,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 ) }
             { /*Request Object Signature*/ }
             {
-                !isSPAApplication
+                !isSpaApplication
                 && applicationConfig.inboundOIDCForm.showRequestObjectSignatureValidation
                 && !isSystemApplication
                 && !isDefaultApplication
@@ -3809,7 +3549,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         ".requestObjectSignature.heading") }
                                 </Heading>
                                 <Field
-                                    ref={ enableRequestObjectSignatureValidation }
+                                    ref={ inboundOidcFormFieldRefs.enableRequestObjectSignatureValidation }
                                     name="enableRequestObjectSignatureValidation"
                                     label=""
                                     required={ false }
@@ -3865,7 +3605,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     ".scopeValidators.heading") }
                             </Heading>
                             <Field
-                                ref={ scopeValidator }
+                                ref={ inboundOidcFormFieldRefs.scopeValidator }
                                 name="scopeValidator"
                                 label=""
                                 required={ false }
@@ -3909,7 +3649,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 updateCertType={ setSelectedCertType }
                                 certificate={ certificate }
                                 readOnly={ readOnly }
-                                hidden={ isSPAApplication || !(applicationConfig.inboundOIDCForm.showCertificates) }
+                                hidden={ isSpaApplication || !(applicationConfig.inboundOIDCForm.showCertificates) }
                                 isRequired={ true }
                                 triggerSubmit={ triggerCertSubmit }
                             />
@@ -3921,7 +3661,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 !readOnly && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <span ref={ updateRef }></span>
+                            <span ref={ inboundOidcFormFieldRefs.updateRef }></span>
                             <Button
                                 primary
                                 type="submit"
@@ -4053,7 +3793,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 data-testid={ `${ testId }-oidc-revoke-confirmation-modal-content` }
             >
                 {
-                    isSPAApplication
+                    isSpaApplication
                         ? (
                             t("applications:confirmations" +
                                 ".revokeApplication.content"))
@@ -4076,7 +3816,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 open={ showReactiveConfirmationModal }
                 assertion={ initialValues?.clientId }
                 assertionHint={
-                    isSPAApplication
+                    isSpaApplication
                         ? (
                             <p>
                                 <Trans
@@ -4120,7 +3860,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     data-testid={ `${ testId }-oidc-reactivate-confirmation-modal-header` }
                 >
                     {
-                        !isSPAApplication
+                        !isSpaApplication
                             ? (
                                 t("applications:confirmations" +
                                 ".reactivateSPA.header"))
@@ -4130,7 +3870,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     }
                 </ConfirmationModal.Header>
                 {
-                    isSPAApplication
+                    isSpaApplication
                         ? (
                             <ConfirmationModal.Message
                                 attached
@@ -4146,7 +3886,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     data-testid={ `${ testId }-oidc-reactivate-confirmation-modal-content` }
                 >
                     {
-                        isSPAApplication
+                        isSpaApplication
                             ? (
                                 t("applications:confirmations" +
                                 ".reactivateSPA.content"))
@@ -4186,7 +3926,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     secondaryAction={ t("common:cancel") }
                     onSecondaryActionClick={ (): void => setShowLowExpiryTimesConfirmationModal(false) }
                     onPrimaryActionClick={ (): void => {
-                        if (!isSPAApplication) {
+                        if (!isSpaApplication) {
                             onSubmit(updateConfiguration(values, url, origin));
                         } else {
                             onSubmit(updateConfigurationForSPA(values, url, origin));
@@ -4269,7 +4009,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         let isExpiryTimesTooLowModalShown: boolean = false;
 
         setTriggerCertSubmit();
-        if (!isSPAApplication && (applicationConfig.inboundOIDCForm.showCertificates)  &&
+        if (!isSpaApplication && (applicationConfig.inboundOIDCForm.showCertificates)  &&
             selectedCertType !== CertificateTypeInterface.NONE && isEmpty(finalCertValue)) {
             return;
         }
@@ -4285,7 +4025,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         isExpiryTimesTooLowModalShown = isExpiryTimesTooLow(values, url, origin);
 
                         if (!isExpiryTimesTooLowModalShown) {
-                            if (!isSPAApplication) {
+                            if (!isSpaApplication) {
                                 onSubmit(updateConfiguration(values, url, origin));
                             } else {
                                 onSubmit(updateConfigurationForSPA(values, url, origin));
@@ -4301,7 +4041,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         isExpiryTimesTooLowModalShown = isExpiryTimesTooLow(values, undefined, undefined);
 
         if (!isExpiryTimesTooLowModalShown) {
-            if (!isSPAApplication) {
+            if (!isSpaApplication) {
                 onSubmit(updateConfiguration(values, undefined, undefined));
             } else {
                 onSubmit(updateConfiguration(values, undefined, undefined));
@@ -4332,7 +4072,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     onStaleChange={ (isStale: boolean) => {
                         setIsFormStale(isStale);
                     } }
-                    ref={ formRef }
+                    ref={ inboundOidcFormFieldRefs.formRef }
                 >
                     <Grid>
                         {
@@ -4369,21 +4109,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     value={ initialValues?.clientId }
                                                     data-testid={ `${ testId }-client-id-readonly-input` }
                                                 />
-                                                {
-                                                    /**
-                                                     * TODO - Application revoke is disabled until proper
-                                                     * backend support for application disabling is provided
-                                                     * Issue - https://github.com/wso2/product-is/issues/11453
-                                                     * Comment - #issuecomment-954842169
-                                                     */
-                                                }
                                             </div>
                                         </Form.Field>
                                         {
                                             (
                                                 applicationConfig.inboundOIDCForm.showNativeClientSecretMessage && (
                                                     initialValues?.state !== State.REVOKED
-                                                ) && isSPAApplication
+                                                ) && isSpaApplication
                                             )
                                                 ? (
                                                     <Message
@@ -4413,7 +4145,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { (
                             initialValues?.clientSecret
                             && (initialValues?.state !== State.REVOKED)
-                            && (!isSPAApplication))
+                            && (!isSpaApplication))
                             && (!isMobileApplication)
                             && !isSystemApplication
                             && !isDefaultApplication
@@ -4532,38 +4264,5 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <ContentLoader inline="centered" active/>
                 </Container>
             )
-
     );
-};
-
-/**
- * Default props for the Inbound OIDC form component.
- */
-InboundOIDCForm.defaultProps = {
-    "data-componentid": "inbound-oidc-form",
-    "data-testid": "inbound-oidc-form",
-    initialValues: {
-        accessToken: undefined,
-        allowedOrigins: [],
-        callbackURLs: [],
-        clientId: "",
-        clientSecret: "",
-        grantTypes: [],
-        hybridFlow: {
-            enable: false,
-            responseType: undefined
-        },
-        idToken: undefined,
-        logout: undefined,
-        pkce: {
-            mandatory: false,
-            supportPlainTransformAlgorithm: false
-        },
-        publicClient: false,
-        refreshToken: undefined,
-        scopeValidators: [],
-        state: undefined,
-        subjectToken: undefined,
-        validateRequestObjectSignature: undefined
-    }
 };
