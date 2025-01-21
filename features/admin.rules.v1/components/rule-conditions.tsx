@@ -32,6 +32,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import debounce from "lodash-es/debounce";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import useGetResourcesList from "../api/use-get-resource-list";
 import { useRulesContext } from "../hooks/use-rules-context";
 import {
@@ -89,6 +90,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
     ["data-componentid"]: componentId = "rules-component",
     rule: ruleInstance
 }: RulesComponentPropsInterface): ReactElement => {
+
     const ruleConditions: RuleConditionsInterface = ruleInstance.rules;
 
     const {
@@ -97,6 +99,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         updateConditionExpression,
         removeRuleConditionExpression
     } = useRulesContext();
+
+    const { t } = useTranslation();
 
     /**
      * Rule expression component to recursive render.
@@ -443,7 +447,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         className="add-button"
                         startIcon={ <AddIcon /> }
                     >
-                        And
+                        { t("rules:buttons.and") }
                     </Button>
                 </FormControl>
 
@@ -503,7 +507,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                         }
                                         startIcon={ <AddIcon /> }
                                     >
-                                        Or
+                                        { t("rules:buttons.or") }
                                     </Button>
                                 </Divider>
                             ) }

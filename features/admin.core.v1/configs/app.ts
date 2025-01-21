@@ -214,7 +214,8 @@ export class Config {
                 I18nConstants.ACTIONS_NAMESPACE,
                 I18nConstants.TENANTS_NAMESPACE,
                 I18nConstants.POLICY_ADMINISTRATION_NAMESPACE,
-                I18nConstants.REMOTE_USER_STORES_NAMESPACE
+                I18nConstants.REMOTE_USER_STORES_NAMESPACE,
+                I18nConstants.RULES_NAMESPACE
             ],
             preload: []
         };
