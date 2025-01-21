@@ -28,7 +28,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AppConstants } from "../constants/app-constants";
-import { ConfigReducerStateInterface } from "../models";
+import { ConfigReducerStateInterface } from "../models/reducer-state";
 import { AppState } from "../store";
 
 /**

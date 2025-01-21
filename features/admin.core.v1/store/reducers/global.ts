@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { GlobalReducerStateInterface } from "../../models";
+import { GlobalReducerStateInterface } from "../../models/reducer-state";
 
 /**
  * Initial state for the common global reducer.

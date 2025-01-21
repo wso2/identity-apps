@@ -18,7 +18,7 @@
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
-import { CORSOriginsListInterface } from "../models";
+import { CORSOriginsListInterface } from "../models/cors-configurations";
 import { store } from "../store";
 
 /**
