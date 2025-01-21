@@ -333,7 +333,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                     />
                 );
 
-            case "custom-authentication":
+            case CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.CUSTOM_AUTHENTICATION:
                 return (
                     <CustomAuthenticationCreateWizard
                         title={ t("customAuthentication:fields.createWizard.title") }

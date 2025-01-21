@@ -72,7 +72,7 @@ export interface CustomAuthenticationCreateWizardPropsInterface extends Identifi
     /**
      * Connection template interface.
      */
-    template: ConnectionTemplateInterface
+    template: ConnectionTemplateInterface;
     /**
      * Title of the wizard.
      */
@@ -136,9 +136,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             RequestMethod: "post",
             displayName: CustomAuthConstants.EMPTY_STRING,
             identifier: CustomAuthConstants.EMPTY_STRING
-        }),
-        []
-    );
+        }),[]);
 
     useEffect(() => {
         if (!initWizard) {
@@ -186,7 +184,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 size="small"
                 color="grey"
                 name={ !showSecret ? "eye" : "eye slash" }
-                data-componentid={ `${ _componentId }-authentication-property-secret1-view-button` }
+                data-componentid={ `${_componentId}-authentication-property-secret1-view-button` }
                 onClick={ onClick }
             />
         </InputAdornment>
@@ -240,9 +238,9 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                             inputType="password"
                             type={ isShowSecret1 ? "text" : "password" }
                             InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(
-                                    isShowSecret1,
-                                    () => setIsShowSecret1(!isShowSecret1))
+                                endAdornment: renderInputAdornmentOfSecret(isShowSecret1, () =>
+                                    setIsShowSecret1(!isShowSecret1)
+                                )
                             } }
                             required={ true }
                             maxLength={ 100 }
@@ -287,9 +285,9 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                             inputType="password"
                             type={ isShowSecret1 ? "text" : "password" }
                             InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(
-                                    isShowSecret1,
-                                    () => setIsShowSecret1(!isShowSecret1))
+                                endAdornment: renderInputAdornmentOfSecret(isShowSecret1, () =>
+                                    setIsShowSecret1(!isShowSecret1)
+                                )
                             } }
                             label={ t(
                                 "customAuthentication:fields.createWizard.configurationsStep." +
@@ -337,9 +335,9 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                             inputType="password"
                             type={ isShowSecret2 ? "text" : "password" }
                             InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(
-                                    isShowSecret2,
-                                    () => setIsShowSecret2(!isShowSecret2))
+                                endAdornment: renderInputAdornmentOfSecret(isShowSecret2, () =>
+                                    setIsShowSecret2(!isShowSecret2)
+                                )
                             } }
                             label={ t(
                                 "customAuthentication:fields.createWizard.configurationsStep." +
@@ -786,9 +784,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             data-componentid={ `${_componentId}-modal` }
         >
             <ModalWithSidePanel.MainPanel>
-                <ModalWithSidePanel.Header
-                    className="wizard-header"
-                    data-componentid={ `${_componentId}-modal-header` }>
+                <ModalWithSidePanel.Header className="wizard-header" data-componentid={ `${_componentId}-modal-header` }>
                     <div className={ "display-flex" }>
                         <GenericIcon
                             icon={ ConnectionsManagementUtils.resolveConnectionResourcePath(
