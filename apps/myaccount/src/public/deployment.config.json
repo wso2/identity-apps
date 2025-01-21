@@ -86,7 +86,9 @@
                 }
             },
             "personalInfo": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "personalInfo.distinct.attribute.profiles"
+                ],
                 "enabled": true,
                 "scopes": {
                     "create": [],
