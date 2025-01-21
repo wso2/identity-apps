@@ -121,6 +121,9 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
         data: RuleExpressionsMetaData
     } = useGetRulesMeta(actionTypeApiPath);
 
+    // TODO: Temporary flag to show/hide the rule component.
+    const showRuleComponent: boolean = false;
+
     /**
      * The following useEffect is used to set the current Action Authentication Type.
      */
@@ -761,7 +764,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     { t("actions:fields.authentication.label") }
                 </Heading>
                 { renderAuthenticationSection() }
-                { RuleExpressionsMetaData && (
+                { (RuleExpressionsMetaData && showRuleComponent) && (
                     <>
                         <Divider className="divider-container" />
                         <Heading className="heading-container" as="h5">
