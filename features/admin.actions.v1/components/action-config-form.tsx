@@ -28,7 +28,7 @@ import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-
 import { AppState } from "@wso2is/admin.core.v1";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import RulesComponent from "@wso2is/admin.rules.v1/components/rules-component";
-import { RuleExecuteCollectionInterface } from "@wso2is/admin.rules.v1/models/rules";
+import { RuleExecuteCollectionInterface, RuleInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { getRuleInstanceValue } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -97,9 +97,10 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
         (state: AppState) => state.config.ui.features.actions);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
-    const [ isSubmitting, setIsSubmitting ] = useState(false);
-    const [ isShowSecret1, setIsShowSecret1 ] = useState(false);
-    const [ isShowSecret2, setIsShowSecret2 ] = useState(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isShowSecret1, setIsShowSecret1 ] = useState<boolean>(false);
+    const [ isShowSecret2, setIsShowSecret2 ] = useState<boolean>(false);
+    const [ isHasRule, setIsHasRule ] = useState<boolean>(false);
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -112,19 +113,13 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     } = useGetActionsByType(actionTypeApiPath);
 
     const {
+        data: actionData,
         mutate: mutateAction
     } = useGetActionById(actionTypeApiPath, initialValues?.id);
 
     const {
         data: RuleExpressionsMetaData
     } = useGetRulesMeta(actionTypeApiPath);
-
-    // TODO: Use this function to get the rule value.
-    /* eslint-disable @typescript-eslint/no-unused-vars */
-    const handleGetRuleValue = () => {
-        const ruleValue: RuleExecuteCollectionInterface = getRuleInstanceValue();
-    };
-    /* eslint-enable @typescript-eslint/no-unused-vars */
 
     /**
      * The following useEffect is used to set the current Action Authentication Type.
@@ -137,6 +132,12 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
             setIsAuthenticationUpdateFormState(false);
         }
     }, [ initialValues ]);
+
+    useEffect(() => {
+        if (actionData?.rule) {
+            setIsHasRule(true);
+        }
+    }, [ actionData ]);
 
     const renderInputAdornmentOfSecret = (showSecret: boolean, onClick: () => void): ReactElement => (
         <InputAdornment position="end">
@@ -295,6 +296,22 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
         values: ActionConfigFormPropertyInterface,
         changedFields: ActionConfigFormPropertyInterface) =>
     {
+
+        let rule: RuleInterface | Record<string, never>;
+
+        if (isHasRule) {
+            const ruleValue: RuleExecuteCollectionInterface = getRuleInstanceValue();
+
+            rule = ruleValue?.rules[0];
+
+            if (rule?.rules?.length === 1 &&
+                rule?.rules[0].expressions?.length === 1 &&
+                rule?.rules[0]?.expressions[0].value === "") {
+
+                rule = {};
+            }
+        }
+
         const authProperties: Partial<AuthenticationPropertiesInterface> = {};
 
         if (isAuthenticationUpdateFormState || isCreateFormState) {
@@ -329,7 +346,8 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     },
                     uri: values.endpointUri
                 },
-                name: values.name
+                name: values.name,
+                ...(rule !== null && { rule: rule })
             };
 
             setIsSubmitting(true);
@@ -354,7 +372,8 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     } : undefined,
                     uri: changedFields?.endpointUri ? values.endpointUri : undefined
                 } : undefined,
-                name: changedFields?.name ? values.name : undefined
+                name: changedFields?.name ? values.name : undefined,
+                ...(rule !== null && { rule: rule })
             };
 
             setIsSubmitting(true);
@@ -392,7 +411,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                 };
 
                 return (
-                    <Alert severity="info">
+                    <Alert className="alert-nutral" icon={ false }>
                         <AlertTitle
                             className="alert-title"
                             data-componentid={ `${ _componentId }-authentication-info-box-title` }
@@ -742,10 +761,47 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     { t("actions:fields.authentication.label") }
                 </Heading>
                 { renderAuthenticationSection() }
-                { (RuleExpressionsMetaData) && (
+                { RuleExpressionsMetaData && (
                     <>
-                        <Divider className="divider-container"/>
-                        <RulesComponent conditionExpressionsMetaData={ RuleExpressionsMetaData } />
+                        <Divider className="divider-container" />
+                        <Heading className="heading-container" as="h5">
+                            <Trans i18nKey={ t("actions:fields.rules.label") }>
+                                Execution Rule
+                            </Trans>
+                        </Heading>
+                        { isHasRule ? (
+                            <RulesComponent
+                                conditionExpressionsMetaData={ RuleExpressionsMetaData }
+                                initialData={ actionData?.rule }
+                            />
+                        ) : (
+                            <Alert className="alert-nutral" icon={ false }>
+                                <AlertTitle
+                                    className="alert-title"
+                                    data-componentid={ `${ _componentId }-rule-info-box-title` }
+                                >
+                                    <Trans i18nKey={ t("actions:fields.rules.info.title") }>
+                                        No execution rule is configured.
+                                    </Trans>
+                                </AlertTitle>
+                                <Trans
+                                    i18nKey={ t("actions:fields.authentication.info.message") }
+                                >
+                                    This action will be executed without any conditions.
+                                </Trans>
+                                <div>
+                                    <Button
+                                        onClick={ () => setIsHasRule(true) }
+                                        variant="outlined"
+                                        size="small"
+                                        className={ "secondary-button" }
+                                        data-componentid={ `${ _componentId }-configure-rule-button` }
+                                    >
+                                        { t("actions:fields.rules.button") }
+                                    </Button>
+                                </div>
+                            </Alert>
+                        ) }
                     </>
                 ) }
             </>

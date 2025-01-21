@@ -135,6 +135,14 @@ export interface actionsNS {
                 invalid: string;
             };
         };
+        rules: {
+            button: string;
+            info: {
+                title: string;
+                message: string;
+            };
+            label: string;
+        }
     };
     goBackActions: string,
     notification: {
