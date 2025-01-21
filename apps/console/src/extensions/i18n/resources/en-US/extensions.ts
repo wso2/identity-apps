@@ -3757,7 +3757,7 @@ export const extensions: Extensions = {
                                 label: "Lock account for a specified duration"
                             },
                             lockAccountIndefiniteTime: {
-                                label: "Lock account indefinitely"
+                                label: "Lock account until admin unlocks"
                             }
                         }
                     },
@@ -3767,7 +3767,7 @@ export const extensions: Extensions = {
                     connectorDescription:
                         "Protect accounts from password brute-force attacks by locking the " +
                         "account on consecutive failed login attempts.",
-                    accountLockDurationHeading: "Set account lock duration",
+                    accountLockDurationHeading: "Choose account lock option",
                     heading: "Login Attempts",
                     notification: {
                         error: {
