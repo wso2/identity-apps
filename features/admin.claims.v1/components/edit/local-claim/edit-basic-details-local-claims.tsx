@@ -45,6 +45,7 @@ import {
 import { Property } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
+import { DropDownItemInterface } from "@wso2is/form/src";
 import {
     ConfirmationModal,
     CopyInputField,
@@ -129,6 +130,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const hasAttributeUpdatePermissions: boolean = useRequiredScopes(featureConfig?.attributeDialects?.scopes?.update);
+    const isUpdatingSharedProfilesEnabled: boolean = !featureConfig?.attributeDialects?.disabledFeatures?.includes(
+        "attributeDialects.sharedProfileValueResolvingMethod"
+    );
     const [ hideSpecialClaims, setHideSpecialClaims ] = useState<boolean>(true);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
@@ -141,6 +145,24 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const { data: validationData } = useValidationConfigData();
 
     const { UIConfig } = useUIConfig();
+
+    const sharedProfileValueResolvingMethodOptions: DropDownItemInterface[] = [
+        {
+            text: t("claims:local.forms." +
+                "sharedProfileValueResolvingMethod.options.fromOrigin"),
+            value: SharedProfileValueResolvingMethod.FROM_ORIGIN
+        },
+        {
+            text: t("claims:local.forms.sharedProfileValueResolvingMethod." +
+                "options.fromSharedProfile"),
+            value: SharedProfileValueResolvingMethod.FROM_SHARED_PROFILE
+        },
+        {
+            text: t("claims:local.forms.sharedProfileValueResolvingMethod." +
+                "options.fromFirstFoundInHierarchy"),
+            value: SharedProfileValueResolvingMethod.FROM_FIRST_FOUND_IN_HIERARCHY
+        }
+    ];
 
     /**
      * Get username configuration.
@@ -449,7 +471,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             uniquenessScope: values?.uniquenessScope as UniquenessScope || UniquenessScope.NONE
         };
 
-        if (isSystemClaim) {
+        if (isSystemClaim || !isUpdatingSharedProfilesEnabled) {
             delete data.sharedProfileValueResolvingMethod;
         }
 
@@ -575,33 +597,22 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             />
                         )
                     }
-                    <Field.Dropdown
-                        ariaLabel="shared-profile-value-resolving-method-dropdown"
-                        name={ ClaimManagementConstants.SHARED_PROFILE_VALUE_RESOLVING_METHOD_PROPERTY_NAME }
-                        label={ t("claims:local.forms.sharedProfileValueResolvingMethod.label") }
-                        data-componentid={ `${ testId }-form-shared-profile-value-resolving-method-dropdown` }
-                        hint={ t("claims:local.forms.sharedProfileValueResolvingMethod.hint") }
-                        disabled={ isSystemClaim || isReadOnly }
-                        options={ [
-                            {
-                                text: t("claims:local.forms.sharedProfileValueResolvingMethod.options.fromOrigin"),
-                                value: SharedProfileValueResolvingMethod.FROM_ORIGIN
-                            },
-                            {
-                                text: t("claims:local.forms.sharedProfileValueResolvingMethod." +
-                                    "options.fromSharedProfile"),
-                                value: SharedProfileValueResolvingMethod.FROM_SHARED_PROFILE
-                            },
-                            {
-                                text: t("claims:local.forms.sharedProfileValueResolvingMethod." +
-                                    "options.fromFirstFoundInHierarchy"),
-                                value: SharedProfileValueResolvingMethod.FROM_FIRST_FOUND_IN_HIERARCHY
-                            }
-                        ] }
-                        value={ claim?.sharedProfileValueResolvingMethod
-                            || SharedProfileValueResolvingMethod.FROM_ORIGIN
-                        }
-                    />
+                    { isUpdatingSharedProfilesEnabled &&
+                        (
+                            <Field.Dropdown
+                                ariaLabel="shared-profile-value-resolving-method-dropdown"
+                                name={ ClaimManagementConstants.SHARED_PROFILE_VALUE_RESOLVING_METHOD_PROPERTY_NAME }
+                                label={ t("claims:local.forms.sharedProfileValueResolvingMethod.label") }
+                                data-componentid={ `${ testId }-form-shared-profile-value-resolving-method-dropdown` }
+                                hint={ t("claims:local.forms.sharedProfileValueResolvingMethod.hint") }
+                                disabled={ isSystemClaim || isReadOnly }
+                                options={ sharedProfileValueResolvingMethodOptions }
+                                value={ claim?.sharedProfileValueResolvingMethod
+                                    || SharedProfileValueResolvingMethod.FROM_ORIGIN
+                                }
+                            />
+                        )
+                    }
                     {
                         claim && UIConfig?.isClaimUniquenessValidationEnabled
                             && !hideSpecialClaims

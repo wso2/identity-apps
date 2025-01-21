@@ -106,10 +106,15 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const [ hideTermination, setHideTermination ] = useState<boolean>(false);
     const [ adminUsername, setAdminUsername ] = useState<string|null>(null);
     const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
+    const [ isUserProfileReadOnly, setIsUserProfileReadOnly ] = useState<boolean>(false);
 
     const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
         return state.config.ui.features?.users?.disabledFeatures;
     });
+
+    const isUpdatingSharedProfilesEnabled: boolean = !userRolesDisabledFeatures?.includes(
+        UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_PROFILES")
+    );
 
     useEffect(() => {
         const userStore: string = user?.userName?.split("/").length > 1
@@ -137,6 +142,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     useEffect(() => {
         if (user[ SCIMConfigs.scim.enterpriseSchema ]?.managedOrg) {
+            if (!isUpdatingSharedProfilesEnabled) {
+                setIsUserProfileReadOnly(true);
+            }
+
             setIsUserManagedByParentOrg(true);
         }
     }, [ user ]);
@@ -210,7 +219,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         onAlertFired={ handleAlerts }
                         user={ user }
                         handleUserUpdate={ handleUserUpdate }
-                        isReadOnly={ isReadOnly }
+                        isReadOnly={ isReadOnly || isUserProfileReadOnly }
                         connectorProperties={ connectorProperties }
                         isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
                         isUserManagedByParentOrg={ isUserManagedByParentOrg }
