@@ -2015,6 +2015,15 @@
             {% endfor %}
             {% endif %}
         },
+        "routes": {
+            "organizationEnabledRoutes": [
+            {% if console.ui.routes.organizationEnabledRoutes is defined %}
+                {% for value in console.ui.routes.organizationEnabledRoutes %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+            ]
+        },
         "selfAppIdentifier": "{{ console.self_app_identifier }}",
         "systemAppsIdentifiers": [
             {% if console.system_apps_identifiers is defined %}

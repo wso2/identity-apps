@@ -443,6 +443,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isCustomClaimMappingMergeEnabled?: boolean;
     /**
+     * Configurations related to routing.
+     */
+    routes: RouteConfigInterface;
+    /**
      * Self app name.
      */
     selfAppIdentifier: string;
@@ -609,4 +613,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
 
 export interface ResourceEndpointsInterface {
     [key: string]: string;
+}
+
+export interface RouteConfigInterface {
+    organizationEnabledRoutes: string[];
 }

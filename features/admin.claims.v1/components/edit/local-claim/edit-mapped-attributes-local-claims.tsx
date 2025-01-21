@@ -185,6 +185,11 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                     ]
                                 };
 
+                                if (validExcludedUserStores?.length === 0) {
+                                    submitData.properties = submitData?.properties?.filter((property: Property) =>
+                                        property.key !== ClaimManagementConstants.EXCLUDED_USER_STORES_CLAIM_PROPERTY);
+                                }
+
                                 setIsSubmitting(true);
 
                                 updateAClaim(claim.id, submitData)

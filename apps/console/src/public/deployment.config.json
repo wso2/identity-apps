@@ -1321,6 +1321,26 @@
         "productVersionConfig": {
             "productVersion": ""
         },
+        "routes": {
+            "organizationEnabledRoutes": [
+                "apiResources",
+                "applications",
+                "attributeDialects",
+                "branding",
+                "consoleSettings",
+                "emailTemplates",
+                "gettingStarted",
+                "governanceConnectors",
+                "groups",
+                "identityProviders",
+                "organizations",
+                "roles",
+                "smsTemplates",
+                "userRoles",
+                "userStores",
+                "users"
+            ]
+        },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
         "showSmsOtpPwdRecoveryFeatureStatusChip": false,

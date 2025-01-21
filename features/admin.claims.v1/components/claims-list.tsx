@@ -1150,7 +1150,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const resolveTableRowClick = (e: SyntheticEvent, item: Claim | ExternalClaim | ClaimDialect | any): void => {
 
         //Disables inline edit if create scope is not available
-        if (!hasAttributeCreatePermissions) {
+        if (!hasAttributeUpdatePermissions) {
             return;
         }
 

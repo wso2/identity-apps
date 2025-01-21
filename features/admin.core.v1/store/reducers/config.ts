@@ -281,6 +281,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             privacyPolicyConfigs: null,
             productName: "",
             productVersionConfig: null,
+            routes: {
+                organizationEnabledRoutes: []
+            },
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
             showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
