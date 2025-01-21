@@ -20,9 +20,8 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import RuleExecutionComponent from "./rules";
 import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "../models/meta";
-import { RuleExecuteCollectionInterface, RuleInterface } from "../models/rules";
+import { RuleExecuteCollectionWithoutIdInterface, RuleWithoutIdInterface } from "../models/rules";
 import { RulesProvider } from "../providers/rules-provider";
-import "./rules-component.scss";
 
 /**
  * Props interface of {@link RulesComponent}
@@ -31,7 +30,7 @@ interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
     /**
      * Initial data to be passed to the rules component.
      */
-    initialData?: RuleExecuteCollectionInterface | RuleInterface;
+    initialData?: RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface;
 
     /**
      * Rule expressions meta data.

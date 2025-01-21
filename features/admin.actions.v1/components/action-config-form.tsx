@@ -28,7 +28,7 @@ import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-
 import { AppState } from "@wso2is/admin.core.v1";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import RulesComponent from "@wso2is/admin.rules.v1/components/rules-component";
-import { RuleExecuteCollectionInterface, RuleInterface } from "@wso2is/admin.rules.v1/models/rules";
+import { RuleExecuteCollectionWithoutIdInterface, RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { getRuleInstanceValue } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -297,10 +297,10 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
         changedFields: ActionConfigFormPropertyInterface) =>
     {
 
-        let rule: RuleInterface | Record<string, never>;
+        let rule: RuleWithoutIdInterface | Record<string, never>;
 
         if (isHasRule) {
-            const ruleValue: RuleExecuteCollectionInterface = getRuleInstanceValue();
+            const ruleValue: RuleExecuteCollectionWithoutIdInterface = getRuleInstanceValue();
 
             rule = ruleValue?.rules[0];
 

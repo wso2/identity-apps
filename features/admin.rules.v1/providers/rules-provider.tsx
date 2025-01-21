@@ -28,7 +28,9 @@ import {
     ExpressionFieldTypes,
     RuleConditionInterface,
     RuleExecuteCollectionInterface,
-    RuleInterface
+    RuleExecuteCollectionWithoutIdInterface,
+    RuleInterface,
+    RuleWithoutIdInterface
 } from "../models/rules";
 import { addIds, removeIds } from "../utils/add-remove-ids";
 
@@ -42,14 +44,15 @@ const RuleContextRef: { ruleInstance: RuleExecuteCollectionInterface | undefined
  *
  * @returns RuleInstanceData
  */
-export const getRuleInstanceValue = () => removeIds(Object.freeze(RuleContextRef.ruleInstance));
+export const getRuleInstanceValue = (): RuleExecuteCollectionWithoutIdInterface =>
+    removeIds(Object.freeze(RuleContextRef.ruleInstance));
 
 /**
  * Provider for the RulesContext
  *
  * @param children - ReactNode
  * @param conditionExpressionsMetaData - ConditionExpressionsMetaDataInterface
- * @param initialData - RuleExecutionInterface
+ * @param initialData - RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface
  * @param ruleExecutionsMetaData - RuleExecutionMetaDataInterface
  * @returns RulesProvider
  */
@@ -61,7 +64,7 @@ export const RulesProvider = ({
 }: {
     children: ReactNode;
     conditionExpressionsMetaData: ConditionExpressionsMetaDataInterface;
-    initialData: RuleExecuteCollectionInterface | RuleInterface;
+    initialData: RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface;
     ruleExecutionMetaData: RuleExecutionMetaDataInterface;
 }) => {
     let RuleExecutionData: any = addIds(initialData);

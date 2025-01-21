@@ -49,7 +49,6 @@ import {
     RuleConditionsInterface,
     RuleInterface
 } from "../models/rules";
-import "./rules-component.scss";
 
 /**
  * Value input autocomplete props interface.

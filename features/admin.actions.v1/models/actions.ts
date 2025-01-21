@@ -18,7 +18,7 @@
 
 import { HttpMethod } from "@asgardeo/auth-react";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
-import { RuleInterface } from "@wso2is/admin.rules.v1/models/rules";
+import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { ReactNode } from "react";
 
 /**
@@ -202,7 +202,7 @@ export interface ActionResponseInterface extends ActionBaseResponseInterface {
     /**
      * Rules to execute the action.
      */
-    rule?: RuleInterface;
+    rule?: RuleWithoutIdInterface;
 }
 
 /**
@@ -243,7 +243,7 @@ export interface ActionUpdateInterface {
     /**
      * Rule configuration of the Action.
      */
-    rule?: RuleInterface | Record<string, never>;
+    rule?: RuleWithoutIdInterface | Record<string, never>;
 }
 
 /**
