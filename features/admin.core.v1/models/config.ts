@@ -326,6 +326,24 @@ type GovernanceConnectorsFeatureConfig = Record<string, {
 }>
 
 /**
+ * Interface representing the configuration for multi-tenancy.
+ */
+export interface MultiTenancyConfigInterface {
+    /**
+     * Indicates if the dot extension is mandatory in the tenant domain.
+     */
+    isTenantDomainDotExtensionMandatory: boolean;
+    /**
+     * Regular expression for illegal characters in the tenant domain.
+     */
+    tenantDomainIllegalCharactersRegex: string;
+    /**
+     * Regular expression for validating the tenant domain.
+     */
+    tenantDomainRegex: string;
+}
+
+/**
  * Portal UI config interface inheriting the common configs from core module.
  */
 export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfigInterface> {
@@ -425,6 +443,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isCustomClaimMappingMergeEnabled?: boolean;
     /**
+     * Configurations related to routing.
+     */
+    routes: RouteConfigInterface;
+    /**
      * Self app name.
      */
     selfAppIdentifier: string;
@@ -499,6 +521,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Password policy configs.
      */
     passwordPolicyConfigs: PasswordPolicyConfigsInterface;
+    /**
+     * Multi-tenancy related configurations.
+     */
+    multiTenancy: MultiTenancyConfigInterface;
 }
 
 /**
@@ -587,4 +613,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
 
 export interface ResourceEndpointsInterface {
     [key: string]: string;
+}
+
+export interface RouteConfigInterface {
+    organizationEnabledRoutes: string[];
 }

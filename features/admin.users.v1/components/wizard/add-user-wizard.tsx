@@ -144,7 +144,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ isAlphanumericUsername, setIsAlphanumericUsername ] = useState<boolean>(false);
     const [ isBasicDetailsLoading, setBasicDetailsLoading ] = useState<boolean>(false);
     const [ isStepsUpdated, setIsStepsUpdated ] = useState<boolean>(false);
-    const [ isUserstoreRequired, setUserstoreRequired ] = useState<boolean>(false);
     const [ isFirstNameRequired, setFirstNameRequired ] = useState<boolean>(true);
     const [ isLastNameRequired, setLastNameRequired ] = useState<boolean>(true);
     const [ isEmailRequired, setEmailRequired ] = useState<boolean>(false);
@@ -184,10 +183,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         isLoading: isUserStoreListFetchRequestLoading,
         isValidating: isUserStoreListFetchRequestValidating,
         error: userStoreListFetchRequestError
-    } = useUserStores(
-        null,
-        !isSubOrganization()
-    );
+    } = useUserStores(null);
 
     /**
      * Set read-write userstores list.
@@ -427,11 +423,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         if (emailSchema) {
             hiddenAttributes.push(HiddenFieldNames.EMAIL);
             setEmailRequired(emailSchema.required);
-        }
-
-        if (isSubOrganization()) {
-            hiddenAttributes.push(HiddenFieldNames.USERSTORE);
-            setUserstoreRequired(false);
         }
 
         if (nameSchema?.subAttributes?.length > 0) {
@@ -932,7 +923,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     hiddenFields={ hiddenFields }
                     requestedPasswordOption={ wizardState &&
                     wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.passwordOption }
-                    isUserstoreRequired={ isUserstoreRequired }
+                    isUserstoreRequired={ false }
                     isFirstNameRequired={ isFirstNameRequired }
                     isLastNameRequired={ isLastNameRequired }
                     isEmailRequired={ isEmailRequired }

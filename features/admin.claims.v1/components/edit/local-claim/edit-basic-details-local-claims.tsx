@@ -27,6 +27,7 @@ import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
@@ -142,6 +143,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ accountVerificationEnabled, setAccountVerificationEnabled ] = useState<boolean>(false);
     const [ selfRegistrationEnabled, setSelfRegistrationEnabledEnabled ] = useState<boolean>(false);
     const [ isSystemClaim, setIsSystemClaim ] = useState<boolean>(false);
+
+    const { isSubOrganization } = useGetCurrentOrganizationType();
     const [ isConsoleRequired, setIsConsoleRequired ] = useState<boolean>(false);
     const [ isEndUserRequired, setIsEndUserRequired ] = useState<boolean>(false);
     const [ isSelfRegistrationRequired, setIsSelfRegistrationRequired ] = useState<boolean>(false);
@@ -585,7 +588,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         defaultValue={ claim?.profiles?.console?.supportedByDefault ?? claim?.supportedByDefault }
                         data-componentid={
                             `${ testId }-form-console-supported-by-default-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isSupportedByDefaultCheckboxDisabled }
                         {
                             ...( isConsoleRequired && !isConsoleReadOnly
@@ -603,7 +606,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         required={ false }
                         defaultValue={ claim?.profiles?.endUser?.supportedByDefault ?? claim?.supportedByDefault }
                         data-componentid={ `${ testId }-form-end-user-supported-by-default-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isSupportedByDefaultCheckboxDisabled }
                         {
                             ...( isEndUserRequired && !isEndUserReadOnly
@@ -623,7 +626,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             claim?.supportedByDefault }
                         data-componentid={
                             `${ testId }-form-self-registration-supported-by-default-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isSupportedByDefaultCheckboxDisabled }
                         {
                             ...( isSelfRegistrationRequired && !isSelfRegistrationReadOnly
@@ -668,7 +671,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         required={ false }
                         defaultValue={ claim?.profiles?.console?.required ?? claim?.required }
                         data-componentid={ `${ testId }-form-console-required-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isRequiredCheckboxDisabled || isConsoleReadOnly }
                         listen ={ (value: boolean) => {
                             setIsConsoleRequired(value);
@@ -688,7 +691,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         required={ false }
                         defaultValue={ claim?.profiles?.endUser?.required ?? claim?.required }
                         data-componentid={ `${ testId }-form-end-user-required-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isRequiredCheckboxDisabled || isEndUserReadOnly }
                         listen ={ (value: boolean) => {
                             setIsEndUserRequired(value);
@@ -708,7 +711,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         required={ false }
                         defaultValue={ claim?.profiles?.selfRegistration?.required ?? claim?.required }
                         data-componentid={ `${ testId }-form-self-registration-required-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isRequiredCheckboxDisabled || isSelfRegistrationReadOnly }
                         listen ={ (value: boolean) => {
                             setIsSelfRegistrationRequired(value);
@@ -750,7 +753,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         requiredErrorMessage=""
                         defaultValue={ claim?.profiles?.console?.readOnly ?? claim?.readOnly }
                         data-componentid={ `${ testId }-form-console-readOnly-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isReadOnlyCheckboxDisabled }
                         listen ={ (value: boolean) => {
                             setIsConsoleReadOnly(value);
@@ -765,7 +768,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         requiredErrorMessage=""
                         defaultValue={ claim?.profiles?.endUser?.readOnly ?? claim?.readOnly }
                         data-componentid={ `${ testId }-form-end-user-readOnly-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isReadOnlyCheckboxDisabled }
                         listen ={ (value: boolean) => {
                             setIsEndUserReadOnly(value);
@@ -780,7 +783,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         requiredErrorMessage=""
                         defaultValue={ claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
                         data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                         disabled={ isReadOnlyCheckboxDisabled }
                         listen ={ (value: boolean) => {
                             setIsSelfRegistrationReadOnly(value);
@@ -839,7 +842,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         maxLength={ 30 }
                         minLength={ 1 }
                         hint={ t("claims:local.forms.nameHint") }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
 
                     />
                     <Field.Textarea
@@ -858,7 +861,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         minLength={ 3 }
                         data-testid={ `${ testId }-form-description-input` }
                         hint={ t("claims:local.forms.descriptionHint") }
-                        readOnly={ isReadOnly }
+                        readOnly={ isSubOrganization() || isReadOnly }
                     />
 
                     { !attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims
@@ -877,7 +880,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 maxLength={ ClaimManagementConstants.REGEX_FIELD_MAX_LENGTH }
                                 minLength={ ClaimManagementConstants.REGEX_FIELD_MIN_LENGTH }
                                 hint={ t("claims:local.forms.regExHint") }
-                                readOnly={ isReadOnly }
+                                readOnly={ isSubOrganization() || isReadOnly }
                             />
                         )
                     }
@@ -891,6 +894,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 label={ t("claims:local.forms.uniquenessScope.label") }
                                 data-componentid={ `${ testId }-form-uniqueness-scope-dropdown` }
                                 hint={ t("claims:local.forms.uniquenessScopeHint") }
+                                disabled={ isSubOrganization() }
                                 options={ [
                                     {
                                         text: t("claims:local.forms.uniquenessScope.options.none"),
@@ -960,7 +964,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     setIsShowDisplayOrder(!!values?.supportedByDefault);
                                 } }
                                 data-testid={ `${testId}-form-supported-by-default-input` }
-                                readOnly={ isReadOnly }
+                                readOnly={ isSubOrganization() || isReadOnly }
                                 disabled={
                                     !hasMapping
                                     || (
@@ -1002,7 +1006,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 ref={ displayOrderField }
                                 data-testid={ `${ testId }-form-display-order-input` }
                                 hint={ t("claims:local.forms.displayOrderHint") }
-                                readOnly={ isReadOnly }
+                                readOnly={ isSubOrganization() || isReadOnly }
                             />
                         )
                     }
@@ -1019,7 +1023,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 requiredErrorMessage=""
                                 label={ t("claims:local.forms.required.label") }
                                 data-testid={ `${ testId }-form-required-checkbox` }
-                                readOnly={ isReadOnly }
+                                readOnly={ isSubOrganization() || isReadOnly }
                                 hint={ t("claims:local.forms.requiredHint") }
                                 listen ={ (value: boolean) => {
                                     isSupportedByDefault(value);
@@ -1075,7 +1079,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     requiredErrorMessage=""
                                     defaultValue={ claim?.readOnly }
                                     data-testid={ `${ testId }-form-readonly-checkbox` }
-                                    readOnly={ isReadOnly }
+                                    readOnly={ isSubOrganization() || isReadOnly }
                                     hint={ t("claims:local.forms.readOnlyHint") }
                                     listen={ (value: boolean) => {
                                         setIsClaimReadOnly(value);
@@ -1141,7 +1145,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         )
                     }
                     {
-                        !hideSpecialClaims &&
+                        !hideSpecialClaims && !isSubOrganization() &&
                         (
                             <Show
                                 when={ featureConfig?.attributeDialects?.scopes?.update }

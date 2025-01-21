@@ -47,9 +47,9 @@ export interface PolicyListDraggableNodePropsInterface
     policy: PolicyInterface;
     mutateActivePolicyList?: () => void;
     mutateInactivePolicyList?: () => void;
-    setInactivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
-    setPageInactive: React.Dispatch<React.SetStateAction<number>>;
-    setHasMoreInactivePolicies: React.Dispatch<React.SetStateAction<boolean>>;
+    setActivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
+    setPageActive: React.Dispatch<React.SetStateAction<number>>;
+    setHasMoreActivePolicies: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInterface> = ({
@@ -58,9 +58,9 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
     policy,
     mutateActivePolicyList,
     mutateInactivePolicyList,
-    setInactivePolicies,
-    setPageInactive,
-    setHasMoreInactivePolicies,
+    setActivePolicies,
+    setPageActive,
+    setHasMoreActivePolicies,
     ...rest
 }: PolicyListDraggableNodePropsInterface): ReactElement => {
     const { t } = useTranslation();
@@ -82,10 +82,14 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
             await deletePolicy(policy.policyId);
 
             dispatch(addAlert({
-                description: "The policy has been deleted successfully",
+                description: t("policyAdministration:alerts.deleteSuccess.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Delete successful"
+                message: t("policyAdministration:alerts.deleteSuccess.message")
             }));
+
+            setActivePolicies([]);
+            setPageActive(0);
+            setHasMoreActivePolicies(true);
 
             mutateActivePolicyList();
             mutateInactivePolicyList();
@@ -93,9 +97,9 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
         } catch (error) {
             // Dispatch the error alert.
             dispatch(addAlert({
-                description: "An error occurred while deleting the policy",
+                description: t("policyAdministration:alerts.deleteFailure.description"),
                 level: AlertLevels.ERROR,
-                message: "Delete error"
+                message: t("policyAdministration:alerts.deleteFailure.message")
             }));
         }
     };
@@ -111,25 +115,20 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
             });
 
             dispatch(addAlert({
-                description: "The policy has been deactivated successfully",
+                description: t("policyAdministration:alerts.deactivateSuccess.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Deactivation successful"
+                message: t("policyAdministration:alerts.deactivateSuccess.message")
             }));
-
-            setPageInactive(0);
-            setHasMoreInactivePolicies(true);
-            setInactivePolicies([]);
 
             mutateActivePolicyList();
             mutateInactivePolicyList();
 
         } catch (error) {
             dispatch(addAlert({
-                description: "An error occurred while deactivating the policy",
+                description:  t("policyAdministration:alerts.deactivateFailure.description"),
                 level: AlertLevels.ERROR,
-                message: "Deactivation error"
+                message: t("policyAdministration:alerts.deactivateFailure.message")
             }));
-
         }
     };
 

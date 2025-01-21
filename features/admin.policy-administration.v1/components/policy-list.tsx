@@ -36,6 +36,9 @@ interface PolicyListProps extends IdentifiableComponentInterface {
     setInactivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
     setPageInactive?: React.Dispatch<React.SetStateAction<number>>;
     setHasMoreInactivePolicies?: React.Dispatch<React.SetStateAction<boolean>>;
+    setActivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
+    setPageActive?: React.Dispatch<React.SetStateAction<number>>;
+    setHasMoreActivePolicies?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 
@@ -46,6 +49,9 @@ export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
     mutateInactivePolicyList, setInactivePolicies,
     setPageInactive,
     setHasMoreInactivePolicies,
+    setActivePolicies,
+    setPageActive,
+    setHasMoreActivePolicies,
     mutateActivePolicyList,
     containerId,
     isDraggable = true // Default to draggable
@@ -75,15 +81,16 @@ export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
                             key={ policy.policyId }
                             className={ dragItemClassName }
                             { ...otherDragItemProps }
+                            draggable={ false }
                         >
                             <PolicyListDraggableNode
                                 policy={ policy }
                                 data-componentid={ generateComponentId() }
                                 mutateActivePolicyList={ mutateActivePolicyList }
                                 mutateInactivePolicyList={ mutateInactivePolicyList }
-                                setPageInactive={ setPageInactive }
-                                setInactivePolicies={ setInactivePolicies }
-                                setHasMoreInactivePolicies={ setHasMoreInactivePolicies }
+                                setPageActive={ setPageActive }
+                                setHasMoreActivePolicies={ setHasMoreActivePolicies }
+                                setActivePolicies={ setActivePolicies }
 
                             />
                         </div>
