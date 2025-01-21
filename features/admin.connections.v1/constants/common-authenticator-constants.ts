@@ -44,6 +44,7 @@ export class CommonAuthenticatorConstants {
         ORGANIZATION_ENTERPRISE_IDP: string;
         SAML: string;
         SWE: string;
+        TEST_CONNECTOR: string;
         TRUSTED_TOKEN_ISSUER: string;
     } = {
             APPLE: "apple-idp",
@@ -60,6 +61,7 @@ export class CommonAuthenticatorConstants {
             ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",
             SAML: "enterprise-saml-idp",
             SWE: "swe-idp",
+            TEST_CONNECTOR: "test-connector",
             TRUSTED_TOKEN_ISSUER: "trusted-token-issuer"
         };
 
