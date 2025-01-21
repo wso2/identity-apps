@@ -489,6 +489,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
                 regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
                 required: values?.required !== undefined && !values?.readOnly ? !!values.required : false,
+                sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod as
+                    SharedProfileValueResolvingMethod || SharedProfileValueResolvingMethod.FROM_ORIGIN,
                 supportedByDefault: values?.supportedByDefault !== undefined
                     ? !!values.supportedByDefault : claim?.supportedByDefault,
                 uniquenessScope: values?.uniquenessScope as UniquenessScope || UniquenessScope.NONE
@@ -541,6 +543,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
                 regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
                 required: values?.required !== undefined && !values?.readOnly ? !!values.required : false,
+                sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod as
+                    SharedProfileValueResolvingMethod || SharedProfileValueResolvingMethod.FROM_ORIGIN,
                 supportedByDefault: values?.supportedByDefault !== undefined
                     ? !!values.supportedByDefault : claim?.supportedByDefault,
                 uniquenessScope: values?.uniquenessScope as UniquenessScope || UniquenessScope.NONE
@@ -919,7 +923,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 label={ t("claims:local.forms.sharedProfileValueResolvingMethod.label") }
                                 data-componentid={ `${ testId }-form-shared-profile-value-resolving-method-dropdown` }
                                 hint={ t("claims:local.forms.sharedProfileValueResolvingMethod.hint") }
-                                disabled={ isSystemClaim || isReadOnly }
+                                disabled={ isSubOrganization() || isSystemClaim || isReadOnly }
                                 options={ sharedProfileValueResolvingMethodOptions }
                                 value={ claim?.sharedProfileValueResolvingMethod
                                     || SharedProfileValueResolvingMethod.FROM_ORIGIN
