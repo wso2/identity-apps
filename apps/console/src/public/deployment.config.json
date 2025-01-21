@@ -353,6 +353,23 @@
                     "applications.loginFlow.legacyEditor"
                 ],
                 "enabled": true,
+                "featureFlags": {
+                    "label": "",
+                    "subFeatures": [
+                        {
+                            "label": "New",
+                            "name": "applications.templates.list.m2m"
+                        },
+                        {
+                            "label": "",
+                            "name": "applications.templates.list.google"
+                        },
+                        {
+                            "label": "",
+                            "name": "applications.templates.list.google"
+                        }
+                    ]
+                },
                 "scopes": {
                     "create": [
                         "internal_application_mgt_create"
