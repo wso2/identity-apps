@@ -32,8 +32,7 @@ import {
     LinkButton,
     PrimaryButton,
     SelectionCard,
-    Steps,
-    useWizardAlert
+    Steps
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, {
@@ -94,7 +93,6 @@ export interface CustomAuthenticationCreateWizardPropsInterface extends Identifi
  * @returns React Element
  */
 const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCreateWizardPropsInterface> = ({
-    template,
     title,
     subTitle,
     onWizardClose,
@@ -107,12 +105,11 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
     const [ initWizard, setInitWizard ] = useState<boolean>(false);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>([]);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(0);
-    const [ alert, setAlert, alertComponent ] = useWizardAlert();
     const [ selectedAuthenticator, setSelectedAuthenticator ] = useState<AvailableCustomAuthentications>(
         CustomAuthConstants.EXTERNAL_AUTHENTICATOR
     );
     const [ selectedTemplateId, setSelectedTemplateId ] = useState<string>(null);
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isSubmitting ] = useState<boolean>(false);
     const [ isShowSecret1, setIsShowSecret1 ] = useState(false);
     const [ isShowSecret2, setIsShowSecret2 ] = useState(false);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
@@ -120,7 +117,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
 
     const { t } = useTranslation();
 
-    const { data: connectionTemplate, isLoading: isConnectionTemplateFetchRequestLoading } = useGetConnectionTemplate(
+    const { isLoading: isConnectionTemplateFetchRequestLoading } = useGetConnectionTemplate(
         selectedTemplateId,
         selectedTemplateId !== null
     );
@@ -784,7 +781,9 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             data-componentid={ `${_componentId}-modal` }
         >
             <ModalWithSidePanel.MainPanel>
-                <ModalWithSidePanel.Header className="wizard-header" data-componentid={ `${_componentId}-modal-header` }>
+                <ModalWithSidePanel.Header
+                    className="wizard-header"
+                    data-componentid={ `${_componentId}-modal-header` }>
                     <div className={ "display-flex" }>
                         <GenericIcon
                             icon={ ConnectionsManagementUtils.resolveConnectionResourcePath(
@@ -817,7 +816,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                         className="content-container"
                         data-componentid={ `${_componentId}-modal-content-2` }
                     >
-                        { alert && alertComponent }
                         <Wizard2
                             ref={ wizardRef }
                             initialValues={ initialValues }
