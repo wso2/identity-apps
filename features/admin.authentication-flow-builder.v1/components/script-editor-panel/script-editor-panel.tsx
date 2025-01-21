@@ -28,7 +28,7 @@ import Toolbar from "@oxygen-ui/react/Toolbar";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
@@ -287,7 +287,7 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
                             </div>
                             <div className="secret-selection-menu-wrapper">
                                 { secretMgtFeatureConfig?.enabled &&
-hasSecretReadPermissions && (
+                                    hasSecretReadPermissions && (
                                     <SecretSelectionDropdown
                                         open={ isSecretSelectionDropdownOpen }
                                         onClose={ () => setIsSecretSelectionDropdownOpen(false) }

@@ -22,7 +22,7 @@ import { AppAvatar, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
-import { MainApplicationInterface } from "../../models";
+import { MainApplicationInterface } from "../../models/application";
 
 /**
  * Proptypes for the wizard summary component.

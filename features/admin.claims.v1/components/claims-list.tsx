@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import {
     AppConstants,
@@ -27,6 +28,7 @@ import {
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
 import { getUserStores } from "@wso2is/admin.userstores.v1/api/user-stores";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -42,6 +44,7 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
+import { StringUtils } from "@wso2is/core/utils";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import {
     AnimatedAvatar,
@@ -70,7 +73,7 @@ import React,{
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Header, Icon, ItemHeader, SemanticICONS } from "semantic-ui-react";
 import { EditExternalClaim } from "./edit";
@@ -231,6 +234,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
     const dispatch: ThunkDispatch<AppState, any, any> = useDispatch();
 
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
+
     const [ submitExternalClaim, setSubmitExternalClaim ] = useTrigger();
 
     //TODO: [Type Fix] Check the usage of following refs and fix the types.
@@ -285,8 +291,10 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         });
 
         claim?.attributeMapping?.find((attribute: AttributeMapping) => {
-            return attribute.userstore === "PRIMARY";
-        }) ?? userStoresNotSet.push("Primary");
+            return attribute.userstore === primaryUserStoreDomainName;
+        }) ?? userStoresNotSet.push(StringUtils.isEqualCaseInsensitive(primaryUserStoreDomainName, PRIMARY_USERSTORE)
+            ? t("console:manage.features.users.userstores.userstoreOptions.primary")
+            : primaryUserStoreDomainName);
 
         return userStoresNotSet;
     };
@@ -1142,7 +1150,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const resolveTableRowClick = (e: SyntheticEvent, item: Claim | ExternalClaim | ClaimDialect | any): void => {
 
         //Disables inline edit if create scope is not available
-        if (!hasAttributeCreatePermissions) {
+        if (!hasAttributeUpdatePermissions) {
             return;
         }
 

@@ -78,9 +78,9 @@ import { Card, Checkbox, CheckboxProps, Dimmer, Divider, Grid } from "semantic-u
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
-import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api";
+import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api/application";
 import { getInboundProtocolLogos } from "../../configs/ui";
-import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import MobileApplicationTemplate
@@ -94,10 +94,12 @@ import {
     ApplicationTemplateLoadingStrategies,
     ApplicationTemplateNames,
     MainApplicationInterface,
-    SAMLConfigModes,
-    SupportedAuthProtocolTypes,
     URLFragmentTypes
-} from "../../models";
+} from "../../models/application";
+import {
+    SAMLConfigModes,
+    SupportedAuthProtocolTypes
+} from "../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { ApplicationShareModal } from "../modals/application-share-modal";
 import "./minimal-application-create-wizard.scss";

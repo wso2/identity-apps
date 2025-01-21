@@ -241,6 +241,36 @@
             },
             {% endfor %}
             {% endif %}
+            {% if console.actions is defined %}
+            "actions": {
+                "disabledFeatures": [
+                    {% if console.actions.disabled_features is defined %}
+                    {% for feature in console.actions.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.actions.enabled is defined %} {{ console.actions.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.actions.scopes is defined %}
+                    {% for operation, scopes in console.actions.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.login_and_registration is defined %}
             "loginAndRegistration": {
                 "disabledFeatures": [
@@ -267,6 +297,37 @@
                         "read": [],
                         "update": [],
                         "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.internal_notification_sending is defined %}
+            "internalNotificationSending": {
+                "disabledFeatures": [
+                    {% if console.internal_notification_sending.disabled_features is defined %}
+                    {% for feature in console.internal_notification_sending.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.internal_notification_sending.enabled is defined %} {{ console.internal_notification_sending.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.internal_notification_sending.scopes is defined %}
+                    {% for operation, scopes in console.internal_notification_sending.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": [],
+                        "feature": []
                     {% endif %}
                 }
             },
@@ -981,6 +1042,36 @@
                 }
             },
             {% endif %}
+            {% if console.policyAdministration is defined %}
+            "policyAdministration": {
+                "disabledFeatures": [
+                    {% if console.policyAdministration.disabled_features is defined %}
+                    {% for feature in console.policyAdministration.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.policyAdministration.enabled is defined %} {{ console.policyAdministration.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.policyAdministration.scopes is defined %}
+                    {% for operation, scopes in console.policyAdministration.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.identity_providers is defined %}
             "identityProviders": {
                 "disabledFeatures": [
@@ -1302,6 +1393,37 @@
                     {% endfor %}
                     {% endif %}
                 ]
+            },
+            {% endif %}
+            {% if console.rule_based_password_expiry is defined %}
+            "ruleBasedPasswordExpiry": {
+                "disabledFeatures": [
+                    {% if console.rule_based_password_expiry.disabled_features is defined %}
+                    {% for feature in console.rule_based_password_expiry.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.rule_based_password_expiry.enabled is defined %} {{ console.rule_based_password_expiry.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.rule_based_password_expiry.scopes is defined %}
+                    {% for operation, scopes in console.rule_based_password_expiry.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "feature": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
             },
             {% endif %}
             {% if console.server is defined %}
@@ -1756,6 +1878,9 @@
                 {% endfor %}
             {% endif %}
         ],
+        {% if user_store.properties.DomainName is defined %}
+        "primaryUserStoreDomainName": "{{ user_store.properties.DomainName }}",
+        {% endif %}
         "hiddenUserStores": [
             {% if console.ui.hidden_user_stores is defined %}
                 {% for value in console.ui.hidden_user_stores %}
@@ -1847,6 +1972,13 @@
         {% else %}
         "isPasswordInputValidationEnabled": true,
         {% endif %}
+        "passwordPolicyConfigs": {
+            {% if identity_mgt.password_policy.max_password_allowed_length is defined %}
+            "maxPasswordAllowedLength": {{ identity_mgt.password_policy.max_password_allowed_length }}
+            {% else %}
+            "maxPasswordAllowedLength": 64
+            {% endif %}
+        },
         "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
         "listAllAttributeDialects": {{ console.list_all_attribute_dialects }},
         {% if console.enable_identity_claims is defined %}
@@ -1855,6 +1987,11 @@
         {% if tenant_mgt.enable_email_domain is defined %}
         "enableEmailDomain": {{ tenant_mgt.enable_email_domain }},
         {% endif %}
+        "multiTenancy": {
+            "isTenantDomainDotExtensionMandatory": {% if console.ui.multi_tenancy.is_tenant_domain_dot_extension_mandatory is defined %} {{ console.ui.multi_tenancy.is_tenant_domain_dot_extension_mandatory }} {% else %} {{ multi_tenancy.stratos.public_cloud_setup }} {% endif %},
+            "tenantDomainIllegalCharactersRegex": "{{ console.ui.multi_tenancy.tenant_domain_illegal_characters_regex }}",
+            "tenantDomainRegex": "{{ console.ui.multi_tenancy.tenant_domain_regex or multi_tenancy.stratos.tenant_domain_regex }}"
+        },
         "privacyPolicyConfigs": {
             {% if console.privacy_policy_configs.items() is defined %}
             {% for key, value in console.privacy_policy_configs.items() %}
@@ -1877,6 +2014,15 @@
             {% endif %}
             {% endfor %}
             {% endif %}
+        },
+        "routes": {
+            "organizationEnabledRoutes": [
+            {% if console.ui.routes.organizationEnabledRoutes is defined %}
+                {% for value in console.ui.routes.organizationEnabledRoutes %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+            ]
         },
         "selfAppIdentifier": "{{ console.self_app_identifier }}",
         "systemAppsIdentifiers": [

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,7 @@ import {
     useCheckFeatureStatus,
     useRequiredScopes
 } from "@wso2is/access-control";
-import { useApplicationList } from "@wso2is/admin.applications.v1/api";
+import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -64,7 +64,6 @@ import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { getUserStores } from "@wso2is/admin.userstores.v1/api";
 import {
     CONSUMER_USERSTORE,
-    PRIMARY_USERSTORE,
     UserStoreManagementConstants
 } from "@wso2is/admin.userstores.v1/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
@@ -161,6 +160,8 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
     const authUserTenants: TenantInfo[] = useSelector((state: AppState) => state?.auth?.tenants);
     const guestUserFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state.config.ui.features.guestUser);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const hasGuestUserCreatePermissions: boolean = useRequiredScopes(
         guestUserFeatureConfig?.scopes?.create
@@ -251,7 +252,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                 : searchQuery
         ),
         null,
-        PRIMARY_USERSTORE,
+        primaryUserStoreDomainName,
         excludedAttributes,
         !administratorConfig.enableAdminInvite || invitationStatusOption === InvitationStatus.ACCEPTED
     );
@@ -1581,7 +1582,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                     <DocumentationLink
                         link={ getLink("manage.users.collaboratorAccounts.learnMore") }
                     >
-                        { t("extensions:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </>
             ) }

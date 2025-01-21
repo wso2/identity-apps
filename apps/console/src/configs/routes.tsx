@@ -116,6 +116,31 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
+            category: "console:common.sidePanel.policyAdministration",
+            children: [
+                {
+                    component: lazy(() => import("@wso2is/admin.policy-administration.v1/pages/edit-policy")),
+                    exact: true,
+                    id: "editPolicy",
+                    name: "Edit Policy",
+                    path: AppConstants.getPaths().get("EDIT_POLICY"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.policy-administration.v1/pages/policy-administration")),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().policyAdministration
+            },
+            id: "policyAdministration",
+            name: "Policy Administration",
+            order: 30,
+            path: AppConstants.getPaths().get("POLICY_ADMINISTRATION"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
             category: "console:develop.features.sidePanel.categories.application",
             children: [
                 {
@@ -279,6 +304,16 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     id: "alternative-login-identifier",
                     name: "Alternative Login Identifier",
                     path: AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.server-configurations.v1/pages/internal-notification-sending-page")
+                    ),
+                    exact: true,
+                    id: "internalNotificationSending",
+                    path: AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING"),
                     protected: true,
                     showOnSidePanel: false
                 }
@@ -1070,40 +1105,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 .get("GOVERNANCE_CONNECTOR_EDIT"),
             protected: true,
             showOnSidePanel: false
-        },
-        {
-            category: "extensions:manage.sidePanel.categories.settings",
-            children: [
-                {
-                    component: lazy(() =>
-                        import("@wso2is/admin.server.v1/pages/internal-notification-sending-page")
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "internal-notification-sending",
-                    name: "Internal Notification Sending",
-                    path: AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() =>
-                import(
-                    "@wso2is/admin.server.v1/pages/server"
-                )
-            ),
-            exact: true,
-            icon: {
-                icon: getSidePanelIcons().userStore
-            },
-            id: "server",
-            name: "Server",
-            order: 25,
-            path: AppConstants.getPaths().get("SERVER"),
-            protected: true,
-            showOnSidePanel: true
         },
         {
             category: "extensions:manage.sidePanel.categories.userManagement",

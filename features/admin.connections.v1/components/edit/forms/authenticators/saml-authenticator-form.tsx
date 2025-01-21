@@ -39,6 +39,7 @@ import {
 import {
     DEFAULT_NAME_ID_FORMAT,
     DEFAULT_PROTOCOL_BINDING,
+    IDENTITY_PROVIDER_AUTHENTICATION_REQUEST_PROVIDER_NAME_LENGTH,
     IDENTITY_PROVIDER_AUTHORIZED_REDIRECT_URL_LENGTH,
     IDENTITY_PROVIDER_ENTITY_ID_LENGTH,
     LOGOUT_URL_LENGTH,
@@ -115,6 +116,7 @@ export interface SamlPropertiesInterface {
     IncludeCert?: boolean;
     IncludeNameIDPolicy?:boolean;
     AuthnContextClassRef?: string;
+    samlAuthnRequestProviderName?: string;
 }
 
 const FORM_ID: string = "saml-authenticator-form";
@@ -297,8 +299,11 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             /**
              * https://github.com/wso2/product-is/issues/17004
              */
-            isAssertionSigned: findPropVal<boolean>({ defaultValue: false, key: "isAssertionSigned" })
-
+            isAssertionSigned: findPropVal<boolean>({ defaultValue: false, key: "isAssertionSigned" }),
+            samlAuthnRequestProviderName: findPropVal<string>({
+                defaultValue: "",
+                key: "samlAuthnRequestProviderName"
+            })
         } as SamlPropertiesInterface;
 
     }, []);
@@ -956,6 +961,25 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             label={ t(`${ I18N_TARGET_KEY }.commonAuthQueryParams.label`) }
                             ariaLabel={ t(`${ I18N_TARGET_KEY }.commonAuthQueryParams.ariaLabel`) }
                             name="commonAuthQueryParams"
+                            readOnly={ readOnly }
+                        />
+                    </SectionRow>
+                    <SectionRow>
+                        <Field.Input
+                            name="samlAuthnRequestProviderName"
+                            value={ formValues?.samlAuthnRequestProviderName }
+                            inputType="default"
+                            placeholder={ t(`${ I18N_TARGET_KEY }.samlAuthnRequestProviderName.placeholder`) }
+                            ariaLabel={ t(`${ I18N_TARGET_KEY }.samlAuthnRequestProviderName.ariaLabel`) }
+                            data-testid={ `${ testId }-samlAuthnRequestProviderName-field` }
+                            label={ (
+                                <FormInputLabel htmlFor="samlAuthnRequestProviderName">
+                                    { t(`${ I18N_TARGET_KEY }.samlAuthnRequestProviderName.label`) }
+                                </FormInputLabel>
+                            ) }
+                            maxLength={ IDENTITY_PROVIDER_AUTHENTICATION_REQUEST_PROVIDER_NAME_LENGTH.max }
+                            minLength={ IDENTITY_PROVIDER_AUTHENTICATION_REQUEST_PROVIDER_NAME_LENGTH.min }
+                            hint={ t(`${ I18N_TARGET_KEY }.samlAuthnRequestProviderName.hint`) }
                             readOnly={ readOnly }
                         />
                     </SectionRow>

@@ -191,6 +191,8 @@ export class ServerConfigurationsConstants {
      * User email verification API Keyword constants.
      */
     public static readonly EMAIL_VERIFICATION_ENABLED: string = "EmailVerification.Enable";
+    public static readonly EMAIL_VERIFICATION_NOTIFICATIONS_INTERNALLY_MANAGED: string =
+        "EmailVerification.Notification.InternallyManage";
 
     /**
 	 * Self registration API Keyword constants.
@@ -406,6 +408,8 @@ export class ServerConfigurationsConstants {
     public static readonly LOGIN_SECURITY_SETTINGS_CATEGORY_ID: string = "login-security";
     public static readonly PROVISIONING_SETTINGS_CATEGORY_ID: string = "provider-settings";
     public static readonly OUTBOUND_PROVISIONING_SETTINGS_CONNECTOR_ID: string = "outbound-provisioning-settings";
+    public static readonly NOTIFICATION_SETTINGS_CATEGORY_ID: string = "notification-settings";
+    public static readonly NOTIFICATION_SETTINGS_CONNECTOR_ID: string = "internal-notification-settings";
 
     /**
 	 * Multi Attribute Login Constants.

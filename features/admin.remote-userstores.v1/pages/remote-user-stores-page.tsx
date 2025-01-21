@@ -188,7 +188,7 @@ const RemoteUserStoresPage: FunctionComponent<RemoteUserStoresPagePropsInterface
                     <DocumentationLink
                         link={ getLink("manage.userStores.userStoresList.learnMore") }
                     >
-                        { t("extensions:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </>
             ) }

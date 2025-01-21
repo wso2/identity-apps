@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,16 +20,17 @@ import { ResponseMode, Storage } from "@asgardeo/auth-react";
 import { ActionsResourceEndpointsInterface } from "@wso2is/admin.actions.v1/models/endpoints";
 import { ApplicationsTemplatesEndpointsInterface } from "@wso2is/admin.application-templates.v1/models/endpoints";
 import {
-    ApplicationTemplateLoadingStrategies,
-    ApplicationsResourceEndpointsInterface
-} from "@wso2is/admin.applications.v1/models";
+    ApplicationTemplateLoadingStrategies
+} from "@wso2is/admin.applications.v1/models/application";
+import { ApplicationsResourceEndpointsInterface } from "@wso2is/admin.applications.v1/models/endpoints";
 import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.branding.v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
 import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.v1";
-import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1";
+import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1/models/endpoints";
 import { ScopesResourceEndpointsInterface } from "@wso2is/admin.oidc-scopes.v1";
 import { OrganizationResourceEndpointsInterface } from "@wso2is/admin.organizations.v1/models";
+import { PolicyAdministrationEndpointsInterface } from "@wso2is/admin.policy-administration.v1/models/endpoints";
 import { RolesResourceEndpointsInterface } from "@wso2is/admin.roles.v2/models/endpoints";
 import { SecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "@wso2is/admin.server-configurations.v1";
@@ -251,9 +252,17 @@ export interface FeatureConfigInterface {
      */
     residentOutboundProvisioning?: FeatureAccessConfigInterface;
     /**
+     * Rule based password expiry feature
+     */
+    ruleBasedPasswordExpiry?: FeatureAccessConfigInterface;
+    /**
      * Connection management feature.
      */
     connections?: ConnectionConfigInterface;
+    /**
+     * Notification sending feature.
+     */
+    internalNotificationSending?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -315,6 +324,24 @@ interface ExternalAppConfigInterface {
 type GovernanceConnectorsFeatureConfig = Record<string, {
     disabledFeatures: string[]
 }>
+
+/**
+ * Interface representing the configuration for multi-tenancy.
+ */
+export interface MultiTenancyConfigInterface {
+    /**
+     * Indicates if the dot extension is mandatory in the tenant domain.
+     */
+    isTenantDomainDotExtensionMandatory: boolean;
+    /**
+     * Regular expression for illegal characters in the tenant domain.
+     */
+    tenantDomainIllegalCharactersRegex: string;
+    /**
+     * Regular expression for validating the tenant domain.
+     */
+    tenantDomainRegex: string;
+}
 
 /**
  * Portal UI config interface inheriting the common configs from core module.
@@ -416,6 +443,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isCustomClaimMappingMergeEnabled?: boolean;
     /**
+     * Configurations related to routing.
+     */
+    routes: RouteConfigInterface;
+    /**
      * Self app name.
      */
     selfAppIdentifier: string;
@@ -486,6 +517,24 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Config to check whether the multiple emails and mobile numbers per user feature is enabled.
      */
     isMultipleEmailsAndMobileNumbersEnabled?: boolean;
+    /**
+     * Password policy configs.
+     */
+    passwordPolicyConfigs: PasswordPolicyConfigsInterface;
+    /**
+     * Multi-tenancy related configurations.
+     */
+    multiTenancy: MultiTenancyConfigInterface;
+}
+
+/**
+ * Password policy configs interface.
+ */
+interface PasswordPolicyConfigsInterface {
+    /**
+     * Maximum password length.
+     */
+    maxPasswordAllowedLength: number;
 }
 
 /**
@@ -553,8 +602,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     ExtensionTemplatesEndpointsInterface,
     ApplicationsTemplatesEndpointsInterface,
     SMSTemplateResourceEndpointsInterface,
-    ActionsResourceEndpointsInterface {
-
+    ActionsResourceEndpointsInterface,
+    PolicyAdministrationEndpointsInterface {
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details
     me: string;
@@ -564,4 +613,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
 
 export interface ResourceEndpointsInterface {
     [key: string]: string;
+}
+
+export interface RouteConfigInterface {
+    organizationEnabledRoutes: string[];
 }

@@ -17,7 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { useApplicationList } from "@wso2is/admin.applications.v1/api";
+import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -221,33 +221,34 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     return (
         <PageLayout
             action={
-                !isSubOrg && !isRolesListLoading && (rolesList?.totalResults > 0)
-                    ? (
-                        <Show when={ featureConfig?.userRoles?.scopes?.create }>
-                            <PrimaryButton
-                                data-componentid={ `${componentId}-add-button` }
-                                onClick={ () => handleCreateRole() }
-                            >
-                                <Icon
-                                    data-componentid={ `${componentId}-add-button-icon` }
-                                    name="add"
-                                />
-                                { t("roles:list.buttons.addButton", { type: "Role" }) }
-                            </PrimaryButton>
-                        </Show>
-                    ) : null
+                (
+                    !isRolesListLoading && (rolesList?.totalResults > 0)
+                        ? (
+                            <Show when={ featureConfig?.userRoles?.scopes?.create }>
+                                <PrimaryButton
+                                    data-componentid={ `${componentId}-add-button` }
+                                    onClick={ () => handleCreateRole() }
+                                >
+                                    <Icon
+                                        data-componentid={ `${componentId}-add-button-icon` }
+                                        name="add"
+                                    />
+                                    { t("roles:list.buttons.addButton", { type: "Role" }) }
+                                </PrimaryButton>
+                            </Show>
+                        ): null
+                )
             }
             title={ t("pages:roles.title") }
             pageTitle={ t("pages:roles.title") }
-            description={ isSubOrg
-                ? t("pages:roles.alternateSubTitle")
-                : (
+            description={
+                (
                     <>
                         { t("pages:roles.subTitle") }
                         <DocumentationLink
                             link={ getLink("develop.applications.roles.learnMore") }
                         >
-                            { t("extensions:common.learnMore") }
+                            { t("common:learnMore") }
                         </DocumentationLink>
                     </>
                 )

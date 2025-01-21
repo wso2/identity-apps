@@ -20,7 +20,7 @@ import {
     ApplicationInterface,
     ApplicationTemplateInterface,
     SAMLApplicationConfigurationInterface
-} from "@wso2is/admin.applications.v1/models";
+} from "@wso2is/admin.applications.v1/models/application";
 import { AppState } from "@wso2is/admin.core.v1";
 import {
     VerticalStepper,

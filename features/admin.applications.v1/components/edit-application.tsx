@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,7 @@ import {
     ApplicationEditTabContentType,
     ApplicationEditTabMetadataInterface
 } from "@wso2is/admin.application-templates.v1/models/templates";
-import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants";
+import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants/branding-preferences-constants";
 import {
     AppConstants,
     AppState,
@@ -62,20 +62,18 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Form, Grid, Menu, TabProps } from "semantic-ui-react";
-import { InboundProtocolsMeta } from "./meta";
+import { InboundProtocolsMeta } from "./meta/inbound-protocols.meta";
 import MyAccountOverview from "./my-account/my-account-overview";
-import {
-    AccessConfiguration,
-    AdvancedSettings,
-    AttributeSettings,
-    GeneralApplicationSettings,
-    ProvisioningSettings,
-    SharedAccess,
-    SignOnMethods
-} from "./settings";
+import { AccessConfiguration } from "./settings/access-configuration";
+import { AdvancedSettings } from "./settings/advanced-settings";
+import { AttributeSettings } from "./settings/attribute-management/attribute-settings";
+import { GeneralApplicationSettings } from "./settings/general-application-settings";
 import { Info } from "./settings/info";
-import { disableApplication, getInboundProtocolConfig } from "../api";
-import { ApplicationManagementConstants } from "../constants";
+import { ProvisioningSettings } from "./settings/provisioning/provisioning-settings";
+import { SharedAccess } from "./settings/shared-access";
+import { SignOnMethods } from "./settings/sign-on-methods/sign-on-methods";
+import { disableApplication, getInboundProtocolConfig } from "../api/application";
+import { ApplicationManagementConstants } from "../constants/application-management";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
@@ -83,13 +81,15 @@ import {
     ApplicationTabTypes,
     ApplicationTemplateIdTypes,
     ApplicationTemplateInterface,
-    AuthProtocolMetaListItemInterface,
     InboundProtocolListItemInterface,
     OIDCApplicationConfigurationInterface,
+    SAMLApplicationConfigurationInterface
+} from "../models/application";
+import {
+    AuthProtocolMetaListItemInterface,
     OIDCDataInterface,
-    SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolTypes
-} from "../models";
+} from "../models/application-inbound";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 
 /**
@@ -942,7 +942,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                      "data-tabid": ApplicationTabIDs.INFO,
                      menuItem: {
                          content: t("applications:edit.sections.info.tabName"),
-                         icon: "info circle grey"
+                         icon: "info circle"
                      },
                      render: InfoTabPane
                  });

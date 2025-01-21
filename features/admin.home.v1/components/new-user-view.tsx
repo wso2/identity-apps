@@ -24,7 +24,7 @@ import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/co
 import {
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
-} from "@wso2is/admin.applications.v1/models";
+} from "@wso2is/admin.applications.v1/models/";
 import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
@@ -90,7 +90,7 @@ export const NewUserView: FC<NewUserViewContextCardPropsInterface> = (props: New
                                     </Placeholder.Header>
                                 </Placeholder>
                             )
-                            : t("extensions:common.quickStart.greeting.heading", {
+                            : t("console:common.quickStart.greeting.heading", {
                                 username: isPrivilegedUser ? username : resolveUserDisplayName(profileInfo)
                             })
                     }

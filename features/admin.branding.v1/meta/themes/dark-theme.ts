@@ -17,7 +17,7 @@
  */
 
 import { ThemeConfigInterface } from "@wso2is/common.branding.v1/models";
-import { BrandingPreferencesConstants } from "../../constants";
+import { BrandingPreferencesConstants } from "../../constants/branding-preferences-constants";
 
 export const DARK_THEME: ThemeConfigInterface = {
     buttons: {

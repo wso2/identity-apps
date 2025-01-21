@@ -19,7 +19,7 @@
 import {
     ApplicationInterface,
     ApplicationTemplateInterface
-} from "@wso2is/admin.applications.v1/models";
+} from "@wso2is/admin.applications.v1/models/application";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ResourceTab,

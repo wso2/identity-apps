@@ -516,6 +516,21 @@ export interface ClaimsNS {
                 disabledConfigInfo: string;
                 configApplicabilityInfo: string;
             };
+            profiles: {
+                administratorConsole: string;
+                attributeConfigurations: {
+                    title: string;
+                    description: string;
+                }
+                endUserProfile: string;
+                selfRegistration: string;
+                displayByDefault: string;
+                displayByDefaultHint: string;
+                required: string;
+                requiredHint: string;
+                readonly: string;
+                readonlyHint: string;
+            };
         };
         dangerZone: {
             actionTitle: string;

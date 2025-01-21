@@ -56,13 +56,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, DropdownItemProps, Grid, Menu, Placeholder, Segment } from "semantic-ui-react";
 import { IllustrationsPreview } from "./illustrations-preview";
-import * as LayoutDesignExtensions from "./layout-design-extensions";
-import { LayoutSwatchAdapter } from "./layout-swatch";
-import { ThemeSwatchAdapter, ThemeSwatchUIConfigsInterface } from "./theme-swatch";
-import { useLayout } from "../../api";
-import { BrandingModes, BrandingPreferencesConstants } from "../../constants";
+import * as LayoutDesignExtensions from "./layout-design-extensions/layout-design-extension-component-interface";
+import { LayoutSwatchAdapter } from "./layout-swatch/layout-swatch-adapter";
+import { ThemeSwatchUIConfigsInterface } from "./theme-swatch/theme-swatch";
+import { ThemeSwatchAdapter } from "./theme-swatch/theme-swatch-adapter";
+import { useLayout } from "../../api/layout";
+import { BrandingModes, BrandingPreferencesConstants } from "../../constants/branding-preferences-constants";
 import useBrandingPreference from "../../hooks/use-branding-preference";
-import { BrandingPreferenceMeta, PredefinedLayouts } from "../../meta";
+import { BrandingPreferenceMeta } from "../../meta/branding-preference-meta";
+import { PredefinedLayouts } from "../../meta/layouts";
 
 /**
  * Interface for Branding Preference Design Form props.

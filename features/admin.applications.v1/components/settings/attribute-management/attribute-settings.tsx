@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { getAllExternalClaims, getAllLocalClaims, getDialects } from "@wso2is/admin.claims.v1/api";
 import { AppState, EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
@@ -26,7 +26,6 @@ import {
     OIDCScopesClaimsListInterface,
     OIDCScopesListInterface
 } from "@wso2is/admin.oidc-scopes.v1/models/oidc-scopes";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     Claim,
@@ -50,19 +49,18 @@ import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { AttributeSelectionOIDC } from "./attribute-selection-oidc";
 import { RoleMapping } from "./role-mapping";
-import { updateAuthProtocolConfig, updateClaimConfiguration } from "../../../api/";
+import { updateAuthProtocolConfig, updateClaimConfiguration } from "../../../api/application";
 import {
     AppClaimInterface,
     ClaimConfigurationInterface,
     ClaimMappingInterface,
     InboundProtocolListItemInterface,
-    OIDCDataInterface,
     RequestedClaimConfigurationInterface,
     RoleConfigInterface,
     RoleMappingInterface,
-    SubjectConfigInterface,
-    SupportedAuthProtocolTypes
-} from "../../../models";
+    SubjectConfigInterface
+} from "../../../models/application";
+import { OIDCDataInterface, SupportedAuthProtocolTypes } from "../../../models/application-inbound";
 
 export interface SelectedDialectInterface {
     dialectURI: string;
@@ -181,6 +179,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
     const dispatch: Dispatch = useDispatch();
 
+    const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
+
     const enableIdentityClaims: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.enableIdentityClaims);
 
@@ -224,7 +224,6 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
     const [ isClaimLoading, setIsClaimLoading ] = useState<boolean>(true);
     const [ isUserAttributesLoading, setUserAttributesLoading ] = useState<boolean>(undefined);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -1265,9 +1264,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                                 defaultSubjectAttribute={ DefaultSubjectAttribute }
                                                 readOnly={
                                                     readOnly
-                                                || !hasRequiredScopes(featureConfig?.applications,
-                                                    featureConfig?.applications?.scopes?.update,
-                                                    allowedScopes)
+                                                || !hasApplicationUpdatePermissions
                                                 }
                                                 isUserAttributesLoading={ isUserAttributesLoading }
                                                 setUserAttributesLoading={ setUserAttributesLoading }
@@ -1305,9 +1302,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                                 claimMappingError={ claimMappingError }
                                                 readOnly={
                                                     readOnly
-                                                || !hasRequiredScopes(featureConfig?.applications,
-                                                    featureConfig?.applications?.scopes?.update,
-                                                    allowedScopes)
+                                                || !hasApplicationUpdatePermissions
                                                 }
                                                 isUserAttributesLoading={ isUserAttributesLoading }
                                                 setUserAttributesLoading={ setUserAttributesLoading }
@@ -1338,9 +1333,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                         claimMappingOn={ claimMappingOn }
                                         readOnly={
                                             readOnly
-                                            || !hasRequiredScopes(featureConfig?.applications,
-                                                featureConfig?.applications?.scopes?.update,
-                                                allowedScopes)
+                                            || !hasApplicationUpdatePermissions
                                         }
                                         technology={ technology }
                                         applicationTemplateId={ applicationTemplateId }
@@ -1397,9 +1390,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                     initialMappings={ claimConfigurations?.role?.mappings }
                                     readOnly={
                                         readOnly
-                                        || !hasRequiredScopes(featureConfig?.applications,
-                                            featureConfig?.applications?.scopes?.update,
-                                            allowedScopes)
+                                        || !hasApplicationUpdatePermissions
                                     }
                                     data-testid={ `${ componentId }-role-mapping` }
                                 />

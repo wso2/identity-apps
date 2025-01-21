@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -96,6 +96,10 @@ export interface HeaderPropsInterface extends IdentifiableComponentInterface, Te
      * Organization label.
      */
     organizationLabel?: ReactNode;
+    /**
+     * Domain name of the primary user store.
+     */
+    primaryUserStoreDomainName: string;
 }
 
 /**
@@ -193,6 +197,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         showUserDropdownTriggerLabel,
         showOrganizationLabel,
         organizationLabel,
+        primaryUserStoreDomainName,
         onLinkedAccountSwitch,
         onSidePanelToggleClick,
         userDropdownIcon,
@@ -363,7 +368,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                         data-componentid={ `${ componentId }-la-name` }
                                         data-testid={ `${ testId }-la-name` }
                                     >
-                                        { resolveUsername(association.username, association.userStoreDomain) }
+                                        { resolveUsername(association.username,
+                                            association.userStoreDomain, primaryUserStoreDomainName) }
                                     </div>
                                     <div
                                         className="email"

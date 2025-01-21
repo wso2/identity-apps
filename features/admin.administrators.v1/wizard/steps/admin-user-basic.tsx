@@ -18,7 +18,7 @@
 
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import {
     AppState,
     SharedUserStoreUtils,
@@ -519,7 +519,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                                                     <DocumentationLink
                                                         link={ getLink("manage.users.newCollaboratorUser.learnMore") }
                                                     >
-                                                        { t("extensions:common.learnMore") }
+                                                        { t("common:learnMore") }
                                                     </DocumentationLink>
                                                 </Hint>
                                             </Grid.Column>
