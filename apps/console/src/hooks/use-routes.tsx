@@ -20,7 +20,7 @@ import { AccessControlUtils } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { FeatureConfigInterface, RouteConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import {
     AppState,
     setDeveloperVisibility,
@@ -63,6 +63,7 @@ const useRoutes = (): useRoutesInterface => {
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isGroupAndRoleSeparationEnabled);
+    const routesConfig: RouteConfigInterface = useSelector((state: AppState) => state.config.ui.routes);
 
     /**
      * Filter the routes based on the user roles and permissions.
@@ -120,7 +121,7 @@ const useRoutes = (): useRoutesInterface => {
         };
 
         const allowedRoutes: string[] = window["AppUtils"].getConfig().organizationName
-            ? AppConstants.ORGANIZATION_ENABLED_ROUTES
+            ? routesConfig?.organizationEnabledRoutes
             : undefined;
 
         const [

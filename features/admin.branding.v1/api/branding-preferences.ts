@@ -27,7 +27,7 @@ import {
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { BrandingPreferencesConstants } from "../constants";
+import { BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 
 /**
  * Get an axios instance.

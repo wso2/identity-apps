@@ -19,6 +19,7 @@
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, Claim, Property, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -76,6 +77,8 @@ export const EditAdditionalPropertiesLocalClaims:
         const hasAttributeUpdatePermissions: boolean = useRequiredScopes(
             featureConfig?.attributeDialects?.scopes?.update
         );
+
+        const { isSubOrganization } = useGetCurrentOrganizationType();
 
         const { UIConfig } = useUIConfig();
 
@@ -206,28 +209,30 @@ export const EditAdditionalPropertiesLocalClaims:
                                         });
                                 } }
                                 data-testid={ `${ testId }-form-properties-dynamic-field` }
-                                readOnly={ isReadOnly }
+                                readOnly={ isSubOrganization() || isReadOnly }
                             />
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 6 }>
-                            <Show
-                                when={ featureConfig?.attributeDialects?.scopes?.update }
-                            >
-                                <PrimaryButton
-                                    onClick={ () => {
-                                        setSubmit();
-                                    } }
-                                    data-testid={ `${ testId }-submit-button` }
-                                    loading={ isSubmitting }
-                                    disabled={ isSubmitting }
+                    { !isSubOrganization() && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 6 }>
+                                <Show
+                                    when={ featureConfig?.attributeDialects?.scopes?.update }
                                 >
-                                    { t("common:update") }
-                                </PrimaryButton>
-                            </Show>
-                        </Grid.Column>
-                    </Grid.Row>
+                                    <PrimaryButton
+                                        onClick={ () => {
+                                            setSubmit();
+                                        } }
+                                        data-testid={ `${ testId }-submit-button` }
+                                        loading={ isSubmitting }
+                                        disabled={ isSubmitting }
+                                    >
+                                        { t("common:update") }
+                                    </PrimaryButton>
+                                </Show>
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) }
                 </Grid>
             </EmphasizedSegment>
         );

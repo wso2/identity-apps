@@ -103,9 +103,12 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             clientCertificates: "",
             createSecret: "",
             createSecretType: "",
-            dcrConfiguration:"",
+            dcrConfiguration: "",
             deleteSecret: "",
             deleteSecretType: "",
+            entitlementPoliciesApi: "",
+            entitlementPolicyCombiningAlgorithmApi: "",
+            entitlementPolicyPublishApi: "",
             extensionTemplates: "",
             extensions: "",
             externalClaims: "",
@@ -268,11 +271,19 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isSignatureValidationCertificateAliasEnabled: undefined,
             isTrustedAppConsentRequired: undefined,
             listAllAttributeDialects: undefined,
+            multiTenancy: {
+                isTenantDomainDotExtensionMandatory: true,
+                tenantDomainIllegalCharactersRegex: "",
+                tenantDomainRegex: ""
+            },
             passwordPolicyConfigs: null,
             primaryUserStoreDomainName: "",
             privacyPolicyConfigs: null,
             productName: "",
             productVersionConfig: null,
+            routes: {
+                organizationEnabledRoutes: []
+            },
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
             showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
