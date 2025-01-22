@@ -47,6 +47,7 @@ import {
     handleGetConnectionListCallError
 } from "../../../utils/connection-utils";
 import { GeneralDetailsForm } from "../forms";
+import { CustomAuthGeneralDetailsForm } from "../forms/custom-auth-general-details-form";
 
 /**
  * Proptypes for the identity provider general details component.
@@ -87,6 +88,11 @@ interface GeneralSettingsInterface extends TestableComponentInterface {
      */
     isOidc?: boolean;
     /**
+     * Explicitly specifies whether the currently displaying
+     * connector is a custom authenticator or not.
+     */
+    isCustomAuthenticator?: boolean;
+    /**
      * Type of the template.
      */
     templateType?: string;
@@ -115,6 +121,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         hideIdPLogoEditField,
         isSaml,
         isOidc,
+        isCustomAuthenticator,
         templateType,
         loader: Loader,
         [ "data-testid" ]: testId
@@ -280,19 +287,35 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         !isLoading && !isIdPListRequestLoading
             ? (
                 <>
-                    <GeneralDetailsForm
-                        isSaml={ isSaml }
-                        isOidc={ isOidc }
-                        templateType={ templateType }
-                        hideIdPLogoEditField={ hideIdPLogoEditField }
-                        editingIDP={ editingIDP }
-                        onSubmit={ handleFormSubmit }
-                        onUpdate={ onUpdate }
-                        idpList={ idpList }
-                        data-testid={ `${ testId }-form` }
-                        isReadOnly={ isReadOnly }
-                        isSubmitting={ isSubmitting }
-                    />
+                    {
+                        !isCustomAuthenticator ? (
+                            <GeneralDetailsForm
+                                isSaml={ isSaml }
+                                isOidc={ isOidc }
+                                templateType={ templateType }
+                                hideIdPLogoEditField={ hideIdPLogoEditField }
+                                editingIDP={ editingIDP }
+                                onSubmit={ handleFormSubmit }
+                                onUpdate={ onUpdate }
+                                idpList={ idpList }
+                                data-testid={ `${ testId }-form` }
+                                isReadOnly={ isReadOnly }
+                                isSubmitting={ isSubmitting }
+                            />
+                        ) : (
+                            (<CustomAuthGeneralDetailsForm
+                                templateType={ templateType }
+                                hideIdPLogoEditField={ hideIdPLogoEditField }
+                                editingIDP={ editingIDP }
+                                onSubmit={ handleFormSubmit }
+                                onUpdate={ onUpdate }
+                                idpList={ idpList }
+                                data-testid={ `${ testId }-form` }
+                                isReadOnly={ isReadOnly }
+                                isSubmitting={ isSubmitting }
+                            />)
+                        )
+                    }
                     <Divider hidden />
                     <Show
                         when={ featureConfig?.identityProviders?.scopes?.update ||

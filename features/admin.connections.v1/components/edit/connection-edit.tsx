@@ -167,6 +167,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
      */
     const [ isTrustedTokenIssuer, setIsTrustedTokenIssuer ] = useState<boolean>(false);
     const [ isExpertMode, setIsExpertMode ] = useState<boolean>(false);
+    const [ isCustomAuthenticator, setIsCustomAuthenticator ] = useState<boolean>(false);
 
     const hasApplicationReadPermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.read);
 
@@ -224,6 +225,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 templateType={ type }
                 isSaml={ isSaml }
                 isOidc={ isOidc }
+                isCustomAuthenticator= { isCustomAuthenticator }
                 editingIDP={ identityProvider }
                 isLoading={ isLoading }
                 onDelete={ onDelete }
@@ -357,6 +359,11 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         setIsTrustedTokenIssuer(type === CommonAuthenticatorConstants
             .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER);
         setIsExpertMode(type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE);
+        setIsCustomAuthenticator(
+            type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXTERNAL_CUSTOM_AUTHENTICATION ||
+            type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATION ||
+            type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATION
+        );
     }, [ type ]);
 
     useEffect(() => {
@@ -446,6 +453,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         // Evaluate whether to Show/Hide `Attributes`.
         if (shouldShowTab(type, ConnectionTabTypes.USER_ATTRIBUTES)
             && !isOrganizationEnterpriseAuthenticator
+            && !isCustomAuthenticator
             && (type !== CommonAuthenticatorConstants
                 .CONNECTION_TEMPLATE_IDS.OIDC || isAttributesEnabledForOIDC)
             && (type !== CommonAuthenticatorConstants
@@ -467,7 +475,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
         if (shouldShowTab(type, ConnectionTabTypes.IDENTITY_PROVIDER_GROUPS) &&
         featureConfig?.identityProviderGroups?.enabled &&
-        !isOrganizationEnterpriseAuthenticator) {
+        !isOrganizationEnterpriseAuthenticator
+        && !isCustomAuthenticator) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.IDENTITY_PROVIDER_GROUPS,
                 menuItem: "Groups",
@@ -477,7 +486,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
         if (shouldShowTab(type, ConnectionTabTypes.OUTBOUND_PROVISIONING) &&
         identityProviderConfig.editIdentityProvider.showOutboundProvisioning &&
-        !isOrganizationEnterpriseAuthenticator) {
+        !isOrganizationEnterpriseAuthenticator
+        && !isCustomAuthenticator) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.OUTBOUND_PROVISIONING,
                 menuItem: "Outbound Provisioning",
@@ -497,7 +507,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
         if (shouldShowTab(type, ConnectionTabTypes.ADVANCED) &&
         identityProviderConfig.editIdentityProvider.showAdvancedSettings &&
-        !isOrganizationEnterpriseAuthenticator) {
+        !isOrganizationEnterpriseAuthenticator
+        && !isCustomAuthenticator) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.ADVANCED,
                 menuItem: "Advanced",
@@ -528,7 +539,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
     if (!identityProvider || isLoading ||
         ((!isOrganizationEnterpriseAuthenticator && !isTrustedTokenIssuer
-        && !isEnterpriseConnection && !isExpertMode) && !tabPaneExtensions)) {
+        && !isEnterpriseConnection && !isExpertMode && !isCustomAuthenticator) && !tabPaneExtensions)) {
 
         return <Loader />;
     }

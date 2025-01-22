@@ -363,7 +363,14 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             identityProviderTemplate?.id
                 === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE ||
             identityProviderTemplate?.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC ||
-            identityProviderTemplate?.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SAML) {
+            identityProviderTemplate?.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SAML ||
+            identityProviderTemplate?.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.
+                EXTERNAL_CUSTOM_AUTHENTICATION ||
+            identityProviderTemplate?.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.
+                INTERNAL_CUSTOM_AUTHENTICATION ||
+            identityProviderTemplate?.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.
+                TWO_FACTOR_CUSTOM_AUTHENTICATION
+        ) {
 
             return;
         }

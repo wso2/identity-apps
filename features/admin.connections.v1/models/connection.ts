@@ -739,6 +739,28 @@ export interface GeneralDetailsFormValuesInterface {
     name: string;
 }
 
+/**
+ * Interface for from values of custom authentication general details step
+ */
+export interface CustomAuthGeneralDetailsFormValuesInterface {
+    /**
+     * Display name of the connection
+     */
+    name: string
+    /**
+     * Description of the connection
+     */
+    description: string;
+    /**
+     * Image URL of the connection
+     */
+    image: string;
+    /**
+     * Set is primary connection
+     */
+    isPrimary: boolean;
+}
+
 export interface OutboundProvisioningConnectorMetaDataInterface {
     /**
      * Provisioning connector ID.
