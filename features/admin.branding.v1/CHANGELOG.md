@@ -1,5 +1,20 @@
 # @wso2is/admin.branding.v1
 
+## 2.27.66
+
+### Patch Changes
+
+- [#7358](https://github.com/wso2/identity-apps/pull/7358) [`be52c8983d37dca292073fba8885125dbd39e703`](https://github.com/wso2/identity-apps/commit/be52c8983d37dca292073fba8885125dbd39e703) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix form sections being missed in the design tab in org branding page
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.ai.v1@2.26.93
+  - @wso2is/admin.core.v1@2.37.1
+  - @wso2is/admin.extensions.v1@2.36.18
+  - @wso2is/admin.organizations.v1@2.26.93
+  - @wso2is/admin.feature-gate.v1@1.4.93
+  - @wso2is/admin.server-configurations.v1@2.32.18
+  - @wso2is/common.branding.v1@2.25.66
+
 ## 2.27.65
 
 ### Patch Changes
