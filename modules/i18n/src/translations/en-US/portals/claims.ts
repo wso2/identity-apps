@@ -486,7 +486,7 @@ export const claims: ClaimsNS = {
                     description: "Configure attribute profiles for different flows.",
                     title: "Attribute Configurations"
                 },
-                displayByDefault: "Display by default",
+                displayByDefault: "Display",
                 displayByDefaultHint: "If selected, this attribute will be displayed by default in the profile.",
                 endUserProfile: "End-User Profile",
                 readonly: "Read-only",
