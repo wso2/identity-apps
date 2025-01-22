@@ -137,7 +137,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
 
     useEffect(() => {
         if (!initWizard) {
-            console.log("Init wizard");
             setWizardSteps(getWizardSteps());
             setInitWizard(true);
         }
