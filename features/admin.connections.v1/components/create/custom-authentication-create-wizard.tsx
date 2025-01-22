@@ -498,11 +498,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                         selected={ selectedAuthenticator === CustomAuthConstants.EXTERNAL_AUTHENTICATOR }
                         onClick={ () => setSelectedAuthenticator(CustomAuthConstants.EXTERNAL_AUTHENTICATOR) }
                         imageSize="x60"
-                        imageOptions={ {
-                            relaxed: "very",
-                            square: false,
-                            width: "auto"
-                        } }
                         showTooltips={ true }
                         overlay={ renderDimmerOverlay() }
                         overlayOpacity={ 0.6 }
