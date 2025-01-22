@@ -41,17 +41,17 @@ import { updateEnabledAuthenticators } from "../../../api";
 import {
     deletePushAuthRegisteredDevice,
     deletePushAuthenticator,
-    getPushEnabledDevices,
     initPushAuthenticatorQRCode
 } from "../../../api/multi-factor-push";
 import { getMFAIcons } from "../../../configs";
+import useGetPushAuthRegisteredDevices from "../../../hooks/use-get-push-auth-registered-devices";
 import {
     AlertInterface,
     AlertLevels,
     EnabledAuthenticatorUpdateAction,
-    HttpError,
     HttpResponse
 } from "../../../models";
+import { PushAuthRegisteredDevice } from "../../../models/push-authenticator";
 
 /**
  * Property types for the push authenticator component.
@@ -66,13 +66,6 @@ interface PushAuthenticatorProps extends IdentifiableComponentInterface {
      * session termination modal.
      */
      handleSessionTerminationModalVisibility: (visibility: boolean) => void;
-}
-
-interface PushAuthRegisteredDevice {
-    deviceId: string;
-    model: string;
-    name: string;
-    provider: string;
 }
 
 /**
@@ -97,7 +90,12 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
     const translateKey: string = "myAccount:components.mfa.pushAuthenticatorApp.";
     const pushAuthenticatorName: string = "push";
 
-    const [ registeredDeviceList, setRegisteredDeviceList ] = useState<PushAuthRegisteredDevice[]>([]);
+    const {
+        data: registeredDeviceList,
+        isLoading:isRegisteredDeviceListLoading,
+        error: registeredDeviceListFetchError,
+        mutate: updateRegisteredDeviceList
+    } = useGetPushAuthRegisteredDevices();
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isConfigPushAuthenticatorModalOpen, setIsConfigPushAuthenticatorModalOpen ] = useState<boolean>(false);
@@ -105,26 +103,17 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
     const [ PushAuthenticatorModalCurrentStep, setPushAuthenticatorModalCurrentStep ] = useState<number>(0);
 
     useEffect(() => {
-        if (!isLoading) {
-            getPushEnabledDevices().then((resp: any) => {
-                const deviceList: PushAuthRegisteredDevice[] = resp.data;
-
-                if (Array.isArray(deviceList)) {
-                    setRegisteredDeviceList(deviceList);
-                }
-
-            }).catch((err: HttpError) => {
-                onAlertFired({
-                    description: t(translateKey +
-                            "notifications.updateAuthenticatorError.error.description", {
-                        error: err?.message
-                    }),
-                    level: AlertLevels.ERROR,
-                    message: t(translateKey + "notifications.updateAuthenticatorError.error.message")
-                });
+        if (registeredDeviceListFetchError && !isRegisteredDeviceListLoading) {
+            onAlertFired({
+                description: t(translateKey +
+                        "notifications.updateAuthenticatorError.error.description", {
+                    error: registeredDeviceListFetchError?.message
+                }),
+                level: AlertLevels.ERROR,
+                message: t(translateKey + "notifications.updateAuthenticatorError.error.message")
             });
         }
-    }, [ isLoading ]);
+    }, [ isRegisteredDeviceListLoading, registeredDeviceListFetchError ]);
 
     /**
      * Update enabled authenticator list based on the update action.
@@ -225,6 +214,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
      */
     const handlePushAuthenticatorSetupSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
+        updateRegisteredDeviceList();
         setIsConfigPushAuthenticatorModalOpen(false);
     };
 
