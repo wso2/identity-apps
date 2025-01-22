@@ -4748,6 +4748,7 @@ importers:
       '@wso2is/admin.organizations.v1':
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         specifier: ^2.26.94
 =======
 =======
@@ -4768,6 +4769,9 @@ importers:
         specifier: ^2.26.91
 >>>>>>> e5ac138ac3 (Update lockfile)
 >>>>>>> 487359e8e5 (Update lockfile)
+=======
+        specifier: ^2.26.92
+>>>>>>> 3a7dd94969 (Update lockfile)
         version: link:../admin.organizations.v1
       '@wso2is/admin.server-configurations.v1':
         specifier: ^2.32.19
@@ -26560,8 +26564,6 @@ packages:
     resolution: {integrity: sha512-Aq58f5HiWdyDlFffbbSjAlv596h/cOnt2DO1w3DOC7OJ5EHs0hd/nycJfiu9RJbT6Yk6F1knnRRXNSpxoIVZ9Q==}
     dev: true
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   /@oxygen-ui/primitives@1.15.2:
     resolution: {integrity: sha512-THqdYgUn8E9hyktiejSnoq1TtuVGjUj0SBEQwxYPePj5/IBSl20Q/vPDvguSOQuDEScmw6iCv2BYDMsHUP5LYA==}
     dev: false
@@ -26569,21 +26571,11 @@ packages:
   /@oxygen-ui/primitives@2.0.0:
     resolution: {integrity: sha512-PhnuJgngkp7202acCFQgfWRmuFQNml7J3QbZPmeJkrmQAUWndeBbHfjOs/MaKJD2R21ztLweC2m9ELUVa3Orxw==}
     dev: false
-=======
-  '@oxygen-ui/primitives@2.0.0': {}
->>>>>>> d2a77245e9 (Introduce push authenticator configuration support in my account)
-=======
-  /@oxygen-ui/primitives@2.0.0:
-    resolution: {integrity: sha512-PhnuJgngkp7202acCFQgfWRmuFQNml7J3QbZPmeJkrmQAUWndeBbHfjOs/MaKJD2R21ztLweC2m9ELUVa3Orxw==}
-    dev: false
->>>>>>> 8c2a95f2b9 (Update lock file)
 
   /@oxygen-ui/primitives@2.3.1:
     resolution: {integrity: sha512-/SienAtzy9v+QBl71SelWGKoXMgmfXD6yP+bCI4Rn+gS7ucLKY0sKbUnGZ3/S5qo+AvEqpngnGRAJYz34eOzVw==}
     dev: false
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   /@oxygen-ui/react-icons@1.15.2(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5):
     resolution: {integrity: sha512-Ptl7BB0ble/nVuna+jlo3DvCFjycMViaAbWsOXRGYPya/h9K5+g5p90F1mPFbYVyj7GebTZGvu5V8oDpihYDNQ==}
     peerDependencies:
@@ -26599,8 +26591,6 @@ packages:
       typescript: 4.9.5
     dev: false
 
-=======
->>>>>>> 8c2a95f2b9 (Update lock file)
   /@oxygen-ui/react-icons@2.0.0(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5):
     resolution: {integrity: sha512-rPBAZ9O69J549QDTdWENNoQCeuURFW+KBOq650TGzY96vCnTQc61y2XtBX/wJ1+kHFLCYqh3b/j047Qgc8dNTg==}
     peerDependencies:
@@ -26610,12 +26600,6 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
-<<<<<<< HEAD
-=======
-  '@oxygen-ui/react-icons@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)':
->>>>>>> d2a77245e9 (Introduce push authenticator configuration support in my account)
-=======
->>>>>>> 8c2a95f2b9 (Update lock file)
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -26637,8 +26621,6 @@ packages:
       typescript: 4.9.5
     dev: false
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   /@oxygen-ui/react@1.15.2(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.13)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.13)(@mui/utils@5.16.13)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5):
     resolution: {integrity: sha512-xPVoPVDRoYPU63gAv2k78Q5EIGmYnHvjuUwZzvkF9Kr6r+e264Y5IWrM7AgwRbwHofFU2bLKbP5Rb2VLjv8wPA==}
     peerDependencies:
@@ -26675,8 +26657,6 @@ packages:
       - '@types/react'
     dev: false
 
-=======
->>>>>>> 8c2a95f2b9 (Update lock file)
   /@oxygen-ui/react@2.0.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.13)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.13)(@mui/utils@5.16.13)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5):
     resolution: {integrity: sha512-gvEOxknhESh3lIP4qmmm28oYLuhVxoaKgzWXE67g68kfLKaamP7ZH40Xwx+SyhmvEc7AuDe4PrR+whCJC6qc0g==}
     peerDependencies:
@@ -26694,13 +26674,6 @@ packages:
       typescript:
         optional: true
     dependencies:
-<<<<<<< HEAD
-=======
-  ? '@oxygen-ui/react@2.0.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@mui/icons-material@5.16.13(@mui/material@5.13.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@mui/lab@5.0.0-alpha.129(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@mui/material@5.13.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mui/material@5.13.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mui/system@5.16.13(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@mui/utils@5.16.13(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)'
-  : dependencies:
->>>>>>> d2a77245e9 (Introduce push authenticator configuration support in my account)
-=======
->>>>>>> 8c2a95f2b9 (Update lock file)
       '@emotion/react': 11.14.0(@types/react@18.0.18)(react@18.3.1)
       '@emotion/styled': 11.14.0(@emotion/react@11.14.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/icons-material': 5.16.13(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
