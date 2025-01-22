@@ -22,7 +22,13 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import RulesComponent from "@wso2is/admin.rules.v1/components/rules-component";
-import { sampleExecutionsList } from "@wso2is/admin.rules.v1/data";
+import {
+    sampleExpressionsMeta,
+    sampleRuleExecuteInstances,
+    sampleRuleExecutionMeta
+} from "@wso2is/admin.rules.v1/data";
+import { RuleExecuteCollectionInterface } from "@wso2is/admin.rules.v1/models/rules";
+import { getRuleInstanceValue } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import "./rules-properties.scss";
@@ -33,30 +39,51 @@ import "./rules-properties.scss";
 export interface RulesPropertiesPropsInterface extends IdentifiableComponentInterface { }
 
 /**
- * Component to generate the properties for the attribute collector widget.
+ * Rules properties component.
  *
  * @param props - Props injected to the component.
- * @returns The RulesProperties component.
+ * @returns Rules properties component.
  */
 const RulesProperties: FunctionComponent<RulesPropertiesPropsInterface> = ({
     ["data-componentid"]: componentId = "rules-properties-component"
 }: RulesPropertiesPropsInterface): ReactElement => {
 
-    // TODO: Change the glow value
+    // TODO: Change to collect dynamic value from the context
     const {
-        data: RulesMeta
+        data: RuleExpressionsMetaData
     } = useGetRulesMeta("preIssueAccessToken");
+
+    // TODO: Use this function to get the rule value.
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+    const handleGetRuleValue = () => {
+        const ruleValue: RuleExecuteCollectionInterface = getRuleInstanceValue();
+
+        // eslint-disable-next-line no-console
+        console.log(ruleValue);
+    };
+    /* eslint-enable @typescript-eslint/no-unused-vars */
 
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
             <Typography variant="body2">
                 Define a rule to how conditionally proceed to next steps in the flow
             </Typography>
-            { RulesMeta &&
-                <RulesComponent metaData={ RulesMeta } multipleRules={ true } ruleExecutions={ sampleExecutionsList } />
-            }
+            { RuleExpressionsMetaData && (
+                <RulesComponent
+                    initialData={ sampleRuleExecuteInstances }
+                    conditionExpressionsMetaData={ sampleExpressionsMeta }
+                    isMultipleRules={ true }
+                    ruleExecutionMetaData={ sampleRuleExecutionMeta } />
+            ) }
             <Box sx={ { mt: 3 } }>
-                <Button size="small" variant="contained" color="primary">Save</Button>
+                <Button
+                    size="small"
+                    variant="contained"
+                    color="primary"
+                    onClick={ handleGetRuleValue }
+                >
+                    Print Data
+                </Button>
             </Box>
         </Stack>
     );

@@ -28,7 +28,7 @@ import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-
 import { AppState } from "@wso2is/admin.core.v1";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import RulesComponent from "@wso2is/admin.rules.v1/components/rules-component";
-import { RuleInterface } from "@wso2is/admin.rules.v1/models/rules";
+import { RuleExecuteCollectionInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { getRuleInstanceValue } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -111,10 +111,18 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     } = useGetActionsByType(actionTypeApiPath);
 
     const {
-        data: RulesMeta
+        data: RuleExpressionsMetaData
     } = useGetRulesMeta(actionTypeApiPath);
 
-    const showRulesComponent: boolean = false;
+    // TODO: Remove this temporary boolean once the management API is ready.
+    const showRulesComponent: boolean = true;
+
+    // TODO: Use this function to get the rule value.
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+    const handleGetRuleValue = () => {
+        const ruleValue: RuleExecuteCollectionInterface = getRuleInstanceValue();
+    };
+    /* eslint-enable @typescript-eslint/no-unused-vars */
 
     /**
      * The following useEffect is used to set the current Action Authentication Type.
@@ -127,13 +135,6 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
             setIsAuthenticationUpdateFormState(false);
         }
     }, [ initialValues ]);
-
-    // TODO: Use this function to get the rule value.
-    /* eslint-disable @typescript-eslint/no-unused-vars */
-    const handleGetRuleValue = () => {
-        const ruleValue: RuleInterface[] = getRuleInstanceValue();
-    };
-    /* eslint-enable @typescript-eslint/no-unused-vars */
 
     const renderInputAdornmentOfSecret = (showSecret: boolean, onClick: () => void): ReactElement => (
         <InputAdornment position="end">
@@ -739,10 +740,10 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     { t("actions:fields.authentication.label") }
                 </Heading>
                 { renderAuthenticationSection() }
-                { (RulesMeta && showRulesComponent) && (
+                { (RuleExpressionsMetaData && showRulesComponent) && (
                     <>
                         <Divider className="divider-container" />
-                        <RulesComponent metaData={ RulesMeta } />
+                        <RulesComponent conditionExpressionsMetaData={ RuleExpressionsMetaData } />
                     </>
                 ) }
             </>

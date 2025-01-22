@@ -18,8 +18,9 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import Rules from "./rules";
-import { RuleComponentMetaDataInterface, RuleExecutionMetaDataInterface, RuleInterface } from "../models/rules";
+import RuleExecutionComponent from "./rules";
+import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "../models/meta";
+import { RuleExecuteCollectionInterface, RuleInterface } from "../models/rules";
 import { RulesProvider } from "../providers/rules-provider";
 import "./rules-component.scss";
 
@@ -30,43 +31,54 @@ interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
     /**
      * Initial data to be passed to the rules component.
      */
-    initialData?: RuleInterface[];
+    initialData?: RuleExecuteCollectionInterface | RuleInterface;
 
     /**
-     * Meta data to be passed to the rules component.
+     * Rule expressions meta data.
      */
-    metaData: RuleComponentMetaDataInterface;
+    conditionExpressionsMetaData: ConditionExpressionsMetaDataInterface;
 
     /**
-     * Multiple rules flag.
+     * Is multiple rules flag.
      */
-    multipleRules?: boolean;
+    isMultipleRules?: boolean;
 
     /**
-     * Rule execution meta data.
+     * Rule executions meta data.
      */
-    ruleExecutions?: RuleExecutionMetaDataInterface[];
+    ruleExecutionMetaData?: RuleExecutionMetaDataInterface;
 }
 
+/**
+ * Props interface of {@link RulesComponent}
+ */
 type RulesComponentPropsWithValidation =
-    | (RulesComponentPropsInterface & { multipleRules: true; ruleExecutions: any })
-    | (RulesComponentPropsInterface & { multipleRules?: false; ruleExecutions?: never });
+    | (RulesComponentPropsInterface & { isMultipleRules: true; ruleExecutionMetaData: any })
+    | (RulesComponentPropsInterface & { isMultipleRules?: false; ruleExecutionMetaData?: never });
 
 /**
- * Landing page for the Flows feature.
+ * Rules component to render.
  *
  * @param props - Props injected to the component.
- * @returns Flows page component.
+ * @returns Rule component.
+ *
  */
 const RulesComponent: FunctionComponent<RulesComponentPropsWithValidation> = ({
     ["data-componentid"]: componentId = "rules-component",
     initialData,
-    metaData,
-    multipleRules,
-    ruleExecutions
+    conditionExpressionsMetaData,
+    isMultipleRules,
+    ruleExecutionMetaData
 }: RulesComponentPropsWithValidation): ReactElement => (
-    <RulesProvider metaData={ metaData } initialData={ initialData } ruleExecutions={ ruleExecutions }>
-        <Rules data-componentid={ componentId } multipleRules={ multipleRules } />
+    <RulesProvider
+        initialData={ initialData }
+        conditionExpressionsMetaData={ conditionExpressionsMetaData }
+        ruleExecutionMetaData={ ruleExecutionMetaData }
+    >
+        <RuleExecutionComponent
+            data-componentid={ componentId }
+            isMultipleRules={ isMultipleRules }
+        />
     </RulesProvider>
 );
 
