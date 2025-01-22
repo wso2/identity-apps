@@ -101,7 +101,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
     useEffect(() => {
         if (algorithm) {
             const selectedAlgorithm: AlgorithmOption =
-                algorithmOptions.find((option: AlgorithmOption) => option.label === algorithm);
+                algorithmOptions.find((option: AlgorithmOption) => option.id === algorithm);
 
             setSelectedAlgorithm(selectedAlgorithm);
             setIsAlgorithmLoading(false);
@@ -210,21 +210,21 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
             }
             action={
                 (
-                    <Grid container spacing={ 3 } alignItems={ "center" }>
+                    <Grid container spacing={ 9 } alignItems={ "center" }>
                         <Grid xs={ 6 }>
                             <Button
                                 variant={ "outlined" }
                                 className="policy-algorithm-btn"
                                 onClick={ () => setShowAlgorithmModal(true) }
                             >
-                                <GearIcon size={ 20 }/>
+                                <GearIcon className="gear-icon" size={ 20 }/>
                                 <Stack direction="column" className="algorithm-txt">
                                     <Typography variant="body1" noWrap>
                                         { t("policyAdministration:buttons.policyAlgorithm") }
                                     </Typography>
-                                    { !isAlgorithmLoading && selectedAlgorithm?.label && (
+                                    { !isAlgorithmLoading && selectedAlgorithm?.id && (
                                         <Typography variant="body2">
-                                            { selectedAlgorithm.label }
+                                            { selectedAlgorithm.id }
                                         </Typography>
                                     ) }
                                     { isAlgorithmLoading && <CircularProgress size={ 12 } /> }

@@ -71,7 +71,7 @@ const EditPolicyAlgorithm: FunctionComponent<EditPolicyAlgorithmProps> = (
 
     const handleUpdate = () => {
         const data: PolicyAlgorithmRequestInterface = {
-            policyCombiningAlgorithm: selectedOption.label
+            policyCombiningAlgorithm: selectedOption.id
         };
 
         updateAlgorithm(data).then(() => {
@@ -115,12 +115,12 @@ const EditPolicyAlgorithm: FunctionComponent<EditPolicyAlgorithmProps> = (
                 >
                     { algorithmOptions.map((option: AlgorithmOption) => (
                         <MenuItem key={ option.value } value={ option.value }>
-                            { option.label }
+                            { option.id }
                         </MenuItem>
                     )) }
                 </Select>
                 <Alert severity="info" className="algorithm-description">
-                    { selectedOption?.description }
+                    { t(selectedOption?.description) }
                 </Alert>
             </DialogContent>
             <DialogActions>

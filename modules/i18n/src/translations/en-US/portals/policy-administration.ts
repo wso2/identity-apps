@@ -85,6 +85,32 @@ export const policyAdministration: policyAdministrationNS = {
     },
     policyAlgorithm: {
         actionText: "Select a policy combining algorithm",
+        algorithmOptions: {
+            denyOverrides: {
+                description: "The deny overrides combining algorithm is intended for those cases where a deny decision should have priority over a permit decision."
+            },
+            denyUnlessPermit: {
+                description: "This algorithm denies access unless explicitly permitted. If none of the policies produce a \"Permit,\" the result is \"Deny.\" However, if any policy results in a \"Permit,\" the final decision will be \"Permit.\""
+            },
+            firstApplicable: {
+                description: "The first policy that produces a definitive result (\"Permit\" or \"Deny\") determines the final decision."
+            },
+            onlyOneApplicable: {
+                description: "This algorithm requires exactly one applicable policy. If multiple policies can apply or none of them do, the result is \"Indeterminate.\" Otherwise, the decision from the single applicable policy is returned."
+            },
+            orderedDenyOverrides: {
+                description: "The policies are evaluated in the order they are listed, and the first \"Deny\" encountered overrides others."
+            },
+            orderedPermitOverrides: {
+                description: "The policies are evaluated in the order they are listed, and the first \"Permit\" encountered overrides others."
+            },
+            permitOverrides: {
+                description: "The permit overrides combining algorithm is intended for those cases where a permit decision should have priority over a deny decision."
+            },
+            permitUnlessDeny: {
+                description: "This algorithm allows access unless explicitly denied. If none of the policies produce a \"Deny,\" the result is \"Permit.\" However, if any policy results in a \"Deny,\" the final decision will be \"Deny.\""
+            }
+        },
         primaryBtn: "Update",
         title: "Policy Algorithm"
     },

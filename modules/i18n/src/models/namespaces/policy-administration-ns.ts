@@ -37,6 +37,32 @@ export interface policyAdministrationNS {
         title: string;
         actionText: string;
         primaryBtn: string;
+        algorithmOptions: {
+            denyOverrides: {
+                description: string;
+            };
+            permitOverrides: {
+                description: string;
+            };
+            firstApplicable: {
+                description: string;
+            };
+            permitUnlessDeny: {
+                description: string;
+            };
+            denyUnlessPermit: {
+                description: string;
+            };
+            orderedPermitOverrides: {
+                description: string;
+            };
+            orderedDenyOverrides: {
+                description: string;
+            };
+            onlyOneApplicable: {
+                description: string;
+            };
+        };
     }
     alerts: {
         deleteSuccess: {

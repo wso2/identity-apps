@@ -64,18 +64,6 @@ export const NewPolicyWizard: FunctionComponent<NewPolicyWizardPropsInterface> =
 
 
     const handleSave = async (): Promise<void> => {
-        if (!pastedContent || pastedContent.trim().length === 0) {
-            dispatch(
-                addAlert({
-                    description: t("policyAdministration:createPolicy.notifications.emptyContent.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("policyAdministration:createPolicy.notifications.emptyContent.message")
-                })
-            );
-
-            return;
-        }
-
         setIsSubmitting(true);
 
         const rawXml: string = selectedXMLFile
