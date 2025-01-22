@@ -178,6 +178,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         useState<{ value: string; schema?: ProfileSchema }>({ value: "" });
     const [ showMultiValuedFieldDeleteConfirmationModal, setShowMultiValuedFieldDeleteConfirmationModal ]
         = useState<boolean>(false);
+
+    const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.personalInfo?.disabledFeatures?.includes(
+        MyAccountProfileConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
+    );
+
     const handleMultiValuedFieldDeleteModalClose: () => void = useCallback(() => {
         setShowMultiValuedFieldDeleteConfirmationModal(false);
         setSelectedAttributeInfo({ value: "" });
@@ -1211,6 +1216,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * @returns Schema form.
      */
     const generateSchemaForm = (schema: ProfileSchema, index: number): JSX.Element => {
+        const { displayName, name } = schema;
 
         // Define schemas to hide.
         const attributesToHide: string[] = isMultipleEmailAndMobileNumberEnabled === true
@@ -1226,6 +1232,21 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         if (!showEmail && schema?.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             return;
+        }
+
+        // If the feature is enabled, check the supportedByDefault flag.
+        // Hide the field if the schema is not supported by default.
+        // This does not apply to the username field. It is always shown.
+        if (!isDistinctAttributeProfilesDisabled && name !== MyAccountProfileConstants.USERNAME_CLAIM_NAME) {
+            let resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+
+            if (schema?.profiles?.endUser?.supportedByDefault !== undefined) {
+                resolveSupportedByDefaultValue = schema?.profiles?.endUser?.supportedByDefault;
+            }
+
+            if (!resolveSupportedByDefaultValue) {
+                return;
+            }
         }
 
         /*
@@ -1247,7 +1268,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
          * the value matches.
          */
         const isProfileUsernameReadonly: boolean = config?.ui?.isProfileUsernameReadonly;
-        const { displayName, name } = schema;
 
         if (isProfileUsernameReadonly) {
             const usernameClaim: string = "username";
