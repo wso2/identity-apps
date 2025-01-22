@@ -281,6 +281,11 @@ export class I18nConstants {
         I18nModuleConstants.POLICY_ADMINISTRATION_NAMESPACE;
 
     /**
+     * Rules namespace.
+     */
+    public static readonly RULES_NAMESPACE: string = I18nModuleConstants.RULES_NAMESPACE;
+
+    /**
      * Custom Authentication namespace.
      */
     public static readonly CUSTOM_AUTHENTICATION_NAMESPACE: string =
@@ -339,7 +344,8 @@ export class I18nConstants {
         [ I18nConstants.TENANTS_NAMESPACE, "portals" ],
         [ I18nConstants.CUSTOM_AUTHENTICATION_NAMESPACE, "portals" ],
         [ I18nConstants.POLICY_ADMINISTRATION_NAMESPACE, "portals" ],
-        [ I18nConstants.REMOTE_USER_STORES_NAMESPACE, "portals" ]
+        [ I18nConstants.REMOTE_USER_STORES_NAMESPACE, "portals" ],
+        [ I18nConstants.RULES_NAMESPACE, "portals" ]
     ]);
 
     /**

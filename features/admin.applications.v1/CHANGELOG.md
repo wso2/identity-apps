@@ -1,5 +1,70 @@
 # @wso2is/admin.applications.v1
 
+## 2.30.93
+
+### Patch Changes
+
+- Updated dependencies [[`be52c8983d37dca292073fba8885125dbd39e703`](https://github.com/wso2/identity-apps/commit/be52c8983d37dca292073fba8885125dbd39e703)]:
+  - @wso2is/admin.branding.v1@2.27.66
+  - @wso2is/admin.core.v1@2.37.1
+  - @wso2is/admin.application-templates.v1@1.4.93
+  - @wso2is/admin.authentication-flow-builder.v1@2.24.93
+  - @wso2is/admin.connections.v1@2.32.3
+  - @wso2is/admin.console-settings.v1@2.25.93
+  - @wso2is/admin.extensions.v1@2.36.18
+  - @wso2is/admin.identity-providers.v1@2.26.93
+  - @wso2is/admin.login-flow.ai.v1@2.26.93
+  - @wso2is/admin.oidc-scopes.v1@2.25.93
+  - @wso2is/admin.organizations.v1@2.26.93
+  - @wso2is/admin.roles.v2@2.27.37
+  - @wso2is/admin.api-resources.v2@2.25.93
+  - @wso2is/admin.claims.v1@2.27.3
+  - @wso2is/admin.feature-gate.v1@1.4.93
+  - @wso2is/admin.impersonation.v1@1.6.93
+  - @wso2is/admin.secrets.v1@2.25.93
+  - @wso2is/admin.server-configurations.v1@2.32.18
+  - @wso2is/admin.template-core.v1@1.5.47
+  - @wso2is/admin.users.v1@2.30.3
+  - @wso2is/admin.userstores.v1@2.26.52
+  - @wso2is/admin.wsfed-configuration.v1@2.25.93
+
+## 2.30.92
+
+### Patch Changes
+
+- [#7351](https://github.com/wso2/identity-apps/pull/7351) [`790ff6bbdbda324a95285d903b04da27a7533b2b`](https://github.com/wso2/identity-apps/commit/790ff6bbdbda324a95285d903b04da27a7533b2b) Thanks [@shanggeeth](https://github.com/shanggeeth)! - Fix an issue where enable signature validation is not updated when certificate alias is enabled
+
+- Updated dependencies [[`363aeec4c658628cf89027a9f81f52f545421842`](https://github.com/wso2/identity-apps/commit/363aeec4c658628cf89027a9f81f52f545421842), [`50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523`](https://github.com/wso2/identity-apps/commit/50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523), [`abf5c953b8f48db5cdb855e75f5c1b847d1e42f0`](https://github.com/wso2/identity-apps/commit/abf5c953b8f48db5cdb855e75f5c1b847d1e42f0)]:
+  - @wso2is/admin.core.v1@2.37.0
+  - @wso2is/i18n@2.16.0
+  - @wso2is/admin.users.v1@2.30.2
+  - @wso2is/core@2.5.7
+  - @wso2is/admin.claims.v1@2.27.2
+  - @wso2is/admin.api-resources.v2@2.25.92
+  - @wso2is/admin.application-templates.v1@1.4.92
+  - @wso2is/admin.authentication-flow-builder.v1@2.24.92
+  - @wso2is/admin.branding.v1@2.27.65
+  - @wso2is/admin.connections.v1@2.32.2
+  - @wso2is/admin.console-settings.v1@2.25.92
+  - @wso2is/admin.extensions.v1@2.36.17
+  - @wso2is/admin.feature-gate.v1@1.4.92
+  - @wso2is/admin.identity-providers.v1@2.26.92
+  - @wso2is/admin.impersonation.v1@1.6.92
+  - @wso2is/admin.login-flow.ai.v1@2.26.92
+  - @wso2is/admin.oidc-scopes.v1@2.25.92
+  - @wso2is/admin.organizations.v1@2.26.92
+  - @wso2is/admin.roles.v2@2.27.36
+  - @wso2is/admin.secrets.v1@2.25.92
+  - @wso2is/admin.server-configurations.v1@2.32.17
+  - @wso2is/admin.template-core.v1@1.5.46
+  - @wso2is/admin.userstores.v1@2.26.51
+  - @wso2is/admin.wsfed-configuration.v1@2.25.92
+  - @wso2is/admin.authorization.v1@2.25.37
+  - @wso2is/access-control@3.3.11
+  - @wso2is/form@2.6.15
+  - @wso2is/forms@2.3.12
+  - @wso2is/react-components@2.8.22
+
 ## 2.30.91
 
 ### Patch Changes
