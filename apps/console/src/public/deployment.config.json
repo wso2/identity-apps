@@ -676,7 +676,7 @@
                 "scopes": {}
             },
             "identityProviders": {
-                "disabledFeatures": [],
+                "disabledFeatures": ["identityProviders.customAuthentication"],
                 "enabled": true,
                 "scopes": {
                     "create": [
