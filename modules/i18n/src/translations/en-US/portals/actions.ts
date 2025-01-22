@@ -141,6 +141,14 @@ export const actions: actionsNS = {
                 empty: "Action Name is a required field.",
                 invalid: "Please choose a valid name that adheres to the given guidelines."
             }
+        },
+        rules: {
+            button: "Configure Rule",
+            info: {
+                message: "This action will be executed without any conditions.",
+                title: "No execution rule is configured."
+            },
+            label: "Execution Rule"
         }
     },
     goBackActions: "Go back to Actions",

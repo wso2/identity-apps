@@ -47,6 +47,7 @@
         "@wso2is/admin.remote-repository-configuration.v1": "^2.25.91",
         "@wso2is/admin.roles.v1": "^2.25.91",
         "@wso2is/admin.roles.v2": "^2.27.35",
+        "@wso2is/admin.rules.v1": "^0.0.0",
         "@wso2is/admin.saml2-configuration.v1": "^2.25.91",
         "@wso2is/admin.secrets.v1": "^2.25.91",
         "@wso2is/admin.server-configurations.v1": "^2.32.16",

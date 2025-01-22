@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,16 @@
  * under the License.
  */
 
-export * from "./exceptions";
-export * from "./models";
-export * from "./constants";
-export * from "./helpers";
-export * from "./i18n";
+import { RulesEndpointsInterface } from "../models/endpoints";
+
+/**
+ * Get the resource endpoints for the rules feature.
+ *
+ * @param serverHost - Server Host.
+ * @returns Interface of Actions Resource Endpoints.
+ */
+export const getRulesEndpoints = (serverHost: string): RulesEndpointsInterface => {
+    return {
+        rulesMetaData: `${serverHost}/api/server/v1/rules/metadata`
+    };
+};
