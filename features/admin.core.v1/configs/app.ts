@@ -35,6 +35,7 @@ import { getScopesResourceEndpoints } from "@wso2is/admin.oidc-scopes.v1";
 import { getInsightsResourceEndpoints } from "@wso2is/admin.org-insights.v1/config/org-insights";
 import { getOrganizationsResourceEndpoints } from "@wso2is/admin.organizations.v1/configs";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
+import { getPolicyAdministrationResourceEndpoints } from "@wso2is/admin.policy-administration.v1/configs";
 import { getRemoteFetchConfigResourceEndpoints } from "@wso2is/admin.remote-repository-configuration.v1";
 import { getRolesResourceEndpoints } from "@wso2is/admin.roles.v2/configs/endpoints";
 import { getSecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/configs/endpoints";
@@ -48,7 +49,7 @@ import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/configs";
 import { getApprovalsResourceEndpoints } from "@wso2is/admin.workflow-approvals.v1";
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
-import { I18nConstants, UIConstants } from "../constants";
+import { AppConstants, I18nConstants, UIConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 import { store } from "../store";
 
@@ -212,6 +213,7 @@ export class Config {
                 I18nConstants.APPLICATION_TEMPLATES_NAMESPACE,
                 I18nConstants.ACTIONS_NAMESPACE,
                 I18nConstants.TENANTS_NAMESPACE,
+                I18nConstants.POLICY_ADMINISTRATION_NAMESPACE,
                 I18nConstants.REMOTE_USER_STORES_NAMESPACE
             ],
             preload: []
@@ -271,6 +273,7 @@ export class Config {
             ...getApplicationTemplatesResourcesEndpoints(this.resolveServerHost()),
             ...getActionsResourceEndpoints(this.resolveServerHost()),
             ...getSmsTemplateResourceEndpoints(this.resolveServerHost()),
+            ...getPolicyAdministrationResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,
@@ -347,12 +350,16 @@ export class Config {
             isXacmlConnectorEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isXacmlConnectorEnabled,
             legacyMode: window[ "AppUtils" ]?.getConfig()?.ui?.legacyMode,
             listAllAttributeDialects: window[ "AppUtils" ]?.getConfig()?.ui?.listAllAttributeDialects,
+            multiTenancy: window[ "AppUtils" ]?.getConfig()?.ui?.multiTenancy,
             passwordPolicyConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.passwordPolicyConfigs,
             primaryUserStoreDomainName: window[ "AppUtils" ]?.getConfig()?.ui?.primaryUserStoreDomainName?.toUpperCase()
                 ?? PRIMARY_USERSTORE,
             privacyPolicyConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.privacyPolicyConfigs,
             productName: window[ "AppUtils" ]?.getConfig()?.ui?.productName,
             productVersionConfig: window[ "AppUtils" ]?.getConfig()?.ui?.productVersionConfig,
+            routes: window[ "AppUtils" ]?.getConfig()?.ui?.routes ?? {
+                organizationEnabledRoutes: AppConstants.ORGANIZATION_ENABLED_ROUTES
+            },
             selfAppIdentifier: window[ "AppUtils" ]?.getConfig()?.ui?.selfAppIdentifier,
             showAppSwitchButton: window[ "AppUtils" ]?.getConfig()?.ui?.showAppSwitchButton,
             showSmsOtpPwdRecoveryFeatureStatusChip:

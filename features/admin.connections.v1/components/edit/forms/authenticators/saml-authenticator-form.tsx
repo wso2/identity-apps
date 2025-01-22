@@ -116,7 +116,7 @@ export interface SamlPropertiesInterface {
     IncludeCert?: boolean;
     IncludeNameIDPolicy?:boolean;
     AuthnContextClassRef?: string;
-    AuthnReqProviderName?: string;
+    samlAuthnRequestProviderName?: string;
 }
 
 const FORM_ID: string = "saml-authenticator-form";
@@ -250,7 +250,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             AuthRedirectUrl: findPropVal<string>({ defaultValue: authorizedRedirectURL, key: "AuthRedirectUrl" }),
             AuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "AuthnContextClassRef" }),
             AuthnContextComparisonLevel: findPropVal<string>({ defaultValue: "", key: "AuthnContextComparisonLevel" }),
-            AuthnReqProviderName: findPropVal<string>({ defaultValue: "", key: "AuthnReqProviderName" }),
             CustomAuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "CustomAuthnContextClassRef" }),
             DigestAlgorithm: findPropVal<string>({ defaultValue: "SHA256", key: "DigestAlgorithm" }),
             ForceAuthentication: findPropVal<string>({ defaultValue: "string", key: "ForceAuthentication" }),
@@ -300,8 +299,11 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             /**
              * https://github.com/wso2/product-is/issues/17004
              */
-            isAssertionSigned: findPropVal<boolean>({ defaultValue: false, key: "isAssertionSigned" })
-
+            isAssertionSigned: findPropVal<boolean>({ defaultValue: false, key: "isAssertionSigned" }),
+            samlAuthnRequestProviderName: findPropVal<string>({
+                defaultValue: "",
+                key: "samlAuthnRequestProviderName"
+            })
         } as SamlPropertiesInterface;
 
     }, []);
@@ -964,20 +966,20 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     </SectionRow>
                     <SectionRow>
                         <Field.Input
-                            name="AuthnReqProviderName"
-                            value={ formValues?.AuthnReqProviderName }
+                            name="samlAuthnRequestProviderName"
+                            value={ formValues?.samlAuthnRequestProviderName }
                             inputType="default"
-                            placeholder={ t(`${ I18N_TARGET_KEY }.authnReqProviderName.placeholder`) }
-                            ariaLabel={ t(`${ I18N_TARGET_KEY }.authnReqProviderName.ariaLabel`) }
-                            data-testid={ `${ testId }-authnReqProviderName-field` }
+                            placeholder={ t(`${ I18N_TARGET_KEY }.samlAuthnRequestProviderName.placeholder`) }
+                            ariaLabel={ t(`${ I18N_TARGET_KEY }.samlAuthnRequestProviderName.ariaLabel`) }
+                            data-testid={ `${ testId }-samlAuthnRequestProviderName-field` }
                             label={ (
-                                <FormInputLabel htmlFor="AuthnReqProviderName">
-                                    { t(`${ I18N_TARGET_KEY }.authnReqProviderName.label`) }
+                                <FormInputLabel htmlFor="samlAuthnRequestProviderName">
+                                    { t(`${ I18N_TARGET_KEY }.samlAuthnRequestProviderName.label`) }
                                 </FormInputLabel>
                             ) }
                             maxLength={ IDENTITY_PROVIDER_AUTHENTICATION_REQUEST_PROVIDER_NAME_LENGTH.max }
                             minLength={ IDENTITY_PROVIDER_AUTHENTICATION_REQUEST_PROVIDER_NAME_LENGTH.min }
-                            hint={ t(`${ I18N_TARGET_KEY }.authnReqProviderName.hint`) }
+                            hint={ t(`${ I18N_TARGET_KEY }.samlAuthnRequestProviderName.hint`) }
                             readOnly={ readOnly }
                         />
                     </SectionRow>

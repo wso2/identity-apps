@@ -1,5 +1,29 @@
 # @wso2is/form
 
+## 2.6.14
+
+### Patch Changes
+
+- Updated dependencies [[`4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98`](https://github.com/wso2/identity-apps/commit/4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98)]:
+  - @wso2is/core@2.5.6
+  - @wso2is/react-components@2.8.21
+
+## 2.6.13
+
+### Patch Changes
+
+- [#7318](https://github.com/wso2/identity-apps/pull/7318) [`23bd7d4f6d6d70d789ad7115ffd1fbec742455a6`](https://github.com/wso2/identity-apps/commit/23bd7d4f6d6d70d789ad7115ffd1fbec742455a6) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Bump oxygen version and enable active policy view.
+
+- Updated dependencies [[`23bd7d4f6d6d70d789ad7115ffd1fbec742455a6`](https://github.com/wso2/identity-apps/commit/23bd7d4f6d6d70d789ad7115ffd1fbec742455a6), [`ad63bbe54541ed6b28e1f254f3e7f5e7b6767d7b`](https://github.com/wso2/identity-apps/commit/ad63bbe54541ed6b28e1f254f3e7f5e7b6767d7b), [`5a5577aacf0a12d03246c9b829c8168296b37dcf`](https://github.com/wso2/identity-apps/commit/5a5577aacf0a12d03246c9b829c8168296b37dcf)]:
+  - @wso2is/react-components@2.8.20
+
+## 2.6.12
+
+### Patch Changes
+
+- Updated dependencies [[`f9db643943377216b8525a183f3ad4855a3bd4af`](https://github.com/wso2/identity-apps/commit/f9db643943377216b8525a183f3ad4855a3bd4af)]:
+  - @wso2is/react-components@2.8.19
+
 ## 2.6.11
 
 ### Patch Changes

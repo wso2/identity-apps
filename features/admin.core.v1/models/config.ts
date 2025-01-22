@@ -30,6 +30,7 @@ import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.
 import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1/models/endpoints";
 import { ScopesResourceEndpointsInterface } from "@wso2is/admin.oidc-scopes.v1";
 import { OrganizationResourceEndpointsInterface } from "@wso2is/admin.organizations.v1/models";
+import { PolicyAdministrationEndpointsInterface } from "@wso2is/admin.policy-administration.v1/models/endpoints";
 import { RolesResourceEndpointsInterface } from "@wso2is/admin.roles.v2/models/endpoints";
 import { SecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "@wso2is/admin.server-configurations.v1";
@@ -325,6 +326,24 @@ type GovernanceConnectorsFeatureConfig = Record<string, {
 }>
 
 /**
+ * Interface representing the configuration for multi-tenancy.
+ */
+export interface MultiTenancyConfigInterface {
+    /**
+     * Indicates if the dot extension is mandatory in the tenant domain.
+     */
+    isTenantDomainDotExtensionMandatory: boolean;
+    /**
+     * Regular expression for illegal characters in the tenant domain.
+     */
+    tenantDomainIllegalCharactersRegex: string;
+    /**
+     * Regular expression for validating the tenant domain.
+     */
+    tenantDomainRegex: string;
+}
+
+/**
  * Portal UI config interface inheriting the common configs from core module.
  */
 export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfigInterface> {
@@ -424,6 +443,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isCustomClaimMappingMergeEnabled?: boolean;
     /**
+     * Configurations related to routing.
+     */
+    routes: RouteConfigInterface;
+    /**
      * Self app name.
      */
     selfAppIdentifier: string;
@@ -503,6 +526,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Password policy configs.
      */
     passwordPolicyConfigs: PasswordPolicyConfigsInterface;
+    /**
+     * Multi-tenancy related configurations.
+     */
+    multiTenancy: MultiTenancyConfigInterface;
 }
 
 /**
@@ -580,8 +607,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     ExtensionTemplatesEndpointsInterface,
     ApplicationsTemplatesEndpointsInterface,
     SMSTemplateResourceEndpointsInterface,
-    ActionsResourceEndpointsInterface {
-
+    ActionsResourceEndpointsInterface,
+    PolicyAdministrationEndpointsInterface {
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details
     me: string;
@@ -591,4 +618,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
 
 export interface ResourceEndpointsInterface {
     [key: string]: string;
+}
+
+export interface RouteConfigInterface {
+    organizationEnabledRoutes: string[];
 }

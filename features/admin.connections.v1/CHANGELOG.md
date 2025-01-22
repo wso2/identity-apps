@@ -1,5 +1,214 @@
 # @wso2is/admin.connections.v1
 
+## 2.32.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.36.1
+  - @wso2is/admin.application-templates.v1@1.4.91
+  - @wso2is/admin.applications.v1@2.30.91
+  - @wso2is/admin.claims.v1@2.27.1
+  - @wso2is/admin.connections.v1@2.32.1
+  - @wso2is/admin.console-settings.v1@2.25.91
+  - @wso2is/admin.extensions.v1@2.36.16
+  - @wso2is/admin.feature-gate.v1@1.4.91
+  - @wso2is/admin.identity-providers.v1@2.26.91
+  - @wso2is/admin.identity-verification-providers.v1@2.27.91
+  - @wso2is/admin.organizations.v1@2.26.91
+  - @wso2is/admin.roles.v2@2.27.35
+  - @wso2is/admin.template-core.v1@1.5.45
+  - @wso2is/admin.userstores.v1@2.26.50
+
+## 2.32.0
+
+### Minor Changes
+
+- [#7269](https://github.com/wso2/identity-apps/pull/7269) [`066e6a556b348a29874119fdd30e7779e644db84`](https://github.com/wso2/identity-apps/commit/066e6a556b348a29874119fdd30e7779e644db84) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Enable UI to manage secondary userstores in sub-organizations.
+
+### Patch Changes
+
+- Updated dependencies [[`066e6a556b348a29874119fdd30e7779e644db84`](https://github.com/wso2/identity-apps/commit/066e6a556b348a29874119fdd30e7779e644db84)]:
+  - @wso2is/admin.connections.v1@2.32.0
+  - @wso2is/admin.claims.v1@2.27.0
+  - @wso2is/admin.core.v1@2.36.0
+  - @wso2is/admin.applications.v1@2.30.90
+  - @wso2is/admin.extensions.v1@2.36.15
+  - @wso2is/admin.identity-providers.v1@2.26.90
+  - @wso2is/admin.identity-verification-providers.v1@2.27.90
+  - @wso2is/admin.organizations.v1@2.26.90
+  - @wso2is/admin.roles.v2@2.27.34
+  - @wso2is/admin.console-settings.v1@2.25.90
+  - @wso2is/admin.application-templates.v1@1.4.90
+  - @wso2is/admin.feature-gate.v1@1.4.90
+  - @wso2is/admin.template-core.v1@1.5.44
+  - @wso2is/admin.userstores.v1@2.26.49
+
+## 2.31.5
+
+### Patch Changes
+
+- Updated dependencies [[`cfe475febd8e3972a545cf12bb86e7fd08d344ea`](https://github.com/wso2/identity-apps/commit/cfe475febd8e3972a545cf12bb86e7fd08d344ea), [`f2c7a35ce347d4ac7e3e15f3f50404c9d701d212`](https://github.com/wso2/identity-apps/commit/f2c7a35ce347d4ac7e3e15f3f50404c9d701d212), [`f6939061baec44323111cd5a09164d1e7a441324`](https://github.com/wso2/identity-apps/commit/f6939061baec44323111cd5a09164d1e7a441324)]:
+  - @wso2is/admin.core.v1@2.35.27
+  - @wso2is/i18n@2.15.2
+  - @wso2is/admin.application-templates.v1@1.4.89
+  - @wso2is/admin.applications.v1@2.30.89
+  - @wso2is/admin.claims.v1@2.26.48
+  - @wso2is/admin.connections.v1@2.31.5
+  - @wso2is/admin.console-settings.v1@2.25.89
+  - @wso2is/admin.extensions.v1@2.36.14
+  - @wso2is/admin.feature-gate.v1@1.4.89
+  - @wso2is/admin.identity-providers.v1@2.26.89
+  - @wso2is/admin.identity-verification-providers.v1@2.27.89
+  - @wso2is/admin.organizations.v1@2.26.89
+  - @wso2is/admin.roles.v2@2.27.33
+  - @wso2is/admin.template-core.v1@1.5.43
+  - @wso2is/admin.userstores.v1@2.26.48
+
+## 2.31.4
+
+### Patch Changes
+
+- Updated dependencies [[`ad9d93a8a57e076b40ef78674ed0242e8bbeca91`](https://github.com/wso2/identity-apps/commit/ad9d93a8a57e076b40ef78674ed0242e8bbeca91)]:
+  - @wso2is/admin.organizations.v1@2.26.88
+  - @wso2is/admin.applications.v1@2.30.88
+  - @wso2is/admin.connections.v1@2.31.4
+  - @wso2is/admin.console-settings.v1@2.25.88
+  - @wso2is/admin.core.v1@2.35.26
+  - @wso2is/admin.extensions.v1@2.36.13
+  - @wso2is/admin.feature-gate.v1@1.4.88
+  - @wso2is/admin.identity-providers.v1@2.26.88
+  - @wso2is/admin.roles.v2@2.27.32
+  - @wso2is/admin.application-templates.v1@1.4.88
+  - @wso2is/admin.identity-verification-providers.v1@2.27.88
+  - @wso2is/admin.claims.v1@2.26.47
+  - @wso2is/admin.template-core.v1@1.5.42
+  - @wso2is/admin.userstores.v1@2.26.47
+
+## 2.31.3
+
+### Patch Changes
+
+- Updated dependencies [[`cbe83e7ecee7bd19053fdb554e4f73ab279ec2e8`](https://github.com/wso2/identity-apps/commit/cbe83e7ecee7bd19053fdb554e4f73ab279ec2e8)]:
+  - @wso2is/admin.applications.v1@2.30.87
+  - @wso2is/admin.core.v1@2.35.25
+  - @wso2is/admin.application-templates.v1@1.4.87
+  - @wso2is/admin.connections.v1@2.31.3
+  - @wso2is/admin.console-settings.v1@2.25.87
+  - @wso2is/admin.extensions.v1@2.36.12
+  - @wso2is/admin.identity-providers.v1@2.26.87
+  - @wso2is/admin.organizations.v1@2.26.87
+  - @wso2is/admin.roles.v2@2.27.31
+  - @wso2is/admin.claims.v1@2.26.46
+  - @wso2is/admin.feature-gate.v1@1.4.87
+  - @wso2is/admin.identity-verification-providers.v1@2.27.87
+  - @wso2is/admin.template-core.v1@1.5.41
+  - @wso2is/admin.userstores.v1@2.26.46
+
+## 2.31.2
+
+### Patch Changes
+
+- Updated dependencies [[`4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98`](https://github.com/wso2/identity-apps/commit/4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98)]:
+  - @wso2is/admin.claims.v1@2.26.45
+  - @wso2is/core@2.5.6
+  - @wso2is/i18n@2.15.1
+  - @wso2is/admin.applications.v1@2.30.86
+  - @wso2is/admin.connections.v1@2.31.2
+  - @wso2is/admin.core.v1@2.35.24
+  - @wso2is/admin.extensions.v1@2.36.11
+  - @wso2is/admin.identity-providers.v1@2.26.86
+  - @wso2is/admin.identity-verification-providers.v1@2.27.86
+  - @wso2is/admin.console-settings.v1@2.25.86
+  - @wso2is/admin.feature-gate.v1@1.4.86
+  - @wso2is/admin.organizations.v1@2.26.86
+  - @wso2is/admin.roles.v2@2.27.30
+  - @wso2is/admin.template-core.v1@1.5.40
+  - @wso2is/admin.userstores.v1@2.26.45
+  - @wso2is/access-control@3.3.10
+  - @wso2is/dynamic-forms@2.4.21
+  - @wso2is/form@2.6.14
+  - @wso2is/forms@2.3.11
+  - @wso2is/react-components@2.8.21
+  - @wso2is/admin.application-templates.v1@1.4.86
+
+## 2.31.1
+
+### Patch Changes
+
+- Updated dependencies [[`fe7fe766fc92bca1f6ac5f6ba0b43312923b8c27`](https://github.com/wso2/identity-apps/commit/fe7fe766fc92bca1f6ac5f6ba0b43312923b8c27)]:
+  - @wso2is/admin.applications.v1@2.30.85
+  - @wso2is/admin.application-templates.v1@1.4.85
+  - @wso2is/admin.connections.v1@2.31.1
+  - @wso2is/admin.console-settings.v1@2.25.85
+  - @wso2is/admin.core.v1@2.35.23
+  - @wso2is/admin.extensions.v1@2.36.10
+  - @wso2is/admin.identity-providers.v1@2.26.85
+  - @wso2is/admin.organizations.v1@2.26.85
+  - @wso2is/admin.roles.v2@2.27.29
+  - @wso2is/admin.identity-verification-providers.v1@2.27.85
+  - @wso2is/admin.claims.v1@2.26.44
+  - @wso2is/admin.feature-gate.v1@1.4.85
+  - @wso2is/admin.template-core.v1@1.5.39
+  - @wso2is/admin.userstores.v1@2.26.44
+
+## 2.31.0
+
+### Minor Changes
+
+- [#7302](https://github.com/wso2/identity-apps/pull/7302) [`9ecf97c14319c2af32a0ef375c02c4b70cf159d5`](https://github.com/wso2/identity-apps/commit/9ecf97c14319c2af32a0ef375c02c4b70cf159d5) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Update SAML connection ProviderName config name
+
+### Patch Changes
+
+- [#7318](https://github.com/wso2/identity-apps/pull/7318) [`23bd7d4f6d6d70d789ad7115ffd1fbec742455a6`](https://github.com/wso2/identity-apps/commit/23bd7d4f6d6d70d789ad7115ffd1fbec742455a6) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Bump oxygen version and enable active policy view.
+
+* [#7313](https://github.com/wso2/identity-apps/pull/7313) [`ad63bbe54541ed6b28e1f254f3e7f5e7b6767d7b`](https://github.com/wso2/identity-apps/commit/ad63bbe54541ed6b28e1f254f3e7f5e7b6767d7b) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Bump oxygen version
+
+* Updated dependencies [[`9ecf97c14319c2af32a0ef375c02c4b70cf159d5`](https://github.com/wso2/identity-apps/commit/9ecf97c14319c2af32a0ef375c02c4b70cf159d5), [`23bd7d4f6d6d70d789ad7115ffd1fbec742455a6`](https://github.com/wso2/identity-apps/commit/23bd7d4f6d6d70d789ad7115ffd1fbec742455a6), [`ad63bbe54541ed6b28e1f254f3e7f5e7b6767d7b`](https://github.com/wso2/identity-apps/commit/ad63bbe54541ed6b28e1f254f3e7f5e7b6767d7b), [`5a5577aacf0a12d03246c9b829c8168296b37dcf`](https://github.com/wso2/identity-apps/commit/5a5577aacf0a12d03246c9b829c8168296b37dcf)]:
+  - @wso2is/admin.connections.v1@2.31.0
+  - @wso2is/i18n@2.15.0
+  - @wso2is/admin.identity-verification-providers.v1@2.27.84
+  - @wso2is/admin.application-templates.v1@1.4.84
+  - @wso2is/admin.identity-providers.v1@2.26.84
+  - @wso2is/admin.console-settings.v1@2.25.84
+  - @wso2is/admin.organizations.v1@2.26.84
+  - @wso2is/admin.template-core.v1@1.5.38
+  - @wso2is/admin.applications.v1@2.30.84
+  - @wso2is/admin.feature-gate.v1@1.4.84
+  - @wso2is/admin.extensions.v1@2.36.9
+  - @wso2is/admin.userstores.v1@2.26.43
+  - @wso2is/admin.claims.v1@2.26.43
+  - @wso2is/react-components@2.8.20
+  - @wso2is/admin.roles.v2@2.27.28
+  - @wso2is/admin.core.v1@2.35.22
+  - @wso2is/dynamic-forms@2.4.20
+  - @wso2is/form@2.6.13
+
+## 2.30.19
+
+### Patch Changes
+
+- [#7306](https://github.com/wso2/identity-apps/pull/7306) [`f9db643943377216b8525a183f3ad4855a3bd4af`](https://github.com/wso2/identity-apps/commit/f9db643943377216b8525a183f3ad4855a3bd4af) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update oxygen-ui to 2.2.0
+
+- Updated dependencies [[`647e28cd3e4ba79e2d016cbbcd343c007a487a7f`](https://github.com/wso2/identity-apps/commit/647e28cd3e4ba79e2d016cbbcd343c007a487a7f), [`f9db643943377216b8525a183f3ad4855a3bd4af`](https://github.com/wso2/identity-apps/commit/f9db643943377216b8525a183f3ad4855a3bd4af), [`afd3f3bb5aae4dab8dc85ea58fb529af057e9095`](https://github.com/wso2/identity-apps/commit/afd3f3bb5aae4dab8dc85ea58fb529af057e9095)]:
+  - @wso2is/admin.applications.v1@2.30.83
+  - @wso2is/admin.identity-verification-providers.v1@2.27.83
+  - @wso2is/admin.identity-providers.v1@2.26.83
+  - @wso2is/admin.console-settings.v1@2.25.83
+  - @wso2is/admin.organizations.v1@2.26.83
+  - @wso2is/admin.feature-gate.v1@1.4.83
+  - @wso2is/admin.connections.v1@2.30.19
+  - @wso2is/admin.extensions.v1@2.36.8
+  - @wso2is/admin.userstores.v1@2.26.42
+  - @wso2is/admin.claims.v1@2.26.42
+  - @wso2is/react-components@2.8.19
+  - @wso2is/admin.roles.v2@2.27.27
+  - @wso2is/admin.core.v1@2.35.21
+  - @wso2is/dynamic-forms@2.4.19
+  - @wso2is/admin.application-templates.v1@1.4.83
+  - @wso2is/form@2.6.12
+  - @wso2is/admin.template-core.v1@1.5.37
+
 ## 2.30.18
 
 ### Patch Changes

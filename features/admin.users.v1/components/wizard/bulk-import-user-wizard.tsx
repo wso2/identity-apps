@@ -41,7 +41,7 @@ import {
     history
 } from "@wso2is/admin.core.v1";
 import { userConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
-import { getGroupList, useGroupList } from "@wso2is/admin.groups.v1/api";
+import { getGroupList, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";

@@ -47,22 +47,22 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Menu, Message, Segment, TabProps } from "semantic-ui-react";
-import { AdvanceForm, AdvanceFormValuesInterface } from "./advanced";
+import { AdvanceForm, AdvanceFormValuesInterface } from "./advanced/advance-form";
 import CustomText from "./custom-text/custom-text";
 import CustomTextRevertConfirmationModal from "./custom-text/custom-text-revert-all-confirmation-modal";
-import { DesignForm, DesignFormValuesInterface } from "./design";
+import { DesignForm, DesignFormValuesInterface } from "./design/design-form";
 import {
     GeneralDetailsForm,
     GeneralDetailsFormValuesInterface
-} from "./general";
-import { BrandingPreferencePreview } from "./preview";
+} from "./general/general-details-form";
+import { BrandingPreferencePreview } from "./preview/branding-preference-preview";
 import ScreenDropdown from "./screen-dropdown";
 import ScreenVariationDropdown from "./screen-variation-dropdown";
 import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
-import { BrandingModes, BrandingPreferencesConstants } from "../constants";
+import { BrandingModes, BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import useBrandingPreference from "../hooks/use-branding-preference";
-import { BrandingPreferenceMeta } from "../meta";
+import { BrandingPreferenceMeta } from "../meta/branding-preference-meta";
 import { CustomTextConfigurationModes } from "../models/custom-text-preference";
 
 /**
