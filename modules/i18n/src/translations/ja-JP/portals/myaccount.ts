@@ -908,91 +908,59 @@ export const myAccount: MyAccountNS = {
                 "tryButton": "古いパスキーで試してください"
             },
             "pushAuthenticatorApp": {
-                "addHint": "構成、設定",
-                "configuredDescription": "2要素認証のために、構成されたAuthenticatorアプリのTOTPコードを使用できます。アプリケーションにアクセスできない場合は、ここから新しいAuthenticatorアプリを設定できます。",
-                "deleteHint": "取り除く",
-                "description": "Authenticatorアプリを使用して、2要素認証のために確認コードを取得できます。",
-                "enableHint": "TOTP Authenticatorを有効/無効にします",
-                "heading": "Authenticatorアプリ",
-                "hint": "ビュー",
+                "addHint": "設定する",
+                "configuredDescription": "設定済みのプッシュ認証アプリから生成されたログインプロンプトを使用して、二要素認証を行うことができます。アプリにアクセスできない場合は、ここから新しい認証アプリを設定できます。",
+                "deleteHint": "削除",
+                "description": "プッシュ認証アプリを使用して、二要素認証のためのログインプロンプトをプッシュ通知として受け取ることができます。",
+                "heading": "プッシュ認証アプリ",
+                "hint": "表示",
                 "modals": {
-                    "delete": {
-                        "heading": "確認",
-                        "message": "このアクションにより、プロファイルに追加されたQRコードが削除されます。続けたいですか？"
+                    "deviceDeleteConfirmation": {
+                        "assertionHint": "アクションを確認してください。",
+                        "content": "この操作は元に戻せず、デバイスが完全に削除されます。",
+                        "description": "このデバイスを削除すると、再度アカウントにサインインできなくなる可能性があります。慎重に操作してください。",
+                        "heading": "本当に削除しますか？"
                     },
-                    "done": "成功！これで、2要素認証に認証アプリを使用できます",
-                    "heading": "Authenticatorアプリを設定します",
                     "scan": {
-                        "additionNote": "QRコードはプロフィールに正常に追加されました！",
-                        "authenticatorApps": "Authenticatorアプリ",
-                        "generate": "新しいコードを生成します",
-                        "heading": "Authenticatorアプリを使用して、以下のQRコードをスキャンします",
-                        "messageBody": "ここでは、Authenticatorアプリのリストを見つけることができます。",
-                        "messageHeading": "Authenticatorアプリをインストールしていませんか？",
-                        "regenerateConfirmLabel": "新しいQRコードの再生を確認します",
-                        "regenerateWarning": {
-                            "extended": "新しいQRコードを再生するときは、スキャンして認証アプリを再設定する必要があります。以前のQRコードでログインすることはできません。",
-                            "generic": "新しいQRコードを再生するときは、スキャンして認証アプリを再設定する必要があります。以前のセットアップはもう機能しません。"
-                        }
-                    },
-                    "toolTip": "Authenticatorアプリを持っていませんか？<1> App Storeまたは<3> Google PlayからGoogle Authenticatorのような認証アプリをダウンロードする",
-                    "verify": {
-                        "error": "検証に失敗しました。もう一度やり直してください。",
-                        "heading": "検証のために生成されたコードを入力します",
-                        "label": "検証コード",
-                        "placeholder": "確認コードを入力します",
-                        "reScan": "再スキャン",
-                        "reScanQuestion": "QRコードをもう一度スキャンしたいですか？",
-                        "requiredError": "確認コードを入力します"
+                        "additionNote": "QRコードがプロフィールに正常に追加されました！",
+                        "done": "成功しました！これで、プッシュ認証アプリを使用して二要素認証を行うことができます。",
+                        "heading": "プッシュ認証アプリを設定する",
+                        "messageBody": "利用可能な認証アプリのリストはこちらで確認できます。",
+                        "subHeading": "プッシュ認証アプリを使用して、以下のQRコードをスキャンしてください"
                     }
                 },
                 "notifications": {
-                    "deleteError": {
+                    "delete": {
                         "error": {
                             "description": "{{error}}",
-                            "message": "何かがうまくいかなかった"
+                            "message": "問題が発生しました"
                         },
                         "genericError": {
-                            "description": "QRコードの削除中にエラーが発生しました",
-                            "message": "何かがうまくいかなかった"
+                            "description": "登録されたデバイスの削除中にエラーが発生しました",
+                            "message": "問題が発生しました"
+                        },
+                        "success": {
+                            "description": "登録されたデバイスが正常に削除されました",
+                            "message": "デバイスが正常に削除されました"
                         }
                     },
-                    "deleteSuccess": {
-                        "genericMessage": "正常に削除されました",
-                        "message": "TOTP構成を正常に削除しました。"
+                    "deviceListFetchError": {
+                        "error": {
+                            "description": "プッシュ認証用の登録されたデバイスを取得中にエラーが発生しました",
+                            "message": "問題が発生しました"
+                        }
                     },
                     "initError": {
                         "error": {
                             "description": "{{error}}",
-                            "message": "何かがうまくいかなかった"
+                            "message": "問題が発生しました"
                         },
                         "genericError": {
                             "description": "QRコードの取得中にエラーが発生しました",
-                            "message": "何かがうまくいかなかった"
-                        }
-                    },
-                    "refreshError": {
-                        "error": {
-                            "description": "{{error}}",
-                            "message": "何かがうまくいかなかった"
-                        },
-                        "genericError": {
-                            "description": "新しいQRコードを取得しようとしているときにエラーが発生しました",
-                            "message": "何かがうまくいかなかった"
-                        }
-                    },
-                    "updateAuthenticatorError": {
-                        "error": {
-                            "description": "{{error}}",
-                            "message": "何かがうまくいかなかった"
-                        },
-                        "genericError": {
-                            "description": "有効な認証リストを更新しようとしているときにエラーが発生しました",
-                            "message": "何かがうまくいかなかった"
+                            "message": "問題が発生しました"
                         }
                     }
-                },
-                "regenerate": "再生"
+                }
             },
             "smsOtp": {
                 "descriptions": {

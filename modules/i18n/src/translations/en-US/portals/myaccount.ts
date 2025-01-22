@@ -944,55 +944,43 @@ export const myAccount: MyAccountNS = {
                 deleteHint: "Remove",
                 description: "You can use the push authenticator app to get login prompts as push notifications for " +
                     "two-factor authentication.",
-                enableHint: "Enable/Disable Push Authenticator",
                 heading: "Push Authenticator",
                 hint: "View",
                 modals: {
-                    delete : {
-                        heading: "Confirmation",
-                        message: "This action will remove the QR code added to your profile. Do you wish to continue ? "
+                    deviceDeleteConfirmation: {
+                        assertionHint: "Please confirm your action.",
+                        content: "This action is irreversible and will permanently remove the device.",
+                        description: "If you remove this device, you may not be able to sign in to your account again. Please proceed with caution.",
+                        heading: "Are you sure?"
                     },
-                    done: "Success! Now you can use your Push Authenticator App for two-factor authentication",
-                    heading: "Set up the Push Authenticator App",
                     scan: {
                         additionNote: "QR code has been successfully added to your profile!",
-                        authenticatorApps: "Authenticator Apps",
-                        generate: "Generate a new code",
-                        heading: "Scan the QR code below using the push authenticator app",
+                        done: "Success! Now you can use your Push Authenticator App for two-factor authentication",
+                        heading: "Set up the Push Authenticator App",
                         messageBody: "You can find a list of Authenticator Apps available here.",
-                        messageHeading: "Don't have an Authenticator App installed?",
-                        regenerateConfirmLabel: "Confirm regenerating a new QR code",
-                        regenerateWarning: {
-                            extended: "When you regenerate a new QR code, you must scan it and re-setup your authenticator app. You won't be able to login with the previous QR code anymore.",
-                            generic: "When you regenerate a new QR code, you must scan it and re-setup your authenticator app. Your previous setup won't work anymore."
-                        }
-                    },
-                    toolTip: "Don't have the push authenticator app? Download WSO2 " +
-                        "Push Authenticator from <1>App Store</1> or <3>Google Play</3>",
-                    verify: {
-                        error: "Verification failed. Please try again.",
-                        heading: "Enter the generated code for verification",
-                        label: "Verification Code",
-                        placeholder: "Enter your verification code",
-                        reScan: "Re-scan",
-                        reScanQuestion: "Want to scan the QR code again?",
-                        requiredError: "Enter the verification code"
+                        subHeading: "Scan the QR code below using the push authenticator app"
                     }
                 },
                 notifications: {
-                    deleteError: {
+                    delete: {
                         error: {
                             description: "{{error}}",
                             message: "Something went wrong"
                         },
                         genericError: {
-                            description: "Error occurred while deleting QR code",
+                            description: "Error occurred while removing the registered device",
                             message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully removed the registered device",
+                            message: "Device deleted successfully"
                         }
                     },
-                    deleteSuccess: {
-                        genericMessage: "Successfully removed",
-                        message: "Successfully removed TOTP configuration."
+                    deviceListFetchError: {
+                        error: {
+                            description: "An error occurred while retrieving the registered devices for push authentication",
+                            message: "Something went wrong"
+                        }
                     },
                     initError: {
                         error: {
@@ -1003,29 +991,8 @@ export const myAccount: MyAccountNS = {
                             description: "An error occurred while retrieving the QR code",
                             message: "Something went wrong"
                         }
-                    },
-                    refreshError: {
-                        error: {
-                            description: "{{error}}",
-                            message: "Something went wrong"
-                        },
-                        genericError: {
-                            description: "An error occurred while trying to get a new QR code",
-                            message: "Something went wrong"
-                        }
-                    },
-                    updateAuthenticatorError: {
-                        error: {
-                            description: "{{error}}",
-                            message: "Something went wrong"
-                        },
-                        genericError: {
-                            description: "An error occurred while trying to update the enabled authenticator list",
-                            message: "Something went wrong"
-                        }
                     }
-                },
-                regenerate: "Regenerate"
+                }
             },
             smsOtp: {
                 descriptions: {

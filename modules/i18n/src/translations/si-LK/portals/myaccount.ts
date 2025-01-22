@@ -935,98 +935,60 @@ export const myAccount: MyAccountNS = {
                 },
                 tryButton: "පැරණි මුර යතුර සමඟ උත්සාහ කරන්න"
             },
-            pushAuthenticatorApp: {
-                addHint: "වින්‍යාස කරන්න",
-                configuredDescription: "සාධක දෙකක සත්‍යාපනය සඳහා ඔබේ වින්‍යාසගත සත්‍යාපන " +
-                    "යෙදුමෙන් ඔබට TOTP කේත භාවිතා කළ හැකිය. ඔබට යෙදුමට ප්‍රවේශය නොමැති නම් " +
-                    "මෙතැනින් ඔබට නව සත්‍යාපන යෙදුමක් සැකසිය හැකිය",
-                deleteHint: "ඉවත් කරන්න",
-                description: "යෙදුම් වලට ප්‍රවේශවීමේදී දෙවන සාධකය ලෙස කාලය " +
-                    "මත පදනම් වූ, එක් වරක් මුර කේත (TOTP ලෙසද හැඳින්වේ) භාවිතා " +
-                    "කිරීමට Authenticator යෙදුමක් භාවිතයෙන් QR කේතය පරිලෝකනය කරන්න.",
-                enableHint: "TOTP සබල/අබල කරන්න",
-                heading: "සත්‍යාපන යෙදුම",
-                hint: "පෙන්වන්න",
-                modals: {
-                    delete : {
-                        heading: "තහවුරු කිරීම",
-                        message: "මෙම ක්‍රියාව මඟින් ඔබේ පැතිකඩට එකතු කළ QR කේතය ඉවත් කෙරේ. " +
-                            "ඔබ දිගටම කරගෙන යාමට කැමතිද ?"
+            "pushAuthenticatorApp": {
+                "addHint": "සකසන්න",
+                "configuredDescription": "ඔබගේ සකසා ඇති push authenticator යෙදුමෙන් උත්පාදනය කරන ලද ලොගින් ප්‍රතිඥා තහවුරු කිරීම් දෙකක් සඳහා භාවිතා කළ හැක. යෙදුමට ප්‍රවේශ නොමැති නම්, නව authenticator යෙදුමක් මෙහි සිට සකස් කළ හැක.",
+                "deleteHint": "ඉවත් කරන්න",
+                "description": "Push authenticator යෙදුම භාවිතා කර ඔබට ලොගින් ප්‍රතිඥා push විද්‍යුත් පණිවිඩ ලෙස ලබාගත හැක, දෙකේ තහවුරුකිරීම සඳහා.",
+                "heading": "Push Authenticator",
+                "hint": "නරඹන්න",
+                "modals": {
+                    "deviceDeleteConfirmation": {
+                        "assertionHint": "කරුණාකර ඔබේ ක්‍රියාව තහවුරු කරන්න.",
+                        "content": "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර, උපාංගය සම්පූර්ණයෙන්ම ඉවත් කෙරේ.",
+                        "description": "මෙම උපාංගය ඉවත් කළහොත්, ඔබට ඔබේ ගිණුමට නැවත ඇතුල්වීමක් සිදු නොවිය හැක. කරුණාකර අවධානයෙන් පසුවන්න.",
+                        "heading": "ඔබට විශ්වාසද?"
                     },
-                    done: "සාර්ථකත්වය! දැන් ඔබට සාධක දෙකක සත්‍යාපනය සඳහා ඔබේ සත්‍යාපන යෙදුම භාවිතා කළ හැකිය",
-                    heading: "Authenticator යෙදුමක් සකසන්න",
-                    scan: {
-                        additionNote: "QR කේතය ඔබේ පැතිකඩට සාර්ථකව එකතු කර ඇත!",
-                        authenticatorApps: "සත්‍යාපන යෙදුම්",
-                        generate: "නව කේතයක් ජනනය කරන්න",
-                        heading: "සත්‍යාපන යෙදුමක් භාවිතයෙන් මෙම QR කේතය පරිලෝකනය කරන්න",
-                        messageBody: "ඔබට මෙහි ඇති සත්‍යාපන යෙදුම් ලැයිස්තුවක් සොයාගත හැකිය.",
-                        messageHeading: "සත්‍යාපන යෙදුමක් ස්ථාපනය කර නොමැතිද?",
-                        regenerateConfirmLabel: "නව QR කේතයක් පුනර්ජනනය කිරීම තහවුරු කරන්න",
-                        regenerateWarning: {
-                            extended: "ඔබ නව QR කේතයක් නැවත උත්පාදනය කරන විට, ඔබ එය පරිලෝකනය කර ඔබගේ සත්‍යාපන යෙදුම නැවත පිහිටුවිය යුතුය. ඔබට තවදුරටත් පෙර QR කේතය සමඟින් පුරනය වීමට නොහැකි වනු ඇත.",
-                            generic: "ඔබ නව QR කේතයක් නැවත උත්පාදනය කරන විට, ඔබ එය පරිලෝකනය කර ඔබගේ සත්‍යාපන යෙදුම නැවත පිහිටුවිය යුතුය. ඔබගේ පෙර පිහිටුවීම තවදුරටත් ක්‍රියා නොකරනු ඇත."
-                        }
-                    },
-                    toolTip: "යෙදුමක් නැද්ද? <1>App Store</1> හෝ <3>Google Play</3> " +
-                        "වෙතින් Google Authenticator වැනි සත්‍යාපන යෙදුමක් බාගන්න.",
-                    verify: {
-                        error: "සත්‍යාපනය අසාර්ථක විය. කරුණාකර නැවත උත්සාහ කරන්න.",
-                        heading: "සත්‍යාපනය සඳහා ජනනය කළ කේතය ඇතුළත් කරන්න",
-                        label: "සත්යාපන කේතය",
-                        placeholder: "ඔබගේ සත්‍යාපන කේතය ඇතුළත් කරන්න",
-                        reScan: "නැවත පරිලෝකනය කරන්න",
-                        reScanQuestion: "QR කේතය නැවත පරිලෝකනය කිරීමට අවශ්‍යද?",
-                        requiredError: "සත්‍යාපන කේතය ඇතුළත් කරන්න"
+                    "scan": {
+                        "additionNote": "QR කේතය සාර්ථකව ඔබේ පැතිකඩට එක්කර ඇත!",
+                        "done": "සාර්ථකයි! දැන් ඔබට push authenticator යෙදුම භාවිතා කර තහවුරුකිරීම් දෙකක් කිරීමට හැකියාව ඇත.",
+                        "heading": "Push Authenticator යෙදුම සකසන්න",
+                        "messageBody": "ඔබට ලබා ගත හැකි Authenticator යෙදුම් ලැයිස්තුවක් මෙහි සොයා ගත හැක.",
+                        "subHeading": "Push authenticator යෙදුම භාවිතා කර පහත QR කේතය ස්කෑන් කරන්න"
                     }
                 },
-                notifications: {
-                    deleteError: {
-                        error: {
-                            description: "{{error}}",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                "notifications": {
+                    "delete": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "කුමක් හෝ වැරැද්දක් සිදුවිය"
                         },
-                        genericError: {
-                            description: "TOTP සත්‍යාපනකාරක වින්‍යාසය මැකීමේදී දෝෂයක් සිදු විය",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        "genericError": {
+                            "description": "ලියාපදිංචි උපාංගය ඉවත් කිරීමේදී දෝෂයක් සිදුවිය",
+                            "message": "කුමක් හෝ වැරැද්දක් සිදුවිය"
+                        },
+                        "success": {
+                            "description": "ලියාපදිංචි උපාංගය සාර්ථකව ඉවත් කරන ලදි",
+                            "message": "උපාංගය සාර්ථකව ඉවත් කරන ලදි"
                         }
                     },
-                    deleteSuccess: {
-                        genericMessage: "සාර්ථකව ඉවත් කරන ලදී",
-                        message: "TOTP වින්‍යාසය සාර්ථකව ඉවත් කරන ලදී."
-                    },
-                    initError: {
-                        error: {
-                            description: "{{error}}",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
-                        },
-                        genericError: {
-                            description: "QR කේතය ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                    "deviceListFetchError": {
+                        "error": {
+                            "description": "Push authentication සඳහා ලියාපදිංචි උපාංග ලබාගැනීමේදී දෝෂයක් සිදුවිය",
+                            "message": "කුමක් හෝ වැරැද්දක් සිදුවිය"
                         }
                     },
-                    refreshError: {
-                        error: {
-                            description: "{{error}}",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                    "initError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "කුමක් හෝ වැරැද්දක් සිදුවිය"
                         },
-                        genericError: {
-                            description: "නව QR කේතයක් ලබා ගැනීමට උත්සාහ කිරීමේදී දෝෂයකි",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
-                        }
-                    },
-                    updateAuthenticatorError: {
-                        error: {
-                            description: "{{error}}",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
-                        },
-                        genericError: {
-                            description: "සබල කළ සත්‍යාපන ලැයිස්තුව යාවත්කාලීන කිරීමට උත්සාහ කිරීමේදී දෝෂයක් ඇති විය",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        "genericError": {
+                            "description": "QR කේතය ලබා ගැනීමේදී දෝෂයක් සිදුවිය",
+                            "message": "කුමක් හෝ වැරැද්දක් සිදුවිය"
                         }
                     }
-                },
-                regenerate: "නැවත උත්පාදනය කරන්න"
+                }
             },
             smsOtp: {
                 descriptions: {

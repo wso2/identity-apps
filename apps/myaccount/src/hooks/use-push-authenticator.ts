@@ -51,11 +51,10 @@ export default function usePushAuthenticator () {
         if (registeredDeviceListFetchError && !isRegisteredDeviceListLoading) {
             dispatch(addAlert({
                 description: t(translateKey +
-                        "notifications.updateAuthenticatorError.error.description", {
-                    error: registeredDeviceListFetchError?.message
-                }),
+                    "notifications.deviceListFetchError.error.description"
+                ),
                 level: AlertLevels.ERROR,
-                message: t(translateKey + "notifications.updateAuthenticatorError.error.message")
+                message: t(translateKey + "notifications.deviceListFetchError.error.message")
             }));
         }
     }, [ isRegisteredDeviceListLoading, registeredDeviceListFetchError ]);
@@ -73,13 +72,11 @@ export default function usePushAuthenticator () {
                 setIsConfigPushAuthenticatorModalOpen(true);
                 setQrCode(qrCode);
             })
-            .catch((error: any) => {
+            .catch((_error: any) => {
                 dispatch(addAlert({
-                    description: t(translateKey + "notifications.initError.error.description", {
-                        error
-                    }),
+                    description: t(translateKey + "notifications.initError.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t(translateKey + "notifications.initError.error.message")
+                    message: t(translateKey + "notifications.initError.genericError.message")
                 }));
             })
             .finally(() => {
@@ -118,16 +115,16 @@ export default function usePushAuthenticator () {
             (_res: HttpResponse) => {
                 updateRegisteredDeviceList();
                 dispatch(addAlert({
-                    description: "successfully deleted",
+                    description: t(translateKey + "notifications.delete.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "delete success"
+                    message: t(translateKey + "notifications.delete.success.message")
                 }));
             }
         ).catch((_err: any) => {
             dispatch(addAlert({
-                description: "error occurred when deleting the registered device",
+                description: t(translateKey + "notifications.deleteError.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: "delete error"
+                message: t(translateKey + "notifications.deleteError.genericError.message")
             }));
         }).finally(() => {
             setIsLoading(false);

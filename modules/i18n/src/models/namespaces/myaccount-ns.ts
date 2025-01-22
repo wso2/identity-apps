@@ -471,62 +471,36 @@ export interface MyAccountNS {
                 configuredDescription:string;
                 heading: string;
                 hint: string;
-                enableHint: string;
                 addHint: string;
                 deleteHint: string;
-                regenerate: string;
                 modals: {
-                    heading: string;
                     scan: {
                         heading: string;
-                        generate: string;
                         additionNote:string;
-                        messageHeading: string;
+                        done: string;
                         messageBody: string;
-                        authenticatorApps: string;
-                        regenerateWarning: {
-                            extended: string;
-                            generic: string;
-                        };
-                        regenerateConfirmLabel: string;
+                        subHeading: string;
                     };
-                    verify: {
+                    deviceDeleteConfirmation: {
                         heading: string;
-                        label: string;
-                        placeholder: string;
-                        error: string;
-                        requiredError: string;
-                        reScanQuestion: string;
-                        reScan: string;
-                    };
-                    delete: {
-                        heading: string;
-                        message: string;
-                    };
-                    done: string;
-                    toolTip: string;
+                        assertionHint: string;
+                        description: string;
+                        content: string;
+                    }
                 };
                 notifications: {
                     initError: {
                         genericError: NotificationItem;
                         error: NotificationItem;
                     };
-                    refreshError: {
+                    delete: {
                         genericError: NotificationItem;
                         error: NotificationItem;
+                        success: NotificationItem;
                     };
-                    deleteError: {
-                        genericError: NotificationItem;
+                    deviceListFetchError: {
                         error: NotificationItem;
-                    };
-                    updateAuthenticatorError: {
-                        error: NotificationItem;
-                        genericError: NotificationItem;
-                    };
-                    deleteSuccess: {
-                        genericMessage: string;
-                        message: string;
-                    };
+                    }
                 };
             },
             backupCode: {

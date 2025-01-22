@@ -19,7 +19,6 @@
 import { default as OxygenList }from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
-import Tooltip from "@oxygen-ui/react/Tooltip";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ConfirmationModal, GenericIcon, Popup } from "@wso2is/react-components";
 import QRCode from "qrcode.react";
@@ -89,7 +88,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                 closeOnDimmerClick={ false }
             >
                 <Modal.Header className="wizard-header text-center">
-                    { t(translateKey + "modals.heading") }
+                    { t(translateKey + "modals.scan.heading") }
                 </Modal.Header>
                 <Modal.Content data-componentId={ `${ componentId }-modal-content` } scrolling>
                     { renderPushAuthenticatorWizardContent() }
@@ -185,7 +184,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                         </g>
                     </svg>
                 </div>
-                <p className= "success-content">{ t(translateKey + "modals.done") }</p>
+                <p className= "success-content">{ t(translateKey + "modals.scan.done") }</p>
             </Segment>
         );
     };
@@ -238,17 +237,17 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
             closeOnDimmerClick={ false }
         >
             <ConfirmationModal.Header data-componentId={ `${ componentId }-confirmation-modal-header` }>
-                { t("myAccount:components.mfa.fido.modals.deleteConfirmation.heading") }
+                { t("myAccount:components.mfa.pushAuthenticatorApp.modals.deviceDeleteConfirmation.heading") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 data-componentId={ `${ componentId }-confirmation-modal-message` }
                 attached
                 negative
             >
-                { t("myAccount:components.mfa.fido.modals.deleteConfirmation.description") }
+                { t("myAccount:components.mfa.pushAuthenticatorApp.modals.deviceDeleteConfirmation.description") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-componentId={ `${ componentId }-confirmation-modal-content` }>
-                { t("myAccount:components.mfa.fido.modals.deleteConfirmation.content") }
+                { t("myAccount:components.mfa.pushAuthenticatorApp.modals.deviceDeleteConfirmation.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );

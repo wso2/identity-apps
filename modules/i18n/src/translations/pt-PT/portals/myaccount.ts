@@ -937,99 +937,60 @@ export const myAccount: MyAccountNS = {
                 },
                 tryButton: "Tente com uma senha mais antiga"
             },
-            pushAuthenticatorApp: {
-                addHint: "Configurar",
-                configuredDescription: "Você pode usar códigos TOTP de seu aplicativo " +
-                    "autenticador configurado para autenticação de dois fatores. " +
-                    "Se você não tiver acesso ao aplicativo, pode configurar um novo aplicativo autenticador aqui",
-                deleteHint: "Remover",
-                description: "Digitalize o código QR usando um aplicativo " +
-                    "Authenticator para usar senhas de uso único baseadas " +
-                    "em tempo (também conhecidas como TOTP) como um segundo " +
-                    "fator ao fazer login em aplicativos.",
-                enableHint: "Ativar/desativar o autenticador TOTP",
-                heading: "App autenticador",
-                hint: "Visão",
-                modals: {
-                    delete: {
-                        heading: "Confirmação",
-                        message: "Esta ação removerá o código QR adicionado ao seu perfil. Você deseja continuar ?"
+            "pushAuthenticatorApp": {
+                "addHint": "Configurar",
+                "configuredDescription": "Pode utilizar os pedidos de início de sessão gerados pela sua aplicação autenticadora configurada para autenticação de dois fatores. Se não tiver acesso à aplicação, pode configurar uma nova aplicação autenticadora aqui.",
+                "deleteHint": "Remover",
+                "description": "Pode usar a aplicação autenticadora push para receber notificações de início de sessão como notificações push para autenticação de dois fatores.",
+                "heading": "Autenticador Push",
+                "hint": "Ver",
+                "modals": {
+                    "deviceDeleteConfirmation": {
+                        "assertionHint": "Por favor, confirme a sua ação.",
+                        "content": "Esta ação é irreversível e irá remover permanentemente o dispositivo.",
+                        "description": "Se você remover este dispositivo, pode não conseguir entrar novamente na sua conta. Por favor, prossiga com cautela.",
+                        "heading": "Tem a certeza?"
                     },
-                    done: "Sucesso! Agora você pode usar seu aplicativo de autenticação para autenticação de dois " +
-                        "fatores",
-                    heading: "Configurar um aplicativo autenticador",
-                    scan: {
-                        additionNote: "O código QR foi adicionado com sucesso ao seu perfil",
-                        authenticatorApps: "Authenticator Apps",
-                        generate: "Gere um novo código",
-                        heading: "Leia este QR Code usando um aplicativo Authenticator",
-                        messageBody: "Você pode encontrar uma lista de aplicativos autenticadores disponíveis aqui.",
-                        messageHeading: "Não tem um aplicativo autenticador instalado?",
-                        regenerateConfirmLabel: "Confirme a regeneração de um novo código QR",
-                        regenerateWarning: {
-                            extended: "Quando você regenera um novo código QR, você deve digitalizá-lo e recriar o aplicativo Authenticator.Você não poderá mais fazer login com o código QR anterior.",
-                            generic: "Quando você regenera um novo código QR, você deve digitalizá-lo e recriar o aplicativo Authenticator.Sua configuração anterior não funcionará mais."
-                        }
-                    },
-                    toolTip: "Não tem um aplicativo? Baixe um aplicativo autenticador como o " +
-                        "Google Authenticator na <1>App Store</1> ou <3>Google Play</3>",
-                    verify: {
-                        error: "Falha na verificação. Por favor, tente novamente.",
-                        heading: "Insira o código gerado para verificação",
-                        label: "Código de verificação",
-                        placeholder: "Digite seu código de verificação",
-                        reScan: "Verificar novamente",
-                        reScanQuestion: "Deseja digitalizar o código QR novamente?",
-                        requiredError: "Insira o código de verificação"
+                    "scan": {
+                        "additionNote": "O código QR foi adicionado ao seu perfil com sucesso!",
+                        "done": "Sucesso! Agora pode utilizar a sua aplicação autenticadora push para autenticação de dois fatores.",
+                        "heading": "Configurar a aplicação autenticadora push",
+                        "messageBody": "Pode encontrar aqui uma lista de aplicações autenticadoras disponíveis.",
+                        "subHeading": "Faça a leitura do código QR abaixo utilizando a aplicação autenticadora push"
                     }
                 },
-                notifications: {
-                    deleteError: {
-                        error: {
-                            description: "{{error}}",
-                            message: "Algo deu errado"
+                "notifications": {
+                    "delete": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "Algo correu mal"
                         },
-                        genericError: {
-                            description: "Ocorreu um erro ao excluir a configuração do Autenticador TOTP",
-                            message: "Algo deu errado"
+                        "genericError": {
+                            "description": "Ocorreu um erro ao remover o dispositivo registado",
+                            "message": "Algo correu mal"
+                        },
+                        "success": {
+                            "description": "O dispositivo registado foi removido com sucesso",
+                            "message": "Dispositivo removido com sucesso"
                         }
                     },
-                    deleteSuccess: {
-                        genericMessage: "Removido com sucesso",
-                        message: "Configuração TOTP removida com sucesso."
-                    },
-                    initError: {
-                        error: {
-                            description: "{{error}}",
-                            message: "Algo deu errado"
-                        },
-                        genericError: {
-                            description: "Ocorreu um erro ao recuperar o código QR",
-                            message: "Algo deu errado"
+                    "deviceListFetchError": {
+                        "error": {
+                            "description": "Ocorreu um erro ao obter os dispositivos registados para autenticação push",
+                            "message": "Algo correu mal"
                         }
                     },
-                    refreshError: {
-                        error: {
-                            description: "{{error}}",
-                            message: "Algo deu errado"
+                    "initError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "Algo correu mal"
                         },
-                        genericError: {
-                            description: "Erro ao tentar obter um novo código QR",
-                            message: "Algo deu errado"
-                        }
-                    },
-                    updateAuthenticatorError: {
-                        error: {
-                            description: "{{error}}",
-                            message: "Algo deu errado"
-                        },
-                        genericError: {
-                            description: "Ocorreu um erro ao tentar atualizar a lista de autenticadores habilitados",
-                            message: "Algo deu errado"
+                        "genericError": {
+                            "description": "Ocorreu um erro ao obter o código QR",
+                            "message": "Algo correu mal"
                         }
                     }
-                },
-                regenerate: "Regenerado"
+                }
             },
             smsOtp: {
                 descriptions: {
