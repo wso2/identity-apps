@@ -58,7 +58,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon, Message, Grid as SemanticGrid } from "semantic-ui-react";
-import { createConnection, useGetConnectionTemplate } from "../../api/connections";
+import { createConnection, createCustomAuthentication, useGetConnectionTemplate } from "../../api/connections";
 import { getConnectionWizardStepIcons } from "../../configs/ui";
 import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
@@ -71,6 +71,7 @@ import {
     ConnectionInterface,
     ConnectionTemplateInterface,
     CustomAuthenticationCreateWizardGeneralFormValuesInterface,
+    CustomAuthenticatorInterface,
     EndpointConfigFormPropertyInterface,
     FormErrors,
     GenericConnectionCreateWizardPropsInterface,
@@ -483,41 +484,11 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
     };
 
     /**
-     * @param values - form values
-     * @param form - form instance
-     * @param callback - callback to proceed to the next step
+     * This method creates an external authenticator.
+     *
+     * @param identityProvider - identity provider object.
      */
-    const handleFormSubmit = (values: any) => {
-        const FIRST_ENTRY: number = 0;
-
-        const { idp: identityProvider } = cloneDeep(connectionTemplate);
-        const encodedIdentifier: string = encodeString(values?.identifier?.toString());
-
-        identityProvider.templateId = selectedTemplateId;
-        identityProvider.name = values?.displayName?.toString();
-
-        identityProvider.federatedAuthenticators.defaultAuthenticatorId = encodedIdentifier;
-        identityProvider.federatedAuthenticators.authenticators[FIRST_ENTRY].authenticatorId = encodedIdentifier;
-        identityProvider.federatedAuthenticators.authenticators[
-            FIRST_ENTRY
-        ].endpoint.uri = values?.endpointUri.toString();
-        identityProvider.federatedAuthenticators.authenticators[
-            FIRST_ENTRY
-        ].endpoint.authentication.type = authenticationType;
-
-        const authProperties: any = {};
-
-        authProperties["username"] = values?.usernameAuthProperty;
-        authProperties["password"] = values?.passwordAuthProperty;
-        authProperties["accessToken"] = values?.accessTokenAuthProperty;
-        authProperties["header"] = values?.headerAuthProperty;
-        authProperties["value"] = values?.valueAuthProperty;
-        identityProvider.federatedAuthenticators.authenticators[
-            FIRST_ENTRY
-        ].endpoint.authentication.properties = authProperties;
-
-        setIsSubmitting(true);
-
+    const createExternalAuthenticator = (identityProvider: ConnectionInterface) => {
         createConnection(identityProvider)
             .then((response: AxiosResponse<ConnectionInterface>) => {
                 eventPublisher.publish("connections-finish-adding-connection", {
@@ -593,6 +564,151 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             });
     };
 
+    /**
+     * This method creates a custom local authenticator.
+     *
+     * @param customAuthenticator - custom authenticator
+     */
+    const createCustomLocalAuthenticator = (customAuthenticator: CustomAuthenticatorInterface) => {
+        createCustomAuthentication(customAuthenticator)
+            .then((response: AxiosResponse<ConnectionInterface>) => {
+                eventPublisher.publish("connections-finish-adding-connection", {
+                    type: _componentId + "-" + kebabCase(selectedAuthenticator)
+                });
+                dispatch(
+                    addAlert({
+                        description: t("authenticationProvider:notifications." + "addIDP.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("authenticationProvider:notifications." + "addIDP.success.message")
+                    })
+                );
+                // The created resource's id is sent as a location header.
+                // If that's available, navigate to the edit page.
+                if (!isEmpty(response.headers.location)) {
+                    const location: string = response.headers.location;
+                    const createdIdpID: string = location.substring(location.lastIndexOf("/") + 1);
+
+                    onIDPCreate(createdIdpID);
+
+                    return;
+                }
+                onIDPCreate();
+            })
+            .catch((error: AxiosError) => {
+                const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
+
+                if (error.response.status === 403 && error?.response?.data?.code === identityAppsError.getErrorCode()) {
+                    setAlert({
+                        code: identityAppsError.getErrorCode(),
+                        description: t(identityAppsError.getErrorDescription()),
+                        level: AlertLevels.ERROR,
+                        message: t(identityAppsError.getErrorMessage()),
+                        traceId: identityAppsError.getErrorTraceId()
+                    });
+                    setTimeout(() => setAlert(undefined), 4000);
+
+                    return;
+                }
+
+                if (error?.response.status === 500 && error.response?.data.code === "IDP-65002") {
+                    setAlert({
+                        description: t("authenticationProvider:notifications." + "addIDP.serverError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("authenticationProvider:notifications." + "addIDP.serverError.message")
+                    });
+                    setTimeout(() => setAlert(undefined), 8000);
+
+                    return;
+                }
+
+                if (error.response && error.response.data && error.response.data.description) {
+                    setAlert({
+                        description: t("authenticationProvider:notifications." + "addIDP.error.description", {
+                            description: error.response.data.description
+                        }),
+                        level: AlertLevels.ERROR,
+                        message: t("authenticationProvider:notifications." + "addIDP.error.message")
+                    });
+                    setTimeout(() => setAlert(undefined), 4000);
+
+                    return;
+                }
+                setAlert({
+                    description: t("authenticationProvider:notifications." + "addIDP.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("authenticationProvider:notifications." + "addIDP.genericError.message")
+                });
+                setTimeout(() => setAlert(undefined), 4000);
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
+    };
+
+    /**
+     * @param values - form values
+     * @param form - form instance
+     * @param callback - callback to proceed to the next step
+     */
+    const handleFormSubmit = (values: any) => {
+        const prefixedIdentifier: string = CustomAuthConstants.PREFIX + values?.identifier?.toString();
+        const encodedPrefixedIdentifier: string = encodeString(prefixedIdentifier);
+
+        if (selectedAuthenticator === CustomAuthConstants.EXTERNAL_AUTHENTICATOR) {
+            const FIRST_ENTRY: number = 0;
+
+            const { idp: identityProvider } = cloneDeep(connectionTemplate);
+
+            identityProvider.templateId = selectedTemplateId;
+            identityProvider.name = values?.displayName?.toString();
+
+            identityProvider.federatedAuthenticators.defaultAuthenticatorId = encodedPrefixedIdentifier;
+            identityProvider.federatedAuthenticators.authenticators[FIRST_ENTRY].authenticatorId
+                = encodedPrefixedIdentifier;
+            identityProvider.federatedAuthenticators.authenticators[
+                FIRST_ENTRY
+            ].endpoint.uri = values?.endpointUri.toString();
+            identityProvider.federatedAuthenticators.authenticators[
+                FIRST_ENTRY
+            ].endpoint.authentication.type = authenticationType;
+
+            const authProperties: any = {};
+
+            authProperties["username"] = values?.usernameAuthProperty;
+            authProperties["password"] = values?.passwordAuthProperty;
+            authProperties["accessToken"] = values?.accessTokenAuthProperty;
+            authProperties["header"] = values?.headerAuthProperty;
+            authProperties["value"] = values?.valueAuthProperty;
+            identityProvider.federatedAuthenticators.authenticators[
+                FIRST_ENTRY
+            ].endpoint.authentication.properties = authProperties;
+
+            setIsSubmitting(true);
+            createExternalAuthenticator(identityProvider);
+        } else {
+            const { customLocalAuthenticator: customAuthenticator } = cloneDeep(connectionTemplate);
+
+            // customAuthenticator.templateId = selectedTemplateId;
+            customAuthenticator.name = prefixedIdentifier;
+            customAuthenticator.displayName = values?.displayName?.toString();
+
+            customAuthenticator.endpoint.authentication.type = authenticationType;
+            customAuthenticator.endpoint.uri = values?.endpointUri.toString();
+
+            const authProperties: any = {};
+
+            authProperties["username"] = values?.usernameAuthProperty;
+            authProperties["password"] = values?.passwordAuthProperty;
+            authProperties["accessToken"] = values?.accessTokenAuthProperty;
+            authProperties["header"] = values?.headerAuthProperty;
+            authProperties["value"] = values?.valueAuthProperty;
+            customAuthenticator.endpoint.authentication.properties = authProperties;
+
+            setIsSubmitting(true);
+            createCustomLocalAuthenticator(customAuthenticator);
+        }
+    };
+
     const wizardCommonFirstPage = () => (
         <WizardPage
             validate={ () => {
@@ -639,11 +755,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                         selected={ selectedAuthenticator === CustomAuthConstants.EXTERNAL_AUTHENTICATOR }
                         onClick={ () => setSelectedAuthenticator(CustomAuthConstants.EXTERNAL_AUTHENTICATOR) }
                         imageSize="x60"
-                        imageOptions={ {
-                            relaxed: "very",
-                            square: false,
-                            width: "auto"
-                        } }
                         showTooltips={ true }
                         overlay={ renderDimmerOverlay() }
                         overlayOpacity={ 0.6 }
@@ -779,9 +890,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 inputType="resource_name"
                 name="displayName"
                 label={ t("customAuthentication:fields.createWizard.generalSettingsStep.displayName.label") }
-                placeholder={ t(
-                    "customAuthentication:fields.createWizard.generalSettingsStep.displayName.placeholder"
-                ) }
+                placeholder={ t("customAuthentication:fields.createWizard.generalSettingsStep.displayName.placeholder") }
                 initialValue={ initialValues.displayName }
                 required={ true }
                 maxLength={ 100 }
@@ -916,9 +1025,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             data-componentid={ `${_componentId}-modal` }
         >
             <ModalWithSidePanel.MainPanel>
-                <ModalWithSidePanel.Header
-                    className="wizard-header"
-                    data-componentid={ `${_componentId}-modal-header` }>
+                <ModalWithSidePanel.Header className="wizard-header" data-componentid={ `${_componentId}-modal-header` }>
                     <div className={ "display-flex" }>
                         <GenericIcon
                             icon={ ConnectionsManagementUtils.resolveConnectionResourcePath(

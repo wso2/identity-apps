@@ -38,6 +38,7 @@ import {
     ConnectionListResponseInterface,
     ConnectionRolesInterface,
     ConnectionTemplateInterface,
+    CustomAuthenticatorInterface,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
     FederatedAuthenticatorMetaInterface,
@@ -72,6 +73,37 @@ export const createConnection = (
         },
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.identityProviders
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if ((response.status !== 201)) {
+                return Promise.reject(new Error("Failed to create the application."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Function to create a custom authentication
+ *
+ * @param connection - Connection settings data.
+ */
+export const createCustomAuthentication = (
+    connection: CustomAuthenticatorInterface
+): Promise<AxiosResponse<CustomAuthenticatorInterface>> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        data: connection,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.customAuthenticators
     };
 
     return httpClient(requestConfig)

@@ -479,7 +479,7 @@ export interface ConnectionTemplateItemInterface {
     category?: string;
     displayOrder?: number;
     idp?: ConnectionInterface;
-    customAuth?: CustomAuthenticatorInterface;
+    customLocalAuthenticator?: CustomAuthenticatorInterface;
     disabled?: boolean;
     provisioning?: ProvisioningInterface;
     type?: string;

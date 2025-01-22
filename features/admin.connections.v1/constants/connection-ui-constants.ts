@@ -343,6 +343,7 @@ export class ConnectionUIConstants {
      * Custom authentication constants.
      */
     public static readonly CUSTOM_AUTHENTICATION_CONSTANTS: {
+        PREFIX: string;
         EMPTY_STRING: string,
         EXTERNAL_AUTHENTICATOR: AvailableCustomAuthentications,
         INTERNAL_AUTHENTICATOR: AvailableCustomAuthentications,
@@ -356,6 +357,7 @@ export class ConnectionUIConstants {
             EXTERNAL_CUSTOM_AUTHENTICATOR_ID: "external-custom-authentication",
             INTERNAL_AUTHENTICATOR: "internal",
             INTERNAL_CUSTOM_AUTHENTICATOR_ID: "internal-user-custom-authentication",
+            PREFIX: "custom-",
             TWO_FACTOR_AUTHENTICATOR: "two-factor",
             TWO_FACTOR_CUSTOM_AUTHENTICATOR_ID: "two-factor-custom-authentication"
         };
