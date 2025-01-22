@@ -509,6 +509,9 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
 
         authProperties["username"] = values?.usernameAuthProperty;
         authProperties["password"] = values?.passwordAuthProperty;
+        authProperties["accessToken"] = values?.accessTokenAuthProperty;
+        authProperties["header"] = values?.headerAuthProperty;
+        authProperties["value"] = values?.valueAuthProperty;
         identityProvider.federatedAuthenticators.authenticators[
             FIRST_ENTRY
         ].endpoint.authentication.properties = authProperties;
