@@ -16,6 +16,8 @@
  * under the License.
  */
 
+// useRequiredScopes hook cannot be used inside myaccount, hence disabling the rule here.
+// eslint-disable-next-line no-restricted-imports
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { useEffect, useState } from "react";
