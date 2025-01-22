@@ -48,19 +48,7 @@ export const initPushAuthenticatorQRCode = (): Promise<any> => {
             return Promise.resolve(response);
         })
         .catch((error: AxiosError) => {
-            // return Promise.reject(error)
-            return Promise.resolve({
-                data: {
-                    "deviceId": "18fa4228-d136-4b6d-a951-9e934efb6f21",
-                    "username": "batman",
-                    "host": "https://localhost:9443",
-                    "tenantDomain": "carbon.super",
-                    "tenantPath": "/t/carbon.super",
-                    "challenge": "bfd5e5cf-47e2-4214-9994-f9217ef5b344"
-                }
-            }
-            );
-            // return Promise.reject(error);
+            return Promise.reject(error);
         });
 };
 
@@ -82,30 +70,33 @@ export const getPushEnabledDevices = () => {
             return Promise.resolve(response);
         })
         .catch((error: AxiosError) => {
-            // return Promise.reject(error)
-            return Promise.resolve({
-                data:
-                [
-                    {
-                        "deviceId": "385eb085-d575-455e-bb7a-192bfa1555d0",
-                        "name": "My Device",
-                        "model": "iPhone 16",
-                        "provider": "FCM"
-                    }
-
-                ]
-
-            }
-            );
-            // return Promise.reject(error);
+            return Promise.reject(error);
         });
-
 };
 
-export const checkIfPushEnabled = (): Promise<any> => {
-    return new Promise((resolve, reject) => {
-        resolve(false);
-    });
+export const deletePushAuthRegisteredDevice = (deviceId: string) => {
+    const requestConfig: HttpRequestConfig = {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        params: {
+
+        },
+        url: store.getState().config.endpoints.push + "/devices/" + deviceId
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(`An error occurred. The server returned ${response.status}`);
+            }
+
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
