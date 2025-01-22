@@ -96,6 +96,7 @@ export interface CertificatesNS {
             };
         };
         certificateModalHeader: string;
+        certificateViewValidation: string;
         placeholders: {
             emptySearch: {
                 action: string;

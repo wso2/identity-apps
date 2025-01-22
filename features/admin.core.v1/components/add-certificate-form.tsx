@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,20 +16,31 @@
  * under the License.
  */
 
-import { Certificate, TestableComponentInterface } from "@wso2is/core/models";
+import { Certificate, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
+import { Forms } from "@wso2is/forms";
 import * as forge from "node-forge";
 import React, { ReactElement, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { UploadCertificate } from "./upload-certificate";
-import { Forms } from "../../../modules/forms";
 
 /**
  * Proptypes for the add Application certificate form component.
  */
-interface AddCertificateFormProps extends TestableComponentInterface {
+interface AddCertificateFormProps extends IdentifiableComponentInterface {
+    /**
+     * Flag to trigger the certificate upload process.
+     */
     triggerCertificateUpload: boolean;
+    /**
+     * Flag to trigger the form submission.
+     */
     triggerSubmit: boolean;
+    /**
+     * Callback to handle form submission.
+     *
+     * @param values - The submitted form values.
+     */
     onSubmit: (values: any) => void;
     /**
      * Sets the visibility of the finish button.
@@ -44,15 +55,12 @@ interface AddCertificateFormProps extends TestableComponentInterface {
  *
  * @returns ReactElement
  */
-export const AddCertificateFormComponent: React.FunctionComponent<AddCertificateFormProps> = (
-    props: AddCertificateFormProps): ReactElement => {
-
-    const {
-        triggerCertificateUpload,
-        onSubmit,
-        setShowFinishButton,
-        ["data-testid"]: testId
-    } = props;
+export const AddCertificateFormComponent: React.FunctionComponent<AddCertificateFormProps> = ({
+    triggerCertificateUpload,
+    onSubmit,
+    setShowFinishButton,
+    ["data-componentid"]: _componentId = "add-application-certificate-form"
+}: AddCertificateFormProps ): ReactElement => {
 
     const [ name, setName ] = useState("");
     const [ fileDecoded, setFileDecoded ] = useState("");
@@ -100,7 +108,7 @@ export const AddCertificateFormComponent: React.FunctionComponent<AddCertificate
 
     const addApplicationCertificateForm = (): ReactElement => (
         <Forms
-            data-testid={ `${testId}-form` }
+            data-testid={ `${_componentId}-form` }
         >
             <Grid>
                 <Grid.Row columns={ 1 }>
@@ -113,7 +121,7 @@ export const AddCertificateFormComponent: React.FunctionComponent<AddCertificate
                             fileDecodedData={ fileDecoded }
                             fileData={ file }
                             forgeCertificateData={ certificate }
-                            data-testid={ `${testId}-upload` }
+                            data-testid={ `${_componentId}-upload` }
                             hideAliasInput={ true }
                             setShowFinishButton={ setShowFinishButton }
                         />
@@ -131,9 +139,4 @@ export const AddCertificateFormComponent: React.FunctionComponent<AddCertificate
 
 };
 
-/**
- * Default props for the add application certificate form component.
- */
-AddCertificateFormComponent.defaultProps = {
-    "data-testid": "add-application-certificate-form"
-};
+export default AddCertificateFormComponent;

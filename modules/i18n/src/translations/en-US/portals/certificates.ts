@@ -41,6 +41,7 @@ export const certificates: CertificatesNS = {
             alias: "Alias"
         },
         certificateModalHeader: "View Certificate",
+        certificateViewValidation: "We were unable to read this certificate. Currently we only support displaying public key information in certificate types of {algorithms} key algorithms. Support for <strong>Elliptic Curve Cryptography</strong>&nbsp; key algorithms will be enabled soon.",
         confirmation: {
             content: "This action is irreversible and will permanently delete the certificate.",
             header: "Are you sure?",

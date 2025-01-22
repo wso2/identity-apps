@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,6 +32,7 @@ import {
     FormSpy,
     SelectFieldAdapter
 } from "@wso2is/form";
+import { DropdownChild } from "@wso2is/forms";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -48,7 +49,6 @@ import {
     ActionConfigFormPropertyInterface,
     AuthenticationPropertiesInterface,
     AuthenticationType, PasswordFormat,
-    PasswordSharingTypeDropdownOption,
     PreUpdatePasswordActionConfigFormPropertyInterface,
     PreUpdatePasswordActionInterface, PreUpdatePasswordActionUpdateInterface
 } from "../models/actions";
@@ -76,11 +76,9 @@ interface PreUpdatePasswordActionConfigFormInterface extends IdentifiableCompone
      * Specifies action creation state.
      */
     isCreateFormState: boolean;
-
 }
 
 const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActionConfigFormInterface> = ({
-
     initialValues,
     isLoading,
     actionTypeApiPath,
@@ -295,8 +293,8 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                     minLength={ 0 }
                     options={
                         [ ...ActionsConstants.PASSWORD_SHARING_TYPES.map(
-                            (option: PasswordSharingTypeDropdownOption) => ({
-                                text: t(option.text),
+                            (option: DropdownChild) => ({
+                                text: option.text,
                                 value: option.value
                             }))
                         ]
@@ -307,7 +305,6 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                     { t("actions:fields.passwordSharing.certificate.label") }
                 </FormLabel>
                 <ActionCertificatesListComponent
-                    deleteAllowed={ true }
                     updatePEMValue={ (val: string) => {
                         setPEMValue(val);
                     } }

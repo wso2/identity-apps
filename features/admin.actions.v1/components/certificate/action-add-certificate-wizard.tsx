@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,8 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { AddCertificateFormComponent } from "@wso2is/admin.core.v1/components/add-certificate-form";
-import { getAddIDPCertificateWizardStepIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
@@ -33,13 +33,37 @@ import { useHandleError, useHandleSuccess } from "../../util/alert-util";
  * Interface for the Add action certificate wizard component props.
  */
 interface AddActionCertificateWizardPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Callback to close the wizard.
+     */
     closeWizard: () => void;
+    /**
+     * The current step of the wizard.
+     */
     currentStep?: number;
+    /**
+     * Callback to update the PEM value.
+     */
     updatePEMValue: (value: string) => void;
+    /**
+     * Callback to update the submit state.
+     */
     updateSubmit: (value: boolean) => void;
+    /**
+     * The current PEM value.
+     */
     currentPEMValue: string;
+    /**
+     * Indicates if the form is in creation mode.
+     */
     isCreateFormState: boolean;
+     /**
+     * The API path for the action type.
+     */
     actionTypeApiPath: string;
+    /**
+     * The ID of the action.
+     */
     actionId: string;
 }
 
@@ -49,20 +73,17 @@ interface AddActionCertificateWizardPropsInterface extends IdentifiableComponent
  * @param props - Props injected to the component.
  * @returns Add action certificate wizard form component.
  */
-export const AddActionCertificateWizard: FunctionComponent<AddActionCertificateWizardPropsInterface> = (
-    props: AddActionCertificateWizardPropsInterface): ReactElement => {
-
-    const {
-        closeWizard,
-        currentStep,
-        updatePEMValue,
-        updateSubmit,
-        currentPEMValue,
-        isCreateFormState,
-        actionTypeApiPath,
-        actionId,
-        ["data-componentid"]: componentId
-    } = props;
+export const AddActionCertificateWizard: FunctionComponent<AddActionCertificateWizardPropsInterface> = ({
+    closeWizard,
+    currentStep: _currentStep = 0,
+    updatePEMValue,
+    updateSubmit,
+    currentPEMValue,
+    isCreateFormState,
+    actionTypeApiPath,
+    actionId,
+    ["data-componentid"]: _componentId = "add-action-certificate-wizard"
+}: AddActionCertificateWizardPropsInterface ): ReactElement => {
 
     const { t } = useTranslation();
 
@@ -73,7 +94,7 @@ export const AddActionCertificateWizard: FunctionComponent<AddActionCertificateW
     const [ triggerUpload, setTriggerUpload ] = useTrigger();
 
     const [ partiallyCompletedStep ] = useState<number>(undefined);
-    const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
+    const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(_currentStep);
     const [ showFinishButton, setShowFinishButton ] = useState<boolean>(false);
     const [ alert, , alertComponent ] = useWizardAlert();
 
@@ -135,28 +156,6 @@ export const AddActionCertificateWizard: FunctionComponent<AddActionCertificateW
         closeWizard();
     };
 
-    /**
-     * This contains the wizard steps
-     */
-    const STEPS: {
-        content: JSX.Element;
-        icon: any;
-        title: string;
-    }[] = [
-        {
-            content: (
-                <AddCertificateFormComponent
-                    triggerCertificateUpload={ triggerUpload }
-                    triggerSubmit={ finishSubmit }
-                    onSubmit= { handleWizardFormFinish }
-                    setShowFinishButton={ setShowFinishButton }
-                />
-            ),
-            icon: getAddIDPCertificateWizardStepIcons().general,
-            title: t("certificates:keystore.wizard.steps.upload")
-        }
-    ];
-
     return (
         <Modal
             open={ true }
@@ -164,19 +163,34 @@ export const AddActionCertificateWizard: FunctionComponent<AddActionCertificateW
             dimmer="blurring"
             size="small"
             onClose={ closeWizard }
-            data-componentid={ componentId }
+            data-componentid={ _componentId }
             closeOnDimmerClick={ false }
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
-                { t("actions:certificateWizard.heading") }
+                { isCreateFormState
+                    ? t("actions:certificateWizard.add.heading")
+                    : currentPEMValue
+                        ? t("actions:certificateWizard.change.heading")
+                        : t("actions:certificateWizard.add.heading")
+                }
                 <Heading as="h6">
-                    { t("actions:certificateWizard.subHeading") }
+                    { isCreateFormState
+                        ? t("actions:certificateWizard.add.subHeading")
+                        : currentPEMValue
+                            ? t("actions:certificateWizard.change.subHeading")
+                            : t("actions:certificateWizard.add.subHeading")
+                    }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
                 { alert && alertComponent }
-                { STEPS[currentWizardStep].content }
+                <AddCertificateFormComponent
+                    triggerCertificateUpload={ triggerUpload }
+                    triggerSubmit={ finishSubmit }
+                    onSubmit= { handleWizardFormFinish }
+                    setShowFinishButton={ setShowFinishButton }
+                />
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
@@ -185,22 +199,20 @@ export const AddActionCertificateWizard: FunctionComponent<AddActionCertificateW
                             <LinkButton
                                 floated="left"
                                 onClick={ () => closeWizard() }
-                                data-componentid={ `${componentId}-cancel-button` }
+                                data-componentid={ `${_componentId}-cancel-button` }
                             >
                                 { t("common:cancel") }
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            { currentWizardStep === STEPS.length - 1 && (
-                                <PrimaryButton
-                                    disabled={ !showFinishButton }
-                                    floated="right"
-                                    onClick={ finish }
-                                    data-componentid={ `${componentId}-finish-button` }
-                                >
-                                    { t("common:finish") }
-                                </PrimaryButton>
-                            ) }
+                            <PrimaryButton
+                                disabled={ !showFinishButton }
+                                floated="right"
+                                onClick={ finish }
+                                data-componentid={ `${_componentId}-finish-button` }
+                            >
+                                { t("common:finish") }
+                            </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
@@ -209,10 +221,4 @@ export const AddActionCertificateWizard: FunctionComponent<AddActionCertificateW
     );
 };
 
-/**
- * Default props for the add action certificate wizard.
- */
-AddActionCertificateWizard.defaultProps = {
-    currentStep: 0,
-    "data-componentid": "add-action-certificate-wizard"
-};
+export default AddActionCertificateWizard;

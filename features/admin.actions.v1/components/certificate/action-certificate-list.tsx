@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -48,20 +48,28 @@ import "./action-certificate-list.scss";
  */
 interface ActionCertificatesPropsListInterface extends IdentifiableComponentInterface {
     /**
-     * Specifies whether JWKS or Certificates
-     * remove/delete is allowed or not.
+     * The PEM value of the certificate.
      */
-    deleteAllowed?: boolean;
-    /**
-     * The message or the content of the pop up saying
-     * why it's being disabled.
-     */
-    reasonInsideTooltipWhyDeleteIsNotAllowed?: ReactNode;
     certificate: string;
+    /**
+     * Callback to update the PEM value.
+     */
     updatePEMValue: (value: string) => void;
+    /**
+     * Callback to update the submit state.
+     */
     updateSubmit: (value: boolean) => void;
+    /**
+     * Indicates if the form is in creation mode.
+     */
     isCreateFormState: boolean;
+    /**
+     * The API path for the action type.
+     */
     actionTypeApiPath: string;
+    /**
+     * The ID of the action.
+     */
     actionId: string;
 }
 
@@ -72,21 +80,15 @@ interface ActionCertificatesPropsListInterface extends IdentifiableComponentInte
  *
  * @returns
  */
-export const ActionCertificatesListComponent: FunctionComponent<ActionCertificatesPropsListInterface> = (
-    props: ActionCertificatesPropsListInterface
-): ReactElement => {
-
-    const {
-        deleteAllowed,
-        reasonInsideTooltipWhyDeleteIsNotAllowed,
-        certificate,
-        updatePEMValue,
-        updateSubmit,
-        isCreateFormState,
-        actionTypeApiPath,
-        actionId,
-        [ "data-componentid" ]: componentId
-    } = props;
+export const ActionCertificatesListComponent: FunctionComponent<ActionCertificatesPropsListInterface> = ({
+    certificate,
+    updatePEMValue,
+    updateSubmit,
+    isCreateFormState,
+    actionTypeApiPath,
+    actionId,
+    [ "data-componentid" ]: _componentId = "action-certificate-list"
+}: ActionCertificatesPropsListInterface ): ReactElement => {
 
     const { t } = useTranslation();
 
@@ -183,16 +185,16 @@ export const ActionCertificatesListComponent: FunctionComponent<ActionCertificat
             type="negative"
             primaryAction={ t("actions:certificateDeleteConfirmationModal.primaryAction") }
             secondaryAction={ t("actions:certificateDeleteConfirmationModal.secondaryAction") }
-            data-componentid={ `${ componentId }-delete-confirmation-modal` }
+            data-componentid={ `${ _componentId }-delete-confirmation-modal` }
             closeOnDimmerClick={ false }>
             <ConfirmationModal.Header
-                data-componentid={ `${ componentId }-delete-confirmation-modal-header` }>
+                data-componentid={ `${ _componentId }-delete-confirmation-modal-header` }>
                 { t("actions:certificateDeleteConfirmationModal.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 negative
-                data-componentid={ `${ componentId }-delete-confirmation-modal-message` }>
+                data-componentid={ `${ _componentId }-delete-confirmation-modal-message` }>
                 { t("actions:certificateDeleteConfirmationModal.message") }
             </ConfirmationModal.Message>
         </ConfirmationModal>
@@ -325,32 +327,32 @@ export const ActionCertificatesListComponent: FunctionComponent<ActionCertificat
                                                 descriptionColumnWidth={ 9 }
                                                 actions={ [
                                                     {
-                                                        "data-componentid": `${ componentId }-edit-cert-${ index }
+                                                        "data-componentid": `${ _componentId }-edit-cert-${ index }
                                                         -button`,
                                                         icon: "pencil",
                                                         onClick: () => setShowWizard(true),
-                                                        popupText: "Change certificate",
+                                                        popupText: t("actions:fields.passwordSharing.certificate"+
+                                                            ".icon.changecertificate"),
                                                         type: "button"
                                                     },
                                                     {
-                                                        "data-componentid": `${ componentId }-edit-cert-${ index }
+                                                        "data-componentid": `${ _componentId }-edit-cert-${ index }
                                                         -button`,
                                                         disabled: certificate?.infoUnavailable,
                                                         hidden: certificate?.infoUnavailable,
                                                         icon: "eye",
                                                         onClick: () => handleViewCertificate(certificate),
-                                                        popupText: "View certificate",
+                                                        popupText: t("actions:fields.passwordSharing.certificate"+
+                                                            ".icon.viewcertificate"),
                                                         type: "button"
                                                     },
                                                     {
-                                                        "data-componentid": `${ componentId }-delete-cert-${ index }
+                                                        "data-componentid": `${ _componentId }-delete-cert-${ index }
                                                         -button`,
                                                         icon: "trash alternate",
                                                         onClick: handleDeleteCertificate,
-                                                        popupText: deleteAllowed
-                                                            ? t("users:usersList.list." +
-                                                                "iconPopups.delete")
-                                                            : reasonInsideTooltipWhyDeleteIsNotAllowed,
+                                                        popupText: t("actions:fields.passwordSharing.certificate"+
+                                                            ".icon.deletecertificate"),
                                                         type: "button"
                                                     }
                                                 ] }
@@ -417,7 +419,7 @@ export const ActionCertificatesListComponent: FunctionComponent<ActionCertificat
                     isCreateFormState={ isCreateFormState }
                     actionTypeApiPath={ actionTypeApiPath }
                     actionId={ actionId }
-                    data-componentid={ `${ componentId }-add-certificate-wizard` }
+                    data-componentid={ `${ _componentId }-add-certificate-wizard` }
                 />
             ) }
             { DeleteCertConfirmationModal }
@@ -432,11 +434,4 @@ export const ActionCertificatesListComponent: FunctionComponent<ActionCertificat
     );
 };
 
-/**
- * Default proptypes for the action certificate list component.
- */
-ActionCertificatesListComponent.defaultProps = {
-    "data-componentid": "action-certificate-list",
-    deleteAllowed: true,
-    reasonInsideTooltipWhyDeleteIsNotAllowed: null
-};
+export default ActionCertificatesListComponent;

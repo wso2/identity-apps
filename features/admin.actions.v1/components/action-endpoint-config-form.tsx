@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { SelectChangeEvent } from "@mui/material";
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Divider from "@oxygen-ui/react/Divider";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
+import { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1";
@@ -50,13 +50,16 @@ interface ActionEndpointConfigFormInterface extends IdentifiableComponentInterfa
      * Specifies action creation state.
      */
     isCreateFormState: boolean;
-
+    /**
+     * Callback function triggered when the authentication type is changed.
+     *
+     * @param updatedValue - The new authentication type selected.
+     * @param change - Indicates whether the change is detected.
+     */
     onAuthenticationTypeChange:  (updatedValue: AuthenticationType, change: boolean) => void;
-
 }
 
 const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterface> = ({
-
     initialValues,
     isCreateFormState,
     onAuthenticationTypeChange,
@@ -81,7 +84,6 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
             return !hasActionUpdatePermissions;
         }
     };
-
 
     /**
      * The following useEffect is used to set the current Action Authentication Type.

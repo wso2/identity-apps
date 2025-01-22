@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import { URLUtils } from "@wso2is/core/utils";
+import { ActionsConstants } from "../constants/actions-constants";
 import { ActionConfigFormPropertyInterface, AuthenticationType } from "../models/actions";
 
 /**
@@ -42,9 +43,8 @@ export const validateActionCommonFields = (
     if (!values?.name) {
         error.name = t("actions:fields.name.validations.empty");
     }
-    const actionNameRegex: RegExp = /^[a-zA-Z0-9-_][a-zA-Z0-9-_ ]*[a-zA-Z0-9-_]$/;
 
-    if (!actionNameRegex.test(values?.name)) {
+    if (!ActionsConstants.ACTION_NAME_REGEX.test(values?.name)) {
         error.name = t("actions:fields.name.validations.invalid");
     }
     if (!values?.endpointUri) {
@@ -60,8 +60,6 @@ export const validateActionCommonFields = (
     if (!values?.authenticationType) {
         error.authenticationType = t("actions:fields.authenticationType.validations.empty");
     }
-
-    const apiKeyHeaderRegex: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9-.]+$/;
 
     switch (authenticationType) {
         case AuthenticationType.BASIC:
@@ -94,7 +92,7 @@ export const validateActionCommonFields = (
                     error.headerAuthProperty = t("actions:fields.authentication." +
                         "types.apiKey.properties.header.validations.empty");
                 }
-                if (!apiKeyHeaderRegex.test(values?.headerAuthProperty)) {
+                if (!ActionsConstants.API_HEADER_REGEX.test(values?.headerAuthProperty)) {
                     error.headerAuthProperty = t("actions:fields.authentication." +
                         "types.apiKey.properties.header.validations.invalid");
                 }

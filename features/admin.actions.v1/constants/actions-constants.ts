@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,12 +17,12 @@
  */
 
 import { IdentityAppsError } from "@wso2is/core/errors";
+import { DropdownChild } from "@wso2is/forms";
 import ActionType from "../models/action-type";
 import {
     AuthenticationType,
     AuthenticationTypeDropdownOption,
-    PasswordFormat,
-    PasswordSharingTypeDropdownOption
+    PasswordFormat
 } from "../models/actions";
 
 /**
@@ -35,6 +35,9 @@ export class ActionsConstants {
      *
      */
     private constructor() { }
+
+    public static readonly ACTION_NAME_REGEX: RegExp = /^[a-zA-Z0-9-_][a-zA-Z0-9-_ ]*[a-zA-Z0-9-_]$/;
+    public static readonly API_HEADER_REGEX: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9-.]+$/;
 
     public static readonly ACTIONS_DIR: string = "actions";
     public static readonly TYPES_DIR: string = "types";
@@ -129,7 +132,7 @@ export class ActionsConstants {
         }
     ];
 
-    public static readonly PASSWORD_SHARING_TYPES: PasswordSharingTypeDropdownOption[] = [
+    public static readonly PASSWORD_SHARING_TYPES: DropdownChild[] = [
         {
             key: PasswordFormat.SHA_256_HASHED,
             text: "SHA 256 Hashed",

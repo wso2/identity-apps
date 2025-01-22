@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -65,11 +65,9 @@ interface PreIssueAccessTokenActionConfigFormInterface extends IdentifiableCompo
      * Specifies action creation state.
      */
     isCreateFormState: boolean;
-
 }
 
 const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessTokenActionConfigFormInterface> = ({
-
     initialValues,
     isLoading,
     actionTypeApiPath,
@@ -233,7 +231,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                 <CommonActionConfigForm
                     initialValues={ initialValues }
                     isCreateFormState={ isCreateFormState }
-                    onAuthenticationTypeChange={ (updatedValue: any, change: boolean) => {
+                    onAuthenticationTypeChange={ (updatedValue: AuthenticationType, change: boolean) => {
                         setAuthenticationType(updatedValue);
                         setIsAuthenticationUpdateFormState(change);
                     } }/>

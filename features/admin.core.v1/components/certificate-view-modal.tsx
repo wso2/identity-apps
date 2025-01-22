@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 import { CertificateManagementConstants } from "@wso2is/core/constants";
-import { DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
+import { DisplayCertificate, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { Certificate as CertificateDisplay, Code, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -28,7 +28,7 @@ import { getCertificateIllustrations } from "..";
 /**
  * Proptypes for the certificate form field modal component.
  */
-interface CertificateViewModalInterface extends ModalProps, TestableComponentInterface {
+interface CertificateViewModalInterface extends ModalProps, IdentifiableComponentInterface {
     /**
      * Current certificate configurations.
      */
@@ -39,30 +39,26 @@ interface CertificateViewModalInterface extends ModalProps, TestableComponentInt
  * Certificate form field modal component.
  * @param  props - Props injected to the component.
  */
-export const CertificateViewModal: FunctionComponent<CertificateViewModalInterface> = (
-    props: CertificateViewModalInterface
-): ReactElement => {
-
-    const {
-        certificate,
-        [ "data-testid" ]: testId,
-        ...rest
-    } = props;
+export const CertificateViewModal: FunctionComponent<CertificateViewModalInterface> = ({
+    certificate,
+    [ "data-componentid" ]: _componentId = "certificate-form-field-modal",
+    ...rest
+}: CertificateViewModalInterface ): ReactElement => {
 
     const { t } = useTranslation();
 
     const CannotReadCertificate :JSX.Element = (
-        <Segment className="certificate" data-testid={ testId }>
+        <Segment className="certificate" data-componentid={ _componentId }>
             <p className="certificate-field">
-                We were unable to read this certificate. Currently we only
-                support displaying public key information in certificate types of {
-                    CertificateManagementConstants.SUPPORTED_KEY_ALGORITHMS.map((algo : string, index: number) => (
-                        <span key={ `${ algo }+${ index }` }>
-                            <Code>{ algo }</Code>&nbsp;
-                        </span>
-                    ))
-                } key algorithms. Support for <strong>Elliptic Curve Cryptography</strong>&nbsp;
-                key algorithms will be enabled soon.
+                { t("certificates:keystore.certificateViewValidation" , {
+                    algorithms : CertificateManagementConstants.SUPPORTED_KEY_ALGORITHMS.map(
+                        (algo : string, index: number) => (
+                            <span key={ `${ algo }+${ index }` }>
+                                <Code>{ algo }</Code>&nbsp;
+                            </span>
+                        ))
+                } )
+                }
             </p>
         </Segment>
     );
@@ -73,7 +69,7 @@ export const CertificateViewModal: FunctionComponent<CertificateViewModalInterfa
             className="certificate-display"
             dimmer="blurring"
             size="tiny"
-            data-testid={ `${ testId }-view-certificate-modal` }
+            data-componentid={ `${ _componentId }-view-certificate-modal` }
             { ...rest }
         >
             <Modal.Header>
@@ -118,9 +114,4 @@ export const CertificateViewModal: FunctionComponent<CertificateViewModalInterfa
     );
 };
 
-/**
- * Default props for the component.
- */
-CertificateViewModal.defaultProps = {
-    "data-testid": "certificate-form-field-modal"
-};
+export default CertificateViewModal;

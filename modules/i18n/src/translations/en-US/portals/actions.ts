@@ -35,8 +35,14 @@ export const actions: actionsNS = {
         secondaryAction: "Cancel"
     },
     certificateWizard: {
-        heading: "Add New Certificate",
-        subHeading: "Add new certificate to the application"
+        add : {
+            heading: "Add New Certificate",
+            subHeading: "Add new certificate to the action"
+        },
+        change : {
+            heading: "Change Certificate",
+            subHeading: "Change certificate of the action"
+        }
     },
     confirmationModal: {
         assertionHint: "Please confirm your action.",
@@ -157,9 +163,14 @@ export const actions: actionsNS = {
         },
         passwordSharing: {
             certificate: {
+                icon: {
+                    changecertificate : "Change certificate",
+                    deletecertificate: "Delete certificate",
+                    viewcertificate: "View certificate"
+                },
                 info: {
                     description: "To minimize the risk of credential exposure, it is strongly recommended to encrypt " +
-                        "any shared credentials. Following certificate will be used to encrypt the password when " +
+                        "any shared credentials. This certificate will be used to encrypt the password when " +
                         "sharing it to the external service.",
                     header: "Secure Credential Handling"
                 },
@@ -167,7 +178,7 @@ export const actions: actionsNS = {
             },
             format: {
                 label: "Format",
-                placeholder: "Select Password Sharing",
+                placeholder: "Select Format",
                 validations: "Password Sharing format is a required field"
             },
             label: "Password Sharing"

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,7 @@ import useRequest, {
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
-import { ActionResponseInterface, PreUpdatePasswordActionResponseInterface } from "../models/actions";
+import { ActionResponseInterface } from "../models/actions";
 
 /**
  * Hook to get the action configurations by id.
@@ -33,8 +33,7 @@ import { ActionResponseInterface, PreUpdatePasswordActionResponseInterface } fro
  * @param actionId - ID of the action.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetActionById = <Data = ActionResponseInterface |
-    PreUpdatePasswordActionResponseInterface , Error = RequestErrorInterface>
+const useGetActionById = <Data = ActionResponseInterface, Error = RequestErrorInterface>
     (actionType: string, actionId: string): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {

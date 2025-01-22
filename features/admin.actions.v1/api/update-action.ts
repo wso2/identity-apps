@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,8 +25,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { ActionsConstants } from "../constants/actions-constants";
 import {
     ActionResponseInterface,
-    ActionUpdateInterface,
-    PreUpdatePasswordActionUpdateInterface
+    ActionUpdateInterface
 } from "../models/actions";
 
 /**
@@ -44,10 +43,10 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * @returns Promise containing the response.
  * @throws Throws an IdentityAppsApiException if the request fails.
  */
-const updateAction = (
+const updateAction = <T extends ActionUpdateInterface>(
     actionType: string,
     actionId: string,
-    actionUpdateRequestBody: ActionUpdateInterface | PreUpdatePasswordActionUpdateInterface
+    actionUpdateRequestBody: T
 ): Promise<ActionResponseInterface> => {
 
     const requestConfig: RequestConfigInterface = {

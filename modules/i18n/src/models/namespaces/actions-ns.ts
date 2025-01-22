@@ -33,8 +33,14 @@ export interface actionsNS {
         secondaryAction: string;
     },
     certificateWizard: {
-        heading: string;
-        subHeading: string;
+        add : {
+            heading: "Add New Certificate",
+            subHeading: "Add new certificate to the action"
+        },
+        change : {
+            heading: string;
+            subHeading: string;
+        }
     },
     confirmationModal: {
         header: string;
@@ -155,6 +161,11 @@ export interface actionsNS {
                 info: {
                     header: string;
                     description: string;
+                },
+                icon: {
+                    changecertificate : string;
+                    viewcertificate: string;
+                    deletecertificate: string;
                 }
             },
             format: {
