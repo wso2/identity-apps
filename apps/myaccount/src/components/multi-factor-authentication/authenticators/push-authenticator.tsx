@@ -39,6 +39,7 @@ import {
 import { getMFAIcons } from "../../../configs";
 import usePushAuthenticator from "../../../hooks/use-push-authenticator";
 import { PushAuthRegisteredDevice } from "../../../models/push-authenticator";
+import "./push-authenticator.scss";
 
 /**
  * Property types for the push authenticator component.
@@ -228,37 +229,38 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                         ) }
                     </Grid.Column>
                 </Grid.Row>
+                {
+                    registeredDeviceList?.length > 0 ? (
+                        <Grid.Row columns={ 2 } className="push-auth-registered-device-list">
+                            <Grid.Column width={ 1 }></Grid.Column>
+                            <Grid.Column width={ 15 }>
+                                <OxygenList>
+                                    { registeredDeviceList.map((registeredDevice: PushAuthRegisteredDevice) => (
+                                        <ListItem
+                                            key={ registeredDevice?.deviceId }
+                                            secondaryAction={
+                                                (<IconButton
+                                                    edge="end"
+                                                    aria-label="delete"
+                                                    onClick={
+                                                        () => deleteRegisteredDevice(registeredDevice.deviceId)
+                                                    }>
+                                                    <TrashIcon />
+                                                </IconButton>)
+                                            }
+                                        >
+                                            <ListItemText
+                                                primary={ registeredDevice?.name }
+                                                secondary={ registeredDevice?.model }
+                                            />
+                                        </ListItem>
+                                    )) }
+                                </OxygenList>
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) : null
+                }
             </Grid>
-            { registeredDeviceList?.length > 0 ? (<>
-                <OxygenList
-                    sx={ {
-                        ml: 3,
-                        mr: 3,
-                        pt: 0
-                    } }>
-                    { registeredDeviceList.map((registeredDevice: PushAuthRegisteredDevice) => (
-                        <ListItem
-                            key={ registeredDevice?.deviceId }
-                            secondaryAction={
-                                (<IconButton
-                                    edge="end"
-                                    aria-label="delete"
-                                    onClick={
-                                        () => deleteRegisteredDevice(registeredDevice.deviceId)
-                                    }>
-                                    <TrashIcon />
-                                </IconButton>)
-                            }
-                        >
-                            <ListItemText
-                                primary={ registeredDevice?.name }
-                                secondary={ registeredDevice?.model }
-                            />
-                        </ListItem>
-                    )) }
-
-                </OxygenList>
-            </>) : null }
         </>
     );
 };

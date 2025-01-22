@@ -104,7 +104,7 @@ export default function usePushAuthenticator () {
     const handlePushAuthenticatorSetupSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
         updateRegisteredDeviceList();
-        setIsConfigPushAuthenticatorModalOpen(false);
+        // setIsConfigPushAuthenticatorModalOpen(false);
     };
 
     /**
