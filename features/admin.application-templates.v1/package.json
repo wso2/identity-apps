@@ -8,7 +8,8 @@
     "dependencies": {
         "@wso2is/admin.applications.v1": "^2.30.104",
         "@wso2is/admin.core.v1": "^2.37.12",
-        "@wso2is/admin.template-core.v1": "^1.5.58"
+        "@wso2is/admin.template-core.v1": "^1.5.58",
+        "@wso2is/admin.feature-gate.v1": "^1.4.89"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^25.0.7",

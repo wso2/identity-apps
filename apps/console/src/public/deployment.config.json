@@ -213,6 +213,7 @@
             "accountLogin": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "update": [
                         "internal_config_mgt_update"
@@ -222,6 +223,7 @@
             "accountRecovery": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -239,6 +241,7 @@
             "accountSecurity": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -254,8 +257,33 @@
                 }
             },
             "actions": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "actions.filterPreRegistration",
+                    "actions.filterPreUpdateProfile"
+                ],
                 "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "actions",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "actions.create.types.list.preIssueAccessToken",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "actions.create.types.list.preUpdatePassword",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "actions.create.types.list.preUpdateProfile",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "actions.create.types.list.preRegistration",
+                        "flag": ""
+                    }
+                ],
                 "scopes": {
                     "create": [
                         "internal_action_mgt_create"
@@ -277,11 +305,13 @@
             "adminAdvisoryBanner": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {}
             },
             "administrators": {
                 "disabledFeatures": [],
                 "enabled": false,
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -292,6 +322,7 @@
             "ai": {
                 "disabledFeatures": [],
                 "enabled": false,
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -303,6 +334,7 @@
             "analytics": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -320,6 +352,7 @@
             "apiResources": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_api_resource_create"
@@ -341,6 +374,7 @@
             "applicationRoles": {
                 "disabledFeatures": [],
                 "enabled": false,
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -353,23 +387,48 @@
                     "applications.loginFlow.legacyEditor"
                 ],
                 "enabled": true,
-                "featureFlags": {
-                    "label": "",
-                    "subFeatures": [
-                        {
-                            "label": "New",
-                            "name": "applications.templates.list.m2m"
-                        },
-                        {
-                            "label": "",
-                            "name": "applications.templates.list.google"
-                        },
-                        {
-                            "label": "",
-                            "name": "applications.templates.list.google"
-                        }
-                    ]
-                },
+                "featureFlags": [
+                    {
+                        "feature": "applications",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "applications.templates",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "applications.create.templates.list.m2m",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "applications.create.templates.list.google",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "applications.create.templates.list.microsoft",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "applications.create.templates.list.salesforce",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "applications.create.templates.list.zoom",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "applications.create.templates.list.slack",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "applications.create.templates.list.slack",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "applications.edit.general.branding",
+                        "flag": ""
+                    }
+                ],
                 "scopes": {
                     "create": [
                         "internal_application_mgt_create"
@@ -395,6 +454,7 @@
             "approvals": {
                 "disabledFeatures": [],
                 "enabled": false,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_humantask_view"
@@ -416,6 +476,7 @@
             "attributeDialects": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_claim_meta_create"
@@ -438,6 +499,7 @@
             "auditLogs": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "update": [
                         "internal_application_mgt_view"
@@ -449,6 +511,32 @@
                     "branding.hostnameUrlBranding"
                 ],
                 "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "branding",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "branding.stylesAndText",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "branding.emailTemplates",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "branding.stylesAndText.application.title",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "branding.stylesAndText.application.text",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "branding.stylesAndText.organization.text",
+                        "flag": ""
+                    }
+                ],
                 "scopes": {
                     "create": [
                         "internal_branding_preference_update"
@@ -470,6 +558,7 @@
             "bulkUserImport": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "fileImportTimeout": 90000,
                 "scopes": {
                     "create": [
@@ -490,6 +579,7 @@
             "certificates": {
                 "disabledFeatures": [],
                 "enabled": false,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_keystore_update"
@@ -514,6 +604,7 @@
                     "consoleSettings.privilegedUsers"
                 ],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_role_mgt_create"
@@ -542,6 +633,7 @@
             "emailProviders": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_notification_senders_create"
@@ -560,6 +652,7 @@
             "emailTemplates": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_email_mgt_create"
@@ -581,6 +674,7 @@
             "eventPublishing": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_event_config_update"
@@ -642,6 +736,7 @@
             "groups": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_group_mgt_create"
@@ -667,6 +762,7 @@
             "guestUser": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_guest_mgt_invite_add"
@@ -686,11 +782,13 @@
             "identityProviderGroups": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {}
             },
             "identityProviders": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_idp_create"
@@ -714,6 +812,7 @@
             },
             "identityVerificationProviders": {
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_idvp_add"
@@ -735,11 +834,18 @@
             "insights": {
                 "disabledFeatures": [],
                 "enabled": false,
+                "featureFlags": [
+                    {
+                        "feature": "insights",
+                        "flag": ""
+                    }
+                ],
                 "scopes": {}
             },
             "internalNotificationSending": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -757,6 +863,20 @@
             "loginAndRegistration": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "loginAndRegistration",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "loginAndRegistration.organizationSettings.discovery",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "loginAndRegistration.organizationSettings.impersonation",
+                        "flag": ""
+                    }
+                ],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -776,6 +896,7 @@
             "logs": {
                 "disabledFeatures": [],
                 "enabled": false,
+                "featureFlags": [],
                 "scopes": {
                     "update": [
                         "internal_application_mgt_view"
@@ -785,6 +906,7 @@
             "myAccount": {
                 "disabledFeatures": [],
                 "enabled": false,
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -795,6 +917,7 @@
             "notificationChannels": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_notification_senders_create"
@@ -816,6 +939,7 @@
             "oidcScopes": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_oidc_scope_mgt_create"
@@ -838,6 +962,7 @@
             "organizationDiscovery": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_organization_config_add",
@@ -863,6 +988,7 @@
             "organizations": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_organization_create"
@@ -884,6 +1010,7 @@
             "parentUserInvitation": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_guest_mgt_invite_add"
@@ -903,6 +1030,7 @@
             "policyAdministration":{
                 "disabledFeatures": [],
                 "enabled": false,
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -914,6 +1042,7 @@
             "remoteFetchConfig": {
                 "disabledFeatures": [],
                 "enabled": false,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_identity_mgt_create",
@@ -944,11 +1073,13 @@
             "remoteLogging": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {}
             },
             "residentOutboundProvisioning": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -967,6 +1098,7 @@
             "ruleBasedPasswordExpiry": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -986,6 +1118,7 @@
             "saml2Configuration": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -996,6 +1129,7 @@
             "secretsManagement": {
                 "disabledFeatures": [],
                 "enabled": false,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_secret_mgt_add"
@@ -1017,6 +1151,7 @@
             "server": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -1034,6 +1169,7 @@
             "sessionManagement": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -1046,6 +1182,7 @@
                     "choreoAsSMSProvider"
                 ],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_notification_senders_create"
@@ -1064,6 +1201,12 @@
             "smsTemplates": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "smsTemplates",
+                        "flag": ""
+                    }
+                ],
                 "scopes": {
                     "create": [
                         "internal_template_mgt_create"
@@ -1090,6 +1233,7 @@
                     "tenants.organizations.quick.nav.from.dropdown"
                 ],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_create_tenants"
@@ -1108,6 +1252,7 @@
             "tryIt": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_application_mgt_create"
@@ -1131,6 +1276,7 @@
             "userOnboarding": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -1148,6 +1294,12 @@
             "userRoles": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "userRoles",
+                        "flag": ""
+                    }
+                ],
                 "scopes": {
                     "create": [
                         "internal_role_mgt_create"
@@ -1177,6 +1329,7 @@
                    "userStores.type.remote"
                 ],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_userstore_create"
@@ -1198,6 +1351,7 @@
             "userV1Roles": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_role_mgt_create"
@@ -1224,6 +1378,7 @@
             "users": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_user_mgt_create"
@@ -1253,6 +1408,7 @@
             "wsFedConfiguration": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],

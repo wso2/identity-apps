@@ -29,7 +29,8 @@ import {
     UserFlowIcon
 } from "@oxygen-ui/react-icons";
 import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
@@ -174,15 +175,6 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
         </>
     );
 
-    const resolveFeatureLabelClass = (featureStatus: FeatureStatusLabel): string => {
-        switch (featureStatus) {
-            case FeatureStatusLabel.BETA:
-                return "oxygen-chip-beta";
-            case FeatureStatusLabel.COMING_SOON:
-                return "oxygen-chip-coming-soon";
-        }
-    };
-
     const renderActionConfiguredStatus = (actionType: string): ReactElement => {
         let count: number = 0;
 
@@ -238,7 +230,8 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             {
                 description: t("actions:types.preIssueAccessToken.description.shortened"),
                 disabled: false,
-                featureStatusLabel: FeatureStatusLabel.BETA,
+                featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_CREATE_TYPES_LIST_PRE_ISSUE_ACCESS_TOKEN,
                 heading: t("actions:types.preIssueAccessToken.heading"),
                 icon: <KeyFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH,
@@ -247,7 +240,7 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             {
                 description: t("actions:types.preUpdatePassword.description.shortened"),
                 disabled: true,
-                featureStatusLabel: FeatureStatusLabel.COMING_SOON,
+                featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PASSWORD,
                 heading: t("actions:types.preUpdatePassword.heading"),
                 icon: <PadlockAsteriskFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH,
@@ -256,7 +249,7 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             {
                 description: t("actions:types.preUpdateProfile.description.shortened"),
                 disabled: true,
-                featureStatusLabel: FeatureStatusLabel.COMING_SOON,
+                featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PROFILE,
                 heading: t("actions:types.preUpdateProfile.heading"),
                 icon: <ProfileFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH,
@@ -265,7 +258,7 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             {
                 description: t("actions:types.preRegistration.description.shortened"),
                 disabled: true,
-                featureStatusLabel: FeatureStatusLabel.COMING_SOON,
+                featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_REGISTRATION,
                 heading: t("actions:types.preRegistration.heading"),
                 icon: <UserFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_REGISTRATION_URL_PATH,
@@ -365,14 +358,11 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
                                             { !cardProps.disabled ?
                                                 renderActionConfiguredStatus(cardProps.identifier) : null }
                                         </div>
-                                        <div
-                                            className={ "ribbon " +
-                                                        resolveFeatureLabelClass(cardProps.featureStatusLabel) }
-                                        >
-                                            <span className="MuiChip-label">
-                                                { t(cardProps.featureStatusLabel) }
-                                            </span>
-                                        </div>
+                                        <FeatureFlagLabel
+                                            featureFlags={ actionsFeatureConfig?.featureFlags }
+                                            featureKey={ cardProps.featureStatusKey }
+                                            type="ribbon"
+                                        />
                                     </CardContent>
                                     <CardContent>
                                         <Typography variant="body2" color="text.secondary">

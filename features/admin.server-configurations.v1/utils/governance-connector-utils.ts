@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,7 @@
 
 import { AppConstants, store } from "@wso2is/admin.core.v1";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
@@ -390,7 +391,7 @@ export class GovernanceConnectorUtils {
                         header: I18n.instance.t("pages:emailDomainDiscovery.title"),
                         id: ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY,
                         route: AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
-                        status: FeatureStatusLabel.NEW,
+                        status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.LOGIN_AND_REGISTRATION_ORGANIZATION_DISCOVERY,
                         testId: "email-domain-discovery-card"
                     },
                     {
@@ -398,7 +399,8 @@ export class GovernanceConnectorUtils {
                         header: I18n.instance.t("pages:impersonation.title"),
                         id: ServerConfigurationsConstants.IMPERSONATION,
                         route: AppConstants.getPaths().get("IMPERSONATION"),
-                        status: FeatureStatusLabel.NEW,
+                        status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                            .LOGIN_AND_REGISTRATION_ORGANIZATION_IMPERSONATION,
                         testId: "impersonation-card"
                     }
                 ],
