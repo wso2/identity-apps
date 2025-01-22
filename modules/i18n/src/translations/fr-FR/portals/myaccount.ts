@@ -757,105 +757,6 @@ export const myAccount: MyAccountNS = {
                 },
                 regenerate: "Régénérer"
             },
-            pushAuthenticatorApp: {
-                addHint: "Configurer",
-                configuredDescription: "Vous pouvez utiliser les codes TOTP de votre " +
-                    "application d'authentification configurée pour une authentification à " +
-                    "deux facteurs. Si vous n'avez pas accès à l'application, vous pouvez configurer " +
-                    "une nouvelle application d'authentification à partir d'ici",
-                deleteHint: "Retirer",
-                description: "Scannez le code QR à l'aide d'une application " +
-                    "d'authentification pour utiliser des codes d'accès " +
-                    "à usage unique basés sur le temps (également appelés TOTP) " +
-                    "comme deuxième facteur lors de la connexion aux applications.",
-                enableHint: "Activer/désactiver l'authentificateur TOTP",
-                heading: "Application d'authentification",
-                hint: "Voir",
-                modals: {
-                    delete : {
-                        heading: "Confirmation",
-                        message: "Cette action supprimera le code QR ajouté à votre profil. " +
-                            "Souhaitez-vous continuer ? "
-                    },
-                    done: "Réussi ! Vous pouvez maintenant utiliser votre application d'authentification pour une " +
-                        "authentification en deux étapes",
-                    heading: "Configurer une application d'authentification",
-                    scan: {
-                        additionNote: "Le code QR a été ajouté avec succès à votre profil",
-                        authenticatorApps: "Applications d'authentification",
-                        generate: "Générer un nouveau code",
-                        heading: "Scannez ce code QR à l'aide d'une application d'authentification",
-                        messageBody: "Vous pouvez utiliser une application d'authentification compatible dans " +
-                            "cette liste :",
-                        messageHeading: "Vous n'avez pas d'application d'authentification ?",
-                        regenerateConfirmLabel: "Confirmez la régénération d'un nouveau code QR",
-                        regenerateWarning: {
-                            extended: "Lorsque vous régénérez un nouveau code QR, vous devez le scanner et réinstaller votre application Authenticatrice.Vous ne pourrez plus vous connecter avec le code QR précédent.",
-                            generic: "Lorsque vous régénérez un nouveau code QR, vous devez le scanner et réinstaller votre application Authenticatrice.Votre configuration précédente ne fonctionnera plus."
-                        }
-                    },
-                    toolTip: "Vous n'avez pas d'application? Téléchargez une application d'authentification " +
-                        "telle que Google Authenticator depuis <1>App Store</1> ou <3>Google Play</3>",
-                    verify: {
-                        error: "La vérification a échoué. Veuillez réessayer.",
-                        heading: "Entrez le code généré pour vérification",
-                        label: "Code de vérification",
-                        placeholder: "Entrez votre code de vérification",
-                        reScan: "Re-scanner",
-                        reScanQuestion: "Voulez-vous scanner le code QR à nouveau ?",
-                        requiredError: "Veuillez entrer votre code de vérification"
-                    }
-                },
-                notifications: {
-                    deleteError: {
-                        error: {
-                            description: "{{error}}",
-                            message: "Quelque chose s'est mal passé"
-                        },
-                        genericError: {
-                            description: "Une erreur s'est produite lors de la suppression de la " +
-                                "configuration de l'authentificateur TOTP",
-                            message: "Quelque chose s'est mal passé"
-                        }
-                    },
-                    deleteSuccess: {
-                        genericMessage: "Suppression réussie",
-                        message: "La configuration TOTP a bien été supprimée."
-                    },
-                    initError: {
-                        error: {
-                            description: "{{error}}",
-                            message: "Quelque chose s'est mal passé"
-                        },
-                        genericError: {
-                            description: "Une erreur s'est produite lors de la récupération du code QR",
-                            message: "Quelque chose s'est mal passé"
-                        }
-                    },
-                    refreshError: {
-                        error: {
-                            description: "{{error}}",
-                            message: "Quelque chose s'est mal passé"
-                        },
-                        genericError: {
-                            description: "Une erreur s'est produite lors de la récupération d'un nouveau code QR",
-                            message: "Quelque chose s'est mal passé"
-                        }
-                    },
-                    updateAuthenticatorError: {
-                        error: {
-                            description: "{{error}}",
-                            message: "Quelque chose s'est mal passé"
-                        },
-                        genericError: {
-                            description: "Une erreur s'est produite lors de la tentative de mise " +
-                                "à jour de la liste des authentificateurs activés",
-                            message: "Quelque chose s'est mal passé"
-                        }
-                    }
-                },
-                regenerate: "Régénérer"
-            },
             backupCode: {
                 actions: {
                     add: "Ajouter des codes de secours",
@@ -1061,6 +962,105 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 tryButton: "Essayez avec un ancien mot de passe"
+            },
+            pushAuthenticatorApp: {
+                addHint: "Configurer",
+                configuredDescription: "Vous pouvez utiliser les codes TOTP de votre " +
+                    "application d'authentification configurée pour une authentification à " +
+                    "deux facteurs. Si vous n'avez pas accès à l'application, vous pouvez configurer " +
+                    "une nouvelle application d'authentification à partir d'ici",
+                deleteHint: "Retirer",
+                description: "Scannez le code QR à l'aide d'une application " +
+                    "d'authentification pour utiliser des codes d'accès " +
+                    "à usage unique basés sur le temps (également appelés TOTP) " +
+                    "comme deuxième facteur lors de la connexion aux applications.",
+                enableHint: "Activer/désactiver l'authentificateur TOTP",
+                heading: "Application d'authentification",
+                hint: "Voir",
+                modals: {
+                    delete : {
+                        heading: "Confirmation",
+                        message: "Cette action supprimera le code QR ajouté à votre profil. " +
+                            "Souhaitez-vous continuer ? "
+                    },
+                    done: "Réussi ! Vous pouvez maintenant utiliser votre application d'authentification pour une " +
+                        "authentification en deux étapes",
+                    heading: "Configurer une application d'authentification",
+                    scan: {
+                        additionNote: "Le code QR a été ajouté avec succès à votre profil",
+                        authenticatorApps: "Applications d'authentification",
+                        generate: "Générer un nouveau code",
+                        heading: "Scannez ce code QR à l'aide d'une application d'authentification",
+                        messageBody: "Vous pouvez utiliser une application d'authentification compatible dans " +
+                            "cette liste :",
+                        messageHeading: "Vous n'avez pas d'application d'authentification ?",
+                        regenerateConfirmLabel: "Confirmez la régénération d'un nouveau code QR",
+                        regenerateWarning: {
+                            extended: "Lorsque vous régénérez un nouveau code QR, vous devez le scanner et réinstaller votre application Authenticatrice.Vous ne pourrez plus vous connecter avec le code QR précédent.",
+                            generic: "Lorsque vous régénérez un nouveau code QR, vous devez le scanner et réinstaller votre application Authenticatrice.Votre configuration précédente ne fonctionnera plus."
+                        }
+                    },
+                    toolTip: "Vous n'avez pas d'application? Téléchargez une application d'authentification " +
+                        "telle que Google Authenticator depuis <1>App Store</1> ou <3>Google Play</3>",
+                    verify: {
+                        error: "La vérification a échoué. Veuillez réessayer.",
+                        heading: "Entrez le code généré pour vérification",
+                        label: "Code de vérification",
+                        placeholder: "Entrez votre code de vérification",
+                        reScan: "Re-scanner",
+                        reScanQuestion: "Voulez-vous scanner le code QR à nouveau ?",
+                        requiredError: "Veuillez entrer votre code de vérification"
+                    }
+                },
+                notifications: {
+                    deleteError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la suppression de la " +
+                                "configuration de l'authentificateur TOTP",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
+                    deleteSuccess: {
+                        genericMessage: "Suppression réussie",
+                        message: "La configuration TOTP a bien été supprimée."
+                    },
+                    initError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération du code QR",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
+                    refreshError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération d'un nouveau code QR",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
+                    updateAuthenticatorError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la tentative de mise " +
+                                "à jour de la liste des authentificateurs activés",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    }
+                },
+                regenerate: "Régénérer"
             },
             smsOtp: {
                 descriptions: {
