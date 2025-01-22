@@ -173,6 +173,9 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
     const isAuthUserPrivileged: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const isUpdatingSharedProfilesEnabled: boolean = !featureConfig?.users?.disabledFeatures?.includes(
+        UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_PROFILES")
+    );
 
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
@@ -462,7 +465,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg
+                    || (!isUpdatingSharedProfilesEnabled && user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg)
                         ? "eye"
                         : "pencil alternate";
                 },
@@ -477,7 +480,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg
+                    || (!isUpdatingSharedProfilesEnabled && user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg)
                         ? t("common:view")
                         : t("common:edit");
                 },

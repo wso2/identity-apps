@@ -45,12 +45,14 @@ import {
     Claim,
     ExternalClaim,
     ProfileSchemaInterface,
+    SharedProfileValueResolvingMethod,
     TestableComponentInterface,
     UniquenessScope
 } from "@wso2is/core/models";
 import { Property } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
+import { DropDownItemInterface } from "@wso2is/form/src";
 import {
     ConfirmationModal,
     CopyInputField,
@@ -137,6 +139,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const hasAttributeUpdatePermissions: boolean = useRequiredScopes(featureConfig?.attributeDialects?.scopes?.update);
+    const isUpdatingSharedProfilesEnabled: boolean = !featureConfig?.attributeDialects?.disabledFeatures?.includes(
+        "attributeDialects.sharedProfileValueResolvingMethod"
+    );
     const [ hideSpecialClaims, setHideSpecialClaims ] = useState<boolean>(true);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
@@ -161,6 +166,24 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const { data: validationData } = useValidationConfigData();
 
     const { UIConfig } = useUIConfig();
+
+    const sharedProfileValueResolvingMethodOptions: DropDownItemInterface[] = [
+        {
+            text: t("claims:local.forms." +
+                "sharedProfileValueResolvingMethod.options.fromOrigin"),
+            value: SharedProfileValueResolvingMethod.FROM_ORIGIN
+        },
+        {
+            text: t("claims:local.forms.sharedProfileValueResolvingMethod." +
+                "options.fromSharedProfile"),
+            value: SharedProfileValueResolvingMethod.FROM_SHARED_PROFILE
+        },
+        {
+            text: t("claims:local.forms.sharedProfileValueResolvingMethod." +
+                "options.fromFirstFoundInHierarchy"),
+            value: SharedProfileValueResolvingMethod.FROM_FIRST_FOUND_IN_HIERARCHY
+        }
+    ];
 
     /**
      * Get username configuration.
@@ -466,6 +489,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
                 regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
                 required: values?.required !== undefined && !values?.readOnly ? !!values.required : false,
+                sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod as
+                    SharedProfileValueResolvingMethod || SharedProfileValueResolvingMethod.FROM_ORIGIN,
                 supportedByDefault: values?.supportedByDefault !== undefined
                     ? !!values.supportedByDefault : claim?.supportedByDefault,
                 uniquenessScope: values?.uniquenessScope as UniquenessScope || UniquenessScope.NONE
@@ -518,10 +543,16 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
                 regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
                 required: values?.required !== undefined && !values?.readOnly ? !!values.required : false,
+                sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod as
+                    SharedProfileValueResolvingMethod || SharedProfileValueResolvingMethod.FROM_ORIGIN,
                 supportedByDefault: values?.supportedByDefault !== undefined
                     ? !!values.supportedByDefault : claim?.supportedByDefault,
                 uniquenessScope: values?.uniquenessScope as UniquenessScope || UniquenessScope.NONE
             };
+        }
+
+        if (isSystemClaim || !isUpdatingSharedProfilesEnabled) {
+            delete data.sharedProfileValueResolvingMethod;
         }
 
         setIsSubmitting(true);
@@ -881,6 +912,22 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 minLength={ ClaimManagementConstants.REGEX_FIELD_MIN_LENGTH }
                                 hint={ t("claims:local.forms.regExHint") }
                                 readOnly={ isSubOrganization() || isReadOnly }
+                            />
+                        )
+                    }
+                    { isUpdatingSharedProfilesEnabled &&
+                        (
+                            <Field.Dropdown
+                                ariaLabel="shared-profile-value-resolving-method-dropdown"
+                                name={ ClaimManagementConstants.SHARED_PROFILE_VALUE_RESOLVING_METHOD_PROPERTY_NAME }
+                                label={ t("claims:local.forms.sharedProfileValueResolvingMethod.label") }
+                                data-componentid={ `${ testId }-form-shared-profile-value-resolving-method-dropdown` }
+                                hint={ t("claims:local.forms.sharedProfileValueResolvingMethod.hint") }
+                                disabled={ isSubOrganization() || isSystemClaim || isReadOnly }
+                                options={ sharedProfileValueResolvingMethodOptions }
+                                value={ claim?.sharedProfileValueResolvingMethod
+                                    || SharedProfileValueResolvingMethod.FROM_ORIGIN
+                                }
                             />
                         )
                     }

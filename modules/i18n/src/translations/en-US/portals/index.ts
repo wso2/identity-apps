@@ -65,3 +65,4 @@ export * from "./tenants";
 export * from "./sms-templates";
 export * from "./policy-administration";
 export * from "./remote-user-stores";
+export * from "./rules";

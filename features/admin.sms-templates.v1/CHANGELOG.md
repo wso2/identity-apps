@@ -1,5 +1,34 @@
 # @wso2is/admin.sms-templates.v1
 
+## 1.0.91
+
+### Patch Changes
+
+- Updated dependencies [[`363aeec4c658628cf89027a9f81f52f545421842`](https://github.com/wso2/identity-apps/commit/363aeec4c658628cf89027a9f81f52f545421842), [`50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523`](https://github.com/wso2/identity-apps/commit/50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523), [`abf5c953b8f48db5cdb855e75f5c1b847d1e42f0`](https://github.com/wso2/identity-apps/commit/abf5c953b8f48db5cdb855e75f5c1b847d1e42f0)]:
+  - @wso2is/admin.core.v1@2.37.0
+  - @wso2is/i18n@2.16.0
+  - @wso2is/core@2.5.7
+  - @wso2is/admin.branding.v1@2.27.65
+  - @wso2is/admin.organizations.v1@2.26.92
+  - @wso2is/common.branding.v1@2.25.65
+  - @wso2is/access-control@3.3.11
+  - @wso2is/dynamic-forms@2.4.22
+  - @wso2is/form@2.6.15
+  - @wso2is/forms@2.3.12
+  - @wso2is/react-components@2.8.22
+
+## 1.0.90
+
+### Patch Changes
+
+- [#7345](https://github.com/wso2/identity-apps/pull/7345) [`dca7d1cfbb1c492105ec13b2231446f0cf71eacb`](https://github.com/wso2/identity-apps/commit/dca7d1cfbb1c492105ec13b2231446f0cf71eacb) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Fix sms template update issues in root orgs and sub orgs
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.36.1
+  - @wso2is/admin.branding.v1@2.27.64
+  - @wso2is/admin.organizations.v1@2.26.91
+  - @wso2is/common.branding.v1@2.25.64
+
 ## 1.0.89
 
 ### Patch Changes
