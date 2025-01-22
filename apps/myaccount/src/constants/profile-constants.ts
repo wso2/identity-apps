@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,6 +34,13 @@ export class ProfileConstants {
     public static readonly CHANGE_PASSWORD_ERROR: string = "Error occurred while changing the users password.";
 
     public static readonly GLOBE: string = "globe";
+    /**
+     *  The feature flag to enable/disable the distinct attribute profiles feature.
+     */
+    public static readonly DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG: string =
+        "personalInfo.distinct.attribute.profiles";
+
+    public static readonly USERNAME_CLAIM_NAME: string = "userName";
 }
 
 /**

@@ -27,6 +27,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
@@ -205,6 +206,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
+    );
+
+    const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.attributeDialects?.disabledFeatures?.includes(
+        ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
     );
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
@@ -2355,6 +2360,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      */
     const isFieldDisplayable = (schema: ProfileSchemaInterface): boolean => {
         const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
+
+        // If the distinct attribute profiles feature is enabled, check the supportedByDefault flag.
+        if (!isDistinctAttributeProfilesDisabled) {
+            // The global supportedByDefault value is a string. Hence, it needs to be converted to a boolean.
+            let resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+
+            if (schema?.profiles?.endUser?.supportedByDefault !== undefined) {
+                resolveSupportedByDefaultValue = schema?.profiles?.endUser?.supportedByDefault;
+            }
+
+            // If the schema is not supported by default and the value is empty, the field should not be displayed.
+            if (!resolveSupportedByDefaultValue) {
+                return false;
+            }
+        }
 
         return (!isEmpty(profileInfo.get(schema.name)) ||
             (!isReadOnly && (resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA)));
