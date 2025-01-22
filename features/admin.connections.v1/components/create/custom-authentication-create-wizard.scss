@@ -16,118 +16,120 @@
  * under the License.
  */
 
- .wizard-wrapper {
-    .wizard-container {
-        margin-top: 0px;
-        margin-bottom: 0px;
-    }
-
-    .text-field-container {
-        margin-top: 8px;
-        margin-bottom: 8px;
-    }
-
-    .select-field-container {
-        margin-bottom: 8px;
-    }
-
-    .hint-text {
-        margin-top: 0px;
-        margin-bottom: 8px;
-    }
-
-    .button-container {
-        margin-top: 30px;
-    }
-
-    .alert-title {
-        font-weight: 100;
-    }
-
-    .secondary-button {
-        margin-top: 10px;
-    }
-
-    .placeholder {
-        border-radius: 8px;
-        margin-bottom: 8px;
-
-        &.label {
-            height: 20px;
-            max-width: 100px;
+ .custom-authentication-create-wizard {
+    .wizard-wrapper {
+        .wizard-container {
+            margin-top: 0px;
+            margin-bottom: 0px;
         }
-
-        &.text-field {
-            height: 40px;
-        }
-    }
-
-    .placeholder-box {
-        > * {
-            margin-bottom: 8px; 
-        }
-    }
-}
-
-.sub-template-selection {
-    .sub-template-selection-container {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 10px;
-        column-gap: 20px;
-
-        .sub-template-selection-card {
-            flex: 1;
-            height: 260px;
-            margin: none;
-            white-space: normal;
     
-            .card-text-container {
-                .header {
-                    white-space: normal;
-                    font-weight: bold;
-                    margin: 20px;
-                }
-                .examples {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-                    white-space: normal;
-                }
-                .main-description {
-                    margin-bottom: 15px;
-                    white-space: normal;
-                }
+        .text-field-container {
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+    
+        .select-field-container {
+            margin-bottom: 8px;
+        }
+    
+        .hint-text {
+            margin-top: 0px;
+            margin-bottom: 8px;
+        }
+    
+        .button-container {
+            margin-top: 30px;
+        }
+    
+        .alert-title {
+            font-weight: 100;
+        }
+    
+        .secondary-button {
+            margin-top: 10px;
+        }
+    
+        .placeholder {
+            border-radius: 8px;
+            margin-bottom: 8px;
+    
+            &.label {
+                height: 20px;
+                max-width: 100px;
             }
-
-            .card-image-container {
-                height: 10px;
+    
+            &.text-field {
+                height: 40px;
             }
         }
-        .sub-template-selection-card:first-child {
-            margin-top: 14px; // semantic-ui-react Card has set top margin of the first child to zero. We are overriding it.
+    
+        .placeholder-box {
+            > * {
+                margin-bottom: 8px; 
+            }
         }
     }
-}
-
-.divider-container {
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.heading-container {
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.box-container {
-    background-color: #f9fafb;
-    border-radius: 8px;
-    padding: 30px;
-
-    .box-field {
+    
+    .sub-template-selection {
+        .sub-template-selection-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            column-gap: 20px;
+    
+            .sub-template-selection-card {
+                flex: 1;
+                height: 260px;
+                margin: none;
+                white-space: normal;
+        
+                .card-text-container {
+                    .header {
+                        white-space: normal;
+                        font-weight: bold;
+                        margin: 20px;
+                    }
+                    .examples {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        white-space: normal;
+                    }
+                    .main-description {
+                        margin-bottom: 15px;
+                        white-space: normal;
+                    }
+                }
+    
+                .card-image-container {
+                    height: 10px;
+                }
+            }
+            .sub-template-selection-card:first-child {
+                margin-top: 14px; // semantic-ui-react Card has set top margin of the first child to zero. We are overriding it.
+            }
+        }
+    }
+    
+    .divider-container {
         margin-top: 20px;
-        margin-left: 10px;
-        margin-right: 10px;
+        margin-bottom: 20px;
     }
-}
+    
+    .heading-container {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .box-container {
+        background-color: #f9fafb;
+        border-radius: 8px;
+        padding: 30px;
+    
+        .box-field {
+            margin-top: 20px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+    }
+ }

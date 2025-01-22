@@ -110,8 +110,8 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
     );
     const [ selectedTemplateId, setSelectedTemplateId ] = useState<string>(null);
     const [ isSubmitting ] = useState<boolean>(false);
-    const [ isShowSecret1, setIsShowSecret1 ] = useState(false);
-    const [ isShowSecret2, setIsShowSecret2 ] = useState(false);
+    const [ showPrimarySecret, setShowPrimarySecret ] = useState(false);
+    const [ showSecondarySecret, setShowSecondarySecret ] = useState(false);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
 
@@ -137,6 +137,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
 
     useEffect(() => {
         if (!initWizard) {
+            console.log("Init wizard");
             setWizardSteps(getWizardSteps());
             setInitWizard(true);
         }
@@ -196,7 +197,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
      * @param errors - Errors object
      * @returns `true` if the field has an error, `false` otherwise.
      */
-    const ifFieldsHave = (errors: FormErrors): boolean => {
+    const hasValidationErrors = (errors: FormErrors): boolean => {
         return !Object.keys(errors).every((k: any) => !errors[k]);
     };
 
@@ -233,10 +234,10 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                                     "authenticationTypeDropdown.authProperties.username.placeholder"
                             ) }
                             inputType="password"
-                            type={ isShowSecret1 ? "text" : "password" }
+                            type={ showPrimarySecret ? "text" : "password" }
                             InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(isShowSecret1, () =>
-                                    setIsShowSecret1(!isShowSecret1)
+                                endAdornment: renderInputAdornmentOfSecret(showPrimarySecret, () =>
+                                    setShowPrimarySecret(!showPrimarySecret)
                                 )
                             } }
                             required={ true }
@@ -258,10 +259,10 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                             ) }
                             name="passwordAuthProperty"
                             inputType="password"
-                            type={ isShowSecret2 ? "text" : "password" }
+                            type={ showSecondarySecret ? "text" : "password" }
                             InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(isShowSecret2, () =>
-                                    setIsShowSecret2(!isShowSecret2)
+                                endAdornment: renderInputAdornmentOfSecret(showSecondarySecret, () =>
+                                    setShowSecondarySecret(!showSecondarySecret)
                                 )
                             } }
                             required={ true }
@@ -280,10 +281,10 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                             className="addon-field-wrapper"
                             name="accessTokenAuthProperty"
                             inputType="password"
-                            type={ isShowSecret1 ? "text" : "password" }
+                            type={ showPrimarySecret ? "text" : "password" }
                             InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(isShowSecret1, () =>
-                                    setIsShowSecret1(!isShowSecret1)
+                                endAdornment: renderInputAdornmentOfSecret(showPrimarySecret, () =>
+                                    setShowPrimarySecret(!showPrimarySecret)
                                 )
                             } }
                             label={ t(
@@ -330,10 +331,10 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                             className="addon-field-wrapper"
                             name="valueAuthProperty"
                             inputType="password"
-                            type={ isShowSecret2 ? "text" : "password" }
+                            type={ showSecondarySecret ? "text" : "password" }
                             InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(isShowSecret2, () =>
-                                    setIsShowSecret2(!isShowSecret2)
+                                endAdornment: renderInputAdornmentOfSecret(showSecondarySecret, () =>
+                                    setShowSecondarySecret(!showSecondarySecret)
                                 )
                             } }
                             label={ t(
@@ -610,7 +611,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                     );
                 }
 
-                setNextShouldBeDisabled(ifFieldsHave(errors));
+                setNextShouldBeDisabled(hasValidationErrors(errors));
 
                 return errors;
             } }
@@ -708,13 +709,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
         return [ wizardCommonFirstPage(), generalSettingsPage(), configurationsPage() ];
     };
 
-    /**
-     * Wizard help panel content is defined here since there is not metadata.json associated with custom authenticators.
-     * Currently the help panel content is extracted only from the metadata.json file and a separate effort
-     * needs to be in place to improve this.
-     *
-     * @returns help panel.
-     */
     const WizardHelpPanel = (): ReactElement => {
         return (
             <div>
@@ -816,16 +810,17 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                         className="content-container"
                         data-componentid={ `${_componentId}-modal-content-2` }
                     >
-                        <Wizard2
-                            ref={ wizardRef }
-                            initialValues={ initialValues }
-                            // onSubmit={ handleFormSubmit }
-                            uncontrolledForm={ true }
-                            pageChanged={ (index: number) => setCurrentWizardStep(index) }
-                            data-componentid={ _componentId }
-                        >
-                            { resolveWizardPages() }
-                        </Wizard2>
+                        <div className="custom-authentication-create-wizard">
+                            <Wizard2
+                                ref={ wizardRef }
+                                initialValues={ initialValues }
+                                uncontrolledForm={ true }
+                                pageChanged={ (index: number) => setCurrentWizardStep(index) }
+                                data-componentid={ _componentId }
+                            >
+                                { resolveWizardPages() }
+                            </Wizard2>
+                        </div>
                     </ModalWithSidePanel.Content>
                 </React.Fragment>
                 <ModalWithSidePanel.Actions data-componentid={ `${_componentId}-modal-actions` }>
@@ -841,7 +836,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                                 </LinkButton>
                             </SemanticGrid.Column>
                             <SemanticGrid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                { /*Check whether we have more steps*/ }
                                 { currentWizardStep < wizardSteps.length - 1 && (
                                     <PrimaryButton
                                         disabled={ nextShouldBeDisabled }
@@ -855,7 +849,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                                         <Icon name="arrow right" />
                                     </PrimaryButton>
                                 ) }
-                                { /*Check whether its the last step*/ }
                                 { currentWizardStep === wizardSteps.length - 1 && (
                                     <PrimaryButton
                                         disabled={ nextShouldBeDisabled || isSubmitting }
