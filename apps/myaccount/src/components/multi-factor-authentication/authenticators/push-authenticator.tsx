@@ -16,11 +16,9 @@
  * under the License.
  */
 
-import IconButton from "@oxygen-ui/react/IconButton";
 import { default as OxygenList }from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
-import { TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Popup } from "@wso2is/react-components";
 import QRCode from "qrcode.react";
@@ -238,17 +236,29 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                                     { registeredDeviceList.map((registeredDevice: PushAuthRegisteredDevice) => (
                                         <ListItem
                                             key={ registeredDevice?.deviceId }
-                                            secondaryAction={
-                                                (<IconButton
-                                                    edge="end"
-                                                    aria-label="delete"
+                                            secondaryAction={ (
+                                                <Icon
+                                                    name="trash alternate outline"
+                                                    color="red"
+                                                    size="mini"
+                                                    className="list-icon"
+                                                    data-testid={ `${ componentId }-remove-device` }
                                                     onClick={
                                                         () => deleteRegisteredDevice(registeredDevice.deviceId)
-                                                    }>
-                                                    <TrashIcon />
-                                                </IconButton>)
-                                            }
+                                                    }
+                                                />
+                                            ) }
                                         >
+                                            <Icon
+                                                name="mobile alternate"
+                                                size="large"
+                                                className="device-icon"
+                                                data-testid={ `${ componentId }-remove-device` }
+                                                onClick={
+                                                    () => deleteRegisteredDevice(registeredDevice.deviceId)
+                                                }
+                                            />
+
                                             <ListItemText
                                                 primary={ registeredDevice?.name }
                                                 secondary={ registeredDevice?.model }
