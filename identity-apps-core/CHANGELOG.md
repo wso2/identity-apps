@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.10.6
+
+### Patch Changes
+
+- [#7356](https://github.com/wso2/identity-apps/pull/7356) [`a6c864c8dfa74566b0eb1117223c69430463e468`](https://github.com/wso2/identity-apps/commit/a6c864c8dfa74566b0eb1117223c69430463e468) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix last name and first name identitied as unique attributes though it has been disbaled as unique attributes
+
 ## 2.10.5
 
 ### Patch Changes
