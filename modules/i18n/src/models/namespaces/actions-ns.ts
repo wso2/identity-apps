@@ -174,6 +174,14 @@ export interface actionsNS {
                 validations: string;
             }
         }
+        rules: {
+            button: string;
+            info: {
+                title: string;
+                message: string;
+            };
+            label: string;
+        }
     };
     goBackActions: string,
     notification: {

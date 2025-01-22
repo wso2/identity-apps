@@ -31,6 +31,7 @@ export interface Claim {
     required: boolean;
     supportedByDefault: boolean;
     uniquenessScope?: UniquenessScope;
+    sharedProfileValueResolvingMethod?: SharedProfileValueResolvingMethod;
     attributeMapping?: AttributeMapping[];
     properties?: Property[];
     profiles?: {
@@ -151,4 +152,16 @@ export enum UniquenessScope {
     NONE = "NONE",
     WITHIN_USERSTORE = "WITHIN_USERSTORE",
     ACROSS_USERSTORES = "ACROSS_USERSTORES"
+}
+
+/**
+ * Enum representing the method of resolving shared profile attribute values.
+ * - FROM_ORIGIN: Use the value from the originating organization.
+ * - FROM_SHARED_PROFILE: Use the value from the shared profile.
+ * - FROM_FIRST_FOUND_IN_HIERARCHY: Use the first value found in the organization hierarchy.
+ */
+export enum SharedProfileValueResolvingMethod {
+    FROM_ORIGIN = "FromOrigin",
+    FROM_SHARED_PROFILE = "FromSharedProfile",
+    FROM_FIRST_FOUND_IN_HIERARCHY = "FromFirstFoundInHierarchy"
 }

@@ -343,4 +343,9 @@ export class I18nModuleConstants {
      * Remote User Stores namespace.
      */
     public static readonly REMOTE_USER_STORES_NAMESPACE: string = "remoteUserStores";
+
+    /**
+     * Rules namespace.
+     */
+    public static readonly RULES_NAMESPACE: string = "rules";
 }

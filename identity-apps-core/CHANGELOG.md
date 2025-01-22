@@ -1,5 +1,23 @@
 # @wso2is/identity-apps-core
 
+## 2.10.7
+
+### Patch Changes
+
+- [#7357](https://github.com/wso2/identity-apps/pull/7357) [`f09d5cdae572f4d0ddf22383ef06d14f01942678`](https://github.com/wso2/identity-apps/commit/f09d5cdae572f4d0ddf22383ef06d14f01942678) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix required shown for optional fileds on self registration page
+
+## 2.10.6
+
+### Patch Changes
+
+- [#7356](https://github.com/wso2/identity-apps/pull/7356) [`a6c864c8dfa74566b0eb1117223c69430463e468`](https://github.com/wso2/identity-apps/commit/a6c864c8dfa74566b0eb1117223c69430463e468) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix last name and first name identitied as unique attributes though it has been disbaled as unique attributes
+
+## 2.10.5
+
+### Patch Changes
+
+- [#7314](https://github.com/wso2/identity-apps/pull/7314) [`df64c8e46741ad83103d1fa8b266846a105572ea`](https://github.com/wso2/identity-apps/commit/df64c8e46741ad83103d1fa8b266846a105572ea) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add userId extraction support during self registration
+
 ## 2.10.4
 
 ### Patch Changes

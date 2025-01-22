@@ -236,7 +236,9 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                     idpEntityIdAlias: values.get("idpEntityIdAlias"),
                     issuer: values.get("issuer") || initialValues?.issuer,
                     requestValidation: {
-                        enableSignatureValidation: isCertAvailableForEncrypt && values.get("requestSignatureValidation")
+                        enableSignatureValidation: (isCertAvailableForEncrypt
+                            || isSignatureValidationCertificateAliasEnabled)
+                        && values.get("requestSignatureValidation")
                             .includes("enableSignatureValidation"),
                         signatureValidationCertAlias: values.get("signatureValidationCertAlias")
                     },
@@ -1932,8 +1934,9 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     <ApplicationCertificateWrapper
                                         protocol={ SupportedAuthProtocolTypes.SAML }
                                         deleteAllowed={ !(
-                                            initialValues?.requestValidation?.enableSignatureValidation ||
-                                            initialValues?.singleSignOnProfile?.assertion?.encryption?.enabled
+                                            (initialValues?.requestValidation?.enableSignatureValidation
+                                                && !isSignatureValidationCertificateAliasEnabled)
+                                            || initialValues?.singleSignOnProfile?.assertion?.encryption?.enabled
                                         ) }
                                         reasonInsideTooltipWhyDeleteIsNotAllowed={
                                             t("applications:forms." +

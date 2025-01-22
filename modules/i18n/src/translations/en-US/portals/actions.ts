@@ -182,6 +182,14 @@ export const actions: actionsNS = {
                 validations: "Password Sharing format is a required field"
             },
             label: "Password Sharing"
+        },
+        rules: {
+            button: "Configure Rule",
+            info: {
+                message: "This action will be executed without any conditions.",
+                title: "No execution rule is configured."
+            },
+            label: "Execution Rule"
         }
     },
     goBackActions: "Go back to Actions",
