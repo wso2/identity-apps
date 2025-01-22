@@ -198,7 +198,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
      * @returns `true` if the field has an error, `false` otherwise.
      */
     const hasValidationErrors = (errors: FormErrors): boolean => {
-        return !Object.keys(errors).every((k: any) => !errors[k]);
+        return !Object.keys(errors).every((k: string) => !errors[k]);
     };
 
     /**
