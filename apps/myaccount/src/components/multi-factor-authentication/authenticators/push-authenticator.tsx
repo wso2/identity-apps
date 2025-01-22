@@ -19,10 +19,11 @@
 import { default as OxygenList }from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { GenericIcon, Popup } from "@wso2is/react-components";
+import { ConfirmationModal, GenericIcon, Popup } from "@wso2is/react-components";
 import QRCode from "qrcode.react";
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     Button,
@@ -66,8 +67,11 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
         isRegisteredDeviceListLoading,
         qrCode,
         registeredDeviceList,
+        setIsConfigPushAuthenticatorModalOpen,
         translateKey
     } = usePushAuthenticator();
+
+    const [ deviceIdToBeDeleted, setDeviceIdToBeDeleted ] = useState<string>("");
 
     /**
      * Renders the push authenticator configuration Modal.
@@ -77,7 +81,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
     const renderPushAuthenticatorWizard = (): React.ReactElement => {
         return (
             <Modal
-                data-testid={ `${ componentId }-modal` }
+                data-componentId={ `${ componentId }-modal` }
                 dimmer="blurring"
                 size="tiny"
                 open={ isConfigPushAuthenticatorModalOpen }
@@ -87,9 +91,17 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                 <Modal.Header className="wizard-header text-center">
                     { t(translateKey + "modals.heading") }
                 </Modal.Header>
-                <Modal.Content data-testid={ `${ componentId }-modal-content` } scrolling>
+                <Modal.Content data-componentId={ `${ componentId }-modal-content` } scrolling>
                     { renderPushAuthenticatorWizardContent() }
                 </Modal.Content>
+                { registeredDeviceList?.length > 0 && (
+                    <Modal.Actions
+                        data-componentId={ `${ componentId }-view-modal-actions` }
+                        className ="actions"
+                    >
+                        { renderPushAuthenticatorWizardActions() }
+                    </Modal.Actions>)
+                }
             </Modal>
         );
     };
@@ -97,7 +109,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
     /**
      * Render push authenticator configuration modal content.
      *
-     * @returns Modal content based on PushAuthenticatorModalCurrentStep.
+     * @returns Modal content
      */
     const renderPushAuthenticatorWizardContent = (): React.ReactElement => {
         if (!registeredDeviceList || registeredDeviceList?.length === 0) {
@@ -106,7 +118,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                     <h5 className=" text-center"> { t(translateKey + "modals.scan.heading") }</h5>
                     <Segment textAlign="center" basic className="qr-code">
                         { qrCode
-                            ? <QRCode value={ qrCode } data-testid={ `${ componentId }-modals-scan-qrcode` }/>
+                            ? <QRCode value={ qrCode } data-componentId={ `${ componentId }-modals-scan-qrcode` }/>
                             : null
                         }
                     </Segment>
@@ -121,7 +133,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                                                     primary
                                                     type="submit"
                                                     className="totp-verify-action-button"
-                                                    data-testid={ `${ componentId }-modal-actions-primary-button` }
+                                                    data-componentId={ `${ componentId }-modal-actions-primary-button` }
                                                 >
                                                     { t("common:verify") }
                                                 </Button>
@@ -135,7 +147,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                                                     type="button"
                                                     onClick={ handlePushAuthenticatorInitCancel }
                                                     className="link-button totp-verify-action-button"
-                                                    data-testid={ `${ componentId }-modal-actions-cancel-button` }>
+                                                    data-componentId={ `${ componentId }-modal-actions-cancel-button` }>
                                                     { t("common:cancel") }
                                                 </Button>
                                             </Grid.Column>
@@ -178,8 +190,72 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
         );
     };
 
+    /**
+     * Render push authenticator configuration modal actions.
+     *
+     * @returns Modal actions
+     */
+    const renderPushAuthenticatorWizardActions = (): React.ReactElement => {
+        if (registeredDeviceList?.length > 0) {
+            return (
+                <Button
+                    primary
+                    className = "totp-verify-done-button"
+                    data-componentId={ `${ componentId }-modal-actions-primary-button` }
+                    onClick= { () => {
+                        setIsConfigPushAuthenticatorModalOpen(false);
+                    } }
+                >
+                    { t("common:done") }
+                </Button>
+            );
+        }
+
+    };
+
+    /**
+     * This methods generates and returns the delete confirmation modal.
+     *
+     * @returns ReactElement Generates the delete confirmation modal.
+     */
+    const renderDeleteConfirmationModal = (): ReactElement => (
+        <ConfirmationModal
+            data-componentId={ `${ componentId }-confirmation-modal` }
+            onClose={ (): void => setDeviceIdToBeDeleted("") }
+            type="negative"
+            open={ Boolean(deviceIdToBeDeleted) }
+            assertionHint={ t("myAccount:components.mfa.fido.modals.deleteConfirmation.assertionHint") }
+            assertionType="checkbox"
+            primaryAction={ t("common:confirm") }
+            secondaryAction={ t("common:cancel") }
+            onSecondaryActionClick={ (): void => {
+                setDeviceIdToBeDeleted("");
+            } }
+            onPrimaryActionClick={ (): void => {
+                deleteRegisteredDevice(deviceIdToBeDeleted);
+                setDeviceIdToBeDeleted("");
+            } }
+            closeOnDimmerClick={ false }
+        >
+            <ConfirmationModal.Header data-componentId={ `${ componentId }-confirmation-modal-header` }>
+                { t("myAccount:components.mfa.fido.modals.deleteConfirmation.heading") }
+            </ConfirmationModal.Header>
+            <ConfirmationModal.Message
+                data-componentId={ `${ componentId }-confirmation-modal-message` }
+                attached
+                negative
+            >
+                { t("myAccount:components.mfa.fido.modals.deleteConfirmation.description") }
+            </ConfirmationModal.Message>
+            <ConfirmationModal.Content data-componentId={ `${ componentId }-confirmation-modal-content` }>
+                { t("myAccount:components.mfa.fido.modals.deleteConfirmation.content") }
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
+    );
+
+
     return (
-        <>
+        <div className="push-authenticator">
             { renderPushAuthenticatorWizard() }
             <Grid padded={ true } data-componentid={ componentId }>
                 <Grid.Row columns={ 2 }>
@@ -217,7 +293,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                                             color="grey"
                                             name="plus"
                                             disabled={ isRegisteredDeviceListLoading }
-                                            data-testid={ `${componentId}-view-button` }
+                                            data-componentId={ `${componentId}-view-button` }
                                         />)
                                     }
                                     content={ t(translateKey + "addHint") }
@@ -237,27 +313,33 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                                         <ListItem
                                             key={ registeredDevice?.deviceId }
                                             secondaryAction={ (
-                                                <Icon
-                                                    name="trash alternate outline"
-                                                    color="red"
-                                                    size="mini"
-                                                    className="list-icon"
-                                                    data-testid={ `${ componentId }-remove-device` }
-                                                    onClick={
-                                                        () => deleteRegisteredDevice(registeredDevice.deviceId)
-                                                    }
+                                                <Popup
+                                                    content={ t("common:delete") }
+                                                    trigger={ (<Icon
+                                                        name="trash alternate outline"
+                                                        color="red"
+                                                        size="mini"
+                                                        className="list-icon"
+                                                        data-componentId={ `${ componentId }-remove-device` }
+                                                        onClick={
+                                                            () => setDeviceIdToBeDeleted(registeredDevice.deviceId)
+                                                        }
+                                                    />) }
+                                                    position="top center" // Positioning of the tooltip
                                                 />
+
                                             ) }
                                         >
                                             <Icon
                                                 name="mobile alternate"
                                                 size="large"
                                                 className="device-icon"
-                                                data-testid={ `${ componentId }-remove-device` }
+                                                data-componentId={ `${ componentId }-remove-device` }
                                                 onClick={
                                                     () => deleteRegisteredDevice(registeredDevice.deviceId)
                                                 }
                                             />
+
 
                                             <ListItemText
                                                 primary={ registeredDevice?.name }
@@ -270,7 +352,8 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                         </Grid.Row>
                     ) : null
                 }
+                { deviceIdToBeDeleted && renderDeleteConfirmationModal() }
             </Grid>
-        </>
+        </div>
     );
 };

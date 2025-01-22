@@ -144,6 +144,7 @@ export default function usePushAuthenticator () {
         isRegisteredDeviceListLoading,
         qrCode,
         registeredDeviceList,
+        setIsConfigPushAuthenticatorModalOpen,
         translateKey
     };
 }
