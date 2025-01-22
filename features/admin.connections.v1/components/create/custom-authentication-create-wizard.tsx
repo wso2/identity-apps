@@ -64,8 +64,8 @@ import {
     WizardStepInterface,
     WizardStepsCustomAuth
 } from "../../models/connection";
-import "./custom-authentication-create-wizard.scss";
 import { ConnectionsManagementUtils } from "../../utils/connection-utils";
+import "./custom-authentication-create-wizard.scss";
 
 export interface CustomAuthenticationCreateWizardPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -110,8 +110,8 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
     );
     const [ selectedTemplateId, setSelectedTemplateId ] = useState<string>(null);
     const [ isSubmitting ] = useState<boolean>(false);
-    const [ showPrimarySecret, setShowPrimarySecret ] = useState(false);
-    const [ showSecondarySecret, setShowSecondarySecret ] = useState(false);
+    const [ showPrimarySecret, setShowPrimarySecret ] = useState<boolean>(false);
+    const [ showSecondarySecret, setShowSecondarySecret ] = useState<boolean>(false);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
 
@@ -146,10 +146,10 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
     useEffect(() => {
         const templateId: string =
             selectedAuthenticator === CustomAuthConstants.EXTERNAL_AUTHENTICATOR
-                ? "external-custom-authentication"
+                ? CustomAuthConstants.EXTERNAL_CUSTOM_AUTHENTICATOR_ID
                 : selectedAuthenticator === CustomAuthConstants.INTERNAL_AUTHENTICATOR
-                    ? "internal-user-custom-authentication"
-                    : "two-factor-custom-authentication";
+                    ? CustomAuthConstants.INTERNAL_CUSTOM_AUTHENTICATOR_ID
+                    : CustomAuthConstants.TWO_FACTOR_CUSTOM_AUTHENTICATOR_ID;
 
         setSelectedTemplateId(templateId);
     }, [ selectedAuthenticator ]);
@@ -370,18 +370,18 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
 
         if (!values?.endpointUri) {
             errors.endpointUri = t(
-                "customAuthentication:fields.createWizard.configurationsStep." + "endpoint.validations.empty"
+                "customAuthentication:fields.createWizard.configurationsStep.endpoint.validations.empty"
             );
         }
         if (URLUtils.isURLValid(values?.endpointUri)) {
             if (!URLUtils.isHttpsUrl(values?.endpointUri)) {
                 errors.endpointUri = t(
-                    "customAuthentication:fields.createWizard.configurationsStep." + "endpoint.validations.invalid"
+                    "customAuthentication:fields.createWizard.configurationsStep.endpoint.validations.invalid"
                 );
             }
         } else {
             errors.endpointUri = t(
-                "customAuthentication:fields.createWizard.configurationsStep." + "endpoint.validations.general"
+                "customAuthentication:fields.createWizard.configurationsStep.endpoint.validations.general"
             );
         }
 
@@ -629,14 +629,14 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 data-componentid={ `${_componentId}-form-wizard-identifier` }
                 width={ 15 }
             />
-            <Hint>{ t("customAuthentication:fields.createWizard.generalSettingsStep.helpPanel.identifier.hint") }</Hint>
+            <Hint>{ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.hint") }</Hint>
             <Field.Input
                 ariaLabel="displayName"
                 inputType="resource_name"
                 name="displayName"
                 label={ t("customAuthentication:fields.createWizard.generalSettingsStep.displayName.label") }
                 placeholder={ t(
-                    "customAuthentication:fields.createWizard.generalSettingsStep.displayName." + "placeholder"
+                    "customAuthentication:fields.createWizard.generalSettingsStep.displayName.placeholder"
                 ) }
                 initialValue={ initialValues.displayName }
                 required={ true }
@@ -645,9 +645,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 data-componentid={ `${_componentId}-form-wizard-display-name` }
                 width={ 15 }
             />
-            <Hint>
-                { t("customAuthentication:fields.createWizard.generalSettingsStep.helpPanel." + "displayName.hint") }
-            </Hint>
         </WizardPage>
     );
 
@@ -801,7 +798,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                         data-componentid={ `${_componentId}-modal-content-1` }
                     >
                         <Steps.Group current={ currentWizardStep }>
-                            { wizardSteps.map((step: any, index: number) => (
+                            { wizardSteps.map((step: WizardStepInterface, index: number) => (
                                 <Steps.Step active key={ index } icon={ step.icon } title={ step.title } />
                             )) }
                         </Steps.Group>
@@ -871,7 +868,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                                         data-testid="add-connection-modal-previous-button"
                                     >
                                         <Icon name="arrow left" />
-                                        { t("authenticationProvider:wizards.buttons." + "previous") }
+                                        { t("authenticationProvider:wizards.buttons.previous") }
                                     </LinkButton>
                                 ) }
                             </SemanticGrid.Column>

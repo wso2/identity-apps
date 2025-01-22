@@ -338,7 +338,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                 );
 
             case CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.CUSTOM_AUTHENTICATION:
-                if(isFeatureEnabled(customAuthFeatureConfig, "identityProviders.customAuthentication")) {
+                if (isFeatureEnabled(customAuthFeatureConfig, "identityProviders.customAuthentication")) {
                     return (
                         <CustomAuthenticationCreateWizard
                             title={ t("customAuthentication:fields.createWizard.title") }

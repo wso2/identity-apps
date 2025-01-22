@@ -102,7 +102,6 @@ export const customAuthentication: customAuthenticationNS = {
             },
             generalSettingsStep: {
                 displayName: {
-                    hint: "",
                     label: "Display Name",
                     placeholder: "ABC Authenticator",
                     validations: {
@@ -113,21 +112,18 @@ export const customAuthentication: customAuthenticationNS = {
                 helpPanel: {
                     displayName: {
                         description: "Provide a meaningful name to identify the connection.",
-                        header: "Display Name",
-                        hint: "Must be a string containing only letters (a-z, A-Z) numbers (0-9), spaces, " +
-                        "underscore (_) and hyphen (-). "
+                        header: "Display Name"
                     },
                     identifier: {
                         description: "Provide a unique name to refer in authentication scripts and " +
                         "authentication parameters.",
                         header: "Identifier",
-                        hint: "Must be a string containing only letters (a-z, A-Z) numbers (0-9), spaces, " +
-                        "underscore (_) and hyphen (-). ",
                         warning: "This field should be unique; once created, it is not editable. "
                     }
                 },
                 identifier: {
-                    hint: "",
+                    hint: "Must be a string containing only letters (a-z, A-Z) numbers (0-9), " +
+                    "underscore (_) and hyphen (-). ",
                     label: "Identifier",
                     placeholder: "ABC_authenticator",
                     validations: {

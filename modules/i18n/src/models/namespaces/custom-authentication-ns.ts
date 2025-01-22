@@ -54,7 +54,6 @@ export interface customAuthenticationNS {
                 displayName: {
                     label: string;
                     placeholder: string;
-                    hint: string;
                     validations: {
                         empty: string
                         invalid: string
@@ -64,13 +63,11 @@ export interface customAuthenticationNS {
                     identifier: {
                         header: string;
                         description: string;
-                        hint: string;
                         warning: string;
                     };
                     displayName: {
                         header: string;
                         description: string;
-                        hint: string;
                     };
                 };
             };

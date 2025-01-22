@@ -346,11 +346,17 @@ export class ConnectionUIConstants {
         EMPTY_STRING: string,
         EXTERNAL_AUTHENTICATOR: AvailableCustomAuthentications,
         INTERNAL_AUTHENTICATOR: AvailableCustomAuthentications,
-        TWO_FACTOR_AUTHENTICATOR: AvailableCustomAuthentications
+        TWO_FACTOR_AUTHENTICATOR: AvailableCustomAuthentications,
+        EXTERNAL_CUSTOM_AUTHENTICATOR_ID: string,
+        INTERNAL_CUSTOM_AUTHENTICATOR_ID: string,
+        TWO_FACTOR_CUSTOM_AUTHENTICATOR_ID: string,
     } = {
             EMPTY_STRING: "",
             EXTERNAL_AUTHENTICATOR: "external",
+            EXTERNAL_CUSTOM_AUTHENTICATOR_ID: "external-custom-authentication",
             INTERNAL_AUTHENTICATOR: "internal",
-            TWO_FACTOR_AUTHENTICATOR: "two-factor"
+            INTERNAL_CUSTOM_AUTHENTICATOR_ID: "internal-user-custom-authentication",
+            TWO_FACTOR_AUTHENTICATOR: "two-factor",
+            TWO_FACTOR_CUSTOM_AUTHENTICATOR_ID: "two-factor-custom-authentication"
         };
 }
