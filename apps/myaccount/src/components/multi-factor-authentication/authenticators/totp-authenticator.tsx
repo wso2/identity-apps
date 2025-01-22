@@ -254,8 +254,6 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
         initTOTPCode()
             .then((response: any) => {
-                console.log(response?.data?.qrCodeUrl);
-                
                 const qrCodeUrl: string = window.atob(response?.data?.qrCodeUrl);
 
                 setIsConfigTOTPModalOpen(true);
