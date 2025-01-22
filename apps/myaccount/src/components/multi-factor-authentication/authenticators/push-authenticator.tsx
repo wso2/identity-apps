@@ -40,7 +40,6 @@ import {
 import { updateEnabledAuthenticators } from "../../../api";
 import {
     deletePushAuthRegisteredDevice,
-    deletePushAuthenticator,
     initPushAuthenticatorQRCode
 } from "../../../api/multi-factor-push";
 import { getMFAIcons } from "../../../configs";
@@ -189,21 +188,8 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
      * Handle cancelling push authenticator configuration flow.
      */
     const handlePushAuthenticatorInitCancel = () => {
-        deletePushAuthenticator()
-            .then(() => {
-                setIsConfigPushAuthenticatorModalOpen(false);
-                setQrCode(null);
-                handleUpdateEnabledAuthenticators(EnabledAuthenticatorUpdateAction.REMOVE);
-            })
-            .catch((error: any) => {
-                onAlertFired({
-                    description: t(translateKey + "notifications.deleteError.error.description", {
-                        error
-                    }),
-                    level: AlertLevels.ERROR,
-                    message: t(translateKey + "notifications.deleteError.error.message")
-                });
-            });
+        setIsConfigPushAuthenticatorModalOpen(false);
+        setQrCode(null);
     };
 
     /**
