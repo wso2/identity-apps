@@ -193,6 +193,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
 
     /**
      * This method checks whether an error message is attached to a specific field.
+     *
      * @param errors - Errors object
      * @returns `true` if the field has an error, `false` otherwise.
      */
@@ -202,6 +203,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
 
     /**
      * This method handles endpoint authentication type dropdown changes.
+     *
      * @param event - event associated with the dropdown change.
      * @param data - data changed by the event
      */
@@ -211,6 +213,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
 
     /**
      * This method renders property fields of each endpoint authentication type.
+     *
      * @returns property fields of the selected authentication type.
      */
     const renderEndpointAuthPropertyFields = (): ReactElement => {
@@ -359,6 +362,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
 
     /**
      * This method validates the endpoint configurations.
+     *
      * @param values - values to be validated.
      * @returns errors object.
      */
