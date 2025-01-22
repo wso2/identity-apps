@@ -234,9 +234,6 @@
     if (hasPurposes) {
         defaultPurposeCatId = selfRegistrationMgtClient.getDefaultPurposeId(user.getTenantDomain());
         uniquePIIs = IdentityManagementEndpointUtil.getUniquePIIs(purposes);
-        if (MapUtils.isNotEmpty(uniquePIIs)) {
-            piisConfigured = true;
-        }
     }
 
     List<Claim> claimsList;
@@ -244,8 +241,9 @@
     try {
         claimsList = usernameRecoveryApi.claimsGet(user.getTenantDomain(), false);
         uniquePIIs = IdentityManagementEndpointUtil.fillPiisWithClaimInfo(uniquePIIs, claimsList);
-        if (uniquePIIs != null) {
+        if (MapUtils.isNotEmpty(uniquePIIs)) {
             claims = uniquePIIs.values().toArray(new Claim[0]);
+            piisConfigured = true;
         }
         IdentityManagementEndpointUtil.addReCaptchaHeaders(request, usernameRecoveryApi.getApiClient().getResponseHeaders());
 
@@ -2094,8 +2092,8 @@
             var firstNameUserInput = document.getElementById("firstNameUserInput");
             var lastNameUserInput = document.getElementById("lastNameUserInput");
 
-            if ( (!!firstNameUserInput &&  firstNameUserInput.value.trim() == "")
-                || ( !!lastNameUserInput && lastNameUserInput.value.trim() == ""))  {
+            if ( (!!firstNameUserInput &&  firstNameUserInput.value.trim() == "" && firstNameUserInput.required)
+                || ( !!lastNameUserInput && lastNameUserInput.value.trim() == "" && lastNameUserInput.required)) {
                 return false;
             }
 
