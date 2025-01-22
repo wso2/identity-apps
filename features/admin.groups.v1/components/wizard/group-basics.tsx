@@ -18,8 +18,6 @@
 
 import { AppState, SharedUserStoreConstants, SharedUserStoreUtils, UserStoreDetails } from "@wso2is/admin.core.v1";
 import { groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
-import { RootOnlyComponent } from "@wso2is/admin.organizations.v1/components/root-only-component";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getAUserStore, getUserStoreList } from "@wso2is/admin.userstores.v1/api/user-stores";
 import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
 import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
@@ -34,7 +32,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
-import { CreateGroupFormData, SearchGroupInterface, searchGroupList } from "../..";
+import { searchGroupList } from "../../api/groups";
+import { CreateGroupFormData, SearchGroupInterface } from "../../models/groups";
 
 /**
  * Interface to capture group basics props.
@@ -71,8 +70,6 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
     const [ basicDetails, setBasicDetails ] = useState<any>(null);
-
-    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     const groupName: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
 
@@ -171,38 +168,34 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
             }
         ];
 
-        if (isSuperOrganization() || isFirstLevelOrganization()) {
-            try {
-                const response: AxiosResponse<UserstoreListResponseInterface[]> = await getUserStoreList();
+        try {
+            const response: AxiosResponse<UserstoreListResponseInterface[]> = await getUserStoreList();
 
-                const readWriteStores: UserstoreListResponseInterface[] = await Promise.all(response.data?.map(
-                    async (store: UserstoreListResponseInterface) => {
-                        const isReadWrite: boolean = await isUserStoreReadWrite(store.id);
+            const readWriteStores: UserstoreListResponseInterface[] = await Promise.all(response.data?.map(
+                async (store: UserstoreListResponseInterface) => {
+                    const isReadWrite: boolean = await isUserStoreReadWrite(store?.id);
 
-                        return isReadWrite ? store : null;
-                    }));
-
-                readWriteStores.filter(Boolean).forEach((store: UserstoreListResponseInterface, index: number) => {
-                    if (store) {
-                        storeOptions.push({
-                            key: index,
-                            text: store.name,
-                            value: store.name
-                        });
-                    }
-                });
-
-                setUserStoresList(storeOptions);
-            } catch (error) {
-                dispatch(addAlert({
-                    description: t(
-                        "userstores:notifications.fetchUserstores.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("userstores:notifications.fetchUserstores.genericError.message")
+                    return isReadWrite ? store : null;
                 }));
-            }
-        } else {
+
+            readWriteStores.filter(Boolean).forEach((store: UserstoreListResponseInterface, index: number) => {
+                if (store) {
+                    storeOptions.push({
+                        key: index,
+                        text: store.name,
+                        value: store.name
+                    });
+                }
+            });
+
             setUserStoresList(storeOptions);
+        } catch (error) {
+            dispatch(addAlert({
+                description: t(
+                    "userstores:notifications.fetchUserstores.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("userstores:notifications.fetchUserstores.genericError.message")
+            }));
         }
     };
 
@@ -230,26 +223,24 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                 {
                     groupConfig?.allowGroupAddForRemoteUserstores && (
                         <GridRow>
-                            <RootOnlyComponent>
-                                <GridColumn mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                    <Field
-                                        data-componentid={ `${ componentId }-domain-dropdown` }
-                                        type="dropdown"
-                                        label={ t("roles:addRoleWizard.forms.roleBasicDetails." +
-                                            "domain.label.group") }
-                                        name="domain"
-                                        children={ userStoreOptions }
-                                        placeholder={ t("roles:addRoleWizard." +
-                                            "forms.roleBasicDetails.domain.placeholder") }
-                                        requiredErrorMessage={ t("roles:addRoleWizard.forms." +
-                                            "roleBasicDetails.domain.validation.empty.group") }
-                                        required={ true }
-                                        element={ <div></div> }
-                                        listen={ handleDomainChange }
-                                        value={ initialValues?.basicDetails?.domain ?? userStoreOptions[ 0 ]?.value }
-                                    />
-                                </GridColumn>
-                            </RootOnlyComponent>
+                            <GridColumn mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Field
+                                    data-componentid={ `${ componentId }-domain-dropdown` }
+                                    type="dropdown"
+                                    label={ t("roles:addRoleWizard.forms.roleBasicDetails." +
+                                        "domain.label.group") }
+                                    name="domain"
+                                    children={ userStoreOptions }
+                                    placeholder={ t("roles:addRoleWizard." +
+                                        "forms.roleBasicDetails.domain.placeholder") }
+                                    requiredErrorMessage={ t("roles:addRoleWizard.forms." +
+                                        "roleBasicDetails.domain.validation.empty.group") }
+                                    required={ true }
+                                    element={ <div></div> }
+                                    listen={ handleDomainChange }
+                                    value={ initialValues?.basicDetails?.domain ?? userStoreOptions[ 0 ]?.value }
+                                />
+                            </GridColumn>
                         </GridRow>
                     )
                 }

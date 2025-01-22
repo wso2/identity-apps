@@ -21,22 +21,18 @@
         width: 100%;
     }
 
-    .accordion-details {
-        border-radius: 8px;
-        padding: 2px;
-
-        .multi-value-table {
-            .multi-value-table-data-row {
-                &:last-child td, &:last-child th {
-                    border: none;
-                }
+    .multi-value-table {
+        .multi-value-table-data-row {
+            &:last-child td, &:last-child th {
+                border: none;
             }
 
             .table-c1 {
                 display: flex;
                 flex-wrap: nowrap;
                 align-items: center;
-
+                padding: 0.2em 0;
+    
                 .c1-value{
                     margin-bottom: 0;
                     flex-shrink: 0;
@@ -59,6 +55,11 @@
                 align-items: center;
                 justify-content: flex-end;
                 gap: 4px;
+                padding: 0.2em 0;
+
+                .text-btn {
+                    padding: 0px;
+                }
             }
         }
     }

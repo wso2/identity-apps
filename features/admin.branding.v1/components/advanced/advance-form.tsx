@@ -27,7 +27,7 @@ import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, MutableRefObject, ReactElement, Ref, forwardRef, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Placeholder } from "semantic-ui-react";
-import { BrandingPreferencesConstants } from "../../constants";
+import { BrandingPreferencesConstants } from "../../constants/branding-preferences-constants";
 import { BrandingURLPreferenceConstants } from "../../constants/url-preference-constants";
 
 /**

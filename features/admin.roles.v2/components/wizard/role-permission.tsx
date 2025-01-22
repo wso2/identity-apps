@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { RoleConstants } from "../../constants";
-import { TreeNode } from "../../models";
+import { TreeNode } from "../../models/permission";
 import { RoleManagementUtils } from "../../utils";
 
 /**

@@ -398,7 +398,9 @@
                 }
             },
             "attributeDialects": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "attributeDialects.distinct.attribute.profiles"
+                ],
                 "enabled": true,
                 "scopes": {
                     "create": [
@@ -885,6 +887,17 @@
                     ]
                 }
             },
+            "policyAdministration":{
+                "disabledFeatures": [],
+                "enabled": false,
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
+                }
+            },
             "remoteFetchConfig": {
                 "disabledFeatures": [],
                 "enabled": false,
@@ -1282,7 +1295,7 @@
         "isHeaderAvatarLabelAllowed": false,
         "isLeftNavigationCategorized": true,
         "isMarketingConsentBannerEnabled": false,
-        "isMultipleEmailsAndMobileNumbersEnabled": false,
+        "isMultipleEmailsAndMobileNumbersEnabled": true,
         "isPasswordInputValidationEnabled": true,
         "isRequestPathAuthenticationEnabled": false,
         "isSAASDeployment": false,
@@ -1295,6 +1308,11 @@
             "roleMapping": false
         },
         "listAllAttributeDialects": true,
+        "multiTenancy": {
+            "isTenantDomainDotExtensionMandatory": true,
+            "tenantDomainIllegalCharactersRegex": ".*[^a-z0-9._-].*",
+            "tenantDomainRegex": ""
+        },
         "passwordPolicyConfigs": {
             "maxPasswordAllowedLength": 64
         },
@@ -1302,6 +1320,26 @@
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {
             "productVersion": ""
+        },
+        "routes": {
+            "organizationEnabledRoutes": [
+                "apiResources",
+                "applications",
+                "attributeDialects",
+                "branding",
+                "consoleSettings",
+                "emailTemplates",
+                "gettingStarted",
+                "governanceConnectors",
+                "groups",
+                "identityProviders",
+                "organizations",
+                "roles",
+                "smsTemplates",
+                "userRoles",
+                "userStores",
+                "users"
+            ]
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,

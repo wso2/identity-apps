@@ -21,7 +21,7 @@ import {  Heading } from "@wso2is/react-components";
 import React, { Fragment, ReactElement } from "react";
 import { Divider, Grid } from "semantic-ui-react";
 import { LayoutDesignExtensionInterface } from "./layout-design-extension-component-interface";
-import { BrandingPreferencesConstants } from "../../../constants";
+import { BrandingPreferencesConstants } from "../../../constants/branding-preferences-constants";
 
 /**
  * Renders the layout design extension form fields for the headings section.

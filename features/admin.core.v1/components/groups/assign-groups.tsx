@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { GroupsInterface } from "@wso2is/admin.groups.v1";
+import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { RolesInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";

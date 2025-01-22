@@ -34,6 +34,7 @@ import { createRole } from "../api/roles";
 import { RoleBasics } from "../components/wizard-updated/role-basics";
 import { RolePermissionsList } from "../components/wizard-updated/role-permissions/role-permissions";
 import { RoleAudienceTypes } from "../constants";
+import { ScopeInterface } from "../models/apiResources";
 import {
     CreateRoleFormData,
     CreateRoleInterface,
@@ -41,8 +42,7 @@ import {
     CreateRoleStateInterface,
     CreateRoleStepsFormTypes,
     SelectedPermissionsInterface
-} from "../models";
-import { ScopeInterface } from "../models/apiResources";
+} from "../models/roles";
 
 /**
  * Interface which captures create role props.

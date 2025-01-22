@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { BasicRoleInterface } from "@wso2is/admin.roles.v2/models";
+import { BasicRoleInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models";
 import { RolesMemberInterface } from "@wso2is/core/models";
 import { GenericIconProps } from "@wso2is/react-components";

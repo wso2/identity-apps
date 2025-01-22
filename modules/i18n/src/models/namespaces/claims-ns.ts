@@ -470,6 +470,15 @@ export interface ClaimsNS {
                     invalidName: string;
                 };
             };
+            sharedProfileValueResolvingMethod: {
+                label: string;
+                hint: string;
+                options: {
+                    fromOrigin: string;
+                    fromSharedProfile: string;
+                    fromFirstFoundInHierarchy: string;
+                };
+            }
             uniquenessScope: {
                 label: string;
                 options: {
@@ -515,6 +524,21 @@ export interface ClaimsNS {
             infoMessages: {
                 disabledConfigInfo: string;
                 configApplicabilityInfo: string;
+            };
+            profiles: {
+                administratorConsole: string;
+                attributeConfigurations: {
+                    title: string;
+                    description: string;
+                }
+                endUserProfile: string;
+                selfRegistration: string;
+                displayByDefault: string;
+                displayByDefaultHint: string;
+                required: string;
+                requiredHint: string;
+                readonly: string;
+                readonlyHint: string;
             };
         };
         dangerZone: {

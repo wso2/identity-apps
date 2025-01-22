@@ -277,6 +277,17 @@ export class I18nConstants {
     public static readonly REMOTE_USER_STORES_NAMESPACE: string = I18nModuleConstants.REMOTE_USER_STORES_NAMESPACE;
 
     /**
+     * Policy Administration namespace.
+     */
+    public static readonly POLICY_ADMINISTRATION_NAMESPACE: string =
+        I18nModuleConstants.POLICY_ADMINISTRATION_NAMESPACE;
+
+    /**
+     * Rules namespace.
+     */
+    public static readonly RULES_NAMESPACE: string = I18nModuleConstants.RULES_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
@@ -327,7 +338,9 @@ export class I18nConstants {
         [ I18nConstants.IMPERSONATION_CONFIGURATION_NAMESPACE, "portals" ],
         [ I18nConstants.ACTIONS_NAMESPACE, "portals" ],
         [ I18nConstants.TENANTS_NAMESPACE, "portals" ],
-        [ I18nConstants.REMOTE_USER_STORES_NAMESPACE, "portals" ]
+        [ I18nConstants.POLICY_ADMINISTRATION_NAMESPACE, "portals" ],
+        [ I18nConstants.REMOTE_USER_STORES_NAMESPACE, "portals" ],
+        [ I18nConstants.RULES_NAMESPACE, "portals" ]
     ]);
 
     /**

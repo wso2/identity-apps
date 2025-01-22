@@ -486,7 +486,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             </EmphasizedSegment>
             <ConfirmationModal
                 onClose={ (): void => {
-                    setTempRoleAudience(undefined);
+                    setTempRoleAudience(roleAudience);
                     setShowSwitchAudienceWarning(false);
                 } }
                 type="negative"
@@ -497,7 +497,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ (): void => {
-                    setTempRoleAudience(undefined);
+                    setTempRoleAudience(roleAudience);
                     setShowSwitchAudienceWarning(false);
                 } }
                 onPrimaryActionClick={ (): void => {

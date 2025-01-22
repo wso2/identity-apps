@@ -1,5 +1,68 @@
 # @wso2is/identity-apps-core
 
+## 2.10.7
+
+### Patch Changes
+
+- [#7357](https://github.com/wso2/identity-apps/pull/7357) [`f09d5cdae572f4d0ddf22383ef06d14f01942678`](https://github.com/wso2/identity-apps/commit/f09d5cdae572f4d0ddf22383ef06d14f01942678) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix required shown for optional fileds on self registration page
+
+## 2.10.6
+
+### Patch Changes
+
+- [#7356](https://github.com/wso2/identity-apps/pull/7356) [`a6c864c8dfa74566b0eb1117223c69430463e468`](https://github.com/wso2/identity-apps/commit/a6c864c8dfa74566b0eb1117223c69430463e468) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix last name and first name identitied as unique attributes though it has been disbaled as unique attributes
+
+## 2.10.5
+
+### Patch Changes
+
+- [#7314](https://github.com/wso2/identity-apps/pull/7314) [`df64c8e46741ad83103d1fa8b266846a105572ea`](https://github.com/wso2/identity-apps/commit/df64c8e46741ad83103d1fa8b266846a105572ea) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add userId extraction support during self registration
+
+## 2.10.4
+
+### Patch Changes
+
+- [#7333](https://github.com/wso2/identity-apps/pull/7333) [`8b5c00139cafcda59b5d0dd7fbd8a56d7e623d87`](https://github.com/wso2/identity-apps/commit/8b5c00139cafcda59b5d0dd7fbd8a56d7e623d87) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Introduce error code for invalid response type in hybrid flow
+
+## 2.10.3
+
+### Patch Changes
+
+- [#7315](https://github.com/wso2/identity-apps/pull/7315) [`3a8e2f346e6e35969be0cf2f9683f0fc25d25e57`](https://github.com/wso2/identity-apps/commit/3a8e2f346e6e35969be0cf2f9683f0fc25d25e57) Thanks [@KD23243](https://github.com/KD23243)! - Add sanitization to backToUrl in self-registration-username-request.jsp
+
+## 2.10.2
+
+### Patch Changes
+
+- [#7318](https://github.com/wso2/identity-apps/pull/7318) [`23bd7d4f6d6d70d789ad7115ffd1fbec742455a6`](https://github.com/wso2/identity-apps/commit/23bd7d4f6d6d70d789ad7115ffd1fbec742455a6) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Bump oxygen version and enable active policy view.
+
+* [#7313](https://github.com/wso2/identity-apps/pull/7313) [`ad63bbe54541ed6b28e1f254f3e7f5e7b6767d7b`](https://github.com/wso2/identity-apps/commit/ad63bbe54541ed6b28e1f254f3e7f5e7b6767d7b) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Bump oxygen version
+
+## 2.10.1
+
+### Patch Changes
+
+- [#7303](https://github.com/wso2/identity-apps/pull/7303) [`27e635a2d54c78228e63fde1360b68a8d03a0b10`](https://github.com/wso2/identity-apps/commit/27e635a2d54c78228e63fde1360b68a8d03a0b10) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Fix input field value retention issue in self-registration form
+
+## 2.10.0
+
+### Minor Changes
+
+- [#7292](https://github.com/wso2/identity-apps/pull/7292) [`cd827d04f98a519804f1f9996a1dc3a831278df1`](https://github.com/wso2/identity-apps/commit/cd827d04f98a519804f1f9996a1dc3a831278df1) Thanks [@savindi7](https://github.com/savindi7)! - Add RTL support for Authentication and Recovery portals.
+
+### Patch Changes
+
+- [#7293](https://github.com/wso2/identity-apps/pull/7293) [`22de328e49a00d5ce9cdb9bb24a703f867ea1998`](https://github.com/wso2/identity-apps/commit/22de328e49a00d5ce9cdb9bb24a703f867ea1998) Thanks [@sumedhe](https://github.com/sumedhe)! - Fix tenant null issue in self registration flow
+
+- Updated dependencies [[`cd827d04f98a519804f1f9996a1dc3a831278df1`](https://github.com/wso2/identity-apps/commit/cd827d04f98a519804f1f9996a1dc3a831278df1)]:
+  - @wso2is/theme@2.6.0
+
+## 2.9.2
+
+### Patch Changes
+
+- [#7030](https://github.com/wso2/identity-apps/pull/7030) [`d8ac25af8c462eac2d2bb5c949f32996ad83a000`](https://github.com/wso2/identity-apps/commit/d8ac25af8c462eac2d2bb5c949f32996ad83a000) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Remove unnecessary org qualified callback url regex for portal apps
+
 ## 2.9.1
 
 ### Patch Changes

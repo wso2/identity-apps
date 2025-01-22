@@ -58,6 +58,12 @@ export class ClaimManagementConstants {
     public static readonly NEW_LOCAL_CLAIM_URL_SEARCH_PARAM: string = `?${
         ClaimManagementConstants.LOCAL_CLAIM_STATE_URL_SEARCH_PARAM_KEY }=new`;
 
+    /**
+     *  The feature flag to enable/disable the distinct attribute profiles feature.
+     */
+    public static readonly DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG: string =
+        "attributeDialects.distinct.attribute.profiles";
+
     // API errors
     public static readonly ADD_DIALECT_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while adding a new dialect.";
@@ -212,6 +218,11 @@ export class ClaimManagementConstants {
      * Claim property name for uniqueness validation scope.
      */
     public static readonly UNIQUENESS_SCOPE_PROPERTY_NAME: string = "uniquenessScope";
+    /**
+     * Claim property name for shared profile value resolving method.
+     */
+    public static readonly SHARED_PROFILE_VALUE_RESOLVING_METHOD_PROPERTY_NAME: string =
+        "sharedProfileValueResolvingMethod";
 
     /**
      * List of restricted property keys that cannot be used in claim properties.

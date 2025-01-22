@@ -1,5 +1,49 @@
 # @wso2is/i18n
 
+## 2.16.0
+
+### Minor Changes
+
+- [#7349](https://github.com/wso2/identity-apps/pull/7349) [`363aeec4c658628cf89027a9f81f52f545421842`](https://github.com/wso2/identity-apps/commit/363aeec4c658628cf89027a9f81f52f545421842) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Add rules feature
+
+### Patch Changes
+
+- [#7311](https://github.com/wso2/identity-apps/pull/7311) [`abf5c953b8f48db5cdb855e75f5c1b847d1e42f0`](https://github.com/wso2/identity-apps/commit/abf5c953b8f48db5cdb855e75f5c1b847d1e42f0) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Provide capability to update shared user profile & give support to update shared user profile resolving method for local claims.
+
+- Updated dependencies [[`50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523`](https://github.com/wso2/identity-apps/commit/50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523), [`abf5c953b8f48db5cdb855e75f5c1b847d1e42f0`](https://github.com/wso2/identity-apps/commit/abf5c953b8f48db5cdb855e75f5c1b847d1e42f0)]:
+  - @wso2is/core@2.5.7
+
+## 2.15.2
+
+### Patch Changes
+
+- [#7340](https://github.com/wso2/identity-apps/pull/7340) [`f2c7a35ce347d4ac7e3e15f3f50404c9d701d212`](https://github.com/wso2/identity-apps/commit/f2c7a35ce347d4ac7e3e15f3f50404c9d701d212) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Add policy search, deactivation of policy and move strings to i18n
+
+* [#7338](https://github.com/wso2/identity-apps/pull/7338) [`f6939061baec44323111cd5a09164d1e7a441324`](https://github.com/wso2/identity-apps/commit/f6939061baec44323111cd5a09164d1e7a441324) Thanks [@brionmario](https://github.com/brionmario)! - Add the missing validations in Tenant Domain input.
+
+## 2.15.1
+
+### Patch Changes
+
+- [#7312](https://github.com/wso2/identity-apps/pull/7312) [`4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98`](https://github.com/wso2/identity-apps/commit/4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add support to distinct attribute profiles in the console
+
+- Updated dependencies [[`4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98`](https://github.com/wso2/identity-apps/commit/4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98)]:
+  - @wso2is/core@2.5.6
+
+## 2.15.0
+
+### Minor Changes
+
+- [#7302](https://github.com/wso2/identity-apps/pull/7302) [`9ecf97c14319c2af32a0ef375c02c4b70cf159d5`](https://github.com/wso2/identity-apps/commit/9ecf97c14319c2af32a0ef375c02c4b70cf159d5) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Update SAML connection ProviderName config name
+
+### Patch Changes
+
+- [#7318](https://github.com/wso2/identity-apps/pull/7318) [`23bd7d4f6d6d70d789ad7115ffd1fbec742455a6`](https://github.com/wso2/identity-apps/commit/23bd7d4f6d6d70d789ad7115ffd1fbec742455a6) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Bump oxygen version and enable active policy view.
+
+* [#7313](https://github.com/wso2/identity-apps/pull/7313) [`ad63bbe54541ed6b28e1f254f3e7f5e7b6767d7b`](https://github.com/wso2/identity-apps/commit/ad63bbe54541ed6b28e1f254f3e7f5e7b6767d7b) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Bump oxygen version
+
+- [#7313](https://github.com/wso2/identity-apps/pull/7313) [`5a5577aacf0a12d03246c9b829c8168296b37dcf`](https://github.com/wso2/identity-apps/commit/5a5577aacf0a12d03246c9b829c8168296b37dcf) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Introduce policyAdministration UI.
+
 ## 2.14.6
 
 ### Patch Changes

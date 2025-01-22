@@ -21,14 +21,13 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
-import Accordion from "@oxygen-ui/react/Accordion";
-import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
-import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import Alert from "@oxygen-ui/react/Alert";
+import OxygenButton from "@oxygen-ui/react/Button";
+import Chip from "@oxygen-ui/react/Chip";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
-import { CheckIcon,  ChevronDownIcon, StarIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
@@ -55,6 +54,7 @@ import {
     ProfileInfoInterface,
     ProfileSchemaInterface,
     RolesMemberInterface,
+    SharedProfileValueResolvingMethod,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -67,7 +67,7 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
-    Tooltip,
+    Popup,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
@@ -77,7 +77,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffe
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Input } from "semantic-ui-react";
+import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { updateUserInfo } from "../api";
 import {
@@ -209,6 +209,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         featureConfig?.users?.scopes?.update
     );
 
+    const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.attributeDialects?.disabledFeatures?.includes(
+        ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
+    );
+
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
@@ -240,10 +244,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const oneTimePassword: string = user[userConfig.userProfileSchema]?.oneTimePassword;
     const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
         role.display === administratorConfig.adminRoleName) ?? false;
-    const [ expandMultiAttributeAccordion, setExpandMultiAttributeAccordion ] = useState<Record<string, boolean>>({
-        [EMAIL_ADDRESSES_ATTRIBUTE]: false,
-        [MOBILE_NUMBERS_ATTRIBUTE]: false
-    });
     const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
     const [ isMultipleEmailAndMobileNumberEnabled, setIsMultipleEmailAndMobileNumberEnabled ] =
         useState<boolean>(false);
@@ -1904,6 +1904,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
         const resolvedRequiredValue: boolean = schema?.profiles?.console?.required ?? schema.required;
+        const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             attributeValueList = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
@@ -1933,7 +1934,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             attributeValueList.unshift(primaryAttributeValue);
         }
         const showAccordion: boolean = attributeValueList.length >= 1;
-        const accordionLabelValue: string = showAccordion ? attributeValueList[0] : "";
 
         const showVerifiedPopup = (value: string): boolean => {
             return verificationEnabled &&
@@ -1987,7 +1987,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     requiredErrorMessage={ fieldName + " " + "is required" }
                     placeholder={ "Enter your" + " " + fieldName }
                     type="text"
-                    readOnly={ isReadOnly || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
+                    readOnly={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                    }
                     validation={ (value: string, validation: Validation) => {
                         if (!RegExp(primaryAttributeSchema.regEx).test(value)) {
                             setIsMultiValuedItemInvalid({
@@ -2024,99 +2028,39 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     }
                 />
                 <div hidden={ !showAccordion }>
-                    <Accordion
+                    <TableContainer
+                        component={ Paper }
                         elevation={ 0 }
-                        className="multi-valued-accordion"
-                        data-componentid={ `${ testId }-profile-form-${ schema.name }-accordion` }
-                        expanded={ expandMultiAttributeAccordion[schema.name] }
-                        onChange={ () => setExpandMultiAttributeAccordion(
-                            {
-                                ...expandMultiAttributeAccordion,
-                                [schema.name]: !expandMultiAttributeAccordion[schema.name]
-                            }
-                        ) }
+                        data-componentid={ `${testId}-profile-form-${schema.name}-accordion` }
                     >
-                        <AccordionSummary
-                            aria-controls="panel1a-content"
-                            expandIcon={ <ChevronDownIcon /> }
-                            id="multi-attribute-header"
-                            className="accordion-summary"
-                            data-componentid={ `${ testId }-profile-form-${ schema.name }-accordion-summary` }
+                        <Table
+                            className="multi-value-table"
+                            size="small"
+                            aria-label="multi-attribute value table"
                         >
-                            <label
-                                className={ `accordion-label ${schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                                    ? "mobile-label"
-                                    : null}`
-                                }
-                            >
-                                { accordionLabelValue }
-
-                            </label>
-                            {
-                                showVerifiedPopup(accordionLabelValue)
-                                && (
-                                    <div
-                                        className="verified-icon"
-                                        data-componentid={ `${ testId }-profile-form-${ schema.name }-verified-icon` }
-                                    >
-                                        <Tooltip
-                                            trigger={ (
-                                                <CheckIcon fill="blue" />
-                                            ) }
-                                            content={ t("common:verified") }
-                                            size="mini"
-                                        />
-                                    </div>
-                                )
-                            }
-                            {
-                                showPrimaryPopup(accordionLabelValue)
-                                && (
-                                    <div
-                                        className="primary-icon"
-                                        data-componentid={ `${ testId }-profile-form-${ schema.name }-primary-icon` }
-                                    >
-                                        <Tooltip
-                                            trigger={ (
-                                                <StarIcon fill="green" />
-                                            ) }
-                                            content={ t("common:primary") }
-                                            size="mini"
-                                        />
-                                    </div>
-                                )
-                            }
-                        </AccordionSummary>
-                        <AccordionDetails className="accordion-details">
-                            <TableContainer component={ Paper } elevation={ 0 }>
-                                <Table
-                                    className="multi-value-table"
-                                    size="small"
-                                    aria-label="multi-attribute value table"
-                                >
-                                    <TableBody>
-                                        { attributeValueList?.map(
-                                            (value: string, index: number) => (
-                                                <TableRow key={ index } className="multi-value-table-data-row">
-                                                    <TableCell align="left">
-                                                        <div className="table-c1">
-                                                            <label
-                                                                className={ `c1-value ${
-                                                                    schema.name
+                            <TableBody>
+                                { attributeValueList?.map(
+                                    (value: string, index: number) => (
+                                        <TableRow key={ index } className="multi-value-table-data-row">
+                                            <TableCell align="left">
+                                                <div className="table-c1">
+                                                    <label
+                                                        className={ `c1-value ${
+                                                            schema.name
                                                                     === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
                                                                         get("MOBILE_NUMBERS")
-                                                                        ? "mobile-label"
-                                                                        : null}`
-                                                                }
-                                                                data-componentid={
-                                                                    `${testId}-profile-form-${schema.name}` +
+                                                                ? "mobile-label"
+                                                                : null}`
+                                                        }
+                                                        data-componentid={
+                                                            `${testId}-profile-form-${schema.name}` +
                                                                     `-value-${index}`
-                                                                }
-                                                            >
-                                                                { value }
-                                                            </label>
-                                                            {
-                                                                showVerifiedPopup(value)
+                                                        }
+                                                    >
+                                                        { value }
+                                                    </label>
+                                                    {
+                                                        showVerifiedPopup(value)
                                                                 && (
                                                                     <div
                                                                         className="verified-icon"
@@ -2125,107 +2069,103 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                             `-verified-icon-${index}`
                                                                         }
                                                                     >
-                                                                        <Tooltip
-                                                                            trigger={ (
-                                                                                <CheckIcon fill="blue"/>
-                                                                            ) }
-                                                                            content={ t("common:verified") }
-                                                                            size="mini"
+                                                                        <Popup
+                                                                            name="verified-popup"
+                                                                            size="tiny"
+                                                                            trigger={
+                                                                                (
+                                                                                    <Icon
+                                                                                        name="check"
+                                                                                        color="green"
+                                                                                    />
+                                                                                )
+                                                                            }
+                                                                            header= { t("common:verified") }
+                                                                            inverted
                                                                         />
                                                                     </div>
                                                                 )
-                                                            }
-                                                            {
-                                                                showPrimaryPopup(value)
+                                                    }
+                                                    {
+                                                        showPrimaryPopup(value)
                                                                 && (
                                                                     <div
-                                                                        className="primary-icon"
                                                                         data-componentid={
                                                                             `${testId}-profile-form-${schema.name}` +
                                                                             `-primary-icon-${index}`
                                                                         }
                                                                     >
-                                                                        <Tooltip
-                                                                            trigger={ (
-                                                                                <StarIcon fill="green"/>
-                                                                            ) }
-                                                                            content={ t("common:primary") }
-                                                                            size="mini"
+                                                                        <Chip
+                                                                            label={ t("common:primary") }
+                                                                            size="medium"
                                                                         />
                                                                     </div>
                                                                 )
+                                                    }
+                                                </div>
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <div className="table-c2">
+                                                    { showVerifyButton(value) && (
+                                                        <OxygenButton
+                                                            variant="text"
+                                                            size="small"
+                                                            className="text-btn"
+                                                            onClick={ () => handleVerify(schema, value) }
+                                                            data-componentid={
+                                                                `${testId}-profile-form` +
+                                                                        `-${schema.name}-verify-button-${index}`
                                                             }
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        <div className="table-c2">
-                                                            <IconButton
-                                                                size="small"
-                                                                hidden={ !showVerifyButton(value) }
-                                                                onClick={ () => handleVerify(schema, value) }
-                                                                data-componentid={
-                                                                    `${testId}-profile-form` +
-                                                                    `-${schema.name}-verify-button-${index}`
-                                                                }
-                                                                disabled={ isSubmitting || isReadOnly }
-                                                            >
-                                                                <Tooltip
-                                                                    trigger={ (
-                                                                        <CheckIcon />
-                                                                    ) }
-                                                                    content={ t("common:verify") }
-                                                                    size="mini"
-                                                                />
-                                                            </IconButton>
-                                                            <IconButton
-                                                                size="small"
-                                                                hidden={ !showMakePrimaryButton(value) }
-                                                                onClick={ () => handleMakePrimary(schema, value) }
-                                                                data-componentid={
-                                                                    `${testId}-profile-form` +
-                                                                    `-${schema.name}-make-primary-button-${index}`
-                                                                }
-                                                                disabled={ isSubmitting || isReadOnly }
-                                                            >
-                                                                <Tooltip
-                                                                    trigger={ (
-                                                                        <StarIcon />
-                                                                    ) }
-                                                                    content={ t("common:makePrimary") }
-                                                                    size="mini"
-                                                                />
-                                                            </IconButton>
-                                                            <IconButton
-                                                                size="small"
-                                                                hidden={ !showDeleteButton(value) }
-                                                                onClick={ () => {
-                                                                    setSelectedAttributeInfo({ schema, value });
-                                                                    setShowMultiValuedItemDeleteConfirmationModal(true);
-                                                                } }
-                                                                data-componentid={
-                                                                    `${testId}-profile-form` +
+                                                            disabled={ isSubmitting || isReadOnly }
+                                                        >
+                                                            { t("common:verify") }
+                                                        </OxygenButton>
+                                                    ) }
+                                                    { showMakePrimaryButton(value) && (
+                                                        <OxygenButton
+                                                            variant="text"
+                                                            size="small"
+                                                            className="text-btn"
+                                                            onClick={ () => handleMakePrimary(schema, value) }
+                                                            data-componentid={
+                                                                `${testId}-profile-form` +
+                                                                        `-${schema.name}-make-primary-button-${index}`
+                                                            }
+                                                            disabled={ isSubmitting || isReadOnly }
+                                                        >
+                                                            { t("common:makePrimary") }
+                                                        </OxygenButton>
+                                                    ) }
+                                                    <IconButton
+                                                        size="small"
+                                                        hidden={ !showDeleteButton(value) }
+                                                        onClick={ () => {
+                                                            setSelectedAttributeInfo({ schema, value });
+                                                            setShowMultiValuedItemDeleteConfirmationModal(true);
+                                                        } }
+                                                        data-componentid={
+                                                            `${testId}-profile-form` +
                                                                     `-${schema.name}-delete-button-${index}`
-                                                                }
-                                                                disabled={ isSubmitting || isReadOnly }
-                                                            >
-                                                                <Tooltip
-                                                                    trigger={ (
-                                                                        <TrashIcon />
-                                                                    ) }
-                                                                    content={ t("common:delete") }
-                                                                    size="mini"
-                                                                />
-                                                            </IconButton>
-                                                        </div>
-                                                    </TableCell>
-                                                </TableRow>
-                                            )
-                                        ) }
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </AccordionDetails>
-                    </Accordion>
+                                                        }
+                                                        disabled={ isSubmitting || isReadOnly }
+                                                    >
+                                                        <Popup
+                                                            trigger={ (
+                                                                <Icon name="trash alternate" />
+                                                            ) }
+                                                            header={ t("common:delete") }
+                                                            size="tiny"
+                                                            inverted
+                                                        />
+                                                    </IconButton>
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    )
+                                ) }
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                 </div>
             </div>
         );
@@ -2234,6 +2174,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const resolveFormField = (schema: ProfileSchemaInterface, fieldName: string, key: number): ReactElement => {
         const resolvedRequiredValue: boolean = schema?.profiles?.console?.required ?? schema.required;
         const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
+        const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
 
         if (schema.type.toUpperCase() === "BOOLEAN") {
             return (
@@ -2250,7 +2191,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             value: schema.name
                         }
                     ] }
-                    readOnly={ isReadOnly || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
+                    readOnly={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                    }
                     key={ key }
                 />
             );
@@ -2285,8 +2230,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             : []
                     ) }
                     key={ key }
-                    disabled={ false }
-                    readOnly={ isReadOnly || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
+                    disabled={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                    }
+                    readOnly={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                    }
                     clearable={ !resolvedRequiredValue }
                     search
                     selection
@@ -2334,7 +2287,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     ) }
                     key={ key }
                     disabled={ false }
-                    readOnly={ isReadOnly || schema?.mutability === ProfileConstants.READONLY_SCHEMA }
+                    readOnly={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || schema?.mutability === ProfileConstants.READONLY_SCHEMA
+                    }
                     clearable={ !resolvedRequiredValue }
                     search
                     selection
@@ -2358,7 +2315,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     type="text"
                     value={ profileInfo.get(schema.name) }
                     key={ key }
-                    readOnly={ isReadOnly || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
+                    readOnly={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                    }
                     validation={ (value: string, validation: Validation) => {
                         if (!RegExp(schema.regEx).test(value)) {
                             validation.isValid = false;
@@ -2392,7 +2353,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     value={ profileInfo.get(schema.name) }
                     key={ key }
                     disabled={ schema.name === "userName" }
-                    readOnly={ isReadOnly || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
+                    readOnly={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                    }
                     validation={ (value: string, validation: Validation) => {
                         if (!RegExp(schema.regEx).test(value)) {
                             validation.isValid = false;
@@ -2426,6 +2391,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      */
     const isFieldDisplayable = (schema: ProfileSchemaInterface): boolean => {
         const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
+
+        // If the distinct attribute profiles feature is enabled, check the supportedByDefault flag.
+        if (!isDistinctAttributeProfilesDisabled) {
+            // The global supportedByDefault value is a string. Hence, it needs to be converted to a boolean.
+            let resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+
+            if (schema?.profiles?.endUser?.supportedByDefault !== undefined) {
+                resolveSupportedByDefaultValue = schema?.profiles?.endUser?.supportedByDefault;
+            }
+
+            // If the schema is not supported by default and the value is empty, the field should not be displayed.
+            if (!resolveSupportedByDefaultValue) {
+                return false;
+            }
+        }
 
         return (!isEmpty(profileInfo.get(schema.name)) ||
             (!isReadOnly && (resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA)));

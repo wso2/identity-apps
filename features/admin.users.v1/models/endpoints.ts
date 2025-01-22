@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { UserDetailsInterface } from "./user";
 
 /**

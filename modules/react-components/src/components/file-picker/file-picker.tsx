@@ -146,6 +146,10 @@ export interface FilePickerProps extends IdentifiableComponentInterface {
      * Empty file message.
      */
     emptyFileErrorMsg?: string;
+    /**
+     * Provide a custom script editor for the paste tab.
+     */
+    scriptEditor?: React.ReactNode;
 }
 
 // Internal workings interfaces, type defs, and aliases.
@@ -178,6 +182,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
         file: initialFile,
         pastedContent: initialPastedContent,
         normalizeStateOnRemoveOperations,
+        scriptEditor,
         emptyFileError,
         emptyFileErrorMsg,
         hidePasteOption,
@@ -492,44 +497,42 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
 
     const pasteOption: PaneItem = {
         menuItem: "Paste",
-        render: () => {
-            return (
-                <TextArea
-                    rows={ 10 }
-                    placeholder={ pasteAreaPlaceholderText ?? "Paste your content in this area..." }
-                    value={ pastedContent }
-                    onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-                        if (event) {
-                            event.preventDefault();
-                            event.stopPropagation();
+        render: () => scriptEditor ? scriptEditor : (
+            <TextArea
+                rows={ 10 }
+                placeholder={ pasteAreaPlaceholderText ?? "Paste your content in this area..." }
+                value={ pastedContent }
+                onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                    if (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    if (event?.target?.value) {
+                        addPastedDataToState(event.target.value);
+                    } else {
+                        /**
+                         * CLEAR OPERATION:
+                         * This block executes when the user have cleared all the content
+                         * from the textarea and we will evaluate it as a empty string.
+                         */
+                        setPastedContent(EMPTY_STRING);
+                        /**
+                         * If the string is empty we can't show error messages below the
+                         * fields. Because, it's like the initial state.
+                         */
+                        setErrorMessage(null);
+                        setHasError(false);
+                        if (normalizeStateOnRemoveOperations) {
+                            normalizeSerializationOnPastedTextClear();
                         }
-                        if (event?.target?.value) {
-                            addPastedDataToState(event.target.value);
-                        } else {
-                            /**
-                             * CLEAR OPERATION:
-                             * This block executes when the user have cleared all the content
-                             * from the textarea and we will evaluate it as a empty string.
-                             */
-                            setPastedContent(EMPTY_STRING);
-                            /**
-                             * If the string is empty we can't show error messages below the
-                             * fields. Because, it's like the initial state.
-                             */
-                            setErrorMessage(null);
-                            setHasError(false);
-                            if (normalizeStateOnRemoveOperations) {
-                                normalizeSerializationOnPastedTextClear();
-                            }
-                        }
-                        setPasteFieldTouched(true);
-                        setFileFieldTouched(false);
-                    } }
-                    spellCheck={ false }
-                    className={ `certificate-editor ${ dark ? "dark" : "light" }` }
-                />
-            );
-        }
+                    }
+                    setPasteFieldTouched(true);
+                    setFileFieldTouched(false);
+                } }
+                spellCheck={ false }
+                className={ `certificate-editor ${ dark ? "dark" : "light" }` }
+            />
+        )
     };
 
     return (

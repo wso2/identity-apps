@@ -480,6 +480,21 @@ export const claims: ClaimsNS = {
                 }
             },
             nameHint: "The display name of the attribute in the user profile.",
+            profiles: {
+                administratorConsole: "Administrator Console",
+                attributeConfigurations: {
+                    description: "Configure attribute profiles for different flows.",
+                    title: "Attribute Configurations"
+                },
+                displayByDefault: "Display by default",
+                displayByDefaultHint: "If selected, this attribute will be displayed by default in the profile.",
+                endUserProfile: "End-User Profile",
+                readonly: "Read-only",
+                readonlyHint: "If this is selected, the value of this attribute is read-only in the profile. Be sure to select this option if the attribute value is system-defined.",
+                required: "Required",
+                requiredHint: "If selected, the user must specify a value for this attribute in the profile.",
+                selfRegistration: "Self-Registration"
+            },
             readOnly: {
                 label: "Make this attribute read-only on the user's profile"
             },
@@ -497,6 +512,15 @@ export const claims: ClaimsNS = {
             "attribute on the profile.",
             requiredWarning: "To make the email attribute not display and not required on the user's profile, " +
                 "you need to disable account verification for your organization.",
+            sharedProfileValueResolvingMethod: {
+                hint: "Select the method to determine the value of the attribute for shared user profiles.",
+                label: "Shared Profile Value Resolving Method",
+                options: {
+                    fromFirstFoundInHierarchy: "From First Found in Hierarchy",
+                    fromOrigin: "From Origin",
+                    fromSharedProfile: "From Shared Profile"
+                }
+            },
             supportedByDefault: {
                 label: "Display this attribute on the user's profile"
             },

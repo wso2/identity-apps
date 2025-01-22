@@ -45,7 +45,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { DropdownProps } from "semantic-ui-react";
 import useGetRolesList from "../../api/use-get-roles-list";
 import { RoleAudienceTypes, RoleConstants } from "../../constants";
-import { CreateRoleFormData } from "../../models";
+import { CreateRoleFormData } from "../../models/roles";
 
 const FORM_ID: string = "add-role-basics-form";
 
@@ -104,7 +104,8 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         isLoading: isApplicationListFetchRequestLoading,
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
-    } = useApplicationList("clientId,associatedRoles.allowedAudience", null, null, applicationSearchQuery);
+    } = useApplicationList("clientId,associatedRoles.allowedAudience,advancedConfigurations", null, null,
+        applicationSearchQuery);
 
     const {
         data: rolesList,
@@ -146,36 +147,38 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
         applicationList?.applications?.map((application: ApplicationListItemInterface) => {
             if (!RoleConstants.READONLY_APPLICATIONS_CLIENT_IDS.includes(application?.clientId)) {
-                options.push({
-                    content: (
-                        <ListItemText
-                            primary={ application.name }
-                            secondary={
-                                application?.associatedRoles?.allowedAudience === RoleAudienceTypes.ORGANIZATION
-                                    ? (
-                                        <>
-                                            { t("roles:addRoleWizard.forms.roleBasicDetails." +
-                                                "assignedApplication.applicationSubTitle.organization") }
-                                            <Link
-                                                data-componentid={ `${componentId}-link-navigate-roles` }
-                                                onClick={ () => navigateToApplicationEdit(application?.id) }
-                                                external={ false }
-                                            >
-                                                { t("roles:addRoleWizard.forms." +
-                                                    "roleBasicDetails.assignedApplication.applicationSubTitle." +
-                                                    "changeAudience") }
-                                            </Link>
-                                        </>
-                                    ) : t("roles:addRoleWizard.forms.roleBasicDetails." +
-                                        "assignedApplication.applicationSubTitle.application")
-                            }
-                        />
-                    ),
-                    disabled: application?.associatedRoles?.allowedAudience === RoleAudienceTypes.ORGANIZATION,
-                    key: application.id,
-                    text: application.name,
-                    value: application.id
-                });
+                if (application?.advancedConfigurations?.fragment === false) {
+                    options.push({
+                        content: (
+                            <ListItemText
+                                primary={ application.name }
+                                secondary={
+                                    application?.associatedRoles?.allowedAudience === RoleAudienceTypes.ORGANIZATION
+                                        ? (
+                                            <>
+                                                { t("roles:addRoleWizard.forms.roleBasicDetails." +
+                                                    "assignedApplication.applicationSubTitle.organization") }
+                                                <Link
+                                                    data-componentid={ `${componentId}-link-navigate-roles` }
+                                                    onClick={ () => navigateToApplicationEdit(application?.id) }
+                                                    external={ false }
+                                                >
+                                                    { t("roles:addRoleWizard.forms." +
+                                                        "roleBasicDetails.assignedApplication.applicationSubTitle." +
+                                                        "changeAudience") }
+                                                </Link>
+                                            </>
+                                        ) : t("roles:addRoleWizard.forms.roleBasicDetails." +
+                                            "assignedApplication.applicationSubTitle.application")
+                                }
+                            />
+                        ),
+                        disabled: application?.associatedRoles?.allowedAudience === RoleAudienceTypes.ORGANIZATION,
+                        key: application.id,
+                        text: application.name,
+                        value: application.id
+                    });
+                }
             }
         });
 
