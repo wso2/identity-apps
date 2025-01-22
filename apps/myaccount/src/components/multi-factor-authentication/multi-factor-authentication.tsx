@@ -220,21 +220,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_PUSH")
                     ) ? (
                         <List.Item className="inner-list-item">
-                            <PushAuthenticator
-                                onAlertFired={ onAlertFired }
-                                onEnabledAuthenticatorsUpdated={ handleEnabledAuthenticatorsUpdated }
-                                handleSessionTerminationModalVisibility={ () => {
-                                    // Show the session termination modal only if the backup code flow is not activated
-                                    // to stop showing duplicate modals.
-                                    if (isSuperTenantLogin() && isTOTPEnabled) {
-                                        setShowSessionTerminationModal(false);
-
-                                        return;
-                                    }
-
-                                    setShowSessionTerminationModal(true);
-                                } }
-                            />
+                            <PushAuthenticator />
                         </List.Item>
                     ) : null }
 

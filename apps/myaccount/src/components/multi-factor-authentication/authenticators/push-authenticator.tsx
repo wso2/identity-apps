@@ -24,8 +24,8 @@ import { TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Popup } from "@wso2is/react-components";
 import QRCode from "qrcode.react";
-import React, { PropsWithChildren, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import React, { PropsWithChildren } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Button,
     Container,
@@ -33,35 +33,17 @@ import {
     Grid,
     Icon,
     List,
-    Message,
     Modal,
     Segment
 } from "semantic-ui-react";
-import {
-    deletePushAuthRegisteredDevice,
-    initPushAuthenticatorQRCode
-} from "../../../api/multi-factor-push";
 import { getMFAIcons } from "../../../configs";
-import useGetPushAuthRegisteredDevices from "../../../hooks/use-get-push-auth-registered-devices";
-import {
-    AlertInterface,
-    AlertLevels,
-    HttpResponse
-} from "../../../models";
+import usePushAuthenticator from "../../../hooks/use-push-authenticator";
 import { PushAuthRegisteredDevice } from "../../../models/push-authenticator";
 
 /**
  * Property types for the push authenticator component.
  */
-interface PushAuthenticatorProps extends IdentifiableComponentInterface {
-    onAlertFired: (alert: AlertInterface) => void;
-    onEnabledAuthenticatorsUpdated: (updatedAuthenticators: Array<string>) => void;
-    /**
-     * This callback function handles the visibility of the
-     * session termination modal.
-     */
-     handleSessionTerminationModalVisibility: (visibility: boolean) => void;
-}
+type PushAuthenticatorProps = IdentifiableComponentInterface;
 
 /**
  * Push Authenticator.
@@ -72,138 +54,44 @@ interface PushAuthenticatorProps extends IdentifiableComponentInterface {
 export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> = (
     props: PropsWithChildren<PushAuthenticatorProps>
 ): React.ReactElement => {
-    const {
-        onAlertFired,
-        handleSessionTerminationModalVisibility,
-        ["data-componentid"]: componentId = "push-authenticator"
-    } = props;
+    const { ["data-componentid"]: componentId = "push-authenticator" } = props;
 
     const { t } = useTranslation();
 
-    const translateKey: string = "myAccount:components.mfa.pushAuthenticatorApp.";
-
     const {
-        data: registeredDeviceList,
-        isLoading:isRegisteredDeviceListLoading,
-        error: registeredDeviceListFetchError,
-        mutate: updateRegisteredDeviceList
-    } = useGetPushAuthRegisteredDevices();
-
-    const [ isLoading, setIsLoading ] = useState<boolean>(false);
-    const [ isConfigPushAuthenticatorModalOpen, setIsConfigPushAuthenticatorModalOpen ] = useState<boolean>(false);
-    const [ qrCode, setQrCode ] = useState<string>(null);
-    const [ PushAuthenticatorModalCurrentStep, setPushAuthenticatorModalCurrentStep ] = useState<number>(0);
-
-    useEffect(() => {
-        if (registeredDeviceListFetchError && !isRegisteredDeviceListLoading) {
-            onAlertFired({
-                description: t(translateKey +
-                        "notifications.updateAuthenticatorError.error.description", {
-                    error: registeredDeviceListFetchError?.message
-                }),
-                level: AlertLevels.ERROR,
-                message: t(translateKey + "notifications.updateAuthenticatorError.error.message")
-            });
-        }
-    }, [ isRegisteredDeviceListLoading, registeredDeviceListFetchError ]);
+        deleteRegisteredDevice,
+        handlePushAuthenticatorInitCancel,
+        handlePushAuthenticatorSetupSubmit,
+        initPushAuthenticatorRegFlow,
+        isConfigPushAuthenticatorModalOpen,
+        isRegisteredDeviceListLoading,
+        qrCode,
+        registeredDeviceList,
+        translateKey
+    } = usePushAuthenticator();
 
     /**
-     * Initiate the push authenticator configuration flow.
-     */
-    const initPushAuthenticatorRegFlow = () => {
-        setIsLoading(true);
-
-        initPushAuthenticatorQRCode()
-            .then((response: any) => {
-                const qrCode: string = window.btoa(JSON.stringify(response?.data));
-
-                setIsConfigPushAuthenticatorModalOpen(true);
-                setQrCode(qrCode);
-            })
-            .catch((error: any) => {
-                onAlertFired({
-                    description: t(translateKey + "notifications.initError.error.description", {
-                        error
-                    }),
-                    level: AlertLevels.ERROR,
-                    message: t(translateKey + "notifications.initError.error.message")
-                });
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-    };
-
-    /**
-     * Handle cancelling push authenticator configuration flow.
-     */
-    const handlePushAuthenticatorInitCancel = () => {
-        setIsConfigPushAuthenticatorModalOpen(false);
-        setQrCode(null);
-    };
-
-    /**
-     * Handle Push Authenticator configuration flow.
+     * Renders the push authenticator configuration Modal.
      *
-     * @param event - Form submit event.
-     * @param isRegenerated - Whether the push authenticator QR code is regenerated or not.
+     * @returns Rendered modal component
      */
-    const handlePushAuthenticatorSetupSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-        event.preventDefault();
-        updateRegisteredDeviceList();
-        setIsConfigPushAuthenticatorModalOpen(false);
-    };
-
-    /**
-     * Render push authenticator form to shown in the push authenticator configuration modal.
-     *
-     * @param isRegenerated - Whether the push authenticator QR is regenerated or not.
-     * @returns Rendered form component.
-     */
-    const renderPushAuthenticatorVerifyForm = (isRegenerated: boolean = false): React.ReactElement => {
+    const renderPushAuthenticatorWizard = (): React.ReactElement => {
         return (
-            <>
-                <Segment basic className="pl-0">
-                    <Form
-                        onSubmit={ handlePushAuthenticatorSetupSubmit }>
-                        <Container>
-                            <Grid className="ml-3 mr-3">
-                                <div className = "totp-verify-step-btn">
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                            <Button
-                                                primary
-                                                type="submit"
-                                                className="totp-verify-action-button"
-                                                data-testid={ `${ componentId }-modal-actions-primary-button` }
-                                            >
-                                                { t("common:verify") }
-                                            </Button>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </div>
-                                { !isRegenerated
-                                    ? (
-                                        <div className = "totp-verify-step-btn">
-                                            <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                                    <Button
-                                                        type="button"
-                                                        onClick={ handlePushAuthenticatorInitCancel }
-                                                        className="link-button totp-verify-action-button"
-                                                        data-testid={ `${ componentId }-modal-actions-cancel-button` }>
-                                                        { t("common:cancel") }
-                                                    </Button>
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        </div>
-                                    ) : null
-                                }
-                            </Grid>
-                        </Container>
-                    </Form>
-                </Segment>
-            </>
+            <Modal
+                data-testid={ `${ componentId }-modal` }
+                dimmer="blurring"
+                size="tiny"
+                open={ isConfigPushAuthenticatorModalOpen }
+                className="totp"
+                closeOnDimmerClick={ false }
+            >
+                <Modal.Header className="wizard-header text-center">
+                    { t(translateKey + "modals.heading") }
+                </Modal.Header>
+                <Modal.Content data-testid={ `${ componentId }-modal-content` } scrolling>
+                    { renderPushAuthenticatorWizardContent() }
+                </Modal.Content>
+            </Modal>
         );
     };
 
@@ -213,7 +101,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
      * @returns Modal content based on PushAuthenticatorModalCurrentStep.
      */
     const renderPushAuthenticatorWizardContent = (): React.ReactElement => {
-        if (PushAuthenticatorModalCurrentStep === 0) {
+        if (!registeredDeviceList || registeredDeviceList?.length === 0) {
             return (
                 <Segment basic>
                     <h5 className=" text-center"> { t(translateKey + "modals.scan.heading") }</h5>
@@ -223,7 +111,41 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                             : null
                         }
                     </Segment>
-                    { renderPushAuthenticatorVerifyForm() }
+                    <Segment basic className="pl-0">
+                        <Form onSubmit={ handlePushAuthenticatorSetupSubmit }>
+                            <Container>
+                                <Grid className="ml-3 mr-3">
+                                    <div className = "totp-verify-step-btn">
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                <Button
+                                                    primary
+                                                    type="submit"
+                                                    className="totp-verify-action-button"
+                                                    data-testid={ `${ componentId }-modal-actions-primary-button` }
+                                                >
+                                                    { t("common:verify") }
+                                                </Button>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </div>
+                                    <div className = "totp-verify-step-btn">
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                <Button
+                                                    type="button"
+                                                    onClick={ handlePushAuthenticatorInitCancel }
+                                                    className="link-button totp-verify-action-button"
+                                                    data-testid={ `${ componentId }-modal-actions-cancel-button` }>
+                                                    { t("common:cancel") }
+                                                </Button>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </div>
+                                </Grid>
+                            </Container>
+                        </Form>
+                    </Segment>
                 </Segment>
             );
         }
@@ -255,104 +177,6 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                 <p className= "success-content">{ t(translateKey + "modals.done") }</p>
             </Segment>
         );
-    };
-
-    /**
-     * Render push authenticator configuration modal actions.
-     *
-     * @returns Modal action based on PushAuthenticatorModalCurrentStep.
-     */
-    const renderPushAuthenticatorWizardActions = (): React.ReactElement => {
-        if (PushAuthenticatorModalCurrentStep === 0) {
-            return (
-                <Message className="totp-tooltip display-flex">
-                    <Icon name="info circle" />
-                    <Message.Content>
-                        <Trans
-                            i18nKey={ (translateKey + "modals.toolTip") }
-                        >
-                            Don&apos;t have an app? Download an authenticator
-                            application like Google Authenticator from
-                            <a
-                                target="_blank"
-                                href="https://www.apple.com/us/search/totp?src=globalnav"
-                                rel="noopener noreferrer"> App Store </a>
-                            or
-                            <a
-                                target="_blank"
-                                href="https://play.google.com/store/search?q=totp"
-                                rel="noopener noreferrer"> Google Play </a>
-                        </Trans>
-                    </Message.Content>
-                </Message>
-            );
-        }
-
-        return (
-            <Button
-                primary
-                className = "totp-verify-done-button"
-                data-testid={ `${ componentId }-modal-actions-primary-button` }
-                onClick= { () => {
-                    setIsConfigPushAuthenticatorModalOpen(false);
-                    setQrCode(null);
-                    setPushAuthenticatorModalCurrentStep(0);
-                    handleSessionTerminationModalVisibility(true);
-                } }
-            >
-                { t("common:done") }
-            </Button>
-        );
-    };
-
-    /**
-     * Renders the push authenticator configuration Modal.
-     *
-     * @returns Rendered modal component
-     */
-    const renderPushAuthenticatorWizard = (): React.ReactElement => {
-        return (
-            <Modal
-                data-testid={ `${ componentId }-modal` }
-                dimmer="blurring"
-                size="tiny"
-                open={ isConfigPushAuthenticatorModalOpen }
-                className="totp"
-                closeOnDimmerClick={ false }
-            >
-                <Modal.Header className="wizard-header text-center">
-                    { t(translateKey + "modals.heading") }
-                </Modal.Header>
-                <Modal.Content data-testid={ `${ componentId }-modal-content` } scrolling>
-                    { renderPushAuthenticatorWizardContent() }
-                </Modal.Content>
-                <Modal.Actions data-testid={ `${ componentId }-modal-actions` } className ="actions">
-                    { renderPushAuthenticatorWizardActions() }
-                </Modal.Actions>
-            </Modal>
-        );
-    };
-
-    const deleteRegisteredDevice = (deviceId: string): void => {
-        setIsLoading(true);
-        deletePushAuthRegisteredDevice(deviceId).then(
-            (res: HttpResponse) => {
-                if(res.status >= 200 && res.status < 400)
-                    onAlertFired({
-                        description: "successfully deleted",
-                        level: AlertLevels.SUCCESS,
-                        message: "delete success"
-                    });
-            }
-        ).catch((_err: any) => {
-            onAlertFired({
-                description: "error occurred when deleting the registered device",
-                level: AlertLevels.ERROR,
-                message: "delete error"
-            });
-        }).finally(() => {
-            setIsLoading(false);
-        });
     };
 
     return (
@@ -393,7 +217,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                                             size="small"
                                             color="grey"
                                             name="plus"
-                                            disabled={ isLoading }
+                                            disabled={ isRegisteredDeviceListLoading }
                                             data-testid={ `${componentId}-view-button` }
                                         />)
                                     }

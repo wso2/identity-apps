@@ -88,7 +88,7 @@ export const deletePushAuthRegisteredDevice = (deviceId: string) => {
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
+            if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
