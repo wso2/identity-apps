@@ -16,13 +16,12 @@
  * under the License.
  */
 
-import {  AppUtils, PreLoader } from "@wso2is/admin.core.v1";
-
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
-import { store } from "@wso2is/admin.core.v1/store";
+import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
+import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
+import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { RouteInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import {

@@ -17,13 +17,10 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import {
-    AppState,
-    AuthenticatorAccordion,
-    FeatureConfigInterface,
-    getEmptyPlaceholderIllustrations,
-    store
-} from "@wso2is/admin.core.v1";
+import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authenticator-accordion";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
