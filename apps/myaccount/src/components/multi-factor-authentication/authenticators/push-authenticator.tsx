@@ -37,7 +37,6 @@ import {
     Modal,
     Segment
 } from "semantic-ui-react";
-import { updateEnabledAuthenticators } from "../../../api";
 import {
     deletePushAuthRegisteredDevice,
     initPushAuthenticatorQRCode
@@ -47,7 +46,6 @@ import useGetPushAuthRegisteredDevices from "../../../hooks/use-get-push-auth-re
 import {
     AlertInterface,
     AlertLevels,
-    EnabledAuthenticatorUpdateAction,
     HttpResponse
 } from "../../../models";
 import { PushAuthRegisteredDevice } from "../../../models/push-authenticator";
@@ -57,8 +55,6 @@ import { PushAuthRegisteredDevice } from "../../../models/push-authenticator";
  */
 interface PushAuthenticatorProps extends IdentifiableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
-    isSuperTenantLogin: boolean;
-    enabledAuthenticators: Array<string>;
     onEnabledAuthenticatorsUpdated: (updatedAuthenticators: Array<string>) => void;
     /**
      * This callback function handles the visibility of the
@@ -77,8 +73,6 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
     props: PropsWithChildren<PushAuthenticatorProps>
 ): React.ReactElement => {
     const {
-        enabledAuthenticators = [],
-        onEnabledAuthenticatorsUpdated,
         onAlertFired,
         handleSessionTerminationModalVisibility,
         ["data-componentid"]: componentId = "push-authenticator"
@@ -87,7 +81,6 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
     const { t } = useTranslation();
 
     const translateKey: string = "myAccount:components.mfa.pushAuthenticatorApp.";
-    const pushAuthenticatorName: string = "push";
 
     const {
         data: registeredDeviceList,
@@ -115,48 +108,6 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
     }, [ isRegisteredDeviceListLoading, registeredDeviceListFetchError ]);
 
     /**
-     * Update enabled authenticator list based on the update action.
-     *
-     * @param action - The update action.
-     */
-    const handleUpdateEnabledAuthenticators = (action: EnabledAuthenticatorUpdateAction): void => {
-        const authenticatorsList: Array<string> = [ ...enabledAuthenticators ];
-
-        switch(action) {
-            case EnabledAuthenticatorUpdateAction.ADD : {
-                if (!authenticatorsList.includes(pushAuthenticatorName)) {
-                    authenticatorsList.push(pushAuthenticatorName);
-                }
-
-                break;
-            }
-            case EnabledAuthenticatorUpdateAction.REMOVE : {
-                if (authenticatorsList.includes(pushAuthenticatorName)) {
-                    authenticatorsList.splice(authenticatorsList.indexOf(pushAuthenticatorName), 1);
-                }
-
-                break;
-            }
-        }
-
-        // Update enabled authenticator list.
-        updateEnabledAuthenticators(authenticatorsList.join(","))
-            .then(() => {
-                onEnabledAuthenticatorsUpdated(authenticatorsList);
-            })
-            .catch(((errorMessage: any) => {
-                onAlertFired({
-                    description: t(translateKey +
-                            "notifications.updateAuthenticatorError.error.description", {
-                        error: errorMessage
-                    }),
-                    level: AlertLevels.ERROR,
-                    message: t(translateKey + "notifications.updateAuthenticatorError.error.message")
-                });
-            }));
-    };
-
-    /**
      * Initiate the push authenticator configuration flow.
      */
     const initPushAuthenticatorRegFlow = () => {
@@ -168,7 +119,6 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
 
                 setIsConfigPushAuthenticatorModalOpen(true);
                 setQrCode(qrCode);
-                handleUpdateEnabledAuthenticators(EnabledAuthenticatorUpdateAction.ADD);
             })
             .catch((error: any) => {
                 onAlertFired({

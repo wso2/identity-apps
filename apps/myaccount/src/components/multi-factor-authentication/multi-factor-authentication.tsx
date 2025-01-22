@@ -221,9 +221,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                     ) ? (
                         <List.Item className="inner-list-item">
                             <PushAuthenticator
-                                enabledAuthenticators={ enabledAuthenticators }
                                 onAlertFired={ onAlertFired }
-                                isSuperTenantLogin={ isSuperTenantLogin() }
                                 onEnabledAuthenticatorsUpdated={ handleEnabledAuthenticatorsUpdated }
                                 handleSessionTerminationModalVisibility={ () => {
                                     // Show the session termination modal only if the backup code flow is not activated
