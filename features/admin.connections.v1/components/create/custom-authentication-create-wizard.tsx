@@ -96,7 +96,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
     title,
     subTitle,
     onWizardClose,
-    "data-componentid": _componentId = "application-creation-adapter"
+    "data-componentid": _componentId = "custom-authentication"
 }: CustomAuthenticationCreateWizardPropsInterface): ReactElement => {
     const wizardRef: MutableRefObject<any> = useRef(null);
 
@@ -181,7 +181,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 size="small"
                 color="grey"
                 name={ !showSecret ? "eye" : "eye slash" }
-                data-componentid={ `${_componentId}-authentication-property-secret1-view-button` }
+                data-componentid={ `${_componentId}-endpoint-authentication-property-secret-view-button` }
                 onClick={ onClick }
             />
         </InputAdornment>
@@ -245,7 +245,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
-                            data-componentid={ `${_componentId}-authentication-property-username` }
+                            data-componentid={ `${_componentId}-endpoint-authentication-property-username` }
                             width={ 15 }
                         />
                         <Field.Input
@@ -270,7 +270,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
-                            data-componentid={ `${_componentId}-authentication-property-password` }
+                            data-componentid={ `${_componentId}-endpoint-authentication-property-password` }
                             width={ 15 }
                         />
                     </>
@@ -300,7 +300,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
-                            data-componentid={ `${_componentId}-authentication-property-accessToken` }
+                            data-componentid={ `${_componentId}-endpoint-authentication-property-accessToken` }
                             width={ 15 }
                         />
                     </>
@@ -325,7 +325,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
-                            data-componentid={ `${_componentId}-authentication-property-header` }
+                            data-componentid={ `${_componentId}-endpoint-authentication-property-header` }
                             width={ 15 }
                         />
                         <Field.Input
@@ -350,7 +350,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
-                            data-componentid={ `${_componentId}-authentication-property-value` }
+                            data-componentid={ `${_componentId}-endpoint-authentication-property-value` }
                             width={ 15 }
                         />
                     </>
@@ -506,7 +506,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                         showTooltips={ true }
                         overlay={ renderDimmerOverlay() }
                         overlayOpacity={ 0.6 }
-                        data-componentid={ `${_componentId}-form-wizard-external-custom-authentication-
+                        data-componentid={ `${_componentId}-create-wizard-external-custom-authentication-
                         selection-card` }
                     />
                     <SelectionCard
@@ -547,7 +547,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                         contentTopBorder={ false }
                         overlay={ renderDimmerOverlay() }
                         overlayOpacity={ 0.6 }
-                        data-componentid={ `${_componentId}-form-wizard-internal-custom-authentication-
+                        data-componentid={ `${_componentId}-create-wizard-internal-user-custom-authentication-
                         selection-card` }
                     />
                     <SelectionCard
@@ -588,7 +588,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                         overlay={ renderDimmerOverlay() }
                         overlayOpacity={ 0.6 }
                         contentTopBorder={ false }
-                        data-componentid={ `${_componentId}-form-wizard-two-factor-custom-authentication-
+                        data-componentid={ `${_componentId}-create-wizard-two-factor-custom-authentication-
                         selection-card` }
                     />
                 </div>
@@ -629,7 +629,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 required={ true }
                 maxLength={ 100 }
                 minLength={ 3 }
-                data-componentid={ `${_componentId}-form-wizard-identifier` }
+                data-componentid={ `${_componentId}-create-wizard-identifier` }
                 width={ 15 }
             />
             <Hint>{ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.hint") }</Hint>
@@ -645,7 +645,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 required={ true }
                 maxLength={ 100 }
                 minLength={ 3 }
-                data-componentid={ `${_componentId}-form-wizard-display-name` }
+                data-componentid={ `${_componentId}-create-wizard-display-name` }
                 width={ 15 }
             />
         </WizardPage>
@@ -664,7 +664,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 required={ true }
                 maxLength={ 100 }
                 minLength={ 0 }
-                data-componentid={ `${_componentId}-endpointUri` }
+                data-componentid={ `${_componentId}-create-wizard-endpoint-uri` }
                 width={ 15 }
             />
             <Divider className="divider-container" />
@@ -697,7 +697,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                     ] }
                     onChange={ handleDropdownChange }
                     enableReinitialize={ true }
-                    data-componentid={ `${_componentId}-endpoint_authentication-dropdown` }
+                    data-componentid={ `${_componentId}-create-wizard-endpoint-authentication-dropdown` }
                     width={ 15 }
                 />
                 <div className="box-field">{ renderEndpointAuthPropertyFields() }</div>
