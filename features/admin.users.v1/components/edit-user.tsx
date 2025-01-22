@@ -112,6 +112,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         return state.config.ui.features?.users?.disabledFeatures;
     });
 
+    const isUpdatingSharedProfilesEnabled: boolean = !userRolesDisabledFeatures?.includes(
+        UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_PROFILES")
+    );
+
     useEffect(() => {
         const userStore: string = user?.userName?.split("/").length > 1
             ? user?.userName?.split("/")[0]
@@ -138,8 +142,11 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     useEffect(() => {
         if (user[ SCIMConfigs.scim.enterpriseSchema ]?.managedOrg) {
+            if (!isUpdatingSharedProfilesEnabled) {
+                setIsUserProfileReadOnly(true);
+            }
+
             setIsUserManagedByParentOrg(true);
-            setIsUserProfileReadOnly(true);
         }
     }, [ user ]);
 
