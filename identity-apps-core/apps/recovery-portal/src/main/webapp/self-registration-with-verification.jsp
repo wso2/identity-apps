@@ -408,7 +408,8 @@
                                                 <% if (skipSignUpEnableCheck && StringUtils.isNotEmpty(firstNameValue)) { %> disabled <% } %>
                                                 <% if (StringUtils.isNotEmpty(firstNameValue)) { %>
                                                 value="<%= Encode.forHtmlAttribute(firstNameValue)%>"<% } %>
-                                                placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "First.name")%><% if (firstNamePII.getRequired() || !piisConfigured) { %>*<% } %>"
+                                                placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "First.name")%>
+                                                <% if (firstNamePII.getRequired() || !piisConfigured) { %>*<% } %>"
                                             />
                                             <div class="mt-1" id="firstname-error-msg" hidden="hidden">
                                                 <i class="red exclamation circle fitted icon"></i>
@@ -432,7 +433,8 @@
                                                 <% if (skipSignUpEnableCheck && StringUtils.isNotEmpty(lastNameValue)) { %> disabled <% } %>
                                                 <% if (StringUtils.isNotEmpty(lastNameValue)) { %>
                                                 value="<%= Encode.forHtmlAttribute(lastNameValue)%>"<% } %>
-                                                placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Last.name")%><% if (lastNamePII.getRequired() || !piisConfigured) { %>*<% } %>"
+                                                placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Last.name")%>
+                                                <% if (lastNamePII.getRequired() || !piisConfigured) { %>*<% } %>"
                                             />
                                             <div class="mt-1" id="lastname-error-msg" hidden="hidden">
                                                 <i class="red exclamation circle fitted icon"></i>
