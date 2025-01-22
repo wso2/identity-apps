@@ -446,7 +446,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                         </List.Content>
                     </Grid.Column>
                     <Grid.Column width={ 3 } className="last-column">
-                        { registeredDeviceList?.length === 0 && (
+                        { (!registeredDeviceList || registeredDeviceList?.length === 0) && (
                             <List.Content floated="right">
                                 <Popup
                                     trigger={
