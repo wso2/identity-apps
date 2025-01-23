@@ -39,7 +39,6 @@ import {
     CommonPluggableComponentPropertyInterface
 } from "../../../../models/connection";
 
-
 interface PushAuthenticatorFormPropsInterface extends TestableComponentInterface {
     /**
      * Push Authenticator Metadata.
