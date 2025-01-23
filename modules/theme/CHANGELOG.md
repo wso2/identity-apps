@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.6.1
+
+### Patch Changes
+
+- [#7336](https://github.com/wso2/identity-apps/pull/7336) [`3811ae3d223db8bf4fa5315f61d19a11aecc32a9`](https://github.com/wso2/identity-apps/commit/3811ae3d223db8bf4fa5315f61d19a11aecc32a9) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Add Create Wizard for Custom Authentication Feature
+
 ## 2.6.0
 
 ### Minor Changes
