@@ -26,7 +26,7 @@ import {
     VerticalStepper,
     VerticalStepperStepInterface
 } from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
-import { Config } from "@wso2is/admin.core.v1/configs";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     CodeEditor,

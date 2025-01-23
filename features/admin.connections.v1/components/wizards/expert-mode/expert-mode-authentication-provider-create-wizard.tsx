@@ -15,8 +15,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { ModalWithSidePanel, TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components";
-import { EventPublisher } from "@wso2is/admin.core.v1/utils";
+
+import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
+import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

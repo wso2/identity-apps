@@ -15,8 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { ProtocolCard } from "@wso2is/admin.core.v1/components/protocol-card";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
-import { ProtocolCard } from "@wso2is/admin.core.v1/components";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { AnimatedAvatar, EmphasizedSegment, Heading, Text } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
@@ -25,7 +25,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Divider, Grid } from "semantic-ui-react";
 import { getInboundProtocolLogos } from "../../../configs/ui";
-import { SAMLConfigModes, SupportedAuthProtocolTypes } from "../../../models";
+import { SAMLConfigModes, SupportedAuthProtocolTypes } from "../../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../../utils/application-management-utils";
 
 /**
