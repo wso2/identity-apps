@@ -41,6 +41,7 @@ export class FederatedAuthenticatorConstants {
         OFFICE_365_AUTHENTICATOR_ID: string;
         OIDC_AUTHENTICATOR_ID: string;
         ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string;
+        PASSWORD_RESET_ENFORCER_AUTHENTICATOR_ID: string;
         SAML_AUTHENTICATOR_ID: string;
         SIWE_AUTHENTICATOR_ID: string;
         SMS_OTP_AUTHENTICATOR_ID: string;
@@ -61,6 +62,7 @@ export class FederatedAuthenticatorConstants {
         OFFICE_365_AUTHENTICATOR_ID: "T2ZmaWNlMzY1QXV0aGVudGljYXRvcg",
         OIDC_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
         ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg",
+        PASSWORD_RESET_ENFORCER_AUTHENTICATOR_ID: "cGFzc3dvcmQtcmVzZXQtZW5mb3JjZXI",
         SAML_AUTHENTICATOR_ID: "U0FNTFNTT0F1dGhlbnRpY2F0b3I",
         SIWE_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
         SMS_OTP_AUTHENTICATOR_ID: "U01TT1RQ",
@@ -86,6 +88,7 @@ export class FederatedAuthenticatorConstants {
         OIDC_AUTHENTICATOR_NAME: string;
         ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME: string;
         YAHOO_AUTHENTICATOR_NAME: string;
+        PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME: string;
     } = {
         APPLE_AUTHENTICATOR_NAME: "AppleOIDCAuthenticator",
         DUO_AUTHENTICATOR_NAME: "DuoAuthenticator",
@@ -100,6 +103,7 @@ export class FederatedAuthenticatorConstants {
         OFFICE_365_AUTHENTICATOR_NAME: "Office365Authenticator",
         OIDC_AUTHENTICATOR_NAME: "OpenIDConnectAuthenticator",
         ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME: "OrganizationAuthenticator",
+        PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME: "password-reset-enforcer",
         SAML_AUTHENTICATOR_NAME: "SAMLSSOAuthenticator",
         SMS_OTP_AUTHENTICATOR_NAME: "SMSOTP",
         TWITTER_AUTHENTICATOR_NAME: "TwitterAuthenticator",
