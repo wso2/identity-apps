@@ -29,7 +29,7 @@ import { addAlert } from "../store/actions/global";
 /**
  * Custom hook to handle the component state and behaviour of {@Link PushAuthenticator} component
  */
-export default function usePushAuthenticator () {
+const usePushAuthenticator = () => {
     const {
         data: registeredDeviceList,
         isLoading:isRegisteredDeviceListLoading,
@@ -144,4 +144,6 @@ export default function usePushAuthenticator () {
         setIsConfigPushAuthenticatorModalOpen,
         translateKey
     };
-}
+};
+
+export default usePushAuthenticator;
