@@ -17,6 +17,7 @@
  */
 
 import { sanitizeUrl } from "@braintree/sanitize-url";
+import { getDomain as _getDomain } from "tldts";
 import { PatternConstants } from "../constants";
 import { URLComponentsInterface } from "../models";
 
@@ -194,4 +195,55 @@ export class URLUtils {
             return false;
         }
     }
+
+    /**
+     * Extracts the domain from the hostname.
+     *
+     * This function uses the public suffix list to parse the domain safely
+     * for complex hostnames like `app.example.gov.us`, etc.
+     * If parsing fails, `undefined` will be returned.
+     *
+     * @example
+     * // Assuming the current hostname is 'app.example.gov.us'
+     * const domain = URLUtils.getDomain();
+     * console.log(domain); // Outputs: 'example.gov.us'
+     *
+     * @returns The extracted domain or `undefined` if parsing fails.
+     */
+    public static getDomain(url: string, options: Record<string, unknown> = {
+        // `localhost` should be specially handled as a valid host.
+        // eslint-disable-next-line max-len
+        // Refer: https://github.com/remusao/tldts/blob/46f2b6d31be10904e83edfbad90212cef901671f/packages/tldts/README.md#retrieving-subdomain-of-localhost-and-custom-hostnames
+        validHosts: [ "localhost" ]
+    }): string | undefined {
+        let domain: string | undefined = undefined;
+
+        try {
+            domain = _getDomain(url, options);
+        } catch (e) {
+            // Couldn't parse the hostname. Log the error in debug mode.
+            // Tracked here https://github.com/wso2/product-is/issues/11650.
+        }
+
+        // `tldts` doesn't handle non TDLDs like custom hostnames.
+        // Fallback to a simple parser for such cases.
+        if (domain === null) {
+            try {
+                const parsedURL: URL = new URL(url);
+
+                const hostnameTokens: string[] = parsedURL.hostname.split(".");
+
+                if (hostnameTokens.length == 1){
+                    domain = hostnameTokens[0];
+                } else if (hostnameTokens.length > 1) {
+                    domain = hostnameTokens.slice(hostnameTokens.length - 2, hostnameTokens.length).join(".");
+                }
+            } catch (e) {
+                // Couldn't parse the hostname. Log the error in debug mode.
+                // Tracked here https://github.com/wso2/product-is/issues/11650.
+            }
+        }
+
+        return domain;
+    };
 }
