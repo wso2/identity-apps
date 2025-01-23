@@ -59,10 +59,9 @@ const PushAuthQuickStart: FunctionComponent<PushAuthQuickStartPropsInterface> = 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
-    const isApplicationReadAccessAllowed: boolean = useMemo(() => (
-        hasRequiredScopes(
-            featureConfig?.applications, featureConfig?.applications?.scopes?.read, allowedScopes)
-    ), [ featureConfig, allowedScopes ]);
+    const hasApplicationReadPermissions: boolean = useRequiredScopes(
+            featureConfig?.applications?.scopes?.read
+    );
 
     /**
      * Vertical Stepper steps.
