@@ -24,7 +24,7 @@ import {
     VerticalStepper,
     VerticalStepperStepInterface
 } from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers";
 import {
     IdentityProviderTemplateInterface

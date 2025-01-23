@@ -32,7 +32,7 @@ import { SupportedAuthProtocolTypes } from "@wso2is/admin.applications.v1/models
 import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { ApplicationRoles } from "@wso2is/admin.roles.v2/components/application-roles";
 import { I18n } from "@wso2is/i18n";
 import {

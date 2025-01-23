@@ -19,7 +19,7 @@
 import { Show } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils";
 import { getUserDetails } from "@wso2is/admin.users.v1/api";
 import { AddConsumerUserWizard } from "@wso2is/admin.users.v1/components/wizard/add-consumer-user-wizard";
