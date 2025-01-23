@@ -16,8 +16,9 @@
  * under the License.
  */
 
+import { updateResources } from "@wso2is/admin.core.v1/api/bulk-operations";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import {  getEmptyPlaceholderIllustrations, updateResources } from "@wso2is/admin.core.v1";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface, GroupsMemberInterface } from "@wso2is/admin.groups.v1/models/groups";

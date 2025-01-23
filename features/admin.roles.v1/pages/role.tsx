@@ -17,7 +17,10 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { AdvancedSearchWithBasicFilters, AppState, FeatureConfigInterface, UIConstants } from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import {

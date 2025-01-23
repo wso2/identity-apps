@@ -17,15 +17,12 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import {
-    
-    ConfigReducerStateInterface,
-    FeatureConfigInterface,
-    getEmptyPlaceholderIllustrations
-} from "@wso2is/admin.core.v1";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components";
+import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authenticator-accordion";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
