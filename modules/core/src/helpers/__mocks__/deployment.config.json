@@ -571,7 +571,7 @@
                 }
             },
             "groups": {
-                "disabledFeatures": [],
+                "disabledFeatures": [ "groups.add", "groups.edit", "groups.edit.generalSettings" ],
                 "enabled": true,
                 "scopes": {
                     "create": [
@@ -1185,7 +1185,7 @@
                 }
             },
             "users": {
-                "disabledFeatures": [],
+                "disabledFeatures": [ "users.add" ],
                 "enabled": true,
                 "scopes": {
                     "create": [
