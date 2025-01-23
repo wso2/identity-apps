@@ -736,9 +736,9 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             exact: true,
             icon: { icon: <EnvelopeGearIcon fill="black" className="icon" /> },
             id: "notificationChannels",
-            name: "Email & SMS",
+            name: "Notification Channels",
             order: 16,
-            path: `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms`,
+            path: AppConstants.getPaths().get("NOTIFICAION_CHANNELS"),
             protected: true,
             showOnSidePanel: true
         },
@@ -771,6 +771,22 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             name: "SMS",
             order: 17,
             path: AppConstants.getPaths().get("SMS_PROVIDER"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
+            category: "extensions:develop.sidePanel.categories.pushProvider",
+            component: lazy(() =>
+                import("@wso2is/admin.push-providers.v1" + "/pages/push-providers")
+            ),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().sms
+            },
+            id: "pushProviders",
+            name: "Push",
+            order: 18,
+            path: AppConstants.getPaths().get("PUSH_PROVIDER"),
             protected: true,
             showOnSidePanel: false
         },

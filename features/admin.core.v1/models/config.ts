@@ -121,6 +121,10 @@ export interface FeatureConfigInterface {
      */
     smsProviders?: FeatureAccessConfigInterface;
     /**
+     * Push providers feature.
+     */
+    pushProviders?: FeatureAccessConfigInterface;
+    /**
      * Notification channels feature.
      */
     notificationChannels?: FeatureAccessConfigInterface;

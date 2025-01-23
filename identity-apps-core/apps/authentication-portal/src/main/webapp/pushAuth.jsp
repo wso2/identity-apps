@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -184,9 +184,9 @@
                                     <p class="text-center">
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "push.notification.sent.msg.with.challenge")%>
                                     </p>
-                                    <p class="text-center">
-                                        numberChallengeValue
-                                    </p>
+                                    <h3 class="text-center">
+                                        <%=numberChallengeValue%>
+                                    </h3>
                                     <% } else { %>
                                     <p class="text-center">
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "push.notification.sent.msg")%>

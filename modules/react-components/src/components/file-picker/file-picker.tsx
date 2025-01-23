@@ -18,12 +18,15 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
+import { ConfirmationModal, UserAvatar } from "@wso2is/react-components";
 import { KJUR, X509 } from "jsrsasign";
 import * as forge from "node-forge";
 import React, { FC, PropsWithChildren, ReactElement, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Button,
     Divider,
+    Grid,
     Icon,
     Message,
     Segment,
@@ -34,6 +37,7 @@ import {
     TextArea
 } from "semantic-ui-react";
 import { GenericIcon } from "../icon";
+import { ResourceList, ResourceListItem } from "../list";
 
 // TODO: Move polyfills to a generalized module.
 
@@ -150,6 +154,18 @@ export interface FilePickerProps extends IdentifiableComponentInterface {
      * Provide a custom script editor for the paste tab.
      */
     scriptEditor?: React.ReactNode;
+    /**
+     * Show file list.
+     */
+    showFileAsList?: boolean;
+    /**
+     * File display name.
+     */
+    fileDisplayName?: string;
+    /**
+     * Callback function to be invoked in file delete
+     */
+    onFileDelete?: () => void;
 }
 
 // Internal workings interfaces, type defs, and aliases.
@@ -186,6 +202,9 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
         emptyFileError,
         emptyFileErrorMsg,
         hidePasteOption,
+        showFileAsList,
+        fileDisplayName,
+        onFileDelete,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -206,6 +225,11 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
     const [ errorMessage, setErrorMessage ] = useState<string>(null);
     const [ pasteFieldTouched, setPasteFieldTouched ] = useState<boolean>(false);
     const [ fileFieldTouched, setFileFieldTouched ] = useState<boolean>(false);
+
+    const [ showFileDeleteConfirmation, setShowFileDeleteConfirmation ] = useState<boolean>(false);
+    const [ ongoingDeleteRequest, setOngoingDeleteRequest ] = useState<boolean>(false);
+
+    const { t } = useTranslation();
 
     // Hooks
 
@@ -229,6 +253,9 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
 
             return;
         }
+        setFile(null);
+        setPastedContent(EMPTY_STRING);
+        setSerializedData(null);
     }, [ initialFile, initialPastedContent ]);
 
     useEffect(() => {
@@ -535,6 +562,87 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
         )
     };
 
+    const createFileAvatar = (fileName: string): ReactElement => {
+        return (
+            <UserAvatar
+                name={ fileName }
+                size="mini"
+                floated="left"
+            />
+        );
+    };
+
+    const deleteFile = (): void => {
+        setOngoingDeleteRequest(true);
+        onFileDelete();
+        setOngoingDeleteRequest(false);
+        setShowFileDeleteConfirmation(false);
+    };
+
+    const DeleteFileConfirmationModal: ReactElement = (
+        <ConfirmationModal
+            onClose={ (): void => setShowFileDeleteConfirmation(false) }
+            onSecondaryActionClick={ (): void => setShowFileDeleteConfirmation(false) }
+            primaryActionLoading={ ongoingDeleteRequest }
+            onPrimaryActionClick={ deleteFile }
+            open={ showFileDeleteConfirmation }
+            type="negative"
+            primaryAction={ t("applications:confirmations.certificateDelete.primaryAction") }
+            secondaryAction={ t("applications:confirmations" +
+                ".certificateDelete.secondaryAction") }
+            data-testid={ "delete-confirmation-modal" }
+            closeOnDimmerClick={ false }>
+            <ConfirmationModal.Header
+                data-testid={ "delete-confirmation-modal-header" }>
+                { t("applications:confirmations.certificateDelete.header") }
+            </ConfirmationModal.Header>
+            <ConfirmationModal.Message
+                attached
+                negative
+                data-testid={ "delete-confirmation-modal-message" }>
+                { t("applications:confirmations.certificateDelete.message") }
+            </ConfirmationModal.Message>
+        </ConfirmationModal>
+    );
+
+    if (initialFile && showFileAsList) {
+
+        return (
+            <React.Fragment>
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column width={ 16 }>
+                            <Divider hidden/>
+                            <ResourceList
+                                fill
+                                relaxed={ false }
+                                className="file-list"
+                            >
+                                <ResourceListItem
+                                    itemHeader={ fileDisplayName }
+                                    avatar={ createFileAvatar(fileDisplayName) }
+                                    actionsColumnWidth={ 3 }
+                                    descriptionColumnWidth={ 9 }
+                                    actionsFloated="right"
+                                    actions={ [
+                                        {
+                                            "data-testid": "uploaded-file-delete-button",
+                                            icon: "trash alternate",
+                                            onClick: () => setShowFileDeleteConfirmation(true),
+                                            popupText: t("users:usersList.list.iconPopups.delete"),
+                                            type: "button"
+                                        }
+                                    ] }
+                                />
+                            </ResourceList>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+                { DeleteFileConfirmationModal }
+            </React.Fragment>
+        );
+    }
+
     return (
         <React.Fragment>
             <input
@@ -836,6 +944,117 @@ export class XMLFileStrategy implements PickerStrategy<string> {
         }
 
         return xml;
+    }
+
+}
+
+export class JSONFileStrategy implements PickerStrategy<string> {
+
+    static readonly ENCODING: string = "UTF-8";
+    static readonly DEFAULT_MIMES: string = ".json";
+
+    static readonly MEGABYTE: number = 1e+6;
+    static readonly MAX_FILE_SIZE: number = 3 * JSONFileStrategy.MEGABYTE;
+
+    mimeTypes: string[];
+
+    constructor(mimeTypes?: string[]) {
+        if (!mimeTypes || mimeTypes.length === 0)
+            this.mimeTypes = [ JSONFileStrategy.DEFAULT_MIMES ];
+        else
+            this.mimeTypes = mimeTypes;
+    }
+
+    async serialize(data: File | string): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
+            if (!data) {
+                reject({ valid: false });
+
+                return;
+            }
+            if (data instanceof File) {
+                const reader = new FileReader();
+
+                reader.readAsText(data, JSONFileStrategy.ENCODING);
+                reader.onload = () => {
+                    this.parseJSON(reader.result).then((rawJSON) => {
+                        resolve(btoa(rawJSON));
+                    }).catch((error) => {
+                        reject({
+                            errorMessage: error ?? "JSON file content is invalid",
+                            valid: false
+                        });
+                    });
+                };
+            } else {
+                this.parseJSON(data).then((rawJSON) => {
+                    resolve(btoa(rawJSON));
+                }).catch((error) => {
+                    reject({
+                        errorMessage: error ?? "JSON string is invalid",
+                        valid: false
+                    });
+                });
+            }
+        });
+    }
+
+    async validate(data: File | string): Promise<ValidationResult> {
+        return new Promise<ValidationResult>((resolve, reject) => {
+            if (data instanceof File) {
+                const expected = JSONFileStrategy.MAX_FILE_SIZE * JSONFileStrategy.MEGABYTE;
+
+                if ((data as File).size > expected) {
+                    reject({
+                        errorMessage: `File exceeds max size of ${ JSONFileStrategy.MAX_FILE_SIZE } MB`,
+                        valid: false
+                    });
+                }
+                const reader = new FileReader();
+
+                reader.readAsText(data, JSONFileStrategy.ENCODING);
+                reader.onload = () => {
+                    this.parseJSON(reader.result).then(() => {
+                        resolve({ valid: true });
+                    }).catch((error) => {
+                        reject({
+                            errorMessage: error ?? "JSON file has errors",
+                            valid: false
+                        });
+                    });
+                };
+            } else {
+                this.parseJSON(data).then(() => {
+                    resolve({ valid: true });
+                }).catch((error) => {
+                    reject({
+                        errorMessage: error ?? "JSON string has errors",
+                        valid: false
+                    });
+                });
+            }
+        });
+    }
+
+    async parseJSON(json: string | ArrayBuffer): Promise<string> {
+        // If the json is a instance of ArrayBuffer then first
+        // convert it to a primitive string.
+        if (json instanceof ArrayBuffer) {
+            const enc = new TextDecoder(JSONFileStrategy.ENCODING);
+            const arr = new Uint8Array(json);
+
+            json = enc.decode(arr);
+        }
+        // Below this point we can ensure that json is
+        // a string type and proceed to parse.
+
+        try {
+            JSON.parse(json);
+        } catch {
+            throw "Error while parsing JSON file";
+        }
+
+        return json;
     }
 
 }

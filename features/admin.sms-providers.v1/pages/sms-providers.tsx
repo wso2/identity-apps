@@ -498,7 +498,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
     };
 
     const handleBackButtonClick = () => {
-        history.push(`${AppConstants.getPaths().get("EMAIL_AND_SMS")}`);
+        history.push(`${AppConstants.getPaths().get("NOTIFICAION_CHANNELS")}`);
     };
 
     return (

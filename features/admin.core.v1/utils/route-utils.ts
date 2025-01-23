@@ -453,7 +453,8 @@ export class RouteUtils {
                 id: "notificationChannels",
                 selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
                     history.location.pathname === AppConstants.getPaths().get("SMS_PROVIDER") ||
-                    history.location.pathname === AppConstants.getPaths().get("EMAIL_AND_SMS")
+                    history.location.pathname === AppConstants.getPaths().get("PUSH_PROVIDER") ||
+                    history.location.pathname === AppConstants.getPaths().get("NOTIFICAION_CHANNELS")
             },
             {
                 category: monitoring,

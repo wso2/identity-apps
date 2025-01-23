@@ -1992,7 +1992,7 @@ export const extensions: Extensions = {
             info: "You can customize the email content using <1>Email Templates</1>.",
             updateButton: "Update",
             sendTestMailButton: "Send Test Email",
-            goBack: "Go back to Email & SMS",
+            goBack: "Go back to Notification Providers",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
                 content: "If you delete this configuration, the emails will be sent from the Asgardeo Email Address. " +
@@ -2086,9 +2086,9 @@ export const extensions: Extensions = {
             }
         },
         notificationChannel: {
-            heading: "SMS / Email Providers",
-            title: "SMS / Email Providers",
-            description: "Configure the SMS and Email providers for your organization."
+            heading: "Notification Channels",
+            title: "Notification Channels",
+            description: "Configure the notifiction channels for your organization."
         },
         identityProviders: {
             apple: {
@@ -2212,6 +2212,31 @@ export const extensions: Extensions = {
                         selectSMSOTP: {
                             content: "Go to <1>Login Flow</1> tab and click on the <3>Username & Password + SMS OTP</3> option from the Multi-factor login section to configure a basic SMS OTP flow.",
                             heading: "Select <1>SMS OTP</1> option"
+                        }
+                    }
+                }
+            },
+            pushAuth: {
+                quickStart: {
+                    addLoginModal: {
+                        heading: "Add Push Authenticator",
+                        subHeading: "Select an application to set up Push Authentication login."
+                    },
+                    connectApp: {
+                        description:
+                            "Add <1>Push NotificationP</1> to <3>Step 2</3> on the <5>Login Flow" +
+                            "</5> section of your <7>application</7>."
+                    },
+                    heading: "Push Authenticator Set Up Guide",
+                    subHeading: "Follow the instructions given below to set up Push Authenticator as a factor in your login flow.",
+                    steps: {
+                        selectApplication: {
+                            content: "Choose the <1>application</1> for which you want to set up Push Authenticator login.",
+                            heading: "Select Application"
+                        },
+                        selectPushAuth: {
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Username & Password + Push</3> option from the Multi-factor login section to configure a basic Push Authentication flow.",
+                            heading: "Select <1>Push Authenticator</1> option"
                         }
                     }
                 }

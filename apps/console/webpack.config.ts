@@ -36,6 +36,8 @@ import webpack, {
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import DeploymentConfig from "./src/public/deployment.config.json";
 
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+
 /**
  * Different Server Types.
  */
@@ -160,6 +162,14 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     if (indexHtmlWebpackPluginIndex !== -1) {
         config.plugins.splice(indexHtmlWebpackPluginIndex, 1);
     }
+
+    config.plugins.push(
+        new ForkTsCheckerWebpackPlugin({
+            typescript: {
+                memoryLimit: 4096
+            }
+        })
+    );
 
     if (isProduction && !isDeployedOnExternalStaticServer) {
         config.plugins.push(

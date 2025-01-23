@@ -36,6 +36,10 @@ import { getInsightsResourceEndpoints } from "@wso2is/admin.org-insights.v1/conf
 import { getOrganizationsResourceEndpoints } from "@wso2is/admin.organizations.v1/configs";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
 import { getPolicyAdministrationResourceEndpoints } from "@wso2is/admin.policy-administration.v1/configs";
+import {
+    getPushProviderResourceEndpoints,
+    getPushProviderTemplateEndpoints
+} from "@wso2is/admin.push-providers.v1/configs/endpoints";
 import { getRemoteFetchConfigResourceEndpoints } from "@wso2is/admin.remote-repository-configuration.v1";
 import { getRolesResourceEndpoints } from "@wso2is/admin.roles.v2/configs/endpoints";
 import { getRulesEndpoints } from "@wso2is/admin.rules.v1/configs/endpoints";
@@ -217,7 +221,8 @@ export class Config {
                 I18nConstants.CUSTOM_AUTHENTICATION_NAMESPACE,
                 I18nConstants.POLICY_ADMINISTRATION_NAMESPACE,
                 I18nConstants.REMOTE_USER_STORES_NAMESPACE,
-                I18nConstants.RULES_NAMESPACE
+                I18nConstants.RULES_NAMESPACE,
+                I18nConstants.PUSH_PROVIDERS_NAMESPACE
             ],
             preload: []
         };
@@ -278,6 +283,8 @@ export class Config {
             ...getRulesEndpoints(this.resolveServerHost()),
             ...getSmsTemplateResourceEndpoints(this.resolveServerHost()),
             ...getPolicyAdministrationResourceEndpoints(this.resolveServerHost()),
+            ...getPushProviderResourceEndpoints(this.resolveServerHost()),
+            ...getPushProviderTemplateEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,

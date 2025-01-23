@@ -30,13 +30,13 @@ import get from "lodash-es/get";
 import has from "lodash-es/has";
 import pick from "lodash-es/pick";
 import set from "lodash-es/set";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { FormDynamicField } from "./form-dynamic-field";
 import useInitializeHandlers, { CustomInitializeFunction } from "../hooks/use-initialize-handlers";
 import useSubmissionHandlers, { CustomSubmissionFunction } from "../hooks/use-submission-handlers";
 import useValidationHandlers, { CustomValidationsFunction } from "../hooks/use-validation-handlers";
-import { DynamicFieldInterface, DynamicFormInterface } from "../models/dynamic-fields";
+import { DynamicFieldInterface, DynamicFormInterface, DynamicInputFieldTypes } from "../models/dynamic-fields";
 
 /**
  * Prop types of the `TemplateDynamicForm` component.
@@ -114,6 +114,20 @@ export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInte
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ formInitialValues, setFormInitialValues ] = useState<{ [key: string]: unknown }>(null);
+
+    const onlyOneFilePickerExists: boolean = useMemo(() => {
+
+        if (!form || !formInitialValues) {
+            return false;
+        }
+        if (form?.fields?.length === 1
+            && form?.fields[0]?.type === DynamicInputFieldTypes.FILE
+            && Object.keys(formInitialValues).length === 1) {
+            return true;
+        }
+
+        return false;
+    }, [ form, formInitialValues ]);
 
     /**
      * Moderate the initially provided data for the form.
@@ -197,7 +211,7 @@ export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInte
                                         <Grid>
                                             { form?.fields?.map(
                                                 (field: DynamicFieldInterface) => {
-                                                    if (field?.hidden) {
+                                                    if (!field || field?.hidden) {
                                                         return null;
                                                     }
 
@@ -223,18 +237,20 @@ export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInte
                                                     );
                                                 })
                                             }
-                                            <Grid.Row column={ 1 }>
-                                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                                    <PrimaryButton
-                                                        type="submit"
-                                                        data-componentid={ `${componentId}-form-update-button` }
-                                                        loading={ isSubmitting }
-                                                        disabled={ isSubmitting }
-                                                    >
-                                                        { buttonText }
-                                                    </PrimaryButton>
-                                                </Grid.Column>
-                                            </Grid.Row>
+                                            { !onlyOneFilePickerExists && (
+                                                <Grid.Row column={ 1 }>
+                                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                                        <PrimaryButton
+                                                            type="submit"
+                                                            data-componentid={ `${componentId}-form-update-button` }
+                                                            loading={ isSubmitting }
+                                                            disabled={ isSubmitting }
+                                                        >
+                                                            { buttonText }
+                                                        </PrimaryButton>
+                                                    </Grid.Column>
+                                                </Grid.Row>
+                                            ) }
                                         </Grid>
                                     </form>
                                 );

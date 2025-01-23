@@ -133,7 +133,7 @@ export const smsProviders: smsProvidersNS = {
             }
         }
     },
-    goBack: "Go back to Email & SMS",
+    goBack: "Go back to Notification Providers",
     heading: "SMS Provider",
     info: "You can customize the SMS content using <1>SMS Templates</1>.",
     notifications: {

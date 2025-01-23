@@ -25,6 +25,7 @@ import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { ReactComponent as PushIcon } from "../../themes/default/assets/images/icons/push-provider-icon.svg";
 import { ReactComponent as SMSIcon } from "../../themes/default/assets/images/icons/sms-icon.svg";
 import { SettingsSection } from "../settings/settings-section";
 import "./notification-channels.scss";
@@ -59,6 +60,10 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
 
     const handleEmailSelection = (): void => {
         history.push(AppConstants.getPaths().get("EMAIL_PROVIDER"));
+    };
+
+    const handlePushSelection = (): void => {
+        history.push(AppConstants.getPaths().get("PUSH_PROVIDER"));
     };
 
     return (
@@ -106,6 +111,22 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
                                 t("smsProviders:heading")
                             }
                             onPrimaryActionClick={ handleSMSSelection }
+                            primaryAction={ t("common:configure") }
+                            connectorEnabled
+                        />
+                    </Grid>
+                ) }
+
+                { featureConfig.pushProviders?.enabled && (
+                    <Grid xs={ 12 } md={ 6 } lg={ 4 }>
+                        <SettingsSection
+                            data-componentid={ "push-provider-card" }
+                            description={ t("pushProviders:description") }
+                            icon={ <PushIcon /> }
+                            header={
+                                t("pushProviders:heading")
+                            }
+                            onPrimaryActionClick={ handlePushSelection }
                             primaryAction={ t("common:configure") }
                             connectorEnabled
                         />

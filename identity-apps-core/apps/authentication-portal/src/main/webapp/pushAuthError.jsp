@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -64,6 +64,14 @@
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.push.registered.device.not.found");
             } else if (errorMessage.equalsIgnoreCase("error.push.resent.count.exceeded")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.push.resent.count.exceeded");
+            } else if (errorMessage.equalsIgnoreCase("error.push.user.denied.consent")) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.push.user.denied.consent");
+            } else if (errorMessage.equalsIgnoreCase("error.push.number.challenge.failed")) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.push.number.challenge.failed");
+            } else if (errorMessage.equalsIgnoreCase("error.push.token.response.failure")) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.push.token.response.failure");
+            } else if (errorMessage.equalsIgnoreCase("error.push.internal.error")) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.push.internal.error");
             } else if (errorMessage.equalsIgnoreCase("error.push.authentication.failed")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.push.authentication.failed");
             } else if (errorMessage.equalsIgnoreCase("user.account.locked")) {

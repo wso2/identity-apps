@@ -30,6 +30,13 @@ export interface DynamicFormInterface {
      * Should the form only submit the fields defined above.
      */
     submitDefinedFieldsOnly?: boolean;
+
+    common: DynamicCommonInterface;
+}
+
+export interface DynamicCommonInterface {
+
+    hideUpdateOption: boolean;
 }
 
 /**
@@ -118,6 +125,14 @@ export interface DynamicFilePickerFieldInterface extends DynamicFieldInterface {
      * Hide selection tabs & paste section.
      */
     hidePasteOption?: boolean;
+    /**
+     * Show the file list if any are uploaded.
+     */
+    showFileAsList?: boolean;
+
+    fileDisplayName?: string
+
+    onDelete?: () => void;
 }
 
 /**
