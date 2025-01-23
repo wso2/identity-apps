@@ -111,6 +111,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
         return state.config.ui.features?.users?.disabledFeatures;
     });
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
 
     const isUpdatingSharedProfilesEnabled: boolean = !userRolesDisabledFeatures?.includes(
         UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_PROFILES")
@@ -125,7 +126,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             || readOnlyUserStores?.includes(userStore?.toString())
             || !hasUsersUpdatePermissions
             || user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
-            || user[ UserManagementConstants.CUSTOMSCHEMA ]?.isReadOnlyUser === "true"
+            || user[ userSchemaURI ]?.isReadOnlyUser === "true"
         ) {
             setReadOnly(true);
         }
@@ -225,7 +226,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         isUserManagedByParentOrg={ isUserManagedByParentOrg }
                         adminUserType={ AdminAccountTypes.INTERNAL }
                         allowDeleteOnly={
-                            user[ UserManagementConstants.CUSTOMSCHEMA ]?.isReadOnlyUser === "true"
+                            user[ userSchemaURI ]?.isReadOnlyUser === "true"
                         }
                         editUserDisclaimerMessage={ (
                             <Grid>
