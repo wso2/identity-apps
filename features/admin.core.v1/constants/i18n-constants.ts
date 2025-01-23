@@ -22,13 +22,12 @@ import { I18nModuleConstants } from "@wso2is/i18n";
  * Class containing portal specific i18n constants.
  */
 export class I18nConstants {
-
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
      */
     /* eslint-disable @typescript-eslint/no-empty-function */
-    private constructor() { }
+    private constructor() {}
 
     /**
      * Common namespace.
@@ -73,8 +72,7 @@ export class I18nConstants {
     /**
      * JWT private key configuration namespace.
      */
-    public static readonly IMPERSONATION_CONFIGURATION_NAMESPACE: string =
-        I18nModuleConstants.IMPERSONATION_NAMESPACE;
+    public static readonly IMPERSONATION_CONFIGURATION_NAMESPACE: string = I18nModuleConstants.IMPERSONATION_NAMESPACE;
 
     /**
      * transferList namespace.
@@ -246,8 +244,8 @@ export class I18nConstants {
         I18nModuleConstants.AUTHENTICATION_PROVIDER_NAMESPACE;
 
     /**
-    * AI namespace.
-    */
+     * AI namespace.
+     */
     public static readonly AI_NAMESPACE: string = I18nModuleConstants.AI_NAMESPACE;
 
     /**
@@ -286,6 +284,12 @@ export class I18nConstants {
      * Rules namespace.
      */
     public static readonly RULES_NAMESPACE: string = I18nModuleConstants.RULES_NAMESPACE;
+
+    /**
+     * Custom Authentication namespace.
+     */
+    public static readonly CUSTOM_AUTHENTICATION_NAMESPACE: string =
+        I18nModuleConstants.CUSTOM_AUTHENTICATION_NAMESPACE;
 
     /**
      * Locations of the I18n namespaces.
@@ -338,6 +342,7 @@ export class I18nConstants {
         [ I18nConstants.IMPERSONATION_CONFIGURATION_NAMESPACE, "portals" ],
         [ I18nConstants.ACTIONS_NAMESPACE, "portals" ],
         [ I18nConstants.TENANTS_NAMESPACE, "portals" ],
+        [ I18nConstants.CUSTOM_AUTHENTICATION_NAMESPACE, "portals" ],
         [ I18nConstants.POLICY_ADMINISTRATION_NAMESPACE, "portals" ],
         [ I18nConstants.REMOTE_USER_STORES_NAMESPACE, "portals" ],
         [ I18nConstants.RULES_NAMESPACE, "portals" ]

@@ -1,0 +1,32 @@
+<!--
+ * Copyright (c) 2025, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg class="icon" width="14" height="14" viewBox="0 0 14 14" fill="none"
+    xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_2024_141)">
+        <path
+            class="path primary"
+            d="M1.32817 14C0.960258 14 0.646886 13.8623 0.38805 13.587C0.12935 13.3115 0 12.978 0 12.5864V1.41356C0 1.022 0.12935 0.688479 0.38805 0.413C0.646886 0.137667 0.960258 0 1.32817 0H11.8261C11.9673 0 12.1017 0.0221662 12.2293 0.0664995C12.3569 0.110833 12.4739 0.177261 12.5804 0.265782L11.8974 0.992688C11.8657 0.959146 11.8262 0.931145 11.7788 0.908687C11.7314 0.886229 11.676 0.875 11.6127 0.875H1.32817C1.18059 0.875 1.05933 0.925458 0.964369 1.02637C0.869549 1.12744 0.822139 1.2565 0.822139 1.41356V12.5864C0.822139 12.7435 0.869549 12.8726 0.964369 12.9736C1.05933 13.0745 1.18059 13.125 1.32817 13.125H11.8261C11.9736 13.125 12.0949 13.0745 12.1899 12.9736C12.2847 12.8726 12.3321 12.7435 12.3321 12.5864V6.68369L13.1542 5.80869V12.5864C13.1542 12.978 13.0249 13.3115 12.7662 13.587C12.5073 13.8623 12.194 14 11.8261 14H1.32817ZM6.1866 10.7524L2.44278 6.76769L3.02444 6.14863L6.20242 9.53072L13.4292 1.83925L14 2.43644L6.1866 10.7524Z"
+            fill="black" />
+    </g>
+    <defs>
+        <clipPath id="clip0_2024_141">
+            <rect width="14" height="14" fill="white" />
+        </clipPath>
+    </defs>
+</svg>

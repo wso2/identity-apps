@@ -345,6 +345,11 @@ export class I18nModuleConstants {
     public static readonly REMOTE_USER_STORES_NAMESPACE: string = "remoteUserStores";
 
     /**
+     * Custom Authentication namespace.
+     */
+    public static readonly CUSTOM_AUTHENTICATION_NAMESPACE: string = "customAuthentication";
+
+    /**
      * Rules namespace.
      */
     public static readonly RULES_NAMESPACE: string = "rules";
