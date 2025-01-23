@@ -19,15 +19,10 @@
 import Button from "@oxygen-ui/react/Button";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
-import {
-    FeatureConfigInterface,
-    SharedUserStoreUtils,
-    getEmptyPlaceholderIllustrations,
-    getSidePanelIcons,
-    history
-} from "@wso2is/admin.core.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import { useGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api";
@@ -56,6 +51,8 @@ import {
     TabPageLayout,
     UserAvatar
 } from "@wso2is/react-components";
+import { getEmptyPlaceholderIllustrations, getSidePanelIcons } from "@wso2is.admin.core.v1/configs/ui";
+import { history } from "@wso2is.admin.core.v1/helpers/history";
 import React, { MouseEvent, ReactElement, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

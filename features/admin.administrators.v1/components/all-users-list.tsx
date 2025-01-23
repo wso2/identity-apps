@@ -17,19 +17,14 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import {
-    
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations, history
-} from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
 import { UserAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
-import { UserBasicInterface, UserListInterface } from "@wso2is/admin.users.v1/models";
+import { UserBasicInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { getUserNameWithoutDomain, isFeatureEnabled, resolveUserstore } from "@wso2is/core/helpers";
 import {
@@ -48,6 +43,9 @@ import {
     UserAvatar,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
+import { getEmptyPlaceholderIllustrations } from "@wso2is.admin.core.v1/configs/ui";
+import { UIConstants } from "@wso2is.admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is.admin.core.v1/helpers/history";
 import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";

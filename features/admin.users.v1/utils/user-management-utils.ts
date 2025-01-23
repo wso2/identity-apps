@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { UserRoleInterface } from "@wso2is/admin.core.v1/models";
+import { UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { store } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import {

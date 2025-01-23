@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { ProtocolCard } from "@wso2is/admin.core.v1/components";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { EmphasizedSegment, Heading, Text } from "@wso2is/react-components";

@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { history } from "@wso2is/admin.core.v1";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { getOrganizationRoleById } from "@wso2is/admin.organizations.v1/api";

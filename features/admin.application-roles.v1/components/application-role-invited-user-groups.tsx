@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AppState, UIConstants } from "@wso2is/admin.core.v1";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { resolveUserstore } from "@wso2is/core/helpers";

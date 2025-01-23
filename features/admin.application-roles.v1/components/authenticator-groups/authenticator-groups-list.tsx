@@ -17,7 +17,9 @@
  */
 
 import { AuthenticatorInterface } from "@wso2is/admin.connections.v1";
-import { AppConstants, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import {
     IdentifiableComponentInterface,
     LoadableComponentInterface

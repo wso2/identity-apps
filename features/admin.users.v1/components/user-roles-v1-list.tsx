@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { getEmptyPlaceholderIllustrations, updateResources } from "@wso2is/admin.core.v1";
+import { updateResources } from "@wso2is/admin.core.v1/api/bulk-operations";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { getOrganizationRoles } from "@wso2is/admin.organizations.v1/api";
 import {

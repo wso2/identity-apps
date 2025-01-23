@@ -20,7 +20,7 @@ import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import Backdrop from "@mui/material/Backdrop";
 import Divider from "@oxygen-ui/react/Divider";
 import Grid from "@oxygen-ui/react/Grid";
-import { EventPublisher } from "@wso2is/admin.core.v1";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components";
 import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";

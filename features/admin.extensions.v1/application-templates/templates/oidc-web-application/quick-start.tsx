@@ -23,7 +23,7 @@ import {
     ApplicationTemplateInterface,
     URLFragmentTypes
 } from "@wso2is/admin.applications.v1/models/application";
-import { history } from "@wso2is/admin.core.v1";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

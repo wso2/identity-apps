@@ -16,15 +16,12 @@
  * under the License.
  */
 
-import {
-    AdvancedSearchWithBasicFilters,
-    
-    FeatureConfigInterface,
-    UIConstants,
-    UserListInterface
-} from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { UserListInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { InvitationStatus, UserInviteInterface } from "@wso2is/admin.users.v1/models";
+import { InvitationStatus, UserInviteInterface } from "@wso2is/admin.users.v1/models/user";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { DocumentationLink, ListLayout, Message, Text, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -33,7 +30,7 @@ import { useSelector } from "react-redux";
 import { Dropdown, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { GuestUsersList } from "./guest-users-list";
 import { OnboardedGuestUsersList } from "./onboarded-guest-user-list";
-import { AdministratorConstants } from "../../constants";
+import { AdministratorConstants } from "../../constants/users";
 
 /**
  * Props for the Guest users page.

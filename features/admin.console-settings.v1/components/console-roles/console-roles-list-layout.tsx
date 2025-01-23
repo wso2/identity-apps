@@ -17,7 +17,8 @@
  */
 
 import { FeatureAccessConfigInterface, Show } from "@wso2is/access-control";
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";

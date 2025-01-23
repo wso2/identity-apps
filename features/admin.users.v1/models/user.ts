@@ -16,7 +16,6 @@
  * under the License.
  */
 
-// Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { GroupsInterface, GroupsMemberInterface } from "@wso2is/admin.groups.v1/models/groups";
