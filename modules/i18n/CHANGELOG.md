@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.16.3
+
+### Patch Changes
+
+- [#7343](https://github.com/wso2/identity-apps/pull/7343) [`20852203b5868edd1045c8ea236955076b85cdfc`](https://github.com/wso2/identity-apps/commit/20852203b5868edd1045c8ea236955076b85cdfc) Thanks [@osandamaleesha](https://github.com/osandamaleesha)! - Add Pre update password extension
+
 ## 2.16.2
 
 ### Patch Changes
