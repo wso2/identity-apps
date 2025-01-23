@@ -307,7 +307,7 @@ export class AppConstants {
             [ "ORGANIZATION_DISCOVERY_DOMAINS", `${AppConstants.getAdminViewBasePath()}/email-domain-discovery` ],
             [ "UPDATE_ORGANIZATION_DISCOVERY_DOMAINS", `${AppConstants.getAdminViewBasePath()}/email-domain-edit/:id` ],
             [ "EMAIL_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/email-provider` ],
-            [ "NOTIFICAION_CHANNELS", `${ AppConstants.getDeveloperViewBasePath() }/notification-channels` ],
+            [ "NOTIFICATION_CHANNELS", `${ AppConstants.getDeveloperViewBasePath() }/notification-channels` ],
             [ "EMAIL_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/email-management` ],
             [ "SMS_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/sms-provider` ],
             [ "SMS_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/sms-management` ],
