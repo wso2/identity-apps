@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.16.4
+
+### Patch Changes
+
+- [#7369](https://github.com/wso2/identity-apps/pull/7369) [`0939ecb46c7e1d115924c6da953d2f575ebbf83a`](https://github.com/wso2/identity-apps/commit/0939ecb46c7e1d115924c6da953d2f575ebbf83a) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Add policy combining algorithms from i18n, and add constants.
+
 ## 2.16.3
 
 ### Patch Changes
