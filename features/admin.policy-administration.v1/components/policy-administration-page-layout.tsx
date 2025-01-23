@@ -77,7 +77,6 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
 
     const {
         data: inactivePolicyArray,
-        isLoading: isLoadingInactivePolicies,
         error: inactivePolicyError,
         mutate: mutateInactivePolicy
     } = useGetPolicies(true, pageInactive, false, submittedSearchQuery &&
@@ -85,7 +84,6 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
 
     const {
         data: activePolicyArray,
-        isLoading: isLoadingActivePolicies,
         error: activePolicyError,
         mutate: mutateActivePolicy
     } = useGetPolicies(true, pageActive, true, submittedSearchQuery &&
@@ -93,8 +91,6 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
 
     const {
         data: algorithm,
-        isLoading: isLoadingAlgorithm,
-        error: getAlgorithmError,
         mutate: mutateAlgorithm
     } = useGetAlgorithm();
 

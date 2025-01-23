@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
@@ -31,6 +30,7 @@ import Typography from "@oxygen-ui/react/Typography/Typography";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import "./edit-policy-algorithm.scss";
 import { addAlert } from "@wso2is/core/store";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -60,14 +60,16 @@ const EditPolicyAlgorithm: FunctionComponent<EditPolicyAlgorithmProps> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const handleSelectChange = (event) => {
+    const handleSelectChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
-        const selectedAlgorithm: AlgorithmOption = algorithmOptions.find((option: AlgorithmOption) => option.value === event.target.value);
+        const selectedAlgorithm: AlgorithmOption = algorithmOptions.find(
+            (option: AlgorithmOption) => option.value === Number(event.target.value));
 
         setSelectedAlgorithm(selectedAlgorithm);
     };
 
-    const selectedOption: AlgorithmOption = algorithmOptions.find(option => option.value === selectedAlgorithm.value);
+    const selectedOption: AlgorithmOption = algorithmOptions.find(
+        (option: AlgorithmOption) => option.value === selectedAlgorithm.value);
 
     const handleUpdate = () => {
         const data: PolicyAlgorithmRequestInterface = {
@@ -129,7 +131,7 @@ const EditPolicyAlgorithm: FunctionComponent<EditPolicyAlgorithmProps> = (
                         <Button
                             variant="text"
                             color="primary"
-                            onClick={ (e: MouseEvent<HTMLButtonElement>) => closeModal() }
+                            onClick={ () => closeModal() }
                         >
                             { t("tenants:addTenant.actions.cancel.label") }
                         </Button>
