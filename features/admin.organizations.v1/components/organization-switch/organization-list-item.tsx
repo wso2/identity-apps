@@ -22,7 +22,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { organizationConfigs } from "@wso2is/admin.extensions.v1/configs/organization-configs";
+import { organizationConfigs } from "@wso2is/admin.extensions.v1/configs/organization";
 import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
 import { GenericIcon, Popup } from "@wso2is/react-components";
 import React, { ReactElement, SyntheticEvent } from "react";
