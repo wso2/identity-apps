@@ -160,12 +160,6 @@ const PushAuthQuickStart: FunctionComponent<PushAuthQuickStartPropsInterface> = 
     );
 };
 
-/**
- * Default props for the component
- */
-PushAuthQuickStart.defaultProps = {
-    "data-componentid": "push-authenticator-quick-start"
-};
 
 /**
  * A default export was added to support React.lazy.
