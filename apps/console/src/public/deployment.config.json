@@ -1029,7 +1029,7 @@
                         "internal_notification_senders_update"
                     ]
                 }
-            },
+             },
             "remoteFetchConfig": {
                 "disabledFeatures": [],
                 "enabled": false,
