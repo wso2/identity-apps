@@ -31,24 +31,28 @@ interface FeatureFlagLabelPropsInterface {
     featureConfig?: FeatureAccessConfigInterface;
     featureName?: string;
     featureFlags?: FeatureFlagsInterface[];
-    type: "chip" | "ribbon";
+    type?: "chip" | "ribbon";
 }
 
 /**
  * Feature flag label component.
  *
- * @param props - Props injected to the component.
- * @returns React.ReactElement
+ * @param featureFlags   - Feature flags array.
+ * @param featureKey     - Feature key to look up.
+ * @param featureConfig  - Feature config object.
+ * @param featureName    - Name (key) in the feature config object.
+ * @param type           - Display type (chip/ribbon).
+ *
+ * @returns ReactElement
  */
 const FeatureFlagLabel: FunctionComponent<FeatureFlagLabelPropsInterface> = (
-    props: FeatureFlagLabelPropsInterface): ReactElement => {
-
-    const {
+    {
         featureFlags,
         featureConfig,
         featureName,
-        featureKey
-    } = props;
+        featureKey,
+        type = "chip"
+    }: FeatureFlagLabelPropsInterface): ReactElement => {
 
     const { t } = useTranslation();
 
@@ -82,7 +86,7 @@ const FeatureFlagLabel: FunctionComponent<FeatureFlagLabelPropsInterface> = (
      * @returns ReactElement
      */
     const resolveLabelComponent = (flag: string): ReactElement => {
-        switch (props.type) {
+        switch (type) {
             case "chip":
                 return (
                     <Chip
