@@ -23,7 +23,7 @@ import FormLabel from "@oxygen-ui/react/FormLabel";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     FinalForm,

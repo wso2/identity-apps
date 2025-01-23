@@ -25,7 +25,7 @@ import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form/src";
 import { Hint } from "@wso2is/react-components";
