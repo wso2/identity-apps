@@ -17,9 +17,12 @@
  */
 
 .push-authenticator {
-    .push-auth-registered-device-list {
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
+    .ui.grid > .row.push-auth-registered-device-list  {
+        padding-top: 0;
+    }
+
+    .oxygen-list {
+        padding: 0;
     }
     
     .device-icon {
