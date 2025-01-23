@@ -39,4 +39,4 @@
         "**/*.spec.tsx"
     ],
     "compileOnSave": false,
-  }
+}
