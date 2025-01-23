@@ -17,10 +17,7 @@
  */
 
 import ApplicationSelectionModal from "@wso2is/admin.applications.v1/components/application-selection-modal";
-import {
-    VerticalStepper,
-    VerticalStepperStepInterface
-} from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
+import { VerticalStepper, VerticalStepperStepInterface } from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
