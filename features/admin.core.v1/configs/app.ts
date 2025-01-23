@@ -37,8 +37,7 @@ import { getOrganizationsResourceEndpoints } from "@wso2is/admin.organizations.v
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
 import { getPolicyAdministrationResourceEndpoints } from "@wso2is/admin.policy-administration.v1/configs";
 import {
-    getPushProviderResourceEndpoints,
-    getPushProviderTemplateEndpoints
+    getPushProviderResourceEndpoints, getPushProviderTemplateEndpoints
 } from "@wso2is/admin.push-providers.v1/configs/endpoints";
 import { getRemoteFetchConfigResourceEndpoints } from "@wso2is/admin.remote-repository-configuration.v1";
 import { getRolesResourceEndpoints } from "@wso2is/admin.roles.v2/configs/endpoints";
