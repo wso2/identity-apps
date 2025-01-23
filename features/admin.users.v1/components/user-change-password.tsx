@@ -120,7 +120,6 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
-    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
 
     const hasLoginAndRegistrationFeaturePermissions: boolean = useRequiredScopes(
         featureConfig?.loginAndRegistration?.scopes?.feature
