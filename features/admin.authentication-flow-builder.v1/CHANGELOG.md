@@ -1,5 +1,20 @@
 # @wso2is/admin.authentication-flow-builder.v1
 
+## 2.24.98
+
+### Patch Changes
+
+- Updated dependencies [[`d875ff4ee1889464749dbb573a80091ef7f76759`](https://github.com/wso2/identity-apps/commit/d875ff4ee1889464749dbb573a80091ef7f76759)]:
+  - @wso2is/admin.applications.v1@2.30.98
+  - @wso2is/admin.connections.v1@2.32.8
+  - @wso2is/admin.core.v1@2.37.6
+  - @wso2is/admin.extensions.v1@2.36.23
+  - @wso2is/admin.identity-providers.v1@2.26.98
+  - @wso2is/admin.login-flow.ai.v1@2.26.98
+  - @wso2is/admin.organizations.v1@2.26.98
+  - @wso2is/admin.secrets.v1@2.25.98
+  - @wso2is/admin.server-configurations.v1@2.32.23
+
 ## 2.24.97
 
 ### Patch Changes

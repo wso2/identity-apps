@@ -1,5 +1,12 @@
 # @wso2is/admin.org-insights.v1
 
+## 2.25.98
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.6
+
 ## 2.25.97
 
 ### Patch Changes
