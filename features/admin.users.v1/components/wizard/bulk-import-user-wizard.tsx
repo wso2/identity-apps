@@ -49,7 +49,6 @@ import { getAUserStore, getUserStores } from "@wso2is/admin.userstores.v1/api";
 import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
-import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertLevels,
@@ -62,7 +61,6 @@ import {
     SCIMSchemaExtension
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { StringUtils } from "@wso2is/core/utils";
 import {
     CSVFileStrategy,
     CSVResult,
@@ -181,9 +179,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
     const dispatch: Dispatch = useDispatch();
 
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
-
     const [ selectedCSVFile, setSelectedCSVFile ] = useState<File>(null);
     const [ userData, setUserData ] = useState<CSVResult>();
     const [ hasError, setHasError ] = useState<boolean>(false);
@@ -217,7 +212,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         state.config.ui.features.bulkUserImport.fileImportTimeout);
     const userLimit: number = useSelector((state: AppState) =>
         state.config.ui.features.bulkUserImport.userLimit);
-    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
     const csvFileProcessingStrategy: CSVFileStrategy = useMemo( () => {
         return new CSVFileStrategy(
             undefined,  // Mimetype.

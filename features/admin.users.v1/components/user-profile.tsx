@@ -1250,8 +1250,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         if (adminUserType === "internal") {
-            const accountDisabledURI: string = SCIMConfigs?.scimSystemUserClaimUri?.accountDisabled;
-            const accountLockedURI: string = SCIMConfigs?.scimSystemUserClaimUri?.accountLocked;
+            const accountDisabledURI: string = UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY
+                .get("ACCOUNT_LOCKED");
+            const accountLockedURI: string = UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY
+                .get("ACCOUNT_DISABLED");
 
             const schemaURI: string = accountDisabledURI?.startsWith(ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA)
                 && accountLockedURI?.startsWith(ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA)

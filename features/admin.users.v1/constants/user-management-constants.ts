@@ -17,7 +17,6 @@
  */
 
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
-import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { ServerConfigurationsConstants } from
     "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { ProfileConstants } from "@wso2is/core/constants";
@@ -123,9 +122,9 @@ export class UserManagementConstants {
      * @defaultValue
      */
     public static readonly SCIM2_ATTRIBUTES_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("ACCOUNT_LOCKED", SCIMConfigs.scimSystemUserClaimUri.accountLocked)
-        .set("ACCOUNT_DISABLED", SCIMConfigs.scimSystemUserClaimUri.accountDisabled)
-        .set("ONETIME_PASSWORD", SCIMConfigs.scimSystemUserClaimUri.oneTimePassword);
+        .set("ACCOUNT_LOCKED", "urn:scim:wso2:schema:accountLocked")
+        .set("ACCOUNT_DISABLED", "urn:scim:wso2:schema:accountDisabled")
+        .set("ONETIME_PASSWORD", "urn:scim:wso2:schema:oneTimePassword");
 
     public static readonly ROLES: string = "roles";
     public static readonly GROUPS: string = "groups";

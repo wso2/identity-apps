@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,7 @@ export interface SCIMConfigInterface {
         core1Schema: string,
         coreSchema: string,
         enterpriseSchema: string,
+        systemSchema: string,
         userSchema: string
     };
     scimEnterpriseUserClaimUri: {
@@ -34,14 +35,6 @@ export interface SCIMConfigInterface {
         isReadOnlyUser: string,
         oneTimePassword: string,
         profileUrl: string
-    };
-    scimSystemUserClaimUri: {
-        accountDisabled: string,
-        accountLocked: string,
-        askPassword: string,
-        forcePasswordReset: string,
-        isReadOnlyUser: string,
-        oneTimePassword: string
     };
     serverSupportedClaimsAvailable: string[];
 }
