@@ -17,8 +17,9 @@
  */
 
 import Skeleton from "@oxygen-ui/react/Skeleton";
-import { AppState, history } from "@wso2is/admin.core.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { deleteUserStore, patchUserStore } from "@wso2is/admin.userstores.v1/api/user-stores";
 import { DISABLED, RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { PatchData, UserStoreDetails, UserStoreProperty } from "@wso2is/admin.userstores.v1/models/user-stores";

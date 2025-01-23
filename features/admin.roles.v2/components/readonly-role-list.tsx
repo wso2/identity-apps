@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { AdvancedSearchWithBasicFilters, UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { IdentifiableComponentInterface, LoadableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,

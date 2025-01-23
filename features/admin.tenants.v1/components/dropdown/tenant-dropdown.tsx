@@ -33,7 +33,7 @@ import {
     useCheckFeatureStatus,
     useRequiredScopes
 } from "@wso2is/access-control";
-import { getMiscellaneousIcons } from "@wso2is/admin.core.v1/configs";
+import { getMiscellaneousIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";

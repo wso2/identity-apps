@@ -17,7 +17,7 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
-import { VerticalStepper, VerticalStepperStepInterface } from "@wso2is/admin.core.v1";
+import { VerticalStepper, VerticalStepperStepInterface } from "@wso2is/admin.core.v1/components/vertical-stepper";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { store } from "@wso2is/admin.core.v1/store";

@@ -20,8 +20,12 @@ import Chip from "@oxygen-ui/react/Chip";
 import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { getAUserStore } from "@wso2is/admin.core.v1/api/user-store";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
@@ -67,10 +71,6 @@ import {
     ResourceTabPaneInterface,
     useDocumentation
 } from "@wso2is/react-components";
-import { getEmptyPlaceholderIllustrations } from "@wso2is.admin.core.v1/configs/ui";
-import { UIConstants } from "@wso2is.admin.core.v1/constants/ui-constants";
-import { history } from "@wso2is.admin.core.v1/helpers/history";
-import { UserBasicInterface } from "@wso2is.admin.core.v1/models/user";
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, {
