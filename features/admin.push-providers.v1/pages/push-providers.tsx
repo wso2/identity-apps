@@ -104,7 +104,7 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
     }, [ pushProvidersList, availableTemplates ]);
 
     const handleBackButtonClick = () => {
-        history.push(`${AppConstants.getPaths().get("NOTIFICAION_CHANNELS")}`);
+        history.push(`${AppConstants.getPaths().get("NOTIFICATION_CHANNELS")}`);
     };
 
     const handlePushProviderDelete = (): void => {

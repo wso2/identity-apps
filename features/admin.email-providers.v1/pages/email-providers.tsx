@@ -423,7 +423,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
     };
 
     const handleBackButtonClick = () => {
-        history.push(`${AppConstants.getPaths().get("NOTIFICAION_CHANNELS")}`);
+        history.push(`${AppConstants.getPaths().get("NOTIFICATION_CHANNELS")}`);
     };
 
     const goToEmailTemplates = () => {

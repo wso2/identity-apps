@@ -738,7 +738,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             id: "notificationChannels",
             name: "Notification Channels",
             order: 16,
-            path: AppConstants.getPaths().get("NOTIFICAION_CHANNELS"),
+            path: AppConstants.getPaths().get("NOTIFICATION_CHANNELS"),
             protected: true,
             showOnSidePanel: true
         },
