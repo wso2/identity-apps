@@ -142,7 +142,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     }, [ user ]);
 
     useEffect(() => {
-        if (user[ SCIMConfigs.scim.enterpriseSchema ]?.managedOrg) {
+        if (user[ SCIMConfigs.scim.systemSchema ]?.managedOrg) {
             if (!isUpdatingSharedProfilesEnabled) {
                 setIsUserProfileReadOnly(true);
             }

@@ -465,7 +465,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || (!isUpdatingSharedProfilesEnabled && user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg)
+                    || (!isUpdatingSharedProfilesEnabled && user[SCIMConfigs.scim.systemSchema]?.managedOrg)
                         ? "eye"
                         : "pencil alternate";
                 },
@@ -480,7 +480,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || (!isUpdatingSharedProfilesEnabled && user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg)
+                    || (!isUpdatingSharedProfilesEnabled && user[SCIMConfigs.scim.systemSchema]?.managedOrg)
                         ? t("common:view")
                         : t("common:edit");
                 },

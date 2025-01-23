@@ -196,7 +196,7 @@ export const createEmptyUserDetails = (): UserDetailsInterface => ({
     },
     password: "",
     profileUrl: "",
-    [SCIMConfigs.scim.enterpriseSchema]: {
+    [SCIMConfigs.scim.systemSchema]: {
         askPassword: ""
     },
     userName: ""

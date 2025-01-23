@@ -683,7 +683,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     givenName: userInfo.firstName
                 },
                 profileUrl: userInfo.profileUrl,
-                [ SCIMConfigs.scim.enterpriseSchema ]: {
+                [ SCIMConfigs.scim.systemSchema ]: {
                     askPassword: "true"
                 },
                 userName: username
