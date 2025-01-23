@@ -659,7 +659,7 @@ export const myAccount: MyAccountNS = {
                     "(TOTP என்றும் அழைக்கப்படுகிறது) பயன்படுத்த ஒரு அங்கீகார " +
                     "பயன்பாட்டைப் பயன்படுத்தி QR குறியீட்டை ஸ்கேன் செய்யுங்கள்.",
                 enableHint: "TOTP அங்கீகாரத்தை இயக்கு/முடக்கு",
-                heading: "அங்கீகார பயன்பாடு",
+                heading: "TOTP அங்கீகாரி",
                 hint: "காண்க",
                 modals: {
                     delete : {
@@ -902,6 +902,7 @@ export const myAccount: MyAccountNS = {
                         tryWithOlderDevice: "பழைய பாஸ்கி மூலம் மீண்டும் முயற்சி செய்யலாம்."
                     }
                 },
+                noPassKeyMessage: "நீங்கள் இன்னும் எந்த பாஸ்கீஸ்-ஐயும் பதிவு செய்யவில்லை.",
                 notifications: {
                     removeDevice: {
                         error: {

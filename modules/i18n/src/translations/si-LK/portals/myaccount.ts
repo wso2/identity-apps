@@ -654,7 +654,7 @@ export const myAccount: MyAccountNS = {
                     "මත පදනම් වූ, එක් වරක් මුර කේත (TOTP ලෙසද හැඳින්වේ) භාවිතා " +
                     "කිරීමට Authenticator යෙදුමක් භාවිතයෙන් QR කේතය පරිලෝකනය කරන්න.",
                 enableHint: "TOTP සබල/අබල කරන්න",
-                heading: "සත්‍යාපන යෙදුම",
+                heading: "TOTP සත්‍යාපකය",
                 hint: "පෙන්වන්න",
                 modals: {
                     delete : {
@@ -888,6 +888,7 @@ export const myAccount: MyAccountNS = {
                         tryWithOlderDevice: "ඔබට පැරණි මුර යතුරක් සමඟ නැවත උත්සාහ කිරීමටද හැකිය."
                     }
                 },
+                noPassKeyMessage: "ඔබට දැන් තවමත් කිසිදු මුරපදයක් ලියාපදිංචි කර නොමැත.",
                 notifications: {
                     removeDevice: {
                         error: {

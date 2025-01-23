@@ -670,7 +670,7 @@ export const myAccount: MyAccountNS = {
                     "à usage unique basés sur le temps (également appelés TOTP) " +
                     "comme deuxième facteur lors de la connexion aux applications.",
                 enableHint: "Activer/désactiver l'authentificateur TOTP",
-                heading: "Application d'authentification",
+                heading: "Authentificateur TOTP",
                 hint: "Voir",
                 modals: {
                     delete : {
@@ -915,6 +915,7 @@ export const myAccount: MyAccountNS = {
                         tryWithOlderDevice: "VVous pouvez également réessayer avec un mot de passe plus ancien."
                     }
                 },
+                noPassKeyMessage: "Vous n'avez pas encore de clés d'accès enregistrées.",
                 notifications: {
                     removeDevice: {
                         error: {

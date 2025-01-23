@@ -655,7 +655,7 @@ export const myAccount: MyAccountNS = {
                     "em tempo (também conhecidas como TOTP) como um segundo " +
                     "fator ao fazer login em aplicativos.",
                 enableHint: "Ativar/desativar o autenticador TOTP",
-                heading: "App autenticador",
+                heading: "Autenticador TOTP",
                 hint: "Visão",
                 modals: {
                     delete: {
@@ -890,6 +890,7 @@ export const myAccount: MyAccountNS = {
                         tryWithOlderDevice: "Você também pode tentar novamente com uma senha mais antiga."
                     }
                 },
+                noPassKeyMessage: "Você ainda não tem nenhuma chave de acesso registrada.",
                 notifications: {
                     removeDevice: {
                         error: {

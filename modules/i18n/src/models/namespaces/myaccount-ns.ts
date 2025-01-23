@@ -393,6 +393,7 @@ export interface MyAccountNS {
                     remove: string;
                     required: string;
                 };
+                noPassKeyMessage: string;
             };
             smsOtp: {
                 descriptions: {

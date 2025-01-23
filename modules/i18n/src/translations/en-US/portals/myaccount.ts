@@ -889,6 +889,7 @@ export const myAccount: MyAccountNS = {
                         tryWithOlderDevice: "You may also try again with an older passkey."
                     }
                 },
+                noPassKeyMessage: "You don't have any passkeys enrolled yet.",
                 notifications: {
                     removeDevice: {
                         error: {

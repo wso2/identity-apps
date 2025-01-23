@@ -638,7 +638,7 @@ export const myAccount: MyAccountNS = {
                 "deleteHint": "消除",
                 "description": "您可以使用Authenticator应用程序获取两因素身份验证的验证代码。",
                 "enableHint": "启用/禁用TOTP身份验证器",
-                "heading": "身份验证器应用程序",
+                "heading": "TOTP 验证器",
                 "hint": "看法",
                 "modals": {
                     "delete": {
@@ -861,6 +861,7 @@ export const myAccount: MyAccountNS = {
                         "tryWithOlderDevice": "您也可以使用旧的密钥重试。"
                     }
                 },
+                "noPassKeyMessage": "您尚未注册任何密码密钥。",
                 "notifications": {
                     "removeDevice": {
                         "error": {

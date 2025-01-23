@@ -4746,32 +4746,7 @@ importers:
         specifier: ^2.36.19
         version: link:../admin.extensions.v1
       '@wso2is/admin.organizations.v1':
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         specifier: ^2.26.94
-=======
-=======
->>>>>>> 487359e8e5 (Update lockfile)
-<<<<<<< HEAD
-        specifier: ^2.26.92
-=======
-<<<<<<< HEAD
-        specifier: ^2.26.91
-=======
-        specifier: ^2.26.73
->>>>>>> 3c7cda1e99 (Introduce push authenticator configuration support in my account)
->>>>>>> d2a77245e9 (Introduce push authenticator configuration support in my account)
-<<<<<<< HEAD
->>>>>>> 593c2840d0 (Introduce push authenticator configuration support in my account)
-=======
-=======
-        specifier: ^2.26.91
->>>>>>> e5ac138ac3 (Update lockfile)
->>>>>>> 487359e8e5 (Update lockfile)
-=======
-        specifier: ^2.26.92
->>>>>>> 3a7dd94969 (Update lockfile)
         version: link:../admin.organizations.v1
       '@wso2is/admin.server-configurations.v1':
         specifier: ^2.32.19

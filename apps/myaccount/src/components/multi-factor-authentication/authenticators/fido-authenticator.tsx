@@ -663,7 +663,11 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                         ) }
                     </List>
                 ) : (
-                    <Message type="info" className="m-3" content={ "You don't have any passkeys enrolled yet." } />
+                    <Message
+                        type="info"
+                        className="m-3"
+                        content={ t("myAccount:components.mfa.fido.noPassKeyMessage") }
+                    />
                 ) }
             </div>
             <>{ deviceErrorModal() }</>

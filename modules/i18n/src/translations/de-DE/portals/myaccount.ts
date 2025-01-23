@@ -638,7 +638,7 @@ export const myAccount: MyAccountNS = {
                 "deleteHint": "Entfernen",
                 "description": "Sie können die Authentifizierungs-App verwenden, um Bestätigungscodes für die Zwei-Faktor-Authentifizierung zu erhalten.",
                 "enableHint": "TOTP-Authentifikator aktivieren/deaktivieren",
-                "heading": "Authentifizierungs-App",
+                "heading": "TOTP-Authenticator",
                 "hint": "Aussicht",
                 "modals": {
                     "delete": {
@@ -862,6 +862,7 @@ export const myAccount: MyAccountNS = {
                         "tryWithOlderDevice": "Sie können es auch mit einem älteren Passkey noch einmal versuchen."
                     }
                 },
+                "noPassKeyMessage": "Sie haben noch keine Passkeys registriert.",
                 "notifications": {
                     "removeDevice": {
                         "error": {

@@ -638,7 +638,7 @@ export const myAccount: MyAccountNS = {
                 "deleteHint": "Eliminar",
                 "description": "Puede usar la aplicación de autenticación para obtener códigos de verificación para la autenticación de dos factores.",
                 "enableHint": "Habilitar/deshabilitar el autenticador TOTP",
-                "heading": "Aplicación Authenticator",
+                "heading": "Autenticador TOTP",
                 "hint": "Vista",
                 "modals": {
                     "delete": {
@@ -862,6 +862,7 @@ export const myAccount: MyAccountNS = {
                         "tryWithOlderDevice": "También puedes volver a intentarlo con una clave anterior."
                     }
                 },
+                "noPassKeyMessage": "Aún no tienes ninguna clave de acceso registrada.",
                 "notifications": {
                     "removeDevice": {
                         "error": {

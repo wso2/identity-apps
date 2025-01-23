@@ -638,7 +638,7 @@ export const myAccount: MyAccountNS = {
                 "deleteHint": "取り除く",
                 "description": "Authenticatorアプリを使用して、2要素認証のために確認コードを取得できます。",
                 "enableHint": "TOTP Authenticatorを有効/無効にします",
-                "heading": "Authenticatorアプリ",
+                "heading": "TOTP認証器",
                 "hint": "ビュー",
                 "modals": {
                     "delete": {
@@ -861,6 +861,7 @@ export const myAccount: MyAccountNS = {
                         "tryWithOlderDevice": "古いパスキーを使用して再試行することもできます。"
                     }
                 },
+                "noPassKeyMessage": "まだパスキーが登録されていません。",
                 "notifications": {
                     "removeDevice": {
                         "error": {
