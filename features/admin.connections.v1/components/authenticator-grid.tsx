@@ -50,6 +50,7 @@ import React, {
     MouseEvent,
     ReactElement,
     SyntheticEvent,
+    useEffect,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -157,7 +158,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     const dispatch: Dispatch = useDispatch();
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
     const { UIConfig } = useUIConfig();
+    const hiddenAuthenticators: string[] = [ ...(UIConfig?.hiddenAuthenticators ?? []) ];
 
+    const [ displayingAuthenticators, setDisplayingAuthenticators ] = useState<
+        (ConnectionInterface | AuthenticatorInterface)[]>([]);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingIDP, setDeletingIDP ] = useState<ConnectionInterface>(undefined);
     const [ isDeletionloading, setIsDeletionLoading ] = useState(false);
@@ -178,6 +182,15 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     );
 
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
+
+    useEffect(() => {
+        const shownAuthenticatorList: (ConnectionInterface | AuthenticatorInterface)[] =
+            authenticators.filter((authenticator:ConnectionInterface | AuthenticatorInterface)  => {
+                return !hiddenAuthenticators.includes(authenticator.name);
+            });
+
+        setDisplayingAuthenticators(shownAuthenticatorList);
+    }, [ authenticators ]);
 
     /**
      * Redirects to the authenticator edit page when the edit button is clicked.
@@ -448,14 +461,14 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                 isLoading={ isLoading }
                 isPaginating={ false }
                 isEmpty={
-                    (!authenticators
-                    || !Array.isArray(authenticators)
-                    || authenticators.length <= 0)
+                    (!displayingAuthenticators
+                    || !Array.isArray(displayingAuthenticators)
+                    || displayingAuthenticators.length <= 0)
                 }
                 emptyPlaceholder={ showPlaceholders() }
             >
                 {
-                    authenticators?.map((authenticator: ConnectionInterface
+                    displayingAuthenticators?.map((authenticator: ConnectionInterface
                         | AuthenticatorInterface, index: number) => {
 
                         const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
