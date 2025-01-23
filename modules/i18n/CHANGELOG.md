@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.16.1
+
+### Patch Changes
+
+- [#7359](https://github.com/wso2/identity-apps/pull/7359) [`5d39c0975774564423edebcb268291eb24932e23`](https://github.com/wso2/identity-apps/commit/5d39c0975774564423edebcb268291eb24932e23) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Change i18n in distinct attribute profiles and enable the feature for IS pack
+
+* [#7336](https://github.com/wso2/identity-apps/pull/7336) [`7de99c9b05b5f11e8350796ba370d54e8b2dc181`](https://github.com/wso2/identity-apps/commit/7de99c9b05b5f11e8350796ba370d54e8b2dc181) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Add Create Wizard for Custom Authentication Feature
+
 ## 2.16.0
 
 ### Minor Changes

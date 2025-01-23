@@ -1,5 +1,12 @@
 # @wso2is/form
 
+## 2.6.16
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.8.23
+
 ## 2.6.15
 
 ### Patch Changes
