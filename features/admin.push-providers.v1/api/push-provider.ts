@@ -121,4 +121,3 @@ export const deletePushProvider = async (): Promise<AxiosResponse> => {
             );
         });
 };
-
