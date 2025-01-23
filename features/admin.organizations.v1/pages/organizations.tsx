@@ -18,14 +18,12 @@
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConstants
-} from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { AdvanceSearchConstants } from "@wso2is/admin.core.v1/constants/advance-search";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

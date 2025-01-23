@@ -17,16 +17,16 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { getAUserStore } from "@wso2is/admin.core.v1/api/user-store"; // No specific rule found
 import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    SharedUserStoreUtils,
-    UIConstants,
-    UserStoreProperty,
-    getAUserStore,
-    getEmptyPlaceholderIllustrations
-} from "@wso2is/admin.core.v1";
+    AdvancedSearchWithBasicFilters
+} from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters"; // No specific rule found
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui"; // No specific rule found
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants"; // No specific rule found
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { UserStoreProperty } from "@wso2is/admin.core.v1/models/user-store";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { commonConfig, groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";

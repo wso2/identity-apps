@@ -19,14 +19,12 @@
 import { useRequiredScopes } from "@wso2is/access-control";
 import { OutboundProvisioningConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
 import { OutboundProvisioningConnectorInterface } from "@wso2is/admin.connections.v1/models/connection";
-import {
-    AppState,
-    AuthenticatorAccordion,
-    FeatureConfigInterface,
-    history
-} from "@wso2is/admin.core.v1";
+import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authenticator-accordion";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
 import { IdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";

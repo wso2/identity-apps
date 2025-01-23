@@ -18,8 +18,12 @@
 
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
-import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "@wso2is/admin.core.v1";
-import { EventPublisher } from "@wso2is/admin.core.v1/utils";
+import { AssignRoles } from "@wso2is/admin.core.v1/components/roles";
+import { RolePermissions } from "@wso2is/admin.core.v1/components/roles/role-permissions";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
 import { updateRole } from "@wso2is/admin.roles.v2/api";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
@@ -29,7 +33,7 @@ import {
     PatchRoleDataInterface,
     RolesV2Interface
 } from "@wso2is/admin.roles.v2/models/roles";
-import { UserBasicInterface } from "@wso2is/admin.users.v1/models";
+import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
