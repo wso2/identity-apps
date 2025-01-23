@@ -740,6 +740,8 @@
                             if (!StringUtils.equalsIgnoreCase(backToUrl, "null") &&
                                 !StringUtils.isBlank(backToUrl) &&
                                 !backToUrl.toLowerCase().contains("javascript:") &&
+                                !backToUrl.toLowerCase().contains("file:") &&
+                                !backToUrl.toLowerCase().contains("ftp:") &&
                                 !backToUrl.toLowerCase().contains("data:")) {
                         %>
                         <div class="buttons mt-2">
@@ -1302,6 +1304,8 @@
                             if (!StringUtils.equalsIgnoreCase(backToUrl, "null") &&
                                 !StringUtils.isBlank(backToUrl) &&
                                 !backToUrl.toLowerCase().contains("javascript:") &&
+                                !backToUrl.toLowerCase().contains("file:") &&
+                                !backToUrl.toLowerCase().contains("ftp:") &&
                                 !backToUrl.toLowerCase().contains("data:")) {
                         %>
                         <div class="buttons mt-2">
