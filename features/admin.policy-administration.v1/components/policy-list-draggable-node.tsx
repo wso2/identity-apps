@@ -24,7 +24,6 @@ import { EllipsisVerticalIcon }  from "@oxygen-ui/react-icons";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -67,7 +66,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
     const dispatch: Dispatch = useDispatch();
 
     const handleEdit = (policyId: string) => {
-        history.push(`${AppConstants.getPaths().get("EDIT_POLICY").replace(":id", kebabCase(policyId))}`);
+        history.push(`${AppConstants.getPaths().get("EDIT_POLICY").replace(":id", btoa(policyId))}`);
     };
 
     const handleDelete = async (): Promise<void> => {
@@ -79,7 +78,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                 policyIds: [ `${policy.policyId}` ],
                 subscriberIds: [ "PDP Subscriber" ]
             });
-            await deletePolicy(policy.policyId);
+            await deletePolicy(btoa(policy.policyId));
 
             dispatch(addAlert({
                 description: t("policyAdministration:alerts.deleteSuccess.description"),
