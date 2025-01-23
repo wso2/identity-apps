@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.5.8
+
+### Patch Changes
+
+- [#7362](https://github.com/wso2/identity-apps/pull/7362) [`31b4e92ae73fea1372a03f9aa0511f062030e44f`](https://github.com/wso2/identity-apps/commit/31b4e92ae73fea1372a03f9aa0511f062030e44f) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Add system schema
+
 ## 2.5.7
 
 ### Patch Changes

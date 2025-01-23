@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.10.9
+
+### Patch Changes
+
+- [#7367](https://github.com/wso2/identity-apps/pull/7367) [`debd77e3f54f4d57ef7c09af8d4a3c44159ff065`](https://github.com/wso2/identity-apps/commit/debd77e3f54f4d57ef7c09af8d4a3c44159ff065) Thanks [@KD23243](https://github.com/KD23243)! - Add sanitation to self registration callback
+
 ## 2.10.8
 
 ### Patch Changes
