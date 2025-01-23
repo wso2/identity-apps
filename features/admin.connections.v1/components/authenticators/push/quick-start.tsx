@@ -49,7 +49,7 @@ const PushAuthQuickStart: FunctionComponent<PushAuthQuickStartPropsInterface> = 
 ): ReactElement => {
 
     const {
-        [ "data-componentid" ]: componentId
+        [ "data-componentid" ]: componentId = "push-authenticator-quick-start"
     } = props;
 
     const { t } = useTranslation();
