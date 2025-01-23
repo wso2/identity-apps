@@ -16,14 +16,17 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import ApplicationSelectionModal from "@wso2is/admin.applications.v1/components/application-selection-modal";
-import { VerticalStepper, VerticalStepperStepInterface } from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
+import {
+    VerticalStepper,
+    VerticalStepperStepInterface
+} from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { useRequiredScopes } from "@wso2is/access-control";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
@@ -57,7 +60,7 @@ const PushAuthQuickStart: FunctionComponent<PushAuthQuickStartPropsInterface> = 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const hasApplicationReadPermissions: boolean = useRequiredScopes(
-            featureConfig?.applications?.scopes?.read
+        featureConfig?.applications?.scopes?.read
     );
 
     /**
@@ -67,19 +70,19 @@ const PushAuthQuickStart: FunctionComponent<PushAuthQuickStartPropsInterface> = 
     const steps: VerticalStepperStepInterface[] = [
         {
             stepContent: (
-                    <Text>
-                        <Trans
-                            i18nKey={
-                                "extensions:develop.identityProviders.pushAuth." +
+                <Text>
+                    <Trans
+                        i18nKey={
+                            "extensions:develop.identityProviders.pushAuth." +
                                 "quickStart.steps.selectApplication.content"
-                            }
-                        >
-                            Choose the { isApplicationReadAccessAllowed ? (
-                                <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
+                        }
+                    >
+                            Choose the { hasApplicationReadPermissions ? (
+                            <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
                                 application </Link>) : "application" }
                             for which you want to set up Push Authentication login.
-                        </Trans>
-                    </Text>
+                    </Trans>
+                </Text>
             ),
             stepTitle: t("extensions:develop.identityProviders.pushAuth.quickStart.steps.selectApplication.heading")
         },
