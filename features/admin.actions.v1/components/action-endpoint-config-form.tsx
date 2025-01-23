@@ -70,8 +70,8 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
         (state: AppState) => state.config.ui.features.actions);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
-    const [ isShowSecret1, setIsShowSecret1 ] = useState(false);
-    const [ isShowSecret2, setIsShowSecret2 ] = useState(false);
+    const [ isShowSecret1, setIsShowSecret1 ] = useState<boolean>(false);
+    const [ isShowSecret2, setIsShowSecret2 ] = useState<boolean>(false);
     const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
     const hasActionCreatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.create);
 
@@ -140,7 +140,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
             };
 
             return (
-                <Alert severity="info">
+                <Alert className="alert-nutral" icon={ false }>
                     <AlertTitle
                         className="alert-title"
                         data-componentid={ `${_componentId}-authentication-info-box-title` }

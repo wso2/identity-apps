@@ -130,6 +130,7 @@ export interface CertificatesNS {
             subjectDN: string;
             version: string;
         };
+        serial : string;
         wizard: {
             panes: {
                 upload: string;

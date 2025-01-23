@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -69,7 +69,7 @@ export const CertificateViewModal: FunctionComponent<CertificateViewModalInterfa
             className="certificate-display"
             dimmer="blurring"
             size="tiny"
-            data-componentid={ `${ _componentId }-view-certificate-modal` }
+            data-testid={ `${ _componentId }-view-certificate-modal` }
             { ...rest }
         >
             <Modal.Header>
@@ -89,7 +89,8 @@ export const CertificateViewModal: FunctionComponent<CertificateViewModalInterfa
                                 )
                         }
                     </div><br/>
-                    <div className="certificate-serial">Serial Number: { certificate?.serialNumber }</div>
+                    <div className="certificate-serial"> { t("certificates:keystore.serial") }
+                        { certificate?.serialNumber }</div>
                 </div>
             </Modal.Header>
             <Modal.Content className="certificate-content">

@@ -142,6 +142,7 @@ export const certificates: CertificatesNS = {
                 title: "No results found"
             }
         },
+        serial : "Serial Number:",
         summary: {
             issuerDN: "Issuer DN",
             sn: "Serial Number:",

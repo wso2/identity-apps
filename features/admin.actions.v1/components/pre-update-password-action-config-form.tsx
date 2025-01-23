@@ -90,7 +90,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
         (state: AppState) => state.config.ui.features.actions);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
-    const [ isSubmitting, setIsSubmitting ] = useState(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ PEMValue, setPEMValue ] = useState<string>(undefined);
 
     const { t } = useTranslation();

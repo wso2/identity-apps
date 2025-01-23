@@ -409,8 +409,6 @@ export class AppConstants {
                 `${AppConstants.getAdminViewBasePath()}/actions` ],
             [ "PRE_ISSUE_ACCESS_TOKEN_EDIT",
                 `${ AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ],
-            [ "PRE_UPDATE_PASSWORD_EDIT",
-                `${ AppConstants.getAdminViewBasePath()}/actions/pre-update-password` ],
             [ "TENANTS", `${AppConstants.getDefaultLayoutBasePath()}/organizations` ],
             [ "EDIT_TENANT", `${AppConstants.getDefaultLayoutBasePath()}/organizations/:id` ],
             [ "SYSTEM_SETTINGS", `${AppConstants.getDefaultLayoutBasePath()}/organizations/system-settings` ],

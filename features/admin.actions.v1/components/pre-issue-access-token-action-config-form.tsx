@@ -21,6 +21,9 @@ import Button from "@oxygen-ui/react/Button";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1";
+import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
+import { RuleExecuteCollectionWithoutIdInterface, RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
+import { getRuleInstanceValue } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalForm, FormRenderProps, FormSpy } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
@@ -29,6 +32,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import CommonActionConfigForm from "./common-action-config-form";
+import RuleConfigForm from "./rule-config-form";
 import createAction from "../api/create-action";
 import updateAction from "../api/update-action";
 import useGetActionById from "../api/use-get-action-by-id";
@@ -79,7 +83,8 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
         (state: AppState) => state.config.ui.features.actions);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
-    const [ isSubmitting, setIsSubmitting ] = useState(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isHasRule, setIsHasRule ] = useState<boolean>(false);
 
     const { t } = useTranslation();
 
@@ -94,8 +99,16 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
     } = useGetActionsByType(actionTypeApiPath);
 
     const {
+        data: actionData,
         mutate: mutateAction
     } = useGetActionById(actionTypeApiPath, initialValues?.id);
+
+    const {
+        data: RuleExpressionsMetaData
+    } = useGetRulesMeta(actionTypeApiPath);
+
+    // TODO: Temporary flag to show/hide the rule component.
+    const showRuleComponent: boolean = false;
 
     /**
      * The following useEffect is used to set the current Action Authentication Type.
@@ -108,6 +121,12 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
             setIsAuthenticationUpdateFormState(false);
         }
     }, [ initialValues ]);
+
+    useEffect(() => {
+        if (actionData?.rule) {
+            setIsHasRule(true);
+        }
+    }, [ actionData ]);
 
     const renderLoadingPlaceholders = (): ReactElement => (
         <Box className="placeholder-box">
@@ -142,6 +161,22 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
         values: ActionConfigFormPropertyInterface,
         changedFields: ActionConfigFormPropertyInterface) =>
     {
+
+        let rule: RuleWithoutIdInterface | Record<string, never>;
+
+        if (isHasRule) {
+            const ruleValue: RuleExecuteCollectionWithoutIdInterface = getRuleInstanceValue();
+
+            rule = ruleValue?.rules[0];
+
+            if (rule?.rules?.length === 1 &&
+                rule?.rules[0].expressions?.length === 1 &&
+                rule?.rules[0]?.expressions[0].value === "") {
+
+                rule = {};
+            }
+        }
+
         const authProperties: Partial<AuthenticationPropertiesInterface> = {};
 
         if (isAuthenticationUpdateFormState || isCreateFormState) {
@@ -176,7 +211,8 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                     },
                     uri: values.endpointUri
                 },
-                name: values.name
+                name: values.name,
+                ...(rule !== null && { rule: rule })
             };
 
             setIsSubmitting(true);
@@ -201,7 +237,8 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                     } : undefined,
                     uri: changedFields?.endpointUri ? values.endpointUri : undefined
                 } : undefined,
-                name: changedFields?.name ? values.name : undefined
+                name: changedFields?.name ? values.name : undefined,
+                ...(rule !== null && { rule: rule })
             };
 
             setIsSubmitting(true);
@@ -235,6 +272,14 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                         setAuthenticationType(updatedValue);
                         setIsAuthenticationUpdateFormState(change);
                     } }/>
+                { (RuleExpressionsMetaData && showRuleComponent) && (
+                    <RuleConfigForm
+                        ruleExpressionsMetaData={ RuleExpressionsMetaData }
+                        actionData= { actionData }
+                        isHasRule= { isHasRule }
+                        setIsHasRule= { setIsHasRule }
+                    />
+                ) }
             </>
         );
     };

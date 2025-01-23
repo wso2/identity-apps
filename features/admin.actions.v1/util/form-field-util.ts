@@ -38,27 +38,27 @@ export const validateActionCommonFields = (
     t: (key: string, options?: any) => string
 ): Partial<ActionConfigFormPropertyInterface> => {
     const { isCreateFormState, isAuthenticationUpdateFormState, authenticationType } = options;
-    const error: Partial<ActionConfigFormPropertyInterface> = {};
+    const errors: Partial<ActionConfigFormPropertyInterface> = {};
 
     if (!values?.name) {
-        error.name = t("actions:fields.name.validations.empty");
+        errors.name = t("actions:fields.name.validations.empty");
     }
 
     if (!ActionsConstants.ACTION_NAME_REGEX.test(values?.name)) {
-        error.name = t("actions:fields.name.validations.invalid");
+        errors.name = t("actions:fields.name.validations.invalid");
     }
     if (!values?.endpointUri) {
-        error.endpointUri = t("actions:fields.endpoint.validations.empty");
+        errors.endpointUri = t("actions:fields.endpoint.validations.empty");
     }
     if (URLUtils.isURLValid(values?.endpointUri)) {
         if (!(URLUtils.isHttpsUrl(values?.endpointUri))) {
-            error.endpointUri = t("actions:fields.endpoint.validations.notHttps");
+            errors.endpointUri = t("actions:fields.endpoint.validations.notHttps");
         }
     } else {
-        error.endpointUri = t("actions:fields.endpoint.validations.invalidUrl");
+        errors.endpointUri = t("actions:fields.endpoint.validations.invalidUrl");
     }
     if (!values?.authenticationType) {
-        error.authenticationType = t("actions:fields.authenticationType.validations.empty");
+        errors.authenticationType = t("actions:fields.authenticationType.validations.empty");
     }
 
     switch (authenticationType) {
@@ -66,11 +66,11 @@ export const validateActionCommonFields = (
             if(isCreateFormState || isAuthenticationUpdateFormState ||
                 values?.usernameAuthProperty || values?.passwordAuthProperty) {
                 if (!values?.usernameAuthProperty) {
-                    error.usernameAuthProperty = t("actions:fields.authentication." +
+                    errors.usernameAuthProperty = t("actions:fields.authentication." +
                         "types.basic.properties.username.validations.empty");
                 }
                 if (!values?.passwordAuthProperty) {
-                    error.passwordAuthProperty = t("actions:fields.authentication." +
+                    errors.passwordAuthProperty = t("actions:fields.authentication." +
                         "types.basic.properties.password.validations.empty");
                 }
             }
@@ -79,7 +79,7 @@ export const validateActionCommonFields = (
         case AuthenticationType.BEARER:
             if (isCreateFormState || isAuthenticationUpdateFormState) {
                 if (!values?.accessTokenAuthProperty) {
-                    error.accessTokenAuthProperty = t("actions:fields.authentication." +
+                    errors.accessTokenAuthProperty = t("actions:fields.authentication." +
                         "types.bearer.properties.accessToken.validations.empty");
                 }
             }
@@ -89,15 +89,15 @@ export const validateActionCommonFields = (
             if (isCreateFormState || isAuthenticationUpdateFormState ||
                 values?.headerAuthProperty || values?.valueAuthProperty) {
                 if (!values?.headerAuthProperty) {
-                    error.headerAuthProperty = t("actions:fields.authentication." +
+                    errors.headerAuthProperty = t("actions:fields.authentication." +
                         "types.apiKey.properties.header.validations.empty");
                 }
                 if (!ActionsConstants.API_HEADER_REGEX.test(values?.headerAuthProperty)) {
-                    error.headerAuthProperty = t("actions:fields.authentication." +
+                    errors.headerAuthProperty = t("actions:fields.authentication." +
                         "types.apiKey.properties.header.validations.invalid");
                 }
                 if (!values?.valueAuthProperty) {
-                    error.valueAuthProperty = t("actions:fields.authentication." +
+                    errors.valueAuthProperty = t("actions:fields.authentication." +
                         "types.apiKey.properties.value.validations.empty");
                 }
             }
@@ -107,5 +107,5 @@ export const validateActionCommonFields = (
             break;
     }
 
-    return error;
+    return errors;
 };
