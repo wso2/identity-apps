@@ -39,7 +39,6 @@
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
-
     request.getSession().invalidate();
     String queryString = request.getQueryString();
     Map<String, String> idpAuthenticatorMapping = null;
