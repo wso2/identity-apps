@@ -1,5 +1,20 @@
 # @wso2is/admin.policy-administration.v1
 
+## 1.0.15
+
+### Patch Changes
+
+- [#7376](https://github.com/wso2/identity-apps/pull/7376) [`16a151614965af2f47b44a35aafc587c4263ccf7`](https://github.com/wso2/identity-apps/commit/16a151614965af2f47b44a35aafc587c4263ccf7) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Add encoding for policy ID
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.7
+  - @wso2is/admin.applications.v1@2.30.99
+  - @wso2is/admin.extensions.v1@2.36.24
+  - @wso2is/admin.feature-gate.v1@1.4.99
+  - @wso2is/admin.organizations.v1@2.26.99
+  - @wso2is/admin.users.v1@2.30.9
+  - @wso2is/admin.validation.v1@2.27.37
+
 ## 1.0.14
 
 ### Patch Changes
