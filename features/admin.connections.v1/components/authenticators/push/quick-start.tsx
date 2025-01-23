@@ -71,7 +71,6 @@ const PushAuthQuickStart: FunctionComponent<PushAuthQuickStartPropsInterface> = 
     const steps: VerticalStepperStepInterface[] = [
         {
             stepContent: (
-                <>
                     <Text>
                         <Trans
                             i18nKey={
@@ -85,7 +84,6 @@ const PushAuthQuickStart: FunctionComponent<PushAuthQuickStartPropsInterface> = 
                             for which you want to set up Push Authentication login.
                         </Trans>
                     </Text>
-                </>
             ),
             stepTitle: t("extensions:develop.identityProviders.pushAuth.quickStart.steps.selectApplication.heading")
         },
