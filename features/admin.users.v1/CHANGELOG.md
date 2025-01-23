@@ -1,5 +1,27 @@
 # @wso2is/admin.users.v1
 
+## 2.30.6
+
+### Patch Changes
+
+- [#7372](https://github.com/wso2/identity-apps/pull/7372) [`365c0cf9158518f16d330a8b55173cf2cc673b46`](https://github.com/wso2/identity-apps/commit/365c0cf9158518f16d330a8b55173cf2cc673b46) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix attribute profiles console
+
+- Updated dependencies [[`365c0cf9158518f16d330a8b55173cf2cc673b46`](https://github.com/wso2/identity-apps/commit/365c0cf9158518f16d330a8b55173cf2cc673b46)]:
+  - @wso2is/admin.users.v1@2.30.6
+  - @wso2is/admin.core.v1@2.37.4
+  - @wso2is/admin.extensions.v1@2.36.21
+  - @wso2is/admin.groups.v1@2.27.6
+  - @wso2is/admin.identity-providers.v1@2.26.96
+  - @wso2is/admin.organizations.v1@2.26.96
+  - @wso2is/admin.roles.v2@2.27.40
+  - @wso2is/admin.authentication.v1@2.25.96
+  - @wso2is/admin.claims.v1@2.27.6
+  - @wso2is/admin.server-configurations.v1@2.32.21
+  - @wso2is/admin.tenants.v1@2.28.70
+  - @wso2is/admin.validation.v1@2.27.34
+  - @wso2is/admin.feature-gate.v1@1.4.96
+  - @wso2is/admin.userstores.v1@2.26.55
+
 ## 2.30.5
 
 ### Patch Changes
