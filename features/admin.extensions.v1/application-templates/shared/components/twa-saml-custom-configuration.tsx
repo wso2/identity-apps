@@ -17,7 +17,8 @@
  */
 
 import { SAMLApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
-import { AppState, EventPublisher } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     CopyInputField,
