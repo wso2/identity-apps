@@ -348,7 +348,7 @@
     List<Claim> claimsList;
     UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
     try {
-        claimsList = usernameRecoveryApi.claimsGet(tenantDomain, false);
+        claimsList = usernameRecoveryApi.claimsGet(tenantDomain, false, "selfRegistration");
         uniquePIIs = IdentityManagementEndpointUtil.fillPiisWithClaimInfo(uniquePIIs, claimsList);
         if (uniquePIIs != null) {
             claims = uniquePIIs.values().toArray(new Claim[0]);
