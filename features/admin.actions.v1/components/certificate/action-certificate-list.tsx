@@ -170,10 +170,9 @@ export const ActionCertificatesListComponent: FunctionComponent<ActionCertificat
                 .finally(() => {
                     updateSubmit(false);
                 });
-        }else{
+        } else{
             setCertificates(null);
         }
-
     };
 
     const DeleteCertConfirmationModal: ReactElement = (
