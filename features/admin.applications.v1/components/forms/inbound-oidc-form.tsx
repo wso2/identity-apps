@@ -687,7 +687,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
 
         if (initialValues?.hybridFlow?.enable) {
-
             setEnableHybridFlowResponseTypeField(initialValues?.hybridFlow?.enable);
         }
 
@@ -822,10 +821,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @param values - Form values.
      */
     const handleHybridFlowResponseTypeChange = (values: Map<string, FormValue>) => {
-        const hybridFlowResponseType: string[] =
+        const hybridFlowResponseTypes: string[] =
             values.get(ApplicationManagementConstants.HYBRID_FLOW_RESPONSE_TYPE) as string[];
 
-        setSelectedHybridFlowResponseTypes(hybridFlowResponseType);
+        setSelectedHybridFlowResponseTypes(hybridFlowResponseTypes);
     };
 
     const getMetadataHints = (element: string) => {
@@ -2257,7 +2256,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
             {
                 showHybridFlowEnableConfig
-                && ( enableHybridFlowResponseTypeField )
+                && enableHybridFlowResponseTypeField
                 && (
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
