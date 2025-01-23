@@ -17,9 +17,9 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authentication";
+import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authenticator-accordion";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";

@@ -21,7 +21,7 @@ import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from
 import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
-import { DocumentationLinks } from "@wso2is/admin.core.v1/configs/app";
+import { DocumentationLinks } from "@wso2is/admin.core.v1/configs/documentation";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";

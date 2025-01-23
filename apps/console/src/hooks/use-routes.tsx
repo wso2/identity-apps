@@ -22,12 +22,15 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { FeatureConfigInterface, RouteConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import {
-    
-    setDeveloperVisibility,
+    AppState
+} from "@wso2is/admin.core.v1/store";
+import {
+    setDeveloperVisibility
+} from "@wso2is/admin.core.v1/store/actions/acess-control";
+import {
     setFilteredDevelopRoutes,
     setSanitizedDevelopRoutes
-} from "@wso2is/admin.core.v1/store";
-import { AppState } from "@wso2is/admin.core.v1/store";
+} from "@wso2is/admin.core.v1/store/actions/routes";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { RouteInterface } from "@wso2is/core/models";
