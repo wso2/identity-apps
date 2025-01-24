@@ -20,7 +20,6 @@ import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
-import { EllipsisVerticalIcon }  from "@oxygen-ui/react-icons";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -53,14 +52,12 @@ export interface PolicyListDraggableNodePropsInterface
 
 const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInterface> = ({
     "data-componentid": componentId = "policy-list-draggable-node",
-    id,
     policy,
     mutateActivePolicyList,
     mutateInactivePolicyList,
     setActivePolicies,
     setPageActive,
-    setHasMoreActivePolicies,
-    ...rest
+    setHasMoreActivePolicies
 }: PolicyListDraggableNodePropsInterface): ReactElement => {
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -136,10 +133,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
         <Card variant="outlined" className="policy-list-node">
             <CardContent>
                 <Stack direction={ "row" } justifyContent={ "space-between" }>
-                    <Stack direction={ "row" } spacing={ 1 } >
-                        <EllipsisVerticalIcon className="policy-drag-icon" />
-                        <Typography>{ policy.policyId }</Typography>
-                    </Stack>
+                    <Typography className="ellipsis-text">{ policy.policyId }</Typography>
                     <Stack direction={ "row" } marginTop={ "3px" }>
                         <Popup
                             trigger={ (
@@ -154,7 +148,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                                 />
                             ) }
                             position="top center"
-                            content={ "Edit" }
+                            content={ t("common:edit") }
                             inverted
                         />
                         <Popup
@@ -169,7 +163,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                                 />
                             ) }
                             position="top center"
-                            content={ "Delete" }
+                            content={ t("common:delete") }
                             inverted
                         />
                         <Popup
@@ -184,7 +178,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                                 />
                             ) }
                             position="top center"
-                            content={ "Deactivate" }
+                            content={ t("policyAdministration:popup.deactivate") }
                             inverted
                         />
                     </Stack>

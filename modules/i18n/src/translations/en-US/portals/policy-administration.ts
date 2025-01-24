@@ -19,6 +19,10 @@
 import { policyAdministrationNS } from "../../../models";
 
 export const policyAdministration: policyAdministrationNS = {
+    activePoliciesPlaceholder: {
+        subtitle: "There are currently no active policies to display.",
+        title: "No active policies found"
+    },
     advancedSearch: {
         placeholder: "Search by policy name"
     },
@@ -83,6 +87,10 @@ export const policyAdministration: policyAdministrationNS = {
     editPolicy: {
         backBtn: "Go back to Policy Administration "
     },
+    inactivePoliciesPlaceholder: {
+        subtitle: "There are currently no inactive policies to display.",
+        title: "No inactive policies found"
+    },
     policyAlgorithm: {
         actionText: "Select a policy combining algorithm",
         algorithmOptions: {
@@ -113,6 +121,10 @@ export const policyAdministration: policyAdministrationNS = {
         },
         primaryBtn: "Update",
         title: "Policy Algorithm"
+    },
+    popup:{
+        activate: "Activate",
+        deactivate: "Deactivate"
     },
     subtitle: "Create and manage your policies here.",
     title: "Policy Administration"
