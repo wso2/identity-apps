@@ -58,7 +58,7 @@ const useGenerateAIBrandingPreference = (): GenerateAIBrandingPreferenceFunc => 
         websiteUrl: string
     ): Promise<void> => {
 
-        return generateBrandingPreference(websiteUrl, tenantDomain)
+        return generateBrandingPreference(websiteUrl)
             .then(
                 (data: GenerateBrandingAPIResponseInterface) => {
                     setOperationId(data.operation_id);
