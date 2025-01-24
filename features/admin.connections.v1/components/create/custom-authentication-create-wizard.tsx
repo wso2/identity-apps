@@ -34,7 +34,6 @@ import {
     SelectionCard,
     Steps
 } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import React, {
     FunctionComponent,
     MutableRefObject,
@@ -46,7 +45,7 @@ import React, {
     useRef,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { DropdownProps, Icon, Message, Grid as SemanticGrid } from "semantic-ui-react";
 import { useGetConnectionTemplate } from "../../api/connections";
 import { getConnectionWizardStepIcons } from "../../configs/ui";
@@ -361,6 +360,36 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
     };
 
     /**
+     * This method validates the general settings fields.
+     *
+     * @param values - values to be validated.
+     * @returns - errors object.
+     */
+    const validateGeneralSettingsField = (
+        values: CustomAuthenticationCreateWizardGeneralFormValuesInterface
+    ): Partial<CustomAuthenticationCreateWizardGeneralFormValuesInterface> => {
+        const errors: Partial<CustomAuthenticationCreateWizardGeneralFormValuesInterface> = {};
+
+        if (!CommonAuthenticatorConstants.IDENTIFIER_REGEX.test(values?.identifier)) {
+            errors.identifier = t(
+                "customAuthentication:fields.createWizard.generalSettingsStep." +
+                    "identifier.validations.invalid"
+            );
+        }
+
+        if (!CommonAuthenticatorConstants.DISPLAY_NAME_REGEX.test(values?.displayName)) {
+            errors.displayName = t(
+                "customAuthentication:fields.createWizard.generalSettingsStep." +
+                    "displayName.validations.invalid"
+            );
+        }
+
+        setNextShouldBeDisabled(hasValidationErrors(errors));
+
+        return errors;
+    };
+
+    /**
      * This method validates the endpoint configurations.
      *
      * @param values - values to be validated.
@@ -592,35 +621,17 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
     );
 
     const generalSettingsPage = () => (
-        <WizardPage
-            validate={ (values: CustomAuthenticationCreateWizardGeneralFormValuesInterface) => {
-                const errors: FormErrors = {};
-
-                if (!FormValidation.identifier(values.identifier)) {
-                    errors.identifier = t(
-                        "customAuthentication:fields.createWizard.generalSettingsStep." +
-                            "identifier.validations.invalid"
-                    );
-                }
-                if (!FormValidation.isValidResourceName(values.displayName)) {
-                    errors.displayName = t(
-                        "customAuthentication:fields.createWizard.generalSettingsStep." +
-                            "displayName.validations.invalid"
-                    );
-                }
-
-                setNextShouldBeDisabled(hasValidationErrors(errors));
-
-                return errors;
-            } }
-        >
+        <WizardPage validate={ validateGeneralSettingsField }>
             <Field.Input
+                className="identifier-field"
                 ariaLabel="identifier"
-                inputType="identifier"
+                inputType="text"
                 name="identifier"
                 label={ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.label") }
                 placeholder={ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.placeholder") }
                 initialValue={ initialValues.identifier }
+                action={ { content: "custom-" } }
+                actionPosition="left"
                 required={ true }
                 maxLength={ 100 }
                 minLength={ 3 }
@@ -630,7 +641,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             <Hint>{ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.hint") }</Hint>
             <Field.Input
                 ariaLabel="displayName"
-                inputType="resource_name"
+                inputType="text"
                 name="displayName"
                 label={ t("customAuthentication:fields.createWizard.generalSettingsStep.displayName.label") }
                 placeholder={ t(
@@ -715,6 +726,15 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                         "customAuthentication:fields.createWizard.generalSettingsStep.helpPanel." +
                             "identifier.description"
                     ) }
+                </p>
+                <p>
+                    <Trans
+                        i18nKey={ "customAuthentication:fields.createWizard.generalSettingsStep.helpPanel." +
+                            "identifier.note" }
+                    >
+                Provide a unique name to refer in authentication scripts and authentication parameters.
+                Note that <strong>custom-</strong> will be prefixed to the identifier.
+                    </Trans>
                 </p>
                 <Message className="display-flex" size="small" warning header="Hello there">
                     <Icon name="warning sign" color="orange" corner />
