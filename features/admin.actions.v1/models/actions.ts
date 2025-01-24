@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -50,6 +50,14 @@ enum ActionStatus {
 }
 
 /**
+ * Password Sharing Formats.
+ */
+export enum PasswordFormat {
+    PLAIN_TEXT = "PLAIN_TEXT",
+    SHA_256_HASHED = "SHA256_HASHED",
+}
+
+/**
  * Interface for the authentication type dropdown options.
  */
 export interface AuthenticationTypeDropdownOption {
@@ -74,6 +82,16 @@ export interface ActionInterface {
      * Endpoint configuration of the Action.
      */
     endpoint: EndpointInterface;
+}
+
+/**
+ *  Pre Update Password Action configuration.
+ */
+export interface PreUpdatePasswordActionInterface extends ActionInterface {
+    /**
+     * Password sharing type of the action.
+     */
+    passwordSharing: PasswordSharing;
 }
 
 /**
@@ -206,6 +224,30 @@ export interface ActionResponseInterface extends ActionBaseResponseInterface {
 }
 
 /**
+ *  Pre Update Password Action Response.
+ */
+export interface PreUpdatePasswordActionResponseInterface extends ActionResponseInterface {
+    /**
+     * Password sharing type of the action.
+     */
+    passwordSharing: PasswordSharing;
+}
+
+/**
+ *  Password Sharing configuration.
+ */
+export interface PasswordSharing {
+    /**
+     * Password Sharing format.
+     */
+    format: PasswordFormat;
+    /**
+     * Certificate of the Password.
+     */
+    certificate?: string;
+}
+
+/**
  *  Endpoint Response.
  */
 export interface EndpointResponseInterface {
@@ -244,6 +286,27 @@ export interface ActionUpdateInterface {
      * Rule configuration of the Action.
      */
     rule?: RuleWithoutIdInterface | Record<string, never>;
+}
+
+/**
+ *  Pre Update Password Action Update configuration.
+ */
+export interface PreUpdatePasswordActionUpdateInterface extends ActionUpdateInterface {
+    /**
+     * Password sharing type of the updating action.
+     */
+    passwordSharing?: PasswordSharingUpdate;
+}
+
+/**
+ *  Password Sharing Format in Update configuration
+ */
+export interface PasswordSharingUpdate {
+    /**
+     * Password Sharing format.
+     */
+    format?: PasswordFormat;
+    certificate?: string;
 }
 
 /**
@@ -334,6 +397,20 @@ export interface ActionConfigFormPropertyInterface {
      * Value property of apiKey authentication.
      */
     valueAuthProperty?: string;
+}
+
+/**
+ *  Pre Update Password Action config form property Interface.
+ */
+export interface PreUpdatePasswordActionConfigFormPropertyInterface extends ActionConfigFormPropertyInterface {
+    /**
+     * Password Sharing format.
+     */
+    passwordSharing: PasswordFormat;
+    /**
+     * Certificate of the Password.
+     */
+    certificate: string;
 }
 
 /**

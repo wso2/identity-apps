@@ -240,6 +240,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ showCallbackURLField, setShowCallbackURLField ] = useState<boolean>(undefined);
     const [ hideRefreshTokenGrantType, setHideRefreshTokenGrantType ] = useState<boolean>(false);
     const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
+    const [ selectedHybridFlowResponseTypes, setSelectedHybridFlowResponseTypes ] = useState<string[]>(undefined);
     const [ isJWTAccessTokenTypeSelected, setJWTAccessTokenTypeSelected ] = useState<boolean>(false);
     const [ isGrantChanged, setGrantChanged ] = useState<boolean>(false);
     const [ showRegenerateConfirmationModal, setShowRegenerateConfirmationModal ] = useState<boolean>(false);
@@ -685,6 +686,20 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             setAllowedOrigins(initialValues.allowedOrigins.toString());
         }
 
+        if (initialValues?.hybridFlow?.enable) {
+            setEnableHybridFlowResponseTypeField(initialValues?.hybridFlow?.enable);
+        }
+
+        if (initialValues?.hybridFlow?.responseType) {
+            // Split the string by commas and trim any whitespace (if needed)
+            const responseTypes: string[] = initialValues.hybridFlow.responseType
+                .split(",")
+                .map((type: string) => type.trim());
+
+            // Update the state with the resulting array
+            setSelectedHybridFlowResponseTypes(responseTypes);
+        }
+
     }, [ initialValues ]);
 
 
@@ -798,6 +813,18 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
         setSelectedGrantTypes(grants);
         setGrantChanged(!isGrantChanged);
+    };
+
+    /**
+     * Handle hybrid flow response type change.
+     *
+     * @param values - Form values.
+     */
+    const handleHybridFlowResponseTypeChange = (values: Map<string, FormValue>) => {
+        const hybridFlowResponseTypes: string[] =
+            values.get(ApplicationManagementConstants.HYBRID_FLOW_RESPONSE_TYPE) as string[];
+
+        setSelectedHybridFlowResponseTypes(hybridFlowResponseTypes);
     };
 
     const getMetadataHints = (element: string) => {
@@ -1395,7 +1422,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     ...inboundConfigFormValues,
                     hybridFlow: {
                         enable: values.get("enable-hybrid-flow")?.length > 0,
-                        responseType: values.get(ApplicationManagementConstants.HYBRID_FLOW_RESPONSE_TYPE)
+                        responseType: selectedHybridFlowResponseTypes?.join(",") ?? null
                     }
                 };
             } else {
@@ -1589,7 +1616,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 ...inboundConfigFormValues,
                 hybridFlow: {
                     enable: values.get("enable-hybrid-flow")?.length > 0,
-                    responseType: values.get(ApplicationManagementConstants.HYBRID_FLOW_RESPONSE_TYPE)
+                    responseType: selectedHybridFlowResponseTypes?.join(",") ?? null
                 }
             };
         } else {
@@ -2229,7 +2256,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
             {
                 showHybridFlowEnableConfig
-                && ( enableHybridFlowResponseTypeField || initialValues?.hybridFlow?.enable )
+                && enableHybridFlowResponseTypeField
                 && (
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2242,13 +2269,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         ".hybridFlow.hybridFlowResponseType.label")
                                 }
                                 name = { ApplicationManagementConstants.HYBRID_FLOW_RESPONSE_TYPE }
-                                type="radio"
+                                type="checkbox"
                                 required={ true }
                                 children={ getHybridFlowResponseTypes() }
                                 readOnly={ readOnly }
-                                default= { initialValues?.hybridFlow?.responseType?
-                                    initialValues.hybridFlow.responseType :ApplicationManagementConstants.CODE_IDTOKEN }
+                                value={ selectedHybridFlowResponseTypes ?? ApplicationManagementConstants.CODE_IDTOKEN }
                                 enableReinitialize={ true }
+                                listen={ (values: Map<string, FormValue>) =>
+                                    handleHybridFlowResponseTypeChange(values) }
                                 data-testid={ `${ testId }--hybridflow-responsetype-checkbox` }
                             />
                             <Hint>

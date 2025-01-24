@@ -1,5 +1,79 @@
 # @wso2is/admin.tenants.v1
 
+## 2.28.75
+
+### Patch Changes
+
+- Updated dependencies [[`0939ecb46c7e1d115924c6da953d2f575ebbf83a`](https://github.com/wso2/identity-apps/commit/0939ecb46c7e1d115924c6da953d2f575ebbf83a)]:
+  - @wso2is/i18n@2.16.4
+  - @wso2is/admin.core.v1@2.37.9
+  - @wso2is/admin.extensions.v1@2.36.26
+  - @wso2is/admin.organizations.v1@2.26.101
+  - @wso2is/admin.users.v1@2.30.11
+  - @wso2is/admin.validation.v1@2.27.39
+  - @wso2is/admin.feature-gate.v1@1.4.101
+
+## 2.28.74
+
+### Patch Changes
+
+- Updated dependencies [[`20852203b5868edd1045c8ea236955076b85cdfc`](https://github.com/wso2/identity-apps/commit/20852203b5868edd1045c8ea236955076b85cdfc)]:
+  - @wso2is/admin.core.v1@2.37.8
+  - @wso2is/i18n@2.16.3
+  - @wso2is/admin.extensions.v1@2.36.25
+  - @wso2is/admin.organizations.v1@2.26.100
+  - @wso2is/admin.feature-gate.v1@1.4.100
+  - @wso2is/admin.users.v1@2.30.10
+  - @wso2is/admin.validation.v1@2.27.38
+
+## 2.28.73
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.7
+  - @wso2is/admin.extensions.v1@2.36.24
+  - @wso2is/admin.feature-gate.v1@1.4.99
+  - @wso2is/admin.organizations.v1@2.26.99
+  - @wso2is/admin.users.v1@2.30.9
+  - @wso2is/admin.validation.v1@2.27.37
+
+## 2.28.72
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.6
+  - @wso2is/admin.extensions.v1@2.36.23
+  - @wso2is/admin.organizations.v1@2.26.98
+  - @wso2is/admin.feature-gate.v1@1.4.98
+  - @wso2is/admin.users.v1@2.30.8
+  - @wso2is/admin.validation.v1@2.27.36
+
+## 2.28.71
+
+### Patch Changes
+
+- Updated dependencies [[`dfe37eaa32b41e8102d8cbd923602cf71077b92f`](https://github.com/wso2/identity-apps/commit/dfe37eaa32b41e8102d8cbd923602cf71077b92f)]:
+  - @wso2is/admin.users.v1@2.30.7
+  - @wso2is/admin.core.v1@2.37.5
+  - @wso2is/admin.extensions.v1@2.36.22
+  - @wso2is/admin.organizations.v1@2.26.97
+  - @wso2is/admin.validation.v1@2.27.35
+  - @wso2is/admin.feature-gate.v1@1.4.97
+
+## 2.28.70
+
+### Patch Changes
+
+- Updated dependencies [[`365c0cf9158518f16d330a8b55173cf2cc673b46`](https://github.com/wso2/identity-apps/commit/365c0cf9158518f16d330a8b55173cf2cc673b46)]:
+  - @wso2is/admin.users.v1@2.30.6
+  - @wso2is/admin.core.v1@2.37.4
+  - @wso2is/admin.extensions.v1@2.36.21
+  - @wso2is/admin.organizations.v1@2.26.96
+  - @wso2is/admin.validation.v1@2.27.34
+  - @wso2is/admin.feature-gate.v1@1.4.96
+
 ## 2.28.69
 
 ### Patch Changes

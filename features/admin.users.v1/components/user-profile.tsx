@@ -2400,11 +2400,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         // If the distinct attribute profiles feature is enabled, check the supportedByDefault flag.
         if (!isDistinctAttributeProfilesDisabled) {
+            if (schema?.name === "userName") {
+                return true;
+            }
             // The global supportedByDefault value is a string. Hence, it needs to be converted to a boolean.
             let resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
 
-            if (schema?.profiles?.endUser?.supportedByDefault !== undefined) {
-                resolveSupportedByDefaultValue = schema?.profiles?.endUser?.supportedByDefault;
+            if (schema?.profiles?.console?.supportedByDefault !== undefined) {
+                resolveSupportedByDefaultValue = schema?.profiles?.console?.supportedByDefault;
             }
 
             // If the schema is not supported by default and the value is empty, the field should not be displayed.
