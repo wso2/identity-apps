@@ -729,14 +729,14 @@
         <carbon.extension.identity.authenticator.version>3.0.0</carbon.extension.identity.authenticator.version>
         <org.wso2.carbon.identity.association.account>5.1.5</org.wso2.carbon.identity.association.account>
         <identity.extension.utils>1.0.8</identity.extension.utils>
-        <carbon.identity.framework.version>7.7.130</carbon.identity.framework.version>
+        <carbon.identity.framework.version>7.2.30</carbon.identity.framework.version>
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 8.0.0)</carbon.identity.framework.imp.pkg.version.range>
         <identity.organization.management.core.service.version>1.0.77
         </identity.organization.management.core.service.version>
         <identity.org.mgt.core.version.range>[1.0.77, 2.0.0)</identity.org.mgt.core.version.range>
         <identity.organization.management.application.version>1.3.89</identity.organization.management.application.version>
         <identity.org.mgt.application.version.range>[1.3.89, 2.0.0)</identity.org.mgt.application.version.range>
-        <carbon.identity.oauth.version>7.0.224</carbon.identity.oauth.version>
+        <carbon.identity.oauth.version>6.7.130</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 8.0.0)</carbon.identity.oauth.imp.pkg.version.range>
         <identity.governance.version>1.8.41</identity.governance.version>
         <totp.authenticator.version>3.2.2</totp.authenticator.version>

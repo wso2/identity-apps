@@ -257,7 +257,7 @@
                                         <i aria-hidden="true" class="circle tiny icon primary consent-item-bullet" id="Authorization Details Types"></i>
                                         <div class="content mt-2">
                                             <div class="header light-font">
-                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.authorization.details")%>
+                                                <%= i18n(resourceBundle, customText, "requested.authorization.details") %>
                                             </div>
                                         </div>
                                         <div class="content light-font">
