@@ -177,7 +177,7 @@ export class RoleManagementUtils {
      * @returns - user managed by
      */
     public static getUserManagedBy = (user: UserBasicInterface): string => {
-        const userIdp: string = user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType;
+        const userIdp: string = user[ SCIMConfigs.scim.systemSchema ]?.idpType;
 
         if (!userIdp) {
             return null;

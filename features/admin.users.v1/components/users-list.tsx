@@ -238,7 +238,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             ? user?.userName?.split("/")[0]?.toUpperCase()
             : userstoresConfig.primaryUserstoreName;
 
-        const userIdp: string = user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType;
+        const userIdp: string = user[ SCIMConfigs.scim.systemSchema ]?.idpType;
 
         if (!userIdp) {
             return "N/A";
@@ -637,7 +637,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     data-componentid={ `${ testId }-confirmation-modal-content` }
                 >
                     {
-                        deletingUser && deletingUser[SCIMConfigs.scim.enterpriseSchema]?.userSourceId
+                        deletingUser && deletingUser[SCIMConfigs.scim.systemSchema]?.userSourceId
                             ? t("user:deleteJITUser.confirmationModal.content")
                             : t("user:deleteUser.confirmationModal.content")
                     }

@@ -1370,7 +1370,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         !isReadOnly
                         || allowDeleteOnly
                         || isUserManagedByParentOrg
-                        || user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
+                        || user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
                     ) && (
                         !isCurrentUserAdmin
                         || !isUserCurrentLoggedInUser
@@ -2606,7 +2606,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             {
                                 isReadOnly
                                 && (!isEmpty(tenantAdmin) || tenantAdmin !== null)
-                                && !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
+                                && !user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
                                 && editUserDisclaimerMessage
                             }
                             <Forms
