@@ -1,5 +1,19 @@
 # @wso2is/admin.roles.v1
 
+## 2.25.102
+
+### Patch Changes
+
+- [#7383](https://github.com/wso2/identity-apps/pull/7383) [`fa707cce1d0e1a54a282a57bd137e047e6dd207e`](https://github.com/wso2/identity-apps/commit/fa707cce1d0e1a54a282a57bd137e047e6dd207e) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Change enterprise schema usages to system schema
+
+- Updated dependencies [[`fa707cce1d0e1a54a282a57bd137e047e6dd207e`](https://github.com/wso2/identity-apps/commit/fa707cce1d0e1a54a282a57bd137e047e6dd207e)]:
+  - @wso2is/admin.groups.v1@2.27.12
+  - @wso2is/admin.users.v1@2.30.12
+  - @wso2is/admin.core.v1@2.37.10
+  - @wso2is/admin.organizations.v1@2.26.102
+  - @wso2is/admin.server-configurations.v1@2.32.27
+  - @wso2is/admin.userstores.v1@2.26.61
+
 ## 2.25.101
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @wso2is/admin.email-providers.v1
 
+## 2.25.102
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.10
+
 ## 2.25.101
 
 ### Patch Changes

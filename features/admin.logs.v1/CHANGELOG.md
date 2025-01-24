@@ -1,5 +1,12 @@
 # @wso2is/admin.logs.v1
 
+## 1.5.103
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.10
+
 ## 1.5.102
 
 ### Patch Changes
