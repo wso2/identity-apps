@@ -52,14 +52,12 @@ export interface PolicyListDraggableNodePropsInterface
 
 const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> = ({
     "data-componentid": componentId = "policy-list--node",
-    id,
     policy,
     mutateInactivePolicyList,
     setInactivePolicies,
     setPageInactive,
     setHasMoreInactivePolicies,
-    mutateActivePolicyList,
-    ...rest
+    mutateActivePolicyList
 }: PolicyListDraggableNodePropsInterface): ReactElement => {
     const { t } = useTranslation();
 
@@ -115,10 +113,6 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
                 message: t("policyAdministration:alerts.activateSuccess.message")
             }));
 
-            setPageInactive(0);
-            setHasMoreInactivePolicies(true);
-            setInactivePolicies([]);
-
             mutateActivePolicyList();
             mutateInactivePolicyList();
 
@@ -141,17 +135,17 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
                                 <Icon
                                     onClick={ handleActivate }
                                     data-componentid={ `${componentId}-edit-button` }
-                                    className="list-icon"
+                                    className="policy-list-icon list-icon"
                                     size="massive"
                                     color="grey"
                                     name="chevron left"
                                 />
                             ) }
                             position="top center"
-                            content={ "Deactivate" }
+                            content={ "Activate" }
                             inverted
                         />
-                        <Typography>{ policy.policyId }</Typography>
+                        <Typography className="ellipsis-text">{ policy.policyId }</Typography>
                     </Stack>
                     <Stack direction={ "row" } marginTop={ "3px" }>
                         <Popup
