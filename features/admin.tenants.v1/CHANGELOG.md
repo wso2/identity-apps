@@ -1,5 +1,123 @@
 # @wso2is/admin.tenants.v1
 
+## 2.28.77
+
+### Patch Changes
+
+- Updated dependencies [[`897424e026699eb987ff8a0fb473e6bba5f8c117`](https://github.com/wso2/identity-apps/commit/897424e026699eb987ff8a0fb473e6bba5f8c117), [`9e3977c9c5e90cbe454147b42b121aecc28d9ab9`](https://github.com/wso2/identity-apps/commit/9e3977c9c5e90cbe454147b42b121aecc28d9ab9)]:
+  - @wso2is/i18n@2.16.5
+  - @wso2is/admin.core.v1@2.37.11
+  - @wso2is/admin.extensions.v1@2.36.28
+  - @wso2is/admin.organizations.v1@2.26.103
+  - @wso2is/admin.users.v1@2.30.13
+  - @wso2is/admin.validation.v1@2.27.41
+  - @wso2is/admin.feature-gate.v1@1.4.103
+
+## 2.28.76
+
+### Patch Changes
+
+- Updated dependencies [[`fa707cce1d0e1a54a282a57bd137e047e6dd207e`](https://github.com/wso2/identity-apps/commit/fa707cce1d0e1a54a282a57bd137e047e6dd207e)]:
+  - @wso2is/admin.users.v1@2.30.12
+  - @wso2is/admin.core.v1@2.37.10
+  - @wso2is/admin.extensions.v1@2.36.27
+  - @wso2is/admin.organizations.v1@2.26.102
+  - @wso2is/admin.validation.v1@2.27.40
+  - @wso2is/admin.feature-gate.v1@1.4.102
+
+## 2.28.75
+
+### Patch Changes
+
+- Updated dependencies [[`0939ecb46c7e1d115924c6da953d2f575ebbf83a`](https://github.com/wso2/identity-apps/commit/0939ecb46c7e1d115924c6da953d2f575ebbf83a)]:
+  - @wso2is/i18n@2.16.4
+  - @wso2is/admin.core.v1@2.37.9
+  - @wso2is/admin.extensions.v1@2.36.26
+  - @wso2is/admin.organizations.v1@2.26.101
+  - @wso2is/admin.users.v1@2.30.11
+  - @wso2is/admin.validation.v1@2.27.39
+  - @wso2is/admin.feature-gate.v1@1.4.101
+
+## 2.28.74
+
+### Patch Changes
+
+- Updated dependencies [[`20852203b5868edd1045c8ea236955076b85cdfc`](https://github.com/wso2/identity-apps/commit/20852203b5868edd1045c8ea236955076b85cdfc)]:
+  - @wso2is/admin.core.v1@2.37.8
+  - @wso2is/i18n@2.16.3
+  - @wso2is/admin.extensions.v1@2.36.25
+  - @wso2is/admin.organizations.v1@2.26.100
+  - @wso2is/admin.feature-gate.v1@1.4.100
+  - @wso2is/admin.users.v1@2.30.10
+  - @wso2is/admin.validation.v1@2.27.38
+
+## 2.28.73
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.7
+  - @wso2is/admin.extensions.v1@2.36.24
+  - @wso2is/admin.feature-gate.v1@1.4.99
+  - @wso2is/admin.organizations.v1@2.26.99
+  - @wso2is/admin.users.v1@2.30.9
+  - @wso2is/admin.validation.v1@2.27.37
+
+## 2.28.72
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.6
+  - @wso2is/admin.extensions.v1@2.36.23
+  - @wso2is/admin.organizations.v1@2.26.98
+  - @wso2is/admin.feature-gate.v1@1.4.98
+  - @wso2is/admin.users.v1@2.30.8
+  - @wso2is/admin.validation.v1@2.27.36
+
+## 2.28.71
+
+### Patch Changes
+
+- Updated dependencies [[`dfe37eaa32b41e8102d8cbd923602cf71077b92f`](https://github.com/wso2/identity-apps/commit/dfe37eaa32b41e8102d8cbd923602cf71077b92f)]:
+  - @wso2is/admin.users.v1@2.30.7
+  - @wso2is/admin.core.v1@2.37.5
+  - @wso2is/admin.extensions.v1@2.36.22
+  - @wso2is/admin.organizations.v1@2.26.97
+  - @wso2is/admin.validation.v1@2.27.35
+  - @wso2is/admin.feature-gate.v1@1.4.97
+
+## 2.28.70
+
+### Patch Changes
+
+- Updated dependencies [[`365c0cf9158518f16d330a8b55173cf2cc673b46`](https://github.com/wso2/identity-apps/commit/365c0cf9158518f16d330a8b55173cf2cc673b46)]:
+  - @wso2is/admin.users.v1@2.30.6
+  - @wso2is/admin.core.v1@2.37.4
+  - @wso2is/admin.extensions.v1@2.36.21
+  - @wso2is/admin.organizations.v1@2.26.96
+  - @wso2is/admin.validation.v1@2.27.34
+  - @wso2is/admin.feature-gate.v1@1.4.96
+
+## 2.28.69
+
+### Patch Changes
+
+- Updated dependencies [[`31b4e92ae73fea1372a03f9aa0511f062030e44f`](https://github.com/wso2/identity-apps/commit/31b4e92ae73fea1372a03f9aa0511f062030e44f)]:
+  - @wso2is/admin.extensions.v1@2.36.20
+  - @wso2is/admin.users.v1@2.30.5
+  - @wso2is/admin.core.v1@2.37.3
+  - @wso2is/core@2.5.8
+  - @wso2is/admin.organizations.v1@2.26.95
+  - @wso2is/admin.validation.v1@2.27.33
+  - @wso2is/admin.feature-gate.v1@1.4.95
+  - @wso2is/access-control@3.3.12
+  - @wso2is/dynamic-forms@2.4.24
+  - @wso2is/form@2.6.17
+  - @wso2is/forms@2.3.13
+  - @wso2is/i18n@2.16.2
+  - @wso2is/react-components@2.8.24
+
 ## 2.28.68
 
 ### Patch Changes

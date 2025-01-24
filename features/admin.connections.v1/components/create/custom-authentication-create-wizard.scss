@@ -132,4 +132,31 @@
             margin-right: 10px;
         }
     }
+
+    .identifier-field {
+        .input>.button:first-child {
+            background-color: #e8e8e8;
+            pointer-events: none;
+            border: 1px solid rgba(34,36,38,.15);
+            border-right: none;
+            box-shadow: none;
+            padding-left: 14px;
+            padding-right: 4.5px;
+        }
+        .input input{
+            padding-left: 4.5px;
+            border-left: none;
+        }
+    }
+    .error {
+        .input>.button:first-child {
+            background-color: #e8e8e8;
+            pointer-events: none;
+            border: 1px solid rgba(34,36,38,.15);
+            border-right: none;
+            box-shadow: none;
+            padding-left: 14px;
+            padding-right: 4.5px;
+        }
+    }
  }

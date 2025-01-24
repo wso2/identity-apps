@@ -1,5 +1,32 @@
 # @wso2is/i18n
 
+## 2.16.5
+
+### Patch Changes
+
+- [#7386](https://github.com/wso2/identity-apps/pull/7386) [`897424e026699eb987ff8a0fb473e6bba5f8c117`](https://github.com/wso2/identity-apps/commit/897424e026699eb987ff8a0fb473e6bba5f8c117) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Improve Custom Authentication Create Wizard Validations
+
+* [#7381](https://github.com/wso2/identity-apps/pull/7381) [`9e3977c9c5e90cbe454147b42b121aecc28d9ab9`](https://github.com/wso2/identity-apps/commit/9e3977c9c5e90cbe454147b42b121aecc28d9ab9) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Add empty placeholder to policy list and fix text-overflow issue
+
+## 2.16.4
+
+### Patch Changes
+
+- [#7369](https://github.com/wso2/identity-apps/pull/7369) [`0939ecb46c7e1d115924c6da953d2f575ebbf83a`](https://github.com/wso2/identity-apps/commit/0939ecb46c7e1d115924c6da953d2f575ebbf83a) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Add policy combining algorithms from i18n, and add constants.
+
+## 2.16.3
+
+### Patch Changes
+
+- [#7343](https://github.com/wso2/identity-apps/pull/7343) [`20852203b5868edd1045c8ea236955076b85cdfc`](https://github.com/wso2/identity-apps/commit/20852203b5868edd1045c8ea236955076b85cdfc) Thanks [@osandamaleesha](https://github.com/osandamaleesha)! - Add Pre update password extension
+
+## 2.16.2
+
+### Patch Changes
+
+- Updated dependencies [[`31b4e92ae73fea1372a03f9aa0511f062030e44f`](https://github.com/wso2/identity-apps/commit/31b4e92ae73fea1372a03f9aa0511f062030e44f)]:
+  - @wso2is/core@2.5.8
+
 ## 2.16.1
 
 ### Patch Changes

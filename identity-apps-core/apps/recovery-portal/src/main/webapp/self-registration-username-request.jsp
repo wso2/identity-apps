@@ -737,13 +737,18 @@
 
                         <div class="ui divider hidden"></div>
                         <%
-                            if (!StringUtils.equalsIgnoreCase(backToUrl,"null") && !StringUtils.isBlank(backToUrl)) {
+                            if (!StringUtils.equalsIgnoreCase(backToUrl, "null") &&
+                                !StringUtils.isBlank(backToUrl) &&
+                                !backToUrl.toLowerCase().contains("javascript:") &&
+                                !backToUrl.toLowerCase().contains("file:") &&
+                                !backToUrl.toLowerCase().contains("ftp:") &&
+                                !backToUrl.toLowerCase().contains("data:")) {
                         %>
                         <div class="buttons mt-2">
                             <div class="field external-link-container text-small">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                         "Already.have.an.account")%>
-                                <a href="<%= StringEscapeUtils.escapeHtml4(backToUrl) %>">
+                                <a href="<%=backToUrl%>">
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Sign.in")%>
                                 </a>
                             </div>
@@ -1296,13 +1301,18 @@
                         </div>
                         <div class="ui divider hidden"></div>
                         <%
-                            if (!StringUtils.equalsIgnoreCase(backToUrl,"null") && !StringUtils.isBlank(backToUrl)) {
+                            if (!StringUtils.equalsIgnoreCase(backToUrl, "null") &&
+                                !StringUtils.isBlank(backToUrl) &&
+                                !backToUrl.toLowerCase().contains("javascript:") &&
+                                !backToUrl.toLowerCase().contains("file:") &&
+                                !backToUrl.toLowerCase().contains("ftp:") &&
+                                !backToUrl.toLowerCase().contains("data:")) {
                         %>
                         <div class="buttons mt-2">
                             <div class="field external-link-container text-small">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                         "Already.have.an.account")%>
-                                <a href="<%= StringEscapeUtils.escapeHtml4(backToUrl) %>">
+                                <a href="<%=backToUrl%>">
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Sign.in")%>
                                 </a>
                             </div>

@@ -1,5 +1,107 @@
 # @wso2is/admin.actions.v1
 
+## 1.9.3
+
+### Patch Changes
+
+- Updated dependencies [[`897424e026699eb987ff8a0fb473e6bba5f8c117`](https://github.com/wso2/identity-apps/commit/897424e026699eb987ff8a0fb473e6bba5f8c117), [`9e3977c9c5e90cbe454147b42b121aecc28d9ab9`](https://github.com/wso2/identity-apps/commit/9e3977c9c5e90cbe454147b42b121aecc28d9ab9)]:
+  - @wso2is/i18n@2.16.5
+  - @wso2is/admin.core.v1@2.37.11
+  - @wso2is/admin.extensions.v1@2.36.28
+  - @wso2is/admin.feature-gate.v1@1.4.103
+  - @wso2is/admin.rules.v1@0.1.11
+
+## 1.9.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.10
+  - @wso2is/admin.extensions.v1@2.36.27
+  - @wso2is/admin.feature-gate.v1@1.4.102
+  - @wso2is/admin.rules.v1@0.1.10
+
+## 1.9.1
+
+### Patch Changes
+
+- Updated dependencies [[`0939ecb46c7e1d115924c6da953d2f575ebbf83a`](https://github.com/wso2/identity-apps/commit/0939ecb46c7e1d115924c6da953d2f575ebbf83a)]:
+  - @wso2is/i18n@2.16.4
+  - @wso2is/admin.core.v1@2.37.9
+  - @wso2is/admin.extensions.v1@2.36.26
+  - @wso2is/admin.feature-gate.v1@1.4.101
+  - @wso2is/admin.rules.v1@0.1.9
+
+## 1.9.0
+
+### Minor Changes
+
+- [#7343](https://github.com/wso2/identity-apps/pull/7343) [`20852203b5868edd1045c8ea236955076b85cdfc`](https://github.com/wso2/identity-apps/commit/20852203b5868edd1045c8ea236955076b85cdfc) Thanks [@osandamaleesha](https://github.com/osandamaleesha)! - Add Pre update password extension
+
+### Patch Changes
+
+- Updated dependencies [[`20852203b5868edd1045c8ea236955076b85cdfc`](https://github.com/wso2/identity-apps/commit/20852203b5868edd1045c8ea236955076b85cdfc)]:
+  - @wso2is/admin.core.v1@2.37.8
+  - @wso2is/i18n@2.16.3
+  - @wso2is/admin.extensions.v1@2.36.25
+  - @wso2is/admin.feature-gate.v1@1.4.100
+  - @wso2is/admin.rules.v1@0.1.8
+
+## 1.8.7
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.7
+  - @wso2is/admin.extensions.v1@2.36.24
+  - @wso2is/admin.feature-gate.v1@1.4.99
+  - @wso2is/admin.rules.v1@0.1.7
+
+## 1.8.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.6
+  - @wso2is/admin.extensions.v1@2.36.23
+  - @wso2is/admin.feature-gate.v1@1.4.98
+  - @wso2is/admin.rules.v1@0.1.6
+
+## 1.8.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.5
+  - @wso2is/admin.extensions.v1@2.36.22
+  - @wso2is/admin.feature-gate.v1@1.4.97
+  - @wso2is/admin.rules.v1@0.1.5
+
+## 1.8.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.4
+  - @wso2is/admin.extensions.v1@2.36.21
+  - @wso2is/admin.feature-gate.v1@1.4.96
+  - @wso2is/admin.rules.v1@0.1.4
+
+## 1.8.3
+
+### Patch Changes
+
+- Updated dependencies [[`31b4e92ae73fea1372a03f9aa0511f062030e44f`](https://github.com/wso2/identity-apps/commit/31b4e92ae73fea1372a03f9aa0511f062030e44f)]:
+  - @wso2is/admin.extensions.v1@2.36.20
+  - @wso2is/admin.core.v1@2.37.3
+  - @wso2is/core@2.5.8
+  - @wso2is/admin.feature-gate.v1@1.4.95
+  - @wso2is/admin.rules.v1@0.1.3
+  - @wso2is/access-control@3.3.12
+  - @wso2is/form@2.6.17
+  - @wso2is/i18n@2.16.2
+  - @wso2is/react-components@2.8.24
+
 ## 1.8.2
 
 ### Patch Changes

@@ -19,6 +19,10 @@
 import { policyAdministrationNS } from "../../../models";
 
 export const policyAdministration: policyAdministrationNS = {
+    activePoliciesPlaceholder: {
+        subtitle: "There are currently no active policies to display.",
+        title: "No active policies found"
+    },
     advancedSearch: {
         placeholder: "Search by policy name"
     },
@@ -83,10 +87,44 @@ export const policyAdministration: policyAdministrationNS = {
     editPolicy: {
         backBtn: "Go back to Policy Administration "
     },
+    inactivePoliciesPlaceholder: {
+        subtitle: "There are currently no inactive policies to display.",
+        title: "No inactive policies found"
+    },
     policyAlgorithm: {
         actionText: "Select a policy combining algorithm",
+        algorithmOptions: {
+            denyOverrides: {
+                description: "The deny-overrides combining algorithm is intended for those cases where a \"Deny\" decision will have priority over a \"Permit\" decision."
+            },
+            denyUnlessPermit: {
+                description: "This algorithm Denies unless explicitly permitted. If no policy results in a \"Permit\", the final decision is \"Deny\". However, if any policy results in a \"Permit,\" the final decision will be \"Permit.\""
+            },
+            firstApplicable: {
+                description: "The first policy that produces a definitive result (\"Permit\" or \"Deny\") determines the final decision."
+            },
+            onlyOneApplicable: {
+                description: "This algorithm ensures that exactly one policy applies and returns the decision from that policy. If multiple policies can apply or none at all, the result is \"Indeterminate.\""
+            },
+            orderedDenyOverrides: {
+                description: "The policies are evaluated in order and if a \"Deny\" is encountered, the decision is \"Deny\"."
+            },
+            orderedPermitOverrides: {
+                description: "The policies are evaluated in order and if a \"Permit\" is encountered, the decision is \"Permit\"."
+            },
+            permitOverrides: {
+                description: "The permit-overrides combining algorithm is intended for those cases where a \"Permit\" decision will have priority over a \"Deny\" decision."
+            },
+            permitUnlessDeny: {
+                description: "This algorithm Permits unless explicitly denied. If no policy results in a \"Deny\", the final decision is \"Permit\". However, if any policy results in a \"Deny,\" the final decision will be \"Deny.\""
+            }
+        },
         primaryBtn: "Update",
         title: "Policy Algorithm"
+    },
+    popup:{
+        activate: "Activate",
+        deactivate: "Deactivate"
     },
     subtitle: "Create and manage your policies here.",
     title: "Policy Administration"

@@ -1,5 +1,23 @@
 # @wso2is/identity-apps-core
 
+## 2.10.11
+
+### Patch Changes
+
+- [#7388](https://github.com/wso2/identity-apps/pull/7388) [`83bd570f14b174ad38af419bad4d40322c8f5ce4`](https://github.com/wso2/identity-apps/commit/83bd570f14b174ad38af419bad4d40322c8f5ce4) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Set ui_lang cookie if ui_locale in url param exists.
+
+## 2.10.10
+
+### Patch Changes
+
+- [#7255](https://github.com/wso2/identity-apps/pull/7255) [`363d4abbf6d2c327f398b4833806c87f1a3883d9`](https://github.com/wso2/identity-apps/commit/363d4abbf6d2c327f398b4833806c87f1a3883d9) Thanks [@sandushi](https://github.com/sandushi)! - Add password reset enforcer authenticator
+
+## 2.10.9
+
+### Patch Changes
+
+- [#7367](https://github.com/wso2/identity-apps/pull/7367) [`debd77e3f54f4d57ef7c09af8d4a3c44159ff065`](https://github.com/wso2/identity-apps/commit/debd77e3f54f4d57ef7c09af8d4a3c44159ff065) Thanks [@KD23243](https://github.com/KD23243)! - Add sanitation to self registration callback
+
 ## 2.10.8
 
 ### Patch Changes

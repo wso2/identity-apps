@@ -1,5 +1,87 @@
 # @wso2is/myaccount
 
+## 2.14.23
+
+### Patch Changes
+
+- Updated dependencies [[`897424e026699eb987ff8a0fb473e6bba5f8c117`](https://github.com/wso2/identity-apps/commit/897424e026699eb987ff8a0fb473e6bba5f8c117), [`9e3977c9c5e90cbe454147b42b121aecc28d9ab9`](https://github.com/wso2/identity-apps/commit/9e3977c9c5e90cbe454147b42b121aecc28d9ab9)]:
+  - @wso2is/i18n@2.16.5
+  - @wso2is/admin.organizations.v1@2.26.103
+  - @wso2is/common.branding.v1@2.25.76
+
+## 2.14.22
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.102
+  - @wso2is/common.branding.v1@2.25.75
+
+## 2.14.21
+
+### Patch Changes
+
+- Updated dependencies [[`0939ecb46c7e1d115924c6da953d2f575ebbf83a`](https://github.com/wso2/identity-apps/commit/0939ecb46c7e1d115924c6da953d2f575ebbf83a)]:
+  - @wso2is/i18n@2.16.4
+  - @wso2is/admin.organizations.v1@2.26.101
+  - @wso2is/common.branding.v1@2.25.74
+
+## 2.14.20
+
+### Patch Changes
+
+- Updated dependencies [[`20852203b5868edd1045c8ea236955076b85cdfc`](https://github.com/wso2/identity-apps/commit/20852203b5868edd1045c8ea236955076b85cdfc)]:
+  - @wso2is/i18n@2.16.3
+  - @wso2is/admin.organizations.v1@2.26.100
+  - @wso2is/common.branding.v1@2.25.73
+
+## 2.14.19
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.99
+  - @wso2is/common.branding.v1@2.25.72
+
+## 2.14.18
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.98
+  - @wso2is/common.branding.v1@2.25.71
+
+## 2.14.17
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.97
+  - @wso2is/common.branding.v1@2.25.70
+
+## 2.14.16
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.96
+  - @wso2is/common.branding.v1@2.25.69
+
+## 2.14.15
+
+### Patch Changes
+
+- [#7362](https://github.com/wso2/identity-apps/pull/7362) [`31b4e92ae73fea1372a03f9aa0511f062030e44f`](https://github.com/wso2/identity-apps/commit/31b4e92ae73fea1372a03f9aa0511f062030e44f) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Add system schema
+
+- Updated dependencies [[`31b4e92ae73fea1372a03f9aa0511f062030e44f`](https://github.com/wso2/identity-apps/commit/31b4e92ae73fea1372a03f9aa0511f062030e44f)]:
+  - @wso2is/core@2.5.8
+  - @wso2is/admin.organizations.v1@2.26.95
+  - @wso2is/common.branding.v1@2.25.68
+  - @wso2is/access-control@3.3.12
+  - @wso2is/forms@2.3.13
+  - @wso2is/i18n@2.16.2
+  - @wso2is/react-components@2.8.24
+
 ## 2.14.14
 
 ### Patch Changes

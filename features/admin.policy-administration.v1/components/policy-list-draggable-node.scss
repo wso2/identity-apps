@@ -1,7 +1,11 @@
 .policy-list-node{
     padding: 0;
-    .policy-drag-icon {
-        margin-top: 2px;
+
+    .ellipsis-text {
+        text-overflow: ellipsis;
+        max-width: 300px;
+        overflow: hidden;
+        white-space: nowrap;
     }
 }
 

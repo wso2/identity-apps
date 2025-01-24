@@ -1,5 +1,142 @@
 # @wso2is/admin.authentication-flow-builder.v1
 
+## 2.24.103
+
+### Patch Changes
+
+- Updated dependencies [[`897424e026699eb987ff8a0fb473e6bba5f8c117`](https://github.com/wso2/identity-apps/commit/897424e026699eb987ff8a0fb473e6bba5f8c117), [`29042319cdcbe1119ec8e3342bff3a4a74a69b48`](https://github.com/wso2/identity-apps/commit/29042319cdcbe1119ec8e3342bff3a4a74a69b48)]:
+  - @wso2is/admin.connections.v1@2.32.13
+  - @wso2is/admin.applications.v1@2.30.103
+  - @wso2is/admin.core.v1@2.37.11
+  - @wso2is/admin.extensions.v1@2.36.28
+  - @wso2is/admin.identity-providers.v1@2.26.103
+  - @wso2is/admin.organizations.v1@2.26.103
+  - @wso2is/admin.login-flow.ai.v1@2.26.103
+  - @wso2is/admin.secrets.v1@2.25.103
+  - @wso2is/admin.server-configurations.v1@2.32.28
+
+## 2.24.102
+
+### Patch Changes
+
+- Updated dependencies [[`021fdf5adf6e2f23176661e33ac94d16f33171b6`](https://github.com/wso2/identity-apps/commit/021fdf5adf6e2f23176661e33ac94d16f33171b6)]:
+  - @wso2is/admin.applications.v1@2.30.102
+  - @wso2is/admin.connections.v1@2.32.12
+  - @wso2is/admin.core.v1@2.37.10
+  - @wso2is/admin.extensions.v1@2.36.27
+  - @wso2is/admin.identity-providers.v1@2.26.102
+  - @wso2is/admin.login-flow.ai.v1@2.26.102
+  - @wso2is/admin.organizations.v1@2.26.102
+  - @wso2is/admin.server-configurations.v1@2.32.27
+  - @wso2is/admin.secrets.v1@2.25.102
+
+## 2.24.101
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.9
+  - @wso2is/admin.applications.v1@2.30.101
+  - @wso2is/admin.connections.v1@2.32.11
+  - @wso2is/admin.extensions.v1@2.36.26
+  - @wso2is/admin.identity-providers.v1@2.26.101
+  - @wso2is/admin.login-flow.ai.v1@2.26.101
+  - @wso2is/admin.organizations.v1@2.26.101
+  - @wso2is/admin.secrets.v1@2.25.101
+  - @wso2is/admin.server-configurations.v1@2.32.26
+
+## 2.24.100
+
+### Patch Changes
+
+- Updated dependencies [[`20852203b5868edd1045c8ea236955076b85cdfc`](https://github.com/wso2/identity-apps/commit/20852203b5868edd1045c8ea236955076b85cdfc)]:
+  - @wso2is/admin.applications.v1@2.30.100
+  - @wso2is/admin.core.v1@2.37.8
+  - @wso2is/admin.connections.v1@2.32.10
+  - @wso2is/admin.extensions.v1@2.36.25
+  - @wso2is/admin.identity-providers.v1@2.26.100
+  - @wso2is/admin.login-flow.ai.v1@2.26.100
+  - @wso2is/admin.organizations.v1@2.26.100
+  - @wso2is/admin.secrets.v1@2.25.100
+  - @wso2is/admin.server-configurations.v1@2.32.25
+
+## 2.24.99
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.7
+  - @wso2is/admin.applications.v1@2.30.99
+  - @wso2is/admin.connections.v1@2.32.9
+  - @wso2is/admin.extensions.v1@2.36.24
+  - @wso2is/admin.identity-providers.v1@2.26.99
+  - @wso2is/admin.login-flow.ai.v1@2.26.99
+  - @wso2is/admin.organizations.v1@2.26.99
+  - @wso2is/admin.secrets.v1@2.25.99
+  - @wso2is/admin.server-configurations.v1@2.32.24
+
+## 2.24.98
+
+### Patch Changes
+
+- Updated dependencies [[`d875ff4ee1889464749dbb573a80091ef7f76759`](https://github.com/wso2/identity-apps/commit/d875ff4ee1889464749dbb573a80091ef7f76759)]:
+  - @wso2is/admin.applications.v1@2.30.98
+  - @wso2is/admin.connections.v1@2.32.8
+  - @wso2is/admin.core.v1@2.37.6
+  - @wso2is/admin.extensions.v1@2.36.23
+  - @wso2is/admin.identity-providers.v1@2.26.98
+  - @wso2is/admin.login-flow.ai.v1@2.26.98
+  - @wso2is/admin.organizations.v1@2.26.98
+  - @wso2is/admin.secrets.v1@2.25.98
+  - @wso2is/admin.server-configurations.v1@2.32.23
+
+## 2.24.97
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.97
+  - @wso2is/admin.core.v1@2.37.5
+  - @wso2is/admin.extensions.v1@2.36.22
+  - @wso2is/admin.organizations.v1@2.26.97
+  - @wso2is/admin.server-configurations.v1@2.32.22
+  - @wso2is/admin.connections.v1@2.32.7
+  - @wso2is/admin.identity-providers.v1@2.26.97
+  - @wso2is/admin.login-flow.ai.v1@2.26.97
+  - @wso2is/admin.secrets.v1@2.25.97
+
+## 2.24.96
+
+### Patch Changes
+
+- Updated dependencies [[`363d4abbf6d2c327f398b4833806c87f1a3883d9`](https://github.com/wso2/identity-apps/commit/363d4abbf6d2c327f398b4833806c87f1a3883d9)]:
+  - @wso2is/admin.applications.v1@2.30.96
+  - @wso2is/admin.connections.v1@2.32.6
+  - @wso2is/admin.core.v1@2.37.4
+  - @wso2is/admin.extensions.v1@2.36.21
+  - @wso2is/admin.identity-providers.v1@2.26.96
+  - @wso2is/admin.login-flow.ai.v1@2.26.96
+  - @wso2is/admin.organizations.v1@2.26.96
+  - @wso2is/admin.server-configurations.v1@2.32.21
+  - @wso2is/admin.secrets.v1@2.25.96
+
+## 2.24.95
+
+### Patch Changes
+
+- Updated dependencies [[`31b4e92ae73fea1372a03f9aa0511f062030e44f`](https://github.com/wso2/identity-apps/commit/31b4e92ae73fea1372a03f9aa0511f062030e44f)]:
+  - @wso2is/admin.extensions.v1@2.36.20
+  - @wso2is/admin.core.v1@2.37.3
+  - @wso2is/core@2.5.8
+  - @wso2is/admin.applications.v1@2.30.95
+  - @wso2is/admin.connections.v1@2.32.5
+  - @wso2is/admin.identity-providers.v1@2.26.95
+  - @wso2is/admin.organizations.v1@2.26.95
+  - @wso2is/admin.server-configurations.v1@2.32.20
+  - @wso2is/admin.login-flow.ai.v1@2.26.95
+  - @wso2is/admin.secrets.v1@2.25.95
+  - @wso2is/react-components@2.8.24
+
 ## 2.24.94
 
 ### Patch Changes

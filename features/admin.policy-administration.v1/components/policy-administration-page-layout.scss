@@ -18,8 +18,16 @@
 
 .policy-algorithm-btn {
     padding: 1px 16px;
+    width: 212px;
+    display: flex;
+    align-items: center;
+
+    .gear-icon{
+        flex-shrink: 0;
+    }
     .algorithm-txt {
         margin-left: 4px;
+        flex-grow: 1;
     }
 }
 
