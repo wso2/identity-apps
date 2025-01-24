@@ -49,7 +49,7 @@
         const computedLocale = computeLocale(localeFromCookie, localeFromUrlParams, browserLocale);
 
         languageSelectionInput.val(computedLocale);
-        setCookieFromUrlParamUiLocale(computedLocale);
+        setUILocaleCookie(computedLocale);
 
         const dataOption = $( "div[data-value='" + computedLocale + "']" );
         dataOption.addClass("active selected")
@@ -113,12 +113,11 @@
     }
 
     /**
-     * Handles language change by setting the `ui_locale` cookie from the url params ui_locale.
+     * Handles language change by setting the `ui_locale` cookie.
      */
-     function setCookieFromUrlParamUiLocale(computedLocale) {
-        const EXPIRY_DAYS = 30;
-
-        setCookie('ui_lang', computedLocale, EXPIRY_DAYS);
+     function setUILocaleCookie(language) {
+        var EXPIRY_DAYS = 30;
+        setCookie('ui_lang', language, EXPIRY_DAYS);
     }
 
     /**
@@ -127,9 +126,8 @@
     function onLangChange() {
         const langSwitchForm = document.getElementById("language-selector-input");
         const language = langSwitchForm.value;
-        const EXPIRY_DAYS = 30;
+        setUILocaleCookie(language);
 
-        setCookie('ui_lang', language, EXPIRY_DAYS);
         window.location.reload();
     }
 
