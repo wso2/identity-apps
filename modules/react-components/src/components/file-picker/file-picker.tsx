@@ -1045,8 +1045,6 @@ export class JSONFileStrategy implements PickerStrategy<string> {
 
             json = enc.decode(arr);
         }
-        // Below this point we can ensure that json is
-        // a string type and proceed to parse.
 
         try {
             JSON.parse(json);
