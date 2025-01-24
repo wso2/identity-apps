@@ -49,6 +49,7 @@
         const computedLocale = computeLocale(localeFromCookie, localeFromUrlParams, browserLocale);
 
         languageSelectionInput.val(computedLocale);
+        setCookieFromUrlParamUiLocale(computedLocale);
 
         const dataOption = $( "div[data-value='" + computedLocale + "']" );
         dataOption.addClass("active selected")
@@ -109,6 +110,15 @@
             expires = "; expires=" + date.toUTCString();
         }
         document.cookie = name + "=" + (value || "")  + expires + domain + "; path=/";
+    }
+
+    /**
+     * Handles language change by setting the `ui_locale` cookie from the url params ui_locale.
+     */
+     function setCookieFromUrlParamUiLocale(computedLocale) {
+        const EXPIRY_DAYS = 30;
+
+        setCookie('ui_lang', computedLocale, EXPIRY_DAYS);
     }
 
     /**
