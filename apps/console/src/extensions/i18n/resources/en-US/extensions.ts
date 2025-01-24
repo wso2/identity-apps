@@ -2224,7 +2224,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Push NotificationP</1> to <3>Step 2</3> on the <5>Login Flow" +
+                            "Add <1>Push Notification</1> to <3>Step 2</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Push Authenticator Set Up Guide",
