@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.6.2
+
+### Patch Changes
+
+- [#7350](https://github.com/wso2/identity-apps/pull/7350) [`689dcc45ad43831b2805c3b91f04bdd254e1a7ef`](https://github.com/wso2/identity-apps/commit/689dcc45ad43831b2805c3b91f04bdd254e1a7ef) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Introduce push authenticator configuration support in my account
+
 ## 2.6.1
 
 ### Patch Changes
