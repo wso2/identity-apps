@@ -101,6 +101,7 @@
                 }
             }
         }
+        
         return isMultiAuthAvailable;
     }
 %>
