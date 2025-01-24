@@ -88,4 +88,12 @@ export interface policyAdministrationNS {
             description: string;
         };
     };
+    inactivePoliciesPlaceholder: {
+        title: string;
+        subtitle: string;
+    };
+    activePoliciesPlaceholder: {
+        title: string;
+        subtitle: string;
+    };
 }
