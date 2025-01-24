@@ -48,12 +48,10 @@ interface PushProviderSettingsPropsInterface extends IdentifiableComponentInterf
 export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsInterface> = (
     {
         pushProvider,
-        pushProviderTemplateInfo,
         pushProviderTemplateData,
         pushProviderTemplateMetadata,
         isLoading,
         handleDelete,
-        handleUpdate,
         handleCreate,
         ["data-componentid"]: componentId = "push-provider-settings"
     }: PushProviderSettingsPropsInterface
@@ -125,18 +123,16 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
     };
 
     return (
-        <>
-            <TemplateDynamicForm
-                form={ renderFormMetadata }
-                initialFormValues={ initialFormValues as unknown as Record<string, unknown> }
-                templatePayload={ pushProviderTemplateData?.payload as unknown as Record<string, unknown> }
-                buttonText={ t("common:update") }
-                onFormSubmit={ handleFormSubmission }
-                isLoading={ isLoading }
-                readOnly={ false }
-                data-componentid= { `${componentId}-form` }
-            />
-        </>
+        <TemplateDynamicForm
+            form={ renderFormMetadata }
+            initialFormValues={ initialFormValues as unknown as Record<string, unknown> }
+            templatePayload={ pushProviderTemplateData?.payload as unknown as Record<string, unknown> }
+            buttonText={ t("common:update") }
+            onFormSubmit={ handleFormSubmission }
+            isLoading={ isLoading }
+            readOnly={ false }
+            data-componentid= { `${componentId}-form` }
+        />
     );
 
 };
