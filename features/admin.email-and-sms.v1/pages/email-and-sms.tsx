@@ -123,9 +123,7 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
                             data-componentid={ "push-provider-card" }
                             description={ t("pushProviders:description") }
                             icon={ <PushIcon /> }
-                            header={
-                                t("pushProviders:heading")
-                            }
+                            header={ t("pushProviders:heading") }
                             onPrimaryActionClick={ handlePushSelection }
                             primaryAction={ t("common:configure") }
                             connectorEnabled
