@@ -120,7 +120,7 @@ export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInte
         if (!form || !formInitialValues) {
             return false;
         }
-        if (form?.fields?.length === 1
+        if (form.fields?.length === 1
             && form?.fields[0]?.type === DynamicInputFieldTypes.FILE
             && Object.keys(formInitialValues).length === 1) {
             return true;
