@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.10.11
+
+### Patch Changes
+
+- [#7388](https://github.com/wso2/identity-apps/pull/7388) [`83bd570f14b174ad38af419bad4d40322c8f5ce4`](https://github.com/wso2/identity-apps/commit/83bd570f14b174ad38af419bad4d40322c8f5ce4) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Set ui_lang cookie if ui_locale in url param exists.
+
 ## 2.10.10
 
 ### Patch Changes
