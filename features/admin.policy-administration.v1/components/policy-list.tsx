@@ -70,10 +70,8 @@ export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
                 image={ getEmptyPlaceholderIllustrations().emptySearch }
                 imageSize="tiny"
                 title={ t("policyAdministration:activePoliciesPlaceholder.title") }
-                subtitle={ [
-                    t("policyAdministration:activePoliciesPlaceholder.subtitle")
-                ] }
-                data-testid={ "empty-search-placeholder-icon" }
+                subtitle={ [ t("policyAdministration:activePoliciesPlaceholder.subtitle") ] }
+                data-componentid={ "active-policy-list-empty-search-placeholder-icon" }
             />
         ) : (
             <DroppableContainer
@@ -125,10 +123,8 @@ export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
                     image={ getEmptyPlaceholderIllustrations().emptyList }
                     imageSize="tiny"
                     title={ t("policyAdministration:inactivePoliciesPlaceholder.title") }
-                    subtitle={ [
-                        t("policyAdministration:inactivePoliciesPlaceholder.subtitle")
-                    ] }
-                    data-testid={ "empty-search-placeholder-icon" }
+                    subtitle={ [ t("policyAdministration:inactivePoliciesPlaceholder.subtitle") ] }
+                    data-componentid={ "inactive-policy-list-empty-search-placeholder-icon" }
                 />
             ) : ( policies.map((policy: PolicyInterface) => (
                 <PolicyListNode
