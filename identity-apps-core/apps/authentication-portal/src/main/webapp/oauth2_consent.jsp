@@ -1,6 +1,6 @@
 <%--
  ~
- ~ Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ ~ Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  ~
  ~ This software is the property of WSO2 LLC. and its suppliers, if any.
  ~ Dissemination of any information or reproduction of any material contained
@@ -10,6 +10,7 @@
 --%>
 
 <%@ page import="org.apache.commons.collections.CollectionUtils" %>
+<%@ page import="org.apache.commons.collections.MapUtils" %>
 <%@ page import="org.apache.commons.lang.ArrayUtils" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
@@ -29,6 +30,7 @@
 <%@ page import="java.util.stream.Stream" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="org.json.JSONArray" %>
+<%@ page import="org.json.JSONException" %>
 <%@ page import="org.json.JSONObject" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -57,22 +59,22 @@
             JSONArray scopeArray = new JSONArray (jsonObj.get("scopes").toString());
             for (int scopeCount = 0; scopeCount < scopeArray.length(); scopeCount++) {
                 JSONObject scope = (JSONObject) scopeArray.get(scopeCount);
-            
+
                 // Get the displayName.
                 String displayName = (String) scope.get("displayName");
-            
+
                 // Use optString to get description; it returns "" if the key is not found.
                 String description = scope.optString("description", "");
 
                 // Check if description is not empty, otherwise use displayName.
                 String scopeName = !StringUtils.isBlank(description) ? description : displayName;
-            
+
                 // Add the determined scopeName to the scopes list.
                 scopes.add(scopeName);
-            
+
                 // Add the identifier to the scopesWithMetadata list
                 scopesWithMetadata.add((String) scope.get("identifier"));
-            }            
+            }
             scopeDetails.put(key,scopes);
         }
     }
@@ -169,6 +171,24 @@
         scopesSize = openIdScopes.size();
     }
     int claimSize = requestedClaimList.length + mandatoryClaimList.length;
+
+    final Map<String, String> authorizationDetailsToBeDisplayed = new HashMap<>();
+    try {
+        final String authorizationDetailsParam = request.getParameter("authorization_details");
+        if (StringUtils.isNotBlank(authorizationDetailsParam)) {
+            org.json.JSONArray authorizationDetails  = new JSONArray(authorizationDetailsParam);
+            for (int index = 0; index < authorizationDetails.length(); index++) {
+                JSONObject authorizationDetail = authorizationDetails.getJSONObject(index);
+
+                // Check if consent description is not empty, otherwise use type.
+                final String description = authorizationDetail.optString("_description", authorizationDetail.getString("type"));
+                final String authorizationDetailId = "authorization_detail_id_" + authorizationDetail.getString("_id");
+                authorizationDetailsToBeDisplayed.put(authorizationDetailId, description);
+            }
+        }
+    } catch (JSONException e) {
+        // Ignore the error
+    }
 %>
 
 <!doctype html>
@@ -204,7 +224,7 @@
             <% } %>
             <%
                 if (!(ArrayUtils.isNotEmpty(mandatoryClaimList) || ArrayUtils.isNotEmpty(requestedClaimList) || CollectionUtils.isNotEmpty(openIdScopes)
-                    || CollectionUtils.isNotEmpty(scopesWithMetadata))){
+                    || CollectionUtils.isNotEmpty(scopesWithMetadata) || MapUtils.isNotEmpty(authorizationDetailsToBeDisplayed))) {
             %>
                 <form action="<%=oauth2AuthorizeURL%>" method="post" id="profile2" name="oauth2_authz">
                     <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
@@ -233,7 +253,7 @@
                             </h4>
                         </div>
                     </div>
-                    
+
                         <p class="login-portal-app-consent-request larger-font">
                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "this.will.allow.application.to")%>:
                         </p>
@@ -392,6 +412,42 @@
                                                 }
                                             }
                                 %>
+
+                                <%
+                                    if (MapUtils.isNotEmpty(authorizationDetailsToBeDisplayed)) {
+                                %>
+                                    <div class="item">
+                                        <i aria-hidden="true" class="circle tiny icon primary consent-item-bullet" id="Grant access"></i>
+                                        <div class="content mt-2 pl-1 consentItem">
+                                            <div class="header light-font">
+                                                <%= i18n(resourceBundle, customText, "requested.authorization.details") %>
+                                            </div>
+                                        </div>
+                                        <div class="content light-font">
+                                            <div class="border-gray margin-bottom-double">
+                                                <div class="claim-list">
+                                                    <%
+                                                        for (Map.Entry<String, String> authorizationDetailEntry : authorizationDetailsToBeDisplayed.entrySet()) {
+                                                    %>
+                                                        <div class="mt-1 pl-2">
+                                                            <div class="ui checkbox" style="display: flex">
+                                                                <input type="checkbox" class="hidden" name="<%=authorizationDetailEntry.getKey()%>" id="<%=authorizationDetailEntry.getKey()%>" />
+                                                                <label id="<%=authorizationDetailEntry.getKey()%>" for="<%=authorizationDetailEntry.getKey()%>">
+                                                                    <%=Encode.forHtml(authorizationDetailEntry.getValue())%>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    <%
+                                                        }
+                                                    %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <%
+                                    }
+                                %>
+
                                 </div>
                             </div>
                         <div class="ui divider hidden"></div>
