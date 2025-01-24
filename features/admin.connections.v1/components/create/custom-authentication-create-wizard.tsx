@@ -20,11 +20,8 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@oxygen-ui/react/Box";
 import Divider from "@oxygen-ui/react/Divider";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
-import { EventPublisher } from "@wso2is/admin.core.v1";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components";
-import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import {
@@ -35,14 +32,9 @@ import {
     LinkButton,
     PrimaryButton,
     SelectionCard,
-    Steps,
-    useWizardAlert
+    Steps
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { AxiosError, AxiosResponse } from "axios";
-import cloneDeep from "lodash-es/cloneDeep";
-import isEmpty from "lodash-es/isEmpty";
-import kebabCase from "lodash-es/kebabCase";
 import React, {
     FunctionComponent,
     MutableRefObject,
@@ -54,36 +46,28 @@ import React, {
     useRef,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
+import { Trans, useTranslation } from "react-i18next";
 import { DropdownProps, Icon, Message, Grid as SemanticGrid } from "semantic-ui-react";
-import { createConnection, createCustomAuthentication, useGetConnectionTemplate } from "../../api/connections";
+import { useGetConnectionTemplate } from "../../api/connections";
 import { getConnectionWizardStepIcons } from "../../configs/ui";
 import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import { LocalAuthenticatorConstants } from "../../constants/local-authenticator-constants";
-
 import {
     AuthenticationType,
     AuthenticationTypeDropdownOption,
     AvailableCustomAuthentications,
-    ConnectionInterface,
     ConnectionTemplateInterface,
     CustomAuthenticationCreateWizardGeneralFormValuesInterface,
-    CustomAuthenticatorInterface,
     EndpointConfigFormPropertyInterface,
     FormErrors,
-    GenericConnectionCreateWizardPropsInterface,
     WizardStepInterface,
     WizardStepsCustomAuth
 } from "../../models/connection";
 import { ConnectionsManagementUtils } from "../../utils/connection-utils";
 import "./custom-authentication-create-wizard.scss";
 
-export interface CustomAuthenticationCreateWizardPropsInterface
-    extends GenericConnectionCreateWizardPropsInterface,
-        IdentifiableComponentInterface {
+export interface CustomAuthenticationCreateWizardPropsInterface extends IdentifiableComponentInterface {
     /**
      * Connection template interface.
      */
@@ -112,7 +96,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
     title,
     subTitle,
     onWizardClose,
-    onIDPCreate,
     "data-componentid": _componentId = "custom-authentication"
 }: CustomAuthenticationCreateWizardPropsInterface): ReactElement => {
     const wizardRef: MutableRefObject<any> = useRef(null);
@@ -126,17 +109,15 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
         CustomAuthConstants.EXTERNAL_AUTHENTICATOR
     );
     const [ selectedTemplateId, setSelectedTemplateId ] = useState<string>(null);
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isSubmitting ] = useState<boolean>(false);
     const [ showPrimarySecret, setShowPrimarySecret ] = useState<boolean>(false);
     const [ showSecondarySecret, setShowSecondarySecret ] = useState<boolean>(false);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
 
-    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const { data: connectionTemplate, isLoading: isConnectionTemplateFetchRequestLoading } = useGetConnectionTemplate(
+    const { isLoading: isConnectionTemplateFetchRequestLoading } = useGetConnectionTemplate(
         selectedTemplateId,
         selectedTemplateId !== null
     );
@@ -152,9 +133,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             RequestMethod: "post",
             displayName: CustomAuthConstants.EMPTY_STRING,
             identifier: CustomAuthConstants.EMPTY_STRING
-        }),
-        []
-    );
+        }),[]);
 
     useEffect(() => {
         if (!initWizard) {
@@ -382,6 +361,36 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
     };
 
     /**
+     * This method validates the general settings fields.
+     *
+     * @param values - values to be validated.
+     * @returns - errors object.
+     */
+    const validateGeneralSettingsField = (
+        values: CustomAuthenticationCreateWizardGeneralFormValuesInterface
+    ): Partial<CustomAuthenticationCreateWizardGeneralFormValuesInterface> => {
+        const errors: Partial<CustomAuthenticationCreateWizardGeneralFormValuesInterface> = {};
+
+        if (!CommonAuthenticatorConstants.IDENTIFIER_REGEX.test(values?.identifier)) {
+            errors.identifier = t(
+                "customAuthentication:fields.createWizard.generalSettingsStep." +
+                    "identifier.validations.invalid"
+            );
+        }
+
+        if (!CommonAuthenticatorConstants.DISPLAY_NAME_REGEX.test(values?.displayName)) {
+            errors.displayName = t(
+                "customAuthentication:fields.createWizard.generalSettingsStep." +
+                    "displayName.validations.invalid"
+            );
+        }
+
+        setNextShouldBeDisabled(hasValidationErrors(errors));
+
+        return errors;
+    };
+
+    /**
      * This method validates the endpoint configurations.
      *
      * @param values - values to be validated.
@@ -471,245 +480,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
         }
 
         return errors;
-    };
-
-    /**
-     * Encodes a string to base64.
-     * @param str - string to be encoded.
-     * @returns encoded string.
-     */
-    const encodeString = (str: string): string => {
-        try {
-            return btoa(str);
-        } catch (error) {
-            return "";
-        }
-    };
-
-    /**
-     * This method creates an external authenticator.
-     *
-     * @param identityProvider - identity provider object.
-     */
-    const createExternalAuthenticator = (identityProvider: ConnectionInterface) => {
-        createConnection(identityProvider)
-            .then((response: AxiosResponse<ConnectionInterface>) => {
-                eventPublisher.publish("connections-finish-adding-connection", {
-                    type: _componentId + "-" + kebabCase(selectedAuthenticator)
-                });
-                dispatch(
-                    addAlert({
-                        description: t("authenticationProvider:notifications." + "addIDP.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("authenticationProvider:notifications." + "addIDP.success.message")
-                    })
-                );
-                // The created resource's id is sent as a location header.
-                // If that's available, navigate to the edit page.
-                if (!isEmpty(response.headers.location)) {
-                    const location: string = response.headers.location;
-                    const createdIdpID: string = location.substring(location.lastIndexOf("/") + 1);
-
-                    onIDPCreate(createdIdpID);
-
-                    return;
-                }
-                onIDPCreate();
-            })
-            .catch((error: AxiosError) => {
-                const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
-
-                if (error.response.status === 403 && error?.response?.data?.code === identityAppsError.getErrorCode()) {
-                    setAlert({
-                        code: identityAppsError.getErrorCode(),
-                        description: t(identityAppsError.getErrorDescription()),
-                        level: AlertLevels.ERROR,
-                        message: t(identityAppsError.getErrorMessage()),
-                        traceId: identityAppsError.getErrorTraceId()
-                    });
-                    setTimeout(() => setAlert(undefined), 4000);
-
-                    return;
-                }
-
-                if (error?.response.status === 500 && error.response?.data.code === "IDP-65002") {
-                    setAlert({
-                        description: t("authenticationProvider:notifications." + "addIDP.serverError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." + "addIDP.serverError.message")
-                    });
-                    setTimeout(() => setAlert(undefined), 8000);
-
-                    return;
-                }
-
-                if (error.response && error.response.data && error.response.data.description) {
-                    setAlert({
-                        description: t("authenticationProvider:notifications." + "addIDP.error.description", {
-                            description: error.response.data.description
-                        }),
-                        level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." + "addIDP.error.message")
-                    });
-                    setTimeout(() => setAlert(undefined), 4000);
-
-                    return;
-                }
-                setAlert({
-                    description: t("authenticationProvider:notifications." + "addIDP.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications." + "addIDP.genericError.message")
-                });
-                setTimeout(() => setAlert(undefined), 4000);
-            })
-            .finally(() => {
-                setIsSubmitting(false);
-            });
-    };
-
-    /**
-     * This method creates a custom local authenticator.
-     *
-     * @param customAuthenticator - custom authenticator
-     */
-    const createCustomLocalAuthenticator = (customAuthenticator: CustomAuthenticatorInterface) => {
-        createCustomAuthentication(customAuthenticator)
-            .then((response: AxiosResponse<ConnectionInterface>) => {
-                eventPublisher.publish("connections-finish-adding-connection", {
-                    type: _componentId + "-" + kebabCase(selectedAuthenticator)
-                });
-                dispatch(
-                    addAlert({
-                        description: t("authenticationProvider:notifications." + "addIDP.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("authenticationProvider:notifications." + "addIDP.success.message")
-                    })
-                );
-                // The created resource's id is sent as a location header.
-                // If that's available, navigate to the edit page.
-                if (!isEmpty(response.headers.location)) {
-                    const location: string = response.headers.location;
-                    const createdIdpID: string = location.substring(location.lastIndexOf("/") + 1);
-
-                    onIDPCreate(createdIdpID);
-
-                    return;
-                }
-                onIDPCreate();
-            })
-            .catch((error: AxiosError) => {
-                const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
-
-                if (error.response.status === 403 && error?.response?.data?.code === identityAppsError.getErrorCode()) {
-                    setAlert({
-                        code: identityAppsError.getErrorCode(),
-                        description: t(identityAppsError.getErrorDescription()),
-                        level: AlertLevels.ERROR,
-                        message: t(identityAppsError.getErrorMessage()),
-                        traceId: identityAppsError.getErrorTraceId()
-                    });
-                    setTimeout(() => setAlert(undefined), 4000);
-
-                    return;
-                }
-
-                if (error?.response.status === 500 && error.response?.data.code === "IDP-65002") {
-                    setAlert({
-                        description: t("authenticationProvider:notifications." + "addIDP.serverError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." + "addIDP.serverError.message")
-                    });
-                    setTimeout(() => setAlert(undefined), 8000);
-
-                    return;
-                }
-
-                if (error.response && error.response.data && error.response.data.description) {
-                    setAlert({
-                        description: t("authenticationProvider:notifications." + "addIDP.error.description", {
-                            description: error.response.data.description
-                        }),
-                        level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." + "addIDP.error.message")
-                    });
-                    setTimeout(() => setAlert(undefined), 4000);
-
-                    return;
-                }
-                setAlert({
-                    description: t("authenticationProvider:notifications." + "addIDP.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications." + "addIDP.genericError.message")
-                });
-                setTimeout(() => setAlert(undefined), 4000);
-            })
-            .finally(() => {
-                setIsSubmitting(false);
-            });
-    };
-
-    /**
-     * @param values - form values
-     * @param form - form instance
-     * @param callback - callback to proceed to the next step
-     */
-    const handleFormSubmit = (values: any) => {
-        const prefixedIdentifier: string = CustomAuthConstants.PREFIX + values?.identifier?.toString();
-        const encodedPrefixedIdentifier: string = encodeString(prefixedIdentifier);
-
-        if (selectedAuthenticator === CustomAuthConstants.EXTERNAL_AUTHENTICATOR) {
-            const FIRST_ENTRY: number = 0;
-
-            const { idp: identityProvider } = cloneDeep(connectionTemplate);
-
-            identityProvider.templateId = selectedTemplateId;
-            identityProvider.name = values?.displayName?.toString();
-
-            identityProvider.federatedAuthenticators.defaultAuthenticatorId = encodedPrefixedIdentifier;
-            identityProvider.federatedAuthenticators.authenticators[FIRST_ENTRY].authenticatorId
-                = encodedPrefixedIdentifier;
-            identityProvider.federatedAuthenticators.authenticators[
-                FIRST_ENTRY
-            ].endpoint.uri = values?.endpointUri.toString();
-            identityProvider.federatedAuthenticators.authenticators[
-                FIRST_ENTRY
-            ].endpoint.authentication.type = authenticationType;
-
-            const authProperties: any = {};
-
-            authProperties["username"] = values?.usernameAuthProperty;
-            authProperties["password"] = values?.passwordAuthProperty;
-            authProperties["accessToken"] = values?.accessTokenAuthProperty;
-            authProperties["header"] = values?.headerAuthProperty;
-            authProperties["value"] = values?.valueAuthProperty;
-            identityProvider.federatedAuthenticators.authenticators[
-                FIRST_ENTRY
-            ].endpoint.authentication.properties = authProperties;
-
-            setIsSubmitting(true);
-            createExternalAuthenticator(identityProvider);
-        } else {
-            const { customLocalAuthenticator: customAuthenticator } = cloneDeep(connectionTemplate);
-
-            // customAuthenticator.templateId = selectedTemplateId;
-            customAuthenticator.name = prefixedIdentifier;
-            customAuthenticator.displayName = values?.displayName?.toString();
-
-            customAuthenticator.endpoint.authentication.type = authenticationType;
-            customAuthenticator.endpoint.uri = values?.endpointUri.toString();
-
-            const authProperties: any = {};
-
-            authProperties["username"] = values?.usernameAuthProperty;
-            authProperties["password"] = values?.passwordAuthProperty;
-            authProperties["accessToken"] = values?.accessTokenAuthProperty;
-            authProperties["header"] = values?.headerAuthProperty;
-            authProperties["value"] = values?.valueAuthProperty;
-            customAuthenticator.endpoint.authentication.properties = authProperties;
-
-            setIsSubmitting(true);
-            createCustomLocalAuthenticator(customAuthenticator);
-        }
     };
 
     const wizardCommonFirstPage = () => (
@@ -852,35 +622,17 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
     );
 
     const generalSettingsPage = () => (
-        <WizardPage
-            validate={ (values: CustomAuthenticationCreateWizardGeneralFormValuesInterface) => {
-                const errors: FormErrors = {};
-
-                if (!FormValidation.identifier(values.identifier)) {
-                    errors.identifier = t(
-                        "customAuthentication:fields.createWizard.generalSettingsStep." +
-                            "identifier.validations.invalid"
-                    );
-                }
-                if (!FormValidation.isValidResourceName(values.displayName)) {
-                    errors.displayName = t(
-                        "customAuthentication:fields.createWizard.generalSettingsStep." +
-                            "displayName.validations.invalid"
-                    );
-                }
-
-                setNextShouldBeDisabled(hasValidationErrors(errors));
-
-                return errors;
-            } }
-        >
+        <WizardPage validate={ validateGeneralSettingsField }>
             <Field.Input
+                className="identifier-field"
                 ariaLabel="identifier"
-                inputType="identifier"
+                inputType="text"
                 name="identifier"
                 label={ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.label") }
                 placeholder={ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.placeholder") }
                 initialValue={ initialValues.identifier }
+                action={ { content: "custom-" } }
+                actionPosition="left"
                 required={ true }
                 maxLength={ 100 }
                 minLength={ 3 }
@@ -890,10 +642,12 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             <Hint>{ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.hint") }</Hint>
             <Field.Input
                 ariaLabel="displayName"
-                inputType="resource_name"
+                inputType="text"
                 name="displayName"
                 label={ t("customAuthentication:fields.createWizard.generalSettingsStep.displayName.label") }
-                placeholder={ t("customAuthentication:fields.createWizard.generalSettingsStep.displayName.placeholder") }
+                placeholder={ t(
+                    "customAuthentication:fields.createWizard.generalSettingsStep.displayName.placeholder"
+                ) }
                 initialValue={ initialValues.displayName }
                 required={ true }
                 maxLength={ 100 }
@@ -973,6 +727,15 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                         "customAuthentication:fields.createWizard.generalSettingsStep.helpPanel." +
                             "identifier.description"
                     ) }
+                </p>
+                <p>
+                    <Trans
+                        i18nKey={ "customAuthentication:fields.createWizard.generalSettingsStep.helpPanel." +
+                            "identifier.note" }
+                    >
+                Provide a unique name to refer in authentication scripts and authentication parameters.
+                Note that <strong>custom-</strong> will be prefixed to the identifier.
+                    </Trans>
                 </p>
                 <Message className="display-flex" size="small" warning header="Hello there">
                     <Icon name="warning sign" color="orange" corner />
@@ -1067,7 +830,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                             <Wizard2
                                 ref={ wizardRef }
                                 initialValues={ initialValues }
-                                onSubmit={ handleFormSubmit }
                                 uncontrolledForm={ true }
                                 pageChanged={ (index: number) => setCurrentWizardStep(index) }
                                 data-componentid={ _componentId }
