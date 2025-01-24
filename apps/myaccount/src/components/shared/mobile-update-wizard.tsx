@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -93,9 +93,9 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
     const isMobileVerificationPending = (updatedMobileNumber: string, userData:  Record<string, string>): boolean => {
         const PENDING_MOBILE_CLAIM: string = "pendingMobileNumber";
 
-        return userData && userData[ProfileConstants.SCIM2_ENT_USER_SCHEMA] &&
-            userData[ProfileConstants.SCIM2_ENT_USER_SCHEMA][PENDING_MOBILE_CLAIM] &&
-            userData[ProfileConstants.SCIM2_ENT_USER_SCHEMA][PENDING_MOBILE_CLAIM] === updatedMobileNumber;
+        return userData && userData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA] &&
+            userData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][PENDING_MOBILE_CLAIM] &&
+            userData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][PENDING_MOBILE_CLAIM] === updatedMobileNumber;
 
     };
 
@@ -127,7 +127,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                     value: mobileNumber
                 }
             ],
-            [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: { "verifyMobile": true }
+            [ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]: { "verifyMobile": true }
         };
         updateProfileInfo(data).then((response: AxiosResponse) => {
             if (response.status === 200) {

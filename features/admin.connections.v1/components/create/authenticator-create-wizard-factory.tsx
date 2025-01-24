@@ -17,12 +17,14 @@
  */
 
 import { AppState } from "@wso2is/admin.core.v1";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { CreateConnectionWizard } from "./add-connection-wizard";
+import CustomAuthenticationCreateWizard from "./custom-authentication-create-wizard";
 import {
     EnterpriseConnectionCreateWizard
 } from "./enterprise-connection-create-wizard";
@@ -106,6 +108,9 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
         ...rest
     } = props;
 
+    const customAuthFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state.config.ui.features?.identityProviders);
+
     const [ possibleListOfDuplicateIDPs, setPossibleListOfDuplicateIDPs ] = useState<string[]>(undefined);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ConnectionTemplateInterface>(undefined);
     const [
@@ -166,6 +171,8 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
         }
 
         if (type === "enterprise-protocols") {
+            setSelectedTemplate(parentSelectedTemplate);
+        } else if (type === "custom-authentication") {
             setSelectedTemplate(parentSelectedTemplate);
         } else {
             if (!connectionTemplate) {
@@ -329,6 +336,27 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                         { ...rest }
                     />
                 );
+
+            case CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.CUSTOM_AUTHENTICATION:
+                if (isFeatureEnabled(customAuthFeatureConfig, "identityProviders.customAuthentication")) {
+                    return (
+                        <CustomAuthenticationCreateWizard
+                            title={ t("customAuthentication:fields.createWizard.title") }
+                            subTitle= { t("customAuthentication:fields.createWizard.subTitle") }
+                            onWizardClose={ () => {
+                                setSelectedTemplateWithUniqueName(undefined);
+                                setSelectedTemplate(undefined);
+                                handleModalVisibility(false);
+                                onWizardClose();
+                            } }
+                            template={ selectedTemplateWithUniqueName }
+                            data-componentid={ selectedTemplate?.templateId }
+                            { ...rest }
+                        />
+                    );
+                }
+
+                break;
 
             case CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE:
                 return (

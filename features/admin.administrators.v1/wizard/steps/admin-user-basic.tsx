@@ -253,7 +253,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                 // Exclude JIT users, internal admin users and collaborators.
                 const responseUsers: UserBasicInterface[] = response?.Resources?.filter(
                     (user: UserBasicInterface) =>
-                        !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId &&
+                        !user[ SCIMConfigs.scim.systemSchema ]?.userSourceId &&
                     !isAdminUser(user) &&
                     !isCollaboratorUser(user));
 

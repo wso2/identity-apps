@@ -27,7 +27,6 @@ import {
 import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
-import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
@@ -218,15 +217,14 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             return;
         }
 
+        const schemaURI: string = SCIMConfigs.scim.systemSchema;
+
         const data: PatchRoleDataInterface = {
             "Operations": [
                 {
                     "op": "add",
                     "value": {
-                        [ SCIMConfigs?.scimEnterpriseUserClaimUri?.forcePasswordReset?.
-                            startsWith(ProfileConstants.SCIM2_ENT_USER_SCHEMA)
-                            ? ProfileConstants.SCIM2_ENT_USER_SCHEMA
-                            : ProfileConstants.SCIM2_WSO2_USER_SCHEMA ]: {
+                        [ schemaURI ]: {
                             "forcePasswordReset": true
                         }
                     }

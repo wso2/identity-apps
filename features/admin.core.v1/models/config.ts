@@ -519,6 +519,11 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isMultipleEmailsAndMobileNumbersEnabled?: boolean;
     /**
+     * Overridden Scim2 user schema URI.
+     * If the value is not overridden, the default SCIM2 user schema URI is returned.
+     */
+    userSchemaURI?: string;
+    /**
      * Password policy configs.
      */
     passwordPolicyConfigs: PasswordPolicyConfigsInterface;

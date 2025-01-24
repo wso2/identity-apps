@@ -18,7 +18,19 @@
 
 .policy-list-node{
     padding: 0;
+
+    .ellipsis-text {
+        text-overflow: ellipsis;
+        max-width: 300px;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .policy-list-icon {
+        margin-top: 4px;
+    }
 }
 .policy-list-node:hover {
     box-shadow: 0 2px 2px rgba(203, 206, 219, 0.4);
 }
+

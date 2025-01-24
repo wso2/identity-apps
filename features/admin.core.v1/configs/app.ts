@@ -24,6 +24,7 @@ import { getApplicationsResourceEndpoints } from "@wso2is/admin.applications.v1/
 import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { getConnectionResourceEndpoints } from "@wso2is/admin.connections.v1";
 import { getEmailTemplatesResourceEndpoints } from "@wso2is/admin.email-templates.v1";
 import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1/configs/endpoints";
@@ -213,6 +214,7 @@ export class Config {
                 I18nConstants.APPLICATION_TEMPLATES_NAMESPACE,
                 I18nConstants.ACTIONS_NAMESPACE,
                 I18nConstants.TENANTS_NAMESPACE,
+                I18nConstants.CUSTOM_AUTHENTICATION_NAMESPACE,
                 I18nConstants.POLICY_ADMINISTRATION_NAMESPACE,
                 I18nConstants.REMOTE_USER_STORES_NAMESPACE,
                 I18nConstants.RULES_NAMESPACE
@@ -370,7 +372,9 @@ export class Config {
                 window[ "AppUtils" ]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures,
             systemAppsIdentifiers: window[ "AppUtils" ]?.getConfig()?.ui?.systemAppsIdentifiers,
             theme: window[ "AppUtils" ]?.getConfig()?.ui?.theme,
-            useRoleClaimAsGroupClaim: window[ "AppUtils" ]?.getConfig()?.ui?.useRoleClaimAsGroupClaim
+            useRoleClaimAsGroupClaim: window[ "AppUtils" ]?.getConfig()?.ui?.useRoleClaimAsGroupClaim,
+            userSchemaURI: window[ "AppUtils" ]?.getConfig()?.ui?.customUserSchemaURI
+                ?? ClaimManagementConstants.DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI
         };
     }
 }

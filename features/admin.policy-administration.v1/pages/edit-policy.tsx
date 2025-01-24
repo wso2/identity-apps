@@ -58,19 +58,10 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
     const shouldFetchPolicy: boolean = !isEmpty(policyId);
     const [ updatedPolicyScript, setUpdatedPolicyScript ] = useState<string | undefined>();
 
-    /**
-     * Converts kebab-case to snake_case.
-     *
-     * @param kebab - Kebab case string.
-     * @returns Snake case string.
-     */
-    const kebabToSnakeCase = (kebab: string): string => {
-        return kebab.replace(/-/g, "_");
-    };
 
     // Fetch the policy using the useGetPolicy hook
     const { data: policy, isLoading, error } = useGetPolicy(
-        kebabToSnakeCase(policyId || ""),
+        policyId || "",
         shouldFetchPolicy
     );
 
