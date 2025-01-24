@@ -2220,7 +2220,7 @@ export const extensions: Extensions = {
                 quickStart: {
                     addLoginModal: {
                         heading: "Add Push Authenticator",
-                        subHeading: "Select an application to set up Push Authentication login."
+                        subHeading: "Select an application to set up push  authentication."
                     },
                     connectApp: {
                         description:
