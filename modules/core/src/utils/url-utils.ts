@@ -216,7 +216,7 @@ export class URLUtils {
         // Refer: https://github.com/remusao/tldts/blob/46f2b6d31be10904e83edfbad90212cef901671f/packages/tldts/README.md#retrieving-subdomain-of-localhost-and-custom-hostnames
         validHosts: [ "localhost" ]
     }): string | undefined {
-        let domain: string | undefined = undefined;
+        let domain: string = null;
 
         try {
             domain = _getDomain(url, options);
@@ -227,13 +227,13 @@ export class URLUtils {
 
         // `tldts` doesn't handle non TDLDs like custom hostnames.
         // Fallback to a simple parser for such cases.
-        if (domain === null) {
+        if (domain === null || typeof domain === "undefined") {
             try {
                 const parsedURL: URL = new URL(url);
 
                 const hostnameTokens: string[] = parsedURL.hostname.split(".");
 
-                if (hostnameTokens.length == 1){
+                if (hostnameTokens.length === 1){
                     domain = hostnameTokens[0];
                 } else if (hostnameTokens.length > 1) {
                     domain = hostnameTokens.slice(hostnameTokens.length - 2, hostnameTokens.length).join(".");
