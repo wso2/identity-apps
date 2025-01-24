@@ -46,7 +46,7 @@ import React, {
     useRef,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { DropdownProps, Icon, Message, Grid as SemanticGrid } from "semantic-ui-react";
 import { useGetConnectionTemplate } from "../../api/connections";
 import { getConnectionWizardStepIcons } from "../../configs/ui";
@@ -366,7 +366,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
      * @param values - values to be validated.
      * @returns - errors object.
      */
-       const validateGeneralSettingsField = (
+    const validateGeneralSettingsField = (
         values: CustomAuthenticationCreateWizardGeneralFormValuesInterface
     ): Partial<CustomAuthenticationCreateWizardGeneralFormValuesInterface> => {
         const errors: Partial<CustomAuthenticationCreateWizardGeneralFormValuesInterface> = {};
@@ -623,10 +623,9 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
     );
 
     const generalSettingsPage = () => (
-        <WizardPage
-            validate={ generalSettingsPage }
-        >
+        <WizardPage validate={ validateGeneralSettingsField }>
             <Field.Input
+                className="identifier-field"
                 ariaLabel="identifier"
                 inputType="text"
                 name="identifier"
@@ -731,6 +730,15 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                         "customAuthentication:fields.createWizard.generalSettingsStep.helpPanel." +
                             "identifier.description"
                     ) }
+                </p>
+                <p>
+                    <Trans
+                        i18nKey={ "customAuthentication:fields.createWizard.generalSettingsStep.helpPanel." +
+                            "identifier.note" }
+                    >
+                Provide a unique name to refer in authentication scripts and authentication parameters.
+                Note that <strong>custom-</strong> will be prefixed to the identifier.
+                    </Trans>
                 </p>
                 <Message className="display-flex" size="small" warning header="Hello there">
                     <Icon name="warning sign" color="orange" corner />

@@ -64,6 +64,7 @@ export interface customAuthenticationNS {
                         header: string;
                         description: string;
                         warning: string;
+                        note: string;
                     };
                     displayName: {
                         header: string;

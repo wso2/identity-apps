@@ -118,6 +118,7 @@ export const customAuthentication: customAuthenticationNS = {
                         description: "Provide a unique name to refer in authentication scripts and " +
                         "authentication parameters.",
                         header: "Identifier",
+                        note: "Note that <1>custom-</1> will be prefixed to the identifier.",
                         warning: "This field should be unique; once created, it is not editable. "
                     }
                 },
