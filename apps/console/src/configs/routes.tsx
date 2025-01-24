@@ -743,7 +743,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             order: 16,
             path: isPushProviderFeatureEnabled
                 ? AppConstants.getPaths().get("NOTIFICATION_CHANNELS")
-                : `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms`,
+                : AppConstants.getPaths().get("EMAIL_AND_SMS"),
             protected: true,
             showOnSidePanel: true
         },

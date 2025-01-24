@@ -261,9 +261,6 @@ export class AppConstants {
      * @returns All the app paths as a map.
      */
     public static getPaths(): Map<string, string> {
-        const isPushProviderFeatureEnabled: boolean =
-            window["AppUtils"]?.getConfig()?.ui?.features?.pushProviders?.enabled;
-
         const paths: Map<string, string> = new Map<string, string>([
             [ "GETTING_STARTED", `${ AppConstants.getDeveloperViewBasePath() }/getting-started` ],
             [ "ADMIN_OVERVIEW", `${ AppConstants.getAdminViewBasePath() }/overview` ],
@@ -309,11 +306,8 @@ export class AppConstants {
             [ "ORGANIZATION_DISCOVERY_DOMAINS", `${AppConstants.getAdminViewBasePath()}/email-domain-discovery` ],
             [ "UPDATE_ORGANIZATION_DISCOVERY_DOMAINS", `${AppConstants.getAdminViewBasePath()}/email-domain-edit/:id` ],
             [ "EMAIL_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/email-provider` ],
-            [ isPushProviderFeatureEnabled ? "NOTIFICATION_CHANNELS" : "EMAIL_AND_SMS",
-                isPushProviderFeatureEnabled
-                    ? `${ AppConstants.getDeveloperViewBasePath() }/notification-channels`
-                    : `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms`
-            ],
+            [ "NOTIFICATION_CHANNELS", `${ AppConstants.getDeveloperViewBasePath() }/notification-channels` ],
+            [ "EMAIL_AND_SMS", `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms` ],
             [ "EMAIL_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/email-management` ],
             [ "SMS_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/sms-provider` ],
             [ "SMS_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/sms-management` ],
