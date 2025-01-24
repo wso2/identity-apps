@@ -361,6 +361,37 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
     };
 
     /**
+     * This method validates the general settings fields.
+     *
+     * @param values - values to be validated.
+     * @returns - errors object.
+     */
+       const validateGeneralSettingsField = (
+        values: CustomAuthenticationCreateWizardGeneralFormValuesInterface
+    ): Partial<CustomAuthenticationCreateWizardGeneralFormValuesInterface> => {
+        const errors: Partial<CustomAuthenticationCreateWizardGeneralFormValuesInterface> = {};
+
+        if (!CommonAuthenticatorConstants.IDENTIFIER_REGEX.test(values?.identifier)) {
+            errors.identifier = t(
+                "customAuthentication:fields.createWizard.generalSettingsStep." +
+                    "identifier.validations.invalid"
+            );
+        }
+
+        if (!CommonAuthenticatorConstants.DISPLAY_NAME_REGEX.test(values?.displayName)) {
+            errors.displayName = t(
+                "customAuthentication:fields.createWizard.generalSettingsStep." +
+                    "displayName.validations.invalid"
+            );
+        }
+
+        setNextShouldBeDisabled(hasValidationErrors(errors));
+
+        return errors;
+
+    };
+
+    /**
      * This method validates the endpoint configurations.
      *
      * @param values - values to be validated.
@@ -593,34 +624,19 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
 
     const generalSettingsPage = () => (
         <WizardPage
-            validate={ (values: CustomAuthenticationCreateWizardGeneralFormValuesInterface) => {
-                const errors: FormErrors = {};
-
-                if (!FormValidation.identifier(values.identifier)) {
-                    errors.identifier = t(
-                        "customAuthentication:fields.createWizard.generalSettingsStep." +
-                            "identifier.validations.invalid"
-                    );
-                }
-                if (!FormValidation.isValidResourceName(values.displayName)) {
-                    errors.displayName = t(
-                        "customAuthentication:fields.createWizard.generalSettingsStep." +
-                            "displayName.validations.invalid"
-                    );
-                }
-
-                setNextShouldBeDisabled(hasValidationErrors(errors));
-
-                return errors;
-            } }
+            validate={ generalSettingsPage }
         >
             <Field.Input
                 ariaLabel="identifier"
-                inputType="identifier"
+                inputType="text"
                 name="identifier"
                 label={ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.label") }
                 placeholder={ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.placeholder") }
                 initialValue={ initialValues.identifier }
+                action={ {
+                    content: "custom-"
+                } }
+                actionPosition="left"
                 required={ true }
                 maxLength={ 100 }
                 minLength={ 3 }
@@ -630,7 +646,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             <Hint>{ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.hint") }</Hint>
             <Field.Input
                 ariaLabel="displayName"
-                inputType="resource_name"
+                inputType="text"
                 name="displayName"
                 label={ t("customAuthentication:fields.createWizard.generalSettingsStep.displayName.label") }
                 placeholder={ t(
