@@ -17,12 +17,12 @@
  */
 
 import { AsgardeoSPAClient, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1/store";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AcceptHeaderValues, ContentTypeHeaderValues, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { PushProviderAPIResponseInterface } from "../models/push-providers";
+import { PushProviderAPIInterface, PushProviderAPIResponseInterface } from "../models/push-providers";
 
 const httpClient: (
     config: HttpRequestConfig
@@ -30,7 +30,7 @@ const httpClient: (
     AsgardeoSPAClient.getInstance()
 );
 
-export const createPushProvider = async (data: PushProviderAPIResponseInterface):
+export const createPushProvider = async (data: PushProviderAPIInterface):
     Promise<PushProviderAPIResponseInterface> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -70,7 +70,7 @@ export const createPushProvider = async (data: PushProviderAPIResponseInterface)
         });
 };
 
-export const updatePushProvider = async (data: PushProviderAPIResponseInterface):
+export const updatePushProvider = async (data: PushProviderAPIInterface):
     Promise<HttpResponse | undefined> => {
 
     const requestConfig: RequestConfigInterface = {

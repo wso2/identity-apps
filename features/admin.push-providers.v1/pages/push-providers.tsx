@@ -34,8 +34,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import createPushProvider from "../api/use-create-push-provider";
-import deletePushProvider from "../api/use-delete-push-provider";
+import { createPushProvider, deletePushProvider, updatePushProvider } from "../api/push-provider";
 import useGetPushProviderTemplate from "../api/use-get-push-provider-template";
 import useGetPushProviderTemplateMetadata from "../api/use-get-push-provider-template-metadata";
 import useGetPushProvidersList from "../api/use-get-push-providers";
@@ -137,6 +136,29 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
 
     const handlePushProviderUpdate = ( data: PushProviderAPIInterface ): void => {
         // TODO: Implement update API call.
+        updatePushProvider(data)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("pushProviders:alerts.createPushProvider.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("pushProviders:alerts.createPushProvider.success.message")
+                }));
+            })
+            .catch((error: IdentityAppsApiException) => {
+                dispatch(addAlert({
+                    description: error?.response?.data?.description
+                        || t("pushProviders:alerts.createPushProvider.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.response?.data?.message
+                        || t("pushProviders:alerts.createPushProvider.genericError.message")
+                }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+                mutatePushProvidersListFetchRequest();
+                mutatePushProviderTemplateFetchRequest();
+                mutatePushProviderTemplateMetadataFetchRequest();
+            });
     };
 
     const handlePushProviderCreate = ( data: PushProviderAPIInterface, callback: () => void ): void => {
