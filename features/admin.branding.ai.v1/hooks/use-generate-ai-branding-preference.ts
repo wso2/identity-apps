@@ -16,10 +16,6 @@
  * under the License.
  */
 
-import { AppConstants } from "@wso2is/admin.core.v1";
-import { store } from "@wso2is/admin.core.v1/store";
-import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -37,16 +33,10 @@ const useGenerateAIBrandingPreference = (): GenerateAIBrandingPreferenceFunc => 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const { organizationType } = useGetCurrentOrganizationType();
-
     const {
         setGeneratingBranding,
         setOperationId
     } = useAIBrandingPreference();
-
-    const tenantDomain: string = organizationType === OrganizationType.SUBORGANIZATION
-        ? store.getState().organization.organization.id
-        : AppConstants.getTenant();
 
     /**
      * Generate AI branding preference API call function.
