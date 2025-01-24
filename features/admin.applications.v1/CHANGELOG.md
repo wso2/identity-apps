@@ -1,5 +1,35 @@
 # @wso2is/admin.applications.v1
 
+## 2.30.102
+
+### Patch Changes
+
+- [#7385](https://github.com/wso2/identity-apps/pull/7385) [`021fdf5adf6e2f23176661e33ac94d16f33171b6`](https://github.com/wso2/identity-apps/commit/021fdf5adf6e2f23176661e33ac94d16f33171b6) Thanks [@Thumimku](https://github.com/Thumimku)! - revert checkbox of hybrid flow config
+
+- Updated dependencies [[`fa707cce1d0e1a54a282a57bd137e047e6dd207e`](https://github.com/wso2/identity-apps/commit/fa707cce1d0e1a54a282a57bd137e047e6dd207e)]:
+  - @wso2is/admin.console-settings.v1@2.25.102
+  - @wso2is/admin.users.v1@2.30.12
+  - @wso2is/admin.application-templates.v1@1.4.102
+  - @wso2is/admin.authentication-flow-builder.v1@2.24.102
+  - @wso2is/admin.connections.v1@2.32.12
+  - @wso2is/admin.core.v1@2.37.10
+  - @wso2is/admin.extensions.v1@2.36.27
+  - @wso2is/admin.identity-providers.v1@2.26.102
+  - @wso2is/admin.login-flow.ai.v1@2.26.102
+  - @wso2is/admin.oidc-scopes.v1@2.25.102
+  - @wso2is/admin.organizations.v1@2.26.102
+  - @wso2is/admin.roles.v2@2.27.46
+  - @wso2is/admin.claims.v1@2.27.12
+  - @wso2is/admin.server-configurations.v1@2.32.27
+  - @wso2is/admin.api-resources.v2@2.25.102
+  - @wso2is/admin.branding.v1@2.27.75
+  - @wso2is/admin.feature-gate.v1@1.4.102
+  - @wso2is/admin.impersonation.v1@1.6.102
+  - @wso2is/admin.secrets.v1@2.25.102
+  - @wso2is/admin.template-core.v1@1.5.56
+  - @wso2is/admin.userstores.v1@2.26.61
+  - @wso2is/admin.wsfed-configuration.v1@2.25.102
+
 ## 2.30.101
 
 ### Patch Changes

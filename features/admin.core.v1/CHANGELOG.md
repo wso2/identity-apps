@@ -1,5 +1,57 @@
 # @wso2is/admin.core.v1
 
+## 2.37.10
+
+### Patch Changes
+
+- Updated dependencies [[`021fdf5adf6e2f23176661e33ac94d16f33171b6`](https://github.com/wso2/identity-apps/commit/021fdf5adf6e2f23176661e33ac94d16f33171b6), [`fa707cce1d0e1a54a282a57bd137e047e6dd207e`](https://github.com/wso2/identity-apps/commit/fa707cce1d0e1a54a282a57bd137e047e6dd207e)]:
+  - @wso2is/admin.applications.v1@2.30.102
+  - @wso2is/admin.console-settings.v1@2.25.102
+  - @wso2is/admin.administrators.v1@2.29.102
+  - @wso2is/admin.groups.v1@2.27.12
+  - @wso2is/admin.roles.v1@2.25.102
+  - @wso2is/admin.users.v1@2.30.12
+  - @wso2is/admin.application-templates.v1@1.4.102
+  - @wso2is/admin.connections.v1@2.32.12
+  - @wso2is/admin.extensions.v1@2.36.27
+  - @wso2is/admin.identity-providers.v1@2.26.102
+  - @wso2is/admin.oidc-scopes.v1@2.25.102
+  - @wso2is/admin.organizations.v1@2.26.102
+  - @wso2is/admin.policy-administration.v1@1.0.18
+  - @wso2is/admin.roles.v2@2.27.46
+  - @wso2is/admin.validation.v1@2.27.40
+  - @wso2is/admin.authentication.v1@2.25.102
+  - @wso2is/admin.claims.v1@2.27.12
+  - @wso2is/admin.server-configurations.v1@2.32.27
+  - @wso2is/admin.tenants.v1@2.28.76
+  - @wso2is/admin.identity-verification-providers.v1@2.27.102
+  - @wso2is/admin.sms-providers.v1@2.25.102
+  - @wso2is/admin.actions.v1@1.9.2
+  - @wso2is/admin.api-resources.v1@2.25.102
+  - @wso2is/admin.api-resources.v2@2.25.102
+  - @wso2is/admin.branding.v1@2.27.75
+  - @wso2is/admin.certificates.v1@2.25.102
+  - @wso2is/admin.email-and-sms.v1@2.25.102
+  - @wso2is/admin.email-management.v1@2.25.102
+  - @wso2is/admin.email-providers.v1@2.25.102
+  - @wso2is/admin.email-templates.v1@2.25.102
+  - @wso2is/admin.feature-gate.v1@1.4.102
+  - @wso2is/admin.impersonation.v1@1.6.102
+  - @wso2is/admin.org-insights.v1@2.25.102
+  - @wso2is/admin.organization-discovery.v1@2.25.102
+  - @wso2is/admin.private-key-jwt.v1@2.25.102
+  - @wso2is/admin.remote-repository-configuration.v1@2.25.102
+  - @wso2is/admin.rules.v1@0.1.10
+  - @wso2is/admin.saml2-configuration.v1@2.25.102
+  - @wso2is/admin.secrets.v1@2.25.102
+  - @wso2is/admin.session-management.v1@2.25.102
+  - @wso2is/admin.sms-templates.v1@1.0.101
+  - @wso2is/admin.subscription.v1@1.5.102
+  - @wso2is/admin.template-core.v1@1.5.56
+  - @wso2is/admin.userstores.v1@2.26.61
+  - @wso2is/admin.workflow-approvals.v1@2.25.102
+  - @wso2is/admin.wsfed-configuration.v1@2.25.102
+
 ## 2.37.9
 
 ### Patch Changes
