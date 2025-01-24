@@ -34,7 +34,6 @@ import {
     SelectionCard,
     Steps
 } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import React, {
     FunctionComponent,
     MutableRefObject,
@@ -388,7 +387,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
         setNextShouldBeDisabled(hasValidationErrors(errors));
 
         return errors;
-
     };
 
     /**
@@ -632,9 +630,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 label={ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.label") }
                 placeholder={ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.placeholder") }
                 initialValue={ initialValues.identifier }
-                action={ {
-                    content: "custom-"
-                } }
+                action={ { content: "custom-" } }
                 actionPosition="left"
                 required={ true }
                 maxLength={ 100 }
