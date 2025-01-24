@@ -135,7 +135,6 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
     };
 
     const handlePushProviderUpdate = ( data: PushProviderAPIInterface ): void => {
-        // TODO: Implement update API call.
         updatePushProvider(data)
             .then(() => {
                 dispatch(addAlert({
