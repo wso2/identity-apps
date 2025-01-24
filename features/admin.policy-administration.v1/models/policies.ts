@@ -53,7 +53,7 @@ export type AlgorithmResponseInterface = string;
 
 export interface AlgorithmOption {
     value: number;
-    label: string;
+    id: string;
     description: string;
 }
 

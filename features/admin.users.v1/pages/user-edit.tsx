@@ -421,7 +421,7 @@ const UserEditPage = (): ReactElement => {
                     <div>
                         { resolveDescription() }
                         {
-                            user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId && (
+                            user[ SCIMConfigs.scim.systemSchema ]?.userSourceId && (
                                 <Label className="profile-user-source-label">
                                     <GenericIcon
                                         className="mt-1 mb-0"
@@ -429,17 +429,17 @@ const UserEditPage = (): ReactElement => {
                                         inline
                                         size="default"
                                         transparent
-                                        icon={ resolveIdpIcon(user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType) }
+                                        icon={ resolveIdpIcon(user[ SCIMConfigs.scim.systemSchema ]?.idpType) }
                                         verticalAlign="middle"
                                     />
                                     <Label.Detail className="mt-1 ml-0 mb-1">
-                                        { user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId }
+                                        { user[ SCIMConfigs.scim.systemSchema ]?.userSourceId }
                                     </Label.Detail>
                                 </Label>
                             )
                         }
                         {
-                            user[ SCIMConfigs.scim.enterpriseSchema ]?.userSource && (
+                            user[ SCIMConfigs.scim.systemSchema ]?.userSource && (
                                 <Label
                                     className={ !resolveDescription()
                                         ? "profile-user-source-label ml-0"
@@ -455,7 +455,7 @@ const UserEditPage = (): ReactElement => {
                                         verticalAlign="middle"
                                     />
                                     <Label.Detail className="mt-1 ml-0 mb-1">
-                                        { user[ SCIMConfigs.scim.enterpriseSchema ]?.userSource }
+                                        { user[ SCIMConfigs.scim.systemSchema ]?.userSource }
                                     </Label.Detail>
                                 </Label>
                             )

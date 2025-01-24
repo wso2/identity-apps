@@ -1,5 +1,20 @@
 # @wso2is/form
 
+## 2.6.17
+
+### Patch Changes
+
+- Updated dependencies [[`31b4e92ae73fea1372a03f9aa0511f062030e44f`](https://github.com/wso2/identity-apps/commit/31b4e92ae73fea1372a03f9aa0511f062030e44f)]:
+  - @wso2is/core@2.5.8
+  - @wso2is/react-components@2.8.24
+
+## 2.6.16
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.8.23
+
 ## 2.6.15
 
 ### Patch Changes
