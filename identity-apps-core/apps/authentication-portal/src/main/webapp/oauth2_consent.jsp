@@ -415,7 +415,7 @@
                                         <i aria-hidden="true" class="circle tiny icon primary consent-item-bullet" id="Grant access"></i>
                                         <div class="content mt-2 pl-1 consentItem">
                                             <div class="header light-font">
-                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.authorization-details")%>
+                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.authorization.details")%>
                                             </div>
                                         </div>
                                         <div class="content light-font">
