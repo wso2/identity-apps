@@ -128,7 +128,7 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
         <Card variant="outlined" className="policy-list-node">
             <CardContent>
                 <Stack direction={ "row" } justifyContent={ "space-between" }>
-                    <Stack direction={ "row" } spacing={ 1 }>
+                    <Stack direction="row" spacing={ 1 }>
                         <Popup
                             trigger={ (
                                 <Icon
