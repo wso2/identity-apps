@@ -393,6 +393,7 @@ export interface MyAccountNS {
                     remove: string;
                     required: string;
                 };
+                noPassKeyMessage: string;
             };
             smsOtp: {
                 descriptions: {
@@ -466,6 +467,43 @@ export interface MyAccountNS {
                     };
                 };
             };
+            pushAuthenticatorApp: {
+                description: string;
+                configuredDescription:string;
+                heading: string;
+                hint: string;
+                addHint: string;
+                deleteHint: string;
+                modals: {
+                    scan: {
+                        heading: string;
+                        additionNote:string;
+                        done: string;
+                        messageBody: string;
+                        subHeading: string;
+                    };
+                    deviceDeleteConfirmation: {
+                        heading: string;
+                        assertionHint: string;
+                        description: string;
+                        content: string;
+                    }
+                };
+                notifications: {
+                    initError: {
+                        genericError: NotificationItem;
+                        error: NotificationItem;
+                    };
+                    delete: {
+                        genericError: NotificationItem;
+                        error: NotificationItem;
+                        success: NotificationItem;
+                    };
+                    deviceListFetchError: {
+                        error: NotificationItem;
+                    }
+                };
+            },
             backupCode: {
                 actions: {
                     add: string;

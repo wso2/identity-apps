@@ -659,7 +659,7 @@ export const myAccount: MyAccountNS = {
                     "(TOTP என்றும் அழைக்கப்படுகிறது) பயன்படுத்த ஒரு அங்கீகார " +
                     "பயன்பாட்டைப் பயன்படுத்தி QR குறியீட்டை ஸ்கேன் செய்யுங்கள்.",
                 enableHint: "TOTP அங்கீகாரத்தை இயக்கு/முடக்கு",
-                heading: "அங்கீகார பயன்பாடு",
+                heading: "TOTP அங்கீகாரி",
                 hint: "காண்க",
                 modals: {
                     delete : {
@@ -902,6 +902,7 @@ export const myAccount: MyAccountNS = {
                         tryWithOlderDevice: "பழைய பாஸ்கி மூலம் மீண்டும் முயற்சி செய்யலாம்."
                     }
                 },
+                noPassKeyMessage: "நீங்கள் இன்னும் எந்த பாஸ்கீஸ்-ஐயும் பதிவு செய்யவில்லை.",
                 notifications: {
                     removeDevice: {
                         error: {
@@ -948,6 +949,61 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 tryButton: "பழைய பாஸ்கி மூலம் முயற்சிக்கவும்"
+            },
+            "pushAuthenticatorApp": {
+                "addHint": "அமைக்க",
+                "configuredDescription": "இரு காரணி அங்கீகாரத்திற்கு, உங்கள் அமைக்கப்பட்ட push authenticator செயலியில் இருந்து உருவாக்கப்படும் உள்நுழைவு கோரிக்கைகளை பயன்படுத்தலாம். செயலிக்கு அணுகல் இல்லை என்றால், இங்கே புதிய authenticator செயலியை அமைக்கலாம்.",
+                "deleteHint": "அகற்று",
+                "description": "Push authenticator செயலியை பயன்படுத்தி உள்நுழைவு கோரிக்கைகளை push அறிவிப்புகளாகப் பெறலாம், இது இரு காரணி அங்கீகாரத்திற்கு உதவும்.",
+                "heading": "Push Authenticator",
+                "hint": "பார்க்க",
+                "modals": {
+                    "deviceDeleteConfirmation": {
+                        "assertionHint": "உங்கள் நடவடிக்கையை உறுதிசெய்யவும்.",
+                        "content": "இந்த நடவடிக்கை மாற்ற முடியாதது மற்றும் சாதனத்தை நிரந்தரமாக அகற்றும்.",
+                        "description": "இந்த சாதனத்தை நீக்கினால், நீங்கள் உங்கள் கணக்கில் மீண்டும் உள்நுழைய முடியாதிருக்கும். தயவுசெய்து கவனமாக தொடரவும்.",
+                        "heading": "உங்களுக்கு நிச்சயமா?"
+                    },
+                    "scan": {
+                        "additionNote": "QR குறியீடு வெற்றிகரமாக உங்கள் சுயவிவரத்தில் சேர்க்கப்பட்டது!",
+                        "done": "வெற்றி! இப்போது உங்கள் Push Authenticator செயலியை இரு காரணி அங்கீகாரத்திற்கு பயன்படுத்தலாம்.",
+                        "heading": "Push Authenticator செயலியை அமைக்கவும்",
+                        "messageBody": "கிடைக்கக்கூடிய Authenticator செயலிகளின் பட்டியலை இங்கே காணலாம்.",
+                        "subHeading": "Push authenticator செயலியை பயன்படுத்தி கீழே உள்ள QR குறியீட்டைப் பரிசீலிக்கவும்"
+                    }
+                },
+                "notifications": {
+                    "delete": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "ஏதோ தவறு ஏற்பட்டது"
+                        },
+                        "genericError": {
+                            "description": "பதிவுசெய்யப்பட்ட சாதனத்தை அகற்றும் போது பிழை ஏற்பட்டது",
+                            "message": "ஏதோ தவறு ஏற்பட்டது"
+                        },
+                        "success": {
+                            "description": "பதிவுசெய்யப்பட்ட சாதனம் வெற்றிகரமாக அகற்றப்பட்டது",
+                            "message": "சாதனம் வெற்றிகரமாக அகற்றப்பட்டது"
+                        }
+                    },
+                    "deviceListFetchError": {
+                        "error": {
+                            "description": "Push authentication க்கான பதிவுசெய்யப்பட்ட சாதனங்களை பெறும்போது பிழை ஏற்பட்டது",
+                            "message": "ஏதோ தவறு ஏற்பட்டது"
+                        }
+                    },
+                    "initError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "ஏதோ தவறு ஏற்பட்டது"
+                        },
+                        "genericError": {
+                            "description": "QR குறியீட்டை பெறும்போது பிழை ஏற்பட்டது",
+                            "message": "ஏதோ தவறு ஏற்பட்டது"
+                        }
+                    }
+                }
             },
             smsOtp: {
                 descriptions: {
