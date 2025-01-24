@@ -26,6 +26,7 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="org.json.JSONArray" %>
+<%@ page import="org.json.JSONException" %>
 <%@ page import="org.json.JSONObject" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
@@ -64,18 +65,22 @@
 
     boolean displayScopes = Boolean.parseBoolean(getServletContext().getInitParameter("displayScopes"));
 
-    final String authorizationDetailsParam = request.getParameter("authorization_details");
     final Map<String, String> authorizationDetailsToBeDisplayed = new HashMap<>();
-    if (StringUtils.isNotBlank(authorizationDetailsParam)) {
-        final JSONArray authorizationDetails  = new JSONArray(authorizationDetailsParam);
-        for (int index = 0; index < authorizationDetails.length(); index++) {
-            JSONObject authorizationDetail = authorizationDetails.getJSONObject(index);
+    try {
+        final String authorizationDetailsParam = request.getParameter("authorization_details");
+        if (StringUtils.isNotBlank(authorizationDetailsParam)) {
+            final JSONArray authorizationDetails  = new JSONArray(authorizationDetailsParam);
+            for (int index = 0; index < authorizationDetails.length(); index++) {
+                JSONObject authorizationDetail = authorizationDetails.getJSONObject(index);
 
-            // Check if consent description is not empty, otherwise use type.
-            final String description = authorizationDetail.optString("_description", authorizationDetail.getString("type"));
-            final String authorizationDetailId = "authorization_detail_id_" + authorizationDetail.getString("_id");
-            authorizationDetailsToBeDisplayed.put(authorizationDetailId, description);
+                // Check if consent description is not empty, otherwise use type.
+                final String description = authorizationDetail.optString("_description", authorizationDetail.getString("type"));
+                final String authorizationDetailId = "authorization_detail_id_" + authorizationDetail.getString("_id");
+                authorizationDetailsToBeDisplayed.put(authorizationDetailId, description);
+            }
         }
+    } catch (JSONException e) {
+        // Ignore the error
     }
 %>
 
