@@ -132,6 +132,14 @@
                     <div class="segment-form">
                         <form class="ui large form" action="recoverpassword.do" method="post" id="tenantBasedRecovery">
                             <div class="field">
+                                <%
+                                    String ui_locales = request.getParameter("ui_locales");
+                                    if (StringUtils.isNotBlank(ui_locales)) {
+                                %>
+                                        <input id="ui_locales" name="ui_locales" type="hidden" value="<%=Encode.forHtmlAttribute(ui_locales)%>"/>
+                                <%
+                                    }
+                                %>
                                 <% if (isMultiAttributeLoginEnabledInTenant) { %>
                                     <label><%=usernameLabel %></label>
                                 <% } else { %>

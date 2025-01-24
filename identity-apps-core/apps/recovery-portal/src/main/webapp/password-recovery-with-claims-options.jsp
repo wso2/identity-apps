@@ -228,6 +228,14 @@
                 <div class="ui divider hidden"></div>
                 <div class="segment-form">
                     <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
+                        <%
+                            String ui_locales = request.getParameter("ui_locales");
+                            if (StringUtils.isNotBlank(ui_locales)) {
+                        %>
+                                <input id="ui_locales" name="ui_locales" type="hidden" value="<%=Encode.forHtmlAttribute(ui_locales)%>"/>
+                        <%
+                            }
+                        %>
                         <div class="segment" style="text-align: left;">
                         <% if (isNotificationBasedRecoveryEnabled) { %>
                         <% if (isEmailEnabled) { %>

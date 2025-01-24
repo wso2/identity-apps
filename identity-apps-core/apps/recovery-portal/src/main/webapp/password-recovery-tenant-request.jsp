@@ -95,6 +95,14 @@ if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
                 <div class="segment-form">
                     <form class="ui large form" method="post" action="password-recovery-with-claims.jsp"
                         id="tenantBasedRecovery">
+                        <%
+                            String ui_locales = request.getParameter("ui_locales");
+                            if (StringUtils.isNotBlank(ui_locales)) {
+                        %>
+                                <input id="ui_locales" name="ui_locales" type="hidden" value="<%=Encode.forHtmlAttribute(ui_locales)%>"/>
+                        <%
+                            }
+                        %>
                         <input id="tenant-domain" type="text" name="tenantDomain" class="form-control align-center" 
                                 placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Tenant.domain")%>">
                         <%

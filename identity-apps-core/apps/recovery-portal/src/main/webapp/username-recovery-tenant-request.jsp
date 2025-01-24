@@ -89,6 +89,14 @@
                 <div class="segment-form">
                     <form class="ui large form" method="post" action="recoverusername.do" id="tenantBasedRecovery">
                         <%
+                            String ui_locales = request.getParameter("ui_locales");
+                            if (StringUtils.isNotBlank(ui_locales)) {
+                        %>
+                                <input id="ui_locales" name="ui_locales" type="hidden" value="<%=Encode.forHtmlAttribute(ui_locales)%>"/>
+                        <%
+                            }
+                        %>
+                        <%
                             if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
                         %>
                         <input id="tenant-domain" type="text" name="tenantDomain"

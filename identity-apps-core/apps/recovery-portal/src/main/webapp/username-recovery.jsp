@@ -199,6 +199,14 @@
 
                 <div class="segment-form">
                     <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
+                        <%
+                            String ui_locales = request.getParameter("ui_locales");
+                            if (StringUtils.isNotBlank(ui_locales)) {
+                        %>
+                                <input id="ui_locales" name="ui_locales" type="hidden" value="<%=Encode.forHtmlAttribute(ui_locales)%>"/>
+                        <%
+                            }
+                        %>
                         <% if (isFirstNameInClaims || isLastNameInClaims) { %>
                         <div class="field">
                             <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "name")%></label>

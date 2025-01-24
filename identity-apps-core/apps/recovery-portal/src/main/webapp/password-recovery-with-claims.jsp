@@ -190,6 +190,14 @@
 
                 <div class="segment-form">
                     <form class="ui large form" method="post" action="password-recovery-with-claims-options.jsp" id="recoverDetailsForm">
+                        <%
+                            String ui_locales = request.getParameter("ui_locales");
+                            if (StringUtils.isNotBlank(ui_locales)) {
+                        %>
+                            <   input id="ui_locales" name="ui_locales" type="hidden" value="<%=Encode.forHtmlAttribute(ui_locales)%>"/>
+                        <%
+                            }
+                        %>
                         <div class="field">
                             <label class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                     "Username")%></label>
