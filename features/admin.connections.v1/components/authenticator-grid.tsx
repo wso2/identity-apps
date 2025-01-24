@@ -192,7 +192,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                 break;
 
             default:
-                history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", id));
+                // history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", id));
 
                 break;
         }

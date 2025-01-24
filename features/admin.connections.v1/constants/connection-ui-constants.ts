@@ -18,7 +18,7 @@
 
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AvailableCustomAuthentications } from "../models/connection";
+import { AuthenticationTypeDropdownOption, AvailableCustomAuthentications, EndpointAuthenticationType } from "../models/connection";
 
 /**
  * This class contains the constants for the Connections feature UIs.
@@ -361,4 +361,33 @@ export class ConnectionUIConstants {
             TWO_FACTOR_AUTHENTICATOR: "two-factor",
             TWO_FACTOR_CUSTOM_AUTHENTICATOR_ID: "two-factor-custom-authentication"
         };
+
+    /**
+     * Set of keys used to enable/disable features.
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("CUSTOM_AUTHENTICATION", "identityProviders.customAuthentication");
+
+    public static readonly AUTH_TYPES: AuthenticationTypeDropdownOption[] = [
+        {
+            key: EndpointAuthenticationType.NONE,
+            text: "actions:fields.authentication.types.none.name",
+            value: EndpointAuthenticationType.NONE
+        },
+        {
+            key: EndpointAuthenticationType.BASIC,
+            text: "actions:fields.authentication.types.basic.name",
+            value: EndpointAuthenticationType.BASIC
+        },
+        {
+            key: EndpointAuthenticationType.BEARER,
+            text: "actions:fields.authentication.types.bearer.name",
+            value: EndpointAuthenticationType.BEARER
+        },
+        {
+            key: EndpointAuthenticationType.API_KEY,
+            text: "actions:fields.authentication.types.apiKey.name",
+            value: EndpointAuthenticationType.API_KEY
+        }
+    ];
 }

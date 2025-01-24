@@ -72,7 +72,7 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                 <FinalFormField
                     type="number"
                     render={ ( { input, meta } ) => (
-                        <TextFieldAdapter input={ input } meta={ meta } name={ name } { ...rest } />
+                        <TextFieldAdapter input={ input } label="Hello hello hello" meta={ meta } name={ name } { ...rest } />
                     ) }
                     validate={ (value: any, allValues: Record<string, unknown>, meta: FieldState<any>) =>
                         getValidation(value, allValues, meta, props.required, validation)

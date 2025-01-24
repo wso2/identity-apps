@@ -270,7 +270,7 @@ export interface FederatedAuthenticatorInterface extends CommonPluggableComponen
 /**
  * Captures the properties of a externally implemented local authenticator.
  */
-export interface CustomAuthenticatorInterface extends StrictConnectionInterface {
+export interface CustomAuthConnectionInterface extends ConnectionInterface {
     name: string;
     displayName: string;
     isEnabled?: boolean;
@@ -278,6 +278,7 @@ export interface CustomAuthenticatorInterface extends StrictConnectionInterface 
     endpoint: ExternalEndpoint;
     authenticationType: string;
     description?: string;
+    templateId?: string;
 }
 
 /**
@@ -292,7 +293,7 @@ export interface ExternalEndpoint {
  * Captures the authentication properties of an external endpoint associated with the authenticator.
  */
 export interface ExternalEndpointAuthentication {
-    type?: AuthenticationType;
+    type?: EndpointAuthenticationType;
     properties?: string[]
 }
 
@@ -479,7 +480,7 @@ export interface ConnectionTemplateItemInterface {
     category?: string;
     displayOrder?: number;
     idp?: ConnectionInterface;
-    customLocalAuthenticator?: CustomAuthenticatorInterface;
+    customLocalAuthenticator?: CustomAuthConnectionInterface;
     disabled?: boolean;
     provisioning?: ProvisioningInterface;
     type?: string;
@@ -585,6 +586,10 @@ export interface GenericConnectionCreateWizardPropsInterface {
      * Callback to be triggered on successful IDP create.
      */
     onIDPCreate: (id?: string) => void;
+    // /**
+    //  * Callback to be triggered on successful authenticator create.
+    //  */
+    // onAuthenticatorCreate: (id?: string) => void;
     /**
      * Template object.
      */
@@ -889,7 +894,7 @@ interface AuthenticationInterface {
     /**
      * Authentication Type.
      */
-    type: AuthenticationType;
+    type: EndpointAuthenticationType;
     /**
      * Authentication properties.
      */
@@ -926,9 +931,9 @@ export interface AuthenticationPropertiesInterface {
  * Interface for the authentication type dropdown options.
  */
 export interface AuthenticationTypeDropdownOption {
-    key: AuthenticationType;
+    key: EndpointAuthenticationType;
     text: string;
-    value: AuthenticationType;
+    value: EndpointAuthenticationType;
 }
 
 /**
@@ -942,7 +947,7 @@ export enum ConnectionTypes {
 /**
  * Enum for the endpoint authentication types.
  */
-export enum AuthenticationType {
+export enum EndpointAuthenticationType {
     NONE = "NONE",
     BASIC = "BASIC",
     API_KEY = "API_KEY",
@@ -969,3 +974,11 @@ export interface WizardStepInterface {
 
 export type AvailableCustomAuthentications = "external" | "internal" | "two-factor";
 export type FormErrors = { [key: string]: string };
+
+/**
+ * Enum for the custom local authentication types.
+ */
+export enum CustomLocalAuthenticationType {
+    IDENTIFICATION = "IDENTIFICATION",
+    VERIFICATION = "VERIFICATION"
+}

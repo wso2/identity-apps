@@ -82,7 +82,7 @@ interface EditConnectionPropsInterface extends TestableComponentInterface {
     /**
      * Check if IDP is Google
      */
-    isGoogle: boolean;
+    isGoogle?: boolean;
     /**
      * Check if the requesting IDP is enterprise
      * with SAML and OIDC protocols.
@@ -91,11 +91,11 @@ interface EditConnectionPropsInterface extends TestableComponentInterface {
     /**
      * Check if the requesting IDP is OIDC.
      */
-    isOidc: boolean | undefined;
+    isOidc?: boolean | undefined;
     /**
      * Check if the requesting IDP is SAML.
      */
-    isSaml: boolean | undefined;
+    isSaml?: boolean | undefined;
     /**
      * IDP template.
      */
@@ -171,7 +171,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
     const hasApplicationReadPermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.read);
 
-    const isOrganizationEnterpriseAuthenticator: boolean = identityProvider.federatedAuthenticators
+    const isOrganizationEnterpriseAuthenticator: boolean = identityProvider?.federatedAuthenticators
         .defaultAuthenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
         .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
     const isEnterpriseConnection: boolean = identityProvider?.federatedAuthenticators
@@ -193,6 +193,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         lookupAttribute: identityProvider.implicitAssociation.lookupAttribute
     };
 
+    useEffect(() => {console.log("Hello there you lil champ")}, []);
+
     /**
      * This wrapper function ensures that the user stays on the tab that
      * triggered the update after completion. Additionally, it invokes
@@ -213,6 +215,10 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             <ContentLoader inline="centered" active/>
         </EmphasizedSegment>
     );
+
+    useEffect(() => {
+        debugger;
+    }, [ ]);
 
     const GeneralIdentityProviderSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>

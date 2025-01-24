@@ -227,6 +227,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
     const handleSuccessfulIDPCreation = (id: string): void => {
 
         // If ID is present, navigate to the edit page of the created IDP.
+        debugger
         if (id) {
             history.push({
                 pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", id),

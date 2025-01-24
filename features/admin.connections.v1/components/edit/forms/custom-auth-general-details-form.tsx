@@ -33,7 +33,7 @@ import {
 } from "../../../models/connection";
 
 /**
- * Proptypes for the identity provider general details form component.
+ * Proptypes for the custom authenticator general details form component.
  */
 interface CustomAuthGeneralDetailsFormPopsInterface extends IdentifiableComponentInterface {
     /**
@@ -41,7 +41,7 @@ interface CustomAuthGeneralDetailsFormPopsInterface extends IdentifiableComponen
      */
     editingIDP?: ConnectionInterface;
     /**
-     * Mark identity provider as primary.
+     * Mark authenticator as primary.
      */
     isPrimary?: boolean;
     /**
@@ -156,7 +156,6 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                                                 "displayName.validations.invalid"
                             );
                         }
-
 
                         return errors;
                     } }

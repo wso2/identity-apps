@@ -34,6 +34,8 @@ import {
     ConnectionInterface,
     ConnectionListResponseInterface,
     ConnectionTabTypes,
+    CustomAuthConnectionInterface,
+    CustomLocalAuthenticationType,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
     OutboundProvisioningConnectorInterface,
@@ -91,6 +93,22 @@ export class ConnectionsManagementUtils {
         | MultiFactorAuthenticatorInterface): connector is ConnectionInterface {
 
         return (connector as ConnectionInterface)?.federatedAuthenticators !== undefined;
+    }
+
+    /**
+     * Type-guard to check if the connector is an custom local authenticator
+     *
+     * @param connector - Checking connector.
+     * @returns Whether the connector is an custom local authenticator
+     */
+    public static isCustomLocalAuthenticator(connector: ConnectionInterface
+        | MultiFactorAuthenticatorInterface | CustomAuthConnectionInterface):
+        connector is CustomAuthConnectionInterface {
+
+        return ((connector as CustomAuthConnectionInterface)?.authenticationType ===
+            CustomLocalAuthenticationType.IDENTIFICATION) ||
+        ((connector as CustomAuthConnectionInterface)?.authenticationType ===
+            CustomLocalAuthenticationType.VERIFICATION);
     }
 
     /**

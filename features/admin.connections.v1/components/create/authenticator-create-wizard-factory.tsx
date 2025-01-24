@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
@@ -25,33 +25,24 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { CreateConnectionWizard } from "./add-connection-wizard";
 import CustomAuthenticationCreateWizard from "./custom-authentication-create-wizard";
-import {
-    EnterpriseConnectionCreateWizard
-} from "./enterprise-connection-create-wizard";
+import { EnterpriseConnectionCreateWizard } from "./enterprise-connection-create-wizard";
 import { useGetConnectionTemplate, useGetConnections } from "../../api/connections";
 import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
+import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import {
     ConnectionTemplateInterface,
     GenericConnectionCreateWizardPropsInterface,
     StrictConnectionInterface
 } from "../../models/connection";
-import {
-    handleGetConnectionTemplateRequestError,
-    handleGetConnectionsError
-} from "../../utils/connection-utils";
-import {
-    ExpertModeAuthenticationProviderCreateWizard
-} from "../wizards/expert-mode/expert-mode-authentication-provider-create-wizard";
-import {
-    OrganizationEnterpriseConnectionCreateWizard
-} from "../wizards/organization-enterprise/organization-enterprise-connection-create-wizard";
+import { handleGetConnectionTemplateRequestError, handleGetConnectionsError } from "../../utils/connection-utils";
+import { ExpertModeAuthenticationProviderCreateWizard } from "../wizards/expert-mode/expert-mode-authentication-provider-create-wizard";
+import { OrganizationEnterpriseConnectionCreateWizard } from "../wizards/organization-enterprise/organization-enterprise-connection-create-wizard";
 import { TrustedTokenIssuerCreateWizard } from "../wizards/trusted-token-issuer-create-wizard";
 
 /**
  * Proptypes for the Authenticator Create Wizard factory.
  */
 interface AuthenticatorCreateWizardFactoryInterface extends IdentifiableComponentInterface {
-
     /**
      * Show/Hide the wizard
      */
@@ -63,11 +54,11 @@ interface AuthenticatorCreateWizardFactoryInterface extends IdentifiableComponen
     /**
      * Callback to be triggered on wizard close.
      */
-    onWizardClose: GenericConnectionCreateWizardPropsInterface[ "onWizardClose" ];
+    onWizardClose: GenericConnectionCreateWizardPropsInterface["onWizardClose"];
     /**
      * Callback to be triggered on successful IDP create.
      */
-    onIDPCreate: GenericConnectionCreateWizardPropsInterface[ "onIDPCreate" ];
+    onIDPCreate: GenericConnectionCreateWizardPropsInterface["onIDPCreate"];
     /**
      * Type of the wizard.
      */
@@ -91,7 +82,6 @@ interface AuthenticatorCreateWizardFactoryInterface extends IdentifiableComponen
 export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFactoryInterface> = (
     props: AuthenticatorCreateWizardFactoryInterface
 ): ReactElement => {
-
     const {
         isModalOpen,
         handleModalVisibility,
@@ -108,15 +98,17 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
         ...rest
     } = props;
 
-    const customAuthFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
-        state.config.ui.features?.identityProviders);
+    const identityProviderFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.identityProviders
+    );
+
+    const { FEATURE_DICTIONARY } = ConnectionUIConstants;
 
     const [ possibleListOfDuplicateIDPs, setPossibleListOfDuplicateIDPs ] = useState<string[]>(undefined);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ConnectionTemplateInterface>(undefined);
-    const [
-        selectedTemplateWithUniqueName,
-        setSelectedTemplateWithUniqueName
-    ] = useState<ConnectionTemplateInterface>(undefined);
+    const [ selectedTemplateWithUniqueName, setSelectedTemplateWithUniqueName ] = useState<ConnectionTemplateInterface>(
+        undefined
+    );
     const { t } = useTranslation();
 
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
@@ -125,8 +117,12 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
         data: connectionsResponse,
         isLoading: isConnectionsFetchRequestLoading,
         error: connectionsFetchRequestError
-    } = useGetConnections(null, null, !selectedTemplate?.idp?.name
-        ? "name sw " + selectedTemplate?.name : "name sw " + selectedTemplate?.idp?.name, null, true
+    } = useGetConnections(
+        null,
+        null,
+        !selectedTemplate?.idp?.name ? "name sw " + selectedTemplate?.name : "name sw " + selectedTemplate?.idp?.name,
+        null,
+        true
     );
 
     const {
@@ -134,7 +130,6 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
         isLoading: isConnectionTemplateFetchRequestLoading,
         error: connectionTemplateFetchRequestError
     } = useGetConnectionTemplate(type === "enterprise-protocols" ? "enterprise-idp" : type, type !== null);
-
 
     useEffect(() => {
         if (connectionsFetchRequestError) {
@@ -144,21 +139,20 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
         if (connectionTemplateFetchRequestError) {
             handleGetConnectionTemplateRequestError(connectionTemplateFetchRequestError);
         }
-
     }, [ connectionsFetchRequestError, connectionTemplateFetchRequestError ]);
 
     /**
      * Load the template based on the passed in template type.
      */
     useEffect(() => {
-
         if (!connectionsResponse) {
             return;
         }
 
-        setPossibleListOfDuplicateIDPs(connectionsResponse?.totalResults
-            ? connectionsResponse?.identityProviders?.map((eachIdp: StrictConnectionInterface) => eachIdp.name)
-            : []
+        setPossibleListOfDuplicateIDPs(
+            connectionsResponse?.totalResults
+                ? connectionsResponse?.identityProviders?.map((eachIdp: StrictConnectionInterface) => eachIdp.name)
+                : []
         );
     }, [ connectionsResponse ]);
 
@@ -192,10 +186,10 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
      * @param idpName - Name of the IDP.
      */
     const getPossibleListOfDuplicateIDPs = (): void => {
-
-        setPossibleListOfDuplicateIDPs(connectionsResponse?.totalResults
-            ? connectionsResponse?.identityProviders?.map((eachIdp: StrictConnectionInterface) => eachIdp.name)
-            : []
+        setPossibleListOfDuplicateIDPs(
+            connectionsResponse?.totalResults
+                ? connectionsResponse?.identityProviders?.map((eachIdp: StrictConnectionInterface) => eachIdp.name)
+                : []
         );
     };
 
@@ -203,7 +197,6 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
      * Called when there are duplicate IDPs and a unique name should be added to the newly created one.
      */
     useEffect(() => {
-
         if (!isModalOpen) {
             return;
         }
@@ -229,10 +222,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                 ...selectedTemplate,
                 idp: {
                     ...selectedTemplate.idp,
-                    name: generateUniqueIDPName(
-                        selectedTemplate.idp.name,
-                        possibleListOfDuplicateIDPs
-                    )
+                    name: generateUniqueIDPName(selectedTemplate.idp.name, possibleListOfDuplicateIDPs)
                 }
             });
         } else {
@@ -243,10 +233,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
              */
             setSelectedTemplateWithUniqueName({
                 ...selectedTemplate,
-                name: generateUniqueIDPName(
-                    selectedTemplate?.name,
-                    possibleListOfDuplicateIDPs
-                )
+                name: generateUniqueIDPName(selectedTemplate?.name, possibleListOfDuplicateIDPs)
             });
         }
 
@@ -261,7 +248,6 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
      * @returns A unique name from the provided list of names.
      */
     const generateUniqueIDPName = (initialIdpName: string, idpList: string[]): string => {
-
         let idpName: string = initialIdpName;
 
         for (let i: number = 2; ; i++) {
@@ -271,7 +257,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
 
             // If the IdP has spaces, append the number after a space.
             if (idpName.split(" ").length > 1) {
-                idpName = initialIdpName + " " +  i;
+                idpName = initialIdpName + " " + i;
             } else {
                 idpName = initialIdpName + i;
             }
@@ -302,10 +288,10 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
             case "trusted-token-issuer":
                 return (
                     <TrustedTokenIssuerCreateWizard
-                        title= { t("authenticationProvider:templates.trustedTokenIssuer." +
-                            "addWizard.title") }
-                        subTitle= { t("authenticationProvider:templates.trustedTokenIssuer." +
-                            "addWizard.subtitle", { productName }) }
+                        title={ t("authenticationProvider:templates.trustedTokenIssuer." + "addWizard.title") }
+                        subTitle={ t("authenticationProvider:templates.trustedTokenIssuer." + "addWizard.subtitle", {
+                            productName
+                        }) }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);
@@ -321,10 +307,8 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
             case "enterprise-protocols":
                 return (
                     <EnterpriseConnectionCreateWizard
-                        title= { t("authenticationProvider:templates.enterprise." +
-                            "addWizard.title") }
-                        subTitle= { t("authenticationProvider:templates.enterprise." +
-                            "addWizard.subtitle") }
+                        title={ t("authenticationProvider:templates.enterprise." + "addWizard.title") }
+                        subTitle={ t("authenticationProvider:templates.enterprise." + "addWizard.subtitle") }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);
@@ -338,17 +322,18 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                 );
 
             case CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.CUSTOM_AUTHENTICATION:
-                if (isFeatureEnabled(customAuthFeatureConfig, "identityProviders.customAuthentication")) {
+                if (isFeatureEnabled(identityProviderFeatureConfig, FEATURE_DICTIONARY["CUSTOM_AUTHENTICATION"])) {
                     return (
                         <CustomAuthenticationCreateWizard
                             title={ t("customAuthentication:fields.createWizard.title") }
-                            subTitle= { t("customAuthentication:fields.createWizard.subTitle") }
+                            subTitle={ t("customAuthentication:fields.createWizard.subTitle") }
                             onWizardClose={ () => {
                                 setSelectedTemplateWithUniqueName(undefined);
                                 setSelectedTemplate(undefined);
                                 handleModalVisibility(false);
                                 onWizardClose();
                             } }
+                            // onAuthenticatorCreate={ handleSuccessfulLocalAuthenticatorCreate }
                             template={ selectedTemplateWithUniqueName }
                             data-componentid={ selectedTemplate?.templateId }
                             { ...rest }

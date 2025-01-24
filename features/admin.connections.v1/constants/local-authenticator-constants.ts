@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthenticationType, AuthenticationTypeDropdownOption } from "../models/connection";
+import { AuthenticationTypeDropdownOption } from "../models/connection";
 
 /**
  * This class contains the constants for the Local Authenticators.
@@ -118,27 +118,4 @@ export class LocalAuthenticatorConstants {
      * Attribute key for SMS OTP Authenticator expiry time.
      */
     public static readonly MODERATED_SMS_OTP_EXPIRY_TIME_KEY: string = "SmsOTP_ExpiryTime";
-
-    public static readonly AUTH_TYPES: AuthenticationTypeDropdownOption[] = [
-        {
-            key: AuthenticationType.NONE,
-            text: "actions:fields.authentication.types.none.name",
-            value: AuthenticationType.NONE
-        },
-        {
-            key: AuthenticationType.BASIC,
-            text: "actions:fields.authentication.types.basic.name",
-            value: AuthenticationType.BASIC
-        },
-        {
-            key: AuthenticationType.BEARER,
-            text: "actions:fields.authentication.types.bearer.name",
-            value: AuthenticationType.BEARER
-        },
-        {
-            key: AuthenticationType.API_KEY,
-            text: "actions:fields.authentication.types.apiKey.name",
-            value: AuthenticationType.API_KEY
-        }
-    ];
 }

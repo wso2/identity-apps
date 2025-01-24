@@ -26,6 +26,7 @@ import {
 } from "@wso2is/admin.identity-verification-providers.v1/models/identity-verification-providers";
 import { AxiosError } from "axios";
 import get from "lodash-es/get";
+import { useEffect } from "react";
 import { useGetAuthenticators } from "../api/authenticators";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import { AuthenticatorTypes } from "../models/authenticators";
@@ -131,6 +132,13 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         combinedData.push(...(fetchedAuthenticatorsList
             .filter((authenticator: ConnectionInterface) => (
                 authenticator.type === AuthenticatorTypes.FEDERATED
+            ))
+        ));
+
+        // Add Custom Local Authenticators to the list.
+        combinedData.push(...(fetchedAuthenticatorsList
+            .filter((authenticator: ConnectionInterface) => (
+                authenticator.type === AuthenticatorTypes.IDENTIFICATION
             ))
         ));
 

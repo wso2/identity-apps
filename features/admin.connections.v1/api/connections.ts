@@ -38,7 +38,6 @@ import {
     ConnectionListResponseInterface,
     ConnectionRolesInterface,
     ConnectionTemplateInterface,
-    CustomAuthenticatorInterface,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
     FederatedAuthenticatorMetaInterface,
@@ -93,8 +92,8 @@ export const createConnection = (
  * @param connection - Connection settings data.
  */
 export const createCustomAuthentication = (
-    connection: CustomAuthenticatorInterface
-): Promise<AxiosResponse<CustomAuthenticatorInterface>> => {
+    connection: ConnectionInterface
+): Promise<AxiosResponse<ConnectionInterface>> => {
 
     const requestConfig: AxiosRequestConfig = {
         data: connection,
@@ -330,6 +329,8 @@ export const useGetConnectionTemplate = <Data = ConnectionTemplateInterface, Err
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
+    console.log("templateId" + "/connections/" + templateId + "/template");
+
     const { resourceEndpoints } = useResourceEndpoints();
 
     const requestConfig: RequestConfigInterface = {
@@ -409,6 +410,8 @@ export const getConnectionTemplates = (
     offset?: number,
     filter?: string
 ): Promise<any> => {
+
+    debugger
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -520,6 +523,34 @@ export const getConnectionDetails = (id: string): Promise<any> => {
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get idp details from: "));
+            }
+
+            return Promise.resolve(response.data as any);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+/**
+ * Gets custom local authenticator details.
+ *
+ * @param id - Connection Id.
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const getCustomLocalAuthenticatorDetails = (id: string): Promise<any> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.customAuthenticators + "/" + id
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to get custom local authenticator details from: "));
             }
 
             return Promise.resolve(response.data as any);

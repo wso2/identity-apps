@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { debug } from "console";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
@@ -25,7 +24,7 @@ import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "
 import { ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import ExtensionTemplatesProvider from "@wso2is/admin.template-core.v1/provider/extension-templates-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
@@ -36,9 +35,7 @@ import {
     TabPageLayout,
     useDocumentation
 } from "@wso2is/react-components";
-import { AxiosError } from "axios";
 import get from "lodash-es/get";
-import orderBy from "lodash-es/orderBy";
 import React, { Fragment, FunctionComponent, ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -46,47 +43,37 @@ import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
 import { getLocalAuthenticator, getMultiFactorAuthenticatorDetails } from "../api/authenticators";
-import {
-    getConnectionDetails,
-    getConnectionMetaData,
-    getConnectionTemplates,
-    getCustomLocalAuthenticatorDetails
-} from "../api/connections";
+import { getConnectionTemplates } from "../api/connections";
 import { EditConnection } from "../components/edit/connection-edit";
-import { EditMultiFactorAuthenticator } from "../components/edit/edit-multi-factor-authenticator";
 import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
-import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
 import { useSetConnectionTemplates } from "../hooks/use-connection-templates";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import { AuthenticatorInterface, MultiFactorAuthenticatorInterface } from "../models/authenticators";
 import {
     ConnectionInterface,
-    ConnectionTemplateCategoryInterface,
     ConnectionTemplateInterface,
     CustomAuthConnectionInterface,
     CustomLocalAuthenticationType,
     SupportedQuickStartTemplateTypes
 } from "../models/connection";
-import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
-import { ConnectionsManagementUtils, handleGetConnectionsMetaDataError } from "../utils/connection-utils";
+import { ConnectionsManagementUtils } from "../utils/connection-utils";
 
 /**
- * Proptypes for the IDP edit page component.
+ * Proptypes for the Custom Local Authenticator edit page component.
  */
-type ConnectionEditPagePropsInterface = TestableComponentInterface;
+type AuthenticatorEditPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps;
 
 /**
- * Connection Edit page.
+ * Custom Local Authenticator Edit page.
  *
  * @param props - Props injected to the component.
  *
  * @returns React element.
  */
-const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = (
-    props: ConnectionEditPagePropsInterface & RouteComponentProps
-): ReactElement => {
-    const { location, ["data-testid"]: testId } = props;
-
+export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPagePropsInterface> = ({
+    location,
+    "data-componentid": _componentId = "authenticator-edit-page"
+}: AuthenticatorEditPagePropsInterface): ReactElement => {
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
@@ -98,7 +85,9 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
 
     const { CONNECTION_TEMPLATE_IDS: ConnectionTemplateIds } = CommonAuthenticatorConstants;
 
-    const [ identityProviderTemplate, setIdentityProviderTemplate ] = useState<ConnectionTemplateInterface>(undefined);
+    // const [ identityProviderTemplate, setIdentityProviderTemplate ] = useState<ConnectionTemplateInterface>(undefined);
+    const [ authenticatorTemplate, setAuthenticatorTemplate ] = useState<ConnectionTemplateInterface>(undefined);
+
     const [ customLocalAuthenticatorTemplate, setCustomLocalAuthenticatorTemplate ] = useState<
         ConnectionTemplateInterface
     >(undefined);
@@ -132,73 +121,73 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
     /**
      *  Group the connection templates.
      */
-    useEffect(() => {
-        if (
-            !unfilteredConnectionTemplate ||
-            !Array.isArray(unfilteredConnectionTemplate) ||
-            !(unfilteredConnectionTemplate.length > 0)
-        ) {
-            return;
-        }
+    // useEffect(() => {
+    //     if (
+    //         !unfilteredConnectionTemplate ||
+    //         !Array.isArray(unfilteredConnectionTemplate) ||
+    //         !(unfilteredConnectionTemplate.length > 0)
+    //     ) {
+    //         return;
+    //     }
 
-        const connectionTemplatesClone: ConnectionTemplateInterface[] = unfilteredConnectionTemplate.map(
-            (template: ConnectionTemplateInterface) => {
-                if (template.id === "enterprise-oidc-idp" || template.id === "enterprise-saml-idp") {
-                    return {
-                        ...template,
-                        templateGroup: "enterprise-protocols"
-                    };
-                }
+    //     const connectionTemplatesClone: ConnectionTemplateInterface[] = unfilteredConnectionTemplate.map(
+    //         (template: ConnectionTemplateInterface) => {
+    //             if (template.id === "enterprise-oidc-idp" || template.id === "enterprise-saml-idp") {
+    //                 return {
+    //                     ...template,
+    //                     templateGroup: "enterprise-protocols"
+    //                 };
+    //             }
 
-                return template;
-            }
-        );
+    //             return template;
+    //         }
+    //     );
 
-        ConnectionTemplateManagementUtils.reorderConnectionTemplates(connectionTemplatesClone).then(
-            (response: ConnectionTemplateInterface[]) => {
-                setGroupedTemplates(response);
-            }
-        );
-    }, [ unfilteredConnectionTemplate ]);
+    //     ConnectionTemplateManagementUtils.reorderConnectionTemplates(connectionTemplatesClone).then(
+    //         (response: ConnectionTemplateInterface[]) => {
+    //             setGroupedTemplates(response);
+    //         }
+    //     );
+    // }, [ unfilteredConnectionTemplate ]);
 
     /**
      * Categorize the connection templates.
      */
-    useEffect(() => {
-        if (!groupedTemplates || !Array.isArray(groupedTemplates) || !(groupedTemplates.length > 0)) {
-            return;
-        }
+    // useEffect(() => {
+    //     if (!groupedTemplates || !Array.isArray(groupedTemplates) || !(groupedTemplates.length > 0)) {
+    //         return;
+    //     }
 
-        ConnectionTemplateManagementUtils.categorizeTemplates(groupedTemplates)
-            .then((response: ConnectionTemplateCategoryInterface[]) => {
-                response.filter((category: ConnectionTemplateCategoryInterface) => {
-                    // Order the templates by pushing coming soon items to the end.
-                    category.templates = orderBy(category.templates, [ "comingSoon" ], [ "desc" ]);
-                });
+    //     ConnectionsManagementUtils.categorizeTemplates(groupedTemplates)
+    //         .then((response: ConnectionTemplateCategoryInterface[]) => {
+    //             response.filter((category: ConnectionTemplateCategoryInterface) => {
+    //                 // Order the templates by pushing coming soon items to the end.
+    //                 category.templates = orderBy(category.templates, [ "comingSoon" ], [ "desc" ]);
+    //             });
 
-                setConnectionTemplates(response[0]?.templates);
-            })
-            .catch(() => {
-                setConnectionTemplates([]);
-            });
-    }, [ groupedTemplates ]);
+    //             setConnectionTemplates(response[0]?.templates);
+    //         })
+    //         .catch(() => {
+    //             setConnectionTemplates([]);
+    //         });
+    // }, [ groupedTemplates ]);
 
-    useEffect(() => {
-        /**
-         * What's the goal of this effect?
-         * To figure out the application's description is truncated or not.
-         *
-         * A comprehensive explanation is added in {@link ApplicationEditPage}
-         * in a similar {@link useEffect}.
-         */
-        if (idpDescElement || isConnectorDetailsFetchRequestLoading) {
-            const nativeElement: HTMLDivElement = idpDescElement.current;
+    // useEffect(() => {
+    //     /**
+    //      * What's the goal of this effect?
+    //      * To figure out the application's description is truncated or not.
+    //      *
+    //      * A comprehensive explanation is added in {@link ApplicationEditPage}
+    //      * in a similar {@link useEffect}.
+    //      */
+    //     if (idpDescElement || isConnectorDetailsFetchRequestLoading) {
+    //         const nativeElement: HTMLDivElement = idpDescElement.current;
 
-            if (nativeElement && nativeElement.offsetWidth < nativeElement.scrollWidth) {
-                setIsDescTruncated(true);
-            }
-        }
-    }, [ idpDescElement, isConnectorDetailsFetchRequestLoading ]);
+    //         if (nativeElement && nativeElement.offsetWidth < nativeElement.scrollWidth) {
+    //             setIsDescTruncated(true);
+    //         }
+    //     }
+    // }, [ idpDescElement, isConnectorDetailsFetchRequestLoading ]);
 
     /**
      * Use effect for the initial component load.
@@ -209,6 +198,8 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         if (!identityProviderConfig) {
             return;
         }
+
+        debugger
 
         const path: string[] = location.pathname.split("/");
         const id: string = path[path.length - 1];
@@ -224,17 +215,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return;
         }
 
-        // if (!connector) {
-        //     return;
-        // }
-
-        // if (ConnectionsManagementUtils.isCustomLocalAuthenticator(connector)) {
-        //     resolveCustomLocalAuthTemplateId(connector as CustomAuthConnectionInterface);
-        //     getCustomLocalAuthenticator(id); // works fine
-        // }
-
         getCustomLocalAuthenticator(id); // works fine
-        // getIdentityProvider(id);
     }, [ identityProviderConfig ]);
 
     /**
@@ -285,34 +266,16 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
     useEffect(() => {
         // NOTE: 2nd use effect
 
+        debugger;
+
         // Return if connector is not defined.
         if (!connector) {
             return;
         }
 
-        // if (!ConnectionsManagementUtils.isCustomLocalAuthenticator(connector)) {
-        //     return;
-        // }
-
-        // Return if connector is not an IdP.
-        // if (!ConnectionsManagementUtils.isCustomLocalAuthenticator(connector) &&
-        //         !ConnectionsManagementUtils.isConnectorIdentityProvider(connector)) {
-        //     return;
-        // }
-
-        // UNCOMMENT
-        // needs to be either idp or custom local authenticator to proceed
-        if (!ConnectionsManagementUtils.isConnectorIdentityProvider(connector)) {
-            // works fine
-            if (!ConnectionsManagementUtils.isCustomLocalAuthenticator(connector)) {
-                return;
-            }
+        if (!ConnectionsManagementUtils.isCustomLocalAuthenticator(connector)) {
+            return;
         }
-
-        // Original
-        // if (!ConnectionsManagementUtils.isConnectorIdentityProvider(connector)) {
-        //     return;
-        // }
 
         if (
             !(
@@ -321,174 +284,62 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                 UIConfig?.connectionTemplates.length > 0
             )
         ) {
-
             resolveConnectionTemplates();
 
             return;
         }
 
-        // Original
-        if (!connector.templateId) {
-            connector.templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE;
-        }
+        const template: ConnectionTemplateInterface = {};
+        const templateId: string = resolveCustomLocalAuthTemplateId(connector).templateId;
 
-        console.log("connector222: ", JSON.stringify(connector));
+        // if (!templateId) {
+        //     const authenticatorId: string = (connector as CustomAuthConnectionInterface)?.federatedAuthenticators
+        //         ?.defaultAuthenticatorId;
 
-        let template: ConnectionTemplateInterface = {};
-        let templateId: string = connector.templateId;
+        //     if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID) {
+        //         templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK;
+        //     } else if (
+        //         authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID
+        //     ) {
+        //         templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE;
+        //     } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID) {
+        //         templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC;
+        //     } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID) {
+        //         templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SAML;
+        //     } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID) {
+        //         templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GITHUB;
+        //     } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID) {
+        //         templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE;
+        //     }
+        // }
 
-        if (!templateId) {
-            const authenticatorId: string = (connector as ConnectionInterface)?.federatedAuthenticators
-                ?.defaultAuthenticatorId;
+        // if (
+        //     templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC ||
+        //     templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SAML
+        // ) {
+        //     const groupedTemplates: ConnectionTemplateInterface = UIConfig?.connectionTemplates.find(
+        //         (template: ConnectionTemplateInterface) => {
+        //             return template.id === "enterprise-protocols";
+        //         }
+        //     );
 
-            if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID) {
-                templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK;
-            } else if (
-                authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID
-            ) {
-                templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE;
-            } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID) {
-                templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC;
-            } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID) {
-                templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SAML;
-            } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID) {
-                templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GITHUB;
-            } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID) {
-                templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE;
-            }
-        }
-
-        if (
-            templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC ||
-            templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SAML
-        ) {
-            const groupedTemplates: ConnectionTemplateInterface = UIConfig?.connectionTemplates.find(
-                (template: ConnectionTemplateInterface) => {
-                    return template.id === "enterprise-protocols";
-                }
-            );
-
-            template = groupedTemplates?.subTemplates?.find((template: ConnectionTemplateInterface) => {
-                return template.id === templateId;
-            });
-        } else {
-            template = UIConfig?.connectionTemplates.find((template: ConnectionTemplateInterface) => {
-                return template.id === templateId;
-            });
-        }
+        //     template = groupedTemplates?.subTemplates?.find((template: ConnectionTemplateInterface) => {
+        //         return template.id === templateId;
+        //     });
+        // } else {
+        //     template = UIConfig?.connectionTemplates.find((template: ConnectionTemplateInterface) => {
+        //         return template.id === templateId;
+        //     });
+        // }
 
         // setIdentityProviderTemplate(template);
         setCustomLocalAuthenticatorTemplate(template);
     }, [ UIConfig?.connectionTemplates, connector ]);
 
-    // Original
-    useEffect(() => {
-        if (!identityProviderTemplate) {
-            return;
-        }
-
-        if (
-            identityProviderTemplate?.id ===
-                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ||
-            identityProviderTemplate?.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE ||
-            identityProviderTemplate?.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC ||
-            identityProviderTemplate?.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SAML ||
-            identityProviderTemplate?.id ===
-                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXTERNAL_CUSTOM_AUTHENTICATION ||
-            identityProviderTemplate?.id ===
-                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATION ||
-            identityProviderTemplate?.id ===
-                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATION
-        ) {
-            return;
-        }
-
-        getConnectionMetaDetails(identityProviderTemplate.id);
-    }, [ identityProviderTemplate ]);
-
-    useEffect(() => {
-        if (!customLocalAuthenticatorTemplate) {
-            return;
-        }
-
-        if (
-            customLocalAuthenticatorTemplate?.id ===
-                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXTERNAL_CUSTOM_AUTHENTICATION ||
-            customLocalAuthenticatorTemplate?.id ===
-                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATION ||
-            customLocalAuthenticatorTemplate?.id ===
-                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATION
-        ) {
-            return;
-        }
-
-        getConnectionMetaDetails(identityProviderTemplate.id);
-    }, [ customLocalAuthenticatorTemplate ]);
-
     const resolveConnectionTemplates = (): void => {
         getConnectionTemplates().then((response: ConnectionTemplateInterface[]) => {
             setUnfilteredConnectionTemplate(response);
         });
-    };
-
-    /**
-     * Retrieves connection meta details from the API.
-     *
-     * @param id - IDP id.
-     */
-    const getConnectionMetaDetails = (id: string): void => {
-        setConnectorMetaDataFetchRequestLoading(true);
-
-        getConnectionMetaData(id)
-            .then((response: any) => {
-                setConnectionSettings(response);
-            })
-            .catch((error: AxiosError) => {
-                handleGetConnectionsMetaDataError(error);
-            })
-            .finally(() => {
-                setConnectorMetaDataFetchRequestLoading(false);
-            });
-    };
-
-    /**
-     * Retrieves idp details from the API.
-     *
-     * @param id - IDP id.
-     */
-    const getIdentityProvider = (id: string): void => {
-        setConnectorDetailFetchRequestLoading(true);
-
-        getConnectionDetails(id) // this actually gets the idp
-            .then((response: ConnectionInterface | MultiFactorAuthenticatorInterface | AuthenticatorInterface) => {
-                setConnector(response);
-            })
-            .catch((error: IdentityAppsApiException) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(
-                        addAlert({
-                            description: t("authenticationProvider:" + "notifications.getIDP.error.description", {
-                                description: error.response.data.description
-                            }),
-                            level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:" + "notifications.getIDP.error.message")
-                        })
-                    );
-
-                    return;
-                }
-
-                dispatch(
-                    addAlert({
-                        description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
-                    })
-                );
-            })
-            .finally(() => {
-                setConnectorDetailFetchRequestLoading(false);
-            });
     };
 
     useEffect(() => {
@@ -622,31 +473,13 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
     };
 
     /**
-     * Called when an idp updates.
+     * Called when an authenticator updates.
      *
      * @param id - IDP id.
      */
-    const handleIdentityProviderUpdate = (id: string, tabName?: string): void => {
-        getIdentityProvider(id);
+    const handleAuthenticatorUpdate = (id: string, tabName?: string): void => {
+        getCustomLocalAuthenticator(id);
         redirectToSpecificTab(false, tabName);
-    };
-
-    /**
-     * Called when an Multi-factor authenticator updates.
-     *
-     * @param id - Authenticator id.
-     */
-    const handleMultiFactorAuthenticatorUpdate = (id: string): void => {
-        if (!identityProviderConfig) {
-            return;
-        }
-
-        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
-            AuthenticatorMeta.getAuthenticators(),
-            id
-        );
-
-        getMultiFactorAuthenticator(id, authenticatorConfig?.useAuthenticatorsAPI);
     };
 
     /**
@@ -754,7 +587,8 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return (
                 <Fragment>
                     { connector.name }
-                    { isConnectorDetailsFetchRequestLoading === false && connector.name && resolveStatusLabel(connector) }
+                    { isConnectorDetailsFetchRequestLoading === false && connector.name
+                        && resolveStatusLabel(connector) }
                 </Fragment>
             );
         }
@@ -763,36 +597,17 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
     };
 
     /**
-     * Resolves the connector description.
+     * Resolves the authenticator description.
      *
      * @param connector - Evaluating connector.
      *
      * @returns React element.
      */
-    const resolveConnectorDescription = (
+    const resolveAuthenticatorDescription = (
         connector: ConnectionInterface | MultiFactorAuthenticatorInterface
     ): ReactNode => {
         if (!connector) {
             return null;
-        }
-
-        if (ConnectionsManagementUtils.isConnectorIdentityProvider(connector)) {
-            return (
-                <div className="with-label ellipsis" ref={ idpDescElement }>
-                    { identityProviderTemplate?.name && (
-                        <Label size="small">
-                            { identityProviderTemplate.name === "Expert Mode"
-                                ? "Custom Connector"
-                                : identityProviderTemplate?.name }
-                        </Label>
-                    ) }
-                    <Popup
-                        disabled={ !isDescTruncated }
-                        content={ connector?.description?.replaceAll("{{productName}}", productName) }
-                        trigger={ <span>{ connector?.description?.replaceAll("{{productName}}", productName) }</span> }
-                    />
-                </div>
-            );
         }
 
         return (
@@ -828,70 +643,34 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                 } }
                 title={ resolveConnectorName(connector) }
                 contentTopMargin={ true }
-                description={ resolveConnectorDescription(connector) }
+                description={ resolveAuthenticatorDescription(connector) }
                 image={ resolveConnectorImage(connector) }
                 backButton={ {
-                    "data-testid": `${testId}-page-back-button`,
+                    "data-componentid": `${_componentId}-page-back-button`,
                     onClick: handleBackButtonClick,
                     text: t("console:develop.pages.authenticationProviderTemplate.backButton")
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }
-                data-testid={ `${testId}-page-layout` }
+                data-componentid={ `${_componentId}-page-layout` }
             >
-                { ConnectionsManagementUtils.isConnectorIdentityProvider(connector) ||
-                ConnectionsManagementUtils.isCustomLocalAuthenticator(connector) ? (
-                        <EditConnection
-                            connectionSettingsMetaData={ connectionSettings }
-                            identityProvider={ connector }
-                            isLoading={ isConnectorDetailsFetchRequestLoading || isConnectorMetaDataFetchRequestLoading }
-                            onDelete={ handleIdentityProviderDelete }
-                            onUpdate={ handleIdentityProviderUpdate }
-                            isGoogle={
-                                identityProviderTemplate?.name === undefined
-                                    ? undefined
-                                    : identityProviderTemplate.name === SupportedQuickStartTemplateTypes.GOOGLE
-                            }
-                            isSaml={
-                                connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined
-                                    ? undefined
-                                    : connector?.federatedAuthenticators?.defaultAuthenticatorId ===
-                                  FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID
-                            }
-                            isOidc={
-                                connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined
-                                    ? undefined
-                                    : connector.federatedAuthenticators.defaultAuthenticatorId ===
-                                  FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID
-                            }
-                            data-testid={ testId }
-                            template={ identityProviderTemplate }
-                            type={ identityProviderTemplate?.id }
-                            isReadOnly={ isReadOnly }
-                            isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
-                            setIsAutomaticTabRedirectionEnabled={ setIsAutomaticTabRedirectionEnabled }
-                            tabIdentifier={ tabIdentifier }
-                        />
-                    ) : (
-                        <EditMultiFactorAuthenticator
-                            authenticator={ connector }
-                            isLoading={ isConnectorDetailsFetchRequestLoading }
-                            onDelete={ handleIdentityProviderDelete }
-                            onUpdate={ handleMultiFactorAuthenticatorUpdate }
-                            type={ connector?.id }
-                            isReadOnly={ isReadOnly }
-                        />
-                    ) }
+                <EditConnection
+                    connectionSettingsMetaData={ connectionSettings }
+                    identityProvider={ connector }
+                    isLoading={ isConnectorDetailsFetchRequestLoading || isConnectorMetaDataFetchRequestLoading }
+                    onDelete={ handleIdentityProviderDelete }
+                    onUpdate={ handleAuthenticatorUpdate }
+                    data-componentid={ _componentId }
+                    template={ authenticatorTemplate }
+                    type={ authenticatorTemplate?.id }
+                    isReadOnly={ isReadOnly }
+                    isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
+                    setIsAutomaticTabRedirectionEnabled={ setIsAutomaticTabRedirectionEnabled }
+                    tabIdentifier={ tabIdentifier }
+                />
             </TabPageLayout>
         </ExtensionTemplatesProvider>
     );
-};
-
-/**
- * Default proptypes for the Connection edit page component.
- */
-ConnectionEditPage.defaultProps = {
-    "data-testid": "idp-edit-page"
 };
 
 /**
@@ -899,4 +678,4 @@ ConnectionEditPage.defaultProps = {
  * TODO: Change this to a named export once react starts supporting named exports for code splitting.
  * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
  */
-export default ConnectionEditPage;
+export default AuthenticatorEditPage;

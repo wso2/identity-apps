@@ -79,7 +79,8 @@ export interface AuthenticatorInterface {
  */
 export enum AuthenticatorTypes {
     FEDERATED = "FEDERATED",
-    LOCAL = "LOCAL"
+    LOCAL = "LOCAL",
+    IDENTIFICATION = "IDENTIFICATION"
 }
 
 /**
