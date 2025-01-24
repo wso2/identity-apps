@@ -2231,7 +2231,7 @@ export const extensions: Extensions = {
                     subHeading: "Follow the instructions given below to set up Push Authenticator as a factor in your login flow.",
                     steps: {
                         selectApplication: {
-                            content: "Choose the <1>application</1> for which you want to set up Push Authenticator login.",
+                            content: "Choose the <1>application</1> for which you want to set up Push Authentication.",
                             heading: "Select Application"
                         },
                         selectPushAuth: {
