@@ -44,7 +44,7 @@ export const isAdminUser = (user: UserBasicInterface): boolean => {
  * @returns boolean - true if the user is the owner.
  */
 export const isOwner = (user: UserBasicInterface):boolean =>
-    user[ SCIMConfigs.scim.enterpriseSchema ]?.userAccountType === UserAccountTypes.OWNER;
+    user[ SCIMConfigs.scim.systemSchema ]?.userAccountType === UserAccountTypes.OWNER;
 
 /**
  * Checks whether the user is a collaborator.

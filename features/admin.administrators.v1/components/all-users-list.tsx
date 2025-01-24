@@ -328,8 +328,8 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                 id: "idpType",
                 key: "idpType",
                 render: (user: UserBasicInterface): ReactNode => {
-                    if (user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType) {
-                        return user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType;
+                    if (user[ SCIMConfigs.scim.systemSchema ]?.idpType) {
+                        return user[ SCIMConfigs.scim.systemSchema ]?.idpType;
                     } else {
                         return "N/A";
                     }
@@ -362,8 +362,8 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                 id: "userStore",
                 key: "userStore",
                 render: (user: UserBasicInterface): ReactNode => {
-                    if (user[ SCIMConfigs.scim.enterpriseSchema ]?.userSource) {
-                        return user[ SCIMConfigs.scim.enterpriseSchema ]?.userSource;
+                    if (user[ SCIMConfigs.scim.systemSchema ]?.userSource) {
+                        return user[ SCIMConfigs.scim.systemSchema ]?.userSource;
                     } else {
                         return "N/A";
                     }
@@ -615,7 +615,7 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                             { resolveUserstore(deletingUser.userName, primaryUserStoreDomainName)
                                 === userstoresConfig.primaryUserstoreName
                                 ? (
-                                    deletingUser[SCIMConfigs.scim.enterpriseSchema]?.userSourceId
+                                    deletingUser[SCIMConfigs.scim.systemSchema]?.userSourceId
                                         ? t("user:deleteJITUser.confirmationModal.content")
                                         : t("user:deleteUser.confirmationModal.content")
                                 )
