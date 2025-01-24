@@ -89,7 +89,6 @@
 %>
 
 <html lang="en-US">
-
     <head>
         <%-- header --%>
         <%
@@ -108,15 +107,13 @@
     </head>
 
     <body class="login-portal layout authentication-portal-layout">
-
         <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
             <jsp:include page="extensions/timeout.jsp"/>
         <% } else { %>
             <jsp:include page="util/timeout.jsp"/>
         <% } %>
 
-        <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-
+        <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>">
             <layout:component componentName="ProductHeader">
                 <%-- product-title --%>
                 <%
@@ -130,25 +127,19 @@
             </layout:component>
 
             <layout:component componentName="MainSection">
-
                 <div class="ui segment">
-
                     <%-- page content --%>
                     <h2>
                        <%= i18n(resourceBundle, customText, "push.device.not.registered") %>
                     </h2>
                     <div class="ui divider hidden"></div>
-
                     <div class="segment-form">
-
                         <form class="ui large form" id="form" name="form" action="<%=commonauthURL%>" method="POST">
                             <div class="field">
                                 <p class="text-center">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "push.device.not.found.description")%>
                                 </p>
                             </div>
-
-                            <%-- <div> <img class="img-responsive" src="images/deviceNotFound.png" style="max-width: 100%; height: auto; display: block; margin: 0 auto;"> </div> --%>
 
                             <div class="ui divider hidden"></div>
 
@@ -218,7 +209,6 @@
         <% } %>
 
         <script type="text/javascript">
-
             $(document).ready(function () {
                 $('#register').click(function () {
                     document.getElementById("scenario").value = "INIT_PUSH_ENROLL";
@@ -232,8 +222,6 @@
                     $('#form').submit();
                 });
             });
-
         </script>
     </body>
-
 </html>
