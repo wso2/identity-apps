@@ -17,7 +17,7 @@
  */
 
 import { DroppableContainer, GetDragItemProps, useDnD  } from "@oxygen-ui/react/dnd";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import {
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
