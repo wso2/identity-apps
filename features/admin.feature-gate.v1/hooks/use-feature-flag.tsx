@@ -22,45 +22,41 @@ import { useMemo } from "react";
 /**
  * Custom hook to get the status of a feature flag.
  *
+ * @param featureKey - Feature key.
  * @param featureFlags - Feature flags.
  * @param featureConfig - Feature access configuration.
- * @param featureKey - Feature key.
  * @param featureName - Feature name.
  *
  * @returns Feature status flag.
  */
 const useFeatureFlag = (
-    featureFlags: FeatureFlagsInterface[],
     featureKey: string,
+    featureFlags?: FeatureFlagsInterface[],
     featureConfig?: FeatureAccessConfigInterface,
     featureName?: string
-): string => {
-
+): string | null => {
     return useMemo(() => {
-        if (!featureKey) {
-            return null;
+        if (!featureKey) return null;
+
+        // If feature flags are provided, find the flag directly.
+        if (featureFlags) {
+            return featureFlags.find(
+                (featureFlag: FeatureFlagsInterface) => featureFlag.feature === featureKey
+            )?.flag ?? null;
         }
 
-        let flag: string = "";
-
-        if (!featureConfig) {
-            flag = featureFlags.find(
-                (featureFlag: FeatureFlagsInterface) => featureFlag.feature === featureKey)?.flag;
-        }
-
+        // If feature config is provided with feature name.
         if (featureConfig && featureName) {
-            const config: FeatureAccessConfigInterface = featureConfig?.[featureName];
+            const config: FeatureAccessConfigInterface = featureConfig[featureName];
 
-            if (!config) {
-                return null;
-            }
+            if (!config) return null;
 
-            flag = config?.featureFlags?.find(
-                (featureFlag: FeatureFlagsInterface) => featureFlag.feature === featureKey)?.flag;
+            return config.featureFlags?.find(
+                (featureFlag: FeatureFlagsInterface) => featureFlag.feature === featureKey
+            )?.flag ?? null;
         }
 
-        return flag;
-
+        return null;
     }, [ featureKey, featureName, featureFlags, featureConfig ]);
 };
 

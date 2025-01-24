@@ -38,7 +38,7 @@ class FeatureFlagConstants {
         ACTIONS_TYPES_PRE_UPDATE_PROFILE: "actions.create.types.list.preUpdateProfile",
         APPLICATIONS: "application",
         APPLICATION_BRANDING_TEXT: "branding.stylesAndText.application.text",
-        APPLICATION_TEMPLATES: "application.templates",
+        APPLICATION_TEMPLATES: "applications.templates",
         BRANDING: "branding",
         BRANDING_STYLES_AND_TEXT_TITLE: "branding.stylesAndText.application.title",
         INSIGHTS: "insights",

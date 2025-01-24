@@ -397,34 +397,6 @@
                         "flag": ""
                     },
                     {
-                        "feature": "applications.create.templates.list.m2m",
-                        "flag": ""
-                    },
-                    {
-                        "feature": "applications.create.templates.list.google",
-                        "flag": ""
-                    },
-                    {
-                        "feature": "applications.create.templates.list.microsoft",
-                        "flag": ""
-                    },
-                    {
-                        "feature": "applications.create.templates.list.salesforce",
-                        "flag": ""
-                    },
-                    {
-                        "feature": "applications.create.templates.list.zoom",
-                        "flag": ""
-                    },
-                    {
-                        "feature": "applications.create.templates.list.slack",
-                        "flag": ""
-                    },
-                    {
-                        "feature": "applications.create.templates.list.slack",
-                        "flag": ""
-                    },
-                    {
                         "feature": "applications.edit.general.branding",
                         "flag": ""
                     }

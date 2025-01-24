@@ -231,7 +231,7 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
                 description: t("actions:types.preIssueAccessToken.description.shortened"),
                 disabled: false,
                 featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                    .ACTIONS_CREATE_TYPES_LIST_PRE_ISSUE_ACCESS_TOKEN,
+                    .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN,
                 heading: t("actions:types.preIssueAccessToken.heading"),
                 icon: <KeyFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH,

@@ -47,16 +47,16 @@ interface FeatureFlagLabelPropsInterface {
  */
 const FeatureFlagLabel: FunctionComponent<FeatureFlagLabelPropsInterface> = (
     {
+        featureKey,
         featureFlags,
         featureConfig,
         featureName,
-        featureKey,
         type = "chip"
     }: FeatureFlagLabelPropsInterface): ReactElement => {
 
     const { t } = useTranslation();
 
-    const label: string = useFeatureFlag(featureFlags, featureKey, featureConfig, featureName);
+    const label: string = useFeatureFlag(featureKey, featureFlags, featureConfig, featureName);
 
     /**
      * Resolves the class for the feature flag label.

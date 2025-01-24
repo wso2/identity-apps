@@ -74,8 +74,9 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
     const applicationFeatureFlagsConfig: FeatureFlagsInterface[] = useSelector(
         (state: AppState) => state.config.ui.features.applications.featureFlags);
 
-    const featureFlag: string = useFeatureFlag(applicationFeatureFlagsConfig,
-        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_TEMPLATES);
+    const featureFlag: string = useFeatureFlag(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_TEMPLATES,
+        applicationFeatureFlagsConfig
+    );
 
     /**
      * Extract the supported technology details related to the current application template.
