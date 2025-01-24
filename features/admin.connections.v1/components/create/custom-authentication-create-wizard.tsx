@@ -34,7 +34,6 @@ import {
     SelectionCard,
     Steps
 } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import React, {
     FunctionComponent,
     MutableRefObject,

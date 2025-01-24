@@ -132,32 +132,31 @@
             margin-right: 10px;
         }
     }
+
     .identifier-field {
         .input>.button:first-child {
-            background-color: #ffffff;
+            background-color: #e8e8e8;
             pointer-events: none;
             border: 1px solid rgba(34,36,38,.15);
             border-right: none;
             box-shadow: none;
             padding-left: 14px;
-            padding-right: 0;
+            padding-right: 4.5px;
         }
         .input input{
-            padding-left: 0px;
+            padding-left: 4.5px;
             border-left: none;
         }
     }
     .error {
         .input>.button:first-child {
-            background: #fff6f6;
-            border-color: #e0b4b4;
-            color: #9f3a38;
+            background-color: #e8e8e8;
             pointer-events: none;
             border: 1px solid rgba(34,36,38,.15);
             border-right: none;
             box-shadow: none;
             padding-left: 14px;
-            padding-right: 0;
+            padding-right: 4.5px;
         }
     }
-}
+ }
