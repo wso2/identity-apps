@@ -454,7 +454,9 @@ export class RouteUtils {
                 selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
                     history.location.pathname === AppConstants.getPaths().get("SMS_PROVIDER") ||
                     history.location.pathname === AppConstants.getPaths().get("PUSH_PROVIDER") ||
-                    history.location.pathname === AppConstants.getPaths().get("NOTIFICATION_CHANNELS")
+                    history.location.pathname === AppConstants.getPaths().get("NOTIFICATION_CHANNELS") ||
+                    // remove this when enabling push notification provider support
+                    history.location.pathname === AppConstants.getPaths().get("EMAIL_AND_SMS")
             },
             {
                 category: monitoring,
