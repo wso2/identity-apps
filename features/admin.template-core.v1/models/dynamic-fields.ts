@@ -129,9 +129,13 @@ export interface DynamicFilePickerFieldInterface extends DynamicFieldInterface {
      * Show the file list if any are uploaded.
      */
     showFileAsList?: boolean;
-
+    /**
+     * Display name of the file.
+     */
     fileDisplayName?: string
-
+    /**
+     * Callback function to be invoked on file delete.
+     */
     onDelete?: () => void;
 }
 
