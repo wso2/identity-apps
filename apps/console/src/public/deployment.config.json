@@ -350,7 +350,6 @@
             },
             "applications": {
                 "disabledFeatures": [
-                    "applications.loginFlow.ai",
                     "applications.loginFlow.legacyEditor"
                 ],
                 "enabled": true,
@@ -430,7 +429,6 @@
             },
             "branding": {
                 "disabledFeatures": [
-                    "branding.ai",
                     "branding.hostnameUrlBranding"
                 ],
                 "enabled": true,
