@@ -1,5 +1,21 @@
 # @wso2is/admin.policy-administration.v1
 
+## 1.0.19
+
+### Patch Changes
+
+- [#7381](https://github.com/wso2/identity-apps/pull/7381) [`9e3977c9c5e90cbe454147b42b121aecc28d9ab9`](https://github.com/wso2/identity-apps/commit/9e3977c9c5e90cbe454147b42b121aecc28d9ab9) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Add empty placeholder to policy list and fix text-overflow issue
+
+- Updated dependencies [[`897424e026699eb987ff8a0fb473e6bba5f8c117`](https://github.com/wso2/identity-apps/commit/897424e026699eb987ff8a0fb473e6bba5f8c117), [`9e3977c9c5e90cbe454147b42b121aecc28d9ab9`](https://github.com/wso2/identity-apps/commit/9e3977c9c5e90cbe454147b42b121aecc28d9ab9), [`29042319cdcbe1119ec8e3342bff3a4a74a69b48`](https://github.com/wso2/identity-apps/commit/29042319cdcbe1119ec8e3342bff3a4a74a69b48)]:
+  - @wso2is/i18n@2.16.5
+  - @wso2is/admin.applications.v1@2.30.103
+  - @wso2is/admin.core.v1@2.37.11
+  - @wso2is/admin.extensions.v1@2.36.28
+  - @wso2is/admin.organizations.v1@2.26.103
+  - @wso2is/admin.users.v1@2.30.13
+  - @wso2is/admin.validation.v1@2.27.41
+  - @wso2is/admin.feature-gate.v1@1.4.103
+
 ## 1.0.18
 
 ### Patch Changes

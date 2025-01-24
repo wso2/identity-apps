@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.16.5
+
+### Patch Changes
+
+- [#7386](https://github.com/wso2/identity-apps/pull/7386) [`897424e026699eb987ff8a0fb473e6bba5f8c117`](https://github.com/wso2/identity-apps/commit/897424e026699eb987ff8a0fb473e6bba5f8c117) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Improve Custom Authentication Create Wizard Validations
+
+* [#7381](https://github.com/wso2/identity-apps/pull/7381) [`9e3977c9c5e90cbe454147b42b121aecc28d9ab9`](https://github.com/wso2/identity-apps/commit/9e3977c9c5e90cbe454147b42b121aecc28d9ab9) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Add empty placeholder to policy list and fix text-overflow issue
+
 ## 2.16.4
 
 ### Patch Changes
