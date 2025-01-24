@@ -110,6 +110,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
     });
 
     const hasSMSProvidersUpdatePermission: boolean = useRequiredScopes(featureConfig?.smsProviders?.scopes?.update);
+    const isPushProviderFeatureEnabled: boolean = featureConfig?.pushProviders?.enabled;
 
     const {
         data: originalSMSProviderConfig,
@@ -498,7 +499,9 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
     };
 
     const handleBackButtonClick = () => {
-        history.push(`${AppConstants.getPaths().get("NOTIFICATION_CHANNELS")}`);
+        history.push(`${AppConstants.getPaths().get(
+            isPushProviderFeatureEnabled ?
+                "NOTIFICATION_CHANNELS" : "EMAIL_AND_SMS")}`);
     };
 
     return (

@@ -82,6 +82,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
     const { getLink } = useDocumentation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
+    const isPushProviderFeatureEnabled: boolean = featureConfig?.pushProviders?.enabled;
+
     const pageContextRef : MutableRefObject<HTMLElement> = useRef(null);
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
 
@@ -423,7 +425,9 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
     };
 
     const handleBackButtonClick = () => {
-        history.push(`${AppConstants.getPaths().get("NOTIFICATION_CHANNELS")}`);
+        history.push(isPushProviderFeatureEnabled
+            ? `${AppConstants.getPaths().get("NOTIFICATION_CHANNELS")}`
+            : `${AppConstants.getPaths().get("EMAIL_AND_SMS")}`);
     };
 
     const goToEmailTemplates = () => {
