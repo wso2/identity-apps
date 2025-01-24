@@ -141,7 +141,7 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
                                 />
                             ) }
                             position="top center"
-                            content={ "Activate" }
+                            content={ t("policyAdministration:popup.deactivate") }
                             inverted
                         />
                         <Typography className="ellipsis-text">{ policy.policyId }</Typography>
@@ -160,7 +160,7 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
                                 />
                             ) }
                             position="top center"
-                            content={ "Edit" }
+                            content={ t("common:edit") }
                             inverted
                         />
                         <Popup
@@ -175,7 +175,7 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
                                 />
                             ) }
                             position="top center"
-                            content={ "Delete" }
+                            content={ t("common:delete") }
                             inverted
                         />
                     </Stack>

@@ -122,6 +122,10 @@ export const policyAdministration: policyAdministrationNS = {
         primaryBtn: "Update",
         title: "Policy Algorithm"
     },
+    popup:{
+        activate: "Activate",
+        deactivate: "Deactivate"
+    },
     subtitle: "Create and manage your policies here.",
     title: "Policy Administration"
 };

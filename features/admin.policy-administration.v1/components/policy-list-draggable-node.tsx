@@ -148,7 +148,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                                 />
                             ) }
                             position="top center"
-                            content={ "Edit" }
+                            content={ t("common:edit") }
                             inverted
                         />
                         <Popup
@@ -163,7 +163,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                                 />
                             ) }
                             position="top center"
-                            content={ "Delete" }
+                            content={ t("common:delete") }
                             inverted
                         />
                         <Popup
@@ -178,7 +178,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                                 />
                             ) }
                             position="top center"
-                            content={ "Deactivate" }
+                            content={ t("policyAdministration:popup.deactivate") }
                             inverted
                         />
                     </Stack>

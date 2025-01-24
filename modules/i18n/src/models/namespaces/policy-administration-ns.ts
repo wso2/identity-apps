@@ -64,6 +64,10 @@ export interface policyAdministrationNS {
             };
         };
     }
+    popup: {
+        activate: string,
+        deactivate: string,
+    }
     alerts: {
         deleteSuccess: {
             message: string;
