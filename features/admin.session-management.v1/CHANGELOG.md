@@ -1,5 +1,15 @@
 # @wso2is/admin.session-management.v1
 
+## 2.25.107
+
+### Patch Changes
+
+- [#7348](https://github.com/wso2/identity-apps/pull/7348) [`9d0381130e6d1a891e98866669790cd73dedfd09`](https://github.com/wso2/identity-apps/commit/9d0381130e6d1a891e98866669790cd73dedfd09) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix input label issue in session configuration
+
+- Updated dependencies [[`651f2836dd609e7d87d67549b4d5faef2d7aee14`](https://github.com/wso2/identity-apps/commit/651f2836dd609e7d87d67549b4d5faef2d7aee14)]:
+  - @wso2is/i18n@2.16.9
+  - @wso2is/admin.core.v1@2.37.15
+
 ## 2.25.106
 
 ### Patch Changes
