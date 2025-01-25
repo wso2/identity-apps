@@ -115,9 +115,13 @@ export interface FilePickerAdapterPropsInterface extends FieldRenderProps<string
      * Show the file list.
      */
     showFileAsList?: boolean;
-
+    /**
+     * File display name.
+     */
     fileDisplayName?: string;
-
+    /**
+     * Callback function to be invoked in file delete
+     */
     onDelete?: () => void;
 }
 

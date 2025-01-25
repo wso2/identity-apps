@@ -168,8 +168,6 @@ export interface FilePickerProps extends IdentifiableComponentInterface {
     onFileDelete?: () => void;
 }
 
-// Internal workings interfaces, type defs, and aliases.
-
 interface PaneItem {
     pane?: SemanticShorthandItem<TabPaneProps>;
     menuItem?: any;
@@ -177,8 +175,6 @@ interface PaneItem {
 }
 
 type FilePickerPropsAlias = PropsWithChildren<FilePickerProps>;
-
-// Component constants
 
 const FIRST_FILE_INDEX = 0;
 const FIRST_TAB_INDEX = 0;
@@ -230,8 +226,6 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
     const [ ongoingDeleteRequest, setOngoingDeleteRequest ] = useState<boolean>(false);
 
     const { t } = useTranslation();
-
-    // Hooks
 
     useEffect(() => {
         if (emptyFileError) {
@@ -373,7 +367,6 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
 
     // Events that takes care of the drag drop input. User drops
     // a file onto the drop area.
-
     const handleOnDrop = (event: React.DragEvent<HTMLDivElement>): void => {
         if (event) {
             event.preventDefault();
@@ -411,7 +404,6 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
 
     // Events that takes care of the manual input. Where the user
     // clicks the upload button and related file input field changes.
-
     const handleOnFileInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const file: File = event.target.files[ FIRST_FILE_INDEX ];
 
@@ -1036,8 +1028,6 @@ export class JSONFileStrategy implements PickerStrategy<string> {
     }
 
     async parseJSON(json: string | ArrayBuffer): Promise<string> {
-        // If the json is a instance of ArrayBuffer then first
-        // convert it to a primitive string.
         if (json instanceof ArrayBuffer) {
             const enc = new TextDecoder(JSONFileStrategy.ENCODING);
             const arr = new Uint8Array(json);
