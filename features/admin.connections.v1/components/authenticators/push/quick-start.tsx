@@ -148,7 +148,7 @@ const PushAuthQuickStart: FunctionComponent<PushAuthQuickStartPropsInterface> = 
                         subHeading={
                             t("extensions:develop.identityProviders.pushAuth.quickStart.addLoginModal.subHeading")
                         }
-                        data-componentid="connections"
+                        data-componentid={ componentId + "-application-selection-modal" }
                     />
                 )
             }
