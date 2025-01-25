@@ -1,5 +1,22 @@
 # @wso2is/admin.organization-discovery.v1
 
+## 2.25.105
+
+### Patch Changes
+
+- [#7316](https://github.com/wso2/identity-apps/pull/7316) [`e16421435a915fbbca8297ce7bee26cd53edaf3c`](https://github.com/wso2/identity-apps/commit/e16421435a915fbbca8297ce7bee26cd53edaf3c) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Allow old console roles to update discovery configurations after migrating to IS 7.1
+
+- Updated dependencies [[`92a6766086071fd5e0986f91803804783b9159bf`](https://github.com/wso2/identity-apps/commit/92a6766086071fd5e0986f91803804783b9159bf)]:
+  - @wso2is/core@2.5.9
+  - @wso2is/admin.core.v1@2.37.13
+  - @wso2is/admin.organizations.v1@2.26.105
+  - @wso2is/access-control@3.3.13
+  - @wso2is/dynamic-forms@2.4.26
+  - @wso2is/form@2.6.19
+  - @wso2is/forms@2.3.14
+  - @wso2is/i18n@2.16.7
+  - @wso2is/react-components@2.8.26
+
 ## 2.25.104
 
 ### Patch Changes
