@@ -85,6 +85,7 @@ const PushProvidersGrid: FunctionComponent<PushProvidersGridPropsInterface> = ({
     return (
         <GridLayout
             isLoading={ isPushProviderTemplatesRequestLoading }
+            data-componentid={ componentId }
         >
             {
                 categorizedTemplates.map((category: CategorizedExtensionTemplatesInterface) => {

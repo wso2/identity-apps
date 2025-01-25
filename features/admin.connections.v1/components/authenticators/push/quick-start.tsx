@@ -57,7 +57,6 @@ const PushAuthQuickStart: FunctionComponent<PushAuthQuickStartPropsInterface> = 
     const [ showApplicationModal, setShowApplicationModal ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const hasApplicationReadPermissions: boolean = useRequiredScopes(
         featureConfig?.applications?.scopes?.read

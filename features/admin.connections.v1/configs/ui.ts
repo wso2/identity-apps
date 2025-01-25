@@ -47,10 +47,10 @@ import { ReactComponent as GearsIcon } from "../resources/assets/images/icons/ge
 import MagicLinkIcon from "../resources/assets/images/icons/magic-link-icon.svg";
 import OIDCConnectionIcon from "../resources/assets/images/icons/oidc-connection-icon.png";
 import OrganizationSSOIcon from "../resources/assets/images/icons/organization-sso-icon.svg";
-import PushAuthenticationIcon from "../resources/assets/images/icons/push.svg";
 import {
     ReactComponent as ProvisionIcon
 } from "../resources/assets/images/icons/provision.svg";
+import PushAuthenticationIcon from "../resources/assets/images/icons/push.svg";
 import { ReactComponent as ReportIcon } from "../resources/assets/images/icons/report-icon.svg";
 import SAMLConnectionIcon from "../resources/assets/images/icons/saml-connection-icon.png";
 import SMSOTPIcon from "../resources/assets/images/icons/sms-otp.svg";
