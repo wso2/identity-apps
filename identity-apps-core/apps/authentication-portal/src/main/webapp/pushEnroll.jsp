@@ -107,7 +107,6 @@
 %>
 
 <html lang="en-US">
-
     <head>
         <%-- header --%>
         <%
@@ -127,9 +126,7 @@
     </head>
 
     <body class="login-portal layout totp-portal-layout">
-
-        <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-
+        <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>">
             <layout:component componentName="ProductHeader">
                 <%-- product-title --%>
                 <%
@@ -297,8 +294,5 @@
                 }
             }
         </script>
-
     </body>
-
 </html>
-
