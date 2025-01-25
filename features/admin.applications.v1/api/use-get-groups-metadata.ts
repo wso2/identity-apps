@@ -18,12 +18,13 @@
 
 import { store } from "@wso2is/admin.core.v1";
 import useRequest, { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig } from "axios";
 import { GroupMetadataInterface } from "../models/application";
 
 export const useGetGroupsMetadata = <Data = GroupMetadataInterface[], Error = RequestErrorInterface>(
     userStore: string,
-    filter: string,
+    searchTerm: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
@@ -32,10 +33,10 @@ export const useGetGroupsMetadata = <Data = GroupMetadataInterface[], Error = Re
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
-        method: "GET",
+        method: HttpMethods.GET,
         params: {
             domain: userStore,
-            filter: filter
+            filter: searchTerm ? `name co ${searchTerm}` : undefined
         },
         url: store?.getState()?.config?.endpoints?.groupMetadata
     };

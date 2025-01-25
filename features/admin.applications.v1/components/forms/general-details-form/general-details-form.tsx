@@ -21,7 +21,6 @@ import Autocomplete, {
     AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
 import Chip from "@oxygen-ui/react/Chip";
-import FormControl from "@oxygen-ui/react/FormControl";
 import Link from "@oxygen-ui/react/Link";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
@@ -49,15 +48,15 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
+import cloneDeep from "lodash-es/cloneDeep";
+import isEqual from "lodash-es/isEqual";
 import React, {
     FunctionComponent,
     HTMLAttributes,
-    MutableRefObject,
     ReactElement,
     SyntheticEvent,
     useEffect,
     useMemo,
-    useRef,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -70,6 +69,7 @@ import { useMyAccountStatus } from "../../../api/application";
 import { useGetGroupsMetadata } from "../../../api/use-get-groups-metadata";
 import { ApplicationManagementConstants } from "../../../constants/application-management";
 import { ApplicationInterface, DiscoverableGroupInterface, GroupMetadataInterface } from "../../../models/application";
+import "./general-details-form.scss";
 
 /**
  * Proptypes for the applications general details form component.
@@ -216,8 +216,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         setSelectedUserStoreDomain
     ] = useState<string>(userstoresConfig?.primaryUserstoreName);
     const [ searchTerm, setSearchTerm ] = useState<string>(null);
-    const previousUserStore: MutableRefObject<string> = useRef<string>(null);
-    const [ selectedGroupsFromUserStore, setSelectedGroupsFromUserStore ] = useState<GroupMetadataInterface[]>([]);
+    const [
+        selectedGroupsFromUserStore,
+        setSelectedGroupsFromUserStore
+    ] = useState<{ [ key: string ]: GroupMetadataInterface[] }>({});
     const [ activeOption, setActiveOption ] = useState<GroupMetadataInterface>(null);
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
@@ -266,27 +268,21 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         return storeOptions;
     }, [ userStores ]);
 
-    const allSelectedGroupsList: { [ key: string ]: GroupMetadataInterface[] } = useMemo(() => {
+    useEffect(() => {
         const allSelectedGroupsList: { [ key: string ]: GroupMetadataInterface[] } = {};
 
         if (!application?.advancedConfigurations?.discoverableGroups
             || application?.advancedConfigurations?.discoverableGroups?.length === 0) {
-            return allSelectedGroupsList;
+            return setSelectedGroupsFromUserStore(allSelectedGroupsList);
         }
 
         application?.advancedConfigurations?.discoverableGroups.forEach(
             (discoverableGroup: DiscoverableGroupInterface) => {
-                if (previousUserStore?.current === discoverableGroup.userStore) {
-                    allSelectedGroupsList[ discoverableGroup.userStore ] = selectedGroupsFromUserStore;
-                } else {
-                    allSelectedGroupsList[ discoverableGroup.userStore ] = discoverableGroup.groups;
-                }
+                allSelectedGroupsList[ discoverableGroup.userStore ] = discoverableGroup.groups;
             }
         );
-        setSelectedGroupsFromUserStore(allSelectedGroupsList[ selectedUserStoreDomain ] ?? []);
-
-        return allSelectedGroupsList;
-    }, [ application, selectedUserStoreDomain ]);
+        setSelectedGroupsFromUserStore(allSelectedGroupsList);
+    }, [ application ]);
 
     /**
      * Handle the error scenario of fetching user stores.
@@ -304,6 +300,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 level: AlertLevels.ERROR,
                 message: t("userstores:notifications.fetchUserstores.error.message")
             }));
+
+            return;
         }
 
         dispatch(addAlert({
@@ -329,6 +327,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 level: AlertLevels.ERROR,
                 message: t("groups:notifications.fetchGroups.error.message")
             }));
+
+            return;
         }
 
         dispatch(addAlert({
@@ -358,6 +358,30 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     }, []);
 
     /**
+     * Resolve the updated list of discoverable groups.
+     *
+     * @returns Updated discoverable groups list.
+     */
+    const resolveUpdatedDiscoverableGroupList = (): DiscoverableGroupInterface[] => {
+        const discoverableGroups: DiscoverableGroupInterface[] = [];
+
+        Object.keys(selectedGroupsFromUserStore).forEach((key: string) => {
+            if (selectedGroupsFromUserStore[key]?.length > 0) {
+                discoverableGroups.push({
+                    groups: selectedGroupsFromUserStore[key],
+                    userStore: key
+                });
+            }
+        });
+
+        if (!isEqual(application?.advancedConfigurations?.discoverableGroups ?? [], discoverableGroups)) {
+            return discoverableGroups;
+        }
+
+        return undefined;
+    };
+
+    /**
      * Prepare form values for submitting.
      *
      * @param values - Form values.
@@ -367,7 +391,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         onSubmit({
             accessUrl: values.accessUrl?.toString(),
             advancedConfigurations: {
-                discoverableByEndUsers: values.discoverableByEndUsers
+                discoverableByEndUsers: values.discoverableByEndUsers,
+                discoverableGroups: resolveUpdatedDiscoverableGroupList()
             },
             description: values.description?.toString().trim(),
             id: appId,
@@ -679,7 +704,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     }
                     {
                         !isM2MApplication && isMyAccountEnabled && (
-                            <Grid.Row columns={ 16 }>
+                            <Grid.Row columns={ 16 } className="application-general-discoverable-groups">
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Heading as="h6">
                                         { t("applications:forms.generalDetails.fields.discoverableGroups.label") }
@@ -689,14 +714,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     <Select
                                         value={ selectedUserStoreDomain }
                                         onChange={
-                                            (e: SelectChangeEvent<string>) => {
-                                                previousUserStore.current = selectedUserStoreDomain;
-                                                setSelectedUserStoreDomain(e.target.value);
-                                            }
+                                            (e: SelectChangeEvent<string>) =>
+                                                setSelectedUserStoreDomain(e.target.value)
                                         }
                                         data-componentid={
                                             `${ componentId }-group-store-domain-dropdown`
                                         }
+                                        disabled={ !isDiscoverable }
                                     >
                                         { isUserStoresLoading
                                             ? <p>{ t("common:loading") }</p>
@@ -719,7 +743,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         disableCloseOnSelect
                                         loading={ isGroupsListLoading }
                                         options={ groupsList ?? [] }
-                                        value={ selectedGroupsFromUserStore }
+                                        value={ selectedGroupsFromUserStore[selectedUserStoreDomain] ?? [] }
                                         data-componentid={ `${ componentId }-group-search-text-input` }
                                         getOptionLabel={ (group: GroupMetadataInterface) => group?.name }
                                         renderInput={ (params: AutocompleteRenderInputParams) => (
@@ -729,9 +753,14 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                                     "discoverableGroups.action.assign") }
                                             />
                                         ) }
-                                        onChange={ (_event: SyntheticEvent, groups: GroupMetadataInterface[]) =>
-                                            setSelectedGroupsFromUserStore(groups)
-                                        }
+                                        onChange={ (_event: SyntheticEvent, groups: GroupMetadataInterface[]) => {
+                                            const updatedGroups: {
+                                                [ key: string ]: GroupMetadataInterface[]
+                                            } = cloneDeep(selectedGroupsFromUserStore);
+
+                                            updatedGroups[selectedUserStoreDomain] = groups;
+                                            setSelectedGroupsFromUserStore(updatedGroups);
+                                        } }
                                         filterOptions={ (groups: GroupMetadataInterface[]) => groups }
                                         onInputChange={
                                             (_event: SyntheticEvent, searchTerm: string) =>
@@ -768,6 +797,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                                 renderOptionProps={ props }
                                             />
                                         ) }
+                                        disabled={ !isDiscoverable }
                                     />
                                 </Grid.Column>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
