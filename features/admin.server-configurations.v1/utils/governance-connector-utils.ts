@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,7 @@ import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import camelCase from "lodash-es/camelCase";
 import { getConnectorCategories } from "../api";
-import { GovernanceConnectorConstants, ServerConfigurationsConstants } from "../constants";
+import { ServerConfigurationsConstants } from "../constants";
 import {
     ConnectorOverrideConfig,
     ConnectorPropertyInterface,
@@ -35,7 +35,6 @@ import {
     GovernanceConnectorsInterface
 } from "../models";
 import { SetGovernanceConnectorCategory } from "../store/actions";
-import { match } from "assert";
 
 /**
  * Utility class for governance connectors.
@@ -514,7 +513,7 @@ export class GovernanceConnectorUtils {
                     ...connector,
                     ...Object.fromEntries(
                         Object.entries(matchingOverride)
-                            .filter(([ key ]) => key !== "matchBy")
+                            .filter(([ key ]: [string, unknown]) => key !== "matchBy")
                     )
                 };
             }

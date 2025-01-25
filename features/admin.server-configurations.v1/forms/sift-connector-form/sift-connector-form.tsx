@@ -103,7 +103,6 @@ const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = (
         return data;
     };
 
-
     /**
      * Render input adornment.
      *
@@ -215,7 +214,6 @@ const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = (
             />
         </div>
     );
-
 };
 
 export default SiftConnectorForm;
