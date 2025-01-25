@@ -16,15 +16,15 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
 import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -57,13 +57,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
 
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes : string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-
-    const isReadOnly : boolean = useMemo(() => !hasRequiredScopes(
-        featureConfig?.governanceConnectors,
-        featureConfig?.governanceConnectors?.scopes?.update,
-        allowedScopes
-    ), [ featureConfig, allowedScopes ]);
+    const hasConnectorUpdatePermission: boolean = useRequiredScopes(featureConfig.governanceConnectors.scopes?.update);
 
     const dispatch : Dispatch<any> = useDispatch();
 
@@ -293,7 +287,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                 "idleSessionTimeout.hint") }
                                         required={ true }
                                         value={ sessionManagementConfig?.idleSessionTimeout }
-                                        readOnly={ isReadOnly }
+                                        readOnly={ !hasConnectorUpdatePermission }
                                         maxLength={ null }
                                         minLength={ SessionManagementConstants
                                             .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
@@ -319,7 +313,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                 "rememberMePeriod.hint") }
                                         required={ true }
                                         value={ sessionManagementConfig?.rememberMePeriod }
-                                        readOnly={ isReadOnly }
+                                        readOnly={ !hasConnectorUpdatePermission }
                                         maxLength={ null }
                                         minLength={ SessionManagementConstants
                                             .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
@@ -331,7 +325,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                         <Label>{ t("common:minutes") }</Label>
                                     </Field.Input>
                                     {
-                                        !isReadOnly && (
+                                        hasConnectorUpdatePermission && (
                                             <Field.Button
                                                 form={ FORM_ID }
                                                 size="small"
