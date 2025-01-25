@@ -889,10 +889,10 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     }
                 },
                 enableProgressiveEnrollment: {
-                    hint: "Please check this checkbox to enable push notification device progressive enrollment.",
+                    hint: "When enabled, users may enroll their devices for push authentication at the moment they log in to the application.",
                     label: "Enable push notification device progressive enrollment",
                     validations: {
-                        required: "Enable push notification device progressive enrollment is a required field."
+                        required: "Enablin push notification device progressive enrollment is required."
                     }
                 }
             }
