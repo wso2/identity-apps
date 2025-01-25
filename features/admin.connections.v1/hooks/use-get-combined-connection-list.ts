@@ -29,8 +29,8 @@ import get from "lodash-es/get";
 import { useEffect } from "react";
 import { useGetAuthenticators } from "../api/authenticators";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
-import { AuthenticatorTypes } from "../models/authenticators";
-import { ConnectionInterface, ConnectionTypes } from "../models/connection";
+import { AuthenticatorLabels, AuthenticatorTypes } from "../models/authenticators";
+import { ConnectionInterface, ConnectionTypes, CustomAuthConnectionInterface } from "../models/connection";
 import { ConnectionsManagementUtils } from "../utils/connection-utils";
 
 /**
@@ -105,6 +105,19 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
 
     const combinedData: ConnectionInterface[] = [];
 
+    /**
+     * Check if the authenticator is a custom authenticator.
+     *
+     * @param authenticator - Authenticator to evaluate.
+     * @returns - `true` if the authenticator is a custom authenticator.
+     */
+    const IsCustomAuthenticator = (authenticator: ConnectionInterface) => {
+        const tags: string[] = (authenticator as CustomAuthConnectionInterface)?.tags ?? [];
+        const isCustom: boolean = tags.some((tag) => tag?.toUpperCase() === AuthenticatorLabels.CUSTOM);
+
+        return isCustom;
+    };
+
     if (!isAuthenticatorsFetchRequestLoading && !isIdVPListFetchRequestLoading) {
 
         // Add Local Authenticators to the beginning of the list.
@@ -138,7 +151,7 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         // Add Custom Local Authenticators to the list.
         combinedData.push(...(fetchedAuthenticatorsList
             .filter((authenticator: ConnectionInterface) => (
-                authenticator.type === AuthenticatorTypes.IDENTIFICATION
+                authenticator.type === AuthenticatorTypes.LOCAL && IsCustomAuthenticator(authenticator)
             ))
         ));
 

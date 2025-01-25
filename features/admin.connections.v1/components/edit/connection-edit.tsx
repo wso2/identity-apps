@@ -172,28 +172,26 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const hasApplicationReadPermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.read);
 
     const isOrganizationEnterpriseAuthenticator: boolean = identityProvider?.federatedAuthenticators
-        .defaultAuthenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+        ?.defaultAuthenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
         .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
     const isEnterpriseConnection: boolean = identityProvider?.federatedAuthenticators
-        .defaultAuthenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ||
+        ?.defaultAuthenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ||
         identityProvider?.federatedAuthenticators
-            .defaultAuthenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID;
+            ?.defaultAuthenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID;
 
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
     const idpAdvanceConfig: ConnectionAdvanceInterface = {
-        alias: identityProvider.alias,
-        certificate: identityProvider.certificate,
-        homeRealmIdentifier: identityProvider.homeRealmIdentifier,
-        isFederationHub: identityProvider.isFederationHub
+        alias: identityProvider?.alias,
+        certificate: identityProvider?.certificate,
+        homeRealmIdentifier: identityProvider?.homeRealmIdentifier,
+        isFederationHub: identityProvider?.isFederationHub
     };
 
     const idpImplicitAssociationConfig: ImplicitAssociaionConfigInterface = {
-        isEnabled: identityProvider.implicitAssociation.isEnabled,
-        lookupAttribute: identityProvider.implicitAssociation.lookupAttribute
+        isEnabled: identityProvider?.implicitAssociation?.isEnabled,
+        lookupAttribute: identityProvider?.implicitAssociation?.lookupAttribute
     };
-
-    useEffect(() => {console.log("Hello there you lil champ")}, []);
 
     /**
      * This wrapper function ensures that the user stays on the tab that
@@ -215,10 +213,6 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             <ContentLoader inline="centered" active/>
         </EmphasizedSegment>
     );
-
-    useEffect(() => {
-        debugger;
-    }, [ ]);
 
     const GeneralIdentityProviderSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
@@ -296,7 +290,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         <ResourceTab.Pane controlledSegmentation>
             <OutboundProvisioningSettings
                 identityProvider={ identityProvider }
-                outboundConnectors={ identityProvider.provisioning?.outboundConnectors }
+                outboundConnectors={ identityProvider?.provisioning?.outboundConnectors }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-outbound-provisioning-settings` }
@@ -310,7 +304,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         <ResourceTab.Pane controlledSegmentation>
             <JITProvisioningSettings
                 idpId={ identityProvider.id }
-                jitProvisioningConfigurations={ identityProvider.provisioning?.jit }
+                jitProvisioningConfigurations={ identityProvider?.provisioning?.jit }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-jit-provisioning-settings` }

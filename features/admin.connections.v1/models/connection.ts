@@ -278,7 +278,10 @@ export interface CustomAuthConnectionInterface extends ConnectionInterface {
     endpoint: ExternalEndpoint;
     authenticationType: string;
     description?: string;
+    type?: string;
     templateId?: string;
+    tags: string[];
+    self: string;
 }
 
 /**

@@ -96,22 +96,6 @@ export class ConnectionsManagementUtils {
     }
 
     /**
-     * Type-guard to check if the connector is an custom local authenticator
-     *
-     * @param connector - Checking connector.
-     * @returns Whether the connector is an custom local authenticator
-     */
-    public static isCustomLocalAuthenticator(connector: ConnectionInterface
-        | MultiFactorAuthenticatorInterface | CustomAuthConnectionInterface):
-        connector is CustomAuthConnectionInterface {
-
-        return ((connector as CustomAuthConnectionInterface)?.authenticationType ===
-            CustomLocalAuthenticationType.IDENTIFICATION) ||
-        ((connector as CustomAuthConnectionInterface)?.authenticationType ===
-            CustomLocalAuthenticationType.VERIFICATION);
-    }
-
-    /**
      * Utility method to check if the connector is Organization SSO.
      *
      * @param id - Connector id.

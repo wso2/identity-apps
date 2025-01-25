@@ -119,7 +119,8 @@ export enum AuthenticatorLabels {
     HANDLERS = "Handlers",
     USERNAMELESS = "Usernameless",
     PASSKEY = "Passkey",
-    API_AUTHENTICATION = "APIAuth"
+    API_AUTHENTICATION = "APIAuth",
+    CUSTOM = "Custom"
 }
 
 export interface ConnectorPropertyInterface {

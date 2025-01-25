@@ -328,9 +328,6 @@ export const useGetConnectionTemplate = <Data = ConnectionTemplateInterface, Err
     templateId: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
-
-    console.log("templateId" + "/connections/" + templateId + "/template");
-
     const { resourceEndpoints } = useResourceEndpoints();
 
     const requestConfig: RequestConfigInterface = {
@@ -410,9 +407,6 @@ export const getConnectionTemplates = (
     offset?: number,
     filter?: string
 ): Promise<any> => {
-
-    debugger
-
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",

@@ -622,7 +622,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
      * @param customAuthenticator - custom authenticator
      */
     const createCustomLocalAuthenticator = (customAuthenticator: CustomAuthConnectionInterface) => {
-        debugger;
         createCustomAuthentication(customAuthenticator)
             .then((response: AxiosResponse<CustomAuthConnectionInterface>) => {
                 eventPublisher.publish("connections-finish-adding-connection", {
@@ -641,7 +640,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                     const location: string = response.headers.location;
                     const createdLocalAuthID: string = location.substring(location.lastIndexOf("/") + 1);
 
-                    debugger;
                     handleSuccessfulAuthenticatorCreate(createdLocalAuthID);
 
                     return;

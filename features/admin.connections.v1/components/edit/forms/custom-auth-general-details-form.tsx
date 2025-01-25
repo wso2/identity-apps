@@ -164,7 +164,7 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                         ariaLabel="identifier"
                         inputType="identifier"
                         name="identifier"
-                        value={ decodeString(editingIDP.federatedAuthenticators.defaultAuthenticatorId) }
+                        value={ decodeString(editingIDP?.federatedAuthenticators?.defaultAuthenticatorId) }
                         label={ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.label") }
                         placeholder={ t("customAuthentication:fields.createWizard.generalSettingsStep." +
                             "identifier.placeholder") }
