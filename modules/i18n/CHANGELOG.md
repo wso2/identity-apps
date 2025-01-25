@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.16.8
+
+### Patch Changes
+
+- [#7394](https://github.com/wso2/identity-apps/pull/7394) [`6a86d803a5997538ab424336e29f7401c7fb3582`](https://github.com/wso2/identity-apps/commit/6a86d803a5997538ab424336e29f7401c7fb3582) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve Sift connector page
+
 ## 2.16.7
 
 ### Patch Changes
