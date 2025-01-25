@@ -1,5 +1,15 @@
 # @wso2is/admin.userstores.v1
 
+## 2.26.65
+
+### Patch Changes
+
+- Updated dependencies [[`6a86d803a5997538ab424336e29f7401c7fb3582`](https://github.com/wso2/identity-apps/commit/6a86d803a5997538ab424336e29f7401c7fb3582)]:
+  - @wso2is/admin.extensions.v1@2.36.31
+  - @wso2is/i18n@2.16.8
+  - @wso2is/admin.core.v1@2.37.14
+  - @wso2is/admin.remote-userstores.v1@1.7.62
+
 ## 2.26.64
 
 ### Patch Changes
