@@ -268,91 +268,89 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                     { isSessionManagementFetchRequestLoading
                         ? renderLoadingPlaceholder()
                         : (
-                            <>
-                                <div className="session-mgt-form-container">
-                                    <Form
-                                        id={ FORM_ID }
-                                        uncontrolledForm={ false }
-                                        onSubmit={ handleSubmit }
-                                        initialValues={ sessionManagementConfig }
-                                        enableReinitialize={ true }
-                                        ref={ formRef }
-                                        noValidate={ true }
-                                        validate={ validateForm }
-                                    >
-                                        <Field.Input
-                                            min={ SessionManagementConstants
-                                                .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
-                                            ariaLabel="Idle Session Timeout Field"
-                                            inputType="number"
-                                            name="idleSessionTimeout"
-                                            label={ t("sessionManagement:form." +
+                            <div className="session-mgt-form-container">
+                                <Form
+                                    id={ FORM_ID }
+                                    uncontrolledForm={ false }
+                                    onSubmit={ handleSubmit }
+                                    initialValues={ sessionManagementConfig }
+                                    enableReinitialize={ true }
+                                    ref={ formRef }
+                                    noValidate={ true }
+                                    validate={ validateForm }
+                                >
+                                    <Field.Input
+                                        min={ SessionManagementConstants
+                                            .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
+                                        ariaLabel="Idle Session Timeout Field"
+                                        inputType="number"
+                                        name="idleSessionTimeout"
+                                        label={ t("sessionManagement:form." +
                                                 "idleSessionTimeout.label") }
-                                            placeholder={ t("sessionManagement:form." +
+                                        placeholder={ t("sessionManagement:form." +
                                                 "idleSessionTimeout.placeholder") }
-                                            hint={ t("sessionManagement:form." +
+                                        hint={ t("sessionManagement:form." +
                                                 "idleSessionTimeout.hint") }
-                                            required={ true }
-                                            value={ sessionManagementConfig?.idleSessionTimeout }
-                                            readOnly={ isReadOnly }
-                                            maxLength={ null }
-                                            minLength={ SessionManagementConstants
-                                                .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
-                                            width="100%"
-                                            data-componentid={
-                                                `${componentId}-idle-session-timeout` }
-                                            labelPosition="right"
-                                        >
-                                            <input />
-                                            <Label>mins</Label>
-                                        </Field.Input>
-                                        <Field.Input
-                                            min={ SessionManagementConstants
-                                                .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
-                                            ariaLabel="Remember Me Period Field"
-                                            inputType="number"
-                                            name="rememberMePeriod"
-                                            label={ t("sessionManagement:form." +
+                                        required={ true }
+                                        value={ sessionManagementConfig?.idleSessionTimeout }
+                                        readOnly={ isReadOnly }
+                                        maxLength={ null }
+                                        minLength={ SessionManagementConstants
+                                            .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
+                                        width="100%"
+                                        data-componentid={
+                                            `${ componentId }-idle-session-timeout` }
+                                        labelPosition="right"
+                                    >
+                                        <input />
+                                        <Label>{ t("common:minutes") }</Label>
+                                    </Field.Input>
+                                    <Field.Input
+                                        min={ SessionManagementConstants
+                                            .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
+                                        ariaLabel="Remember Me Period Field"
+                                        inputType="number"
+                                        name="rememberMePeriod"
+                                        label={ t("sessionManagement:form." +
                                                 "rememberMePeriod.label") }
-                                            placeholder={ t("sessionManagement:form." +
+                                        placeholder={ t("sessionManagement:form." +
                                                 "rememberMePeriod.placeholder") }
-                                            hint={ t("sessionManagement:form." +
+                                        hint={ t("sessionManagement:form." +
                                                 "rememberMePeriod.hint") }
-                                            required={ true }
-                                            value={ sessionManagementConfig?.rememberMePeriod }
-                                            readOnly={ isReadOnly }
-                                            maxLength={ null }
-                                            minLength={ SessionManagementConstants
-                                                .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
-                                            width="100%"
-                                            data-componentid={ `${componentId}-remember-me-period` }
-                                            labelPosition="right"
-                                        >
-                                            <input />
-                                            <Label>mins</Label>
-                                        </Field.Input>
-                                        {
-                                            !isReadOnly && (
-                                                <Field.Button
-                                                    form={ FORM_ID }
-                                                    size="small"
-                                                    buttonType="primary_btn"
-                                                    name="update-button"
-                                                    data-componentid={
-                                                        `${ componentId }-update-button`
-                                                    }
-                                                    loading={ isSubmitting }
-                                                    onClick={ () => {
-                                                        formRef?.current?.triggerSubmit();
-                                                    } }
-                                                    ariaLabel="Session management form update button"
-                                                    label={ t("common:update") }
-                                                />
-                                            )
-                                        }
-                                    </Form>
-                                </div>
-                            </>
+                                        required={ true }
+                                        value={ sessionManagementConfig?.rememberMePeriod }
+                                        readOnly={ isReadOnly }
+                                        maxLength={ null }
+                                        minLength={ SessionManagementConstants
+                                            .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
+                                        width="100%"
+                                        data-componentid={ `${ componentId }-remember-me-period` }
+                                        labelPosition="right"
+                                    >
+                                        <input />
+                                        <Label>{ t("common:minutes") }</Label>
+                                    </Field.Input>
+                                    {
+                                        !isReadOnly && (
+                                            <Field.Button
+                                                form={ FORM_ID }
+                                                size="small"
+                                                buttonType="primary_btn"
+                                                name="update-button"
+                                                data-componentid={
+                                                    `${ componentId }-update-button`
+                                                }
+                                                loading={ isSubmitting }
+                                                onClick={ () => {
+                                                    formRef?.current?.triggerSubmit();
+                                                } }
+                                                ariaLabel="Session management form update button"
+                                                label={ t("common:update") }
+                                            />
+                                        )
+                                    }
+                                </Form>
+                            </div>
                         )
                     }
                 </EmphasizedSegment>
