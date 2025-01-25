@@ -60,17 +60,13 @@ interface SiftConnectorFormPropsInterface extends IdentifiableComponentInterface
  * @param props - Props injected to the component.
  * @returns Functional component.
  */
-const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = (
-    props: SiftConnectorFormPropsInterface
-): ReactElement => {
-
-    const {
-        initialValues,
-        onSubmit,
-        readOnly,
-        isSubmitting,
-        [ "data-componentid" ]: componentId
-    } = props;
+const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = ({
+    initialValues,
+    onSubmit,
+    readOnly,
+    isSubmitting,
+    [ "data-componentid" ]: componentId = "sift-connector"
+}: SiftConnectorFormPropsInterface): ReactElement => {
 
     const { t } = useTranslation();
 
@@ -213,13 +209,6 @@ const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = (
             />
         </div>
     );
-};
-
-/**
- * Default proptypes for the Sift Connector Form component.
- */
-SiftConnectorForm.defaultProps = {
-    "data-componentid": "sift-connector"
 };
 
 export default SiftConnectorForm;

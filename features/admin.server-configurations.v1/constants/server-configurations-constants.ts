@@ -444,16 +444,8 @@ export class ServerConfigurationsConstants {
 
     /**
      * Login Security Category Constants.
-     */
-    public static readonly LOGIN_ATTEMPT_SECURITY: string = "login-attempt-security";
-
-    /**
-     * Login Security Category Constants.
-     */
+    */
     public static readonly SIFT_CONNECTOR_ID: string = "c2lmdC1jb25maWd1cmF0aW9u";
-
-    /**
-     * Sift Connector Constants.
-     */
+    public static readonly LOGIN_ATTEMPT_SECURITY: string = "login-attempt-security";
     public static readonly SIFT_CONNECTOR_API_KEY_PROPERTY: string = "__secret__.sift.api.key";
 }
