@@ -24,7 +24,7 @@ export const pushProviders: pushProvidersNS = {
         revertConfig: {
             actionTitle: "Delete",
             heading: "Delete Configurations",
-            subHeading: "This action will delete push provider configurations. " +
+            subHeading: "This action will delete the existing push provider configurations. " +
                 "Once deleted, you will not receive any push notifications."
         }
     },
