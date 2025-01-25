@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,6 +29,7 @@ import { LoginAttemptSecurityConfigurationFrom } from "./login-attempt-security-
 import { MultiAttributeLoginForm } from "./multi-attribute-login";
 import { PasswordRecoveryConfigurationForm } from "./password-recovery-form/password-recovery-form";
 import { SelfRegistrationForm } from "./self-registration-form";
+import SiftConnectorForm from "./sift-connector-form/sift-connector-form";
 import { UsernameRecoveryConfigurationForm } from "./username-recovery-form";
 import DynamicConnectorForm from "../components/governance-connectors/dynamic-connector-form";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
@@ -194,6 +195,15 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ isConnectorEnabled }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case ServerConfigurationsConstants.SIFT_CONNECTOR_ID:
+            return (
+                <SiftConnectorForm
+                    onSubmit={ onSubmit }
+                    initialValues={ initialValues }
                     readOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
                 />

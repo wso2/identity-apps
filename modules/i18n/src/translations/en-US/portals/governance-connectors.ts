@@ -269,6 +269,16 @@ export const governanceConnectors: governanceConnectorsNS = {
                             label: "Max failed attempts for reCaptcha"
                         }
                     }
+                },
+                siftConnector: {
+                    properties: {
+                        name: "Sift Connector",
+                        description: "Integrate Sift to detect suspicious patterns and prevent fraudulent account logins.",
+                        siftConnectorApiKey: {
+                            label: "Sift API Key",
+                            placeholder: "Enter Sift API Key"
+                        }
+                    }
                 }
             }
         },
