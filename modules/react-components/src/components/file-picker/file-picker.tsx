@@ -606,7 +606,6 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
     );
 
     if (initialFile && showFileAsList) {
-
         return (
             <React.Fragment>
                 <Grid>
