@@ -1,5 +1,17 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.4.105
+
+### Patch Changes
+
+- [#7364](https://github.com/wso2/identity-apps/pull/7364) [`92a6766086071fd5e0986f91803804783b9159bf`](https://github.com/wso2/identity-apps/commit/92a6766086071fd5e0986f91803804783b9159bf) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce configuration based feature status flag support
+
+- Updated dependencies [[`92a6766086071fd5e0986f91803804783b9159bf`](https://github.com/wso2/identity-apps/commit/92a6766086071fd5e0986f91803804783b9159bf)]:
+  - @wso2is/admin.feature-gate.v1@1.4.105
+  - @wso2is/admin.applications.v1@2.30.105
+  - @wso2is/admin.core.v1@2.37.13
+  - @wso2is/admin.template-core.v1@1.5.59
+
 ## 1.4.104
 
 ### Patch Changes

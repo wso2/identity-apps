@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.11.0
+
+### Minor Changes
+
+- [#7117](https://github.com/wso2/identity-apps/pull/7117) [`8bb552a24c6cac4d01b38932add6c46905dc24c9`](https://github.com/wso2/identity-apps/commit/8bb552a24c6cac4d01b38932add6c46905dc24c9) Thanks [@VimukthiRajapaksha](https://github.com/VimukthiRajapaksha)! - Added support to display authorization details on the consent screen. This optional field, if included in the authorize request, will be shown on the consent screen when user consent is required.
+
 ## 2.10.12
 
 ### Patch Changes
