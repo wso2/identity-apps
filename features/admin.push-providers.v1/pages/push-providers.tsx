@@ -281,7 +281,6 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
             </ExtensionTemplatesProvider>
         </PageLayout>
     );
-
 };
 
 export default PushProvidersPage;
