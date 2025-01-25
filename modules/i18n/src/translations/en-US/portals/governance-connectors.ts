@@ -273,7 +273,7 @@ export const governanceConnectors: governanceConnectorsNS = {
                 siftConnector: {
                     properties: {
                         name: "Sift Connector",
-                        description: "Integrate Sift to detect suspicious patterns and prevent fraudulent account logins.",
+                        description: "Integrate Sift to detect and prevent fraudulent account logins.",
                         siftConnectorApiKey: {
                             label: "Sift API Key",
                             placeholder: "Enter Sift API Key"

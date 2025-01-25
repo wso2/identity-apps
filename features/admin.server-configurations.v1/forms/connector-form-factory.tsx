@@ -16,11 +16,11 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import kebabCase from "lodash-es/kebabCase";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { AdminForcedPasswordResetForm } from "./admin-forced-password-reset";
 import { AnalyticsConfigurationForm } from "./analytics-form";
@@ -87,17 +87,7 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
     } = props;
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-
-    const isReadOnly: boolean = useMemo(
-        () =>
-            !hasRequiredScopes(
-                featureConfig?.governanceConnectors,
-                featureConfig?.governanceConnectors?.scopes?.update,
-                allowedScopes
-            ),
-        [ featureConfig, allowedScopes ]
-    );
+    const hasConnectorUpdatePermission: boolean = useRequiredScopes(featureConfig.governanceConnectors.scopes?.update);
 
     const path: string[] = history?.location?.pathname?.split("/");
     const type: string = path && path[ path.length - 3 ];
@@ -125,7 +115,7 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ isConnectorEnabled }
-                    readOnly={ isReadOnly }
+                    readOnly={ !hasConnectorUpdatePermission }
                     isSubmitting={ isSubmitting }
                 />
             );
@@ -135,7 +125,7 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ isConnectorEnabled }
-                    readOnly={ isReadOnly }
+                    readOnly={ !hasConnectorUpdatePermission }
                     isSubmitting={ isSubmitting }
                 />
             );
@@ -145,7 +135,7 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                     <UsernameRecoveryConfigurationForm
                         onSubmit={ onSubmit }
                         initialValues={ initialValues }
-                        readOnly={ isReadOnly }
+                        readOnly={ !hasConnectorUpdatePermission }
                     />
                 );
             }
@@ -155,7 +145,7 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ isConnectorEnabled }
-                    readOnly={ isReadOnly }
+                    readOnly={ !hasConnectorUpdatePermission }
                     isSubmitting={ isSubmitting }
                 />
             );
@@ -165,7 +155,7 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ true }
-                    readOnly={ isReadOnly }
+                    readOnly={ !hasConnectorUpdatePermission }
                     isSubmitting={ isSubmitting }
                 />
             );
@@ -175,7 +165,7 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ true }
-                    readOnly={ isReadOnly }
+                    readOnly={ !hasConnectorUpdatePermission }
                     isSubmitting={ isSubmitting }
                 />
             );
@@ -185,7 +175,7 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ isConnectorEnabled }
-                    readOnly={ isReadOnly }
+                    readOnly={ !hasConnectorUpdatePermission }
                     isSubmitting={ isSubmitting }
                 />
             );
@@ -195,7 +185,7 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ isConnectorEnabled }
-                    readOnly={ isReadOnly }
+                    readOnly={ !hasConnectorUpdatePermission }
                     isSubmitting={ isSubmitting }
                 />
             );
@@ -204,7 +194,7 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                 <SiftConnectorForm
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
-                    readOnly={ isReadOnly }
+                    readOnly={ !hasConnectorUpdatePermission }
                     isSubmitting={ isSubmitting }
                 />
             );

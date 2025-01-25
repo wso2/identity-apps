@@ -123,7 +123,7 @@ const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = (
     );
 
     return (
-        <div className={ "sift-connector-form" }>
+        <div className="sift-connector-form">
             <FinalForm
                 onSubmit={ (values: Record<string, unknown>) =>
                     onSubmit(getUpdatedAPIKey(values))
@@ -138,7 +138,7 @@ const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = (
                 }
                 render={ ({ handleSubmit, form }: FormRenderProps) => (
                     <form onSubmit={ handleSubmit }>
-                        <Stack direction="row" spacing={ 2 }>
+                        <Stack direction="row" spacing={ 2 } mb={ 3 }>
                             <FinalFormField
                                 className="addon-field-wrapper"
                                 key={ ServerConfigurationsConstants.SIFT_CONNECTOR_API_KEY_PROPERTY }
@@ -199,7 +199,6 @@ const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = (
                             }
                         </Stack>
                         <PrimaryButton
-                            className={ "mr-3 mt-3" }
                             size="small"
                             disabled={ isSubmitting || readOnly }
                             loading={ isSubmitting }
@@ -207,13 +206,20 @@ const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = (
                                 `${ componentId }-configuration-form-submit-button`
                             }
                         >
-                            { t("common:update").toString() }
+                            { t("common:update") }
                         </PrimaryButton>
                     </form>
                 ) }
             />
         </div>
     );
+};
+
+/**
+ * Default proptypes for the Sift Connector Form component.
+ */
+SiftConnectorForm.defaultProps = {
+    "data-componentid": "sift-connector"
 };
 
 export default SiftConnectorForm;
