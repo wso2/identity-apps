@@ -107,6 +107,7 @@ export interface CommonNS {
     metaAttributes: string;
     minimize: string;
     minValidation: string;
+    minutes: string;
     more: string;
     myAccount: string;
     name: string;
