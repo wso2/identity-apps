@@ -420,7 +420,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const TLS_CLIENT_AUTH: string = "tls_client_auth";
 
     useEffect(() => {
-        if (sharedOrganizationsList) {
+        if (sharedOrganizationsList || orgType === OrganizationType.SUBORGANIZATION) {
             return;
         }
 
@@ -454,7 +454,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             );
         }
         );
-    }, [ application ]);
+    }, [ application, orgType ]);
 
     const fetchLocalClaims = () => {
         getAllLocalClaims(null)
