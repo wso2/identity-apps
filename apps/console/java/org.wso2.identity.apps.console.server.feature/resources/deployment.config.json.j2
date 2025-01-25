@@ -222,6 +222,13 @@
                     {% endif %}
                 ],
                 "enabled": {{ feature.enabled }},
+                "featureFlags": {
+                    {% if feature.feature_flags is defined %}
+                    {% for flag, value in feature.feature_flags.items() %}
+                    "{{ flag }}": {{ value }}{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                },
                 "scopes": {
                     {% if feature.scopes is defined %}
                     {% for operation, scopes in feature.scopes.items() %}

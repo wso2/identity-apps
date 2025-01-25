@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -38,16 +38,17 @@ import {
     UserGearIcon,
     UserPlusIcon
 } from "@oxygen-ui/react-icons";
-import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
-import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import { FeatureFlagsInterface, IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import "./governance-connector-grid.scss";
+import { useSelector } from "react-redux";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models/governance-connectors";
+
 /**
  * Props for the Governance connector configuration categories page.
  */
@@ -81,7 +82,8 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
         dynamicConnectors
     } = props;
 
-    const { t } = useTranslation();
+    const loginAndRegistrationFeatureFlags: FeatureFlagsInterface[] = useSelector(
+        (state: AppState) => state.config.ui.features?.loginAndRegistration?.featureFlags);
 
     /**
      * Combine the connectors and dynamic connectors and group them by category.
@@ -213,15 +215,6 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
         }
     };
 
-    const resolveFeatureLabelClass = (featureStatus: FeatureStatusLabel) => {
-        switch (featureStatus) {
-            case FeatureStatusLabel.BETA:
-                return "oxygen-chip-beta";
-            case FeatureStatusLabel.NEW:
-                return "oxygen-chip-new";
-        }
-    };
-
     return (
         <div>
             { combinedConnectors?.map((category: GovernanceConnectorCategoryInterface, index: number) => {
@@ -263,17 +256,11 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                         {
                                                             connector.status
                                                             && (
-                                                                <div
-                                                                    className={
-                                                                        "ribbon " + resolveFeatureLabelClass(
-                                                                            connector.status as FeatureStatusLabel
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    <span className="MuiChip-label">
-                                                                        { t(connector.status) }
-                                                                    </span>
-                                                                </div>
+                                                                <FeatureFlagLabel
+                                                                    featureFlags={ loginAndRegistrationFeatureFlags }
+                                                                    featureKey={ connector.status }
+                                                                    type="ribbon"
+                                                                />
                                                             )
                                                         }
                                                     </CardContent>

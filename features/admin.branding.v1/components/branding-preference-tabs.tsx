@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,10 +17,10 @@
  */
 
 import Button from "@oxygen-ui/react/Button";
-import Chip from "@oxygen-ui/react/Chip";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceThemeInterface,
@@ -29,7 +29,7 @@ import {
     PreviewScreenType,
     PreviewScreenVariationType
 } from "@wso2is/common.branding.v1/models";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FeatureFlagsInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FormPropsInterface } from "@wso2is/form";
 import { Heading, Link, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -164,7 +164,8 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
     const systemTheme: string = useSelector((state: AppState) => state.config.ui.theme?.name);
     const supportEmail: string = useSelector((state: AppState) =>
         state.config.deployment.extensions?.supportEmail as string);
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
+    const brandingFeatureFlags: FeatureFlagsInterface[] = useSelector(
+        (state: AppState) => state.config.ui.features?.branding?.featureFlags);
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(isUpdating);
     const [
@@ -465,19 +466,22 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                     disabled={ brandingMode === BrandingModes.APPLICATION }
                 >
                     { t("branding:tabs.text.label") }
-                    { isSAASDeployment && brandingMode !== BrandingModes.APPLICATION && (
-                        <Chip
-                            size="small"
-                            sx={ { marginLeft: 1 } }
-                            label={ t(FeatureStatusLabel.BETA) }
-                            className="oxygen-chip-beta"
+                    {   brandingMode === BrandingModes.APPLICATION && (
+                        <FeatureFlagLabel
+                            featureFlags={ brandingFeatureFlags }
+                            featureKey={
+                                FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_BRANDING_TEXT
+                            }
+                            type="chip"
                         />
                     ) }
-                    { brandingMode === BrandingModes.APPLICATION && (
-                        <Chip
-                            size="small"
-                            sx={ { marginLeft: 1 } }
-                            label={ t(FeatureStatusLabel.COMING_SOON) }
+                    {   brandingMode !== BrandingModes.APPLICATION && (
+                        <FeatureFlagLabel
+                            featureFlags={ brandingFeatureFlags }
+                            featureKey={
+                                FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ORGANIZATION_BRANDING_TEXT
+                            }
+                            type="chip"
                         />
                     ) }
                 </Menu.Item>

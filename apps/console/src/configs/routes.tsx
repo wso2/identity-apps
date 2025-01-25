@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,8 +34,8 @@ import {
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
 import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
 import compact from "lodash-es/compact";
@@ -71,8 +71,6 @@ import FullScreenLayout from "../layouts/full-screen-layout";
 
 export const getAppViewRoutes = (): RouteInterface[] => {
     const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
-    const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
-        window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
 
     const defaultRoutes: RouteInterface[] = [
         {
@@ -719,8 +717,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 import("@wso2is/admin.sms-templates.v1/pages/sms-customization")
             ),
             exact: true,
-            featureStatus: "NEW",
-            featureStatusLabel: FeatureStatusLabel.NEW,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.SMS_TEMPLATES,
             icon: {
                 icon: getSidePanelIcons().sms
             },
@@ -1049,9 +1046,8 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             category: "extensions:develop.sidePanel.categories.monitor",
             component: lazy(() => import("@wso2is/admin.org-insights.v1/pages/org-insights")),
             exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.INSIGHTS,
             featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
-            featureStatus: "BETA",
-            featureStatusLabel: "common:beta",
             icon: {
                 icon: <LightbulbOnIcon fill="black" className="icon" />
             },
@@ -1239,8 +1235,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ],
             component: lazy(() => import("@wso2is/admin.roles.v2/pages/role")),
             exact: true,
-            featureStatus: showStatusLabelForNewAuthzRuntimeFeatures ? "NEW" : "",
-            featureStatusLabel: showStatusLabelForNewAuthzRuntimeFeatures ? "common:new": "",
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.USER_ROLES,
             icon: {
                 icon: getSidePanelIcons().applicationRoles
             },
@@ -1300,8 +1295,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 import("@wso2is/admin.actions.v1/pages/actions")
             ),
             exact: true,
-            featureStatus: "BETA",
-            featureStatusLabel: FeatureStatusLabel.BETA,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS,
             icon: {
                 icon: <ProgressFlowIcon className="icon" fill="black" />
             },

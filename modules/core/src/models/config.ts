@@ -337,9 +337,27 @@ export interface FeatureAccessConfigInterface {
      */
     enabled?: boolean;
     /**
+     * Enable the feature flags.
+     */
+    featureFlags?: FeatureFlagsInterface[];
+    /**
      * Enable the tour option
      */
     tryittourenabled?: boolean;
+}
+
+/**
+ * Interface for feature flags.
+ */
+export interface FeatureFlagsInterface {
+    /**
+     * Identifier of the feature.
+     */
+    feature: string;
+    /**
+     * Value of the feature flag.
+     */
+    flag: string;
 }
 
 export interface DeprecatedFeatureInterface {
