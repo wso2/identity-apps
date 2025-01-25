@@ -169,7 +169,7 @@ export class ClaimManagementConstants {
             },
             {
                 attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction" ,
-                isAttributeButtonEnabled: true,
+                isAttributeButtonEnabled: false,
                 name: "System Schema",
                 uri: "urn:scim:wso2:schema"
             },
