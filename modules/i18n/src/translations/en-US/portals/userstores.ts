@@ -144,6 +144,10 @@ export const userstores: userstoresNS = {
             }
         },
         fetchUserstores: {
+            error: {
+                description: "{{description}}",
+                message: "Failed to fetch the user stores list"
+            },
             genericError: {
                 description: "An error occurred while fetching user stores.",
                 message: "Something went wrong"

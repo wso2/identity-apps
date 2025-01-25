@@ -117,6 +117,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             getSecretList: "",
             getSecretType: "",
             governanceConnectorCategories: "",
+            groupMetadata: "",
             groups: "",
             guests: "",
             guestsList: "",

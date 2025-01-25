@@ -29,6 +29,10 @@ export interface ApplicationsResourceEndpointsInterface {
      * Below route is to fetch the dcr configuration from server configurations api.
      */
     dcrConfiguration: string;
+    /**
+     * Below route is to fetch the group data from the application api.
+     */
+    groupMetadata: string;
 }
 
 export interface UpdateClaimConfiguration {

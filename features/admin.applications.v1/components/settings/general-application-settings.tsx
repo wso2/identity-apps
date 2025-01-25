@@ -41,7 +41,7 @@ import {
     ApplicationTemplateListItemInterface
 } from "../../models/application";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
-import { GeneralDetailsForm } from "../forms/general-details-form";
+import { GeneralDetailsForm } from "../forms/general-details-form/general-details-form";
 
 /**
  * Proptypes for the applications general details component.
