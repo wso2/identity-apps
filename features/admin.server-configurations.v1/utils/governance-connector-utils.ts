@@ -28,6 +28,7 @@ import camelCase from "lodash-es/camelCase";
 import { getConnectorCategories } from "../api";
 import { ServerConfigurationsConstants } from "../constants";
 import {
+    ConnectorOverrideConfig,
     ConnectorPropertyInterface,
     GovernanceCategoryForOrgsInterface, GovernanceConnectorCategoryInterface,
     GovernanceConnectorForOrgsInterface,
@@ -471,6 +472,56 @@ export class GovernanceConnectorUtils {
         }
 
         return fieldHint;
+    }
+
+    /**
+     * Get governance connector property overrides.
+     *
+     * @returns List of governance connector property overrides.
+     */
+    public static getConnectorPropertyOverrides(): ConnectorOverrideConfig[] {
+        return [
+            {
+                description: I18n.instance.t("governanceConnectors:connectorCategories" +
+                    ".loginAttemptsSecurity.connectors.siftConnector.properties.description"),
+                header: I18n.instance.t("governanceConnectors:connectorCategories" +
+                    ".loginAttemptsSecurity.connectors.siftConnector.properties.name"),
+                id: ServerConfigurationsConstants.SIFT_CONNECTOR_ID,
+                matchBy: "id"
+            }
+        ];
+    }
+
+    /**
+     * Override governance connector properties.
+     * @param connectors - List of governance connectors.
+     * @param overrides - List of connector overrides.
+     *
+     * @returns List of governance connectors with overridden properties.
+     */
+    public static overrideConnectorProperties(
+        connectors: GovernanceConnectorInterface[],
+        overrides: ConnectorOverrideConfig[]
+    ) {
+        return connectors.map((connector: GovernanceConnectorInterface) => {
+            const matchingOverride: ConnectorOverrideConfig = overrides.find((override: ConnectorOverrideConfig) => {
+                const matchBy: string = override.matchBy || "id";
+
+                return connector[matchBy] === override[matchBy];
+            });
+
+            if (matchingOverride) {
+                return {
+                    ...connector,
+                    ...Object.fromEntries(
+                        Object.entries(matchingOverride)
+                            .filter(([ key ]: [string, unknown]) => key !== "matchBy")
+                    )
+                };
+            }
+
+            return connector;
+        });
     }
 
     /**

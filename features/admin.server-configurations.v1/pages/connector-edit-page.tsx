@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -381,6 +381,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return "Multi Attribute Login";
             case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
                 return "Invite User to Set Password";
+            case ServerConfigurationsConstants.SIFT_CONNECTOR_ID:
+                return "Fraud Detection";
             default:
                 return connector?.friendlyName;
         }
@@ -441,6 +443,13 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
                 return "Allow users to set their own passwords during admin-initiated onboarding" +
                     " and configure related settings.";
+            case ServerConfigurationsConstants.SIFT_CONNECTOR_ID:
+                return (<>
+                    Configure Sift to detect and prevent fraudulent account activities.
+                    <DocumentationLink link={ getLink("manage.loginSecurity.siftConnector.learnMore") }>
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>);
             default:
                 return connector?.description
                     ? connector.description

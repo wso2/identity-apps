@@ -316,6 +316,16 @@ export interface governanceConnectorsNS {
                         };
                     };
                 };
+                siftConnector: {
+                    properties: {
+                        name: string;
+                        description: string;
+                        siftConnectorApiKey: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                };
             };
         };
         accountManagement: {
