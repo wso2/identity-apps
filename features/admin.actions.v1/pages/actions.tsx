@@ -36,6 +36,7 @@ import {
     AlertInterface,
     AlertLevels,
     FeatureAccessConfigInterface,
+    FeatureFlagsInterface,
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -225,44 +226,62 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
         }
     };
 
+    const isActionTypeEnabled = (actionType: string): boolean =>
+        actionsFeatureConfig["featureFlags"].some(
+            (featureFlag: FeatureFlagsInterface) => featureFlag.feature === actionType && featureFlag.flag ===
+            ActionsConstants.ACTION_BETA_LABEL
+        );
+
     const actionTypesCardsInfo = (): ActionTypeCardInterface[] => {
         return [
             {
                 description: t("actions:types.preIssueAccessToken.description.shortened"),
-                disabled: false,
+                disabled: !isActionTypeEnabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN),
                 featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
                     .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN,
                 heading: t("actions:types.preIssueAccessToken.heading"),
                 icon: <KeyFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH,
-                route: AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT")
+                route: isActionTypeEnabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN) ? AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT")
+                    : undefined
             },
             {
                 description: t("actions:types.preUpdatePassword.description.shortened"),
-                disabled: false,
+                disabled: !isActionTypeEnabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_UPDATE_PASSWORD),
                 featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PASSWORD,
                 heading: t("actions:types.preUpdatePassword.heading"),
                 icon: <PadlockAsteriskFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH,
-                route: AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT")
+                route: isActionTypeEnabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_UPDATE_PASSWORD) ? AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT")
+                    : undefined
             },
             {
                 description: t("actions:types.preUpdateProfile.description.shortened"),
-                disabled: true,
+                disabled: !isActionTypeEnabled(FeatureFlagConstants
+                    .FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PROFILE),
                 featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PROFILE,
                 heading: t("actions:types.preUpdateProfile.heading"),
                 icon: <ProfileFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH,
-                route: AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT")
+                route: isActionTypeEnabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_UPDATE_PASSWORD) ? AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT")
+                    : undefined
             },
             {
                 description: t("actions:types.preRegistration.description.shortened"),
-                disabled: true,
+                disabled: !isActionTypeEnabled(FeatureFlagConstants
+                    .FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_REGISTRATION),
                 featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_REGISTRATION,
                 heading: t("actions:types.preRegistration.heading"),
                 icon: <UserFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_REGISTRATION_URL_PATH,
-                route: AppConstants.getPaths().get("PRE_REGISTRATION_EDIT")
+                route: isActionTypeEnabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_UPDATE_PASSWORD) ? AppConstants.getPaths().get("PRE_UPDATE_REGISTRATION_EDIT")
+                    : undefined
             } ];
     };
 
