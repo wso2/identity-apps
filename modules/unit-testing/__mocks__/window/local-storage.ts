@@ -30,13 +30,13 @@ Object.defineProperty(window, "localStorage", {
                 store = {};
             },
             getItem: (key: string) => store[key] || null,
-            setItem: (key: string, value: string) => {
-                store[key] = value.toString();
-            },
             removeItem: (key: string) => {
                 delete store[key];
+            },
+            setItem: (key: string, value: string) => {
+                store[key] = value.toString();
             }
         };
     })(),
-    writable: true,
+    writable: true
 });
