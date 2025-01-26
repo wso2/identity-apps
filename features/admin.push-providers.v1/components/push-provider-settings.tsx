@@ -26,22 +26,49 @@ import { useTranslation } from "react-i18next";
 import { PushProviderAPIInterface, PushProviderPropertiesInterface } from "../models/push-providers";
 import { PushProviderTemplateInterface, PushProviderTemplateMetadataInterface } from "../models/templates";
 
+/**
+ * Proptypes for the PushProviderSettings component.
+ */
 interface PushProviderSettingsPropsInterface extends IdentifiableComponentInterface {
 
+    /**
+     * Push Provider interface
+     */
     pushProvider: PushProviderAPIInterface;
 
+    /**
+     * Push Provider template info
+     */
     pushProviderTemplateInfo: ExtensionTemplateCommonInterface;
 
+    /**
+     * Push Provider template data for API requests
+     */
     pushProviderTemplateData: PushProviderTemplateInterface;
 
+    /**
+     * Push Provider template metadata for form rendering
+     */
     pushProviderTemplateMetadata: PushProviderTemplateMetadataInterface;
 
+    /**
+     * Flag to determine if the data is still loading
+     */
     isLoading?: boolean;
 
+    /**
+     * Callback to delete the push provider
+     */
     handleDelete: () => void;
 
+    /**
+     * Callback to update the push provider
+     */
     handleUpdate: (data: PushProviderAPIInterface, callback?: () => void) => void;
 
+    /**
+     * Callback to create the push provider
+     */
     handleCreate: (data: PushProviderAPIInterface, callback?: () => void) => void;
 }
 
