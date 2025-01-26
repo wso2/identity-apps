@@ -102,6 +102,9 @@ import {
 } from "../../themes/default/assets/images/icons/outline-icons/remote-logging.svg";
 import { ReactComponent as PinIcon } from "../../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../../themes/default/assets/images/icons/plug-icon.svg";
+import {
+    ReactComponent as PushNotificationProviderIcon
+} from "../../themes/default/assets/images/icons/push-provider-icon.svg";
 import { ReactComponent as ScopeIcon } from "../../themes/default/assets/images/icons/scope.svg";
 import {
     ReactComponent as LockIconFilled
@@ -272,6 +275,7 @@ export type GetSidePanelIconsInterface = {
     organization: FunctionComponent | ReactNode,
     organizationLegacy: FunctionComponent | ReactNode,
     overview: FunctionComponent | ReactNode,
+    push: FunctionComponent | ReactNode,
     remoteFetch: FunctionComponent | ReactNode,
     remoteLogging: FunctionComponent | ReactNode,
     roles: FunctionComponent | ReactNode,
@@ -295,7 +299,6 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
     return {
         adminAdvisoryBanner: AdminAdvisoryBannerIcon,
         administrators: AdminOutlineIcon,
-        policyAdministration: AdminOutlineIcon,
         apiResources: CloudConnectionOutlineIcon,
         appLogs: IDPMetadataIcon,
         applicationRoles: ApplicationRolesIcon,
@@ -327,6 +330,8 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         organizationLegacy: LDAPOutlineLegacyIcon,
         organizationRoles: OrganizationRolesIcon,
         overview: DashboardIcon,
+        policyAdministration: AdminOutlineIcon,
+        push: PushNotificationProviderIcon,
         remoteFetch: CodeForkIcon,
         remoteLogging: RemoteLoggingIcon,
         roles: BriefcaseIcon,

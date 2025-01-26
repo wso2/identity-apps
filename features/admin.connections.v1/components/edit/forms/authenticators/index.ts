@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,3 +24,4 @@ export * from "./github-authenticator-form";
 export * from "./google-authenticator-form";
 export * from "./microsoft-authenticator-form";
 export * from "./sms-otp-authenticator-form";
+export * from "./push-authenticator-form";

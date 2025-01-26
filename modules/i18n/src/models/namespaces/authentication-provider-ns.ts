@@ -341,6 +341,45 @@ export interface AuthenticationProviderNS {
                     };
                 };
             };
+            push: {
+                hint: string;
+                allowedResendAttemptsCount: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                        invalid: string;
+                        range: string;
+                    };
+                    unit: string;
+                };
+                resendInterval: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                        invalid: string;
+                        range: string;
+                    };
+                    unit: string;
+                };
+                enableNumberChallenge: {
+                    hint: string;
+                    label: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+                enableProgressiveEnrollment: {
+                    hint: string;
+                    label: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+            };
             fido2: {
                 allowProgressiveEnrollment: {
                     hint: string;

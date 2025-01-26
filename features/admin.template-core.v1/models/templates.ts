@@ -123,5 +123,6 @@ export interface CategorizedExtensionTemplatesInterface extends ExtensionTemplat
  */
 export enum ResourceTypes {
     APPLICATIONS = "application",
-    CONNECTIONS = "connection"
+    CONNECTIONS = "connection",
+    NOTIFICATION_PROVIDERS = "notification-provider",
 }

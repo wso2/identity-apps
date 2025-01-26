@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -112,11 +112,11 @@ export const ApplicationRolesList = (props: ApplicationRolesListProps): ReactEle
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("extensions:console.applicationRoles.roleList.placeholder.title") }
+                    title={ t("applicationRoles:roleList.placeholder.title") }
                     subtitle={
                         [
-                            t("extensions:console.applicationRoles.roleList.placeholder.subTitle.0"),
-                            t("extensions:console.applicationRoles.roleList.placeholder.subTitle.1")
+                            t("applicationRoles:roleList.placeholder.subTitle.0"),
+                            t("applicationRoles:roleList.placeholder.subTitle.1")
                         ]
                     }
                 />

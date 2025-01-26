@@ -1,5 +1,59 @@
 # @wso2is/admin.actions.v1
 
+## 1.9.13
+
+### Patch Changes
+
+- Updated dependencies [[`b67d22c81d5c8be72c09abd36ed829a88fb22a4b`](https://github.com/wso2/identity-apps/commit/b67d22c81d5c8be72c09abd36ed829a88fb22a4b), [`985c81584c0d9d2a803b3ee12fc80d473249e341`](https://github.com/wso2/identity-apps/commit/985c81584c0d9d2a803b3ee12fc80d473249e341)]:
+  - @wso2is/react-components@2.9.0
+  - @wso2is/core@2.6.0
+  - @wso2is/i18n@2.17.0
+  - @wso2is/admin.core.v1@2.37.21
+  - @wso2is/admin.extensions.v1@2.36.38
+  - @wso2is/form@2.6.21
+  - @wso2is/admin.feature-gate.v1@1.4.113
+  - @wso2is/admin.rules.v1@0.1.21
+  - @wso2is/access-control@3.3.14
+
+## 1.9.12
+
+### Patch Changes
+
+- Updated dependencies [[`bbfb046145fb557911950c923dc7dd08507f6822`](https://github.com/wso2/identity-apps/commit/bbfb046145fb557911950c923dc7dd08507f6822)]:
+  - @wso2is/admin.extensions.v1@2.36.37
+  - @wso2is/i18n@2.16.12
+  - @wso2is/admin.core.v1@2.37.20
+  - @wso2is/admin.feature-gate.v1@1.4.112
+  - @wso2is/admin.rules.v1@0.1.20
+
+## 1.9.11
+
+### Patch Changes
+
+- Updated dependencies [[`9b6fe9141f5260d6e3760298badd6e0f6c7ec499`](https://github.com/wso2/identity-apps/commit/9b6fe9141f5260d6e3760298badd6e0f6c7ec499)]:
+  - @wso2is/react-components@2.8.27
+  - @wso2is/admin.core.v1@2.37.19
+  - @wso2is/form@2.6.20
+  - @wso2is/i18n@2.16.11
+  - @wso2is/admin.extensions.v1@2.36.36
+  - @wso2is/admin.feature-gate.v1@1.4.111
+  - @wso2is/admin.rules.v1@0.1.19
+
+## 1.9.10
+
+### Patch Changes
+
+- [#7405](https://github.com/wso2/identity-apps/pull/7405) [`9faae3a7080658aef7cd9cfa2183b266309b9874`](https://github.com/wso2/identity-apps/commit/9faae3a7080658aef7cd9cfa2183b266309b9874) Thanks [@osandamaleesha](https://github.com/osandamaleesha)! - Enable pre update password action in console
+
+* [#7403](https://github.com/wso2/identity-apps/pull/7403) [`f8fe4df85375eb2bae95fbd75a7031e5120debfb`](https://github.com/wso2/identity-apps/commit/f8fe4df85375eb2bae95fbd75a7031e5120debfb) Thanks [@malithie](https://github.com/malithie)! - Apply feature flags for actions.
+
+* Updated dependencies [[`f5eb7968aa0f8482f61b3d3fd8809dc82fb6457f`](https://github.com/wso2/identity-apps/commit/f5eb7968aa0f8482f61b3d3fd8809dc82fb6457f)]:
+  - @wso2is/i18n@2.16.10
+  - @wso2is/admin.core.v1@2.37.18
+  - @wso2is/admin.extensions.v1@2.36.35
+  - @wso2is/admin.feature-gate.v1@1.4.110
+  - @wso2is/admin.rules.v1@0.1.18
+
 ## 1.9.9
 
 ### Patch Changes

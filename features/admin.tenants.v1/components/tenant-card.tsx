@@ -68,20 +68,16 @@ export interface TenantCardProps extends LoadableComponentInterface {
  * @param props - Props injected to the component.
  * @returns Tenant Card component.
  */
-const TenantCard: FunctionComponent<TenantCardProps> = ({
-    isLoading,
-    tenant
-}: TenantCardProps): ReactElement => {
+const TenantCard: FunctionComponent<TenantCardProps> = ({ isLoading, tenant }: TenantCardProps): ReactElement => {
     const { t } = useTranslation();
 
-    const clientHost: string = useSelector((state: AppState) => state.config?.deployment?.clientHost);
     const isTenantDeletionEnabled: boolean = useSelector((state: AppState) => {
         return !state?.config?.ui?.features?.tenants?.disabledFeatures?.includes(
             TenantConstants.FEATURE_DICTIONARY.TENANT_DELETION
         );
     });
 
-    const { deleteTenant, disableTenant, enableTenant } = useTenants();
+    const { deleteTenant, disableTenant, enableTenant, navigateToTenantConsole } = useTenants();
 
     const [ anchorEl, setAnchorEl ] = useState<null | HTMLElement>(null);
 
@@ -93,16 +89,6 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({
 
     const handleClose = (): void => {
         setAnchorEl(null);
-    };
-
-    /**
-     * Builds a Console URL for the passed in tenant domain by replacing the tenant domain in the client host URL.
-     *
-     * @param tenantDomain - Tenant domain.
-     * @returns Built tenant console URL.
-     */
-    const buildTenantConsoleURL = (tenantDomain: string): string => {
-        return clientHost.replace(/\/t\/[^/]+\//, `/t/${tenantDomain}/`);
     };
 
     if (isLoading) {
@@ -218,9 +204,10 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({
                         >
                             <MenuItem
                                 className="tenant-card-footer-dropdown-item"
-                                onClick={ () =>
-                                    window.open(buildTenantConsoleURL(tenant.domain), "_blank", "noopener noreferrer")
-                                }
+                                onClick={ () => {
+                                    navigateToTenantConsole(tenant);
+                                    handleClose();
+                                } }
                             >
                                 <ListItemIcon>
                                     <ArrowUpRightFromSquareIcon />

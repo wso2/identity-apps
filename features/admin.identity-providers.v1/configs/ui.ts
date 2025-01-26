@@ -28,6 +28,7 @@ import { ReactComponent as GearsIcon } from "../../themes/default/assets/images/
 import MagicLinkLogo from "../../themes/default/assets/images/icons/magic-link-icon.svg";
 import MagnifierColoredIcon from "../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
 import TOTPIcon from "../../themes/default/assets/images/icons/outline-icons/clock-outline.svg";
+import PushIcon from "../../themes/default/assets/images/icons/push.svg";
 import { ReactComponent as ReportIcon } from "../../themes/default/assets/images/icons/report-icon.svg";
 import EmailOTPIcon from "../../themes/default/assets/images/icons/solid-icons/email-solid.svg";
 import {
@@ -94,6 +95,7 @@ export const getAuthenticatorIcons = (): any => {
         magicLink: MagicLinkLogo,
         microsoft: MicrosoftLogo,
         office365: Office365Logo,
+        push: PushIcon,
         sessionExecutor: ClockColoredIcon,
         "sms-otp-authenticator": SMSOTPIcon,
         smsOTP: SMSOTPIcon,
