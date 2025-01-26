@@ -239,7 +239,7 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             },
             {
                 description: t("actions:types.preUpdatePassword.description.shortened"),
-                disabled: true,
+                disabled: false,
                 featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PASSWORD,
                 heading: t("actions:types.preUpdatePassword.heading"),
                 icon: <PadlockAsteriskFlowIcon size="small" className="icon"/>,
