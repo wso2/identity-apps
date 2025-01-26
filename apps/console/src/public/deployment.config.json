@@ -1014,7 +1014,7 @@
             },
             "pushProviders": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "create": [
                         "internal_notification_senders_create"
@@ -1419,8 +1419,7 @@
         "hiddenApplicationTemplates": [],
         "hiddenAuthenticators": [
             "BasicAuthRequestPathAuthenticator",
-            "OAuthRequestPathAuthenticator",
-            "push-notification-authenticator"
+            "OAuthRequestPathAuthenticator"
         ],
         "hiddenConnectionTemplates": [
             "hypr-idp",
