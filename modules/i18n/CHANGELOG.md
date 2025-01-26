@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.16.10
+
+### Patch Changes
+
+- [#7404](https://github.com/wso2/identity-apps/pull/7404) [`f5eb7968aa0f8482f61b3d3fd8809dc82fb6457f`](https://github.com/wso2/identity-apps/commit/f5eb7968aa0f8482f61b3d3fd8809dc82fb6457f) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix minor issue in Sift connector update notification
+
 ## 2.16.9
 
 ### Patch Changes
