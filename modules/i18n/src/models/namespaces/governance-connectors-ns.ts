@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { NotificationItem } from "../common";
+
 export interface governanceConnectorsNS {
     notifications: {
         getConnectorCategories: {
@@ -323,6 +325,12 @@ export interface governanceConnectorsNS {
                         siftConnectorApiKey: {
                             label: string;
                             placeholder: string;
+                        };
+                    };
+                    notifications: {
+                        configurationUpdate: {
+                            success: NotificationItem;
+                            error: NotificationItem;
                         };
                     };
                 };
