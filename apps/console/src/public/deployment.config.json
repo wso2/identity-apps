@@ -258,8 +258,8 @@
             },
             "actions": {
                 "disabledFeatures": [
-                    "actions.filterPreRegistration",
-                    "actions.filterPreUpdateProfile"
+                    "actions.types.list.preRegistration",
+                    "actions.types.list.preUpdateProfile"
                 ],
                 "enabled": true,
                 "featureFlags": [

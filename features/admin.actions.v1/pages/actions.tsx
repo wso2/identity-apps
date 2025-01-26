@@ -149,13 +149,13 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
 
         switch (actionType) {
             case ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH:
-                return isFeatureEnabled(actionsFeatureConfig, "actions.filterPreIssueAccessToken");
+                return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preIssueAccessToken");
             case ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH:
-                return isFeatureEnabled(actionsFeatureConfig, "actions.filterPreUpdatePassword");
+                return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preUpdatePassword");
             case ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH:
-                return isFeatureEnabled(actionsFeatureConfig, "actions.filterPreUpdateProfile");
+                return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preUpdateProfile");
             case ActionsConstants.PRE_REGISTRATION_URL_PATH:
-                return isFeatureEnabled(actionsFeatureConfig, "actions.filterPreRegistration");
+                return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preRegistration");
             default:
                 return false;
         }
