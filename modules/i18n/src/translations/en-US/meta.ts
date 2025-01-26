@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -47,6 +47,7 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.AUTHENTICATION_FLOW_NAMESPACE,
         I18nModuleConstants.REMOTE_FETCH_NAMESPACE,
         I18nModuleConstants.ROLES_NAMESPACE,
+        I18nModuleConstants.APPLICATION_ROLES_NAMESPACE,
         I18nModuleConstants.SERVER_CONFIGS_NAMESPACE,
         I18nModuleConstants.SAML2_CONFIG_NAMESPACE,
         I18nModuleConstants.SESSION_MANAGEMENT_NAMESPACE,

@@ -171,7 +171,7 @@ const RolesList = (props: RolesListProps): ReactElement => {
                 icon: (): SemanticICONS =>  "add",
                 onClick: (e: SyntheticEvent, role: RoleBasicInterface): void =>
                     editRole(role),
-                popupText: (): string => t("extensions:console.applicationRoles.assignGroupWizard.heading"),
+                popupText: (): string => t("applicationRoles:assignGroupWizard.heading"),
                 renderer: "semantic-icon"
             }
         ];

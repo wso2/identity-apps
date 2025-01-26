@@ -170,6 +170,7 @@ export class Config {
             },
             load: "currentOnly", // lookup only current lang key(en-US). Prevents 404 from `en`.
             ns: [
+                I18nConstants.APPLICATION_ROLES_NAMESPACE,
                 I18nConstants.COMMON_NAMESPACE,
                 I18nConstants.CONSOLE_PORTAL_NAMESPACE,
                 I18nConstants.EXTENSIONS_NAMESPACE,

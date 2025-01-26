@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -156,6 +156,11 @@ export class I18nConstants {
      * Roles namespace.
      */
     public static readonly ROLES_NAMESPACE: string = I18nModuleConstants.ROLES_NAMESPACE;
+
+    /**
+     * Application Roles namespace.
+     */
+    public static readonly APPLICATION_ROLES_NAMESPACE: string = I18nModuleConstants.APPLICATION_ROLES_NAMESPACE;
 
     /**
      * Server configurations namespace.
@@ -319,6 +324,7 @@ export class I18nConstants {
         [ I18nConstants.AUTHENTICATION_FLOW_NAMESPACE, "portals" ],
         [ I18nConstants.REMOTE_FETCH_NAMESPACE, "portals" ],
         [ I18nConstants.ROLES_NAMESPACE, "portals" ],
+        [ I18nConstants.APPLICATION_ROLES_NAMESPACE, "portals" ],
         [ I18nConstants.SERVER_CONFIGS_NAMESPACE, "portals" ],
         [ I18nConstants.SAML2_CONFIG_NAMESPACE, "portals" ],
         [ I18nConstants.SESSION_MANAGEMENT_NAMESPACE, "portals" ],

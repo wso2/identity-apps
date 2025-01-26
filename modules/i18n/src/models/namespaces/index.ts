@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,6 +35,7 @@ export * from "./organizations-ns";
 export * from "./authentication-flow-ns";
 export * from "./remote-fetch-ns";
 export * from "./roles-ns";
+export * from "./application-roles-ns";
 export * from "./server-configs-ns";
 export * from "./saml2-config-ns";
 export * from "./session-management-ns";

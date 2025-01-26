@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -75,16 +75,16 @@ export const AuthenticatorGroupsList = (props: AuthenticatorGroupsListProps): Re
                     data-testid={ `${ componentId }-empty-list-empty-placeholder` }
                     action={ (
                         <LinkButton onClick={ navigateToConnections }>
-                            { t("extensions:console.applicationRoles.authenticatorGroups.goToConnections") }
+                            { t("applicationRoles:authenticatorGroups.goToConnections") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("extensions:console.applicationRoles.authenticatorGroups.placeholder.title") }
+                    title={ t("applicationRoles:authenticatorGroups.placeholder.title") }
                     subtitle={
                         [
-                            t("extensions:console.applicationRoles.authenticatorGroups.placeholder.subTitle.0"),
-                            t("extensions:console.applicationRoles.authenticatorGroups.placeholder.subTitle.1")
+                            t("applicationRoles:authenticatorGroups.placeholder.subTitle.0"),
+                            t("applicationRoles:authenticatorGroups.placeholder.subTitle.1")
                         ]
                     }
                 />

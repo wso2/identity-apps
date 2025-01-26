@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -126,6 +126,26 @@ export const console: ConsoleNS = {
                 subtitle: "Talk to the {{productName}} team to obtain personalized assistance."
             },
             helpDropdownLink: "Get Help"
+        },
+        marketingConsent: {
+            heading: "Let's stay in touch!",
+            description: "Subscribe to get the latest news and product updates straight to your inbox.",
+            actions: {
+                subscribe: "Subscribe",
+                decline: "Don't show this again"
+            },
+            notifications: {
+                errors: {
+                    fetch: {
+                        message: "Something went wrong",
+                        description: "Something went wrong when getting user consent data"
+                    },
+                    update: {
+                        message: "Something went wrong",
+                        description: "Something went wrong when updating user consent"
+                    }
+                }
+            }
         },
         modals: {
             editAvatarModal: {
