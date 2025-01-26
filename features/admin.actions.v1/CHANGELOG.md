@@ -1,5 +1,17 @@
 # @wso2is/admin.actions.v1
 
+## 1.9.14
+
+### Patch Changes
+
+- [#7412](https://github.com/wso2/identity-apps/pull/7412) [`a394cdc3a043fbc6445c305bd56aeb6b515db091`](https://github.com/wso2/identity-apps/commit/a394cdc3a043fbc6445c305bd56aeb6b515db091) Thanks [@osandamaleesha](https://github.com/osandamaleesha)! - Add action disabling through feature flag
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.22
+  - @wso2is/admin.extensions.v1@2.36.39
+  - @wso2is/admin.feature-gate.v1@1.4.114
+  - @wso2is/admin.rules.v1@0.1.22
+
 ## 1.9.13
 
 ### Patch Changes
