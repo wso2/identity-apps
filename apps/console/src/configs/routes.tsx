@@ -72,6 +72,9 @@ import FullScreenLayout from "../layouts/full-screen-layout";
 export const getAppViewRoutes = (): RouteInterface[] => {
     const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
 
+    const isPushProviderFeatureEnabled: boolean =
+        window["AppUtils"]?.getConfig()?.ui?.features?.pushProviders?.enabled;
+
     const defaultRoutes: RouteInterface[] = [
         {
             category: "extensions:manage.sidePanel.categories.userManagement",
@@ -736,9 +739,11 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             exact: true,
             icon: { icon: <EnvelopeGearIcon fill="black" className="icon" /> },
             id: "notificationChannels",
-            name: "Email & SMS",
+            name:  isPushProviderFeatureEnabled ? "Notification Channels" : "Email & SMS",
             order: 16,
-            path: `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms`,
+            path: isPushProviderFeatureEnabled
+                ? AppConstants.getPaths().get("NOTIFICATION_CHANNELS")
+                : AppConstants.getPaths().get("EMAIL_AND_SMS"),
             protected: true,
             showOnSidePanel: true
         },
@@ -771,6 +776,22 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             name: "SMS",
             order: 17,
             path: AppConstants.getPaths().get("SMS_PROVIDER"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
+            category: "extensions:develop.sidePanel.categories.pushProvider",
+            component: lazy(() =>
+                import("@wso2is/admin.push-providers.v1/pages/push-providers")
+            ),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().push
+            },
+            id: "pushProviders",
+            name: "Push Notification Provider",
+            order: 18,
+            path: AppConstants.getPaths().get("PUSH_PROVIDER"),
             protected: true,
             showOnSidePanel: false
         },
@@ -1287,6 +1308,17 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     id: "pre-issue-access-token",
                     name: "Pre Issue Access Token",
                     path: AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.actions.v1/pages/action-configuration-page")
+                    ),
+                    exact: true,
+                    id: "pre-update-password",
+                    name: "Pre Update Password",
+                    path: AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT"),
                     protected: true,
                     showOnSidePanel: false
                 }

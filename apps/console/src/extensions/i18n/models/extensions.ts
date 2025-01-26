@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,221 +20,6 @@ import { FormAttributes, Notification, NotificationItem } from "@wso2is/i18n";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Extensions {
-    console: {
-        application: {
-            quickStart: {
-                technologySelectionWrapper: {
-                    subHeading: string;
-                    otherTechnology: string;
-                };
-                addUserOption: {
-                    description: string;
-                    hint: string;
-                    message: string;
-                };
-                spa: {
-                    customConfig: {
-                        heading: string;
-                        anySPATechnology: string;
-                        configurations: string;
-                        protocolConfig: string;
-                        serverEndpoints: string;
-                        clientId: string;
-                        baseUrl: string;
-                        redirectUrl: string;
-                        scope: string;
-                    };
-                    techSelection: {
-                        heading: string;
-                    };
-                };
-                twa: {
-                    common: {
-                        orAnyTechnology: string;
-                    };
-                    oidc: {
-                        customConfig: {
-                            heading: string;
-                            clientSecret: string;
-                        };
-                    };
-                    saml: {
-                        customConfig: {
-                            heading: string;
-                            issuer: string;
-                            acsUrl: string;
-                            idpEntityId: string;
-                            idpUrl: string;
-                        };
-                    };
-                };
-                m2m: {
-                    customConfig: {
-                        tokenEndpoint: string;
-                        tokenRequest: string;
-                        configurations: string;
-                    };
-                }
-            };
-        };
-        applicationRoles: {
-            assign: string;
-            assignGroupWizard: {
-                heading: string;
-                subHeading: string;
-            };
-            authenticatorGroups: {
-                goToConnections: string;
-                groupsList: {
-                    assignGroups: string;
-                    notifications: {
-                        fetchAssignedGroups: Notification;
-                        updateAssignedGroups: Notification;
-                    }
-                };
-                hint: string;
-                placeholder: {
-                    title: string;
-                    subTitle: {
-                        0: string;
-                        1: string;
-                    };
-                };
-            };
-            connectorGroups: {
-                placeholder: {
-                    title: string;
-                    subTitle: {
-                        0: string;
-                        1: string;
-                    };
-                };
-            };
-            heading: string;
-            subHeading: string;
-            roleGroups: {
-                assignGroup: string;
-                searchGroup: string;
-                placeholder: {
-                    title: string;
-                    subTitle: {
-                        0: string;
-                        1: string;
-                    };
-                };
-                notifications: {
-                    addGroups: Notification;
-                    fetchGroups: Notification;
-                };
-                confirmation: {
-                    deleteRole: {
-                        message: string;
-                        content: string;
-                    };
-                };
-            };
-            roleList: {
-                placeholder: {
-                    title: string;
-                    subTitle: {
-                        0: string;
-                        1: string;
-                    };
-                };
-            };
-            roleMapping: {
-                heading: string;
-                subHeading: string;
-                notifications: {
-                    sharedApplication: {
-                        error: NotificationItem;
-                    }
-                    updateRole: Notification;
-                };
-            };
-            roles: {
-                heading: string;
-                subHeading: string;
-                goBackToRoles: string;
-                orgRoles: {
-                    heading: string;
-                    subHeading: string;
-                };
-            };
-            searchApplication: string;
-        };
-        identityProviderGroups: {
-            claimConfigs: {
-                groupAttributeLabel: string;
-                groupAttributeHint: string;
-                groupAttributePlaceholder: string;
-                groupAttributeMessage1: string;
-                groupAttributeMessage2: string;
-                groupAttributeMessageOIDC: string;
-                groupAttributeMessageSAML: string;
-                notifications: {
-                    fetchConfigs: Notification;
-                };
-            };
-            createGroupWizard: {
-                groupNameLabel: string;
-                groupNamePlaceHolder: string;
-                groupNameHint: string;
-                subHeading: string;
-                notifications: {
-                    createIdentityProviderGroup: Notification;
-                    duplicateGroupError: Notification;
-                };
-            };
-            groupsList: {
-                confirmation: {
-                    deleteGroup: {
-                        message: string;
-                        content: string;
-                    };
-                };
-                newGroup: string;
-                noGroupsAvailable: string;
-                notifications: {
-                    fetchGroups: Notification;
-                    deleteGroup: Notification;
-                };
-                searchByName: string;
-            };
-        };
-        marketingConsent: {
-            heading: string;
-            description: string;
-            actions: {
-                subscribe: string;
-                decline: string;
-            },
-            notifications: {
-                errors: {
-                    fetch: {
-                        message: string;
-                        description: string;
-                    };
-                    update: {
-                        message: string;
-                        description: string;
-                    };
-                };
-            };
-        };
-        organizationInfo: {
-            heading: string;
-            subHeading: string;
-            orgId: {
-                label: string;
-                heading: string;
-                subHeading: string;
-            };
-            notifications: {
-                getConfiguration: Notification;
-            }
-        }
-    };
     develop: {
         apiResource: {
             pageHeader: {
@@ -1967,6 +1752,29 @@ export interface Extensions {
                     };
                 };
             };
+            pushAuth: {
+                quickStart: {
+                    addLoginModal: {
+                        heading: string;
+                        subHeading: string;
+                    };
+                    connectApp: {
+                        description: string;
+                    };
+                    heading: string;
+                    subHeading: string;
+                    steps: {
+                        selectApplication: {
+                            content: string;
+                            heading: string;
+                        };
+                        selectPushAuth: {
+                            content: string;
+                            heading: string;
+                        };
+                    };
+                }
+            },
             facebook: {
                 quickStart: {
                     addLoginModal: {

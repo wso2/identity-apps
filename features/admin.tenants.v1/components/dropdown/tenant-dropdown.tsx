@@ -263,11 +263,9 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             }).catch(() => {
                 dispatch(
                     addAlert({
-                        description: t("extensions:console.organizationInfo." +
-                        "notifications.getConfiguration.error.description"),
+                        description: t("organizations:notifications.getConfiguration.error.description"),
                         level: AlertLevels.ERROR,
-                        message: t("extensions:console.organizationInfo." +
-                        "notifications.getConfiguration.error.message")
+                        message: t("organizations:notifications.getConfiguration.error.message")
                     })
                 );
             });

@@ -258,8 +258,8 @@
             },
             "actions": {
                 "disabledFeatures": [
-                    "actions.filterPreRegistration",
-                    "actions.filterPreUpdateProfile"
+                    "actions.types.list.preRegistration",
+                    "actions.types.list.preUpdateProfile"
                 ],
                 "enabled": true,
                 "featureFlags": [
@@ -268,19 +268,19 @@
                         "flag": ""
                     },
                     {
-                        "feature": "actions.create.types.list.preIssueAccessToken",
+                        "feature": "actions.types.list.preIssueAccessToken",
                         "flag": ""
                     },
                     {
-                        "feature": "actions.create.types.list.preUpdatePassword",
+                        "feature": "actions.types.list.preUpdatePassword",
                         "flag": ""
                     },
                     {
-                        "feature": "actions.create.types.list.preUpdateProfile",
+                        "feature": "actions.types.list.preUpdateProfile",
                         "flag": ""
                     },
                     {
-                        "feature": "actions.create.types.list.preRegistration",
+                        "feature": "actions.types.list.preRegistration",
                         "flag": ""
                     }
                 ],
@@ -1012,6 +1012,34 @@
                     "update": []
                 }
             },
+            "pushProviders": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "features": [
+                    {
+                        "feature": "pushProviders",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "pushProviders.templates",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    "create": [
+                        "internal_notification_senders_create"
+                    ],
+                    "delete": [
+                        "internal_notification_senders_delete"
+                    ],
+                    "read": [
+                        "internal_notification_senders_view"
+                    ],
+                    "update": [
+                        "internal_notification_senders_update"
+                    ]
+                }
+             },
             "remoteFetchConfig": {
                 "disabledFeatures": [],
                 "enabled": false,

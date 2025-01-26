@@ -24,6 +24,7 @@ import { AppState } from "@wso2is/admin.core.v1";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import { RuleExecuteCollectionWithoutIdInterface, RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { getRuleInstanceValue, RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalForm, FormRenderProps, FormSpy } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
@@ -108,7 +109,8 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
     } = useGetRulesMeta(actionTypeApiPath);
 
     // TODO: Temporary flag to show/hide the rule component.
-    const showRuleComponent: boolean = false;
+    const showRuleComponent: boolean = isFeatureEnabled(
+        actionsFeatureConfig, "actions.types.preIssueAccessToken.edit.rule");
 
     /**
      * The following useEffect is used to set the current Action Authentication Type.

@@ -1,5 +1,77 @@
 # @wso2is/admin.validation.v1
 
+## 2.27.50
+
+### Patch Changes
+
+- Updated dependencies [[`bbfb046145fb557911950c923dc7dd08507f6822`](https://github.com/wso2/identity-apps/commit/bbfb046145fb557911950c923dc7dd08507f6822)]:
+  - @wso2is/admin.extensions.v1@2.36.37
+  - @wso2is/i18n@2.16.12
+  - @wso2is/admin.core.v1@2.37.20
+  - @wso2is/admin.organizations.v1@2.26.112
+  - @wso2is/admin.roles.v2@2.27.56
+  - @wso2is/admin.groups.v1@2.27.22
+  - @wso2is/admin.server-configurations.v1@2.32.37
+  - @wso2is/admin.users.v1@2.30.22
+
+## 2.27.49
+
+### Patch Changes
+
+- Updated dependencies [[`9b6fe9141f5260d6e3760298badd6e0f6c7ec499`](https://github.com/wso2/identity-apps/commit/9b6fe9141f5260d6e3760298badd6e0f6c7ec499)]:
+  - @wso2is/react-components@2.8.27
+  - @wso2is/admin.core.v1@2.37.19
+  - @wso2is/theme@2.6.3
+  - @wso2is/form@2.6.20
+  - @wso2is/i18n@2.16.11
+  - @wso2is/admin.extensions.v1@2.36.36
+  - @wso2is/admin.organizations.v1@2.26.111
+  - @wso2is/admin.roles.v2@2.27.55
+  - @wso2is/admin.server-configurations.v1@2.32.36
+  - @wso2is/admin.users.v1@2.30.21
+  - @wso2is/admin.groups.v1@2.27.21
+  - @wso2is/dynamic-forms@2.4.27
+
+## 2.27.48
+
+### Patch Changes
+
+- Updated dependencies [[`f5eb7968aa0f8482f61b3d3fd8809dc82fb6457f`](https://github.com/wso2/identity-apps/commit/f5eb7968aa0f8482f61b3d3fd8809dc82fb6457f)]:
+  - @wso2is/admin.server-configurations.v1@2.32.35
+  - @wso2is/i18n@2.16.10
+  - @wso2is/admin.core.v1@2.37.18
+  - @wso2is/admin.extensions.v1@2.36.35
+  - @wso2is/admin.roles.v2@2.27.54
+  - @wso2is/admin.users.v1@2.30.20
+  - @wso2is/admin.groups.v1@2.27.20
+  - @wso2is/admin.organizations.v1@2.26.110
+
+## 2.27.47
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.17
+  - @wso2is/admin.extensions.v1@2.36.34
+  - @wso2is/admin.server-configurations.v1@2.32.34
+  - @wso2is/admin.users.v1@2.30.19
+  - @wso2is/admin.groups.v1@2.27.19
+  - @wso2is/admin.organizations.v1@2.26.109
+  - @wso2is/admin.roles.v2@2.27.53
+
+## 2.27.46
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.16
+  - @wso2is/admin.extensions.v1@2.36.33
+  - @wso2is/admin.groups.v1@2.27.18
+  - @wso2is/admin.organizations.v1@2.26.108
+  - @wso2is/admin.roles.v2@2.27.52
+  - @wso2is/admin.server-configurations.v1@2.32.33
+  - @wso2is/admin.users.v1@2.30.18
+
 ## 2.27.45
 
 ### Patch Changes

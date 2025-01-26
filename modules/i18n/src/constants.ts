@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -162,6 +162,11 @@ export class I18nModuleConstants {
     public static readonly ROLES_NAMESPACE: string = "roles";
 
     /**
+     * Roles namespace.
+     */
+    public static readonly APPLICATION_ROLES_NAMESPACE: string = "applicationRoles";
+
+    /**
      * Server configurations namespace.
      */
     public static readonly SERVER_CONFIGS_NAMESPACE: string = "serverConfigs";
@@ -190,6 +195,11 @@ export class I18nModuleConstants {
      * SMS Providers namespace.
      */
     public static readonly SMS_PROVIDERS_NAMESPACE: string = "smsProviders";
+
+    /**
+     * Push Templates namespace.
+     */
+    public static readonly PUSH_PROVIDERS_NAMESPACE: string = "pushProviders";
 
     /**
      * SMS Templates namespace.

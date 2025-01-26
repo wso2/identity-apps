@@ -1,5 +1,23 @@
 # @wso2is/i18n
 
+## 2.16.12
+
+### Patch Changes
+
+- [#7320](https://github.com/wso2/identity-apps/pull/7320) [`bbfb046145fb557911950c923dc7dd08507f6822`](https://github.com/wso2/identity-apps/commit/bbfb046145fb557911950c923dc7dd08507f6822) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Move console related i18n extensions to @wso2is/i18n module
+
+## 2.16.11
+
+### Patch Changes
+
+- [#7370](https://github.com/wso2/identity-apps/pull/7370) [`9b6fe9141f5260d6e3760298badd6e0f6c7ec499`](https://github.com/wso2/identity-apps/commit/9b6fe9141f5260d6e3760298badd6e0f6c7ec499) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Add UI support for Push notification based authentication
+
+## 2.16.10
+
+### Patch Changes
+
+- [#7404](https://github.com/wso2/identity-apps/pull/7404) [`f5eb7968aa0f8482f61b3d3fd8809dc82fb6457f`](https://github.com/wso2/identity-apps/commit/f5eb7968aa0f8482f61b3d3fd8809dc82fb6457f) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix minor issue in Sift connector update notification
+
 ## 2.16.9
 
 ### Patch Changes

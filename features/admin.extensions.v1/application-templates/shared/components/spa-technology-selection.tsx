@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -50,7 +50,7 @@ interface TechnologyInterface<T> extends TestableComponentInterface, Identifiabl
  */
 export const SPATechnologySelection: <T>(
     props: SPATechnologySelectionPropsInterface<T>
-) => ReactElement = <T extends unknown>(
+) => ReactElement = <T,>(
     props: SPATechnologySelectionPropsInterface<T>
 ): ReactElement => {
 
@@ -71,7 +71,7 @@ export const SPATechnologySelection: <T>(
         >
             <Card.Content textAlign="center">
                 <Text muted>
-                    { t("extensions:console.application.quickStart.spa.techSelection.heading") }
+                    { t("applications:quickStart.spa.techSelection.heading") }
                 </Text>
             </Card.Content>
             <Divider hidden/>

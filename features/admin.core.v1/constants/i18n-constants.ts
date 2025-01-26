@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -158,6 +158,11 @@ export class I18nConstants {
     public static readonly ROLES_NAMESPACE: string = I18nModuleConstants.ROLES_NAMESPACE;
 
     /**
+     * Application Roles namespace.
+     */
+    public static readonly APPLICATION_ROLES_NAMESPACE: string = I18nModuleConstants.APPLICATION_ROLES_NAMESPACE;
+
+    /**
      * Server configurations namespace.
      */
     public static readonly SERVER_CONFIGS_NAMESPACE: string = I18nModuleConstants.SERVER_CONFIGS_NAMESPACE;
@@ -186,6 +191,11 @@ export class I18nConstants {
      * SMS Providers namespace.
      */
     public static readonly SMS_PROVIDERS_NAMESPACE: string = I18nModuleConstants.SMS_PROVIDERS_NAMESPACE;
+
+    /**
+     * Push Providers namespace.
+     */
+    public static readonly PUSH_PROVIDERS_NAMESPACE: string = I18nModuleConstants.PUSH_PROVIDERS_NAMESPACE;
 
     /**
      * SMS Templates namespace.
@@ -314,6 +324,7 @@ export class I18nConstants {
         [ I18nConstants.AUTHENTICATION_FLOW_NAMESPACE, "portals" ],
         [ I18nConstants.REMOTE_FETCH_NAMESPACE, "portals" ],
         [ I18nConstants.ROLES_NAMESPACE, "portals" ],
+        [ I18nConstants.APPLICATION_ROLES_NAMESPACE, "portals" ],
         [ I18nConstants.SERVER_CONFIGS_NAMESPACE, "portals" ],
         [ I18nConstants.SAML2_CONFIG_NAMESPACE, "portals" ],
         [ I18nConstants.SESSION_MANAGEMENT_NAMESPACE, "portals" ],
@@ -345,7 +356,8 @@ export class I18nConstants {
         [ I18nConstants.CUSTOM_AUTHENTICATION_NAMESPACE, "portals" ],
         [ I18nConstants.POLICY_ADMINISTRATION_NAMESPACE, "portals" ],
         [ I18nConstants.REMOTE_USER_STORES_NAMESPACE, "portals" ],
-        [ I18nConstants.RULES_NAMESPACE, "portals" ]
+        [ I18nConstants.RULES_NAMESPACE, "portals" ],
+        [ I18nConstants.PUSH_PROVIDERS_NAMESPACE, "portals" ]
     ]);
 
     /**

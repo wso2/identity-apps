@@ -192,7 +192,7 @@ const ApplicationRolesPage = (props: ApplicationRolesPageInterface): ReactElemen
             iconPosition="left"
             onChange={ (e: ChangeEvent<HTMLInputElement>) => searchApplications(e.target.value) }
             value={ searchQuery }
-            placeholder={ t("extensions:console.applicationRoles.searchApplication") }
+            placeholder={ t("applicationRoles:searchApplication") }
             floated="left"
             style={ { width: 300 } }
             transparent
@@ -213,13 +213,13 @@ const ApplicationRolesPage = (props: ApplicationRolesPageInterface): ReactElemen
 
     return (
         <PageLayout
-            title={ t("extensions:console.applicationRoles.heading") }
-            description={ t("extensions:console.applicationRoles.subHeading") }
-            pageTitle={ t("extensions:console.applicationRoles.heading") }
+            title={ t("applicationRoles:heading") }
+            description={ t("applicationRoles:subHeading") }
+            pageTitle={ t("applicationRoles:heading") }
             backButton={ isSubOrg
                 ? {
                     onClick: handleBackButtonClick,
-                    text: t("extensions:console.applicationRoles.roles.goBackToRoles")
+                    text: t("applicationRoles:roles.goBackToRoles")
                 }: null
             }
         >

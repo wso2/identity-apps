@@ -278,6 +278,18 @@ export const governanceConnectors: governanceConnectorsNS = {
                             label: "Sift API Key",
                             placeholder: "Enter Sift API Key"
                         }
+                    },
+                    notifications: {
+                        configurationUpdate: {
+                            error: {
+                                description: "An error occurred while updating the Sift configuration.",
+                                message: "Update Error"
+                            },
+                            success: {
+                                description: "Successfully updated the Sift configuration.",
+                                message: "Update Successful"
+                            }
+                        }
                     }
                 }
             }
