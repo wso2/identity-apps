@@ -1,5 +1,15 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.4.109
+
+### Patch Changes
+
+- [#7401](https://github.com/wso2/identity-apps/pull/7401) [`dcb12dbb4a3bd97ba51e0affdc255d35496db14f`](https://github.com/wso2/identity-apps/commit/dcb12dbb4a3bd97ba51e0affdc255d35496db14f) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Update feature flags keys in actions feature
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.17
+  - @wso2is/admin.organizations.v1@2.26.109
+
 ## 1.4.108
 
 ### Patch Changes
