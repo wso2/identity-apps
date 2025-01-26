@@ -32,10 +32,10 @@ class FeatureFlagConstants {
      */
     public static readonly FEATURE_FLAG_KEY_MAP: { [key: string]: string } = {
         ACTIONS: "actions",
-        ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN: "actions.create.types.list.preIssueAccessToken",
-        ACTIONS_TYPES_PRE_REGISTRATION: "actions.create.types.list.preRegistration",
-        ACTIONS_TYPES_PRE_UPDATE_PASSWORD: "actions.create.types.list.preUpdatePassword",
-        ACTIONS_TYPES_PRE_UPDATE_PROFILE: "actions.create.types.list.preUpdateProfile",
+        ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN: "actions.types.preIssueAccessToken",
+        ACTIONS_TYPES_PRE_REGISTRATION: "actions.types.preRegistration",
+        ACTIONS_TYPES_PRE_UPDATE_PASSWORD: "actions.types.preUpdatePassword",
+        ACTIONS_TYPES_PRE_UPDATE_PROFILE: "actions.types.preUpdateProfile",
         APPLICATIONS: "application",
         APPLICATION_BRANDING_TEXT: "branding.stylesAndText.application.text",
         APPLICATION_TEMPLATES: "applications.templates",
