@@ -23,8 +23,13 @@ import Navbar from "@oxygen-ui/react/Navbar";
 import Snackbar from "@oxygen-ui/react/Snackbar";
 import { AlertInterface, AnnouncementBannerInterface, ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
-import { RouteUtils as CommonRouteUtils, CommonUtils, CookieStorageUtils, RouteUtils } from "@wso2is/core/utils";
-import { I18n, LanguageChangeException } from "@wso2is/i18n";
+import {
+    RouteUtils as CommonRouteUtils,
+    CommonUtils, CookieStorageUtils,
+    RouteUtils,
+    URLUtils
+} from "@wso2is/core/utils";
+import { I18n, I18nModuleConstants, LanguageChangeException } from "@wso2is/i18n";
 import { Alert, ContentLoader, EmptyPlaceholder, ErrorBoundary, LinkButton } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
@@ -110,40 +115,15 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
         });
 
         const cookieSupportedLanguage: string = language.replace("-", "_");
-        const domain: string = ";domain=" + extractDomainFromHost();
-        const cookieExpiryTime: number = 30;
-        const expires: string = "; expires=" + new Date().setTime(cookieExpiryTime * 24 * 60 * 60 * 1000);
-        const cookieString: string = "ui_lang=" + (cookieSupportedLanguage || "") + expires + domain + "; path=/";
 
-        CookieStorageUtils.setItem(cookieString);
+        CookieStorageUtils.setCookie(
+            I18nModuleConstants.PREFERENCE_STORAGE_KEY,
+            cookieSupportedLanguage,
+            { days: 30 },
+            URLUtils.getDomain(window.location.href)
+        );
     };
 
-    /**
-     * Extracts the domain from the hostname.
-     * If parsing fails, undefined will be returned.
-     *
-     * @returns current domain
-     */
-    const extractDomainFromHost = (): string => {
-        let domain: string = undefined;
-
-        /**
-         * Extract the domain from the hostname.
-         * Ex: If console.wso2-is.com is parsed, `wso2-is.com` will be set as the domain.
-         */
-        try {
-            const hostnameTokens: string[] = window.location.hostname.split(".");
-
-            if (hostnameTokens.length > 1) {
-                domain = hostnameTokens.slice(hostnameTokens.length - 2, hostnameTokens.length).join(".");
-            }
-        } catch (e) {
-            // Couldn't parse the hostname. Log the error in debug mode.
-            // Tracked here https://github.com/wso2/product-is/issues/11650.
-        }
-
-        return domain;
-    };
 
     /**
      * Performs pre-requisites for the side panel items visibility.

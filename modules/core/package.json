@@ -99,6 +99,7 @@
         "moment": "^2.29.4",
         "node-forge": "^0.10.0",
         "react-notification-system": "^0.4.0",
+        "tldts": "^6.1.73",
         "ts-jest": "^29.1.2",
         "ua-parser-js": "0.7.28"
     },
