@@ -162,6 +162,11 @@ export class I18nModuleConstants {
     public static readonly ROLES_NAMESPACE: string = "roles";
 
     /**
+     * Roles namespace.
+     */
+    public static readonly APPLICATION_ROLES_NAMESPACE: string = "applicationRoles";
+
+    /**
      * Server configurations namespace.
      */
     public static readonly SERVER_CONFIGS_NAMESPACE: string = "serverConfigs";

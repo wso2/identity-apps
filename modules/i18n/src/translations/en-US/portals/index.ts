@@ -37,6 +37,7 @@ export * from "./organizations";
 export * from "./authentication-flow";
 export * from "./remote-fetch";
 export * from "./roles";
+export * from "./application-roles";
 export * from "./server-configs";
 export * from "./saml2-config";
 export * from "./session-management";

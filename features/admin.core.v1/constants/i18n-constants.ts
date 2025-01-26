@@ -158,6 +158,11 @@ export class I18nConstants {
     public static readonly ROLES_NAMESPACE: string = I18nModuleConstants.ROLES_NAMESPACE;
 
     /**
+     * Application Roles namespace.
+     */
+    public static readonly APPLICATION_ROLES_NAMESPACE: string = I18nModuleConstants.APPLICATION_ROLES_NAMESPACE;
+
+    /**
      * Server configurations namespace.
      */
     public static readonly SERVER_CONFIGS_NAMESPACE: string = I18nModuleConstants.SERVER_CONFIGS_NAMESPACE;
@@ -314,6 +319,7 @@ export class I18nConstants {
         [ I18nConstants.AUTHENTICATION_FLOW_NAMESPACE, "portals" ],
         [ I18nConstants.REMOTE_FETCH_NAMESPACE, "portals" ],
         [ I18nConstants.ROLES_NAMESPACE, "portals" ],
+        [ I18nConstants.APPLICATION_ROLES_NAMESPACE, "portals" ],
         [ I18nConstants.SERVER_CONFIGS_NAMESPACE, "portals" ],
         [ I18nConstants.SAML2_CONFIG_NAMESPACE, "portals" ],
         [ I18nConstants.SESSION_MANAGEMENT_NAMESPACE, "portals" ],
