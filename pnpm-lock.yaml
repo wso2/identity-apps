@@ -13490,6 +13490,9 @@ importers:
       '@wso2is/admin.core.v1':
         specifier: ^2.34.26
         version: link:../admin.core.v1
+      '@wso2is/admin.feature-gate.v1':
+        specifier: ^1.4.109
+        version: link:../admin.feature-gate.v1
       '@wso2is/admin.template-core.v1':
         specifier: ^1.4.26
         version: link:../admin.template-core.v1

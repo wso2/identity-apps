@@ -1015,6 +1015,16 @@
             "pushProviders": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "features": [
+                    {
+                        "feature": "pushProviders",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "pushProviders.templates",
+                        "flag": ""
+                    }
+                ],
                 "scopes": {
                     "create": [
                         "internal_notification_senders_create"

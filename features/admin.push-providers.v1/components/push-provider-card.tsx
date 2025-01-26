@@ -19,17 +19,21 @@
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Typography from "@oxygen-ui/react/Typography";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
+import useFeatureFlag from "@wso2is/admin.feature-gate.v1/hooks/use-feature-flag";
 import {
     CustomAttributeInterface,
     ExtensionTemplateListInterface,
     ResourceTypes
 } from "@wso2is/admin.template-core.v1/models/templates";
 import { ExtensionTemplateManagementUtils } from "@wso2is/admin.template-core.v1/utils/templates";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FeatureFlagsInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import classnames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import "./push-provider-card.scss";
+import { useSelector } from "react-redux";
 import { PushProviderConstants } from "../constants/push-provider-constants";
 import { PushProviderTemplateFeatureStatus } from "../models/templates";
 
@@ -60,6 +64,14 @@ const PushProviderCard: FunctionComponent<PushProviderCardPropsInterface> = ({
 
     const { t } = useTranslation();
 
+    const pushProviderFeatureFlagsConfig: FeatureFlagsInterface[] = useSelector(
+        (state: AppState) => state.config.ui.features.pushProviders.featureFlags
+    );
+
+    const featureFlag: string = useFeatureFlag(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_TEMPLATES,
+        pushProviderFeatureFlagsConfig
+    );
+
     const featureStatus: PushProviderTemplateFeatureStatus = useMemo(() => {
         if (!template?.customAttributes
             || !Array.isArray(template?.customAttributes)
@@ -71,6 +83,10 @@ const PushProviderCard: FunctionComponent<PushProviderCardPropsInterface> = ({
             (property: CustomAttributeInterface) =>
                 property?.key === PushProviderConstants.FEATURE_STATUS_ATTRIBUTE_KEY
         );
+
+        if (featureFlag === "TRUE") {
+            return property?.value as PushProviderTemplateFeatureStatus;
+        }
 
         return property?.value;
     }, [ template ]);
