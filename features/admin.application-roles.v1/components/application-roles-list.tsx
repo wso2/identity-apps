@@ -112,11 +112,11 @@ export const ApplicationRolesList = (props: ApplicationRolesListProps): ReactEle
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("extensions:console.applicationRoles.roleList.placeholder.title") }
+                    title={ t("applicationRoles:roleList.placeholder.title") }
                     subtitle={
                         [
-                            t("extensions:console.applicationRoles.roleList.placeholder.subTitle.0"),
-                            t("extensions:console.applicationRoles.roleList.placeholder.subTitle.1")
+                            t("applicationRoles:roleList.placeholder.subTitle.0"),
+                            t("applicationRoles:roleList.placeholder.subTitle.1")
                         ]
                     }
                 />

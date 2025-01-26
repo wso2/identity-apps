@@ -385,7 +385,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                 data-testid={ `${testId}-page-layout` }
                 backButton={ {
                     onClick: handleBackButtonClick,
-                    text: t("extensions:console.applicationRoles.roles.goBackToRoles")
+                    text: t("applicationRoles:roles.goBackToRoles")
                 } }
             >
                 { !isLoading ? (

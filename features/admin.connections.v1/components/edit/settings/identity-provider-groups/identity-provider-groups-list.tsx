@@ -236,11 +236,11 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                         ) }
                         image={ getEmptyPlaceholderIllustrations().newList }
                         imageSize="tiny"
-                        title={ t("extensions:console.applicationRoles.connectorGroups.placeholder.title") }
+                        title={ t("applicationRoles:connectorGroups.placeholder.title") }
                         subtitle={
                             [
-                                t("extensions:console.applicationRoles.connectorGroups.placeholder.subTitle.0"),
-                                t("extensions:console.applicationRoles.connectorGroups.placeholder.subTitle.1")
+                                t("applicationRoles:connectorGroups.placeholder.subTitle.0"),
+                                t("applicationRoles:connectorGroups.placeholder.subTitle.1")
                             ]
                         }
                     />
