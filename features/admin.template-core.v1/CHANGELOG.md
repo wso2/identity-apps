@@ -1,5 +1,12 @@
 # @wso2is/admin.template-core.v1
 
+## 1.5.66
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.20
+
 ## 1.5.65
 
 ### Patch Changes
