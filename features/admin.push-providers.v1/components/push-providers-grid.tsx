@@ -38,9 +38,13 @@ export interface PushProvidersGridPropsInterface extends IdentifiableComponentIn
      * Callback to be fired when a template is selected.
      */
     onTemplateSelect: (template: ExtensionTemplateListInterface) => void;
-
+    /**
+     * Callback to be fired when the templates are loaded.
+     */
     onTemplatesLoad?: (templates: ExtensionTemplateListInterface[]) => void;
-
+    /**
+     * Selected template.
+     */
     selectedTemplate: ExtensionTemplateListInterface;
 }
 
