@@ -268,7 +268,7 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
                 icon: <ProfileFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH,
                 route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                    .ACTIONS_TYPES_PRE_UPDATE_PASSWORD) ? undefined 
+                    .ACTIONS_TYPES_PRE_UPDATE_PASSWORD) ? undefined
                     : AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT")
             },
             {
