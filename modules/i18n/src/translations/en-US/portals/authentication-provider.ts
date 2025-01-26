@@ -882,7 +882,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     unit: "minutes"
                 },
                 enableNumberChallenge: {
-                    hint: "Please check this checkbox to enable number challenge.",
+                    hint: "When enabled, users must confirm the number displayed in the application on their push authentication device to complete the sign in.",
                     label: "Enable number challenge",
                     validations: {
                         required: "Enable number challenge is a required field."
