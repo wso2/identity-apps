@@ -1,4 +1,4 @@
-/**
+<!--
  * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
@@ -14,7 +14,7 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- */
+ -->
  
 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M5.95161 13.3688H5.05005C4.35969 13.3688 3.80005 12.8091 3.80005 12.1188V2.875C3.80005 2.18465 4.35969 1.625 5.05005 1.625H8.8188C9.50915 1.625 10.0688 2.18464 10.0688 2.875V6.97524" stroke="black" stroke-linecap="round"/>
