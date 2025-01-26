@@ -536,6 +536,11 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     "extensions:manage.serverConfigurations.analytics.form." +
                     "notification.error.description"
                 );
+            case ServerConfigurationsConstants.SIFT_CONNECTOR_ID:
+                return t(
+                    "governanceConnectors:connectorCategories.loginAttemptsSecurity.connectors.siftConnector" +
+                    ".notifications.configurationUpdate.error.description"
+                );
             default:
                 return t(
                     "governanceConnectors:notifications.updateConnector.error.description",
