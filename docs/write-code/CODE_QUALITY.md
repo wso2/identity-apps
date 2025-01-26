@@ -6,7 +6,84 @@ This is an evolving documentation on the best practices for writing readable, fu
 
 ## Refrain from using `defaultProps`
 
-## Refrain from using the `hasRequiredScopes` function. Use `useRequiredScopes` wherever possible.
+Using `defaultProps` for functional components is deprecated and will be removed in a future React version. Use JavaScript default parameter values directly in function definitions instead. This approach is cleaner, easier to read, and avoids unnecessary overhead. Additionally, TypeScript can better infer types when default values are defined inline.
+
+**Why:**
+
+- defaultProps requires additional syntax and is less intuitive for functional components.
+- Inline default values are simpler and align better with ES6+ standards.
+- Improves type inference and eliminates the need for extra declarations.
+
+**What to do:**
+
+Define default values for props directly in the function parameter list.
+
+**Example:**
+
+Recommended:
+
+```javascript
+const MyComponent = ({ title = "Default Title" }) => (
+    <h1>{title}</h1>
+);
+```
+
+Avoid:
+
+```javascript
+const MyComponent = ({ title }) => (
+    <h1>{title}</h1>
+);
+
+MyComponent.defaultProps = {
+    title: "Default Title",
+};
+```
+
+## Refrain from using `hasRequiredScopes` in React components. Use `useRequiredScopes` whenever possible.
+
+The `hasRequiredScopes` function is a utility to check if the user has the necessary scopes for an action. However, it is a synchronous function and does not integrate seamlessly with React's lifecycle, which can lead to issues with reactivity and state management. The `useRequiredScopes` custom hook, on the other hand, leverages React's state and effect management, ensuring more predictable and reactive behavior.
+
+**Why:**
+
+- `useRequiredScopes` is designed as a React hook, making it more suitable for functional components.
+- Ensures reactivity, automatically re-evaluating when dependencies change.
+- Reduces boilerplate code and integrates seamlessly into React's declarative paradigm.
+
+**What to do:**
+
+Replace instances of `hasRequiredScopes` with `useRequiredScopes` wherever possible to ensure better reactivity and cleaner code.
+
+**Example:**
+
+Recommended:
+
+```javascript
+import { useRequiredScopes } from "@wso2is/access-control";
+
+const MyComponent = () => {
+    const sampleFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features?.sampleFeature);
+
+    const hasSampleReadPermissions: boolean = useRequiredScopes(sampleFeatureConfig?.scopes?.read);
+
+    return hasSampleReadPermissions ? <p>data</p> : null;
+};
+```
+
+Avoid:
+
+```javascript
+import { hasRequiredScopes } from "@wso2is/access-control";
+
+const MyComponent = () => {
+    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+
+    const hasSampleReadPermissions: boolean = hasRequiredScopes(featureConfig?.sampleFeature
+            featureConfig?.apiResources?.scopes?.read, allowedScopes)
+
+    return hasSampleReadPermissions ? <p>data</p> : null;
+};
+```
 
 ## Avoid using semantic UI classes as much as possible.
 
