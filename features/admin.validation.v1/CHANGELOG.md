@@ -1,5 +1,18 @@
 # @wso2is/admin.validation.v1
 
+## 2.27.47
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.17
+  - @wso2is/admin.extensions.v1@2.36.34
+  - @wso2is/admin.server-configurations.v1@2.32.34
+  - @wso2is/admin.users.v1@2.30.19
+  - @wso2is/admin.groups.v1@2.27.19
+  - @wso2is/admin.organizations.v1@2.26.109
+  - @wso2is/admin.roles.v2@2.27.53
+
 ## 2.27.46
 
 ### Patch Changes
