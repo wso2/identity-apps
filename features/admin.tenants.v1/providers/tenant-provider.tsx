@@ -16,13 +16,17 @@
  * under the License.
  */
 
+import { useAuthContext } from "@asgardeo/auth-react";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal } from "@wso2is/react-components";
 import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { Trans, useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import deleteTenantMetadata from "../api/delete-tenant-metadata";
 import updateTenantActivationStatus from "../api/update-tenant-activation-status";
@@ -58,7 +62,7 @@ export interface TenantProviderProps {
      * Callback to be fired on un-successful tenant enable.
      */
     onTenantEnableError?: () => void;
-};
+}
 
 /**
  * This component provides tenant-related context to its children.
@@ -77,13 +81,20 @@ const TenantProvider = ({
 }: PropsWithChildren<TenantProviderProps>): ReactElement => {
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { updateConfig } = useAuthContext();
+
+    const clientHost: string = useSelector((state: AppState) => state.config?.deployment?.clientHost);
 
     const [ isInitialRenderingComplete, setIsInitialRenderingComplete ] = useState<boolean>(false);
     const [ tenantListLimit, setTenantListLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
+    const [ showTenantConsoleNavigationConfirmationModal, setShowTenantConsoleNavigationConfirmationModal ] = useState<
+        boolean
+    >(false);
     const [ deletingTenant, setDeletingTenant ] = useState<Tenant>(null);
     const [ disablingTenant, setDisablingTenant ] = useState<Tenant>(null);
+    const [ consoleNavigatingTenant, setConsoleNavigatingTenant ] = useState<Tenant>(null);
     const [ isTenantDeleteRequestLoading, setIsTenantDeleteRequestLoading ] = useState<boolean>(false);
     const [ isTenantStatusUpdateRequestLoading, setIsTenantStatusUpdateRequestLoading ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
@@ -204,6 +215,22 @@ const TenantProvider = ({
             });
     };
 
+    /**
+     * Handles the tenant console navigation after the user confirms the action.
+     * @param tenant - Tenant to navigate to.
+     */
+    const handleTenantConsoleNavigation = async (tenant: Tenant): Promise<void> => {
+        const consoleURL: string = clientHost.replace(/\/t\/[^/]+\//, `/t/${tenant.domain}/`);
+
+        setShowTenantConsoleNavigationConfirmationModal(false);
+
+        await updateConfig({
+            signOutRedirectURL: consoleURL
+        });
+
+        history.push(AppConstants.getAppLogoutPath());
+    };
+
     return (
         <TenantContext.Provider
             value={ {
@@ -221,6 +248,10 @@ const TenantProvider = ({
                 isInitialRenderingComplete,
                 isTenantListLoading,
                 mutateTenantList,
+                navigateToTenantConsole: (tenant: Tenant): void => {
+                    setShowTenantConsoleNavigationConfirmationModal(true);
+                    setConsoleNavigatingTenant(tenant);
+                },
                 searchQuery,
                 searchQueryClearTrigger,
                 setSearchQuery,
@@ -273,7 +304,7 @@ const TenantProvider = ({
                     primaryAction={ t("tenants:confirmationModals.disableTenant.primaryAction") }
                     secondaryAction={ t("tenants:confirmationModals.disableTenant.secondaryAction") }
                     onSecondaryActionClick={ (): void => setShowDisableConfirmationModal(false) }
-                    onPrimaryActionClick={ (): void => handleTenantStatusUpdateConfirmation(disablingTenant) }
+                    onPrimaryActionClick={ async () => await handleTenantStatusUpdateConfirmation(disablingTenant) }
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header data-componentid="tenant-disable-confirmation-modal-header">
@@ -288,6 +319,41 @@ const TenantProvider = ({
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content data-componentid="tenant-disable-confirmation-modal-content">
                         { t("tenants:confirmationModals.disableTenant.content") }
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            ) }
+            { showTenantConsoleNavigationConfirmationModal && (
+                <ConfirmationModal
+                    data-componentid="tenant-console-navigation-confirmation-modal"
+                    onClose={ (): void => setShowTenantConsoleNavigationConfirmationModal(false) }
+                    type="warning"
+                    open={ showTenantConsoleNavigationConfirmationModal }
+                    assertionHint={ t("tenants:confirmationModals.navigatingToTenantConsole.assertionHint") }
+                    assertionType="checkbox"
+                    primaryAction={ t("tenants:confirmationModals.navigatingToTenantConsole.primaryAction") }
+                    secondaryAction={ t("tenants:confirmationModals.navigatingToTenantConsole.secondaryAction") }
+                    onSecondaryActionClick={ (): void => setShowTenantConsoleNavigationConfirmationModal(false) }
+                    onPrimaryActionClick={ async () => await handleTenantConsoleNavigation(consoleNavigatingTenant) }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header data-componentid="tenant-disable-confirmation-modal-header">
+                        { t("tenants:confirmationModals.navigatingToTenantConsole.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        attached
+                        warning
+                        data-componentid="tenant-disable-confirmation-modal-message"
+                    >
+                        { t("tenants:confirmationModals.navigatingToTenantConsole.message") }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content data-componentid="tenant-disable-confirmation-modal-content">
+                        <Trans
+                            i18nKey="tenants:confirmationModals.navigatingToTenantConsole.content"
+                            i18nOptions={ { domain: consoleNavigatingTenant?.domain } }
+                        >
+                            If you continue navigating to the <strong>{ consoleNavigatingTenant?.domain }
+                            </strong>Console, you will be logged out from the current session.
+                        </Trans>
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }

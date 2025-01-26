@@ -52,6 +52,11 @@ export interface TenantContextProps {
      */
     mutateTenantList: () => void;
     /**
+     * Navigate to the tenant console.
+     * @param tenant  - Tenant to navigate to.
+     */
+    navigateToTenantConsole: (tenant: Tenant) => void;
+    /**
      * The search query.
      */
     searchQuery: string;
@@ -91,6 +96,7 @@ const TenantContext: Context<TenantContextProps> = createContext<null | TenantCo
     isInitialRenderingComplete: false,
     isTenantListLoading: false,
     mutateTenantList: () => null,
+    navigateToTenantConsole: () => null,
     searchQuery: "",
     searchQueryClearTrigger: false,
     setSearchQuery: () => null,

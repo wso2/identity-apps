@@ -166,6 +166,14 @@ export const tenants: TenantsNS = {
             message: "This action will temporarily disable the organization.",
             primaryAction: "Confirm",
             secondaryAction: "Cancel"
+        },
+        navigatingToTenantConsole: {
+            assertionHint: "Please confirm your action.",
+            content: "If you continue navigating to the <1>{{domain}}</1> Console, you will be logged out from the current session.",
+            header: "Confirmation",
+            message: "Navigating to the Console will require you to re-login.",
+            primaryAction: "Logout & Go to Console",
+            secondaryAction: "Cancel"
         }
     },
     edit: {
