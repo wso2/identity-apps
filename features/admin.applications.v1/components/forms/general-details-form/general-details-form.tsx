@@ -17,6 +17,7 @@
  */
 
 import Autocomplete, {
+    AutocompleteInputChangeReason,
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
@@ -762,9 +763,17 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                             setSelectedGroupsFromUserStore(updatedGroups);
                                         } }
                                         filterOptions={ (groups: GroupMetadataInterface[]) => groups }
+                                        inputValue={ searchTerm }
                                         onInputChange={
-                                            (_event: SyntheticEvent, searchTerm: string) =>
-                                                setSearchTerm(searchTerm)
+                                            (
+                                                _event: SyntheticEvent,
+                                                searchTerm: string,
+                                                reason: AutocompleteInputChangeReason
+                                            ) => {
+                                                if (reason === "input") {
+                                                    setSearchTerm(searchTerm);
+                                                }
+                                            }
                                         }
                                         isOptionEqualToValue={
                                             (option: GroupMetadataInterface, value: GroupMetadataInterface) =>
