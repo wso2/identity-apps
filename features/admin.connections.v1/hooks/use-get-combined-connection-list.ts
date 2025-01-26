@@ -26,7 +26,6 @@ import {
 } from "@wso2is/admin.identity-verification-providers.v1/models/identity-verification-providers";
 import { AxiosError } from "axios";
 import get from "lodash-es/get";
-import { useEffect } from "react";
 import { useGetAuthenticators } from "../api/authenticators";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import { AuthenticatorLabels, AuthenticatorTypes } from "../models/authenticators";
@@ -113,7 +112,7 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
      */
     const IsCustomAuthenticator = (authenticator: ConnectionInterface) => {
         const tags: string[] = (authenticator as CustomAuthConnectionInterface)?.tags ?? [];
-        const isCustom: boolean = tags.some((tag) => tag?.toUpperCase() === AuthenticatorLabels.CUSTOM);
+        const isCustom: boolean = tags.some((tag: string) => tag === AuthenticatorLabels.CUSTOM);
 
         return isCustom;
     };

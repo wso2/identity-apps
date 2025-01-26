@@ -199,7 +199,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
      * @param id - ID of the created local authenticator.
      */
     const handleSuccessfulAuthenticatorCreate = (id?: string): void => {
-        // If ID is present, navigate to the edit page of the created IDP.
         if (id) {
             history.push({
                 pathname: AppConstants.getPaths()
@@ -211,7 +210,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             return;
         }
 
-        // Fallback to identity providers page, if id is not present.
         history.push(AppConstants.getPaths().get("IDP"));
     };
 
@@ -553,8 +551,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                         message: t("authenticationProvider:notifications." + "addIDP.success.message")
                     })
                 );
-                // The created resource's id is sent as a location header.
-                // If that's available, navigate to the edit page.
+
                 if (!isEmpty(response.headers.location)) {
                     const location: string = response.headers.location;
                     const createdIdpID: string = location.substring(location.lastIndexOf("/") + 1);
@@ -634,8 +631,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                         message: t("authenticationProvider:notifications." + "addIDP.success.message")
                     })
                 );
-                // The created resource's id is sent as a location header.
-                // If that's available, navigate to the edit page.
+
                 if (!isEmpty(response.headers.location)) {
                     const location: string = response.headers.location;
                     const createdLocalAuthID: string = location.substring(location.lastIndexOf("/") + 1);
@@ -739,11 +735,13 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             setIsSubmitting(true);
             createExternalAuthenticator(identityProvider);
         } else {
+
             const { customLocalAuthenticator: customAuthenticator } = cloneDeep(connectionTemplate);
 
-            // customAuthenticator.templateId = selectedTemplateId;
             customAuthenticator.name = prefixedIdentifier;
             customAuthenticator.displayName = values?.displayName?.toString();
+            customAuthenticator.description = connectionTemplate.customLocalAuthenticator.description;
+            // TODO: Provide support to add local file URI as the image.
 
             customAuthenticator.endpoint.authentication.type = endpointAuthType;
             customAuthenticator.endpoint.uri = values?.endpointUri.toString();

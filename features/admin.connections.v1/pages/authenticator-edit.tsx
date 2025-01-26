@@ -19,15 +19,13 @@
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import { ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import ExtensionTemplatesProvider from "@wso2is/admin.template-core.v1/provider/extension-templates-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    AnimatedAvatar,
     AppAvatar,
     DocumentationLink,
     LabelWithPopup,
@@ -44,14 +42,9 @@ import { getLocalAuthenticator } from "../api/authenticators";
 import { useGetConnectionTemplate } from "../api/connections";
 import { EditConnection } from "../components/edit/connection-edit";
 import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
-import { useSetConnectionTemplates } from "../hooks/use-connection-templates";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import { AuthenticatorLabels } from "../models/authenticators";
-import {
-    ConnectionInterface,
-    ConnectionTemplateInterface,
-    CustomAuthConnectionInterface
-} from "../models/connection";
+import { CustomAuthConnectionInterface } from "../models/connection";
 
 /**
  * Proptypes for the Custom Local Authenticator edit page component.
@@ -71,49 +64,46 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
 }: AuthenticatorEditPagePropsInterface): ReactElement => {
     const dispatch: Dispatch = useDispatch();
 
-    const { t } = useTranslation();
-    const { UIConfig } = useUIConfig();
-    const setConnectionTemplates: (templates: Record<string, any>[]) => void = useSetConnectionTemplates();
-
     const idpDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
-    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     const { CONNECTION_TEMPLATE_IDS: ConnectionTemplateIds } = CommonAuthenticatorConstants;
 
-    // const [ identityProviderTemplate, setIdentityProviderTemplate ] = useState<ConnectionTemplateInterface>(undefined);
-    // const [ authenticatorTemplate, setAuthenticatorTemplate ] = useState<ConnectionTemplateInterface>(undefined);
-
-    const [ customLocalAuthenticatorTemplate, setCustomLocalAuthenticatorTemplate ] = useState<
-        ConnectionTemplateInterface
-    >(undefined);
-    const [ unfilteredConnectionTemplate, setUnfilteredConnectionTemplate ] = useState<ConnectionTemplateInterface[]>(
-        undefined
-    );
-    const [ groupedTemplates, setGroupedTemplates ] = useState<ConnectionTemplateInterface[]>([]);
     const [ connector, setConnector ] = useState<CustomAuthConnectionInterface>(undefined);
-    const [ isConnectorDetailsFetchRequestLoading, setConnectorDetailFetchRequestLoading ] = useState<boolean>(undefined);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
-    const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
+    const [ isConnectorDetailsFetchRequestLoading, setConnectorDetailFetchRequestLoading ]
+        = useState<boolean>(undefined);
     const [ tabIdentifier, setTabIdentifier ] = useState<string>();
     const [ isAutomaticTabRedirectionEnabled, setIsAutomaticTabRedirectionEnabled ] = useState<boolean>(false);
-    const [ connectionSettings, setConnectionSettings ] = useState(undefined);
-    const [ isConnectorMetaDataFetchRequestLoading, setConnectorMetaDataFetchRequestLoading ] = useState<boolean>(
-        undefined
-    );
+    const [ shouldFetchConnectionTemplate, setShouldFetchConnectionTemplate ] = useState<boolean>(false);
+    const [ templateId, setTemplateId ] = useState<string>(undefined);
 
-    const isReadOnly: boolean = !useRequiredScopes(featureConfig?.identityProviders?.scopes?.update);
     const { getLink } = useDocumentation();
+    const { t } = useTranslation();
 
     const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.applications
     );
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
+    const isReadOnly: boolean = !useRequiredScopes(featureConfig?.identityProviders?.scopes?.update);
     const hasApplicationTemplateViewPermissions: boolean = useRequiredScopes(applicationsFeatureConfig?.scopes?.read);
 
-    const {
-        data: template
-    } = useGetConnectionTemplate("internal-user-custom-authentication");
+    const { data: template } = useGetConnectionTemplate(templateId, shouldFetchConnectionTemplate);
+
+    useEffect(() => {
+        if (!connector) {
+            return;
+        }
+        setTemplateId(getCustomLocalAuthTemplateId(connector as CustomAuthConnectionInterface));
+    }, [ connector ]);
+
+    useEffect(() => {
+        if (templateId) {
+            setShouldFetchConnectionTemplate(true);
+        }
+    }, [ templateId ]);
+
+    useEffect(() => {}, []);
 
     /**
      * Checks if the user needs to go to a specific tab index.
@@ -123,32 +113,15 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
     }, []);
 
     useEffect(() => {
-
         if (!identityProviderConfig) {
             return;
         }
 
         const path: string[] = location.pathname.split("/");
-        const id: string = path[ path.length - 1 ];
-
+        const id: string = path[path.length - 1];
 
         getCustomLocalAuthenticator(id);
     }, [ identityProviderConfig ]);
-
-    useEffect(() => {
-        if (!connector) {
-            return;
-        }
-
-        const resolvedTemplatedId: string = resolveCustomLocalAuthTemplateId(connector as CustomAuthConnectionInterface)
-            .templateId;
-
-        template.templateId = resolvedTemplatedId; // Update the templateId property
-        const updatedTemplate: ConnectionTemplateInterface = template; // Assign the whole template object
-
-        setCustomLocalAuthenticatorTemplate(updatedTemplate);
-
-    }, [ connector ]);
 
     /**
      * Function to redirect the user to a specific tab.
@@ -174,19 +147,14 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
      * @param connector - Custom local authenticator without template ID.
      * @returns - Custom local authenticator with resolved template ID.
      */
-    const resolveCustomLocalAuthTemplateId = (
-        connector: CustomAuthConnectionInterface
-    ): CustomAuthConnectionInterface => {
-
+    const getCustomLocalAuthTemplateId = (connector: CustomAuthConnectionInterface): string => {
         const tags: string[] = (connector as CustomAuthConnectionInterface)?.tags || [];
 
         const has2FA: boolean = tags.some((tag: string) => tag.toUpperCase() === AuthenticatorLabels.SECOND_FACTOR);
 
-        has2FA
-            ? (connector.templateId = ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATION)
-            : (connector.templateId = ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATION);
-
-        return connector;
+        return has2FA
+            ? ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATION
+            : ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATION;
     };
 
     /**
@@ -260,15 +228,9 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
      * @returns React element.
      */
     const resolveStatusLabel = (connector: CustomAuthConnectionInterface): ReactElement => {
-        // Return `null` if connector is not defined.
         if (!connector) {
             return null;
         }
-
-        // Return `null` if connector is not an IdP.
-        // if (!ConnectionsManagementUtils.isConnectorIdentityProvider(connector)) {
-        //     return null;
-        // }
 
         if (connector?.isEnabled) {
             return (
@@ -290,53 +252,6 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
     };
 
     /**
-     * Resolves the connector image.
-     *
-     * @param connector - Evaluating connector.
-     *
-     * @returns React element.
-     */
-    const resolveConnectorImage = (connector: ConnectionInterface): ReactElement => {
-        // const isOrganizationSSOIDP: boolean = ConnectionsManagementUtils.isOrganizationSSOConnection(
-        //     (connector as ConnectionInterface)?.federatedAuthenticators?.defaultAuthenticatorId
-        // );
-
-        if (!connector) {
-            return;
-        }
-
-        // if (ConnectionsManagementUtils.isConnectorIdentityProvider(connector) && !isOrganizationSSOIDP) {
-        //     if (connector.image) {
-        //         return (
-        //             <AppAvatar
-        //                 hoverable={ false }
-        //                 name={ connector.name }
-        //                 image={ ConnectionsManagementUtils.resolveConnectionResourcePath(
-        //                     connectionResourcesUrl,
-        //                     connector?.image
-        //                 ) }
-        //                 size="tiny"
-        //             />
-        //         );
-        //     }
-
-        //     return <AnimatedAvatar hoverable={ false } name={ connector.name } size="tiny" floated="left" />;
-        // }
-
-        // TODO: check image path
-        return (
-            <AppAvatar
-                hoverable={ false }
-                name={ customLocalAuthenticatorTemplate?.customLocalAuthenticator?.displayName }
-                image={ AuthenticatorMeta.getAuthenticatorIcon(
-                    customLocalAuthenticatorTemplate?.image
-                ) }
-                size="tiny"
-            />
-        );
-    };
-
-    /**
      * Resolves the connector name.
      *
      * @param connector - Evaluating connector.
@@ -354,58 +269,32 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
                 { isConnectorDetailsFetchRequestLoading === false && connector.name && resolveStatusLabel(connector) }
             </Fragment>
         );
-
-        // Original
-        // if (ConnectionsManagementUtils.isConnectorIdentityProvider(connector)) {
-        //     return (
-        //         <Fragment>
-        //             { connector.name }
-        //             { isConnectorDetailsFetchRequestLoading === false && connector.name && resolveStatusLabel(connector) }
-        //         </Fragment>
-        //     );
-        // }
-
-        // Original
-        // return connector.friendlyName || connector.displayName || connector.name;
     };
 
     /**
      * Resolves the authenticator description.
      *
      * @param connector - Evaluating connector.
-     *
      * @returns React element.
      */
-    // TODO: make id not optionsl - line 554
-    const resolveAuthenticatorDescription = (connector: ConnectionInterface): ReactNode => {
+    const resolveAuthenticatorDescription = (connector: CustomAuthConnectionInterface): ReactNode => {
         if (!connector) {
             return null;
         }
 
         return (
             <div className="with-label ellipsis" ref={ idpDescElement }>
-                { customLocalAuthenticatorTemplate?.description ? (
+                { connector?.description ? (
                     <Popup
-                        disabled={ !isDescTruncated }
-                        content={ customLocalAuthenticatorTemplate?.description?.replaceAll(
-                            "{{productName}}",
-                            productName
-                        ) }
-                        trigger={
-                            (<span>
-                                { customLocalAuthenticatorTemplate?.description?.replaceAll(
-                                    "{{productName}}",
-                                    productName
-                                ) }
-                            </span>)
-                        }
+                        content={ connector?.description?.replaceAll("{{productName}}", productName) }
+                        trigger={ <span>{ connector?.description?.replaceAll("{{productName}}", productName) }</span> }
                     />
                 ) : (
-                    AuthenticatorMeta.getAuthenticatorDescription(customLocalAuthenticatorTemplate?.id)
+                    AuthenticatorMeta.getAuthenticatorDescription(connector?.id)
                 ) }
                 <DocumentationLink
                     link={ getLink(`develop.connections.newConnection.
-                    ${customLocalAuthenticatorTemplate?.name}.learnMore`) }
+                    ${connector?.name}.learnMore`) }
                 >
                     { t("common:learnMore") }
                 </DocumentationLink>
@@ -429,7 +318,6 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
                 title={ resolveConnectorName(connector) }
                 contentTopMargin={ true }
                 description={ resolveAuthenticatorDescription(connector) }
-                image={ resolveConnectorImage(connector) }
                 backButton={ {
                     "data-componentid": `${_componentId}-page-back-button`,
                     onClick: handleBackButtonClick,
@@ -440,14 +328,13 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
                 data-componentid={ `${_componentId}-page-layout` }
             >
                 <EditConnection
-                    connectionSettingsMetaData={ connectionSettings }
                     identityProvider={ connector }
-                    isLoading={ isConnectorDetailsFetchRequestLoading || isConnectorMetaDataFetchRequestLoading }
+                    isLoading={ isConnectorDetailsFetchRequestLoading }
                     onDelete={ handleIdentityProviderDelete }
                     onUpdate={ handleAuthenticatorUpdate }
                     data-componentid={ _componentId }
-                    template={ customLocalAuthenticatorTemplate }
-                    type={ customLocalAuthenticatorTemplate?.id }
+                    template={ template }
+                    type={ templateId }
                     isReadOnly={ isReadOnly }
                     isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
                     setIsAutomaticTabRedirectionEnabled={ setIsAutomaticTabRedirectionEnabled }

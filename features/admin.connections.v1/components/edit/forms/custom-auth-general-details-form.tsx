@@ -16,21 +16,21 @@
  * under the License.
  */
 
-import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import {
     ConnectionInterface,
     ConnectionListResponseInterface,
+    CustomAuthConnectionInterface,
     CustomAuthGeneralDetailsFormValuesInterface,
-    StrictConnectionInterface
+    CustomAuthenticationCreateWizardGeneralFormValuesInterface
 } from "../../../models/connection";
+import { debug } from "console";
 
 /**
  * Proptypes for the custom authenticator general details form component.
@@ -39,7 +39,7 @@ interface CustomAuthGeneralDetailsFormPopsInterface extends IdentifiableComponen
     /**
      * Currently editing IDP.
      */
-    editingIDP?: ConnectionInterface;
+    editingIDP?: ConnectionInterface | CustomAuthConnectionInterface;
     /**
      * Mark authenticator as primary.
      */
@@ -94,17 +94,17 @@ const FORM_ID: string = "idp-custom-auth-general-details-form";
  * @returns Functional component.
  */
 export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDetailsFormPopsInterface> = ({
+    templateType,
     onSubmit,
     editingIDP,
-    idpList,
-    hideIdPLogoEditField,
     isReadOnly,
-    templateType,
     isSubmitting,
     "data-componentid": _componentId = "idp-edit-custom-auth-general-settings-form"
 }: CustomAuthGeneralDetailsFormPopsInterface): ReactElement => {
 
     const { t } = useTranslation();
+
+    const { CONNECTION_TEMPLATE_IDS: ConnectionTemplateIds } = CommonAuthenticatorConstants;
 
     /**
      * Prepare form values for submitting.
@@ -135,6 +135,57 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
         }
     };
 
+    const IsCustomLocalAuthenticator = (): boolean => {
+        if (templateType == ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATION ||
+            templateType == ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATION) {
+
+            return(true);
+        }
+    };
+
+    const resolveIdentifier = (): string => {
+        if (IsCustomLocalAuthenticator) {
+            return (editingIDP as CustomAuthConnectionInterface)?.name;
+        } else {
+            return decodeString(editingIDP?.federatedAuthenticators?.defaultAuthenticatorId);
+        }
+    };
+
+    const resolveDisplayName = (): string => {
+        debugger
+        if (IsCustomLocalAuthenticator) {
+            return (editingIDP as CustomAuthConnectionInterface)?.displayName;
+        } else {
+            return editingIDP?.name;
+        }
+    };
+
+    /**
+         * This method validates the general settings fields.
+         *
+         * @param values - values to be validated.
+         * @returns - errors object.
+         */
+    const validateGeneralSettingsField = (
+        values: CustomAuthenticationCreateWizardGeneralFormValuesInterface
+    ): Partial<CustomAuthenticationCreateWizardGeneralFormValuesInterface> => {
+        const errors: Partial<CustomAuthenticationCreateWizardGeneralFormValuesInterface> = {};
+
+        if (!CommonAuthenticatorConstants.IDENTIFIER_REGEX.test(values?.identifier)) {
+            errors.identifier = t(
+                "customAuthentication:fields.createWizard.generalSettingsStep." + "identifier.validations.invalid"
+            );
+        }
+
+        if (!CommonAuthenticatorConstants.DISPLAY_NAME_REGEX.test(values?.displayName)) {
+            errors.displayName = t(
+                "customAuthentication:fields.createWizard.generalSettingsStep." + "displayName.validations.invalid"
+            );
+        }
+
+        return errors;
+    };
+
     return (
         <React.Fragment>
             <EmphasizedSegment padded="very">
@@ -145,26 +196,13 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                         updateConfigurations(values);
                     } }
                     data-componentid={ _componentId }
-                    validate={ (values: CustomAuthGeneralDetailsFormValuesInterface) => {
-                        const errors: Partial<Record<keyof CustomAuthGeneralDetailsFormValuesInterface, string>> = {
-                            image: undefined
-                        };
-
-                        if (!FormValidation.isValidResourceName(values.name)) {
-                            errors.name = t(
-                                "customAuthentication:fields.createWizard.generalSettingsStep." +
-                                                "displayName.validations.invalid"
-                            );
-                        }
-
-                        return errors;
-                    } }
+                    validate={ validateGeneralSettingsField }
                 >
                     <Field.Input
                         ariaLabel="identifier"
-                        inputType="identifier"
+                        inputType="text"
                         name="identifier"
-                        value={ decodeString(editingIDP?.federatedAuthenticators?.defaultAuthenticatorId) }
+                        value={ resolveIdentifier() }
                         label={ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.label") }
                         placeholder={ t("customAuthentication:fields.createWizard.generalSettingsStep." +
                             "identifier.placeholder") }
@@ -180,9 +218,9 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                     />
                     <Field.Input
                         ariaLabel="name"
-                        inputType="resource_name"
+                        inputType="text"
                         name="name"
-                        value={ editingIDP.name }
+                        value={ resolveDisplayName() }
                         label={ t("customAuthentication:fields.createWizard.generalSettingsStep.displayName.label") }
                         placeholder={ t(
                             "customAuthentication:fields.createWizard.generalSettingsStep.displayName.placeholder"

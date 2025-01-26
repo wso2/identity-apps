@@ -24,16 +24,11 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
     EmphasizedSegment,
+    Hint,
     ResourceTab,
     ResourceTabPaneInterface
 } from "@wso2is/react-components";
-import React, {
-    FunctionComponent,
-    ReactElement,
-    lazy,
-    useEffect,
-    useState
-} from "react";
+import React, { FunctionComponent, ReactElement, lazy, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { TabProps } from "semantic-ui-react";
 import {
@@ -58,6 +53,7 @@ import {
 } from "../../models/connection";
 import { isProvisioningAttributesEnabled } from "../../utils/attribute-utils";
 import { ConnectionsManagementUtils } from "../../utils/connection-utils";
+// import ActionEndpointConfigForm from "@wso2is/admin.actions.v1/components"
 
 /**
  * Proptypes for the connection edit component.
@@ -124,7 +120,7 @@ interface EditConnectionPropsInterface extends TestableComponentInterface {
     /**
      * Connection setting section meta data.
      */
-    connectionSettingsMetaData: any;
+    connectionSettingsMetaData?: any;
 }
 
 /**
@@ -136,7 +132,6 @@ interface EditConnectionPropsInterface extends TestableComponentInterface {
 export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     props: EditConnectionPropsInterface
 ): ReactElement => {
-
     const {
         connectionSettingsMetaData,
         identityProvider,
@@ -151,15 +146,16 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         isAutomaticTabRedirectionEnabled,
         setIsAutomaticTabRedirectionEnabled,
         tabIdentifier,
-        [ "data-testid" ]: testId
+        ["data-testid"]: testId
     } = props;
 
-    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
-    const disabledFeatures: string[] = useSelector((state: AppState) =>
-        state.config.ui.features.identityProviders?.disabledFeatures);
+    const disabledFeatures: string[] = useSelector(
+        (state: AppState) => state.config.ui.features.identityProviders?.disabledFeatures
+    );
 
     /**
      * This is placed as a temporary fix until the dynamic tab loading is implemented.
@@ -171,13 +167,14 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
     const hasApplicationReadPermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.read);
 
-    const isOrganizationEnterpriseAuthenticator: boolean = identityProvider?.federatedAuthenticators
-        ?.defaultAuthenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
-        .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
-    const isEnterpriseConnection: boolean = identityProvider?.federatedAuthenticators
-        ?.defaultAuthenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ||
-        identityProvider?.federatedAuthenticators
-            ?.defaultAuthenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID;
+    const isOrganizationEnterpriseAuthenticator: boolean =
+        identityProvider?.federatedAuthenticators?.defaultAuthenticatorId ===
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
+    const isEnterpriseConnection: boolean =
+        identityProvider?.federatedAuthenticators?.defaultAuthenticatorId ===
+            FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ||
+        identityProvider?.federatedAuthenticators?.defaultAuthenticatorId ===
+            FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID;
 
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
@@ -210,28 +207,26 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
     const Loader = (): ReactElement => (
         <EmphasizedSegment padded>
-            <ContentLoader inline="centered" active/>
+            <ContentLoader inline="centered" active />
         </EmphasizedSegment>
     );
 
     const GeneralIdentityProviderSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <GeneralSettings
-                hideIdPLogoEditField={
-                    ConnectionsManagementUtils.hideLogoInputFieldInIdPGeneralSettingsForm(
-                        identityProvider?.templateId
-                    )
-                }
+                hideIdPLogoEditField={ ConnectionsManagementUtils.hideLogoInputFieldInIdPGeneralSettingsForm(
+                    identityProvider?.templateId
+                ) }
                 templateType={ type }
                 isSaml={ isSaml }
                 isOidc={ isOidc }
-                isCustomAuthenticator= { isCustomAuthenticator }
+                isCustomAuthenticator={ isCustomAuthenticator }
                 editingIDP={ identityProvider }
                 isLoading={ isLoading }
                 onDelete={ onDelete }
                 onUpdate={ onUpdate }
-                data-testid={ `${ testId }-general-settings` }
-                isReadOnly = { isReadOnly }
+                data-testid={ `${testId}-general-settings` }
+                isReadOnly={ isReadOnly }
                 loader={ Loader }
             />
         </ResourceTab.Pane>
@@ -247,22 +242,23 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 onUpdate={ onUpdate }
                 hideIdentityClaimAttributes={
                     /*identity claim attributes are disabled for saml and oidc selectively*/
-                    (isSaml || isOidc ) && ( identityProviderConfig.utils.hideIdentityClaimAttributes(
+                    (isSaml || isOidc) &&
+                    identityProviderConfig.utils.hideIdentityClaimAttributes(
                         identityProvider.federatedAuthenticators.defaultAuthenticatorId
-                    ))
+                    )
                 }
                 isRoleMappingsEnabled={
-                    isSaml || FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
-                        .SAML_AUTHENTICATOR_ID !== identityProvider.federatedAuthenticators.defaultAuthenticatorId
+                    isSaml ||
+                    FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID !==
+                        identityProvider.federatedAuthenticators.defaultAuthenticatorId
                 }
-                data-testid={ `${ testId }-attribute-settings` }
+                data-testid={ `${testId}-attribute-settings` }
                 provisioningAttributesEnabled={
-                    !disabledFeatures?.includes("identityProviders.attributes.provisioningAttributes")
-                    && (
-                        isSaml
-                        || isProvisioningAttributesEnabled(
-                            identityProvider.federatedAuthenticators.defaultAuthenticatorId)
-                    )
+                    !disabledFeatures?.includes("identityProviders.attributes.provisioningAttributes") &&
+                    (isSaml ||
+                        isProvisioningAttributesEnabled(
+                            identityProvider.federatedAuthenticators.defaultAuthenticatorId
+                        ))
                 }
                 isReadOnly={ isReadOnly }
                 loader={ Loader }
@@ -272,19 +268,24 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         </ResourceTab.Pane>
     );
 
-    const AuthenticatorSettingsTabPane = (): ReactElement => (
-        <ResourceTab.Pane controlledSegmentation>
-            <AuthenticatorSettings
-                connectionSettingsMetaData={ connectionSettingsMetaData }
-                identityProvider={ identityProvider }
-                isLoading={ isLoading }
-                onUpdate={ onUpdate }
-                data-testid={ `${ testId }-authenticator-settings` }
-                isReadOnly={ isReadOnly }
-                loader={ Loader }
-            />
-        </ResourceTab.Pane>
-    );
+    const AuthenticatorSettingsTabPane = (): ReactElement =>
+        isCustomAuthenticator ? (
+            <>
+            {/* <ActionEndpointConfigForm/> */}
+            </>
+        ) : (
+            <ResourceTab.Pane controlledSegmentation>
+                <AuthenticatorSettings
+                    connectionSettingsMetaData={ connectionSettingsMetaData }
+                    identityProvider={ identityProvider }
+                    isLoading={ isLoading }
+                    onUpdate={ onUpdate }
+                    data-testid={ `${testId}-authenticator-settings` }
+                    isReadOnly={ isReadOnly }
+                    loader={ Loader }
+                />
+            </ResourceTab.Pane>
+        );
 
     const OutboundProvisioningSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
@@ -293,7 +294,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 outboundConnectors={ identityProvider?.provisioning?.outboundConnectors }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
-                data-testid={ `${ testId }-outbound-provisioning-settings` }
+                data-testid={ `${testId}-outbound-provisioning-settings` }
                 isReadOnly={ isReadOnly }
                 loader={ Loader }
             />
@@ -307,7 +308,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 jitProvisioningConfigurations={ identityProvider?.provisioning?.jit }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
-                data-testid={ `${ testId }-jit-provisioning-settings` }
+                data-testid={ `${testId}-jit-provisioning-settings` }
                 isReadOnly={ isReadOnly }
                 loader={ Loader }
             />
@@ -321,11 +322,11 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 advancedConfigurations={ idpAdvanceConfig }
                 implicitAssociationConfig={ idpImplicitAssociationConfig }
                 onUpdate={ onUpdate }
-                data-testid={ `${ testId }-advance-settings` }
+                data-testid={ `${testId}-advance-settings` }
                 isReadOnly={ isReadOnly }
                 isLoading={ isLoading }
                 loader={ Loader }
-                templateType = { type }
+                templateType={ type }
             />
         </ResourceTab.Pane>
     );
@@ -337,7 +338,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 isReadOnly={ isReadOnly }
                 isLoading={ isLoading }
                 loader={ Loader }
-                data-componentid={ `${ testId }-connected-apps-settings` }
+                data-componentid={ `${testId}-connected-apps-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -350,55 +351,49 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 isLoading={ isLoading }
                 loader={ Loader }
                 isOIDC={ isOidc }
-                data-componentid={ `${ testId }-groups-settings` }
+                data-componentid={ `${testId}-groups-settings` }
             />
         </ResourceTab.Pane>
     );
 
     useEffect(() => {
-        setIsTrustedTokenIssuer(type === CommonAuthenticatorConstants
-            .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER);
+        setIsTrustedTokenIssuer(type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER);
         setIsExpertMode(type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE);
         setIsCustomAuthenticator(
             type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXTERNAL_CUSTOM_AUTHENTICATION ||
-            type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATION ||
-            type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATION
+                type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATION ||
+                type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATION
         );
     }, [ type ]);
 
     useEffect(() => {
-
         if (tabPaneExtensions) {
-
             return;
         }
 
         if (!connectionSettingsMetaData?.edit?.tabs?.quickStart || !identityProvider?.id) {
-
             return;
         }
 
         let extensions: ResourceTabPaneInterface[] = [];
 
         if (typeof connectionSettingsMetaData?.edit?.tabs?.quickStart === "string") {
-            extensions = identityProviderConfig
-                .editIdentityProvider.getTabExtensions({
-                    content: lazy(
-                        () => import(`../../resources/guides/${
-                            connectionSettingsMetaData?.edit?.tabs?.quickStart
-                        }/quick-start.tsx`)
-                    ),
-                    identityProvider: identityProvider,
-                    template: template
-                });
+            extensions = identityProviderConfig.editIdentityProvider.getTabExtensions({
+                content: lazy(() =>
+                    import(
+                        `../../resources/guides/${connectionSettingsMetaData?.edit?.tabs?.quickStart}/quick-start.tsx`
+                    )
+                ),
+                identityProvider: identityProvider,
+                template: template
+            });
         } else {
-            extensions = identityProviderConfig
-                .editIdentityProvider.getTabExtensions({
-                    content: lazy(() => import("./connection-quick-start")),
-                    identityProvider: identityProvider,
-                    quickStartContent: connectionSettingsMetaData?.edit?.tabs?.quickStart,
-                    template: template
-                });
+            extensions = identityProviderConfig.editIdentityProvider.getTabExtensions({
+                content: lazy(() => import("./connection-quick-start")),
+                identityProvider: identityProvider,
+                quickStartContent: connectionSettingsMetaData?.edit?.tabs?.quickStart,
+                template: template
+            });
         }
 
         if (Array.isArray(extensions) && extensions.length > 0) {
@@ -408,12 +403,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         }
 
         setTabPaneExtensions(extensions);
-    }, [
-        template,
-        tabPaneExtensions,
-        identityProvider,
-        connectionSettingsMetaData
-    ]);
+    }, [ template, tabPaneExtensions, identityProvider, connectionSettingsMetaData ]);
 
     const getPanes = () => {
         const panes: ResourceTabPaneInterface[] = [];
@@ -451,13 +441,13 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         const isAttributesEnabledForOIDC: boolean = isOidc;
 
         // Evaluate whether to Show/Hide `Attributes`.
-        if (shouldShowTab(type, ConnectionTabTypes.USER_ATTRIBUTES)
-            && !isOrganizationEnterpriseAuthenticator
-            && !isCustomAuthenticator
-            && (type !== CommonAuthenticatorConstants
-                .CONNECTION_TEMPLATE_IDS.OIDC || isAttributesEnabledForOIDC)
-            && (type !== CommonAuthenticatorConstants
-                .CONNECTION_TEMPLATE_IDS.SAML || attributesForSamlEnabled)) {
+        if (
+            shouldShowTab(type, ConnectionTabTypes.USER_ATTRIBUTES) &&
+            !isOrganizationEnterpriseAuthenticator &&
+            !isCustomAuthenticator &&
+            (type !== CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC || isAttributesEnabledForOIDC) &&
+            (type !== CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SAML || attributesForSamlEnabled)
+        ) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.ATTRIBUTES,
                 menuItem: "Attributes",
@@ -473,10 +463,12 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
         }
 
-        if (shouldShowTab(type, ConnectionTabTypes.IDENTITY_PROVIDER_GROUPS) &&
-        featureConfig?.identityProviderGroups?.enabled &&
-        !isOrganizationEnterpriseAuthenticator
-        && !isCustomAuthenticator) {
+        if (
+            shouldShowTab(type, ConnectionTabTypes.IDENTITY_PROVIDER_GROUPS) &&
+            featureConfig?.identityProviderGroups?.enabled &&
+            !isOrganizationEnterpriseAuthenticator &&
+            !isCustomAuthenticator
+        ) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.IDENTITY_PROVIDER_GROUPS,
                 menuItem: "Groups",
@@ -484,10 +476,12 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
         }
 
-        if (shouldShowTab(type, ConnectionTabTypes.OUTBOUND_PROVISIONING) &&
-        identityProviderConfig.editIdentityProvider.showOutboundProvisioning &&
-        !isOrganizationEnterpriseAuthenticator
-        && !isCustomAuthenticator) {
+        if (
+            shouldShowTab(type, ConnectionTabTypes.OUTBOUND_PROVISIONING) &&
+            identityProviderConfig.editIdentityProvider.showOutboundProvisioning &&
+            !isOrganizationEnterpriseAuthenticator &&
+            !isCustomAuthenticator
+        ) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.OUTBOUND_PROVISIONING,
                 menuItem: "Outbound Provisioning",
@@ -495,9 +489,11 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
         }
 
-        if (shouldShowTab(type, ConnectionTabTypes.JIT_PROVISIONING) &&
-        identityProviderConfig.editIdentityProvider.showJitProvisioning &&
-        !isOrganizationEnterpriseAuthenticator) {
+        if (
+            shouldShowTab(type, ConnectionTabTypes.JIT_PROVISIONING) &&
+            identityProviderConfig.editIdentityProvider.showJitProvisioning &&
+            !isOrganizationEnterpriseAuthenticator
+        ) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.JIT_PROVISIONING,
                 menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
@@ -505,10 +501,12 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
         }
 
-        if (shouldShowTab(type, ConnectionTabTypes.ADVANCED) &&
-        identityProviderConfig.editIdentityProvider.showAdvancedSettings &&
-        !isOrganizationEnterpriseAuthenticator
-        && !isCustomAuthenticator) {
+        if (
+            shouldShowTab(type, ConnectionTabTypes.ADVANCED) &&
+            identityProviderConfig.editIdentityProvider.showAdvancedSettings &&
+            !isOrganizationEnterpriseAuthenticator &&
+            !isCustomAuthenticator
+        ) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.ADVANCED,
                 menuItem: "Advanced",
@@ -527,30 +525,33 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
      * @returns Should show tab or not.
      */
     const shouldShowTab = (templateType: string, tabType: ConnectionTabTypes): boolean => {
+        const isTabEnabledInExtensions:
+            | boolean
+            | undefined = identityProviderConfig.editIdentityProvider.isTabEnabledForIdP(templateType, tabType);
 
-        const isTabEnabledInExtensions: boolean | undefined = identityProviderConfig
-            .editIdentityProvider
-            .isTabEnabledForIdP(templateType, tabType);
-
-        return isTabEnabledInExtensions !== undefined
-            ? isTabEnabledInExtensions
-            : true;
+        return isTabEnabledInExtensions !== undefined ? isTabEnabledInExtensions : true;
     };
 
-    if (!identityProvider || isLoading ||
-        ((!isOrganizationEnterpriseAuthenticator && !isTrustedTokenIssuer
-        && !isEnterpriseConnection && !isExpertMode && !isCustomAuthenticator) && !tabPaneExtensions)) {
-
+    if (
+        !identityProvider ||
+        isLoading ||
+        (!isOrganizationEnterpriseAuthenticator &&
+            !isTrustedTokenIssuer &&
+            !isEnterpriseConnection &&
+            !isExpertMode &&
+            !isCustomAuthenticator &&
+            !tabPaneExtensions)
+    ) {
         return <Loader />;
     }
 
     return (
         <ResourceTab
             isLoading={ isLoading }
-            data-testid={ `${ testId }-resource-tabs` }
+            data-testid={ `${testId}-resource-tabs` }
             panes={ getPanes() }
             defaultActiveIndex={ defaultActiveIndex }
-            onTabChange={ (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: TabProps ) => {
+            onTabChange={ (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: TabProps) => {
                 setDefaultActiveIndex(data.activeIndex);
                 isAutomaticTabRedirectionEnabled && setIsAutomaticTabRedirectionEnabled(false);
             } }

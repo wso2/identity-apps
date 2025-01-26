@@ -50,6 +50,7 @@ import React, {
     MouseEvent,
     ReactElement,
     SyntheticEvent,
+    useEffect,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -62,6 +63,7 @@ import {
 import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
+    AuthenticatorCategories,
     AuthenticatorExtensionsConfigInterface,
     AuthenticatorInterface,
     AuthenticatorTypes
@@ -191,8 +193,13 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
                 break;
 
+            case AuthenticatorCategories.LOCAL:
+                history.push(AppConstants.getPaths().get("AUTH_EDIT").replace(":id", id));
+
+                break;
+
             default:
-                // history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", id));
+                history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", id));
 
                 break;
         }
@@ -385,6 +392,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      */
     const handleGridItemOnClick = (e: SyntheticEvent, authenticator: ConnectionInterface
         | AuthenticatorInterface): void => {
+
         handleAuthenticatorEdit(authenticator.id, authenticator.type);
         onItemClick && onItemClick(e, authenticator);
     };
