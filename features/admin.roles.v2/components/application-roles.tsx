@@ -334,7 +334,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                     "rolesV2.application")
                                                 }
                                                 data-componentid={ `${ componentId }-application-audience-checkbox` }
-                                                disabled={ isReadOnly }
                                             />
                                         </Grid.Column>
                                         <Grid.Column width={ 6 }>
@@ -346,7 +345,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                             fluid
                                                             data-componentid="create-application-role-button"
                                                             onClick={ handleAddNewRoleWizardClick }
-                                                            disabled={ isReadOnly }
                                                         >
                                                             <Icon name="plus"/>
                                                             {
@@ -370,7 +368,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                     "rolesV2.organization")
                                                 }
                                                 data-componentid={ `${ componentId }-organization-audience-checkbox` }
-                                                disabled={ isReadOnly }
                                             />
                                         </Grid.Column>
                                     </Grid.Row>
@@ -406,7 +403,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     loading={ isLoading }
                                     options={ roleList }
                                     value={ selectedRoles ?? [] }
-                                    disabled = { isReadOnly }
                                     data-componentid={ `${ componentId }-assigned-roles-list` }
                                     getOptionLabel={
                                         (role: BasicRoleInterface) => role.name
@@ -466,7 +462,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                         </Grid.Row>
                     ) : null }
                     {
-                        !isReadOnly && (
+                        (
                             <Grid.Row className="mt-4">
                                 <Grid.Column width={ 16 }>
                                     <PrimaryButton
