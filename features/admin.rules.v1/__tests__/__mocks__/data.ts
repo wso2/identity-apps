@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "./models/meta";
-import { RuleExecuteCollectionInterface, RuleInterface } from "./models/rules";
+import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "../../models/meta";
+import { RuleExecuteCollectionInterface, RuleInterface } from "../../models/rules";
 
 export const sampleRuleExecuteInstance: RuleInterface = {
     condition: "OR",
