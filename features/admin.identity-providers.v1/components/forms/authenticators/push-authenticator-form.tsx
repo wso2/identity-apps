@@ -182,6 +182,16 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
             return;
         }
 
+        const {
+            resolvedFormFields,
+            resolvedInitialValues
+        } = resolveFormFields();
+
+        setFormFields(resolvedFormFields);
+        setInitialValues(resolvedInitialValues);
+    }, [ originalInitialValues ]);
+
+    const resolveFormFields = () => {
         let resolvedFormFields: PushAuthenticatorFormFieldsInterface = null;
         let resolvedInitialValues: PushAuthenticatorFormInitialValuesInterface = null;
 
@@ -225,9 +235,12 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                 };
             }
         });
-        setFormFields(resolvedFormFields);
-        setInitialValues(resolvedInitialValues);
-    }, [ originalInitialValues ]);
+
+        return {
+            resolvedFormFields,
+            resolvedInitialValues
+        };
+    };
 
     /**
      * Prepare form values for submitting.
