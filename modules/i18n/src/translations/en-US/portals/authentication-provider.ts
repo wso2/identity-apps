@@ -856,6 +856,45 @@ export const authenticationProvider:AuthenticationProviderNS = {
                         required: "Use only numeric characters for OTP token is a required field."
                     }
                 }
+            },
+            push: {
+                allowedResendAttemptsCount: {
+                    hint: "The number of allowed push notification resend attempts.",
+                    label: "Allowed push notification resend attempts",
+                    placeholder: "Enter allowed resend attempt count.",
+                    validations: {
+                        required: "Allowed push notification resend attempt count is a required field.",
+                        invalid: "Allowed push notification resend attempt count should be an integer.",
+                        range: "Allowed push notification resend attempt count should be between 0 & 10."
+                    },
+                    unit: "attempts"
+                },
+                hint: "Ensure that a <1>Push Provider</1> is configured for the push notifications to be sent.",
+                resendInterval: {
+                    hint: "The time interval between push notification resend attempts.",
+                    label: "Push notification resend interval",
+                    placeholder: "Enter resend interval in minutes.",
+                    validations: {
+                        required: "Push notification resend interval is a required field.",
+                        invalid: "Push notification resend interval should be an integer.",
+                        range: "Push notification resend interval should be between 1 & 10 minutes."
+                    },
+                    unit: "minutes"
+                },
+                enableNumberChallenge: {
+                    hint: "When enabled, users must confirm the number displayed in the application on their push authentication device to complete the sign in.",
+                    label: "Enable number challenge",
+                    validations: {
+                        required: "Enable number challenge is a required field."
+                    }
+                },
+                enableProgressiveEnrollment: {
+                    hint: "When enabled, users may enroll their devices for push authentication at the moment they log in to the application.",
+                    label: "Enable push notification device progressive enrollment",
+                    validations: {
+                        required: "Enablin push notification device progressive enrollment is required."
+                    }
+                }
             }
         },
         certificateSection: {

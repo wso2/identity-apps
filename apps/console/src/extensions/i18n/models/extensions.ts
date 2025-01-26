@@ -1967,6 +1967,29 @@ export interface Extensions {
                     };
                 };
             };
+            pushAuth: {
+                quickStart: {
+                    addLoginModal: {
+                        heading: string;
+                        subHeading: string;
+                    };
+                    connectApp: {
+                        description: string;
+                    };
+                    heading: string;
+                    subHeading: string;
+                    steps: {
+                        selectApplication: {
+                            content: string;
+                            heading: string;
+                        };
+                        selectPushAuth: {
+                            content: string;
+                            heading: string;
+                        };
+                    };
+                }
+            },
             facebook: {
                 quickStart: {
                     addLoginModal: {

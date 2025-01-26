@@ -587,6 +587,9 @@ importers:
       '@wso2is/admin.private-key-jwt.v1':
         specifier: ^2.25.110
         version: link:../../features/admin.private-key-jwt.v1
+      '@wso2is/admin.push-providers.v1':
+        specifier: ^0.0.0
+        version: link:../../features/admin.push-providers.v1
       '@wso2is/admin.remote-repository-configuration.v1':
         specifier: ^2.25.110
         version: link:../../features/admin.remote-repository-configuration.v1
@@ -6047,6 +6050,9 @@ importers:
       '@wso2is/admin.private-key-jwt.v1':
         specifier: ^2.25.110
         version: link:../admin.private-key-jwt.v1
+      '@wso2is/admin.push-providers.v1':
+        specifier: ^0.0.0
+        version: link:../admin.push-providers.v1
       '@wso2is/admin.remote-repository-configuration.v1':
         specifier: ^2.25.110
         version: link:../admin.remote-repository-configuration.v1
@@ -13475,6 +13481,73 @@ importers:
       ts-jest:
         specifier: ^26.4.0
         version: 26.5.6(jest@26.6.3)(typescript@4.9.5)
+      typescript:
+        specifier: ^4.6.4
+        version: 4.9.5
+
+  features/admin.push-providers.v1:
+    dependencies:
+      '@wso2is/admin.core.v1':
+        specifier: ^2.34.26
+        version: link:../admin.core.v1
+      '@wso2is/admin.feature-gate.v1':
+        specifier: ^1.4.109
+        version: link:../admin.feature-gate.v1
+      '@wso2is/admin.template-core.v1':
+        specifier: ^1.4.26
+        version: link:../admin.template-core.v1
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^4.3.1
+        version: 4.3.1(react@18.3.1)
+    devDependencies:
+      '@rollup/plugin-commonjs':
+        specifier: ^25.0.7
+        version: 25.0.8(rollup@4.31.0)
+      '@rollup/plugin-dynamic-import-vars':
+        specifier: ^2.1.2
+        version: 2.1.5(rollup@4.31.0)
+      '@rollup/plugin-image':
+        specifier: ^3.0.3
+        version: 3.0.3(rollup@4.31.0)
+      '@rollup/plugin-json':
+        specifier: ^6.1.0
+        version: 6.1.0(rollup@4.31.0)
+      '@rollup/plugin-node-resolve':
+        specifier: ^15.2.3
+        version: 15.3.1(rollup@4.31.0)
+      '@rollup/plugin-typescript':
+        specifier: ^11.1.6
+        version: 11.1.6(rollup@4.31.0)(tslib@2.8.1)(typescript@4.9.5)
+      '@svgr/rollup':
+        specifier: ^6.2.1
+        version: 6.5.1
+      rollup:
+        specifier: ^4.17.2
+        version: 4.31.0
+      rollup-plugin-dts:
+        specifier: ^6.1.1
+        version: 6.1.1(rollup@4.31.0)(typescript@4.9.5)
+      rollup-plugin-generate-package-json:
+        specifier: ^3.2.0
+        version: 3.2.0(rollup@4.31.0)
+      rollup-plugin-polyfill-node:
+        specifier: ^0.13.0
+        version: 0.13.0(rollup@4.31.0)
+      rollup-plugin-scss:
+        specifier: ^4.0.0
+        version: 4.0.1
+      rollup-plugin-styles:
+        specifier: ^4.0.0
+        version: 4.0.0(rollup@4.31.0)
+      rollup-plugin-svg:
+        specifier: ^2.0.0
+        version: 2.0.0
       typescript:
         specifier: ^4.6.4
         version: 4.9.5
@@ -21762,7 +21835,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.12.9
-      '@babel/helper-plugin-utils': 7.10.4
+      '@babel/helper-plugin-utils': 7.26.5
       '@babel/plugin-syntax-object-rest-spread': 7.8.3(@babel/core@7.12.9)
       '@babel/plugin-transform-parameters': 7.25.9(@babel/core@7.12.9)
 
@@ -30330,7 +30403,7 @@ packages:
     resolution: {integrity: sha512-BahAZSSvuFXyhgJiwQgsfsNlStE9K/ULGL+YEzK4mmL2Vf02Pjl2yZs+KmbkAg3MxkC9WwMuFwuwnwvrg7CqvQ==}
     deprecated: This is a stub types definition. cssnano provides its own type definitions, so you do not need this installed.
     dependencies:
-      cssnano: 5.1.15(postcss@8.5.1)
+      cssnano: 6.1.2(postcss@8.5.1)
     transitivePeerDependencies:
       - postcss
     dev: true
@@ -37500,7 +37573,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.0.5
+      minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: true

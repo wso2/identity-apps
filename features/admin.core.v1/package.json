@@ -43,6 +43,7 @@
         "@wso2is/admin.organizations.v1": "^2.26.110",
         "@wso2is/admin.policy-administration.v1": "^1.0.26",
         "@wso2is/admin.private-key-jwt.v1": "^2.25.110",
+        "@wso2is/admin.push-providers.v1": "^0.0.0",
         "@wso2is/admin.impersonation.v1": "^1.6.110",
         "@wso2is/admin.remote-repository-configuration.v1": "^2.25.110",
         "@wso2is/admin.roles.v1": "^2.25.110",

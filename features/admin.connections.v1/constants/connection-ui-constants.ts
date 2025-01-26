@@ -144,6 +144,26 @@ export class ConnectionUIConstants {
             OTP_LENGTH_MIN_VALUE: 4
         };
 
+    public static readonly PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
+            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: number;
+            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: number;
+            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: number;
+            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: number;
+            RESEND_INTERVAL_MAX_LENGTH: number;
+            RESEND_INTERVAL_MAX_VALUE: number;
+            RESEND_INTERVAL_MIN_LENGTH: number;
+            RESEND_INTERVAL_MIN_VALUE: number;
+        } = {
+            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: 2,
+            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: 10,
+            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: 1,
+            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: 0,
+            RESEND_INTERVAL_MAX_LENGTH: 2,
+            RESEND_INTERVAL_MAX_VALUE: 10,
+            RESEND_INTERVAL_MIN_LENGTH: 1,
+            RESEND_INTERVAL_MIN_VALUE: 1
+        };
+
     /**
      * Apple Authenticator Settings Form element constraints.
      */

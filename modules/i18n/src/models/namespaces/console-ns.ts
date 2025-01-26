@@ -7977,6 +7977,11 @@ export interface ConsoleNS {
                 };
                 compareToLastPeriodMessage: string;
             };
+            pushProviders: {
+                heading: string;
+                subHeading: string;
+                description: string;
+            };
             smsProviders: {
                 heading: string;
                 subHeading: string;

@@ -1012,6 +1012,34 @@
                     "update": []
                 }
             },
+            "pushProviders": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "features": [
+                    {
+                        "feature": "pushProviders",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "pushProviders.templates",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    "create": [
+                        "internal_notification_senders_create"
+                    ],
+                    "delete": [
+                        "internal_notification_senders_delete"
+                    ],
+                    "read": [
+                        "internal_notification_senders_view"
+                    ],
+                    "update": [
+                        "internal_notification_senders_update"
+                    ]
+                }
+             },
             "remoteFetchConfig": {
                 "disabledFeatures": [],
                 "enabled": false,
