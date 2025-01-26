@@ -71,6 +71,7 @@ const RulesComponent: FunctionComponent<RulesComponentPropsWithValidation> = ({
 }: RulesComponentPropsWithValidation): ReactElement => (
     <RulesProvider
         initialData={ initialData }
+        isMultipleRules={ isMultipleRules }
         conditionExpressionsMetaData={ conditionExpressionsMetaData }
         ruleExecutionMetaData={ ruleExecutionMetaData }
     >

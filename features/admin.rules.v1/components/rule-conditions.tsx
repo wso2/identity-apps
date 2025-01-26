@@ -115,16 +115,18 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         ruleId: string,
         conditionId: string,
         expressionId: string,
-        fieldName: ExpressionFieldTypes
+        fieldName: ExpressionFieldTypes,
+        isUserOnChange: boolean
     ) => void = debounce(
         (
             changedValue: string,
             ruleId: string,
             conditionId: string,
             expressionId: string,
-            fieldName: ExpressionFieldTypes
+            fieldName: ExpressionFieldTypes,
+            isUserOnChange: boolean
         ) => {
-            updateConditionExpression(changedValue, ruleId, conditionId, expressionId, fieldName);
+            updateConditionExpression(changedValue, ruleId, conditionId, expressionId, fieldName, isUserOnChange);
         },
         300
     );
@@ -241,7 +243,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 ruleId,
                                 conditionId,
                                 expression.id,
-                                ExpressionFieldTypes.Value
+                                ExpressionFieldTypes.Value,
+                                true
                             );
                         }
                     } }
@@ -330,7 +333,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         ruleId,
                         conditionId,
                         expression.id,
-                        ExpressionFieldTypes.Value
+                        ExpressionFieldTypes.Value,
+                        false
                     );
                 }
 
@@ -355,7 +359,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 ruleId,
                                 conditionId,
                                 expression.id,
-                                ExpressionFieldTypes.Value
+                                ExpressionFieldTypes.Value,
+                                true
                             );
                         } }
                     >
@@ -388,7 +393,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 ruleId,
                                 conditionId,
                                 expression.id,
-                                ExpressionFieldTypes.Value
+                                ExpressionFieldTypes.Value,
+                                true
                             );
                         } }
                     />
@@ -405,7 +411,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             ruleId,
                             conditionId,
                             expression.id,
-                            ExpressionFieldTypes.Value
+                            ExpressionFieldTypes.Value,
+                            false
                         );
                     }
 
@@ -418,7 +425,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                     ruleId,
                                     conditionId,
                                     expression.id,
-                                    ExpressionFieldTypes.Value
+                                    ExpressionFieldTypes.Value,
+                                    true
                                 );
                             } }
                         >
@@ -473,17 +481,22 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 ruleId,
                                 conditionId,
                                 expression.id,
-                                ExpressionFieldTypes.Field
+                                ExpressionFieldTypes.Field,
+                                true
                             );
                             updateConditionExpression(
                                 "",
                                 ruleId,
                                 conditionId,
                                 expression.id,
-                                ExpressionFieldTypes.Value
+                                ExpressionFieldTypes.Value,
+                                true
                             );
                         } }
                     >
+                        <MenuItem disabled value="">
+                            <em>Placeholder</em>
+                        </MenuItem>
                         { conditionExpressionsMeta?.map((item: ConditionExpressionMetaInterface, index: number) => (
                             <MenuItem value={ item.field?.name } key={ `${expression.id}-${index}` }>
                                 { item.field?.displayName }
@@ -500,7 +513,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 ruleId,
                                 conditionId,
                                 expression.id,
-                                ExpressionFieldTypes.Operator
+                                ExpressionFieldTypes.Operator,
+                                true
                             );
                         } }
                     >

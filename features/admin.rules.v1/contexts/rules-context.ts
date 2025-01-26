@@ -88,7 +88,8 @@ export interface RulesContextInterface {
         ruleId: string,
         conditionId: string,
         expressionId: string,
-        fieldName: ExpressionFieldTypes
+        fieldName: ExpressionFieldTypes,
+        isUserOnChange: boolean
     ) => void;
 }
 

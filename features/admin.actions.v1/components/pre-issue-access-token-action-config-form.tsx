@@ -153,28 +153,28 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
             authenticationType: authenticationType,
             isAuthenticationUpdateFormState: isAuthenticationUpdateFormState,
             isCreateFormState: isCreateFormState
-        },
-        t);
+        }, t);
     };
 
     const handleSubmit = (
         values: ActionConfigFormPropertyInterface,
         changedFields: ActionConfigFormPropertyInterface) =>
     {
-
-        let rule: RuleWithoutIdInterface | Record<string, never>;
+        let rule: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
 
         if (isHasRule) {
-            const ruleValue: RuleExecuteCollectionWithoutIdInterface = getRuleInstanceValue();
+            rule = getRuleInstanceValue();
 
-            rule = ruleValue?.rules[0];
-
-            if (rule?.rules?.length === 1 &&
+            if ('isRuleInstanceTouched' in rule &&
+                rule?.rules?.length === 1 &&
                 rule?.rules[0].expressions?.length === 1 &&
-                rule?.rules[0]?.expressions[0].value === "") {
+                !rule.isRuleInstanceTouched &&
+                !isCreateFormState) {
 
                 rule = {};
             }
+
+            delete (rule as RuleWithoutIdInterface).isRuleInstanceTouched;
         }
 
         const authProperties: Partial<AuthenticationPropertiesInterface> = {};
