@@ -68,7 +68,7 @@ export class ActionsConstants {
     public static readonly PRE_UPDATE_PROFILE_API_PATH: string = "preUpdateProfile";
     public static readonly PRE_REGISTRATION_API_PATH: string = "preRegistration";
 
-    public static readonly ACTION_BETA_LABEL: string = "BETA";
+    public static readonly ACTION_COMING_SOON_LABEL: string = "COMING_SOON";
 
     public static readonly ERROR_MESSAGES: {
         CREATE_ACTION_INVALID_STATUS_CODE_ERROR: IdentityAppsError;
