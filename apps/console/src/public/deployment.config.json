@@ -268,19 +268,19 @@
                         "flag": ""
                     },
                     {
-                        "feature": "actions.create.types.list.preIssueAccessToken",
+                        "feature": "actions.types.list.preIssueAccessToken",
                         "flag": ""
                     },
                     {
-                        "feature": "actions.create.types.list.preUpdatePassword",
+                        "feature": "actions.types.list.preUpdatePassword",
                         "flag": ""
                     },
                     {
-                        "feature": "actions.create.types.list.preUpdateProfile",
+                        "feature": "actions.types.list.preUpdateProfile",
                         "flag": ""
                     },
                     {
-                        "feature": "actions.create.types.list.preRegistration",
+                        "feature": "actions.types.list.preRegistration",
                         "flag": ""
                     }
                 ],
