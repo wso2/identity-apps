@@ -1,5 +1,19 @@
 # @wso2is/admin.alternative-login-identifier.v1
 
+## 1.5.111
+
+### Patch Changes
+
+- Updated dependencies [[`9b6fe9141f5260d6e3760298badd6e0f6c7ec499`](https://github.com/wso2/identity-apps/commit/9b6fe9141f5260d6e3760298badd6e0f6c7ec499)]:
+  - @wso2is/react-components@2.8.27
+  - @wso2is/admin.core.v1@2.37.19
+  - @wso2is/form@2.6.20
+  - @wso2is/admin.applications.v1@2.30.111
+  - @wso2is/admin.server-configurations.v1@2.32.36
+  - @wso2is/admin.users.v1@2.30.21
+  - @wso2is/admin.claims.v1@2.27.21
+  - @wso2is/admin.validation.v1@2.27.49
+
 ## 1.5.110
 
 ### Patch Changes
