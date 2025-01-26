@@ -30,13 +30,6 @@ export interface DynamicFormInterface {
      * Should the form only submit the fields defined above.
      */
     submitDefinedFieldsOnly?: boolean;
-
-    common: DynamicCommonInterface;
-}
-
-export interface DynamicCommonInterface {
-
-    hideUpdateOption: boolean;
 }
 
 /**
