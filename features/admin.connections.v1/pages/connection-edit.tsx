@@ -16,18 +16,13 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    history
-} from "@wso2is/admin.core.v1";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import {
-    AuthenticatorExtensionsConfigInterface,
-    identityProviderConfig
-} from "@wso2is/admin.extensions.v1/configs";
+import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
+import { ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
+import ExtensionTemplatesProvider from "@wso2is/admin.template-core.v1/provider/extension-templates-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -43,39 +38,21 @@ import {
 import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import orderBy from "lodash-es/orderBy";
-import React, {
-    Fragment,
-    FunctionComponent,
-    ReactElement,
-    ReactNode,
-    useEffect,
-    useRef,
-    useState
-} from "react";
+import React, { Fragment, FunctionComponent, ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
-import {
-    getLocalAuthenticator,
-    getMultiFactorAuthenticatorDetails
-} from "../api/authenticators";
-import {
-    getConnectionDetails,
-    getConnectionMetaData,
-    getConnectionTemplates
-} from "../api/connections";
+import { getLocalAuthenticator, getMultiFactorAuthenticatorDetails } from "../api/authenticators";
+import { getConnectionDetails, getConnectionMetaData, getConnectionTemplates } from "../api/connections";
 import { EditConnection } from "../components/edit/connection-edit";
 import { EditMultiFactorAuthenticator } from "../components/edit/edit-multi-factor-authenticator";
 import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
 import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
 import { useSetConnectionTemplates } from "../hooks/use-connection-templates";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
-import {
-    AuthenticatorInterface,
-    MultiFactorAuthenticatorInterface
-} from "../models/authenticators";
+import { AuthenticatorInterface, MultiFactorAuthenticatorInterface } from "../models/authenticators";
 import {
     ConnectionInterface,
     ConnectionTemplateCategoryInterface,
@@ -101,69 +78,58 @@ type ConnectionEditPagePropsInterface = TestableComponentInterface;
 const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = (
     props: ConnectionEditPagePropsInterface & RouteComponentProps
 ): ReactElement => {
-
-    const {
-        location,
-        [ "data-testid" ]: testId
-    } = props;
+    const { location, ["data-testid"]: testId } = props;
 
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
-    const setConnectionTemplates: ((templates: Record<string, any>[]) => void) = useSetConnectionTemplates();
+    const setConnectionTemplates: (templates: Record<string, any>[]) => void = useSetConnectionTemplates();
 
     const idpDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
-    const [
-        identityProviderTemplate,
-        setIdentityProviderTemplate
-    ] = useState<ConnectionTemplateInterface>(undefined);
-    const [
-        unfilteredConnectionTemplate,
-        setUnfilteredConnectionTemplate
-    ] = useState<ConnectionTemplateInterface[]>(undefined);
-    const [
-        groupedTemplates,
-        setGroupedTemplates
-    ] = useState<ConnectionTemplateInterface[]>([]);
-    const [
-        connector,
-        setConnector
-    ] = useState<ConnectionInterface | MultiFactorAuthenticatorInterface | AuthenticatorInterface>(undefined);
-    const [
-        isConnectorDetailsFetchRequestLoading,
-        setConnectorDetailFetchRequestLoading
-    ] = useState<boolean>(undefined);
+    const [ identityProviderTemplate, setIdentityProviderTemplate ] = useState<ConnectionTemplateInterface>(undefined);
+    const [ unfilteredConnectionTemplate, setUnfilteredConnectionTemplate ] = useState<ConnectionTemplateInterface[]>(
+        undefined
+    );
+    const [ groupedTemplates, setGroupedTemplates ] = useState<ConnectionTemplateInterface[]>([]);
+    const [ connector, setConnector ] = useState<
+        ConnectionInterface | MultiFactorAuthenticatorInterface | AuthenticatorInterface
+    >(undefined);
+    const [ isConnectorDetailsFetchRequestLoading, setConnectorDetailFetchRequestLoading ] = useState<boolean>(undefined);
+    const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.applications
+    );
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
     const [ tabIdentifier, setTabIdentifier ] = useState<string>();
     const [ isAutomaticTabRedirectionEnabled, setIsAutomaticTabRedirectionEnabled ] = useState<boolean>(false);
     const [ connectionSettings, setConnectionSettings ] = useState(undefined);
-    const [
-        isConnectorMetaDataFetchRequestLoading,
-        setConnectorMetaDataFetchRequestLoading
-    ] = useState<boolean>(undefined);
+    const [ isConnectorMetaDataFetchRequestLoading, setConnectorMetaDataFetchRequestLoading ] = useState<boolean>(
+        undefined
+    );
 
-    const isReadOnly: boolean = !(useRequiredScopes(featureConfig?.identityProviders?.scopes?.update));
+    const isReadOnly: boolean = !useRequiredScopes(featureConfig?.identityProviders?.scopes?.update);
+    const hasApplicationTemplateViewPermissions: boolean = useRequiredScopes(applicationsFeatureConfig?.scopes?.read);
+
     const { getLink } = useDocumentation();
 
     /**
      *  Group the connection templates.
      */
     useEffect(() => {
-
-        if (!unfilteredConnectionTemplate || !Array.isArray(unfilteredConnectionTemplate)
-            || !(unfilteredConnectionTemplate.length > 0)) {
-
+        if (
+            !unfilteredConnectionTemplate ||
+            !Array.isArray(unfilteredConnectionTemplate) ||
+            !(unfilteredConnectionTemplate.length > 0)
+        ) {
             return;
         }
 
         const connectionTemplatesClone: ConnectionTemplateInterface[] = unfilteredConnectionTemplate.map(
             (template: ConnectionTemplateInterface) => {
-
                 if (template.id === "enterprise-oidc-idp" || template.id === "enterprise-saml-idp") {
                     return {
                         ...template,
@@ -175,20 +141,18 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             }
         );
 
-        ConnectionTemplateManagementUtils
-            .reorderConnectionTemplates(connectionTemplatesClone)
-            .then((response: ConnectionTemplateInterface[]) => {
+        ConnectionTemplateManagementUtils.reorderConnectionTemplates(connectionTemplatesClone).then(
+            (response: ConnectionTemplateInterface[]) => {
                 setGroupedTemplates(response);
-            });
+            }
+        );
     }, [ unfilteredConnectionTemplate ]);
 
     /**
      * Categorize the connection templates.
      */
     useEffect(() => {
-
-        if (!groupedTemplates || !Array.isArray(groupedTemplates)
-            || !(groupedTemplates.length > 0)) {
+        if (!groupedTemplates || !Array.isArray(groupedTemplates) || !(groupedTemplates.length > 0)) {
             return;
         }
 
@@ -199,7 +163,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                     category.templates = orderBy(category.templates, [ "comingSoon" ], [ "desc" ]);
                 });
 
-                setConnectionTemplates(response[ 0 ]?.templates);
+                setConnectionTemplates(response[0]?.templates);
             })
             .catch(() => {
                 setConnectionTemplates([]);
@@ -217,7 +181,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         if (idpDescElement || isConnectorDetailsFetchRequestLoading) {
             const nativeElement: HTMLDivElement = idpDescElement.current;
 
-            if (nativeElement && (nativeElement.offsetWidth < nativeElement.scrollWidth)) {
+            if (nativeElement && nativeElement.offsetWidth < nativeElement.scrollWidth) {
                 setIsDescTruncated(true);
             }
         }
@@ -227,16 +191,17 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
      * Use effect for the initial component load.
      */
     useEffect(() => {
-
         if (!identityProviderConfig) {
             return;
         }
 
         const path: string[] = location.pathname.split("/");
-        const id: string = path[ path.length - 1 ];
+        const id: string = path[path.length - 1];
 
         const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
-            AuthenticatorMeta.getAuthenticators(), id);
+            AuthenticatorMeta.getAuthenticators(),
+            id
+        );
 
         if (authenticatorConfig?.isEnabled) {
             getMultiFactorAuthenticator(id, authenticatorConfig?.useAuthenticatorsAPI);
@@ -263,7 +228,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
      */
     const redirectToSpecificTab = (useLocationStateData: boolean = true, tabName?: string): void => {
         if (useLocationStateData) {
-            tabName =  location?.state as string;
+            tabName = location?.state as string;
         }
 
         if (tabName !== undefined) {
@@ -276,7 +241,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
      * Load the template that the IDP is built on.
      */
     useEffect(() => {
-
         // Return if connector is not defined.
         if (!connector) {
             return;
@@ -287,10 +251,13 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return;
         }
 
-        if (!(UIConfig?.connectionTemplates
-            && UIConfig?.connectionTemplates instanceof Array
-            && UIConfig?.connectionTemplates.length > 0)) {
-
+        if (
+            !(
+                UIConfig?.connectionTemplates &&
+                UIConfig?.connectionTemplates instanceof Array &&
+                UIConfig?.connectionTemplates.length > 0
+            )
+        ) {
             resolveConnectionTemplates();
 
             return;
@@ -304,13 +271,14 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         let templateId: string = connector.templateId;
 
         if (!templateId) {
-            const authenticatorId: string = (connector as ConnectionInterface)
-                ?.federatedAuthenticators?.defaultAuthenticatorId;
+            const authenticatorId: string = (connector as ConnectionInterface)?.federatedAuthenticators
+                ?.defaultAuthenticatorId;
 
             if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID) {
                 templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK;
-            } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
-                .GOOGLE_OIDC_AUTHENTICATOR_ID) {
+            } else if (
+                authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID
+            ) {
                 templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE;
             } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID) {
                 templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC;
@@ -323,22 +291,23 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             }
         }
 
-        if (templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC ||
-            templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SAML) {
-
-            const groupedTemplates: ConnectionTemplateInterface = UIConfig?.connectionTemplates
-                .find((template: ConnectionTemplateInterface) => {
+        if (
+            templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC ||
+            templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SAML
+        ) {
+            const groupedTemplates: ConnectionTemplateInterface = UIConfig?.connectionTemplates.find(
+                (template: ConnectionTemplateInterface) => {
                     return template.id === "enterprise-protocols";
-                });
+                }
+            );
 
             template = groupedTemplates?.subTemplates?.find((template: ConnectionTemplateInterface) => {
                 return template.id === templateId;
             });
         } else {
-            template = UIConfig?.connectionTemplates
-                .find((template: ConnectionTemplateInterface) => {
-                    return template.id === templateId;
-                });
+            template = UIConfig?.connectionTemplates.find((template: ConnectionTemplateInterface) => {
+                return template.id === templateId;
+            });
         }
 
         setIdentityProviderTemplate(template);
@@ -346,24 +315,22 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
 
     useEffect(() => {
         if (!identityProviderTemplate) {
-
             return;
         }
 
-        if (identityProviderTemplate?.id
-                === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ||
-            identityProviderTemplate?.id
-                === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE ||
+        if (
+            identityProviderTemplate?.id ===
+                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ||
+            identityProviderTemplate?.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE ||
             identityProviderTemplate?.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC ||
             identityProviderTemplate?.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SAML ||
-            identityProviderTemplate?.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.
-                EXTERNAL_CUSTOM_AUTHENTICATION ||
-            identityProviderTemplate?.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.
-                INTERNAL_CUSTOM_AUTHENTICATION ||
-            identityProviderTemplate?.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.
-                TWO_FACTOR_CUSTOM_AUTHENTICATION
+            identityProviderTemplate?.id ===
+                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXTERNAL_CUSTOM_AUTHENTICATION ||
+            identityProviderTemplate?.id ===
+                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATION ||
+            identityProviderTemplate?.id ===
+                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATION
         ) {
-
             return;
         }
 
@@ -371,10 +338,9 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
     }, [ identityProviderTemplate ]);
 
     const resolveConnectionTemplates = (): void => {
-        getConnectionTemplates()
-            .then((response: ConnectionTemplateInterface[]) => {
-                setUnfilteredConnectionTemplate(response);
-            });
+        getConnectionTemplates().then((response: ConnectionTemplateInterface[]) => {
+            setUnfilteredConnectionTemplate(response);
+        });
     };
 
     /**
@@ -388,7 +354,8 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         getConnectionMetaData(id)
             .then((response: any) => {
                 setConnectionSettings(response);
-            }).catch ((error: AxiosError) => {
+            })
+            .catch((error: AxiosError) => {
                 handleGetConnectionsMetaDataError(error);
             })
             .finally(() => {
@@ -405,31 +372,31 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         setConnectorDetailFetchRequestLoading(true);
 
         getConnectionDetails(id)
-            .then((response: ConnectionInterface | MultiFactorAuthenticatorInterface | AuthenticatorInterface) =>
-            {
+            .then((response: ConnectionInterface | MultiFactorAuthenticatorInterface | AuthenticatorInterface) => {
                 setConnector(response);
             })
             .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: t("authenticationProvider:" +
-                            "notifications.getIDP.error.description",
-                        { description: error.response.data.description }),
-                        level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:" +
-                            "notifications.getIDP.error.message")
-                    }));
+                    dispatch(
+                        addAlert({
+                            description: t("authenticationProvider:" + "notifications.getIDP.error.description", {
+                                description: error.response.data.description
+                            }),
+                            level: AlertLevels.ERROR,
+                            message: t("authenticationProvider:" + "notifications.getIDP.error.message")
+                        })
+                    );
 
                     return;
                 }
 
-                dispatch(addAlert({
-                    description: t("authenticationProvider:" +
-                        "notifications.getIDP.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:" +
-                        "notifications.getIDP.genericError.message")
-                }));
+                dispatch(
+                    addAlert({
+                        description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
+                    })
+                );
             })
             .finally(() => {
                 setConnectorDetailFetchRequestLoading(false);
@@ -443,7 +410,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
      * @param useAuthenticatorsAPI - Use the
      */
     const getMultiFactorAuthenticator = (id: string, useAuthenticatorsAPI: boolean = true): void => {
-
         setConnectorDetailFetchRequestLoading(true);
 
         /**
@@ -452,32 +418,40 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
          * @returns Promise containing authenticator details.
          */
         const getAuthenticatorDetails = <T,>(cb: (id: string) => Promise<T>) => {
-
             cb(id)
                 .then((response: T) => {
                     setConnector(response);
                 })
                 .catch((error: IdentityAppsApiException) => {
                     if (error.response && error.response.data && error.response.data.description) {
-                        dispatch(addAlert({
-                            description: t("authenticationProvider:" +
-                                "notifications.getConnectionDetails.error.description",
-                            { description: error.response.data.description }),
-                            level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:" +
-                                "notifications.getConnectionDetails.error.message")
-                        }));
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "authenticationProvider:" + "notifications.getConnectionDetails.error.description",
+                                    { description: error.response.data.description }
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "authenticationProvider:" + "notifications.getConnectionDetails.error.message"
+                                )
+                            })
+                        );
 
                         return;
                     }
 
-                    dispatch(addAlert({
-                        description: t("authenticationProvider:" +
-                            "notifications.getConnectionDetails.genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:" +
-                            "notifications.getConnectionDetails.genericError.message")
-                    }));
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "authenticationProvider:" +
+                                    "notifications.getConnectionDetails.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "authenticationProvider:" + "notifications.getConnectionDetails.genericError.message"
+                            )
+                        })
+                    );
                 })
                 .finally(() => {
                     setConnectorDetailFetchRequestLoading(false);
@@ -497,7 +471,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-
         history.push(AppConstants.getPaths().get("IDP"));
     };
 
@@ -505,7 +478,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
      * Called when an idp is deleted.
      */
     const handleIdentityProviderDelete = (): void => {
-
         history.push(AppConstants.getPaths().get("IDP"));
     };
 
@@ -515,7 +487,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
      * @param id - IDP id.
      */
     const handleIdentityProviderUpdate = (id: string, tabName?: string): void => {
-
         getIdentityProvider(id);
         redirectToSpecificTab(false, tabName);
     };
@@ -526,14 +497,14 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
      * @param id - Authenticator id.
      */
     const handleMultiFactorAuthenticatorUpdate = (id: string): void => {
-
         if (!identityProviderConfig) {
             return;
         }
 
-
         const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
-            AuthenticatorMeta.getAuthenticators(), id);
+            AuthenticatorMeta.getAuthenticators(),
+            id
+        );
 
         getMultiFactorAuthenticator(id, authenticatorConfig?.useAuthenticatorsAPI);
     };
@@ -545,9 +516,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
      *
      * @returns React element.
      */
-    const resolveStatusLabel = (connector: ConnectionInterface
-        | MultiFactorAuthenticatorInterface): ReactElement => {
-
+    const resolveStatusLabel = (connector: ConnectionInterface | MultiFactorAuthenticatorInterface): ReactElement => {
         // Return `null` if connector is not defined.
         if (!connector) {
             return null;
@@ -562,18 +531,15 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return (
                 <LabelWithPopup
                     popupHeader={ t("authenticationProvider:popups.appStatus.enabled.header") }
-                    popupSubHeader={ t("authenticationProvider:popups.appStatus." +
-                        "enabled.content") }
+                    popupSubHeader={ t("authenticationProvider:popups.appStatus." + "enabled.content") }
                     labelColor="green"
                 />
             );
         } else {
             return (
                 <LabelWithPopup
-                    popupHeader={ t("authenticationProvider:popups.appStatus." +
-                        "disabled.header") }
-                    popupSubHeader={ t("authenticationProvider:popups.appStatus." +
-                        "disabled.content") }
+                    popupHeader={ t("authenticationProvider:popups.appStatus." + "disabled.header") }
+                    popupSubHeader={ t("authenticationProvider:popups.appStatus." + "disabled.content") }
                     labelColor="grey"
                 />
             );
@@ -587,57 +553,45 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
      *
      * @returns React element.
      */
-    const resolveConnectorImage = (connector: ConnectionInterface
-        | MultiFactorAuthenticatorInterface): ReactElement => {
-
-        const isOrganizationSSOIDP: boolean = ConnectionsManagementUtils
-            .isOrganizationSSOConnection(
-                (connector as ConnectionInterface)?.federatedAuthenticators?.defaultAuthenticatorId);
+    const resolveConnectorImage = (
+        connector: ConnectionInterface | MultiFactorAuthenticatorInterface
+    ): ReactElement => {
+        const isOrganizationSSOIDP: boolean = ConnectionsManagementUtils.isOrganizationSSOConnection(
+            (connector as ConnectionInterface)?.federatedAuthenticators?.defaultAuthenticatorId
+        );
 
         if (!connector) {
-            return (
-                <AppAvatar
-                    hoverable={ false }
-                    isLoading={ true }
-                    size="tiny"
-                />
-            );
+            return <AppAvatar hoverable={ false } isLoading={ true } size="tiny" />;
         }
 
         if (ConnectionsManagementUtils.isConnectorIdentityProvider(connector) && !isOrganizationSSOIDP) {
-
             if (connector.image) {
                 return (
                     <AppAvatar
                         hoverable={ false }
                         name={ connector.name }
-                        image={
-                            ConnectionsManagementUtils
-                                .resolveConnectionResourcePath(connectionResourcesUrl, connector?.image)
-                        }
+                        image={ ConnectionsManagementUtils.resolveConnectionResourcePath(
+                            connectionResourcesUrl,
+                            connector?.image
+                        ) }
                         size="tiny"
                     />
                 );
             }
 
-            return (
-                <AnimatedAvatar
-                    hoverable={ false }
-                    name={ connector.name }
-                    size="tiny"
-                    floated="left"
-                />
-            );
+            return <AnimatedAvatar hoverable={ false } name={ connector.name } size="tiny" floated="left" />;
         }
 
         return (
             <AppAvatar
                 hoverable={ false }
                 name={ connector.name }
-                image={ !isOrganizationSSOIDP
-                    ? AuthenticatorMeta.getAuthenticatorIcon(connector?.id)
-                    : AuthenticatorMeta.getAuthenticatorIcon((connector as ConnectionInterface)
-                        .federatedAuthenticators?.defaultAuthenticatorId)
+                image={
+                    !isOrganizationSSOIDP
+                        ? AuthenticatorMeta.getAuthenticatorIcon(connector?.id)
+                        : AuthenticatorMeta.getAuthenticatorIcon(
+                            (connector as ConnectionInterface).federatedAuthenticators?.defaultAuthenticatorId
+                        )
                 }
                 size="tiny"
             />
@@ -651,22 +605,16 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
      *
      * @returns React element.
      */
-    const resolveConnectorName = (connector: ConnectionInterface
-        | MultiFactorAuthenticatorInterface): ReactNode => {
-
+    const resolveConnectorName = (connector: ConnectionInterface | MultiFactorAuthenticatorInterface): ReactNode => {
         if (!connector) {
             return null;
         }
 
         if (ConnectionsManagementUtils.isConnectorIdentityProvider(connector)) {
-
             return (
                 <Fragment>
                     { connector.name }
-                    {
-                        (isConnectorDetailsFetchRequestLoading === false
-                            && connector.name) && resolveStatusLabel(connector)
-                    }
+                    { isConnectorDetailsFetchRequestLoading === false && connector.name && resolveStatusLabel(connector) }
                 </Fragment>
             );
         }
@@ -681,35 +629,27 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
      *
      * @returns React element.
      */
-    const resolveConnectorDescription = (connector: ConnectionInterface
-        | MultiFactorAuthenticatorInterface): ReactNode => {
-
+    const resolveConnectorDescription = (
+        connector: ConnectionInterface | MultiFactorAuthenticatorInterface
+    ): ReactNode => {
         if (!connector) {
             return null;
         }
 
         if (ConnectionsManagementUtils.isConnectorIdentityProvider(connector)) {
-
             return (
                 <div className="with-label ellipsis" ref={ idpDescElement }>
-                    {
-                        identityProviderTemplate?.name
-                        && (
-                            <Label size="small">
-                                {
-                                    identityProviderTemplate.name === "Expert Mode"
-                                        ? "Custom Connector"
-                                        : identityProviderTemplate?.name
-                                }
-                            </Label>
-                        )
-                    }
+                    { identityProviderTemplate?.name && (
+                        <Label size="small">
+                            { identityProviderTemplate.name === "Expert Mode"
+                                ? "Custom Connector"
+                                : identityProviderTemplate?.name }
+                        </Label>
+                    ) }
                     <Popup
                         disabled={ !isDescTruncated }
                         content={ connector?.description?.replaceAll("{{productName}}", productName) }
-                        trigger={ (
-                            <span>{ connector?.description?.replaceAll("{{productName}}", productName) }</span>
-                        ) }
+                        trigger={ <span>{ connector?.description?.replaceAll("{{productName}}", productName) }</span> }
                     />
                 </div>
             );
@@ -717,24 +657,16 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
 
         return (
             <div className="with-label ellipsis" ref={ idpDescElement }>
-                {
-                    connector?.description
-                        ? (
-                            <Popup
-                                disabled={ !isDescTruncated }
-                                content={ connector?.description?.replaceAll("{{productName}}", productName) }
-                                trigger={ (
-                                    <span>{ connector?.description?.replaceAll("{{productName}}", productName) }</span>
-                                ) }
-                            />
-                        )
-                        : AuthenticatorMeta.getAuthenticatorDescription(
-                            connector.id
-                        )
-                }
-                <DocumentationLink
-                    link={ getLink(`develop.connections.newConnection.${connector.name}.learnMore`) }
-                >
+                { connector?.description ? (
+                    <Popup
+                        disabled={ !isDescTruncated }
+                        content={ connector?.description?.replaceAll("{{productName}}", productName) }
+                        trigger={ <span>{ connector?.description?.replaceAll("{{productName}}", productName) }</span> }
+                    />
+                ) : (
+                    AuthenticatorMeta.getAuthenticatorDescription(connector.id)
+                ) }
+                <DocumentationLink link={ getLink(`develop.connections.newConnection.${connector.name}.learnMore`) }>
                     { t("common:learnMore") }
                 </DocumentationLink>
             </div>
@@ -742,76 +674,75 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
     };
 
     return (
-        <TabPageLayout
-            pageTitle="Edit Connection"
-            isLoading={ isConnectorDetailsFetchRequestLoading }
-            loadingStateOptions={ {
-                count: 5,
-                imageType: "square"
-            } }
-            title={ resolveConnectorName(connector) }
-            contentTopMargin={ true }
-            description={ resolveConnectorDescription(connector) }
-            image={ resolveConnectorImage(connector) }
-            backButton={ {
-                "data-testid": `${ testId }-page-back-button`,
-                onClick: handleBackButtonClick,
-                text: t("console:develop.pages.authenticationProviderTemplate.backButton")
-            } }
-            titleTextAlign="left"
-            bottomMargin={ false }
-            data-testid={ `${ testId }-page-layout` }
+        <ExtensionTemplatesProvider
+            shouldFetch={ hasApplicationTemplateViewPermissions }
+            resourceType={ ResourceTypes.APPLICATIONS }
+            categories={ ApplicationTemplateConstants.SUPPORTED_CATEGORIES_INFO }
         >
-            {
-                ConnectionsManagementUtils.isConnectorIdentityProvider(connector)
-                    ? (
-                        <EditConnection
-                            connectionSettingsMetaData={ connectionSettings }
-                            identityProvider={ connector }
-                            isLoading={
-                                isConnectorDetailsFetchRequestLoading ||
-                                isConnectorMetaDataFetchRequestLoading
-                            }
-                            onDelete={ handleIdentityProviderDelete }
-                            onUpdate={ handleIdentityProviderUpdate }
-                            isGoogle={
-                                (identityProviderTemplate?.name === undefined)
-                                    ? undefined
-                                    : identityProviderTemplate.name === SupportedQuickStartTemplateTypes.GOOGLE
-                            }
-                            isSaml={
-                                (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
-                                    ? undefined
-                                    : (connector?.federatedAuthenticators?.defaultAuthenticatorId
-                                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID)
-                            }
-                            isOidc={
-                                (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
-                                    ? undefined
-                                    : (connector.federatedAuthenticators.defaultAuthenticatorId
-                                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID)
-                            }
-                            data-testid={ testId }
-                            template={ identityProviderTemplate }
-                            type={ identityProviderTemplate?.id }
-                            isReadOnly={ isReadOnly }
-                            isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
-                            setIsAutomaticTabRedirectionEnabled={ setIsAutomaticTabRedirectionEnabled }
-                            tabIdentifier={ tabIdentifier }
-                        />
-                    )
-                    : (
-                        <EditMultiFactorAuthenticator
-                            authenticator={ connector }
-                            isLoading={ isConnectorDetailsFetchRequestLoading }
-                            onDelete={ handleIdentityProviderDelete }
-                            onUpdate={ handleMultiFactorAuthenticatorUpdate }
-                            type={ connector?.id }
-                            isReadOnly={ isReadOnly }
-                        />
-                    )
-            }
-        </TabPageLayout>
+            <TabPageLayout
+                pageTitle="Edit Connection"
+                isLoading={ isConnectorDetailsFetchRequestLoading }
+                loadingStateOptions={ {
+                    count: 5,
+                    imageType: "square"
+                } }
+                title={ resolveConnectorName(connector) }
+                contentTopMargin={ true }
+                description={ resolveConnectorDescription(connector) }
+                image={ resolveConnectorImage(connector) }
+                backButton={ {
+                    "data-testid": `${testId}-page-back-button`,
+                    onClick: handleBackButtonClick,
+                    text: t("console:develop.pages.authenticationProviderTemplate.backButton")
+                } }
+                titleTextAlign="left"
+                bottomMargin={ false }
+                data-testid={ `${testId}-page-layout` }
+            >
+                { ConnectionsManagementUtils.isConnectorIdentityProvider(connector) ? (
+                    <EditConnection
+                        connectionSettingsMetaData={ connectionSettings }
+                        identityProvider={ connector }
+                        isLoading={ isConnectorDetailsFetchRequestLoading || isConnectorMetaDataFetchRequestLoading }
+                        onDelete={ handleIdentityProviderDelete }
+                        onUpdate={ handleIdentityProviderUpdate }
+                        isGoogle={
+                            identityProviderTemplate?.name === undefined
+                                ? undefined
+                                : identityProviderTemplate.name === SupportedQuickStartTemplateTypes.GOOGLE
+                        }
+                        isSaml={
+                            connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined
+                                ? undefined
+                                : connector?.federatedAuthenticators?.defaultAuthenticatorId ===
+                                  FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID
+                        }
+                        isOidc={
+                            connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined
+                                ? undefined
+                                : connector.federatedAuthenticators.defaultAuthenticatorId ===
+                                  FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID
+                        }
+                        data-testid={ testId }
+                        template={ identityProviderTemplate }
+                        type={ identityProviderTemplate?.id }
+                        isReadOnly={ isReadOnly }
+                        isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
+                        setIsAutomaticTabRedirectionEnabled={ setIsAutomaticTabRedirectionEnabled }
+                        tabIdentifier={ tabIdentifier }
+                    />
+                ) : (
+                    <EditMultiFactorAuthenticator
+                        authenticator={ connector }
+                        isLoading={ isConnectorDetailsFetchRequestLoading }
+                        onDelete={ handleIdentityProviderDelete }
+                        onUpdate={ handleMultiFactorAuthenticatorUpdate }
+                        type={ connector?.id }
+                        isReadOnly={ isReadOnly }
+                    />
+                ) }
+            </TabPageLayout>
+        </ExtensionTemplatesProvider>
     );
 };
 

@@ -924,7 +924,8 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 inputType="text"
                 name="displayName"
                 label={ t("customAuthentication:fields.createWizard.generalSettingsStep.displayName.label") }
-                placeholder={ t("customAuthentication:fields.createWizard.generalSettingsStep.displayName.placeholder") }
+                placeholder={ t("customAuthentication:fields.createWizard.generalSettingsStep.displayName." +
+                    "placeholder") }
                 initialValue={ initialValues.displayName }
                 required={ true }
                 maxLength={ 100 }

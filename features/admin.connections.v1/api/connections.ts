@@ -38,6 +38,7 @@ import {
     ConnectionListResponseInterface,
     ConnectionRolesInterface,
     ConnectionTemplateInterface,
+    CustomAuthConnectionInterface,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
     FederatedAuthenticatorMetaInterface,
@@ -92,8 +93,8 @@ export const createConnection = (
  * @param connection - Connection settings data.
  */
 export const createCustomAuthentication = (
-    connection: ConnectionInterface
-): Promise<AxiosResponse<ConnectionInterface>> => {
+    connection: CustomAuthConnectionInterface
+): Promise<AxiosResponse<CustomAuthConnectionInterface>> => {
 
     const requestConfig: AxiosRequestConfig = {
         data: connection,
@@ -109,6 +110,38 @@ export const createCustomAuthentication = (
         .then((response: AxiosResponse) => {
             if ((response.status !== 201)) {
                 return Promise.reject(new Error("Failed to create the application."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Function to update custom local authenticator.
+ *
+ * @param connection - Connection settings data.
+ */
+export const updateCustomAuthentication = (
+    id: string,
+    connection: CustomAuthConnectionInterface
+): Promise<AxiosResponse<CustomAuthConnectionInterface>> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        data: connection,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.customAuthenticators + "/" + id
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if ((response.status !== 200)) {
+                return Promise.reject(new Error("Failed to update the custom local authenticator."));
             }
 
             return Promise.resolve(response);

@@ -69,8 +69,7 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
     const { CONNECTION_TEMPLATE_IDS: ConnectionTemplateIds } = CommonAuthenticatorConstants;
 
     const [ connector, setConnector ] = useState<CustomAuthConnectionInterface>(undefined);
-    const [ isConnectorDetailsFetchRequestLoading, setConnectorDetailFetchRequestLoading ]
-        = useState<boolean>(undefined);
+    const [ isConnectorDetailsFetchRequestLoading, setConnectorDetailFetchRequestLoading ] = useState<boolean>(undefined);
     const [ tabIdentifier, setTabIdentifier ] = useState<string>();
     const [ isAutomaticTabRedirectionEnabled, setIsAutomaticTabRedirectionEnabled ] = useState<boolean>(false);
     const [ shouldFetchConnectionTemplate, setShouldFetchConnectionTemplate ] = useState<boolean>(false);
@@ -197,6 +196,24 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
             });
     };
 
+
+    const resolveConnectorImage = (connector: CustomAuthConnectionInterface): ReactElement => {
+        if (!connector) {
+            return;
+        }
+
+        return (
+            <AppAvatar
+                hoverable={ false }
+                name={ connector?.displayName }
+                image={ AuthenticatorMeta.getAuthenticatorIcon(
+                    connector?.image
+                ) }
+                size="tiny"
+            />
+        );
+    }
+
     /**
      * Handles the back button click event.
      */
@@ -318,6 +335,7 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
                 title={ resolveConnectorName(connector) }
                 contentTopMargin={ true }
                 description={ resolveAuthenticatorDescription(connector) }
+                image={ resolveConnectorImage(connector) }
                 backButton={ {
                     "data-componentid": `${_componentId}-page-back-button`,
                     onClick: handleBackButtonClick,

@@ -271,6 +271,7 @@ export interface FederatedAuthenticatorInterface extends CommonPluggableComponen
  * Captures the properties of a externally implemented local authenticator.
  */
 export interface CustomAuthConnectionInterface extends ConnectionInterface {
+    id?: string;
     name: string;
     displayName: string;
     isEnabled?: boolean;
@@ -755,7 +756,7 @@ export interface CustomAuthGeneralDetailsFormValuesInterface {
     /**
      * Display name of the connection
      */
-    name: string
+    displayName: string
     /**
      * Description of the connection
      */
@@ -768,6 +769,10 @@ export interface CustomAuthGeneralDetailsFormValuesInterface {
      * Set is primary connection
      */
     isPrimary: boolean;
+    /**
+     * Set is enabled connection
+     */
+    isEnabled: boolean;
 }
 
 export interface OutboundProvisioningConnectorMetaDataInterface {

@@ -16,11 +16,15 @@
  * under the License.
  */
 
+import Button from "@oxygen-ui/react/Button";
 import { useRequiredScopes } from "@wso2is/access-control";
+import ActionEndpointConfigForm from "@wso2is/admin.actions.v1/components/action-endpoint-config-form";
+import { validateActionCommonFields } from "@wso2is/admin.actions.v1/util/form-field-util";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { FinalForm, FormRenderProps, FormSpy } from "@wso2is/form";
 import {
     ContentLoader,
     EmphasizedSegment,
@@ -29,6 +33,7 @@ import {
     ResourceTabPaneInterface
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, lazy, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { TabProps } from "semantic-ui-react";
 import {
@@ -49,11 +54,14 @@ import {
     ConnectionInterface,
     ConnectionTabTypes,
     ConnectionTemplateInterface,
+    EndpointAuthenticationType,
+    EndpointConfigFormPropertyInterface,
     ImplicitAssociaionConfigInterface
 } from "../../models/connection";
 import { isProvisioningAttributesEnabled } from "../../utils/attribute-utils";
 import { ConnectionsManagementUtils } from "../../utils/connection-utils";
-// import ActionEndpointConfigForm from "@wso2is/admin.actions.v1/components"
+import { validateEndpointAuthentication } from "../../utils/form-field-utils";
+import "./connection-edit.scss";
 
 /**
  * Proptypes for the connection edit component.
@@ -164,8 +172,13 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const [ isTrustedTokenIssuer, setIsTrustedTokenIssuer ] = useState<boolean>(false);
     const [ isExpertMode, setIsExpertMode ] = useState<boolean>(false);
     const [ isCustomAuthenticator, setIsCustomAuthenticator ] = useState<boolean>(false);
+    const [ isCustomLocalAuthenticator, setIsCustomLocalAuthenticator ] = useState<boolean>(false);
+    const [ endpointAuthenticationType, setEndpointAuthenticationType ] = useState<EndpointAuthenticationType>(null);
+    const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
 
     const hasApplicationReadPermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.read);
+
+    const { t } = useTranslation();
 
     const isOrganizationEnterpriseAuthenticator: boolean =
         identityProvider?.federatedAuthenticators?.defaultAuthenticatorId ===
@@ -190,6 +203,12 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         lookupAttribute: identityProvider?.implicitAssociation?.lookupAttribute
     };
 
+    useEffect(() => {
+        if (!identityProvider?.id) {
+            setIsAuthenticationUpdateFormState(true);
+        }
+    }, [ identityProvider ]);
+
     /**
      * This wrapper function ensures that the user stays on the tab that
      * triggered the update after completion. Additionally, it invokes
@@ -203,6 +222,22 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         } else {
             onConnectionUpdate(id, getPanes()[defaultActiveIndex]["data-tabid"]);
         }
+    };
+
+    const onAuthenticationTypeChange = (): void => {
+        (updatedValue: EndpointAuthenticationType, change: boolean) => {
+            setEndpointAuthenticationType(updatedValue);
+            setIsAuthenticationUpdateFormState(change);
+        };
+    };
+
+    const validateForm = (values: EndpointConfigFormPropertyInterface):
+        Partial<EndpointConfigFormPropertyInterface> => {
+
+        return validateEndpointAuthentication(values, {
+            authenticationType: endpointAuthenticationType,
+            isAuthenticationUpdateFormState: isAuthenticationUpdateFormState
+        }, t);
     };
 
     const Loader = (): ReactElement => (
@@ -268,12 +303,78 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         </ResourceTab.Pane>
     );
 
+    const handleCustomAuthSettingsForm = (values: EndpointConfigFormPropertyInterface) =>
+    {
+        const authProperties: Partial<EndpointConfigFormPropertyInterface> = {};
+
+        if (isAuthenticationUpdateFormState) {
+            switch (values.authenticationType) {
+                case EndpointAuthenticationType.BASIC:
+                    authProperties.usernameAuthProperty = values.usernameAuthProperty;
+                    authProperties.passwordAuthProperty = values.passwordAuthProperty;
+
+                    break;
+                case EndpointAuthenticationType.BEARER:
+                    authProperties.accessTokenAuthProperty = values.accessTokenAuthProperty;
+
+                    break;
+                case EndpointAuthenticationType.API_KEY:
+                    authProperties.headerAuthProperty = values.headerAuthProperty;
+                    authProperties.valueAuthProperty = values.valueAuthProperty;
+
+                    break;
+                case EndpointAuthenticationType.NONE:
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+    const CustomAuthenticatorSettingsTabPane = (): ReactElement => (
+        <div className="custom-authentication-create-wizard">
+            <FinalForm
+                onSubmit={ (values: EndpointConfigFormPropertyInterface) => {
+                    handleCustomAuthSettingsForm(values); }
+                }
+                validate={ validateForm }
+                render={ ({ handleSubmit }: FormRenderProps) => (
+                    <form onSubmit={ handleSubmit }>
+                        <EmphasizedSegment
+                            className="form-wrapper"
+                            padded={ "very" }
+                            data-componentid={ `${ testId }-section` }
+                        >
+                            <div className="form-container with-max-width">
+                                <ActionEndpointConfigForm
+                                    initialValues={ null }
+                                    isCreateFormState={ false }
+                                    onAuthenticationTypeChange={ onAuthenticationTypeChange }
+                                />
+                                { !isLoading && (
+                                    <Button
+                                        size="medium"
+                                        variant="contained"
+                                        onClick={ handleSubmit }
+                                        className={ "button-container" }
+                                        data-componentid={ `${ testId }-primary-button` }
+                                    >
+                                        {
+                                            t("actions:buttons.update")
+                                        }
+                                    </Button>
+                                ) }
+                            </div>
+                        </EmphasizedSegment>
+                    </form>
+                ) }
+            >
+            </FinalForm>
+        </div>
+    );
+
     const AuthenticatorSettingsTabPane = (): ReactElement =>
-        isCustomAuthenticator ? (
-            <>
-            {/* <ActionEndpointConfigForm/> */}
-            </>
-        ) : (
+        isCustomAuthenticator ? CustomAuthenticatorSettingsTabPane() : (
             <ResourceTab.Pane controlledSegmentation>
                 <AuthenticatorSettings
                     connectionSettingsMetaData={ connectionSettingsMetaData }
@@ -363,6 +464,10 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXTERNAL_CUSTOM_AUTHENTICATION ||
                 type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATION ||
                 type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATION
+        );
+        setIsCustomLocalAuthenticator(
+            type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATION ||
+            type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATION
         );
     }, [ type ]);
 
@@ -455,7 +560,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
         }
 
-        if (shouldShowTab(type, ConnectionTabTypes.CONNECTED_APPS) && hasApplicationReadPermissions) {
+        if (shouldShowTab(type, ConnectionTabTypes.CONNECTED_APPS) && hasApplicationReadPermissions &&
+            !isCustomLocalAuthenticator) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.CONNECTED_APPS,
                 menuItem: "Connected Apps",
@@ -492,7 +598,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         if (
             shouldShowTab(type, ConnectionTabTypes.JIT_PROVISIONING) &&
             identityProviderConfig.editIdentityProvider.showJitProvisioning &&
-            !isOrganizationEnterpriseAuthenticator
+            !isOrganizationEnterpriseAuthenticator &&
+            !isCustomLocalAuthenticator
         ) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.JIT_PROVISIONING,
