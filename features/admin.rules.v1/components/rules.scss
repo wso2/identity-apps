@@ -40,13 +40,17 @@
     margin-top: 5px;
 }
 
+.clear-button.has-delete-button {
+    margin-right: 60px;
+}
+
 .delete-button {
     font-size: 1rem;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     min-height: 30px;
-    right: 14px;
-    top: 35px;
+    right: 25px;
+    top: 20px;
 
     .delete-button-icon {
         font-size: 1.2rem;

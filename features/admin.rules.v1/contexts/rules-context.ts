@@ -51,6 +51,11 @@ export interface RulesContextInterface {
     clearRule: (id: string) => void;
 
     /**
+     * Is multiple rules flag
+     */
+    isMultipleRules: boolean;
+
+    /**
      * Method to remove a rule.
      */
     removeRule: (id: string) => void;

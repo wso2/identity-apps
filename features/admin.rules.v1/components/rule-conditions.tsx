@@ -494,9 +494,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             );
                         } }
                     >
-                        <MenuItem disabled value="">
-                            <em>Placeholder</em>
-                        </MenuItem>
                         { conditionExpressionsMeta?.map((item: ConditionExpressionMetaInterface, index: number) => (
                             <MenuItem value={ item.field?.name } key={ `${expression.id}-${index}` }>
                                 { item.field?.displayName }

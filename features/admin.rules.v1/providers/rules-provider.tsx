@@ -76,10 +76,10 @@ export const RulesProvider = ({
     ruleExecutionMetaData
 }: {
     children: ReactNode;
-    isMultipleRules: boolean;
+    isMultipleRules?: boolean;
     conditionExpressionsMetaData: ConditionExpressionsMetaDataInterface;
     initialData: RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface;
-    ruleExecutionMetaData: RuleExecutionMetaDataInterface;
+    ruleExecutionMetaData?: RuleExecutionMetaDataInterface;
 }) => {
     let RuleExecutionData: any = addIds(initialData);
 
@@ -416,6 +416,7 @@ export const RulesProvider = ({
                 addNewRuleConditionExpression: handleAddConditionExpression,
                 clearRule: handleClearRule,
                 conditionExpressionsMeta: ruleComponentInstanceConditionExpressionsMeta,
+                isMultipleRules: isMultipleRules,
                 removeRule: handleRemoveRule,
                 removeRuleConditionExpression: handleRemoveConditionExpression,
                 ruleExecuteCollection: ruleComponentInstance,

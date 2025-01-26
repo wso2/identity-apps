@@ -77,7 +77,6 @@ const RulesComponent: FunctionComponent<RulesComponentPropsWithValidation> = ({
     >
         <RuleExecutionComponent
             data-componentid={ componentId }
-            isMultipleRules={ isMultipleRules }
         />
     </RulesProvider>
 );
