@@ -195,8 +195,6 @@
                                 </div>
 
                                 <div class="ui divider hidden"></div>
-                                <div> <img class="img-responsive" src="images/pushAuth.png" style="max-width: 60%; height: auto; display: block; margin: 0 auto;"> </div>
-                                <div class="ui divider hidden"></div>
                             </div>
 
                             <input type="hidden" name="sessionDataKey"
