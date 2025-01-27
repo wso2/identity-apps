@@ -842,7 +842,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))
                 && !isM2MApplication
-                && (isSuperOrganization() || (isSubOrganization() && isFragmentApp))) {
+                && (isSuperOrganization() || (isSubOrganization() && isFragmentApp) || isFirstLevelOrg)) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(

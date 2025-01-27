@@ -71,12 +71,12 @@ const RulesComponent: FunctionComponent<RulesComponentPropsWithValidation> = ({
 }: RulesComponentPropsWithValidation): ReactElement => (
     <RulesProvider
         initialData={ initialData }
+        isMultipleRules={ isMultipleRules }
         conditionExpressionsMetaData={ conditionExpressionsMetaData }
         ruleExecutionMetaData={ ruleExecutionMetaData }
     >
         <RuleExecutionComponent
             data-componentid={ componentId }
-            isMultipleRules={ isMultipleRules }
         />
     </RulesProvider>
 );

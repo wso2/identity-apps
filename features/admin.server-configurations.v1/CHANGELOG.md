@@ -1,5 +1,36 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.32.41
+
+### Patch Changes
+
+- Updated dependencies [[`6d6d70456efbff3725a566889de169fb91eba0a3`](https://github.com/wso2/identity-apps/commit/6d6d70456efbff3725a566889de169fb91eba0a3)]:
+  - @wso2is/i18n@2.18.0
+  - @wso2is/admin.core.v1@2.37.24
+  - @wso2is/admin.extensions.v1@2.36.41
+  - @wso2is/admin.identity-providers.v1@2.26.116
+  - @wso2is/admin.organizations.v1@2.26.116
+  - @wso2is/admin.server-configurations.v1@2.32.41
+  - @wso2is/admin.users.v1@2.30.26
+  - @wso2is/admin.validation.v1@2.27.54
+  - @wso2is/admin.feature-gate.v1@1.4.116
+
+## 2.32.40
+
+### Patch Changes
+
+- [#6997](https://github.com/wso2/identity-apps/pull/6997) [`487651a6db5cfa2b19468f9cb1219d7c23fad989`](https://github.com/wso2/identity-apps/commit/487651a6db5cfa2b19468f9cb1219d7c23fad989) Thanks [@sandushi](https://github.com/sandushi)! - Support the feature indefinitely lock user until admin unlocks
+
+- Updated dependencies [[`487651a6db5cfa2b19468f9cb1219d7c23fad989`](https://github.com/wso2/identity-apps/commit/487651a6db5cfa2b19468f9cb1219d7c23fad989)]:
+  - @wso2is/admin.server-configurations.v1@2.32.40
+  - @wso2is/admin.core.v1@2.37.23
+  - @wso2is/admin.extensions.v1@2.36.40
+  - @wso2is/admin.identity-providers.v1@2.26.115
+  - @wso2is/admin.users.v1@2.30.25
+  - @wso2is/admin.validation.v1@2.27.53
+  - @wso2is/admin.organizations.v1@2.26.115
+  - @wso2is/admin.feature-gate.v1@1.4.115
+
 ## 2.32.39
 
 ### Patch Changes

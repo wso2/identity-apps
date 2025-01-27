@@ -70,6 +70,7 @@ export interface RuleInterface {
     id: string;
     rules: RuleConditionsInterface;
     execution?: string;
+    isRuleInstanceTouched?: boolean;
 }
 
 /**

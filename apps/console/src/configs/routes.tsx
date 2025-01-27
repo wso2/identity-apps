@@ -135,7 +135,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 icon: getSidePanelIcons().policyAdministration
             },
             id: "policyAdministration",
-            name: "Policy Administration",
+            name: "policyAdministration:title",
             order: 30,
             path: AppConstants.getPaths().get("POLICY_ADMINISTRATION"),
             protected: true,
