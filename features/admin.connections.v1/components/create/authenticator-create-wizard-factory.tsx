@@ -333,7 +333,6 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                                 handleModalVisibility(false);
                                 onWizardClose();
                             } }
-                            // onAuthenticatorCreate={ handleSuccessfulLocalAuthenticatorCreate }
                             template={ selectedTemplateWithUniqueName }
                             data-componentid={ selectedTemplate?.templateId }
                             { ...rest }
