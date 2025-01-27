@@ -128,32 +128,312 @@ const MyComponent = () => {
 
 ## Avoid using named exports. Use default exports instead
 
+Use default exports instead of named exports to maintain a uniform and simple import/export structure in the codebase.
+
+**Why:**
+- Makes refactoring easier, as default exports can be renamed during import without modifying the export.
+- Reduces potential naming conflicts when importing multiple items.
+- Simplifies the codebase by enforcing a single export per file.
+
+**What to do:**
+Always use default exports for components, utilities, and modules.
+
+**Example:**
+
+Recommended:
+
+```javascript
+// MyComponent.jsx
+const MyComponent = () => {
+    return <div>Hello, World!</div>;
+};
+
+export default MyComponent;
+
+// Importing
+import MyComponent from "./MyComponent";
+```
+
+Avoid:
+
+```javascript
+// MyComponent.jsx
+export const MyComponent = () => {
+    return <div>Hello, World!</div>;
+};
+
+// Importing
+import { MyComponent } from "./MyComponent";
+```
+
 ## Use ReactFinalForm instead of modules/form or modules/forms when implementing new forms.
+
+<brief description>
+
+**Why:**
+<explain reasons in list format>
+
+**What to do:**
+<explain the recommendation in single sentence>
+
+**Example:**
+
+Recommended:
+
+<example what to do>
+
+Avoid:
+
+<example what not to do>
 
 ## Refrain from using 	`any` as a type. Use it as the last resort.
 
+<brief description>
+
+**Why:**
+<explain reasons in list format>
+
+**What to do:**
+<explain the recommendation in single sentence>
+
+**Example:**
+
+Recommended:
+
+<example what to do>
+
+Avoid:
+
+<example what not to do>
+
 ## Avoid using data-testid / TestableComponentInterface. Use IdentifiableComponentInterface instead.
+
+<brief description>
+
+**Why:**
+<explain reasons in list format>
+
+**What to do:**
+<explain the recommendation in single sentence>
+
+**Example:**
+
+Recommended:
+
+<example what to do>
+
+Avoid:
+
+<example what not to do>
 
 ## Get the UI text reviewed by the documentation team.
 
+<brief description>
+
+**Why:**
+<explain reasons in list format>
+
+**What to do:**
+<explain the recommendation in single sentence>
+
+**Example:**
+
+Recommended:
+
+<example what to do>
+
+Avoid:
+
+<example what not to do>
+
 ## Make sure to get the UI/UX reviewed with the team before jumping into implementation.
+
+<brief description>
+
+**Why:**
+<explain reasons in list format>
+
+**What to do:**
+<explain the recommendation in single sentence>
+
+**Example:**
+
+Recommended:
+
+<example what to do>
+
+Avoid:
+
+<example what not to do>
 
 ## Enable running eslint on file save
 
+<brief description>
+
+**Why:**
+<explain reasons in list format>
+
+**What to do:**
+<explain the recommendation in single sentence>
+
+**Example:**
+
+Recommended:
+
+<example what to do>
+
+Avoid:
+
+<example what not to do>
+
 ## Make sure to add changeset if you want a new version released with your changes. Carefully review the type of changes to each module and specify the version bump type in changeset accordingly.
+
+<brief description>
+
+**Why:**
+<explain reasons in list format>
+
+**What to do:**
+<explain the recommendation in single sentence>
+
+**Example:**
+
+Recommended:
+
+<example what to do>
+
+Avoid:
+
+<example what not to do>
 
 ## Use constants for string literals wherever possible.
 
+<brief description>
+
+**Why:**
+<explain reasons in list format>
+
+**What to do:**
+<explain the recommendation in single sentence>
+
+**Example:**
+
+Recommended:
+
+<example what to do>
+
+Avoid:
+
+<example what not to do>
+
 ## If you are doing a behavioral change to the repo (changes to development process, changes to product behaviour etc,), make sure to update the PR with relevant references. This will come in handy when looking back at the code in a few years.
 
+<brief description>
+
+**Why:**
+<explain reasons in list format>
+
+**What to do:**
+<explain the recommendation in single sentence>
+
+**Example:**
+
+Recommended:
+
+<example what to do>
+
+Avoid:
+
+<example what not to do>
+    
 ## Use clear variable names
 
+<brief description>
+
+**Why:**
+<explain reasons in list format>
+
+**What to do:**
+<explain the recommendation in single sentence>
+
+**Example:**
+
+Recommended:
+
+<example what to do>
+
+Avoid:
+
+<example what not to do>
+    
 ## Use `classnames` package for conditionally applying class names to UI elements
+
+<brief description>
+
+**Why:**
+<explain reasons in list format>
+
+**What to do:**
+<explain the recommendation in single sentence>
+
+**Example:**
+
+Recommended:
+
+<example what to do>
+
+Avoid:
+
+<example what not to do>
 
 ## Refrain from using index files, as it leads to increased bundle sizes and circular dependencies
 
+<brief description>
 
-## Use modern js features to keep the code concise and readable. Eg: optional chaining instead of chained &&
+**Why:**
+<explain reasons in list format>
+
+**What to do:**
+<explain the recommendation in single sentence>
+
+**Example:**
+
+Recommended:
+
+<example what to do>
+
+Avoid:
+
+<example what not to do>
+    
+## Use modern js features to keep the code concise and readable. 
+
+<brief description>
+
+Eg: 
+
+**Why:**
+<explain reasons in list format>
+
+**What to do:**
+<explain the recommendation in single sentence>
+
+**Example:**
+
+1. Use optional chaining instead of chained expressions joined by `&&`.
+
+Recommended:
+
+```javascript
+const userName = user?.profile?.name || "Guest";
+```
+
+Avoid:
+
+```javascript
+const userName = (user && user.profile && user.profile.name) || "Guest";
+```
+
 
 ## Typescript Doc Comments
 
