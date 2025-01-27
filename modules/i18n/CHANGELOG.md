@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.18.1
+
+### Patch Changes
+
+- [#7425](https://github.com/wso2/identity-apps/pull/7425) [`756bca6449a5f4092cbea1a27939cd2c95452c4c`](https://github.com/wso2/identity-apps/commit/756bca6449a5f4092cbea1a27939cd2c95452c4c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update broken i18n strings in push notification provider configurations
+
 ## 2.18.0
 
 ### Minor Changes

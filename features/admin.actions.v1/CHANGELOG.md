@@ -1,5 +1,20 @@
 # @wso2is/admin.actions.v1
 
+## 1.10.1
+
+### Patch Changes
+
+- [#7363](https://github.com/wso2/identity-apps/pull/7363) [`b4f965e293948682763b30059ee9dca47f9bc744`](https://github.com/wso2/identity-apps/commit/b4f965e293948682763b30059ee9dca47f9bc744) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Add custom authenticator UI
+
+* [#7427](https://github.com/wso2/identity-apps/pull/7427) [`a31e61e4a3c50c2a62e6654f85c033f8e8be19c7`](https://github.com/wso2/identity-apps/commit/a31e61e4a3c50c2a62e6654f85c033f8e8be19c7) Thanks [@osandamaleesha](https://github.com/osandamaleesha)! - Update the description of Pre Update Password Action
+
+* Updated dependencies [[`b4f965e293948682763b30059ee9dca47f9bc744`](https://github.com/wso2/identity-apps/commit/b4f965e293948682763b30059ee9dca47f9bc744), [`756bca6449a5f4092cbea1a27939cd2c95452c4c`](https://github.com/wso2/identity-apps/commit/756bca6449a5f4092cbea1a27939cd2c95452c4c)]:
+  - @wso2is/admin.core.v1@2.37.25
+  - @wso2is/i18n@2.18.1
+  - @wso2is/admin.extensions.v1@2.36.42
+  - @wso2is/admin.feature-gate.v1@1.4.117
+  - @wso2is/admin.rules.v1@0.2.1
+
 ## 1.10.0
 
 ### Minor Changes

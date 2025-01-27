@@ -1,5 +1,16 @@
 # @wso2is/admin.push-providers.v1
 
+## 1.0.6
+
+### Patch Changes
+
+- [#7425](https://github.com/wso2/identity-apps/pull/7425) [`756bca6449a5f4092cbea1a27939cd2c95452c4c`](https://github.com/wso2/identity-apps/commit/756bca6449a5f4092cbea1a27939cd2c95452c4c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update broken i18n strings in push notification provider configurations
+
+- Updated dependencies [[`b4f965e293948682763b30059ee9dca47f9bc744`](https://github.com/wso2/identity-apps/commit/b4f965e293948682763b30059ee9dca47f9bc744)]:
+  - @wso2is/admin.core.v1@2.37.25
+  - @wso2is/admin.feature-gate.v1@1.4.117
+  - @wso2is/admin.template-core.v1@1.5.71
+
 ## 1.0.5
 
 ### Patch Changes
