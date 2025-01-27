@@ -22,6 +22,7 @@ import ActionEndpointConfigForm from "@wso2is/admin.actions.v1/components/action
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
+import { FederatedAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -62,7 +63,7 @@ import { isProvisioningAttributesEnabled } from "../../utils/attribute-utils";
 import { ConnectionsManagementUtils, handleConnectionUpdateError } from "../../utils/connection-utils";
 import { validateEndpointAuthentication } from "../../utils/form-field-utils";
 import "./connection-edit.scss";
-import { getFederatedAuthenticatorDetails, updateCustomAuthentication, updateIdentityProviderDetails } from "../../api/connections";
+import { getFederatedAuthenticatorDetails, updateCustomAuthentication, updateFederatedAuthenticator, updateIdentityProviderDetails } from "../../api/connections";
 import { getLocalAuthenticator } from "../../api/authenticators";
 import { AxiosError } from "axios";
 
@@ -254,7 +255,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                     );
                 });
         } else {
-            localAuthenticatorId = identityProvider?.federatedAuthenticators?.defaultAuthenticatorId;
+            localAuthenticatorId = identityProvider?.federatedAuthenticators?.authenticators[0].authenticatorId;
             getFederatedAuthenticatorDetails(identityProvider?.id, localAuthenticatorId)
                 .then((data: FederatedAuthenticatorListItemInterface) => {
                     setAuthenticatorEndpoint(data?.endpoint);
@@ -399,21 +400,21 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             changedFields: EndpointConfigFormPropertyInterface
         ) => {
 
-            const authProperties: Partial<EndpointConfigFormPropertyInterface> = {};
+            const authProperties: any = {};
 
             switch (values.authenticationType) {
                 case EndpointAuthenticationType.BASIC:
-                    authProperties.usernameAuthProperty = values.usernameAuthProperty;
-                    authProperties.passwordAuthProperty = values.passwordAuthProperty;
+                    authProperties["username"] = values.usernameAuthProperty;
+                    authProperties["password"] = values.passwordAuthProperty;
 
                     break;
                 case EndpointAuthenticationType.BEARER:
-                    authProperties.accessTokenAuthProperty = values.accessTokenAuthProperty;
+                    authProperties["accessToken"] = values.accessTokenAuthProperty;
 
                     break;
                 case EndpointAuthenticationType.API_KEY:
-                    authProperties.headerAuthProperty = values.headerAuthProperty;
-                    authProperties.valueAuthProperty = values.valueAuthProperty;
+                    authProperties["header"]= values.headerAuthProperty;
+                    authProperties["value"] = values.valueAuthProperty;
 
                     break;
                 case EndpointAuthenticationType.NONE:
@@ -422,28 +423,22 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                     break;
             }
 
-            const updatingValues: EndpointAuthenticationUpdateInterface = {
-                displayName: resolveDisplayName(),
-
-                endpoint:
-                    isAuthenticationUpdateFormState || changedFields?.endpointUri
-                        ? {
-                            authentication: isAuthenticationUpdateFormState
-                                ? {
-                                    properties: authProperties,
-                                    type: values.authenticationType as EndpointAuthenticationType
-                                }
-                                : undefined,
-                            uri: changedFields?.endpointUri ? values.endpointUri : undefined
-                        }
-                        : undefined,
-
-                isEnabled: identityProvider.isEnabled
-            };
-
             setIsSubmitting(true);
 
             if (isCustomLocalAuthenticator) {
+                const updatingValues: EndpointAuthenticationUpdateInterface = {
+                    displayName: resolveDisplayName(),
+                    endpoint: {
+                        authentication: {
+                            properties: authProperties,
+                            type: values.authenticationType as EndpointAuthenticationType
+                        },
+                        uri: changedFields?.endpointUri ? values.endpointUri : undefined
+                    },
+                    isEnabled: identityProvider.isEnabled,
+                    isPrimary: identityProvider.isPrimary
+                };
+
                 updateCustomAuthentication(identityProvider.id, updatingValues as CustomAuthConnectionInterface)
                     .then(() => {
                         dispatch(
@@ -463,21 +458,55 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                         setIsSubmitting(false);
                     });
             } else {
-                updateIdentityProviderDetails({ id: identityProvider.id, ...updatingValues },
-                    identityProvider.idpIssuerName === undefined)
+                const updatingValues: FederatedAuthenticatorInterface = {
+                    authenticatorId: identityProvider?.federatedAuthenticators?.authenticators[0]?.authenticatorId,
+                    endpoint: {
+                        authentication: {
+                            properties: authProperties,
+                            type: values.authenticationType as EndpointAuthenticationType
+                        },
+                        uri: changedFields?.endpointUri ? values.endpointUri : undefined
+                    },
+                    isEnabled: identityProvider.isEnabled
+                };
+
+                updateFederatedAuthenticator(identityProvider.id, updatingValues)
                     .then(() => {
-                        dispatch(
-                            addAlert({
-                                description: t("authenticationProvider:notifications.updateIDP." +
-                                     "success.description"),
-                                level: AlertLevels.SUCCESS,
-                                message: t("authenticationProvider:notifications.updateIDP." + "success.message")
-                            })
-                        );
+                        dispatch(addAlert({
+                            description: t("authenticationProvider:" +
+                                                    "notifications.updateFederatedAuthenticator." +
+                                                    "success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("authenticationProvider:notifications." +
+                                                    "updateFederatedAuthenticator." +
+                                                    "success.message")
+                        }));
                         onUpdate(identityProvider.id);
                     })
                     .catch((error: AxiosError) => {
-                        handleConnectionUpdateError(error);
+                        if (error.response && error.response.data && error.response.data.description) {
+                            dispatch(addAlert({
+                                description: t("authenticationProvider:" +
+                                            "notifications.updateFederatedAuthenticator." +
+                                            "error.description", { description: error.response.data.description }),
+                                level: AlertLevels.ERROR,
+                                message: t("authenticationProvider:" +
+                                            "notifications.updateFederatedAuthenticator." +
+                                            "error.message")
+                            }));
+
+                            return;
+                        }
+
+                        dispatch(addAlert({
+                            description: t("authenticationProvider:notifications." +
+                                        "updateFederatedAuthenticator." +
+                                        "genericError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("authenticationProvider:notifications." +
+                                        "updateFederatedAuthenticator." +
+                                        "genericError.message")
+                        }));
                     })
                     .finally(() => {
                         setIsSubmitting(false);

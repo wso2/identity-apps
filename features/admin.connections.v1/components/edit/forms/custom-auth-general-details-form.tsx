@@ -169,7 +169,7 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                     );
                 });
         } else {
-            localAuthenticatorId = editingIDP?.federatedAuthenticators?.defaultAuthenticatorId;
+            localAuthenticatorId = editingIDP?.federatedAuthenticators?.authenticators[0].authenticatorId;
             getFederatedAuthenticatorDetails(editingIDP.id, localAuthenticatorId)
                 .then((data: FederatedAuthenticatorListItemInterface) => {
                     setAuthenticatorEndpoint(data?.endpoint);
@@ -244,7 +244,7 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
         if (isCustomLocalAuth) {
             return (editingIDP as CustomAuthConnectionInterface)?.name;
         } else {
-            return decodeString(editingIDP?.federatedAuthenticators?.defaultAuthenticatorId);
+            return decodeString(editingIDP?.federatedAuthenticators?.authenticators[0].authenticatorId);
         }
     };
 
