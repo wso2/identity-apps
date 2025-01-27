@@ -50,7 +50,6 @@ import React, {
     MouseEvent,
     ReactElement,
     SyntheticEvent,
-    useEffect,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -169,6 +168,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         setShowDeleteErrorDueToConnectedAppsModal
     ] = useState<boolean>(false);
     const [ isConnectedAppsLoading, setIsConnectedAppsLoading ] = useState<boolean>(true);
+    const [ isCustomAuthenticator, setIsCustomAuthenticator ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
@@ -193,7 +193,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
                 break;
 
-            case AuthenticatorCategories.LOCAL:
+            case AuthenticatorCategories.LOCAL + isCustomAuthenticator:
                 history.push(AppConstants.getPaths().get("AUTH_EDIT").replace(":id", id));
 
                 break;
@@ -392,6 +392,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      */
     const handleGridItemOnClick = (e: SyntheticEvent, authenticator: ConnectionInterface
         | AuthenticatorInterface): void => {
+
+        if(ConnectionsManagementUtils.IsCustomAuthenticator(authenticator)) {
+            setIsCustomAuthenticator(true);
+        }
 
         handleAuthenticatorEdit(authenticator.id, authenticator.type);
         onItemClick && onItemClick(e, authenticator);

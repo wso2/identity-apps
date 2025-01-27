@@ -104,19 +104,6 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
 
     const combinedData: ConnectionInterface[] = [];
 
-    /**
-     * Check if the authenticator is a custom authenticator.
-     *
-     * @param authenticator - Authenticator to evaluate.
-     * @returns - `true` if the authenticator is a custom authenticator.
-     */
-    const IsCustomAuthenticator = (authenticator: ConnectionInterface) => {
-        const tags: string[] = (authenticator as CustomAuthConnectionInterface)?.tags ?? [];
-        const isCustom: boolean = tags.some((tag: string) => tag === AuthenticatorLabels.CUSTOM);
-
-        return isCustom;
-    };
-
     if (!isAuthenticatorsFetchRequestLoading && !isIdVPListFetchRequestLoading) {
 
         // Add Local Authenticators to the beginning of the list.
@@ -150,7 +137,8 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         // Add Custom Local Authenticators to the list.
         combinedData.push(...(fetchedAuthenticatorsList
             .filter((authenticator: ConnectionInterface) => (
-                authenticator.type === AuthenticatorTypes.LOCAL && IsCustomAuthenticator(authenticator)
+                authenticator.type === AuthenticatorTypes.LOCAL &&
+                ConnectionsManagementUtils.IsCustomAuthenticator(authenticator)
             ))
         ));
 
