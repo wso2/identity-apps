@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { NotificationItem } from "../common";
+
 export interface pushProvidersNS {
     heading: string;
     subHeading: string;
@@ -30,4 +32,22 @@ export interface pushProvidersNS {
             actionTitle: string;
         };
     };
+    modals: {
+        deleteConfirmation: {
+            assertionHint: string;
+            content: string;
+            heading: string;
+            message: string;
+        }
+    };
+    alerts: {
+        create: {
+            success: NotificationItem;
+            error: NotificationItem;
+        };
+        delete: {
+            success: NotificationItem;
+            error: NotificationItem;
+        }
+    }
 }

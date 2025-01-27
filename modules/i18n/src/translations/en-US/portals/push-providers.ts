@@ -19,6 +19,28 @@
 import { pushProvidersNS } from "../../../models";
 
 export const pushProviders: pushProvidersNS = {
+    alerts: {
+        create: {
+            error: {
+                description: "Error occurred while updating push provider configurations.",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "Push provider configurations updated successfully.",
+                message: "Updated successfully."
+            }
+        },
+        delete: {
+            error: {
+                description: "Error occurred while deleting push provider configurations",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "Push provider configurations deleted succesfully",
+                message: "Deleted successfully"
+            }
+        }
+    },
     dangerZoneGroup: {
         header: "Danger Zone",
         revertConfig: {
@@ -31,6 +53,14 @@ export const pushProviders: pushProvidersNS = {
     description: "Configure the push provider settings according to your push provider.",
     goBack: "Go back to Notification Providers",
     heading: "Push Provider",
+    modals: {
+        deleteConfirmation: {
+            assertionHint: "Please confirm your action",
+            content: "If you delete the push provider, users will no longer receive push notifications from applications set up with push authentication. Proceed with caution.",
+            heading: "Are you sure?",
+            message: "This action is irreversible and will permanently delete the current push provider configuration."
+        }
+    },
     subHeading: "Configure a push provider to send push notifications to your users.",
     updateButton: "Update"
 };
