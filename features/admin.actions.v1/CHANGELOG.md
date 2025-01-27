@@ -1,5 +1,17 @@
 # @wso2is/admin.actions.v1
 
+## 1.9.15
+
+### Patch Changes
+
+- [#7419](https://github.com/wso2/identity-apps/pull/7419) [`83a4e3b8209f03b42cd752e550a7ed232ab04d82`](https://github.com/wso2/identity-apps/commit/83a4e3b8209f03b42cd752e550a7ed232ab04d82) Thanks [@osandamaleesha](https://github.com/osandamaleesha)! - Add null check for feature flags in actions
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.23
+  - @wso2is/admin.extensions.v1@2.36.40
+  - @wso2is/admin.feature-gate.v1@1.4.115
+  - @wso2is/admin.rules.v1@0.1.23
+
 ## 1.9.14
 
 ### Patch Changes
