@@ -351,8 +351,7 @@ export const actions: actionsNS = {
         },
         preUpdatePassword: {
             description: {
-                expanded: "This action is executed before updating the password of a user. " +
-                "Refer the documentation for the API definition to implement.",
+                expanded: "This action is executed before updating the password of a user. ",
                 shortened: "This action is executed before updating the password of a user."
             },
             heading: "Pre Update Password"
