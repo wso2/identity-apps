@@ -592,7 +592,6 @@ export const getConnectionDetails = (id: string): Promise<any> => {
  *
  * @param id - Connection Id.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getCustomLocalAuthenticatorDetails = (id: string): Promise<any> => {
 
     const requestConfig: RequestConfigInterface = {
