@@ -238,7 +238,6 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             return;
         }
 
-        debugger
         if (isCustom) {
             setDeletingIDP(authenticators.find(
                 (idp: ConnectionInterface | AuthenticatorInterface) => idp.id === idpId)
@@ -311,7 +310,6 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
         let deleteAction: (id: string) => Promise<AxiosResponse>;
 
-        debugger;
         if(isCustomAuth) {
             deleteAction = deleteCustomAuthentication;
         }
@@ -416,7 +414,6 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     const handleGridItemOnClick = (e: SyntheticEvent, authenticator: ConnectionInterface
         | AuthenticatorInterface): void => {
 
-        debugger
         handleAuthenticatorEdit(authenticator.id, authenticator.type,
             ConnectionsManagementUtils.IsCustomAuthenticator(authenticator));
         onItemClick && onItemClick(e, authenticator);

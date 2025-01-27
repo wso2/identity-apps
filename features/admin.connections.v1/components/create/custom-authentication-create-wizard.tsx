@@ -1017,7 +1017,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                         that <strong>custom-</strong> will be prefixed to the identifier.
                     </Trans>
                 </p>
-                <Message className="display-flex" size="small" warning header="Hello there">
+                <Message className="display-flex" size="small" warning>
                     <Icon name="warning sign" color="orange" corner />
                     <Message.Content className="tiny">
                         { t(
