@@ -22,21 +22,21 @@ export const pushProviders: pushProvidersNS = {
     alerts: {
         create: {
             error: {
-                description: "Error occurred while updating push notification provider configurations.",
+                description: "Error occurred while updating push provider configurations.",
                 message: "Something went wrong"
             },
             success: {
-                description: "Push notification provider configurations updated successfully.",
+                description: "Push provider configurations updated successfully.",
                 message: "Updated successfully."
             }
         },
         delete: {
             error: {
-                description: "Error occurred while deleting push notification provider configurations",
+                description: "Error occurred while deleting push provider configurations",
                 message: "Something went wrong"
             },
             success: {
-                description: "Push notification provider configurations deleted succesfully",
+                description: "Push provider configurations deleted succesfully",
                 message: "Deleted successfully"
             }
         }
@@ -56,9 +56,9 @@ export const pushProviders: pushProvidersNS = {
     modals: {
         deleteConfirmation: {
             assertionHint: "Please confirm your action",
-            content: "If you delete the push notification provider configurations, users will no longer receive push notifications for applications set up with push authentication. Please proceed with caution.",
+            content: "If you delete the push provider, users will no longer receive push notifications from applications set up with push authentication. Proceed with caution.",
             heading: "Are you sure?",
-            message: "This action is irreversible and will permanently delete the current push notification provider configuration."
+            message: "This action is irreversible and will permanently delete the current push provider configuration."
         }
     },
     subHeading: "Configure a push provider to send push notifications to your users.",
