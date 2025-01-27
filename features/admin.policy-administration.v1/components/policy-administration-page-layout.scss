@@ -34,15 +34,6 @@
 .policy-list-card {
     background-color: transparent;
     padding: 0;
-}
-
-#active-policy-list-container{
-    height: 60vh;
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-
-#inactive-policy-list-container{
     height: 60vh;
     overflow-x: hidden;
     overflow-y: auto;
@@ -61,4 +52,3 @@
         flex: 1;
     }
 }
-

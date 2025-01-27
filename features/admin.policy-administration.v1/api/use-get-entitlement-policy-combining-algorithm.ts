@@ -28,30 +28,32 @@ import { AlgorithmResponseInterface } from "../models/policies";
 /**
  * Fetches the policy combining algorithm.
  *
- * @param {boolean} shouldFetch - Flag to determine if the data should be fetched.
- * @return {RequestResultInterface} Response as a promise.
+ * @param shouldFetch - Should fetch the data.
+ * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-export const useGetAlgorithm = <Data = AlgorithmResponseInterface, Error = RequestErrorInterface>(
-    shouldFetch: boolean = true
-): RequestResultInterface<Data, Error> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.entitlementPolicyCombiningAlgorithmApi}`
-    };
+export const useGetEntitlementPolicyCombiningAlgorithm =
+    <Data = AlgorithmResponseInterface, Error = RequestErrorInterface>(
+        shouldFetch: boolean = true
+    ): RequestResultInterface<Data, Error> => {
+        const requestConfig: RequestConfigInterface = {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            method: HttpMethods.GET,
+            url: `${store.getState().config.endpoints.entitlementPolicyCombiningAlgorithmApi}`
+        };
 
-    const { data, error, isValidating, mutate, isLoading } = useRequest<Data, Error>(shouldFetch ? requestConfig : null, {
-        shouldRetryOnError: false
-    });
+        const { data, error, isValidating, mutate, isLoading } = useRequest<Data, Error>(
+            shouldFetch ? requestConfig : null, {
+                shouldRetryOnError: false
+            });
 
-    return {
-        data,
-        error,
-        isLoading,
-        isValidating,
-        mutate
+        return {
+            data,
+            error,
+            isLoading,
+            isValidating,
+            mutate
+        };
     };
-};
