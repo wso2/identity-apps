@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
@@ -35,8 +35,10 @@ import {
     StrictConnectionInterface
 } from "../../models/connection";
 import { handleGetConnectionTemplateRequestError, handleGetConnectionsError } from "../../utils/connection-utils";
-import { ExpertModeAuthenticationProviderCreateWizard } from "../wizards/expert-mode/expert-mode-authentication-provider-create-wizard";
-import { OrganizationEnterpriseConnectionCreateWizard } from "../wizards/organization-enterprise/organization-enterprise-connection-create-wizard";
+import { ExpertModeAuthenticationProviderCreateWizard } from
+    "../wizards/expert-mode/expert-mode-authentication-provider-create-wizard";
+import { OrganizationEnterpriseConnectionCreateWizard } from
+    "../wizards/organization-enterprise/organization-enterprise-connection-create-wizard";
 import { TrustedTokenIssuerCreateWizard } from "../wizards/trusted-token-issuer-create-wizard";
 
 /**
@@ -288,8 +290,8 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
             case "trusted-token-issuer":
                 return (
                     <TrustedTokenIssuerCreateWizard
-                        title={ t("authenticationProvider:templates.trustedTokenIssuer." + "addWizard.title") }
-                        subTitle={ t("authenticationProvider:templates.trustedTokenIssuer." + "addWizard.subtitle", {
+                        title={ t("authenticationProvider:templates.trustedTokenIssuer.addWizard.title") }
+                        subTitle={ t("authenticationProvider:templates.trustedTokenIssuer.addWizard.subtitle", {
                             productName
                         }) }
                         onWizardClose={ () => {
@@ -307,8 +309,8 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
             case "enterprise-protocols":
                 return (
                     <EnterpriseConnectionCreateWizard
-                        title={ t("authenticationProvider:templates.enterprise." + "addWizard.title") }
-                        subTitle={ t("authenticationProvider:templates.enterprise." + "addWizard.subtitle") }
+                        title={ t("authenticationProvider:templates.enterprise.addWizard.title") }
+                        subTitle={ t("authenticationProvider:templates.enterprise.addWizard.subtitle") }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);

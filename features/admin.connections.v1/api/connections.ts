@@ -121,6 +121,7 @@ export const createCustomAuthentication = (
 /**
  * Function to update custom local authenticator.
  *
+ * @param id - ID of the custom authentication.
  * @param connection - Connection settings data.
  */
 export const updateCustomAuthentication = (

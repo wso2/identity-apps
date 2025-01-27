@@ -151,9 +151,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             RequestMethod: "post",
             displayName: CustomAuthConstants.EMPTY_STRING,
             identifier: CustomAuthConstants.EMPTY_STRING
-        }),
-        []
-    );
+        }),[]);
 
     useEffect(() => {
         if (!initWizard) {
@@ -413,13 +411,13 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
 
         if (!CommonAuthenticatorConstants.IDENTIFIER_REGEX.test(values?.identifier)) {
             errors.identifier = t(
-                "customAuthentication:fields.createWizard.generalSettingsStep." + "identifier.validations.invalid"
+                "customAuthentication:fields.createWizard.generalSettingsStep.identifier.validations.invalid"
             );
         }
 
         if (!CommonAuthenticatorConstants.DISPLAY_NAME_REGEX.test(values?.displayName)) {
             errors.displayName = t(
-                "customAuthentication:fields.createWizard.generalSettingsStep." + "displayName.validations.invalid"
+                "customAuthentication:fields.createWizard.generalSettingsStep.displayName.validations.invalid"
             );
         }
 
@@ -546,9 +544,9 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 });
                 dispatch(
                     addAlert({
-                        description: t("authenticationProvider:notifications." + "addIDP.success.description"),
+                        description: t("authenticationProvider:notifications.addIDP.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("authenticationProvider:notifications." + "addIDP.success.message")
+                        message: t("authenticationProvider:notifications.addIDP.success.message")
                     })
                 );
 
@@ -580,9 +578,9 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
 
                 if (error?.response.status === 500 && error.response?.data.code === "IDP-65002") {
                     setAlert({
-                        description: t("authenticationProvider:notifications." + "addIDP.serverError.description"),
+                        description: t("authenticationProvider:notifications.addIDP.serverError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." + "addIDP.serverError.message")
+                        message: t("authenticationProvider:notifications.addIDP.serverError.message")
                     });
                     setTimeout(() => setAlert(undefined), 8000);
 
@@ -591,20 +589,20 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
 
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
-                        description: t("authenticationProvider:notifications." + "addIDP.error.description", {
+                        description: t("authenticationProvider:notifications.addIDP.error.description", {
                             description: error.response.data.description
                         }),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." + "addIDP.error.message")
+                        message: t("authenticationProvider:notifications.addIDP.error.message")
                     });
                     setTimeout(() => setAlert(undefined), 4000);
 
                     return;
                 }
                 setAlert({
-                    description: t("authenticationProvider:notifications." + "addIDP.genericError.description"),
+                    description: t("authenticationProvider:notifications.addIDP.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications." + "addIDP.genericError.message")
+                    message: t("authenticationProvider:notifications.addIDP.genericError.message")
                 });
                 setTimeout(() => setAlert(undefined), 4000);
             })
@@ -626,9 +624,9 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 });
                 dispatch(
                     addAlert({
-                        description: t("authenticationProvider:notifications." + "addIDP.success.description"),
+                        description: t("authenticationProvider:notifications.addIDP.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("authenticationProvider:notifications." + "addIDP.success.message")
+                        message: t("authenticationProvider:notifications.addIDP.success.message")
                     })
                 );
 
@@ -660,9 +658,9 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
 
                 if (error?.response.status === 500 && error.response?.data.code === "IDP-65002") {
                     setAlert({
-                        description: t("authenticationProvider:notifications." + "addIDP.serverError.description"),
+                        description: t("authenticationProvider:notifications.addIDP.serverError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." + "addIDP.serverError.message")
+                        message: t("authenticationProvider:notifications.addIDP.serverError.message")
                     });
                     setTimeout(() => setAlert(undefined), 8000);
 
@@ -671,20 +669,20 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
 
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
-                        description: t("authenticationProvider:notifications." + "addIDP.error.description", {
+                        description: t("authenticationProvider:notifications.addIDP.error.description", {
                             description: error.response.data.description
                         }),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." + "addIDP.error.message")
+                        message: t("authenticationProvider:notifications.addIDP.error.message")
                     });
                     setTimeout(() => setAlert(undefined), 4000);
 
                     return;
                 }
                 setAlert({
-                    description: t("authenticationProvider:notifications." + "addIDP.genericError.description"),
+                    description: t("authenticationProvider:notifications.addIDP.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications." + "addIDP.genericError.message")
+                    message: t("authenticationProvider:notifications.addIDP.genericError.message")
                 });
                 setTimeout(() => setAlert(undefined), 4000);
             })
