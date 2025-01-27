@@ -333,8 +333,9 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
         setAccordionActiveIndex(newIndex);
     };
 
-    const updateEnableIndefiniteAccountLockDuration = (value: any) => {
+    const updateEnableIndefiniteAccountLockDuration = (value: any): void => {
         setEnableIndefiniteUserLockDuration(value);
+
         if (value) {
             setLockDuration("0");
         }
@@ -445,7 +446,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
     }
 
     return (
-        <div className={ "connector-form login-attempt-security-form" }>
+        <div className="connector-form login-attempt-security-form">
             <Form
                 id={ FORM_ID }
                 initialValues={ initialConnectorValues }
