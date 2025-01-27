@@ -641,10 +641,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         )
                     }
                     {
-                        !isM2MApplication && isMyAccountEnabled && !isSubOrganizationType ? (
+                        !isM2MApplication && isMyAccountEnabled &&
+                            (!isSubOrganizationType || (isSubOrganizationType && isDiscoverable)) && (
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Divider />
+                                    { !isSubOrganizationType && <Divider /> }
                                     <Heading as="h4">
                                         { t("applications:forms.generalDetails.fields.discoverable.label") }
                                     </Heading>
@@ -654,7 +655,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         required={ false }
                                         label={ t("common:enable") }
                                         initialValue={ isDiscoverable }
-                                        readOnly={ readOnly }
+                                        readOnly={ readOnly || (isSubOrganizationType && isDiscoverable) }
                                         data-testid={ `${ testId }-application-discoverable-checkbox` }
                                         listen={ (value: boolean) => setDiscoverability(value) }
                                         hint={ (
@@ -701,10 +702,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     />
                                 </Grid.Column>
                             </Grid.Row>
-                        ) : null
+                        )
                     }
                     {
-                        !isM2MApplication && isMyAccountEnabled && (
+                        !isM2MApplication && isMyAccountEnabled &&
+                            (!isSubOrganizationType || (isSubOrganizationType && isDiscoverable)) && (
                             <Grid.Row columns={ 16 } className="application-general-discoverable-groups">
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Heading as="h6">
@@ -908,7 +910,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 loading={ isSubmitting }
                 label={ t("common:update") }
                 hidden={
-                    isSubOrganizationType ||
+                    (isSubOrganizationType && !isDiscoverable) ||
                     !hasRequiredScope || (
                         readOnly
                         && applicationConfig.generalSettings.getFieldReadOnlyStatus(
