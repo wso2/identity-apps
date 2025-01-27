@@ -38,7 +38,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Icon } from "semantic-ui-react";
 import { PolicyList } from "./policy-list";
 import { NewPolicyWizard } from "./wizard/new-policy-wizard";
-import { useGetAlgorithm } from "../api/use-get-algorithm";
+import { useGetEntitlementPolicyCombiningAlgorithm } from "../api/use-get-entitlement-policy-combining-algorithm";
 import { useGetPolicies } from "../api/use-get-policies";
 import EditPolicyAlgorithmModal from "../components/edit-policy-algorithm/edit-policy-algorithm";
 import "./policy-administration-page-layout.scss";
@@ -92,7 +92,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
     const {
         data: algorithm,
         mutate: mutateAlgorithm
-    } = useGetAlgorithm();
+    } = useGetEntitlementPolicyCombiningAlgorithm();
 
     useEffect(() => {
         if (algorithm) {
@@ -218,9 +218,9 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                                     <Typography variant="body1" noWrap>
                                         { t("policyAdministration:buttons.policyAlgorithm") }
                                     </Typography>
-                                    { !isAlgorithmLoading && selectedAlgorithm?.id && (
+                                    { !isAlgorithmLoading && (
                                         <Typography variant="body2">
-                                            { selectedAlgorithm.id }
+                                            { algorithm }
                                         </Typography>
                                     ) }
                                     { isAlgorithmLoading && <CircularProgress size={ 12 } /> }
