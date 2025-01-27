@@ -1595,11 +1595,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                             <TableCell align="left">
                                                 <div className="table-c1">
                                                     <Typography
-                                                        className={ `c1-value ${
-                                                            schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                                                                ? "mobile-label"
-                                                                : null}`
-                                                        }
+                                                        className="c1-value"
                                                         data-componentid={
                                                             `${testId}-editing-section-${
                                                                 schema.name.replace(".", "-")
@@ -2034,10 +2030,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             return (
                 <div className="dropdown-row">
                     <Typography
-                        className={ `dropdown-label ${schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                            ? "mobile-label"
-                            : null}`
-                        }
+                        className="dropdown-label"
                         data-componentid={ `${testId}-readonly-section-${schema.name.replace(".", "-")}-value-${index}`
                         }
                     >
