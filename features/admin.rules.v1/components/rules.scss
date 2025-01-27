@@ -16,43 +16,45 @@
  * under the License.
  */
 
-.box-container {
-    background-color: #f9fafb;
-    border-radius: 8px;
-    padding: 20px;
-}
-
-.remove-button {
-    font-size: 1rem;
-    width: 25px;
-    height: 25px;
-    min-height: 25px;
-    right: -10px;
-    top: -10px;
-
-    .remove-button-icon {
-        font-size: 1rem;
+.rules-component { 
+    .box-container {
+        background-color: #f9fafb;
+        border-radius: 8px;
+        padding: 20px;
     }
-}
 
-.clear-button {
-    margin-right: 10px;
-    margin-top: 5px;
-}
+    .remove-button {
+        font-size: 1rem;
+        width: 25px;
+        height: 25px;
+        min-height: 25px;
+        right: -10px;
+        top: -10px;
 
-.clear-button.has-delete-button {
-    margin-right: 60px;
-}
+        .remove-button-icon {
+            font-size: 1rem;
+        }
+    }
 
-.delete-button {
-    font-size: 1rem;
-    width: 40px;
-    height: 40px;
-    min-height: 30px;
-    right: 25px;
-    top: 20px;
+    .clear-button {
+        margin-right: 10px;
+        margin-top: 5px;
+    }
 
-    .delete-button-icon {
-        font-size: 1.2rem;
+    .clear-button.has-delete-button {
+        margin-right: 60px;
+    }
+
+    .delete-button {
+        font-size: 1rem;
+        width: 40px;
+        height: 40px;
+        min-height: 30px;
+        right: 25px;
+        top: 20px;
+
+        .delete-button-icon {
+            font-size: 1.2rem;
+        }
     }
 }
