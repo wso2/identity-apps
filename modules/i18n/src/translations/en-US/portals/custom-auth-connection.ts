@@ -103,7 +103,7 @@ export const customAuthentication: customAuthenticationNS = {
             generalSettingsStep: {
                 displayName: {
                     label: "Display Name",
-                    placeholder: "ABC Authenticator",
+                    placeholder: "Authenticator Display Name",
                     validations: {
                         empty: "",
                         invalid: "Invalid Display Name"
@@ -126,7 +126,7 @@ export const customAuthentication: customAuthenticationNS = {
                     hint: "Must be a string containing only letters (a-z, A-Z) numbers (0-9), " +
                     "underscore (_) and hyphen (-). ",
                     label: "Identifier",
-                    placeholder: "ABC_authenticator",
+                    placeholder: "Authenticator Identifier",
                     validations: {
                         empty: "",
                         invalid: "Invalid Identifier"

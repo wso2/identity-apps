@@ -316,7 +316,6 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
         if (!selected || selected?.length === 0) {
             return null;
         }
-        // console.log("testing:selected:", selected, "\n", rule);
         const isRoleAttribute: boolean = rule?.attribute === PasswordExpiryRuleAttribute.ROLES;
         const resourceList: Resource[] = isRoleAttribute ? rolesList : groupsList;
         const firstItem: Resource | undefined =

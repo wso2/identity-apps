@@ -39,6 +39,7 @@ import {
 } from "../models/authenticators";
 import {
     ConnectionInterface,
+    CustomAuthConnectionInterface,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
     FederatedAuthenticatorMetaInterface
@@ -252,7 +253,7 @@ export const updateMultiFactorAuthenticatorDetails = (
  * @returns Response as a promise.
  * @throws IdentityAppsApiException
  */
-export const getLocalAuthenticator = (id: string): Promise<AuthenticatorInterface> => {
+export const getLocalAuthenticator = (id: string): Promise<AuthenticatorInterface | CustomAuthConnectionInterface> => {
 
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -264,7 +265,7 @@ export const getLocalAuthenticator = (id: string): Promise<AuthenticatorInterfac
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<AuthenticatorInterface>) => {
+        .then((response: AxiosResponse<AuthenticatorInterface | CustomAuthConnectionInterface>) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     ConnectionUIConstants.ERROR_MESSAGES.LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,

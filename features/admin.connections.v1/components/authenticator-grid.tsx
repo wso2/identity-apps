@@ -58,11 +58,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import {
     deleteConnection,
+    deleteCustomAuthentication,
     getConnectedApps
 } from "../api/connections";
 import { getConnectionIcons } from "../configs/ui";
+import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
+    AuthenticatorCategories,
     AuthenticatorExtensionsConfigInterface,
     AuthenticatorInterface,
     AuthenticatorTypes
@@ -72,7 +75,8 @@ import {
     ConnectedAppInterface,
     ConnectedAppsInterface,
     ConnectionInterface,
-    ConnectionTypes
+    ConnectionTypes,
+    CustomAuthConnectionInterface
 } from "../models/connection";
 import { ConnectionsManagementUtils, handleConnectionDeleteError } from "../utils/connection-utils";
 
@@ -197,10 +201,20 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      *
      * @param id - Authenticator ID.
      */
-    const handleAuthenticatorEdit = (id: string, connectionType: string): void => {
+    const handleAuthenticatorEdit = (id: string, connectionType: string, isCustom?: boolean): void => {
         switch (connectionType) {
             case ConnectionTypes.IDVP:
                 history.push(AppConstants.getPaths().get("IDVP_EDIT").replace(":id", id));
+
+                break;
+
+            case AuthenticatorCategories.LOCAL:
+                if (isCustom) {
+                    history.push(AppConstants.getPaths().get("AUTH_EDIT").replace(":id", id));
+                } else {
+                    history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", id));
+
+                }
 
                 break;
 
@@ -225,9 +239,19 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      *
      * @param idpId - Identity provider id.
      */
-    const handleAuthenticatorDeleteInitiation = async (idpId: string, connectionType: string): Promise<void> => {
+    const handleAuthenticatorDeleteInitiation = async (idpId: string, connectionType: string,
+        isCustom?: boolean): Promise<void> => {
         // If the connection is an Identity Verification Provider, then skip checking for connected apps.
         if (connectionType === ConnectionTypes.IDVP) {
+            setDeletingIDP(authenticators.find(
+                (idp: ConnectionInterface | AuthenticatorInterface) => idp.id === idpId)
+            );
+            setShowDeleteConfirmationModal(true);
+
+            return;
+        }
+
+        if (isCustom) {
             setDeletingIDP(authenticators.find(
                 (idp: ConnectionInterface | AuthenticatorInterface) => idp.id === idpId)
             );
@@ -287,9 +311,14 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             });
     };
 
+    const isCustomLocalAuthenticator = (idp: ConnectionInterface): boolean => {
+        return ConnectionsManagementUtils.IsCustomAuthenticator(idp) &&
+        idp?.type === AuthenticatorTypes.LOCAL;
+    };
+
     /**
      * Deletes an authenticator via the API.
-     * @remarks ATM, IDP delete is only supported.
+     * @remarks ATM, IDP and custom local authenticator delete is only supported.
      *
      * @param id - Authenticator ID.
      */
@@ -297,21 +326,17 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
         setIsDeletionLoading(true);
 
-        let deleteAction: (id: string) => Promise<AxiosResponse>;
+        let deleteCustomAuth: (id: string) => Promise<AxiosResponse>;
 
-        switch (connectionType) {
-            case ConnectionTypes.IDVP:
-                deleteAction = deleteIdentityVerificationProvider;
-
-                break;
-
-            default:
-                deleteAction = deleteConnection;
-
-                break;
+        if(connectionType === ConnectionTypes.IDVP) {
+            deleteCustomAuth = deleteIdentityVerificationProvider;
+        } else if (isCustomLocalAuthenticator(deletingIDP)) {
+            deleteCustomAuth = deleteCustomAuthentication;
+        } else {
+            deleteCustomAuth = deleteConnection;
         }
 
-        deleteAction(id)
+        deleteCustomAuth(id)
             .then(() => {
                 dispatch(addAlert({
                     description: t("authenticationProvider:" +
@@ -398,7 +423,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      */
     const handleGridItemOnClick = (e: SyntheticEvent, authenticator: ConnectionInterface
         | AuthenticatorInterface): void => {
-        handleAuthenticatorEdit(authenticator.id, authenticator.type);
+
+        handleAuthenticatorEdit(authenticator.id, authenticator.type,
+            ConnectionsManagementUtils.IsCustomAuthenticator(authenticator));
         onItemClick && onItemClick(e, authenticator);
     };
 
@@ -417,8 +444,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             return false;
         }
 
-        return ConnectionsManagementUtils.isConnectorIdentityProvider(authenticator)
-            || (authenticator as ConnectionInterface).type === AuthenticatorTypes.FEDERATED;
+        return ConnectionsManagementUtils.isConnectorIdentityProvider(authenticator) ||
+        (authenticator as ConnectionInterface).type === AuthenticatorTypes.FEDERATED ||
+        ConnectionsManagementUtils.IsCustomAuthenticator(authenticator) ;
     };
 
     /**
@@ -452,7 +480,26 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             );
         }
 
+        if (ConnectionsManagementUtils.IsCustomAuthenticator(connection)) {
+            return ConnectionsManagementUtils.resolveConnectionResourcePath(
+                connectionResourcesUrl,
+                ConnectionUIConstants.CUSTOM_LOCAL_AUTHENTICATOR_IMAGE_URI
+            );
+        }
+
         return AuthenticatorMeta.getAuthenticatorIcon(connection?.id);
+    };
+
+    const resolveAuthenticatorDescription = (authenticator: ConnectionInterface, isIdP: boolean): string => {
+        if (isCustomLocalAuthenticator(authenticator as CustomAuthConnectionInterface)) {
+            return authenticator.description;
+        }
+
+        return !isEmpty(authenticator.description)
+            ? authenticator?.description?.replaceAll("{{productName}}", productName)
+            : !isIdP
+                ? AuthenticatorMeta.getAuthenticatorDescription(authenticator.id)
+                : "";
     };
 
     return (
@@ -506,7 +553,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     } }
                                     onDelete={ () => handleAuthenticatorDeleteInitiation(
                                         authenticator.id,
-                                        authenticator.type
+                                        authenticator.type,
+                                        ConnectionsManagementUtils.IsCustomAuthenticator(authenticator)
                                     ) }
                                     showActions={ true }
                                     showResourceEdit={ true }
@@ -527,13 +575,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                                 : authenticator.id
                                         )
                                     }
-                                    resourceDescription={
-                                        !isEmpty(authenticator.description)
-                                            ? authenticator?.description?.replaceAll("{{productName}}", productName)
-                                            : !isIdP
-                                                ? AuthenticatorMeta.getAuthenticatorDescription(authenticator.id)
-                                                : ""
-                                    }
+                                    resourceDescription={ resolveAuthenticatorDescription(authenticator, isIdP) }
                                     resourceDocumentationLink = { null }
                                     resourceImage={ resolveResourceImage(authenticator, isIdP, isOrganizationSSOIDP) }
                                     tags={ (authenticator as AuthenticatorInterface).tags }

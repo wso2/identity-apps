@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthenticationType, AuthenticationTypeDropdownOption } from "../models/connection";
+import { AuthenticationTypeDropdownOption, EndpointAuthenticationType } from "../models/connection";
 
 /**
  * This class contains the constants for the Local Authenticators.
@@ -125,24 +125,24 @@ export class LocalAuthenticatorConstants {
 
     public static readonly AUTH_TYPES: AuthenticationTypeDropdownOption[] = [
         {
-            key: AuthenticationType.NONE,
+            key: EndpointAuthenticationType.NONE,
             text: "actions:fields.authentication.types.none.name",
-            value: AuthenticationType.NONE
+            value: EndpointAuthenticationType.NONE
         },
         {
-            key: AuthenticationType.BASIC,
+            key: EndpointAuthenticationType.BASIC,
             text: "actions:fields.authentication.types.basic.name",
-            value: AuthenticationType.BASIC
+            value: EndpointAuthenticationType.BASIC
         },
         {
-            key: AuthenticationType.BEARER,
+            key: EndpointAuthenticationType.BEARER,
             text: "actions:fields.authentication.types.bearer.name",
-            value: AuthenticationType.BEARER
+            value: EndpointAuthenticationType.BEARER
         },
         {
-            key: AuthenticationType.API_KEY,
+            key: EndpointAuthenticationType.API_KEY,
             text: "actions:fields.authentication.types.apiKey.name",
-            value: AuthenticationType.API_KEY
+            value: EndpointAuthenticationType.API_KEY
         }
     ];
 

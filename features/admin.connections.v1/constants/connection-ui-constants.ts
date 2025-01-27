@@ -18,7 +18,11 @@
 
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AvailableCustomAuthentications } from "../models/connection";
+import {
+    AuthenticationTypeDropdownOption,
+    AvailableCustomAuthentications,
+    EndpointAuthenticationType
+} from "../models/connection";
 
 /**
  * This class contains the constants for the Connections feature UIs.
@@ -28,7 +32,7 @@ export class ConnectionUIConstants {
      * Private constructor to avoid object instantiation from outside
      * the class.
      */
-    private constructor() { }
+    private constructor() {}
 
     /**
      * Key for the URL search param for IDP create wizard trigger.
@@ -43,8 +47,7 @@ export class ConnectionUIConstants {
     /**
      * URL Search param for newly created IDPs.
      */
-    public static readonly NEW_IDP_URL_SEARCH_PARAM: string = `?${
-        this.IDP_STATE_URL_SEARCH_PARAM_KEY }=new`;
+    public static readonly NEW_IDP_URL_SEARCH_PARAM: string = `?${this.IDP_STATE_URL_SEARCH_PARAM_KEY}=new`;
 
     // Tab IDs for the connection edit page
     public static readonly TabIds: Readonly<{
@@ -56,7 +59,7 @@ export class ConnectionUIConstants {
         OUTBOUND_PROVISIONING: string;
         SETTINGS: string;
         IDENTITY_PROVIDER_GROUPS: string;
-    }>= {
+    }> = {
         ADVANCED: "advanced",
         ATTRIBUTES: "attributes",
         CONNECTED_APPS: "connected-apps",
@@ -117,19 +120,19 @@ export class ConnectionUIConstants {
      * SMS OTP Authenticator Settings Form element constraints.
      */
     public static readonly SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
-            EXPIRY_TIME_MAX_LENGTH: number;
-            EXPIRY_TIME_MAX_VALUE: number;
-            EXPIRY_TIME_MIN_LENGTH: number;
-            EXPIRY_TIME_MIN_VALUE: number;
-            OTP_LENGTH_MAX_LENGTH: number;
-            OTP_LENGTH_MAX_VALUE: number;
-            OTP_LENGTH_MIN_LENGTH: number;
-            OTP_LENGTH_MIN_VALUE: number;
-            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: number;
-            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: number;
-            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: number;
-            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: number;
-        } = {
+        EXPIRY_TIME_MAX_LENGTH: number;
+        EXPIRY_TIME_MAX_VALUE: number;
+        EXPIRY_TIME_MIN_LENGTH: number;
+        EXPIRY_TIME_MIN_VALUE: number;
+        OTP_LENGTH_MAX_LENGTH: number;
+        OTP_LENGTH_MAX_VALUE: number;
+        OTP_LENGTH_MIN_LENGTH: number;
+        OTP_LENGTH_MIN_VALUE: number;
+        ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: number;
+        ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: number;
+        ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: number;
+        ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: number;
+    } = {
             ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: 10000,
             ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: 100,
             ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: 1,
@@ -145,15 +148,15 @@ export class ConnectionUIConstants {
         };
 
     public static readonly PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
-            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: number;
-            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: number;
-            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: number;
-            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: number;
-            RESEND_INTERVAL_MAX_LENGTH: number;
-            RESEND_INTERVAL_MAX_VALUE: number;
-            RESEND_INTERVAL_MIN_LENGTH: number;
-            RESEND_INTERVAL_MIN_VALUE: number;
-        } = {
+        ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: number;
+        ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: number;
+        ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: number;
+        ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: number;
+        RESEND_INTERVAL_MAX_LENGTH: number;
+        RESEND_INTERVAL_MAX_VALUE: number;
+        RESEND_INTERVAL_MIN_LENGTH: number;
+        RESEND_INTERVAL_MIN_VALUE: number;
+    } = {
             ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: 2,
             ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: 10,
             ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: 1,
@@ -168,16 +171,16 @@ export class ConnectionUIConstants {
      * Apple Authenticator Settings Form element constraints.
      */
     public static readonly APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
-        ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: number,
-        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: number,
-        KEY_ID_MAX_LENGTH: number,
-        KEY_ID_MIN_LENGTH: number,
-        PRIVATE_KEY_MAX_LENGTH: number,
-        PRIVATE_KEY_MIN_LENGTH: number,
-        SECRET_VALIDITY_PERIOD_MAX_LENGTH: number,
-        SECRET_VALIDITY_PERIOD_MIN_LENGTH: number,
-        TEAM_ID_MAX_LENGTH: number,
-        TEAM_ID_MIN_LENGTH: number
+        ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: number;
+        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: number;
+        KEY_ID_MAX_LENGTH: number;
+        KEY_ID_MIN_LENGTH: number;
+        PRIVATE_KEY_MAX_LENGTH: number;
+        PRIVATE_KEY_MIN_LENGTH: number;
+        SECRET_VALIDITY_PERIOD_MAX_LENGTH: number;
+        SECRET_VALIDITY_PERIOD_MIN_LENGTH: number;
+        TEAM_ID_MAX_LENGTH: number;
+        TEAM_ID_MIN_LENGTH: number;
     } = {
             ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000,
             ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0,
@@ -248,26 +251,37 @@ export class ConnectionUIConstants {
         MULTI_FACTOR_AUTHENTICATOR_UPDATE_INVALID_STATUS_CODE_ERROR: string;
     } = {
             AUTHENTICATORS_FETCH_ERROR: "An error occurred while fetching the authenticators.",
-            AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while fetching the authenticators.",
+            AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR:
+            "Received an invalid status code while fetching the authenticators.",
             COMBINED_AUTHENTICATOR_FETCH_ERROR: "An error occurred while fetching the local and federated authenticators.",
             CONNECTIONS_FETCH_ERROR: "An error occurred while fetching connections.",
             CONNECTIONS_FETCH_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while fetching connections.",
             CONNECTION_CERTIFICATE_UPDATE_ERROR: "An error occurred while updating the certificate of the connection.",
-            CONNECTION_CLAIMS_UPDATE_ERROR: "An error occurred while updating claims configurations of the identity provider.",
-            CONNECTION_IMPLICIT_ASSOCIATION_UPDATE_ERROR: "An error occurred while updating implicit association configurations of the identity provider.",
-            CONNECTION_JIT_PROVISIONING_UPDATE_ERROR: "An error occurred while updating the JIT provisioning configurations of the connection.",
+            CONNECTION_CLAIMS_UPDATE_ERROR:
+            "An error occurred while updating claims configurations of the identity provider.",
+            CONNECTION_IMPLICIT_ASSOCIATION_UPDATE_ERROR:
+            "An error occurred while updating implicit association configurations of the identity provider.",
+            CONNECTION_JIT_PROVISIONING_UPDATE_ERROR:
+            "An error occurred while updating the JIT provisioning configurations of the connection.",
             FIDO_AUTHENTICATOR_CONFIG_UPDATE_ERROR: "An error occurred while updating the Passkey connector configs.",
-            FIDO_AUTHENTICATOR_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while updating the Passkey connector configs.",
-            IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR: "An error occurred while fetching the required connection templates list.",
-            IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while fetching connection templates list.",
+            FIDO_AUTHENTICATOR_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR:
+            "Received an invalid status code while updating the Passkey connector configs.",
+            IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR:
+            "An error occurred while fetching the required connection templates list.",
+            IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR:
+            "Received an invalid status code while fetching connection templates list.",
             LOCAL_AUTHENTICATORS_FETCH_ERROR: "An error occurred while fetching the local authenticators.",
-            LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while fetching local authenticators.",
+            LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR:
+            "Received an invalid status code while fetching local authenticators.",
             LOCAL_AUTHENTICATOR_FETCH_ERROR: "An error occurred while fetching the local authenticator.",
-            LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while fetching the local authenticator.",
+            LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR:
+            "Received an invalid status code while fetching the local authenticator.",
             MULTI_FACTOR_AUTHENTICATOR_FETCH_ERROR: "An error occurred while fetching the multi-factor authenticator.",
-            MULTI_FACTOR_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR:"Received an invalid status code while fetching the multi-factor authenticator.",
+            MULTI_FACTOR_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR:
+            "Received an invalid status code while fetching the multi-factor authenticator.",
             MULTI_FACTOR_AUTHENTICATOR_UPDATE_ERROR: "An error occurred while fetching the multi-factor authenticator.",
-            MULTI_FACTOR_AUTHENTICATOR_UPDATE_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while updating the multi-factor authenticator."
+            MULTI_FACTOR_AUTHENTICATOR_UPDATE_INVALID_STATUS_CODE_ERROR:
+            "Received an invalid status code while updating the multi-factor authenticator."
         };
     /* eslint-enable max-len */
 
@@ -279,7 +293,7 @@ export class ConnectionUIConstants {
 
     /**
      * Identity provider create limit reached error.
-    **/
+     **/
     public static readonly ERROR_CREATE_LIMIT_REACHED: IdentityAppsError = new IdentityAppsError(
         "IDP-60035",
         "idp:notifications.apiLimitReachedError.error.description",
@@ -363,20 +377,56 @@ export class ConnectionUIConstants {
      * Custom authentication constants.
      */
     public static readonly CUSTOM_AUTHENTICATION_CONSTANTS: {
-        EMPTY_STRING: string,
-        EXTERNAL_AUTHENTICATOR: AvailableCustomAuthentications,
-        INTERNAL_AUTHENTICATOR: AvailableCustomAuthentications,
-        TWO_FACTOR_AUTHENTICATOR: AvailableCustomAuthentications,
-        EXTERNAL_CUSTOM_AUTHENTICATOR_ID: string,
-        INTERNAL_CUSTOM_AUTHENTICATOR_ID: string,
-        TWO_FACTOR_CUSTOM_AUTHENTICATOR_ID: string,
+        PREFIX: string;
+        EMPTY_STRING: string;
+        EXTERNAL_AUTHENTICATOR: AvailableCustomAuthentications;
+        INTERNAL_AUTHENTICATOR: AvailableCustomAuthentications;
+        TWO_FACTOR_AUTHENTICATOR: AvailableCustomAuthentications;
+        EXTERNAL_CUSTOM_AUTHENTICATOR_ID: string;
+        INTERNAL_CUSTOM_AUTHENTICATOR_ID: string;
+        TWO_FACTOR_CUSTOM_AUTHENTICATOR_ID: string;
     } = {
             EMPTY_STRING: "",
             EXTERNAL_AUTHENTICATOR: "external",
             EXTERNAL_CUSTOM_AUTHENTICATOR_ID: "external-custom-authentication",
             INTERNAL_AUTHENTICATOR: "internal",
             INTERNAL_CUSTOM_AUTHENTICATOR_ID: "internal-user-custom-authentication",
+            PREFIX: "custom-",
             TWO_FACTOR_AUTHENTICATOR: "two-factor",
             TWO_FACTOR_CUSTOM_AUTHENTICATOR_ID: "two-factor-custom-authentication"
         };
+
+    /**
+     * Set of keys used to enable/disable features.
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>().set(
+        "CUSTOM_AUTHENTICATION",
+        "identityProviders.customAuthentication"
+    );
+
+    public static readonly AUTH_TYPES: AuthenticationTypeDropdownOption[] = [
+        {
+            key: EndpointAuthenticationType.NONE,
+            text: "actions:fields.authentication.types.none.name",
+            value: EndpointAuthenticationType.NONE
+        },
+        {
+            key: EndpointAuthenticationType.BASIC,
+            text: "actions:fields.authentication.types.basic.name",
+            value: EndpointAuthenticationType.BASIC
+        },
+        {
+            key: EndpointAuthenticationType.BEARER,
+            text: "actions:fields.authentication.types.bearer.name",
+            value: EndpointAuthenticationType.BEARER
+        },
+        {
+            key: EndpointAuthenticationType.API_KEY,
+            text: "actions:fields.authentication.types.apiKey.name",
+            value: EndpointAuthenticationType.API_KEY
+        }
+    ];
+
+    public static readonly CUSTOM_LOCAL_AUTHENTICATOR_IMAGE_URI: string =
+        "assets/images/logos/custom-authentication.svg";
 }

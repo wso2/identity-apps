@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 import { IdentifiableComponentInterface, LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIconProps } from "@wso2is/react-components";
 import { ComponentType, LazyExoticComponent, ReactElement } from "react";
@@ -270,7 +271,8 @@ export interface FederatedAuthenticatorInterface extends CommonPluggableComponen
 /**
  * Captures the properties of a externally implemented local authenticator.
  */
-export interface CustomAuthenticatorInterface extends StrictConnectionInterface {
+export interface CustomAuthConnectionInterface extends ConnectionInterface {
+    id?: string;
     name: string;
     displayName: string;
     isEnabled?: boolean;
@@ -278,6 +280,11 @@ export interface CustomAuthenticatorInterface extends StrictConnectionInterface 
     endpoint: ExternalEndpoint;
     authenticationType: string;
     description?: string;
+    image?: string;
+    type?: string;
+    templateId?: string;
+    tags: string[];
+    self: string;
 }
 
 /**
@@ -292,7 +299,7 @@ export interface ExternalEndpoint {
  * Captures the authentication properties of an external endpoint associated with the authenticator.
  */
 export interface ExternalEndpointAuthentication {
-    type?: AuthenticationType;
+    type?: EndpointAuthenticationType;
     properties?: string[]
 }
 
@@ -479,7 +486,7 @@ export interface ConnectionTemplateItemInterface {
     category?: string;
     displayOrder?: number;
     idp?: ConnectionInterface;
-    customAuth?: CustomAuthenticatorInterface;
+    customLocalAuthenticator?: CustomAuthConnectionInterface;
     disabled?: boolean;
     provisioning?: ProvisioningInterface;
     type?: string;
@@ -739,6 +746,32 @@ export interface GeneralDetailsFormValuesInterface {
     name: string;
 }
 
+/**
+ * Interface for from values of custom authentication general details step
+ */
+export interface CustomAuthGeneralDetailsFormValuesInterface {
+    /**
+     * Display name of the connection
+     */
+    displayName?: string
+    /**
+     * Description of the connection
+     */
+    description?: string;
+    /**
+     * Image URL of the connection
+     */
+    image?: string;
+    /**
+     * Set is primary connection
+     */
+    isPrimary?: boolean;
+    /**
+     * Set is enabled connection
+     */
+    isEnabled?: boolean;
+}
+
 export interface OutboundProvisioningConnectorMetaDataInterface {
     /**
      * Provisioning connector ID.
@@ -813,37 +846,21 @@ export interface CustomAuthenticationCreateWizardGeneralFormValuesInterface {
 }
 
 /**
- *  Custom authentication endpoint config form property Interface.
+ *  Endpoint Authentication Update configuration.
  */
-export interface EndpointConfigFormPropertyInterface {
+export interface EndpointAuthenticationUpdateInterface extends CustomAuthGeneralDetailsFormValuesInterface {
     /**
-     * Endpoint Uri of the Action.
+     * Name of the Action.
      */
-    endpointUri: string;
+    name?: string;
     /**
-     * Endpoint Uri of the Action.
+     * Description of the Action.
      */
-    authenticationType: string;
+    description?: string;
     /**
-     * Username property of basic authentication.
+     * Endpoint configuration of the Action.
      */
-    usernameAuthProperty?: string;
-    /**
-     * Password property of basic authentication.
-     */
-    passwordAuthProperty?: string;
-    /**
-     * Access Token property of bearer authentication.
-     */
-    accessTokenAuthProperty?: string;
-    /**
-     * Header property of apiKey authentication.
-     */
-    headerAuthProperty?: string;
-    /**
-     * Value property of apiKey authentication.
-     */
-    valueAuthProperty?: string;
+    endpoint?: Partial<EndpointInterface>;
 }
 
 /**
@@ -867,11 +884,11 @@ interface AuthenticationInterface {
     /**
      * Authentication Type.
      */
-    type: AuthenticationType;
+    type: EndpointAuthenticationType;
     /**
      * Authentication properties.
      */
-    properties: Partial<AuthenticationPropertiesInterface>;
+    properties: Partial<EndpointConfigFormPropertyInterface>;
 }
 
 /**
@@ -904,9 +921,9 @@ export interface AuthenticationPropertiesInterface {
  * Interface for the authentication type dropdown options.
  */
 export interface AuthenticationTypeDropdownOption {
-    key: AuthenticationType;
+    key: EndpointAuthenticationType;
     text: string;
-    value: AuthenticationType;
+    value: EndpointAuthenticationType;
 }
 
 /**
@@ -920,7 +937,7 @@ export enum ConnectionTypes {
 /**
  * Enum for the endpoint authentication types.
  */
-export enum AuthenticationType {
+export enum EndpointAuthenticationType {
     NONE = "NONE",
     BASIC = "BASIC",
     API_KEY = "API_KEY",
@@ -947,3 +964,11 @@ export interface WizardStepInterface {
 
 export type AvailableCustomAuthentications = "external" | "internal" | "two-factor";
 export type FormErrors = { [key: string]: string };
+
+/**
+ * Enum for the custom local authentication types.
+ */
+export enum CustomLocalAuthenticationType {
+    IDENTIFICATION = "IDENTIFICATION",
+    VERIFICATION = "VERIFICATION"
+}
