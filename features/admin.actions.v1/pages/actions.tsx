@@ -227,7 +227,7 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
     };
 
     const isActionTypeDisabled = (actionType: string): boolean =>
-        actionsFeatureConfig["featureFlags"].some(
+        actionsFeatureConfig["featureFlags"]?.some(
             (featureFlag: FeatureFlagsInterface) => featureFlag.feature === actionType
             && featureFlag.flag === ActionsConstants.ACTION_COMING_SOON_LABEL
         );
