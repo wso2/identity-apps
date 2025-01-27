@@ -1,5 +1,22 @@
 # @wso2is/admin.administrators.v1
 
+## 2.29.116
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.24
+  - @wso2is/admin.applications.v1@2.30.116
+  - @wso2is/admin.authentication.v1@2.25.116
+  - @wso2is/admin.extensions.v1@2.36.41
+  - @wso2is/admin.roles.v2@2.27.60
+  - @wso2is/admin.server-configurations.v1@2.32.41
+  - @wso2is/admin.tenants.v1@2.28.90
+  - @wso2is/admin.users.v1@2.30.26
+  - @wso2is/admin.userstores.v1@2.26.75
+  - @wso2is/admin.feature-gate.v1@1.4.116
+  - @wso2is/admin.remote-userstores.v1@1.7.72
+
 ## 2.29.115
 
 ### Patch Changes

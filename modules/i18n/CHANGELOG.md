@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.18.0
+
+### Minor Changes
+
+- [#7409](https://github.com/wso2/identity-apps/pull/7409) [`6d6d70456efbff3725a566889de169fb91eba0a3`](https://github.com/wso2/identity-apps/commit/6d6d70456efbff3725a566889de169fb91eba0a3) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Fixed some issues and did some usage improvements to the rule component
+
 ## 2.17.0
 
 ### Minor Changes

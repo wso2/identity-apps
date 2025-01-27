@@ -1,5 +1,20 @@
 # @wso2is/admin.actions.v1
 
+## 1.10.0
+
+### Minor Changes
+
+- [#7409](https://github.com/wso2/identity-apps/pull/7409) [`6d6d70456efbff3725a566889de169fb91eba0a3`](https://github.com/wso2/identity-apps/commit/6d6d70456efbff3725a566889de169fb91eba0a3) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Fixed some issues and did some usage improvements to the rule component
+
+### Patch Changes
+
+- Updated dependencies [[`6d6d70456efbff3725a566889de169fb91eba0a3`](https://github.com/wso2/identity-apps/commit/6d6d70456efbff3725a566889de169fb91eba0a3)]:
+  - @wso2is/admin.rules.v1@0.2.0
+  - @wso2is/i18n@2.18.0
+  - @wso2is/admin.core.v1@2.37.24
+  - @wso2is/admin.extensions.v1@2.36.41
+  - @wso2is/admin.feature-gate.v1@1.4.116
+
 ## 1.9.15
 
 ### Patch Changes
