@@ -25,7 +25,6 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { PageLayout } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import lowerCase from "lodash-es/lowerCase";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "./edit-policy.scss";
@@ -34,7 +33,6 @@ import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { updatePolicy } from "../api/entitlement-policies";
 import { useGetPolicy } from "../api/use-get-policy";
-import startCase from "lodash-es/startCase";
 import PolicyEditor from "../components/policy-editor/policy-editor";
 import { PolicyInterface } from "../models/policies";
 
@@ -116,7 +114,7 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
 
     return (
         <PageLayout
-            title={ startCase(lowerCase(policy?.policyId)) || t("policyAdministration:editPolicy.loadingTitle") }
+            title={ isLoading ? "" : policy?.policyId }
             backButton={ {
                 "data-componentid": `${componentId}-edit-policy-page-back-button`,
                 onClick: handleBackButtonClick,
