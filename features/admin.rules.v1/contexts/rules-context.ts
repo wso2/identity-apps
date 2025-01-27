@@ -19,7 +19,13 @@
 import { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import { createContext } from "react";
 import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "../models/meta";
-import { AdjoiningOperatorTypes, ExpressionFieldTypes, RuleExecuteCollectionInterface } from "../models/rules";
+import {
+    AdjoiningOperatorTypes,
+    ExpressionFieldTypes,
+    RuleExecuteCollectionInterface,
+    RuleExecuteCollectionWithoutIdInterface,
+    RuleWithoutIdInterface
+} from "../models/rules";
 
 /**
  * Interface for the RulesContext.
@@ -74,6 +80,11 @@ export interface RulesContextInterface {
      * Method to remove a rule condition expression.
      */
     removeRuleConditionExpression: (ruleId: string, expressionId: string) => void;
+
+    /**
+     * Object to retrive the clean rules state.
+     */
+    ruleInstance: RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface;
 
     /**
      * Method to update the rule execution.

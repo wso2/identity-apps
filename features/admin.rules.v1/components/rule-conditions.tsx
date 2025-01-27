@@ -60,6 +60,14 @@ interface ValueInputAutocompleteProps {
 }
 
 /**
+ * Value input autocomplete options interface.
+ */
+interface ValueInputAutocompleteOptionsInterface {
+    id: string;
+    label: string;
+}
+
+/**
  * Condition value input props interface.
  */
 interface ConditionValueInputProps {
@@ -180,7 +188,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             const { data: initialResources = [], isLoading: isInitialLoading } =
                 useGetResourceDetails(initialResourcesLoadUrl);
             const { data: filteredResources = [], isLoading: isFiltering } = useGetResourceDetails(filterUrl);
-            const { data: resourceDetails, isLoading: isResourceDetailsLoading } = 
+            const { data: resourceDetails, isLoading: isResourceDetailsLoading } =
                 useGetResourceDetails(`/${resourceType}/${expression.value}`);
 
             useEffect(() => {
@@ -193,7 +201,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             useEffect(() => {
                 if (inputValueLabel && filterUrl) {
                     if (filteredResources && Array.isArray(filteredResources[resourceType])) {
-                        const filteredOptions: any[] = filteredResources[resourceType].map((resource) => ({
+                        const filteredOptions: any[] = filteredResources[resourceType].map((resource: any) => ({
                             id: resource[valueReferenceAttribute],
                             label: resource[valueDisplayAttribute]
                         }));
@@ -202,7 +210,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     }
                 } else {
                     if (initialResources && Array.isArray(initialResources[resourceType])) {
-                        const initialOptions: any[] = initialResources[resourceType].map((resource) => ({
+                        const initialOptions: any[] = initialResources[resourceType].map((resource: any) => ({
                             id: resource[valueReferenceAttribute],
                             label: resource[valueDisplayAttribute]
                         }));
@@ -221,16 +229,21 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     onClose={ () => setOpen(false) }
                     options={
                         hasMoreItems
-                            ? [...options, {
+                            ? [ ...options, {
                                 id: "more-items",
-                                label: t("rules:fields.autocomplete.moreItemsMessage"),
-                                isDisabled: true 
-                            }]
+                                isDisabled: true,
+                                label: t("rules:fields.autocomplete.moreItemsMessage")
+                            } ]
                             : options  || []
                     }
-                    getOptionLabel={ (option) => option.label || "" }
+                    getOptionLabel={ (option: ValueInputAutocompleteOptionsInterface) => option.label || "" }
                     value={ resourceDetails ? { id: inputValue, label: inputValueLabel } : null }
-                    isOptionEqualToValue={ (option, value) => value?.id && option.id === value.id }
+                    isOptionEqualToValue={ (
+                        option: ValueInputAutocompleteOptionsInterface,
+                        value: ValueInputAutocompleteOptionsInterface
+                    ) =>
+                        value?.id && option.id === value.id
+                    }
                     loading={ isInitialLoading || isFiltering || isResourceDetailsLoading }
                     onChange={ (e: any, value: any) => {
                         if (value?.isDisabled) {
@@ -274,12 +287,12 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         if (option.id === "more-items") {
                             return (
                                 <li
-                                    {...props}
+                                    { ...props }
                                     // TODO: Check the issue why className is not working.
                                     // And move styles to a css file.
                                     style={ {
-                                        fontStyle: "italic",
                                         color: "#666666",
+                                        fontStyle: "italic",
                                         padding: "12px 15px 5px",
                                         pointerEvents: option.isDisabled ? "none" : "auto"
                                     } }
@@ -287,11 +300,12 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 >
                                     { option.label }
                                 </li>
-                            ) 
+                            );
                         }
+
                         return (
-                            <li {...props}>
-                                {option.label}
+                            <li { ...props }>
+                                { option.label }
                             </li>
                         );
                     } }

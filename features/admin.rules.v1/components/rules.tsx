@@ -39,7 +39,6 @@ import "./rules.scss";
  * Props interface of {@link RulesComponent}
  */
 export interface RulesPropsInterface extends IdentifiableComponentInterface {
-    
     /**
      * Disable single rule delete button.
      */
@@ -157,9 +156,9 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                                 aria-label="Clear rule"
                                 variant="outlined"
                                 size="small"
-                                className={`clear-button 
-                                    ${ruleExecuteCollection?.rules?.length > 1 || !disableLastRuleDelete ? 
-                                    "has-delete-button" : ""}`
+                                className={
+                                    `clear-button ${ruleExecuteCollection?.rules?.length > 1 || !disableLastRuleDelete ?
+                                        "has-delete-button" : ""}`
                                 }
                                 sx={ {
                                     position: "absolute",
