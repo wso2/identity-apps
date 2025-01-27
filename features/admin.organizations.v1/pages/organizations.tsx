@@ -592,8 +592,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                     onSortStrategyChange={ handleListSortingStrategyOnChange }
                     showPagination={ true }
                     showTopActionPanel={
-                        isOrganizationListRequestLoading ||
-                                !(!searchQuery && organizationList?.organizations?.length <= 0)
+                        !isOrganizationListRequestLoading && organizationList?.organizations?.length > 0
                     }
                     sortOptions={ ORGANIZATIONS_LIST_SORTING_OPTIONS }
                     sortStrategy={ listSortingStrategy }
