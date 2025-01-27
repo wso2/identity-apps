@@ -132,7 +132,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
             .then((response: UserListInterface) => {
                 // Exclude JIT users.
                 const responseUsers: UserBasicInterface[] = response?.Resources?.filter(
-                    (user: UserBasicInterface) => !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId);
+                    (user: UserBasicInterface) => !user[ SCIMConfigs.scim.systemSchema ]?.userSourceId);
 
                 if (responseUsers) {
                     responseUsers.sort((userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>

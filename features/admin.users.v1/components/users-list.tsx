@@ -173,6 +173,9 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
     const isAuthUserPrivileged: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const isUpdatingSharedProfilesEnabled: boolean = !featureConfig?.users?.disabledFeatures?.includes(
+        UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_PROFILES")
+    );
 
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
@@ -235,7 +238,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             ? user?.userName?.split("/")[0]?.toUpperCase()
             : userstoresConfig.primaryUserstoreName;
 
-        const userIdp: string = user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType;
+        const userIdp: string = user[ SCIMConfigs.scim.systemSchema ]?.idpType;
 
         if (!userIdp) {
             return "N/A";
@@ -462,7 +465,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg
+                    || (!isUpdatingSharedProfilesEnabled && user[SCIMConfigs.scim.systemSchema]?.managedOrg)
                         ? "eye"
                         : "pencil alternate";
                 },
@@ -477,7 +480,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg
+                    || (!isUpdatingSharedProfilesEnabled && user[SCIMConfigs.scim.systemSchema]?.managedOrg)
                         ? t("common:view")
                         : t("common:edit");
                 },
@@ -634,7 +637,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     data-componentid={ `${ testId }-confirmation-modal-content` }
                 >
                     {
-                        deletingUser && deletingUser[SCIMConfigs.scim.enterpriseSchema]?.userSourceId
+                        deletingUser && deletingUser[SCIMConfigs.scim.systemSchema]?.userSourceId
                             ? t("user:deleteJITUser.confirmationModal.content")
                             : t("user:deleteUser.confirmationModal.content")
                     }

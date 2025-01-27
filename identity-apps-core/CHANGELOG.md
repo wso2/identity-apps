@@ -1,5 +1,88 @@
 # @wso2is/identity-apps-core
 
+## 2.12.0
+
+### Minor Changes
+
+- [#7353](https://github.com/wso2/identity-apps/pull/7353) [`b67d22c81d5c8be72c09abd36ed829a88fb22a4b`](https://github.com/wso2/identity-apps/commit/b67d22c81d5c8be72c09abd36ed829a88fb22a4b) Thanks [@brionmario](https://github.com/brionmario)! - Integrate `tldts` to derive the `domain` name
+
+## 2.11.1
+
+### Patch Changes
+
+- [#7370](https://github.com/wso2/identity-apps/pull/7370) [`9b6fe9141f5260d6e3760298badd6e0f6c7ec499`](https://github.com/wso2/identity-apps/commit/9b6fe9141f5260d6e3760298badd6e0f6c7ec499) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Add UI support for Push notification based authentication
+
+- Updated dependencies [[`9b6fe9141f5260d6e3760298badd6e0f6c7ec499`](https://github.com/wso2/identity-apps/commit/9b6fe9141f5260d6e3760298badd6e0f6c7ec499)]:
+  - @wso2is/theme@2.6.3
+
+## 2.11.0
+
+### Minor Changes
+
+- [#7117](https://github.com/wso2/identity-apps/pull/7117) [`8bb552a24c6cac4d01b38932add6c46905dc24c9`](https://github.com/wso2/identity-apps/commit/8bb552a24c6cac4d01b38932add6c46905dc24c9) Thanks [@VimukthiRajapaksha](https://github.com/VimukthiRajapaksha)! - Added support to display authorization details on the consent screen. This optional field, if included in the authorize request, will be shown on the consent screen when user consent is required.
+
+## 2.10.12
+
+### Patch Changes
+
+- Updated dependencies [[`689dcc45ad43831b2805c3b91f04bdd254e1a7ef`](https://github.com/wso2/identity-apps/commit/689dcc45ad43831b2805c3b91f04bdd254e1a7ef)]:
+  - @wso2is/theme@2.6.2
+
+## 2.10.11
+
+### Patch Changes
+
+- [#7388](https://github.com/wso2/identity-apps/pull/7388) [`83bd570f14b174ad38af419bad4d40322c8f5ce4`](https://github.com/wso2/identity-apps/commit/83bd570f14b174ad38af419bad4d40322c8f5ce4) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Set ui_lang cookie if ui_locale in url param exists.
+
+## 2.10.10
+
+### Patch Changes
+
+- [#7255](https://github.com/wso2/identity-apps/pull/7255) [`363d4abbf6d2c327f398b4833806c87f1a3883d9`](https://github.com/wso2/identity-apps/commit/363d4abbf6d2c327f398b4833806c87f1a3883d9) Thanks [@sandushi](https://github.com/sandushi)! - Add password reset enforcer authenticator
+
+## 2.10.9
+
+### Patch Changes
+
+- [#7367](https://github.com/wso2/identity-apps/pull/7367) [`debd77e3f54f4d57ef7c09af8d4a3c44159ff065`](https://github.com/wso2/identity-apps/commit/debd77e3f54f4d57ef7c09af8d4a3c44159ff065) Thanks [@KD23243](https://github.com/KD23243)! - Add sanitation to self registration callback
+
+## 2.10.8
+
+### Patch Changes
+
+- Updated dependencies [[`3811ae3d223db8bf4fa5315f61d19a11aecc32a9`](https://github.com/wso2/identity-apps/commit/3811ae3d223db8bf4fa5315f61d19a11aecc32a9)]:
+  - @wso2is/theme@2.6.1
+
+## 2.10.7
+
+### Patch Changes
+
+- [#7357](https://github.com/wso2/identity-apps/pull/7357) [`f09d5cdae572f4d0ddf22383ef06d14f01942678`](https://github.com/wso2/identity-apps/commit/f09d5cdae572f4d0ddf22383ef06d14f01942678) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix required shown for optional fileds on self registration page
+
+## 2.10.6
+
+### Patch Changes
+
+- [#7356](https://github.com/wso2/identity-apps/pull/7356) [`a6c864c8dfa74566b0eb1117223c69430463e468`](https://github.com/wso2/identity-apps/commit/a6c864c8dfa74566b0eb1117223c69430463e468) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix last name and first name identitied as unique attributes though it has been disbaled as unique attributes
+
+## 2.10.5
+
+### Patch Changes
+
+- [#7314](https://github.com/wso2/identity-apps/pull/7314) [`df64c8e46741ad83103d1fa8b266846a105572ea`](https://github.com/wso2/identity-apps/commit/df64c8e46741ad83103d1fa8b266846a105572ea) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add userId extraction support during self registration
+
+## 2.10.4
+
+### Patch Changes
+
+- [#7333](https://github.com/wso2/identity-apps/pull/7333) [`8b5c00139cafcda59b5d0dd7fbd8a56d7e623d87`](https://github.com/wso2/identity-apps/commit/8b5c00139cafcda59b5d0dd7fbd8a56d7e623d87) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Introduce error code for invalid response type in hybrid flow
+
+## 2.10.3
+
+### Patch Changes
+
+- [#7315](https://github.com/wso2/identity-apps/pull/7315) [`3a8e2f346e6e35969be0cf2f9683f0fc25d25e57`](https://github.com/wso2/identity-apps/commit/3a8e2f346e6e35969be0cf2f9683f0fc25d25e57) Thanks [@KD23243](https://github.com/KD23243)! - Add sanitization to backToUrl in self-registration-username-request.jsp
+
 ## 2.10.2
 
 ### Patch Changes

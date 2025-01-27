@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -70,6 +70,10 @@ export interface TenantsNS {
                     label: string;
                     placeholder: string;
                     validations: {
+                        domainInvalidCharPattern: string;
+                        domainInvalidPattern: string;
+                        domainMandatoryExtension: string;
+                        domainStartingWithDot: string;
                         domainUnavailable: string;
                         required: string;
                     };
@@ -152,6 +156,14 @@ export interface TenantsNS {
             secondaryAction: string;
         };
         disableTenant: {
+            assertionHint: string;
+            content: string;
+            header: string;
+            message: string;
+            primaryAction: string;
+            secondaryAction: string;
+        };
+        navigatingToTenantConsole: {
             assertionHint: string;
             content: string;
             header: string;

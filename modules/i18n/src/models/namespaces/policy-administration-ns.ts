@@ -37,5 +37,93 @@ export interface policyAdministrationNS {
         title: string;
         actionText: string;
         primaryBtn: string;
+        algorithmOptions: {
+            denyOverrides: {
+                description: string;
+            };
+            permitOverrides: {
+                description: string;
+            };
+            firstApplicable: {
+                description: string;
+            };
+            permitUnlessDeny: {
+                description: string;
+            };
+            denyUnlessPermit: {
+                description: string;
+            };
+            orderedPermitOverrides: {
+                description: string;
+            };
+            orderedDenyOverrides: {
+                description: string;
+            };
+            onlyOneApplicable: {
+                description: string;
+            };
+        };
     }
+    popup: {
+        activate: string,
+        deactivate: string,
+    }
+    alerts: {
+        deleteSuccess: {
+            message: string;
+            description: string;
+        };
+        deleteFailure: {
+            message: string;
+            description: string;
+        };
+        activateSuccess: {
+            message: string;
+            description: string;
+        };
+        activateFailure: {
+            message: string;
+            description: string;
+        };
+        deactivateSuccess: {
+            message: string;
+            description: string;
+        };
+        deactivateFailure: {
+            message: string;
+            description: string;
+        };
+        updateSuccess: {
+            message: string;
+            description: string;
+        };
+        updateFailure: {
+            message: string;
+            description: string;
+        };
+        updateAlgorithmSuccess: {
+            message: string;
+            description: string;
+        };
+        updateAlgorithmFailure: {
+            message: string;
+            description: string;
+        };
+        createSuccess: {
+            message: string;
+            description: string;
+        };
+        createFailure: {
+            message: string;
+            description: string;
+        };
+    };
+    inactivePoliciesPlaceholder: {
+        title: string;
+        subtitle: string;
+    };
+    activePoliciesPlaceholder: {
+        title: string;
+        subtitle: string;
+    };
 }

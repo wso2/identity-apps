@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,7 @@ import {
     ApplicationEditTabContentType,
     ApplicationEditTabMetadataInterface
 } from "@wso2is/admin.application-templates.v1/models/templates";
-import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants";
+import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants/branding-preferences-constants";
 import {
     AppConstants,
     AppState,
@@ -813,7 +813,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))
-                && !isFragmentApp
+                && !isSubOrganization()
                 && !isM2MApplication
                 && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
                     application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)
@@ -841,7 +841,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))
-                && !isM2MApplication) {
+                && !isM2MApplication
+                && (isSuperOrganization() || (isSubOrganization() && isFragmentApp) || isFirstLevelOrg)) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
@@ -859,7 +860,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (applicationConfig.editApplication.showProvisioningSettings
                 && isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))
-                && !isFragmentApp
+                && !isSubOrganization()
                 && !isM2MApplication
                 && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
                     application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
@@ -875,7 +876,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))
-                && !isFragmentApp
+                && !isSubOrganization()
                 && !isM2MApplication
                 && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
                     application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
@@ -928,7 +929,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
-                 && !isFragmentApp
+                 && !isSubOrganization()
                  && !isMyAccount) {
 
                 applicationConfig.editApplication.
@@ -942,7 +943,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                      "data-tabid": ApplicationTabIDs.INFO,
                      menuItem: {
                          content: t("applications:edit.sections.info.tabName"),
-                         icon: "info circle grey"
+                         icon: "info circle"
                      },
                      render: InfoTabPane
                  });

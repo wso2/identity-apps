@@ -638,7 +638,7 @@ export const myAccount: MyAccountNS = {
                 "deleteHint": "Entfernen",
                 "description": "Sie können die Authentifizierungs-App verwenden, um Bestätigungscodes für die Zwei-Faktor-Authentifizierung zu erhalten.",
                 "enableHint": "TOTP-Authentifikator aktivieren/deaktivieren",
-                "heading": "Authentifizierungs-App",
+                "heading": "TOTP-Authenticator",
                 "hint": "Aussicht",
                 "modals": {
                     "delete": {
@@ -862,6 +862,7 @@ export const myAccount: MyAccountNS = {
                         "tryWithOlderDevice": "Sie können es auch mit einem älteren Passkey noch einmal versuchen."
                     }
                 },
+                "noPassKeyMessage": "Sie haben noch keine Passkeys registriert.",
                 "notifications": {
                     "removeDevice": {
                         "error": {
@@ -907,6 +908,61 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 "tryButton": "Versuchen Sie es mit einem älteren Passkey"
+            },
+            "pushAuthenticatorApp": {
+                "addHint": "Konfigurieren",
+                "configuredDescription": "Sie können die Login-Eingabeaufforderungen nutzen, die von Ihrer konfigurierten Push-Authentifikator-App für die Zwei-Faktor-Authentifizierung generiert werden. Wenn Sie keinen Zugriff auf die Anwendung haben, können Sie hier eine neue Authentifikator-App einrichten.",
+                "deleteHint": "Entfernen",
+                "description": "Sie können die Push-Authentifikator-App verwenden, um Login-Eingabeaufforderungen als Push-Benachrichtigungen für die Zwei-Faktor-Authentifizierung zu erhalten.",
+                "heading": "Push-Authentifikator",
+                "hint": "Anzeigen",
+                "modals": {
+                    "deviceDeleteConfirmation": {
+                        "assertionHint": "Bitte bestätigen Sie Ihre Aktion.",
+                        "content": "Diese Aktion ist unwiderruflich und wird das Gerät dauerhaft entfernen.",
+                        "description": "Wenn Sie dieses Gerät entfernen, können Sie möglicherweise nicht mehr auf Ihr Konto zugreifen. Bitte fahren Sie mit Vorsicht fort.",
+                        "heading": "Sind Sie sicher?"
+                    },
+                    "scan": {
+                        "additionNote": "Der QR-Code wurde erfolgreich zu Ihrem Profil hinzugefügt!",
+                        "done": "Erfolg! Jetzt können Sie Ihre Push-Authentifikator-App für die Zwei-Faktor-Authentifizierung verwenden.",
+                        "heading": "Push-Authentifikator-App einrichten",
+                        "messageBody": "Eine Liste der verfügbaren Authentifikator-Apps finden Sie hier.",
+                        "subHeading": "Scannen Sie den untenstehenden QR-Code mit der Push-Authentifikator-App"
+                    }
+                },
+                "notifications": {
+                    "delete": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "Etwas ist schiefgelaufen"
+                        },
+                        "genericError": {
+                            "description": "Beim Entfernen des registrierten Geräts ist ein Fehler aufgetreten.",
+                            "message": "Etwas ist schiefgelaufen"
+                        },
+                        "success": {
+                            "description": "Das registrierte Gerät wurde erfolgreich entfernt.",
+                            "message": "Gerät erfolgreich gelöscht"
+                        }
+                    },
+                    "deviceListFetchError": {
+                        "error": {
+                            "description": "Beim Abrufen der registrierten Geräte für die Push-Authentifizierung ist ein Fehler aufgetreten.",
+                            "message": "Etwas ist schiefgelaufen"
+                        }
+                    },
+                    "initError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "Etwas ist schiefgelaufen"
+                        },
+                        "genericError": {
+                            "description": "Beim Abrufen des QR-Codes ist ein Fehler aufgetreten.",
+                            "message": "Etwas ist schiefgelaufen"
+                        }
+                    }
+                }
             },
             "smsOtp": {
                 "descriptions": {

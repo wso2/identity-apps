@@ -17,7 +17,6 @@
  */
 
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
-import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { ServerConfigurationsConstants } from
     "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { ProfileConstants } from "@wso2is/core/constants";
@@ -68,7 +67,8 @@ export class UserManagementConstants {
         .set("USER_DELETE", "users.delete")
         .set("USER_READ", "users.read")
         .set("USER_GROUPS", "users.edit.groups")
-        .set("USER_ROLES", "users.edit.roles");
+        .set("USER_ROLES", "users.edit.roles")
+        .set("USER_SHARED_PROFILES", "users.updateSharedProfiles");
 
     // API errors
     public static readonly USER_INFO_UPDATE_ERROR: string = "Could not update the user information.";
@@ -96,7 +96,12 @@ export class UserManagementConstants {
 
     // Schema related constants.
     public static readonly ENTERPRISESCHEMA: string = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
+    public static readonly SYSTEMSCHEMA: string = "urn:scim:wso2:schema";
+    /**
+     * @deprecated This variable is deprecated. Use `SCIM2_CUSTOM_SCHEMA` instead.
+     */
     public static readonly CUSTOMSCHEMA: string = "urn:scim:wso2:schema";
+    public static readonly SCIM2_CUSTOM_SCHEMA: string = "urn:scim:schemas:extension:custom:User";
 
     /**
      * Set of SCIM2 schema names.apps/myaccount/src/store/actions/authenticate.ts
@@ -117,9 +122,9 @@ export class UserManagementConstants {
      * @defaultValue
      */
     public static readonly SCIM2_ATTRIBUTES_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("ACCOUNT_LOCKED", SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked)
-        .set("ACCOUNT_DISABLED", SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled)
-        .set("ONETIME_PASSWORD", SCIMConfigs.scimEnterpriseUserClaimUri.oneTimePassword);
+        .set("ACCOUNT_LOCKED", "urn:scim:wso2:schema:accountLocked")
+        .set("ACCOUNT_DISABLED", "urn:scim:wso2:schema:accountDisabled")
+        .set("ONETIME_PASSWORD", "urn:scim:wso2:schema:oneTimePassword");
 
     public static readonly ROLES: string = "roles";
     public static readonly GROUPS: string = "groups";

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -39,6 +39,7 @@ const useGetSmsTemplate = <Data = SMSTemplate, Error = RequestErrorInterface>(
     templateType: string,
     locale: string = SMSTemplateConstants.DEAFULT_LOCALE,
     fetchSystemTemplate: boolean = false,
+    fetchInheritedTemplate: boolean = false,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     const smsLocale: string = locale.replace("-", "_");
@@ -53,6 +54,12 @@ const useGetSmsTemplate = <Data = SMSTemplate, Error = RequestErrorInterface>(
             store.getState().config.endpoints.smsTemplates +
             `/template-types/${templateType}/org-templates/${smsLocale}`
     };
+
+    if (fetchInheritedTemplate) {
+        requestConfig.params = {
+            resolve: true
+        };
+    }
 
     if (fetchSystemTemplate) {
         requestConfig.url =

@@ -1,5 +1,23 @@
 # @wso2is/theme
 
+## 2.6.3
+
+### Patch Changes
+
+- [#7370](https://github.com/wso2/identity-apps/pull/7370) [`9b6fe9141f5260d6e3760298badd6e0f6c7ec499`](https://github.com/wso2/identity-apps/commit/9b6fe9141f5260d6e3760298badd6e0f6c7ec499) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Add UI support for Push notification based authentication
+
+## 2.6.2
+
+### Patch Changes
+
+- [#7350](https://github.com/wso2/identity-apps/pull/7350) [`689dcc45ad43831b2805c3b91f04bdd254e1a7ef`](https://github.com/wso2/identity-apps/commit/689dcc45ad43831b2805c3b91f04bdd254e1a7ef) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Introduce push authenticator configuration support in my account
+
+## 2.6.1
+
+### Patch Changes
+
+- [#7336](https://github.com/wso2/identity-apps/pull/7336) [`3811ae3d223db8bf4fa5315f61d19a11aecc32a9`](https://github.com/wso2/identity-apps/commit/3811ae3d223db8bf4fa5315f61d19a11aecc32a9) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Add Create Wizard for Custom Authentication Feature
+
 ## 2.6.0
 
 ### Minor Changes

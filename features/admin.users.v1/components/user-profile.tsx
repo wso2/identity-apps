@@ -27,6 +27,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
@@ -53,6 +54,7 @@ import {
     ProfileInfoInterface,
     ProfileSchemaInterface,
     RolesMemberInterface,
+    SharedProfileValueResolvingMethod,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -200,11 +202,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
     );
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const { UIConfig } = useUIConfig();
 
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
+    );
+
+    const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.attributeDialects?.disabledFeatures?.includes(
+        ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
     );
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
@@ -352,9 +359,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         const getDisplayOrder = (schema: ProfileSchemaInterface): number => {
             if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
-                && !schema.displayOrder) return 6;
+                && (!schema.displayOrder || schema.displayOrder == "0")) return 6;
             if (schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                && !schema.displayOrder) return 7;
+                && (!schema.displayOrder || schema.displayOrder == "0")) return 7;
 
             return schema.displayOrder ? parseInt(schema.displayOrder, 10) : -1;
         };
@@ -450,12 +457,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             }
 
                             if (
-                                schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                                schema.extended
+                                && userInfo?.[userSchemaURI]?.[schemaNames[0]]
                             ) {
                                 if (UserManagementConstants.MULTI_VALUED_ATTRIBUTES.includes(schemaNames[0])) {
                                     const attributeValue: string | string[] =
-                                        userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]?.[schemaNames[0]];
+                                        userInfo[userSchemaURI]?.[schemaNames[0]];
                                     const formattedValue: string = Array.isArray(attributeValue)
                                         ? attributeValue.join(",")
                                         : "";
@@ -465,7 +472,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     return;
                                 }
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                                    schema.name, userInfo[userSchemaURI][schemaNames[0]]
                                 );
 
                                 return;
@@ -585,12 +592,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             }
 
                             if (
-                                schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                                schema.extended
+                                && userInfo?.[userSchemaURI]?.[schemaNames[0]]
                             ) {
                                 if (UserManagementConstants.MULTI_VALUED_ATTRIBUTES.includes(schemaNames[0])) {
                                     const attributeValue: string | string[] =
-                                        userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]?.[schemaNames[0]];
+                                        userInfo[userSchemaURI]?.[schemaNames[0]];
                                     const formattedValue: string = Array.isArray(attributeValue)
                                         ? attributeValue.join(",")
                                         : "";
@@ -600,7 +607,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     return;
                                 }
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                                    schema.name, userInfo[userSchemaURI][schemaNames[0]]
                                 );
 
                                 return;
@@ -1227,7 +1234,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     /**
      * The method handles the locking and disabling of user account.
      */
-    const handleDangerActions = (attributeName: string, attributeValue: boolean): Promise<void> => {
+    const handleDangerActions = (attributeName: string, attributeValue: boolean): void => {
         let data: PatchRoleDataInterface = {
             "Operations": [
                 {
@@ -1243,17 +1250,22 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         if (adminUserType === "internal") {
+            const accountDisabledURI: string = UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY
+                .get("ACCOUNT_LOCKED");
+            const accountLockedURI: string = UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY
+                .get("ACCOUNT_DISABLED");
+
+            const schemaURI: string = accountDisabledURI?.startsWith(ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA)
+                && accountLockedURI?.startsWith(ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA)
+                ? ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA
+                : userSchemaURI;
+
             data = {
                 "Operations": [
                     {
                         "op": "replace",
-                        "value": {
-                            [ SCIMConfigs?.scimEnterpriseUserClaimUri?.accountDisabled?.
-                                startsWith(ProfileConstants.SCIM2_WSO2_USER_SCHEMA) &&
-                                SCIMConfigs?.scimEnterpriseUserClaimUri?.accountLocked?.
-                                    startsWith(ProfileConstants.SCIM2_WSO2_USER_SCHEMA)
-                                ? ProfileConstants.SCIM2_WSO2_USER_SCHEMA
-                                : ProfileConstants.SCIM2_ENT_USER_SCHEMA ]: {
+                        value: {
+                            [schemaURI]: {
                                 [attributeName]: attributeValue
                             }
                         }
@@ -1263,7 +1275,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             };
         }
 
-        return updateUserInfo(user.id, data)
+        updateUserInfo(user.id, data)
             .then(() => {
                 onAlertFired({
                     description:
@@ -1358,7 +1370,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         !isReadOnly
                         || allowDeleteOnly
                         || isUserManagedByParentOrg
-                        || user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
+                        || user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
                     ) && (
                         !isCurrentUserAdmin
                         || !isUserCurrentLoggedInUser
@@ -1896,9 +1908,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         let primaryAttributeSchema: ProfileSchemaInterface;
         let maxAllowedLimit: number = 0;
 
-        const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
-        const resolvedRequiredValue: boolean = schema?.profiles?.console?.required ?? schema.required;
-
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             attributeValueList = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
             verifiedAttributeValueList = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
@@ -1954,6 +1963,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             && verificationEnabled
             && !(verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
 
+        const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
+        const resolvedMultiValueAttributeRequiredValue: boolean
+            = schema?.profiles?.console?.required ?? schema.required;
+        const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
+        const resolvedPrimarySchemaRequiredValue: boolean
+            = primaryAttributeSchema?.profiles?.console?.required ?? primaryAttributeSchema?.required;
+        const resolvedRequiredValue: boolean = (resolvedMultiValueAttributeRequiredValue
+            || resolvedPrimarySchemaRequiredValue);
+
         return (
             <div key={ key }>
                 <Field
@@ -1976,13 +1994,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             : fieldName
                         )
                     }
-                    required={ resolvedRequiredValue }
-                    requiredErrorMessage={ fieldName + " " + "is required" }
+                    className={ resolvedRequiredValue ? "required-icon" : "" }
                     placeholder={ "Enter your" + " " + fieldName }
                     type="text"
-                    readOnly={ isReadOnly || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
+                    readOnly={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                    }
                     validation={ (value: string, validation: Validation) => {
-                        if (!RegExp(primaryAttributeSchema.regEx).test(value)) {
+                        if (!RegExp(primaryAttributeSchema?.regEx).test(value)) {
                             setIsMultiValuedItemInvalid({
                                 ...isMultiValuedItemInvalid,
                                 [schema.name]: true
@@ -2034,13 +2055,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             <TableCell align="left">
                                                 <div className="table-c1">
                                                     <label
-                                                        className={ `c1-value ${
-                                                            schema.name
-                                                                    === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
-                                                                        get("MOBILE_NUMBERS")
-                                                                ? "mobile-label"
-                                                                : null}`
-                                                        }
+                                                        className="c1-value"
                                                         data-componentid={
                                                             `${testId}-profile-form-${schema.name}` +
                                                                     `-value-${index}`
@@ -2163,6 +2178,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const resolveFormField = (schema: ProfileSchemaInterface, fieldName: string, key: number): ReactElement => {
         const resolvedRequiredValue: boolean = schema?.profiles?.console?.required ?? schema.required;
         const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
+        const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
 
         if (schema.type.toUpperCase() === "BOOLEAN") {
             return (
@@ -2179,7 +2195,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             value: schema.name
                         }
                     ] }
-                    readOnly={ isReadOnly || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
+                    readOnly={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                    }
                     key={ key }
                 />
             );
@@ -2214,8 +2234,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             : []
                     ) }
                     key={ key }
-                    disabled={ false }
-                    readOnly={ isReadOnly || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
+                    disabled={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                    }
+                    readOnly={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                    }
                     clearable={ !resolvedRequiredValue }
                     search
                     selection
@@ -2263,7 +2291,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     ) }
                     key={ key }
                     disabled={ false }
-                    readOnly={ isReadOnly || schema?.mutability === ProfileConstants.READONLY_SCHEMA }
+                    readOnly={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || schema?.mutability === ProfileConstants.READONLY_SCHEMA
+                    }
                     clearable={ !resolvedRequiredValue }
                     search
                     selection
@@ -2287,7 +2319,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     type="text"
                     value={ profileInfo.get(schema.name) }
                     key={ key }
-                    readOnly={ isReadOnly || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
+                    readOnly={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                    }
                     validation={ (value: string, validation: Validation) => {
                         if (!RegExp(schema.regEx).test(value)) {
                             validation.isValid = false;
@@ -2321,7 +2357,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     value={ profileInfo.get(schema.name) }
                     key={ key }
                     disabled={ schema.name === "userName" }
-                    readOnly={ isReadOnly || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
+                    readOnly={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                    }
                     validation={ (value: string, validation: Validation) => {
                         if (!RegExp(schema.regEx).test(value)) {
                             validation.isValid = false;
@@ -2355,6 +2395,24 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      */
     const isFieldDisplayable = (schema: ProfileSchemaInterface): boolean => {
         const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
+
+        // If the distinct attribute profiles feature is enabled, check the supportedByDefault flag.
+        if (!isDistinctAttributeProfilesDisabled) {
+            if (schema?.name === "userName") {
+                return true;
+            }
+            // The global supportedByDefault value is a string. Hence, it needs to be converted to a boolean.
+            let resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+
+            if (schema?.profiles?.console?.supportedByDefault !== undefined) {
+                resolveSupportedByDefaultValue = schema?.profiles?.console?.supportedByDefault;
+            }
+
+            // If the schema is not supported by default and the value is empty, the field should not be displayed.
+            if (!resolveSupportedByDefaultValue) {
+                return false;
+            }
+        }
 
         return (!isEmpty(profileInfo.get(schema.name)) ||
             (!isReadOnly && (resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA)));
@@ -2398,7 +2456,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         return (
             <Grid.Row columns={ 1 } key={ key }>
-                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     {
                         schema.name === "userName" && domainName.length > 1 ? (
                             <>
@@ -2549,7 +2607,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             {
                                 isReadOnly
                                 && (!isEmpty(tenantAdmin) || tenantAdmin !== null)
-                                && !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
+                                && !user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
                                 && editUserDisclaimerMessage
                             }
                             <Forms
@@ -2557,11 +2615,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 onSubmit={ (values: Map<string, string | string[]>) => handleSubmit(values) }
                                 onStaleChange={ (stale: boolean) => setIsFormStale(stale) }
                             >
-                                <Grid>
+                                <Grid className="user-profile-form form-container with-max-width">
                                     {
                                         user.id && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
+                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                     <Form.Field>
                                                         <label>
                                                             { t("user:profile.fields.userId") }
@@ -2607,7 +2665,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         oneTimePassword && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
+                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                     <Field
                                                         data-testid={ `${ testId }-profile-form-one-time-pw }
                                                         -input` }
@@ -2628,7 +2686,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         createdDate && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
+                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                     <Form.Field>
                                                         <label>
                                                             { t("user:profile.fields." +
@@ -2649,7 +2707,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         modifiedDate && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
+                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                     <Form.Field>
                                                         <label>
                                                             { t("user:profile.fields.modifiedDate") }
@@ -2667,7 +2725,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         )
                                     }
                                     <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                             {
                                                 !isReadOnly && (
                                                     <Button

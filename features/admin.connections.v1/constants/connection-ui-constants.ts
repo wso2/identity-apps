@@ -18,6 +18,7 @@
 
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
+import { AvailableCustomAuthentications } from "../models/connection";
 
 /**
  * This class contains the constants for the Connections feature UIs.
@@ -141,6 +142,26 @@ export class ConnectionUIConstants {
             OTP_LENGTH_MAX_VALUE: 10,
             OTP_LENGTH_MIN_LENGTH: 1,
             OTP_LENGTH_MIN_VALUE: 4
+        };
+
+    public static readonly PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
+            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: number;
+            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: number;
+            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: number;
+            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: number;
+            RESEND_INTERVAL_MAX_LENGTH: number;
+            RESEND_INTERVAL_MAX_VALUE: number;
+            RESEND_INTERVAL_MIN_LENGTH: number;
+            RESEND_INTERVAL_MIN_VALUE: number;
+        } = {
+            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: 2,
+            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: 10,
+            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: 1,
+            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: 0,
+            RESEND_INTERVAL_MAX_LENGTH: 2,
+            RESEND_INTERVAL_MAX_VALUE: 10,
+            RESEND_INTERVAL_MIN_LENGTH: 1,
+            RESEND_INTERVAL_MIN_VALUE: 1
         };
 
     /**
@@ -313,8 +334,10 @@ export class ConnectionUIConstants {
      * Set of connection template group Ids.
      */
     public static readonly CONNECTION_TEMPLATE_GROUPS: {
+        CUSTOM_AUTHENTICATION: string;
         ENTERPRISE_PROTOCOLS: string;
     } = {
+            CUSTOM_AUTHENTICATION: "custom-authentication",
             ENTERPRISE_PROTOCOLS: "enterprise-protocols"
         };
 
@@ -335,4 +358,25 @@ export class ConnectionUIConstants {
     public static readonly USER_ID_IN_CLAIMS: string = "IsUserIdInClaims";
 
     public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
+
+    /**
+     * Custom authentication constants.
+     */
+    public static readonly CUSTOM_AUTHENTICATION_CONSTANTS: {
+        EMPTY_STRING: string,
+        EXTERNAL_AUTHENTICATOR: AvailableCustomAuthentications,
+        INTERNAL_AUTHENTICATOR: AvailableCustomAuthentications,
+        TWO_FACTOR_AUTHENTICATOR: AvailableCustomAuthentications,
+        EXTERNAL_CUSTOM_AUTHENTICATOR_ID: string,
+        INTERNAL_CUSTOM_AUTHENTICATOR_ID: string,
+        TWO_FACTOR_CUSTOM_AUTHENTICATOR_ID: string,
+    } = {
+            EMPTY_STRING: "",
+            EXTERNAL_AUTHENTICATOR: "external",
+            EXTERNAL_CUSTOM_AUTHENTICATOR_ID: "external-custom-authentication",
+            INTERNAL_AUTHENTICATOR: "internal",
+            INTERNAL_CUSTOM_AUTHENTICATOR_ID: "internal-user-custom-authentication",
+            TWO_FACTOR_AUTHENTICATOR: "two-factor",
+            TWO_FACTOR_CUSTOM_AUTHENTICATOR_ID: "two-factor-custom-authentication"
+        };
 }

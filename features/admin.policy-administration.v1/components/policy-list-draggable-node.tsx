@@ -20,11 +20,9 @@ import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
-import { EllipsisVerticalIcon }  from "@oxygen-ui/react-icons";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -47,27 +45,25 @@ export interface PolicyListDraggableNodePropsInterface
     policy: PolicyInterface;
     mutateActivePolicyList?: () => void;
     mutateInactivePolicyList?: () => void;
-    setInactivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
-    setPageInactive: React.Dispatch<React.SetStateAction<number>>;
-    setHasMoreInactivePolicies: React.Dispatch<React.SetStateAction<boolean>>;
+    setActivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
+    setPageActive: React.Dispatch<React.SetStateAction<number>>;
+    setHasMoreActivePolicies: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInterface> = ({
     "data-componentid": componentId = "policy-list-draggable-node",
-    id,
     policy,
     mutateActivePolicyList,
     mutateInactivePolicyList,
-    setInactivePolicies,
-    setPageInactive,
-    setHasMoreInactivePolicies,
-    ...rest
+    setActivePolicies,
+    setPageActive,
+    setHasMoreActivePolicies
 }: PolicyListDraggableNodePropsInterface): ReactElement => {
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
     const handleEdit = (policyId: string) => {
-        history.push(`${AppConstants.getPaths().get("EDIT_POLICY").replace(":id", kebabCase(policyId))}`);
+        history.push(`${AppConstants.getPaths().get("EDIT_POLICY").replace(":id", btoa(policyId))}`);
     };
 
     const handleDelete = async (): Promise<void> => {
@@ -79,13 +75,17 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                 policyIds: [ `${policy.policyId}` ],
                 subscriberIds: [ "PDP Subscriber" ]
             });
-            await deletePolicy(policy.policyId);
+            await deletePolicy(btoa(policy.policyId));
 
             dispatch(addAlert({
-                description: "The policy has been deleted successfully",
+                description: t("policyAdministration:alerts.deleteSuccess.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Delete successful"
+                message: t("policyAdministration:alerts.deleteSuccess.message")
             }));
+
+            setActivePolicies([]);
+            setPageActive(0);
+            setHasMoreActivePolicies(true);
 
             mutateActivePolicyList();
             mutateInactivePolicyList();
@@ -93,9 +93,9 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
         } catch (error) {
             // Dispatch the error alert.
             dispatch(addAlert({
-                description: "An error occurred while deleting the policy",
+                description: t("policyAdministration:alerts.deleteFailure.description"),
                 level: AlertLevels.ERROR,
-                message: "Delete error"
+                message: t("policyAdministration:alerts.deleteFailure.message")
             }));
         }
     };
@@ -111,25 +111,20 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
             });
 
             dispatch(addAlert({
-                description: "The policy has been deactivated successfully",
+                description: t("policyAdministration:alerts.deactivateSuccess.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Deactivation successful"
+                message: t("policyAdministration:alerts.deactivateSuccess.message")
             }));
-
-            setPageInactive(0);
-            setHasMoreInactivePolicies(true);
-            setInactivePolicies([]);
 
             mutateActivePolicyList();
             mutateInactivePolicyList();
 
         } catch (error) {
             dispatch(addAlert({
-                description: "An error occurred while deactivating the policy",
+                description:  t("policyAdministration:alerts.deactivateFailure.description"),
                 level: AlertLevels.ERROR,
-                message: "Deactivation error"
+                message: t("policyAdministration:alerts.deactivateFailure.message")
             }));
-
         }
     };
 
@@ -137,11 +132,8 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
 
         <Card variant="outlined" className="policy-list-node">
             <CardContent>
-                <Stack direction={ "row" } justifyContent={ "space-between" }>
-                    <Stack direction={ "row" } spacing={ 1 } >
-                        <EllipsisVerticalIcon className="policy-drag-icon" />
-                        <Typography>{ policy.policyId }</Typography>
-                    </Stack>
+                <Stack direction={ "row" } justifyContent={ "space-between" } className="policy-action-container">
+                    <Typography className="ellipsis-text">{ policy.policyId }</Typography>
                     <Stack direction={ "row" } marginTop={ "3px" }>
                         <Popup
                             trigger={ (
@@ -156,7 +148,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                                 />
                             ) }
                             position="top center"
-                            content={ "Edit" }
+                            content={ t("common:edit") }
                             inverted
                         />
                         <Popup
@@ -171,7 +163,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                                 />
                             ) }
                             position="top center"
-                            content={ "Delete" }
+                            content={ t("common:delete") }
                             inverted
                         />
                         <Popup
@@ -186,7 +178,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                                 />
                             ) }
                             position="top center"
-                            content={ "Deactivate" }
+                            content={ t("policyAdministration:popup.deactivate") }
                             inverted
                         />
                     </Stack>

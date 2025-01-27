@@ -38,5 +38,5 @@ export const userConfig: User = {
     enableBulkImportSecondaryUserStore: true,
     enableUsernameValidation: false,
     hiddenItemsPerPageRemoteUserStoreDropdown: false,
-    userProfileSchema: ProfileConstants.SCIM2_ENT_USER_SCHEMA
+    userProfileSchema: ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA
 };

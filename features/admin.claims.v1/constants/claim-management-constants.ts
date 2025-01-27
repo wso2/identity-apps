@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -58,6 +58,12 @@ export class ClaimManagementConstants {
     public static readonly NEW_LOCAL_CLAIM_URL_SEARCH_PARAM: string = `?${
         ClaimManagementConstants.LOCAL_CLAIM_STATE_URL_SEARCH_PARAM_KEY }=new`;
 
+    /**
+     *  The feature flag to enable/disable the distinct attribute profiles feature.
+     */
+    public static readonly DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG: string =
+        "attributeDialects.distinct.attribute.profiles";
+
     // API errors
     public static readonly ADD_DIALECT_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while adding a new dialect.";
@@ -92,7 +98,8 @@ export class ClaimManagementConstants {
         .set("SCIM2_SCHEMAS_CORE_USER", "dXJuOmlldGY6cGFyYW1zOnNjaW06c2NoZW1hczpjb3JlOjIuMDpVc2Vy")
         .set("SCIM2_SCHEMAS_EXT_ENT_USER",
             "dXJuOmlldGY6cGFyYW1zOnNjaW06c2NoZW1hczpleHRlbnNpb246ZW50ZXJwcmlzZToyLjA6VXNlcg")
-        .set("SCIM_SCHEMAS_CORE", "dXJuOnNjaW06c2NoZW1hczpjb3JlOjEuMA");
+        .set("SCIM_SCHEMAS_CORE", "dXJuOnNjaW06c2NoZW1hczpjb3JlOjEuMA")
+        .set("SCIM2_SCHEMAS_EXT_SYSTEM", "dXJuOnNjaW06d3NvMjpzY2hlbWE");
 
     /**
      * Set of dialects packed OOTB.
@@ -118,7 +125,8 @@ export class ClaimManagementConstants {
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE_USER"),
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"),
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM_SCHEMAS_CORE"),
-        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP")
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_SYSTEM")
     ];
 
     public static readonly CUSTOM_MAPPING: string = SCIMConfigs.custom;
@@ -141,39 +149,45 @@ export class ClaimManagementConstants {
         isAttributeButtonEnabled: boolean;
         attributeButtonText: string;
     }[] = [
-        {
-            attributeButtonText: "",
-            isAttributeButtonEnabled: false,
-            name: "Core Schema",
-            uri: "urn:ietf:params:scim:schemas:core:2.0"
-        },
-        {
-            attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction",
-            isAttributeButtonEnabled: true,
-            name: "User Schema",
-            uri: "urn:ietf:params:scim:schemas:core:2.0:User"
-        },
-        {
-            attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction" ,
-            isAttributeButtonEnabled: true,
-            name: "Enterprise Schema",
-            uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
-        },
-        {
-            attributeButtonText: "",
-            isAttributeButtonEnabled: true,
-            name: "Core 1.0 Schema",
-            uri: "urn:scim:schemas:core:1.0"
-        }
-    ];
+            {
+                attributeButtonText: "",
+                isAttributeButtonEnabled: false,
+                name: "Core Schema",
+                uri: "urn:ietf:params:scim:schemas:core:2.0"
+            },
+            {
+                attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction",
+                isAttributeButtonEnabled: true,
+                name: "User Schema",
+                uri: "urn:ietf:params:scim:schemas:core:2.0:User"
+            },
+            {
+                attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction" ,
+                isAttributeButtonEnabled: true,
+                name: "Enterprise Schema",
+                uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+            },
+            {
+                attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction" ,
+                isAttributeButtonEnabled: false,
+                name: "System Schema",
+                uri: "urn:scim:wso2:schema"
+            },
+            {
+                attributeButtonText: "",
+                isAttributeButtonEnabled: true,
+                name: "Core 1.0 Schema",
+                uri: "urn:scim:schemas:core:1.0"
+            }
+        ];
 
     public static readonly EIDAS_TABS: {
         name: string;
         uri: string;
     }[] = [
-        { name: "eIDAS/Legal Person", uri: "http://eidas.europa.eu/attributes/legalperson" },
-        { name: "eIDAS/Natural Person", uri: "http://eidas.europa.eu/attributes/naturalperson" }
-    ];
+            { name: "eIDAS/Legal Person", uri: "http://eidas.europa.eu/attributes/legalperson" },
+            { name: "eIDAS/Natural Person", uri: "http://eidas.europa.eu/attributes/naturalperson" }
+        ];
 
     /**
      * Display names of User Id & Username to
@@ -212,6 +226,11 @@ export class ClaimManagementConstants {
      * Claim property name for uniqueness validation scope.
      */
     public static readonly UNIQUENESS_SCOPE_PROPERTY_NAME: string = "uniquenessScope";
+    /**
+     * Claim property name for shared profile value resolving method.
+     */
+    public static readonly SHARED_PROFILE_VALUE_RESOLVING_METHOD_PROPERTY_NAME: string =
+        "sharedProfileValueResolvingMethod";
 
     /**
      * List of restricted property keys that cannot be used in claim properties.
@@ -228,6 +247,11 @@ export class ClaimManagementConstants {
      */
     public static readonly REGEX_FIELD_MAX_LENGTH: number = 255;
     public static readonly REGEX_FIELD_MIN_LENGTH: number = 3;
+
+    /**
+     * Default scim2 custom user schema URI.
+     */
+    public static readonly DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI: string = "urn:scim:schemas:extension:custom:User";
 }
 
 /**

@@ -391,7 +391,7 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
                     },
                     password: userInfo.newPassword ? userInfo.newPassword : "password",
                     profileUrl: userInfo.profileUrl,
-                    [SCIMConfigs.scim.enterpriseSchema]: {
+                    [SCIMConfigs.scim.systemSchema]: {
                         askPassword: "true"
                     },
                     userName: userName

@@ -49,8 +49,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddGroupUsers } from "./group-assign-users";
-import { createGroup } from "../../api";
-import { getGroupsWizardStepIcons } from "../../configs";
+import { createGroup } from "../../api/groups";
+import { getGroupsWizardStepIcons } from "../../configs/ui";
 import {
     CreateGroupInterface,
     CreateGroupMemberInterface,

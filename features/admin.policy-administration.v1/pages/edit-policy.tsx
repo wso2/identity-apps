@@ -25,7 +25,6 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { PageLayout } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import lowerCase from "lodash-es/lowerCase";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "./edit-policy.scss";
@@ -34,7 +33,6 @@ import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { updatePolicy } from "../api/entitlement-policies";
 import { useGetPolicy } from "../api/use-get-policy";
-import startCase from "lodash-es/startCase";
 import PolicyEditor from "../components/policy-editor/policy-editor";
 import { PolicyInterface } from "../models/policies";
 
@@ -58,19 +56,10 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
     const shouldFetchPolicy: boolean = !isEmpty(policyId);
     const [ updatedPolicyScript, setUpdatedPolicyScript ] = useState<string | undefined>();
 
-    /**
-     * Converts kebab-case to snake_case.
-     *
-     * @param kebab - Kebab case string.
-     * @returns Snake case string.
-     */
-    const kebabToSnakeCase = (kebab: string): string => {
-        return kebab.replace(/-/g, "_");
-    };
 
     // Fetch the policy using the useGetPolicy hook
     const { data: policy, isLoading, error } = useGetPolicy(
-        kebabToSnakeCase(policyId || ""),
+        policyId || "",
         shouldFetchPolicy
     );
 
@@ -105,10 +94,9 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
             .then(() => {
                 dispatch(
                     addAlert({
-                        description: t("policyAdministration:editPolicy.notifications.updatePolicy." +
-                            "success.description"),
+                        description:  t("policyAdministration:alerts.updateSuccess.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("policyAdministration:editPolicy.notifications.updatePolicy.success.message")
+                        message: t("policyAdministration:alerts.updateSuccess.message")
                     })
                 );
 
@@ -116,9 +104,9 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
             .catch(() => {
                 dispatch(
                     addAlert({
-                        description: t("policyAdministration:editPolicy.notifications.updatePolicy.error.description"),
+                        description: t("policyAdministration:alerts.updateFailure.description"),
                         level: AlertLevels.ERROR,
-                        message: t("policyAdministration:editPolicy.notifications.updatePolicy.error.message")
+                        message: t("policyAdministration:alerts.updateFailure.message")
                     })
                 );
             });
@@ -126,7 +114,7 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
 
     return (
         <PageLayout
-            title={ startCase(lowerCase(policy?.policyId)) || t("policyAdministration:editPolicy.loadingTitle") }
+            title={ isLoading ? "" : policy?.policyId }
             backButton={ {
                 "data-componentid": `${componentId}-edit-policy-page-back-button`,
                 onClick: handleBackButtonClick,

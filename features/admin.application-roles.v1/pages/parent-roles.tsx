@@ -50,9 +50,9 @@ const ParentRolePage = (props: ParentRolePagePropsInterface): ReactElement => {
 
     return(
         <PageLayout
-            pageTitle={ t("extensions:console.applicationRoles.roles.heading") }
-            title={ t("extensions:console.applicationRoles.roles.heading") }
-            description={ t("extensions:console.applicationRoles.roles.subHeading") }
+            pageTitle={ t("applicationRoles:roles.heading") }
+            title={ t("applicationRoles:roles.heading") }
+            description={ t("applicationRoles:roles.subHeading") }
             data-testid={ `${ componentId }-page-layout` }
         >
             <GridLayout
@@ -65,9 +65,9 @@ const ParentRolePage = (props: ParentRolePagePropsInterface): ReactElement => {
                                 <Grid.Column width={ 12 }>
                                     <Section
                                         data-componentid={ `${componentId}-application-roles` }
-                                        description={ t("extensions:console.applicationRoles.subHeading") }
+                                        description={ t("applicationRoles:subHeading") }
                                         icon={ null }
-                                        header={ t("extensions:console.applicationRoles.heading") }
+                                        header={ t("applicationRoles:heading") }
                                         onPrimaryActionClick={ navigateToApplicationRoles }
                                         primaryAction={ t("common:configure") }
                                     >
@@ -85,9 +85,9 @@ const ParentRolePage = (props: ParentRolePagePropsInterface): ReactElement => {
                             <Grid.Column width={ 12 }>
                                 <Section
                                     data-componentid={ `${componentId}-organization-roles` }
-                                    description={ t("extensions:console.applicationRoles.roles.orgRoles.subHeading") }
+                                    description={ t("applicationRoles:roles.orgRoles.subHeading") }
                                     icon={ null }
-                                    header={ t("extensions:console.applicationRoles.roles.orgRoles.heading") }
+                                    header={ t("applicationRoles:roles.orgRoles.heading") }
                                     onPrimaryActionClick={ navigateToOrganizationRoles }
                                     primaryAction={ t("common:configure") }
                                 >

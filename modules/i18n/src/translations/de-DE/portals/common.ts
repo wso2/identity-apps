@@ -118,6 +118,7 @@ export const common: CommonNS = {
     "metaAttributes": "Metaattribute",
     "minValidation": "Dieser Wert sollte größer oder gleich {{min}} sein.",
     "minimize": "Minimieren",
+    "minutes": "minuten",
     "more": "Mehr",
     "myAccount": "Mein Konto",
     "name": "Name",

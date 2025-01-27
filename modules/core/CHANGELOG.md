@@ -1,5 +1,37 @@
 # @wso2is/core
 
+## 2.6.0
+
+### Minor Changes
+
+- [#7353](https://github.com/wso2/identity-apps/pull/7353) [`b67d22c81d5c8be72c09abd36ed829a88fb22a4b`](https://github.com/wso2/identity-apps/commit/b67d22c81d5c8be72c09abd36ed829a88fb22a4b) Thanks [@brionmario](https://github.com/brionmario)! - Integrate `tldts` to derive the `domain` name
+
+## 2.5.9
+
+### Patch Changes
+
+- [#7364](https://github.com/wso2/identity-apps/pull/7364) [`92a6766086071fd5e0986f91803804783b9159bf`](https://github.com/wso2/identity-apps/commit/92a6766086071fd5e0986f91803804783b9159bf) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce configuration based feature status flag support
+
+## 2.5.8
+
+### Patch Changes
+
+- [#7362](https://github.com/wso2/identity-apps/pull/7362) [`31b4e92ae73fea1372a03f9aa0511f062030e44f`](https://github.com/wso2/identity-apps/commit/31b4e92ae73fea1372a03f9aa0511f062030e44f) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Add system schema
+
+## 2.5.7
+
+### Patch Changes
+
+- [#7352](https://github.com/wso2/identity-apps/pull/7352) [`50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523`](https://github.com/wso2/identity-apps/commit/50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add support for supportedByDefault flag in my account and console
+
+* [#7311](https://github.com/wso2/identity-apps/pull/7311) [`abf5c953b8f48db5cdb855e75f5c1b847d1e42f0`](https://github.com/wso2/identity-apps/commit/abf5c953b8f48db5cdb855e75f5c1b847d1e42f0) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Provide capability to update shared user profile & give support to update shared user profile resolving method for local claims.
+
+## 2.5.6
+
+### Patch Changes
+
+- [#7312](https://github.com/wso2/identity-apps/pull/7312) [`4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98`](https://github.com/wso2/identity-apps/commit/4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add support to distinct attribute profiles in the console
+
 ## 2.5.5
 
 ### Patch Changes

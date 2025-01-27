@@ -25,7 +25,6 @@ import Grid from "@oxygen-ui/react/Grid";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { GearIcon } from "@oxygen-ui/react-icons";
-import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
@@ -39,7 +38,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Icon } from "semantic-ui-react";
 import { PolicyList } from "./policy-list";
 import { NewPolicyWizard } from "./wizard/new-policy-wizard";
-import { useGetAlgorithm } from "../api/use-get-algorithm";
+import { useGetEntitlementPolicyCombiningAlgorithm } from "../api/use-get-entitlement-policy-combining-algorithm";
 import { useGetPolicies } from "../api/use-get-policies";
 import EditPolicyAlgorithmModal from "../components/edit-policy-algorithm/edit-policy-algorithm";
 import "./policy-administration-page-layout.scss";
@@ -73,32 +72,32 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
     const [ pageActive, setPageActive ] = useState<number>(0);
     const [ hasMoreActivePolicies, setHasMoreActivePolicies ] = useState<boolean>(true);
     const [ activePolicies, setActivePolicies ] = useState<PolicyInterface[]>([]);
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const [ submittedSearchQuery, setSubmittedSearchQuery ] = useState<string>("");
 
     const {
         data: inactivePolicyArray,
-        isLoading: isLoadingInactivePolicies,
         error: inactivePolicyError,
         mutate: mutateInactivePolicy
-    } = useGetPolicies(true, pageInactive, false, "*", "ALL");
+    } = useGetPolicies(true, pageInactive, false, submittedSearchQuery &&
+    submittedSearchQuery.trim() !== "" ? submittedSearchQuery : "*", "ALL");
 
     const {
         data: activePolicyArray,
-        isLoading: isLoadingActivePolicies,
         error: activePolicyError,
         mutate: mutateActivePolicy
-    } = useGetPolicies(true, pageActive, true, "*", "ALL");
+    } = useGetPolicies(true, pageActive, true, submittedSearchQuery &&
+    submittedSearchQuery.trim() !== "" ? submittedSearchQuery : "*", "ALL");
 
     const {
         data: algorithm,
-        isLoading: isLoadingAlgorithm,
-        error: getAlgorithmError,
         mutate: mutateAlgorithm
-    } = useGetAlgorithm();
+    } = useGetEntitlementPolicyCombiningAlgorithm();
 
     useEffect(() => {
         if (algorithm) {
             const selectedAlgorithm: AlgorithmOption =
-                algorithmOptions.find((option: AlgorithmOption) => option.label === algorithm);
+                algorithmOptions.find((option: AlgorithmOption) => option.id === algorithm);
 
             setSelectedAlgorithm(selectedAlgorithm);
             setIsAlgorithmLoading(false);
@@ -166,23 +165,6 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         setActivePolicies([]);
     }, []);
 
-    const handleListFilter = (query: string): void => {
-        // TODO: Add search functionality here
-    };
-
-    if (isLoadingActivePolicies || isLoadingInactivePolicies) {
-        return (
-            <PageLayout
-                pageTitle={ t("policyAdministration:title") }
-                title={ t("policyAdministration:title") }
-                description={ t("policyAdministration:subtitle") }
-                className="policy-administration-page"
-            >
-                <CircularProgress />
-            </PageLayout>
-        );
-    }
-
     if (activePolicyError || inactivePolicyError) {
         return (
             <PageLayout
@@ -204,6 +186,12 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         setPageInactive((prevPage: number) => prevPage + 1);
     };
 
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setSubmittedSearchQuery(searchQuery);
+    };
+
     return (
         <PageLayout
             pageTitle={ "Policy Administration" }
@@ -216,24 +204,23 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                     </DocumentationLink>
                 </>)
             }
-            action={ (
-                !(inactivePolicies?.length <= 0)) &&
+            action={
                 (
-                    <Grid container spacing={ 3 } alignItems={ "center" }>
+                    <Grid container spacing={ 9 } alignItems={ "center" }>
                         <Grid xs={ 6 }>
                             <Button
                                 variant={ "outlined" }
                                 className="policy-algorithm-btn"
                                 onClick={ () => setShowAlgorithmModal(true) }
                             >
-                                <GearIcon size={ 20 }/>
+                                <GearIcon className="gear-icon" size={ 20 }/>
                                 <Stack direction="column" className="algorithm-txt">
                                     <Typography variant="body1" noWrap>
                                         { t("policyAdministration:buttons.policyAlgorithm") }
                                     </Typography>
-                                    { !isAlgorithmLoading && selectedAlgorithm?.label && (
+                                    { !isAlgorithmLoading && (
                                         <Typography variant="body2">
-                                            { selectedAlgorithm.label }
+                                            { algorithm }
                                         </Typography>
                                     ) }
                                     { isAlgorithmLoading && <CircularProgress size={ 12 } /> }
@@ -256,25 +243,40 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         >
             <Grid container>
                 <Grid xs={ 12 } sm={ 12 } md={ 12 } lg={ 12 } xl={ 12 }>
-                    <AdvancedSearchWithBasicFilters
-                        fill="white"
-                        onFilter={ handleListFilter }
-                        filterAttributeOptions={ [
-                            {
-                                key: 0,
-                                text: t("tenants:listing.advancedSearch.form.dropdown.filterAttributeOptions.domain"),
-                                value: "domainName"
-                            }
-                        ] }
+                    <form
+                        className="advance-search-form"
+                        onSubmit={ handleSubmit }
+                    >
+                        <div className="search-input-wrapper">
+                            <div className="search-box ui left icon input advanced-search">
+                                <input
+                                    autoComplete="off"
+                                    placeholder={ t("policyAdministration:advancedSearch.placeholder") }
+                                    maxLength={ 120 }
+                                    name="query"
+                                    type="text"
+                                    className="search-input fluid"
+                                    value={ searchQuery }
+                                    onChange={ (e: React.FormEvent<HTMLInputElement> ) =>
+                                        setSearchQuery((e.target as HTMLInputElement).value)
+                                    }
+                                    data-componentid={ `${componentId}-search-input` }
+                                />
+                                <Icon name="search" color="grey"/>
+                            </div>
+                            <input
+                                hidden
+                                type="submit"
+                                value="Submit"
+                                data-componentid={ `${componentId}-search-input-submit` }
+                            />
+                        </div>
+                    </form>
 
-                        placeholder={ t("policyAdministration:advancedSearch.placeholder") }
-                        defaultSearchAttribute={ "policyName" }
-                        defaultSearchOperator="co"
-                    />
                 </Grid>
             </Grid>
 
-            <Grid container spacing={ 2 } marginTop={ 2 } >
+            <Grid container spacing={ 2 } marginTop={ 2 }>
                 <Grid xs={ 6 }>
                     <DnDProvider>
                         <Typography variant="h5" className="policy-list-header">Active Policies</Typography>
@@ -298,6 +300,9 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                                         isDraggable={ true }
                                         mutateInactivePolicyList={ mutateInactivePolicy }
                                         mutateActivePolicyList={ mutateActivePolicy }
+                                        setActivePolicies={ setActivePolicies }
+                                        setPageActive={ setPageActive }
+                                        setHasMoreActivePolicies={ setHasMoreActivePolicies }
                                     />
                                 </CardContent>
                             </InfiniteScroll>

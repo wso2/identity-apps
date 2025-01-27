@@ -118,6 +118,7 @@ export const common: CommonNS = {
     "metaAttributes": "元属性",
     "minValidation": "该值应大于或等于{{min}}。",
     "minimize": "最小化",
+    "minutes": "分钟",
     "more": "更多的",
     "myAccount": "我的账户",
     "name": "姓名",

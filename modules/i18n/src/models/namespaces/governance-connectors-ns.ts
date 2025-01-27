@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { NotificationItem } from "../common";
+
 export interface governanceConnectorsNS {
     notifications: {
         getConnectorCategories: {
@@ -313,6 +315,22 @@ export interface governanceConnectorsNS {
                         ssoLoginRecaptchaOnMaxFailedAttempts: {
                             hint: string;
                             label: string;
+                        };
+                    };
+                };
+                siftConnector: {
+                    properties: {
+                        name: string;
+                        description: string;
+                        siftConnectorApiKey: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                    notifications: {
+                        configurationUpdate: {
+                            success: NotificationItem;
+                            error: NotificationItem;
                         };
                     };
                 };

@@ -146,6 +146,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             rolesWithoutOrgPath: "",
             rootOrganization: "",
             rootUsersOrganization: "",
+            rulesMetaData: "",
             saml2Configurations: "",
             saml2Meta: "",
             schemas: "",
@@ -271,11 +272,19 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isSignatureValidationCertificateAliasEnabled: undefined,
             isTrustedAppConsentRequired: undefined,
             listAllAttributeDialects: undefined,
+            multiTenancy: {
+                isTenantDomainDotExtensionMandatory: true,
+                tenantDomainIllegalCharactersRegex: "",
+                tenantDomainRegex: ""
+            },
             passwordPolicyConfigs: null,
             primaryUserStoreDomainName: "",
             privacyPolicyConfigs: null,
             productName: "",
             productVersionConfig: null,
+            routes: {
+                organizationEnabledRoutes: []
+            },
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
             showSmsOtpPwdRecoveryFeatureStatusChip: undefined,

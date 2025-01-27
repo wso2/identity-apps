@@ -24,8 +24,8 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { HttpMethods } from "@wso2is/core/models";
-import { BrandingModes } from "../constants";
-import { PredefinedLayouts } from "../meta";
+import { BrandingModes } from "../constants/branding-preferences-constants";
+import { PredefinedLayouts } from "../meta/layouts";
 
 /**
  * Hook to get the layout.

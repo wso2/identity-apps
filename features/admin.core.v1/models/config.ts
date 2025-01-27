@@ -32,6 +32,7 @@ import { ScopesResourceEndpointsInterface } from "@wso2is/admin.oidc-scopes.v1";
 import { OrganizationResourceEndpointsInterface } from "@wso2is/admin.organizations.v1/models";
 import { PolicyAdministrationEndpointsInterface } from "@wso2is/admin.policy-administration.v1/models/endpoints";
 import { RolesResourceEndpointsInterface } from "@wso2is/admin.roles.v2/models/endpoints";
+import { RulesEndpointsInterface } from "@wso2is/admin.rules.v1/models/endpoints";
 import { SecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "@wso2is/admin.server-configurations.v1";
 import { SMSTemplateResourceEndpointsInterface } from "@wso2is/admin.sms-templates.v1/models/endpoints";
@@ -119,6 +120,10 @@ export interface FeatureConfigInterface {
      * SMS providers feature.
      */
     smsProviders?: FeatureAccessConfigInterface;
+    /**
+     * Push providers feature.
+     */
+    pushProviders?: FeatureAccessConfigInterface;
     /**
      * Notification channels feature.
      */
@@ -326,6 +331,24 @@ type GovernanceConnectorsFeatureConfig = Record<string, {
 }>
 
 /**
+ * Interface representing the configuration for multi-tenancy.
+ */
+export interface MultiTenancyConfigInterface {
+    /**
+     * Indicates if the dot extension is mandatory in the tenant domain.
+     */
+    isTenantDomainDotExtensionMandatory: boolean;
+    /**
+     * Regular expression for illegal characters in the tenant domain.
+     */
+    tenantDomainIllegalCharactersRegex: string;
+    /**
+     * Regular expression for validating the tenant domain.
+     */
+    tenantDomainRegex: string;
+}
+
+/**
  * Portal UI config interface inheriting the common configs from core module.
  */
 export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfigInterface> {
@@ -425,6 +448,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isCustomClaimMappingMergeEnabled?: boolean;
     /**
+     * Configurations related to routing.
+     */
+    routes: RouteConfigInterface;
+    /**
      * Self app name.
      */
     selfAppIdentifier: string;
@@ -496,9 +523,18 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isMultipleEmailsAndMobileNumbersEnabled?: boolean;
     /**
+     * Overridden Scim2 user schema URI.
+     * If the value is not overridden, the default SCIM2 user schema URI is returned.
+     */
+    userSchemaURI?: string;
+    /**
      * Password policy configs.
      */
     passwordPolicyConfigs: PasswordPolicyConfigsInterface;
+    /**
+     * Multi-tenancy related configurations.
+     */
+    multiTenancy: MultiTenancyConfigInterface;
 }
 
 /**
@@ -577,7 +613,9 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     ApplicationsTemplatesEndpointsInterface,
     SMSTemplateResourceEndpointsInterface,
     ActionsResourceEndpointsInterface,
-    PolicyAdministrationEndpointsInterface {
+    PolicyAdministrationEndpointsInterface,
+    RulesEndpointsInterface {
+
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details
     me: string;
@@ -587,4 +625,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
 
 export interface ResourceEndpointsInterface {
     [key: string]: string;
+}
+
+export interface RouteConfigInterface {
+    organizationEnabledRoutes: string[];
 }

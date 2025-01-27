@@ -70,7 +70,7 @@ const generateLoginFlow = (
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse<GenerateLoginFlowAPIResponseInterface>) => {
-            if (response.status !== 200) {
+            if (response.status !== 200 && response.status !== 202) {
                 throw new Error(`Failed to generate login flow: ${response.statusText}`);
             }
 

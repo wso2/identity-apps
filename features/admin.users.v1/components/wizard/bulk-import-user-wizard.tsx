@@ -41,7 +41,7 @@ import {
     history
 } from "@wso2is/admin.core.v1";
 import { userConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
-import { getGroupList, useGroupList } from "@wso2is/admin.groups.v1/api";
+import { getGroupList, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
@@ -61,7 +61,6 @@ import {
     SCIMSchemaExtension
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { StringUtils } from "@wso2is/core/utils";
 import {
     CSVFileStrategy,
     CSVResult,
@@ -179,9 +178,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const dispatch: Dispatch = useDispatch();
-
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ selectedCSVFile, setSelectedCSVFile ] = useState<File>(null);
     const [ userData, setUserData ] = useState<CSVResult>();
@@ -1087,10 +1083,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                         ? `${selectedUserStore}/${email}`
                         : email,
-                [ !StringUtils.isEqualCaseInsensitive(userstore, primaryUserStoreDomainName)
-                    ? UserManagementConstants.CUSTOMSCHEMA
-                    : UserManagementConstants.ENTERPRISESCHEMA
-                ]: {
+                [ UserManagementConstants.SYSTEMSCHEMA ]: {
                     askPassword: "true"
                 }
             };

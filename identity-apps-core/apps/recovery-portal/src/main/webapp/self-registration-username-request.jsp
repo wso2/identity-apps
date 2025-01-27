@@ -348,7 +348,7 @@
     List<Claim> claimsList;
     UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
     try {
-        claimsList = usernameRecoveryApi.claimsGet(tenantDomain, false);
+        claimsList = usernameRecoveryApi.claimsGet(tenantDomain, false, "selfRegistration");
         uniquePIIs = IdentityManagementEndpointUtil.fillPiisWithClaimInfo(uniquePIIs, claimsList);
         if (uniquePIIs != null) {
             claims = uniquePIIs.values().toArray(new Claim[0]);
@@ -737,7 +737,12 @@
 
                         <div class="ui divider hidden"></div>
                         <%
-                            if (!StringUtils.equalsIgnoreCase(backToUrl,"null") && !StringUtils.isBlank(backToUrl)) {
+                            if (!StringUtils.equalsIgnoreCase(backToUrl, "null") &&
+                                !StringUtils.isBlank(backToUrl) &&
+                                !backToUrl.toLowerCase().contains("javascript:") &&
+                                !backToUrl.toLowerCase().contains("file:") &&
+                                !backToUrl.toLowerCase().contains("ftp:") &&
+                                !backToUrl.toLowerCase().contains("data:")) {
                         %>
                         <div class="buttons mt-2">
                             <div class="field external-link-container text-small">
@@ -1296,7 +1301,12 @@
                         </div>
                         <div class="ui divider hidden"></div>
                         <%
-                            if (!StringUtils.equalsIgnoreCase(backToUrl,"null") && !StringUtils.isBlank(backToUrl)) {
+                            if (!StringUtils.equalsIgnoreCase(backToUrl, "null") &&
+                                !StringUtils.isBlank(backToUrl) &&
+                                !backToUrl.toLowerCase().contains("javascript:") &&
+                                !backToUrl.toLowerCase().contains("file:") &&
+                                !backToUrl.toLowerCase().contains("ftp:") &&
+                                !backToUrl.toLowerCase().contains("data:")) {
                         %>
                         <div class="buttons mt-2">
                             <div class="field external-link-container text-small">

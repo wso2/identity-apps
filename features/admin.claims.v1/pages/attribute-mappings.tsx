@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -70,6 +70,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
         const listAllAttributeDialects: boolean = useSelector(
             (state: AppState) => state.config.ui.listAllAttributeDialects
         );
+        const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
+
         const { t } = useTranslation();
         const { getLink } = useDocumentation();
 
@@ -356,12 +358,13 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                         }
                     });
 
-                    if (type === ClaimManagementConstants.SCIM) {
-                        if (attributeConfig.showCustomDialectInSCIM
-                            && filteredDialect.filter((e: ClaimDialect) => e.dialectURI
-                                === attributeConfig.localAttributes.customDialectURI).length > 0  ) {
-                            attributeMappings.push(filteredDialect.filter((e: ClaimDialect) => e.dialectURI
-                                === attributeConfig.localAttributes.customDialectURI)[0]);
+                    if (type === ClaimManagementConstants.SCIM && attributeConfig.showCustomDialectInSCIM) {
+                        const customDialect: ClaimDialect = filteredDialect?.find(
+                            (dialect: ClaimDialect) => dialect.dialectURI === userSchemaURI
+                        );
+
+                        if (customDialect) {
+                            attributeMappings.push(customDialect);
                         }
                     }
 
@@ -428,7 +431,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
 
                 if (attributeConfig.showCustomDialectInSCIM) {
                     const dialect: ClaimDialect = dialects?.find((dialect: ClaimDialect) =>
-                        dialect.dialectURI === attributeConfig.localAttributes.customDialectURI
+                        dialect.dialectURI === userSchemaURI
                     );
 
                     if (dialect) {

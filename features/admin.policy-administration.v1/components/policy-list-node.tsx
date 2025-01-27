@@ -22,7 +22,6 @@ import Typography from "@oxygen-ui/react/Typography";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -52,35 +51,33 @@ export interface PolicyListDraggableNodePropsInterface
 
 const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> = ({
     "data-componentid": componentId = "policy-list--node",
-    id,
     policy,
     mutateInactivePolicyList,
     setInactivePolicies,
     setPageInactive,
     setHasMoreInactivePolicies,
-    mutateActivePolicyList,
-    ...rest
+    mutateActivePolicyList
 }: PolicyListDraggableNodePropsInterface): ReactElement => {
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
 
     const handleEdit = (policyId: string) => {
-        history.push(`${AppConstants.getPaths().get("EDIT_POLICY").replace(":id", kebabCase(policyId))}`);
+        history.push(`${AppConstants.getPaths().get("EDIT_POLICY").replace(":id", btoa(policyId))}`);
     };
 
     const handleDelete = async (): Promise<void> => {
         try {
-            await deletePolicy(policy.policyId);
+            await deletePolicy(btoa(policy.policyId));
 
             setPageInactive(0);
             setHasMoreInactivePolicies(true);
             setInactivePolicies([]);
 
             dispatch(addAlert({
-                description: "The policy has been deleted successfully",
+                description: t("policyAdministration:alerts.deleteSuccess.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Delete successful"
+                message: t("policyAdministration:alerts.deleteSuccess.message")
             }));
 
             mutateInactivePolicyList();
@@ -88,9 +85,9 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
         } catch (error) {
             // Dispatch the error alert.
             dispatch(addAlert({
-                description: "An error occurred while deleting the policy",
+                description: t("policyAdministration:alerts.deleteFailure.description"),
                 level: AlertLevels.ERROR,
-                message: "Delete error"
+                message: t("policyAdministration:alerts.deleteFailure.message")
             }));
         }
     };
@@ -109,18 +106,20 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
                 subscriberIds: [ "PDP Subscriber" ]
             });
 
-            setPageInactive(0);
-            setHasMoreInactivePolicies(true);
-            setInactivePolicies([]);
+            dispatch(addAlert({
+                description: t("policyAdministration:alerts.activateSuccess.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("policyAdministration:alerts.activateSuccess.message")
+            }));
 
             mutateActivePolicyList();
             mutateInactivePolicyList();
 
         } catch ( error ) {
             dispatch(addAlert({
-                description: "An error occurred while activating the policy",
+                description: t("policyAdministration:alerts.activateFailure.description"),
                 level: AlertLevels.ERROR,
-                message: "Activation error"
+                message: t("policyAdministration:alerts.activateFailure.message")
             }));
         }
     };
@@ -129,23 +128,23 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
         <Card variant="outlined" className="policy-list-node">
             <CardContent>
                 <Stack direction={ "row" } justifyContent={ "space-between" }>
-                    <Stack direction={ "row" } spacing={ 1 } >
+                    <Stack direction="row" spacing={ 1 }>
                         <Popup
                             trigger={ (
                                 <Icon
                                     onClick={ handleActivate }
                                     data-componentid={ `${componentId}-edit-button` }
-                                    className="list-icon"
+                                    className="policy-list-icon list-icon"
                                     size="massive"
                                     color="grey"
                                     name="chevron left"
                                 />
                             ) }
                             position="top center"
-                            content={ "Deactivate" }
+                            content={ t("policyAdministration:popup.activate") }
                             inverted
                         />
-                        <Typography>{ policy.policyId }</Typography>
+                        <Typography className="ellipsis-text">{ policy.policyId }</Typography>
                     </Stack>
                     <Stack direction={ "row" } marginTop={ "3px" }>
                         <Popup
@@ -161,7 +160,7 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
                                 />
                             ) }
                             position="top center"
-                            content={ "Edit" }
+                            content={ t("common:edit") }
                             inverted
                         />
                         <Popup
@@ -176,7 +175,7 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
                                 />
                             ) }
                             position="top center"
-                            content={ "Delete" }
+                            content={ t("common:delete") }
                             inverted
                         />
                     </Stack>

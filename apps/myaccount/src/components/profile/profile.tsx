@@ -148,6 +148,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         state.authenticationInformation.profileInfo.isReadOnly);
     const hasLocalAccount: boolean = useSelector((state: AppState) => state.authenticationInformation.hasLocalAccount);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
@@ -178,6 +179,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         useState<{ value: string; schema?: ProfileSchema }>({ value: "" });
     const [ showMultiValuedFieldDeleteConfirmationModal, setShowMultiValuedFieldDeleteConfirmationModal ]
         = useState<boolean>(false);
+
+    const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.personalInfo?.disabledFeatures?.includes(
+        MyAccountProfileConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
+    );
+
     const handleMultiValuedFieldDeleteModalClose: () => void = useCallback(() => {
         setShowMultiValuedFieldDeleteConfirmationModal(false);
         setSelectedAttributeInfo({ value: "" });
@@ -363,8 +369,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     useEffect(() => {
 
         const getDisplayOrder = (schema: ProfileSchema): number => {
-            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE && !schema.displayOrder) return 6;
-            if (schema.name === MOBILE_NUMBERS_ATTRIBUTE && !schema.displayOrder) return 7;
+            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
+                && (!schema.displayOrder || schema.displayOrder == "0")) return 6;
+            if (schema.name === MOBILE_NUMBERS_ATTRIBUTE
+                && (!schema.displayOrder || schema.displayOrder == "0")) return 7;
 
             return schema.displayOrder ? parseInt(schema.displayOrder, 10) : -1;
         };
@@ -426,58 +434,46 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             tempProfileInfo.set(schema.name, primaryEmail);
                         }
                     } else {
-                        if (schema.extended
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
-                            tempProfileInfo.set(
-                                schema.name,
-                                profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                                    ? profileDetails?.profileInfo[
-                                        ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]
-                                    ]
-                                    : ""
-                            );
-
-                            return;
-                        }
-
-                        if (schema.extended
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]) {
-
-                            const multiValuedAttributes: string[] = [
-                                EMAIL_ADDRESSES_ATTRIBUTE,
-                                MOBILE_NUMBERS_ATTRIBUTE,
-                                VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
-                                VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
+                        if (schema.extended) {
+                            const schemaURIs: string[] = [
+                                ProfileConstants.SCIM2_ENT_USER_SCHEMA,
+                                ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA,
+                                userSchemaURI
                             ];
 
-                            if (multiValuedAttributes.includes(schemaNames[0])) {
+                            for (const schemaURI of schemaURIs) {
+                                if (profileDetails?.profileInfo[schemaURI]?.[schemaNames[0]]) {
 
-                                const attributeValue: string | string[] =
-                                    profileDetails?.profileInfo[
-                                        ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]?.[schemaNames[0]];
+                                    const multiValuedAttributes: string[] = [
+                                        EMAIL_ADDRESSES_ATTRIBUTE,
+                                        MOBILE_NUMBERS_ATTRIBUTE,
+                                        VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
+                                        VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
+                                    ];
 
-                                const formattedValue: string = Array.isArray(attributeValue)
-                                    ? attributeValue.join(",")
-                                    : "";
+                                    if (schemaURI === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA
+                                        && multiValuedAttributes.includes(schemaNames[0])) {
+                                        const attributeValue: string | string[] =
+                                            profileDetails?.profileInfo[schemaURI]?.[schemaNames[0]];
 
-                                tempProfileInfo.set(schema.name, formattedValue);
+                                        const formattedValue: string = Array.isArray(attributeValue)
+                                            ? attributeValue.join(",")
+                                            : "";
 
-                                return;
+                                        tempProfileInfo.set(schema.name, formattedValue);
+
+                                        return;
+                                    }
+
+                                    tempProfileInfo.set(
+                                        schema.name,
+                                        profileDetails?.profileInfo[schemaURI]?.[schemaNames[0]] ?? ""
+                                    );
+
+                                    return;
+                                }
                             }
-                            tempProfileInfo.set(
-                                schema.name,
-                                profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                                    ? profileDetails?.profileInfo[
-                                        ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA
-                                    ][schemaNames[0]]
-                                    : ""
-                            );
-
-                            return;
                         }
-
                         tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]]);
                     }
                 } else {
@@ -507,14 +503,20 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             }
                         }
                     } else {
-                        if (schema.extended) {
-                            tempProfileInfo.set(schema.name,
-                                profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]
-                                    ? profileDetails
-                                        ?.profileInfo[
-                                            ProfileConstants.SCIM2_ENT_USER_SCHEMA
-                                        ][schemaNames[0]][schemaNames[1]]
-                                    : "");
+                        if (schema.extended
+                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]) {
+                            tempProfileInfo.set(
+                                schema.name,
+                                profileDetails.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][
+                                    schemaNames[1]]
+                                ?? "");
+                        } else if (schema.extended &&
+                            profileDetails?.profileInfo[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[schemaNames[0]]) {
+                            tempProfileInfo.set(
+                                schema.name,
+                                profileDetails.profileInfo[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][schemaNames[0]][
+                                    schemaNames[1]]
+                                ?? "");
                         } else {
                             const subValue: BasicProfileInterface = profileDetails.profileInfo[schemaNames[0]]
                                 && profileDetails.profileInfo[schemaNames[0]].find(
@@ -700,7 +702,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 if (values.get(formName)) {
                     value = {
                         ...value,
-                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                        [ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]: {
                             "verifyEmail": true
                         }
                     };
@@ -742,7 +744,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 if (primaryValue) {
                     value = {
                         ...value,
-                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                        [ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]: {
                             "verifyEmail": true
                         }
                     };
@@ -1211,6 +1213,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * @returns Schema form.
      */
     const generateSchemaForm = (schema: ProfileSchema, index: number): JSX.Element => {
+        const { displayName, name } = schema;
 
         // Define schemas to hide.
         const attributesToHide: string[] = isMultipleEmailAndMobileNumberEnabled === true
@@ -1226,6 +1229,21 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         if (!showEmail && schema?.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             return;
+        }
+
+        // If the feature is enabled, check the supportedByDefault flag.
+        // Hide the field if the schema is not supported by default.
+        // This does not apply to the username field. It is always shown.
+        if (!isDistinctAttributeProfilesDisabled && name !== MyAccountProfileConstants.USERNAME_CLAIM_NAME) {
+            let resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+
+            if (schema?.profiles?.endUser?.supportedByDefault !== undefined) {
+                resolveSupportedByDefaultValue = schema?.profiles?.endUser?.supportedByDefault;
+            }
+
+            if (!resolveSupportedByDefaultValue) {
+                return;
+            }
         }
 
         /*
@@ -1247,7 +1265,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
          * the value matches.
          */
         const isProfileUsernameReadonly: boolean = config?.ui?.isProfileUsernameReadonly;
-        const { displayName, name } = schema;
 
         if (isProfileUsernameReadonly) {
             const usernameClaim: string = "username";
@@ -1580,11 +1597,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                             <TableCell align="left">
                                                 <div className="table-c1">
                                                     <Typography
-                                                        className={ `c1-value ${
-                                                            schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                                                                ? "mobile-label"
-                                                                : null}`
-                                                        }
+                                                        className="c1-value"
                                                         data-componentid={
                                                             `${testId}-editing-section-${
                                                                 schema.name.replace(".", "-")
@@ -2019,10 +2032,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             return (
                 <div className="dropdown-row">
                     <Typography
-                        className={ `dropdown-label ${schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                            ? "mobile-label"
-                            : null}`
-                        }
+                        className="dropdown-label"
                         data-componentid={ `${testId}-readonly-section-${schema.name.replace(".", "-")}-value-${index}`
                         }
                     >

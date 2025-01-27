@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -70,10 +70,14 @@ export const tenants: TenantsNS = {
                     }
                 },
                 domain: {
-                    helperText: "Enter a unique domain name for your organization. The domain name should be in the format of <1>abc.com</1>.",
+                    helperText: "Enter a unique domain name for your organization. The domain name should be in the format of <1>abc.com</1>. The valid characters are lowercase letters, numbers, '.', '-', and '_'.",
                     label: "Domain",
                     placeholder: "Enter a Domain name",
                     validations: {
+                        domainInvalidCharPattern: "The domain contains one or more illegal characters.",
+                        domainInvalidPattern: "The domain doesn't match the valid pattern.",
+                        domainMandatoryExtension: "The domain should have a dot extension. E.g,: abc.com",
+                        domainStartingWithDot: "The domain name cannot start with a dot.",
                         domainUnavailable: "A domain with the same name already exists.",
                         required: "A domain name is required."
                     }
@@ -161,6 +165,14 @@ export const tenants: TenantsNS = {
             header: "Are you sure?",
             message: "This action will temporarily disable the organization.",
             primaryAction: "Confirm",
+            secondaryAction: "Cancel"
+        },
+        navigatingToTenantConsole: {
+            assertionHint: "Please confirm your action.",
+            content: "If you continue navigating to the <1>{{domain}}</1> Console, you will be logged out from the current session.",
+            header: "Confirmation",
+            message: "Navigating to the Console will require you to re-login.",
+            primaryAction: "Logout & Go to Console",
             secondaryAction: "Cancel"
         }
     },
