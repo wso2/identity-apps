@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -281,6 +281,7 @@ export class ServerConfigurationsConstants {
     public static readonly ACCOUNT_LOCK_INTERNAL_NOTIFICATION_MANAGEMENT: string =
         "account.lock.handler.notification.manageInternally";
 
+    public static readonly ACCOUNT_LOCK_TIME_DEFAULT: string = "5";
     public static readonly NOTIFY_USER_ON_ACCOUNT_LOCK_INCREMENT: string =
         "account.lock.handler.notification.notifyOnLockIncrement";
 
@@ -435,12 +436,17 @@ export class ServerConfigurationsConstants {
     public static readonly ADMIN_FORCED_PASSWORD_RESET: string = "YWRtaW4tZm9yY2VkLXBhc3N3b3JkLXJlc2V0";
     public static readonly PRIVATE_KEY_JWT_CLIENT_AUTH: string = "private-key-jwt-configuration";
 
-    public static readonly LOGIN_ATTEMPT_SECURITY: string = "login-attempt-security";
-
     /**
 	 * Organization Settings Category Constants.
 	 */
     public static readonly ORGANIZATION_SETTINGS_CATEGORY_ID: string = "organization-settings";
     public static readonly EMAIL_DOMAIN_DISCOVERY: string = "ZW1haWwtZG9tYWluLWRpc2NvdmVyeQ==";
     public static readonly IMPERSONATION: string = "impersonation";
+
+    /**
+     * Login Security Category Constants.
+    */
+    public static readonly SIFT_CONNECTOR_ID: string = "c2lmdC1jb25maWd1cmF0aW9u";
+    public static readonly LOGIN_ATTEMPT_SECURITY: string = "login-attempt-security";
+    public static readonly SIFT_CONNECTOR_API_KEY_PROPERTY: string = "__secret__.sift.api.key";
 }

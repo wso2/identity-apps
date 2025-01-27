@@ -50,6 +50,7 @@ import OrganizationSSOIcon from "../resources/assets/images/icons/organization-s
 import {
     ReactComponent as ProvisionIcon
 } from "../resources/assets/images/icons/provision.svg";
+import PushAuthenticationIcon from "../resources/assets/images/icons/push.svg";
 import { ReactComponent as ReportIcon } from "../resources/assets/images/icons/report-icon.svg";
 import SAMLConnectionIcon from "../resources/assets/images/icons/saml-connection-icon.png";
 import SMSOTPIcon from "../resources/assets/images/icons/sms-otp.svg";
@@ -100,6 +101,7 @@ export const getConnectionIcons = (): any => {
         office365: Office365Logo,
         oidc: OIDCConnectionIcon,
         organizationSSO: OrganizationSSOIcon,
+        push: PushAuthenticationIcon,
         saml: SAMLConnectionIcon,
         smsOTP: SMSOTPIcon,
         totp: TOTPIcon,

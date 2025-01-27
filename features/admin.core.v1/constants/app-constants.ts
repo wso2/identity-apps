@@ -261,7 +261,6 @@ export class AppConstants {
      * @returns All the app paths as a map.
      */
     public static getPaths(): Map<string, string> {
-
         const paths: Map<string, string> = new Map<string, string>([
             [ "GETTING_STARTED", `${ AppConstants.getDeveloperViewBasePath() }/getting-started` ],
             [ "ADMIN_OVERVIEW", `${ AppConstants.getAdminViewBasePath() }/overview` ],
@@ -307,10 +306,12 @@ export class AppConstants {
             [ "ORGANIZATION_DISCOVERY_DOMAINS", `${AppConstants.getAdminViewBasePath()}/email-domain-discovery` ],
             [ "UPDATE_ORGANIZATION_DISCOVERY_DOMAINS", `${AppConstants.getAdminViewBasePath()}/email-domain-edit/:id` ],
             [ "EMAIL_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/email-provider` ],
+            [ "NOTIFICATION_CHANNELS", `${ AppConstants.getDeveloperViewBasePath() }/notification-channels` ],
             [ "EMAIL_AND_SMS", `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms` ],
             [ "EMAIL_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/email-management` ],
             [ "SMS_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/sms-provider` ],
             [ "SMS_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/sms-management` ],
+            [ "PUSH_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/push-provider` ],
             [ "EMAIL_TEMPLATE_TYPES", `${ AppConstants.getAdminViewBasePath() }/email-templates` ],
             [ "EMAIL_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId` ],
             [
@@ -409,7 +410,9 @@ export class AppConstants {
             [ "ACTIONS",
                 `${AppConstants.getAdminViewBasePath()}/actions` ],
             [ "PRE_ISSUE_ACCESS_TOKEN_EDIT",
-                `${ AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ],
+                `${AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ],
+            [ "PRE_UPDATE_PASSWORD_EDIT",
+                `${AppConstants.getAdminViewBasePath()}/actions/pre-update-password` ],
             [ "TENANTS", `${AppConstants.getDefaultLayoutBasePath()}/organizations` ],
             [ "EDIT_TENANT", `${AppConstants.getDefaultLayoutBasePath()}/organizations/:id` ],
             [ "SYSTEM_SETTINGS", `${AppConstants.getDefaultLayoutBasePath()}/organizations/system-settings` ],

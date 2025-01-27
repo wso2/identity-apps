@@ -22,12 +22,13 @@ import { InputLabelProps } from "@oxygen-ui/react/InputLabel";
 import {
     DefaultFileStrategy,
     FilePicker,
+    JSONFileStrategy,
     PickerResult,
     PickerStrategy,
     XMLFileStrategy
 } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { FieldRenderProps } from "react-final-form";
 import "./file-picker-adapter.scss";
 import { Icon, SemanticICONS } from "semantic-ui-react";
@@ -37,7 +38,8 @@ import { Icon, SemanticICONS } from "semantic-ui-react";
  */
 export enum SupportedFileTypes {
     DEFAULT = "default",
-    XML = "xml"
+    XML = "xml",
+    JSON = "json"
 }
 
 /**
@@ -45,6 +47,7 @@ export enum SupportedFileTypes {
  */
 const FILE_STRATEGIES: { [ key in SupportedFileTypes ]: PickerStrategy<any> } = {
     default: new DefaultFileStrategy(),
+    json: new JSONFileStrategy(),
     xml: new XMLFileStrategy()
 };
 
@@ -108,6 +111,18 @@ export interface FilePickerAdapterPropsInterface extends FieldRenderProps<string
      * Icon displayed after selecting the file.
      */
     selectedIcon?: SemanticICONS | Icon | SVGElement | string | any;
+    /**
+     * Show the file list.
+     */
+    showFileAsList?: boolean;
+    /**
+     * File display name.
+     */
+    fileDisplayName?: string;
+    /**
+     * Callback function to be invoked in file delete
+     */
+    onDelete?: () => void;
 }
 
 /**
@@ -135,11 +150,11 @@ const FilePickerAdapter: FunctionComponent<FilePickerAdapterPropsInterface> = ({
     hidePasteOption,
     placeholderIcon,
     selectedIcon,
-    FormControlProps = {}
+    showFileAsList,
+    fileDisplayName,
+    FormControlProps = {},
+    onDelete
 }: FilePickerAdapterPropsInterface): ReactElement => {
-
-    const [ file, setFile ] = useState<File>(null);
-    const [ pastedContent, setPastedContent ] = useState<string>(null);
 
     const isError: boolean = (meta.error || meta.submitError) && meta.touched;
 
@@ -149,6 +164,15 @@ const FilePickerAdapter: FunctionComponent<FilePickerAdapterPropsInterface> = ({
             error: isError
         }
     );
+
+    const file: File = useMemo(() => {
+        if (!meta?.initial) {
+            return null;
+        }
+        const base64DecodeString: string = atob(meta?.initial);
+
+        return new File([ base64DecodeString ], fileDisplayName, { type: FILE_STRATEGIES?.[fileType]?.mimeTypes[0] });
+    }, [ meta?.initial ]);
 
     return (
         <FormControl fullWidth={ fullWidth } className={ classes } { ...FormControlProps }>
@@ -164,8 +188,6 @@ const FilePickerAdapter: FunctionComponent<FilePickerAdapterPropsInterface> = ({
             <FilePicker
                 fileStrategy={ FILE_STRATEGIES?.[fileType] ?? FILE_STRATEGIES?.default }
                 onChange={ (result: PickerResult<any>) => {
-                    setFile(result?.file);
-                    setPastedContent(result?.pastedContent);
                     input.onChange(result?.serialized);
                 } }
                 dropzoneText={ dropzoneText }
@@ -174,9 +196,11 @@ const FilePickerAdapter: FunctionComponent<FilePickerAdapterPropsInterface> = ({
                 icon={ placeholderIcon }
                 placeholderIcon={ selectedIcon }
                 file={ file }
-                pastedContent={ pastedContent }
                 normalizeStateOnRemoveOperations={ true }
                 hidePasteOption={ hidePasteOption }
+                showFileAsList={ showFileAsList }
+                fileDisplayName={ fileDisplayName }
+                onFileDelete={ onDelete }
             />
             { isError &&
                 <FormHelperText className="helper-text" error>{ meta.error || meta.submitError }</FormHelperText> }

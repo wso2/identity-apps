@@ -20,30 +20,49 @@ import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Button from "@oxygen-ui/react/Button";
 import Divider from "@oxygen-ui/react/Divider";
-import RulesComponent from "@wso2is/admin.rules.v1/components/rules-component";
-import { ConditionExpressionsMetaDataInterface } from "@wso2is/admin.rules.v1/models/meta";
+import Rules from "@wso2is/admin.rules.v1/components/rules";
+import useRulesContext from "@wso2is/admin.rules.v1/hooks/use-rules-context";
+import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import isEqual from "lodash-es/isEqual";
+import React, { Dispatch, FunctionComponent, ReactElement, useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { ActionResponseInterface } from "../models/actions";
 
 interface RuleConfigFormInterface extends IdentifiableComponentInterface {
-    ruleExpressionsMetaData : ConditionExpressionsMetaDataInterface;
-    actionData : ActionResponseInterface;
+    rule: RuleWithoutIdInterface;
     isHasRule : boolean;
     setIsHasRule: (value: boolean) => void;
+    setRule: Dispatch<React.SetStateAction<RuleWithoutIdInterface>>;
 }
 
 const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
-    ruleExpressionsMetaData,
-    actionData,
+    rule,
     isHasRule,
     setIsHasRule,
+    setRule,
     ["data-componentid"]: _componentId = "action-rule-config-form"
 }: RuleConfigFormInterface): ReactElement => {
 
+    const { addNewRule, ruleInstance } = useRulesContext();
     const { t } = useTranslation();
+
+    useEffect(() => {
+        if (!ruleInstance) {
+            setIsHasRule(false);
+            setRule(null);
+        }
+
+        if (ruleInstance && !isEqual(ruleInstance, rule)) {
+            setRule(ruleInstance as RuleWithoutIdInterface);
+        }
+    }, [ ruleInstance ]);
+
+    useEffect(() => {
+        if (isHasRule && !ruleInstance) {
+            addNewRule();
+        }
+    }, [ isHasRule ]);
 
     return (
         <>
@@ -54,10 +73,7 @@ const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
                 </Trans>
             </Heading>
             { isHasRule ? (
-                <RulesComponent
-                    conditionExpressionsMetaData={ ruleExpressionsMetaData }
-                    initialData={ actionData?.rule }
-                />
+                <Rules disableLastRuleDelete={ false } />
             ) : (
                 <Alert className="alert-nutral" icon={ false }>
                     <AlertTitle

@@ -82,11 +82,11 @@ const ApplicationRoleInvitedUserGroups = (props: ApplicationRoleGroupsProps): Re
                 || applicationRoleGroupDataFetchRequestError) {
             handleAlerts({
                 description: t(
-                    "extensions:console.applicationRoles.roleGroups.fetchGroups.error.description"
+                    "applicationRoles:roleGroups.fetchGroups.error.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "extensions:console.applicationRoles.roleGroups.fetchGroups.error.message"
+                    "applicationRoles:roleGroups.fetchGroups.error.message"
                 )
             });
         }
@@ -97,11 +97,11 @@ const ApplicationRoleInvitedUserGroups = (props: ApplicationRoleGroupsProps): Re
                 || descendantDataFetchRequestError) {
             handleAlerts({
                 description: t(
-                    "extensions:console.applicationRoles.roleGroups.fetchGroups.error.description"
+                    "applicationRoles:roleGroups.fetchGroups.error.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "extensions:console.applicationRoles.roleGroups.fetchGroups.error.message"
+                    "applicationRoles:roleGroups.fetchGroups.error.message"
                 )
             });
         }
@@ -203,9 +203,9 @@ const ApplicationRoleInvitedUserGroups = (props: ApplicationRoleGroupsProps): Re
             return (
                 <EmptyPlaceholder
                     data-testid={ `${ componentId }-search-empty-placeholder` }
-                    title={ t("extensions:console.applicationRoles.roleGroups.placeholder.title") }
+                    title={ t("applicationRoles:roleGroups.placeholder.title") }
                     subtitle={ [
-                        t("extensions:console.applicationRoles.roleGroups.placeholder.subTitle.0")
+                        t("applicationRoles:roleGroups.placeholder.subTitle.0")
                     ] }
                 />
             );
@@ -317,7 +317,7 @@ const ApplicationRoleInvitedUserGroups = (props: ApplicationRoleGroupsProps): Re
                                             onChange={ (e: ChangeEvent<HTMLInputElement>) =>
                                                 searchGroups(e.target.value) }
                                             value={ searchQuery }
-                                            placeholder={ t("extensions:console.applicationRoles.roleGroups." +
+                                            placeholder={ t("applicationRoles:roleGroups." +
                                                 "searchGroup") }
                                             floated="left"
                                             fluid

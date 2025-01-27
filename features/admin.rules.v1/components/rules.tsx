@@ -40,9 +40,14 @@ import "./rules.scss";
  */
 export interface RulesPropsInterface extends IdentifiableComponentInterface {
     /**
-     * Is multiple rules flag.
+     * Disable single rule delete button.
      */
-    isMultipleRules: boolean;
+    disableLastRuleDelete?: boolean;
+
+    /**
+     * Disable clear rule button.
+     */
+    disableClearRule?: boolean;
 }
 
 /**
@@ -53,10 +58,12 @@ export interface RulesPropsInterface extends IdentifiableComponentInterface {
  */
 const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
     ["data-componentid"]: componentId = "rules-render-component",
-    isMultipleRules = false
+    disableLastRuleDelete = true,
+    disableClearRule = false
 }: RulesPropsInterface): ReactElement => {
 
     const {
+        isMultipleRules,
         ruleExecuteCollection,
         ruleExecutionsMeta,
         addNewRule,
@@ -128,7 +135,7 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                             </Grid>
                         </Grid>
                         <RuleConditions rule={ rule } />
-                        { ruleExecuteCollection?.rules?.length > 1 && (
+                        { ruleExecuteCollection?.rules?.length > 1 || !disableLastRuleDelete && (
                             <Fab
                                 color="error"
                                 aria-label="delete"
@@ -144,12 +151,15 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                                 <TrashIcon className="delete-button-icon" />
                             </Fab>
                         ) }
-                        { !isMultipleRules && (
+                        { !isMultipleRules && !disableClearRule && (
                             <Button
                                 aria-label="Clear rule"
                                 variant="outlined"
                                 size="small"
-                                className="clear-button"
+                                className={
+                                    `clear-button ${ruleExecuteCollection?.rules?.length > 1 || !disableLastRuleDelete ?
+                                        "has-delete-button" : ""}`
+                                }
                                 sx={ {
                                     position: "absolute",
                                     right: 14,

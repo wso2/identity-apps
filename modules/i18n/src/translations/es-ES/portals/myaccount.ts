@@ -638,7 +638,7 @@ export const myAccount: MyAccountNS = {
                 "deleteHint": "Eliminar",
                 "description": "Puede usar la aplicación de autenticación para obtener códigos de verificación para la autenticación de dos factores.",
                 "enableHint": "Habilitar/deshabilitar el autenticador TOTP",
-                "heading": "Aplicación Authenticator",
+                "heading": "Autenticador TOTP",
                 "hint": "Vista",
                 "modals": {
                     "delete": {
@@ -862,6 +862,7 @@ export const myAccount: MyAccountNS = {
                         "tryWithOlderDevice": "También puedes volver a intentarlo con una clave anterior."
                     }
                 },
+                "noPassKeyMessage": "Aún no tienes ninguna clave de acceso registrada.",
                 "notifications": {
                     "removeDevice": {
                         "error": {
@@ -907,6 +908,61 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 "tryButton": "Pruebe con una clave anterior"
+            },
+            "pushAuthenticatorApp": {
+                "addHint": "Configurar",
+                "configuredDescription": "Puedes usar las solicitudes de inicio de sesión generadas desde tu aplicación autenticadora configurada para la autenticación de dos factores. Si no tienes acceso a la aplicación, puedes configurar una nueva aplicación autenticadora desde aquí.",
+                "deleteHint": "Eliminar",
+                "description": "Puedes usar la aplicación autenticadora push para recibir notificaciones de inicio de sesión como notificaciones push para la autenticación de dos factores.",
+                "heading": "Autenticador Push",
+                "hint": "Ver",
+                "modals": {
+                    "deviceDeleteConfirmation": {
+                        "assertionHint": "Por favor, confirma tu acción.",
+                        "content": "Esta acción es irreversible y eliminará el dispositivo de forma permanente.",
+                        "description": "Si eliminas este dispositivo, es posible que no puedas iniciar sesión en tu cuenta nuevamente. Por favor, procede con cautela.",
+                        "heading": "¿Estás seguro?"
+                    },
+                    "scan": {
+                        "additionNote": "¡El código QR se ha agregado exitosamente a tu perfil!",
+                        "done": "¡Éxito! Ahora puedes usar tu aplicación autenticadora push para la autenticación de dos factores.",
+                        "heading": "Configura la aplicación autenticadora push",
+                        "messageBody": "Puedes encontrar una lista de aplicaciones autenticadoras disponibles aquí.",
+                        "subHeading": "Escanea el código QR a continuación usando la aplicación autenticadora push"
+                    }
+                },
+                "notifications": {
+                    "delete": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "Algo salió mal"
+                        },
+                        "genericError": {
+                            "description": "Se produjo un error al eliminar el dispositivo registrado",
+                            "message": "Algo salió mal"
+                        },
+                        "success": {
+                            "description": "El dispositivo registrado se eliminó con éxito",
+                            "message": "Dispositivo eliminado con éxito"
+                        }
+                    },
+                    "deviceListFetchError": {
+                        "error": {
+                            "description": "Se produjo un error al recuperar los dispositivos registrados para la autenticación push",
+                            "message": "Algo salió mal"
+                        }
+                    },
+                    "initError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "Algo salió mal"
+                        },
+                        "genericError": {
+                            "description": "Se produjo un error al recuperar el código QR",
+                            "message": "Algo salió mal"
+                        }
+                    }
+                }
             },
             "smsOtp": {
                 "descriptions": {

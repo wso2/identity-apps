@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { CookieStorageUtils } from "@wso2is/core/utils";
+import { CookieStorageUtils, URLUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import React, {
     FunctionComponent,
@@ -162,49 +162,15 @@ export const CookieConsentBanner: FunctionComponent<PropsWithChildren<CookieCons
      * Persist the consent.
      */
     const persistConsent = (): void => {
-
         if (storageStrategy === "cookie") {
+            const _domain: string = domainCookie ? domain ?? URLUtils.getDomain(window.location.href) : undefined;
 
-            let cookieString: string = COOKIE_CONSENT_COOKIE_NAME + "=true;max-age=31536000;path=/";
-
-            if (domainCookie) {
-                cookieString = `${ cookieString };domain=${ domain ?? extractDomainFromHost() }`;
-            }
-
-            CookieStorageUtils.setItem(cookieString);
+            CookieStorageUtils.setCookie(COOKIE_CONSENT_COOKIE_NAME, "true", { days: 365 }, _domain);
 
             return;
         }
 
         throw new Error("Invalid storage strategy. Only Cookie is supported.");
-    };
-
-    /**
-     * Extracts the domain from the hostname.
-     * If parsing fails, undefined will be returned.
-     *
-     * @returns the domain of the current host
-     */
-    const extractDomainFromHost = (): string => {
-
-        let domain: string = undefined;
-
-        /**
-         * Extract the domain from the hostname.
-         * Ex: If console.wso2-is.com is parsed, `wso2-is.com` will be set as the domain.
-         */
-        try {
-            const hostnameTokens: string[] = window.location.hostname.split(".");
-
-            if (hostnameTokens.length > 1) {
-                domain = hostnameTokens.slice((hostnameTokens.length - 2), hostnameTokens.length).join(".");
-            }
-        } catch (e) {
-            // Couldn't parse the hostname. Log the error in debug mode.
-            // Tracked here https://github.com/wso2/product-is/issues/11650.
-        }
-
-        return domain;
     };
 
     return (

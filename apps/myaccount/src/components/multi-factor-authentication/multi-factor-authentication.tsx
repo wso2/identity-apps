@@ -16,6 +16,8 @@
  * under the License.
  */
 
+// useRequiredScopes hook cannot be used inside myaccount, hence disabling the rule here.
+// eslint-disable-next-line no-restricted-imports
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { useEffect, useState } from "react";
@@ -24,6 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, List } from "semantic-ui-react";
 import { BackupCodeAuthenticator, FIDOAuthenticator, SMSOTPAuthenticator, TOTPAuthenticator } from "./authenticators";
+import { PushAuthenticator } from "./authenticators/push-authenticator";
 import { getEnabledAuthenticators } from "../../api";
 import { AppConstants } from "../../constants";
 import { commonConfig } from "../../extensions";
@@ -210,6 +213,17 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                             />
                         </List.Item>
                     ) : null }
+
+                { hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes) &&
+                    isFeatureEnabled(
+                        featureConfig?.security,
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_PUSH")
+                    ) ? (
+                        <List.Item className="inner-list-item">
+                            <PushAuthenticator />
+                        </List.Item>
+                    ) : null }
+
                 { hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         featureConfig?.security,

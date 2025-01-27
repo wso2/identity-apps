@@ -132,7 +132,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
 
         <Card variant="outlined" className="policy-list-node">
             <CardContent>
-                <Stack direction={ "row" } justifyContent={ "space-between" }>
+                <Stack direction={ "row" } justifyContent={ "space-between" } className="policy-action-container">
                     <Typography className="ellipsis-text">{ policy.policyId }</Typography>
                     <Stack direction={ "row" } marginTop={ "3px" }>
                         <Popup

@@ -638,7 +638,7 @@ export const myAccount: MyAccountNS = {
                 "deleteHint": "消除",
                 "description": "您可以使用Authenticator应用程序获取两因素身份验证的验证代码。",
                 "enableHint": "启用/禁用TOTP身份验证器",
-                "heading": "身份验证器应用程序",
+                "heading": "TOTP 验证器",
                 "hint": "看法",
                 "modals": {
                     "delete": {
@@ -861,6 +861,7 @@ export const myAccount: MyAccountNS = {
                         "tryWithOlderDevice": "您也可以使用旧的密钥重试。"
                     }
                 },
+                "noPassKeyMessage": "您尚未注册任何密码密钥。",
                 "notifications": {
                     "removeDevice": {
                         "error": {
@@ -906,6 +907,61 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 "tryButton": "尝试使用较旧的密钥"
+            },
+            "pushAuthenticatorApp": {
+                "addHint": "配置",
+                "configuredDescription": "您可以使用已配置的推送认证器应用生成的登录提示进行双因素认证。如果您无法访问该应用，可以从这里设置一个新的认证器应用。",
+                "deleteHint": "移除",
+                "description": "您可以使用推送认证器应用，通过推送通知接收登录提示以进行双因素认证。",
+                "heading": "推送认证器",
+                "hint": "查看",
+                "modals": {
+                    "deviceDeleteConfirmation": {
+                        "assertionHint": "请确认您的操作。",
+                        "content": "此操作不可逆，将永久删除该设备。",
+                        "description": "如果您移除此设备，可能无法再次登录您的账户。请谨慎操作。",
+                        "heading": "您确定吗？"
+                    },
+                    "scan": {
+                        "additionNote": "二维码已成功添加到您的个人资料！",
+                        "done": "成功！现在您可以使用推送认证器应用进行双因素认证。",
+                        "heading": "设置推送认证器应用",
+                        "messageBody": "您可以在此处找到可用的认证器应用列表。",
+                        "subHeading": "使用推送认证器应用扫描下方的二维码"
+                    }
+                },
+                "notifications": {
+                    "delete": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "出了点问题"
+                        },
+                        "genericError": {
+                            "description": "移除已注册设备时发生错误",
+                            "message": "出了点问题"
+                        },
+                        "success": {
+                            "description": "已成功移除注册设备",
+                            "message": "设备已成功删除"
+                        }
+                    },
+                    "deviceListFetchError": {
+                        "error": {
+                            "description": "检索推送认证的已注册设备时发生错误",
+                            "message": "出了点问题"
+                        }
+                    },
+                    "initError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "出了点问题"
+                        },
+                        "genericError": {
+                            "description": "检索二维码时发生错误",
+                            "message": "出了点问题"
+                        }
+                    }
+                }
             },
             "smsOtp": {
                 "descriptions": {

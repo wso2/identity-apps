@@ -197,6 +197,8 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                             (field as DynamicFilePickerFieldInterface)?.pasteAreaPlaceholderText }
                         uploadButtonText={ (field as DynamicFilePickerFieldInterface)?.uploadButtonText }
                         hidePasteOption={ (field as DynamicFilePickerFieldInterface)?.hidePasteOption }
+                        showFileAsList={ (field as DynamicFilePickerFieldInterface)?.showFileAsList }
+                        fileDisplayName={ (field as DynamicFilePickerFieldInterface)?.fileDisplayName }
                         placeholderIcon={ getCertificateIllustrations().uploadPlaceholder }
                         selectedIcon={ <Icon name="file alternate" size="huge"/> }
                         component={ FilePickerAdapter }
@@ -208,6 +210,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                                 </Hint>
                             ) : null
                         }
+                        onDelete={ (field as DynamicFilePickerFieldInterface)?.onDelete }
                     />
                 );
             default:

@@ -670,7 +670,7 @@ export const myAccount: MyAccountNS = {
                     "à usage unique basés sur le temps (également appelés TOTP) " +
                     "comme deuxième facteur lors de la connexion aux applications.",
                 enableHint: "Activer/désactiver l'authentificateur TOTP",
-                heading: "Application d'authentification",
+                heading: "Authentificateur TOTP",
                 hint: "Voir",
                 modals: {
                     delete : {
@@ -915,6 +915,7 @@ export const myAccount: MyAccountNS = {
                         tryWithOlderDevice: "VVous pouvez également réessayer avec un mot de passe plus ancien."
                     }
                 },
+                noPassKeyMessage: "Vous n'avez pas encore de clés d'accès enregistrées.",
                 notifications: {
                     removeDevice: {
                         error: {
@@ -962,6 +963,61 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 tryButton: "Essayez avec un ancien mot de passe"
+            },
+            "pushAuthenticatorApp": {
+                "addHint": "Configurer",
+                "configuredDescription": "Vous pouvez utiliser les notifications de connexion générées par votre application d'authentification configurée pour l'authentification à deux facteurs. Si vous n'avez pas accès à l'application, vous pouvez configurer une nouvelle application d'authentification ici.",
+                "deleteHint": "Supprimer",
+                "description": "Vous pouvez utiliser l'application d'authentification push pour recevoir des notifications de connexion sous forme de notifications push pour l'authentification à deux facteurs.",
+                "heading": "Authentificateur Push",
+                "hint": "Voir",
+                "modals": {
+                    "deviceDeleteConfirmation": {
+                        "assertionHint": "Veuillez confirmer votre action.",
+                        "content": "Cette action est irréversible et supprimera définitivement l'appareil.",
+                        "description": "Si vous supprimez cet appareil, vous ne pourrez peut-être pas vous reconnecter à votre compte. Veuillez procéder avec prudence.",
+                        "heading": "Êtes-vous sûr ?"
+                    },
+                    "scan": {
+                        "additionNote": "Le code QR a été ajouté avec succès à votre profil !",
+                        "done": "Succès ! Vous pouvez maintenant utiliser votre application d'authentification push pour l'authentification à deux facteurs.",
+                        "heading": "Configurer l'application d'authentification push",
+                        "messageBody": "Vous pouvez trouver une liste des applications d'authentification disponibles ici.",
+                        "subHeading": "Scannez le code QR ci-dessous avec l'application d'authentification push"
+                    }
+                },
+                "notifications": {
+                    "delete": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "Une erreur s'est produite"
+                        },
+                        "genericError": {
+                            "description": "Une erreur s'est produite lors de la suppression de l'appareil enregistré",
+                            "message": "Une erreur s'est produite"
+                        },
+                        "success": {
+                            "description": "L'appareil enregistré a été supprimé avec succès",
+                            "message": "Appareil supprimé avec succès"
+                        }
+                    },
+                    "deviceListFetchError": {
+                        "error": {
+                            "description": "Une erreur s'est produite lors de la récupération des appareils enregistrés pour l'authentification push",
+                            "message": "Une erreur s'est produite"
+                        }
+                    },
+                    "initError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "Une erreur s'est produite"
+                        },
+                        "genericError": {
+                            "description": "Une erreur s'est produite lors de la récupération du code QR",
+                            "message": "Une erreur s'est produite"
+                        }
+                    }
+                }
             },
             smsOtp: {
                 descriptions: {
