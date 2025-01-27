@@ -22,22 +22,52 @@ import { fileURLToPath } from 'url';
 import { Project, SyntaxKind } from "ts-morph";
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
-const __dirname = path.dirname(__filename); 
+const __dirname = path.dirname(__filename);
 
-const i18nEnUsLangBundlePath = path.resolve(__dirname, "..", "modules", "i18n", "dist", "bundle", "en-US", "portals");
+/**
+ * Utility functions
+ */
 
-// get file path as cmd argument.
-const tsFileList = process.argv[2]
-
+/**
+ * 
+ * @param {string} filePath 
+ * @returns whether the passed file is a typescript file.
+ */
 const isTSFile = (filePath) =>  {
   return filePath.endsWith(".ts") || filePath.endsWith(".tsx")
 }
 
+/**
+ * 
+ * @param {any} obj - en_US language bundle
+ * @param {string} path - path to the value in lang bundle joined with `.`.
+ * eg: advancedSearch.form.inputs.filterAttribute.placeholder
+ * 
+ * @returns the translation for the corresponding path in lang bundle
+ */
 const getValueAtPath = (obj, path) => {
-    return path.split('.').reduce((acc, key) => acc && acc[key], obj);
+  return path
+      .split('.')
+      .map((key) => key.trim()) // Trim keys to avoid whitespace issues
+      .reduce((acc, key) => {
+          if (!acc || typeof acc !== "object") {
+              // console.warn(`Invalid object at "${key}":`, acc);
+              return undefined;
+          }
+          if (!Object.hasOwn(acc, key)) {
+              // console.warn(`Key "${key}" not found in:`, acc);
+              return undefined;
+          }
+          return acc[key];
+      }, obj);
 };
 
-// Function to dynamically import the file
+/**
+ * 
+ * @param {string} namespace
+ * 
+ * @returns the language bundle for the provided namespace. 
+ */
 const dynamicImport = async (namespace) => {
   try {
     // Read all files in the directory
@@ -67,43 +97,74 @@ const dynamicImport = async (namespace) => {
   }
 };
 
+/**
+ * 
+ * @param {any} args - arguments passed to the t("") function
+ * 
+ * @returns the formatted property access chain to access translation in lang bundle.
+ * eg: advancedSearch.form.inputs.filterAttribute.placeholder
+ */
+const getPropertyAccessChain = async (args) => {
+  if(args.length > 0 && args[0].getKind() === SyntaxKind.BinaryExpression) {
+    return args[0].getText().replace(/["+]/g, "").replace("\n","").replace(/\s+/g, "").trim()+ " \n";
+  }
+
+  if (args.length > 0 && args[0].getKind() === SyntaxKind.StringLiteral) {
+    return args[0].getText().replace(/^"|"$/g, "");
+  }
+}
+
+/* Script logic begins here */
+
+const i18nEnUsLangBundlePath = path.resolve(__dirname, "..", "modules", "i18n", "dist", "bundle", "en-US", "portals");
+
+// get file path as cmd argument.
+const filePathFromArg = process.argv[2]
+
 // Initialize a ts-morph Project
 const project = new Project();
 
-if (isTSFile(filePath)) {
-  project.addSourceFileAtPath(filePath)
+if (isTSFile(filePathFromArg)) {
+  project.addSourceFileAtPath(filePathFromArg)
 } else {
-  console.error("Invalid file: " + filePath);
-  return;
+  console.error("Invalid file: " + filePathFromArg);
+  exit(1);
 }
 
-const sourceFile = project.getSourceFileOrThrow(filePath);
+const sourceFile = project.getSourceFileOrThrow(filePathFromArg);
 const calls = sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression);
 
-calls.forEach(async (call) => {
-    const expression = call.getExpression();
+const i18nManualReviewFlags = []
 
-    if (expression.getText() === "t") {
-        const args = call.getArguments();
+for (const call of calls) {
+  const expression = call.getExpression();
 
-        if (args.length > 0 && args[0].getKind() === SyntaxKind.StringLiteral) {
-            console.log(`Found t("") call in ${filePath}:`);
-            const i18nKey = args[0].getText().replace(/^"|"$/g, "");;
+  if (expression.getText() === "t") {
+      console.log(`Found t("") call in ${filePathFromArg}:`);
 
-            console.log(`  - Text: ${i18nKey}`);
+      const args = call.getArguments();
+      const i18nKey = await getPropertyAccessChain(args);
 
-            const i18nNamespace = i18nKey.split(":")[0];
-            const i18nStringPath = i18nKey.split(":")[1];
+      if (!i18nKey) {
+          i18nManualReviewFlags.push("Couldn't resolve the i18n usage at " + filePathFromArg + "#L" + call.getStartLineNumber());
+          continue; // Use `continue` instead of `return` to skip the current iteration
+      }
 
-            console.log(i18nNamespace)
+      console.log(`  - Text: ${i18nKey}\n`);
 
-            dynamicImport(i18nNamespace).then(langBundle => {
-              const value = getValueAtPath(langBundle, i18nStringPath)
-            
-              if(!value) {
-                console.error("Broken i18n key found: " + i18nKey)
-              }
-            })
-        }
-    }
-});
+      const i18nNamespace = i18nKey.split(":")[0];
+      const i18nStringPath = i18nKey.split(":")[1];
+
+      // Using async/await for dynamicImport instead of then()
+      const langBundle = await dynamicImport(i18nNamespace);
+      const value = getValueAtPath(langBundle, i18nStringPath);
+
+      if (!value) {
+          console.error("Broken i18n key found: " + i18nKey);
+      }
+  }
+}
+
+for(const warning of i18nManualReviewFlags) {
+  console.warn(warning)
+}
