@@ -2458,7 +2458,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         return (
             <Grid.Row columns={ 1 } key={ key }>
-                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     {
                         schema.name === "userName" && domainName.length > 1 ? (
                             <>
@@ -2617,11 +2617,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 onSubmit={ (values: Map<string, string | string[]>) => handleSubmit(values) }
                                 onStaleChange={ (stale: boolean) => setIsFormStale(stale) }
                             >
-                                <Grid>
+                                <Grid className="form-container with-max-width">
                                     {
                                         user.id && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
+                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                     <Form.Field>
                                                         <label>
                                                             { t("user:profile.fields.userId") }
@@ -2667,7 +2667,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         oneTimePassword && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
+                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                     <Field
                                                         data-testid={ `${ testId }-profile-form-one-time-pw }
                                                         -input` }
@@ -2688,7 +2688,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         createdDate && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
+                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                     <Form.Field>
                                                         <label>
                                                             { t("user:profile.fields." +
@@ -2709,7 +2709,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         modifiedDate && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
+                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                     <Form.Field>
                                                         <label>
                                                             { t("user:profile.fields.modifiedDate") }
@@ -2727,7 +2727,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         )
                                     }
                                     <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                             {
                                                 !isReadOnly && (
                                                     <Button
