@@ -1,9 +1,24 @@
+/*
+ * Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 package org.wso2.identity.apps.common.listner;
 
-import org.apache.commons.lang.StringUtils;
-import org.wso2.carbon.identity.api.resource.collection.mgt.APIResourceCollectionManagerImpl;
 import org.wso2.carbon.identity.api.resource.collection.mgt.exception.APIResourceCollectionMgtException;
-import org.wso2.carbon.identity.api.resource.collection.mgt.internal.APIResourceCollectionMgtServiceDataHolder;
 import org.wso2.carbon.identity.api.resource.collection.mgt.model.APIResourceCollection;
 import org.wso2.carbon.identity.api.resource.collection.mgt.model.APIResourceCollectionSearchResult;
 import org.wso2.carbon.identity.api.resource.mgt.APIResourceMgtException;
@@ -21,8 +36,10 @@ import org.wso2.carbon.identity.role.v2.mgt.core.model.RoleBasicInfo;
 import org.wso2.identity.apps.common.internal.AppsCommonDataHolder;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.wso2.carbon.identity.api.resource.collection.mgt.constant.APIResourceCollectionManagementConstants.APIResourceCollectionConfigBuilderConstants.EDIT_FEATURE_SCOPE_SUFFIX;
@@ -53,7 +70,7 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                            String audience, String audienceId, String tenantDomain)
         throws IdentityRoleManagementException {
 
-        if (isConsoleApp(audience, audienceId, tenantDomain)) {
+        if (isConsoleApp(audience, audienceId, tenantDomain) && !RoleConstants.ADMINISTRATOR.equals(roleName)) {
             List<Permission> consoleFeaturePermissions = getConsoleFeaturePermissions(permissions);
             if (consoleFeaturePermissions != null && !consoleFeaturePermissions.isEmpty()) {
                 // If console features are added to the role, then we need to we only need to persist the console
@@ -90,9 +107,14 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
     public void postGetPermissionListOfRoles(List<String> permissions, List<String> roleIds, String tenantDomain)
         throws IdentityRoleManagementException {
 
-        boolean isConsolePermissionsContains = isConsolePermissionsContains(permissions);
-        boolean isConsoleFeaturePermissionsContains = isConsoleFeaturePermissionsContains(permissions);
-        if (isConsolePermissionsContains || isConsoleFeaturePermissionsContains) {
+        boolean isConsoleRole = false;
+        for (String roleId : roleIds) {
+            if (isConsoleRole(roleId, tenantDomain)) {
+                isConsoleRole = true;
+                break;
+            }
+        }
+        if (isConsoleRole) {
             List<Permission> resolvedRolePermissions = new ArrayList<>();
             List<Permission> systemPermissions = getSystemPermission(tenantDomain);
             permissions.forEach(permission -> {
@@ -112,7 +134,7 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                                             List<Permission> deletedPermissions, String audience, String audienceId,
                                             String tenantDomain) throws IdentityRoleManagementException {
 
-        if (isConsoleApp(audience, audienceId, tenantDomain)) {
+        if (isConsoleRole(roleId, tenantDomain)) {
             List<Permission> consoleFeaturePermissions = getConsoleFeaturePermissions(addedPermissions);
             if (consoleFeaturePermissions != null && !consoleFeaturePermissions.isEmpty()) {
                 // If console features are added to the role, then we need to we only need to persist the console
@@ -122,6 +144,15 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
         }
     }
 
+    /**
+     * This method resolves the new permissions for the console roles. In this method, we resolve two type of console
+     * roles. 1. Console roles created after 7.0.0. 2. Console roles created in 7.0.0.
+     *
+     * @param rolePermissions List of permissions of the role.
+     * @param tenantDomain    Tenant domain.
+     * @return List of resolved permissions.
+     * @throws IdentityRoleManagementException If an error occurs while resolving the permissions.
+     */
     private List<Permission> getUpgradedPermissions(List<Permission> rolePermissions, String tenantDomain)
         throws IdentityRoleManagementException {
 
@@ -134,6 +165,7 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
             // We check whether the role has the view feature scope or edit feature scope. If the role has the
             // view feature scope, then we add all the read scopes. If the role has the edit feature scope, then we
             // add all the write scopes.
+            List<Permission> resolvedRolePermissions = new ArrayList<>();
             consoleFeaturePermissions.forEach(permission -> {
                 apiResourceCollections.forEach(apiResourceCollection -> {
                     // If the role has the edit feature scope, then we add all the write and read scopes.
@@ -143,7 +175,7 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                             Optional<Permission> newPermission = systemPermissions.stream()
                                 .filter(permission1 -> permission1.getName().equals(writeScope))
                                 .findFirst();
-                            newPermission.ifPresent(rolePermissions::add);
+                            newPermission.ifPresent(resolvedRolePermissions::add);
                         });
                     }
                     if (apiResourceCollection.getViewFeatureScope() != null &&
@@ -152,14 +184,16 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                             Optional<Permission> newPermission = systemPermissions.stream()
                                 .filter(permission1 -> permission1.getName().equals(readScope))
                                 .findFirst();
-                            newPermission.ifPresent(rolePermissions::add);
+                            newPermission.ifPresent(resolvedRolePermissions::add);
                         });
                     }
                 });
             });
+            return resolvedRolePermissions;
         } else {
             // This is where we handle the initial console roles (console roles created in 7.0.0) permissions.
             // Here we assume these role only contains legacy feature scope not the new feature scopes.
+            Set<Permission> resolvedRolePermissions = new HashSet<>(new ArrayList<>(rolePermissions));
             List<Permission> consolePermissions = getConsolePermissions(rolePermissions);
             consolePermissions.forEach(permission -> {
                 apiResourceCollections.forEach(apiResourceCollection -> {
@@ -170,7 +204,7 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                             Optional<Permission> newPermission = systemPermissions.stream()
                                 .filter(permission1 -> permission1.getName().equals(newReadScope))
                                 .findFirst();
-                            newPermission.ifPresent(rolePermissions::add);
+                            newPermission.ifPresent(resolvedRolePermissions::add);
                         });
                         List<String> legacyWriteScopes = apiResourceCollection.getLegacyWriteScopes();
                         // if all the writeScopes are in the role's permission list, then add new write scopes.
@@ -180,16 +214,24 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                                 Optional<Permission> newPermission = systemPermissions.stream()
                                     .filter(permission1 -> permission1.getName().equals(newWriteScope))
                                     .findFirst();
-                                newPermission.ifPresent(rolePermissions::add);
+                                newPermission.ifPresent(resolvedRolePermissions::add);
                             });
                         }
                     }
                 });
             });
+            return new ArrayList<>(resolvedRolePermissions);
         }
-        return rolePermissions;
     }
 
+    /**
+     * Check whether the role is a console role. We consider all the console roles except the administrator role.
+     *
+     * @param roleId       Role id.
+     * @param tenantDomain Tenant domain.
+     * @return True if the role is a console role.
+     * @throws IdentityRoleManagementException If an error occurs while checking the role.
+     */
     private boolean isConsoleRole(String roleId, String tenantDomain) throws IdentityRoleManagementException {
 
         RoleManagementService roleManagementService = AppsCommonDataHolder.getInstance()
@@ -199,10 +241,19 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
             role.getAudienceName().equals(CONSOLE_APP_AUDIENCE_NAME);
     }
 
+    /**
+     * Check whether the app is a console application based in audience.
+     *
+     * @param audience     Audience.
+     * @param audienceId   Audience id.
+     * @param tenantDomain Tenant domain.
+     * @return True if the app is a console application.
+     * @throws IdentityRoleManagementException If an error occurs while checking the app.
+     */
     private boolean isConsoleApp(String audience, String audienceId, String tenantDomain)
         throws IdentityRoleManagementException {
 
-        if (!RoleConstants.APPLICATION.equals(audience)) {
+        if (!RoleConstants.APPLICATION.equalsIgnoreCase(audience)) {
             return false;
         }
         ApplicationManagementService applicationManagementService = AppsCommonDataHolder.getInstance()
@@ -218,14 +269,23 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
         }
     }
 
+    /**
+     * Get API resource collections for the tenant. This will return all the tenant and organization specific API
+     * collections.
+     *
+     * @param tenantDomain Tenant domain.
+     * @return List of API resource collections.
+     * @throws IdentityRoleManagementException If an error occurs while retrieving the API resource collections.
+     */
     private List<APIResourceCollection> getAPIResourceCollections(String tenantDomain)
         throws IdentityRoleManagementException {
 
         try {
             List<String> requiredAttributes = new ArrayList<>();
             requiredAttributes.add("apiResources");
-            APIResourceCollectionSearchResult apiResourceCollectionSearchResult = APIResourceCollectionManagerImpl
-                .getInstance().getAPIResourceCollections("", requiredAttributes, tenantDomain);
+            APIResourceCollectionSearchResult apiResourceCollectionSearchResult = AppsCommonDataHolder
+                .getInstance().getApiResourceCollectionManager()
+                .getAPIResourceCollections("", requiredAttributes, tenantDomain);
             return apiResourceCollectionSearchResult.getAPIResourceCollections();
 
         } catch (APIResourceCollectionMgtException e) {
@@ -234,6 +294,12 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
         }
     }
 
+    /**
+     * Get console feature permissions from the role permissions.
+     *
+     * @param rolePermissions Role permissions.
+     * @return List of console feature permissions.
+     */
     private List<Permission> getConsoleFeaturePermissions(List<Permission> rolePermissions) {
 
         return rolePermissions.stream().filter(permission -> permission != null &&
@@ -244,6 +310,12 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
             .collect(Collectors.toList());
     }
 
+    /**
+     * Get console permissions (old ones) from the role permissions.
+     *
+     * @param rolePermissions Role permissions.
+     * @return List of console permissions.
+     */
     private List<Permission> getConsolePermissions(List<Permission> rolePermissions) {
 
         return rolePermissions.stream().filter(permission -> permission != null &&
@@ -254,25 +326,19 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
             .collect(Collectors.toList());
     }
 
-    private boolean isConsoleFeaturePermissionsContains(List<String> rolePermissions) {
-
-        return rolePermissions.stream().anyMatch(permission -> StringUtils.isNotBlank(permission) &&
-            (permission.startsWith(CONSOLE_SCOPE_PREFIX) || permission.startsWith(CONSOLE_ORG_SCOPE_PREFIX)) &&
-            (permission.endsWith(VIEW_FEATURE_SCOPE_SUFFIX) || permission.endsWith(EDIT_FEATURE_SCOPE_SUFFIX)));
-    }
-
-    private boolean isConsolePermissionsContains(List<String> rolePermissions) {
-
-        return rolePermissions.stream().anyMatch(permission -> StringUtils.isNotBlank(permission) &&
-            (permission.startsWith(CONSOLE_SCOPE_PREFIX) || permission.startsWith(CONSOLE_ORG_SCOPE_PREFIX)) &&
-            !(permission.endsWith(VIEW_FEATURE_SCOPE_SUFFIX) || permission.endsWith(EDIT_FEATURE_SCOPE_SUFFIX)));
-    }
-
+    /**
+     * Get system permissions for the tenant.
+     *
+     * @param tenantDomain Tenant domain.
+     * @return List of system permissions.
+     * @throws IdentityRoleManagementException If an error occurs while retrieving the system permissions.
+     */
     private List<Permission> getSystemPermission(String tenantDomain) throws IdentityRoleManagementException {
         List<Scope> systemScopes;
+
         try {
-            systemScopes = APIResourceCollectionMgtServiceDataHolder.getInstance()
-                .getAPIResourceManagementService().getSystemAPIScopes(tenantDomain);
+            systemScopes = AppsCommonDataHolder.getInstance()
+                .getAPIResourceManager().getSystemAPIScopes(tenantDomain);
         } catch (APIResourceMgtException e) {
             throw new IdentityRoleManagementException("Error while retrieving internal scopes for tenant " +
                 "domain : " + tenantDomain, e);
