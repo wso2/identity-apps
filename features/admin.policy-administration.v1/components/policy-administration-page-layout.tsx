@@ -218,9 +218,9 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                                     <Typography variant="body1" noWrap>
                                         { t("policyAdministration:buttons.policyAlgorithm") }
                                     </Typography>
-                                    { !isAlgorithmLoading && selectedAlgorithm?.id && (
+                                    { !isAlgorithmLoading && (
                                         <Typography variant="body2">
-                                            { selectedAlgorithm.id }
+                                            { algorithm }
                                         </Typography>
                                     ) }
                                     { isAlgorithmLoading && <CircularProgress size={ 12 } /> }
