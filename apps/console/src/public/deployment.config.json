@@ -758,7 +758,7 @@
                 "scopes": {}
             },
             "identityProviders": {
-                "disabledFeatures": [ "identityProviders.customAuthentication" ],
+                "disabledFeatures": [],
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
@@ -1434,7 +1434,7 @@
         "hiddenConnectionTemplates": [
             "hypr-idp",
             "swe-idp"
-       ],
+        ],
         "hiddenUserStores": [],
         "i18nConfigs": {
             "langAutoDetectEnabled": false,
