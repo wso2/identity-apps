@@ -16,9 +16,10 @@
  * under the License.
  */
 
+import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 import { URLUtils } from "@wso2is/core/utils";
 import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
-import { EndpointAuthenticationType, EndpointConfigFormPropertyInterface } from "../models/connection";
+import { EndpointAuthenticationType } from "../models/connection";
 
 /**
  * Validates the ActionConfig form fields.

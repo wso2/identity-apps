@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 import { IdentifiableComponentInterface, LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIconProps } from "@wso2is/react-components";
 import { ComponentType, LazyExoticComponent, ReactElement } from "react";
@@ -591,10 +592,6 @@ export interface GenericConnectionCreateWizardPropsInterface {
      * Callback to be triggered on successful IDP create.
      */
     onIDPCreate: (id?: string) => void;
-    // /**
-    //  * Callback to be triggered on successful authenticator create.
-    //  */
-    // onAuthenticatorCreate: (id?: string) => void;
     /**
      * Template object.
      */
@@ -846,40 +843,6 @@ export interface CustomAuthenticationCreateWizardGeneralFormValuesInterface {
      * Display name of the custom authentication.
      */
     displayName: string;
-}
-
-/**
- *  Custom authentication endpoint config form property Interface.
- */
-export interface EndpointConfigFormPropertyInterface {
-    /**
-     * Endpoint Uri of the Action.
-     */
-    endpointUri: string;
-    /**
-     * Endpoint Uri of the Action.
-     */
-    authenticationType: string;
-    /**
-     * Username property of basic authentication.
-     */
-    usernameAuthProperty?: string;
-    /**
-     * Password property of basic authentication.
-     */
-    passwordAuthProperty?: string;
-    /**
-     * Access Token property of bearer authentication.
-     */
-    accessTokenAuthProperty?: string;
-    /**
-     * Header property of apiKey authentication.
-     */
-    headerAuthProperty?: string;
-    /**
-     * Value property of apiKey authentication.
-     */
-    valueAuthProperty?: string;
 }
 
 /**

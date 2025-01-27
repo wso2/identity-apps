@@ -69,7 +69,6 @@ import {
     CustomAuthConnectionInterface,
     CustomAuthenticationCreateWizardGeneralFormValuesInterface,
     EndpointAuthenticationType,
-    EndpointConfigFormPropertyInterface,
     FormErrors,
     GenericConnectionCreateWizardPropsInterface,
     WizardStepInterface,
@@ -77,6 +76,7 @@ import {
 } from "../../models/connection";
 import { ConnectionsManagementUtils } from "../../utils/connection-utils";
 import "./custom-authentication-create-wizard.scss";
+import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 
 export interface CustomAuthenticationCreateWizardPropsInterface
     extends GenericConnectionCreateWizardPropsInterface,

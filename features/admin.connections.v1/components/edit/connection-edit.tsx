@@ -54,7 +54,6 @@ import {
     CustomAuthConnectionInterface,
     EndpointAuthenticationType,
     EndpointAuthenticationUpdateInterface,
-    EndpointConfigFormPropertyInterface,
     ExternalEndpoint,
     FederatedAuthenticatorListItemInterface,
     ImplicitAssociaionConfigInterface
@@ -66,6 +65,7 @@ import "./connection-edit.scss";
 import { getFederatedAuthenticatorDetails, updateCustomAuthentication, updateFederatedAuthenticator, updateIdentityProviderDetails } from "../../api/connections";
 import { getLocalAuthenticator } from "../../api/authenticators";
 import { AxiosError } from "axios";
+import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 
 /**
  * Proptypes for the connection edit component.
@@ -181,7 +181,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const [ isCustomLocalAuthenticator, setIsCustomLocalAuthenticator ] = useState<boolean>(undefined);
     const [ endpointAuthenticationType, setEndpointAuthenticationType ] = useState<EndpointAuthenticationType>(null);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
-    const [ authenticatorEndpoint, setAuthenticatorEndpoint ] = useState<ExternalEndpoint>(null);
+    const [ authenticatorEndpoint, setAuthenticatorEndpoint ] = useState<EndpointConfigFormPropertyInterface>(null);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const hasApplicationReadPermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.read);
@@ -211,6 +211,76 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         lookupAttribute: identityProvider?.implicitAssociation?.lookupAttribute
     };
 
+    const getCustomLocalAuthenticator = (localAuthenticatorId: string) => {
+        getLocalAuthenticator(localAuthenticatorId)
+            .then((data: CustomAuthConnectionInterface) => {
+                const endpointAuth: EndpointConfigFormPropertyInterface = {
+                    authenticationType: data?.endpoint?.authentication?.type,
+                    endpointUri: data?.endpoint?.uri
+                };
+
+                setAuthenticatorEndpoint(endpointAuth);
+            })
+            .catch((error: IdentityAppsApiException) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(
+                        addAlert({
+                            description: t("authenticationProvider:notifications.getIDP.error.description", {
+                                description: error.response.data.description
+                            }),
+                            level: AlertLevels.ERROR,
+                            message: t("authenticationProvider:" + "notifications.getIDP.error.message")
+                        })
+                    );
+
+                    return;
+                }
+
+                dispatch(
+                    addAlert({
+                        description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
+                    })
+                );
+            });
+    };
+
+    const getCustomFederatedAuthenticator = (localAuthenticatorId: string) => {
+        getFederatedAuthenticatorDetails(identityProvider?.id, localAuthenticatorId)
+            .then((data: FederatedAuthenticatorListItemInterface) => {
+                const endpointAuth: EndpointConfigFormPropertyInterface = {
+                    authenticationType: data?.endpoint?.authentication?.type,
+                    endpointUri: data?.endpoint?.uri
+                };
+
+                setAuthenticatorEndpoint(endpointAuth);
+            })
+            .catch((error: IdentityAppsApiException) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(
+                        addAlert({
+                            description: t("authenticationProvider:notifications.getIDP.error.description", {
+                                description: error.response.data.description
+                            }),
+                            level: AlertLevels.ERROR,
+                            message: t("authenticationProvider:" + "notifications.getIDP.error.message")
+                        })
+                    );
+
+                    return;
+                }
+
+                dispatch(
+                    addAlert({
+                        description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
+                    })
+                );
+            });
+    };
+
     useEffect(() => {
         if (!identityProvider?.id) {
             setIsAuthenticationUpdateFormState(true);
@@ -222,66 +292,16 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             return;
         }
 
+        setIsAutomaticTabRedirectionEnabled(false);
+
         let localAuthenticatorId: string;
 
         if (isCustomLocalAuthenticator) {
             localAuthenticatorId = (identityProvider as CustomAuthConnectionInterface)?.id;
-            getLocalAuthenticator(localAuthenticatorId)
-                .then((data: CustomAuthConnectionInterface) => {
-                    setAuthenticatorEndpoint(data?.endpoint);
-                })
-                .catch((error: IdentityAppsApiException) => {
-                    if (error.response && error.response.data && error.response.data.description) {
-                        dispatch(
-                            addAlert({
-                                description: t("authenticationProvider:notifications.getIDP.error.description", {
-                                    description: error.response.data.description
-                                }),
-                                level: AlertLevels.ERROR,
-                                message: t("authenticationProvider:" + "notifications.getIDP.error.message")
-                            })
-                        );
-
-                        return;
-                    }
-
-                    dispatch(
-                        addAlert({
-                            description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
-                            level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
-                        })
-                    );
-                });
+            getCustomLocalAuthenticator(localAuthenticatorId);
         } else {
             localAuthenticatorId = identityProvider?.federatedAuthenticators?.authenticators[0].authenticatorId;
-            getFederatedAuthenticatorDetails(identityProvider?.id, localAuthenticatorId)
-                .then((data: FederatedAuthenticatorListItemInterface) => {
-                    setAuthenticatorEndpoint(data?.endpoint);
-                })
-                .catch((error: IdentityAppsApiException) => {
-                    if (error.response && error.response.data && error.response.data.description) {
-                        dispatch(
-                            addAlert({
-                                description: t("authenticationProvider:notifications.getIDP.error.description", {
-                                    description: error.response.data.description
-                                }),
-                                level: AlertLevels.ERROR,
-                                message: t("authenticationProvider:" + "notifications.getIDP.error.message")
-                            })
-                        );
-
-                        return;
-                    }
-
-                    dispatch(
-                        addAlert({
-                            description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
-                            level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
-                        })
-                    );
-                });
+            getCustomFederatedAuthenticator(localAuthenticatorId);
         }
     }, [ isCustomLocalAuthenticator ]);
 
@@ -422,8 +442,6 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                     break;
             }
 
-            setIsSubmitting(true);
-
             if (isCustomLocalAuthenticator) {
                 const updatingValues: EndpointAuthenticationUpdateInterface = {
                     displayName: resolveDisplayName(),
@@ -454,17 +472,20 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                         handleConnectionUpdateError(error);
                     })
                     .finally(() => {
+                        getCustomLocalAuthenticator(identityProvider.id);
                         setIsSubmitting(false);
                     });
             } else {
+                const federatedAuthenticatorId: string = identityProvider?.federatedAuthenticators?.
+                    authenticators[0]?.authenticatorId;
                 const updatingValues: FederatedAuthenticatorInterface = {
-                    authenticatorId: identityProvider?.federatedAuthenticators?.authenticators[0]?.authenticatorId,
+                    authenticatorId: federatedAuthenticatorId,
                     endpoint: {
                         authentication: {
                             properties: authProperties,
                             type: values.authenticationType as EndpointAuthenticationType
                         },
-                        uri: changedFields?.endpointUri ? values.endpointUri : undefined
+                        uri: values.endpointUri
                     },
                     isEnabled: identityProvider.isEnabled
                 };
@@ -508,6 +529,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                         }));
                     })
                     .finally(() => {
+                        getCustomFederatedAuthenticator(federatedAuthenticatorId);
                         setIsSubmitting(false);
                     });
             }
@@ -519,11 +541,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                     onSubmit={ (values: EndpointConfigFormPropertyInterface, form: any) => {
                         handleSubmit(values, form.getState().dirtyFields); }
                     }
-                    initialValues={ {
-                        displayName: resolveDisplayName(),
-                        endpoint: authenticatorEndpoint,
-                        isEnabled: identityProvider?.isEnabled
-                    } }
+                    initialValues={ authenticatorEndpoint }
                     validate={ validateForm }
                     render={ ({ handleSubmit }: FormRenderProps) => (
                         <form onSubmit={ handleSubmit }>
@@ -534,7 +552,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                             >
                                 <div className="form-container with-max-width">
                                     <ActionEndpointConfigForm
-                                        initialValues={ null }
+                                        initialValues={ authenticatorEndpoint }
                                         isCreateFormState={ false }
                                         onAuthenticationTypeChange={ onAuthenticationTypeChange }
                                     />
