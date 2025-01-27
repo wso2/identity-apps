@@ -23,7 +23,7 @@ import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-
 import { AppState } from "@wso2is/admin.core.v1";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import { RuleExecuteCollectionWithoutIdInterface, RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
-import { getRuleInstanceValue, RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
+import { RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalForm, FormRenderProps, FormSpy } from "@wso2is/form";
@@ -86,6 +86,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isHasRule, setIsHasRule ] = useState<boolean>(false);
+    const [ rule, setRule ] = useState<RuleWithoutIdInterface>(null);
 
     const { t } = useTranslation();
 
@@ -162,15 +163,13 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
         values: ActionConfigFormPropertyInterface,
         changedFields: ActionConfigFormPropertyInterface) =>
     {
-        let rule: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
+        let payloadRule: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
 
         if (isHasRule) {
-            rule = getRuleInstanceValue();
-
-            delete (rule as RuleWithoutIdInterface).isRuleInstanceTouched;
+            payloadRule = rule;
         } else {
-            if (!isCreateFormState && actionData?.rule) {
-                rule = {};
+            if (!isCreateFormState && !rule) {
+                payloadRule = {};
             }
         }
 
@@ -209,7 +208,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                     uri: values.endpointUri
                 },
                 name: values.name,
-                ...(rule !== null && { rule: rule })
+                ...(payloadRule !== null && { rule: payloadRule })
             };
 
             setIsSubmitting(true);
@@ -235,7 +234,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                     uri: changedFields?.endpointUri ? values.endpointUri : undefined
                 } : undefined,
                 name: changedFields?.name ? values.name : undefined,
-                ...(rule !== null && { rule: rule })
+                ...(payloadRule !== null && { rule: payloadRule })
             };
 
             setIsSubmitting(true);
@@ -271,8 +270,10 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                     } }/>
                 { (RuleExpressionsMetaData && showRuleComponent) && (
                     <RuleConfigForm
-                        isHasRule= { isHasRule }
-                        setIsHasRule= { setIsHasRule }
+                        rule={ rule }
+                        setRule={ setRule }
+                        isHasRule={ isHasRule }
+                        setIsHasRule={ setIsHasRule }
                     />
                 ) }
             </>

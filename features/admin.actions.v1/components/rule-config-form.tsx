@@ -22,33 +22,44 @@ import Button from "@oxygen-ui/react/Button";
 import Divider from "@oxygen-ui/react/Divider";
 import Rules from "@wso2is/admin.rules.v1/components/rules";
 import useRulesContext from "@wso2is/admin.rules.v1/hooks/use-rules-context";
+import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import isEqual from "lodash-es/isEqual";
+import React, { Dispatch, FunctionComponent, ReactElement, useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
 interface RuleConfigFormInterface extends IdentifiableComponentInterface {
+    rule: RuleWithoutIdInterface;
     isHasRule : boolean;
     setIsHasRule: (value: boolean) => void;
+    setRule: Dispatch<React.SetStateAction<RuleWithoutIdInterface>>;
 }
 
 const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
+    rule,
     isHasRule,
     setIsHasRule,
+    setRule,
     ["data-componentid"]: _componentId = "action-rule-config-form"
 }: RuleConfigFormInterface): ReactElement => {
 
-    const { addNewRule, ruleExecuteCollection } = useRulesContext();
+    const { addNewRule, ruleInstance } = useRulesContext();
     const { t } = useTranslation();
 
     useEffect(() => {
-        if (ruleExecuteCollection?.rules?.length === 0) {
+        if (!ruleInstance) {
             setIsHasRule(false);
+            setRule(null);
         }
-    }, [ ruleExecuteCollection ]);
+
+        if (ruleInstance && !isEqual(ruleInstance, rule)) {
+            setRule(ruleInstance as RuleWithoutIdInterface);
+        }
+    }, [ ruleInstance ]);
 
     useEffect(() => {
-        if (isHasRule && ruleExecuteCollection?.rules?.length === 0) {
+        if (isHasRule && !ruleInstance) {
             addNewRule();
         }
     }, [ isHasRule ]);
