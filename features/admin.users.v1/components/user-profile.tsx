@@ -2055,13 +2055,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             <TableCell align="left">
                                                 <div className="table-c1">
                                                     <label
-                                                        className={ `c1-value ${
-                                                            schema.name
-                                                                    === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
-                                                                        get("MOBILE_NUMBERS")
-                                                                ? "mobile-label"
-                                                                : null}`
-                                                        }
+                                                        className="c1-value"
                                                         data-componentid={
                                                             `${testId}-profile-form-${schema.name}` +
                                                                     `-value-${index}`
