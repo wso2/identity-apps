@@ -228,8 +228,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             localAuthenticatorId = (identityProvider as CustomAuthConnectionInterface)?.id;
             getLocalAuthenticator(localAuthenticatorId)
                 .then((data: CustomAuthConnectionInterface) => {
-                    setAuthenticatorEndpoint(data?.endpoint[0]);
-                    // TODO: Check if it is expected to send the endpoint in an array
+                    setAuthenticatorEndpoint(data?.endpoint);
                 })
                 .catch((error: IdentityAppsApiException) => {
                     if (error.response && error.response.data && error.response.data.description) {

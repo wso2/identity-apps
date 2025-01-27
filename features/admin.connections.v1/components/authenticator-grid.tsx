@@ -174,6 +174,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     ] = useState<boolean>(false);
     const [ isConnectedAppsLoading, setIsConnectedAppsLoading ] = useState<boolean>(true);
     const [ isCustomAuth, setIsCustomAuth ] = useState<boolean>(false);
+    const [ isCustomLocalAuth, setIsCustomLocalAuth ] = useState<boolean>(undefined);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
@@ -209,7 +210,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
             case AuthenticatorCategories.LOCAL:
                 if (isCustom) {
-                    setIsCustomAuth(true);
+                    setIsCustomLocalAuth(true);
                     history.push(AppConstants.getPaths().get("AUTH_EDIT").replace(":id", id));
                 } else {
                     history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", id));
@@ -311,6 +312,11 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             });
     };
 
+    const isCustomLocalAuthenticator = (): boolean => {
+        return ConnectionsManagementUtils.IsCustomAuthenticator(deletingIDP) &&
+        deletingIDP?.type === AuthenticatorTypes.LOCAL;
+    };
+
     /**
      * Deletes an authenticator via the API.
      * @remarks ATM, IDP and custom local authenticator delete is only supported.
@@ -321,25 +327,17 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
         setIsDeletionLoading(true);
 
-        let deleteAction: (id: string) => Promise<AxiosResponse>;
+        let deleteCustomAuth: (id: string) => Promise<AxiosResponse>;
 
-        if(isCustomAuth) {
-            deleteAction = deleteCustomAuthentication;
+        if(connectionType === ConnectionTypes.IDVP) {
+            deleteCustomAuth = deleteIdentityVerificationProvider;
+        } else if (isCustomLocalAuthenticator()) {
+            deleteCustomAuth = deleteCustomAuthentication;
+        } else {
+            deleteCustomAuth = deleteConnection;
         }
 
-        switch (connectionType) {
-            case ConnectionTypes.IDVP:
-                deleteAction = deleteIdentityVerificationProvider;
-
-                break;
-
-            default:
-                deleteAction = deleteConnection;
-
-                break;
-        }
-
-        deleteAction(id)
+        deleteCustomAuth(id)
             .then(() => {
                 dispatch(addAlert({
                     description: t("authenticationProvider:" +
