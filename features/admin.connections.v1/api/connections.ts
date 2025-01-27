@@ -151,6 +151,36 @@ export const updateCustomAuthentication = (
 };
 
 /**
+ * Function to delete a custom authentication.
+ *
+ * @param id - ID of the custom authentication
+ */
+export const deleteCustomAuthentication = (
+    id: string,
+): Promise<AxiosResponse<CustomAuthConnectionInterface>> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: store.getState().config.endpoints.customAuthenticators + "/" + id
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if ((response.status !== 204)) {
+                return Promise.reject(new Error("Failed to delete the custom local authenticator."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
  * Hook to get the connection list with limit and offset.
  *
  * @param limit - Maximum Limit of the connection List.

@@ -112,7 +112,6 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
     const dispatch: Dispatch = useDispatch();
 
     const [ isCustomLocalAuth, setIsCustomLocalAuth ] = useState<boolean>(undefined);
-    const [ localAuthenticatorId , setLocalAuthenticatorId ] = useState<string>(null);
     const [ authenticatorEndpoint, setAuthenticatorEndpoint ] = useState<ExternalEndpoint>(null);
 
     const { t } = useTranslation();

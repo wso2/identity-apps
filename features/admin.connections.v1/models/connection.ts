@@ -756,23 +756,23 @@ export interface CustomAuthGeneralDetailsFormValuesInterface {
     /**
      * Display name of the connection
      */
-    displayName: string
+    displayName?: string
     /**
      * Description of the connection
      */
-    description: string;
+    description?: string;
     /**
      * Image URL of the connection
      */
-    image: string;
+    image?: string;
     /**
      * Set is primary connection
      */
-    isPrimary: boolean;
+    isPrimary?: boolean;
     /**
      * Set is enabled connection
      */
-    isEnabled: boolean;
+    isEnabled?: boolean;
 }
 
 export interface OutboundProvisioningConnectorMetaDataInterface {
@@ -883,6 +883,24 @@ export interface EndpointConfigFormPropertyInterface {
 }
 
 /**
+ *  Endpoint Authentication Update configuration.
+ */
+export interface EndpointAuthenticationUpdateInterface extends CustomAuthGeneralDetailsFormValuesInterface {
+    /**
+     * Name of the Action.
+     */
+    name?: string;
+    /**
+     * Description of the Action.
+     */
+    description?: string;
+    /**
+     * Endpoint configuration of the Action.
+     */
+    endpoint?: Partial<EndpointInterface>;
+}
+
+/**
  *  Endpoint configuration.
  */
 export interface EndpointInterface {
@@ -907,7 +925,7 @@ interface AuthenticationInterface {
     /**
      * Authentication properties.
      */
-    properties: Partial<AuthenticationPropertiesInterface>;
+    properties: Partial<EndpointConfigFormPropertyInterface>;
 }
 
 /**

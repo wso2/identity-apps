@@ -19,22 +19,18 @@
 import Button from "@oxygen-ui/react/Button";
 import { useRequiredScopes } from "@wso2is/access-control";
 import ActionEndpointConfigForm from "@wso2is/admin.actions.v1/components/action-endpoint-config-form";
-import { validateActionCommonFields } from "@wso2is/admin.actions.v1/util/form-field-util";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
-import { TestableComponentInterface } from "@wso2is/core/models";
-import { FinalForm, FormRenderProps, FormSpy } from "@wso2is/form";
-import {
-    ContentLoader,
-    EmphasizedSegment,
-    Hint,
-    ResourceTab,
-    ResourceTabPaneInterface
-} from "@wso2is/react-components";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { FinalForm, FormRenderProps } from "@wso2is/form";
+import { ContentLoader, EmphasizedSegment, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, lazy, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
 import {
     AdvanceSettings,
@@ -54,14 +50,21 @@ import {
     ConnectionInterface,
     ConnectionTabTypes,
     ConnectionTemplateInterface,
+    CustomAuthConnectionInterface,
     EndpointAuthenticationType,
+    EndpointAuthenticationUpdateInterface,
     EndpointConfigFormPropertyInterface,
+    ExternalEndpoint,
+    FederatedAuthenticatorListItemInterface,
     ImplicitAssociaionConfigInterface
 } from "../../models/connection";
 import { isProvisioningAttributesEnabled } from "../../utils/attribute-utils";
-import { ConnectionsManagementUtils } from "../../utils/connection-utils";
+import { ConnectionsManagementUtils, handleConnectionUpdateError } from "../../utils/connection-utils";
 import { validateEndpointAuthentication } from "../../utils/form-field-utils";
 import "./connection-edit.scss";
+import { getFederatedAuthenticatorDetails, updateCustomAuthentication, updateIdentityProviderDetails } from "../../api/connections";
+import { getLocalAuthenticator } from "../../api/authenticators";
+import { AxiosError } from "axios";
 
 /**
  * Proptypes for the connection edit component.
@@ -157,6 +160,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         ["data-testid"]: testId
     } = props;
 
+    const dispatch: Dispatch = useDispatch();
+
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
@@ -172,9 +177,11 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const [ isTrustedTokenIssuer, setIsTrustedTokenIssuer ] = useState<boolean>(false);
     const [ isExpertMode, setIsExpertMode ] = useState<boolean>(false);
     const [ isCustomAuthenticator, setIsCustomAuthenticator ] = useState<boolean>(false);
-    const [ isCustomLocalAuthenticator, setIsCustomLocalAuthenticator ] = useState<boolean>(false);
+    const [ isCustomLocalAuthenticator, setIsCustomLocalAuthenticator ] = useState<boolean>(undefined);
     const [ endpointAuthenticationType, setEndpointAuthenticationType ] = useState<EndpointAuthenticationType>(null);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
+    const [ authenticatorEndpoint, setAuthenticatorEndpoint ] = useState<ExternalEndpoint>(null);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const hasApplicationReadPermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.read);
 
@@ -209,6 +216,75 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         }
     }, [ identityProvider ]);
 
+    useEffect(() => {
+        if (isCustomLocalAuthenticator === undefined) {
+            return;
+        }
+
+        let localAuthenticatorId: string;
+
+        if (isCustomLocalAuthenticator) {
+            localAuthenticatorId = (identityProvider as CustomAuthConnectionInterface)?.id;
+            getLocalAuthenticator(localAuthenticatorId)
+                .then((data: CustomAuthConnectionInterface) => {
+                    setAuthenticatorEndpoint(data?.endpoint[0]);
+                    // TODO: Check if it is expected to send the endpoint in an array
+                })
+                .catch((error: IdentityAppsApiException) => {
+                    if (error.response && error.response.data && error.response.data.description) {
+                        dispatch(
+                            addAlert({
+                                description: t("authenticationProvider:notifications.getIDP.error.description", {
+                                    description: error.response.data.description
+                                }),
+                                level: AlertLevels.ERROR,
+                                message: t("authenticationProvider:" + "notifications.getIDP.error.message")
+                            })
+                        );
+
+                        return;
+                    }
+
+                    dispatch(
+                        addAlert({
+                            description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
+                        })
+                    );
+                });
+        } else {
+            localAuthenticatorId = identityProvider?.federatedAuthenticators?.defaultAuthenticatorId;
+            getFederatedAuthenticatorDetails(identityProvider?.id, localAuthenticatorId)
+                .then((data: FederatedAuthenticatorListItemInterface) => {
+                    setAuthenticatorEndpoint(data?.endpoint);
+                })
+                .catch((error: IdentityAppsApiException) => {
+                    if (error.response && error.response.data && error.response.data.description) {
+                        dispatch(
+                            addAlert({
+                                description: t("authenticationProvider:notifications.getIDP.error.description", {
+                                    description: error.response.data.description
+                                }),
+                                level: AlertLevels.ERROR,
+                                message: t("authenticationProvider:" + "notifications.getIDP.error.message")
+                            })
+                        );
+
+                        return;
+                    }
+
+                    dispatch(
+                        addAlert({
+                            description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
+                        })
+                    );
+                });
+        }
+    }, [ isCustomLocalAuthenticator ]);
+
     /**
      * This wrapper function ensures that the user stays on the tab that
      * triggered the update after completion. Additionally, it invokes
@@ -231,14 +307,27 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         };
     };
 
-    const validateForm = (values: EndpointConfigFormPropertyInterface):
-        Partial<EndpointConfigFormPropertyInterface> => {
-
-        return validateEndpointAuthentication(values, {
-            authenticationType: endpointAuthenticationType,
-            isAuthenticationUpdateFormState: isAuthenticationUpdateFormState
-        }, t);
+    const validateForm = (
+        values: EndpointConfigFormPropertyInterface
+    ): Partial<EndpointConfigFormPropertyInterface> => {
+        return validateEndpointAuthentication(
+            values,
+            {
+                authenticationType: endpointAuthenticationType,
+                isAuthenticationUpdateFormState: isAuthenticationUpdateFormState
+            },
+            t
+        );
     };
+
+    const resolveDisplayName = (): string => {
+        if (isCustomLocalAuthenticator) {
+            return (identityProvider as CustomAuthConnectionInterface)?.displayName;
+        } else {
+            return (identityProvider as ConnectionInterface)?.name;
+        }
+    };
+
 
     const Loader = (): ReactElement => (
         <EmphasizedSegment padded>
@@ -303,11 +392,15 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         </ResourceTab.Pane>
     );
 
-    const handleCustomAuthSettingsForm = (values: EndpointConfigFormPropertyInterface) =>
-    {
-        const authProperties: Partial<EndpointConfigFormPropertyInterface> = {};
+    const CustomAuthenticatorSettingsTabPane = (): ReactElement => {
 
-        if (isAuthenticationUpdateFormState) {
+        const handleSubmit = (
+            values: EndpointConfigFormPropertyInterface,
+            changedFields: EndpointConfigFormPropertyInterface
+        ) => {
+
+            const authProperties: Partial<EndpointConfigFormPropertyInterface> = {};
+
             switch (values.authenticationType) {
                 case EndpointAuthenticationType.BASIC:
                     authProperties.usernameAuthProperty = values.usernameAuthProperty;
@@ -328,53 +421,119 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 default:
                     break;
             }
-        }
+
+            const updatingValues: EndpointAuthenticationUpdateInterface = {
+                displayName: resolveDisplayName(),
+
+                endpoint:
+                    isAuthenticationUpdateFormState || changedFields?.endpointUri
+                        ? {
+                            authentication: isAuthenticationUpdateFormState
+                                ? {
+                                    properties: authProperties,
+                                    type: values.authenticationType as EndpointAuthenticationType
+                                }
+                                : undefined,
+                            uri: changedFields?.endpointUri ? values.endpointUri : undefined
+                        }
+                        : undefined,
+
+                isEnabled: identityProvider.isEnabled
+            };
+
+            setIsSubmitting(true);
+
+            if (isCustomLocalAuthenticator) {
+                updateCustomAuthentication(identityProvider.id, updatingValues as CustomAuthConnectionInterface)
+                    .then(() => {
+                        dispatch(
+                            addAlert({
+                                description: t("authenticationProvider:notifications.updateIDP." +
+                                    "success.description"),
+                                level: AlertLevels.SUCCESS,
+                                message: t("authenticationProvider:notifications.updateIDP." + "success.message")
+                            })
+                        );
+                        onUpdate(identityProvider.id);
+                    })
+                    .catch((error: AxiosError) => {
+                        handleConnectionUpdateError(error);
+                    })
+                    .finally(() => {
+                        setIsSubmitting(false);
+                    });
+            } else {
+                updateIdentityProviderDetails({ id: identityProvider.id, ...updatingValues },
+                    identityProvider.idpIssuerName === undefined)
+                    .then(() => {
+                        dispatch(
+                            addAlert({
+                                description: t("authenticationProvider:notifications.updateIDP." +
+                                     "success.description"),
+                                level: AlertLevels.SUCCESS,
+                                message: t("authenticationProvider:notifications.updateIDP." + "success.message")
+                            })
+                        );
+                        onUpdate(identityProvider.id);
+                    })
+                    .catch((error: AxiosError) => {
+                        handleConnectionUpdateError(error);
+                    })
+                    .finally(() => {
+                        setIsSubmitting(false);
+                    });
+            }
+        };
+
+        return(
+            <div className="custom-authentication-create-wizard">
+                <FinalForm
+                    onSubmit={ (values: EndpointConfigFormPropertyInterface, form: any) => {
+                        handleSubmit(values, form.getState().dirtyFields); }
+                    }
+                    initialValues={ {
+                        displayName: resolveDisplayName(),
+                        endpoint: authenticatorEndpoint,
+                        isEnabled: identityProvider?.isEnabled
+                    } }
+                    validate={ validateForm }
+                    render={ ({ handleSubmit }: FormRenderProps) => (
+                        <form onSubmit={ handleSubmit }>
+                            <EmphasizedSegment
+                                className="form-wrapper"
+                                padded={ "very" }
+                                data-componentid={ `${testId}-section` }
+                            >
+                                <div className="form-container with-max-width">
+                                    <ActionEndpointConfigForm
+                                        initialValues={ null }
+                                        isCreateFormState={ false }
+                                        onAuthenticationTypeChange={ onAuthenticationTypeChange }
+                                    />
+                                    { !isLoading && (
+                                        <Button
+                                            size="medium"
+                                            variant="contained"
+                                            onClick={ handleSubmit }
+                                            className={ "button-container" }
+                                            data-componentid={ `${testId}-primary-button` }
+                                        >
+                                            { t("actions:buttons.update") }
+                                        </Button>
+                                    ) }
+                                </div>
+                            </EmphasizedSegment>
+                        </form>
+                    ) }
+                ></FinalForm>
+            </div>
+        );
     };
 
-    const CustomAuthenticatorSettingsTabPane = (): ReactElement => (
-        <div className="custom-authentication-create-wizard">
-            <FinalForm
-                onSubmit={ (values: EndpointConfigFormPropertyInterface) => {
-                    handleCustomAuthSettingsForm(values); }
-                }
-                validate={ validateForm }
-                render={ ({ handleSubmit }: FormRenderProps) => (
-                    <form onSubmit={ handleSubmit }>
-                        <EmphasizedSegment
-                            className="form-wrapper"
-                            padded={ "very" }
-                            data-componentid={ `${ testId }-section` }
-                        >
-                            <div className="form-container with-max-width">
-                                <ActionEndpointConfigForm
-                                    initialValues={ null }
-                                    isCreateFormState={ false }
-                                    onAuthenticationTypeChange={ onAuthenticationTypeChange }
-                                />
-                                { !isLoading && (
-                                    <Button
-                                        size="medium"
-                                        variant="contained"
-                                        onClick={ handleSubmit }
-                                        className={ "button-container" }
-                                        data-componentid={ `${ testId }-primary-button` }
-                                    >
-                                        {
-                                            t("actions:buttons.update")
-                                        }
-                                    </Button>
-                                ) }
-                            </div>
-                        </EmphasizedSegment>
-                    </form>
-                ) }
-            >
-            </FinalForm>
-        </div>
-    );
-
     const AuthenticatorSettingsTabPane = (): ReactElement =>
-        isCustomAuthenticator ? CustomAuthenticatorSettingsTabPane() : (
+        isCustomAuthenticator ? (
+            CustomAuthenticatorSettingsTabPane()
+        ) : (
             <ResourceTab.Pane controlledSegmentation>
                 <AuthenticatorSettings
                     connectionSettingsMetaData={ connectionSettingsMetaData }
@@ -467,7 +626,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         );
         setIsCustomLocalAuthenticator(
             type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATION ||
-            type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATION
+                type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATION
         );
     }, [ type ]);
 
@@ -560,8 +719,11 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
         }
 
-        if (shouldShowTab(type, ConnectionTabTypes.CONNECTED_APPS) && hasApplicationReadPermissions &&
-            !isCustomLocalAuthenticator) {
+        if (
+            shouldShowTab(type, ConnectionTabTypes.CONNECTED_APPS) &&
+            hasApplicationReadPermissions &&
+            !isCustomLocalAuthenticator
+        ) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.CONNECTED_APPS,
                 menuItem: "Connected Apps",
