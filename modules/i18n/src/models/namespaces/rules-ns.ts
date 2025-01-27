@@ -23,8 +23,13 @@ export interface rulesNS {
         newRule: string;
         or: string;
     };
+    fields: {
+        autocomplete: {
+            moreItemsMessage: string;
+        }
+    };
     texts: {
         execute: string;
         if: string;
-    }
+    };
 }

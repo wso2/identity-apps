@@ -29,9 +29,9 @@ import TextField from "@oxygen-ui/react/TextField";
 import { MinusIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import debounce from "lodash-es/debounce";
-import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { ChangeEvent, Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import useGetResourcesList from "../api/use-get-resource-list";
+import useGetResourceDetails from "../api/use-get-resource-details";
 import { useRulesContext } from "../hooks/use-rules-context";
 import {
     ConditionExpressionMetaInterface,
@@ -52,10 +52,19 @@ import {
  * Value input autocomplete props interface.
  */
 interface ValueInputAutocompleteProps {
-    localValue: string;
+    valueReferenceAttribute: string;
+    valueDisplayAttribute: string;
     resourceType: string;
     initialResourcesLoadUrl: string;
     filterBaseResourcesUrl: string;
+}
+
+/**
+ * Value input autocomplete options interface.
+ */
+interface ValueInputAutocompleteOptionsInterface {
+    id: string;
+    label: string;
 }
 
 /**
@@ -100,6 +109,37 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
     const { t } = useTranslation();
 
     /**
+     * Debounced function to handle the change of the condition expression.
+     *
+     * @param changedValue - Changed value.
+     * @param ruleId - Rule id.
+     * @param conditionId - Condition id.
+     * @param expressionId - Expression id.
+     * @param fieldName - Field name.
+     * @returns Debounced function.
+     */
+    const handleExpressionChangeDebounced: (
+        changedValue: string,
+        ruleId: string,
+        conditionId: string,
+        expressionId: string,
+        fieldName: ExpressionFieldTypes,
+        isUserOnChange: boolean
+    ) => void = debounce(
+        (
+            changedValue: string,
+            ruleId: string,
+            conditionId: string,
+            expressionId: string,
+            fieldName: ExpressionFieldTypes,
+            isUserOnChange: boolean
+        ) => {
+            updateConditionExpression(changedValue, ruleId, conditionId, expressionId, fieldName, isUserOnChange);
+        },
+        300
+    );
+
+    /**
      * Rule expression component to recursive render.
      *
      * @param props - Props injected to the component.
@@ -123,35 +163,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         );
 
         /**
-         * Debounced function to handle the change of the condition expression.
-         *
-         * @param changedValue - Changed value.
-         * @param ruleId - Rule id.
-         * @param conditionId - Condition id.
-         * @param expressionId - Expression id.
-         * @param fieldName - Field name.
-         * @returns Debounced function.
-         */
-        const handleExpressionChangeDebounced: (
-            changedValue: string,
-            ruleId: string,
-            conditionId: string,
-            expressionId: string,
-            fieldName: ExpressionFieldTypes
-        ) => void = debounce(
-            (
-                changedValue: string,
-                ruleId: string,
-                conditionId: string,
-                expressionId: string,
-                fieldName: ExpressionFieldTypes
-            ) => {
-                updateConditionExpression(changedValue, ruleId, conditionId, expressionId, fieldName);
-            },
-            300
-        );
-
-        /**
          * Value input autocomplete component.
          *
          * @param metaValue - Meta value.
@@ -159,69 +170,111 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
          * @returns Value input autocomplete component.
          */
         const ValueInputAutocomplete: FunctionComponent<ValueInputAutocompleteProps> = ({
-            localValue,
+            valueReferenceAttribute,
+            valueDisplayAttribute,
             resourceType,
             initialResourcesLoadUrl,
             filterBaseResourcesUrl
         }: ValueInputAutocompleteProps) => {
-            const [ inputValue, setInputValue ] = useState<string>(localValue);
+            const [ inputValue, setInputValue ] = useState<string>(null);
+            const [ inputValueLabel, setInputValueLabel ] = useState<string>(null);
             const [ options, setOptions ] = useState([]);
             const [ open, setOpen ] = useState<boolean>(false);
 
-            const filterUrl: string = inputValue ?
-                filterBaseResourcesUrl?.replace("*", inputValue) : initialResourcesLoadUrl;
-            const { data: initialResources = [], isLoading: isInitialLoading } = useGetResourcesList(
-                initialResourcesLoadUrl
-            );
-            const { data: filteredResources = [], isLoading: isFiltering } = useGetResourcesList(filterUrl);
+            const filterUrl: string = inputValueLabel
+                ? filterBaseResourcesUrl?.replace("filter=", `filter=name+sw+${inputValueLabel}`)
+                : initialResourcesLoadUrl;
+
+            const { data: initialResources = [], isLoading: isInitialLoading } =
+                useGetResourceDetails(initialResourcesLoadUrl);
+            const { data: filteredResources = [], isLoading: isFiltering } = useGetResourceDetails(filterUrl);
+            const { data: resourceDetails, isLoading: isResourceDetailsLoading } =
+                useGetResourceDetails(`/${resourceType}/${expression.value}`);
 
             useEffect(() => {
-                if (inputValue && filterUrl) {
+                if (resourceDetails) {
+                    setInputValue(resourceDetails[valueReferenceAttribute]);
+                    setInputValueLabel(resourceDetails[valueDisplayAttribute]);
+                }
+            }, [ expression.value, isResourceDetailsLoading ]);
+
+            useEffect(() => {
+                if (inputValueLabel && filterUrl) {
                     if (filteredResources && Array.isArray(filteredResources[resourceType])) {
-                        setOptions(filteredResources[resourceType]);
+                        const filteredOptions: any[] = filteredResources[resourceType].map((resource: any) => ({
+                            id: resource[valueReferenceAttribute],
+                            label: resource[valueDisplayAttribute]
+                        }));
+
+                        setOptions(filteredOptions);
                     }
                 } else {
                     if (initialResources && Array.isArray(initialResources[resourceType])) {
-                        setOptions(initialResources[resourceType]);
+                        const initialOptions: any[] = initialResources[resourceType].map((resource: any) => ({
+                            id: resource[valueReferenceAttribute],
+                            label: resource[valueDisplayAttribute]
+                        }));
+
+                        setOptions(initialOptions);
                     }
                 }
-            }, [ inputValue, initialResources, filteredResources, filterUrl ]);
+            }, [ inputValueLabel, initialResources, filteredResources, filterUrl ]);
+
+            const hasMoreItems: boolean = filteredResources?.totalResults > filteredResources?.count;
 
             return (
                 <Autocomplete
                     open={ open }
                     onOpen={ () => setOpen(true) }
                     onClose={ () => setOpen(false) }
-                    options={ options || [] }
-                    getOptionLabel={ (option: { name: string }) => option.name || "" }
-                    loading={ isInitialLoading || isFiltering }
-                    value={
-                        (options || []).some((option: { id: string }) => option.id === inputValue)
-                            ? options.find((option: { id: string }) => option.id === inputValue)
-                            : null
+                    options={
+                        hasMoreItems
+                            ? [ ...options, {
+                                id: "more-items",
+                                isDisabled: true,
+                                label: t("rules:fields.autocomplete.moreItemsMessage")
+                            } ]
+                            : options  || []
                     }
-                    onChange={ (event: React.SyntheticEvent, value: { id: string; name: string } | null) => {
+                    getOptionLabel={ (option: ValueInputAutocompleteOptionsInterface) => option.label || "" }
+                    value={ resourceDetails ? { id: inputValue, label: inputValueLabel } : null }
+                    isOptionEqualToValue={ (
+                        option: ValueInputAutocompleteOptionsInterface,
+                        value: ValueInputAutocompleteOptionsInterface
+                    ) =>
+                        value?.id && option.id === value.id
+                    }
+                    loading={ isInitialLoading || isFiltering || isResourceDetailsLoading }
+                    onChange={ (e: any, value: any) => {
+                        if (value?.isDisabled) {
+                            // Prevent selection of the disabled option
+                            return;
+                        }
                         if (value) {
                             handleExpressionChangeDebounced(
                                 value.id,
                                 ruleId,
                                 conditionId,
                                 expression.id,
-                                ExpressionFieldTypes.Value
+                                ExpressionFieldTypes.Value,
+                                true
                             );
                         }
                     } }
-                    onInputChange={ (event: React.ChangeEvent, value: string) => setInputValue(value) }
+                    inputValue={ inputValueLabel }
+                    onInputChange={ (event: ChangeEvent, value: string) => {
+                        setInputValueLabel(value);
+                    } }
                     renderInput={ (params: any) => (
                         <TextField
                             { ...params }
                             variant="outlined"
-                            value={ inputValue }
+                            value={ inputValueLabel }
                             InputProps={ {
                                 ...params.InputProps,
                                 endAdornment: (
                                     <>
-                                        { isInitialLoading || isFiltering ? (
+                                        { isInitialLoading || isFiltering || isResourceDetailsLoading ? (
                                             <CircularProgress color="inherit" size={ 20 } />
                                         ) : null }
                                         { params.InputProps.endAdornment }
@@ -230,11 +283,32 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             } }
                         />
                     ) }
-                    renderOption={ (props: any, option: { name: string; id: string }) => (
-                        <li { ...props } key={ option.id }>
-                            { option.name }
-                        </li>
-                    ) }
+                    renderOption={ (props: any, option: { label: string; id: string, isDisabled: boolean }) => {
+                        if (option.id === "more-items") {
+                            return (
+                                <li
+                                    { ...props }
+                                    // TODO: Check the issue why className is not working.
+                                    // And move styles to a css file.
+                                    style={ {
+                                        color: "#666666",
+                                        fontStyle: "italic",
+                                        padding: "12px 15px 5px",
+                                        pointerEvents: option.isDisabled ? "none" : "auto"
+                                    } }
+                                    key={ option.id }
+                                >
+                                    { option.label }
+                                </li>
+                            );
+                        }
+
+                        return (
+                            <li { ...props }>
+                                { option.label }
+                            </li>
+                        );
+                    } }
                 />
             );
         };
@@ -247,27 +321,43 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         const ResourceListSelect: FunctionComponent<ResourceListSelectProps> = (props: any) => {
             const { initialResourcesLoadUrl, filterBaseResourcesUrl } = props;
 
+            const valueReferenceAttribute: string = findMetaValuesAgainst?.value?.valueReferenceAttribute || "id";
+            const valueDisplayAttribute: string = findMetaValuesAgainst?.value?.valueDisplayAttribute || "name";
+
+            const { data: fetchedResourcesList } = useGetResourceDetails(initialResourcesLoadUrl);
+
             let resourcesList: any = null;
             let resourceType: string = "";
-
-            const { data: fetchedResourcesList } = useGetResourcesList(initialResourcesLoadUrl);
 
             // Determine resourcesList if it's needed
             if (findMetaValuesAgainst?.value?.links?.length > 1 && fetchedResourcesList) {
                 resourcesList = fetchedResourcesList;
             }
 
-            // TODO: Handle other resource types once the API is ready
+            // TODO: Handle other resource types once the API updates with the required data.
             if (expression.field === "application") {
                 resourceType = "applications";
             }
 
             if (resourcesList) {
-                if (resourcesList.count > 10) {
+                // Set first value of the list if option is empty
+                if (expression.value === "") {
+                    updateConditionExpression(
+                        resourcesList[resourceType][0]?.id,
+                        ruleId,
+                        conditionId,
+                        expression.id,
+                        ExpressionFieldTypes.Value,
+                        false
+                    );
+                }
+
+                if (resourcesList.totalResults > resourcesList.count) {
                     return (
                         <ValueInputAutocomplete
-                            localValue={ expression.value }
                             resourceType={ resourceType }
+                            valueReferenceAttribute={ valueReferenceAttribute }
+                            valueDisplayAttribute={ valueDisplayAttribute }
                             initialResourcesLoadUrl={ initialResourcesLoadUrl }
                             filterBaseResourcesUrl={ filterBaseResourcesUrl }
                         />
@@ -283,13 +373,14 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 ruleId,
                                 conditionId,
                                 expression.id,
-                                ExpressionFieldTypes.Value
+                                ExpressionFieldTypes.Value,
+                                true
                             );
                         } }
                     >
-                        { resourcesList[resourceType]?.map((item: any, index: number) => (
-                            <MenuItem value={ item.id } key={ `${expression.id}-${index}` }>
-                                { item.name }
+                        { resourcesList[resourceType]?.map((resource: any, index: number) => (
+                            <MenuItem value={ resource[valueReferenceAttribute] } key={ `${expression.id}-${index}` }>
+                                { resource[valueDisplayAttribute] }
                             </MenuItem>
                         )) }
                     </Select>
@@ -316,7 +407,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 ruleId,
                                 conditionId,
                                 expression.id,
-                                ExpressionFieldTypes.Value
+                                ExpressionFieldTypes.Value,
+                                true
                             );
                         } }
                     />
@@ -325,6 +417,19 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
             if (metaValue?.inputType === "options") {
                 if (metaValue?.values?.length > 1) {
+
+                    // Set first value of the list if option is empty
+                    if (expression.value === "") {
+                        updateConditionExpression(
+                            metaValue?.values[0].name,
+                            ruleId,
+                            conditionId,
+                            expression.id,
+                            ExpressionFieldTypes.Value,
+                            false
+                        );
+                    }
+
                     return (
                         <Select
                             value={ expression.value }
@@ -334,7 +439,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                     ruleId,
                                     conditionId,
                                     expression.id,
-                                    ExpressionFieldTypes.Value
+                                    ExpressionFieldTypes.Value,
+                                    true
                                 );
                             } }
                         >
@@ -389,14 +495,16 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 ruleId,
                                 conditionId,
                                 expression.id,
-                                ExpressionFieldTypes.Field
+                                ExpressionFieldTypes.Field,
+                                true
                             );
                             updateConditionExpression(
                                 "",
                                 ruleId,
                                 conditionId,
                                 expression.id,
-                                ExpressionFieldTypes.Value
+                                ExpressionFieldTypes.Value,
+                                true
                             );
                         } }
                     >
@@ -416,7 +524,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 ruleId,
                                 conditionId,
                                 expression.id,
-                                ExpressionFieldTypes.Operator
+                                ExpressionFieldTypes.Operator,
+                                true
                             );
                         } }
                     >
