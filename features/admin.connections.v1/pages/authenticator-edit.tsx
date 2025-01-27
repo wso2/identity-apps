@@ -42,9 +42,12 @@ import { getLocalAuthenticator } from "../api/authenticators";
 import { useGetConnectionTemplate } from "../api/connections";
 import { EditConnection } from "../components/edit/connection-edit";
 import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
+import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import { AuthenticatorLabels } from "../models/authenticators";
 import { CustomAuthConnectionInterface } from "../models/connection";
+import { ConnectionsManagementUtils } from "../utils/connection-utils";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 
 /**
  * Proptypes for the Custom Local Authenticator edit page component.
@@ -69,7 +72,8 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
     const { CONNECTION_TEMPLATE_IDS: ConnectionTemplateIds } = CommonAuthenticatorConstants;
 
     const [ connector, setConnector ] = useState<CustomAuthConnectionInterface>(undefined);
-    const [ isConnectorDetailsFetchRequestLoading, setConnectorDetailFetchRequestLoading ] = useState<boolean>(undefined);
+    const [ isConnectorDetailsFetchRequestLoading, setConnectorDetailFetchRequestLoading ] =
+        useState<boolean>(undefined);
     const [ tabIdentifier, setTabIdentifier ] = useState<string>();
     const [ isAutomaticTabRedirectionEnabled, setIsAutomaticTabRedirectionEnabled ] = useState<boolean>(false);
     const [ shouldFetchConnectionTemplate, setShouldFetchConnectionTemplate ] = useState<boolean>(false);
@@ -88,6 +92,10 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
     const hasApplicationTemplateViewPermissions: boolean = useRequiredScopes(applicationsFeatureConfig?.scopes?.read);
 
     const { data: template } = useGetConnectionTemplate(templateId, shouldFetchConnectionTemplate);
+
+    const { UIConfig } = useUIConfig();
+
+    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     useEffect(() => {
         if (!connector) {
@@ -196,7 +204,6 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
             });
     };
 
-
     const resolveConnectorImage = (connector: CustomAuthConnectionInterface): ReactElement => {
         if (!connector) {
             return;
@@ -206,13 +213,14 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
             <AppAvatar
                 hoverable={ false }
                 name={ connector?.displayName }
-                image={ AuthenticatorMeta.getAuthenticatorIcon(
-                    connector?.image
+                image={ ConnectionsManagementUtils.resolveConnectionResourcePath(
+                    connectionResourcesUrl,
+                    ConnectionUIConstants.CUSTOM_LOCAL_AUTHENTICATOR_IMAGE_URI
                 ) }
                 size="tiny"
             />
         );
-    }
+    };
 
     /**
      * Handles the back button click event.

@@ -62,6 +62,7 @@ import {
     getConnectedApps
 } from "../api/connections";
 import { getConnectionIcons } from "../configs/ui";
+import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
     AuthenticatorCategories,
@@ -74,7 +75,8 @@ import {
     ConnectedAppInterface,
     ConnectedAppsInterface,
     ConnectionInterface,
-    ConnectionTypes
+    ConnectionTypes,
+    CustomAuthConnectionInterface
 } from "../models/connection";
 import { ConnectionsManagementUtils, handleConnectionDeleteError } from "../utils/connection-utils";
 
@@ -174,7 +176,6 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     ] = useState<boolean>(false);
     const [ isConnectedAppsLoading, setIsConnectedAppsLoading ] = useState<boolean>(true);
     const [ isCustomAuth, setIsCustomAuth ] = useState<boolean>(false);
-    const [ isCustomLocalAuth, setIsCustomLocalAuth ] = useState<boolean>(undefined);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
@@ -210,7 +211,6 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
             case AuthenticatorCategories.LOCAL:
                 if (isCustom) {
-                    setIsCustomLocalAuth(true);
                     history.push(AppConstants.getPaths().get("AUTH_EDIT").replace(":id", id));
                 } else {
                     history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", id));
@@ -312,9 +312,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             });
     };
 
-    const isCustomLocalAuthenticator = (): boolean => {
-        return ConnectionsManagementUtils.IsCustomAuthenticator(deletingIDP) &&
-        deletingIDP?.type === AuthenticatorTypes.LOCAL;
+    const isCustomLocalAuthenticator = (idp: ConnectionInterface): boolean => {
+        return ConnectionsManagementUtils.IsCustomAuthenticator(idp) &&
+        idp?.type === AuthenticatorTypes.LOCAL;
     };
 
     /**
@@ -331,7 +331,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
         if(connectionType === ConnectionTypes.IDVP) {
             deleteCustomAuth = deleteIdentityVerificationProvider;
-        } else if (isCustomLocalAuthenticator()) {
+        } else if (isCustomLocalAuthenticator(deletingIDP)) {
             deleteCustomAuth = deleteCustomAuthentication;
         } else {
             deleteCustomAuth = deleteConnection;
@@ -481,7 +481,26 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             );
         }
 
+        if (ConnectionsManagementUtils.IsCustomAuthenticator(connection)) {
+            return ConnectionsManagementUtils.resolveConnectionResourcePath(
+                connectionResourcesUrl,
+                ConnectionUIConstants.CUSTOM_LOCAL_AUTHENTICATOR_IMAGE_URI
+            );
+        }
+
         return AuthenticatorMeta.getAuthenticatorIcon(connection?.id);
+    };
+
+    const resolveAuthenticatorDescription = (authenticator: ConnectionInterface, isIdP: boolean): string => {
+        if (isCustomLocalAuthenticator(authenticator as CustomAuthConnectionInterface)) {
+            return authenticator.description;
+        }
+
+        return !isEmpty(authenticator.description)
+            ? authenticator?.description?.replaceAll("{{productName}}", productName)
+            : !isIdP
+                ? AuthenticatorMeta.getAuthenticatorDescription(authenticator.id)
+                : "";
     };
 
     return (
@@ -557,13 +576,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                                 : authenticator.id
                                         )
                                     }
-                                    resourceDescription={
-                                        !isEmpty(authenticator.description)
-                                            ? authenticator?.description?.replaceAll("{{productName}}", productName)
-                                            : !isIdP
-                                                ? AuthenticatorMeta.getAuthenticatorDescription(authenticator.id)
-                                                : ""
-                                    }
+                                    resourceDescription={ resolveAuthenticatorDescription(authenticator, isIdP) }
                                     resourceDocumentationLink = { null }
                                     resourceImage={ resolveResourceImage(authenticator, isIdP, isOrganizationSSOIDP) }
                                     tags={ (authenticator as AuthenticatorInterface).tags }
