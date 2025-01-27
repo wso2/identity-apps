@@ -369,8 +369,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     useEffect(() => {
 
         const getDisplayOrder = (schema: ProfileSchema): number => {
-            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE && !schema.displayOrder) return 6;
-            if (schema.name === MOBILE_NUMBERS_ATTRIBUTE && !schema.displayOrder) return 7;
+            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
+                && (!schema.displayOrder || schema.displayOrder == "0")) return 6;
+            if (schema.name === MOBILE_NUMBERS_ATTRIBUTE
+                && (!schema.displayOrder || schema.displayOrder == "0")) return 7;
 
             return schema.displayOrder ? parseInt(schema.displayOrder, 10) : -1;
         };
@@ -1595,11 +1597,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                             <TableCell align="left">
                                                 <div className="table-c1">
                                                     <Typography
-                                                        className={ `c1-value ${
-                                                            schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                                                                ? "mobile-label"
-                                                                : null}`
-                                                        }
+                                                        className="c1-value"
                                                         data-componentid={
                                                             `${testId}-editing-section-${
                                                                 schema.name.replace(".", "-")
@@ -2034,10 +2032,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             return (
                 <div className="dropdown-row">
                     <Typography
-                        className={ `dropdown-label ${schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                            ? "mobile-label"
-                            : null}`
-                        }
+                        className="dropdown-label"
                         data-componentid={ `${testId}-readonly-section-${schema.name.replace(".", "-")}-value-${index}`
                         }
                     >
