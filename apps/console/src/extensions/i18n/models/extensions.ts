@@ -2896,10 +2896,13 @@ export interface Extensions {
                             enable: FormAttributes;
                             maxFailedAttempts: FormAttributes;
                             notifyUserOnAccountLockIncrement: FormAttributes;
+                            lockAccountForSpecifiedTime: FormAttributes;
+                            lockAccountIndefiniteTime: FormAttributes;
                         };
                     };
                     info: string;
                     connectorDescription: string;
+                    accountLockDurationHeading: string;
                     heading: string;
                     notification: {
                         error: NotificationItem;

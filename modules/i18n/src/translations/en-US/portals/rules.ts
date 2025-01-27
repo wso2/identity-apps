@@ -25,6 +25,11 @@ export const rules: rulesNS = {
         newRule: "New Rule",
         or: "Or"
     },
+    fields: {
+        autocomplete: {
+            moreItemsMessage: "Only the recent resources are listed. Type to search for others ..."
+        }
+    },
     texts: {
         execute: "Execute",
         if: "If"
