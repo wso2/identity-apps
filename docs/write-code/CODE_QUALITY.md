@@ -87,6 +87,45 @@ const MyComponent = () => {
 
 ## Avoid using semantic UI classes as much as possible.
 
+We are moving away from Semantic UI in favor of Oxygen UI. As part of this transition, new components should avoid using Semantic UI classes to prevent future issues and maintain consistency with the evolving UI framework.
+
+**Why:**
+
+- Using Semantic UI classes in new components introduces technical debt.
+- Keeping the codebase consistent with Oxygen UI ensures future-proof development.
+
+**What to do:**
+
+Use Oxygen UI components and classes for new components to ensure consistency and future-proof development.
+
+**Example:**
+
+Recommended:
+
+```jsx
+import Button from "@oxygen-ui/react/Button";
+
+const MyComponent = () => {
+    return (
+       <Button
+         className="primary-button"
+         variant="outlined"
+       >
+         Click Me
+       </Button>);
+};
+```
+
+Avoid:
+
+```jsx
+import { Button } from "semantic-ui-react"
+
+const MyComponent = () => {
+    return <button className="ui button primary">Click Me</button>;
+};
+```
+
 ## Avoid using named exports. Use default exports instead
 
 ## Use ReactFinalForm instead of modules/form or modules/forms when implementing new forms.
