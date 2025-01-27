@@ -97,7 +97,8 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
     const [ connector, setConnector ] = useState<
         ConnectionInterface | MultiFactorAuthenticatorInterface | AuthenticatorInterface
     >(undefined);
-    const [ isConnectorDetailsFetchRequestLoading, setConnectorDetailFetchRequestLoading ] = useState<boolean>(undefined);
+    const [ isConnectorDetailsFetchRequestLoading, setConnectorDetailFetchRequestLoading ] =
+        useState<boolean>(undefined);
     const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.applications
     );
@@ -614,7 +615,8 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return (
                 <Fragment>
                     { connector.name }
-                    { isConnectorDetailsFetchRequestLoading === false && connector.name && resolveStatusLabel(connector) }
+                    { isConnectorDetailsFetchRequestLoading === false && connector.name &&
+                        resolveStatusLabel(connector) }
                 </Fragment>
             );
         }

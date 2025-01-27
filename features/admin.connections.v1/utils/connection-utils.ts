@@ -35,7 +35,6 @@ import {
     ConnectionListResponseInterface,
     ConnectionTabTypes,
     CustomAuthConnectionInterface,
-    CustomLocalAuthenticationType,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
     OutboundProvisioningConnectorInterface,

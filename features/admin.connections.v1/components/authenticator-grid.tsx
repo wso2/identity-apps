@@ -175,7 +175,6 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         setShowDeleteErrorDueToConnectedAppsModal
     ] = useState<boolean>(false);
     const [ isConnectedAppsLoading, setIsConnectedAppsLoading ] = useState<boolean>(true);
-    const [ isCustomAuth, setIsCustomAuth ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);

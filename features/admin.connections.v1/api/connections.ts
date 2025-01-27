@@ -157,7 +157,7 @@ export const updateCustomAuthentication = (
  * @param id - ID of the custom authentication
  */
 export const deleteCustomAuthentication = (
-    id: string,
+    id: string
 ): Promise<AxiosResponse<CustomAuthConnectionInterface>> => {
 
     const requestConfig: AxiosRequestConfig = {

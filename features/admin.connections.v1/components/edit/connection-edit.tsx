@@ -19,6 +19,7 @@
 import Button from "@oxygen-ui/react/Button";
 import { useRequiredScopes } from "@wso2is/access-control";
 import ActionEndpointConfigForm from "@wso2is/admin.actions.v1/components/action-endpoint-config-form";
+import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
@@ -28,6 +29,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormRenderProps } from "@wso2is/form";
 import { ContentLoader, EmphasizedSegment, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, lazy, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,6 +45,9 @@ import {
     OutboundProvisioningSettings
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
+import { getLocalAuthenticator } from "../../api/authenticators";
+import { getFederatedAuthenticatorDetails, updateCustomAuthentication, updateFederatedAuthenticator }
+    from "../../api/connections";
 import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import { FederatedAuthenticatorConstants } from "../../constants/federated-authenticator-constants";
@@ -54,7 +59,6 @@ import {
     CustomAuthConnectionInterface,
     EndpointAuthenticationType,
     EndpointAuthenticationUpdateInterface,
-    ExternalEndpoint,
     FederatedAuthenticatorListItemInterface,
     ImplicitAssociaionConfigInterface
 } from "../../models/connection";
@@ -62,10 +66,6 @@ import { isProvisioningAttributesEnabled } from "../../utils/attribute-utils";
 import { ConnectionsManagementUtils, handleConnectionUpdateError } from "../../utils/connection-utils";
 import { validateEndpointAuthentication } from "../../utils/form-field-utils";
 import "./connection-edit.scss";
-import { getFederatedAuthenticatorDetails, updateCustomAuthentication, updateFederatedAuthenticator, updateIdentityProviderDetails } from "../../api/connections";
-import { getLocalAuthenticator } from "../../api/authenticators";
-import { AxiosError } from "axios";
-import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 
 /**
  * Proptypes for the connection edit component.
@@ -182,7 +182,6 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const [ endpointAuthenticationType, setEndpointAuthenticationType ] = useState<EndpointAuthenticationType>(null);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
     const [ authenticatorEndpoint, setAuthenticatorEndpoint ] = useState<EndpointConfigFormPropertyInterface>(null);
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const hasApplicationReadPermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.read);
 
@@ -473,7 +472,6 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                     })
                     .finally(() => {
                         getCustomLocalAuthenticator(identityProvider.id);
-                        setIsSubmitting(false);
                     });
             } else {
                 const federatedAuthenticatorId: string = identityProvider?.federatedAuthenticators?.
@@ -530,7 +528,6 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                     })
                     .finally(() => {
                         getCustomFederatedAuthenticator(federatedAuthenticatorId);
-                        setIsSubmitting(false);
                     });
             }
         };

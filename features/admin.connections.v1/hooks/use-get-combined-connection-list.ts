@@ -28,8 +28,8 @@ import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import { useGetAuthenticators } from "../api/authenticators";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
-import { AuthenticatorLabels, AuthenticatorTypes } from "../models/authenticators";
-import { ConnectionInterface, ConnectionTypes, CustomAuthConnectionInterface } from "../models/connection";
+import { AuthenticatorTypes } from "../models/authenticators";
+import { ConnectionInterface, ConnectionTypes } from "../models/connection";
 import { ConnectionsManagementUtils } from "../utils/connection-utils";
 
 /**

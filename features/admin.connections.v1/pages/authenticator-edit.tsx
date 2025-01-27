@@ -19,6 +19,7 @@
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import { ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import ExtensionTemplatesProvider from "@wso2is/admin.template-core.v1/provider/extension-templates-provider";
@@ -47,7 +48,6 @@ import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import { AuthenticatorLabels } from "../models/authenticators";
 import { CustomAuthConnectionInterface } from "../models/connection";
 import { ConnectionsManagementUtils } from "../utils/connection-utils";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 
 /**
  * Proptypes for the Custom Local Authenticator edit page component.

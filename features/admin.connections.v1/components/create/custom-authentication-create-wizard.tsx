@@ -20,6 +20,7 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@oxygen-ui/react/Box";
 import Divider from "@oxygen-ui/react/Divider";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
+import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 import { AppConstants, EventPublisher, history } from "@wso2is/admin.core.v1";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components";
 import { IdentityAppsError } from "@wso2is/core/errors";
@@ -76,7 +77,6 @@ import {
 } from "../../models/connection";
 import { ConnectionsManagementUtils } from "../../utils/connection-utils";
 import "./custom-authentication-create-wizard.scss";
-import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 
 export interface CustomAuthenticationCreateWizardPropsInterface
     extends GenericConnectionCreateWizardPropsInterface,
@@ -1069,7 +1069,9 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             data-componentid={ `${_componentId}-modal` }
         >
             <ModalWithSidePanel.MainPanel>
-                <ModalWithSidePanel.Header className="wizard-header" data-componentid={ `${_componentId}-modal-header` }>
+                <ModalWithSidePanel.Header
+                    className="wizard-header"
+                    data-componentid={ `${_componentId}-modal-header` }>
                     <div className={ "display-flex" }>
                         <GenericIcon
                             icon={ ConnectionsManagementUtils.resolveConnectionResourcePath(
@@ -1102,6 +1104,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                         className="content-container"
                         data-componentid={ `${_componentId}-modal-content-2` }
                     >
+                        { alert && alertComponent }
                         <div className="custom-authentication-create-wizard">
                             <Wizard2
                                 ref={ wizardRef }
