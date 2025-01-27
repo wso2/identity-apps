@@ -1908,10 +1908,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         let primaryAttributeSchema: ProfileSchemaInterface;
         let maxAllowedLimit: number = 0;
 
-        const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
-        const resolvedRequiredValue: boolean = schema?.profiles?.console?.required ?? schema.required;
-        const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
-
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             attributeValueList = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
             verifiedAttributeValueList = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
@@ -1967,6 +1963,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             && verificationEnabled
             && !(verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
 
+        const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
+        const resolvedMultiValueAttributeRequiredValue: boolean
+            = schema?.profiles?.console?.required ?? schema.required;
+        const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
+        const resolvedPrimarySchemaRequiredValue: boolean
+            = primaryAttributeSchema?.profiles?.console?.required ?? primaryAttributeSchema?.required;
+        const resolvedRequiredValue: boolean = (resolvedMultiValueAttributeRequiredValue
+            || resolvedPrimarySchemaRequiredValue);
+
         return (
             <div key={ key }>
                 <Field
@@ -1989,8 +1994,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             : fieldName
                         )
                     }
-                    required={ resolvedRequiredValue }
-                    requiredErrorMessage={ fieldName + " " + "is required" }
+                    className={ resolvedRequiredValue ? "required-icon" : "" }
                     placeholder={ "Enter your" + " " + fieldName }
                     type="text"
                     readOnly={ (isUserManagedByParentOrg &&
@@ -1999,7 +2003,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
                     }
                     validation={ (value: string, validation: Validation) => {
-                        if (!RegExp(primaryAttributeSchema.regEx).test(value)) {
+                        if (!RegExp(primaryAttributeSchema?.regEx).test(value)) {
                             setIsMultiValuedItemInvalid({
                                 ...isMultiValuedItemInvalid,
                                 [schema.name]: true
@@ -2617,7 +2621,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 onSubmit={ (values: Map<string, string | string[]>) => handleSubmit(values) }
                                 onStaleChange={ (stale: boolean) => setIsFormStale(stale) }
                             >
-                                <Grid className="form-container with-max-width">
+                                <Grid className="user-profile-form form-container with-max-width">
                                     {
                                         user.id && (
                                             <Grid.Row columns={ 1 }>
