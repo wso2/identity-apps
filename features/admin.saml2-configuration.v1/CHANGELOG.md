@@ -1,5 +1,12 @@
 # @wso2is/admin.saml2-configuration.v1
 
+## 2.25.115
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.23
+
 ## 2.25.114
 
 ### Patch Changes
