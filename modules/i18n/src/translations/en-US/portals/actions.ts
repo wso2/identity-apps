@@ -343,7 +343,7 @@ export const actions: actionsNS = {
         },
         preRegistration: {
             description: {
-                expanded: "This action is executed before registering a user. " +
+                expanded: "This action is executed before registering a user." +
                 "Refer the documentation for the API definition to implement.",
                 shortened: "This action is executed before registering a user."
             },
@@ -351,8 +351,7 @@ export const actions: actionsNS = {
         },
         preUpdatePassword: {
             description: {
-                expanded: "This action is executed before updating the password of a user. " +
-                "Refer the documentation for the API definition to implement.",
+                expanded: "Use this action to validate the password of a user.",
                 shortened: "This action is executed before updating the password of a user."
             },
             heading: "Pre Update Password"
