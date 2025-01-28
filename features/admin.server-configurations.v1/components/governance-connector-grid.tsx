@@ -38,7 +38,9 @@ import {
     UserGearIcon,
     UserPlusIcon
 } from "@oxygen-ui/react-icons";
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
 import { FeatureFlagsInterface, IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";

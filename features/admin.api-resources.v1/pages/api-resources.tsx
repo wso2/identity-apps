@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AppState, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";

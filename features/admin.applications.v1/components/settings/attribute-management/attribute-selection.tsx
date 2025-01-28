@@ -17,14 +17,12 @@
  */
 
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
-import {
-    AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
-    EventPublisher,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {

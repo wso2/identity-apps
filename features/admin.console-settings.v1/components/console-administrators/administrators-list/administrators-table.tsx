@@ -18,19 +18,16 @@
 
 import Chip from "@oxygen-ui/react/Chip";
 import { useRequiredScopes } from "@wso2is/access-control";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    UserBasicInterface,
-    UserRoleInterface,
-    getEmptyPlaceholderIllustrations
-} from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
-import { UserListInterface } from "@wso2is/admin.users.v1/models";
+import { UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {

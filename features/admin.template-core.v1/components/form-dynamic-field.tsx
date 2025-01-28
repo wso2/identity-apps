@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getCertificateIllustrations } from "@wso2is/admin.core.v1";
+import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     CheckboxFieldAdapter,

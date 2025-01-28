@@ -1,5 +1,27 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.4.119
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.119
+  - @wso2is/admin.core.v1@2.37.27
+  - @wso2is/admin.feature-gate.v1@1.4.119
+  - @wso2is/admin.template-core.v1@1.5.73
+
+## 1.4.118
+
+### Patch Changes
+
+- [#7332](https://github.com/wso2/identity-apps/pull/7332) [`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove barrel files from @wso2is/admin.core.v1 module
+
+- Updated dependencies [[`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546)]:
+  - @wso2is/admin.template-core.v1@1.5.72
+  - @wso2is/admin.applications.v1@2.30.118
+  - @wso2is/admin.feature-gate.v1@1.4.118
+  - @wso2is/admin.core.v1@2.37.26
+
 ## 1.4.117
 
 ### Patch Changes

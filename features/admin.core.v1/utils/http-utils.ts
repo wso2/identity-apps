@@ -22,8 +22,8 @@ import { hideAJAXTopLoadingBar, showAJAXTopLoadingBar } from "@wso2is/core/store
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import { AxiosError } from "axios";
 import { EventPublisher } from "./event-publisher";
-import { AppConstants } from "../constants";
-import { history } from "../helpers";
+import { AppConstants } from "../constants/app-constants";
+import { history } from "../helpers/history";
 import { store } from "../store";
 
 /**

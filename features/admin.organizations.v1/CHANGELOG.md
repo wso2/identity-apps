@@ -1,5 +1,51 @@
 # @wso2is/admin.organizations.v1
 
+## 2.26.119
+
+### Patch Changes
+
+- [#7432](https://github.com/wso2/identity-apps/pull/7432) [`c9245493cf5b3ae0f02b13d85c3905223cfcb21d`](https://github.com/wso2/identity-apps/commit/c9245493cf5b3ae0f02b13d85c3905223cfcb21d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken imports
+
+- Updated dependencies [[`f86a9460f4cbeb73994bb6a24609744f037ad580`](https://github.com/wso2/identity-apps/commit/f86a9460f4cbeb73994bb6a24609744f037ad580)]:
+  - @wso2is/admin.connections.v1@2.33.2
+  - @wso2is/admin.extensions.v1@2.36.44
+  - @wso2is/admin.roles.v2@2.27.63
+  - @wso2is/admin.userstores.v1@2.26.78
+  - @wso2is/admin.applications.v1@2.30.119
+  - @wso2is/admin.authentication.v1@2.25.119
+  - @wso2is/admin.core.v1@2.37.27
+  - @wso2is/admin.groups.v1@2.27.29
+  - @wso2is/admin.identity-providers.v1@2.26.119
+  - @wso2is/admin.tenants.v1@2.28.93
+  - @wso2is/admin.users.v1@2.30.29
+
+## 2.26.118
+
+### Patch Changes
+
+- [#7332](https://github.com/wso2/identity-apps/pull/7332) [`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove barrel files from @wso2is/admin.core.v1 module
+
+* [#7428](https://github.com/wso2/identity-apps/pull/7428) [`1aa2273fe1f0a066f9623e6b2a25833f277be7f9`](https://github.com/wso2/identity-apps/commit/1aa2273fe1f0a066f9623e6b2a25833f277be7f9) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Fix search bar not being hidden when there are no organizations
+
+* Updated dependencies [[`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546)]:
+  - @wso2is/admin.identity-providers.v1@2.26.118
+  - @wso2is/admin.authentication.v1@2.25.118
+  - @wso2is/admin.authorization.v1@2.25.53
+  - @wso2is/admin.applications.v1@2.30.118
+  - @wso2is/admin.connections.v1@2.33.1
+  - @wso2is/admin.extensions.v1@2.36.43
+  - @wso2is/admin.userstores.v1@2.26.77
+  - @wso2is/admin.tenants.v1@2.28.92
+  - @wso2is/admin.groups.v1@2.27.28
+  - @wso2is/react-components@2.9.1
+  - @wso2is/admin.roles.v2@2.27.62
+  - @wso2is/admin.users.v1@2.30.28
+  - @wso2is/admin.core.v1@2.37.26
+  - @wso2is/dynamic-forms@2.4.29
+  - @wso2is/theme@2.6.4
+  - @wso2is/form@2.6.22
+  - @wso2is/i18n@2.18.2
+
 ## 2.26.117
 
 ### Patch Changes

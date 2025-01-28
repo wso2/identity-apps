@@ -17,14 +17,12 @@
  */
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui"; // No specific rule found
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";

@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { EventPublisher } from "@wso2is/admin.core.v1";
-import { Config } from "@wso2is/admin.core.v1/configs";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import {

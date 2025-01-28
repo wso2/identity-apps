@@ -18,7 +18,8 @@
 
 import { Show } from "@wso2is/access-control";
 import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";

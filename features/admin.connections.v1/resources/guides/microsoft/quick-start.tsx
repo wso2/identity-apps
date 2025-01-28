@@ -24,8 +24,8 @@ import {
 import {
     VerticalStepper,
     VerticalStepperStepInterface
-} from "@wso2is/admin.core.v1";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+} from "@wso2is/admin.core.v1/components/vertical-stepper";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";

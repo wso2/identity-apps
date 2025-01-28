@@ -17,8 +17,10 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
-import { AppState, FeatureConfigInterface, getTechnologyLogos } from "@wso2is/admin.core.v1";
+import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {

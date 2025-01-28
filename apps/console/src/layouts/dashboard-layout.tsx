@@ -22,20 +22,18 @@ import Navbar, { NavbarItems } from "@oxygen-ui/react/Navbar";
 import Snackbar from "@oxygen-ui/react/Snackbar";
 import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
-import {
-    AppConstants,
-    AppState,
-    AppUtils,
-    ConfigReducerStateInterface,
-    FeatureConfigInterface,
-    ProtectedRoute,
-    RouteUtils,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
 import Header from "@wso2is/admin.core.v1/components/header";
-import { CommonUtils as ConsoleCommonUtils } from "@wso2is/admin.core.v1/utils";
+import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
+import { CommonUtils as ConsoleCommonUtils } from "@wso2is/admin.core.v1/utils/common-utils";
+import { RouteUtils } from "@wso2is/admin.core.v1/utils/route-utils";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";

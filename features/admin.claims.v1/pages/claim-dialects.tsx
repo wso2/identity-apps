@@ -18,14 +18,11 @@
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { getDialects } from "@wso2is/admin.claims.v1/api";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    getSidePanelIcons,
-    getTechnologyLogos,
-    history
-} from "@wso2is/admin.core.v1";
+import { getSidePanelIcons, getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";

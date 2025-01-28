@@ -19,7 +19,7 @@
 import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";

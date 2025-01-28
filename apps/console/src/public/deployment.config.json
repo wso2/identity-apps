@@ -1015,7 +1015,7 @@
             "pushProviders": {
                 "disabledFeatures": [],
                 "enabled": true,
-                "features": [
+                "featureFlags": [
                     {
                         "feature": "pushProviders",
                         "flag": ""

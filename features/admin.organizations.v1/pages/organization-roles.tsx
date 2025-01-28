@@ -17,14 +17,12 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    history
-} from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { CreateGroupMemberInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { CreateRoleInterface, CreateRoleMemberInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { IdentityAppsError } from "@wso2is/core/errors";

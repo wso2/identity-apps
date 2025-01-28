@@ -18,8 +18,9 @@
 
 import Typography from "@oxygen-ui/react/Typography";
 import { useRequiredScopes } from "@wso2is/access-control";
-import { AppState, FeatureConfigInterface, store  } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface  } from "@wso2is/admin.core.v1/models/config";
+import { AppState, store  } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";

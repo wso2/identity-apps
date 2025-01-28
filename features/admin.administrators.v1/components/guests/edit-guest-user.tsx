@@ -17,7 +17,7 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";

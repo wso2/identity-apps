@@ -17,7 +17,7 @@
  */
 
 import { SimpleUserStoreListItemInterface } from "@wso2is/admin.applications.v1/models/application";
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

@@ -22,7 +22,7 @@ import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/co
 import { ApplicationTemplateListItemInterface } from "@wso2is/admin.applications.v1/models/application";
 import { ApplicationTemplateManagementUtils } from
     "@wso2is/admin.applications.v1/utils/application-template-management-utils";
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";

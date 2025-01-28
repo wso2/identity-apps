@@ -35,14 +35,12 @@ import {
 } from "@wso2is/admin.applications.v1/models/application";
 import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
 import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
-import {
-    AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
-    EventPublisher,
-    FeatureConfigInterface,
-    history
-} from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config"; // No specific rule found
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state"; // No specific rule found
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";

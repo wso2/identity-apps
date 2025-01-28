@@ -21,12 +21,15 @@ import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { getApplicationDetails } from "@wso2is/admin.applications.v1/api/application";
-import { AppState, EventPublisher, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import {
     getEmptyPlaceholderIllustrations
 } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
     deleteIdentityVerificationProvider

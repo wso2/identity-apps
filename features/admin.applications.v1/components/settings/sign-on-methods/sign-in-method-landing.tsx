@@ -20,8 +20,9 @@ import {
     CommonAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
-import { EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { Heading, InfoCard, useMediaContext } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";

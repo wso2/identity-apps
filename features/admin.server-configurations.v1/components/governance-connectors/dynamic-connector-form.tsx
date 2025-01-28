@@ -16,10 +16,8 @@
  * under the License.
  */
 
-import {
-    AppState,
-    FeatureConfigInterface
-} from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { I18n } from "@wso2is/i18n";

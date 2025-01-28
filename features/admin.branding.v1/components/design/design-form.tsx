@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
 import {

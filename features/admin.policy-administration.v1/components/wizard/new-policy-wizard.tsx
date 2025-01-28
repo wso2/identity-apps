@@ -23,7 +23,7 @@ import DialogContent from "@oxygen-ui/react/DialogContent";
 import DialogTitle from "@oxygen-ui/react/DialogTitle";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography/Typography";
-import { getCertificateIllustrations } from "@wso2is/admin.core.v1";
+import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FilePicker, PickerResult, XMLFileStrategy } from "@wso2is/react-components";

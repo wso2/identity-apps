@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";

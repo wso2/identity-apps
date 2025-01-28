@@ -31,11 +31,15 @@ import ApplicationTemplateMetadataProvider from
 import ApplicationTemplateProvider from "@wso2is/admin.application-templates.v1/provider/application-template-provider";
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
+    AppConstants
+} from "@wso2is/admin.core.v1/constants/app-constants";
+import {
     history
-} from "@wso2is/admin.core.v1";
+} from "@wso2is/admin.core.v1/helpers/history";
+import {
+    FeatureConfigInterface
+} from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
 import useGetExtensionTemplates from "@wso2is/admin.template-core.v1/api/use-get-extension-templates";
 import { ExtensionTemplateListInterface, ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";

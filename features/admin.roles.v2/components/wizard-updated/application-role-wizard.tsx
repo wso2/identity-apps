@@ -24,7 +24,7 @@ import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resou
 import useSubscribedAPIResources from "@wso2is/admin.applications.v1/api/use-subscribed-api-resources";
 import { AuthorizedAPIListItemInterface } from "@wso2is/admin.applications.v1/models/api-authorization";
 import { ApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
-import { history } from "@wso2is/admin.core.v1";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";

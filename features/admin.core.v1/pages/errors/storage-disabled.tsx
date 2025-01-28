@@ -20,9 +20,9 @@ import { EmptyPlaceholder } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router-dom";
-import { getEmptyPlaceholderIllustrations } from "../../configs";
-import { AppConstants } from "../../constants";
-import { history } from "../../helpers";
+import { getEmptyPlaceholderIllustrations } from "../../configs/ui";
+import { AppConstants } from "../../constants/app-constants";
+import { history } from "../../helpers/history";
 
 /**
  * Storage disabled error page.

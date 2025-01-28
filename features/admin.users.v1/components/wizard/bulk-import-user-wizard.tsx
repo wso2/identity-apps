@@ -31,15 +31,13 @@ import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "@wso2is/admin.claims.v1/api";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
-import {
-    AppConstants,
-    AppState,
-    ModalWithSidePanel,
-    UserStoreDetails,
-    UserStoreProperty,
-    getCertificateIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
+import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
+import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { UserStoreDetails, UserStoreProperty } from "@wso2is/admin.core.v1/models/user-store";
+import { AppState } from "@wso2is/admin.core.v1/store";
+
 import { userConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import { getGroupList, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
@@ -97,14 +95,16 @@ import {
     UserManagementConstants
 } from "../../constants";
 import {
+    SCIMBulkEndpointInterface,
+    SCIMBulkOperation,
+    SCIMBulkResponseOperation
+} from "../../models/endpoints";
+import {
     BulkResponseSummary,
     BulkUserImportOperationResponse,
     MultipleInviteMode,
-    SCIMBulkEndpointInterface,
-    SCIMBulkOperation,
-    SCIMBulkResponseOperation,
     UserDetailsInterface
-} from "../../models";
+} from "../../models/user";
 import { UserManagementUtils, getUsernameConfiguration } from "../../utils";
 import { BulkImportResponseList } from "../bulk-import-response-list";
 

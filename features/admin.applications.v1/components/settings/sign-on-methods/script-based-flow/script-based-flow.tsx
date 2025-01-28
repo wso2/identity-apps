@@ -39,7 +39,11 @@ import {
     ELK_RISK_BASED_TEMPLATE_NAME
 } from "@wso2is/admin.authentication-flow-builder.v1/constants/template-constants";
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { AppState, AppUtils, EventPublisher, FeatureConfigInterface, getOperationIcons } from "@wso2is/admin.core.v1";
+import { getOperationIcons } from "@wso2is/admin.core.v1/configs/ui";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
