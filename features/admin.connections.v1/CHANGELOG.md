@@ -1,5 +1,28 @@
 # @wso2is/admin.connections.v1
 
+## 2.33.3
+
+### Patch Changes
+
+- [#7435](https://github.com/wso2/identity-apps/pull/7435) [`706c6d545c9e9199588bc73cc6c072565b74eda9`](https://github.com/wso2/identity-apps/commit/706c6d545c9e9199588bc73cc6c072565b74eda9) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Enable hiding connection template based on hiddenConnectionTemplates config #7435
+
+- Updated dependencies [[`706c6d545c9e9199588bc73cc6c072565b74eda9`](https://github.com/wso2/identity-apps/commit/706c6d545c9e9199588bc73cc6c072565b74eda9)]:
+  - @wso2is/admin.connections.v1@2.33.3
+  - @wso2is/admin.core.v1@2.37.28
+  - @wso2is/admin.extensions.v1@2.36.45
+  - @wso2is/admin.applications.v1@2.30.120
+  - @wso2is/admin.identity-providers.v1@2.26.120
+  - @wso2is/admin.identity-verification-providers.v1@2.27.120
+  - @wso2is/admin.organizations.v1@2.26.120
+  - @wso2is/admin.roles.v2@2.27.64
+  - @wso2is/admin.actions.v1@1.10.4
+  - @wso2is/admin.application-templates.v1@1.4.120
+  - @wso2is/admin.claims.v1@2.27.30
+  - @wso2is/admin.console-settings.v1@2.25.120
+  - @wso2is/admin.feature-gate.v1@1.4.120
+  - @wso2is/admin.template-core.v1@1.5.74
+  - @wso2is/admin.userstores.v1@2.26.79
+
 ## 2.33.2
 
 ### Patch Changes
