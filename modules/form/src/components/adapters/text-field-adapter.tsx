@@ -78,10 +78,15 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
                 InputLabelProps={ {
                     required
                 } }
-                InputProps={ {
-                    endAdornment,
-                    readOnly
-                } }
+                { ...(endAdornment || readOnly
+                    ? {
+                        InputProps: {
+                            ...(endAdornment && { endAdornment }),
+                            ...(readOnly && { readOnly })
+                        }
+                    }
+                    : {})
+                }
                 inputProps={ {
                     style: { textTransform: uppercase ? "uppercase" : "none" }
                 } }
