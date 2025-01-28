@@ -102,8 +102,8 @@
         if (localeFromCookie) {
             return localeFromCookie;
         } else if (localeFromUrlParams) {
-            const firstLangFromUrlParams = localeFromUrlParams.split(" ")[0];
-            return firstLangFromUrlParams;
+            const firstLangFromUrlParams = decodeURIComponent(localeFromUrlParams).split(" ")[0];
+            return encodeURIComponent(firstLangFromUrlParams);
         } else if (browserLocale) {
             return browserLocale;
         } else {
