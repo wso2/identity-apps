@@ -45,7 +45,6 @@ import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Icon } from "semantic-ui-react";
 import getTenantDomainAvailability from "../../api/get-tenant-domain-availability";
 import TenantConstants from "../../constants/tenant-constants";
 import { AddTenantRequestPayload, Tenant, TenantOwner, TenantStatus } from "../../models/tenants";
@@ -93,7 +92,6 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
     );
 
     const [ isPasswordValid, setIsPasswordValid ] = useState<boolean>(false);
-    const [ isPasswordVisible, setIsPasswordVisible ] = useState(false);
 
     const userNameValidationConfig: ValidationFormInterface = useMemo((): ValidationFormInterface => {
         return getUsernameConfiguration(validationData);
@@ -418,20 +416,6 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
         </FormSpy>
     );
 
-    const renderInputAdornmentOfSecret = (showSecret: boolean, onClick: () => void): ReactElement => (
-        <InputAdornment position="end">
-            <Icon
-                link={ true }
-                className="list-icon reset-field-to-default-adornment"
-                size="small"
-                color="grey"
-                name={ !showSecret ? "eye" : "eye slash" }
-                data-componentid={ `${ componentId }-password-view-button` }
-                onClick={ onClick }
-            />
-        </InputAdornment>
-    );
-
     return (
         <FinalForm
             initialValues={ {} }
@@ -574,12 +558,7 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                                         required={ true }
                                         data-componentid={ `${componentId}-password` }
                                         name="password"
-                                        type={ isPasswordVisible ? "text" : "password" }
-                                        InputProps={ {
-                                            endAdornment: renderInputAdornmentOfSecret(
-                                                isPasswordVisible,
-                                                () => setIsPasswordVisible(!isPasswordVisible))
-                                        } }
+                                        type="password"
                                         label={ t("tenants:common.form.fields.password.label") }
                                         placeholder={ t("tenants:common.form.fields.password.placeholder") }
                                         component={ TextFieldAdapter }
