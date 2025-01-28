@@ -18,13 +18,11 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import Grid from "@oxygen-ui/react/Grid";
-import {
-    AppState,
-    ConfigReducerStateInterface,
-    EventPublisher,
-    TierLimitReachErrorModal,
-    getCertificateIllustrations
-} from "@wso2is/admin.core.v1";
+import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import {
     CertificateType,

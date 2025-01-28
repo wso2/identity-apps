@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { attributeConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import { UserStoreBasicData } from "@wso2is/admin.userstores.v1/models";

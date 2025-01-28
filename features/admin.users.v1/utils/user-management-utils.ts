@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { UserRoleInterface } from "@wso2is/admin.core.v1/models";
+import { UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { store } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import {
@@ -28,7 +28,7 @@ import {
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import { UserManagementConstants } from "../constants/user-management-constants";
-import { MultipleInviteMode, MultipleInvitesDisplayNames, UserBasicInterface } from "../models";
+import { MultipleInviteMode, MultipleInvitesDisplayNames, UserBasicInterface } from "../models/user";
 
 /**
  * Utility class for user management operations.

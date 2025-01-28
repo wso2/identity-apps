@@ -17,7 +17,7 @@
  */
 
 import { getAllExternalClaims, getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
-import { AttributeSelectList } from "@wso2is/admin.core.v1";
+import { AttributeSelectList } from "@wso2is/admin.core.v1/components/attribute-select-list";
 import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";

@@ -22,7 +22,7 @@ import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import set from "lodash-es/set";
 import { AppUtils } from "./app-utils";
-import { CommonConstants } from "../constants";
+import { CommonConstants } from "../constants/common-constants";
 
 /**
  * Utility class for common util operations.

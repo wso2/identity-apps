@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1";
-import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { getUsersList } from "@wso2is/admin.users.v1/api/users";
 import { UserListInterface } from "@wso2is/admin.users.v1/models/user";

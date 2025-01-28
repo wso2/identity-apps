@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs";
-import { UIConstants } from "@wso2is/admin.core.v1/constants";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import {
     AlertLevels,
     LoadableComponentInterface,

@@ -24,7 +24,8 @@ import {
     useAuthContext
 } from "@asgardeo/auth-react";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
-import { AppConstants, CommonConstants } from "@wso2is/admin.core.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { CommonConstants } from "@wso2is/admin.core.v1/constants/common-constants";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
 import { DeploymentConfigInterface } from "@wso2is/admin.core.v1/models/config";

@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { UIConstants, UserBasicInterface, UserListInterface, getUsersList } from "@wso2is/admin.core.v1";
+import { getUsersList } from "@wso2is/admin.core.v1/api/users";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { UserBasicInterface, UserListInterface } from "@wso2is/admin.core.v1/models/users";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";

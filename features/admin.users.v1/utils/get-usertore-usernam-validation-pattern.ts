@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { UserManagementConstants } from "../constants/user-management-constants";
 

@@ -17,7 +17,7 @@
  */
 
 import { CreateGroupMemberInterface } from "@wso2is/admin.groups.v1/models/groups";
-import { SchemaAttributeValueInterface } from "@wso2is/admin.users.v1/models";
+import { SchemaAttributeValueInterface } from "@wso2is/admin.users.v1/models/user";
 import { RolesInterface } from "@wso2is/core/models";
 import { ScopeInterface } from "./apiResources";
 import { RoleAudienceTypes } from "../constants/role-constants";

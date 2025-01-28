@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { EventPublisher } from "@wso2is/admin.core.v1/utils";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";

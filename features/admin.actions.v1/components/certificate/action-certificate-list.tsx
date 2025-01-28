@@ -19,8 +19,8 @@
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Button from "@oxygen-ui/react/Button";
-import { UIConstants } from "@wso2is/admin.core.v1";
 import { CertificateViewModal } from "@wso2is/admin.core.v1/components/certificate-view-modal";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { CertificateValidity, DisplayCertificate, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";

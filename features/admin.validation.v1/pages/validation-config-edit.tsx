@@ -18,7 +18,10 @@
 
 import Switch from "@oxygen-ui/react/Switch";
 import { useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
 import { useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";

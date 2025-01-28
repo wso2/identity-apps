@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { UsersResourceEndpointsInterface } from "../models";
+import { UsersResourceEndpointsInterface } from "../models/endpoints";
 
 /**
  * Get the resource endpoints for the Users feature.

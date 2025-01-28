@@ -17,7 +17,7 @@
  */
 
 import { getRolesList } from "@wso2is/admin.roles.v2/api";
-import { UserInviteInterface } from "@wso2is/admin.users.v1/models";
+import { UserInviteInterface } from "@wso2is/admin.users.v1/models/user";
 import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
