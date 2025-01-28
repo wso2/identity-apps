@@ -1737,6 +1737,12 @@ export const extensions: Extensions = {
                 }
             }
         },
+        emailAndSms: {
+            heading: "SMS / Email Providers",
+            title: "SMS / Email Providers",
+            description: "Configure the SMS and Email providers for your organization.",
+            goBack: "Go back to Email & SMS"
+        },
         notificationChannel: {
             heading: "Notification Channels",
             title: "Notification Channels",

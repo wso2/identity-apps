@@ -1633,6 +1633,12 @@ export interface Extensions {
                 }
             };
         };
+        emailAndSms: {
+            heading: string;
+            title: string;
+            description: string;
+            goBack: string;
+        };
         notificationChannel: {
             heading: string;
             title: string;
