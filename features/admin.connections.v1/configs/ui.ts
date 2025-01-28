@@ -21,6 +21,7 @@ import FIDOIcon from "../../themes/default/assets/images/authenticators/fido-pas
 import SalesforceLogo from "../../themes/default/assets/images/connectors/salesforce.png";
 import SCIMLogo from "../../themes/default/assets/images/connectors/scim.png";
 import SPMLLogo from "../../themes/default/assets/images/connectors/spml.png";
+import ExpertIcon from "../../themes/default/assets/images/identity-providers/expert.svg";
 import FacebookLogo from "../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
 import GithubIdPIcon from "../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
 import GoogleLogo from "../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
@@ -89,6 +90,7 @@ export const getConnectionIcons = (): any => {
         "email-otp-authenticator": EmailOTPIcon,
         emailOTP: EmailOTPIcon,
         enterprise: EnterpriseConnectionIcon,
+        expert: ExpertIcon,
         facebook: FacebookLogo,
         fido: FIDOIcon,
         githubAuthenticator: GithubIdPIcon,
