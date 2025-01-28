@@ -1,5 +1,15 @@
 # @wso2is/admin.email-and-sms.v1
 
+## 2.25.120
+
+### Patch Changes
+
+- [#7436](https://github.com/wso2/identity-apps/pull/7436) [`3ab3aeda615ea6d7a9ed9bfafe5ddb66e2762481`](https://github.com/wso2/identity-apps/commit/3ab3aeda615ea6d7a9ed9bfafe5ddb66e2762481) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Conditionally display heading text based on push provider feature flag
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.28
+  - @wso2is/admin.organizations.v1@2.26.120
+
 ## 2.25.119
 
 ### Patch Changes
