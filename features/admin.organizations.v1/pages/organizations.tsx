@@ -34,7 +34,6 @@ import { DocumentationLink, ListLayout, PageLayout, PrimaryButton, useDocumentat
 import { AxiosError } from "axios";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
-import trim from "lodash-es/trim";
 import React, {
     FunctionComponent,
     MouseEvent,
