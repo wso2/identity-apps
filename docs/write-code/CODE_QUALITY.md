@@ -225,23 +225,38 @@ const MyForm = () => (
 
 ## Refrain from using 	`any` as a type. Use it as the last resort.
 
-<brief description>
+Using `any` as a type bypasses TypeScript's type-checking, which can lead to potential runtime errors and reduce the benefits of a strongly typed system.
 
 **Why:**
-<explain reasons in list format>
+
+- `any` disables type safety, making your code prone to errors.
+- Using `any` can obscure the intent of the code, reducing readability and predictability.
 
 **What to do:**
-<explain the recommendation in single sentence>
+
+Use specific types or `unknown` when the type is uncertain, and refine it with type guards as necessary.
 
 **Example:**
 
 Recommended:
 
-<example what to do>
+```javascript
+// Typescript will prevent any `processInput` function calls with parameters that are not of
+// type `string` during development and build time.
+function processInput(input: string): string {
+   return input.toUpperCase();
+}
+```
 
 Avoid:
 
-<example what not to do>
+```javascript
+// Might cause runtime errors if input is not a string, but TS wouldn't show any warning
+// during development or build
+function processInput(input: any): string {
+  return input.toUpperCase();
+}
+```
 
 ## Avoid using data-testid / TestableComponentInterface. Use IdentifiableComponentInterface instead.
 
