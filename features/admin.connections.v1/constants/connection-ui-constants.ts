@@ -396,14 +396,6 @@ export class ConnectionUIConstants {
             TWO_FACTOR_CUSTOM_AUTHENTICATOR_ID: "two-factor-custom-authentication"
         };
 
-    /**
-     * Set of keys used to enable/disable features.
-     */
-    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>().set(
-        "CUSTOM_AUTHENTICATION",
-        "identityProviders.customAuthentication"
-    );
-
     public static readonly AUTH_TYPES: AuthenticationTypeDropdownOption[] = [
         {
             key: EndpointAuthenticationType.NONE,

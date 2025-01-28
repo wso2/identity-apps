@@ -405,6 +405,11 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                 return null;
                             }
 
+                            if (UIConfig?.hiddenConnectionTemplates?.includes(template.id)) {
+
+                                return null;
+                            }
+
                             let isTemplateDisabled: boolean = template.disabled;
                             let disabledHint: ReactNode = undefined;
 
