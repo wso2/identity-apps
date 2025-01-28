@@ -442,7 +442,9 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             pageHeaderMaxWidth={ true }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: t("extensions:develop.emailProviders.goBack")
+                text: isPushProviderFeatureEnabled
+                    ? t("extensions:develop.emailProviders.goBack")
+                    : t("extensions:develop.emailAndSms.goBack")
             } }
             action={
                 featureConfig.emailProviders?.enabled &&

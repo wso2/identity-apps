@@ -54,6 +54,8 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
 
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
+    const isPushProviderFeatureEnabled: boolean = featureConfig?.pushProviders?.enabled;
+
     /**
      * Handle connector advance setting selection.
      */
@@ -71,9 +73,21 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
 
     return (
         <PageLayout
-            pageTitle={ t("extensions:develop.notificationChannel.heading") }
-            title={ t("extensions:develop.notificationChannel.title") }
-            description={ t("extensions:develop.notificationChannel.description") }
+            pageTitle={
+                isPushProviderFeatureEnabled
+                    ? t("extensions:develop.notificationChannel.heading")
+                    : t("extensions:develop.emailAndSms.heading")
+            }
+            title={
+                isPushProviderFeatureEnabled
+                    ? t("extensions:develop.notificationChannel.title")
+                    : t("extensions:develop.emailAndSms.title")
+            }
+            description={
+                isPushProviderFeatureEnabled
+                    ? t("extensions:develop.notificationChannel.description")
+                    : t("extensions:develop.emailAndSms.description")
+            }
             data-testid={ `${componentid}-page-layout` }
         >
             <Grid container rowSpacing={ 3 } columnSpacing={ 3 }>

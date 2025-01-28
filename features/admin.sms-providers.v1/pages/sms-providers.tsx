@@ -523,7 +523,9 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             pageHeaderMaxWidth={ true }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: t("smsProviders:goBack")
+                text: isPushProviderFeatureEnabled
+                    ? t("smsProviders:goBack")
+                    : t("extensions:develop.emailAndSms.goBack")
             } }
             data-componentid={ `${componentId}-form-layout` }
         >
