@@ -96,6 +96,7 @@ export const getAuthenticatorIcons = (): any => {
         microsoft: MicrosoftLogo,
         office365: Office365Logo,
         push: PushIcon,
+        "push-notification-authenticator": PushIcon,
         sessionExecutor: ClockColoredIcon,
         "sms-otp-authenticator": SMSOTPIcon,
         smsOTP: SMSOTPIcon,
