@@ -1,5 +1,33 @@
 # @wso2is/admin.connections.v1
 
+## 2.33.1
+
+### Patch Changes
+
+- [#7332](https://github.com/wso2/identity-apps/pull/7332) [`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove barrel files from @wso2is/admin.core.v1 module
+
+- Updated dependencies [[`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546), [`1aa2273fe1f0a066f9623e6b2a25833f277be7f9`](https://github.com/wso2/identity-apps/commit/1aa2273fe1f0a066f9623e6b2a25833f277be7f9)]:
+  - @wso2is/admin.identity-verification-providers.v1@2.27.118
+  - @wso2is/admin.application-templates.v1@1.4.118
+  - @wso2is/admin.identity-providers.v1@2.26.118
+  - @wso2is/admin.console-settings.v1@2.25.118
+  - @wso2is/admin.organizations.v1@2.26.118
+  - @wso2is/admin.template-core.v1@1.5.72
+  - @wso2is/admin.applications.v1@2.30.118
+  - @wso2is/admin.feature-gate.v1@1.4.118
+  - @wso2is/admin.connections.v1@2.33.1
+  - @wso2is/admin.extensions.v1@2.36.43
+  - @wso2is/admin.userstores.v1@2.26.77
+  - @wso2is/admin.actions.v1@1.10.2
+  - @wso2is/admin.claims.v1@2.27.28
+  - @wso2is/react-components@2.9.1
+  - @wso2is/admin.roles.v2@2.27.62
+  - @wso2is/admin.core.v1@2.37.26
+  - @wso2is/dynamic-forms@2.4.29
+  - @wso2is/theme@2.6.4
+  - @wso2is/form@2.6.22
+  - @wso2is/i18n@2.18.2
+
 ## 2.33.0
 
 ### Minor Changes
