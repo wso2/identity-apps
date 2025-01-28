@@ -15,7 +15,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AppConstants, AppState, SharedUserStoreUtils, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
