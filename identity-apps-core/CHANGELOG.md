@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.12.2
+
+### Patch Changes
+
+- [#7437](https://github.com/wso2/identity-apps/pull/7437) [`1ee0f81e259400a680af085a2d12c62f89d71fee`](https://github.com/wso2/identity-apps/commit/1ee0f81e259400a680af085a2d12c62f89d71fee) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Decode the encoded url lang input before splitting.
+
 ## 2.12.1
 
 ### Patch Changes
