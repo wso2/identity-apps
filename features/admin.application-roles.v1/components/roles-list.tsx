@@ -16,8 +16,9 @@
  * under the License.
  */
 
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AppConstants, UIConstants } from "@wso2is/admin.core.v1/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     DataTable,
