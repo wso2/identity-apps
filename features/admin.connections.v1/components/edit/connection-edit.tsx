@@ -287,20 +287,24 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     }, [ identityProvider ]);
 
     useEffect(() => {
+        if (!isCustomAuthenticator) {
+            return;
+        }
+
         if (isCustomLocalAuthenticator === undefined) {
             return;
         }
 
         setIsAutomaticTabRedirectionEnabled(false);
 
-        let localAuthenticatorId: string;
+        let customAuthenticatorId: string;
 
         if (isCustomLocalAuthenticator) {
-            localAuthenticatorId = (identityProvider as CustomAuthConnectionInterface)?.id;
-            getCustomLocalAuthenticator(localAuthenticatorId);
+            customAuthenticatorId = (identityProvider as CustomAuthConnectionInterface)?.id;
+            getCustomLocalAuthenticator(customAuthenticatorId);
         } else {
-            localAuthenticatorId = identityProvider?.federatedAuthenticators?.authenticators[0].authenticatorId;
-            getCustomFederatedAuthenticator(localAuthenticatorId);
+            customAuthenticatorId = identityProvider?.federatedAuthenticators?.authenticators[0]?.authenticatorId;
+            getCustomFederatedAuthenticator(customAuthenticatorId);
         }
     }, [ isCustomLocalAuthenticator ]);
 
