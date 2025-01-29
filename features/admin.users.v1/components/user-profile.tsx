@@ -502,6 +502,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     tempProfileInfo.set(schema.name,
                                         userInfo[userConfig.userProfileSchema][schemaName][schemaSecondaryProperty])
                                 );
+                            } else if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
+                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaName]) {
+                                const enterpriseUserInfo: {[key: string]: any}
+                                    = userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA];
+
+                                tempProfileInfo.set(
+                                    schema.name, enterpriseUserInfo[schemaName][schemaSecondaryProperty]
+                                );
                             } else {
                                 const subValue: SubValueInterface = userInfo[schemaName] &&
                                     Array.isArray(userInfo[schemaName]) &&
@@ -636,6 +644,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     userInfo[userConfig.userProfileSchema][schemaName][schemaSecondaryProperty] && (
                                     tempProfileInfo.set(schema.name,
                                         userInfo[userConfig.userProfileSchema][schemaName][schemaSecondaryProperty])
+                                );
+                            } else if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
+                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaName]) {
+                                const enterpriseUserInfo: {[key: string]: any}
+                                    = userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA];
+
+                                tempProfileInfo.set(
+                                    schema.name, enterpriseUserInfo[schemaName][schemaSecondaryProperty]
                                 );
                             } else {
                                 const subValue: SubValueInterface = userInfo[schemaName] &&
