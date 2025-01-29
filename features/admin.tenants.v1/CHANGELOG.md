@@ -1,5 +1,17 @@
 # @wso2is/admin.tenants.v1
 
+## 2.28.96
+
+### Patch Changes
+
+- Updated dependencies [[`991ff0e5349d6bc87f6b8d3559f84fcfe7953004`](https://github.com/wso2/identity-apps/commit/991ff0e5349d6bc87f6b8d3559f84fcfe7953004)]:
+  - @wso2is/admin.users.v1@2.30.32
+  - @wso2is/admin.core.v1@2.37.30
+  - @wso2is/admin.extensions.v1@2.36.47
+  - @wso2is/admin.organizations.v1@2.26.122
+  - @wso2is/admin.validation.v1@2.27.60
+  - @wso2is/admin.feature-gate.v1@1.4.122
+
 ## 2.28.95
 
 ### Patch Changes
