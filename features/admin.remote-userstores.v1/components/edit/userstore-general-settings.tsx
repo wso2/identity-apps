@@ -152,7 +152,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                 (connection: AgentConnectionInterface) => connection?.agent && !isEmpty(connection?.agent?.displayName)
             );
         } else {
-            // Inject a display name for connections without an agent due to disconnected.
+            // Inject a display name for connections without an agent (Disconnected connections).
             _agentConnections = agentConnectionsData?.map((connection: AgentConnectionInterface, index: number) => {
                 return {
                     ...connection,
