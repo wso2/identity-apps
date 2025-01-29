@@ -178,7 +178,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const [ isTrustedTokenIssuer, setIsTrustedTokenIssuer ] = useState<boolean>(false);
     const [ isExpertMode, setIsExpertMode ] = useState<boolean>(false);
     const [ isCustomAuthenticator, setIsCustomAuthenticator ] = useState<boolean>(false);
-    const [ isCustomLocalAuthenticator, setIsCustomLocalAuthenticator ] = useState<boolean>(undefined);
+    const [ isCustomLocalAuthenticator, setIsCustomLocalAuthenticator ] = useState<boolean>(false);
     const [ endpointAuthenticationType, setEndpointAuthenticationType ] = useState<EndpointAuthenticationType>(null);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
     const [ authenticatorEndpoint, setAuthenticatorEndpoint ] = useState<EndpointConfigFormPropertyInterface>(null);
@@ -210,8 +210,14 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         lookupAttribute: identityProvider?.implicitAssociation?.lookupAttribute
     };
 
-    const getCustomLocalAuthenticator = (localAuthenticatorId: string) => {
-        getLocalAuthenticator(localAuthenticatorId)
+    /**
+     * This function is used to get the custom local authenticator details which includes endpoint
+     * configurations that need to be accessed from the "Settings" tab.
+     *
+     * @param customLocalAuthenticatorId - Custom local authenticator id.
+     */
+    const getCustomLocalAuthenticator = (customLocalAuthenticatorId: string) => {
+        getLocalAuthenticator(customLocalAuthenticatorId)
             .then((data: CustomAuthConnectionInterface) => {
                 const endpointAuth: EndpointConfigFormPropertyInterface = {
                     authenticationType: data?.endpoint?.authentication?.type,
@@ -245,8 +251,14 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
     };
 
-    const getCustomFederatedAuthenticator = (localAuthenticatorId: string) => {
-        getFederatedAuthenticatorDetails(identityProvider?.id, localAuthenticatorId)
+    /**
+     * This function is used to get the custom federated authenticator details which includes endpoint
+     * configurations that need to be accessed from the "Settings" tab.
+     *
+     * @param customFederatedAuthenticatorId - Custom federated authenticator id.
+     */
+    const getCustomFederatedAuthenticator = (customFederatedAuthenticatorId: string) => {
+        getFederatedAuthenticatorDetails(identityProvider?.id, customFederatedAuthenticatorId)
             .then((data: FederatedAuthenticatorListItemInterface) => {
                 const endpointAuth: EndpointConfigFormPropertyInterface = {
                     authenticationType: data?.endpoint?.authentication?.type,
@@ -286,23 +298,28 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         }
     }, [ identityProvider ]);
 
+    /**
+     * This useEffect is utilized only for custom authenticators in order to fetch additional
+     * details related to authenticators.
+     * This is not required for other connections since all the required details are passed from the parent component.
+     */
     useEffect(() => {
-        if (isCustomLocalAuthenticator === undefined) {
+        if (!isCustomAuthenticator) {
             return;
         }
 
         setIsAutomaticTabRedirectionEnabled(false);
 
-        let localAuthenticatorId: string;
+        let customAuthenticatorId: string;
 
         if (isCustomLocalAuthenticator) {
-            localAuthenticatorId = (identityProvider as CustomAuthConnectionInterface)?.id;
-            getCustomLocalAuthenticator(localAuthenticatorId);
+            customAuthenticatorId = (identityProvider as CustomAuthConnectionInterface)?.id;
+            getCustomLocalAuthenticator(customAuthenticatorId);
         } else {
-            localAuthenticatorId = identityProvider?.federatedAuthenticators?.authenticators[0].authenticatorId;
-            getCustomFederatedAuthenticator(localAuthenticatorId);
+            customAuthenticatorId = identityProvider?.federatedAuthenticators?.authenticators[0]?.authenticatorId;
+            getCustomFederatedAuthenticator(customAuthenticatorId);
         }
-    }, [ isCustomLocalAuthenticator ]);
+    }, [ isCustomAuthenticator, isCustomLocalAuthenticator ]);
 
     /**
      * This wrapper function ensures that the user stays on the tab that
