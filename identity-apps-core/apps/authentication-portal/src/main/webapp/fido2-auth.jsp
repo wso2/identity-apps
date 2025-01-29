@@ -268,7 +268,8 @@
         if (StringUtils.isNotEmpty(myaccountUrl)) {
             myaccountUrl = myaccountUrl + "/t/" + tenantDomain;
         } else {
-            myaccountUrl = ServiceURLBuilder.create().setTenant(tenantDomain).build().getAbsolutePublicURL();
+            myaccountUrl = IdentityManagementEndpointUtil.getUserPortalUrl(
+                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
         }
     %>
 
