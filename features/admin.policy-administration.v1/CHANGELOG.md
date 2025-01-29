@@ -1,5 +1,18 @@
 # @wso2is/admin.policy-administration.v1
 
+## 1.0.40
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.32
+  - @wso2is/admin.applications.v1@2.30.124
+  - @wso2is/admin.extensions.v1@2.36.49
+  - @wso2is/admin.feature-gate.v1@1.4.124
+  - @wso2is/admin.organizations.v1@2.26.124
+  - @wso2is/admin.users.v1@2.30.34
+  - @wso2is/admin.validation.v1@2.27.62
+
 ## 1.0.39
 
 ### Patch Changes
