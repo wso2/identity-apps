@@ -1,5 +1,14 @@
 # @wso2is/admin.oidc-scopes.v1
 
+## 2.25.121
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.121
+  - @wso2is/admin.claims.v1@2.27.31
+  - @wso2is/admin.core.v1@2.37.29
+
 ## 2.25.120
 
 ### Patch Changes

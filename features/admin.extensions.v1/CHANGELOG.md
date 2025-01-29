@@ -1,5 +1,32 @@
 # @wso2is/admin.extensions.v1
 
+## 2.36.46
+
+### Patch Changes
+
+- [#7441](https://github.com/wso2/identity-apps/pull/7441) [`18e8c1c6768f359ebfb0424152c6585df98249a5`](https://github.com/wso2/identity-apps/commit/18e8c1c6768f359ebfb0424152c6585df98249a5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken i18n in marketing consent modal
+
+- Updated dependencies []:
+  - @wso2is/admin.api-resources.v1@2.25.121
+  - @wso2is/admin.applications.v1@2.30.121
+  - @wso2is/admin.authentication.v1@2.25.121
+  - @wso2is/admin.claims.v1@2.27.31
+  - @wso2is/admin.connections.v1@2.33.4
+  - @wso2is/admin.core.v1@2.37.29
+  - @wso2is/admin.groups.v1@2.27.31
+  - @wso2is/admin.identity-providers.v1@2.26.121
+  - @wso2is/admin.organizations.v1@2.26.121
+  - @wso2is/admin.remote-userstores.v1@1.7.77
+  - @wso2is/admin.roles.v2@2.27.65
+  - @wso2is/admin.server-configurations.v1@2.32.46
+  - @wso2is/admin.sms-providers.v1@2.25.121
+  - @wso2is/admin.tenants.v1@2.28.95
+  - @wso2is/admin.users.v1@2.30.31
+  - @wso2is/admin.userstores.v1@2.26.80
+  - @wso2is/admin.validation.v1@2.27.59
+  - @wso2is/admin.provisioning.v1@2.25.121
+  - @wso2is/admin.feature-gate.v1@1.4.121
+
 ## 2.36.45
 
 ### Patch Changes
