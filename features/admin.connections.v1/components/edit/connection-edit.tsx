@@ -210,8 +210,14 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         lookupAttribute: identityProvider?.implicitAssociation?.lookupAttribute
     };
 
-    const getCustomLocalAuthenticator = (localAuthenticatorId: string) => {
-        getLocalAuthenticator(localAuthenticatorId)
+    /**
+     * This function is used to get the custom local authenticator details which includes endpoint
+     * configurations that need to be accessed from the "Settings" tab.
+     *
+     * @param customLocalAuthenticatorId - Custom local authenticator id.
+     */
+    const getCustomLocalAuthenticator = (customLocalAuthenticatorId: string) => {
+        getLocalAuthenticator(customLocalAuthenticatorId)
             .then((data: CustomAuthConnectionInterface) => {
                 const endpointAuth: EndpointConfigFormPropertyInterface = {
                     authenticationType: data?.endpoint?.authentication?.type,
@@ -245,8 +251,14 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
     };
 
-    const getCustomFederatedAuthenticator = (localAuthenticatorId: string) => {
-        getFederatedAuthenticatorDetails(identityProvider?.id, localAuthenticatorId)
+    /**
+     * This function is used to get the custom federated authenticator details which includes endpoint
+     * configurations that need to be accessed from the "Settings" tab.
+     *
+     * @param customFederatedAuthenticatorId - Custom federated authenticator id.
+     */
+    const getCustomFederatedAuthenticator = (customFederatedAuthenticatorId: string) => {
+        getFederatedAuthenticatorDetails(identityProvider?.id, customFederatedAuthenticatorId)
             .then((data: FederatedAuthenticatorListItemInterface) => {
                 const endpointAuth: EndpointConfigFormPropertyInterface = {
                     authenticationType: data?.endpoint?.authentication?.type,
@@ -286,6 +298,11 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         }
     }, [ identityProvider ]);
 
+    /**
+     * This useEffect is utilized only for custom authenticators in order to fetch additional
+     * details related to authenticators.
+     * This is not required for other connections since all the required details are passed from the parent component.
+     */
     useEffect(() => {
         if (!isCustomAuthenticator) {
             return;
