@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import { Config } from "@wso2is/admin.core.v1/configs";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
-import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 
 /**
@@ -44,7 +44,7 @@ const useGetResourcesList = <Data = any, Error = RequestErrorInterface>(
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.deployment.idpConfigs.serverOrigin + `/api/server/v1${endpointPath}`
+        url: Config.resolveServerHost() + `/api/server/v1${endpointPath}`
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
