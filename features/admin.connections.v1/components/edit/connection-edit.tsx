@@ -178,7 +178,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const [ isTrustedTokenIssuer, setIsTrustedTokenIssuer ] = useState<boolean>(false);
     const [ isExpertMode, setIsExpertMode ] = useState<boolean>(false);
     const [ isCustomAuthenticator, setIsCustomAuthenticator ] = useState<boolean>(false);
-    const [ isCustomLocalAuthenticator, setIsCustomLocalAuthenticator ] = useState<boolean>(undefined);
+    const [ isCustomLocalAuthenticator, setIsCustomLocalAuthenticator ] = useState<boolean>(false);
     const [ endpointAuthenticationType, setEndpointAuthenticationType ] = useState<EndpointAuthenticationType>(null);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
     const [ authenticatorEndpoint, setAuthenticatorEndpoint ] = useState<EndpointConfigFormPropertyInterface>(null);
@@ -308,10 +308,6 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             return;
         }
 
-        if (isCustomLocalAuthenticator === undefined) {
-            return;
-        }
-
         setIsAutomaticTabRedirectionEnabled(false);
 
         let customAuthenticatorId: string;
@@ -323,7 +319,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             customAuthenticatorId = identityProvider?.federatedAuthenticators?.authenticators[0]?.authenticatorId;
             getCustomFederatedAuthenticator(customAuthenticatorId);
         }
-    }, [ isCustomLocalAuthenticator ]);
+    }, [ isCustomAuthenticator, isCustomLocalAuthenticator ]);
 
     /**
      * This wrapper function ensures that the user stays on the tab that
