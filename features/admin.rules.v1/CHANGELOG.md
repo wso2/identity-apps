@@ -1,5 +1,14 @@
 # @wso2is/admin.rules.v1
 
+## 0.2.8
+
+### Patch Changes
+
+- [#7450](https://github.com/wso2/identity-apps/pull/7450) [`925226891b2f87fecd6057acd74ef465d9c3948d`](https://github.com/wso2/identity-apps/commit/925226891b2f87fecd6057acd74ef465d9c3948d) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix server Host resolving issue in rule get resources api
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.32
+
 ## 0.2.7
 
 ### Patch Changes
