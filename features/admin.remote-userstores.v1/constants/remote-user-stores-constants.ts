@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -118,3 +118,10 @@ interface UserStoreValidationRegexPatternInterface {
 export const USERSTORE_VALIDATION_REGEX_PATTERNS: UserStoreValidationRegexPatternInterface = {
     EscapeRegEx: "\\$\\{[^}]*\\}"
 };
+
+/**
+ * Enum for remote user store API exception codes.
+ */
+export enum RemoteUserStoreAPIExceptionCodes {
+    TokenLimitExceeded = "UMG-60011"
+}
