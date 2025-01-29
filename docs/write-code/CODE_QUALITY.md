@@ -338,7 +338,7 @@ Avoid:
 
 <example what not to do>
 
-## Make sure to add changeset if you want a new version released with your changes. Carefully review the type of changes to each module and specify the version bump type in changeset accordingly.
+## Make sure to add changeset to your PR if you want a new version released with your changes. Carefully review the type of changes to each module and specify the version bump type in changeset accordingly.
 
 <brief description>
 
@@ -504,6 +504,25 @@ Avoid:
 const userName = (user && user.profile && user.profile.name) || "Guest";
 ```
 
+## Use component hooks to separate the component logic from the presentation layer.
+
+<brief description>
+
+**Why:**
+<explain reasons in list format>
+
+**What to do:**
+<explain the recommendation in single sentence>
+
+**Example:**
+
+Recommended:
+
+<example what to do>
+
+Avoid:
+
+<example what not to do>
 
 ## Typescript Doc Comments
 
