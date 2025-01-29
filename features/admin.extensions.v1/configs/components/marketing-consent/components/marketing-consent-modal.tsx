@@ -79,9 +79,9 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
             .then((response: AxiosResponse) => {
                 if (response?.status !== 200) {
                     dispatch(addAlert<AlertInterface>({
-                        description: t("console:marketingConsent.notifications.errors.update.description"),
+                        description: t("console:common.marketingConsent.notifications.errors.update.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:marketingConsent.notifications.errors.update.message")
+                        message: t("console:common.marketingConsent.notifications.errors.update.message")
                     }));
                 }
 
@@ -90,9 +90,9 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
             })
             .catch((_: IdentityAppsApiException) => {
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:marketingConsent.notifications.errors.update.description"),
+                    description: t("console:common.marketingConsent.notifications.errors.update.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:marketingConsent.notifications.errors.update.message")
+                    message: t("console:common.marketingConsent.notifications.errors.update.message")
                 }));
             })
             .finally(() => {
@@ -145,7 +145,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
                                         data-componentid={ `${componentId}-heading` }
                                         className="ui header"
                                     >
-                                        { t("console:marketingConsent.heading") }
+                                        { t("console:common.marketingConsent.heading") }
                                     </h4>
                                     <Icon
                                         link={ true }
@@ -158,7 +158,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
                                     />
                                 </div>
                                 <Card.Description className="mb-2">
-                                    { t("console:marketingConsent.description") }
+                                    { t("console:common.marketingConsent.description") }
                                 </Card.Description>
                                 <Card.Content>
                                     <Button
@@ -167,7 +167,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
                                         disabled={ isLoading }
                                         data-componentid={ `${componentId}-subscribe-btn` }
                                     >
-                                        { t("console:marketingConsent.actions.subscribe") }
+                                        { t("console:common.marketingConsent.actions.subscribe") }
                                     </Button>
                                     <Button
                                         basic
@@ -177,7 +177,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
                                         disabled={ isLoading }
                                         data-componentid={ `${componentId}-decline-btn` }
                                     >
-                                        { t("console:marketingConsent.actions.decline") }
+                                        { t("console:common.marketingConsent.actions.decline") }
                                     </Button>
                                 </Card.Content>
                             </Card.Content>
