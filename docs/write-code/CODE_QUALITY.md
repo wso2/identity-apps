@@ -398,25 +398,43 @@ Avoid:
 
 <example what not to do>
     
-## Use clear variable names
+## Use meaningful variable names  
 
-<brief description>
+Use meaningful and descriptive variable names to improve code readability and maintainability.  
 
-**Why:**
-<explain reasons in list format>
+**Why:**  
+- Enhances code readability and understanding.  
+- Reduces ambiguity and misinterpretation.  
+- Makes debugging and collaboration easier.  
 
-**What to do:**
-<explain the recommendation in single sentence>
+**What to do:**  
+Choose variable names that clearly describe their purpose and avoid abbreviations or vague terms.  
 
-**Example:**
+**Example:**  
 
-Recommended:
+Recommended:  
+```javascript
+const userEmail = "user@example.com";
 
-<example what to do>
+const maxRetryCount = 3;
+
+const updatePolicyCombinationAlgorithm = () => {
+  /* function body */
+}
+```
 
 Avoid:
 
-<example what not to do>
+```javascript
+const ue = "user@example.com";
+
+const mrc = 3;
+
+// ambiguous function name
+const updateAlgorithm = () => {
+  /* function body */
+}
+```
     
 ## Use `classnames` package for conditionally applying class names to UI elements
 
