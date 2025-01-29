@@ -228,7 +228,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     };
 
     const renderUserIdp = (user: UserBasicInterface): string => {
-        if (user[SCIMConfigs?.scim?.enterpriseSchema]?.managedOrg) {
+        if (user[SCIMConfigs?.scim?.systemSchema]?.managedOrg) {
             return UserManagementConstants.MANAGED_BY_PARENT_TEXT;
         }
 
@@ -328,7 +328,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                     { header as ReactNode }
                                     {
                                         userConfig?.disableManagedByColumn
-                                            && user[SCIMConfigs?.scim?.enterpriseSchema]?.managedOrg
+                                            && user[SCIMConfigs?.scim?.systemSchema]?.managedOrg
                                             && (
                                                 <Label size="mini" className="client-id-label">
                                                     { t("parentOrgInvitations:invitedUserLabel") }
