@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { deleteUserStore, patchUserStore } from "@wso2is/admin.userstores.v1/api/user-stores";
 import { DISABLED, RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { PatchData, UserStoreDetails, UserStoreProperty } from "@wso2is/admin.userstores.v1/models/user-stores";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue } from "@wso2is/form";
@@ -52,6 +53,7 @@ import { Button, CheckboxProps, Divider, Grid, Icon, List, Segment } from "seman
 import { disconnectAgentConnection, generateToken, regenerateToken } from "../../api/remote-user-stores";
 import useGetUserStoreAgentConnections from "../../api/use-get-user-store-agent-connections";
 import {
+    RemoteUserStoreAPIExceptionCodes,
     RemoteUserStoreConstants,
     USERSTORE_VALIDATION_REGEX_PATTERNS
 } from "../../constants/remote-user-stores-constants";
@@ -141,11 +143,26 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
         mutate: mutateAgentConnectionsRequest
     } = useGetUserStoreAgentConnections(userStoreId, userStoreManager);
 
-    // Filter out agent connections without an agent or display name.
     const agentConnections: AgentConnectionInterface[] = useMemo(() => {
-        const _agentConnections: AgentConnectionInterface[] = agentConnectionsData?.filter(
-            (connection: AgentConnectionInterface) => connection?.agent && !isEmpty(connection?.agent?.displayName)
-        );
+        let _agentConnections: AgentConnectionInterface[] = [];
+
+        if (userStoreManager === RemoteUserStoreManagerType.WSOutboundUserStoreManager) {
+            // Filter out agent connections without an agent or display name.
+            _agentConnections = agentConnectionsData?.filter(
+                (connection: AgentConnectionInterface) => connection?.agent && !isEmpty(connection?.agent?.displayName)
+            );
+        } else {
+            // Inject a display name for connections without an agent due to disconnected.
+            _agentConnections = agentConnectionsData?.map((connection: AgentConnectionInterface, index: number) => {
+                return {
+                    ...connection,
+                    agent: {
+                        agentId: connection?.agent?.agentId,
+                        displayName: connection?.agent?.displayName ?? `Remote-Agent-${index + 1}`
+                    }
+                };
+            });
+        }
 
         return _agentConnections;
     }, [ agentConnectionsData ]);
@@ -200,12 +217,24 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                 setAgentHAToken(response.token);
                 setShowGenerateTokenModal(true);
             })
-            .catch(() => {
+            .catch((error: IdentityAppsApiException) => {
+                if (error?.code === RemoteUserStoreAPIExceptionCodes.TokenLimitExceeded) {
+                    dispatch(addAlert(
+                        {
+                            description: t("remoteUserStores:notifications.tokenCountExceededError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("remoteUserStores:notifications.tokenCountExceededError.message")
+                        }
+                    ));
+
+                    return;
+                }
+
                 dispatch(
                     addAlert({
                         description: t("remoteUserStores:notifications.tokenGenerateError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("userstores:notifications.tokenGenerateError.message")
+                        message: t("remoteUserStores:notifications.tokenGenerateError.message")
                     })
                 );
             });
@@ -231,7 +260,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
      * connection object.
      */
     const handleAgentDisconnect = (disconnectingAgentConnection: AgentConnectionInterface) => {
-        disconnectAgentConnection(userStoreId, disconnectingAgentConnection.agent.Id, userStoreManager)
+        disconnectAgentConnection(userStoreId, disconnectingAgentConnection.agent.agentId, userStoreManager)
             .then(() => {
                 setShowDisconnectConfirmationModal(false);
                 mutateAgentConnectionsRequest();
@@ -269,7 +298,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                     addAlert({
                         description: t("remoteUserStores:notifications.tokenGenerateError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("userstores:notifications.tokenGenerateError.message")
+                        message: t("remoteUserStores:notifications.tokenGenerateError.message")
                     })
                 );
             });
@@ -750,7 +779,11 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                                     <List.Content>
                                         <List.Header>
                                             <Icon name="times circle" color="red" className="mr-1" />
-                                            <strong>On-Prem-Agent-2</strong>
+                                            <strong>{
+                                                userStoreManager === RemoteUserStoreManagerType.RemoteUserStoreManager
+                                                    ? "Remote-Agent-2"
+                                                    : "On-Prem-Agent-2"
+                                            }</strong>
                                         </List.Header>
                                         <List.Description className="mt-2 ml-1">
                                             { t(
