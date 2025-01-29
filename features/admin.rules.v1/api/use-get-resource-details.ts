@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Config } from "@wso2is/admin.core.v1/configs";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
