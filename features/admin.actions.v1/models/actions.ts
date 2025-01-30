@@ -359,7 +359,7 @@ export interface ActionTypesCountInterface {
 /**
  *  Action config form property Interface.
  */
-export interface ActionConfigFormPropertyInterface {
+export interface ActionConfigFormPropertyInterface extends EndpointConfigFormPropertyInterface {
     /**
      * Id of the Action.
      */
@@ -368,6 +368,9 @@ export interface ActionConfigFormPropertyInterface {
      * Name of the Action.
      */
     name: string;
+}
+
+export interface EndpointConfigFormPropertyInterface {
     /**
      * Endpoint Uri of the Action.
      */

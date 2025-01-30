@@ -21,8 +21,8 @@ import {
     ApplicationTemplateInterface,
     URLFragmentTypes
 } from "@wso2is/admin.applications.v1/models/application";
-import { history } from "@wso2is/admin.core.v1";
-import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
+import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";

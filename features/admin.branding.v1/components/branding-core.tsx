@@ -19,8 +19,9 @@
 import Alert from "@oxygen-ui/react/Alert";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import useAIBrandingPreference from "@wso2is/admin.branding.ai.v1/hooks/use-ai-branding-preference";
-import { EventPublisher, OrganizationType } from "@wso2is/admin.core.v1";
+import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models/organizations";

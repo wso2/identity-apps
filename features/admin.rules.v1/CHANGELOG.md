@@ -1,5 +1,98 @@
 # @wso2is/admin.rules.v1
 
+## 0.2.8
+
+### Patch Changes
+
+- [#7450](https://github.com/wso2/identity-apps/pull/7450) [`925226891b2f87fecd6057acd74ef465d9c3948d`](https://github.com/wso2/identity-apps/commit/925226891b2f87fecd6057acd74ef465d9c3948d) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix server Host resolving issue in rule get resources api
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.32
+
+## 0.2.7
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.31
+
+## 0.2.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.30
+
+## 0.2.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.29
+
+## 0.2.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.28
+
+## 0.2.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.27
+
+## 0.2.2
+
+### Patch Changes
+
+- [#7332](https://github.com/wso2/identity-apps/pull/7332) [`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove barrel files from @wso2is/admin.core.v1 module
+
+- Updated dependencies [[`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546)]:
+  - @wso2is/admin.core.v1@2.37.26
+
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies [[`b4f965e293948682763b30059ee9dca47f9bc744`](https://github.com/wso2/identity-apps/commit/b4f965e293948682763b30059ee9dca47f9bc744)]:
+  - @wso2is/admin.core.v1@2.37.25
+
+## 0.2.0
+
+### Minor Changes
+
+- [#7409](https://github.com/wso2/identity-apps/pull/7409) [`6d6d70456efbff3725a566889de169fb91eba0a3`](https://github.com/wso2/identity-apps/commit/6d6d70456efbff3725a566889de169fb91eba0a3) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Fixed some issues and did some usage improvements to the rule component
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.24
+
+## 0.1.23
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.23
+
+## 0.1.22
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.22
+
+## 0.1.21
+
+### Patch Changes
+
+- Updated dependencies [[`b67d22c81d5c8be72c09abd36ed829a88fb22a4b`](https://github.com/wso2/identity-apps/commit/b67d22c81d5c8be72c09abd36ed829a88fb22a4b)]:
+  - @wso2is/core@2.6.0
+  - @wso2is/admin.core.v1@2.37.21
+
 ## 0.1.20
 
 ### Patch Changes

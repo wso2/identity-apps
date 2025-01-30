@@ -1737,6 +1737,12 @@ export const extensions: Extensions = {
                 }
             }
         },
+        emailAndSms: {
+            heading: "SMS / Email Providers",
+            title: "SMS / Email Providers",
+            description: "Configure the SMS and Email providers for your organization.",
+            goBack: "Go back to Email & SMS"
+        },
         notificationChannel: {
             heading: "Notification Channels",
             title: "Notification Channels",
@@ -3429,6 +3435,12 @@ export const extensions: Extensions = {
                                     "Notify user when the account lock duration is increased due to " +
                                     "continuous failed login attempts.",
                                 label: "Notify user when lock time is increased"
+                            },
+                            lockAccountForSpecifiedTime: {
+                                label: "Lock account for a specified duration"
+                            },
+                            lockAccountIndefiniteTime: {
+                                label: "Lock account until admin unlocks"
                             }
                         }
                     },
@@ -3438,6 +3450,7 @@ export const extensions: Extensions = {
                     connectorDescription:
                         "Protect accounts from password brute-force attacks by locking the " +
                         "account on consecutive failed login attempts.",
+                    accountLockDurationHeading: "Choose account lock option",
                     heading: "Login Attempts",
                     notification: {
                         error: {

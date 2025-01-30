@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetOrganization from "@wso2is/admin.organizations.v1/api/use-get-organization";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";

@@ -18,7 +18,9 @@
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
-import { AppState, FeatureConfigInterface, I18nConstants } from "@wso2is/admin.core.v1";
+import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {

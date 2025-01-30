@@ -17,12 +17,10 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    history
-} from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { ExtensionTemplateListInterface, ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import ExtensionTemplatesProvider from "@wso2is/admin.template-core.v1/provider/extension-templates-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -110,18 +108,18 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
         deletePushProvider()
             .then(() => {
                 dispatch(addAlert({
-                    description: t("pushProviders:alerts.deletePushProvider.success.description"),
+                    description: t("pushProviders:alerts.delete.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("pushProviders:alerts.deletePushProvider.success.message")
+                    message: t("pushProviders:alerts.delete.success.message")
                 }));
             })
             .catch((error: IdentityAppsApiException) => {
                 dispatch(addAlert({
                     description: error?.response?.data?.description
-                        || t("pushProviders:alerts.deletePushProvider.genericError.description"),
+                        || t("pushProviders:alerts.delete.error.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        || t("pushProviders:alerts.deletePushProvider.genericError.message")
+                        || t("pushProviders:alerts.delete.error.message")
                 }));
             })
             .finally(() => {
@@ -138,18 +136,18 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
         updatePushProvider(data)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("pushProviders:alerts.createPushProvider.success.description"),
+                    description: t("pushProviders:alerts.create.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("pushProviders:alerts.createPushProvider.success.message")
+                    message: t("pushProviders:alerts.create.success.message")
                 }));
             })
             .catch((error: IdentityAppsApiException) => {
                 dispatch(addAlert({
                     description: error?.response?.data?.description
-                        || t("pushProviders:alerts.createPushProvider.genericError.description"),
+                        || t("pushProviders:alerts.create.error.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        || t("pushProviders:alerts.createPushProvider.genericError.message")
+                        || t("pushProviders:alerts.create.error.message")
                 }));
             })
             .finally(() => {
@@ -164,18 +162,18 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
         createPushProvider(data)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("pushProviders:alerts.createPushProvider.success.description"),
+                    description: t("pushProviders:alerts.create.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("pushProviders:alerts.createPushProvider.success.message")
+                    message: t("pushProviders:alerts.create.success.message")
                 }));
             })
             .catch((error: IdentityAppsApiException) => {
                 dispatch(addAlert({
                     description: error?.response?.data?.description
-                        || t("pushProviders:alerts.createPushProvider.genericError.description"),
+                        || t("pushProviders:alerts.create.error.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        || t("pushProviders:alerts.createPushProvider.genericError.message")
+                        || t("pushProviders:alerts.create.error.message")
                 }));
             })
             .finally(() => {
@@ -250,7 +248,7 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
                         onClose={ (): void => setOpenRevertConfigModal(false) }
                         type="negative"
                         open={ isOpenRevertConfigModal }
-                        assertionHint={ t("pushProviders:confirmationModal.assertionHint") }
+                        assertionHint={ t("pushProviders:modals.deleteConfirmation.assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
@@ -264,17 +262,17 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
                         <ConfirmationModal.Header
                             data-componentid={ `${componentId}-revert-confirmation-modal-header` }
                         >
-                            { t("pushProviders:confirmationModal.header") }
+                            { t("pushProviders:modals.deleteConfirmation.heading") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             negative
                             data-componentid={ `${componentId}-revert-confirmation-modal-message` }
                         >
-                            { t("pushProviders:confirmationModal.message") }
+                            { t("pushProviders:modals.deleteConfirmation.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            { t("pushProviders:confirmationModal.content") }
+                            { t("pushProviders:modals.deleteConfirmation.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 </Show>

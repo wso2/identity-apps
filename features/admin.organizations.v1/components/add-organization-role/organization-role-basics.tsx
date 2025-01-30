@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { AppState, SharedUserStoreConstants, SharedUserStoreUtils } from "@wso2is/admin.core.v1";
+import { SharedUserStoreConstants } from "@wso2is/admin.core.v1/constants/user-store-constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { CreateRoleFormData } from "@wso2is/admin.roles.v2/models/roles";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";

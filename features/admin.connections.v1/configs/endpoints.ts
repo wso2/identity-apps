@@ -30,6 +30,7 @@ export const getConnectionResourceEndpoints = (serverHost: string): ConnectionRe
     return {
         authenticatorTags: `${ serverHost }/api/server/v1/authenticators/meta/tags`,
         authenticators: `${ serverHost }/api/server/v1/authenticators`,
+        customAuthenticators: `${ serverHost }/api/server/v1/authenticators/custom`,
         extensions: `${ serverHost }/api/server/v1/extensions`,
         fidoConfigs: `${ serverHost }/api/identity/config-mgt/v1.0/resource/fido-config`,
         identityProviders: `${ serverHost }/api/server/v1/identity-providers`,

@@ -19,7 +19,8 @@
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, Field, Form, composeValidators } from "@wso2is/form";

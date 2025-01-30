@@ -51,12 +51,14 @@ import { ReactComponent as MyAccountIcon } from "../../themes/default/assets/ima
 import { ReactComponent as AskHelpIcon } from "../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
 import { ReactComponent as DocsIcon } from "../../themes/wso2is/assets/images/icons/docs-icon.svg";
 import { ReactComponent as BillingPortalIcon } from "../../themes/wso2is/assets/images/icons/dollar-icon.svg";
-import { AppConstants, OrganizationType } from "../constants";
-import { history } from "../helpers";
+import { AppConstants } from "../constants/app-constants";
+import { OrganizationType } from "../constants/organization-constants";
+import { history } from "../helpers/history";
 import useGlobalVariables from "../hooks/use-global-variables";
-import { ConfigReducerStateInterface } from "../models";
+import { ConfigReducerStateInterface } from "../models/reducer-state";
 import { AppState } from "../store";
-import { CommonUtils, EventPublisher } from "../utils";
+import { CommonUtils } from "../utils/common-utils";
+import { EventPublisher } from "../utils/event-publisher";
 import "./header.scss";
 
 /**

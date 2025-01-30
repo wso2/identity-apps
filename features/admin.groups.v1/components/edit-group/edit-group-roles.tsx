@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { ReadOnlyRoleList } from "@wso2is/admin.roles.v2/components/readonly-role-list";
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import { EmphasizedSegment, EmptyPlaceholder, Heading } from "@wso2is/react-components";

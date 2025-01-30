@@ -17,7 +17,7 @@
  */
 
 import Collapse from "@mui/material/Collapse";
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import {
     shareApplication,

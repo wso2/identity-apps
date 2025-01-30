@@ -23,7 +23,7 @@ import {
     SetFilteredManageRoutesActionInterface,
     SetSanitizedDevelopRoutesActionInterface,
     SetSanitizedManageRoutesActionInterface
-} from "./types";
+} from "./types/routes";
 
 export const setFilteredManageRoutes = (routes: RouteInterface[]): SetFilteredManageRoutesActionInterface => {
     return {

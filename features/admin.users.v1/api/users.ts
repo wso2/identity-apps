@@ -29,7 +29,12 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods, ProfileInfoInterface } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { UserManagementConstants } from "../constants";
-import { SCIMBulkEndpointInterface, UserDetailsInterface, UserListInterface, UserSessionsInterface } from "../models";
+import { SCIMBulkEndpointInterface } from "../models/endpoints";
+import {
+    UserDetailsInterface,
+    UserListInterface,
+    UserSessionsInterface
+} from "../models/user";
 
 /**
  * Initialize an axios Http client.

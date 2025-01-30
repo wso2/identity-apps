@@ -22,7 +22,8 @@ import {
     AuthorizedPermissionListItemInterface
 } from "@wso2is/admin.applications.v1/models/api-authorization";
 import { OIDCApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
-import { AppState, history } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import {

@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { TabPageLayout } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";

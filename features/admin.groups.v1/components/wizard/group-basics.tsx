@@ -16,7 +16,10 @@
  * under the License.
  */
 
-import { AppState, SharedUserStoreConstants, SharedUserStoreUtils, UserStoreDetails } from "@wso2is/admin.core.v1";
+import { SharedUserStoreConstants  } from "@wso2is/admin.core.v1/constants/user-store-constants";
+import { UserStoreDetails } from "@wso2is/admin.core.v1/models/user-store";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { getAUserStore, getUserStoreList } from "@wso2is/admin.userstores.v1/api/user-stores";
 import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";

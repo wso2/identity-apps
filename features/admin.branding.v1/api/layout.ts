@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { Config } from "@wso2is/admin.core.v1/configs";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,

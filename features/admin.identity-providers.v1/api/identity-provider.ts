@@ -17,7 +17,7 @@
  */
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
-import { store } from "@wso2is/admin.core.v1";
+import { store } from "@wso2is/admin.core.v1/store";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,

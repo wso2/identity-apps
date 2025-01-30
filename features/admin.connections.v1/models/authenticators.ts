@@ -79,7 +79,8 @@ export interface AuthenticatorInterface {
  */
 export enum AuthenticatorTypes {
     FEDERATED = "FEDERATED",
-    LOCAL = "LOCAL"
+    LOCAL = "LOCAL",
+    IDENTIFICATION = "IDENTIFICATION"
 }
 
 /**
@@ -118,7 +119,8 @@ export enum AuthenticatorLabels {
     HANDLERS = "Handlers",
     USERNAMELESS = "Usernameless",
     PASSKEY = "Passkey",
-    API_AUTHENTICATION = "APIAuth"
+    API_AUTHENTICATION = "APIAuth",
+    CUSTOM = "Custom"
 }
 
 export interface ConnectorPropertyInterface {

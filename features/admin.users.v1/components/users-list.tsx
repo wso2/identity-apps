@@ -17,14 +17,12 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
@@ -59,7 +57,7 @@ import {
 } from "../../themes/default/assets/images/icons/solid-icons/rounded-lock.svg";
 import { deleteUser } from "../api";
 import { ACCOUNT_LOCK_REASON_MAP, UserManagementConstants } from "../constants";
-import { UserBasicInterface, UserListInterface } from "../models";
+import { UserBasicInterface, UserListInterface } from "../models/user";
 import { UserManagementUtils } from "../utils/user-management-utils";
 
 /**
@@ -230,7 +228,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     };
 
     const renderUserIdp = (user: UserBasicInterface): string => {
-        if (user[SCIMConfigs?.scim?.enterpriseSchema]?.managedOrg) {
+        if (user[SCIMConfigs?.scim?.systemSchema]?.managedOrg) {
             return UserManagementConstants.MANAGED_BY_PARENT_TEXT;
         }
 
@@ -330,7 +328,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                     { header as ReactNode }
                                     {
                                         userConfig?.disableManagedByColumn
-                                            && user[SCIMConfigs?.scim?.enterpriseSchema]?.managedOrg
+                                            && user[SCIMConfigs?.scim?.systemSchema]?.managedOrg
                                             && (
                                                 <Label size="mini" className="client-id-label">
                                                     { t("parentOrgInvitations:invitedUserLabel") }

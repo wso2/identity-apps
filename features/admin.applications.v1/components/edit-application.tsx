@@ -26,16 +26,14 @@ import {
     ApplicationEditTabMetadataInterface
 } from "@wso2is/admin.application-templates.v1/models/templates";
 import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants/branding-preferences-constants";
-import {
-    AppConstants,
-    AppState,
-    CORSOriginsListInterface,
-    EventPublisher,
-    FeatureConfigInterface,
-    getCORSOrigins,
-    history
-} from "@wso2is/admin.core.v1";
+import { getCORSOrigins } from "@wso2is/admin.core.v1/api/cors-configurations";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { CORSOriginsListInterface } from "@wso2is/admin.core.v1/models/cors-configurations";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
 import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-login-flow-provider";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
@@ -842,7 +840,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))
                 && !isM2MApplication
-                && (isSuperOrganization() || (isSubOrganization() && isFragmentApp))) {
+                && (isSuperOrganization() || (isSubOrganization() && isFragmentApp) || isFirstLevelOrg)) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(

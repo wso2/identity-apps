@@ -17,7 +17,7 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1";
+import { store } from "@wso2is/admin.core.v1/store";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -38,6 +38,7 @@ import {
     ConnectionListResponseInterface,
     ConnectionRolesInterface,
     ConnectionTemplateInterface,
+    CustomAuthConnectionInterface,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
     FederatedAuthenticatorMetaInterface,
@@ -78,6 +79,100 @@ export const createConnection = (
         .then((response: AxiosResponse) => {
             if ((response.status !== 201)) {
                 return Promise.reject(new Error("Failed to create the application."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Function to create a custom authentication
+ *
+ * @param connection - Connection settings data.
+ */
+export const createCustomAuthentication = (
+    connection: CustomAuthConnectionInterface
+): Promise<AxiosResponse<CustomAuthConnectionInterface>> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        data: connection,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.customAuthenticators
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if ((response.status !== 201)) {
+                return Promise.reject(new Error("Failed to create the application."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Function to update custom local authenticator.
+ *
+ * @param id - ID of the custom authentication.
+ * @param connection - Connection settings data.
+ */
+export const updateCustomAuthentication = (
+    id: string,
+    connection: CustomAuthConnectionInterface
+): Promise<AxiosResponse<CustomAuthConnectionInterface>> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        data: connection,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.customAuthenticators + "/" + id
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if ((response.status !== 200)) {
+                return Promise.reject(new Error("Failed to update the custom local authenticator."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Function to delete a custom authentication.
+ *
+ * @param id - ID of the custom authentication
+ */
+export const deleteCustomAuthentication = (
+    id: string
+): Promise<AxiosResponse<CustomAuthConnectionInterface>> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: store.getState().config.endpoints.customAuthenticators + "/" + id
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if ((response.status !== 204)) {
+                return Promise.reject(new Error("Failed to delete the custom local authenticator."));
             }
 
             return Promise.resolve(response);
@@ -297,7 +392,6 @@ export const useGetConnectionTemplate = <Data = ConnectionTemplateInterface, Err
     templateId: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
-
     const { resourceEndpoints } = useResourceEndpoints();
 
     const requestConfig: RequestConfigInterface = {
@@ -377,7 +471,6 @@ export const getConnectionTemplates = (
     offset?: number,
     filter?: string
 ): Promise<any> => {
-
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
@@ -488,6 +581,33 @@ export const getConnectionDetails = (id: string): Promise<any> => {
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get idp details from: "));
+            }
+
+            return Promise.resolve(response.data as any);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+/**
+ * Gets custom local authenticator details.
+ *
+ * @param id - Connection Id.
+ */
+export const getCustomLocalAuthenticatorDetails = (id: string): Promise<any> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.customAuthenticators + "/" + id
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to get custom local authenticator details from: "));
             }
 
             return Promise.resolve(response.data as any);

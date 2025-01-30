@@ -32,7 +32,7 @@ import {
     UserGroupIcon
 } from "@oxygen-ui/react-icons";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
@@ -135,7 +135,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 icon: getSidePanelIcons().policyAdministration
             },
             id: "policyAdministration",
-            name: "Policy Administration",
+            name: "policyAdministration:title",
             order: 30,
             path: AppConstants.getPaths().get("POLICY_ADMINISTRATION"),
             protected: true,
@@ -473,6 +473,20 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     id: "identityProvidersEdit",
                     name: "Identity Providers Edit",
                     path: AppConstants.getPaths().get("IDP_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.connections.v1/pages/authenticator-edit")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "authenticatorEdit",
+                    name: "Local Authenticators Edit",
+                    path: AppConstants.getPaths().get("AUTH_EDIT"),
                     protected: true,
                     showOnSidePanel: false
                 }

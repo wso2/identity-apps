@@ -34,7 +34,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { updateAlgorithm } from "../../api/update-algorithm";
+import { updateEntitlementPolicyCombiningAlgorithm } from "../../api/update-entitlement-policy-combining-algorithm";
 import { AlgorithmOption, PolicyAlgorithmRequestInterface } from "../../models/policies";
 
 interface EditPolicyAlgorithmProps extends IdentifiableComponentInterface{
@@ -76,7 +76,7 @@ const EditPolicyAlgorithm: FunctionComponent<EditPolicyAlgorithmProps> = (
             policyCombiningAlgorithm: selectedOption.id
         };
 
-        updateAlgorithm(data).then(() => {
+        updateEntitlementPolicyCombiningAlgorithm(data).then(() => {
             dispatch(addAlert({
                 description: t("policyAdministration:alerts.updateAlgorithmSuccess.description"),
                 level: AlertLevels.SUCCESS,

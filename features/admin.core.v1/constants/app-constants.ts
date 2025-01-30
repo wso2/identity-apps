@@ -329,6 +329,7 @@ export class AppConstants {
             [ "IDP", `${ AppConstants.getDeveloperViewBasePath() }/connections` ],
             [ "IDP_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/connections/templates` ],
             [ "IDP_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/connections/:id` ],
+            [ "AUTH_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/authenticators/:id` ],
             [ "IDVP", `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers` ],
             [ "IDVP_TEMPLATES",
                 `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers/templates`

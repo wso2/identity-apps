@@ -363,4 +363,10 @@ export class I18nModuleConstants {
      * Rules namespace.
      */
     public static readonly RULES_NAMESPACE: string = "rules";
+
+    /**
+     * Constant representing the locale preference key.
+     * This key is used to store the user's language preference in cookies or local storage.
+     */
+    public static readonly PREFERENCE_STORAGE_KEY: string = "ui_lang";
 }

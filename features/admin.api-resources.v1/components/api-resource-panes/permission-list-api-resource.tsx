@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";

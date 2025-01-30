@@ -25,7 +25,7 @@ import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form/src";
 import { Hint } from "@wso2is/react-components";
@@ -35,9 +35,9 @@ import { useSelector } from "react-redux";
 import { Icon } from "semantic-ui-react";
 import { ActionsConstants } from "../constants/actions-constants";
 import {
-    ActionConfigFormPropertyInterface,
     AuthenticationType,
-    AuthenticationTypeDropdownOption
+    AuthenticationTypeDropdownOption,
+    EndpointConfigFormPropertyInterface
 } from "../models/actions";
 import "./action-endpoint-config-form.scss";
 
@@ -45,7 +45,7 @@ interface ActionEndpointConfigFormInterface extends IdentifiableComponentInterfa
     /**
      * Action's initial values.
      */
-    initialValues: ActionConfigFormPropertyInterface;
+    initialValues: EndpointConfigFormPropertyInterface;
     /**
      * Specifies action creation state.
      */
@@ -89,10 +89,10 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
      * The following useEffect is used to set the current Action Authentication Type.
      */
     useEffect(() => {
-        if (!initialValues?.id) {
+        if (!initialValues) {
             setIsAuthenticationUpdateFormState(true);
         } else {
-            setAuthenticationType(initialValues.authenticationType as AuthenticationType);
+            setAuthenticationType(initialValues?.authenticationType as AuthenticationType);
             setIsAuthenticationUpdateFormState(false);
         }
     }, [ initialValues ]);

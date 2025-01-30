@@ -18,7 +18,10 @@
 
 import Grid from "@oxygen-ui/react/Grid";
 import { EnvelopeIcon } from "@oxygen-ui/react-icons";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
@@ -51,6 +54,8 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
 
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
+    const isPushProviderFeatureEnabled: boolean = featureConfig?.pushProviders?.enabled;
+
     /**
      * Handle connector advance setting selection.
      */
@@ -68,9 +73,21 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
 
     return (
         <PageLayout
-            pageTitle={ t("extensions:develop.notificationChannel.heading") }
-            title={ t("extensions:develop.notificationChannel.title") }
-            description={ t("extensions:develop.notificationChannel.description") }
+            pageTitle={
+                isPushProviderFeatureEnabled
+                    ? t("extensions:develop.notificationChannel.heading")
+                    : t("extensions:develop.emailAndSms.heading")
+            }
+            title={
+                isPushProviderFeatureEnabled
+                    ? t("extensions:develop.notificationChannel.title")
+                    : t("extensions:develop.emailAndSms.title")
+            }
+            description={
+                isPushProviderFeatureEnabled
+                    ? t("extensions:develop.notificationChannel.description")
+                    : t("extensions:develop.emailAndSms.description")
+            }
             data-testid={ `${componentid}-page-layout` }
         >
             <Grid container rowSpacing={ 3 } columnSpacing={ 3 }>

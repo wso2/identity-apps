@@ -17,7 +17,11 @@
  */
 
 import { getAllExternalClaims, getDialects } from "@wso2is/admin.claims.v1/api";
-import { AppConstants, AppState, getTechnologyLogos, history } from "@wso2is/admin.core.v1";
+import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+
 import { SCIMConfigs, attributeConfig } from "@wso2is/admin.extensions.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";

@@ -18,7 +18,8 @@
 
 import Chip from "@oxygen-ui/react/Chip";
 import { useRequiredScopes } from "@wso2is/access-control";
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import {  FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,

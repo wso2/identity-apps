@@ -17,12 +17,10 @@
  */
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface
-} from "@wso2is/admin.core.v1";
-import { history } from "@wso2is/admin.core.v1/helpers";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import smsProviderConfig from "@wso2is/admin.extensions.v1/configs/sms-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -525,7 +523,9 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             pageHeaderMaxWidth={ true }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: t("smsProviders:goBack")
+                text: isPushProviderFeatureEnabled
+                    ? t("smsProviders:goBack")
+                    : t("extensions:develop.emailAndSms.goBack")
             } }
             data-componentid={ `${componentId}-form-layout` }
         >

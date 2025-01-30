@@ -17,7 +17,8 @@
  */
 
 /* eslint-disable @typescript-eslint/typedef */
-import { DocPanelUICardInterface, store } from "@wso2is/admin.core.v1";
+import { DocPanelUICardInterface } from "@wso2is/admin.core.v1/models/help-panel";
+import { store } from "@wso2is/admin.core.v1/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";

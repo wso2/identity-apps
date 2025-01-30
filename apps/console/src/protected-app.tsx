@@ -24,22 +24,17 @@ import {
     useAuthContext
 } from "@asgardeo/auth-react";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
-import {
-    AppState,
-    AppUtils,
-    Config,
-    DeploymentConfigInterface,
-    HttpUtils,
-    PreLoader,
-    UIConfigInterface,
-    setFilteredDevelopRoutes,
-    setSanitizedDevelopRoutes,
-    store
-} from "@wso2is/admin.core.v1";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { MultitenantConstants } from "@wso2is/admin.core.v1/constants/multitenant-constants";
-import { history } from "@wso2is/admin.core.v1/helpers";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { DeploymentConfigInterface, UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
+import { setFilteredDevelopRoutes, setSanitizedDevelopRoutes } from "@wso2is/admin.core.v1/store/actions/routes";
+import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
+import { HttpUtils } from "@wso2is/admin.core.v1/utils/http-utils";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import useOrganizationSwitch from "@wso2is/admin.organizations.v1/hooks/use-organization-switch";
 import useGetTenantTier from "@wso2is/admin.subscription.v1/api/use-get-tenant-tier";

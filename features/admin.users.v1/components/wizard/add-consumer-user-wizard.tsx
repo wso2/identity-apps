@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { UserBasicInterface } from "@wso2is/admin.core.v1";
+import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import {

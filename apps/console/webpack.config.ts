@@ -24,6 +24,7 @@ import CompressionPlugin from "compression-webpack-plugin";
 import history from "connect-history-api-fallback";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import JsonMinimizerPlugin from "json-minimizer-webpack-plugin";
 import webpack, {
@@ -160,6 +161,14 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     if (indexHtmlWebpackPluginIndex !== -1) {
         config.plugins.splice(indexHtmlWebpackPluginIndex, 1);
     }
+
+    config.plugins.push(
+        new ForkTsCheckerWebpackPlugin({
+            typescript: {
+                memoryLimit: 4096
+            }
+        })
+    );
 
     if (isProduction && !isDeployedOnExternalStaticServer) {
         config.plugins.push(

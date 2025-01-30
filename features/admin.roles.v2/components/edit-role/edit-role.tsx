@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { AppState, FeatureConfigInterface, OrganizationType } from "@wso2is/admin.core.v1";
+import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { RoleConstants } from "@wso2is/core/constants";

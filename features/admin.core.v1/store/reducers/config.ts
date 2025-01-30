@@ -23,7 +23,7 @@ import {
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface,
     UIConfigInterface
-} from "../../models";
+} from "../../models/config";
 
 /**
  * Initial state for the common config reducer.
@@ -103,6 +103,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             clientCertificates: "",
             createSecret: "",
             createSecretType: "",
+            customAuthenticators: "",
             dcrConfiguration: "",
             deleteSecret: "",
             deleteSecretType: "",

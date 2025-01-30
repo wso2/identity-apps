@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { EventPublisher } from "@wso2is/admin.core.v1/utils";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIconProps, LargeTechnologyCard, Text } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";

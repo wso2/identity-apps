@@ -18,7 +18,7 @@
 
 import { DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AllFeatureInterface } from "@wso2is/access-control";
-import { OrganizationManagementConstants } from "@wso2is/admin.core.v1";
+import { OrganizationManagementConstants } from "@wso2is/admin.core.v1/constants/organization-constants";
 import useRequest, {
     RequestErrorInterface,
     RequestResultInterface

@@ -17,7 +17,7 @@
  */
 
 import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models/application";
-import { CertificateConfigInterface } from "@wso2is/admin.connections.v1";
+import { CertificateConfigInterface, ExternalEndpoint } from "@wso2is/admin.connections.v1";
 import { GovernanceConnectorInterface } from "@wso2is/admin.server-configurations.v1/models";
 import { IdentifiableComponentInterface, LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { FunctionComponent, SVGProps } from "react";
@@ -119,6 +119,7 @@ export interface FederatedAuthenticatorInterface extends CommonPluggableComponen
     name?: string;
     isEnabled?: boolean;
     isDefault?: boolean;
+    endpoint?: ExternalEndpoint;
     /**
      * The list of tags that the authenticator can be categorized under.
      */
