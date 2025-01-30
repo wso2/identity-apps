@@ -41,7 +41,6 @@ import {
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import useOrganizationSwitch from "@wso2is/admin.organizations.v1/hooks/use-organization-switch";
 import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
-import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore
