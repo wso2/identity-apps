@@ -331,7 +331,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
             });
         }
 
-        if (isSubOrganization()) {
+        if (isCurrentOrgSubOrganization) {
             addAdminOptions.push({
                 "data-componentid": `${componentId}-invite-new-user-dropdown-item`,
                 key: 2,
@@ -382,6 +382,16 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                 <PrimaryButton
                     data-componentid={ `${componentId}-add-button` }
                     onClick={ () => setShowAddExternalAdminWizard(true) }
+                >
+                    <Icon data-componentid={ `${componentId}-add-button-icon` } name="add" />
+                    { t("consoleSettings:administrators.add.action") }
+                </PrimaryButton>
+            );
+        } else {
+            return (
+                <PrimaryButton
+                    data-componentid={ `${componentId}-add-button` }
+                    onClick={ () => setShowAddExistingUserWizard(true) }
                 >
                     <Icon data-componentid={ `${componentId}-add-button-icon` } name="add" />
                     { t("consoleSettings:administrators.add.action") }
