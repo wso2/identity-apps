@@ -513,8 +513,8 @@ export const claims: ClaimsNS = {
             requiredWarning: "To make the email attribute not display and not required on the user's profile, " +
                 "you need to disable account verification for your organization.",
             sharedProfileValueResolvingMethod: {
-                hint: "Select the method to determine the value of the attribute for shared user profiles.",
-                label: "Shared Profile Value Resolving Method",
+                hint: "When a user's profile is shared across multiple organizations, the value of this attribute will be taken from the selected source.",
+                label: "Select Source for Attribute Value of Shared Users",
                 options: {
                     fromFirstFoundInHierarchy: "From First Found in Hierarchy",
                     fromOrigin: "From Origin",
