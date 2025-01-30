@@ -41,6 +41,7 @@ export class ProfileConstants {
         "personalInfo.distinct.attribute.profiles";
 
     public static readonly USERNAME_CLAIM_NAME: string = "userName";
+    public static readonly MOBILE: string = "mobile";
 }
 
 /**

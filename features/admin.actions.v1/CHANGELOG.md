@@ -1,5 +1,15 @@
 # @wso2is/admin.actions.v1
 
+## 1.10.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.34
+  - @wso2is/admin.extensions.v1@2.36.51
+  - @wso2is/admin.feature-gate.v1@1.4.126
+  - @wso2is/admin.rules.v1@0.2.10
+
 ## 1.10.9
 
 ### Patch Changes

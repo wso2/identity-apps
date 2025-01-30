@@ -1,5 +1,18 @@
 # @wso2is/admin.authentication.v1
 
+## 2.25.126
+
+### Patch Changes
+
+- [#7455](https://github.com/wso2/identity-apps/pull/7455) [`caf392810864168e895ce8f41cdc2c51fa8b1354`](https://github.com/wso2/identity-apps/commit/caf392810864168e895ce8f41cdc2c51fa8b1354) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Fix privilege check to include secondary user stores
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.34
+  - @wso2is/admin.extensions.v1@2.36.51
+  - @wso2is/admin.organizations.v1@2.26.126
+  - @wso2is/admin.users.v1@2.30.36
+  - @wso2is/admin.userstores.v1@2.26.85
+
 ## 2.25.125
 
 ### Patch Changes
