@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.16.14
+
+### Patch Changes
+
+- [#7457](https://github.com/wso2/identity-apps/pull/7457) [`c1567e073a5a1589496101d34019dea11f215949`](https://github.com/wso2/identity-apps/commit/c1567e073a5a1589496101d34019dea11f215949) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix SCIM complex attribute handling logics in user profiles
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.127
+  - @wso2is/common.branding.v1@2.25.100
+
 ## 2.16.13
 
 ### Patch Changes
