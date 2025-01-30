@@ -1,5 +1,19 @@
 # @wso2is/admin.policy-administration.v1
 
+## 1.0.41
+
+### Patch Changes
+
+- Updated dependencies [[`216ef9336657dee546fd212705ccc023e61fb923`](https://github.com/wso2/identity-apps/commit/216ef9336657dee546fd212705ccc023e61fb923)]:
+  - @wso2is/admin.users.v1@2.30.35
+  - @wso2is/i18n@2.18.3
+  - @wso2is/admin.applications.v1@2.30.125
+  - @wso2is/admin.core.v1@2.37.33
+  - @wso2is/admin.extensions.v1@2.36.50
+  - @wso2is/admin.organizations.v1@2.26.125
+  - @wso2is/admin.validation.v1@2.27.63
+  - @wso2is/admin.feature-gate.v1@1.4.125
+
 ## 1.0.40
 
 ### Patch Changes

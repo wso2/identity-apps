@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.12.3
+
+### Patch Changes
+
+- [#7449](https://github.com/wso2/identity-apps/pull/7449) [`f2040d74ceb57bd7f21b8eef39c1f8cff6dae5e1`](https://github.com/wso2/identity-apps/commit/f2040d74ceb57bd7f21b8eef39c1f8cff6dae5e1) Thanks [@SamudraUduwaka](https://github.com/SamudraUduwaka)! - Fix My Account URL in Passkey flow
+
 ## 2.12.2
 
 ### Patch Changes
