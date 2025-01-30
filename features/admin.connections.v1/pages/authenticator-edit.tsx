@@ -42,6 +42,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
+import { Label } from "semantic-ui-react";
 import { getLocalAuthenticator } from "../api/authenticators";
 import { useGetConnectionTemplate } from "../api/connections";
 import { EditConnection } from "../components/edit/connection-edit";
@@ -298,6 +299,28 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
     };
 
     /**
+     * Resolve local custom authenticator label to be displayed in the edit page.
+     *
+     * @param connector - Connector.
+     * @returns React element.
+     */
+    const resolveCustomLocalAuthenticatorLabel = (connector: CustomAuthConnectionInterface): ReactNode => {
+        return (
+            <Label size="small">
+                { getCustomLocalAuthTemplateId(connector)
+                    === ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATION ?
+                    t(
+                        "customAuthentication:fields.createWizard.authenticationTypeStep." +
+                    "twoFactorAuthenticationCard.header"
+                    ) : t(
+                        "customAuthentication:fields.createWizard.authenticationTypeStep." +
+                    "internalUserAuthenticationCard.header"
+                    ) }
+            </Label>
+        );
+    };
+
+    /**
      * Resolves the authenticator description.
      *
      * @param connector - Evaluating connector.
@@ -310,6 +333,9 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
 
         return (
             <div className="with-label ellipsis" ref={ idpDescElement }>
+
+                { resolveCustomLocalAuthenticatorLabel(connector) }
+
                 { connector?.description ? (
                     <Popup
                         content={ connector?.description?.replaceAll("{{productName}}", productName) }
