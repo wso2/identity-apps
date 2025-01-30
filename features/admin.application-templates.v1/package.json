@@ -1,15 +1,15 @@
 {
     "private": true,
     "name": "@wso2is/admin.application-templates.v1",
-    "version": "1.4.124",
+    "version": "1.4.125",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/admin.applications.v1": "^2.30.124",
-        "@wso2is/admin.core.v1": "^2.37.32",
-        "@wso2is/admin.template-core.v1": "^1.5.78",
-        "@wso2is/admin.feature-gate.v1": "^1.4.124"
+        "@wso2is/admin.applications.v1": "^2.30.125",
+        "@wso2is/admin.core.v1": "^2.37.33",
+        "@wso2is/admin.template-core.v1": "^1.5.79",
+        "@wso2is/admin.feature-gate.v1": "^1.4.125"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^25.0.7",

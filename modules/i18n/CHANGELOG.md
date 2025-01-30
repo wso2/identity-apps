@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.18.3
+
+### Patch Changes
+
+- [#7447](https://github.com/wso2/identity-apps/pull/7447) [`216ef9336657dee546fd212705ccc023e61fb923`](https://github.com/wso2/identity-apps/commit/216ef9336657dee546fd212705ccc023e61fb923) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Update lable and hint of shared user profile attribute resolving method dropdown.
+
 ## 2.18.2
 
 ### Patch Changes
