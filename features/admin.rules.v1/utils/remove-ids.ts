@@ -16,28 +16,18 @@
  * under the License.
  */
 
-import { rulesNS } from "../../../models";
-
-export const rules: rulesNS = {
-    alerts: {
-        resourceNotFound: {
-            description: "Please make sure to update it to a resource that is available.",
-            title: "Previous configured resource cannot be found."
-        }
-    },
-    buttons: {
-        and: "And",
-        clearRule: "Clear Rule",
-        newRule: "New Rule",
-        or: "Or"
-    },
-    fields: {
-        autocomplete: {
-            moreItemsMessage: "Only the recent resources are listed. Type to search for others ..."
-        }
-    },
-    texts: {
-        execute: "Execute",
-        if: "If"
+export const removeIds = (obj: any): any => {
+    if (Array.isArray(obj)) {
+        return obj.map(removeIds);
+    } else if (typeof obj === "object" && obj !== null) {
+        return Object.fromEntries(
+            Object.entries(obj)
+                .filter(([ key ]: [string, any]) => key !== "id")
+                .map(([ key, value ]: [string, any]) => [ key, removeIds(value) ])
+        );
     }
+
+    return obj;
 };
+
+export default removeIds;

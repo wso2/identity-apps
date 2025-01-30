@@ -102,6 +102,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
 
     const {
         data: actionData,
+        isLoading: isActionLoading,
         mutate: mutateAction
     } = useGetActionById(actionTypeApiPath, initialValues?.id);
 
@@ -270,6 +271,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                     } }/>
                 { (RuleExpressionsMetaData && showRuleComponent) && (
                     <RuleConfigForm
+                        readonly={ getFieldDisabledStatus() }
                         rule={ rule }
                         setRule={ setRule }
                         isHasRule={ isHasRule }
@@ -281,113 +283,117 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
     };
 
     return (
-        <RulesProvider
-            conditionExpressionsMetaData={ RuleExpressionsMetaData }
-            initialData={ actionData?.rule }
-        >
-            <FinalForm
-                onSubmit={ (values: ActionConfigFormPropertyInterface, form: any) => {
-                    handleSubmit(values, form.getState().dirtyFields); }
-                }
-                validate={ validateForm }
-                initialValues={ initialValues }
-                render={ ({ handleSubmit, form }: FormRenderProps) => (
-                    <form onSubmit={ handleSubmit }>
-                        <EmphasizedSegment
-                            className="form-wrapper"
-                            padded={ "very" }
-                            data-componentid={ `${ _componentId }-section` }
-                        >
-                            <div className="form-container with-max-width">
-                                { renderFormFields() }
-                                { !isLoading && (
-                                    <Button
-                                        size="medium"
-                                        variant="contained"
-                                        onClick={ handleSubmit }
-                                        className={ "button-container" }
-                                        data-componentid={ `${ _componentId }-primary-button` }
-                                        loading={ isSubmitting }
-                                        disabled={ getFieldDisabledStatus() }
-                                    >
-                                        {
-                                            isCreateFormState
-                                                ? t("actions:buttons.create")
-                                                : t("actions:buttons.update")
+        <>
+            { !isActionLoading && actionData && (
+                <RulesProvider
+                    conditionExpressionsMetaData={ RuleExpressionsMetaData }
+                    initialData={ actionData?.rule }
+                >
+                    <FinalForm
+                        onSubmit={ (values: ActionConfigFormPropertyInterface, form: any) => {
+                            handleSubmit(values, form.getState().dirtyFields); }
+                        }
+                        validate={ validateForm }
+                        initialValues={ initialValues }
+                        render={ ({ handleSubmit, form }: FormRenderProps) => (
+                            <form onSubmit={ handleSubmit }>
+                                <EmphasizedSegment
+                                    className="form-wrapper"
+                                    padded={ "very" }
+                                    data-componentid={ `${ _componentId }-section` }
+                                >
+                                    <div className="form-container with-max-width">
+                                        { renderFormFields() }
+                                        { !isLoading && (
+                                            <Button
+                                                size="medium"
+                                                variant="contained"
+                                                onClick={ handleSubmit }
+                                                className={ "button-container" }
+                                                data-componentid={ `${ _componentId }-primary-button` }
+                                                loading={ isSubmitting }
+                                                disabled={ getFieldDisabledStatus() }
+                                            >
+                                                {
+                                                    isCreateFormState
+                                                        ? t("actions:buttons.create")
+                                                        : t("actions:buttons.update")
+                                                }
+                                            </Button>
+                                        ) }
+                                    </div>
+                                </EmphasizedSegment>
+                                <FormSpy
+                                    subscription={ { values: true } }
+                                >
+                                    { ({ values }: { values: ActionConfigFormPropertyInterface }) => {
+                                        if (!isAuthenticationUpdateFormState) {
+                                            form.change("authenticationType",
+                                                initialValues?.authenticationType);
+                                            switch (authenticationType) {
+                                                case AuthenticationType.BASIC:
+                                                    delete values.usernameAuthProperty;
+                                                    delete values.passwordAuthProperty;
+
+                                                    break;
+                                                case AuthenticationType.BEARER:
+                                                    delete values.accessTokenAuthProperty;
+
+                                                    break;
+                                                case AuthenticationType.API_KEY:
+                                                    delete values.headerAuthProperty;
+                                                    delete values.valueAuthProperty;
+
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
                                         }
-                                    </Button>
-                                ) }
-                            </div>
-                        </EmphasizedSegment>
-                        <FormSpy
-                            subscription={ { values: true } }
-                        >
-                            { ({ values }: { values: ActionConfigFormPropertyInterface }) => {
-                                if (!isAuthenticationUpdateFormState) {
-                                    form.change("authenticationType",
-                                        initialValues?.authenticationType);
-                                    switch (authenticationType) {
-                                        case AuthenticationType.BASIC:
-                                            delete values.usernameAuthProperty;
-                                            delete values.passwordAuthProperty;
 
-                                            break;
-                                        case AuthenticationType.BEARER:
-                                            delete values.accessTokenAuthProperty;
+                                        // Clear inputs of property field values of other authentication types.
+                                        switch (authenticationType) {
+                                            case AuthenticationType.BASIC:
+                                                delete values.accessTokenAuthProperty;
+                                                delete values.headerAuthProperty;
+                                                delete values.valueAuthProperty;
 
-                                            break;
-                                        case AuthenticationType.API_KEY:
-                                            delete values.headerAuthProperty;
-                                            delete values.valueAuthProperty;
+                                                break;
+                                            case AuthenticationType.BEARER:
+                                                delete values.usernameAuthProperty;
+                                                delete values.passwordAuthProperty;
+                                                delete values.headerAuthProperty;
+                                                delete values.valueAuthProperty;
 
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
+                                                break;
+                                            case AuthenticationType.API_KEY:
+                                                delete values.usernameAuthProperty;
+                                                delete values.passwordAuthProperty;
+                                                delete values.accessTokenAuthProperty;
 
-                                // Clear inputs of property field values of other authentication types.
-                                switch (authenticationType) {
-                                    case AuthenticationType.BASIC:
-                                        delete values.accessTokenAuthProperty;
-                                        delete values.headerAuthProperty;
-                                        delete values.valueAuthProperty;
+                                                break;
+                                            case AuthenticationType.NONE:
+                                                delete values.usernameAuthProperty;
+                                                delete values.passwordAuthProperty;
+                                                delete values.headerAuthProperty;
+                                                delete values.valueAuthProperty;
+                                                delete values.accessTokenAuthProperty;
 
-                                        break;
-                                    case AuthenticationType.BEARER:
-                                        delete values.usernameAuthProperty;
-                                        delete values.passwordAuthProperty;
-                                        delete values.headerAuthProperty;
-                                        delete values.valueAuthProperty;
+                                                break;
+                                            default:
 
-                                        break;
-                                    case AuthenticationType.API_KEY:
-                                        delete values.usernameAuthProperty;
-                                        delete values.passwordAuthProperty;
-                                        delete values.accessTokenAuthProperty;
+                                                break;
+                                        }
 
-                                        break;
-                                    case AuthenticationType.NONE:
-                                        delete values.usernameAuthProperty;
-                                        delete values.passwordAuthProperty;
-                                        delete values.headerAuthProperty;
-                                        delete values.valueAuthProperty;
-                                        delete values.accessTokenAuthProperty;
-
-                                        break;
-                                    default:
-
-                                        break;
-                                }
-
-                                return null;
-                            } }
-                        </FormSpy>
-                    </form>
-                ) }
-            >
-            </FinalForm>
-        </RulesProvider>
+                                        return null;
+                                    } }
+                                </FormSpy>
+                            </form>
+                        ) }
+                    >
+                    </FinalForm>
+                </RulesProvider>
+            ) }
+        </>
     );
 };
 

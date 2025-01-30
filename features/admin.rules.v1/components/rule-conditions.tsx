@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
+import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Autocomplete from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
@@ -30,8 +32,8 @@ import { MinusIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import debounce from "lodash-es/debounce";
 import React, { ChangeEvent, Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import useGetResourceDetails from "../api/use-get-resource-details";
+import { Trans, useTranslation } from "react-i18next";
+import useGetResourceListOrResourceDetails from "../api/use-get-resource-list-or-resource-details";
 import { useRulesContext } from "../hooks/use-rules-context";
 import {
     ConditionExpressionMetaInterface,
@@ -83,6 +85,7 @@ interface ResourceListSelectProps {
  * Props interface of {@link RulesComponent}
  */
 export interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
+    readonly?: boolean;
     rule: RuleInterface;
 }
 
@@ -94,6 +97,7 @@ export interface RulesComponentPropsInterface extends IdentifiableComponentInter
  */
 const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
     ["data-componentid"]: componentId = "rules-component",
+    readonly,
     rule: ruleInstance
 }: RulesComponentPropsInterface): ReactElement => {
 
@@ -162,6 +166,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             (expressionMeta: ConditionExpressionMetaInterface) => expressionMeta.field.name === expression.field
         );
 
+        const [ isResourceMissing, setIsResourceMissing ] = useState<boolean>(false);
+
         /**
          * Value input autocomplete component.
          *
@@ -186,10 +192,11 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 : initialResourcesLoadUrl;
 
             const { data: initialResources = [], isLoading: isInitialLoading } =
-                useGetResourceDetails(initialResourcesLoadUrl);
-            const { data: filteredResources = [], isLoading: isFiltering } = useGetResourceDetails(filterUrl);
+                useGetResourceListOrResourceDetails(initialResourcesLoadUrl);
+            const { data: filteredResources = [], isLoading: isFiltering } =
+                useGetResourceListOrResourceDetails(filterUrl);
             const { data: resourceDetails, isLoading: isResourceDetailsLoading } =
-                useGetResourceDetails(`/${resourceType}/${expression.value}`);
+                useGetResourceListOrResourceDetails(`/${resourceType}/${expression.value}`);
 
             useEffect(() => {
                 if (resourceDetails) {
@@ -224,6 +231,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
             return (
                 <Autocomplete
+                    disabled={ readonly }
                     open={ open }
                     onOpen={ () => setOpen(true) }
                     onClose={ () => setOpen(false) }
@@ -324,7 +332,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             const valueReferenceAttribute: string = findMetaValuesAgainst?.value?.valueReferenceAttribute || "id";
             const valueDisplayAttribute: string = findMetaValuesAgainst?.value?.valueDisplayAttribute || "name";
 
-            const { data: fetchedResourcesList } = useGetResourceDetails(initialResourcesLoadUrl);
+            const { data: fetchedResourcesList } = useGetResourceListOrResourceDetails(initialResourcesLoadUrl);
 
             let resourcesList: any = null;
             let resourceType: string = "";
@@ -352,6 +360,10 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     );
                 }
 
+                if (!resourcesList[resourceType].find((resource: any) => resource.id === expression.value)) {
+                    setIsResourceMissing(true);
+                }
+
                 if (resourcesList.totalResults > resourcesList.count) {
                     return (
                         <ValueInputAutocomplete
@@ -366,6 +378,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
                 return (
                     <Select
+                        disabled={ readonly }
                         value={ expression.value }
                         onChange={ (e: SelectChangeEvent) => {
                             updateConditionExpression(
@@ -400,6 +413,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             if (metaValue?.inputType === "input" || null) {
                 return (
                     <TextField
+                        disabled={ readonly }
                         value={ expression.value }
                         onChange={ (e: React.ChangeEvent<HTMLInputElement>) => {
                             handleExpressionChangeDebounced(
@@ -432,6 +446,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
                     return (
                         <Select
+                            disabled={ readonly }
                             value={ expression.value }
                             onChange={ (e: SelectChangeEvent) => {
                                 updateConditionExpression(
@@ -486,8 +501,25 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 className="box-container"
                 data-componentid={ componentId }
             >
+                { isResourceMissing && (
+                    <Alert severity="warning" className="alert-warning" sx={ { mb: 2 } }>
+                        <AlertTitle
+                            className="alert-title"
+                        >
+                            <Trans i18nKey={ t("actions:fields.rules.alerts.resourceNotFound.title") }>
+                                Previous configured resource cannot be found.
+                            </Trans>
+                        </AlertTitle>
+                        <Trans
+                            i18nKey={ t("actions:fields.rules.alerts.resourceNotFound.description") }
+                        >
+                            Please make sure to update it to a resource that is available.
+                        </Trans>
+                    </Alert>
+                ) }
                 <FormControl fullWidth size="small">
                     <Select
+                        disabled={ readonly }
                         value={ expression.field }
                         onChange={ (e: SelectChangeEvent) => {
                             updateConditionExpression(
@@ -517,6 +549,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 </FormControl>
                 <FormControl sx={ { mb: 1, minWidth: 120, mt: 1 } } size="small">
                     <Select
+                        disabled={ readonly }
                         value={ expression.operator }
                         onChange={ (e: SelectChangeEvent) => {
                             updateConditionExpression(
@@ -541,6 +574,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 </FormControl>
                 <FormControl sx={ { mt: 1 } } size="small">
                     <Button
+                        disabled={ readonly }
                         size="small"
                         variant="contained"
                         color="secondary"
@@ -559,7 +593,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     </Button>
                 </FormControl>
 
-                { isConditionExpressionRemovable && (
+                { isConditionExpressionRemovable && !readonly && (
                     <Fab
                         aria-label="delete"
                         size="small"
@@ -603,6 +637,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             { condition.expressions?.length > 0 && (
                                 <Divider sx={ { mb: 1, mt: 2 } }>
                                     <Button
+                                        disabled={ readonly }
                                         size="small"
                                         variant="contained"
                                         color="secondary"

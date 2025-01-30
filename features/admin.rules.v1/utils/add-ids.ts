@@ -18,20 +18,6 @@
 
 import { v4 as uuidv4 } from "uuid";
 
-export const removeIds = (obj: any): any => {
-    if (Array.isArray(obj)) {
-        return obj.map(removeIds);
-    } else if (typeof obj === "object" && obj !== null) {
-        return Object.fromEntries(
-            Object.entries(obj)
-                .filter(([ key ]: [string, any]) => key !== "id")
-                .map(([ key, value ]: [string, any]) => [ key, removeIds(value) ])
-        );
-    }
-
-    return obj;
-};
-
 export const addIds = (obj: any): any => {
     if (Array.isArray(obj)) {
         return obj.map(addIds);
@@ -50,3 +36,5 @@ export const addIds = (obj: any): any => {
 
     return obj;
 };
+
+export default addIds;

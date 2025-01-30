@@ -30,6 +30,7 @@ import React, { Dispatch, FunctionComponent, ReactElement, useEffect } from "rea
 import { Trans, useTranslation } from "react-i18next";
 
 interface RuleConfigFormInterface extends IdentifiableComponentInterface {
+    readonly: boolean;
     rule: RuleWithoutIdInterface;
     isHasRule : boolean;
     setIsHasRule: (value: boolean) => void;
@@ -37,6 +38,7 @@ interface RuleConfigFormInterface extends IdentifiableComponentInterface {
 }
 
 const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
+    readonly,
     rule,
     isHasRule,
     setIsHasRule,
@@ -73,7 +75,7 @@ const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
                 </Trans>
             </Heading>
             { isHasRule ? (
-                <Rules disableLastRuleDelete={ false } />
+                <Rules disableLastRuleDelete={ false } readonly={ readonly } />
             ) : (
                 <Alert className="alert-nutral" icon={ false }>
                     <AlertTitle
