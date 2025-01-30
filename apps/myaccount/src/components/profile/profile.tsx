@@ -89,6 +89,7 @@ import {
     AlertLevels,
     AuthStateInterface, BasicProfileInterface, ConfigReducerStateInterface,
     FeatureConfigInterface,
+    MultiValue,
     PreferenceConnectorResponse,
     PreferenceProperty,
     PreferenceRequest,
@@ -641,9 +642,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 let primaryValue: string | null;
 
                 if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-                    primaryValue = profileDetails?.profileInfo?.emails?.length > 0
-                        ? profileDetails?.profileInfo?.emails[0]
-                        : null;
+                    primaryValue = profileDetails.profileInfo?.emails?.find(
+                        (subAttribute: string) => typeof subAttribute === "string");
                 } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
                     primaryValue = profileInfo.get(MOBILE_ATTRIBUTE);
                 }
@@ -661,15 +661,26 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 };
                 // If no primary value is set, set the first value as the primary value.
                 if (isEmpty(primaryValue) && !isEmpty(currentValues)) {
+                    const subAttributes: MultiValue[] = extractSubAttributes(EMAIL_ATTRIBUTE);
+
                     if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
                         value = {
                             ...value,
-                            [EMAIL_ATTRIBUTE]: [ currentValues[0] ]
+                            [EMAIL_ATTRIBUTE]: [
+                                ...subAttributes,
+                                currentValues[0]
+                            ]
                         };
                     } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+
+                        const filteredSubAttributes: MultiValue[] = extractSubAttributes(
+                            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))
+                            .filter((attr: MultiValue) => attr?.type !== "mobile");
+
                         value = {
                             ...value,
                             [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                                ...filteredSubAttributes,
                                 {
                                     type: "mobile",
                                     value: currentValues[0]
@@ -715,6 +726,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     primaryValue = profileDetails.profileInfo[schemaNames[0]]
                         && profileDetails.profileInfo[schemaNames[0]]
                             .find((subAttribute: string) => typeof subAttribute === "string");
+                    attributeValues.push(primaryValue);
                 }
 
                 // List of sub attributes.
@@ -733,7 +745,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 value = {
                     [schemaNames[0]]: [
                         ...attributeValues,
-                        primaryValue,
                         {
                             type: schemaNames[1],
                             value: values.get(formName)
@@ -942,6 +953,21 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     /**
+     * Extracts sub-attributes (objects) from the profile details.
+     *
+     * @param schemaKey - The attribute key to extract sub-attributes from.
+     * @returns Array of sub-attributes (objects).
+     */
+    const extractSubAttributes = (schemaKey: string): MultiValue[] => {
+
+        const attributes: MultiValue[] = profileDetails?.profileInfo?.[schemaKey];
+
+        return Array.isArray(attributes)
+            ? attributes.filter((subAttribute: unknown) => typeof subAttribute === "object")
+            : [];
+    };
+
+    /**
      * Assign primary email address or mobile number the multi-valued attribute.
      *
      * @param schema - Schema of the attribute
@@ -962,13 +988,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
 
+            const subAttributes: MultiValue[] = extractSubAttributes(EMAIL_ATTRIBUTE);
+
             data.Operations[0].value = {
-                [EMAIL_ATTRIBUTE]: [ attributeValue ]
+                [EMAIL_ATTRIBUTE]: [
+                    ...subAttributes,
+                    attributeValue
+                ]
             };
 
-            const existingPrimaryEmail: string = profileDetails?.profileInfo?.emails?.length > 0
-                ? profileDetails?.profileInfo?.emails[0]
-                : null;
+            const existingPrimaryEmail: string = profileDetails.profileInfo?.emails?.find(
+                (subAttribute: string) => typeof subAttribute === "string");
             const existingEmailList: string[] = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
 
             if (existingPrimaryEmail && !existingEmailList.includes(existingPrimaryEmail)) {
@@ -984,8 +1014,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             }
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
 
+            const filteredSubAttributes: MultiValue[] = extractSubAttributes(
+                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))
+                .filter((attr: MultiValue) => attr?.type !== "mobile");
+
             data.Operations[0].value = {
                 [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                    ...filteredSubAttributes,
                     {
                         type: "mobile",
                         value: attributeValue
@@ -1060,9 +1095,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             const emailList: string[] = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
             const updatedEmailList: string[] = emailList.filter((email: string) => email !== attributeValue);
-            const primaryEmail: string = profileDetails?.profileInfo?.emails?.length > 0
-                ? profileDetails?.profileInfo?.emails[0]
-                : null;
+            const primaryEmail: string = profileDetails?.profileInfo?.emails?.find(
+                (subAttribute: string) => typeof subAttribute === "string");
 
             data.Operations[0].value = {
                 [schema.schemaId] : {
@@ -1071,10 +1105,15 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             };
 
             if (attributeValue === primaryEmail) {
+                const subAttributes: MultiValue[] = extractSubAttributes(EMAIL_ATTRIBUTE);
+
                 data.Operations.push({
                     op: "replace",
                     value: {
-                        [EMAIL_ATTRIBUTE]: []
+                        [EMAIL_ATTRIBUTE]: [
+                            ...subAttributes,
+                            ""
+                        ]
                     }
                 });
             }
@@ -1084,13 +1123,20 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             const primaryMobile: string = profileInfo.get(MOBILE_ATTRIBUTE);
 
             if (attributeValue === primaryMobile) {
+                const filteredSubAttributes: MultiValue[] = extractSubAttributes(
+                    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))
+                    .filter((attr: MultiValue) => attr?.type !== "mobile");
+
                 data.Operations.push({
                     op: "replace",
                     value: {
-                        [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [ {
-                            type: "mobile",
-                            value: ""
-                        } ]
+                        [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                            ...filteredSubAttributes,
+                            {
+                                type: "mobile",
+                                value: ""
+                            }
+                        ]
                     }
                 });
             }
@@ -1491,10 +1537,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             pendingEmailAddress = profileDetails?.profileInfo?.pendingEmails?.length > 0
                 ? profileDetails?.profileInfo?.pendingEmails[0]?.value
                 : null;
-            primaryAttributeValue = profileDetails?.profileInfo?.emails?.length > 0
-                ? profileDetails?.profileInfo?.emails[0]
-                : null;
-            primaryAttributeValue = profileDetails?.profileInfo?.emails[0];
+            primaryAttributeValue = profileInfo.get(EMAIL_ATTRIBUTE);
             verificationEnabled = isEmailVerificationEnabled;
             primaryAttributeSchema = getSchemaFromName(EMAIL_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
@@ -1992,9 +2035,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             pendingEmailAddress = profileDetails?.profileInfo?.pendingEmails?.length > 0
                 ? profileDetails?.profileInfo?.pendingEmails[0]?.value
                 : null;
-            primaryAttributeValue = profileDetails?.profileInfo?.emails?.length > 0
-                ? profileDetails?.profileInfo?.emails[0]
-                : null;
+            primaryAttributeValue = profileInfo.get(EMAIL_ATTRIBUTE);
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             verificationEnabled = isMobileVerificationEnabled;
