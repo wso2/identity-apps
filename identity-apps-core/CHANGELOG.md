@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.12.4
+
+### Patch Changes
+
+- [#7453](https://github.com/wso2/identity-apps/pull/7453) [`489217135a86cf4a905a3fbdf5763af3a4be4c1b`](https://github.com/wso2/identity-apps/commit/489217135a86cf4a905a3fbdf5763af3a4be4c1b) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Fix i18n strings for push authenticator
+
 ## 2.12.3
 
 ### Patch Changes
