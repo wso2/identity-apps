@@ -661,9 +661,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 };
                 // If no primary value is set, set the first value as the primary value.
                 if (isEmpty(primaryValue) && !isEmpty(currentValues)) {
-                    const subAttributes: MultiValue[] = extractSubAttributes(EMAIL_ATTRIBUTE);
-
                     if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+                        const subAttributes: MultiValue[] = extractSubAttributes(EMAIL_ATTRIBUTE);
+
                         value = {
                             ...value,
                             [EMAIL_ATTRIBUTE]: [
@@ -675,14 +675,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
                         const filteredSubAttributes: MultiValue[] = extractSubAttributes(
                             ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))
-                            .filter((attr: MultiValue) => attr?.type !== "mobile");
+                            .filter((attr: MultiValue) => attr?.type !== MyAccountProfileConstants.MOBILE);
 
                         value = {
                             ...value,
                             [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
                                 ...filteredSubAttributes,
                                 {
-                                    type: "mobile",
+                                    type: MyAccountProfileConstants.MOBILE,
                                     value: currentValues[0]
                                 }
                             ]
@@ -1016,13 +1016,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
             const filteredSubAttributes: MultiValue[] = extractSubAttributes(
                 ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))
-                .filter((attr: MultiValue) => attr?.type !== "mobile");
+                .filter((attr: MultiValue) => attr?.type !== MyAccountProfileConstants.MOBILE);
 
             data.Operations[0].value = {
                 [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
                     ...filteredSubAttributes,
                     {
-                        type: "mobile",
+                        type: MyAccountProfileConstants.MOBILE,
                         value: attributeValue
                     }
                 ]
@@ -1125,7 +1125,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             if (attributeValue === primaryMobile) {
                 const filteredSubAttributes: MultiValue[] = extractSubAttributes(
                     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))
-                    .filter((attr: MultiValue) => attr?.type !== "mobile");
+                    .filter((attr: MultiValue) => attr?.type !== MyAccountProfileConstants.MOBILE);
 
                 data.Operations.push({
                     op: "replace",
@@ -1133,7 +1133,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
                             ...filteredSubAttributes,
                             {
-                                type: "mobile",
+                                type: MyAccountProfileConstants.MOBILE,
                                 value: ""
                             }
                         ]
