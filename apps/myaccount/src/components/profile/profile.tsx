@@ -1545,7 +1545,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             attributeValueList = profileInfo?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
             verifiedAttributeValueList = profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
-            primaryAttributeValue = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"));
+            primaryAttributeValue = profileInfo?.get(MOBILE_ATTRIBUTE);
             verificationEnabled = isMobileVerificationEnabled;
             primaryAttributeSchema = getSchemaFromName(MOBILE_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;

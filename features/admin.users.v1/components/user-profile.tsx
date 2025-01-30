@@ -1566,7 +1566,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             if (attributeValue === primaryMobile) {
                 const filteredSubAttributes: Record<string, string>[] =
                     extractSubAttributes(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))?.filter(
-                        (attr: Record<string, string>) => attr?.type !== "mobile");
+                        (attr: Record<string, string>) => attr?.type !== UserManagementConstants.MOBILE);
 
                 data.Operations.push({
                     op: "replace",
@@ -1574,7 +1574,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
                             ...filteredSubAttributes,
                             {
-                                type: "mobile",
+                                type: UserManagementConstants.MOBILE,
                                 value: ""
                             }
                         ]
@@ -1769,13 +1769,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
             const filteredSubAttributes: Record<string, string>[] =
                 extractSubAttributes(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))?.filter(
-                    (attr: Record<string, string>) => attr?.type !== "mobile");
+                    (attr: Record<string, string>) => attr?.type !== UserManagementConstants.MOBILE);
 
             data.Operations[0].value = {
                 [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
                     ...filteredSubAttributes,
                     {
-                        type: "mobile",
+                        type: UserManagementConstants.MOBILE,
                         value: attributeValue
                     }
                 ]
@@ -1900,7 +1900,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             if (isEmpty(existingPrimaryMobile) && !isEmpty(attributeValues)) {
                 const filteredSubAttributes: Record<string, string>[] =
                     extractSubAttributes(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))?.filter(
-                        (attr: Record<string, string>) => attr?.type !== "mobile");
+                        (attr: Record<string, string>) => attr?.type !== UserManagementConstants.MOBILE);
 
                 data.Operations.push({
                     op: "replace",
@@ -1908,7 +1908,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
                             ...filteredSubAttributes,
                             {
-                                type: "mobile",
+                                type: UserManagementConstants.MOBILE,
                                 value: attributeValues[0]
                             }
                         ]
