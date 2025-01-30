@@ -39,23 +39,10 @@ jobs:
             github.event.workflow_run.conclusion == 'success'
         steps:
             - name: 📥 Download PR Number Artifact
-              uses: actions/github-script@v3.1.0
+              uses: actions/download-artifact@v4
               with:
-                script: |
-                    const artifacts = await github.actions.listWorkflowRunArtifacts({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        run_id: ${{ github.event.workflow_run.id }},
-                    });
-                    const matchArtifact = artifacts.data.artifacts.find(artifact => artifact.name === "pr-number");
-                    const download = await github.actions.downloadArtifact({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        artifact_id: matchArtifact.id,
-                        archive_format: 'zip',
-                    });
-                    const fs = require('fs');
-                    fs.writeFileSync('${{github.workspace}}/pr-number.zip', Buffer.from(download.data));
+                name: pr-number
+                path: ./
 
             - name: 📦 Extract PR Number Artifact
               run: unzip pr-number.zip
