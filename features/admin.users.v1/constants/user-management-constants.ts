@@ -128,6 +128,7 @@ export class UserManagementConstants {
 
     public static readonly ROLES: string = "roles";
     public static readonly GROUPS: string = "groups";
+    public static readonly MOBILE: string = "mobile";
     public static readonly SCIM_USER_PATH: string = "/Users";
     public static readonly SCIM_GROUP_PATH: string = "/Groups";
     public static readonly SCIM_V2_ROLE_PATH: string = "/v2/Roles";

@@ -912,7 +912,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const attributeValues: (string | string[] | SchemaAttributeValueInterface)[] = [];
                             const attValues: Map<string, string | string []> = new Map();
 
-                            if (schemaNames.length === 1 || schema.name === "phoneNumbers.mobile") {
+                            if (schemaNames.length === 1 || schemaNames.length === 2) {
 
                                 // Extract the sub attributes from the form values.
                                 for (const value of values.keys()) {
@@ -1073,7 +1073,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const attributeValues: (string | string[] | SchemaAttributeValueInterface)[] = [];
                             const attValues: Map<string, string | string []> = new Map();
 
-                            if (schemaNames.length === 1 || schema.name === "phoneNumbers.mobile") {
+                            if (schemaNames.length === 1 || schemaNames.length === 2) {
 
                                 // Extract the sub attributes from the form values.
                                 for (const value of values.keys()) {
@@ -1534,8 +1534,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            const emailList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
-                get("EMAIL_ADDRESSES"))?.split(",") || [];
+            const emailList: string[] = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
             const updatedEmailList: string[] = emailList.filter((email: string) => email !== attributeValue);
             const primaryEmail: string = profileInfo?.get(EMAIL_ATTRIBUTE);
 
@@ -1546,10 +1545,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             };
 
             if (attributeValue === primaryEmail) {
+                const subAttributes: Record<string, string>[] = extractSubAttributes(EMAIL_ATTRIBUTE);
+
                 data.Operations.push({
                     op: "replace",
                     value: {
-                        [EMAIL_ATTRIBUTE]: []
+                        [EMAIL_ATTRIBUTE]: [
+                            ...subAttributes,
+                            ""
+                        ]
                     }
                 });
             }
@@ -1560,13 +1564,20 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             const primaryMobile: string = profileInfo.get(MOBILE_ATTRIBUTE);
 
             if (attributeValue === primaryMobile) {
+                const filteredSubAttributes: Record<string, string>[] =
+                    extractSubAttributes(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))?.filter(
+                        (attr: Record<string, string>) => attr?.type !== UserManagementConstants.MOBILE);
+
                 data.Operations.push({
                     op: "replace",
                     value: {
-                        [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [ {
-                            type: "mobile",
-                            value: ""
-                        } ]
+                        [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                            ...filteredSubAttributes,
+                            {
+                                type: UserManagementConstants.MOBILE,
+                                value: ""
+                            }
+                        ]
                     }
                 });
             }
@@ -1701,6 +1712,18 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
+     * Extracts sub-attributes (objects) from the profile details.
+     *
+     * @param schemaKey - The attribute key to extract sub-attributes from.
+     * @returns Array of sub-attributes (objects).
+     */
+    const extractSubAttributes = (schemaKey: string): Record<string, string>[] => {
+
+        return user && user[schemaKey]?.filter(
+            (subAttribute: unknown) => typeof subAttribute === "object") || [];
+    };
+
+    /**
      * Assign primary email address or mobile number the multi-valued attribute.
      *
      * @param schema - Schema of the attribute
@@ -1718,13 +1741,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+            const subAttributes: Record<string, string>[] = extractSubAttributes(EMAIL_ATTRIBUTE);
 
             data.Operations[0].value = {
-                [EMAIL_ATTRIBUTE]: [ attributeValue ]
+                [EMAIL_ATTRIBUTE]: [
+                    ...subAttributes,
+                    attributeValue
+                ]
             };
 
-            const existingPrimaryEmail: string =
-                profileInfo?.get(EMAIL_ATTRIBUTE);
+            const existingPrimaryEmail: string = profileInfo?.get(EMAIL_ATTRIBUTE);
             const existingEmailList: string[] = profileInfo?.get(
                 EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
 
@@ -1741,10 +1767,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             }
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
 
+            const filteredSubAttributes: Record<string, string>[] =
+                extractSubAttributes(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))?.filter(
+                    (attr: Record<string, string>) => attr?.type !== UserManagementConstants.MOBILE);
+
             data.Operations[0].value = {
                 [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                    ...filteredSubAttributes,
                     {
-                        type: "mobile",
+                        type: UserManagementConstants.MOBILE,
                         value: attributeValue
                     }
                 ]
@@ -1841,10 +1872,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             };
 
             if (isEmpty(existingPrimaryEmail) && !isEmpty(attributeValues)) {
+                const subAttributes: Record<string, string>[] = extractSubAttributes(EMAIL_ATTRIBUTE);
+
                 data.Operations.push({
                     op: "replace",
                     value: {
-                        [EMAIL_ATTRIBUTE]: [ attributeValues[0] ]
+                        [EMAIL_ATTRIBUTE]: [
+                            ...subAttributes,
+                            attributeValues[0]
+                        ]
                     }
                 });
             }
@@ -1862,12 +1898,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             };
 
             if (isEmpty(existingPrimaryMobile) && !isEmpty(attributeValues)) {
+                const filteredSubAttributes: Record<string, string>[] =
+                    extractSubAttributes(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))?.filter(
+                        (attr: Record<string, string>) => attr?.type !== UserManagementConstants.MOBILE);
+
                 data.Operations.push({
                     op: "replace",
                     value: {
                         [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                            ...filteredSubAttributes,
                             {
-                                type: "mobile",
+                                type: UserManagementConstants.MOBILE,
                                 value: attributeValues[0]
                             }
                         ]

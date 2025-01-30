@@ -399,7 +399,7 @@ export interface PatchUserAddOpInterface {
  */
 export type PatchUserOperationValue = Record<string, string
     | Record<string, string | string[]>
-    | Array<string>
+    | Array<string | Record<string, string>>
     | Array<Record<string, string>>>;
 
 /**

@@ -264,5 +264,5 @@ export const createEmptyProfile = (): BasicProfileInterface => ({
  */
 export type ProfilePatchOperationValue = Record<string, string
     | Record<string, string | string[]>
-    | Array<string>
+    | Array<string | MultiValue>
     | Array<Record<string, string>>>;
