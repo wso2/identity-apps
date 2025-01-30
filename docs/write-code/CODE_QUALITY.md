@@ -438,43 +438,87 @@ const updateAlgorithm = () => {
     
 ## Use `classnames` package for conditionally applying class names to UI elements
 
-<brief description>
+Manually managing conditional class names using string concatenation can lead to unreadable and error-prone code. The [`classnames`](https://www.npmjs.com/package/classnames) package simplifies conditional styling by providing a clean and flexible way to apply class names dynamically.
 
 **Why:**
-<explain reasons in list format>
+- Improves readability and maintainability of class name logic.
+- Avoids unnecessary string concatenation and ternary expressions.
+- Makes conditional styling more declarative and easier to modify.
+- Reduces the risk of missing spaces or incorrectly formatted class names.
 
 **What to do:**
-<explain the recommendation in single sentence>
+Use the classnames package to conditionally apply class names in a structured and readable way.
 
 **Example:**
 
 Recommended:
 
-<example what to do>
+```js
+import classNames from "classnames";
+
+function Button({ primary, disabled }) {
+  return (
+    <button
+      className={classNames("px-4 py-2 rounded", {
+        "bg-blue-500 text-white": primary,
+        "bg-gray-300 text-gray-700 cursor-not-allowed": disabled,
+      })}
+      disabled={disabled}
+    >
+      Click me
+    </button>
+  );
+}
+```
 
 Avoid:
 
-<example what not to do>
+```js
+function Button({ primary, disabled }) {
+  return (
+    <button
+      className={
+        "px-4 py-2 rounded " +
+        (primary ? "bg-blue-500 text-white " : "") +
+        (disabled ? "bg-gray-300 text-gray-700 cursor-not-allowed" : "")
+      }
+      disabled={disabled}
+    >
+      Click me
+    </button>
+  );
+}
+```
 
 ## Refrain from using index files, as it leads to increased bundle sizes and circular dependencies
 
-<brief description>
+Using index.js (or index.ts) files for re-exporting multiple modules can unintentionally import unnecessary code, leading to larger bundle sizes and potential circular dependencies that break execution order.
 
 **Why:**
-<explain reasons in list format>
+- Increases bundle size by importing unused modules.
+- Leads to circular dependencies that can cause runtime errors.
+- Makes debugging harder as imports become less explicit.
+- Reduces tree-shaking efficiency, preventing unused code elimination.
 
 **What to do:**
-<explain the recommendation in single sentence>
+Import modules directly from their specific file paths instead of using index files for aggregation.
 
 **Example:**
 
 Recommended:
 
-<example what to do>
+```js
+// Import only what is needed
+import Button from "@/components/Button";
+import Card from "@/components/Card";
+```
 
 Avoid:
 
-<example what not to do>
+```js
+// Importing from index file (Pulls unnecessary code)
+import { Button, Card } from "@/components";
+```
     
 ## Use modern js features to keep the code concise and readable. 
 
@@ -506,23 +550,73 @@ const userName = (user && user.profile && user.profile.name) || "Guest";
 
 ## Use component hooks to separate the component logic from the presentation layer.
 
-<brief description>
+Separating logic into custom hooks improves reusability, readability, and maintainability of React components by keeping UI concerns distinct from business logic.
 
 **Why:**
-<explain reasons in list format>
+- Promotes code reusability by encapsulating logic in reusable hooks.
+- Improves readability by keeping components focused on rendering.
+- Enhances maintainability by making it easier to test and modify logic independently.
+- Reduces prop drilling by managing state and side effects separately.
 
 **What to do:**
-<explain the recommendation in single sentence>
+Extract complex logic, state management, and side effects into custom hooks while keeping UI rendering inside the component.
 
 **Example:**
 
 Recommended:
 
-<example what to do>
+```js
+// useUserData.js (Custom Hook)
+import { useState, useEffect } from "react";
+
+function useUserData(userId) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    fetch(`/api/users/${userId}`)
+      .then((res) => res.json())
+      .then(setUser);
+  }, [userId]);
+
+  return user;
+}
+
+export default useUserData;
+```
+
+```js
+// UserProfile.js (Component)
+import useUserData from "./useUserData";
+
+function UserProfile({ userId }) {
+  const user = useUserData(userId);
+
+  if (!user) return <p>Loading...</p>;
+
+  return <h1>{user.name}</h1>;
+}
+```
 
 Avoid:
 
-<example what not to do>
+```js
+// UserProfile.js (Component with mixed logic)
+import { useState, useEffect } from "react";
+
+function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    fetch(`/api/users/${userId}`)
+      .then((res) => res.json())
+      .then(setUser);
+  }, [userId]);
+
+  if (!user) return <p>Loading...</p>;
+
+  return <h1>{user.name}</h1>;
+}
+```
 
 ## Typescript Doc Comments
 
