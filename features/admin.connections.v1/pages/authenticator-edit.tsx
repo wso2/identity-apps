@@ -333,9 +333,7 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
 
         return (
             <div className="with-label ellipsis" ref={ idpDescElement }>
-
                 { resolveCustomLocalAuthenticatorLabel(connector) }
-
                 { connector?.description ? (
                     <Popup
                         content={ connector?.description?.replaceAll("{{productName}}", productName) }
