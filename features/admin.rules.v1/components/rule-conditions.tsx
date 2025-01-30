@@ -34,7 +34,7 @@ import debounce from "lodash-es/debounce";
 import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import getResourceDetails from "../api/get-resource-details";
-import useGetResourceList from "../api/use-get-resource-list-or-resource-details";
+import useGetResourceList from "../api/use-get-resource-list";
 import { useRulesContext } from "../hooks/use-rules-context";
 import {
     ConditionExpressionMetaInterface,
