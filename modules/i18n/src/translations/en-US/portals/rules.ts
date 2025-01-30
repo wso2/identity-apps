@@ -21,8 +21,8 @@ import { rulesNS } from "../../../models";
 export const rules: rulesNS = {
     alerts: {
         resourceNotFound: {
-            description: "Please make sure to update it to a resource that is available.",
-            title: "Previous configured resource cannot be found."
+            description: "Please update to a valid resource.",
+            title: "The resource linked to this rule is no longer available."
         }
     },
     buttons: {

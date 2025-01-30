@@ -561,13 +561,13 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             className="alert-title"
                         >
                             <Trans i18nKey={ t("actions:fields.rules.alerts.resourceNotFound.title") }>
-                                Previous configured resource cannot be found.
+                                The resource linked to this rule is no longer available.
                             </Trans>
                         </AlertTitle>
                         <Trans
                             i18nKey={ t("actions:fields.rules.alerts.resourceNotFound.description") }
                         >
-                            Please make sure to update it to a resource that is available.
+                            Please update to a valid resource.
                         </Trans>
                     </Alert>
                 ) }
