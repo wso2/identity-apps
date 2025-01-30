@@ -71,7 +71,7 @@ const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
             <Divider className="divider-container" />
             <Heading className="heading-container" as="h5">
                 <Trans i18nKey={ t("actions:fields.rules.label") }>
-                        Execution Rule
+                    Execution Rule
                 </Trans>
             </Heading>
             { isHasRule ? (
@@ -83,13 +83,13 @@ const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
                         data-componentid={ `${ _componentId }-rule-info-box-title` }
                     >
                         <Trans i18nKey={ t("actions:fields.rules.info.title") }>
-                                No execution rule is configured.
+                            No execution rule is configured.
                         </Trans>
                     </AlertTitle>
                     <Trans
                         i18nKey={ t("actions:fields.authentication.info.message") }
                     >
-                            This action will be executed without any conditions.
+                        This action will be executed without any conditions.
                     </Trans>
                     <div>
                         <Button

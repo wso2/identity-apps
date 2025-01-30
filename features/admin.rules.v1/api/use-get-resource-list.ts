@@ -34,7 +34,7 @@ import { HttpMethods } from "@wso2is/core/models";
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetResourceListOrResourceDetails = <Data = any, Error = RequestErrorInterface>(
+const useGetResourceList = <Data = any, Error = RequestErrorInterface>(
     endpointPath: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
@@ -60,4 +60,4 @@ const useGetResourceListOrResourceDetails = <Data = any, Error = RequestErrorInt
     };
 };
 
-export default useGetResourceListOrResourceDetails;
+export default useGetResourceList;
