@@ -90,7 +90,6 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
-    const state: boolean = useSelector((state: AppState) => state);
     const gettingStartedFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state.config.ui.features.gettingStarted);
     const scopes: string = useSelector((state: AppState) => state.auth.allowedScopes);
@@ -310,7 +309,12 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         return !userOrganizationID || userOrganizationID === window["AppUtils"].getConfig().organizationName;
     };
 
-    const myAccountUrl = (): string => {
+    /**
+     * Get the my account url based on the user.
+     *
+     * @returns my account url.
+     */
+    const getMyAccountUrl = (): string => {
         if (isPrivilegedUser) {
             return privilegedUserAccountURL;
         } if (isSubOrganization) {
@@ -319,7 +323,6 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
 
         return accountAppURL;
     };
-
 
     const LOGO_IMAGE = () => {
         return (
@@ -424,7 +427,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                             onClick={ () => {
                                 eventPublisher.publish("console-click-visit-my-account");
                                 window.open(
-                                    myAccountUrl(),
+                                    getMyAccountUrl(),
                                     "_blank",
                                     "noopener"
                                 );
