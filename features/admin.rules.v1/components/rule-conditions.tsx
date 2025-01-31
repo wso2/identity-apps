@@ -34,7 +34,6 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import debounce from "lodash-es/debounce";
 import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import getResourceDetails from "../api/get-resource-details";
 import useGetResourceList from "../api/use-get-resource-list";
 import { useRulesContext } from "../hooks/use-rules-context";
 import {
@@ -52,6 +51,7 @@ import {
     RuleConditionsInterface,
     RuleInterface
 } from "../models/rules";
+import "./rule-conditions.scss";
 
 /**
  * Value input autocomplete options interface.
@@ -96,6 +96,7 @@ interface ResourceListSelectProps extends ComponentCommonPropsInterface {
  * Value input autocomplete props interface.
  */
 interface ValueInputAutocompleteProps extends ComponentCommonPropsInterface {
+    resourceDetails: ResourceInterface;
     valueReferenceAttribute: string;
     valueDisplayAttribute: string;
     resourceType: string;
@@ -184,9 +185,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
      */
     const ValueInputAutocomplete: FunctionComponent<ValueInputAutocompleteProps> = ({
         ["data-componentid"]: componentId = "rules-condition-expression-input-value",
-        expressionValue,
         valueReferenceAttribute,
         valueDisplayAttribute,
+        resourceDetails,
         resourceType,
         initialResourcesLoadUrl,
         filterBaseResourcesUrl,
@@ -197,7 +198,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
         const [ inputValue, setInputValue ] = useState<string>(null);
         const [ inputValueLabel, setInputValueLabel ] = useState<string>(null);
-        const [ resourceDetails, setResourceDetails ] = useState<ResourceInterface>(null);
         const [ options, setOptions ] = useState<ValueInputAutocompleteOptionsInterface[]>([]);
         const [ open, setOpen ] = useState<boolean>(false);
 
@@ -209,16 +209,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             useGetResourceList(initialResourcesLoadUrl);
         const { data: filteredResources = [], isLoading: isFiltering } =
             useGetResourceList(filterUrl);
-
-        useEffect(() => {
-            getResourceDetails(`/${resourceType}/${expressionValue}`)
-                .then((response: ResourceInterface) => {
-                    setResourceDetails(response);
-                })
-                .catch(() => {
-                    return;
-                });
-        }, [ expressionValue ]);
 
         useEffect(() => {
             if (resourceDetails) {
@@ -255,6 +245,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
         return (
             <Autocomplete
+                className="autocomplete"
                 disabled={ readonly }
                 data-componentid={ componentId }
                 open={ open }
@@ -321,12 +312,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         return (
                             <li
                                 { ...props }
-                                // TODO: Check the issue why className is not working.
-                                // And move styles to a css file.
+                                className="MuiAutocomplete-moreItemsAvailableMessage"
                                 style={ {
-                                    color: "#666666",
-                                    fontStyle: "italic",
-                                    padding: "12px 15px 5px",
                                     pointerEvents: option.isDisabled ? "none" : "auto"
                                 } }
                                 key={ option.id }
@@ -365,6 +352,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         filterBaseResourcesUrl
     }: ResourceListSelectProps) => {
 
+        const [ resourceDetails, setResourceDetails ] = useState<ResourceInterface>(null);
         const valueReferenceAttribute: string = findMetaValuesAgainst?.value?.valueReferenceAttribute || "id";
         const valueDisplayAttribute: string = findMetaValuesAgainst?.value?.valueDisplayAttribute || "name";
 
@@ -379,15 +367,22 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             data: fetchedResourcesList
         } = useGetResourceList(initialResourcesLoadUrl);
 
+        const {
+            data: resourcesDetails,
+            isLoading: isResourceDetailsLoading,
+            error: resourceDetailsError
+        } = useGetResourceList(`/${resourceType}/${expressionValue}`);
+
         useEffect(() => {
-            getResourceDetails(`/${resourceType}/${expressionValue}`)
-                .then(() => {
-                    return;
-                })
-                .catch(() => {
+            if (!isResourceDetailsLoading) {
+                if (resourceDetailsError) {
                     setIsResourceMissing(true);
-                });
-        }, [ expressionValue ]);
+                    setResourceDetails(null);
+                } else {
+                    setResourceDetails(resourcesDetails);
+                }
+            }
+        }, [ isResourceDetailsLoading, resourceDetailsError ]);
 
         if (fetchedResourcesList) {
             // Set first value of the list if option is empty
@@ -409,6 +404,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         ruleId={ ruleId }
                         expressionId={ expressionId }
                         expressionValue={ expressionValue }
+                        resourceDetails={ resourceDetails }
                         resourceType={ resourceType }
                         valueReferenceAttribute={ valueReferenceAttribute }
                         valueDisplayAttribute={ valueDisplayAttribute }
@@ -567,6 +563,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         index,
         isConditionExpressionRemovable
     }: RuleExpressionComponentProps) => {
+
         const [ isResourceMissing, setIsResourceMissing ] = useState<boolean>(false);
 
         const findMetaValuesAgainst: ConditionExpressionMetaInterface = conditionExpressionsMeta.find(
