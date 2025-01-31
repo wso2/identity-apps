@@ -1,5 +1,25 @@
 # @wso2is/admin.roles.v2
 
+## 2.27.76
+
+### Patch Changes
+
+- [#7473](https://github.com/wso2/identity-apps/pull/7473) [`2c880fbf9da65f902c6aeae45a79bf4794fef879`](https://github.com/wso2/identity-apps/commit/2c880fbf9da65f902c6aeae45a79bf4794fef879) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix applications listing issue in application role creation flow
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.132
+  - @wso2is/admin.connections.v1@2.33.15
+  - @wso2is/admin.core.v1@2.38.1
+  - @wso2is/admin.extensions.v1@2.36.57
+  - @wso2is/admin.groups.v1@2.27.42
+  - @wso2is/admin.identity-providers.v1@2.26.132
+  - @wso2is/admin.organizations.v1@2.26.132
+  - @wso2is/admin.users.v1@2.30.42
+  - @wso2is/admin.remote-userstores.v1@1.7.88
+  - @wso2is/admin.api-resources.v2@2.25.132
+  - @wso2is/admin.server-configurations.v1@2.32.57
+  - @wso2is/admin.userstores.v1@2.26.91
+
 ## 2.27.75
 
 ### Patch Changes
