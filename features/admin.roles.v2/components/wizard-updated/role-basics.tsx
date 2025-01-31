@@ -104,6 +104,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const {
         data: applicationList,
         isLoading: isApplicationListFetchRequestLoading,
+        isValidating: isApplicationListFetchRequestValidating,
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
     } = useApplicationList("clientId,associatedRoles.allowedAudience,advancedConfigurations", null, null,
@@ -187,7 +188,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         noApplicationsAvailable.current = (options.length === 0);
 
         setApplicationListOptions(options);
-    }, [ isApplicationListFetchRequestLoading ]);
+    }, [ isApplicationListFetchRequestValidating ]);
 
     useEffect(() => {
         if (isFormError || isDisplayNoAppScopeApplicatioError) {
