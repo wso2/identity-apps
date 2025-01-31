@@ -1,5 +1,16 @@
 # @wso2is/admin.home.v1
 
+## 1.6.132
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.132
+  - @wso2is/admin.core.v1@2.38.1
+  - @wso2is/admin.extensions.v1@2.36.57
+  - @wso2is/admin.organizations.v1@2.26.132
+  - @wso2is/admin.feature-gate.v1@1.4.132
+
 ## 1.6.131
 
 ### Patch Changes

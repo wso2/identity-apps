@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.12.5
+
+### Patch Changes
+
+- [#7416](https://github.com/wso2/identity-apps/pull/7416) [`39e05965ced7cdaf05d28ad58e18507f0b50b47c`](https://github.com/wso2/identity-apps/commit/39e05965ced7cdaf05d28ad58e18507f0b50b47c) Thanks [@shashimalcse](https://github.com/shashimalcse)! - introduce console listener
+
 ## 2.12.4
 
 ### Patch Changes
