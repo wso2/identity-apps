@@ -1,14 +1,14 @@
 {
     "private": true,
     "name": "@wso2is/admin.push-providers.v1",
-    "version": "1.0.16",
+    "version": "1.0.17",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/admin.core.v1": "^2.37.35",
-        "@wso2is/admin.feature-gate.v1": "^1.4.127",
-        "@wso2is/admin.template-core.v1": "^1.5.81"
+        "@wso2is/admin.core.v1": "^2.37.36",
+        "@wso2is/admin.feature-gate.v1": "^1.4.128",
+        "@wso2is/admin.template-core.v1": "^1.5.82"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^25.0.7",
