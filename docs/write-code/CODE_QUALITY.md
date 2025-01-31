@@ -311,125 +311,74 @@ const MyComponent = (
 };
 ```
 
-## Get the UI text reviewed by the documentation team.
-
-<brief description>
-
-**Why:**
-<explain reasons in list format>
-
-**What to do:**
-<explain the recommendation in single sentence>
-
-**Example:**
-
-Recommended:
-
-<example what to do>
-
-Avoid:
-
-<example what not to do>
-
-## Make sure to get the UI/UX reviewed with the team before jumping into implementation.
-
-<brief description>
-
-**Why:**
-<explain reasons in list format>
-
-**What to do:**
-<explain the recommendation in single sentence>
-
-**Example:**
-
-Recommended:
-
-<example what to do>
-
-Avoid:
-
-<example what not to do>
-
 ## Enable running eslint on file save
 
-<brief description>
+Automatically running ESLint on file save helps maintain code quality and enforce consistent coding standards without requiring manual intervention.
 
 **Why:**
-<explain reasons in list format>
+
+- Ensures code follows linting rules consistently.
+- Reduces manual effort in running ESLint commands.
+- Helps catch errors and warnings early.
 
 **What to do:**
-<explain the recommendation in single sentence>
+
+Enable ESLint to run automatically on file save in your editor or development environment.
 
 **Example:**
 
 Recommended:
 
-<example what to do>
+In VS Code:
+
+```js
+"editor.codeActionsOnSave": {
+  "source.fixAll.eslint": true
+}
+```
 
 Avoid:
 
-<example what not to do>
+Manually running ESLint each time before committing changes or manually resolve eslint warnings in the editor.
 
-## Make sure to add changeset to your PR if you want a new version released with your changes. Carefully review the type of changes to each module and specify the version bump type in changeset accordingly.
-
-<brief description>
-
-**Why:**
-<explain reasons in list format>
-
-**What to do:**
-<explain the recommendation in single sentence>
-
-**Example:**
-
-Recommended:
-
-<example what to do>
-
-Avoid:
-
-<example what not to do>
+```bash
+eslint --fix myfile.js
+```
 
 ## Use constants for string literals wherever possible.
 
-<brief description>
+Using constants for string literals helps avoid repetition, reduces the risk of errors, and makes code easier to maintain.
 
 **Why:**
-<explain reasons in list format>
+
+- Reduces the risk of typos by reusing the same value consistently.
+- Simplifies code maintenance, as updating a string value only requires modifying the constant.
+- Improves readability by giving meaningful names to commonly used values.
+- Promotes consistency across the codebase by preventing multiple variations of the same string.
 
 **What to do:**
-<explain the recommendation in single sentence>
+
+Define constants for string literals and use them throughout the code to ensure consistency and maintainability.
 
 **Example:**
 
 Recommended:
 
-<example what to do>
+```JS
+const OperationStatus = {
+  SUCCESS: "success",
+  ERROR: "error"
+}
+
+// Usage
+if (status === OperationStatus.SUCCESS) { ... }
+```
 
 Avoid:
 
-<example what not to do>
-
-## If you are doing a behavioral change to the repo (changes to development process, changes to product behaviour etc,), make sure to update the PR with relevant references. This will come in handy when looking back at the code in a few years.
-
-<brief description>
-
-**Why:**
-<explain reasons in list format>
-
-**What to do:**
-<explain the recommendation in single sentence>
-
-**Example:**
-
-Recommended:
-
-<example what to do>
-
-Avoid:
-
-<example what not to do>
+```js
+if (status === "success") { ... }
+```
     
 ## Use meaningful variable names  
 
@@ -468,7 +417,7 @@ const updateAlgorithm = () => {
   /* function body */
 }
 ```
-    
+   
 ## Use `classnames` package for conditionally applying class names to UI elements
 
 Manually managing conditional class names using string concatenation can lead to unreadable and error-prone code. The [`classnames`](https://www.npmjs.com/package/classnames) package simplifies conditional styling by providing a clean and flexible way to apply class names dynamically.
@@ -555,15 +504,22 @@ import { Button, Card } from "@/components";
     
 ## Use modern js features to keep the code concise and readable. 
 
-<brief description>
+Modern JavaScript features like arrow functions, destructuring, template literals, and async/await can greatly enhance code readability, reduce verbosity, and improve maintainability.
 
 Eg: 
 
 **Why:**
-<explain reasons in list format>
+
+- Modern JS features
+    - make the code more concise and expressive.
+    - reduce the need for repetitive code and boilerplate.
+    - help avoid common bugs by promoting cleaner, less error-prone syntax.
+    - improve readability, making it easier for developers to understand the code quickly.
+    - align with current JavaScript best practices, which helps maintain consistency across projects.
 
 **What to do:**
-<explain the recommendation in single sentence>
+
+Adopt modern JavaScript features where possible to simplify and improve the clarity of the code.
 
 **Example:**
 
