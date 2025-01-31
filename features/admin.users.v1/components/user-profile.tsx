@@ -48,7 +48,6 @@ import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { resolveUserEmails } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -1318,19 +1317,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             ? (
                                 attributeValue
                                     ? t("user:profile.notifications.lockUserAccount." +
-                                        "success.message", { name: user.emails && user.emails !== undefined ?
-                                        resolveUserEmails(user?.emails) : resolveUsernameOrDefaultEmail(user, true) })
+                                        "success.message", { name: resolveUsernameOrDefaultEmail(user, true) })
                                     : t("user:profile.notifications.unlockUserAccount." +
-                                        "success.message", { name: user.emails && user.emails !== undefined ?
-                                        resolveUserEmails(user?.emails) : resolveUsernameOrDefaultEmail(user, true) })
+                                        "success.message", { name: resolveUsernameOrDefaultEmail(user, true) })
                             ) : (
                                 attributeValue
                                     ? t("user:profile.notifications.disableUserAccount." +
-                                        "success.message", { name: user.emails && user.emails !== undefined ?
-                                        resolveUserEmails(user?.emails) : resolveUsernameOrDefaultEmail(user, false) })
+                                        "success.message", { name: resolveUsernameOrDefaultEmail(user, true) })
                                     : t("user:profile.notifications.enableUserAccount." +
-                                        "success.message", { name: user.emails && user.emails !== undefined ?
-                                        resolveUserEmails(user?.emails) : resolveUsernameOrDefaultEmail(user, false) })
+                                        "success.message", { name: resolveUsernameOrDefaultEmail(user, true) })
                             )
                 });
                 setShowLockDisableConfirmationModal(false);
