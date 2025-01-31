@@ -1,5 +1,12 @@
 # @wso2is/admin.logs.v1
 
+## 1.5.131
+
+### Patch Changes
+
+- Updated dependencies [[`0fe45738f242dfe6672745d4203e9cf7dad2bde7`](https://github.com/wso2/identity-apps/commit/0fe45738f242dfe6672745d4203e9cf7dad2bde7)]:
+  - @wso2is/admin.core.v1@2.37.38
+
 ## 1.5.130
 
 ### Patch Changes
