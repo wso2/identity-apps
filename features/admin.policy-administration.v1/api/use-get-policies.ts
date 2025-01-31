@@ -44,6 +44,9 @@ export const useGetPolicies = <
         policySearchString: string,
         policyType: string
     ): RequestResultInterface<Data, Error> => {
+
+    const searchStringWithWildcard: string = policySearchString.trim() !== "" ? `*${policySearchString}*` : "*";
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
@@ -53,15 +56,16 @@ export const useGetPolicies = <
         params: {
             isPDPPolicy,
             pageNumber,
-            policySearchString,
+            policySearchString: searchStringWithWildcard,
             policyType
         },
         url: `${store.getState().config.endpoints.entitlementPoliciesApi}`
     };
 
-    const { data, error, isValidating, mutate, isLoading } = useRequest<Data, Error>(shouldFetch ? requestConfig : null, {
-        shouldRetryOnError: false
-    });
+    const { data, error, isValidating, mutate, isLoading } = useRequest<Data, Error>(
+        shouldFetch ? requestConfig : null, {
+            shouldRetryOnError: false
+        });
 
     return {
         data,
