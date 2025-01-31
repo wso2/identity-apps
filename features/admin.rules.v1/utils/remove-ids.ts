@@ -19,7 +19,7 @@
 /**
  * Recursively removes the `id` attribute from the given object.
  *
- * @param obj - Input object.
+ * @param obj - Input of a JSON object or an Array of JSON objects.
  * @returns Object without `id` properties.
  */
 export const removeIds = (obj: any): any => {

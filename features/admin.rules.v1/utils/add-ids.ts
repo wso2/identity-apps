@@ -21,7 +21,7 @@ import { v4 as uuidv4 } from "uuid";
 /**
  * Recursively add an `id` property to all objects in the input object.
  *
- * @param obj - Input object.
+ * @param obj - Input of a JSON object or an Array of JSON objects.
  * @returns Object with `id` properties.
  */
 export const addIds = (obj: any): any => {

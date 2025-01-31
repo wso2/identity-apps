@@ -22,6 +22,7 @@
 export interface ResourceInterface {
     id: string;
     name: string;
+    isDisabled?: boolean;
     [key: string]: any;
 }
 

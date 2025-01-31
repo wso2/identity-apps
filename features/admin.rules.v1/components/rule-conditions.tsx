@@ -18,13 +18,14 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
-import Autocomplete from "@oxygen-ui/react/Autocomplete";
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Divider from "@oxygen-ui/react/Divider";
 import Fab from "@oxygen-ui/react/Fab";
 import FormControl from "@oxygen-ui/react/FormControl";
+import { ListItemProps } from "@oxygen-ui/react/ListItem";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
@@ -197,7 +198,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         const [ inputValue, setInputValue ] = useState<string>(null);
         const [ inputValueLabel, setInputValueLabel ] = useState<string>(null);
         const [ resourceDetails, setResourceDetails ] = useState<ResourceInterface>(null);
-        const [ options, setOptions ] = useState([]);
+        const [ options, setOptions ] = useState<ValueInputAutocompleteOptionsInterface[]>([]);
         const [ open, setOpen ] = useState<boolean>(false);
 
         const filterUrl: string = inputValueLabel
@@ -211,8 +212,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
         useEffect(() => {
             getResourceDetails(`/${resourceType}/${expressionValue}`)
-                .then((response: any) => {
-                    setResourceDetails(response?.data);
+                .then((response: ResourceInterface) => {
+                    setResourceDetails(response);
                 })
                 .catch(() => {
                     return;
@@ -229,7 +230,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         useEffect(() => {
             if (inputValueLabel && filterUrl) {
                 if (filteredResources && Array.isArray(filteredResources[resourceType])) {
-                    const filteredOptions: any[] =
+                    const filteredOptions: ValueInputAutocompleteOptionsInterface[] =
                         filteredResources[resourceType].map((resource: ResourceInterface) => ({
                             id: resource[valueReferenceAttribute],
                             label: resource[valueDisplayAttribute]
@@ -239,10 +240,11 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 }
             } else {
                 if (initialResources && Array.isArray(initialResources[resourceType])) {
-                    const initialOptions: any[] = initialResources[resourceType].map((resource: ResourceInterface) => ({
-                        id: resource[valueReferenceAttribute],
-                        label: resource[valueDisplayAttribute]
-                    }));
+                    const initialOptions: ValueInputAutocompleteOptionsInterface[] =
+                        initialResources[resourceType].map((resource: ResourceInterface) => ({
+                            id: resource[valueReferenceAttribute],
+                            label: resource[valueDisplayAttribute]
+                        }));
 
                     setOptions(initialOptions);
                 }
@@ -276,7 +278,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     value?.id && option.id === value.id
                 }
                 loading={ isInitialLoading || isFiltering }
-                onChange={ (e: any, value: any) => {
+                onChange={ (e: React.ChangeEvent, value: ResourceInterface) => {
                     if (value?.isDisabled) {
                         // Prevent selection of the disabled option
                         return;
@@ -296,7 +298,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 onInputChange={ (event: ChangeEvent, value: string) => {
                     setInputValueLabel(value);
                 } }
-                renderInput={ (params: any) => (
+                renderInput={ (params: AutocompleteRenderInputParams) => (
                     <TextField
                         { ...params }
                         variant="outlined"
@@ -314,7 +316,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         } }
                     />
                 ) }
-                renderOption={ (props: any, option: { label: string; id: string, isDisabled: boolean }) => {
+                renderOption={ (props: ListItemProps, option: { label: string; id: string, isDisabled: boolean }) => {
                     if (option.id === "more-items") {
                         return (
                             <li

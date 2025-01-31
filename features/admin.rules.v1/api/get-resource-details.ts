@@ -25,8 +25,7 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
  * Initialize an axios Http client.
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
-    .httpRequest.bind(AsgardeoSPAClient.getInstance())
-    .bind(AsgardeoSPAClient.getInstance());
+    .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Retrieve resource details for a given endpoint path.
@@ -36,7 +35,6 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 const getResourceDetails = (endpointPath: string): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -45,7 +43,7 @@ const getResourceDetails = (endpointPath: string): Promise<any> => {
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            return Promise.resolve(response);
+            return Promise.resolve(response.data);
         }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
