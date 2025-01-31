@@ -1,5 +1,26 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.25.128
+
+### Patch Changes
+
+- [#7461](https://github.com/wso2/identity-apps/pull/7461) [`a5454fb62efc8eeb5c4149cff9dd7196ab1eca25`](https://github.com/wso2/identity-apps/commit/a5454fb62efc8eeb5c4149cff9dd7196ab1eca25) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in Add Administrators flow
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.128
+  - @wso2is/admin.core.v1@2.37.36
+  - @wso2is/admin.administrators.v1@2.29.128
+  - @wso2is/admin.extensions.v1@2.36.53
+  - @wso2is/admin.identity-providers.v1@2.26.128
+  - @wso2is/admin.login-flow.ai.v1@2.27.23
+  - @wso2is/admin.organizations.v1@2.26.128
+  - @wso2is/admin.roles.v2@2.27.72
+  - @wso2is/admin.authentication.v1@2.25.128
+  - @wso2is/admin.feature-gate.v1@1.4.128
+  - @wso2is/admin.server-configurations.v1@2.32.53
+  - @wso2is/admin.users.v1@2.30.38
+  - @wso2is/admin.userstores.v1@2.26.87
+
 ## 2.25.127
 
 ### Patch Changes
