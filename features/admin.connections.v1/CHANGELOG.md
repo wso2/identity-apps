@@ -1,5 +1,28 @@
 # @wso2is/admin.connections.v1
 
+## 2.33.12
+
+### Patch Changes
+
+- [#7460](https://github.com/wso2/identity-apps/pull/7460) [`49558bf36efbc5075d4bda46ff307d807faa913c`](https://github.com/wso2/identity-apps/commit/49558bf36efbc5075d4bda46ff307d807faa913c) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Display Name Tag in the Local Custom Authenticator Edit Page
+
+- Updated dependencies [[`49558bf36efbc5075d4bda46ff307d807faa913c`](https://github.com/wso2/identity-apps/commit/49558bf36efbc5075d4bda46ff307d807faa913c), [`f8d897f936c4eaf890f0534abcce1aa66c7a5c95`](https://github.com/wso2/identity-apps/commit/f8d897f936c4eaf890f0534abcce1aa66c7a5c95)]:
+  - @wso2is/admin.connections.v1@2.33.12
+  - @wso2is/admin.core.v1@2.37.37
+  - @wso2is/admin.applications.v1@2.30.129
+  - @wso2is/admin.extensions.v1@2.36.54
+  - @wso2is/admin.identity-providers.v1@2.26.129
+  - @wso2is/admin.identity-verification-providers.v1@2.27.129
+  - @wso2is/admin.organizations.v1@2.26.129
+  - @wso2is/admin.roles.v2@2.27.73
+  - @wso2is/admin.actions.v1@1.10.13
+  - @wso2is/admin.application-templates.v1@1.4.129
+  - @wso2is/admin.claims.v1@2.27.39
+  - @wso2is/admin.console-settings.v1@2.25.129
+  - @wso2is/admin.feature-gate.v1@1.4.129
+  - @wso2is/admin.template-core.v1@1.5.83
+  - @wso2is/admin.userstores.v1@2.26.88
+
 ## 2.33.11
 
 ### Patch Changes
