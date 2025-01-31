@@ -187,7 +187,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setSubmittedSearchQuery(searchQuery.trim() !== "" ? `*${searchQuery}*` : "*");
+        setSubmittedSearchQuery(searchQuery);
     };
 
     return (
