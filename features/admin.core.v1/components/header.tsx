@@ -89,6 +89,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const privilegedUserAccountURL: string = useSelector(
         (state: AppState) => state.config.deployment.accountApp.tenantQualifiedPath
     );
+    const consumerAccountURL: string = useSelector((state: AppState) =>
+        state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const gettingStartedFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state.config.ui.features.gettingStarted);
@@ -102,7 +104,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
     const { tierName }: UseSubscriptionInterface = useSubscription();
 
-    const { organizationType } = useGetCurrentOrganizationType();
+    const { organizationType, isSubOrganization } = useGetCurrentOrganizationType();
 
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
@@ -309,6 +311,21 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         return !userOrganizationID || userOrganizationID === window["AppUtils"].getConfig().organizationName;
     };
 
+    /**
+     * Get the my account url based on the user.
+     *
+     * @returns my account url.
+     */
+    const getMyAccountUrl = (): string => {
+        if (isPrivilegedUser) {
+            return privilegedUserAccountURL;
+        } if (isSubOrganization) {
+            return consumerAccountURL;
+        }
+
+        return accountAppURL;
+    };
+
     const LOGO_IMAGE = () => {
         return (
             <Image
@@ -412,7 +429,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                             onClick={ () => {
                                 eventPublisher.publish("console-click-visit-my-account");
                                 window.open(
-                                    isPrivilegedUser ? privilegedUserAccountURL : accountAppURL,
+                                    getMyAccountUrl(),
                                     "_blank",
                                     "noopener"
                                 );
