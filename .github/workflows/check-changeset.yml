@@ -43,6 +43,7 @@ jobs:
               with:
                 name: pr-number
                 path: ./
+                github-token: ${{ env.GH_TOKEN }}
 
             - name: 📦 Extract PR Number Artifact
               run: unzip pr-number.zip
