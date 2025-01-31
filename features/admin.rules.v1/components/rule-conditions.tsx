@@ -63,7 +63,7 @@ interface ValueInputAutocompleteOptionsInterface {
 /**
  * Component common props interface.
  */
-interface ComponentCommonPropsInterface {
+interface ComponentCommonPropsInterface extends IdentifiableComponentInterface {
     conditionId: string;
     expressionId: string;
     expressionValue: string;
@@ -105,7 +105,7 @@ interface ValueInputAutocompleteProps extends ComponentCommonPropsInterface {
 /**
  * Rule expression component props interface.
  */
-interface RuleExpressionComponentProps {
+interface RuleExpressionComponentProps extends IdentifiableComponentInterface {
     expression: ConditionExpressionInterface;
     ruleId: string;
     conditionId: string;
@@ -128,7 +128,7 @@ export interface RulesComponentPropsInterface extends IdentifiableComponentInter
  * @returns Rule condition component.
  */
 const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
-    ["data-componentid"]: componentId = "rules-component",
+    ["data-componentid"]: componentId = "rules-component-condition",
     readonly,
     rule: ruleInstance
 }: RulesComponentPropsInterface): ReactElement => {
@@ -182,6 +182,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
      * @returns Value input autocomplete component.
      */
     const ValueInputAutocomplete: FunctionComponent<ValueInputAutocompleteProps> = ({
+        ["data-componentid"]: componentId = "rules-condition-expression-input-value",
         expressionValue,
         valueReferenceAttribute,
         valueDisplayAttribute,
@@ -253,6 +254,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         return (
             <Autocomplete
                 disabled={ readonly }
+                data-componentid={ componentId }
                 open={ open }
                 onOpen={ () => setOpen(true) }
                 onClose={ () => setOpen(false) }
@@ -349,6 +351,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
      * @returns Resource list select component.
      */
     const ResourceListSelect: FunctionComponent<ResourceListSelectProps> = ({
+        ["data-componentid"]: componentId = "rules-condition-expression-input-value",
         ruleId,
         conditionId,
         setIsResourceMissing,
@@ -365,7 +368,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
         let resourceType: string;
 
-        // TODO: Handle other resource types once the API updates with the required data.
+        // TODO: Handle other resource types once the API is updated with the required data.
         if (expressionField === "application") {
             resourceType = "applications";
         }
@@ -417,6 +420,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 <Select
                     disabled={ readonly }
                     value={ expressionValue }
+                    data-componentid={ componentId }
                     onChange={ (e: SelectChangeEvent) => {
                         updateConditionExpression(
                             e.target.value,
@@ -445,6 +449,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
      * @returns Condition value input component.
      */
     const ConditionValueInput: FunctionComponent<ConditionValueInputProps> = ({
+        ["data-componentid"]: componentId = "rules-condition-expression-input-value",
         findMetaValuesAgainst,
         ruleId,
         conditionId,
@@ -460,6 +465,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 <TextField
                     disabled={ readonly }
                     value={ expressionValue }
+                    data-componentid={ componentId }
                     onChange={ (e: React.ChangeEvent<HTMLInputElement>) => {
                         handleExpressionChangeDebounced(
                             e.target.value,
@@ -493,6 +499,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     <Select
                         disabled={ readonly }
                         value={ expressionValue }
+                        data-componentid={ componentId }
                         onChange={ (e: SelectChangeEvent) => {
                             updateConditionExpression(
                                 e.target.value,
@@ -551,6 +558,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
      * @returns Rule expression component.
      */
     const RuleExpression: FunctionComponent<RuleExpressionComponentProps> = ({
+        ["data-componentid"]: componentId = "rules-condition-expression",
         expression,
         ruleId,
         conditionId,
@@ -571,7 +579,12 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 data-componentid={ componentId }
             >
                 { isResourceMissing && (
-                    <Alert severity="warning" className="alert-warning" sx={ { mb: 2 } }>
+                    <Alert
+                        severity="warning"
+                        className="alert-warning"
+                        sx={ { mb: 2 } }
+                        data-componentid={ "rules-condition-expression-alert" }
+                    >
                         <AlertTitle
                             className="alert-title"
                         >
@@ -590,6 +603,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     <Select
                         disabled={ readonly }
                         value={ expression.field }
+                        data-componentid={ "rules-condition-expression-input-field-select" }
                         onChange={ (e: SelectChangeEvent) => {
                             updateConditionExpression(
                                 e.target.value,
@@ -620,6 +634,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     <Select
                         disabled={ readonly }
                         value={ expression.operator }
+                        data-componentid={ "rules-condition-expression-input-operator-select" }
                         onChange={ (e: SelectChangeEvent) => {
                             updateConditionExpression(
                                 e.target.value,
@@ -687,7 +702,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
     };
 
     return (
-        <>
+        <div data-componentid={ componentId }>
             { ruleConditions?.map(
                 (condition: RuleConditionInterface, index: number) =>
                     ruleInstance?.condition === AdjoiningOperatorTypes.Or && (
@@ -735,7 +750,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         </Fragment>
                     )
             ) }
-        </>
+        </div>
     );
 };
 
