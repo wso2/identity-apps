@@ -16,6 +16,12 @@
  * under the License.
  */
 
+/**
+ * Recursively removes the `id` attribute from the given object.
+ *
+ * @param obj - Input object.
+ * @returns Object without `id` properties.
+ */
 export const removeIds = (obj: any): any => {
     if (Array.isArray(obj)) {
         return obj.map(removeIds);

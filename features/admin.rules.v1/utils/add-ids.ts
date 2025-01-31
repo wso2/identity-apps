@@ -18,6 +18,12 @@
 
 import { v4 as uuidv4 } from "uuid";
 
+/**
+ * Recursively add an `id` property to all objects in the input object.
+ *
+ * @param obj - Input object.
+ * @returns Object with `id` properties.
+ */
 export const addIds = (obj: any): any => {
     if (Array.isArray(obj)) {
         return obj.map(addIds);

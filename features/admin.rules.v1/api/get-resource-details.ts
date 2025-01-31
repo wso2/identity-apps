@@ -30,6 +30,8 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 
 /**
  * Retrieve resource details for a given endpoint path.
+ *
+ * @param endpointPath - Endpoint path.
  */
 const getResourceDetails = (endpointPath: string): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
