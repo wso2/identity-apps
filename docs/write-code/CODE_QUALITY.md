@@ -223,7 +223,7 @@ const MyForm = () => (
 );
 ```
 
-## Refrain from using 	`any` as a type. Use it as the last resort.
+## Refrain from using `any` as a type. Use it as the last resort.
 
 Using `any` as a type bypasses TypeScript's type-checking, which can lead to potential runtime errors and reduce the benefits of a strongly typed system.
 
@@ -258,25 +258,58 @@ function processInput(input: any): string {
 }
 ```
 
-## Avoid using data-testid / TestableComponentInterface. Use IdentifiableComponentInterface instead.
+## Avoid using `data-testid` / `TestableComponentInterface`. Use `IdentifiableComponentInterface` instead.
 
-<brief description>
+When adding identifiers to components for testing or automation purposes, prefer using `IdentifiableComponentInterface` with `data-componentid` over using `TestableComponentInterface` with `data-testid`.
 
 **Why:**
-<explain reasons in list format>
+- Consistency: IdentifiableComponentInterface standardizes how components are identified across the codebase.
+- Readability: It provides clearer intent about the purpose of the identifier.
+- Scalability: It aligns better with modern testing frameworks and automation tools.
+- Maintainability: Reduces reliance on arbitrary attributes (data-testid), making tests more resilient to UI changes.
 
 **What to do:**
-<explain the recommendation in single sentence>
+Use `IdentifiableComponentInterface` to define unique identifiers for components instead of using `data-testid` with `TestableComponentInterface`.
 
 **Example:**
 
 Recommended:
 
-<example what to do>
+```js
+import { IdentifiableComponentInterface } from "@wso2is/core";
+
+interface MyComponentProps extends IdentifiableComponentInterface {
+  /* props for your component */
+}
+
+const MyComponent: React.FC<IdentifiableComponentInterface> = ({
+   /* props for your component */
+   propA,
+   propB, 
+   ["data-componentid"]: componentId = "my-component"
+}) => {
+  return <div data-componentid={ componentId }>Hello</div>;
+};
+```
 
 Avoid:
 
-<example what not to do>
+```js
+import { TestableComponentInterface } from "@wso2is/core";
+
+interface MyComponentProps extends TestableComponentInterface {
+  /* props for your component */
+}
+
+const MyComponent = (
+   /* props for your component */
+   propA,
+   propB, 
+   ["data-testid"]: testId = "my-component"
+) => {
+  return <div data-testid={ testId }>Hello</div>;
+};
+```
 
 ## Get the UI text reviewed by the documentation team.
 
