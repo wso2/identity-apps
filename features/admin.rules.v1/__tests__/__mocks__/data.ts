@@ -17,6 +17,7 @@
  */
 
 import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "../../models/meta";
+import { ResourceListInterface } from "../../models/resource";
 import { RuleExecuteCollectionInterface, RuleInterface } from "../../models/rules";
 
 export const sampleRuleExecuteInstance: RuleInterface = {
@@ -83,7 +84,7 @@ export const sampleRuleExecuteInstances: RuleExecuteCollectionInterface = {
     ]
 };
 
-export const sampleApplicationList: any = {
+export const sampleApplicationList: ResourceListInterface = {
     applications: [
         {
             access: "READ",

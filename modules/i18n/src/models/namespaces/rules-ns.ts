@@ -17,6 +17,12 @@
  */
 
 export interface rulesNS {
+    alerts: {
+        resourceNotFound: {
+            description: string;
+            title: string;
+        };
+    };
     buttons: {
         and: string;
         clearRule: string;
@@ -26,7 +32,7 @@ export interface rulesNS {
     fields: {
         autocomplete: {
             moreItemsMessage: string;
-        }
+        };
     };
     texts: {
         execute: string;

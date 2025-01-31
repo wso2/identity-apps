@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { removeIds } from "./add-remove-ids";
+import removeIds from "./remove-ids";
 import {
     RuleExecuteCollectionInterface,
     RuleExecuteCollectionWithoutIdInterface,
@@ -52,3 +52,5 @@ export const cleanInstance = (
 
     return removeIds(objWithoutTouched);
 };
+
+export default cleanInstance;

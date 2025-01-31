@@ -20,5 +20,6 @@
  * Interface for the Actions feature resource endpoints.
  */
 export interface RulesEndpointsInterface {
+    apiRoot: string;
     rulesMetaData: string;
 }

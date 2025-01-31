@@ -32,8 +32,8 @@ import {
     RuleInterface,
     RuleWithoutIdInterface
 } from "../models/rules";
-import { addIds } from "../utils/add-remove-ids";
-import { cleanInstance } from "../utils/clean";
+import addIds from "../utils/add-ids";
+import cleanInstance from "../utils/clean-instance";
 
 interface RuleContextRefInterface extends RuleExecuteCollectionInterface {
     isMultipleRules: boolean;
@@ -200,7 +200,7 @@ export const RulesProvider = ({
         setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
             return {
                 ...prev,
-                rules: [ ...prev.rules, getNewRuleInstance() ]
+                rules: [ ...prev?.rules, getNewRuleInstance() ]
             };
         });
     };
@@ -214,7 +214,7 @@ export const RulesProvider = ({
         setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
             return {
                 ...prev,
-                rules: prev.rules?.filter(
+                rules: prev?.rules?.filter(
                     (ruleExecution: RuleInterface) => ruleExecution?.id !== id)
             };
         });
@@ -229,7 +229,7 @@ export const RulesProvider = ({
         setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
             return {
                 ...prev,
-                rules: prev.rules?.map((rule: RuleInterface) =>
+                rules: prev?.rules?.map((rule: RuleInterface) =>
                     rule.id === id ? getNewRuleInstance() : rule
                 )
             };
@@ -248,7 +248,7 @@ export const RulesProvider = ({
         setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
             return {
                 ...prev,
-                rules: prev.rules?.map((ruleExecution: RuleInterface) => {
+                rules: prev?.rules?.map((ruleExecution: RuleInterface) => {
                     if (ruleExecution.id === id) {
                         return {
                             ...ruleExecution,
@@ -296,7 +296,7 @@ export const RulesProvider = ({
         setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
             return {
                 ...prev,
-                rules: prev.rules?.map((rule: RuleInterface) => {
+                rules: prev?.rules?.map((rule: RuleInterface) => {
                     if (rule.id === ruleId) {
                         return {
                             ...rule,
@@ -353,7 +353,7 @@ export const RulesProvider = ({
         setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
             return {
                 ...prev,
-                rules: prev.rules?.map((rule: RuleInterface) => {
+                rules: prev?.rules?.map((rule: RuleInterface) => {
                     if (rule.id === ruleId) {
                         return {
                             ...rule,
@@ -407,7 +407,7 @@ export const RulesProvider = ({
         setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
             return {
                 ...prev,
-                rules: prev.rules?.map((rule: RuleInterface) => {
+                rules: prev?.rules?.map((rule: RuleInterface) => {
                     if (rule.id === ruleId) {
                         return {
                             ...rule,

@@ -16,28 +16,23 @@
  * under the License.
  */
 
-import { rulesNS } from "../../../models";
+/**
+ * Interface for the rule feature resource.
+ */
+export interface ResourceInterface {
+    id: string;
+    name: string;
+    isDisabled?: boolean;
+    [key: string]: any;
+}
 
-export const rules: rulesNS = {
-    alerts: {
-        resourceNotFound: {
-            description: "Please update to a valid resource.",
-            title: "The resource linked to this rule is no longer available."
-        }
-    },
-    buttons: {
-        and: "And",
-        clearRule: "Clear Rule",
-        newRule: "New Rule",
-        or: "Or"
-    },
-    fields: {
-        autocomplete: {
-            moreItemsMessage: "Only the recent resources are listed. Type to search for others ..."
-        }
-    },
-    texts: {
-        execute: "Execute",
-        if: "If"
-    }
-};
+/**
+ * Interface for the rule feature resource list.
+ */
+export interface ResourceListInterface {
+    count: number;
+    links: any[];
+    startIndex: number;
+    totalResults: number;
+    [key: string]: ResourceInterface[] | number | any;
+}

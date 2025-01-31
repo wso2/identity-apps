@@ -30,6 +30,7 @@ import React, { Dispatch, FunctionComponent, ReactElement, useEffect } from "rea
 import { Trans, useTranslation } from "react-i18next";
 
 interface RuleConfigFormInterface extends IdentifiableComponentInterface {
+    readonly: boolean;
     rule: RuleWithoutIdInterface;
     isHasRule : boolean;
     setIsHasRule: (value: boolean) => void;
@@ -37,6 +38,7 @@ interface RuleConfigFormInterface extends IdentifiableComponentInterface {
 }
 
 const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
+    readonly,
     rule,
     isHasRule,
     setIsHasRule,
@@ -69,11 +71,11 @@ const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
             <Divider className="divider-container" />
             <Heading className="heading-container" as="h5">
                 <Trans i18nKey={ t("actions:fields.rules.label") }>
-                        Execution Rule
+                    Execution Rule
                 </Trans>
             </Heading>
             { isHasRule ? (
-                <Rules disableLastRuleDelete={ false } />
+                <Rules disableLastRuleDelete={ false } readonly={ readonly } />
             ) : (
                 <Alert className="alert-nutral" icon={ false }>
                     <AlertTitle
@@ -81,25 +83,27 @@ const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
                         data-componentid={ `${ _componentId }-rule-info-box-title` }
                     >
                         <Trans i18nKey={ t("actions:fields.rules.info.title") }>
-                                No execution rule is configured.
+                            No execution rule is configured.
                         </Trans>
                     </AlertTitle>
                     <Trans
                         i18nKey={ t("actions:fields.authentication.info.message") }
                     >
-                            This action will be executed without any conditions.
+                        This action will be executed without any conditions.
                     </Trans>
-                    <div>
-                        <Button
-                            onClick={ () => setIsHasRule(true) }
-                            variant="outlined"
-                            size="small"
-                            className={ "secondary-button" }
-                            data-componentid={ `${ _componentId }-configure-rule-button` }
-                        >
-                            { t("actions:fields.rules.button") }
-                        </Button>
-                    </div>
+                    { !readonly && (
+                        <div>
+                            <Button
+                                onClick={ () => setIsHasRule(true) }
+                                variant="outlined"
+                                size="small"
+                                className={ "secondary-button" }
+                                data-componentid={ `${ _componentId }-configure-rule-button` }
+                            >
+                                { t("actions:fields.rules.button") }
+                            </Button>
+                        </div>
+                    ) }
                 </Alert>
             ) }
         </>
