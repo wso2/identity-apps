@@ -91,17 +91,19 @@ const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
                     >
                         This action will be executed without any conditions.
                     </Trans>
-                    <div>
-                        <Button
-                            onClick={ () => setIsHasRule(true) }
-                            variant="outlined"
-                            size="small"
-                            className={ "secondary-button" }
-                            data-componentid={ `${ _componentId }-configure-rule-button` }
-                        >
-                            { t("actions:fields.rules.button") }
-                        </Button>
-                    </div>
+                    { !readonly && (
+                        <div>
+                            <Button
+                                onClick={ () => setIsHasRule(true) }
+                                variant="outlined"
+                                size="small"
+                                className={ "secondary-button" }
+                                data-componentid={ `${ _componentId }-configure-rule-button` }
+                            >
+                                { t("actions:fields.rules.button") }
+                            </Button>
+                        </div>
+                    ) }
                 </Alert>
             ) }
         </>

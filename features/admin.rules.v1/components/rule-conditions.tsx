@@ -112,6 +112,7 @@ interface RuleExpressionComponentProps extends IdentifiableComponentInterface {
     ruleId: string;
     conditionId: string;
     index: number;
+    isConditionLast: boolean;
     isConditionExpressionRemovable: boolean;
 }
 
@@ -561,6 +562,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         ruleId,
         conditionId,
         index,
+        isConditionLast,
         isConditionExpressionRemovable
     }: RuleExpressionComponentProps) => {
 
@@ -664,26 +666,28 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         setIsResourceMissing={ setIsResourceMissing }
                     />
                 </FormControl>
-                <FormControl sx={ { mt: 1 } } size="small">
-                    <Button
-                        disabled={ readonly }
-                        size="small"
-                        variant="contained"
-                        color="secondary"
-                        onClick={ () => {
-                            addNewRuleConditionExpression(
-                                ruleId,
-                                conditionId,
-                                AdjoiningOperatorTypes.And,
-                                expression.id
-                            );
-                        } }
-                        className="add-button"
-                        startIcon={ <PlusIcon /> }
-                    >
-                        { t("rules:buttons.and") }
-                    </Button>
-                </FormControl>
+                { ((!readonly) || (readonly && !isConditionLast)) && (
+                    <FormControl sx={ { mt: 1 } } size="small">
+                        <Button
+                            disabled={ readonly }
+                            size="small"
+                            variant="contained"
+                            color="secondary"
+                            onClick={ () => {
+                                addNewRuleConditionExpression(
+                                    ruleId,
+                                    conditionId,
+                                    AdjoiningOperatorTypes.And,
+                                    expression.id
+                                );
+                            } }
+                            className="add-button"
+                            startIcon={ !readonly ? <PlusIcon /> : null }
+                        >
+                            { t("rules:buttons.and") }
+                        </Button>
+                    </FormControl>
+                ) }
 
                 { isConditionExpressionRemovable && !readonly && (
                     <Fab
@@ -711,11 +715,13 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                     { condition.expressions?.map(
                                         (expression: ConditionExpressionInterface, exprIndex: number) => (
                                             <Box sx={ { mt: 2 } } key={ exprIndex }>
+                                                { (condition.expressions.length === (exprIndex + 1)) }
                                                 <RuleExpression
                                                     expression={ expression }
                                                     ruleId={ ruleInstance.id }
                                                     conditionId={ condition.id }
                                                     index={ exprIndex }
+                                                    isConditionLast={ condition.expressions.length === (exprIndex + 1) }
                                                     isConditionExpressionRemovable={
                                                         condition.expressions.length > 1 ||
                                                         ruleInstance.rules.length > 1
@@ -726,7 +732,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                     ) }
                                 </>
                             ) }
-                            { condition.expressions?.length > 0 && (
+                            { ((!readonly && (condition.expressions?.length > 0)) ||
+                                (readonly && (condition.expressions?.length !== index))) && (
                                 <Divider sx={ { mb: 1, mt: 2 } }>
                                     <Button
                                         disabled={ readonly }
@@ -740,7 +747,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                                 AdjoiningOperatorTypes.Or
                                             )
                                         }
-                                        startIcon={ <PlusIcon /> }
+                                        startIcon={ !readonly ? <PlusIcon /> : null }
                                     >
                                         { t("rules:buttons.or") }
                                     </Button>
