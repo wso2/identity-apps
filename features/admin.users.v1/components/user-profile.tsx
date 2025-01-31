@@ -48,7 +48,6 @@ import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { resolveUserEmails } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
