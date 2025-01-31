@@ -2,4 +2,4 @@
 "@wso2is/admin.core.v1": patch
 ---
 
-Update componentid
+Update component id for add-certificate-form
