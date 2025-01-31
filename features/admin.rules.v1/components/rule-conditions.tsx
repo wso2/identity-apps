@@ -80,6 +80,9 @@ interface ConditionValueInputProps extends ComponentCommonPropsInterface {
     setIsResourceMissing: Dispatch<React.SetStateAction<boolean>>;
 }
 
+/**
+ * Resource list select props interface.
+ */
 interface ResourceListSelectProps extends ComponentCommonPropsInterface {
     expressionField: string;
     filterBaseResourcesUrl: string;
@@ -97,6 +100,17 @@ interface ValueInputAutocompleteProps extends ComponentCommonPropsInterface {
     resourceType: string;
     initialResourcesLoadUrl: string;
     filterBaseResourcesUrl: string;
+}
+
+/**
+ * Rule expression component props interface.
+ */
+interface RuleExpressionComponentProps {
+    expression: ConditionExpressionInterface;
+    ruleId: string;
+    conditionId: string;
+    index: number;
+    isConditionExpressionRemovable: boolean;
 }
 
 /**
@@ -164,8 +178,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
     /**
      * Value input autocomplete component.
      *
-     * @param metaValue - Meta value.
-     * @param resourceType - Resource type.
+     * @param props - Props injected to the component.
      * @returns Value input autocomplete component.
      */
     const ValueInputAutocomplete: FunctionComponent<ValueInputAutocompleteProps> = ({
@@ -182,6 +195,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
         const [ inputValue, setInputValue ] = useState<string>(null);
         const [ inputValueLabel, setInputValueLabel ] = useState<string>(null);
+        const [ resourceDetails, setResourceDetails ] = useState<ResourceInterface>(null);
         const [ options, setOptions ] = useState([]);
         const [ open, setOpen ] = useState<boolean>(false);
 
@@ -193,15 +207,23 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             useGetResourceList(initialResourcesLoadUrl);
         const { data: filteredResources = [], isLoading: isFiltering } =
             useGetResourceList(filterUrl);
-        const { data: resourceDetails, isLoading: isResourceDetailsLoading } =
-            useGetResourceList(`/${resourceType}/${expressionValue}`);
 
         useEffect(() => {
-            if (resourceDetails && !isResourceDetailsLoading) {
+            getResourceDetails(`/${resourceType}/${expressionValue}`)
+                .then((response: any) => {
+                    setResourceDetails(response?.data);
+                })
+                .catch(() => {
+                    return;
+                });
+        }, [ expressionValue ]);
+
+        useEffect(() => {
+            if (resourceDetails) {
                 setInputValue(resourceDetails[valueReferenceAttribute]);
                 setInputValueLabel(resourceDetails[valueDisplayAttribute]);
             }
-        }, [ expressionValue, isResourceDetailsLoading ]);
+        }, [ resourceDetails ]);
 
         useEffect(() => {
             if (inputValueLabel && filterUrl) {
@@ -251,7 +273,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 ) =>
                     value?.id && option.id === value.id
                 }
-                loading={ isInitialLoading || isFiltering || isResourceDetailsLoading }
+                loading={ isInitialLoading || isFiltering }
                 onChange={ (e: any, value: any) => {
                     if (value?.isDisabled) {
                         // Prevent selection of the disabled option
@@ -281,7 +303,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             ...params.InputProps,
                             endAdornment: (
                                 <>
-                                    { isInitialLoading || isFiltering || isResourceDetailsLoading ? (
+                                    { isInitialLoading || isFiltering ? (
                                         <CircularProgress color="inherit" size={ 20 } />
                                     ) : null }
                                     { params.InputProps.endAdornment }
@@ -323,20 +345,20 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
     /**
      * Resource list select component.
      *
+     * @param props - Props injected to the component.
      * @returns Resource list select component.
      */
-    const ResourceListSelect: FunctionComponent<ResourceListSelectProps> = (props: ResourceListSelectProps) => {
-        const {
-            ruleId,
-            conditionId,
-            setIsResourceMissing,
-            expressionValue,
-            expressionId,
-            expressionField,
-            findMetaValuesAgainst,
-            initialResourcesLoadUrl,
-            filterBaseResourcesUrl
-        } = props;
+    const ResourceListSelect: FunctionComponent<ResourceListSelectProps> = ({
+        ruleId,
+        conditionId,
+        setIsResourceMissing,
+        expressionValue,
+        expressionId,
+        expressionField,
+        findMetaValuesAgainst,
+        initialResourcesLoadUrl,
+        filterBaseResourcesUrl
+    }: ResourceListSelectProps) => {
 
         const valueReferenceAttribute: string = findMetaValuesAgainst?.value?.valueReferenceAttribute || "id";
         const valueDisplayAttribute: string = findMetaValuesAgainst?.value?.valueDisplayAttribute || "name";
@@ -419,20 +441,19 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
     /**
      * Condition value input component.
      *
-     * @param metaValue - Meta value.
+     * @param props - Props injected to the component.
      * @returns Condition value input component.
      */
-    const ConditionValueInput: FunctionComponent<ConditionValueInputProps> = (props: ConditionValueInputProps) => {
-        const {
-            findMetaValuesAgainst,
-            ruleId,
-            conditionId,
-            expressionField,
-            expressionId,
-            expressionValue,
-            metaValue,
-            setIsResourceMissing
-        } = props;
+    const ConditionValueInput: FunctionComponent<ConditionValueInputProps> = ({
+        findMetaValuesAgainst,
+        ruleId,
+        conditionId,
+        expressionField,
+        expressionId,
+        expressionValue,
+        metaValue,
+        setIsResourceMissing
+    }: ConditionValueInputProps) => {
 
         if (metaValue?.inputType === "input" || null) {
             return (
@@ -529,19 +550,13 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
      * @param props - Props injected to the component.
      * @returns Rule expression component.
      */
-    const RuleExpression = ({
+    const RuleExpression: FunctionComponent<RuleExpressionComponentProps> = ({
         expression,
         ruleId,
         conditionId,
         index,
         isConditionExpressionRemovable
-    }: {
-        expression: ConditionExpressionInterface;
-        ruleId: string;
-        conditionId: string;
-        index: number;
-        isConditionExpressionRemovable: boolean;
-    }) => {
+    }: RuleExpressionComponentProps) => {
         const [ isResourceMissing, setIsResourceMissing ] = useState<boolean>(false);
 
         const findMetaValuesAgainst: ConditionExpressionMetaInterface = conditionExpressionsMeta.find(
