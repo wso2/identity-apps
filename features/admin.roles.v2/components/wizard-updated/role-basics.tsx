@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -40,6 +40,7 @@ import React, {
     SyntheticEvent,
     useCallback,
     useEffect,
+    useMemo,
     useRef,
     useState
 } from "react";
@@ -96,7 +97,6 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const [ isFormError, setIsFormError ] = useState<boolean>(false);
     const [ applicationSearchQuery, setApplicationSearchQuery ] = useState<string>(undefined);
     const [ assignedApplicationsSearching, setAssignedApplicationsSearching ] = useState<boolean>(false);
-    const [ applicationListOptions, setApplicationListOptions ] = useState<DropdownProps[]>([]);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
 
     const noApplicationsAvailable: MutableRefObject<boolean> = useRef<boolean>(false);
@@ -104,6 +104,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const {
         data: applicationList,
         isLoading: isApplicationListFetchRequestLoading,
+        isValidating: isApplicationListFetchRequestValidating,
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
     } = useApplicationList("clientId,associatedRoles.allowedAudience,advancedConfigurations", null, null,
@@ -117,6 +118,15 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
     const { organizationType } = useGetCurrentOrganizationType();
     const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
+
+    // Filter out readonly applications and shared parent applications.
+    const filteredApplicationList: ApplicationListItemInterface[] = useMemo(() => {
+        return applicationList?.applications
+            ?.filter((application: ApplicationListItemInterface) =>
+                !RoleConstants.READONLY_APPLICATIONS_CLIENT_IDS.includes(application?.clientId) &&
+                application?.advancedConfigurations?.fragment === false
+            ) || [];
+    }, [ isApplicationListFetchRequestValidating ]);
 
     useEffect(() => {
         if (applicationListFetchRequestError) {
@@ -145,48 +155,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             return;
         }
 
-        const options: DropdownProps[] = [];
-
-        applicationList?.applications?.map((application: ApplicationListItemInterface) => {
-            if (!RoleConstants.READONLY_APPLICATIONS_CLIENT_IDS.includes(application?.clientId)) {
-                if (application?.advancedConfigurations?.fragment === false) {
-                    options.push({
-                        content: (
-                            <ListItemText
-                                primary={ application.name }
-                                secondary={
-                                    application?.associatedRoles?.allowedAudience === RoleAudienceTypes.ORGANIZATION
-                                        ? (
-                                            <>
-                                                { t("roles:addRoleWizard.forms.roleBasicDetails." +
-                                                    "assignedApplication.applicationSubTitle.organization") }
-                                                <Link
-                                                    data-componentid={ `${componentId}-link-navigate-roles` }
-                                                    onClick={ () => navigateToApplicationEdit(application?.id) }
-                                                    external={ false }
-                                                >
-                                                    { t("roles:addRoleWizard.forms." +
-                                                        "roleBasicDetails.assignedApplication.applicationSubTitle." +
-                                                        "changeAudience") }
-                                                </Link>
-                                            </>
-                                        ) : t("roles:addRoleWizard.forms.roleBasicDetails." +
-                                            "assignedApplication.applicationSubTitle.application")
-                                }
-                            />
-                        ),
-                        disabled: application?.associatedRoles?.allowedAudience === RoleAudienceTypes.ORGANIZATION,
-                        key: application.id,
-                        text: application.name,
-                        value: application.id
-                    });
-                }
-            }
-        });
-
-        noApplicationsAvailable.current = (options.length === 0);
-
-        setApplicationListOptions(options);
+        noApplicationsAvailable.current = (filteredApplicationList.length === 0);
     }, [ isApplicationListFetchRequestLoading ]);
 
     useEffect(() => {
@@ -208,12 +177,52 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                 ? values.assignedApplicationId.toString()
                 : null,
             assignedApplicationName: values.roleAudience === RoleAudienceTypes.APPLICATION
-                ? applicationListOptions?.find((application: DropdownProps) =>
-                    application.key === values.assignedApplicationId.toString())?.text
+                ? filteredApplicationList?.find((application: ApplicationListItemInterface) =>
+                    application.id === values.assignedApplicationId.toString())?.name
                 : null,
             roleAudience: values.roleAudience.toString(),
             roleName: values.roleName.toString()
         };
+    };
+
+    /**
+     * Generates the dropdown options list for the available applications.
+     *
+     * @param _applicationList - list of applications to be displayed.
+     * @returns The dropdown options list for the applications.
+     */
+    const getAvailableApplicationOptions = (
+        _applicationList: ApplicationListItemInterface[]
+    ): DropdownProps[] => {
+        return _applicationList?.map((application: ApplicationListItemInterface) => ({
+            content: (
+                <ListItemText
+                    primary={ application.name }
+                    secondary={
+                        application?.associatedRoles?.allowedAudience === RoleAudienceTypes.ORGANIZATION
+                            ? (
+                                <>
+                                    { t("roles:addRoleWizard.forms.roleBasicDetails." +
+                                        "assignedApplication.applicationSubTitle.organization") }
+                                    <Link
+                                        data-componentid={ `${componentId}-link-navigate-roles` }
+                                        onClick={ () => navigateToApplicationEdit(application?.id) }
+                                        external={ false }
+                                    >
+                                        { t("roles:addRoleWizard.forms." +
+                                            "roleBasicDetails.assignedApplication.applicationSubTitle.changeAudience") }
+                                    </Link>
+                                </>
+                            ) : t("roles:addRoleWizard.forms.roleBasicDetails." +
+                                "assignedApplication.applicationSubTitle.application")
+                    }
+                />
+            ),
+            disabled: application?.associatedRoles?.allowedAudience === RoleAudienceTypes.ORGANIZATION,
+            key: application.id,
+            text: application.name,
+            value: application.id
+        }));
     };
 
     /**
@@ -421,7 +430,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                             name="assignedApplicationId"
                             label={ t("roles:addRoleWizard.forms.roleBasicDetails." +
                                 "assignedApplication.label") }
-                            options={ applicationListOptions }
+                            options={ getAvailableApplicationOptions(filteredApplicationList) }
                             required={ isDisplayApplicationList }
                             value={ initialValues?.assignedApplicationId }
                             search
