@@ -21,6 +21,7 @@
     "isSaas": false,
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
+    "proxyContextPath": "",
     "routePaths": {
         "home": "/overview",
         "login": "",

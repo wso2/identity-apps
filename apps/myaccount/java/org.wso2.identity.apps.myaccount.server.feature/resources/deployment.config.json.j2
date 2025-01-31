@@ -121,6 +121,9 @@
     {% elif legacy_authz_runtime.enable is defined %}
     "isSaas": {{ legacy_authz_runtime.enable }},
     {% endif %}
+    {% if myaccount.proxy_context_path is defined %}
+    "proxyContextPath": "{{ myaccount.proxy_context_path }}",
+    {% endif %}
     "session": {
         {% if myaccount.session.params is defined %}
             {% for param, value in myaccount.session.params.items() %}
