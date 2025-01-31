@@ -103,7 +103,8 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
     const {
         data: actionData,
         isLoading: isActionLoading,
-        mutate: mutateAction
+        mutate: mutateAction,
+        error: actionError
     } = useGetActionById(actionTypeApiPath, initialValues?.id);
 
     const {
@@ -284,7 +285,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
 
     return (
         <>
-            { !isActionLoading && actionData && (
+            { !isActionLoading && !actionError && actionData && (
                 <RulesProvider
                     conditionExpressionsMetaData={ RuleExpressionsMetaData }
                     initialData={ actionData?.rule }
@@ -299,7 +300,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                             <form onSubmit={ handleSubmit }>
                                 <EmphasizedSegment
                                     className="form-wrapper"
-                                    padded={ "very" }
+                                    padded="very"
                                     data-componentid={ `${ _componentId }-section` }
                                 >
                                     <div className="form-container with-max-width">
