@@ -35,7 +35,7 @@ import { getScopesResourceEndpoints } from "@wso2is/admin.oidc-scopes.v1";
 import { getInsightsResourceEndpoints } from "@wso2is/admin.org-insights.v1/config/org-insights";
 import { getOrganizationsResourceEndpoints } from "@wso2is/admin.organizations.v1/configs";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
-import { getPolicyAdministrationResourceEndpoints } from "@wso2is/admin.policy-administration.v1/configs";
+import { getPolicyAdministrationResourceEndpoints } from "@wso2is/admin.policy-administration.v1/configs/endpoints";
 import {
     getPushProviderResourceEndpoints, getPushProviderTemplateEndpoints
 } from "@wso2is/admin.push-providers.v1/configs/endpoints";
