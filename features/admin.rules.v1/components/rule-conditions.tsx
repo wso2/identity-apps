@@ -34,7 +34,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import debounce from "lodash-es/debounce";
 import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import useGetResourceList from "../api/use-get-resource-list";
+import useGetResourceListOrResourceDetails from "../api/use-get-resource-list-or-resource-details";
 import { useRulesContext } from "../hooks/use-rules-context";
 import {
     ConditionExpressionMetaInterface,
@@ -206,9 +206,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             : initialResourcesLoadUrl;
 
         const { data: initialResources = [], isLoading: isInitialLoading } =
-            useGetResourceList(initialResourcesLoadUrl);
+            useGetResourceListOrResourceDetails(initialResourcesLoadUrl);
         const { data: filteredResources = [], isLoading: isFiltering } =
-            useGetResourceList(filterUrl);
+            useGetResourceListOrResourceDetails(filterUrl);
 
         useEffect(() => {
             if (resourceDetails) {
@@ -365,13 +365,13 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
         const {
             data: fetchedResourcesList
-        } = useGetResourceList(initialResourcesLoadUrl);
+        } = useGetResourceListOrResourceDetails(initialResourcesLoadUrl);
 
         const {
             data: resourcesDetails,
             isLoading: isResourceDetailsLoading,
             error: resourceDetailsError
-        } = useGetResourceList(`/${resourceType}/${expressionValue}`);
+        } = useGetResourceListOrResourceDetails(`/${resourceType}/${expressionValue}`);
 
         useEffect(() => {
             if (!isResourceDetailsLoading) {
