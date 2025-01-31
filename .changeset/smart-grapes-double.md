@@ -1,6 +1,6 @@
 ---
 "@wso2is/admin.rules.v1": minor
-"@wso2is/core": minor
+"@wso2is/admin.core.v1": minor
 "@wso2is/i18n": minor
 "@wso2is/admin.actions.v1": patch
 ---
