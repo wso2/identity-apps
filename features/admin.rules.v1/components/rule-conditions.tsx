@@ -570,7 +570,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         const [ isResourceMissing, setIsResourceMissing ] = useState<boolean>(false);
 
         const findMetaValuesAgainst: ConditionExpressionMetaInterface = conditionExpressionsMeta.find(
-            (expressionMeta: ConditionExpressionMetaInterface) => expressionMeta.field.name === expression.field
+            (expressionMeta: ConditionExpressionMetaInterface) => expressionMeta?.field?.name === expression.field
         );
 
         return (
