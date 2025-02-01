@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
+import { AuthenticationType, EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 import { IdentifiableComponentInterface, LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIconProps } from "@wso2is/react-components";
 import { ComponentType, LazyExoticComponent, ReactElement } from "react";
@@ -299,8 +299,8 @@ export interface ExternalEndpoint {
  * Captures the authentication properties of an external endpoint associated with the authenticator.
  */
 export interface ExternalEndpointAuthentication {
-    type?: EndpointAuthenticationType;
-    properties?: string[]
+    type?: EndpointAuthenticationType | AuthenticationType;
+    properties?: Partial<AuthenticationPropertiesInterface>
 }
 
 /**
@@ -884,11 +884,11 @@ interface AuthenticationInterface {
     /**
      * Authentication Type.
      */
-    type: EndpointAuthenticationType;
+    type: EndpointAuthenticationType | AuthenticationType;
     /**
      * Authentication properties.
      */
-    properties: Partial<EndpointConfigFormPropertyInterface>;
+    properties: Partial<AuthenticationPropertiesInterface>;
 }
 
 /**
