@@ -364,7 +364,6 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         }
     };
 
-
     const Loader = (): ReactElement => (
         <EmphasizedSegment padded>
             <ContentLoader inline="centered" active />

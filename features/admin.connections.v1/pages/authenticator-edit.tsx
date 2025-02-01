@@ -244,6 +244,7 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
      * @param id - IDP id.
      */
     const handleAuthenticatorUpdate = (id: string, tabName?: string): void => {
+        getCustomLocalAuthenticator(id);
         redirectToSpecificTab(false, tabName);
     };
 
