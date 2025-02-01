@@ -2049,7 +2049,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             : fieldName
                         )
                     }
-                    className={ resolvedRequiredValue ? "required-icon" : "" }
+                    className={ !(isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                            && resolvedRequiredValue ? "required-icon" : "" }
                     placeholder={ "Enter your" + " " + fieldName }
                     type="text"
                     readOnly={ (isUserManagedByParentOrg &&
@@ -2230,10 +2232,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         );
     };
 
+    const resolveRequiredValue = (schema: ProfileSchemaInterface,
+        sharedProfileValueResolvingMethod: string): boolean => {
+
+        if (isUserManagedByParentOrg &&
+            sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN) {
+            return false;
+        }
+
+        return schema?.profiles?.console?.required ?? schema.required;
+    };
+
     const resolveFormField = (schema: ProfileSchemaInterface, fieldName: string, key: number): ReactElement => {
-        const resolvedRequiredValue: boolean = schema?.profiles?.console?.required ?? schema.required;
         const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
         const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
+        const resolvedRequiredValue: boolean = resolveRequiredValue(schema, sharedProfileValueResolvingMethod);
 
         if (schema.type.toUpperCase() === "BOOLEAN") {
             return (
