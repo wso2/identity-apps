@@ -873,7 +873,7 @@ export const getConnectedAppsOfAuthenticator = (authenticatorId: string): Promis
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.customAuthenticators + "/" + authenticatorId + "/connected-apps/"
+        url: store.getState().config.endpoints.localAuthenticators + "/" + authenticatorId + "/connected-apps/"
     };
 
     return httpClient(requestConfig)
