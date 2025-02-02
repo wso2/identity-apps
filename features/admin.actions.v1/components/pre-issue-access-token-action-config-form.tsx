@@ -285,7 +285,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
 
     return (
         <>
-            { !isActionLoading && !actionError && actionData && (
+            { (isCreateFormState || (!isActionLoading && !actionError && actionData)) && (
                 <RulesProvider
                     conditionExpressionsMetaData={ RuleExpressionsMetaData }
                     initialData={ actionData?.rule }
