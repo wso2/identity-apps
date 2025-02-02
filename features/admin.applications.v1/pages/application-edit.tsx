@@ -150,6 +150,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ callBackIdpID, setcallBackIdpID ] = useState<string>();
     const [ callBackIdpName, setcallBackIdpName ] = useState<string>();
     const [ callBackRedirect, setcallBackRedirect ] = useState<string>();
+    const [ isCallBackLocalAuthenticator, setIsCallBackLocalAuthenticator ] = useState<boolean>(false);
 
     const {
         data: application,
@@ -416,6 +417,14 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
         setcallBackIdpID(idpInfo.id);
         setcallBackIdpName(idpInfo.name);
+        /**
+         * Check if the callback originates from a local authenticator.
+         * If it is, then redirects to /authenticators/<local-authenticator-id> route.
+         * Default case redirects to /connections/<idp-id> route.
+         * TODO: Refactor variables to match the generic use case of connectors including
+         * both IDPs and local authenticators.
+         */
+        setIsCallBackLocalAuthenticator(idpInfo.isLocalAuthenticator);
         idpInfo?.redirectTo && setcallBackRedirect(idpInfo.redirectTo);
     });
 
@@ -435,6 +444,26 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     }, [ featureConfig ]);
 
     /**
+     * Redirect back to either IDP edit page or local authenticator edit page.
+     * Currently only custom local authenticators are editable.
+     * TODO: Refactor variables to match the generic use case of connectors including
+     * both IDPs and local authenticators.
+     */
+    const handleConnectionEditPageRedirect = (): void => {
+        if (isCallBackLocalAuthenticator) {
+            history.push({
+                pathname: AppConstants.getPaths().get("AUTH_EDIT").replace(":id", callBackIdpID),
+                state: ConnectionUIConstants.TabIds.CONNECTED_APPS
+            });
+        } else {
+            history.push({
+                pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", callBackIdpID),
+                state: ConnectionUIConstants.TabIds.CONNECTED_APPS
+            });
+        }
+    };
+
+    /**
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
@@ -447,10 +476,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     state: ConnectionUIConstants.TabIds.CONNECTED_APPS
                 });
             } else {
-                history.push({
-                    pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", callBackIdpID),
-                    state: ConnectionUIConstants.TabIds.CONNECTED_APPS
-                });
+                handleConnectionEditPageRedirect();
             }
         }
     };

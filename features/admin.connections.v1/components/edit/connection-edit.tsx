@@ -780,8 +780,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
         if (
             shouldShowTab(type, ConnectionTabTypes.CONNECTED_APPS) &&
-            hasApplicationReadPermissions &&
-            !isCustomLocalAuthenticator
+            hasApplicationReadPermissions
         ) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.CONNECTED_APPS,

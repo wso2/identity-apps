@@ -888,6 +888,7 @@ export enum ApplicationTabTypes {
  */
 export interface idpInfoTypeInterface {
     id: string;
+    isLocalAuthenticator?: boolean;
     name: string;
     redirectTo?: string;
 }

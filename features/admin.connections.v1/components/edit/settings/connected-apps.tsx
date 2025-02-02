@@ -74,12 +74,14 @@ import {
     Label,
     SemanticICONS
 } from "semantic-ui-react";
-import { getConnectedApps } from "../../../api/connections";
+import { getConnectedApps, getConnectedAppsOfAuthenticator } from "../../../api/connections";
+import { AuthenticatorTypes } from "../../../models/authenticators";
 import {
     ConnectedAppInterface,
     ConnectedAppsInterface,
     ConnectionInterface
 } from "../../../models/connection";
+import { ConnectionsManagementUtils } from "../../../utils/connection-utils";
 
 /**
  * Proptypes for the advance settings component.
@@ -176,8 +178,63 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         isExtensionTemplatesRequestLoading: isExtensionApplicationTemplatesRequestLoading
     } = useExtensionTemplates();
 
+    const isCustomLocalAuthenticator = (idp: ConnectionInterface): boolean => {
+        return ConnectionsManagementUtils.IsCustomAuthenticator(idp) &&
+        idp?.type === AuthenticatorTypes.LOCAL;
+    };
+
     useEffect(() => {
         setIsAppsLoading(true);
+
+        if (isCustomLocalAuthenticator(editingIDP)) {
+            getConnectedAppsOfAuthenticator(editingIDP.id)
+                .then(async (response: ConnectedAppsInterface) => {
+                    setconnectedAppsCount(response.count);
+
+                    if (response.count > 0) {
+                        const appRequests: Promise<any>[] = response.connectedApps.map(
+                            (app: ConnectedAppInterface) => {
+                                return getApplicationDetails(app.appId);
+                            }
+                        );
+
+                        const results: ApplicationBasicInterface[] = await Promise.all(
+                            appRequests.map((response: Promise<any>) =>
+                                response.catch((error: IdentityAppsError) => {
+                                    dispatch(
+                                        addAlert({
+                                            description:
+                                                        error?.description ||
+                                                        t("idp:connectedApps.genericError.description"),
+                                            level: AlertLevels.ERROR,
+                                            message:
+                                                        error?.message || t("idp:connectedApps.genericError.message")
+                                        })
+                                    );
+                                })
+                            )
+                        );
+
+                        setConnectedApps(results);
+                        setFilterSelectedApps(results);
+                    }
+                })
+                .catch((error: IdentityAppsError) => {
+                    dispatch(
+                        addAlert({
+                            description: error?.description || t("idp:connectedApps.genericError.description"),
+                            level: AlertLevels.ERROR,
+                            message: error?.message || t("idp:connectedApps.genericError.message")
+                        })
+                    );
+                })
+                .finally(() => {
+                    setIsAppsLoading(false);
+                });
+
+            return;
+        };
+
         getConnectedApps(editingIDP.id)
             .then(async (response: ConnectedAppsInterface) => {
                 setconnectedAppsCount(response.count);
@@ -416,7 +473,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }` +
                     `=${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`,
 
-                state: { id: editingIDP.id, name: editingIDP.name }
+                state: { id: editingIDP.id, isLocalAuthenticator: isCustomLocalAuthenticator(editingIDP),
+                    name: editingIDP.name }
             });
         } else {
             if (!UIConfig?.legacyMode?.applicationListSystemApps) {
@@ -442,14 +500,21 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
             }
 
             history.push({
-                pathname: AppConstants.getPaths().get("APPLICATION_SIGN_IN_METHOD_EDIT")
-                    .replace(":id", appId).replace(":tabName", tabName),
+                pathname: AppConstants.getPaths()
+                    .get("APPLICATION_SIGN_IN_METHOD_EDIT")
+                    .replace(":id", appId)
+                    .replace(":tabName", tabName),
 
-                search: access === ApplicationAccessTypes.READ
-                    ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
-                    : "",
+                search:
+                    access === ApplicationAccessTypes.READ
+                        ? `?${ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY}=true`
+                        : "",
 
-                state: { id: editingIDP.id, name: editingIDP.name }
+                state: {
+                    id: editingIDP.id,
+                    isLocalAuthenticator: isCustomLocalAuthenticator(editingIDP),
+                    name: editingIDP.name
+                }
             });
         }
     };

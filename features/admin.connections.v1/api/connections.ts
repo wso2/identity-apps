@@ -17,13 +17,13 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1/store";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
+import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
@@ -850,6 +850,37 @@ export const getConnectedApps = (idpId: string): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(
                     new Error("Failed to get connected apps for the IDP: " + idpId)
+                );
+            }
+
+            return Promise.resolve(response.data as ConnectedAppsInterface);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Get connected apps of the local authenticator.
+ *
+ * @param authenticatorId - ID of the local authenticator.
+ * @returns  A promise containing the response.
+ */
+export const getConnectedAppsOfAuthenticator = (authenticatorId: string): Promise<any> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.customAuthenticators + "/" + authenticatorId + "/connected-apps/"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error("Failed to get connected apps for the local authenticator: " + authenticatorId)
                 );
             }
 
