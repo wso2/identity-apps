@@ -1,5 +1,22 @@
 # @wso2is/admin.organizations.v1
 
+## 2.26.134
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.connections.v1@2.33.17
+  - @wso2is/admin.core.v1@2.38.3
+  - @wso2is/admin.applications.v1@2.30.134
+  - @wso2is/admin.extensions.v1@2.36.59
+  - @wso2is/admin.identity-providers.v1@2.26.134
+  - @wso2is/admin.roles.v2@2.27.78
+  - @wso2is/admin.authentication.v1@2.25.134
+  - @wso2is/admin.groups.v1@2.27.44
+  - @wso2is/admin.tenants.v1@2.28.108
+  - @wso2is/admin.users.v1@2.30.44
+  - @wso2is/admin.userstores.v1@2.26.93
+
 ## 2.26.133
 
 ### Patch Changes

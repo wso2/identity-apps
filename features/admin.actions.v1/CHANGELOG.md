@@ -1,5 +1,17 @@
 # @wso2is/admin.actions.v1
 
+## 1.10.18
+
+### Patch Changes
+
+- [#7482](https://github.com/wso2/identity-apps/pull/7482) [`ce1ce6ac788f20327ac3af322186fd012251f83f`](https://github.com/wso2/identity-apps/commit/ce1ce6ac788f20327ac3af322186fd012251f83f) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Fix an issue in actions page
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.3
+  - @wso2is/admin.extensions.v1@2.36.59
+  - @wso2is/admin.feature-gate.v1@1.4.134
+  - @wso2is/admin.rules.v1@0.3.3
+
 ## 1.10.17
 
 ### Patch Changes
