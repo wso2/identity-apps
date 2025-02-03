@@ -122,7 +122,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
 
     // TODO: Temporary flag to show/hide the rule component.
     const showRuleComponent: boolean = isFeatureEnabled(
-        actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_UPDATE_PASSWORD_RULE_DISABLE"));
+        actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_UPDATE_PASSWORD_RULE"));
 
     /**
      * The following useEffect is used to set the current Action Authentication Type.

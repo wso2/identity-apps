@@ -153,6 +153,6 @@ export class ActionsConstants {
      * @defaultValue
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("PRE_ISSUE_ACCESS_TOKEN_RULE_DISABLE", "actions.types.preIssueAccessToken.edit.rule")
-        .set("PRE_UPDATE_PASSWORD_RULE_DISABLE", "actions.types.preUpdatePassword.edit.rule");
+        .set("PRE_ISSUE_ACCESS_TOKEN_RULE", "actions.types.preIssueAccessToken.edit.rule")
+        .set("PRE_UPDATE_PASSWORD_RULE", "actions.types.preUpdatePassword.edit.rule");
 }
