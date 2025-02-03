@@ -263,6 +263,7 @@
                  * @returns {string} Contructed URL.
                  */
                 function signInRedirectURL() {
+                    // When there's no proxy context path, the IS server returns "null".
                     var contextPath = proxyContextPathGlobal !== "null" ? "/" + proxyContextPathGlobal : "";
 
                     if (getTenantName() === startupConfig.superTenant) {
