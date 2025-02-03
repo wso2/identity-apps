@@ -30,7 +30,6 @@ import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
@@ -45,7 +44,6 @@ import {
 import { ConnectorPropertyInterface  } from "@wso2is/admin.server-configurations.v1";
 import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
 import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -76,7 +74,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -98,6 +96,7 @@ import {
     SubValueInterface
 } from "../models/user";
 import "./user-profile.scss";
+import { isMultipleEmailsAndMobileNumbersEnabled } from "../utils/user-management-utils";
 
 const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
 const MOBILE_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
@@ -185,12 +184,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         allowDeleteOnly,
         connectorProperties,
         isReadOnlyUserStoresLoading,
-        isReadOnlyUserStore,
+        isReadOnlyUserStore = false,
         tenantAdmin,
         editUserDisclaimerMessage,
-        adminUserType,
+        adminUserType = "None",
         isUserManagedByParentOrg,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId = "user-mgt-user-profile"
     } = props;
 
     const { t } = useTranslation();
@@ -207,7 +206,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     );
     const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const { UIConfig } = useUIConfig();
 
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
@@ -249,8 +247,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
         role.display === administratorConfig.adminRoleName) ?? false;
     const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
-    const [ isMultipleEmailAndMobileNumberEnabled, setIsMultipleEmailAndMobileNumberEnabled ] =
-        useState<boolean>(false);
     const [ tempMultiValuedItemValue, setTempMultiValuedItemValue ] = useState<Record<string, string>>({});
     const [ isMultiValuedItemInvalid, setIsMultiValuedItemInvalid ] =  useState<Record<string, boolean>>({});
 
@@ -267,6 +263,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         handleMultiValuedItemDelete(selectedAttributeInfo.schema, selectedAttributeInfo.value);
         handleMultiValuedItemDeleteModalClose();
     }, [ selectedAttributeInfo, handleMultiValuedItemDeleteModalClose ]);
+
+    const isMultipleEmailAndMobileNumberEnabled: boolean = useMemo(() => {
+        return isMultipleEmailsAndMobileNumbersEnabled(profileInfo,profileSchema);
+    }, [ profileSchema, profileInfo ]);
 
     useEffect(() => {
         if (connectorProperties && Array.isArray(connectorProperties) && connectorProperties?.length > 0) {
@@ -290,55 +290,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             setConfigSettings(accountConfigSettings);
         }
     }, [ connectorProperties ]);
-
-    /**
-     * Check if multiple emails and mobile numbers feature is enabled.
-     */
-    const isMultipleEmailsAndMobileNumbersEnabled = (): void => {
-        if (isEmpty(profileInfo) || isEmpty(profileSchema)) return;
-
-        if (!UIConfig?.isMultipleEmailsAndMobileNumbersEnabled) {
-            setIsMultipleEmailAndMobileNumberEnabled(false);
-
-            return;
-        }
-
-        const multipleEmailsAndMobileFeatureRelatedAttributes: string[] = [
-            MOBILE_ATTRIBUTE,
-            EMAIL_ATTRIBUTE,
-            EMAIL_ADDRESSES_ATTRIBUTE,
-            MOBILE_NUMBERS_ATTRIBUTE,
-            VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
-            VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
-        ];
-
-        const domainName: string[] = profileInfo?.get("userName")?.toString().split("/");
-        const userStoreDomain: string = (domainName.length > 1
-            ? domainName[0]
-            : PRIMARY_USERSTORE)?.toUpperCase();
-
-        // Check each required attribute exists and domain is not excluded in the excluded user store list.
-        const attributeCheck: boolean = multipleEmailsAndMobileFeatureRelatedAttributes.every(
-            (attribute: string) => {
-                const schema: ProfileSchemaInterface = profileSchema?.find(
-                    (schema: ProfileSchemaInterface) => schema?.name === attribute);
-
-                if (!schema) {
-                    return false;
-                }
-
-                const excludedUserStores: string[] =
-                    schema?.excludedUserStores?.split(",")?.map((store: string) => store?.trim().toUpperCase()) || [];
-
-                return !excludedUserStores.includes(userStoreDomain);
-            });
-
-        setIsMultipleEmailAndMobileNumberEnabled(attributeCheck);
-    };
-
-    useEffect(() => {
-        isMultipleEmailsAndMobileNumbersEnabled();
-    }, [ profileSchema, profileInfo ]);
 
     /**
      *  .
@@ -2972,13 +2923,4 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             </>)
             : <ContentLoader dimmer/>
     );
-};
-
-/**
- * User profile component default props.
- */
-UserProfile.defaultProps = {
-    adminUserType: "None",
-    "data-testid": "user-mgt-user-profile",
-    isReadOnlyUserStore: false
 };
