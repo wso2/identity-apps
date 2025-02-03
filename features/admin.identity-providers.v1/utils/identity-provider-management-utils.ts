@@ -127,7 +127,7 @@ export class IdentityProviderManagementUtils {
          * @returns whether the authenticator is a custom local authenticator or not.
          */
         const isCustomLocalAuthenticator = (authenticator: LocalAuthenticatorInterface): boolean => {
-            return (authenticator as GenericAuthenticatorInterface)?.defaultAuthenticator?.tags?.includes("Custom");
+            return authenticator?.tags?.includes("Custom");
         };
 
         return axios.all(getPromises())
@@ -161,7 +161,8 @@ export class IdentityProviderManagementUtils {
                         displayName: authenticator.displayName,
                         id: authenticator.id,
                         idp: LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER,
-                        image: isCustomLocalAuthenticator ? AuthenticatorMeta.getCustomAuthenticatorIcon() :
+                        image: isCustomLocalAuthenticator(authenticator) ?
+                            AuthenticatorMeta.getCustomAuthenticatorIcon() :
                             AuthenticatorMeta.getAuthenticatorIcon(authenticator.id),
                         isEnabled: authenticator.isEnabled,
                         name: authenticator.name
