@@ -185,12 +185,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         allowDeleteOnly,
         connectorProperties,
         isReadOnlyUserStoresLoading,
-        isReadOnlyUserStore,
+        isReadOnlyUserStore = false,
         tenantAdmin,
         editUserDisclaimerMessage,
-        adminUserType,
+        adminUserType = "None",
         isUserManagedByParentOrg,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId = "user-mgt-user-profile"
     } = props;
 
     const { t } = useTranslation();
@@ -2972,13 +2972,4 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             </>)
             : <ContentLoader dimmer/>
     );
-};
-
-/**
- * User profile component default props.
- */
-UserProfile.defaultProps = {
-    adminUserType: "None",
-    "data-testid": "user-mgt-user-profile",
-    isReadOnlyUserStore: false
 };
