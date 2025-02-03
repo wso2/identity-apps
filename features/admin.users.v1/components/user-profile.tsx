@@ -73,6 +73,7 @@ import {
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
+import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
 import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useState } from "react";
@@ -2049,9 +2050,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             : fieldName
                         )
                     }
-                    className={ !(isUserManagedByParentOrg &&
+                    className={ classNames({ "required-icon": !(isUserManagedByParentOrg &&
                         sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                            && resolvedRequiredValue ? "required-icon" : "" }
+                            && resolvedRequiredValue }) }
                     placeholder={ "Enter your" + " " + fieldName }
                     type="text"
                     readOnly={ (isUserManagedByParentOrg &&
@@ -2232,8 +2233,18 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         );
     };
 
-    const resolveRequiredValue = (schema: ProfileSchemaInterface,
-        sharedProfileValueResolvingMethod: string): boolean => {
+    /**
+     * Resolves the required value of the attribute based on the shared profile value resolving method
+     * and the schema.
+     *
+     * @param schema - Schema of the attribute.
+     * @param sharedProfileValueResolvingMethod - Shared profile value resolving method of the attribute.
+     * @returns True if the attribute is required.
+     */
+    const resolveRequiredValue = (
+        schema: ProfileSchemaInterface,
+        sharedProfileValueResolvingMethod: string
+    ): boolean => {
 
         if (isUserManagedByParentOrg &&
             sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN) {
