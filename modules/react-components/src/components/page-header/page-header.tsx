@@ -63,9 +63,11 @@ export interface PageHeaderPropsInterface extends LoadableComponentInterface, Te
      */
     description?: ReactNode;
     /**
-     * Flag to enable CSS flex box behavior instead of the Grid.
+     * Flag to enable the legacy semantic-ui grid system for the page header.
+     * @deprecated This prop is deprecated and will be removed in the next major release.
+     * Use the new flex mode (default) instead.
      */
-    flex?: boolean;
+    legacyGrid?: boolean;
     /**
      * Flag to determine whether max width should be added to page header text content.
      */
@@ -130,33 +132,31 @@ export interface BackButtonInterface extends TestableComponentInterface, Identif
  * @returns the page header component
  */
 export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
-    props: PageHeaderPropsInterface
-): ReactElement => {
-
-    const {
+    {
         action,
-        actionColumnWidth,
+        actionColumnWidth = 6,
         alertBanner,
         backButton,
-        bottomMargin,
+        bottomMargin = true,
         className,
         description,
-        flex,
-        headingColumnWidth,
+        // TODO: Remove the default value once the existing components are updated.
+        legacyGrid = true,
+        headingColumnWidth = 10,
         image,
         isLoading,
-        imageSpaced,
+        imageSpaced = "right",
         loadingStateOptions,
-        showBottomDivider,
+        showBottomDivider = false,
         title,
-        titleAs,
+        titleAs = "h1",
         titleTextAlign,
         pageHeaderMaxWidth,
         truncateContent,
-        [ "data-componentid" ]: componentId,
-        [ "data-testid" ]: testId
-    } = props;
-
+        [ "data-componentid" ]: componentId = "page-header",
+        [ "data-testid" ]: testId = "page-header"
+    }: PageHeaderPropsInterface
+): ReactElement => {
     const wrapperClasses = classNames(
         "page-header-wrapper",
         {
@@ -290,7 +290,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
             return headingContent;
         }
 
-        if (flex) {
+        if (!legacyGrid) {
             return (
                 <Box
                     display="flex"
@@ -365,18 +365,4 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
             )
             : null
     );
-};
-
-/**
- * Default proptypes for the page header component.
- */
-PageHeader.defaultProps = {
-    actionColumnWidth: 6,
-    bottomMargin: true,
-    "data-componentid": "page-header",
-    "data-testid": "page-header",
-    headingColumnWidth: 10,
-    imageSpaced: "right",
-    showBottomDivider: false,
-    titleAs: "h1"
 };

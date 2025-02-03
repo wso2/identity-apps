@@ -107,7 +107,7 @@ const EditTenantPage: FunctionComponent<EditTenantPageProps> = ({
             } }
         >
             <PageLayout
-                flex
+                legacyGrid={ false }
                 pageTitle="Edit Root Organizations"
                 title={
                     (<div className="tenant-status">
