@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import {
     IdentifiableComponentInterface,
     LoadableComponentInterface,
@@ -61,6 +62,10 @@ export interface PageHeaderPropsInterface extends LoadableComponentInterface, Te
      * Description.
      */
     description?: ReactNode;
+    /**
+     * Flag to enable CSS flex box behavior instead of the Grid.
+     */
+    flex?: boolean;
     /**
      * Flag to determine whether max width should be added to page header text content.
      */
@@ -136,6 +141,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
         bottomMargin,
         className,
         description,
+        flex,
         headingColumnWidth,
         image,
         isLoading,
@@ -275,6 +281,47 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
         </div>
     );
 
+    /**
+     * Resolves the content rendering logic.
+     * @returns Header content as a react component.
+     */
+    const renderContent = (): ReactElement => {
+        if (!action) {
+            return headingContent;
+        }
+
+        if (flex) {
+            return (
+                <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    flexDirection="row"
+                    flexWrap="wrap"
+                    alignItems="center"
+                    sx={ {
+                        gap: "var(--oxygen-spacing-2)"
+                    } }
+                >
+                    <Box className="heading-wrapper">{ headingContent }</Box>
+                    <Box className="action-wrapper">{ action }</Box>
+                </Box>
+            );
+        }
+
+        return (
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column computer={ headingColumnWidth } className="heading-wrapper">
+                        { headingContent }
+                    </Grid.Column>
+                    <Grid.Column computer={ actionColumnWidth } className="action-wrapper">
+                        { action && <div className="floated right action">{ action }</div> }
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        );
+    };
+
     return (
         (title || description)
             ? (
@@ -307,22 +354,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                         )
                     }
                     { alertBanner }
-                    {
-                        action
-                            ? (
-                                <Grid>
-                                    <Grid.Row>
-                                        <Grid.Column computer={ headingColumnWidth } className="heading-wrapper">
-                                            { headingContent }
-                                        </Grid.Column>
-                                        <Grid.Column computer={ actionColumnWidth } className="action-wrapper">
-                                            { action && <div className="floated right action">{ action }</div> }
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            )
-                            : headingContent
-                    }
+                    { renderContent() }
                     {
                         bottomMargin && <Divider hidden/>
                     }
