@@ -217,7 +217,7 @@ export const AppUtils: AppUtilsInterface = (function() {
                 },
                 serverOrigin: _config.serverOrigin,
                 serverOriginWithOrganization: _config.serverOrigin + this.getOrganizationPath(),
-                serverOriginWithTenant: _config.serverOrigin + tenantPath,
+                serverOriginWithTenant: this.getServerOriginWithTenant(),
                 session: _config.session,
                 superTenant: this.getSuperTenant(),
                 superTenantProxy: this.getSuperTenantProxy(),
@@ -278,6 +278,34 @@ export const AppUtils: AppUtilsInterface = (function() {
         getOrganizationPrefix: function () {
             return _args.organizationPrefix || orgPrefixFallback;
         },
+
+        /**
+         * Get the server base URL with tenant name appended.
+         *
+         * @example
+         * `https://localhost:9443/t/testtenant`
+         * `https://localhost:9443/t/testtenant/o/suborgid`
+         *
+         * @param enforceOrgPath - whether the suborg prefix should be attached for suborganization base URL.
+         * This was added to utilize this method for constructing the feature gate API base URL which should
+         * not have suborg path prefix appended in the base URL when invoking from suborganizations.
+         *
+         * @returns the server base URL with the tenant name appended.
+         */
+        getServerOriginWithTenant: function(enforceOrgPath: boolean = true) {
+            let tenantPath: string = this.getTenantPath(true);
+
+            /**
+             * If the tenant path is empty, and the organization name is present, then append the `carbon.super` path.
+             */
+            if (this.getOrganizationName() && !tenantPath) {
+                tenantPath = `/${this.getTenantPrefix()}/${this.getSuperTenant()}`;
+            }
+
+            // eslint-disable-next-line max-len
+            return `${ _config.serverOrigin }${ tenantPath }${ enforceOrgPath && this.getOrganizationName() ? "/o" : "" }`;
+        },
+
 
         /**
          * Get the super tenant.
