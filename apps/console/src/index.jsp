@@ -8,6 +8,8 @@
 -->
 
 <%= htmlWebpackPlugin.options.contentType %>
+<%= htmlWebpackPlugin.options.serverConfiguration %>
+<%= htmlWebpackPlugin.options.proxyContextPathConstant %>
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importOwaspEncode %>
 
@@ -168,6 +170,7 @@
     </head>
     <script>
 
+        var proxyContextPathGlobal = "<%= htmlWebpackPlugin.options.proxyContextPath %>";
         var userAccessedPath = window.location.href;
         var applicationDomain = window.location.origin;
 
@@ -260,12 +263,14 @@
                  * @returns {string} Contructed URL.
                  */
                 function signInRedirectURL() {
+                    var contextPath = proxyContextPathGlobal !== "null" ? "/" + proxyContextPathGlobal : "";
+
                     if (getTenantName() === startupConfig.superTenant) {
-                        return applicationDomain.replace(/\/+$/, '')
+                        return applicationDomain.replace(/\/+$/, '') + contextPath
                             + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                     }
 
-                    return applicationDomain.replace(/\/+$/, '') + getTenantPath()
+                    return applicationDomain.replace(/\/+$/, '') + contextPath + getTenantPath()
                         + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                 }
 
