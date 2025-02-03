@@ -160,7 +160,7 @@ const EditTenantPage: FunctionComponent<EditTenantPageProps> = ({
                                 <Hint popup>
                                     <Trans i18nKey="tenants:edit.consoleURL.hint" values={ { domain: tenant?.domain } }>
                                         If you try to login to <strong>{ tenant?.domain }</strong> organization&apos;s
-                                        Console using the same browser, you will have to log out from this active
+                                        Console using the same browser, you will have to logout from this active
                                         session first.
                                     </Trans>
                                 </Hint>

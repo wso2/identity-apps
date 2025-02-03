@@ -171,7 +171,7 @@ export const tenants: TenantsNS = {
     edit: {
         backButton: "Go back to Root Organizations",
         consoleURL: {
-            hint: "If you try to login to <1>{{domain}}</1> organization's Console using the same browser, you will have to log out from this active session first.",
+            hint: "If you try to login to <1>{{domain}}</1> organization's Console using the same browser, you will have to logout from this active session first.",
             label: "Console URL"
         },
         subtitle: "Crated on {{date}}"
