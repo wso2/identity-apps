@@ -73,6 +73,7 @@ import {
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
+import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
 import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useState } from "react";
@@ -2049,7 +2050,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             : fieldName
                         )
                     }
-                    className={ resolvedRequiredValue ? "required-icon" : "" }
+                    className={ classNames({ "required-icon": !(isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                            && resolvedRequiredValue }) }
                     placeholder={ "Enter your" + " " + fieldName }
                     type="text"
                     readOnly={ (isUserManagedByParentOrg &&
@@ -2230,10 +2233,31 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         );
     };
 
+    /**
+     * Resolves the required value of the attribute based on the shared profile value resolving method
+     * and the schema.
+     *
+     * @param schema - Schema of the attribute.
+     * @param sharedProfileValueResolvingMethod - Shared profile value resolving method of the attribute.
+     * @returns True if the attribute is required.
+     */
+    const resolveRequiredValue = (
+        schema: ProfileSchemaInterface,
+        sharedProfileValueResolvingMethod: string
+    ): boolean => {
+
+        if (isUserManagedByParentOrg &&
+            sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN) {
+            return false;
+        }
+
+        return schema?.profiles?.console?.required ?? schema.required;
+    };
+
     const resolveFormField = (schema: ProfileSchemaInterface, fieldName: string, key: number): ReactElement => {
-        const resolvedRequiredValue: boolean = schema?.profiles?.console?.required ?? schema.required;
         const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
         const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
+        const resolvedRequiredValue: boolean = resolveRequiredValue(schema, sharedProfileValueResolvingMethod);
 
         if (schema.type.toUpperCase() === "BOOLEAN") {
             return (
