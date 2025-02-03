@@ -122,7 +122,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
 
     // TODO: Temporary flag to show/hide the rule component.
     const showRuleComponent: boolean = isFeatureEnabled(
-        actionsFeatureConfig, "actions.types.preUpdatePassword.edit.rule");
+        actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_UPDATE_PASSWORD_RULE_DISABLE"));
 
     /**
      * The following useEffect is used to set the current Action Authentication Type.
@@ -147,12 +147,6 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
             setPEMValue(null);
         }
     }, [ initialValues ]);
-
-    // useEffect(() => {
-    //     if (actionData?.rule) {
-    //         setIsHasRule(true);
-    //     }
-    // }, [ actionData ]);
 
     const renderLoadingPlaceholders = (): ReactElement => (
         <Box className="placeholder-box">
@@ -195,12 +189,12 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
         values: PreUpdatePasswordActionConfigFormPropertyInterface,
         changedFields: PreUpdatePasswordActionConfigFormPropertyInterface) => {
 
-        let payloadRule: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
+        let rulePayload: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
 
         if (isHasRule) {
-            payloadRule = rule;
+            rulePayload = rule;
         } else if (!isCreateFormState && !rule) {
-            payloadRule = {};
+            rulePayload = {};
         }
 
         const authProperties: Partial<AuthenticationPropertiesInterface> = {};
@@ -242,7 +236,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                     ...(PEMValue ? { certificate: PEMValue } : {}),
                     format: values.passwordSharing
                 },
-                rule: payloadRule !== null ? payloadRule : undefined
+                rule: rulePayload ?? undefined
             };
 
             setIsSubmitting(true);
@@ -271,7 +265,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                 passwordSharing: changedFields?.passwordSharing ? {
                     format: values.passwordSharing
                 } : undefined,
-                rule: payloadRule !== null ? payloadRule : undefined
+                rule: rulePayload ?? undefined
             };
 
             setIsSubmitting(true);
@@ -352,7 +346,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                     actionTypeApiPath={ actionTypeApiPath }
                     actionId={ initialValues?.id }
                 />
-                { (RuleExpressionsMetaData && showRuleComponent) && (
+                { RuleExpressionsMetaData && showRuleComponent && (
                     <RuleConfigForm
                         readonly={ getFieldDisabledStatus() }
                         rule={ rule }
@@ -366,114 +360,118 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
     };
 
     return (
-        <RulesProvider
-            conditionExpressionsMetaData={ RuleExpressionsMetaData }
-            initialData={ initialValues?.rule }
-        >
-            <FinalForm
-                onSubmit={ (values: PreUpdatePasswordActionConfigFormPropertyInterface, form: any) => {
-                    handleSubmit(values, form.getState().dirtyFields);
-                }
-                }
-                validate={ validateForm }
-                initialValues={ initialValues }
-                render={ ({ handleSubmit, form }: FormRenderProps) => (
-                    <form onSubmit={ handleSubmit }>
-                        <EmphasizedSegment
-                            className="form-wrapper"
-                            padded={ "very" }
-                            data-componentid={ `${_componentId}-section` }
-                        >
-                            <div className="form-container with-max-width">
-                                { renderFormFields() }
-                                { !isLoading && (
-                                    <Button
-                                        size="medium"
-                                        variant="contained"
-                                        onClick={ handleSubmit }
-                                        className={ "button-container" }
-                                        data-componentid={ `${_componentId}-primary-button` }
-                                        loading={ isSubmitting }
-                                        disabled={ getFieldDisabledStatus() }
-                                    >
-                                        {
-                                            isCreateFormState
-                                                ? t("actions:buttons.create")
-                                                : t("actions:buttons.update")
+        <>
+            { (isCreateFormState || initialValues) && (
+                <RulesProvider
+                    conditionExpressionsMetaData={ RuleExpressionsMetaData }
+                    initialData={ initialValues?.rule }
+                >
+                    <FinalForm
+                        onSubmit={ (values: PreUpdatePasswordActionConfigFormPropertyInterface, form: any) => {
+                            handleSubmit(values, form.getState().dirtyFields);
+                        }
+                        }
+                        validate={ validateForm }
+                        initialValues={ initialValues }
+                        render={ ({ handleSubmit, form }: FormRenderProps) => (
+                            <form onSubmit={ handleSubmit }>
+                                <EmphasizedSegment
+                                    className="form-wrapper"
+                                    padded={ "very" }
+                                    data-componentid={ `${_componentId}-section` }
+                                >
+                                    <div className="form-container with-max-width">
+                                        { renderFormFields() }
+                                        { !isLoading && (
+                                            <Button
+                                                size="medium"
+                                                variant="contained"
+                                                onClick={ handleSubmit }
+                                                className={ "button-container" }
+                                                data-componentid={ `${_componentId}-primary-button` }
+                                                loading={ isSubmitting }
+                                                disabled={ getFieldDisabledStatus() }
+                                            >
+                                                {
+                                                    isCreateFormState
+                                                        ? t("actions:buttons.create")
+                                                        : t("actions:buttons.update")
+                                                }
+                                            </Button>
+                                        ) }
+                                    </div>
+                                </EmphasizedSegment>
+                                <FormSpy
+                                    subscription={ { values: true } }
+                                >
+                                    { ({ values }: { values: ActionConfigFormPropertyInterface }) => {
+                                        if (!isAuthenticationUpdateFormState) {
+                                            form.change("authenticationType",
+                                                initialValues?.authenticationType);
+                                            switch (authenticationType) {
+                                                case AuthenticationType.BASIC:
+                                                    delete values.usernameAuthProperty;
+                                                    delete values.passwordAuthProperty;
+
+                                                    break;
+                                                case AuthenticationType.BEARER:
+                                                    delete values.accessTokenAuthProperty;
+
+                                                    break;
+                                                case AuthenticationType.API_KEY:
+                                                    delete values.headerAuthProperty;
+                                                    delete values.valueAuthProperty;
+
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
                                         }
-                                    </Button>
-                                ) }
-                            </div>
-                        </EmphasizedSegment>
-                        <FormSpy
-                            subscription={ { values: true } }
-                        >
-                            { ({ values }: { values: ActionConfigFormPropertyInterface }) => {
-                                if (!isAuthenticationUpdateFormState) {
-                                    form.change("authenticationType",
-                                        initialValues?.authenticationType);
-                                    switch (authenticationType) {
-                                        case AuthenticationType.BASIC:
-                                            delete values.usernameAuthProperty;
-                                            delete values.passwordAuthProperty;
 
-                                            break;
-                                        case AuthenticationType.BEARER:
-                                            delete values.accessTokenAuthProperty;
+                                        // Clear inputs of property field values of other authentication types.
+                                        switch (authenticationType) {
+                                            case AuthenticationType.BASIC:
+                                                delete values.accessTokenAuthProperty;
+                                                delete values.headerAuthProperty;
+                                                delete values.valueAuthProperty;
 
-                                            break;
-                                        case AuthenticationType.API_KEY:
-                                            delete values.headerAuthProperty;
-                                            delete values.valueAuthProperty;
+                                                break;
+                                            case AuthenticationType.BEARER:
+                                                delete values.usernameAuthProperty;
+                                                delete values.passwordAuthProperty;
+                                                delete values.headerAuthProperty;
+                                                delete values.valueAuthProperty;
 
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
+                                                break;
+                                            case AuthenticationType.API_KEY:
+                                                delete values.usernameAuthProperty;
+                                                delete values.passwordAuthProperty;
+                                                delete values.accessTokenAuthProperty;
 
-                                // Clear inputs of property field values of other authentication types.
-                                switch (authenticationType) {
-                                    case AuthenticationType.BASIC:
-                                        delete values.accessTokenAuthProperty;
-                                        delete values.headerAuthProperty;
-                                        delete values.valueAuthProperty;
+                                                break;
+                                            case AuthenticationType.NONE:
+                                                delete values.usernameAuthProperty;
+                                                delete values.passwordAuthProperty;
+                                                delete values.headerAuthProperty;
+                                                delete values.valueAuthProperty;
+                                                delete values.accessTokenAuthProperty;
 
-                                        break;
-                                    case AuthenticationType.BEARER:
-                                        delete values.usernameAuthProperty;
-                                        delete values.passwordAuthProperty;
-                                        delete values.headerAuthProperty;
-                                        delete values.valueAuthProperty;
+                                                break;
+                                            default:
 
-                                        break;
-                                    case AuthenticationType.API_KEY:
-                                        delete values.usernameAuthProperty;
-                                        delete values.passwordAuthProperty;
-                                        delete values.accessTokenAuthProperty;
+                                                break;
+                                        }
 
-                                        break;
-                                    case AuthenticationType.NONE:
-                                        delete values.usernameAuthProperty;
-                                        delete values.passwordAuthProperty;
-                                        delete values.headerAuthProperty;
-                                        delete values.valueAuthProperty;
-                                        delete values.accessTokenAuthProperty;
-
-                                        break;
-                                    default:
-
-                                        break;
-                                }
-
-                                return null;
-                            } }
-                        </FormSpy>
-                    </form>
-                ) }
-            >
-            </FinalForm>
-        </RulesProvider>
+                                        return null;
+                                    } }
+                                </FormSpy>
+                            </form>
+                        ) }
+                    >
+                    </FinalForm>
+                </RulesProvider>
+            ) }
+        </>
     );
 };
 
