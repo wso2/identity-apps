@@ -1,5 +1,19 @@
 # @wso2is/admin.actions.v1
 
+## 1.11.0
+
+### Minor Changes
+
+- [#7486](https://github.com/wso2/identity-apps/pull/7486) [`34a926448e3cea96642355bfe473951501c89739`](https://github.com/wso2/identity-apps/commit/34a926448e3cea96642355bfe473951501c89739) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add rule configuration for pre update password action ui
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.4
+  - @wso2is/admin.extensions.v1@2.36.60
+  - @wso2is/admin.feature-gate.v1@1.4.135
+  - @wso2is/admin.rules.v1@0.3.4
+
 ## 1.10.18
 
 ### Patch Changes
