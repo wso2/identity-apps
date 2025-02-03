@@ -1,5 +1,19 @@
 # @wso2is/admin.tenants.v1
 
+## 2.28.109
+
+### Patch Changes
+
+- [#7485](https://github.com/wso2/identity-apps/pull/7485) [`f7338ef6a3ba6d51922b49dc56e34927978a7fac`](https://github.com/wso2/identity-apps/commit/f7338ef6a3ba6d51922b49dc56e34927978a7fac) Thanks [@brionmario](https://github.com/brionmario)! - Fix text interpolation issues in Tenant navigation disclaimer modal
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.4
+  - @wso2is/admin.extensions.v1@2.36.60
+  - @wso2is/admin.organizations.v1@2.26.135
+  - @wso2is/admin.users.v1@2.30.45
+  - @wso2is/admin.feature-gate.v1@1.4.135
+  - @wso2is/admin.validation.v1@2.27.73
+
 ## 2.28.108
 
 ### Patch Changes
