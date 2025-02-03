@@ -30,8 +30,7 @@ export const customAuthentication: customAuthenticationNS = {
                 internalUserAuthenticationCard: {
                     examples: "E.g., Username & Password, Email OTP",
                     header: "Internal User Authentication",
-                    mainDescription:
-                               "Collect identifier and authenticate user accounts managed in the organization."
+                    mainDescription: "Collect identifier and authenticate user accounts managed in the organization."
                 },
                 label: "Select the authentication type you are implementing",
                 title: "Authentication Type",
@@ -55,8 +54,7 @@ export const customAuthentication: customAuthenticationNS = {
                             label: "Header",
                             placeholder: "Header",
                             validations: {
-                                invalid:
-                                           "Please choose a valid header name that adheres to the given guidelines.",
+                                invalid: "Please choose a valid header name that adheres to the given guidelines.",
                                 required: "Header is a required field."
                             }
                         },
@@ -82,8 +80,7 @@ export const customAuthentication: customAuthenticationNS = {
                             }
                         }
                     },
-                    hint:
-                               "Once added, these secrets will not be displayed. You will only be able to reset them.",
+                    hint: "Once added, these secrets will not be displayed. You will only be able to reset them.",
                     label: "Authentication Scheme",
                     placeholder: "Select Authentication Type",
                     title: "Endpoint Authentication",
@@ -118,18 +115,16 @@ export const customAuthentication: customAuthenticationNS = {
                         header: "Display Name"
                     },
                     identifier: {
-                        description:
-                                   "Provide a unique name to refer in authentication scripts and " +
-                                   "authentication parameters.",
+                        description: "Provide a unique name to refer in authentication scripts and " +
+                        "authentication parameters.",
                         header: "Identifier",
                         note: "Note that <1>custom-</1> will be prefixed to the identifier.",
                         warning: "This field should be unique; once created, it is not editable. "
                     }
                 },
                 identifier: {
-                    hint:
-                               "Must be a string containing only letters (a-z, A-Z) numbers (0-9), " +
-                               "underscore (_) and hyphen (-). ",
+                    hint: "Must be a string containing only letters (a-z, A-Z) numbers (0-9), " +
+                    "underscore (_) and hyphen (-). ",
                     label: "Identifier",
                     placeholder: "Authenticator Identifier",
                     validations: {
