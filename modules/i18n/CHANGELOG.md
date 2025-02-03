@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.19.1
+
+### Patch Changes
+
+- [#7488](https://github.com/wso2/identity-apps/pull/7488) [`18a74388ea24649a45d9cf9cf47cee491bd7b216`](https://github.com/wso2/identity-apps/commit/18a74388ea24649a45d9cf9cf47cee491bd7b216) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Refactor Terminology in Custom Authenticator to Improve UX
+
 ## 2.19.0
 
 ### Minor Changes
