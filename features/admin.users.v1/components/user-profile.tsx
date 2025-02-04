@@ -47,7 +47,6 @@ import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
-    AlertInterface,
     AlertLevels,
     MultiValueAttributeInterface,
     PatchOperationRequest,
@@ -119,10 +118,6 @@ interface UserProfilePropsInterface extends TestableComponentInterface {
      */
     adminUsername: string;
     /**
-     * On alert fired callback.
-     */
-    onAlertFired: (alert: AlertInterface) => void;
-    /**
      * User profile
      */
     user: ProfileInfoInterface;
@@ -180,7 +175,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const {
         adminUsername,
-        onAlertFired,
         user,
         handleUserUpdate,
         isReadOnly,
@@ -643,7 +637,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const handleUserDelete = (deletingUser: ProfileInfoInterface): void => {
         userConfig.deleteUser(deletingUser)
             .then(() => {
-                onAlertFired({
+                dispatch(addAlert({
                     description: t(
                         "users:notifications.deleteUser.success.description"
                     ),
@@ -651,7 +645,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     message: t(
                         "users:notifications.deleteUser.success.message"
                     )
-                });
+                }));
 
                 if (adminUserType === AdminAccountTypes.EXTERNAL) {
                     history.push(AppConstants.getPaths().get("ADMINISTRATORS"));
@@ -1218,7 +1212,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         updateUserInfo(user.id, data)
             .then(() => {
-                onAlertFired({
+                dispatch(addAlert({
                     description: t(
                         "user:profile.notifications.updateProfileInfo.success.description"
                     ),
@@ -1226,7 +1220,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     message: t(
                         "user:profile.notifications.updateProfileInfo.success.message"
                     )
-                });
+                }));
 
                 handleUserUpdate(user.id);
             })
@@ -1319,7 +1313,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         updateUserInfo(user.id, data)
             .then(() => {
-                onAlertFired({
+                dispatch(addAlert({
                     description:
                         attributeName === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
                             ? (
@@ -1351,14 +1345,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     : t("user:profile.notifications.enableUserAccount." +
                                         "success.message", { name: resolveUsernameOrDefaultEmail(user, true) })
                             )
-                });
+                }));
                 setShowLockDisableConfirmationModal(false);
                 handleUserUpdate(user.id);
                 setEditingAttribute(undefined);
             })
             .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    onAlertFired({
+                    dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message:
@@ -1367,12 +1361,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     "message")
                                 : t("user:profile.notifications.disableUserAccount.error." +
                                     "message")
-                    });
+                    }));
 
                     return;
                 }
 
-                onAlertFired({
+                dispatch(addAlert({
                     description:
                         editingAttribute?.name === UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY
                             .get("ACCOUNT_LOCKED")
@@ -1388,7 +1382,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 "message")
                             : t("user:profile.notifications.disableUserAccount.genericError." +
                                 "message")
-                });
+                }));
             });
     };
 
@@ -1611,7 +1605,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         setIsSubmitting(true);
         updateUserInfo(user.id, data)
             .then(() => {
-                onAlertFired({
+                dispatch(addAlert({
                     description: t(
                         "user:profile.notifications.updateProfileInfo.success.description"
                     ),
@@ -1619,7 +1613,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     message: t(
                         "user:profile.notifications.updateProfileInfo.success.message"
                     )
-                });
+                }));
 
                 handleUserUpdate(user.id);
             })
@@ -1697,7 +1691,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         setIsSubmitting(true);
         updateUserInfo(user.id, data)
             .then(() => {
-                onAlertFired({
+                dispatch(addAlert({
                     description: t(
                         `${translationKey}success.description`
                     ),
@@ -1705,7 +1699,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     message: t(
                         `${translationKey}success.message`
                     )
-                });
+                }));
 
                 handleUserUpdate(user.id);
             })
@@ -1808,7 +1802,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         setIsSubmitting(true);
         updateUserInfo(user.id, data)
             .then(() => {
-                onAlertFired({
+                dispatch(addAlert({
                     description: t(
                         "user:profile.notifications.updateProfileInfo.success.description"
                     ),
@@ -1816,7 +1810,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     message: t(
                         "user:profile.notifications.updateProfileInfo.success.message"
                     )
-                });
+                }));
 
                 handleUserUpdate(user.id);
             })
@@ -1926,7 +1920,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         setIsSubmitting(true);
         updateUserInfo(user.id, data)
             .then(() => {
-                onAlertFired({
+                dispatch(addAlert({
                     description: t(
                         "user:profile.notifications.updateProfileInfo.success.description"
                     ),
@@ -1934,7 +1928,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     message: t(
                         "user:profile.notifications.updateProfileInfo.success.message"
                     )
-                });
+                }));
 
                 handleUserUpdate(user.id);
             })
@@ -2993,7 +2987,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     connectorProperties={ connectorProperties }
                     handleCloseChangePasswordModal={ () => setOpenChangePasswordModal(false) }
                     openChangePasswordModal={ openChangePasswordModal }
-                    onAlertFired={ onAlertFired }
                     user={ user }
                     handleUserUpdate={ handleUserUpdate }
                 />

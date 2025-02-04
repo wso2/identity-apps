@@ -174,7 +174,6 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
                                 </Grid.Row>
                             </Grid>
                         ) }
-                        onAlertFired={ handleAlerts }
                         user={ user }
                         handleUserUpdate={ handleUserUpdate }
                         allowDeleteOnly={ allowDeleteOnly }

@@ -216,7 +216,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserProfile
                         adminUsername={ adminUsername }
-                        onAlertFired={ handleAlerts }
                         user={ user }
                         handleUserUpdate={ handleUserUpdate }
                         isReadOnly={ isReadOnly || isUserProfileReadOnly }
