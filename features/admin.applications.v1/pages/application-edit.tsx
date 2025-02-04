@@ -450,15 +450,19 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * both IDPs and local authenticators.
      */
     const handleConnectionEditPageRedirect = (): void => {
+        const state: { targetTab: string } = {
+            targetTab: ConnectionUIConstants.TabIds.CONNECTED_APPS
+        };
+
         if (isCallBackLocalAuthenticator) {
             history.push({
                 pathname: AppConstants.getPaths().get("AUTH_EDIT").replace(":id", callBackIdpID),
-                state: ConnectionUIConstants.TabIds.CONNECTED_APPS
+                state: state.targetTab
             });
         } else {
             history.push({
                 pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", callBackIdpID),
-                state: ConnectionUIConstants.TabIds.CONNECTED_APPS
+                state: state.targetTab
             });
         }
     };
