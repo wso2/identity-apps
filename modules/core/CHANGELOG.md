@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.6.1
+
+### Patch Changes
+
+- [#7494](https://github.com/wso2/identity-apps/pull/7494) [`bb8c0b38541fe6bb367f74621b4c27587d82ebdd`](https://github.com/wso2/identity-apps/commit/bb8c0b38541fe6bb367f74621b4c27587d82ebdd) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Use self registration attribute profile's required option to govern self registration verification
+
 ## 2.6.0
 
 ### Minor Changes
