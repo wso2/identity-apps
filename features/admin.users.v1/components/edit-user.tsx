@@ -126,7 +126,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             || readOnlyUserStores?.includes(userStore?.toString())
             || !hasUsersUpdatePermissions
             || user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
-            || user[ userSchemaURI ]?.isReadOnlyUser === "true"
+            || user[ SCIMConfigs.scim.systemSchema ]?.isReadOnlyUser === "true"
         ) {
             setReadOnly(true);
         }
@@ -226,7 +226,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         isUserManagedByParentOrg={ isUserManagedByParentOrg }
                         adminUserType={ AdminAccountTypes.INTERNAL }
                         allowDeleteOnly={
-                            user[ userSchemaURI ]?.isReadOnlyUser === "true"
+                            user[ SCIMConfigs.scim.systemSchema ]?.isReadOnlyUser === "true"
                         }
                         editUserDisclaimerMessage={ (
                             <Grid>
