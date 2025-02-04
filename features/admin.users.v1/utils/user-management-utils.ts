@@ -318,7 +318,7 @@ export const constructPatchOpValueForMultiValuedAttribute = (
     profileInfo: Map<string, string>,
     multiValuedAttributeInputValues: Record<string, string>
 ) => {
-    const currentValues: string[] = profileInfo.get(attributeSchemaName)?.split(",") || [];
+    const currentValues: string[] = profileInfo?.get(attributeSchemaName)?.split(",") || [];
 
     if (!isEmpty(multiValuedAttributeInputValues[attributeSchemaName])) {
         currentValues.push(multiValuedAttributeInputValues[attributeSchemaName]);
