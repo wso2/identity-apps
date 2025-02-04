@@ -161,9 +161,11 @@ export class AuthenticatorMeta {
 
     /**
      * Get Custom Authenticator Icon.
+     *
      * Currently authenticator id is being used to fetch the respective authenticator icon.
      * Existing function could not be used since the id and the name of
      * custom authenticators are not pre defined.
+     *
      * @returns Custom Authenticator Icon.
      */
     public static getCustomAuthenticatorIcon(): string {
