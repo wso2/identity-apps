@@ -111,7 +111,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
         return state.config.ui.features?.users?.disabledFeatures;
     });
-    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
 
     const isUpdatingSharedProfilesEnabled: boolean = !userRolesDisabledFeatures?.includes(
         UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_PROFILES")
