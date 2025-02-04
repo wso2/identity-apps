@@ -290,3 +290,15 @@ const getValidationConfig = (
 
     return null;
 };
+
+/**
+     * Extracts sub-attributes (objects) from the profile details.
+     *
+     * @param user - The user object to extract sub-attributes from.
+     * @param schemaKey - The attribute key to extract sub-attributes from.
+     * @returns Array of sub-attributes (objects).
+     */
+export const extractSubAttributes = (user: ProfileInfoInterface, schemaKey: string): Record<string, string>[] => {
+    return user && user[schemaKey]?.filter(
+        (subAttribute: unknown) => typeof subAttribute === "object") || [];
+};
