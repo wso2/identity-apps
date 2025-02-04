@@ -56,10 +56,6 @@ import "./custom-authenticator-settings.scss";
  */
 export interface CustomAuthenticatorSettingsPagePropsInterface extends IdentifiableComponentInterface {
     /**
-     * Is the authenticator a custom authenticator.
-     */
-    isCustomAuthenticator: boolean;
-    /**
      * Is the authenticator a custom local authenticator.
      */
     isCustomLocalAuthenticator: boolean;
@@ -84,7 +80,6 @@ export interface CustomAuthenticatorSettingsPagePropsInterface extends Identifia
  * @returns React element.
  */
 export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettingsPagePropsInterface> = ({
-    isCustomAuthenticator,
     isCustomLocalAuthenticator,
     isLoading,
     connector,
@@ -108,9 +103,6 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
     * are passed from the parent component.
     */
     useEffect(() => {
-        if (!isCustomAuthenticator) {
-            return;
-        }
 
         let customAuthenticatorId: string;
 
@@ -121,7 +113,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
             customAuthenticatorId = connector?.federatedAuthenticators?.authenticators[0]?.authenticatorId;
             getCustomFederatedAuthenticator(customAuthenticatorId);
         }
-    }, [ isCustomAuthenticator, isCustomLocalAuthenticator ]);
+    }, [ isCustomLocalAuthenticator ]);
 
     const resolveDisplayName = (): string => {
         if (isCustomLocalAuthenticator) {

@@ -267,7 +267,6 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         isCustomAuthenticator ? (
             <ResourceTab.Pane controlledSegmentation>
                 <CustomAuthenticatorSettings
-                    isCustomAuthenticator={ isCustomAuthenticator }
                     isCustomLocalAuthenticator={ isCustomLocalAuthenticator }
                     isLoading={ isLoading }
                     connector={ identityProvider }
