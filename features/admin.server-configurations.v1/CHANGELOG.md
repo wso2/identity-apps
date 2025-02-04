@@ -1,5 +1,28 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.32.62
+
+### Patch Changes
+
+- [#7494](https://github.com/wso2/identity-apps/pull/7494) [`bb8c0b38541fe6bb367f74621b4c27587d82ebdd`](https://github.com/wso2/identity-apps/commit/bb8c0b38541fe6bb367f74621b4c27587d82ebdd) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Use self registration attribute profile's required option to govern self registration verification
+
+- Updated dependencies [[`bb8c0b38541fe6bb367f74621b4c27587d82ebdd`](https://github.com/wso2/identity-apps/commit/bb8c0b38541fe6bb367f74621b4c27587d82ebdd)]:
+  - @wso2is/admin.server-configurations.v1@2.32.62
+  - @wso2is/core@2.6.1
+  - @wso2is/admin.core.v1@2.38.6
+  - @wso2is/admin.extensions.v1@2.36.62
+  - @wso2is/admin.identity-providers.v1@2.26.137
+  - @wso2is/admin.users.v1@2.30.47
+  - @wso2is/admin.validation.v1@2.27.75
+  - @wso2is/admin.feature-gate.v1@1.4.137
+  - @wso2is/admin.organizations.v1@2.26.137
+  - @wso2is/access-control@3.3.15
+  - @wso2is/dynamic-forms@2.4.30
+  - @wso2is/form@2.6.23
+  - @wso2is/forms@2.3.16
+  - @wso2is/i18n@2.19.2
+  - @wso2is/react-components@2.9.2
+
 ## 2.32.61
 
 ### Patch Changes

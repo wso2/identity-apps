@@ -1,5 +1,15 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.4.137
+
+### Patch Changes
+
+- Updated dependencies [[`e9949d9081c28719a43f50246f0b2dfac5334f78`](https://github.com/wso2/identity-apps/commit/e9949d9081c28719a43f50246f0b2dfac5334f78)]:
+  - @wso2is/admin.applications.v1@2.30.137
+  - @wso2is/admin.core.v1@2.38.6
+  - @wso2is/admin.feature-gate.v1@1.4.137
+  - @wso2is/admin.template-core.v1@1.5.91
+
 ## 1.4.136
 
 ### Patch Changes
