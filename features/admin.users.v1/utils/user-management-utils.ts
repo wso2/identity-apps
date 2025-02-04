@@ -302,3 +302,35 @@ export const extractSubAttributes = (user: ProfileInfoInterface, schemaKey: stri
     return user && user[schemaKey]?.filter(
         (subAttribute: unknown) => typeof subAttribute === "object") || [];
 };
+
+/**
+ * Process multi valued simple attribute patch operation value.
+ *
+ * @param attributeSchemaName - Attribute schema name.
+ * @param primaryAttributeSchemaName - Primary schema attribute.
+ * @param profileInfo - Profile information.
+ * @param multiValuedAttributeInputValues - Multi valued attribute input values.
+ * @returns Patch operation value.
+ */
+export const constructPatchOpValueForMultiValuedAttribute = (
+    attributeSchemaName: string,
+    primaryAttributeSchemaName: string,
+    profileInfo: Map<string, string>,
+    multiValuedAttributeInputValues: Record<string, string>
+) => {
+    const currentValues: string[] = profileInfo.get(attributeSchemaName)?.split(",") || [];
+
+    if (!isEmpty(multiValuedAttributeInputValues[attributeSchemaName])) {
+        currentValues.push(multiValuedAttributeInputValues[attributeSchemaName]);
+    }
+
+    if (!isEmpty(primaryAttributeSchemaName)) {
+        const existingPrimary: string = profileInfo?.get(primaryAttributeSchemaName);
+
+        if (existingPrimary && !currentValues.includes(existingPrimary)) {
+            currentValues.push(existingPrimary);
+        }
+    }
+
+    return { [attributeSchemaName]: currentValues } ;
+};

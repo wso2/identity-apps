@@ -96,7 +96,11 @@ import {
     SubValueInterface
 } from "../models/user";
 import "./user-profile.scss";
-import { extractSubAttributes, isMultipleEmailsAndMobileNumbersEnabled } from "../utils/user-management-utils";
+import {
+    constructPatchOpValueForMultiValuedAttribute,
+    extractSubAttributes,
+    isMultipleEmailsAndMobileNumbersEnabled
+} from "../utils/user-management-utils";
 
 const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
 const MOBILE_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
@@ -826,32 +830,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
-     * Process multi valued simple attribute patch operation value.
-     *
-     * @param attributeSchemaName - Attribute schema name.
-     * @param primaryAttributeSchemaName - Primary schema attribute.
-     * @returns Patch operation value.
-     */
-    const constructPatchOpValueForMultiValuedAttribute = (
-        attributeSchemaName: string,
-        primaryAttributeSchemaName: string
-    ) => {
-        const currentValues: string[] = profileInfo.get(attributeSchemaName)?.split(",") || [];
-
-        if (!isEmpty(tempMultiValuedItemValue[attributeSchemaName])) {
-            currentValues.push(tempMultiValuedItemValue[attributeSchemaName]);
-        }
-
-        const existingPrimary: string = profileInfo?.get(primaryAttributeSchemaName);
-
-        if (existingPrimary && !currentValues.includes(existingPrimary)) {
-            currentValues.push(existingPrimary);
-        }
-
-        return { [attributeSchemaName]: currentValues } ;
-    };
-
-    /**
      * Handles updating the primary email and mobile values when multiple emails and mobile numbers are enabled.
      *
      * @param values - The Map of form values.
@@ -923,13 +901,19 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
                                     opValue = {
                                         [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
-                                            EMAIL_ADDRESSES_ATTRIBUTE, EMAIL_ATTRIBUTE
+                                            EMAIL_ADDRESSES_ATTRIBUTE,
+                                            EMAIL_ATTRIBUTE,
+                                            profileInfo,
+                                            tempMultiValuedItemValue
                                         )
                                     };
                                 } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
                                     opValue = {
                                         [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
-                                            MOBILE_NUMBERS_ATTRIBUTE, MOBILE_ATTRIBUTE
+                                            MOBILE_NUMBERS_ATTRIBUTE,
+                                            MOBILE_ATTRIBUTE,
+                                            profileInfo,
+                                            tempMultiValuedItemValue
                                         )
                                     };
                                 } else {
@@ -1099,13 +1083,19 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
                                     opValue = {
                                         [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
-                                            EMAIL_ADDRESSES_ATTRIBUTE, EMAIL_ATTRIBUTE
+                                            EMAIL_ADDRESSES_ATTRIBUTE,
+                                            EMAIL_ATTRIBUTE,
+                                            profileInfo,
+                                            tempMultiValuedItemValue
                                         )
                                     };
                                 } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
                                     opValue = {
                                         [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
-                                            MOBILE_NUMBERS_ATTRIBUTE, MOBILE_ATTRIBUTE
+                                            MOBILE_NUMBERS_ATTRIBUTE,
+                                            MOBILE_ATTRIBUTE,
+                                            profileInfo,
+                                            tempMultiValuedItemValue
                                         )
                                     };
                                 } else {
