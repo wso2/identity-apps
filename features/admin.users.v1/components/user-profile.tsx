@@ -907,34 +907,44 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const attValues: Map<string, string | string []> = new Map();
 
                             if (schemaNames.length === 1 || schemaNames.length === 2) {
+                                if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+                                    opValue = {
+                                        [schema.schemaId]:
+                                                processMultiValuedAttribute(EMAIL_ADDRESSES_ATTRIBUTE, EMAIL_ATTRIBUTE)
+                                    };
+                                } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+                                    opValue = {
+                                        [schema.schemaId]:
+                                                processMultiValuedAttribute(MOBILE_NUMBERS_ATTRIBUTE, MOBILE_ATTRIBUTE)
+                                    };
+                                } else {
+                                    // Extract the sub attributes from the form values.
+                                    for (const value of values.keys()) {
+                                        const subAttribute: string[] = value.split(".");
 
-                                // Extract the sub attributes from the form values.
-                                for (const value of values.keys()) {
-                                    const subAttribute: string[] = value.split(".");
-
-                                    if (subAttribute[0] === schemaNames[0]) {
-                                        attValues.set(value, values.get(value));
-                                    }
-                                }
-
-                                for (const [ key, value ] of attValues) {
-                                    const attribute: string[] = key.split(".");
-
-                                    if (value && value !== "") {
-                                        if (attribute.length === 1) {
-                                            attributeValues.push(value);
-                                        } else {
-                                            attributeValues.push({
-                                                type: attribute[1],
-                                                value: value
-                                            });
+                                        if (subAttribute[0] === schemaNames[0]) {
+                                            attValues.set(value, values.get(value));
                                         }
                                     }
-                                }
 
-                                opValue = {
-                                    [schemaNames[0]]: attributeValues
-                                };
+                                    for (const [ key, value ] of attValues) {
+                                        const attribute: string[] = key.split(".");
+
+                                        if (value && value !== "") {
+                                            if (attribute.length === 1) {
+                                                attributeValues.push(value);
+                                            } else {
+                                                attributeValues.push({
+                                                    type: attribute[1],
+                                                    value: value
+                                                });
+                                            }
+                                        }
+                                    }
+                                    opValue = {
+                                        [schemaNames[0]]: attributeValues
+                                    };
+                                }
                             }
                         } else {
                             if (schemaNames.length === 1) {
@@ -1071,33 +1081,44 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                             if (schemaNames.length === 1 || schemaNames.length === 2) {
 
-                                // Extract the sub attributes from the form values.
-                                for (const value of values.keys()) {
-                                    const subAttribute: string[] = value.split(".");
+                                if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+                                    opValue = {
+                                        [schema.schemaId]:
+                                                processMultiValuedAttribute(EMAIL_ADDRESSES_ATTRIBUTE, EMAIL_ATTRIBUTE)
+                                    };
+                                } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+                                    opValue = {
+                                        [schema.schemaId]:
+                                                processMultiValuedAttribute(MOBILE_NUMBERS_ATTRIBUTE, MOBILE_ATTRIBUTE)
+                                    };
+                                } else {
+                                    // Extract the sub attributes from the form values.
+                                    for (const value of values.keys()) {
+                                        const subAttribute: string[] = value.split(".");
 
-                                    if (subAttribute[0] === schemaNames[0]) {
-                                        attValues.set(value, values.get(value));
-                                    }
-                                }
-
-                                for (const [ key, value ] of attValues) {
-                                    const attribute: string[] = key.split(".");
-
-                                    if (value && value !== "") {
-                                        if (attribute.length === 1) {
-                                            attributeValues.push(value);
-                                        } else {
-                                            attributeValues.push({
-                                                type: attribute[1],
-                                                value: value
-                                            });
+                                        if (subAttribute[0] === schemaNames[0]) {
+                                            attValues.set(value, values.get(value));
                                         }
                                     }
-                                }
 
-                                opValue = {
-                                    [schemaNames[0]]: attributeValues
-                                };
+                                    for (const [ key, value ] of attValues) {
+                                        const attribute: string[] = key.split(".");
+
+                                        if (value && value !== "") {
+                                            if (attribute.length === 1) {
+                                                attributeValues.push(value);
+                                            } else {
+                                                attributeValues.push({
+                                                    type: attribute[1],
+                                                    value: value
+                                                });
+                                            }
+                                        }
+                                    }
+                                    opValue = {
+                                        [schemaNames[0]]: attributeValues
+                                    };
+                                }
                             }
                         } else {
                             if (schemaNames.length === 1) {
@@ -2039,12 +2060,23 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             && resolvedRequiredValue }) }
                     placeholder={ "Enter your" + " " + fieldName }
                     type="text"
+                    value={ tempMultiValuedItemValue[schema.name] }
                     readOnly={ (isUserManagedByParentOrg &&
                         sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)
                         || isReadOnly
                         || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
                     }
                     validation={ (value: string, validation: Validation) => {
+                        if (isEmpty(value) && resolvedRequiredValue && isEmpty(attributeValueList)) {
+                            setIsMultiValuedItemInvalid({
+                                ...isMultiValuedItemInvalid,
+                                [schema.name]: true
+                            });
+                            validation.isValid = false;
+                            validation.errorMessages
+                                .push(t("user:profile.forms.generic.inputs.validations.empty", { fieldName }));
+                        }
+
                         if (!RegExp(primaryAttributeSchema?.regEx).test(value)) {
                             setIsMultiValuedItemInvalid({
                                 ...isMultiValuedItemInvalid,
@@ -2457,6 +2489,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @returns whether the field for the input schema should be displayed.
      */
     const isFieldDisplayable = (schema: ProfileSchemaInterface): boolean => {
+        if (!isMultipleEmailAndMobileNumberEnabled) {
+            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+                return false;
+            }
+        }
         const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
 
         // If the distinct attribute profiles feature is enabled, check the supportedByDefault flag.
