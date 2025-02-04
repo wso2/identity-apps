@@ -34,16 +34,13 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
-import { searchRoleList, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
+import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import {
     OperationValueInterface,
     PatchRoleDataInterface,
-    ScimOperationsInterface,
-    SearchRoleInterface
+    ScimOperationsInterface
 } from "@wso2is/admin.roles.v2/models/roles";
 import { ConnectorPropertyInterface  } from "@wso2is/admin.server-configurations.v1";
-import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
-import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -69,7 +66,7 @@ import {
     Popup,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
 import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useMemo, useState } from "react";
@@ -82,13 +79,11 @@ import { updateUserInfo } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
     AdminAccountTypes,
-    CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP,
     LocaleJoiningSymbol,
-    PASSWORD_RESET_PROPERTIES,
     UserManagementConstants
 } from "../constants";
+import useUserProfile from "../hooks/use-user-profile";
 import {
-    AccountConfigSettingsInterface,
     PatchUserOperationValue,
     SchemaAttributeValueInterface,
     SubValueInterface
@@ -193,11 +188,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const dispatch: Dispatch = useDispatch();
 
-    const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
+    const {
+        adminRoleId,
+        associationType,
+        configSettings,
+        profileSchema
+    } = useUserProfile({ adminUserType, connectorProperties });
+
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
-    const currentOrganization: string =  useSelector((state: AppState) => state?.config?.deployment?.tenant);
-    const authUserTenants: TenantInfo[] = useSelector((state: AppState) => state?.auth?.tenants);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
     );
@@ -213,26 +212,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     );
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
-    const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showAdminRevokeConfirmationModal, setShowAdminRevokeConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<ProfileInfoInterface>(undefined);
     const [ editingAttribute, setEditingAttribute ] = useState(undefined);
     const [ showLockDisableConfirmationModal, setShowLockDisableConfirmationModal ] = useState<boolean>(false);
     const [ openChangePasswordModal, setOpenChangePasswordModal ] = useState<boolean>(false);
-    const [ configSettings, setConfigSettings ] = useState<AccountConfigSettingsInterface>({
-        accountDisable: "false",
-        accountLock: "false",
-        forcePasswordReset: "false",
-        isEmailVerificationEnabled: "false",
-        isMobileVerificationByPrivilegeUserEnabled: "false",
-        isMobileVerificationEnabled: "false"
-    });
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
-    const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ adminRoleId, setAdminRoleId ] = useState<string>("");
-    const [ associationType, setAssociationType ] = useState<string>("");
 
     const createdDate: string = user?.meta?.created;
     const modifiedDate: string = user?.meta?.lastModified;
@@ -264,77 +251,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const isMultipleEmailAndMobileNumberEnabled: boolean = useMemo(() => {
         return isMultipleEmailsAndMobileNumbersEnabled(profileInfo,profileSchema);
     }, [ profileSchema, profileInfo ]);
-
-    useEffect(() => {
-        if (connectorProperties && Array.isArray(connectorProperties) && connectorProperties?.length > 0) {
-
-            const accountConfigSettings: AccountConfigSettingsInterface = { ...configSettings } ;
-
-            for (const property of connectorProperties) {
-                if (PASSWORD_RESET_PROPERTIES.includes(property.name)) {
-                    if (property.value === "true") {
-                        accountConfigSettings.forcePasswordReset = property.value;
-                    }
-
-                    continue;
-                }
-                const configKey: string = CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP[property.name];
-
-                if (configKey) {
-                    accountConfigSettings[configKey] = property.value;
-                }
-            }
-            setConfigSettings(accountConfigSettings);
-        }
-    }, [ connectorProperties ]);
-
-    /**
-     *  .
-     */
-    useEffect(() => {
-        // This will load the countries to the dropdown
-        setCountryList(CommonUtils.getCountryList());
-        // This will load authenticated user's association type to the current organization.
-        setAssociationType(getAssociationType(authUserTenants, currentOrganization));
-
-        if (adminUserType === AdminAccountTypes.INTERNAL && userConfig?.enableAdminPrivilegeRevokeOption) {
-            // Admin role ID is only used by internal admins.
-            getAdminRoleId();
-        }
-    }, []);
-
-    /**
-     * Sort the elements of the profileSchema state accordingly by the displayOrder attribute in the ascending order.
-     */
-    useEffect(() => {
-
-        const getDisplayOrder = (schema: ProfileSchemaInterface): number => {
-            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
-                && (!schema.displayOrder || schema.displayOrder == "0")) return 6;
-            if (schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                && (!schema.displayOrder || schema.displayOrder == "0")) return 7;
-
-            return schema.displayOrder ? parseInt(schema.displayOrder, 10) : -1;
-        };
-
-        const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
-            .filter((item: ProfileSchemaInterface) =>
-                item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"))
-            .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
-                const orderA: number = getDisplayOrder(a);
-                const orderB: number = getDisplayOrder(b);
-
-                if (orderA === -1) {
-                    return -1;
-                } else if (orderB === -1) {
-                    return 1;
-                } else {
-                    return orderA - orderB;
-                }
-            });
-
-        setProfileSchema(sortedSchemas);
-    }, [ profileSchemas ]);
 
     useEffect(() => {
         mapUserToSchema(profileSchema, user);
@@ -731,44 +647,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
 
         return normalizedLocale;
-    };
-
-    /**
-     * This function returns the ID of the administrator role.
-     *
-     */
-    const getAdminRoleId = () => {
-        const searchData: SearchRoleInterface = {
-            filter: "displayName eq " + administratorConfig.adminRoleName,
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:SearchRequest" ],
-            startIndex: 0
-        };
-
-        searchRoleList(searchData)
-            .then((response: AxiosResponse) => {
-                if (response?.data?.Resources.length > 0) {
-                    const adminId: string = response?.data?.Resources[0]?.id;
-
-                    setAdminRoleId(adminId);
-                }
-            }).catch((error: IdentityAppsApiException) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("users:notifications.getAdminRole.error.message")
-                    }));
-
-                    return;
-                }
-                dispatch(addAlert({
-                    description: t("users:notifications.getAdminRole." +
-                        "genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("users:notifications.getAdminRole.genericError" +
-                        ".message")
-                }));
-            });
     };
 
     /**
@@ -2317,17 +2195,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         text: "Select your country" as string,
                         value: "" as string
                     } ].concat(
-                        countryList
-                            ? countryList.map((list: DropdownItemProps) => {
-                                return {
-                                    "data-testid": `${ testId }-profile-form-country-dropdown-` +  list.value as string,
-                                    flag: list.flag,
-                                    key: list.key as string,
-                                    text: list.text as string,
-                                    value: list.value as string
-                                };
-                            })
-                            : []
+                        CommonUtils.getCountryList()?.map((list: DropdownItemProps) => {
+                            return {
+                                "data-testid": `${ testId }-profile-form-country-dropdown-` +  list.value as string,
+                                flag: list.flag,
+                                key: list.key as string,
+                                text: list.text as string,
+                                value: list.value as string
+                            };
+                        }) || []
                     ) }
                     key={ key }
                     disabled={ (isUserManagedByParentOrg &&
