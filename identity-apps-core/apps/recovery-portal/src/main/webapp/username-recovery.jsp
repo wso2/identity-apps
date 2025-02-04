@@ -200,24 +200,27 @@
                 <div class="segment-form">
                     <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
                         <% if (isFirstNameInClaims || isLastNameInClaims) { %>
-                        <div class="field">
-                            <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "name")%></label>
-                            <div class="two fields">
-                                <% if (isFirstNameInClaims) { %>
-                                <div class="required field">
-                                    <input id="first-name" type="text" required name="http://wso2.org/claims/givenname"
-                                        placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                            "First.name")%>*" />
-                                </div>
-                                <% } %>
-                                <% if (isLastNameInClaims) { %>
-                                <div class="field">
-                                    <input id="last-name" type="text" name="http://wso2.org/claims/lastname"
-                                        placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                            "Last.name")%>" />
-                                </div>
-                                <% } %>
+                        <div class="two fields">
+                            <% if (isFirstNameInClaims) { %>
+                            <div class="required field">
+                                <label>
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "First.name")%>
+                                </label>
+                                <input id="first-name" type="text" required name="http://wso2.org/claims/givenname"
+                                    placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                        "First.name")%>" />
                             </div>
+                            <% } %>
+                            <% if (isLastNameInClaims) { %>
+                            <div class="field">
+                                <label>
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Last.name")%>
+                                </label>
+                                <input id="last-name" type="text" name="http://wso2.org/claims/lastname"
+                                    placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                        "Last.name")%>" />
+                            </div>
+                            <% } %>
                         </div>
                         <% } %>
 
@@ -245,7 +248,7 @@
                             <label for="contact" class="control-label"><%=i18n(recoveryResourceBundle, customText,
                                     "contact")%></label>
                             <input id="contact" type="text" name="contact" 
-                                placeholder="<%=i18n(recoveryResourceBundle, customText, "contact")%>*" 
+                                placeholder="<%=i18n(recoveryResourceBundle, customText, "contact")%>" 
                                     required class="form-control" />
                         </div>
                         <% } %>
