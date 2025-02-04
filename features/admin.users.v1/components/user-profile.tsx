@@ -1961,10 +1961,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             }
         };
 
-        const showDeleteButton = (value: string): boolean => {
-            return !(primaryAttributeSchema?.required && value === primaryAttributeValue);
-        };
-
         const showVerifyButton = (value: string): boolean =>
             schema.name === EMAIL_ADDRESSES_ATTRIBUTE
             && verificationEnabled
@@ -1978,6 +1974,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             = primaryAttributeSchema?.profiles?.console?.required ?? primaryAttributeSchema?.required;
         const resolvedRequiredValue: boolean = (resolvedMultiValueAttributeRequiredValue
             || resolvedPrimarySchemaRequiredValue);
+
+        const showDeleteButton = (value: string): boolean => {
+            return !(value === primaryAttributeValue && resolvedPrimarySchemaRequiredValue);
+        };
 
         return (
             <div key={ key }>
