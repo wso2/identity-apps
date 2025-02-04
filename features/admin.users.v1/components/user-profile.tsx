@@ -832,7 +832,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param primaryAttributeSchemaName - Primary schema attribute.
      * @returns Patch operation value.
      */
-    const processMultiValuedAttribute = (attributeSchemaName: string, primaryAttributeSchemaName: string) => {
+    const constructPatchOpValueForMultiValuedAttribute = (
+        attributeSchemaName: string,
+        primaryAttributeSchemaName: string
+    ) => {
         const currentValues: string[] = profileInfo.get(attributeSchemaName)?.split(",") || [];
 
         if (!isEmpty(tempMultiValuedItemValue[attributeSchemaName])) {
@@ -846,6 +849,31 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
 
         return { [attributeSchemaName]: currentValues } ;
+    };
+
+    /**
+     * Handles updating the primary email and mobile values when multiple emails and mobile numbers are enabled.
+     *
+     * @param values - The Map of form values.
+     */
+    const handlePrimaryEmailAndMobile = (values: Map<string, string | string[]>): void => {
+        const existingPrimaryMobile: string = profileInfo?.get(MOBILE_ATTRIBUTE);
+        const newMobile: string = tempMultiValuedItemValue[MOBILE_NUMBERS_ATTRIBUTE];
+
+        if (!isEmpty(existingPrimaryMobile)) {
+            values.set(MOBILE_ATTRIBUTE, existingPrimaryMobile);
+        } else if (!isEmpty(newMobile)) {
+            values.set(MOBILE_ATTRIBUTE, newMobile);
+        }
+
+        const existingPrimaryEmail: string = profileInfo?.get(EMAIL_ATTRIBUTE);
+        const newEmail: string = tempMultiValuedItemValue[EMAIL_ADDRESSES_ATTRIBUTE];
+
+        if (!isEmpty(existingPrimaryEmail)) {
+            values.set(EMAIL_ATTRIBUTE, existingPrimaryEmail);
+        } else if (!isEmpty(newEmail)) {
+            values.set(EMAIL_ATTRIBUTE, newEmail);
+        }
     };
 
     /**
@@ -865,23 +893,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             value: {}
         };
 
-        // Handle primary email and primary mobile values when multiple emails and mobile feature is enabled.
         if (isMultipleEmailAndMobileNumberEnabled) {
-            const existingPrimaryMobile: string = profileInfo?.get(MOBILE_ATTRIBUTE);
-
-            if (!isEmpty(existingPrimaryMobile)) {
-                values.set(MOBILE_ATTRIBUTE, existingPrimaryMobile);
-            } else if (!isEmpty(tempMultiValuedItemValue[MOBILE_NUMBERS_ATTRIBUTE])) {
-                values.set(MOBILE_ATTRIBUTE, tempMultiValuedItemValue[MOBILE_NUMBERS_ATTRIBUTE]);
-            }
-
-            const existingPrimaryEmail: string = profileInfo?.get(EMAIL_ATTRIBUTE);
-
-            if (!isEmpty(existingPrimaryEmail)) {
-                values.set(EMAIL_ATTRIBUTE, existingPrimaryEmail);
-            } else if (isEmpty(existingPrimaryEmail) && !isEmpty(tempMultiValuedItemValue[EMAIL_ADDRESSES_ATTRIBUTE])) {
-                values.set(EMAIL_ATTRIBUTE, tempMultiValuedItemValue[EMAIL_ADDRESSES_ATTRIBUTE]);
-            }
+            handlePrimaryEmailAndMobile(values);
         }
 
         if (adminUserType === AdminAccountTypes.INTERNAL) {
@@ -909,13 +922,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             if (schemaNames.length === 1 || schemaNames.length === 2) {
                                 if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
                                     opValue = {
-                                        [schema.schemaId]:
-                                                processMultiValuedAttribute(EMAIL_ADDRESSES_ATTRIBUTE, EMAIL_ATTRIBUTE)
+                                        [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
+                                            EMAIL_ADDRESSES_ATTRIBUTE, EMAIL_ATTRIBUTE
+                                        )
                                     };
                                 } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
                                     opValue = {
-                                        [schema.schemaId]:
-                                                processMultiValuedAttribute(MOBILE_NUMBERS_ATTRIBUTE, MOBILE_ATTRIBUTE)
+                                        [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
+                                            MOBILE_NUMBERS_ATTRIBUTE, MOBILE_ATTRIBUTE
+                                        )
                                     };
                                 } else {
                                     // Extract the sub attributes from the form values.
@@ -1083,13 +1098,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                                 if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
                                     opValue = {
-                                        [schema.schemaId]:
-                                                processMultiValuedAttribute(EMAIL_ADDRESSES_ATTRIBUTE, EMAIL_ATTRIBUTE)
+                                        [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
+                                            EMAIL_ADDRESSES_ATTRIBUTE, EMAIL_ATTRIBUTE
+                                        )
                                     };
                                 } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
                                     opValue = {
-                                        [schema.schemaId]:
-                                                processMultiValuedAttribute(MOBILE_NUMBERS_ATTRIBUTE, MOBILE_ATTRIBUTE)
+                                        [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
+                                            MOBILE_NUMBERS_ATTRIBUTE, MOBILE_ATTRIBUTE
+                                        )
                                     };
                                 } else {
                                     // Extract the sub attributes from the form values.
