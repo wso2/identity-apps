@@ -28,13 +28,11 @@ import { UserSessions } from "@wso2is/admin.users.v1/components/user-sessions";
 import { AdminAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertInterface, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
 import { ContentLoader, Message, ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
+import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 
 interface EditGuestUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
@@ -84,7 +82,6 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-    const dispatch: Dispatch = useDispatch();
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ allowDeleteOnly, setAllowDeleteOnly ] = useState<boolean>(false);
@@ -148,10 +145,6 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
         }
 
     }, [ user, readOnlyUserStores ]);
-
-    const handleAlerts = (alert: AlertInterface) => {
-        dispatch(addAlert<AlertInterface>(alert));
-    };
 
     const panes = () => ([
         {
