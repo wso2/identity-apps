@@ -2055,9 +2055,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             : fieldName
                         )
                     }
-                    className={ classNames({ "required-icon": !(isUserManagedByParentOrg &&
-                        sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                            && resolvedRequiredValue }) }
                     placeholder={ "Enter your" + " " + fieldName }
                     type="text"
                     value={ tempMultiValuedItemValue[schema.name] }
@@ -2066,6 +2063,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         || isReadOnly
                         || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
                     }
+                    required={ !(isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                       && resolvedRequiredValue && isEmpty(attributeValueList) }
+                    requiredErrorMessage={ t("user:profile.forms.generic.inputs.validations.empty", { fieldName }) }
                     validation={ (value: string, validation: Validation) => {
                         if (isEmpty(value) && resolvedRequiredValue && isEmpty(attributeValueList)) {
                             setIsMultiValuedItemInvalid({
