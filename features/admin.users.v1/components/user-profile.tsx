@@ -826,6 +826,29 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
+     * Process multi valued simple attribute patch operation value.
+     *
+     * @param attributeSchemaName - Attribute schema name.
+     * @param primaryAttributeSchemaName - Primary schema attribute.
+     * @returns Patch operation value.
+     */
+    const processMultiValuedAttribute = (attributeSchemaName: string, primaryAttributeSchemaName: string) => {
+        const currentValues: string[] = profileInfo.get(attributeSchemaName)?.split(",") || [];
+
+        if (!isEmpty(tempMultiValuedItemValue[attributeSchemaName])) {
+            currentValues.push(tempMultiValuedItemValue[attributeSchemaName]);
+        }
+
+        const existingPrimary: string = profileInfo?.get(primaryAttributeSchemaName);
+
+        if (existingPrimary && !currentValues.includes(existingPrimary)) {
+            currentValues.push(existingPrimary);
+        }
+
+        return { [attributeSchemaName]: currentValues } ;
+    };
+
+    /**
      * The following method handles the `onSubmit` event of forms.
      *
      * @param values - submit values.
