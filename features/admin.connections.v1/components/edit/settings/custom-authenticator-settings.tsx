@@ -44,6 +44,7 @@ import {
     AuthenticationPropertiesInterface,
     ConnectionInterface,
     CustomAuthConnectionInterface,
+    EndpointAuthenticationType,
     EndpointAuthenticationUpdateInterface
 } from "../../../models/connection";
 import { handleConnectionUpdateError } from "../../../utils/connection-utils";
@@ -316,7 +317,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                             properties: (connector as CustomAuthConnectionInterface)?.endpoint?.authentication
                                 ?.properties,
                             type: (connector as CustomAuthConnectionInterface)?.endpoint?.authentication
-                                ?.type as AuthenticationType
+                                ?.type
                         },
                     uri: changedFields?.endpointUri ? values.endpointUri :
                         (connector as CustomAuthConnectionInterface)?.endpoint?.uri
@@ -350,7 +351,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                 endpoint: {
                     authentication: {
                         properties: authProperties,
-                        type: values.authenticationType as AuthenticationType
+                        type: values.authenticationType as EndpointAuthenticationType
                     },
                     uri: values.endpointUri
                 },
@@ -440,9 +441,9 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                                     initialValues={ authenticatorEndpoint }
                                     isCreateFormState={ false }
                                     onAuthenticationTypeChange={ (updatedValue: AuthenticationType, change: boolean) => {
-                                        setEndpointAuthenticationType(updatedValue);
-                                        setIsAuthenticationUpdateFormState(change);
-                                    } }
+                                            setEndpointAuthenticationType(updatedValue);
+                                            setIsAuthenticationUpdateFormState(change);
+                                        } }
                                 />
                                 { !isLoading && (
                                     <Button

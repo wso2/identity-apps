@@ -299,7 +299,7 @@ export interface ExternalEndpoint {
  * Captures the authentication properties of an external endpoint associated with the authenticator.
  */
 export interface ExternalEndpointAuthentication {
-    type?: EndpointAuthenticationType | AuthenticationType;
+    type?: EndpointAuthenticationType;
     properties?: Partial<AuthenticationPropertiesInterface>
 }
 
