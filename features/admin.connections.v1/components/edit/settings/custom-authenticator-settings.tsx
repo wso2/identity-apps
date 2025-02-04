@@ -40,6 +40,7 @@ import {
     updateCustomAuthentication,
     updateFederatedAuthenticator
 } from "../../../api/connections";
+import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import {
     AuthenticationPropertiesInterface,
     ConnectionInterface,
@@ -49,7 +50,6 @@ import {
 } from "../../../models/connection";
 import { handleConnectionUpdateError } from "../../../utils/connection-utils";
 import "./custom-authenticator-settings.scss";
-import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 
 /**
  * Proptypes for the Custom Local Authenticator edit page component.
@@ -77,27 +77,36 @@ export interface CustomAuthenticatorSettingsPagePropsInterface extends Identifia
     onUpdate: (id: string, tabName?: string) => void;
 }
 
+/**
+ * Custom authenticator settings page.
+ *
+ * @param props - Props injected to the component.
+ * @returns React element.
+ */
 export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettingsPagePropsInterface> = ({
     isCustomAuthenticator,
     isCustomLocalAuthenticator,
     isLoading,
     connector,
     onUpdate,
-    "data-componentid": _componentId = "authenticator-edit-page"
+    ["data-componentid"]: componentId = "authenticator-settings-page"
 }: CustomAuthenticatorSettingsPagePropsInterface): ReactElement => {
     const dispatch: Dispatch = useDispatch();
 
-    const [ authenticatorEndpoint, setAuthenticatorEndpoint ] = useState<EndpointConfigFormPropertyInterface>(null);
+    const [ authenticatorEndpoint, setAuthenticatorEndpoint ] = useState<EndpointConfigFormPropertyInterface>(
+        null
+    );
     const [ endpointAuthenticationType, setEndpointAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
 
     const { t } = useTranslation();
 
     /**
-     * This useEffect is utilized only for custom authenticators in order to fetch additional
-     * details related to authenticators.
-     * This is not required for other connections since all the required details are passed from the parent component.
-     */
+    * This useEffect is utilized only for custom authenticators in order to fetch additional
+    * details related to authenticators.
+    * This is not required for other connections since all the required details
+    * are passed from the parent component.
+    */
     useEffect(() => {
         if (!isCustomAuthenticator) {
             return;
@@ -123,11 +132,11 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
     };
 
     /**
-     * This function is used to get the custom local authenticator details which includes endpoint
-     * configurations that need to be accessed from the "Settings" tab.
-     *
-     * @param customLocalAuthenticatorId - Custom local authenticator id.
-     */
+    * This function is used to get the custom local authenticator details which includes endpoint
+    * configurations that need to be accessed from the "Settings" tab.
+    *
+    * @param customLocalAuthenticatorId - Custom local authenticator id.
+    */
     const getCustomLocalAuthenticator = (customLocalAuthenticatorId: string) => {
         getLocalAuthenticator(customLocalAuthenticatorId)
             .then((data: CustomAuthConnectionInterface) => {
@@ -146,7 +155,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                                 description: error.response.data.description
                             }),
                             level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:" + "notifications.getIDP.error.message")
+                            message: t("authenticationProvider:notifications.getIDP.error.message")
                         })
                     );
 
@@ -155,20 +164,22 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
 
                 dispatch(
                     addAlert({
-                        description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
+                        description: t(
+                            "authenticationProvider:notifications.getIDP.genericError.description"
+                        ),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
+                        message: t("authenticationProvider:notifications.getIDP.genericError.message")
                     })
                 );
             });
     };
 
     /**
-     * This function is used to get the custom federated authenticator details which includes endpoint
-     * configurations that need to be accessed from the "Settings" tab.
-     *
-     * @param customFederatedAuthenticatorId - Custom federated authenticator id.
-     */
+    * This function is used to get the custom federated authenticator details which includes endpoint
+    * configurations that need to be accessed from the "Settings" tab.
+    *
+    * @param customFederatedAuthenticatorId - Custom federated authenticator id.
+    */
     const getCustomFederatedAuthenticator = (customFederatedAuthenticatorId: string) => {
         getFederatedAuthenticatorDetails(connector?.id, customFederatedAuthenticatorId)
             .then((data: FederatedAuthenticatorListItemInterface) => {
@@ -187,7 +198,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                                 description: error.response.data.description
                             }),
                             level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:" + "notifications.getIDP.error.message")
+                            message: t("authenticationProvider:notifications.getIDP.error.message")
                         })
                     );
 
@@ -196,9 +207,11 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
 
                 dispatch(
                     addAlert({
-                        description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
+                        description: t(
+                            "authenticationProvider:notifications.getIDP.genericError.description"
+                        ),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
+                        message: t("authenticationProvider:notifications.getIDP.genericError.message")
                     })
                 );
             });
@@ -223,15 +236,17 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
 
         switch (endpointAuthenticationType) {
             case AuthenticationType.BASIC:
-                if (isAuthenticationUpdateFormState || values?.usernameAuthProperty || values?.passwordAuthProperty) {
+                if (
+                    isAuthenticationUpdateFormState || values?.usernameAuthProperty || values?.passwordAuthProperty
+                ) {
                     if (!values?.usernameAuthProperty) {
                         errors.usernameAuthProperty = t(
-                            "actions:fields.authentication." + "types.basic.properties.username.validations.empty"
+                            "actions:fields.authentication.types.basic.properties.username.validations.empty"
                         );
                     }
                     if (!values?.passwordAuthProperty) {
                         errors.passwordAuthProperty = t(
-                            "actions:fields.authentication." + "types.basic.properties.password.validations.empty"
+                            "actions:fields.authentication.types.basic.properties.password.validations.empty"
                         );
                     }
                 }
@@ -241,7 +256,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                 if (isAuthenticationUpdateFormState) {
                     if (!values?.accessTokenAuthProperty) {
                         errors.accessTokenAuthProperty = t(
-                            "actions:fields.authentication." + "types.bearer.properties.accessToken.validations.empty"
+                            "actions:fields.authentication.types.bearer.properties.accessToken.validations.empty"
                         );
                     }
                 }
@@ -251,17 +266,17 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                 if (isAuthenticationUpdateFormState || values?.headerAuthProperty || values?.valueAuthProperty) {
                     if (!values?.headerAuthProperty) {
                         errors.headerAuthProperty = t(
-                            "actions:fields.authentication." + "types.apiKey.properties.header.validations.empty"
+                            "actions:fields.authentication.types.apiKey.properties.header.validations.empty"
                         );
                     }
                     if (!CommonAuthenticatorConstants.API_KEY_HEADER_REGEX.test(values?.headerAuthProperty)) {
                         errors.headerAuthProperty = t(
-                            "actions:fields.authentication." + "types.apiKey.properties.header.validations.invalid"
+                            "actions:fields.authentication.types.apiKey.properties.header.validations.invalid"
                         );
                     }
                     if (!values?.valueAuthProperty) {
                         errors.valueAuthProperty = t(
-                            "actions:fields.authentication." + "types.apiKey.properties.value.validations.empty"
+                            "actions:fields.authentication.types.apiKey.properties.value.validations.empty"
                         );
                     }
                 }
@@ -316,11 +331,11 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                         : {
                             properties: (connector as CustomAuthConnectionInterface)?.endpoint?.authentication
                                 ?.properties,
-                            type: (connector as CustomAuthConnectionInterface)?.endpoint?.authentication
-                                ?.type
+                            type: (connector as CustomAuthConnectionInterface)?.endpoint?.authentication?.type
                         },
-                    uri: changedFields?.endpointUri ? values.endpointUri :
-                        (connector as CustomAuthConnectionInterface)?.endpoint?.uri
+                    uri: changedFields?.endpointUri
+                        ? values.endpointUri
+                        : (connector as CustomAuthConnectionInterface)?.endpoint?.uri
                 },
                 isEnabled: connector.isEnabled,
                 isPrimary: connector.isPrimary
@@ -330,9 +345,11 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                 .then(() => {
                     dispatch(
                         addAlert({
-                            description: t("authenticationProvider:notifications.updateIDP." + "success.description"),
+                            description: t(
+                                "authenticationProvider:notifications.updateIDP.success.description"
+                            ),
                             level: AlertLevels.SUCCESS,
-                            message: t("authenticationProvider:notifications.updateIDP." + "success.message")
+                            message: t("authenticationProvider:notifications.updateIDP.success.message")
                         })
                     );
                     onUpdate(connector.id);
@@ -345,7 +362,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                 });
         } else {
             const federatedAuthenticatorId: string =
-                connector?.federatedAuthenticators?.authenticators[0]?.authenticatorId;
+                       connector?.federatedAuthenticators?.authenticators[0]?.authenticatorId;
             const updatingValues: FederatedAuthenticatorInterface = {
                 authenticatorId: federatedAuthenticatorId,
                 endpoint: {
@@ -363,15 +380,11 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                     dispatch(
                         addAlert({
                             description: t(
-                                "authenticationProvider:" +
-                                    "notifications.updateFederatedAuthenticator." +
-                                    "success.description"
+                                "authenticationProvider:notifications.updateFederatedAuthenticator.success.description"
                             ),
                             level: AlertLevels.SUCCESS,
                             message: t(
-                                "authenticationProvider:notifications." +
-                                    "updateFederatedAuthenticator." +
-                                    "success.message"
+                                "authenticationProvider:notifications.updateFederatedAuthenticator.success.message"
                             )
                         })
                     );
@@ -382,16 +395,13 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                         dispatch(
                             addAlert({
                                 description: t(
-                                    "authenticationProvider:" +
-                                        "notifications.updateFederatedAuthenticator." +
-                                        "error.description",
+                                    "authenticationProvider:notifications.updateFederatedAuthenticator." +
+                                    "error.description",
                                     { description: error.response.data.description }
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "authenticationProvider:" +
-                                        "notifications.updateFederatedAuthenticator." +
-                                        "error.message"
+                                    "authenticationProvider:notifications.updateFederatedAuthenticator.error.message"
                                 )
                             })
                         );
@@ -402,15 +412,13 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                     dispatch(
                         addAlert({
                             description: t(
-                                "authenticationProvider:notifications." +
-                                    "updateFederatedAuthenticator." +
-                                    "genericError.description"
+                                "authenticationProvider:notifications.updateFederatedAuthenticator." +
+                                "genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "authenticationProvider:notifications." +
-                                    "updateFederatedAuthenticator." +
-                                    "genericError.message"
+                                "authenticationProvider:notifications.updateFederatedAuthenticator." +
+                                           "genericError.message"
                             )
                         })
                     );
@@ -434,16 +442,17 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                         <EmphasizedSegment
                             className="endpoint-settings-container"
                             padded={ "very" }
-                            data-componentid={ `${_componentId}-section` }
+                            data-componentid={ `${componentId}-section` }
                         >
                             <div className="form-container with-max-width">
                                 <ActionEndpointConfigForm
                                     initialValues={ authenticatorEndpoint }
                                     isCreateFormState={ false }
-                                    onAuthenticationTypeChange={ (updatedValue: AuthenticationType, change: boolean) => {
-                                            setEndpointAuthenticationType(updatedValue);
-                                            setIsAuthenticationUpdateFormState(change);
-                                        } }
+                                    onAuthenticationTypeChange={ (updatedValue: AuthenticationType, change: boolean
+                                    ) => {
+                                        setEndpointAuthenticationType(updatedValue);
+                                        setIsAuthenticationUpdateFormState(change);
+                                    } }
                                 />
                                 { !isLoading && (
                                     <Button
@@ -451,7 +460,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                                         variant="contained"
                                         onClick={ handleSubmit }
                                         className={ "button-container" }
-                                        data-componentid={ `${_componentId}-primary-button` }
+                                        data-componentid={ `${componentId}-primary-button` }
                                     >
                                         { t("actions:buttons.update") }
                                     </Button>

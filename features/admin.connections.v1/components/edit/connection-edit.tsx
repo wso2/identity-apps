@@ -272,7 +272,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                     isLoading={ isLoading }
                     connector={ identityProvider }
                     onUpdate={ onUpdate }
-                    data-testid={ `${testId}-authenticator-settings` }
+                    data-componentid={ `${ testId }-authenticator-settings` }
                 />
             </ResourceTab.Pane>
         ) : (
