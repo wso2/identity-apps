@@ -233,7 +233,7 @@ export interface ProfileSchemaInterface {
         /**
          * Attribute profile for self registration
          */
-        selfRegister?: ProfileAttributeInterface;
+        selfRegistration?: ProfileAttributeInterface;
     }
 }
 
