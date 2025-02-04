@@ -59,7 +59,7 @@ export const AddCertificateFormComponent: React.FunctionComponent<AddCertificate
     triggerCertificateUpload,
     onSubmit,
     setShowFinishButton,
-    ["data-componentid"]: _componentId = "add-application-certificate-form"
+    ["data-componentid"]: _componentId = "add-certificate-form"
 }: AddCertificateFormProps ): ReactElement => {
 
     const [ name, setName ] = useState("");

@@ -16,28 +16,10 @@
  * under the License.
  */
 
-import { rulesNS } from "../../../models";
-
-export const rules: rulesNS = {
-    alerts: {
-        resourceNotFound: {
-            description: "Please update to a valid resource.",
-            title: "The resource linked to this rule is no longer available."
-        }
-    },
-    buttons: {
-        and: "And",
-        clearRule: "Clear Rule",
-        newRule: "New Rule",
-        or: "Or"
-    },
-    fields: {
-        autocomplete: {
-            moreItemsMessage: "Only the recent resources are listed. Type to search for others ..."
-        }
-    },
-    texts: {
-        execute: "Execute",
-        if: "If"
+.MuiAutocomplete-listbox {
+    .MuiAutocomplete-moreItemsAvailableMessage {
+        color: #666666;
+        font-style: italic;
+        padding: 12px 15px 5px;
     }
-};
+}

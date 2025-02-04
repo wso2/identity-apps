@@ -79,15 +79,13 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         data: inactivePolicyArray,
         error: inactivePolicyError,
         mutate: mutateInactivePolicy
-    } = useGetPolicies(true, pageInactive, false, submittedSearchQuery &&
-    submittedSearchQuery.trim() !== "" ? submittedSearchQuery : "*", "ALL");
+    } = useGetPolicies(true, pageInactive, false, submittedSearchQuery, "ALL");
 
     const {
         data: activePolicyArray,
         error: activePolicyError,
         mutate: mutateActivePolicy
-    } = useGetPolicies(true, pageActive, true, submittedSearchQuery &&
-    submittedSearchQuery.trim() !== "" ? submittedSearchQuery : "*", "ALL");
+    } = useGetPolicies(true, pageActive, true, submittedSearchQuery, "ALL");
 
     const {
         data: algorithm,

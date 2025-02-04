@@ -244,6 +244,7 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
      * @param id - IDP id.
      */
     const handleAuthenticatorUpdate = (id: string, tabName?: string): void => {
+        getCustomLocalAuthenticator(id);
         redirectToSpecificTab(false, tabName);
     };
 
@@ -333,9 +334,7 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
 
         return (
             <div className="with-label ellipsis" ref={ idpDescElement }>
-
                 { resolveCustomLocalAuthenticatorLabel(connector) }
-
                 { connector?.description ? (
                     <Popup
                         content={ connector?.description?.replaceAll("{{productName}}", productName) }

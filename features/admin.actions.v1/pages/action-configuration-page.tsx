@@ -126,7 +126,8 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                     authenticationType: action?.endpoint?.authentication?.type?.toString(),
                     endpointUri: action?.endpoint?.uri,
                     id: action?.id,
-                    name: action?.name
+                    name: action?.name,
+                    rule: action?.rule
                 };
 
             } else {

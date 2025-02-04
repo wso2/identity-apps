@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { Config } from "@wso2is/admin.core.v1/configs/app";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 
 /**
@@ -34,7 +34,7 @@ import { HttpMethods } from "@wso2is/core/models";
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetResourceDetails = <Data = any, Error = RequestErrorInterface>(
+const useGetResourceListOrResourceDetails = <Data = any, Error = RequestErrorInterface>(
     endpointPath: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
@@ -44,7 +44,7 @@ const useGetResourceDetails = <Data = any, Error = RequestErrorInterface>(
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.resolveServerHost() + `/api/server/v1${endpointPath}`
+        url: store.getState().config.endpoints.apiRoot + endpointPath
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
@@ -60,4 +60,4 @@ const useGetResourceDetails = <Data = any, Error = RequestErrorInterface>(
     };
 };
 
-export default useGetResourceDetails;
+export default useGetResourceListOrResourceDetails;

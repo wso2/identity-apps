@@ -16,4 +16,23 @@
  * under the License.
  */
 
-export * from "./endpoints";
+/**
+ * Interface for the rule feature resource.
+ */
+export interface ResourceInterface {
+    id: string;
+    name: string;
+    isDisabled?: boolean;
+    [key: string]: any;
+}
+
+/**
+ * Interface for the rule feature resource list.
+ */
+export interface ResourceListInterface {
+    count: number;
+    links: any[];
+    startIndex: number;
+    totalResults: number;
+    [key: string]: ResourceInterface[] | number | any;
+}

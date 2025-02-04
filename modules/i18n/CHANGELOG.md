@@ -1,5 +1,24 @@
 # @wso2is/i18n
 
+## 2.19.2
+
+### Patch Changes
+
+- Updated dependencies [[`bb8c0b38541fe6bb367f74621b4c27587d82ebdd`](https://github.com/wso2/identity-apps/commit/bb8c0b38541fe6bb367f74621b4c27587d82ebdd)]:
+  - @wso2is/core@2.6.1
+
+## 2.19.1
+
+### Patch Changes
+
+- [#7488](https://github.com/wso2/identity-apps/pull/7488) [`18a74388ea24649a45d9cf9cf47cee491bd7b216`](https://github.com/wso2/identity-apps/commit/18a74388ea24649a45d9cf9cf47cee491bd7b216) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Refactor Terminology in Custom Authenticator to Improve UX
+
+## 2.19.0
+
+### Minor Changes
+
+- [#7454](https://github.com/wso2/identity-apps/pull/7454) [`5f74a67b842b049e740d0c006410c055249e5c0d`](https://github.com/wso2/identity-apps/commit/5f74a67b842b049e740d0c006410c055249e5c0d) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Add readonly view and missing resource alert support to the rules component
+
 ## 2.18.3
 
 ### Patch Changes

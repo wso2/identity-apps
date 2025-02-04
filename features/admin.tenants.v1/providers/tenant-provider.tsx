@@ -349,7 +349,7 @@ const TenantProvider = ({
                     <ConfirmationModal.Content data-componentid="tenant-disable-confirmation-modal-content">
                         <Trans
                             i18nKey="tenants:confirmationModals.navigatingToTenantConsole.content"
-                            i18nOptions={ { domain: consoleNavigatingTenant?.domain } }
+                            values={ { domain: consoleNavigatingTenant?.domain } }
                         >
                             If you continue navigating to the <strong>{ consoleNavigatingTenant?.domain }
                             </strong>Console, you will be logged out from the current session.

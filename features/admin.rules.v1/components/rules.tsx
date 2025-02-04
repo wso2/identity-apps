@@ -48,6 +48,11 @@ export interface RulesPropsInterface extends IdentifiableComponentInterface {
      * Disable clear rule button.
      */
     disableClearRule?: boolean;
+
+    /**
+     * Is readonly flag.
+     */
+    readonly?: boolean;
 }
 
 /**
@@ -59,7 +64,8 @@ export interface RulesPropsInterface extends IdentifiableComponentInterface {
 const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
     ["data-componentid"]: componentId = "rules-render-component",
     disableLastRuleDelete = true,
-    disableClearRule = false
+    disableClearRule = false,
+    readonly = false
 }: RulesPropsInterface): ReactElement => {
 
     const {
@@ -77,7 +83,7 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
 
     return (
         <div className="rules-component" data-componentid={ componentId }>
-            { isMultipleRules && (
+            { isMultipleRules && !readonly && (
                 <Box sx={ { mb: 2 } }>
                     <Button
                         size="small"
@@ -107,6 +113,7 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                                 <Grid>
                                     <FormControl sx={ { m: 1, minWidth: 120 } } size="small">
                                         <Select
+                                            disabled={ readonly }
                                             value={ rule.execution }
                                             onChange={ (event: SelectChangeEvent) =>
                                                 updateRuleExecution(event, rule.id)
@@ -134,8 +141,8 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                                 <Typography variant="body2">{ t("rules:texts.if") }</Typography>
                             </Grid>
                         </Grid>
-                        <RuleConditions rule={ rule } />
-                        { ruleExecuteCollection?.rules?.length > 1 || !disableLastRuleDelete && (
+                        <RuleConditions rule={ rule } readonly={ readonly } />
+                        { ruleExecuteCollection?.rules?.length > 1 || !disableLastRuleDelete && !readonly && (
                             <Fab
                                 color="error"
                                 aria-label="delete"
@@ -151,9 +158,10 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                                 <TrashIcon className="delete-button-icon" />
                             </Fab>
                         ) }
-                        { !isMultipleRules && !disableClearRule && (
+                        { !isMultipleRules && !disableClearRule && !readonly && (
                             <Button
                                 aria-label="Clear rule"
+                                disabled={ readonly }
                                 variant="outlined"
                                 size="small"
                                 className={
@@ -189,6 +197,7 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                                 <Select
                                     value={ ruleExecuteCollection?.fallbackExecution }
                                     onChange={ (event: SelectChangeEvent) => updateRulesFallbackExecution(event) }
+                                    disabled={ readonly }
                                 >
                                     { ruleExecutionsMeta?.fallbackExecutions?.map(
                                         (item: ListDataInterface, index: number) => (

@@ -16,8 +16,12 @@
  * under the License.
  */
 
-import { v4 as uuidv4 } from "uuid";
-
+/**
+ * Recursively removes the `id` attribute from the given object.
+ *
+ * @param obj - Input of a JSON object or an Array of JSON objects.
+ * @returns Object without `id` properties.
+ */
 export const removeIds = (obj: any): any => {
     if (Array.isArray(obj)) {
         return obj.map(removeIds);
@@ -32,21 +36,4 @@ export const removeIds = (obj: any): any => {
     return obj;
 };
 
-export const addIds = (obj: any): any => {
-    if (Array.isArray(obj)) {
-        return obj.map(addIds);
-    } else if (typeof obj === "object" && obj !== null) {
-        const updatedObj: Record<string, any> = Object.fromEntries(Object.entries(obj).map(
-            ([ key, value ]: [string, any]) => [ key, addIds(value) ])
-        );
-
-        // Add an `id` property if it doesn't exist
-        if (!("id" in updatedObj)) {
-            updatedObj.id = uuidv4();
-        }
-
-        return updatedObj;
-    }
-
-    return obj;
-};
+export default removeIds;
