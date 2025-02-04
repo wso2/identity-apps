@@ -865,6 +865,25 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             value: {}
         };
 
+        // Handle primary email and primary mobile values when multiple emails and mobile feature is enabled.
+        if (isMultipleEmailAndMobileNumberEnabled) {
+            const existingPrimaryMobile: string = profileInfo?.get(MOBILE_ATTRIBUTE);
+
+            if (!isEmpty(existingPrimaryMobile)) {
+                values.set(MOBILE_ATTRIBUTE, existingPrimaryMobile);
+            } else if (!isEmpty(tempMultiValuedItemValue[MOBILE_NUMBERS_ATTRIBUTE])) {
+                values.set(MOBILE_ATTRIBUTE, tempMultiValuedItemValue[MOBILE_NUMBERS_ATTRIBUTE]);
+            }
+
+            const existingPrimaryEmail: string = profileInfo?.get(EMAIL_ATTRIBUTE);
+
+            if (!isEmpty(existingPrimaryEmail)) {
+                values.set(EMAIL_ATTRIBUTE, existingPrimaryEmail);
+            } else if (isEmpty(existingPrimaryEmail) && !isEmpty(tempMultiValuedItemValue[EMAIL_ADDRESSES_ATTRIBUTE])) {
+                values.set(EMAIL_ATTRIBUTE, tempMultiValuedItemValue[EMAIL_ADDRESSES_ATTRIBUTE]);
+            }
+        }
+
         if (adminUserType === AdminAccountTypes.INTERNAL) {
             profileSchema.forEach((schema: ProfileSchemaInterface) => {
                 const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
@@ -872,6 +891,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 if (resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA) {
                     return;
                 }
+                if (!isFieldDisplayable(schema)) return;
 
                 let opValue: OperationValueInterface = {};
 
@@ -1034,6 +1054,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 if (resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA) {
                     return;
                 }
+
+                if (!isFieldDisplayable(schema)) return;
 
                 let opValue: OperationValueInterface = {};
 
