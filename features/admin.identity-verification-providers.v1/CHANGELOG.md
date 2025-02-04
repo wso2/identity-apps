@@ -1,5 +1,22 @@
 # @wso2is/admin.identity-verification-providers.v1
 
+## 2.27.138
+
+### Patch Changes
+
+- [#7495](https://github.com/wso2/identity-apps/pull/7495) [`79babcaf1edcd195d6da04f39903056b106b1c32`](https://github.com/wso2/identity-apps/commit/79babcaf1edcd195d6da04f39903056b106b1c32) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Resolve Custom Local Authenticator Icon in the Login Flow
+
+- Updated dependencies [[`79babcaf1edcd195d6da04f39903056b106b1c32`](https://github.com/wso2/identity-apps/commit/79babcaf1edcd195d6da04f39903056b106b1c32)]:
+  - @wso2is/theme@2.6.5
+  - @wso2is/admin.claims.v1@2.27.48
+  - @wso2is/admin.core.v1@2.38.7
+  - @wso2is/admin.connections.v1@2.33.21
+  - @wso2is/react-components@2.9.3
+  - @wso2is/admin.feature-gate.v1@1.4.138
+  - @wso2is/admin.template-core.v1@1.5.92
+  - @wso2is/dynamic-forms@2.4.31
+  - @wso2is/form@2.6.24
+
 ## 2.27.137
 
 ### Patch Changes
