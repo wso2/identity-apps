@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.16.25
+
+### Patch Changes
+
+- [#7501](https://github.com/wso2/identity-apps/pull/7501) [`480166a60002ab0a856aeada79fa3b7fb0a814ce`](https://github.com/wso2/identity-apps/commit/480166a60002ab0a856aeada79fa3b7fb0a814ce) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - change isReadOnlyUser property schema
+
+- Updated dependencies [[`79babcaf1edcd195d6da04f39903056b106b1c32`](https://github.com/wso2/identity-apps/commit/79babcaf1edcd195d6da04f39903056b106b1c32)]:
+  - @wso2is/theme@2.6.5
+  - @wso2is/admin.organizations.v1@2.26.138
+  - @wso2is/react-components@2.9.3
+  - @wso2is/common.branding.v1@2.25.111
+
 ## 2.16.24
 
 ### Patch Changes
