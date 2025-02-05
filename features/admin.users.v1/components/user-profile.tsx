@@ -1680,7 +1680,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     /**
      * Assign primary email address or mobile number the multi-valued attribute.
      *
-     * @param schema - Schema of the attribute
+     * @param schemaName - Name of the primary attribute schema.
      * @param attributeValue - Value of the attribute
      */
     const handleMakePrimary = (schemaName: string, attributeValue: string) => {
@@ -1748,18 +1748,18 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         let maxAllowedLimit: number = 0;
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            attributeValueList = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
+            attributeValueList = multiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] ?? [];
             verifiedAttributeValueList = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
-            primaryAttributeValue = profileInfo?.get(EMAIL_ATTRIBUTE);
+            primaryAttributeValue = primaryValues[EMAIL_ATTRIBUTE];
             verificationEnabled = configSettings?.isEmailVerificationEnabled === "true";
             primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
                 schema.name === EMAIL_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            attributeValueList = profileInfo?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
+            attributeValueList = multiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] ?? [];
             verifiedAttributeValueList = profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
-            primaryAttributeValue = profileInfo?.get(MOBILE_ATTRIBUTE);
+            primaryAttributeValue = primaryValues[MOBILE_ATTRIBUTE];
             verificationEnabled = configSettings?.isMobileVerificationEnabled === "true"
                 || configSettings?.isMobileVerificationByPrivilegeUserEnabled === "true";
             primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
@@ -1767,13 +1767,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;
         }
 
-        // Move the primary attribute value to the top of the list.
-        if (!isEmpty(primaryAttributeValue)) {
-            attributeValueList = attributeValueList.filter((value: string) =>
-                !isEmpty(value)
-                && value !== primaryAttributeValue);
-            attributeValueList.unshift(primaryAttributeValue);
-        }
         const showAccordion: boolean = attributeValueList.length >= 1;
 
         const showVerifiedPopup = (value: string): boolean => {
@@ -1818,13 +1811,18 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         icon: "plus",
                         onClick: (event: React.MouseEvent) => {
                             event.preventDefault();
-                            const value: string = tempMultiValuedItemValue[schema.name];
+                            const value: string = multiValuedInputFieldValue[schema.name];
 
-                            if (isMultiValuedItemInvalid[schema.name] || isEmpty(value)) return;
+                            if (isMultiValuedItemInvalid[schema.name] || isEmpty(value)
+                                || multiValuedAttributeValues[schema.name]?.includes(value)
+                            ) return;
                             handleAddMultiValuedItem(schema, value);
                         }
                     } }
-                    disabled = { isSubmitting || isReadOnly || attributeValueList?.length >= maxAllowedLimit }
+                    disabled={ isSubmitting
+                        || isReadOnly
+                        || multiValuedAttributeValues[schema?.name]?.length >= maxAllowedLimit
+                    }
                     data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
                     name={ schema.name }
                     label={ schema.name === "profileUrl" ? "Profile Image URL" :
@@ -1835,7 +1833,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     }
                     placeholder={ "Enter your" + " " + fieldName }
                     type="text"
-                    value={ tempMultiValuedItemValue[schema.name] }
+                    value={ multiValuedInputFieldValue[schema.name] }
                     readOnly={ (isUserManagedByParentOrg &&
                         sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)
                         || isReadOnly
@@ -1843,10 +1841,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     }
                     required={ !(isUserManagedByParentOrg &&
                         sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                       && resolvedRequiredValue && isEmpty(attributeValueList) }
+                       && resolvedRequiredValue && isEmpty(multiValuedAttributeValues[schema?.name]) }
                     requiredErrorMessage={ t("user:profile.forms.generic.inputs.validations.empty", { fieldName }) }
                     validation={ (value: string, validation: Validation) => {
-                        if (isEmpty(value) && resolvedRequiredValue && isEmpty(attributeValueList)) {
+                        if (isEmpty(value) && resolvedRequiredValue
+                            && isEmpty(multiValuedAttributeValues[schema?.name])) {
                             setIsMultiValuedItemInvalid({
                                 ...isMultiValuedItemInvalid,
                                 [schema.name]: true
@@ -1875,8 +1874,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     } }
                     displayErrorOn="blur"
                     listen={ (values: ProfileInfoInterface) => {
-                        setTempMultiValuedItemValue({
-                            ...tempMultiValuedItemValue,
+                        setMultiValuedInputFieldValue({
+                            ...multiValuedInputFieldValue,
                             [schema.name]: values.get(schema.name)
                         });
                     } }
@@ -1902,7 +1901,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             aria-label="multi-attribute value table"
                         >
                             <TableBody>
-                                { attributeValueList?.map(
+                                { multiValuedAttributeValues[schema?.name]?.map(
                                     (value: string, index: number) => (
                                         <TableRow key={ index } className="multi-value-table-data-row">
                                             <TableCell align="left">
@@ -1983,7 +1982,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                             variant="text"
                                                             size="small"
                                                             className="text-btn"
-                                                            onClick={ () => handleMakePrimary(schema, value) }
+                                                            onClick={ () =>
+                                                                handleMakePrimary(primaryAttributeSchema?.name, value)
+                                                            }
                                                             data-componentid={
                                                                 `${testId}-profile-form` +
                                                                         `-${schema.name}-make-primary-button-${index}`
