@@ -1,10 +1,12 @@
 .edit-organization-discovery-domains-form {
-    // TODO: Fix this from `@oxygen-ui` side.
+    // TODO: Fix this from the `@oxygen-ui/react` side and remove.
+    // Tracker: https://github.com/wso2/oxygen-ui/issues/331
     .Mui-readOnly {
         background-color: #e9ecef;
     }
 
     // TODO: Fix this from `@oxygen-ui` side.
+    // Tracker: https://github.com/wso2/oxygen-ui/issues/332
     .MuiFormHelperText-root {
         margin-left: 0;
     }
