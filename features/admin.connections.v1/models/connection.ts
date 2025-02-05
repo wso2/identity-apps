@@ -770,10 +770,6 @@ export interface CustomAuthGeneralDetailsFormValuesInterface {
      * Set is enabled connection
      */
     isEnabled?: boolean;
-    /**
-     * Set is default authenticator
-     */
-    isDefault?: boolean;
 }
 
 export interface OutboundProvisioningConnectorMetaDataInterface {
@@ -854,45 +850,9 @@ export interface CustomAuthenticationCreateWizardGeneralFormValuesInterface {
  */
 export interface EndpointAuthenticationUpdateInterface extends CustomAuthGeneralDetailsFormValuesInterface {
     /**
-     * Name of the Action.
-     */
-    name?: string;
-    /**
-     * Description of the Action.
-     */
-    description?: string;
-    /**
      * Endpoint configuration of the Action.
      */
-    endpoint?: Partial<EndpointInterface>;
-}
-
-/**
- *  Endpoint configuration.
- */
-export interface EndpointInterface {
-    /**
-     * External endpoint.
-     */
-    uri: string;
-    /**
-     * Authentication configurations of the Action.
-     */
-    authentication: AuthenticationInterface;
-}
-
-/**
- *  Endpoint authentication configuration.
- */
-interface AuthenticationInterface {
-    /**
-     * Authentication Type.
-     */
-    type: EndpointAuthenticationType;
-    /**
-     * Authentication properties.
-     */
-    properties: Partial<EndpointConfigFormPropertyInterface>;
+    endpoint?: Partial<ExternalEndpoint>;
 }
 
 /**
