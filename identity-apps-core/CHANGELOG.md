@@ -1,5 +1,16 @@
 # @wso2is/identity-apps-core
 
+## 2.12.8
+
+### Patch Changes
+
+- [#7507](https://github.com/wso2/identity-apps/pull/7507) [`6994a4d6ef9d39263556cb06ece735cd72c96bf5`](https://github.com/wso2/identity-apps/commit/6994a4d6ef9d39263556cb06ece735cd72c96bf5) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add min-width to login portal jsp pages.
+
+* [#7505](https://github.com/wso2/identity-apps/pull/7505) [`ce71be618f6e8a9f4bde91579101f1d087451420`](https://github.com/wso2/identity-apps/commit/ce71be618f6e8a9f4bde91579101f1d087451420) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix reCAPTCHA Failure Upon Duplicate Unique Attribute Error in Self-Registration Flow
+
+* Updated dependencies [[`6994a4d6ef9d39263556cb06ece735cd72c96bf5`](https://github.com/wso2/identity-apps/commit/6994a4d6ef9d39263556cb06ece735cd72c96bf5)]:
+  - @wso2is/theme@2.6.6
+
 ## 2.12.7
 
 ### Patch Changes
