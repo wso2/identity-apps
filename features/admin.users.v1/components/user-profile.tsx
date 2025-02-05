@@ -876,20 +876,20 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param values - The Map of form values.
      */
     const handlePrimaryEmailAndMobile = (values: Map<string, string | string[]>): void => {
-        const existingPrimaryMobile: string = profileInfo?.get(MOBILE_ATTRIBUTE);
-        const newMobile: string = tempMultiValuedItemValue[MOBILE_NUMBERS_ATTRIBUTE];
+        const tempPrimaryMobile: string = primaryValues[MOBILE_ATTRIBUTE];
+        const mobileNumbersInputFieldValue: string = multiValuedInputFieldValue[MOBILE_NUMBERS_ATTRIBUTE];
 
-        if (!isEmpty(existingPrimaryMobile)) {
-            values.set(MOBILE_ATTRIBUTE, existingPrimaryMobile);
-        } else if (!isEmpty(newMobile)) {
-            values.set(MOBILE_ATTRIBUTE, newMobile);
+        if (!isEmpty(tempPrimaryMobile)) {
+            values.set(MOBILE_ATTRIBUTE, tempPrimaryMobile);
+        } else if (!isEmpty(mobileNumbersInputFieldValue)) {
+            values.set(MOBILE_ATTRIBUTE, mobileNumbersInputFieldValue);
         }
 
-        const existingPrimaryEmail: string = profileInfo?.get(EMAIL_ATTRIBUTE);
-        const newEmail: string = tempMultiValuedItemValue[EMAIL_ADDRESSES_ATTRIBUTE];
+        const tempPrimaryEmail: string = primaryValues[EMAIL_ATTRIBUTE];
+        const newEmail: string = multiValuedInputFieldValue[EMAIL_ADDRESSES_ATTRIBUTE];
 
-        if (!isEmpty(existingPrimaryEmail)) {
-            values.set(EMAIL_ATTRIBUTE, existingPrimaryEmail);
+        if (!isEmpty(tempPrimaryEmail)) {
+            values.set(EMAIL_ATTRIBUTE, tempPrimaryEmail);
         } else if (!isEmpty(newEmail)) {
             values.set(EMAIL_ATTRIBUTE, newEmail);
         }
@@ -939,22 +939,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const attValues: Map<string, string | string []> = new Map();
 
                             if (schemaNames.length === 1 || schemaNames.length === 2) {
-                                if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+                                if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
+                                    || schema.name == MOBILE_NUMBERS_ATTRIBUTE) {
                                     opValue = {
                                         [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
-                                            EMAIL_ADDRESSES_ATTRIBUTE,
-                                            EMAIL_ATTRIBUTE,
-                                            profileInfo,
-                                            tempMultiValuedItemValue
-                                        )
-                                    };
-                                } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-                                    opValue = {
-                                        [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
-                                            MOBILE_NUMBERS_ATTRIBUTE,
-                                            MOBILE_ATTRIBUTE,
-                                            profileInfo,
-                                            tempMultiValuedItemValue
+                                            schema.name,
+                                            multiValuedAttributeValues[schema.name],
+                                            multiValuedInputFieldValue[schema.name]
                                         )
                                     };
                                 } else {
@@ -1121,22 +1112,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                             if (schemaNames.length === 1 || schemaNames.length === 2) {
 
-                                if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+                                if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
+                                    || schema.name == MOBILE_NUMBERS_ATTRIBUTE) {
                                     opValue = {
                                         [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
-                                            EMAIL_ADDRESSES_ATTRIBUTE,
-                                            EMAIL_ATTRIBUTE,
-                                            profileInfo,
-                                            tempMultiValuedItemValue
-                                        )
-                                    };
-                                } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-                                    opValue = {
-                                        [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
-                                            MOBILE_NUMBERS_ATTRIBUTE,
-                                            MOBILE_ATTRIBUTE,
-                                            profileInfo,
-                                            tempMultiValuedItemValue
+                                            schema.name,
+                                            multiValuedAttributeValues[schema.name],
+                                            multiValuedInputFieldValue[schema.name]
                                         )
                                     };
                                 } else {
