@@ -39,6 +39,7 @@ import {
     ExternalEndpoint,
     FederatedAuthenticatorListItemInterface
 } from "../../../models/connection";
+import { ConnectionsManagementUtils } from "../../../utils/connection-utils";
 
 /**
  * Proptypes for the custom authenticator general details form component.
@@ -111,11 +112,10 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
 }: CustomAuthGeneralDetailsFormPopsInterface): ReactElement => {
 
     const dispatch: Dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const [ isCustomLocalAuth, setIsCustomLocalAuth ] = useState<boolean>(undefined);
     const [ authenticatorEndpoint, setAuthenticatorEndpoint ] = useState<ExternalEndpoint>(null);
-
-    const { t } = useTranslation();
 
     const { CONNECTION_TEMPLATE_IDS: ConnectionTemplateIds } = CommonAuthenticatorConstants;
 
@@ -268,7 +268,9 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
      */
     const resolveAuthenticatorImage = (): string => {
         if (isCustomLocalAuth) {
-            return AuthenticatorMeta.getCustomAuthenticatorIcon();
+            return ConnectionsManagementUtils.resolveConnectionRelativePath(
+                AuthenticatorMeta.getCustomAuthenticatorIcon()
+            );
         } else {
             return editingIDP.image;
         };
