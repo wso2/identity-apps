@@ -22,7 +22,7 @@ import { CustomTextPreferenceConstants } from "../../../../constants/custom-text
 import useBrandingPreference from "../../../../hooks/use-branding-preference";
 
 /**
- * Proptypes for the totp fragment of login screen skeleton.
+ * Proptypes for the push authentication fragment of login screen skeleton.
  */
 export type PushAuthFragmentInterface = IdentifiableComponentInterface;
 
@@ -35,7 +35,7 @@ export type PushAuthFragmentInterface = IdentifiableComponentInterface;
 const PushAuthFragment: FunctionComponent<PushAuthFragmentInterface> = (
     props: PushAuthFragmentInterface
 ): ReactElement => {
-    const { ["data-componentid"]: componentId } = props;
+    const { ["data-componentid"]: componentId = "branding-preview-push-auth-fragment" } = props;
 
     const { i18n } = useBrandingPreference();
 
@@ -46,12 +46,12 @@ const PushAuthFragment: FunctionComponent<PushAuthFragmentInterface> = (
             </h3>
 
             <div className="segment-form">
-                <form method="post" id="totpForm" className="ui large form otp-form">
+                <form method="post" id="pushAuthForm" className="ui large form">
                     <p className="text-center" id="instruction">
                         {
                             i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.PUSH_AUTH.BODY,
-                                // eslint-disable-next-line max-len
-                                "A push notification has been sent to your device. Please respond to the request to continue."
+                                "A push notification has been sent to your device. " +
+                                "Please respond to the request to continue."
                             )
                         }
                     </p>
@@ -73,11 +73,5 @@ const PushAuthFragment: FunctionComponent<PushAuthFragmentInterface> = (
     );
 };
 
-/**
- * Default props for the component.
- */
-PushAuthFragment.defaultProps = {
-    "data-componentid": "branding-preview-totp-fragment"
-};
 
 export default PushAuthFragment;
