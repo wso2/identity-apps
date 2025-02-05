@@ -97,7 +97,6 @@ import {
 import "./user-profile.scss";
 import {
     constructPatchOpValueForMultiValuedAttribute,
-    extractSubAttributes,
     isMultipleEmailsAndMobileNumbersEnabled
 } from "../utils/user-management-utils";
 
