@@ -181,6 +181,10 @@ export class CustomTextPreferenceConstants {
             BODY: string;
         },
         PRIVACY_POLICY: string;
+        PUSH_AUTH: {
+            HEADING: string;
+            BODY: string;
+        },
         REGISTER_TEXT: {
             MESSAGE: string;
             REGISTER: string;
@@ -242,6 +246,10 @@ export class CustomTextPreferenceConstants {
             HEADING: "password.reset.success.heading"
         },
         PRIVACY_POLICY: "privacy.policy",
+        PUSH_AUTH: {
+            HEADING: "push.auth.heading",
+            BODY: "push.notification.sent.msg"
+        },
         REGISTER_TEXT: {
             MESSAGE: "dont.have.an.account",
             REGISTER: "register"
