@@ -310,7 +310,6 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                         maxLength={ 100 }
                         minLength={ 3 }
                         data-componentid={ `${_componentId}-form-wizard-identifier` }
-                        width={ 15 }
                         hint={ t(
                             "customAuthentication:fields.createWizard.generalSettingsStep.helpPanel." +
                                 "identifier.description"
@@ -329,7 +328,6 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                         maxLength={ 100 }
                         minLength={ 3 }
                         data-componentid={ `${_componentId}-form-wizard-display-name` }
-                        width={ 15 }
                     />
                     <Field.Input
                         name="image"
