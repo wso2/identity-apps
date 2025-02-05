@@ -90,6 +90,7 @@
     boolean isLastNameInClaims = false;
     boolean isEmailInClaims = false;
     boolean isMobileInClaims = false;
+    boolean isFirstNameRequired = false;
     List<Claim> claims;
     UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
     try {
@@ -118,6 +119,7 @@
         if (StringUtils.equals(claim.getUri(),
                 IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM)) {
             isFirstNameInClaims = true;
+            isFirstNameRequired = claim.getRequired();
         }
         if (StringUtils.equals(claim.getUri(), IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM)) {
             isLastNameInClaims = true;
@@ -200,24 +202,27 @@
                 <div class="segment-form">
                     <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
                         <% if (isFirstNameInClaims || isLastNameInClaims) { %>
-                        <div class="field">
-                            <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "name")%></label>
-                            <div class="two fields">
-                                <% if (isFirstNameInClaims) { %>
-                                <div class="required field">
-                                    <input id="first-name" type="text" required name="http://wso2.org/claims/givenname"
-                                        placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                            "First.name")%>*" />
-                                </div>
-                                <% } %>
-                                <% if (isLastNameInClaims) { %>
-                                <div class="field">
-                                    <input id="last-name" type="text" name="http://wso2.org/claims/lastname"
-                                        placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                            "Last.name")%>" />
-                                </div>
-                                <% } %>
+                        <div class="two fields">
+                            <% if (isFirstNameInClaims) { %>
+                            <div class="<%= isFirstNameRequired ? "required field" : "field" %>">
+                                <label>
+                                    <%=i18n(recoveryResourceBundle, customText, "First.name")%>
+                                </label>
+                                <input id="first-name" type="text" 
+                                    <%= isFirstNameRequired ? "required" : "" %> 
+                                    name="http://wso2.org/claims/givenname"
+                                    placeholder="<%=i18n(recoveryResourceBundle, customText, "First.name")%>" />
                             </div>
+                            <% } %>
+                            <% if (isLastNameInClaims) { %>
+                            <div class="field">
+                                <label>
+                                    <%=i18n(recoveryResourceBundle, customText, "Last.name")%>
+                                </label>
+                                <input id="last-name" type="text" name="http://wso2.org/claims/lastname"
+                                    placeholder="<%=i18n(recoveryResourceBundle, customText, "Last.name")%>" />
+                            </div>
+                            <% } %>
                         </div>
                         <% } %>
 
@@ -245,7 +250,7 @@
                             <label for="contact" class="control-label"><%=i18n(recoveryResourceBundle, customText,
                                     "contact")%></label>
                             <input id="contact" type="text" name="contact" 
-                                placeholder="<%=i18n(recoveryResourceBundle, customText, "contact")%>*" 
+                                placeholder="<%=i18n(recoveryResourceBundle, customText, "contact")%>" 
                                     required class="form-control" />
                         </div>
                         <% } %>
@@ -380,11 +385,11 @@
                 const errorMessage = $("#error-msg");
                 errorMessage.hide();
 
-                <% if (isFirstNameInClaims){ %>
+                <% if (isFirstNameInClaims && isFirstNameRequired) { %>
                     const firstName = $("#first-name").val();
 
                     if (firstName === "") {
-                        errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "fill.the.first.name")%>");
+                        errorMessage.text("<%=i18n(recoveryResourceBundle, customText, "fill.the.first.name")%>");
                         errorMessage.show();
                         $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
                         submitButton.removeClass("loading").attr("disabled", false);
