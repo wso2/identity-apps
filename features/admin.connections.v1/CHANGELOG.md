@@ -1,5 +1,28 @@
 # @wso2is/admin.connections.v1
 
+## 2.33.24
+
+### Patch Changes
+
+- [#7510](https://github.com/wso2/identity-apps/pull/7510) [`8ccf4ae097eac87ddeaee83830d283ae00957784`](https://github.com/wso2/identity-apps/commit/8ccf4ae097eac87ddeaee83830d283ae00957784) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Set isDefault Property of the Custom Federated Authenticator when updating Endpoint Details #7510
+
+- Updated dependencies [[`8ccf4ae097eac87ddeaee83830d283ae00957784`](https://github.com/wso2/identity-apps/commit/8ccf4ae097eac87ddeaee83830d283ae00957784)]:
+  - @wso2is/admin.connections.v1@2.33.24
+  - @wso2is/admin.applications.v1@2.30.141
+  - @wso2is/admin.core.v1@2.38.10
+  - @wso2is/admin.extensions.v1@2.36.66
+  - @wso2is/admin.identity-providers.v1@2.26.141
+  - @wso2is/admin.identity-verification-providers.v1@2.27.141
+  - @wso2is/admin.organizations.v1@2.26.141
+  - @wso2is/admin.roles.v2@2.27.85
+  - @wso2is/admin.application-templates.v1@1.4.141
+  - @wso2is/admin.console-settings.v1@2.25.141
+  - @wso2is/admin.actions.v1@1.11.6
+  - @wso2is/admin.claims.v1@2.27.51
+  - @wso2is/admin.feature-gate.v1@1.4.141
+  - @wso2is/admin.template-core.v1@1.5.95
+  - @wso2is/admin.userstores.v1@2.26.100
+
 ## 2.33.23
 
 ### Patch Changes
