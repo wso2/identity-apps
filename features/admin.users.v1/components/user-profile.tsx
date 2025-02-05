@@ -250,7 +250,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
         role.display === administratorConfig.adminRoleName) ?? false;
     const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
-    const [ tempMultiValuedItemValue, setTempMultiValuedItemValue ] = useState<Record<string, string>>({});
+    const [ multiValuedInputFieldValue, setMultiValuedInputFieldValue ] = useState<Record<string, string>>({});
+    const [ multiValuedAttributeValues, setMultiValuedAttributeValues ] =
+        useState<Record<string, string[]>>({});
+    const [ primaryValues, setPrimaryValues ] = useState<Record<string, string>>({}); // For multi-valued attributes.
     const [ isMultiValuedItemInvalid, setIsMultiValuedItemInvalid ] =  useState<Record<string, boolean>>({});
 
     // Multi-valued attribute delete confirmation modal related states.
@@ -633,6 +636,45 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
             setProfileInfo(tempProfileInfo);
         }
+    };
+
+    useEffect(() => {
+        mapMultiValuedAttributeValues(profileInfo);
+    }, [ profileInfo ]);
+
+    const mapMultiValuedAttributeValues = (profileData: Map<string, string>): void => {
+
+        if (!isMultipleEmailAndMobileNumberEnabled) return;
+        const tempMultiValuedAttributeValues: Record<string, string[]> = {};
+        const tempPrimaryValues: Record<string, string> = {};
+
+        let emailAddresses: string[] = profileData?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
+        const primaryEmail: string = profileData?.get(EMAIL_ATTRIBUTE);
+
+        let mobileNumbers: string[] = profileData?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
+        const primaryMobile: string = profileData?.get(MOBILE_ATTRIBUTE);
+
+        if (!isEmpty(primaryEmail)) {
+            emailAddresses = emailAddresses.filter((value: string) =>
+                !isEmpty(value)
+                && value !== primaryEmail);
+            emailAddresses.unshift(primaryEmail);
+        }
+
+        if (!isEmpty(primaryMobile)) {
+            mobileNumbers = mobileNumbers.filter((value: string) =>
+                !isEmpty(value)
+                && value !== primaryMobile);
+            mobileNumbers.unshift(primaryMobile);
+        }
+
+        tempMultiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] = emailAddresses;
+        tempMultiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] = mobileNumbers;
+        tempPrimaryValues[EMAIL_ATTRIBUTE] = primaryEmail;
+        tempPrimaryValues[MOBILE_ATTRIBUTE] = primaryMobile;
+
+        setMultiValuedAttributeValues(tempMultiValuedAttributeValues);
+        setPrimaryValues(tempPrimaryValues);
     };
 
     /**
