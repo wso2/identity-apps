@@ -1584,110 +1584,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param attributeValue - value of the attribute
      */
     const handleMultiValuedItemDelete = (schema: ProfileSchemaInterface, attributeValue: string) => {
-        const data: PatchOperationRequest<PatchUserOperationValue> = {
-            Operations: [
-                {
-                    op: "replace",
-                    value: {}
-                }
-            ],
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
-        };
 
-        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            const emailList: string[] = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
-            const updatedEmailList: string[] = emailList.filter((email: string) => email !== attributeValue);
-            const primaryEmail: string = profileInfo?.get(EMAIL_ATTRIBUTE);
+        const filteredValues: string[] =
+            multiValuedAttributeValues[schema?.name]?.filter((value: string) => value !== attributeValue);
 
-            data.Operations[0].value = {
-                [schema.schemaId] : {
-                    [EMAIL_ADDRESSES_ATTRIBUTE]: updatedEmailList
-                }
-            };
-
-            if (attributeValue === primaryEmail) {
-                const subAttributes: Record<string, string>[] = extractSubAttributes(user, EMAIL_ATTRIBUTE);
-
-                data.Operations.push({
-                    op: "replace",
-                    value: {
-                        [EMAIL_ATTRIBUTE]: [
-                            ...subAttributes,
-                            ""
-                        ]
-                    }
-                });
-            }
-        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            const mobileList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
-                get("MOBILE_NUMBERS"))?.split(",") || [];
-            const updatedMobileList: string[] = mobileList.filter((mobile: string) => mobile !== attributeValue);
-            const primaryMobile: string = profileInfo.get(MOBILE_ATTRIBUTE);
-
-            if (attributeValue === primaryMobile) {
-                const filteredSubAttributes: Record<string, string>[] =
-                    extractSubAttributes(user, ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))?.filter(
-                        (attr: Record<string, string>) => attr?.type !== UserManagementConstants.MOBILE);
-
-                data.Operations.push({
-                    op: "replace",
-                    value: {
-                        [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
-                            ...filteredSubAttributes,
-                            {
-                                type: UserManagementConstants.MOBILE,
-                                value: ""
-                            }
-                        ]
-                    }
-                });
-            }
-
-            data.Operations[0].value = {
-                [schema.schemaId]: {
-                    [MOBILE_NUMBERS_ATTRIBUTE]: updatedMobileList
-                }
-            };
-        }
-
-        setIsSubmitting(true);
-        updateUserInfo(user.id, data)
-            .then(() => {
-                onAlertFired({
-                    description: t(
-                        "user:profile.notifications.updateProfileInfo.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "user:profile.notifications.updateProfileInfo.success.message"
-                    )
-                });
-
-                handleUserUpdate(user.id);
-            })
-            .catch((error: AxiosError) => {
-                if (error?.response?.data?.detail || error?.response?.data?.description) {
-                    dispatch(addAlert({
-                        description: error?.response?.data?.detail || error?.response?.data?.description,
-                        level: AlertLevels.ERROR,
-                        message: t("user:profile.notifications.updateProfileInfo." +
-                            "error.message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("user:profile.notifications.updateProfileInfo." +
-                        "genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("user:profile.notifications.updateProfileInfo." +
-                        "genericError.message")
-                }));
-            })
-            .finally(() => {
-                setIsSubmitting(false);
-            });
+        setMultiValuedAttributeValues({
+            ...multiValuedAttributeValues,
+            [schema.name]: filteredValues
+        });
+        setIsFormStale(true);
     };
 
     /**
@@ -1778,113 +1683,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param schema - Schema of the attribute
      * @param attributeValue - Value of the attribute
      */
-    const handleMakePrimary = (schema: ProfileSchemaInterface, attributeValue: string) => {
-        const data: PatchOperationRequest<PatchUserOperationValue> = {
-            Operations: [
-                {
-                    op: "replace",
-                    value: {}
-                }
-            ],
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
-        };
+    const handleMakePrimary = (schemaName: string, attributeValue: string) => {
 
-        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            const subAttributes: Record<string, string>[] = extractSubAttributes(user, EMAIL_ATTRIBUTE);
-
-            data.Operations[0].value = {
-                [EMAIL_ATTRIBUTE]: [
-                    ...subAttributes,
-                    attributeValue
-                ]
-            };
-
-            const existingPrimaryEmail: string = profileInfo?.get(EMAIL_ATTRIBUTE);
-            const existingEmailList: string[] = profileInfo?.get(
-                EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
-
-            if (existingPrimaryEmail && !existingEmailList.includes(existingPrimaryEmail)) {
-                existingEmailList.push(existingPrimaryEmail);
-                data.Operations.push({
-                    op: "replace",
-                    value: {
-                        [schema.schemaId] : {
-                            [EMAIL_ADDRESSES_ATTRIBUTE]: existingEmailList
-                        }
-                    }
-                });
-            }
-        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-
-            const filteredSubAttributes: Record<string, string>[] =
-                extractSubAttributes(user, ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))?.filter(
-                    (attr: Record<string, string>) => attr?.type !== UserManagementConstants.MOBILE);
-
-            data.Operations[0].value = {
-                [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
-                    ...filteredSubAttributes,
-                    {
-                        type: UserManagementConstants.MOBILE,
-                        value: attributeValue
-                    }
-                ]
-            };
-
-            const existingPrimaryMobile: string =
-                profileInfo.get(MOBILE_ATTRIBUTE);
-            const existingMobileList: string[] =
-                profileInfo?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
-
-            if (existingPrimaryMobile && !existingMobileList.includes(existingPrimaryMobile)) {
-                existingMobileList.push(existingPrimaryMobile);
-                data.Operations.push({
-                    op: "replace",
-                    value: {
-                        [schema.schemaId] : {
-                            [MOBILE_NUMBERS_ATTRIBUTE]: existingMobileList
-                        }
-                    }
-                });
-            }
-        }
-        setIsSubmitting(true);
-        updateUserInfo(user.id, data)
-            .then(() => {
-                onAlertFired({
-                    description: t(
-                        "user:profile.notifications.updateProfileInfo.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "user:profile.notifications.updateProfileInfo.success.message"
-                    )
-                });
-
-                handleUserUpdate(user.id);
-            })
-            .catch((error: AxiosError) => {
-                if (error?.response?.data?.detail || error?.response?.data?.description) {
-                    dispatch(addAlert({
-                        description: error?.response?.data?.detail || error?.response?.data?.description,
-                        level: AlertLevels.ERROR,
-                        message: t("user:profile.notifications.updateProfileInfo." +
-                            "error.message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("user:profile.notifications.updateProfileInfo." +
-                        "genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("user:profile.notifications.updateProfileInfo." +
-                        "genericError.message")
-                }));
-            })
-            .finally(() => {
-                setIsSubmitting(false);
-            });
+        setPrimaryValues({
+            ...primaryValues,
+            [schemaName]: attributeValue
+        });
+        setIsFormStale(true);
     };
 
     /**
@@ -1894,115 +1699,40 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param attributeValue - Value of the attribute
      */
     const handleAddMultiValuedItem = (schema: ProfileSchemaInterface, attributeValue: string) => {
-        const data: PatchOperationRequest<PatchUserOperationValue> = {
-            Operations: [
-                {
-                    op: "replace",
-                    value: {}
-                }
-            ],
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
-        };
 
-        const attributeValues: string[] = profileInfo.get(schema.name)?.split(",") || [];
+        if (isEmpty(attributeValue)) return;
+        setMultiValuedAttributeValues({
+            ...multiValuedAttributeValues,
+            [schema.name]: [
+                ...multiValuedAttributeValues[schema.name],
+                attributeValue
+            ]
+        });
 
-        attributeValues.push(attributeValue);
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             const existingPrimaryEmail: string = profileInfo?.get(EMAIL_ATTRIBUTE);
 
-            if (existingPrimaryEmail && !attributeValues.includes(existingPrimaryEmail)) {
-                attributeValues.push(existingPrimaryEmail);
-            }
-
-            data.Operations[0].value = {
-                [schema.schemaId]: {
-                    [EMAIL_ADDRESSES_ATTRIBUTE]: attributeValues
-                }
-            };
-
-            if (isEmpty(existingPrimaryEmail) && !isEmpty(attributeValues)) {
-                const subAttributes: Record<string, string>[] = extractSubAttributes(user, EMAIL_ATTRIBUTE);
-
-                data.Operations.push({
-                    op: "replace",
-                    value: {
-                        [EMAIL_ATTRIBUTE]: [
-                            ...subAttributes,
-                            attributeValues[0]
-                        ]
+            if (isEmpty(existingPrimaryEmail)) {
+                setPrimaryValues(
+                    {
+                        ...primaryValues,
+                        [EMAIL_ATTRIBUTE]: attributeValue
                     }
-                });
+                );
             }
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             const existingPrimaryMobile: string = profileInfo?.get(MOBILE_ATTRIBUTE);
 
-            if (existingPrimaryMobile && !attributeValues.includes(existingPrimaryMobile)) {
-                attributeValues.push(existingPrimaryMobile);
-            }
-
-            data.Operations[0].value = {
-                [schema.schemaId]: {
-                    [MOBILE_NUMBERS_ATTRIBUTE]: attributeValues
-                }
-            };
-
-            if (isEmpty(existingPrimaryMobile) && !isEmpty(attributeValues)) {
-                const filteredSubAttributes: Record<string, string>[] =
-                    extractSubAttributes(user, ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))?.filter(
-                        (attr: Record<string, string>) => attr?.type !== UserManagementConstants.MOBILE);
-
-                data.Operations.push({
-                    op: "replace",
-                    value: {
-                        [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
-                            ...filteredSubAttributes,
-                            {
-                                type: UserManagementConstants.MOBILE,
-                                value: attributeValues[0]
-                            }
-                        ]
+            if (isEmpty(existingPrimaryMobile)) {
+                setPrimaryValues(
+                    {
+                        ...primaryValues,
+                        [MOBILE_ATTRIBUTE]: attributeValue
                     }
-                });
+                );
             }
         }
-        setIsSubmitting(true);
-        updateUserInfo(user.id, data)
-            .then(() => {
-                onAlertFired({
-                    description: t(
-                        "user:profile.notifications.updateProfileInfo.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "user:profile.notifications.updateProfileInfo.success.message"
-                    )
-                });
-
-                handleUserUpdate(user.id);
-            })
-            .catch((error: AxiosError) => {
-                if (error?.response?.data?.detail || error?.response?.data?.description) {
-                    dispatch(addAlert({
-                        description: error?.response?.data?.detail || error?.response?.data?.description,
-                        level: AlertLevels.ERROR,
-                        message: t("user:profile.notifications.updateProfileInfo." +
-                            "error.message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("user:profile.notifications.updateProfileInfo." +
-                        "genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("user:profile.notifications.updateProfileInfo." +
-                        "genericError.message")
-                }));
-            })
-            .finally(() => {
-                setIsSubmitting(false);
-            });
+        setIsFormStale(true);
     };
 
     const resolveMultiValuedAttributesFormField = (
