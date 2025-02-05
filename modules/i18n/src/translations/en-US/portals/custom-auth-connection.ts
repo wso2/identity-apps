@@ -136,6 +136,14 @@ export const customAuthentication: customAuthenticationNS = {
             },
             subTitle: "Register externally implemented authentication service.",
             title: "Custom Authentication"
+        },
+        editPage: {
+            generalTab: {
+                iconUrl: {
+                    hint: "An image URL for the application. If this is not provided, we will display a generated" +
+                    "thumbnail instead. Recommended size: 200x200 pixels."
+                }
+            }
         }
     }
 };
