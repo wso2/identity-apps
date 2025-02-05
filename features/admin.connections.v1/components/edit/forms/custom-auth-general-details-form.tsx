@@ -152,7 +152,7 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                                     description: error.response.data.description
                                 }),
                                 level: AlertLevels.ERROR,
-                                message: t("authenticationProvider:" + "notifications.getIDP.error.message")
+                                message: t("authenticationProvider:notifications.getIDP.error.message")
                             })
                         );
 
@@ -161,9 +161,9 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
 
                     dispatch(
                         addAlert({
-                            description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
+                            description: t("authenticationProvider:notifications.getIDP.genericError.description"),
                             level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
+                            message: t("authenticationProvider:notifications.getIDP.genericError.message")
                         })
                     );
                 });
@@ -181,7 +181,7 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                                     description: error.response.data.description
                                 }),
                                 level: AlertLevels.ERROR,
-                                message: t("authenticationProvider:" + "notifications.getIDP.error.message")
+                                message: t("authenticationProvider:notifications.getIDP.error.message")
                             })
                         );
 
@@ -190,9 +190,9 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
 
                     dispatch(
                         addAlert({
-                            description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
+                            description: t("authenticationProvider:notifications.getIDP.genericError.description"),
                             level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
+                            message: t("authenticationProvider:notifications.getIDP.genericError.message")
                         })
                     );
                 });
@@ -268,13 +268,13 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
 
         if (!CommonAuthenticatorConstants.IDENTIFIER_REGEX.test(values?.identifier)) {
             errors.identifier = t(
-                "customAuthentication:fields.createWizard.generalSettingsStep." + "identifier.validations.invalid"
+                "customAuthentication:fields.createWizard.generalSettingsStep.identifier.validations.invalid"
             );
         }
 
         if (!CommonAuthenticatorConstants.DISPLAY_NAME_REGEX.test(values?.displayName)) {
             errors.displayName = t(
-                "customAuthentication:fields.createWizard.generalSettingsStep." + "displayName.validations.invalid"
+                "customAuthentication:fields.createWizard.generalSettingsStep.displayName.validations.invalid"
             );
         }
 
@@ -305,8 +305,9 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                         inputType="text"
                         name="identifier"
                         label={ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.label") }
-                        placeholder={ t("customAuthentication:fields.createWizard.generalSettingsStep." +
-                            "identifier.placeholder") }
+                        placeholder={ t(
+                            "customAuthentication:fields.createWizard.generalSettingsStep.identifier.placeholder"
+                        ) }
                         maxLength={ 100 }
                         minLength={ 3 }
                         data-componentid={ `${_componentId}-form-wizard-identifier` }
@@ -335,32 +336,22 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                         inputType="url"
                         label={ "Icon URL" }
                         required={ false }
-                        placeholder={ t("authenticationProvider:" +
-                                "forms.generalDetails.image." +
-                                "placeholder") }
+                        placeholder={ t("authenticationProvider:forms.generalDetails.image.placeholder") }
                         value={ editingIDP.image }
-                        data-componentid={ `${ _componentId }-idp-image` }
-                        maxLength={
-                                ConnectionUIConstants
-                                    .GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MAX_LENGTH as number
-                        }
-                        minLength={
-                                ConnectionUIConstants
-                                    .GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MIN_LENGTH as number
-                        }
-                        hint="Logo to display in login pages."
+                        data-componentid={ `${_componentId}-idp-image` }
+                        maxLength={ ConnectionUIConstants.GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MAX_LENGTH as number }
+                        minLength={ ConnectionUIConstants.GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MIN_LENGTH as number }
+                        hint={ t("customAuthentication:fields.editPage.generalTab.iconUrl.hint") }
                         readOnly={ isReadOnly }
                     />
                     <Field.Textarea
                         name="description"
                         ariaLabel="description"
-                        label={ t("authenticationProvider:forms." +
-                            "generalDetails.description.label") }
+                        label={ t("authenticationProvider:forms.generalDetails.description.label") }
                         required={ false }
-                        placeholder={ t("authenticationProvider:forms." +
-                            "generalDetails.description.placeholder") }
+                        placeholder={ t("authenticationProvider:forms.generalDetails.description.placeholder") }
                         value={ editingIDP.description }
-                        data-componentid={ `${ _componentId }-idp-description` }
+                        data-componentid={ `${_componentId}-idp-description` }
                         maxLength={ ConnectionUIConstants.IDP_NAME_LENGTH.max }
                         minLength={ ConnectionUIConstants.IDP_NAME_LENGTH.min }
                         hint="A text description of the authenticator."
