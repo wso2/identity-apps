@@ -483,7 +483,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         }
 
         if (ConnectionsManagementUtils.IsCustomAuthenticator(connection)) {
-            return AuthenticatorMeta.getCustomAuthenticatorIcon();
+            return connection.image || AuthenticatorMeta.getCustomAuthenticatorIcon();
         }
 
         return AuthenticatorMeta.getAuthenticatorIcon(connection?.id);

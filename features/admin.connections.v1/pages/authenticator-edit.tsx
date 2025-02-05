@@ -208,7 +208,7 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
             <AppAvatar
                 hoverable={ false }
                 name={ connector?.displayName }
-                image={ AuthenticatorMeta.getCustomAuthenticatorIcon() }
+                image={ connector?.image || AuthenticatorMeta.getCustomAuthenticatorIcon() }
                 size="tiny"
             />
         );

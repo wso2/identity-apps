@@ -267,7 +267,7 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
      * @returns - Resolved image URL.
      */
     const resolveAuthenticatorImage = (): string => {
-        if (isCustomLocalAuth) {
+        if (isCustomLocalAuth && !editingIDP?.image) {
             return ConnectionsManagementUtils.resolveConnectionRelativePath(
                 AuthenticatorMeta.getCustomAuthenticatorIcon()
             );
