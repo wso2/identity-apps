@@ -57,13 +57,4 @@
             }
         }
     }
-    .required-icon {
-        label::after {
-            display: inline-block;
-            vertical-align: top;
-            margin: -.2em 0 0 .2em;
-            content: '*';
-            color: #e53535;
-        }
-    }
 }
