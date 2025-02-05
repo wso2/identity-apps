@@ -74,7 +74,7 @@ import {
     Label,
     SemanticICONS
 } from "semantic-ui-react";
-import { getConnectedApps, getConnectedAppsOfAuthenticator } from "../../../api/connections";
+import { getConnectedApps, useGetConnectedAppsOfAuthenticator } from "../../../api/connections";
 import { AuthenticatorTypes } from "../../../models/authenticators";
 import {
     ConnectedAppInterface,
@@ -160,7 +160,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     const [ connectedApps, setConnectedApps ] = useState<ConnectedAppInterface[]>();
     const [ filterSelectedApps, setFilterSelectedApps ] = useState<ConnectedAppInterface[]>([]);
     const [ connectedAppsCount, setconnectedAppsCount ] = useState<number>(0);
-    const [ isAppsLoading, setIsAppsLoading ] = useState<boolean>(true);
+    const [ isAppsLoading, setIsAppsLoading ] = useState<boolean>(false);
+    const [ shouldFetchConnectedApps, setShouldFetchConnectedApps ] = useState<boolean>(true);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
@@ -183,57 +184,33 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         idp?.type === AuthenticatorTypes.LOCAL;
     };
 
+    /**
+    * Fetch connected apps when required.
+    */
+    const {
+        data: connectedAppsOfAuthenticator,
+        isLoading: isFetchConnectedAppsLoading
+    } = useGetConnectedAppsOfAuthenticator(editingIDP?.id, shouldFetchConnectedApps);
+
     useEffect(() => {
-        setIsAppsLoading(true);
+        if (!isCustomLocalAuthenticator(editingIDP) || isFetchConnectedAppsLoading || !connectedAppsOfAuthenticator) {
+            return;
+        }
+
+        setShouldFetchConnectedApps(true);
+        setConnectedApps(connectedAppsOfAuthenticator);
+        setconnectedAppsCount(connectedAppsOfAuthenticator.length);
+
+        return;
+    }, [ connectedAppsOfAuthenticator ]);
+
+    useEffect(() => {
 
         if (isCustomLocalAuthenticator(editingIDP)) {
-            getConnectedAppsOfAuthenticator(editingIDP.id)
-                .then(async (response: ConnectedAppsInterface) => {
-                    setconnectedAppsCount(response.count);
-
-                    if (response.count > 0) {
-                        const appRequests: Promise<any>[] = response.connectedApps.map(
-                            (app: ConnectedAppInterface) => {
-                                return getApplicationDetails(app.appId);
-                            }
-                        );
-
-                        const results: ApplicationBasicInterface[] = await Promise.all(
-                            appRequests.map((response: Promise<any>) =>
-                                response.catch((error: IdentityAppsError) => {
-                                    dispatch(
-                                        addAlert({
-                                            description:
-                                                        error?.description ||
-                                                        t("idp:connectedApps.genericError.description"),
-                                            level: AlertLevels.ERROR,
-                                            message:
-                                                        error?.message || t("idp:connectedApps.genericError.message")
-                                        })
-                                    );
-                                })
-                            )
-                        );
-
-                        setConnectedApps(results);
-                        setFilterSelectedApps(results);
-                    }
-                })
-                .catch((error: IdentityAppsError) => {
-                    dispatch(
-                        addAlert({
-                            description: error?.description || t("idp:connectedApps.genericError.description"),
-                            level: AlertLevels.ERROR,
-                            message: error?.message || t("idp:connectedApps.genericError.message")
-                        })
-                    );
-                })
-                .finally(() => {
-                    setIsAppsLoading(false);
-                });
-
             return;
-        };
+        }
+
+        setIsAppsLoading(true);
 
         getConnectedApps(editingIDP.id)
             .then(async (response: ConnectedAppsInterface) => {
@@ -618,13 +595,18 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      * @param changevalue-search query.
      */
     const searchFilter = (changeValue: string) => {
+        debugger
         const appNameFilter: ConnectedAppInterface[] = connectedApps.filter((item: ConnectedAppInterface) =>
             item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
 
         setFilterSelectedApps(appNameFilter);
     };
 
-    if (isAppsLoading) {
+    console.log("isFetchConnectedAppsLoading: ", isFetchConnectedAppsLoading);
+
+    debugger
+
+    if (isAppsLoading || isFetchConnectedAppsLoading) {
         return <Loader />;
     }
 

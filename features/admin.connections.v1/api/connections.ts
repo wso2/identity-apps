@@ -31,6 +31,7 @@ import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import { NotificationSenderSMSInterface } from "../models/authenticators";
 import {
     ApplicationBasicInterface,
+    ConnectedAppInterface,
     ConnectedAppsInterface,
     ConnectionClaimsInterface,
     ConnectionGroupInterface,
@@ -860,34 +861,34 @@ export const getConnectedApps = (idpId: string): Promise<any> => {
 };
 
 /**
- * Get connected apps of the local authenticator.
+ * Hook to get connected apps of a local authenticator.
  *
  * @param authenticatorId - ID of the local authenticator.
- * @returns  A promise containing the response.
+ * @param shouldFetch - Whether the request should be fetched.
+ * @returns Requested connected apps.
  */
-export const getConnectedAppsOfAuthenticator = (authenticatorId: string): Promise<any> => {
-
+export const useGetConnectedAppsOfAuthenticator = <Data = ConnectedAppInterface[], Error = RequestErrorInterface>(
+    authenticatorId: string,
+    shouldFetch: boolean = true
+): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.localAuthenticators + "/" + authenticatorId + "/connected-apps/"
+        url: store.getState().config.endpoints.authenticators + "/" + authenticatorId + "/connected-apps/"
     };
 
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
-                return Promise.reject(
-                    new Error("Failed to get connected apps for the local authenticator: " + authenticatorId)
-                );
-            }
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
-            return Promise.resolve(response.data as ConnectedAppsInterface);
-        }).catch((error: AxiosError) => {
-            return Promise.reject(error);
-        });
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate
+    };
 };
 
 /**
