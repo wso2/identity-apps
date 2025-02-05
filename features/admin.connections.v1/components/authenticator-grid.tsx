@@ -65,7 +65,6 @@ import {
     getConnectedApps
 } from "../api/connections";
 import { getConnectionIcons } from "../configs/ui";
-import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
     AuthenticatorCategories,
@@ -484,10 +483,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         }
 
         if (ConnectionsManagementUtils.IsCustomAuthenticator(connection)) {
-            return ConnectionsManagementUtils.resolveConnectionResourcePath(
-                connectionResourcesUrl,
-                ConnectionUIConstants.CUSTOM_LOCAL_AUTHENTICATOR_IMAGE_URI
-            );
+            return AuthenticatorMeta.getCustomAuthenticatorIcon();
         }
 
         return AuthenticatorMeta.getAuthenticatorIcon(connection?.id);
