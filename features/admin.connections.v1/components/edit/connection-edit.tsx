@@ -467,6 +467,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                         },
                         uri: changedFields?.endpointUri ? values.endpointUri : undefined
                     },
+                    isDefault: true,
                     isEnabled: identityProvider.isEnabled,
                     isPrimary: identityProvider.isPrimary
                 };

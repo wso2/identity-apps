@@ -753,7 +753,7 @@ export interface CustomAuthGeneralDetailsFormValuesInterface {
     /**
      * Display name of the connection
      */
-    displayName?: string
+    displayName?: string;
     /**
      * Description of the connection
      */
@@ -770,6 +770,10 @@ export interface CustomAuthGeneralDetailsFormValuesInterface {
      * Set is enabled connection
      */
     isEnabled?: boolean;
+    /**
+     * Set is default authenticator
+     */
+    isDefault?: boolean;
 }
 
 export interface OutboundProvisioningConnectorMetaDataInterface {
