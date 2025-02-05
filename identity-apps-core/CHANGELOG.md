@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.12.7
+
+### Patch Changes
+
+- [#7502](https://github.com/wso2/identity-apps/pull/7502) [`67faeec200ccf5e9aa2b561d1c1694177023b9ac`](https://github.com/wso2/identity-apps/commit/67faeec200ccf5e9aa2b561d1c1694177023b9ac) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Fix incorrect placement of mandatory indicator in username recovery page
+
 ## 2.12.6
 
 ### Patch Changes
