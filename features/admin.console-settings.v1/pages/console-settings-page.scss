@@ -6,10 +6,12 @@
     align-items: center;
     flex-wrap: nowrap;
     gap: 15px;
-    
+
     .MuiInputBase-root {
         min-width: 400px;
-        
+
+        // TODO: Fix this from the `@oxygen-ui/react` side and remove.
+        // Tracker: https://github.com/wso2/oxygen-ui/issues/331
         &.Mui-readOnly {
             cursor: default;
             background-color: #e9ecef!important;
