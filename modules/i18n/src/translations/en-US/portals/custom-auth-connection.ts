@@ -140,8 +140,8 @@ export const customAuthentication: customAuthenticationNS = {
         editPage: {
             generalTab: {
                 iconUrl: {
-                    hint: "An image URL for the application. If this is not provided, we will display a generated" +
-                    "thumbnail instead. Recommended size: 200x200 pixels."
+                    hint: "A URL for the image of the connection for display purposes. If not provided a generated thumbnail" +
+                    "will be displayed. Recommended size is 200x200 pixels."
                 }
             }
         }
