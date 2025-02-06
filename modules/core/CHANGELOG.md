@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.6.2
+
+### Patch Changes
+
+- [#7123](https://github.com/wso2/identity-apps/pull/7123) [`0aca53b8d7f18b9d8488911500b86c7178eb9be6`](https://github.com/wso2/identity-apps/commit/0aca53b8d7f18b9d8488911500b86c7178eb9be6) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Ingore regex pattern matching for inbound OAuth apps
+
 ## 2.6.1
 
 ### Patch Changes
