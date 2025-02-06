@@ -245,7 +245,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
         user[userConfig.userProfileSchema]?.accountLocked === true;
     const accountLockedReason: string = user[userConfig.userProfileSchema]?.lockedReason;
-    const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true";
+    const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true" ||
+        user[userConfig.userProfileSchema]?.accountDisabled === true;
     const oneTimePassword: string = user[userConfig.userProfileSchema]?.oneTimePassword;
     const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
         role.display === administratorConfig.adminRoleName) ?? false;
@@ -1482,7 +1483,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                 toggle={ {
                                                     checked: accountLocked,
                                                     id: "accountLocked",
-                                                    onChange: handleDangerZoneToggles
+                                                    onChange: handleDangerZoneToggles,
+                                                    disabled: accountDisabled,
+                                                    disableHint: t("user:editUser.dangerZoneGroup." +
+                                                        "lockUserZone.disabledHint")
                                                 } }
                                             />
                                         )
@@ -2691,6 +2695,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @returns The resolved account locked reason in readable text.
      */
     const resolveUserAccountLockedReason = (): string => {
+        if (accountDisabled) {
+            return t("user:profile.accountDisabled");
+        }
+
         if (accountLockedReason) {
             return ACCOUNT_LOCK_REASON_MAP[accountLockedReason] ?? ACCOUNT_LOCK_REASON_MAP["DEFAULT"];
         }
@@ -2702,7 +2710,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         !isReadOnlyUserStoresLoading
             ? (<>
                 {
-                    accountLocked && accountLockedReason && (
+                    (accountLocked || accountDisabled) && (
                         <Alert severity="warning">
                             { t(resolveUserAccountLockedReason()) }
                         </Alert>

@@ -359,6 +359,7 @@ export interface governanceConnectorsNS {
                 };
                 accountDisableHandler: {
                     friendlyName: string;
+                    description: string;
                     properties: {
                         accountDisableHandlerEnable: {
                             hint: string;
@@ -367,6 +368,12 @@ export interface governanceConnectorsNS {
                         accountDisableHandlerNotificationManageInternally: {
                             hint: string;
                             label: string;
+                        };
+                    };
+                    notifications: {
+                        configurationUpdate: {
+                            success: NotificationItem;
+                            error: NotificationItem;
                         };
                     };
                 };

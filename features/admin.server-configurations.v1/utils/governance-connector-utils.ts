@@ -443,6 +443,24 @@ export class GovernanceConnectorUtils {
                 id: ServerConfigurationsConstants.NOTIFICATION_SETTINGS_CATEGORY_ID,
                 title: I18n.instance
                     .t("governanceConnectors:connectorCategories.internalNotificationSending.categoryTitle")
+            },
+            {
+                connectors: [
+                    {
+                        description: I18n.instance.t(
+                            "governanceConnectors:connectorCategories.accountManagement.connectors.accountDisableHandler.description"
+                        ),
+                        header: I18n.instance.t(
+                            "governanceConnectors:connectorCategories.accountManagement.connectors.accountDisableHandler.friendlyName"),
+                        id: ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CUSTOM_CATEGORY_ID,
+                        route: AppConstants.getPaths().get("ACCOUNT_DISABLE"),
+                        testId: "account-disable-settings-card"
+                    }
+                ],
+                displayOrder: 0,
+                id: ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CUSTOM_CATEGORY_ID,
+                title: I18n.instance
+                    .t("governanceConnectors:connectorCategories.accountManagement.name")
             }
         ];
     }
