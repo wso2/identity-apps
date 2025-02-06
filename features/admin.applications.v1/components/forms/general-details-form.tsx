@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import Chip from "@oxygen-ui/react/Chip";
 import Link from "@oxygen-ui/react/Link";
 import { PaletteIcon } from "@oxygen-ui/react-icons";
 import { ApplicationTabComponentsFilter } from
@@ -26,9 +25,10 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState  } from "@wso2is/admin.core.v1/store";
 import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { FeatureFlagsInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import {
@@ -182,14 +182,16 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const { getLink } = useDocumentation();
 
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
+    const brandingFeatureFlagsConfig: FeatureFlagsInterface[] = UIConfig?.features?.applications?.featureFlags;
+    const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
 
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
     const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
 
+
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
-    const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
     const isSubOrganizationType: boolean = orgType === OrganizationType.SUBORGANIZATION;
 
     const {
@@ -591,10 +593,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     <>
                                         <Heading as="h4">
                                             { t("applications:forms.generalDetails.sections.branding.title") }
-                                            <Chip
-                                                size="small"
-                                                label={ t(FeatureStatusLabel.BETA) }
-                                                className="oxygen-chip-beta mb-1 ml-2"
+                                            <FeatureFlagLabel
+                                                featureFlags={ brandingFeatureFlagsConfig }
+                                                featureKey={
+                                                    FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                                                        .APPLICATION_EDIT_BRANDING_LINK
+                                                }
+                                                type="chip"
                                             />
                                         </Heading>
                                         <PaletteIcon fill="#ff7300" /> &nbsp;

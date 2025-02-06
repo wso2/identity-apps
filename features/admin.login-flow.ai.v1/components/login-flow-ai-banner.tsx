@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,16 +28,16 @@ import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
-import Chip from "@oxygen-ui/react/Chip";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import AIBanner from "@wso2is/common.ai.v1/components/ai-banner";
 import AIBannerTall from "@wso2is/common.ai.v1/components/ai-banner-tall";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, DocumentationLink, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
@@ -64,6 +64,9 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
 
     const applicationsFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state.config.ui.features.applications);
+    const aiFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.ai);
+
     const hasApplicationUpdatePermissions: boolean = useRequiredScopes(applicationsFeatureConfig?.scopes?.update);
 
     const dispatch: Dispatch = useDispatch();
@@ -90,6 +93,8 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
     const [ showHistory, setShowHistory ] = useState<boolean>(false);
     const [ showReplaceConfirmationModal, setShowReplaceConfirmationModal ] = useState<boolean>(false);
     const [ replacingPrompt, setReplacingPrompt ] = useState<string>("");
+
+    const isAIFeautureEnabled: boolean = aiFeatureConfig?.enabled;
 
     /**
      * Handles the click event of the expand button.
@@ -175,17 +180,21 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
             <Collapse in={ bannerState === BannerState.FULL }>
                 <AIBanner
                     title={ t("ai:aiLoginFlow.banner.full.heading") }
-                    description={ t("ai:aiLoginFlow.banner.full.subheading") }
+                    description={ isAIFeautureEnabled
+                        ? t("ai:aiLoginFlow.banner.full.subheading")
+                        : t("ai:subscribeToAI")
+                    }
                     aiText={ t("ai:aiLoginFlow.title") }
                     actionButtonText={ t("ai:aiLoginFlow.banner.full.button") }
                     onActionButtonClick={ handleExpandClick }
                     titleLabel={ (
-                        <Chip
-                            size="small"
-                            label={ t(FeatureStatusLabel.BETA) }
-                            className="oxygen-chip-beta mb-1 ml-2"
+                        <FeatureFlagLabel
+                            featureFlags={ aiFeatureConfig?.featureFlags }
+                            featureKey={ FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.AI_APPLICATION_LOGIN_FLOW_BANNER }
+                            type="chip"
                         />
                     ) }
+                    hideAction={ !isAIFeautureEnabled }
                 />
             </Collapse>
             <Collapse in={ bannerState === BannerState.INPUT || bannerState === BannerState.COLLAPSED }>
@@ -206,10 +215,10 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                     ) }
                     aiText={ t("ai:aiLoginFlow.title") }
                     titleLabel={ (
-                        <Chip
-                            size="small"
-                            label={ t(FeatureStatusLabel.BETA) }
-                            className="oxygen-chip-beta mb-1 ml-2"
+                        <FeatureFlagLabel
+                            featureFlags={ aiFeatureConfig?.featureFlags }
+                            featureKey={ FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.AI_APPLICATION_LOGIN_FLOW_BANNER }
+                            type="chip"
                         />
                     ) }
                 >
