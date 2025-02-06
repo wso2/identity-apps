@@ -32,11 +32,9 @@ export type PushAuthFragmentInterface = IdentifiableComponentInterface;
  * @param props - Props injected to the component.
  * @returns PushAuthFragment fragment component.
  */
-const PushAuthFragment: FunctionComponent<PushAuthFragmentInterface> = (
-    props: PushAuthFragmentInterface
-): ReactElement => {
-    const { ["data-componentid"]: componentId = "branding-preview-push-auth-fragment" } = props;
-
+const PushAuthFragment: FunctionComponent<PushAuthFragmentInterface> = ({
+    ["data-componentid"]: componentId = "branding-preview-push-auth-fragment"
+} : PushAuthFragmentInterface): ReactElement => {
     const { i18n } = useBrandingPreference();
 
     return (
