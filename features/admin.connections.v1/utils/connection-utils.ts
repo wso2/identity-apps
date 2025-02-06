@@ -412,6 +412,33 @@ export const handleGetConnectionsError = (error: AxiosError): void => {
 };
 
 /**
+ * Utility function to handle the error alert of the get custom authenticator request.
+ */
+export const handleGetCustomAuthenticatorError = (error: AxiosError): void => {
+    if (error?.response?.data?.description) {
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t("authenticationProvider:notifications.getIDP.error.description", {
+                    description: error.response.data.description
+                }),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t("authenticationProvider:notifications.getIDP.error.message")
+            })
+        );
+
+        return;
+    }
+
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t("authenticationProvider:notifications.getIDP.genericError.description"),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t("authenticationProvider:notifications.getIDP.genericError.message")
+        })
+    );
+};
+
+/**
  * Utility function to handle the error alert of the get connection templates list request.
  */
 export const handleGetConnectionTemplateListError = (error: AxiosError): void => {
@@ -585,6 +612,37 @@ export const handleConnectionUpdateError = (error: AxiosError): void => {
             description: I18n.instance.t("authenticationProvider:notifications.updateIDP.genericError.description"),
             level: AlertLevels.ERROR,
             message: I18n.instance.t("authenticationProvider:notifications.updateIDP.genericError.message")
+        })
+    );
+};
+
+export const handleCustomAuthenticatorUpdateError = (error: AxiosError): void => {
+    if (error?.response?.data?.description) {
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "authenticationProvider:notifications.updateFederatedAuthenticator." + "error.description",
+                    { description: error.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t(
+                    "authenticationProvider:notifications.updateFederatedAuthenticator.error.message"
+                )
+            })
+        );
+
+        return;
+    }
+
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "authenticationProvider:notifications.updateFederatedAuthenticator." + "genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t(
+                "authenticationProvider:notifications.updateFederatedAuthenticator." + "genericError.message"
+            )
         })
     );
 };

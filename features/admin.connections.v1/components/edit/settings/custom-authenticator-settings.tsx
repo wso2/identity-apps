@@ -24,7 +24,6 @@ import {
     FederatedAuthenticatorInterface,
     FederatedAuthenticatorListItemInterface
 } from "@wso2is/admin.identity-providers.v1/models";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormRenderProps, FormSpy } from "@wso2is/form";
@@ -47,7 +46,11 @@ import {
     EndpointAuthenticationType,
     EndpointAuthenticationUpdateInterface
 } from "../../../models/connection";
-import { handleConnectionUpdateError } from "../../../utils/connection-utils";
+import {
+    handleConnectionUpdateError,
+    handleCustomAuthenticatorUpdateError,
+    handleGetCustomAuthenticatorError
+} from "../../../utils/connection-utils";
 import "./custom-authenticator-settings.scss";
 
 /**
@@ -134,28 +137,8 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
 
                 setInitialValues(endpointAuth);
             })
-            .catch((error: IdentityAppsApiException) => {
-                if (error?.response?.data?.description) {
-                    dispatch(
-                        addAlert({
-                            description: t("authenticationProvider:notifications.getIDP.error.description", {
-                                description: error.response.data.description
-                            }),
-                            level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:notifications.getIDP.error.message")
-                        })
-                    );
-
-                    return;
-                }
-
-                dispatch(
-                    addAlert({
-                        description: t("authenticationProvider:notifications.getIDP.genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications.getIDP.genericError.message")
-                    })
-                );
+            .catch((error: AxiosError) => {
+                handleGetCustomAuthenticatorError(error);
             });
     };
 
@@ -175,28 +158,8 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
 
                 setInitialValues(endpointAuth);
             })
-            .catch((error: IdentityAppsApiException) => {
-                if (error?.response?.data?.description) {
-                    dispatch(
-                        addAlert({
-                            description: t("authenticationProvider:notifications.getIDP.error.description", {
-                                description: error.response.data.description
-                            }),
-                            level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:notifications.getIDP.error.message")
-                        })
-                    );
-
-                    return;
-                }
-
-                dispatch(
-                    addAlert({
-                        description: t("authenticationProvider:notifications.getIDP.genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications.getIDP.genericError.message")
-                    })
-                );
+            .catch((error: AxiosError) => {
+                handleGetCustomAuthenticatorError(error);
             });
     };
 
@@ -294,37 +257,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                 onUpdate(connector.id);
             })
             .catch((error: AxiosError) => {
-                if (error?.response?.data?.description) {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "authenticationProvider:notifications.updateFederatedAuthenticator." +
-                                    "error.description",
-                                { description: error.response.data.description }
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "authenticationProvider:notifications.updateFederatedAuthenticator.error.message"
-                            )
-                        })
-                    );
-
-                    return;
-                }
-
-                dispatch(
-                    addAlert({
-                        description: t(
-                            "authenticationProvider:notifications.updateFederatedAuthenticator." +
-                                "genericError.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "authenticationProvider:notifications.updateFederatedAuthenticator." +
-                                "genericError.message"
-                        )
-                    })
-                );
+                handleCustomAuthenticatorUpdateError(error);
             })
             .finally(() => {
                 getCustomFederatedAuthenticator(federatedAuthenticatorId);
