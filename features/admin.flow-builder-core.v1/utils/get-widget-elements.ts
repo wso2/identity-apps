@@ -16,27 +16,22 @@
  * under the License.
  */
 
-import { Payload } from "./api";
-import { Component } from "./component";
-
-export type Widget = Component<WidgetExtendedConfig>;
-
-export type SubFlow = Partial<Payload>;
+import { Element } from "../models/elements";
 
 /**
- * Interface for the properties of a widget.
+ * Retrieves the elements of a widget.
+ *
+ * A widget is identified by the presence of a `flow` property in its configuration.
+ * This function returns the elements defined in the widget's flow configuration.
+ *
+ * @param element - The widget element to retrieve elements from.
+ * @returns An array of elements if the widget has a flow configuration, otherwise an empty array.
+ *
+ * @example
+ * const elements = getWidgetElements(widget); // Returns an array of elements.
  */
-export interface WidgetExtendedConfig {
-    /**
-     * Version of the widget.
-     */
-    version?: string;
-    /**
-     * Sub flow to render for the widget.
-     */
-    flow?: SubFlow;
-}
+const getWidgetElements = (element: Element): Element[] => {
+    return element?.config?.flow?.elements;
+};
 
-export enum WidgetTypes {
-    IdentifierPassword = "IDENTIFIER_PASSWORD",
-}
+export default getWidgetElements;

@@ -88,6 +88,10 @@ export interface BaseDisplay {
      * The default variant of the component or the primitive.
      */
     defaultVariant?: string;
+    /**
+     * Description of the component or the primitive.
+     */
+    description?: string;
 }
 
 /**

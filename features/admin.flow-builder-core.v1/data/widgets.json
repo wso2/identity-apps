@@ -1,16 +1,89 @@
 [
     {
         "category": "WIDGET",
-        "type": "RECAPTCHA",
+        "type": "IDENTIFIER_PASSWORD",
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "reCAPTCHA",
-            "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png"
+            "label": "Username + Password",
+            "description": "Basic registration experience with simple username & password",
+            "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg"
         },
         "config": {
-            "version": 2,
-            "field": {}
+            "field": {
+                "className": "wso2is-widget username-password"
+            },
+            "flow": {
+                "blocks": [
+                    {
+                        "elements": [
+                            "dnd-element_d6707724-df80-4f69-bbbd-6303217b660e",
+                            "dnd-element_4f84cb89-62de-488d-aeb4-163dcb948148",
+                            "dnd-element_b5c04863-dc63-4fe6-831b-df8a2a946a9f"
+                        ],
+                        "id": "flow-block-c2a56cea-abf8-4608-a617-92fb1f61e136"
+                    }
+                ],
+                "elements": [
+                    {
+                        "category": "FIELD",
+                        "type": "INPUT",
+                        "variant": "TEXT",
+                        "display": {
+                            "label": "Text",
+                            "image": "https://www.svgrepo.com/show/532231/text-size.svg"
+                        },
+                        "config": {
+                            "field": {
+                                "type": "text",
+                                "hint": "",
+                                "label": "Username",
+                                "required": true,
+                                "placeholder": "Enter your username",
+                                "name": "http://wso2.org/claims/username"
+                            }
+                        },
+                        "id": "dnd-element_d6707724-df80-4f69-bbbd-6303217b660e"
+                    },
+                    {
+                        "category": "FIELD",
+                        "type": "INPUT",
+                        "variant": "PASSWORD",
+                        "display": {
+                            "label": "Password Input",
+                            "image": "https://www.svgrepo.com/show/529125/password.svg"
+                        },
+                        "config": {
+                            "field": {
+                                "name": "password",
+                                "type": "password",
+                                "hint": "",
+                                "label": "Password",
+                                "required": true,
+                                "placeholder": "Enter your password"
+                            }
+                        },
+                        "id": "dnd-element_4f84cb89-62de-488d-aeb4-163dcb948148"
+                    },
+                    {
+                        "category": "ACTION",
+                        "type": "BUTTON",
+                        "id": "dnd-element_b5c04863-dc63-4fe6-831b-df8a2a946a9f",
+                        "variant": "PRIMARY",
+                        "display": {
+                            "label": "Button",
+                            "image": "https://www.svgrepo.com/show/450681/button.svg"
+                        },
+                        "config": {
+                            "field": {
+                                "type": "submit",
+                                "text": "Continue"
+                            }
+                        }
+                    }
+                ]
+            },
+            "styles": {}
         }
     },
     {
@@ -20,204 +93,11 @@
         "deprecated": false,
         "display": {
             "label": "Email OTP",
+            "description": "Registration experience with Email",
             "image": "https://www.svgrepo.com/show/368868/otp.svg"
         },
         "config": {
             "field": {}
-        },
-        "flow": {
-            "nodes": [
-                {
-                    "id": "flow-node-{{STEP_NUMBER}}",
-                    "elements": [
-                        "flow-display-header-rg6pwt0",
-                        "flow-block-attributes-53fdsfsp",
-                        "flow-action-go-back-er212kfl"
-                    ],
-                    "actions": [
-                        {
-                            "id": "flow-action-next-tyG3hp31",
-                            "action": {
-                                "type": "NEXT",
-                                "meta": {
-                                    "actionType": "ATTRIBUTE_COLLECTION"
-                                }
-                            },
-                            "next": [
-                                "{{NEXT_STEP_ID}}"
-                            ]
-                        },
-                        {
-                            "id": "flow-action-go-back-er212kfl",
-                            "action": {
-                                "type": "PREVIOUS"
-                            },
-                            "previous": [
-                                "{{PREVIOUS_STEP_ID}}"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "flow-node-{{STEP_NUMBER}}",
-                    "elements": [
-                        "flow-display-header-GG456y7",
-                        "flow-block-attributes-45owsew2",
-                        "flow-action-go-back-yt5g5t"
-                    ],
-                    "actions": [
-                        {
-                            "id": "flow-action-verify-otp-ssd5g6h",
-                            "action": {
-                                "type": "NEXT",
-                                "meta": {
-                                    "actionType": "VERIFICATION"
-                                }
-                            },
-                            "next": [
-                                "{{NEXT_STEP_ID}}"
-                            ]
-                        },
-                        {
-                            "id": "flow-action-go-back-yt5g5t",
-                            "action": {
-                                "type": "PREVIOUS"
-                            },
-                            "previous": [
-                                "{{PREVIOUS_STEP_ID}}"
-                            ]
-                        }
-                    ]
-                }
-            ],
-            "blocks": [
-                {
-                    "id": "flow-block-attributes-53fdsfsp",
-                    "nodes": [
-                        "flow-field-email-Rt8uJ6D3",
-                        "flow-action-next-tyG3hp31"
-                    ]
-                },
-                {
-                    "id": "flow-block-attributes-45owsew2",
-                    "nodes": [
-                        "flow-field-otp-mn44gh0j",
-                        "flow-action-verify-otp-ssd5g6h"
-                    ]
-                }
-            ],
-            "elements": [
-                {
-                    "id": "flow-display-header-rg6pwt0",
-                    "category": "DISPLAY",
-                    "type": "TYPOGRAPHY",
-                    "version": "0.1.0",
-                    "variant": "H3",
-                    "config": {
-                        "field": {
-                            "text": "Enter Email"
-                        }
-                    }
-                },
-                {
-                    "id": "flow-field-email-Rt8uJ6D3",
-                    "category": "FIELD",
-                    "type": "INPUT",
-                    "version": "0.1.0",
-                    "variant": "EMAIL",
-                    "config": {
-                        "field": {
-                            "type": "email",
-                            "name": "email",
-                            "hint": "",
-                            "label": "Email",
-                            "required": true,
-                            "placeholder": "Enter your email address"
-                        }
-                    }
-                },
-                {
-                    "id": "flow-action-next-tyG3hp31",
-                    "category": "ACTION",
-                    "type": "BUTTON",
-                    "version": "0.1.0",
-                    "variant": "PRIMARY",
-                    "config": {
-                        "field": {
-                            "type": "submit",
-                            "text": "Continue"
-                        }
-                    }
-                },
-                {
-                    "id": "flow-action-go-back-er212kfl",
-                    "category": "ACTION",
-                    "type": "BUTTON",
-                    "version": "0.1.0",
-                    "variant": "SECONDARY",
-                    "config": {
-                        "field": {
-                            "type": "submit",
-                            "text": "Go back"
-                        }
-                    }
-                },
-                {
-                    "id": "flow-display-header-GG456y7",
-                    "category": "DISPLAY",
-                    "type": "TYPOGRAPHY",
-                    "version": "0.1.0",
-                    "variant": "H3",
-                    "config": {
-                        "field": {
-                            "text": "OTP Verification"
-                        }
-                    }
-                },
-                {
-                    "id": "flow-field-otp-mn44gh0j",
-                    "category": "FIELD",
-                    "type": "INPUT",
-                    "version": "0.1.0",
-                    "variant": "OTP",
-                    "config": {
-                        "field": {
-                            "type": "text",
-                            "name": "otp",
-                            "hint": "",
-                            "label": "OTP",
-                            "required": true,
-                            "placeholder": "Enter the OTP"
-                        }
-                    }
-                },
-                {
-                    "id": "flow-action-verify-otp-ssd5g6h",
-                    "category": "ACTION",
-                    "type": "BUTTON",
-                    "version": "0.1.0",
-                    "variant": "PRIMARY",
-                    "config": {
-                        "field": {
-                            "type": "submit",
-                            "text": "Continue"
-                        }
-                    }
-                },
-                {
-                    "id": "flow-action-go-back-yt5g5t",
-                    "category": "ACTION",
-                    "type": "BUTTON",
-                    "version": "0.1.0",
-                    "variant": "SECONDARY",
-                    "config": {
-                        "field": {
-                            "type": "submit",
-                            "text": "Go back"
-                        }
-                    }
-                }
-            ]
         }
     },
     {
@@ -227,9 +107,25 @@
         "deprecated": false,
         "display": {
             "label": "SMS OTP",
+            "description": "Registration experience with SMS OTP",
             "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg"
         },
         "config": {
+            "field": {}
+        }
+    },
+    {
+        "category": "WIDGET",
+        "type": "RECAPTCHA",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "reCAPTCHA",
+            "description": "Add reCAPTCHA to your registration experience",
+            "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png"
+        },
+        "config": {
+            "version": 2,
             "field": {}
         }
     }

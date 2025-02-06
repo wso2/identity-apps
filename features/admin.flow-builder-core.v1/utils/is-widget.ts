@@ -16,10 +16,22 @@
  * under the License.
  */
 
-.authentication-flow-builder-attribute-collector-property {
-    padding: var(--oxygen-spacing-2);
+import { Element } from "../models/elements";
 
-    .MuiAccordionSummary-content {
-        margin: 0;
-    }
-}
+/**
+ * Checks if the given element is a widget.
+ *
+ * A widget is identified by the presence of a `flow` property in its configuration.
+ *
+ * @param element - The element to check.
+ * @returns True if the element is a widget, otherwise false.
+ *
+ * @example
+ * const result = isWidget(element);
+ * console.log(result); // true
+ */
+const isWidget = (element: Element): boolean => {
+    return element?.config?.flow;
+};
+
+export default isWidget;

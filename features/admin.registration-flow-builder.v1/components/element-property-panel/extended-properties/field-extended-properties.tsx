@@ -59,7 +59,7 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
                 disablePortal
                 options={ attributes }
                 getOptionLabel={ (attribute: Attribute) => attribute.displayName }
-                sx={ { width: 300 } }
+                sx={ { width: "100%" } }
                 renderInput={ (params: AutocompleteRenderInputParams) => <TextField { ...params } label="Attribute" /> }
                 value={ selectedValue }
                 onChange={ (_: ChangeEvent<HTMLInputElement>, attribute: Attribute) => {
