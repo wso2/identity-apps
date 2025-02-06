@@ -176,7 +176,6 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
      * Update custom local authenticator.
      *
      * @param values - Form values.
-     * @param changedFields - Changed fields.
      * @param authProperties - Endpoint authentication properties.
      */
     const handleUpdateCustomLocalAuthenticator = (
@@ -317,11 +316,11 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                                     initialValues={ initialValues }
                                     isCreateFormState={ false }
                                     onAuthenticationTypeChange={ (
-                                        updatedValue: AuthenticationType,
-                                        change: boolean
+                                        authenticationType: AuthenticationType,
+                                        isAuthenticationUpdated: boolean
                                     ) => {
-                                        setEndpointAuthenticationType(updatedValue);
-                                        setIsUpdateEndpointAuthenticationType(change);
+                                        setEndpointAuthenticationType(authenticationType);
+                                        setIsUpdateEndpointAuthenticationType(isAuthenticationUpdated);
                                     } }
                                 />
                                 { !isLoading && (

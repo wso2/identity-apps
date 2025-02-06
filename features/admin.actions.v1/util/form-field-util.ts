@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { URLUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
+import { FormValidation } from "../../../modules/validation/dist/types";
 import { ActionsConstants } from "../constants/actions-constants";
 import {
     ActionConfigFormPropertyInterface,
@@ -78,11 +78,12 @@ export const validateActionEndpointFields = (
         errors.endpointUri = I18n.instance.t("actions:fields.endpoint.validations.empty");
     }
 
-    if (URLUtils.isURLValid(values?.endpointUri)) {
-        if (!URLUtils.isHttpsUrl(values?.endpointUri)) {
-            errors.endpointUri = I18n.instance.t("actions:fields.endpoint.validations.notHttps");
-        }
-    } else {
+    if (
+        !FormValidation.url(values?.endpointUri, {
+            domain: { allowUnicode: true },
+            scheme: [ "http", "https" ]
+        })
+    ) {
         errors.endpointUri = I18n.instance.t("actions:fields.endpoint.validations.invalidUrl");
     }
 
