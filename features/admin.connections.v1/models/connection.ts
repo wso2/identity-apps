@@ -852,35 +852,7 @@ export interface EndpointAuthenticationUpdateInterface extends CustomAuthGeneral
     /**
      * Endpoint configuration of the Action.
      */
-    endpoint?: Partial<EndpointInterface>;
-}
-
-/**
- *  Endpoint configuration.
- */
-export interface EndpointInterface {
-    /**
-     * External endpoint.
-     */
-    uri: string;
-    /**
-     * Authentication configurations of the Action.
-     */
-    authentication: AuthenticationInterface;
-}
-
-/**
- *  Endpoint authentication configuration.
- */
-interface AuthenticationInterface {
-    /**
-     * Authentication Type.
-     */
-    type: EndpointAuthenticationType | AuthenticationType;
-    /**
-     * Authentication properties.
-     */
-    properties: Partial<AuthenticationPropertiesInterface>;
+    endpoint?: Partial<ExternalEndpoint>;
 }
 
 /**

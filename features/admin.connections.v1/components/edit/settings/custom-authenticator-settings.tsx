@@ -227,7 +227,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                 authentication: isAuthenticationUpdateFormState
                     ? {
                         properties: authProperties,
-                        type: values.authenticationType as AuthenticationType
+                        type: values.authenticationType as EndpointAuthenticationType
                     }
                     : {
                         properties: (connector as CustomAuthConnectionInterface)?.endpoint?.authentication
@@ -369,11 +369,11 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
         }
 
         if (isCustomLocalAuthenticator) {
-            handleUpdateCustomLocalAuthenticator(values, changedFields, authProperties);
+            handleUpdateCustomLocalAuthenticator(values, authProperties);
 
             return;
         } else {
-            handleUpdateCustomFederatedAuthenticator(values, changedFields, authProperties);
+            handleUpdateCustomFederatedAuthenticator(values, authProperties);
         }
     };
 
