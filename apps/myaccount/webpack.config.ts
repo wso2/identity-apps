@@ -210,13 +210,13 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     }
 
     if (isProduction && !isDeployedOnExternalStaticServer) {
+        /* eslint-disable max-len */
         config.plugins.push(
             (new HtmlWebpackPlugin({
                 authorizationCode: "<%=request.getParameter(\"code\")%>",
                 contentType:
                     "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                     "pageEncoding=\"UTF-8\" %>",
-                // eslint-disable-next-line max-len
                 cookieproDomainScriptId:
                     "<% String cookiepro_domain_script_id = System.getenv(\"cookiepro_domain_script_id\"); %>",
                 cookieproDomainScriptIdVar: "<%= cookiepro_domain_script_id %>",
@@ -224,7 +224,6 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 cookieproEnabledCheckEnd: "<% } %>",
                 cookieproEnabledFlag: "<% String is_cookiepro_enabled = System.getenv(\"is_cookiepro_enabled\"); %>",
                 cookieproInitialScriptTypeCheck:
-                    // eslint-disable-next-line max-len
                     "<% String initialScriptType = (Boolean.TRUE.toString()).equals(is_cookiepro_enabled) ? \"text/plain\" : \"text/javascript\"; %>",
                 cookieproInitialScriptTypeVar: "<%= initialScriptType %>",
                 filename: ABSOLUTE_PATHS.homeTemplateInDistribution,
@@ -256,7 +255,16 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     ? "<%= isOrganizationManagementEnabled() %>"
                     : "false",
                 minify: false,
+                proxyContextPath: !isDeployedOnExternalTomcatServer
+                    ? "<%=ServerConfiguration.getInstance().getFirstProperty(PROXY_CONTEXT_PATH)%>"
+                    : "",
+                proxyContextPathConstant: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"static org.wso2.carbon.identity.core.util.IdentityCoreConstants.PROXY_CONTEXT_PATH\" %>"
+                    : "",
                 publicPath: baseHref,
+                serverConfiguration: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"org.wso2.carbon.base.ServerConfiguration\" %>"
+                    : "",
                 serverUrl: !isDeployedOnExternalTomcatServer ? "<%=getServerURL(\"\", true, true)%>" : "",
                 sessionState: "<%=request.getParameter(\"session_state\")%>",
                 superTenantConstant: !isDeployedOnExternalTomcatServer ? "<%=SUPER_TENANT_DOMAIN_NAME%>" : "",
@@ -267,7 +275,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 themeHash: getThemeConfigs(theme).styleSheetHash
             }) as unknown) as WebpackPluginInstance
         );
+        /* eslint-enable max-len */
 
+        /* eslint-disable max-len */
         config.plugins.push(
             (new HtmlWebpackPlugin({
                 authenticatedIdPs: "<%=request.getParameter(\"AuthenticatedIdPs\")%>",
@@ -307,6 +317,12 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     ? "<%= isOrganizationManagementEnabled() %>"
                     : "false",
                 minify: false,
+                proxyContextPath: !isDeployedOnExternalTomcatServer
+                    ? "<%=ServerConfiguration.getInstance().getFirstProperty(PROXY_CONTEXT_PATH)%>"
+                    : "",
+                proxyContextPathConstant: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"static org.wso2.carbon.identity.core.util.IdentityCoreConstants.PROXY_CONTEXT_PATH\" %>"
+                    : "",
                 publicPath: baseHref,
                 requestForwardSnippet:
                     "if(request.getParameter(\"code\") != null && " +
@@ -314,6 +330,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     "{request.getRequestDispatcher(\"/authenticate?code=\"+request.getParameter(\"code\")+" +
                     "\"&AuthenticatedIdPs=\"+request.getParameter(\"AuthenticatedIdPs\")" +
                     "+\"&session_state=\"+request.getParameter(\"session_state\")).forward(request, response);}",
+                serverConfiguration: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"org.wso2.carbon.base.ServerConfiguration\" %>"
+                    : "",
                 serverUrl: !isDeployedOnExternalTomcatServer ? "<%=getServerURL(\"\", true, true)%>" : "",
                 sessionState: "<%=Encode.forHtml(request.getParameter(\"session_state\"))%>",
                 superTenantConstant: !isDeployedOnExternalTomcatServer ? "<%=SUPER_TENANT_DOMAIN_NAME%>" : "",
@@ -324,6 +343,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 themeHash: getThemeConfigs(theme).styleSheetHash
             }) as unknown) as WebpackPluginInstance
         );
+        /* eslint-enable max-len */
     } else if (isPreAuthCheckEnabled) {
         config.plugins.push(
             (new HtmlWebpackPlugin({

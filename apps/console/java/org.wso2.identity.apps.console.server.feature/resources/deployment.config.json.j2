@@ -82,6 +82,9 @@
     "i18nResourcePath": "{{ console.i18n_resource_path }}",
     "loginCallbackPath": "{{ console.login_callback_path }}",
     "logoutCallbackPath": "{{ console.logout_callback_path }}",
+    {% if console.proxy_context_path is defined %}
+    "proxyContextPath": "{{ console.proxy_context_path }}",
+    {% endif %}
     {% if console.server_origin is defined %}
     "serverOrigin": "{{ console.server_origin }}",
     {% endif %}
