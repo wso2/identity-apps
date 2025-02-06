@@ -1572,12 +1572,29 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const handleMultiValuedItemDelete = (schema: ProfileSchemaInterface, attributeValue: string) => {
 
         const filteredValues: string[] =
-            multiValuedAttributeValues[schema?.name]?.filter((value: string) => value !== attributeValue);
+            multiValuedAttributeValues[schema?.name]?.filter((value: string) => value !== attributeValue) || [];
 
-        setMultiValuedAttributeValues({
-            ...multiValuedAttributeValues,
+        setMultiValuedAttributeValues((prevValues: Record<string, string[]>) => ({
+            ...prevValues,
             [schema.name]: filteredValues
-        });
+        }));
+
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+            if (primaryValues[EMAIL_ATTRIBUTE] === attributeValue) {
+                setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
+                    ...prevPrimaryValues,
+                    [EMAIL_ATTRIBUTE]: ""
+                }));
+            }
+        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+            if (primaryValues[MOBILE_ATTRIBUTE] === attributeValue) {
+                setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
+                    ...prevPrimaryValues,
+                    [MOBILE_ATTRIBUTE]: ""
+                }));
+            }
+        }
+
         setIsFormStale(true);
     };
 
@@ -1671,10 +1688,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      */
     const handleMakePrimary = (schemaName: string, attributeValue: string) => {
 
-        setPrimaryValues({
-            ...primaryValues,
+        setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
+            ...prevPrimaryValues,
             [schemaName]: attributeValue
-        });
+        }));
         setIsFormStale(true);
     };
 
@@ -1687,36 +1704,25 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const handleAddMultiValuedItem = (schema: ProfileSchemaInterface, attributeValue: string) => {
 
         if (isEmpty(attributeValue)) return;
-        setMultiValuedAttributeValues({
-            ...multiValuedAttributeValues,
-            [schema.name]: [
-                ...multiValuedAttributeValues[schema.name],
-                attributeValue
-            ]
-        });
+
+        setMultiValuedAttributeValues((prevValues: Record<string, string[]>) => ({
+            ...prevValues,
+            [schema.name]: [ ...(prevValues[schema.name] || []), attributeValue ]
+        }));
+
+        const updatePrimaryValue = (primaryKey: string) => {
+            if (isEmpty(primaryValues[primaryKey])) {
+                setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
+                    ...prevPrimaryValues,
+                    [primaryKey]: attributeValue
+                }));
+            }
+        };
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            const existingPrimaryEmail: string = profileInfo?.get(EMAIL_ATTRIBUTE);
-
-            if (isEmpty(existingPrimaryEmail)) {
-                setPrimaryValues(
-                    {
-                        ...primaryValues,
-                        [EMAIL_ATTRIBUTE]: attributeValue
-                    }
-                );
-            }
+            updatePrimaryValue(EMAIL_ATTRIBUTE);
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            const existingPrimaryMobile: string = profileInfo?.get(MOBILE_ATTRIBUTE);
-
-            if (isEmpty(existingPrimaryMobile)) {
-                setPrimaryValues(
-                    {
-                        ...primaryValues,
-                        [MOBILE_ATTRIBUTE]: attributeValue
-                    }
-                );
-            }
+            updatePrimaryValue(MOBILE_ATTRIBUTE);
         }
         setIsFormStale(true);
     };
