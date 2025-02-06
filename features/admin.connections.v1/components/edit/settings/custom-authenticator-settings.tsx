@@ -88,9 +88,9 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const [ authenticatorEndpoint, setAuthenticatorEndpoint ] = useState<EndpointConfigFormPropertyInterface>(null);
+    const [ initialValues, setInitialValues ] = useState<EndpointConfigFormPropertyInterface>(null);
     const [ endpointAuthenticationType, setEndpointAuthenticationType ] = useState<AuthenticationType>(null);
-    const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
+    const [ isUpdateEndpointAuthenticationType, setIsUpdateEndpointAuthenticationType ] = useState<boolean>(false);
 
     /**
     * This useEffect is utilized only for custom authenticators in order to fetch additional
@@ -132,7 +132,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                     endpointUri: data?.endpoint?.uri
                 };
 
-                setAuthenticatorEndpoint(endpointAuth);
+                setInitialValues(endpointAuth);
             })
             .catch((error: IdentityAppsApiException) => {
                 if (error?.response?.data?.description) {
@@ -173,7 +173,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                     endpointUri: data?.endpoint?.uri
                 };
 
-                setAuthenticatorEndpoint(endpointAuth);
+                setInitialValues(endpointAuth);
             })
             .catch((error: IdentityAppsApiException) => {
                 if (error?.response?.data?.description) {
@@ -200,14 +200,13 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
             });
     };
 
-    const validateForm = (values: EndpointConfigFormPropertyInterface): any => {
-        return validateActionEndpointFields(
-            values,
-            {
-                authenticationType: endpointAuthenticationType,
-                isAuthenticationUpdateFormState: isAuthenticationUpdateFormState,
-                isCreateFormState: false
-            },t);
+    const validateForm = (values: EndpointConfigFormPropertyInterface):
+        Partial<EndpointConfigFormPropertyInterface> => {
+
+        return validateActionEndpointFields(values, {
+            authenticationType: endpointAuthenticationType,
+            isAuthenticationUpdateFormState: isUpdateEndpointAuthenticationType
+        });
     };
 
     /**
@@ -224,16 +223,10 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
         const updatingValues: EndpointAuthenticationUpdateInterface = {
             displayName: resolveDisplayName(),
             endpoint: {
-                authentication: isAuthenticationUpdateFormState
-                    ? {
-                        properties: authProperties,
-                        type: values.authenticationType as EndpointAuthenticationType
-                    }
-                    : {
-                        properties: (connector as CustomAuthConnectionInterface)?.endpoint?.authentication
-                            ?.properties,
-                        type: (connector as CustomAuthConnectionInterface)?.endpoint?.authentication?.type
-                    },
+                authentication: {
+                    properties: authProperties,
+                    type: values.authenticationType as EndpointAuthenticationType
+                },
                 uri: values?.endpointUri
             },
             isEnabled: connector.isEnabled,
@@ -339,33 +332,29 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
     };
 
     const handleSubmit = (
-        values: EndpointConfigFormPropertyInterface,
-        changedFields: EndpointConfigFormPropertyInterface
+        values: EndpointConfigFormPropertyInterface
     ) => {
         const authProperties: Partial<AuthenticationPropertiesInterface> = {};
 
-        // Update endpoint authentication properties only when the authentication type is changed
-        if (isAuthenticationUpdateFormState) {
-            switch (values.authenticationType) {
-                case AuthenticationType.BASIC:
-                    authProperties.username = values.usernameAuthProperty;
-                    authProperties.password = values.passwordAuthProperty;
+        switch (values.authenticationType) {
+            case AuthenticationType.BASIC:
+                authProperties.username = values.usernameAuthProperty;
+                authProperties.password = values.passwordAuthProperty;
 
-                    break;
-                case AuthenticationType.BEARER:
-                    authProperties.accessToken = values.accessTokenAuthProperty;
+                break;
+            case AuthenticationType.BEARER:
+                authProperties.accessToken = values.accessTokenAuthProperty;
 
-                    break;
-                case AuthenticationType.API_KEY:
-                    authProperties.header = values.headerAuthProperty;
-                    authProperties.value = values.valueAuthProperty;
+                break;
+            case AuthenticationType.API_KEY:
+                authProperties.header = values.headerAuthProperty;
+                authProperties.value = values.valueAuthProperty;
 
-                    break;
-                case AuthenticationType.NONE:
-                    break;
-                default:
-                    break;
-            }
+                break;
+            case AuthenticationType.NONE:
+                break;
+            default:
+                break;
         }
 
         if (isCustomLocalAuthenticator) {
@@ -380,10 +369,8 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
     return (
         <div className="custom-authentication-settings-tab">
             <FinalForm
-                onSubmit={ (values: EndpointConfigFormPropertyInterface, form: any) => {
-                    handleSubmit(values, form.getState().dirtyFields);
-                } }
-                initialValues={ authenticatorEndpoint }
+                onSubmit={ handleSubmit }
+                initialValues={ initialValues }
                 validate={ validateForm }
                 render={ ({ handleSubmit, form }: FormRenderProps) => (
                     <form onSubmit={ handleSubmit }>
@@ -394,14 +381,14 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                         >
                             <div className="form-container with-max-width">
                                 <ActionEndpointConfigForm
-                                    initialValues={ authenticatorEndpoint }
+                                    initialValues={ initialValues }
                                     isCreateFormState={ false }
                                     onAuthenticationTypeChange={ (
                                         updatedValue: AuthenticationType,
                                         change: boolean
                                     ) => {
                                         setEndpointAuthenticationType(updatedValue);
-                                        setIsAuthenticationUpdateFormState(change);
+                                        setIsUpdateEndpointAuthenticationType(change);
                                     } }
                                 />
                                 { !isLoading && (
@@ -419,7 +406,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                         </EmphasizedSegment>
                         <FormSpy subscription={ { values: true } }>
                             { ({ values }: { values: EndpointConfigFormPropertyInterface }) => {
-                                if (!isAuthenticationUpdateFormState) {
+                                if (!isUpdateEndpointAuthenticationType) {
                                     form.change("authenticationType", values?.authenticationType);
                                     switch (values?.authenticationType) {
                                         case AuthenticationType.BASIC:
