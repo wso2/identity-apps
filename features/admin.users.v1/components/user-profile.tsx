@@ -641,6 +641,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         mapMultiValuedAttributeValues(profileInfo);
     }, [ profileInfo ]);
 
+    /**
+     * The following function map multi-valued attribute values and their primary values from profile data.
+     *
+     * @param profileData - Profile data.
+     */
     const mapMultiValuedAttributeValues = (profileData: Map<string, string>): void => {
 
         if (!isMultipleEmailAndMobileNumberEnabled) return;

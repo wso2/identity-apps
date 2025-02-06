@@ -319,6 +319,7 @@ export const constructPatchOpValueForMultiValuedAttribute = (
     if (isEmpty(currentValues)) {
         currentValues = [];
     }
+
     if (!isEmpty(inputValue) && !currentValues.includes(inputValue)) {
         currentValues.push(inputValue);
     }
