@@ -190,7 +190,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
     const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
 
-
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
     const isSubOrganizationType: boolean = orgType === OrganizationType.SUBORGANIZATION;
 

@@ -459,7 +459,7 @@
                 }
             },
             {% endif %}
-            {% if console.ai is defined %}
+            {% if console.ai is defined  %}
             "ai": {
                 "disabledFeatures": [
                     {% if console.ai.disabled_features is defined %}
@@ -469,13 +469,11 @@
                     {% endif %}
                 ],
                 "enabled": {% if console.ai.enabled is defined %} {{ console.ai.enabled }},
-                    {% elif ai_services is defined 
-                            and ai_services.key is defined 
-                            and ai_services.key|trim != "" %}
-                        true,
                     {% else %}
-                        false,
-                    {% endif %}
+                        {% if ai_services.key is defined and ai_services.key|length > 0 %} true,
+                        {% else %} false,                     
+                        {% endif %}
+                {% endif %}
                 "scopes": {
                     {% if console.ai.scopes is defined %}
                     {% for operation, scopes in console.ai.scopes.items() %}
