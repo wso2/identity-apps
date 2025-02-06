@@ -17,7 +17,7 @@
  */
 
 import { I18n } from "@wso2is/i18n";
-import { FormValidation } from "../../../modules/validation/dist/types";
+import { FormValidation } from "@wso2is/validation";
 import { ActionsConstants } from "../constants/actions-constants";
 import {
     ActionConfigFormPropertyInterface,
@@ -79,8 +79,10 @@ export const validateActionEndpointFields = (
     }
 
     if (
-        !FormValidation.url(values?.endpointUri, {
-            domain: { allowUnicode: true },
+        FormValidation.url(values?.endpointUri, {
+            domain: {
+                allowUnicode: true
+            },
             scheme: [ "http", "https" ]
         })
     ) {

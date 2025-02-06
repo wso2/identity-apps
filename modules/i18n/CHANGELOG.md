@@ -1,5 +1,16 @@
 # @wso2is/i18n
 
+## 2.19.4
+
+### Patch Changes
+
+- [#7509](https://github.com/wso2/identity-apps/pull/7509) [`36688f8894c54be04e79e8d2f2c97ddba30f688d`](https://github.com/wso2/identity-apps/commit/36688f8894c54be04e79e8d2f2c97ddba30f688d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Introduce branding support for push authentication screen
+
+* [#7514](https://github.com/wso2/identity-apps/pull/7514) [`04be5207ce0c3539ae960f3417151baa3d5bcddd`](https://github.com/wso2/identity-apps/commit/04be5207ce0c3539ae960f3417151baa3d5bcddd) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Enhance Custom Local Authenticator Icon Resolution with Customised Icon Support
+
+* Updated dependencies [[`0aca53b8d7f18b9d8488911500b86c7178eb9be6`](https://github.com/wso2/identity-apps/commit/0aca53b8d7f18b9d8488911500b86c7178eb9be6)]:
+  - @wso2is/core@2.6.2
+
 ## 2.19.3
 
 ### Patch Changes

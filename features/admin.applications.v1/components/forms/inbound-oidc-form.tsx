@@ -1998,7 +1998,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             return false;
                                         }
                                         if (URLUtils.isURLValid(value)) {
-                                            if (URLUtils.isHttpUrl(value) || URLUtils.isHttpsUrl(value)) {
+                                            if (URLUtils.isHttpUrl(value, false) || URLUtils.isHttpsUrl(value, false)) {
                                                 setCallbackURLsErrorLabel(null);
 
                                                 return true;
