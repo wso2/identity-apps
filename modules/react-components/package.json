@@ -38,8 +38,8 @@
     "types": "dist/src/index.d.ts",
     "dependencies": {
         "@artsy/fresnel": "^6.1.0",
-        "@oxygen-ui/react": "^2.0.0",
-        "@oxygen-ui/react-icons": "^2.0.0",
+        "@oxygen-ui/react": "^2.3.2",
+        "@oxygen-ui/react-icons": "^2.3.2",
         "@storybook/addons": "^6.5.9",
         "@storybook/builder-webpack5": "^6.5.9",
         "@storybook/core-server": "^6.5.9",
