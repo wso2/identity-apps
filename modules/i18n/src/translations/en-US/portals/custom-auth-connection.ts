@@ -91,7 +91,7 @@ export const customAuthentication: customAuthenticationNS = {
                 endpoint: {
                     hint: "The URL of the configured external endpoint to integrate with the authenticator",
                     label: "Endpoint",
-                    placeholder: "https://abc.external.authenticator/authenticate",
+                    placeholder: "https://auth.service.example.com/authenticate",
                     validations: {
                         empty: "Empty endpoint URI",
                         general: "Please enter a valid URL.",
@@ -111,7 +111,7 @@ export const customAuthentication: customAuthenticationNS = {
                 },
                 helpPanel: {
                     displayName: {
-                        description: "Provide a meaningful name to identify the connection.",
+                        description: "Provide a meaningful name to display in login pages and login flow editor.",
                         header: "Display Name"
                     },
                     identifier: {

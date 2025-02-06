@@ -30,7 +30,6 @@ import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
@@ -45,7 +44,6 @@ import {
 import { ConnectorPropertyInterface  } from "@wso2is/admin.server-configurations.v1";
 import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
 import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -75,7 +73,7 @@ import {
 import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -97,6 +95,11 @@ import {
     SubValueInterface
 } from "../models/user";
 import "./user-profile.scss";
+import {
+    constructPatchOpValueForMultiValuedAttribute,
+    extractSubAttributes,
+    isMultipleEmailsAndMobileNumbersEnabled
+} from "../utils/user-management-utils";
 
 const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
 const MOBILE_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
@@ -184,12 +187,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         allowDeleteOnly,
         connectorProperties,
         isReadOnlyUserStoresLoading,
-        isReadOnlyUserStore,
+        isReadOnlyUserStore = false,
         tenantAdmin,
         editUserDisclaimerMessage,
-        adminUserType,
+        adminUserType = "None",
         isUserManagedByParentOrg,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId = "user-mgt-user-profile"
     } = props;
 
     const { t } = useTranslation();
@@ -206,7 +209,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     );
     const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const { UIConfig } = useUIConfig();
 
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
@@ -248,8 +250,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
         role.display === administratorConfig.adminRoleName) ?? false;
     const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
-    const [ isMultipleEmailAndMobileNumberEnabled, setIsMultipleEmailAndMobileNumberEnabled ] =
-        useState<boolean>(false);
     const [ tempMultiValuedItemValue, setTempMultiValuedItemValue ] = useState<Record<string, string>>({});
     const [ isMultiValuedItemInvalid, setIsMultiValuedItemInvalid ] =  useState<Record<string, boolean>>({});
 
@@ -266,6 +266,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         handleMultiValuedItemDelete(selectedAttributeInfo.schema, selectedAttributeInfo.value);
         handleMultiValuedItemDeleteModalClose();
     }, [ selectedAttributeInfo, handleMultiValuedItemDeleteModalClose ]);
+
+    const isMultipleEmailAndMobileNumberEnabled: boolean = useMemo(() => {
+        return isMultipleEmailsAndMobileNumbersEnabled(profileInfo,profileSchema);
+    }, [ profileSchema, profileInfo ]);
 
     useEffect(() => {
         if (connectorProperties && Array.isArray(connectorProperties) && connectorProperties?.length > 0) {
@@ -289,55 +293,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             setConfigSettings(accountConfigSettings);
         }
     }, [ connectorProperties ]);
-
-    /**
-     * Check if multiple emails and mobile numbers feature is enabled.
-     */
-    const isMultipleEmailsAndMobileNumbersEnabled = (): void => {
-        if (isEmpty(profileInfo) || isEmpty(profileSchema)) return;
-
-        if (!UIConfig?.isMultipleEmailsAndMobileNumbersEnabled) {
-            setIsMultipleEmailAndMobileNumberEnabled(false);
-
-            return;
-        }
-
-        const multipleEmailsAndMobileFeatureRelatedAttributes: string[] = [
-            MOBILE_ATTRIBUTE,
-            EMAIL_ATTRIBUTE,
-            EMAIL_ADDRESSES_ATTRIBUTE,
-            MOBILE_NUMBERS_ATTRIBUTE,
-            VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
-            VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
-        ];
-
-        const domainName: string[] = profileInfo?.get("userName")?.toString().split("/");
-        const userStoreDomain: string = (domainName.length > 1
-            ? domainName[0]
-            : PRIMARY_USERSTORE)?.toUpperCase();
-
-        // Check each required attribute exists and domain is not excluded in the excluded user store list.
-        const attributeCheck: boolean = multipleEmailsAndMobileFeatureRelatedAttributes.every(
-            (attribute: string) => {
-                const schema: ProfileSchemaInterface = profileSchema?.find(
-                    (schema: ProfileSchemaInterface) => schema?.name === attribute);
-
-                if (!schema) {
-                    return false;
-                }
-
-                const excludedUserStores: string[] =
-                    schema?.excludedUserStores?.split(",")?.map((store: string) => store?.trim().toUpperCase()) || [];
-
-                return !excludedUserStores.includes(userStoreDomain);
-            });
-
-        setIsMultipleEmailAndMobileNumberEnabled(attributeCheck);
-    };
-
-    useEffect(() => {
-        isMultipleEmailsAndMobileNumbersEnabled();
-    }, [ profileSchema, profileInfo ]);
 
     /**
      *  .
@@ -874,6 +829,31 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
+     * Handles updating the primary email and mobile values when multiple emails and mobile numbers are enabled.
+     *
+     * @param values - The Map of form values.
+     */
+    const handlePrimaryEmailAndMobile = (values: Map<string, string | string[]>): void => {
+        const existingPrimaryMobile: string = profileInfo?.get(MOBILE_ATTRIBUTE);
+        const newMobile: string = tempMultiValuedItemValue[MOBILE_NUMBERS_ATTRIBUTE];
+
+        if (!isEmpty(existingPrimaryMobile)) {
+            values.set(MOBILE_ATTRIBUTE, existingPrimaryMobile);
+        } else if (!isEmpty(newMobile)) {
+            values.set(MOBILE_ATTRIBUTE, newMobile);
+        }
+
+        const existingPrimaryEmail: string = profileInfo?.get(EMAIL_ATTRIBUTE);
+        const newEmail: string = tempMultiValuedItemValue[EMAIL_ADDRESSES_ATTRIBUTE];
+
+        if (!isEmpty(existingPrimaryEmail)) {
+            values.set(EMAIL_ATTRIBUTE, existingPrimaryEmail);
+        } else if (!isEmpty(newEmail)) {
+            values.set(EMAIL_ATTRIBUTE, newEmail);
+        }
+    };
+
+    /**
      * The following method handles the `onSubmit` event of forms.
      *
      * @param values - submit values.
@@ -890,6 +870,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             value: {}
         };
 
+        if (isMultipleEmailAndMobileNumberEnabled) {
+            handlePrimaryEmailAndMobile(values);
+        }
+
         if (adminUserType === AdminAccountTypes.INTERNAL) {
             profileSchema.forEach((schema: ProfileSchemaInterface) => {
                 const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
@@ -897,6 +881,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 if (resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA) {
                     return;
                 }
+                if (!isFieldDisplayable(schema)) return;
 
                 let opValue: OperationValueInterface = {};
 
@@ -912,34 +897,52 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const attValues: Map<string, string | string []> = new Map();
 
                             if (schemaNames.length === 1 || schemaNames.length === 2) {
+                                if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+                                    opValue = {
+                                        [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
+                                            EMAIL_ADDRESSES_ATTRIBUTE,
+                                            EMAIL_ATTRIBUTE,
+                                            profileInfo,
+                                            tempMultiValuedItemValue
+                                        )
+                                    };
+                                } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+                                    opValue = {
+                                        [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
+                                            MOBILE_NUMBERS_ATTRIBUTE,
+                                            MOBILE_ATTRIBUTE,
+                                            profileInfo,
+                                            tempMultiValuedItemValue
+                                        )
+                                    };
+                                } else {
+                                    // Extract the sub attributes from the form values.
+                                    for (const value of values.keys()) {
+                                        const subAttribute: string[] = value.split(".");
 
-                                // Extract the sub attributes from the form values.
-                                for (const value of values.keys()) {
-                                    const subAttribute: string[] = value.split(".");
-
-                                    if (subAttribute[0] === schemaNames[0]) {
-                                        attValues.set(value, values.get(value));
-                                    }
-                                }
-
-                                for (const [ key, value ] of attValues) {
-                                    const attribute: string[] = key.split(".");
-
-                                    if (value && value !== "") {
-                                        if (attribute.length === 1) {
-                                            attributeValues.push(value);
-                                        } else {
-                                            attributeValues.push({
-                                                type: attribute[1],
-                                                value: value
-                                            });
+                                        if (subAttribute[0] === schemaNames[0]) {
+                                            attValues.set(value, values.get(value));
                                         }
                                     }
-                                }
 
-                                opValue = {
-                                    [schemaNames[0]]: attributeValues
-                                };
+                                    for (const [ key, value ] of attValues) {
+                                        const attribute: string[] = key.split(".");
+
+                                        if (value && value !== "") {
+                                            if (attribute.length === 1) {
+                                                attributeValues.push(value);
+                                            } else {
+                                                attributeValues.push({
+                                                    type: attribute[1],
+                                                    value: value
+                                                });
+                                            }
+                                        }
+                                    }
+                                    opValue = {
+                                        [schemaNames[0]]: attributeValues
+                                    };
+                                }
                             }
                         } else {
                             if (schemaNames.length === 1) {
@@ -1060,6 +1063,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     return;
                 }
 
+                if (!isFieldDisplayable(schema)) return;
+
                 let opValue: OperationValueInterface = {};
 
                 const schemaNames: string[] = schema.name.split(".");
@@ -1074,33 +1079,52 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                             if (schemaNames.length === 1 || schemaNames.length === 2) {
 
-                                // Extract the sub attributes from the form values.
-                                for (const value of values.keys()) {
-                                    const subAttribute: string[] = value.split(".");
+                                if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+                                    opValue = {
+                                        [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
+                                            EMAIL_ADDRESSES_ATTRIBUTE,
+                                            EMAIL_ATTRIBUTE,
+                                            profileInfo,
+                                            tempMultiValuedItemValue
+                                        )
+                                    };
+                                } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+                                    opValue = {
+                                        [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
+                                            MOBILE_NUMBERS_ATTRIBUTE,
+                                            MOBILE_ATTRIBUTE,
+                                            profileInfo,
+                                            tempMultiValuedItemValue
+                                        )
+                                    };
+                                } else {
+                                    // Extract the sub attributes from the form values.
+                                    for (const value of values.keys()) {
+                                        const subAttribute: string[] = value.split(".");
 
-                                    if (subAttribute[0] === schemaNames[0]) {
-                                        attValues.set(value, values.get(value));
-                                    }
-                                }
-
-                                for (const [ key, value ] of attValues) {
-                                    const attribute: string[] = key.split(".");
-
-                                    if (value && value !== "") {
-                                        if (attribute.length === 1) {
-                                            attributeValues.push(value);
-                                        } else {
-                                            attributeValues.push({
-                                                type: attribute[1],
-                                                value: value
-                                            });
+                                        if (subAttribute[0] === schemaNames[0]) {
+                                            attValues.set(value, values.get(value));
                                         }
                                     }
-                                }
 
-                                opValue = {
-                                    [schemaNames[0]]: attributeValues
-                                };
+                                    for (const [ key, value ] of attValues) {
+                                        const attribute: string[] = key.split(".");
+
+                                        if (value && value !== "") {
+                                            if (attribute.length === 1) {
+                                                attributeValues.push(value);
+                                            } else {
+                                                attributeValues.push({
+                                                    type: attribute[1],
+                                                    value: value
+                                                });
+                                            }
+                                        }
+                                    }
+                                    opValue = {
+                                        [schemaNames[0]]: attributeValues
+                                    };
+                                }
                             }
                         } else {
                             if (schemaNames.length === 1) {
@@ -1540,7 +1564,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             };
 
             if (attributeValue === primaryEmail) {
-                const subAttributes: Record<string, string>[] = extractSubAttributes(EMAIL_ATTRIBUTE);
+                const subAttributes: Record<string, string>[] = extractSubAttributes(user, EMAIL_ATTRIBUTE);
 
                 data.Operations.push({
                     op: "replace",
@@ -1560,7 +1584,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
             if (attributeValue === primaryMobile) {
                 const filteredSubAttributes: Record<string, string>[] =
-                    extractSubAttributes(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))?.filter(
+                    extractSubAttributes(user, ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))?.filter(
                         (attr: Record<string, string>) => attr?.type !== UserManagementConstants.MOBILE);
 
                 data.Operations.push({
@@ -1707,18 +1731,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
-     * Extracts sub-attributes (objects) from the profile details.
-     *
-     * @param schemaKey - The attribute key to extract sub-attributes from.
-     * @returns Array of sub-attributes (objects).
-     */
-    const extractSubAttributes = (schemaKey: string): Record<string, string>[] => {
-
-        return user && user[schemaKey]?.filter(
-            (subAttribute: unknown) => typeof subAttribute === "object") || [];
-    };
-
-    /**
      * Assign primary email address or mobile number the multi-valued attribute.
      *
      * @param schema - Schema of the attribute
@@ -1736,7 +1748,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            const subAttributes: Record<string, string>[] = extractSubAttributes(EMAIL_ATTRIBUTE);
+            const subAttributes: Record<string, string>[] = extractSubAttributes(user, EMAIL_ATTRIBUTE);
 
             data.Operations[0].value = {
                 [EMAIL_ATTRIBUTE]: [
@@ -1763,7 +1775,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
 
             const filteredSubAttributes: Record<string, string>[] =
-                extractSubAttributes(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))?.filter(
+                extractSubAttributes(user, ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))?.filter(
                     (attr: Record<string, string>) => attr?.type !== UserManagementConstants.MOBILE);
 
             data.Operations[0].value = {
@@ -1867,7 +1879,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             };
 
             if (isEmpty(existingPrimaryEmail) && !isEmpty(attributeValues)) {
-                const subAttributes: Record<string, string>[] = extractSubAttributes(EMAIL_ATTRIBUTE);
+                const subAttributes: Record<string, string>[] = extractSubAttributes(user, EMAIL_ATTRIBUTE);
 
                 data.Operations.push({
                     op: "replace",
@@ -1894,7 +1906,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
             if (isEmpty(existingPrimaryMobile) && !isEmpty(attributeValues)) {
                 const filteredSubAttributes: Record<string, string>[] =
-                    extractSubAttributes(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))?.filter(
+                    extractSubAttributes(user, ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))?.filter(
                         (attr: Record<string, string>) => attr?.type !== UserManagementConstants.MOBILE);
 
                 data.Operations.push({
@@ -2009,10 +2021,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             }
         };
 
-        const showDeleteButton = (value: string): boolean => {
-            return !(primaryAttributeSchema?.required && value === primaryAttributeValue);
-        };
-
         const showVerifyButton = (value: string): boolean =>
             schema.name === EMAIL_ADDRESSES_ATTRIBUTE
             && verificationEnabled
@@ -2026,6 +2034,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             = primaryAttributeSchema?.profiles?.console?.required ?? primaryAttributeSchema?.required;
         const resolvedRequiredValue: boolean = (resolvedMultiValueAttributeRequiredValue
             || resolvedPrimarySchemaRequiredValue);
+
+        const showDeleteButton = (value: string): boolean => {
+            return !(value === primaryAttributeValue && resolvedPrimarySchemaRequiredValue);
+        };
 
         return (
             <div key={ key }>
@@ -2049,15 +2061,29 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             : fieldName
                         )
                     }
-                    className={ resolvedRequiredValue ? "required-icon" : "" }
                     placeholder={ "Enter your" + " " + fieldName }
                     type="text"
+                    value={ tempMultiValuedItemValue[schema.name] }
                     readOnly={ (isUserManagedByParentOrg &&
                         sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)
                         || isReadOnly
                         || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
                     }
+                    required={ !(isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                       && resolvedRequiredValue && isEmpty(attributeValueList) }
+                    requiredErrorMessage={ t("user:profile.forms.generic.inputs.validations.empty", { fieldName }) }
                     validation={ (value: string, validation: Validation) => {
+                        if (isEmpty(value) && resolvedRequiredValue && isEmpty(attributeValueList)) {
+                            setIsMultiValuedItemInvalid({
+                                ...isMultiValuedItemInvalid,
+                                [schema.name]: true
+                            });
+                            validation.isValid = false;
+                            validation.errorMessages
+                                .push(t("user:profile.forms.generic.inputs.validations.empty", { fieldName }));
+                        }
+
                         if (!RegExp(primaryAttributeSchema?.regEx).test(value)) {
                             setIsMultiValuedItemInvalid({
                                 ...isMultiValuedItemInvalid,
@@ -2230,10 +2256,31 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         );
     };
 
+    /**
+     * Resolves the required value of the attribute based on the shared profile value resolving method
+     * and the schema.
+     *
+     * @param schema - Schema of the attribute.
+     * @param sharedProfileValueResolvingMethod - Shared profile value resolving method of the attribute.
+     * @returns True if the attribute is required.
+     */
+    const resolveRequiredValue = (
+        schema: ProfileSchemaInterface,
+        sharedProfileValueResolvingMethod: string
+    ): boolean => {
+
+        if (isUserManagedByParentOrg &&
+            sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN) {
+            return false;
+        }
+
+        return schema?.profiles?.console?.required ?? schema.required;
+    };
+
     const resolveFormField = (schema: ProfileSchemaInterface, fieldName: string, key: number): ReactElement => {
-        const resolvedRequiredValue: boolean = schema?.profiles?.console?.required ?? schema.required;
         const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
         const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
+        const resolvedRequiredValue: boolean = resolveRequiredValue(schema, sharedProfileValueResolvingMethod);
 
         if (schema.type.toUpperCase() === "BOOLEAN") {
             return (
@@ -2449,6 +2496,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @returns whether the field for the input schema should be displayed.
      */
     const isFieldDisplayable = (schema: ProfileSchemaInterface): boolean => {
+        if (!isMultipleEmailAndMobileNumberEnabled) {
+            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+                return false;
+            }
+        }
         const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
 
         // If the distinct attribute profiles feature is enabled, check the supportedByDefault flag.
@@ -2948,13 +3000,4 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             </>)
             : <ContentLoader dimmer/>
     );
-};
-
-/**
- * User profile component default props.
- */
-UserProfile.defaultProps = {
-    adminUserType: "None",
-    "data-testid": "user-mgt-user-profile",
-    isReadOnlyUserStore: false
 };

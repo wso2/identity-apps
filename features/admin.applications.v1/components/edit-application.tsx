@@ -811,7 +811,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))
-                && !isSubOrganization()
+                && !isFragmentApp
                 && !isM2MApplication
                 && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
                     application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)

@@ -29,7 +29,6 @@ import Stack from "@oxygen-ui/react/Stack";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography/Typography";
 import {
-    ArrowUpRightFromSquareIcon,
     BanIcon,
     CircleCheckFilledIcon,
     EllipsisVerticalIcon,
@@ -77,7 +76,7 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({ isLoading, tenant }: T
         );
     });
 
-    const { deleteTenant, disableTenant, enableTenant, navigateToTenantConsole } = useTenants();
+    const { deleteTenant, disableTenant, enableTenant } = useTenants();
 
     const [ anchorEl, setAnchorEl ] = useState<null | HTMLElement>(null);
 
@@ -202,18 +201,6 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({ isLoading, tenant }: T
                             onClose={ handleClose }
                             className="tenant-card-footer-dropdown"
                         >
-                            <MenuItem
-                                className="tenant-card-footer-dropdown-item"
-                                onClick={ () => {
-                                    navigateToTenantConsole(tenant);
-                                    handleClose();
-                                } }
-                            >
-                                <ListItemIcon>
-                                    <ArrowUpRightFromSquareIcon />
-                                </ListItemIcon>
-                                <ListItemText>{ t("tenants:listing.item.actions.goToConsole.label") }</ListItemText>
-                            </MenuItem>
                             <MenuItem
                                 className={ classNames("tenant-card-footer-dropdown-item", {
                                     error: tenant?.lifecycleStatus?.activated,

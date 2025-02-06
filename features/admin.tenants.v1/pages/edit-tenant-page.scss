@@ -45,4 +45,41 @@
             }
         }
     }
+
+    .console-url-copy-field {
+        .MuiInputBase-root {
+            min-width: 400px;
+
+            // TODO: Fix this from the `@oxygen-ui/react` side and remove.
+            // Tracker: https://github.com/wso2/oxygen-ui/issues/331
+            &.Mui-readOnly {
+                cursor: default;
+                background-color: #e9ecef!important;
+            }
+        }
+    }
+}
+
+@media (min-width: 675px) {
+    .tenant-edit-page {
+        .console-url-copy-field {
+            display: flex;
+            flex-direction: row;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: nowrap;
+            gap: 15px;
+        }
+    }
+}
+
+@media (max-width: 675px) {
+    .tenant-edit-page {
+        .console-url-copy-field {
+            .MuiInputBase-root {
+                min-width: auto;
+            }
+        }
+    }
 }

@@ -161,7 +161,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             .find((schema: ProfileSchemaInterface) => (schema.name === "emails"));
 
         if (emailSchema) {
-            setEmailRequired(emailSchema.required);
+            setEmailRequired(emailSchema.profiles?.selfRegistration?.required ?? emailSchema.required);
         }
     }, []);
 

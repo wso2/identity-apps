@@ -17,6 +17,7 @@
  */
 
 import BasicAuthIcon from "../../themes/default/assets/images/authenticators/basic-auth.png";
+import CustomAuthenticator from "../../themes/default/assets/images/authenticators/custom-authenticator.svg";
 import FIDOLogo from "../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
 import SMSOTPIcon from "../../themes/default/assets/images/authenticators/sms-otp.svg";
 import BackupCodesAuthenticatorLogo from "../../themes/default/assets/images/icons/backup-code-icon.svg";
@@ -84,6 +85,7 @@ export const getAuthenticatorIcons = (): any => {
         apple: AppleLogo,
         backupCode: BackupCodesAuthenticatorLogo,
         basic: BasicAuthIcon,
+        customAuthenticator: CustomAuthenticator,
         default: ConnectionIcon,
         "email-otp-authenticator": EmailOTPIcon,
         emailOTP: EmailOTPIcon,

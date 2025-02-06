@@ -163,17 +163,13 @@ export interface TenantsNS {
             primaryAction: string;
             secondaryAction: string;
         };
-        navigatingToTenantConsole: {
-            assertionHint: string;
-            content: string;
-            header: string;
-            message: string;
-            primaryAction: string;
-            secondaryAction: string;
-        };
     },
     edit: {
         backButton: string;
+        consoleURL: {
+            label: string;
+            hint: string;
+        };
         subtitle: string;
     };
     editTenant: {
@@ -294,9 +290,6 @@ export interface TenantsNS {
                     label: string;
                 };
                 edit: {
-                    label: string;
-                };
-                goToConsole: {
                     label: string;
                 };
                 more: {

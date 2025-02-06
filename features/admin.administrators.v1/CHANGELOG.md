@@ -1,5 +1,150 @@
 # @wso2is/admin.administrators.v1
 
+## 2.29.141
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.141
+  - @wso2is/admin.core.v1@2.38.10
+  - @wso2is/admin.extensions.v1@2.36.66
+  - @wso2is/admin.roles.v2@2.27.85
+  - @wso2is/admin.remote-userstores.v1@1.7.97
+  - @wso2is/admin.authentication.v1@2.25.141
+  - @wso2is/admin.feature-gate.v1@1.4.141
+  - @wso2is/admin.server-configurations.v1@2.32.66
+  - @wso2is/admin.tenants.v1@2.28.115
+  - @wso2is/admin.users.v1@2.30.51
+  - @wso2is/admin.userstores.v1@2.26.100
+
+## 2.29.140
+
+### Patch Changes
+
+- Updated dependencies [[`2c831ff7dc0a263fc0ed20b4599f4a13dd4dc6df`](https://github.com/wso2/identity-apps/commit/2c831ff7dc0a263fc0ed20b4599f4a13dd4dc6df), [`a9231ac6175b28be3d696cb55004cca77191402e`](https://github.com/wso2/identity-apps/commit/a9231ac6175b28be3d696cb55004cca77191402e)]:
+  - @wso2is/admin.tenants.v1@2.28.114
+  - @wso2is/react-components@2.9.4
+  - @wso2is/admin.applications.v1@2.30.140
+  - @wso2is/admin.extensions.v1@2.36.65
+  - @wso2is/admin.roles.v2@2.27.84
+  - @wso2is/admin.server-configurations.v1@2.32.65
+  - @wso2is/admin.users.v1@2.30.50
+  - @wso2is/admin.userstores.v1@2.26.99
+  - @wso2is/admin.core.v1@2.38.9
+  - @wso2is/admin.remote-userstores.v1@1.7.96
+  - @wso2is/form@2.6.25
+  - @wso2is/admin.authentication.v1@2.25.140
+  - @wso2is/admin.feature-gate.v1@1.4.140
+
+## 2.29.139
+
+### Patch Changes
+
+- Updated dependencies [[`ab6106079bb48bb3b4207aadf592a7cd3df6c4f2`](https://github.com/wso2/identity-apps/commit/ab6106079bb48bb3b4207aadf592a7cd3df6c4f2)]:
+  - @wso2is/admin.users.v1@2.30.49
+  - @wso2is/admin.applications.v1@2.30.139
+  - @wso2is/admin.authentication.v1@2.25.139
+  - @wso2is/admin.core.v1@2.38.8
+  - @wso2is/admin.extensions.v1@2.36.64
+  - @wso2is/admin.remote-userstores.v1@1.7.95
+  - @wso2is/admin.roles.v2@2.27.83
+  - @wso2is/admin.server-configurations.v1@2.32.64
+  - @wso2is/admin.tenants.v1@2.28.113
+  - @wso2is/admin.feature-gate.v1@1.4.139
+  - @wso2is/admin.userstores.v1@2.26.98
+
+## 2.29.138
+
+### Patch Changes
+
+- Updated dependencies [[`480166a60002ab0a856aeada79fa3b7fb0a814ce`](https://github.com/wso2/identity-apps/commit/480166a60002ab0a856aeada79fa3b7fb0a814ce)]:
+  - @wso2is/admin.users.v1@2.30.48
+  - @wso2is/admin.applications.v1@2.30.138
+  - @wso2is/admin.authentication.v1@2.25.138
+  - @wso2is/admin.core.v1@2.38.7
+  - @wso2is/admin.extensions.v1@2.36.63
+  - @wso2is/admin.remote-userstores.v1@1.7.94
+  - @wso2is/admin.roles.v2@2.27.82
+  - @wso2is/admin.server-configurations.v1@2.32.63
+  - @wso2is/admin.tenants.v1@2.28.112
+  - @wso2is/admin.userstores.v1@2.26.97
+  - @wso2is/react-components@2.9.3
+  - @wso2is/admin.feature-gate.v1@1.4.138
+  - @wso2is/form@2.6.24
+
+## 2.29.137
+
+### Patch Changes
+
+- Updated dependencies [[`bb8c0b38541fe6bb367f74621b4c27587d82ebdd`](https://github.com/wso2/identity-apps/commit/bb8c0b38541fe6bb367f74621b4c27587d82ebdd), [`e9949d9081c28719a43f50246f0b2dfac5334f78`](https://github.com/wso2/identity-apps/commit/e9949d9081c28719a43f50246f0b2dfac5334f78)]:
+  - @wso2is/admin.server-configurations.v1@2.32.62
+  - @wso2is/core@2.6.1
+  - @wso2is/admin.applications.v1@2.30.137
+  - @wso2is/admin.core.v1@2.38.6
+  - @wso2is/admin.extensions.v1@2.36.62
+  - @wso2is/admin.roles.v2@2.27.81
+  - @wso2is/admin.users.v1@2.30.47
+  - @wso2is/admin.authentication.v1@2.25.137
+  - @wso2is/admin.feature-gate.v1@1.4.137
+  - @wso2is/admin.remote-userstores.v1@1.7.93
+  - @wso2is/admin.tenants.v1@2.28.111
+  - @wso2is/admin.userstores.v1@2.26.96
+  - @wso2is/access-control@3.3.15
+  - @wso2is/form@2.6.23
+  - @wso2is/forms@2.3.16
+  - @wso2is/react-components@2.9.2
+
+## 2.29.136
+
+### Patch Changes
+
+- Updated dependencies [[`21db5cdc160709b1fde7b72025655976ce1b1f6f`](https://github.com/wso2/identity-apps/commit/21db5cdc160709b1fde7b72025655976ce1b1f6f)]:
+  - @wso2is/admin.users.v1@2.30.46
+  - @wso2is/admin.applications.v1@2.30.136
+  - @wso2is/admin.core.v1@2.38.5
+  - @wso2is/admin.extensions.v1@2.36.61
+  - @wso2is/admin.roles.v2@2.27.80
+  - @wso2is/admin.authentication.v1@2.25.136
+  - @wso2is/admin.server-configurations.v1@2.32.61
+  - @wso2is/admin.tenants.v1@2.28.110
+  - @wso2is/admin.userstores.v1@2.26.95
+  - @wso2is/admin.remote-userstores.v1@1.7.92
+  - @wso2is/admin.feature-gate.v1@1.4.136
+
+## 2.29.135
+
+### Patch Changes
+
+- Updated dependencies [[`f7338ef6a3ba6d51922b49dc56e34927978a7fac`](https://github.com/wso2/identity-apps/commit/f7338ef6a3ba6d51922b49dc56e34927978a7fac)]:
+  - @wso2is/admin.tenants.v1@2.28.109
+  - @wso2is/admin.core.v1@2.38.4
+  - @wso2is/admin.extensions.v1@2.36.60
+  - @wso2is/admin.users.v1@2.30.45
+  - @wso2is/admin.applications.v1@2.30.135
+  - @wso2is/admin.roles.v2@2.27.79
+  - @wso2is/admin.authentication.v1@2.25.135
+  - @wso2is/admin.feature-gate.v1@1.4.135
+  - @wso2is/admin.remote-userstores.v1@1.7.91
+  - @wso2is/admin.server-configurations.v1@2.32.60
+  - @wso2is/admin.userstores.v1@2.26.94
+
+## 2.29.134
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.3
+  - @wso2is/admin.applications.v1@2.30.134
+  - @wso2is/admin.extensions.v1@2.36.59
+  - @wso2is/admin.roles.v2@2.27.78
+  - @wso2is/admin.authentication.v1@2.25.134
+  - @wso2is/admin.feature-gate.v1@1.4.134
+  - @wso2is/admin.remote-userstores.v1@1.7.90
+  - @wso2is/admin.server-configurations.v1@2.32.59
+  - @wso2is/admin.tenants.v1@2.28.108
+  - @wso2is/admin.users.v1@2.30.44
+  - @wso2is/admin.userstores.v1@2.26.93
+
 ## 2.29.133
 
 ### Patch Changes

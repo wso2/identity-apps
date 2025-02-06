@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------------
 #
-# Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+# Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
 #
 # WSO2 LLC. licenses this file to you under the Apache License,
 # Version 2.0 (the "License"); you may not use this file except
@@ -39,33 +39,15 @@ jobs:
             github.event.workflow_run.conclusion == 'success'
         steps:
             - name: 📥 Download PR Number Artifact
-              uses: actions/github-script@v3.1.0
+              uses: actions/download-artifact@v4
               with:
+                name: pr-number
                 github-token: ${{ env.GH_TOKEN }}
-                script: |
-                    const artifacts = await github.actions.listWorkflowRunArtifacts({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        run_id: ${{ github.event.workflow_run.id }},
-                    });
+                repository: ${{ github.repository }}
+                run-id: ${{ github.event.workflow_run.id }}
 
-                    const matchArtifact = artifacts.data.artifacts.find(artifact => artifact.name === "pr-number");
-                    if (!matchArtifact) {
-                        throw new Error("Artifact 'pr-number' not found.");
-                    }
-
-                    const download = await github.actions.downloadArtifact({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        artifact_id: matchArtifact.id,
-                        archive_format: 'zip',
-                    });
-
-                    const fs = require('fs');
-                    fs.writeFileSync('${{ github.workspace }}/pr-number.zip', Buffer.from(download.data));
-
-            - name: 📦 Extract PR Number Artifact
-              run: unzip pr-number.zip
+            - name: 📝 Display PR Number
+              run: cat ./PR_NUMBER
 
             - name: 💬 Remove Existing Changeset Comment
               uses: actions/github-script@v3.1.0

@@ -146,4 +146,13 @@ export class ActionsConstants {
             value: PasswordFormat.PLAIN_TEXT
         }
     ];
+
+    /**
+     * Set of keys used to enable/disable features.
+     * @typeParam FEATURE_DICTIONARY - `Map<string, string>`
+     * @defaultValue
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("PRE_ISSUE_ACCESS_TOKEN_RULE", "actions.types.preIssueAccessToken.edit.rule")
+        .set("PRE_UPDATE_PASSWORD_RULE", "actions.types.preUpdatePassword.edit.rule");
 }

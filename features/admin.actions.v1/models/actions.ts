@@ -81,6 +81,10 @@ export interface ActionInterface {
      * Endpoint configuration of the Action.
      */
     endpoint: EndpointInterface;
+    /**
+     * Rules to execute the action.
+     */
+    rule?: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
 }
 
 /**
@@ -368,6 +372,10 @@ export interface ActionConfigFormPropertyInterface extends EndpointConfigFormPro
      * Name of the Action.
      */
     name: string;
+    /**
+     * Rule of the Action.
+     */
+    rule?: RuleWithoutIdInterface
 }
 
 export interface EndpointConfigFormPropertyInterface {
