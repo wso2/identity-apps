@@ -570,6 +570,7 @@ export enum PreviewScreenType {
     EMAIL_TEMPLATE = "email-template",
     SIGN_UP = "sign-up",
     EMAIL_OTP = "email-otp",
+    PUSH_AUTH = "push-auth",
     SMS_OTP = "sms-otp",
     TOTP = "totp",
     PASSWORD_RECOVERY = "password-recovery",

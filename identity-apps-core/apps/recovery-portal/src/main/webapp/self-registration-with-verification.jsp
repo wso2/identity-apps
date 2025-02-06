@@ -781,6 +781,9 @@
                                 <div class="ui divider hidden"></div>
                                 <div class="field">
                                     <div class="g-recaptcha"
+                                        data-size="invisible"
+                                        data-bind="registrationSubmit"
+                                        data-callback="onCompleted"
                                         data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
                                         data-theme="light"
                                     >
@@ -1040,6 +1043,10 @@
 
         function goBack() {
             window.history.back();
+        }
+
+        function onCompleted() {
+            $('#register').submit();
         }
 
         $(document).ready(function () {

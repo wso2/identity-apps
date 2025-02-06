@@ -189,7 +189,7 @@
                                     </h3>
                                     <% } else { %>
                                     <p class="text-center">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "push.notification.sent.msg")%>
+                                        <%=i18n(resourceBundle, customText, "push.notification.sent.msg")%>
                                     </p>
                                     <% } %>
                                 </div>

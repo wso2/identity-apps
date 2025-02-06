@@ -1,5 +1,71 @@
 # @wso2is/admin.identity-verification-providers.v1
 
+## 2.27.142
+
+### Patch Changes
+
+- Updated dependencies [[`e1fd42a4d68b6b9c3d06c36b749fa46bb04c064d`](https://github.com/wso2/identity-apps/commit/e1fd42a4d68b6b9c3d06c36b749fa46bb04c064d)]:
+  - @wso2is/admin.core.v1@2.38.11
+  - @wso2is/admin.claims.v1@2.27.52
+  - @wso2is/admin.connections.v1@2.33.25
+  - @wso2is/admin.feature-gate.v1@1.4.142
+  - @wso2is/admin.template-core.v1@1.5.96
+
+## 2.27.141
+
+### Patch Changes
+
+- Updated dependencies [[`8ccf4ae097eac87ddeaee83830d283ae00957784`](https://github.com/wso2/identity-apps/commit/8ccf4ae097eac87ddeaee83830d283ae00957784)]:
+  - @wso2is/admin.connections.v1@2.33.24
+  - @wso2is/admin.core.v1@2.38.10
+  - @wso2is/admin.claims.v1@2.27.51
+  - @wso2is/admin.feature-gate.v1@1.4.141
+  - @wso2is/admin.template-core.v1@1.5.95
+
+## 2.27.140
+
+### Patch Changes
+
+- Updated dependencies [[`6994a4d6ef9d39263556cb06ece735cd72c96bf5`](https://github.com/wso2/identity-apps/commit/6994a4d6ef9d39263556cb06ece735cd72c96bf5), [`2c831ff7dc0a263fc0ed20b4599f4a13dd4dc6df`](https://github.com/wso2/identity-apps/commit/2c831ff7dc0a263fc0ed20b4599f4a13dd4dc6df)]:
+  - @wso2is/theme@2.6.6
+  - @wso2is/react-components@2.9.4
+  - @wso2is/i18n@2.19.3
+  - @wso2is/admin.claims.v1@2.27.50
+  - @wso2is/admin.connections.v1@2.33.23
+  - @wso2is/admin.core.v1@2.38.9
+  - @wso2is/dynamic-forms@2.4.32
+  - @wso2is/form@2.6.25
+  - @wso2is/admin.feature-gate.v1@1.4.140
+  - @wso2is/admin.template-core.v1@1.5.94
+
+## 2.27.139
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.claims.v1@2.27.49
+  - @wso2is/admin.core.v1@2.38.8
+  - @wso2is/admin.connections.v1@2.33.22
+  - @wso2is/admin.feature-gate.v1@1.4.139
+  - @wso2is/admin.template-core.v1@1.5.93
+
+## 2.27.138
+
+### Patch Changes
+
+- [#7495](https://github.com/wso2/identity-apps/pull/7495) [`79babcaf1edcd195d6da04f39903056b106b1c32`](https://github.com/wso2/identity-apps/commit/79babcaf1edcd195d6da04f39903056b106b1c32) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Resolve Custom Local Authenticator Icon in the Login Flow
+
+- Updated dependencies [[`79babcaf1edcd195d6da04f39903056b106b1c32`](https://github.com/wso2/identity-apps/commit/79babcaf1edcd195d6da04f39903056b106b1c32)]:
+  - @wso2is/theme@2.6.5
+  - @wso2is/admin.claims.v1@2.27.48
+  - @wso2is/admin.core.v1@2.38.7
+  - @wso2is/admin.connections.v1@2.33.21
+  - @wso2is/react-components@2.9.3
+  - @wso2is/admin.feature-gate.v1@1.4.138
+  - @wso2is/admin.template-core.v1@1.5.92
+  - @wso2is/dynamic-forms@2.4.31
+  - @wso2is/form@2.6.24
+
 ## 2.27.137
 
 ### Patch Changes

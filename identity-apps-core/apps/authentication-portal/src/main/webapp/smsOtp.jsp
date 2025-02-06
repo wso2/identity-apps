@@ -149,7 +149,7 @@
                       <% } %>
                       <div id="alertDiv"></div>
                       <div class="segment-form">
-                          <form class="ui large form" id="codeForm" name="codeForm" action="<%=commonauthURL%>" method="POST">
+                          <form class="ui large form otp-form" id="codeForm" name="codeForm" action="<%=commonauthURL%>" method="POST">
                               <%
                                   String loginFailed = request.getParameter("authFailure");
                                   if (loginFailed != null && "true".equals(loginFailed)) {

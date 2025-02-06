@@ -290,3 +290,47 @@ const getValidationConfig = (
 
     return null;
 };
+
+/**
+ * Extracts sub-attributes (objects) from the profile details.
+ *
+ * @param user - The user object to extract sub-attributes from.
+ * @param schemaKey - The attribute key to extract sub-attributes from.
+ * @returns Array of sub-attributes (objects).
+ */
+export const extractSubAttributes = (user: ProfileInfoInterface, schemaKey: string): Record<string, string>[] => {
+    return user && user[schemaKey]?.filter(
+        (subAttribute: unknown) => typeof subAttribute === "object") || [];
+};
+
+/**
+ * Process multi valued simple attribute patch operation value.
+ *
+ * @param attributeSchemaName - Attribute schema name.
+ * @param primaryAttributeSchemaName - Primary schema attribute.
+ * @param profileInfo - Profile information.
+ * @param multiValuedAttributeInputValues - Multi valued attribute input values.
+ * @returns Patch operation value.
+ */
+export const constructPatchOpValueForMultiValuedAttribute = (
+    attributeSchemaName: string,
+    primaryAttributeSchemaName: string,
+    profileInfo: Map<string, string>,
+    multiValuedAttributeInputValues: Record<string, string>
+) => {
+    const currentValues: string[] = profileInfo?.get(attributeSchemaName)?.split(",") || [];
+
+    if (!isEmpty(multiValuedAttributeInputValues[attributeSchemaName])) {
+        currentValues.push(multiValuedAttributeInputValues[attributeSchemaName]);
+    }
+
+    if (!isEmpty(primaryAttributeSchemaName)) {
+        const existingPrimary: string = profileInfo?.get(primaryAttributeSchemaName);
+
+        if (existingPrimary && !currentValues.includes(existingPrimary)) {
+            currentValues.push(existingPrimary);
+        }
+    }
+
+    return { [attributeSchemaName]: currentValues } ;
+};

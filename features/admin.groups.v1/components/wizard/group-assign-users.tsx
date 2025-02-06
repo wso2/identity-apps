@@ -239,16 +239,12 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
         return;
     };
 
-    const handleAssignedItemCheckboxChange = (role: any) => {
-        const checkedGroups: any = [ ...checkedAssignedListItems ];
-
-        if (checkedGroups.includes(role)) {
-            checkedGroups.splice(checkedGroups.indexOf(role), 1);
-            setCheckedAssignedListItems(checkedGroups);
-        } else {
-            checkedGroups.push(role);
-            setCheckedAssignedListItems(checkedGroups);
-        }
+    const handleAssignedItemCheckboxChange = (role: UserBasicInterface) => {
+        setCheckedAssignedListItems((prevCheckedItems: UserBasicInterface[]) => {
+            return prevCheckedItems.some((user: UserBasicInterface) => user.id === role.id)
+                ? prevCheckedItems.filter((user: UserBasicInterface) => user.id !== role.id)
+                : [ ...prevCheckedItems, role ];
+        });
     };
 
     const resolveListItemElement = (listItemValue: string) => {

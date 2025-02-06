@@ -7,6 +7,8 @@
 ~    You may not alter or remove any copyright or other notice from copies of this content."
 -->
 
+<%= htmlWebpackPlugin.options.serverConfiguration %>
+<%= htmlWebpackPlugin.options.proxyContextPathConstant %>
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importTenantPrefix %>
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
@@ -142,6 +144,7 @@
         <script>
             var contextPathGlobal = "<%= htmlWebpackPlugin.options.publicPath %>";
             var serverOriginGlobal = "<%= htmlWebpackPlugin.options.serverUrl %>";
+            var proxyContextPathGlobal = "<%= htmlWebpackPlugin.options.proxyContextPath %>";
             var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
             var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
             var isAdaptiveAuthenticationAvailable = JSON.parse("<%= htmlWebpackPlugin.options.isAdaptiveAuthenticationAvailable %>");

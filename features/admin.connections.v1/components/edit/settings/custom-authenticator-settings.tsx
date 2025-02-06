@@ -219,7 +219,6 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
      */
     const handleUpdateCustomLocalAuthenticator = (
         values: EndpointConfigFormPropertyInterface,
-        changedFields: EndpointConfigFormPropertyInterface,
         authProperties: Partial<AuthenticationPropertiesInterface>
     ) => {
         const updatingValues: EndpointAuthenticationUpdateInterface = {
@@ -269,7 +268,6 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
      */
     const handleUpdateCustomFederatedAuthenticator = (
         values: EndpointConfigFormPropertyInterface,
-        changedFields: EndpointConfigFormPropertyInterface,
         authProperties: Partial<AuthenticationPropertiesInterface>
     ) => {
         const federatedAuthenticatorId: string =
@@ -283,6 +281,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                 },
                 uri: values.endpointUri
             },
+            isDefault: true,
             isEnabled: connector.isEnabled
         };
 

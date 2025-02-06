@@ -1,5 +1,74 @@
 # @wso2is/admin.remote-userstores.v1
 
+## 1.7.98
+
+### Patch Changes
+
+- Updated dependencies [[`e1fd42a4d68b6b9c3d06c36b749fa46bb04c064d`](https://github.com/wso2/identity-apps/commit/e1fd42a4d68b6b9c3d06c36b749fa46bb04c064d)]:
+  - @wso2is/admin.core.v1@2.38.11
+  - @wso2is/admin.applications.v1@2.30.142
+  - @wso2is/admin.claims.v1@2.27.52
+  - @wso2is/admin.extensions.v1@2.36.67
+  - @wso2is/admin.users.v1@2.30.52
+  - @wso2is/admin.userstores.v1@2.26.101
+  - @wso2is/admin.validation.v1@2.27.80
+
+## 1.7.97
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.141
+  - @wso2is/admin.core.v1@2.38.10
+  - @wso2is/admin.extensions.v1@2.36.66
+  - @wso2is/admin.claims.v1@2.27.51
+  - @wso2is/admin.users.v1@2.30.51
+  - @wso2is/admin.userstores.v1@2.26.100
+  - @wso2is/admin.validation.v1@2.27.79
+
+## 1.7.96
+
+### Patch Changes
+
+- Updated dependencies [[`2c831ff7dc0a263fc0ed20b4599f4a13dd4dc6df`](https://github.com/wso2/identity-apps/commit/2c831ff7dc0a263fc0ed20b4599f4a13dd4dc6df), [`a9231ac6175b28be3d696cb55004cca77191402e`](https://github.com/wso2/identity-apps/commit/a9231ac6175b28be3d696cb55004cca77191402e)]:
+  - @wso2is/react-components@2.9.4
+  - @wso2is/admin.applications.v1@2.30.140
+  - @wso2is/admin.extensions.v1@2.36.65
+  - @wso2is/admin.claims.v1@2.27.50
+  - @wso2is/admin.users.v1@2.30.50
+  - @wso2is/admin.userstores.v1@2.26.99
+  - @wso2is/admin.validation.v1@2.27.78
+  - @wso2is/admin.core.v1@2.38.9
+  - @wso2is/form@2.6.25
+
+## 1.7.95
+
+### Patch Changes
+
+- Updated dependencies [[`ab6106079bb48bb3b4207aadf592a7cd3df6c4f2`](https://github.com/wso2/identity-apps/commit/ab6106079bb48bb3b4207aadf592a7cd3df6c4f2)]:
+  - @wso2is/admin.users.v1@2.30.49
+  - @wso2is/admin.applications.v1@2.30.139
+  - @wso2is/admin.claims.v1@2.27.49
+  - @wso2is/admin.core.v1@2.38.8
+  - @wso2is/admin.extensions.v1@2.36.64
+  - @wso2is/admin.validation.v1@2.27.77
+  - @wso2is/admin.userstores.v1@2.26.98
+
+## 1.7.94
+
+### Patch Changes
+
+- Updated dependencies [[`480166a60002ab0a856aeada79fa3b7fb0a814ce`](https://github.com/wso2/identity-apps/commit/480166a60002ab0a856aeada79fa3b7fb0a814ce)]:
+  - @wso2is/admin.users.v1@2.30.48
+  - @wso2is/admin.applications.v1@2.30.138
+  - @wso2is/admin.claims.v1@2.27.48
+  - @wso2is/admin.core.v1@2.38.7
+  - @wso2is/admin.extensions.v1@2.36.63
+  - @wso2is/admin.validation.v1@2.27.76
+  - @wso2is/admin.userstores.v1@2.26.97
+  - @wso2is/react-components@2.9.3
+  - @wso2is/form@2.6.24
+
 ## 1.7.93
 
 ### Patch Changes

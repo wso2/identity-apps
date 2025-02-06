@@ -753,7 +753,7 @@ export interface CustomAuthGeneralDetailsFormValuesInterface {
     /**
      * Display name of the connection
      */
-    displayName?: string
+    displayName?: string;
     /**
      * Description of the connection
      */
@@ -849,14 +849,6 @@ export interface CustomAuthenticationCreateWizardGeneralFormValuesInterface {
  *  Endpoint Authentication Update configuration.
  */
 export interface EndpointAuthenticationUpdateInterface extends CustomAuthGeneralDetailsFormValuesInterface {
-    /**
-     * Name of the Action.
-     */
-    name?: string;
-    /**
-     * Description of the Action.
-     */
-    description?: string;
     /**
      * Endpoint configuration of the Action.
      */

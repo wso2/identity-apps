@@ -1,5 +1,55 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.4.142
+
+### Patch Changes
+
+- Updated dependencies [[`e1fd42a4d68b6b9c3d06c36b749fa46bb04c064d`](https://github.com/wso2/identity-apps/commit/e1fd42a4d68b6b9c3d06c36b749fa46bb04c064d)]:
+  - @wso2is/admin.core.v1@2.38.11
+  - @wso2is/admin.applications.v1@2.30.142
+  - @wso2is/admin.feature-gate.v1@1.4.142
+  - @wso2is/admin.template-core.v1@1.5.96
+
+## 1.4.141
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.141
+  - @wso2is/admin.core.v1@2.38.10
+  - @wso2is/admin.feature-gate.v1@1.4.141
+  - @wso2is/admin.template-core.v1@1.5.95
+
+## 1.4.140
+
+### Patch Changes
+
+- Updated dependencies [[`a9231ac6175b28be3d696cb55004cca77191402e`](https://github.com/wso2/identity-apps/commit/a9231ac6175b28be3d696cb55004cca77191402e)]:
+  - @wso2is/admin.applications.v1@2.30.140
+  - @wso2is/admin.core.v1@2.38.9
+  - @wso2is/admin.feature-gate.v1@1.4.140
+  - @wso2is/admin.template-core.v1@1.5.94
+
+## 1.4.139
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.139
+  - @wso2is/admin.core.v1@2.38.8
+  - @wso2is/admin.feature-gate.v1@1.4.139
+  - @wso2is/admin.template-core.v1@1.5.93
+
+## 1.4.138
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.138
+  - @wso2is/admin.core.v1@2.38.7
+  - @wso2is/admin.feature-gate.v1@1.4.138
+  - @wso2is/admin.template-core.v1@1.5.92
+
 ## 1.4.137
 
 ### Patch Changes

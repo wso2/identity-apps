@@ -172,6 +172,7 @@
     },
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
+    "proxyContextPath": "",
     "routePaths": {
         "home": "/getting-started",
         "login": "",

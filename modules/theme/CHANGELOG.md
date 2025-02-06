@@ -1,5 +1,17 @@
 # @wso2is/theme
 
+## 2.6.6
+
+### Patch Changes
+
+- [#7507](https://github.com/wso2/identity-apps/pull/7507) [`6994a4d6ef9d39263556cb06ece735cd72c96bf5`](https://github.com/wso2/identity-apps/commit/6994a4d6ef9d39263556cb06ece735cd72c96bf5) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add min-width to login portal jsp pages.
+
+## 2.6.5
+
+### Patch Changes
+
+- [#7495](https://github.com/wso2/identity-apps/pull/7495) [`79babcaf1edcd195d6da04f39903056b106b1c32`](https://github.com/wso2/identity-apps/commit/79babcaf1edcd195d6da04f39903056b106b1c32) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Resolve Custom Local Authenticator Icon in the Login Flow
+
 ## 2.6.4
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.19.3
+
+### Patch Changes
+
+- [#7490](https://github.com/wso2/identity-apps/pull/7490) [`2c831ff7dc0a263fc0ed20b4599f4a13dd4dc6df`](https://github.com/wso2/identity-apps/commit/2c831ff7dc0a263fc0ed20b4599f4a13dd4dc6df) Thanks [@brionmario](https://github.com/brionmario)! - Remove `Go to Console` link from root organization actions and show a URL instead
+
+  **Reason**: There are issues in having a `Go to Console` link and we can't properly workaround this without first resolving https://github.com/wso2/product-is/issues/22615
+
 ## 2.19.2
 
 ### Patch Changes

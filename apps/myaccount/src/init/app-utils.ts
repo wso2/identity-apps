@@ -71,6 +71,7 @@ export const AppUtils: AppUtilsInterface = (function() {
     const urlPathForSuperTenantOriginsFallback: string = "";
     const isSaasFallback: boolean = false;
     const tenantResolutionStrategyFallback: string = "id_token";
+    const proxyContextPathFallback: string = "";
 
     const SERVER_ORIGIN_IDP_URL_PLACEHOLDER: string = "${serverOrigin}";
     const TENANT_PREFIX_IDP_URL_PLACEHOLDER: string = "${tenantPrefix}";
@@ -111,8 +112,18 @@ export const AppUtils: AppUtilsInterface = (function() {
          * @returns Redirect URLs.
          */
         constructRedirectURLs: function(url: string) {
-            return _config.clientOrigin + this.getTenantPath() +
-                (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
+            const proxyContextPath: string = this.getProxyContextPath();
+            let basePath: string = `${_config.clientOrigin}${
+                proxyContextPath ? `/${proxyContextPath}` : ""
+            }${this.getTenantPath(true)}`;
+
+            if (basePath.includes(this.getSuperTenant())) {
+                basePath = _config.clientOrigin;
+            }
+
+            return `${basePath}${(_config.appBaseName
+                ? "/" + _config.appBaseName
+                : "")}${url}`;
         },
 
         /**
@@ -154,12 +165,13 @@ export const AppUtils: AppUtilsInterface = (function() {
             const appBaseName: string = _config.appBaseName
                 ? `/${_config.appBaseName}`
                 : "";
+            const proxyContextPath: string = this.getProxyContextPath() ? `/${this.getProxyContextPath()}` : "";
 
             if (_config.tenantContext?.requireSuperTenantInAppUrls && !tenantPath) {
                 tenantPath = `/${this.getTenantPrefix()}/${this.getSuperTenant()}`;
             }
 
-            return `${ tenantPath }${ this.getOrganizationPath() }${ appBaseName }`;
+            return `${proxyContextPath}${ tenantPath }${ this.getOrganizationPath() }${ appBaseName }`;
         },
 
         /**
@@ -210,6 +222,7 @@ export const AppUtils: AppUtilsInterface = (function() {
                 logoutCallbackURL: this.constructRedirectURLs(_config.logoutCallbackPath),
                 organizationPrefix: this.getOrganizationPrefix(),
                 productVersionConfig: _config.ui.productVersionConfig,
+                proxyContextPath: this.getProxyContextPath(),
                 routes: {
                     home: this.constructAppPaths(_config.routePaths.home),
                     login: this.constructAppPaths(_config.routePaths.login),
@@ -217,7 +230,7 @@ export const AppUtils: AppUtilsInterface = (function() {
                 },
                 serverOrigin: _config.serverOrigin,
                 serverOriginWithOrganization: _config.serverOrigin + this.getOrganizationPath(),
-                serverOriginWithTenant: _config.serverOrigin + tenantPath,
+                serverOriginWithTenant: this.getServerOriginWithTenant(),
                 session: _config.session,
                 superTenant: this.getSuperTenant(),
                 superTenantProxy: this.getSuperTenantProxy(),
@@ -278,6 +291,55 @@ export const AppUtils: AppUtilsInterface = (function() {
         getOrganizationPrefix: function () {
             return _args.organizationPrefix || orgPrefixFallback;
         },
+
+        /**
+         * Retrieves the proxy context path configured on the server.
+         *
+         * Reads in the following `proxy_context_path` from the `deployment.toml`.
+         *
+         *```
+         * [server]
+         * proxy_context_path = "auth"
+         *```
+         *
+         * @returns The proxy context path.
+         */
+        getProxyContextPath: function() {
+            // When there's no proxy context path, the IS server returns "null".
+            if (_config.proxyContextPath === "null") {
+                return "";
+            }
+
+            return _config.proxyContextPath;
+        },
+
+        /**
+         * Get the server base URL with tenant name appended.
+         *
+         * @example
+         * `https://localhost:9443/t/testtenant`
+         * `https://localhost:9443/t/testtenant/o/suborgid`
+         *
+         * @param enforceOrgPath - whether the suborg prefix should be attached for suborganization base URL.
+         * This was added to utilize this method for constructing the feature gate API base URL which should
+         * not have suborg path prefix appended in the base URL when invoking from suborganizations.
+         *
+         * @returns the server base URL with the tenant name appended.
+         */
+        getServerOriginWithTenant: function(enforceOrgPath: boolean = true) {
+            let tenantPath: string = this.getTenantPath(true);
+
+            /**
+             * If the tenant path is empty, and the organization name is present, then append the `carbon.super` path.
+             */
+            if (this.getOrganizationName() && !tenantPath) {
+                tenantPath = `/${this.getTenantPrefix()}/${this.getSuperTenant()}`;
+            }
+
+            // eslint-disable-next-line max-len
+            return `${ _config.serverOrigin }${ tenantPath }${ enforceOrgPath && this.getOrganizationName() ? "/o" : "" }`;
+        },
+
 
         /**
          * Get the super tenant.
@@ -388,6 +450,7 @@ export const AppUtils: AppUtilsInterface = (function() {
                 "clientOrigin": window.location.origin,
                 "consoleAppOrigin": _args.consoleAppOrigin || _args.serverOrigin || fallbackServerOrigin,
                 "contextPath": _args.contextPath,
+                "proxyContextPath": _args.proxyContextPath || proxyContextPathFallback,
                 "serverOrigin": _args.serverOrigin || fallbackServerOrigin
             };
 
@@ -564,7 +627,6 @@ export const AppUtils: AppUtilsInterface = (function() {
             }
 
             _config.appBaseWithTenant = "/" + this.getTenantPrefix() + "/" + tenant + "/" + _config.appBaseName;
-
         }
     };
 }());

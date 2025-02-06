@@ -56,6 +56,8 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
 }: EditTenantProps): ReactElement => {
     const { t } = useTranslation();
 
+    const isActivated: boolean = tenant?.lifecycleStatus?.activated;
+
     const isTenantDeletionEnabled: boolean = useSelector((state: AppState) => {
         return !state?.config?.ui?.features?.tenants?.disabledFeatures?.includes(
             TenantConstants.FEATURE_DICTIONARY.TENANT_DELETION
@@ -97,26 +99,28 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
             >
                 <EditTenantForm tenant={ tenant } />
             </Card>
-            <DangerZoneGroup sectionHeader={ t("tenants:editTenant.dangerZoneGroup.header") }>
-                { tenant?.lifecycleStatus?.activated && (
-                    <DangerZone
-                        data-componentid={ `${componentId}-danger-zone-status` }
-                        actionTitle={ t("tenants:editTenant.dangerZoneGroup.disable.actionTitle") }
-                        header={ t("tenants:editTenant.dangerZoneGroup.disable.header") }
-                        subheader={ t("tenants:editTenant.dangerZoneGroup.disable.subheader") }
-                        onActionClick={ (): void => disableTenant(tenant) }
-                    />
-                ) }
-                { isTenantDeletionEnabled && (
-                    <DangerZone
-                        data-componentid={ `${componentId}-danger-zone-delete` }
-                        actionTitle={ t("tenants:editTenant.dangerZoneGroup.delete.actionTitle") }
-                        header={ t("tenants:editTenant.dangerZoneGroup.delete.header") }
-                        subheader={ t("tenants:editTenant.dangerZoneGroup.delete.subheader") }
-                        onActionClick={ (): void => deleteTenant(tenant) }
-                    />
-                ) }
-            </DangerZoneGroup>
+            { (isActivated || isTenantDeletionEnabled) && (
+                <DangerZoneGroup sectionHeader={ t("tenants:editTenant.dangerZoneGroup.header") }>
+                    { isActivated && (
+                        <DangerZone
+                            data-componentid={ `${componentId}-danger-zone-status` }
+                            actionTitle={ t("tenants:editTenant.dangerZoneGroup.disable.actionTitle") }
+                            header={ t("tenants:editTenant.dangerZoneGroup.disable.header") }
+                            subheader={ t("tenants:editTenant.dangerZoneGroup.disable.subheader") }
+                            onActionClick={ (): void => disableTenant(tenant) }
+                        />
+                    ) }
+                    { isTenantDeletionEnabled && (
+                        <DangerZone
+                            data-componentid={ `${componentId}-danger-zone-delete` }
+                            actionTitle={ t("tenants:editTenant.dangerZoneGroup.delete.actionTitle") }
+                            header={ t("tenants:editTenant.dangerZoneGroup.delete.header") }
+                            subheader={ t("tenants:editTenant.dangerZoneGroup.delete.subheader") }
+                            onActionClick={ (): void => deleteTenant(tenant) }
+                        />
+                    ) }
+                </DangerZoneGroup>
+            ) }
         </Stack>
     );
 };

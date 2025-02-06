@@ -140,7 +140,7 @@ export const getProfileInformation = (
                             setProfileInfo({
                                 ...infoResponse,
                                 isReadOnly:
-                                    response[SCIMConfigs.scim.customEnterpriseSchema]
+                                    response[SCIMConfigs.scim.systemSchema]
                                         ?.isReadOnlyUser
                             })
                         );
@@ -152,7 +152,7 @@ export const getProfileInformation = (
                                 getScimSchemas(
                                     infoResponse,
                                     toBoolean(
-                                        response[SCIMConfigs.scim.customEnterpriseSchema]?.isReadOnlyUser
+                                        response[SCIMConfigs.scim.systemSchema]?.isReadOnlyUser
                                     )
                                 ) as unknown as AnyAction
                             );
@@ -165,7 +165,7 @@ export const getProfileInformation = (
                                     infoResponse,
                                     store.getState().authenticationInformation.profileSchemas,
                                     toBoolean(
-                                        response[SCIMConfigs.scim.customEnterpriseSchema]?.isReadOnlyUser
+                                        response[SCIMConfigs.scim.systemSchema]?.isReadOnlyUser
                                     )
                                 );
                             } catch (e) {
