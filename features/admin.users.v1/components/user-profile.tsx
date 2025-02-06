@@ -1798,6 +1798,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 || multiValuedAttributeValues[schema.name]?.includes(value)
                             ) return;
                             handleAddMultiValuedItem(schema, value);
+                            setMultiValuedInputFieldValue({
+                                ...multiValuedInputFieldValue,
+                                [schema.name]: ""
+                            });
                         }
                     } }
                     disabled={ isSubmitting
@@ -1869,6 +1873,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
                             )
                     }
+                    controlled
                 />
                 <div hidden={ !showAccordion }>
                     <TableContainer
