@@ -314,14 +314,12 @@
 
                 pollingInterval = setInterval(() => {
                     $.ajax({
-                        url: STATUS_URL,
+                        url: "<%= Encode.forJavaScriptBlock(identityServerEndpointContextParam)%>" + STATUS_URL,
                         type: "GET",
                         contentType: "application/json",
                         success: function (response) {
                             if (response.status === "COMPLETED") {
                                 clearInterval(pollingInterval);
-                                document.getElementById("instruction-div").style.display = "none";
-                                $("#responseReceived").transition("fade");
                                 setTimeout(() => {
                                     document.getElementById("scenario").value = "PROCEED_PUSH_AUTHENTICATION";
                                     $("#submitForm").submit();
