@@ -17,6 +17,7 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
+import { DroppableContainer, GetDragItemProps, useDnD } from "@oxygen-ui/react/dnd";
 import FormGroup from "@oxygen-ui/react/FormGroup";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
@@ -24,7 +25,6 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DroppableContainer, GetDragItemProps, useDnD } from "@wso2is/dnd";
 import { Handle, Node, Position, useNodeId, useNodesData, useReactFlow } from "@xyflow/react";
 import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
@@ -149,7 +149,7 @@ export const Step: FunctionComponent<StepPropsInterface> = ({
                 <Paper className="flow-builder-step-content-box" elevation={ 0 } variant="outlined">
                     <Box className="flow-builder-step-content-form">
                         <FormGroup>
-                            <DroppableContainer<Component>
+                            <DroppableContainer
                                 nodes={ (node?.data?.components || []) as Component[] }
                                 onOrderChange={ handleOrderChange }
                             >

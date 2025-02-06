@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { DnDProvider } from "@oxygen-ui/react/dnd";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DnDProvider } from "@wso2is/dnd";
 import { ReactFlowProvider } from "@xyflow/react";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";

@@ -19,10 +19,10 @@
 import Avatar from "@oxygen-ui/react/Avatar";
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
+import { DraggableNode } from "@oxygen-ui/react/dnd";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DraggableNode } from "@wso2is/dnd";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import { SupportedCanvasNodes } from "../../models/visual-editor";
 import "./element-panel-draggable-node.scss";
