@@ -535,6 +535,70 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
     };
 
     /**
+     * This method handles custom authenticator create errors.
+     *
+     * @param error - error object.
+     */
+    const handleCustomAuthenticatorCreateErrors = (error: AxiosError): void => {
+        const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
+
+        if (
+            error?.response?.status === 403 &&
+                           error?.response?.data?.code === identityAppsError.getErrorCode()
+        ) {
+            setAlert({
+                code: identityAppsError.getErrorCode(),
+                description: t(identityAppsError.getErrorDescription()),
+                level: AlertLevels.ERROR,
+                message: t(identityAppsError.getErrorMessage()),
+                traceId: identityAppsError.getErrorTraceId()
+            });
+            setTimeout(() => setAlert(undefined), 4000);
+
+            return;
+        }
+
+        if (error?.response?.status === 500 && error?.response?.data?.code === "IDP-65002") {
+            setAlert({
+                description: t(
+                    "customAuthentication:notifications.addCustomAuthenticator.genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "customAuthentication:notifications.addCustomAuthenticator.genericError.message"
+                )
+            });
+            setTimeout(() => setAlert(undefined), 8000);
+
+            return;
+        }
+
+        if (error?.response?.data?.description) {
+            setAlert({
+                description: t(
+                    "customAuthentication:notifications.addCustomAuthenticator.error.description",
+                    {
+                        description: error.response.data.description
+                    }
+                ),
+                level: AlertLevels.ERROR,
+                message: t("customAuthentication:notifications.addCustomAuthenticator.error.message")
+            });
+            setTimeout(() => setAlert(undefined), 4000);
+
+            return;
+        }
+        setAlert({
+            description: t(
+                "customAuthentication:notifications.addCustomAuthenticator.genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: t("customAuthentication:notifications.addCustomAuthenticator.genericError.message")
+        });
+        setTimeout(() => setAlert(undefined), 4000);
+    };
+
+    /**
      * This method creates an external authenticator.
      *
      * @param identityProvider - identity provider object.
@@ -547,9 +611,11 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 });
                 dispatch(
                     addAlert({
-                        description: t("authenticationProvider:notifications.addIDP.success.description"),
+                        description: t("customAuthentication:notifications.addCustomAuthenticator.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("authenticationProvider:notifications.addIDP.success.message")
+                        message: t(
+                            "customAuthentication:notifications.addCustomAuthenticator.success.message"
+                        )
                     })
                 );
 
@@ -564,50 +630,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 onIDPCreate();
             })
             .catch((error: AxiosError) => {
-                const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
-
-                if (error.response.status === 403 && error?.response?.data?.code === identityAppsError.getErrorCode()) {
-                    setAlert({
-                        code: identityAppsError.getErrorCode(),
-                        description: t(identityAppsError.getErrorDescription()),
-                        level: AlertLevels.ERROR,
-                        message: t(identityAppsError.getErrorMessage()),
-                        traceId: identityAppsError.getErrorTraceId()
-                    });
-                    setTimeout(() => setAlert(undefined), 4000);
-
-                    return;
-                }
-
-                if (error?.response.status === 500 && error.response?.data.code === "IDP-65002") {
-                    setAlert({
-                        description: t("authenticationProvider:notifications.addIDP.serverError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications.addIDP.serverError.message")
-                    });
-                    setTimeout(() => setAlert(undefined), 8000);
-
-                    return;
-                }
-
-                if (error.response && error.response.data && error.response.data.description) {
-                    setAlert({
-                        description: t("authenticationProvider:notifications.addIDP.error.description", {
-                            description: error.response.data.description
-                        }),
-                        level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications.addIDP.error.message")
-                    });
-                    setTimeout(() => setAlert(undefined), 4000);
-
-                    return;
-                }
-                setAlert({
-                    description: t("authenticationProvider:notifications.addIDP.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications.addIDP.genericError.message")
-                });
-                setTimeout(() => setAlert(undefined), 4000);
+                handleCustomAuthenticatorCreateErrors(error);
             })
             .finally(() => {
                 setIsSubmitting(false);
@@ -644,50 +667,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 handleSuccessfulAuthenticatorCreate();
             })
             .catch((error: AxiosError) => {
-                const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
-
-                if (error.response.status === 403 && error?.response?.data?.code === identityAppsError.getErrorCode()) {
-                    setAlert({
-                        code: identityAppsError.getErrorCode(),
-                        description: t(identityAppsError.getErrorDescription()),
-                        level: AlertLevels.ERROR,
-                        message: t(identityAppsError.getErrorMessage()),
-                        traceId: identityAppsError.getErrorTraceId()
-                    });
-                    setTimeout(() => setAlert(undefined), 4000);
-
-                    return;
-                }
-
-                if (error?.response.status === 500 && error.response?.data.code === "IDP-65002") {
-                    setAlert({
-                        description: t("authenticationProvider:notifications.addIDP.serverError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications.addIDP.serverError.message")
-                    });
-                    setTimeout(() => setAlert(undefined), 8000);
-
-                    return;
-                }
-
-                if (error.response && error.response.data && error.response.data.description) {
-                    setAlert({
-                        description: t("authenticationProvider:notifications.addIDP.error.description", {
-                            description: error.response.data.description
-                        }),
-                        level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications.addIDP.error.message")
-                    });
-                    setTimeout(() => setAlert(undefined), 4000);
-
-                    return;
-                }
-                setAlert({
-                    description: t("authenticationProvider:notifications.addIDP.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications.addIDP.genericError.message")
-                });
-                setTimeout(() => setAlert(undefined), 4000);
+                handleCustomAuthenticatorCreateErrors(error);
             })
             .finally(() => {
                 setIsSubmitting(false);

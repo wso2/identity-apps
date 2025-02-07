@@ -38,7 +38,7 @@ export interface customAuthenticationNS {
                     header: string;
                     mainDescription: string;
                     examples: string;
-                }
+                };
             };
             generalSettingsStep: {
                 title: string;
@@ -47,16 +47,16 @@ export interface customAuthenticationNS {
                     hint: string;
                     placeholder: string;
                     validations: {
-                        empty: string
-                        invalid: string
+                        empty: string;
+                        invalid: string;
                     };
                 };
                 displayName: {
                     label: string;
                     placeholder: string;
                     validations: {
-                        empty: string
-                        invalid: string
+                        empty: string;
+                        invalid: string;
                     };
                 };
                 helpPanel: {
@@ -125,20 +125,64 @@ export interface customAuthenticationNS {
                             validations: {
                                 required: string;
                             };
-                        }
+                        };
                     };
                     validations: {
                         required: string;
                     };
-                }
-            }
+                };
+            };
         };
         editPage: {
             generalTab: {
                 iconUrl: {
                     hint: string;
-                }
-            }
-        }
+                };
+            };
+        };
+    };
+    notifications: {
+        updateCustomAuthenticator: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        getCustomAuthenticator: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        addCustomAuthenticator: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
     };
 };

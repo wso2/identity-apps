@@ -435,11 +435,14 @@ export const handleGetCustomAuthenticatorError = (error: AxiosError): void => {
     if (error?.response?.data?.description) {
         store.dispatch(
             addAlert({
-                description: I18n.instance.t("authenticationProvider:notifications.getIDP.error.description", {
-                    description: error.response.data.description
-                }),
+                description: I18n.instance.t(
+                    "customAuthentication:notifications.getCustomAuthenticator.error.description",
+                    {
+                        description: error?.response?.data?.description
+                    }
+                ),
                 level: AlertLevels.ERROR,
-                message: I18n.instance.t("authenticationProvider:notifications.getIDP.error.message")
+                message: I18n.instance.t("customAuthentication:notifications.getCustomAuthenticator.error.message")
             })
         );
 
@@ -448,9 +451,11 @@ export const handleGetCustomAuthenticatorError = (error: AxiosError): void => {
 
     store.dispatch(
         addAlert({
-            description: I18n.instance.t("authenticationProvider:notifications.getIDP.genericError.description"),
+            description: I18n.instance.t(
+                "customAuthentication:notifications.getCustomAuthenticator.genericError.description"
+            ),
             level: AlertLevels.ERROR,
-            message: I18n.instance.t("authenticationProvider:notifications.getIDP.genericError.message")
+            message: I18n.instance.t("customAuthentication:notifications.getCustomAuthenticator.genericError.message")
         })
     );
 };
@@ -633,18 +638,19 @@ export const handleConnectionUpdateError = (error: AxiosError): void => {
     );
 };
 
+/**
+ * Utility function to handle the error alert of the custom authenticator update request.
+ */
 export const handleCustomAuthenticatorUpdateError = (error: AxiosError): void => {
     if (error?.response?.data?.description) {
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "authenticationProvider:notifications.updateFederatedAuthenticator.error.description",
-                    { description: error.response.data.description }
+                    "customAuthentication:notifications.updateCustomAuthenticator.error.description",
+                    { description: error?.response?.data?.description }
                 ),
                 level: AlertLevels.ERROR,
-                message: I18n.instance.t(
-                    "authenticationProvider:notifications.updateFederatedAuthenticator.error.message"
-                )
+                message: I18n.instance.t("customAuthentication:notifications.updateCustomAuthenticator.error.message")
             })
         );
 
@@ -654,11 +660,11 @@ export const handleCustomAuthenticatorUpdateError = (error: AxiosError): void =>
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "authenticationProvider:notifications.updateFederatedAuthenticator.genericError.description"
+                "customAuthentication:notifications.updateCustomAuthenticator.genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "authenticationProvider:notifications.updateFederatedAuthenticator.genericError.message"
+                "customAuthentication:notifications.updateCustomAuthenticator.genericError.message"
             )
         })
     );

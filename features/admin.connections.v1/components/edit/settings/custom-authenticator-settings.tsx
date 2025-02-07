@@ -245,12 +245,10 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                 dispatch(
                     addAlert({
                         description: t(
-                            "authenticationProvider:notifications.updateFederatedAuthenticator.success.description"
+                            "customAuthentication:notifications.updateCustomAuthenticator.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
-                        message: t(
-                            "authenticationProvider:notifications.updateFederatedAuthenticator.success.message"
-                        )
+                        message: t("customAuthentication:notifications.updateCustomAuthenticator.success.message")
                     })
                 );
                 onUpdate(connector.id);

@@ -16,15 +16,12 @@
  * under the License.
  */
 
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { getLocalAuthenticator } from "../../../api/authenticators";
 import { getFederatedAuthenticatorDetails } from "../../../api/connections";
 import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
@@ -39,12 +36,12 @@ import {
     ExternalEndpoint,
     FederatedAuthenticatorListItemInterface
 } from "../../../models/connection";
-import { ConnectionsManagementUtils } from "../../../utils/connection-utils";
+import { ConnectionsManagementUtils, handleGetCustomAuthenticatorError } from "../../../utils/connection-utils";
 
 /**
  * Proptypes for the custom authenticator general details form component.
  */
-interface CustomAuthGeneralDetailsFormPopsInterface extends IdentifiableComponentInterface {
+interface CustomAuthenticatorGeneralDetailsFormPopsInterface extends IdentifiableComponentInterface {
     /**
      * Currently editing IDP.
      */
@@ -102,16 +99,16 @@ const FORM_ID: string = "idp-custom-auth-general-details-form";
  * @param props - Props injected to the component.
  * @returns Functional component.
  */
-export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDetailsFormPopsInterface> = ({
+export const CustomAuthenticatorGeneralDetailsForm:FunctionComponent<
+CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
     templateType,
     onSubmit,
     editingIDP,
     isReadOnly,
     isSubmitting,
     "data-componentid": _componentId = "idp-edit-custom-auth-general-settings-form"
-}: CustomAuthGeneralDetailsFormPopsInterface): ReactElement => {
+}: CustomAuthenticatorGeneralDetailsFormPopsInterface): ReactElement => {
 
-    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
     const [ isCustomLocalAuth, setIsCustomLocalAuth ] = useState<boolean>(undefined);
@@ -145,28 +142,8 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                 .then((data: CustomAuthConnectionInterface) => {
                     setAuthenticatorEndpoint(data?.endpoint);
                 })
-                .catch((error: IdentityAppsApiException) => {
-                    if (error.response && error.response.data && error.response.data.description) {
-                        dispatch(
-                            addAlert({
-                                description: t("authenticationProvider:notifications.getIDP.error.description", {
-                                    description: error.response.data.description
-                                }),
-                                level: AlertLevels.ERROR,
-                                message: t("authenticationProvider:notifications.getIDP.error.message")
-                            })
-                        );
-
-                        return;
-                    }
-
-                    dispatch(
-                        addAlert({
-                            description: t("authenticationProvider:notifications.getIDP.genericError.description"),
-                            level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:notifications.getIDP.genericError.message")
-                        })
-                    );
+                .catch((error: AxiosError) => {
+                    handleGetCustomAuthenticatorError(error);
                 });
         } else {
             localAuthenticatorId = editingIDP?.federatedAuthenticators?.authenticators[0].authenticatorId;
@@ -174,28 +151,8 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                 .then((data: FederatedAuthenticatorListItemInterface) => {
                     setAuthenticatorEndpoint(data?.endpoint);
                 })
-                .catch((error: IdentityAppsApiException) => {
-                    if (error.response && error.response.data && error.response.data.description) {
-                        dispatch(
-                            addAlert({
-                                description: t("authenticationProvider:notifications.getIDP.error.description", {
-                                    description: error.response.data.description
-                                }),
-                                level: AlertLevels.ERROR,
-                                message: t("authenticationProvider:notifications.getIDP.error.message")
-                            })
-                        );
-
-                        return;
-                    }
-
-                    dispatch(
-                        addAlert({
-                            description: t("authenticationProvider:notifications.getIDP.genericError.description"),
-                            level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:notifications.getIDP.genericError.message")
-                        })
-                    );
+                .catch((error: AxiosError) => {
+                    handleGetCustomAuthenticatorError(error);
                 });
         }
     }, [ isCustomLocalAuth ]);
