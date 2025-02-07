@@ -63,7 +63,11 @@ import {
     ImplicitAssociaionConfigInterface
 } from "../../models/connection";
 import { isProvisioningAttributesEnabled } from "../../utils/attribute-utils";
-import { ConnectionsManagementUtils, handleConnectionUpdateError } from "../../utils/connection-utils";
+import {
+    ConnectionsManagementUtils,
+    handleConnectionUpdateError,
+    resolveCustomAuthenticatorDisplayName
+} from "../../utils/connection-utils";
 import { validateEndpointAuthentication } from "../../utils/form-field-utils";
 import "./connection-edit.scss";
 
@@ -356,14 +360,6 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         );
     };
 
-    const resolveDisplayName = (): string => {
-        if (isCustomLocalAuthenticator) {
-            return (identityProvider as CustomAuthConnectionInterface)?.displayName;
-        } else {
-            return (identityProvider as ConnectionInterface)?.name;
-        }
-    };
-
     const Loader = (): ReactElement => (
         <EmphasizedSegment padded>
             <ContentLoader inline="centered" active />
@@ -459,7 +455,10 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
             if (isCustomLocalAuthenticator) {
                 const updatingValues: EndpointAuthenticationUpdateInterface = {
-                    displayName: resolveDisplayName(),
+                    displayName: resolveCustomAuthenticatorDisplayName(
+                        identityProvider,
+                        isCustomLocalAuthenticator
+                    ),
                     endpoint: {
                         authentication: {
                             properties: authProperties,

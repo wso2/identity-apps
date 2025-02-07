@@ -39,7 +39,7 @@ import {
     ExternalEndpoint,
     FederatedAuthenticatorListItemInterface
 } from "../../../models/connection";
-import { ConnectionsManagementUtils } from "../../../utils/connection-utils";
+import { ConnectionsManagementUtils, resolveCustomAuthenticatorDisplayName } from "../../../utils/connection-utils";
 
 /**
  * Proptypes for the custom authenticator general details form component.
@@ -248,14 +248,6 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
         }
     };
 
-    const resolveDisplayName = (): string => {
-        if (isCustomLocalAuth) {
-            return (editingIDP as CustomAuthConnectionInterface)?.displayName;
-        } else {
-            return (editingIDP as ConnectionInterface)?.name;
-        }
-    };
-
     /**
      * Resolve the authenticator image.
      *
@@ -315,7 +307,7 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                     validate={ validateGeneralSettingsField }
                     initialValues={ {
                         description: editingIDP?.description,
-                        displayName: resolveDisplayName(),
+                        displayName: resolveCustomAuthenticatorDisplayName(editingIDP, isCustomLocalAuth),
                         identifier: resolveIdentifier(),
                         image: editingIDP?.image,
                         isEnabled: editingIDP?.isEnabled

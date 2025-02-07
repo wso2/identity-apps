@@ -31,7 +31,6 @@ import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import { NotificationSenderSMSInterface } from "../models/authenticators";
 import {
     ApplicationBasicInterface,
-    ConnectedAppInterface,
     ConnectedAppsInterface,
     ConnectionClaimsInterface,
     ConnectionGroupInterface,
@@ -867,13 +866,14 @@ export const getConnectedApps = (idpId: string): Promise<any> => {
  * @param shouldFetch - Whether the request should be fetched.
  * @returns Requested connected apps.
  */
-export const useGetConnectedAppsOfAuthenticator = <Data = ConnectedAppInterface[], Error = RequestErrorInterface>(
+export const useGetConnectedAppsOfAuthenticator = <Data = ConnectedAppsInterface, Error = RequestErrorInterface>(
     authenticatorId: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
+
     const requestConfig: RequestConfigInterface = {
         headers: {
-            Accept: "application/json",
+            "Accept": "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -885,7 +885,7 @@ export const useGetConnectedAppsOfAuthenticator = <Data = ConnectedAppInterface[
     return {
         data,
         error: error,
-        isLoading: !error && !data,
+        isLoading: shouldFetch ? !error && !data : null,
         isValidating,
         mutate
     };
