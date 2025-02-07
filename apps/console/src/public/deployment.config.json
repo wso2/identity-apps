@@ -492,7 +492,8 @@
             },
             "branding": {
                 "disabledFeatures": [
-                    "branding.hostnameUrlBranding"
+                    "branding.hostnameUrlBranding",
+                    "branding.stylesAndText.application.text"
                 ],
                 "enabled": true,
                 "featureFlags": [
