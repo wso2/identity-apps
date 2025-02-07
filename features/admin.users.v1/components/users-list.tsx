@@ -55,6 +55,9 @@ import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-r
 import {
     ReactComponent as RoundedLockSolidIcon
 } from "../../themes/default/assets/images/icons/solid-icons/rounded-lock.svg";
+import {
+    ReactComponent as RemoveCircleSolidIcon
+} from "../../themes/default/assets/images/icons/solid-icons/remove-circle.svg";
 import { deleteUser } from "../api";
 import { ACCOUNT_LOCK_REASON_MAP, UserManagementConstants } from "../constants";
 import { UserBasicInterface, UserListInterface } from "../models/user";
@@ -257,17 +260,37 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
     /**
      * Returns a locked icon if the account is locked.
+     * Returns a cross icon if the account is disabled.
      *
      * @param user - each admin user belonging to a row of the table.
      * @returns the locked icon.
      */
-    const resolveAccountLockStatus = (user: UserBasicInterface): ReactNode => {
+    const resolveAccountStatus = (user: UserBasicInterface): ReactNode => {
         const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
             user[userConfig.userProfileSchema]?.accountLocked === true;
+        const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true" ||
+            user[userConfig.userProfileSchema]?.accountDisabled === true;
         const accountLockedReason: string = user[userConfig.userProfileSchema]?.lockedReason;
 
         const accountLockedReasonContent: string = ACCOUNT_LOCK_REASON_MAP[accountLockedReason]
             ?? ACCOUNT_LOCK_REASON_MAP["DEFAULT"];
+
+        if (accountDisabled) {
+            return (
+                <Popup
+                    trigger={ (
+                        <Icon
+                            className="disabled-icon"
+                            size="small"
+                        >
+                            <RemoveCircleSolidIcon/>
+                        </Icon>
+                    ) }
+                    content={ t("user:profile.accountDisabled") }
+                    inverted
+                />
+            );
+        }
 
         if (accountLocked) {
             return (
@@ -322,7 +345,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 spaced="right"
                                 data-suppress=""
                             />
-                            { resolveAccountLockStatus(user) }
+                            { resolveAccountStatus(user) }
                             <Header.Content className="pl-0">
                                 <div>
                                     { header as ReactNode }
