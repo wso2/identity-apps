@@ -558,7 +558,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             return;
         }
 
-        if (error?.response?.status === 500 && error?.response?.data?.code === "IDP-65002") {
+        if (error?.response?.status === 500) {
             setAlert({
                 description: t(
                     "customAuthentication:notifications.addCustomAuthenticator.genericError.description"
