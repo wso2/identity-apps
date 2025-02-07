@@ -65,18 +65,22 @@
      * @param name - Name of the cookie
      * @param value - Value to be stored
      * @param days - Expiry days
+     * @param options - Additional options for the cookie such as `httpOnly` and `secure.
      */
-    function setCookie(name, value, days) {
+    function setCookie(name, value, days, options) {
         var expires = "";
         var domain = ";domain=" + URLUtils.getDomain(window.location.href);
 
         if (days) {
             const date = new Date();
-            date.setTime(date.getTime() + (days*24*60*60*1000));
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
             expires = "; expires=" + date.toUTCString();
         }
 
-        document.cookie = name + "=" + (value || "")  + expires + domain + "; path=/";
+        var httpOnlyString = (options && options.httpOnly) ? "; HttpOnly" : "";
+        var secureString = (options && options.secure) ? "; Secure" : "";
+
+        document.cookie = name + "=" + (value || "") + expires + domain + "; path=/" + httpOnlyString + secureString;
     }
 
     /**

@@ -197,7 +197,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             I18nModuleConstants.PREFERENCE_STORAGE_KEY,
             cookieSupportedLanguage,
             { days: 30 },
-            URLUtils.getDomain(window.location.href)
+            URLUtils.getDomain(window.location.href),
+            { secure: true }
         );
     };
 
