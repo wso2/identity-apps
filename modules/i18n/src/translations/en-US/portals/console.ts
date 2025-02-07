@@ -8555,10 +8555,6 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: "Templates - {{displayName}}"
             },
-            groups: {
-                subTitle: "Create and manage user groups, assign permissions for groups.",
-                title: "Groups"
-            },
             invite: {
                 subTitle: "Invite and manage admins and developers.",
                 title: "Admins & Developers"

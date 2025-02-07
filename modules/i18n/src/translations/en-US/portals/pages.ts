@@ -68,7 +68,7 @@ export const pages: pagesNS = {
         title: "Templates - {{displayName}}"
     },
     groups: {
-        subTitle: "Create and manage user groups, assign permissions for groups.",
+        subTitle: "Create and manage groups, assign users for groups.",
         title: "Groups"
     },
     groupsEdit: {
