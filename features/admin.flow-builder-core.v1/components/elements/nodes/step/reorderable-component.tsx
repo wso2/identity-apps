@@ -17,8 +17,8 @@
  */
 
 import Box, { BoxProps } from "@oxygen-ui/react/Box";
+import { GetDragItemProps } from "@oxygen-ui/react/dnd";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { GetDragItemProps } from "@wso2is/dnd";
 import { useNodeId } from "@xyflow/react";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, SVGProps } from "react";
