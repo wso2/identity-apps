@@ -88,7 +88,7 @@
      */
     function setUILocaleCookie(language) {
         var EXPIRY_DAYS = 30;
-        setCookie('ui_lang', language, EXPIRY_DAYS);
+        setCookie('ui_lang', language, EXPIRY_DAYS, { secure: true });
     }
 
     /**
