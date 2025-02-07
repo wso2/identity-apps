@@ -128,7 +128,7 @@ if (isTSFile(filePathFromArg)) {
   project.addSourceFileAtPath(filePathFromArg)
 } else {
   console.error("Invalid file: " + filePathFromArg);
-  exit(1);
+  process.exit(1);
 }
 
 const sourceFile = project.getSourceFileOrThrow(filePathFromArg);
@@ -143,6 +143,7 @@ for (const call of calls) {
       console.log(`Found t("") call in ${filePathFromArg}:`);
 
       const args = call.getArguments();
+      console.log(args[0].getKind())
       const i18nKey = await getPropertyAccessChain(args);
 
       if (!i18nKey) {
