@@ -29,7 +29,7 @@ import {
     PreviewScreenType,
     PreviewScreenVariationType
 } from "@wso2is/common.branding.v1/models";
-import { FeatureFlagsInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface, FeatureFlagsInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FormPropsInterface } from "@wso2is/form";
 import { Heading, Link, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -164,8 +164,10 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
     const systemTheme: string = useSelector((state: AppState) => state.config.ui.theme?.name);
     const supportEmail: string = useSelector((state: AppState) =>
         state.config.deployment.extensions?.supportEmail as string);
+    const brandingFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.branding);
     const brandingFeatureFlags: FeatureFlagsInterface[] = useSelector(
-        (state: AppState) => state.config.ui.features?.branding?.featureFlags);
+        () => brandingFeatureConfig?.featureFlags);
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(isUpdating);
     const [
@@ -458,24 +460,14 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
             render: AdvancePreferenceTabPane
         });
 
-        panes.push({
-            "data-tabid": BrandingPreferencesConstants.TABS.TEXT_TAB_ID,
-            menuItem: (
-                <Menu.Item
-                    key="text"
-                    disabled={ brandingMode === BrandingModes.APPLICATION }
-                >
-                    { t("branding:tabs.text.label") }
-                    {   brandingMode === BrandingModes.APPLICATION && (
-                        <FeatureFlagLabel
-                            featureFlags={ brandingFeatureFlags }
-                            featureKey={
-                                FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_BRANDING_TEXT
-                            }
-                            type="chip"
-                        />
-                    ) }
-                    {   brandingMode !== BrandingModes.APPLICATION && (
+        if (brandingMode === BrandingModes.ORGANIZATION) {
+            panes.push({
+                "data-tabid": BrandingPreferencesConstants.TABS.TEXT_TAB_ID,
+                menuItem: (
+                    <Menu.Item
+                        key="text"
+                    >
+                        { t("branding:tabs.text.label") }
                         <FeatureFlagLabel
                             featureFlags={ brandingFeatureFlags }
                             featureKey={
@@ -483,11 +475,36 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                             }
                             type="chip"
                         />
-                    ) }
-                </Menu.Item>
-            ),
-            render: TextPreferenceTabPane
-        });
+                    </Menu.Item>
+                ),
+                render: TextPreferenceTabPane
+            });
+        }
+
+        if (brandingMode === BrandingModes.APPLICATION &&
+            !brandingFeatureConfig?.disabledFeatures?.includes(FeatureFlagConstants
+                .FEATURE_FLAG_KEY_MAP.APPLICATION_BRANDING_TEXT)) {
+
+            panes.push({
+                "data-tabid": BrandingPreferencesConstants.TABS.TEXT_TAB_ID,
+                menuItem: (
+                    <Menu.Item
+                        key="text"
+                        disabled={ true }
+                    >
+                        { t("branding:tabs.text.label") }
+                        <FeatureFlagLabel
+                            featureFlags={ brandingFeatureFlags }
+                            featureKey={
+                                FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_BRANDING_TEXT
+                            }
+                            type="chip"
+                        />
+                    </Menu.Item>
+                ),
+                render: TextPreferenceTabPane
+            });
+        }
 
         if (!isSplitView) {
             panes.push({
