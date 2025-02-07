@@ -93,7 +93,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
 
     const [ initialValues, setInitialValues ] = useState<EndpointConfigFormPropertyInterface>(null);
     const [ endpointAuthenticationType, setEndpointAuthenticationType ] = useState<AuthenticationType>(null);
-    const [ isUpdateEndpointAuthenticationType, setIsUpdateEndpointAuthenticationType ] = useState<boolean>(false);
+    const [ isEndpointAuthenticationUpdated, setIsEndpointAuthenticationUpdated ] = useState<boolean>(false);
 
     /**
     * This useEffect is utilized only for custom authenticators in order to fetch additional
@@ -168,7 +168,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
 
         return validateActionEndpointFields(values, {
             authenticationType: endpointAuthenticationType,
-            isAuthenticationUpdateFormState: isUpdateEndpointAuthenticationType
+            isAuthenticationUpdateFormState: isEndpointAuthenticationUpdated
         });
     };
 
@@ -318,7 +318,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                                         isAuthenticationUpdated: boolean
                                     ) => {
                                         setEndpointAuthenticationType(authenticationType);
-                                        setIsUpdateEndpointAuthenticationType(isAuthenticationUpdated);
+                                        setIsEndpointAuthenticationUpdated(isAuthenticationUpdated);
                                     } }
                                 />
                                 { !isLoading && (
@@ -336,7 +336,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                         </EmphasizedSegment>
                         <FormSpy subscription={ { values: true } }>
                             { ({ values }: { values: EndpointConfigFormPropertyInterface }) => {
-                                if (!isUpdateEndpointAuthenticationType) {
+                                if (!isEndpointAuthenticationUpdated) {
                                     form.change("authenticationType", values?.authenticationType);
                                     switch (values?.authenticationType) {
                                         case AuthenticationType.BASIC:

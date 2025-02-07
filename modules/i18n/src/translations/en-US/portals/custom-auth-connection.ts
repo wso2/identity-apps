@@ -164,15 +164,11 @@ export const customAuthentication: customAuthenticationNS = {
         getCustomAuthenticator: {
             error: {
                 description: "{{ description }}",
-                message: "Retrieval Error"
+                message: "Retrieval error"
             },
             genericError: {
                 description: "An error occurred while retrieving the custom authenticator.",
-                message: "Retrieval Error"
-            },
-            success: {
-                description: "",
-                message: ""
+                message: "Retrieval error"
             }
         },
         updateCustomAuthenticator: {

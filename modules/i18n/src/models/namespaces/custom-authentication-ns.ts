@@ -165,10 +165,6 @@ export interface customAuthenticationNS {
                 message: string;
                 description: string;
             };
-            success: {
-                message: string;
-                description: string;
-            };
         };
         addCustomAuthenticator: {
             error: {
