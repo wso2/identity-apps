@@ -21,7 +21,11 @@ import { ApplicationTabComponentsFilter } from
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { ApplicationTabIDs, applicationConfig, commonConfig } from "@wso2is/admin.extensions.v1";
-import { getAvailableNameIDFormats } from "@wso2is/admin.identity-providers.v1/components/utils/saml-idp-utils";
+import {
+    DEFAULT_NAME_ATTRIBUTE_FORMAT,
+    getAvailableNameAttributeFormats,
+    getAvailableNameIDFormats
+} from "@wso2is/admin.identity-providers.v1/components/utils/saml-idp-utils";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { CheckboxChild, DropdownChild, Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
@@ -178,6 +182,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     const keyEncryptionAlgorithm:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const attributeProfile:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const includeAttributesInResponse:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const attributeNameFormat:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const attributeConsumingServiceIndex:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const singleLogoutProfile:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const logoutMethod:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
@@ -229,6 +234,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                     assertionConsumerUrls: assertionConsumerUrls.split(","),
                     attributeProfile: {
                         alwaysIncludeAttributesInResponse: values.get("attributeProfile").includes("enabled"),
+                        attributeNameFormat: values.get("attributeNameFormat"),
                         enabled: values.get("attributeProfile").includes("enabled")
                     },
                     defaultAssertionConsumerUrl: values.get("defaultAssertionConsumerUrl"),
@@ -432,6 +438,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                 break;
             case "attributeConsumingServiceIndex":
                 attributeConsumingServiceIndex.current.scrollIntoView(options);
+
+                break;
+            case "attributeNameFormat":
+                attributeNameFormat.current.scrollIntoView(options);
 
                 break;
             case "singleLogoutProfile":
@@ -1526,6 +1536,33 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     </>
                                 )
                             }
+                            <Grid.Row
+                                columns={ 1 }
+                                data-componentid="application-edit-inbound-saml-form-attribute-name-format"
+                            >
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Field
+                                        ref={ attributeNameFormat }
+                                        label={
+                                            t("applications:forms.inboundSAML.sections" +
+                                                ".attributeProfile.fields.attributeNameFormat.label")
+                                        }
+                                        name="attributeNameFormat"
+                                        type="dropdown"
+                                        default={ DEFAULT_NAME_ATTRIBUTE_FORMAT }
+                                        required={ false }
+                                        value={ initialValues?.attributeProfile?.attributeNameFormat }
+                                        children={ getAvailableNameAttributeFormats() }
+                                        readOnly={ readOnly }
+                                        data-componentid=
+                                            "application-edit-inbound-saml-form-attribute-name-format-input"
+                                    />
+                                    <Hint>
+                                        { t("applications:forms.inboundSAML.sections.attributeProfile" +
+                                            ".fields.attributeNameFormat.hint") }
+                                    </Hint>
+                                </Grid.Column>
+                            </Grid.Row>
 
                             { /*Single Logout Profile*/ }
                             <Grid.Row
