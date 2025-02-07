@@ -73,8 +73,7 @@ export const AppUtils: AppUtilsInterface = (function() {
     const tenantResolutionStrategyFallback: string = "id_token";
     const proxyContextPathFallback: string = "";
 
-    const SERVER_ORIGIN_PLACEHOLDER: string = "${serverOrigin}";
-    const SERVER_ORIGIN_IDP_URL_PLACEHOLDER: string = "${serverOrigin}";
+    const SERVER_ORIGIN_URL_PLACEHOLDER: string = "${serverOrigin}";
     const TENANT_PREFIX_IDP_URL_PLACEHOLDER: string = "${tenantPrefix}";
     const USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER: string = "${userTenantDomain}";
     const SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER: string= "${superTenantDomain}";
@@ -532,7 +531,7 @@ export const AppUtils: AppUtilsInterface = (function() {
                 authorizeEndpointURL: _config.idpConfigs
                     && _config.idpConfigs.authorizeEndpointURL
                     && _config.idpConfigs.authorizeEndpointURL
-                        .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, _config.serverOrigin + tenantPath)
+                        .replace(SERVER_ORIGIN_URL_PLACEHOLDER, _config.serverOrigin + tenantPath)
                         .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                         .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                         .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -541,7 +540,7 @@ export const AppUtils: AppUtilsInterface = (function() {
                 jwksEndpointURL: _config.idpConfigs
                     && _config.idpConfigs.jwksEndpointURL
                     && _config.idpConfigs.jwksEndpointURL
-                        .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER,  _config.serverOrigin + tenantPath)
+                        .replace(SERVER_ORIGIN_URL_PLACEHOLDER,  _config.serverOrigin + tenantPath)
                         .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                         .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                         .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -550,7 +549,7 @@ export const AppUtils: AppUtilsInterface = (function() {
                 logoutEndpointURL: _config.idpConfigs
                     && _config.idpConfigs.logoutEndpointURL
                     && _config.idpConfigs.logoutEndpointURL
-                        .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER,  _config.serverOrigin + tenantPath)
+                        .replace(SERVER_ORIGIN_URL_PLACEHOLDER,  _config.serverOrigin + tenantPath)
                         .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                         .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                         .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -559,7 +558,7 @@ export const AppUtils: AppUtilsInterface = (function() {
                 oidcSessionIFrameEndpointURL: _config.idpConfigs
                     && _config.idpConfigs.oidcSessionIFrameEndpointURL
                     && _config.idpConfigs.oidcSessionIFrameEndpointURL
-                        .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER,  _config.serverOrigin + tenantPath)
+                        .replace(SERVER_ORIGIN_URL_PLACEHOLDER,  _config.serverOrigin + tenantPath)
                         .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                         .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                         .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName() !== this.getSuperTenant()
@@ -568,7 +567,7 @@ export const AppUtils: AppUtilsInterface = (function() {
                 tokenEndpointURL: _config.idpConfigs
                     && _config.idpConfigs.tokenEndpointURL
                     && _config.idpConfigs.tokenEndpointURL
-                        .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER,  _config.serverOrigin + tenantPath)
+                        .replace(SERVER_ORIGIN_URL_PLACEHOLDER,  _config.serverOrigin + tenantPath)
                         .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                         .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                         .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -577,7 +576,7 @@ export const AppUtils: AppUtilsInterface = (function() {
                 tokenRevocationEndpointURL: _config.idpConfigs
                     && _config.idpConfigs.tokenRevocationEndpointURL
                     && _config.idpConfigs.tokenRevocationEndpointURL
-                        .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER,  _config.serverOrigin + tenantPath)
+                        .replace(SERVER_ORIGIN_URL_PLACEHOLDER,  _config.serverOrigin + tenantPath)
                         .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                         .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                         .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -586,7 +585,7 @@ export const AppUtils: AppUtilsInterface = (function() {
                 wellKnownEndpointURL: _config.idpConfigs
                     && _config.idpConfigs.wellKnownEndpointURL
                     && _config.idpConfigs.wellKnownEndpointURL
-                        .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER,  _config.serverOrigin + tenantPath)
+                        .replace(SERVER_ORIGIN_URL_PLACEHOLDER,  _config.serverOrigin + tenantPath)
                         .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                         .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                         .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
