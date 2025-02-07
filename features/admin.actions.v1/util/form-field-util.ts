@@ -85,7 +85,7 @@ export const validateActionEndpointFields = (
                 minDomainSegments: 1,
                 tlds: false
             },
-            scheme: [ "https" ]
+            scheme: [ "https", "http" ]
         })
     ) {
         errors.endpointUri = I18n.instance.t("actions:fields.endpoint.validations.invalidUrl");
