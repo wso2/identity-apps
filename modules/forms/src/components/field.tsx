@@ -185,7 +185,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                         type={ inputField.type }
                         placeholder={ inputField.placeholder }
                         name={ inputField.name }
-                        value={ form.get(inputField.name) || "" }
+                        value={ passedProps?.controlled ? passedProps.value : form.get(inputField.name) || "" }
                         onBlur={ (event: React.KeyboardEvent) => {
                             handleBlur(event, inputField.name);
                         } }
