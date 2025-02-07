@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.12.10
+
+### Patch Changes
+
+- [#7525](https://github.com/wso2/identity-apps/pull/7525) [`250d8ec84aeee89aba7ddbacf400898dc972aeb5`](https://github.com/wso2/identity-apps/commit/250d8ec84aeee89aba7ddbacf400898dc972aeb5) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Fix push status check endpoint issue with tenanted users.
+
 ## 2.12.9
 
 ### Patch Changes
