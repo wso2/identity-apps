@@ -79,11 +79,13 @@ export const validateActionEndpointFields = (
     }
 
     if (
-        FormValidation.url(values?.endpointUri, {
+        !FormValidation.url(values?.endpointUri, {
             domain: {
-                allowUnicode: true
+                allowUnicode: true,
+                minDomainSegments: 1,
+                tlds: false
             },
-            scheme: [ "http", "https" ]
+            scheme: [ "https" ]
         })
     ) {
         errors.endpointUri = I18n.instance.t("actions:fields.endpoint.validations.invalidUrl");
