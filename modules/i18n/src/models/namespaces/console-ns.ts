@@ -8255,11 +8255,6 @@ export interface ConsoleNS {
                 subTitle: string;
                 backButton: string;
             };
-            roles: {
-                title: string;
-                subTitle: string;
-                alternateSubTitle: string;
-            };
             rolesEdit: {
                 title: string;
                 subTitle: string;
