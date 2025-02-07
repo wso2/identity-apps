@@ -8577,11 +8577,6 @@ export const console: ConsoleNS = {
                     "etc.",
                 title: "Welcome, {{firstName}}"
             },
-            roles: {
-                alternateSubTitle: "View and manage roles.",
-                subTitle: "Create and manage roles, assign permissions for roles.",
-                title: "Roles"
-            },
             rolesEdit: {
                 backButton: "Go back to {{type}}",
                 subTitle: null,

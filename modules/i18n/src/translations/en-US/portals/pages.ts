@@ -68,7 +68,7 @@ export const pages: pagesNS = {
         title: "Templates - {{displayName}}"
     },
     groups: {
-        subTitle: "Create and manage groups, assign users for groups.",
+        subTitle: "Create and manage groups, assign users to them.",
         title: "Groups"
     },
     groupsEdit: {
@@ -104,7 +104,7 @@ export const pages: pagesNS = {
     },
     roles: {
         alternateSubTitle: "View and manage roles.",
-        subTitle: "Create and manage roles, assign permissions for roles.",
+        subTitle: "Create and manage roles, assign permissions to them.",
         title: "Roles"
     },
     rolesEdit: {
