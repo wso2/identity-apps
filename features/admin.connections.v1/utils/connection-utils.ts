@@ -313,6 +313,27 @@ export const resolveConnectionName = (name: string): string => {
     }
 };
 
+/**
+ * This method resolves the custom authenticator display name.
+ *
+ * This method is necessary since the display name is stored in two different properties in custom federated
+ * authenticators and custom local authenticators.
+ *
+ * @param authenticator - Authenticator object.
+ * @param isCustomLocalAuthenticator - Whether the authenticator is a custom local authenticator.
+ * @returns - Resolved display name.x
+ */
+export const resolveCustomAuthenticatorDisplayName = (
+    authenticator: ConnectionInterface | CustomAuthConnectionInterface,
+    isCustomLocalAuthenticator: boolean
+): string => {
+    if (isCustomLocalAuthenticator) {
+        return (authenticator as CustomAuthConnectionInterface)?.displayName;
+    } else {
+        return (authenticator as ConnectionInterface)?.name;
+    }
+};
+
 export const getIdPCapabilityIcons = (): any => {
     return {
         [SupportedServices.AUTHENTICATION]: ConnectionIcon,

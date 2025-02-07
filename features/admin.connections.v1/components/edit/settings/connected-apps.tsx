@@ -154,59 +154,109 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
 
     const dispatch: Dispatch = useDispatch();
     const { organizationType } = useGetCurrentOrganizationType();
+    const { t } = useTranslation();
 
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
     const [ connectedApps, setConnectedApps ] = useState<ConnectedAppInterface[]>();
     const [ filterSelectedApps, setFilterSelectedApps ] = useState<ConnectedAppInterface[]>([]);
     const [ connectedAppsCount, setconnectedAppsCount ] = useState<number>(0);
+    const [ isCustomLocalAuthenticator, setIsCustomLocalAuthenticator ] = useState<boolean>(undefined);
     const [ isAppsLoading, setIsAppsLoading ] = useState<boolean>(false);
-    const [ shouldFetchConnectedApps, setShouldFetchConnectedApps ] = useState<boolean>(true);
+    const [ shouldFetchLocalAuthenticatorConnectedApps, setShouldFetchLocalAuthenticatorConnectedApps ] =
+        useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
     const groupedApplicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state?.application?.groupedTemplates);
+
     const [
         isApplicationTemplateRequestLoading,
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
-
-    const { t } = useTranslation();
     const {
         templates: extensionApplicationTemplates,
         isExtensionTemplatesRequestLoading: isExtensionApplicationTemplatesRequestLoading
     } = useExtensionTemplates();
-
-    const isCustomLocalAuthenticator = (idp: ConnectionInterface): boolean => {
-        return ConnectionsManagementUtils.IsCustomAuthenticator(idp) &&
-        idp?.type === AuthenticatorTypes.LOCAL;
-    };
-
-    /**
-    * Fetch connected apps when required.
-    */
     const {
         data: connectedAppsOfAuthenticator,
         isLoading: isFetchConnectedAppsLoading
-    } = useGetConnectedAppsOfAuthenticator(editingIDP?.id, shouldFetchConnectedApps);
+    } = useGetConnectedAppsOfAuthenticator(editingIDP?.id, shouldFetchLocalAuthenticatorConnectedApps);
 
+    /**
+     * This useEffect checks whether the authenticator is a custom local authenticator.
+     * If yes, it enables fetching the connected apps of the local authenticator.
+     */
     useEffect(() => {
-        if (!isCustomLocalAuthenticator(editingIDP) || isFetchConnectedAppsLoading || !connectedAppsOfAuthenticator) {
+        /**
+         * Check whether the connection is a custom local authenticator.
+         *
+         * @param idp - Connection to be evaluated.
+         * @returns - whether the connection is a custom local authenticator.
+         */
+        const checkCustomLocalAuthenticator = (idp: ConnectionInterface): boolean => {
+            return ConnectionsManagementUtils.IsCustomAuthenticator(idp) && idp?.type === AuthenticatorTypes.LOCAL;
+        };
+
+        if (checkCustomLocalAuthenticator(editingIDP)) {
+            setIsCustomLocalAuthenticator(true);
+            setShouldFetchLocalAuthenticatorConnectedApps(true);
+        } else {
+            setIsCustomLocalAuthenticator(false);
+            setShouldFetchLocalAuthenticatorConnectedApps(false);
+        }
+    }, [ editingIDP ]);
+
+    /**
+     * This useEffect sets the fetched connected apps of the local authenticator to the state.
+     */
+    useEffect(() => {
+
+        if (isCustomLocalAuthenticator === undefined || !isCustomLocalAuthenticator || !connectedAppsOfAuthenticator) {
             return;
         }
 
-        setShouldFetchConnectedApps(true);
-        setConnectedApps(connectedAppsOfAuthenticator);
-        setconnectedAppsCount(connectedAppsOfAuthenticator.length);
+        const fetchAppDetails = async () => {
+            setconnectedAppsCount(connectedAppsOfAuthenticator.count);
 
-        return;
+            if (connectedAppsOfAuthenticator.count > 0) {
+                const appRequests: Promise<any>[] = connectedAppsOfAuthenticator.connectedApps.map(
+                    (app: ConnectedAppInterface) => {
+                        return getApplicationDetails(app.appId);
+                    }
+                );
+
+                const results: ApplicationBasicInterface[] = await Promise.all(
+                    appRequests.map((response: Promise<any>) =>
+                        response.catch((error: IdentityAppsError) => {
+                            dispatch(
+                                addAlert({
+                                    description:
+                                        error?.description || t("idp:connectedApps.genericError.description"),
+                                    level: AlertLevels.ERROR,
+                                    message: error?.message || t("idp:connectedApps.genericError.message")
+                                })
+                            );
+                        })
+                    )
+                );
+
+                setConnectedApps(results);
+                setFilterSelectedApps(results);
+            }
+        };
+
+        fetchAppDetails();
     }, [ connectedAppsOfAuthenticator ]);
 
+    /**
+     * This useEffect fetches the connected apps of the IDP and sets them to the state.
+     */
     useEffect(() => {
 
-        if (isCustomLocalAuthenticator(editingIDP)) {
+        if (isCustomLocalAuthenticator === undefined || isCustomLocalAuthenticator) {
             return;
         }
 
@@ -217,39 +267,43 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 setconnectedAppsCount(response.count);
 
                 if (response.count > 0) {
-
                     const appRequests: Promise<any>[] = response.connectedApps.map((app: ConnectedAppInterface) => {
                         return getApplicationDetails(app.appId);
                     });
 
                     const results: ApplicationBasicInterface[] = await Promise.all(
-                        appRequests.map((response: Promise<any>) => response.catch((error: IdentityAppsError) => {
-                            dispatch(addAlert({
-                                description: error?.description
-                                    || t("idp:connectedApps.genericError.description"),
-                                level: AlertLevels.ERROR,
-                                message: error?.message
-                                    || t("idp:connectedApps.genericError.message")
-                            }));
-                        }))
+                        appRequests.map((response: Promise<any>) =>
+                            response.catch((error: IdentityAppsError) => {
+                                dispatch(
+                                    addAlert({
+                                        description:
+                                            error?.description || t("idp:connectedApps.genericError.description"),
+                                        level: AlertLevels.ERROR,
+                                        message: error?.message || t("idp:connectedApps.genericError.message")
+                                    })
+                                );
+                            })
+                        )
                     );
 
                     setConnectedApps(results);
                     setFilterSelectedApps(results);
                 }
+                // fetchConnectedAppDetails(response);
             })
             .catch((error: IdentityAppsError) => {
-                dispatch(addAlert({
-                    description: error?.description
-                        || t("idp:connectedApps.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.message || t("idp:connectedApps.genericError.message")
-                }));
+                dispatch(
+                    addAlert({
+                        description: error?.description || t("idp:connectedApps.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.message || t("idp:connectedApps.genericError.message")
+                    })
+                );
             })
             .finally(() => {
                 setIsAppsLoading(false);
             });
-    }, []);
+    }, [ isCustomLocalAuthenticator ]);
 
     /**
      * Fetch the application templates if list is not available in redux.
@@ -450,7 +504,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }` +
                     `=${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`,
 
-                state: { id: editingIDP.id, isLocalAuthenticator: isCustomLocalAuthenticator(editingIDP),
+                state: { id: editingIDP.id, isLocalAuthenticator: isCustomLocalAuthenticator,
                     name: editingIDP.name }
             });
         } else {
@@ -489,7 +543,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
 
                 state: {
                     id: editingIDP.id,
-                    isLocalAuthenticator: isCustomLocalAuthenticator(editingIDP),
+                    isLocalAuthenticator: isCustomLocalAuthenticator,
                     name: editingIDP.name
                 }
             });
@@ -504,6 +558,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
         if (filterSelectedApps.length === 0 && connectedAppsCount !== 0) {
+
             return (
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
@@ -595,18 +650,13 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      * @param changevalue-search query.
      */
     const searchFilter = (changeValue: string) => {
-        debugger
         const appNameFilter: ConnectedAppInterface[] = connectedApps.filter((item: ConnectedAppInterface) =>
             item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
 
         setFilterSelectedApps(appNameFilter);
     };
 
-    console.log("isFetchConnectedAppsLoading: ", isFetchConnectedAppsLoading);
-
-    debugger
-
-    if (isAppsLoading || isFetchConnectedAppsLoading) {
+    if (isAppsLoading || isFetchConnectedAppsLoading || !connectedApps) {
         return <Loader />;
     }
 
@@ -675,4 +725,3 @@ ConnectedApps.defaultProps = {
     selection: true,
     showListItemActions: true
 };
-
