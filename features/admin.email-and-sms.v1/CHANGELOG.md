@@ -1,5 +1,14 @@
 # @wso2is/admin.email-and-sms.v1
 
+## 2.25.145
+
+### Patch Changes
+
+- Updated dependencies [[`b4cba28321177f383170ac4bb7b4d75ce7ca404b`](https://github.com/wso2/identity-apps/commit/b4cba28321177f383170ac4bb7b4d75ce7ca404b)]:
+  - @wso2is/i18n@2.19.5
+  - @wso2is/admin.core.v1@2.38.14
+  - @wso2is/admin.organizations.v1@2.26.145
+
 ## 2.25.144
 
 ### Patch Changes
