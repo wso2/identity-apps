@@ -1,5 +1,17 @@
 # @wso2is/i18n
 
+## 2.19.6
+
+### Patch Changes
+
+- [#7499](https://github.com/wso2/identity-apps/pull/7499) [`4a8f0320d82b3c2ed9f26473e0d950a74a6080a8`](https://github.com/wso2/identity-apps/commit/4a8f0320d82b3c2ed9f26473e0d950a74a6080a8) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Refactor Custom Authenticator Settings Page
+
+* [#7534](https://github.com/wso2/identity-apps/pull/7534) [`d1bb49ef3881a4569df6ff2c976a250bb886e091`](https://github.com/wso2/identity-apps/commit/d1bb49ef3881a4569df6ff2c976a250bb886e091) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve wording in root organization list page
+
+- [#7531](https://github.com/wso2/identity-apps/pull/7531) [`8156ef36ebc15563e88b42477a2ce40a936d7add`](https://github.com/wso2/identity-apps/commit/8156ef36ebc15563e88b42477a2ce40a936d7add) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix state and loading issues in the users section
+
+* [#7523](https://github.com/wso2/identity-apps/pull/7523) [`8161cc441a1cf598f59f50e26d55527a1eb07cc7`](https://github.com/wso2/identity-apps/commit/8161cc441a1cf598f59f50e26d55527a1eb07cc7) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Enable account disable feature in console
+
 ## 2.19.5
 
 ### Patch Changes
