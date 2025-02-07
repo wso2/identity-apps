@@ -462,6 +462,39 @@
                 }
             },
             {% endif %}
+            {% if console.ai is defined  %}
+            "ai": {
+                "disabledFeatures": [
+                    {% if console.ai.disabled_features is defined %}
+                    {% for feature in console.ai.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.ai.enabled is defined %} {{ console.ai.enabled }},
+                    {% else %}
+                        {% if ai_services.key is defined and ai_services.key|length > 0 %} true,
+                        {% else %} false,                     
+                        {% endif %}
+                {% endif %}
+                "scopes": {
+                    {% if console.ai.scopes is defined %}
+                    {% for operation, scopes in console.ai.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.analytics.enabled is defined %}
             "analytics": {
                 "disabledFeatures": [

@@ -304,33 +304,25 @@ export const extractSubAttributes = (user: ProfileInfoInterface, schemaKey: stri
 };
 
 /**
- * Process multi valued simple attribute patch operation value.
+ * Constructs the patch operation value for a multi-valued attribute.
  *
- * @param attributeSchemaName - Attribute schema name.
- * @param primaryAttributeSchemaName - Primary schema attribute.
- * @param profileInfo - Profile information.
- * @param multiValuedAttributeInputValues - Multi valued attribute input values.
- * @returns Patch operation value.
+ * @param attributeSchemaName - The schema name of the attribute.
+ * @param currentValues - The existing values for the attribute.
+ * @param inputValue - Input values for the multi-valued attribute.
+ * @returns An object representing the patch operation value.
  */
 export const constructPatchOpValueForMultiValuedAttribute = (
     attributeSchemaName: string,
-    primaryAttributeSchemaName: string,
-    profileInfo: Map<string, string>,
-    multiValuedAttributeInputValues: Record<string, string>
+    currentValues: string[],
+    inputValue: string
 ) => {
-    const currentValues: string[] = profileInfo?.get(attributeSchemaName)?.split(",") || [];
-
-    if (!isEmpty(multiValuedAttributeInputValues[attributeSchemaName])) {
-        currentValues.push(multiValuedAttributeInputValues[attributeSchemaName]);
+    if (isEmpty(currentValues)) {
+        currentValues = [];
     }
 
-    if (!isEmpty(primaryAttributeSchemaName)) {
-        const existingPrimary: string = profileInfo?.get(primaryAttributeSchemaName);
-
-        if (existingPrimary && !currentValues.includes(existingPrimary)) {
-            currentValues.push(existingPrimary);
-        }
+    if (!isEmpty(inputValue) && !currentValues.includes(inputValue)) {
+        currentValues.push(inputValue);
     }
 
-    return { [attributeSchemaName]: currentValues } ;
+    return { [attributeSchemaName]: currentValues };
 };
