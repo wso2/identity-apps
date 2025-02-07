@@ -29,7 +29,11 @@ import {
     PreviewScreenType,
     PreviewScreenVariationType
 } from "@wso2is/common.branding.v1/models";
-import { FeatureAccessConfigInterface, FeatureFlagsInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import {
+    FeatureAccessConfigInterface,
+    FeatureFlagsInterface,
+    IdentifiableComponentInterface
+} from "@wso2is/core/models";
 import { FormPropsInterface } from "@wso2is/form";
 import { Heading, Link, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
