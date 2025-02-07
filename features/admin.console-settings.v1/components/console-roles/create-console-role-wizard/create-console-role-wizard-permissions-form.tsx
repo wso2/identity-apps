@@ -565,6 +565,12 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                         }
                                                         exclusive
                                                         onChange={ (e: MouseEvent<HTMLElement>, value: string) => {
+                                                            // If no value is selected and exclusive is true the value
+                                                            // is null
+                                                            if (!value) {
+                                                                return;
+                                                            }
+
                                                             handlePermissionLevelChange(
                                                                 e,
                                                                 collection,
