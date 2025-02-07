@@ -5,7 +5,7 @@
     "displayOrder": 12,
     "id": "custom-authentication",
     "docLink": "",
-    "image": "assets/images/logos/custom-authentication.svg",
+    "image": "assets/images/logos/custom-authenticator.svg",
     "name": "Custom Authenticator",
     "services": [],
     "disabled": false,
