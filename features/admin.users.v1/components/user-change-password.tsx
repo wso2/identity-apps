@@ -32,7 +32,8 @@ import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constant
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
 import { LinkButton, Message, PasswordValidation, PrimaryButton } from "@wso2is/react-components";
 import React,
@@ -44,7 +45,8 @@ import React,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Icon, Modal, SemanticCOLORS } from "semantic-ui-react";
 import { updateUserInfo } from "../api";
 import { getConfiguration } from "../utils";
@@ -61,10 +63,6 @@ interface ChangePasswordPropsInterface extends TestableComponentInterface {
      * Show or hide the change password modal.
      */
     openChangePasswordModal: boolean;
-    /**
-     * On alert fired callback.
-     */
-    onAlertFired: (alert: AlertInterface) => void;
     /**
      * User profile
      */
@@ -94,7 +92,6 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
 ): ReactElement => {
 
     const {
-        onAlertFired,
         user,
         handleUserUpdate,
         openChangePasswordModal,
@@ -105,6 +102,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     } = props;
 
     const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
 
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
     const [ userStorePasswordRegex, setUserStorePasswordRegex ] = useState<string>("");
@@ -208,7 +206,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
      */
     const handleForcePasswordReset = () => {
         if (forcePasswordReset === "false") {
-            onAlertFired({
+            dispatch(addAlert({
                 description: t(
                     "user:profile.notifications.noPasswordResetOptions.error.description"
                 ),
@@ -216,7 +214,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 message: t(
                     "user:profile.notifications.noPasswordResetOptions.error.message"
                 )
-            });
+            }));
 
             return;
         }
@@ -240,7 +238,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         setIsSubmitting(true);
 
         updateUserInfo(user.id, data).then(() => {
-            onAlertFired({
+            dispatch(addAlert({
                 description: t(
                     "user:profile.notifications.forcePasswordReset.success.description"
                 ),
@@ -248,7 +246,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 message: t(
                     "user:profile.notifications.forcePasswordReset.success.message"
                 )
-            });
+            }));
             handleForcePasswordResetTrigger && handleForcePasswordResetTrigger();
             handleModalClose();
             handleCloseChangePasswordModal();
@@ -256,23 +254,23 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         })
             .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    onAlertFired({
+                    dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t("user:profile.notifications.forcePasswordReset.error." +
                             "message")
-                    });
+                    }));
 
                     return;
                 }
 
-                onAlertFired({
+                dispatch(addAlert({
                     description: t("user:profile.notifications.forcePasswordReset." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("user:profile.notifications.forcePasswordReset.genericError." +
                         "message")
-                });
+                }));
                 handleModalClose();
                 handleCloseChangePasswordModal();
             })
@@ -587,7 +585,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         setIsSubmitting(true);
 
         updateUserInfo(user.id, data).then(() => {
-            onAlertFired({
+            dispatch(addAlert({
                 description: t(
                     "user:profile.notifications.changeUserPassword.success.description"
                 ),
@@ -595,30 +593,30 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 message: t(
                     "user:profile.notifications.changeUserPassword.success.message"
                 )
-            });
+            }));
             handleCloseChangePasswordModal();
             handleModalClose();
             handleUserUpdate(user.id);
         })
             .catch((error: any) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    onAlertFired({
+                    dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t("user:profile.notifications.changeUserPassword.error." +
                         "message")
-                    });
+                    }));
 
                     return;
                 }
 
-                onAlertFired({
+                dispatch(addAlert({
                     description: t("user:profile.notifications.changeUserPassword" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("user:profile.notifications.changeUserPassword.genericError." +
                         "message")
-                });
+                }));
                 handleCloseChangePasswordModal();
                 handleModalClose();
             })
