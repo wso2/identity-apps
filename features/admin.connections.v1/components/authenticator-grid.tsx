@@ -206,6 +206,15 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         setDisplayingAuthenticators(shownAuthenticatorList);
     }, [ authenticators ]);
 
+    /**
+     * This use effect handles deletion of custom local authenticators.
+     * This will be triggered only when the connected apps of the authenticator are fetched.
+     */
+    useEffect(() => {
+        connectedAppsOfLocalAuthenticator &&
+            handleLocalAuthenticatorDeleteInitiation(deletingAuthenticatorId);
+    }, [ connectedAppsOfLocalAuthenticator, deletingAuthenticatorId ]);
+
     const checkCustomLocalAuthenticator = (authenticator: ConnectionInterface): boolean => {
         return (
             ConnectionsManagementUtils.IsCustomAuthenticator(authenticator) &&
@@ -250,15 +259,6 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     const resolveReadOnlyState = (): boolean => {
         return !hasConnectionUpdatePermission;
     };
-
-    /**
-     * This use effect handles deletion of custom local authenticators.
-     * This will be triggered only when the connected apps of the authenticator are fetched.
-     */
-    useEffect(() => {
-        connectedAppsOfLocalAuthenticator &&
-            handleLocalAuthenticatorDeleteInitiation(deletingAuthenticatorId);
-    }, [ connectedAppsOfLocalAuthenticator, deletingAuthenticatorId ]);
 
     /**
      * Initiates the deletes of an authenticator. This will check for connected apps.

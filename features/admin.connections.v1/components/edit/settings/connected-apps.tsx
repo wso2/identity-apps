@@ -214,7 +214,15 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      */
     useEffect(() => {
 
-        if (isCustomLocalAuthenticator === undefined || !isCustomLocalAuthenticator || !connectedAppsOfAuthenticator) {
+        if (!connectedAppsOfAuthenticator || isFetchConnectedAppsLoading) {
+            setIsAppsLoading(true);
+
+            return;
+        }
+
+        if (connectedAppsOfAuthenticator?.count === 0) {
+            setIsAppsLoading(false);
+
             return;
         }
 
@@ -245,6 +253,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
 
                 setConnectedApps(results);
                 setFilterSelectedApps(results);
+                setIsAppsLoading(false);
             }
         };
 
@@ -289,7 +298,6 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     setConnectedApps(results);
                     setFilterSelectedApps(results);
                 }
-                // fetchConnectedAppDetails(response);
             })
             .catch((error: IdentityAppsError) => {
                 dispatch(
@@ -656,7 +664,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         setFilterSelectedApps(appNameFilter);
     };
 
-    if (isAppsLoading || isFetchConnectedAppsLoading || !connectedApps) {
+    if (isAppsLoading) {
         return <Loader />;
     }
 
