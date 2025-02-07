@@ -450,12 +450,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const schemaSecondaryProperty: string = schemaNames[1];
 
                             const userProfileSchema: string = userInfo
-                                ?. [userConfig.userProfileSchema]?.[schemaName]
-                                ?. [schemaSecondaryProperty];
+                                ?.[userConfig.userProfileSchema]?.[schemaName]
+                                ?.[schemaSecondaryProperty];
 
                             const enterpriseSchema: string = userInfo
-                                ?. [ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaName]
-                                ?. [schemaSecondaryProperty];
+                                ?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaName]
+                                ?.[schemaSecondaryProperty];
 
                             if (schema.extended && (userProfileSchema || enterpriseSchema)) {
                                 if (userProfileSchema) {
