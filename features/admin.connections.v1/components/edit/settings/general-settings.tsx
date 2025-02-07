@@ -49,7 +49,7 @@ import {
     handleGetConnectionListCallError
 } from "../../../utils/connection-utils";
 import { GeneralDetailsForm } from "../forms";
-import { CustomAuthGeneralDetailsForm } from "../forms/custom-auth-general-details-form";
+import { CustomAuthenticatorGeneralDetailsForm } from "../forms/custom-authenticator-general-details-form";
 
 /**
  * Proptypes for the identity provider general details component.
@@ -511,7 +511,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     isSubmitting={ isSubmitting }
                 />
             ) : (
-                <CustomAuthGeneralDetailsForm
+                <CustomAuthenticatorGeneralDetailsForm
                     templateType={ templateType }
                     hideIdPLogoEditField={ hideIdPLogoEditField }
                     editingIDP={ editingIDP }

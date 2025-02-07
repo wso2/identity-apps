@@ -1,5 +1,20 @@
 # @wso2is/identity-apps-core
 
+## 2.12.11
+
+### Patch Changes
+
+- [#7545](https://github.com/wso2/identity-apps/pull/7545) [`4bae01b49c019cdcfadb9c8271abf741b74432eb`](https://github.com/wso2/identity-apps/commit/4bae01b49c019cdcfadb9c8271abf741b74432eb) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue in identifier first page
+
+* [#7544](https://github.com/wso2/identity-apps/pull/7544) [`863e421af246486a4d00034666ff3d64c13f37ce`](https://github.com/wso2/identity-apps/commit/863e421af246486a4d00034666ff3d64c13f37ce) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add icon resolving logic for custom local authenticators in login.jsp
+
+- [#7538](https://github.com/wso2/identity-apps/pull/7538) [`211fe47d87654baae204c69ddd8c7acb7b623a9c`](https://github.com/wso2/identity-apps/commit/211fe47d87654baae204c69ddd8c7acb7b623a9c) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Fix Inconsistent Login identifier labels in password recovery page
+
+* [#7529](https://github.com/wso2/identity-apps/pull/7529) [`b466b7c0d0c504d17bdc72a2bb64b005ed668ff6`](https://github.com/wso2/identity-apps/commit/b466b7c0d0c504d17bdc72a2bb64b005ed668ff6) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve wording on the iProov JSP page
+
+* Updated dependencies [[`863e421af246486a4d00034666ff3d64c13f37ce`](https://github.com/wso2/identity-apps/commit/863e421af246486a4d00034666ff3d64c13f37ce), [`8161cc441a1cf598f59f50e26d55527a1eb07cc7`](https://github.com/wso2/identity-apps/commit/8161cc441a1cf598f59f50e26d55527a1eb07cc7)]:
+  - @wso2is/theme@2.6.7
+
 ## 2.12.10
 
 ### Patch Changes

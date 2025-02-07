@@ -32,6 +32,8 @@
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.AuthenticatorDataRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.AuthenticatorDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CommonDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityProviderDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityProviderDataRetrievalClientException" %>
@@ -89,6 +91,7 @@
     private static final String TOTP_AUTHENTICATOR = "totp";
     private static final String ENTERPRISE_LOGIN_KEY = "isEnterpriseLoginEnabled";
     private static final String ENTERPRISE_API_RELATIVE_PATH = "/api/asgardeo-enterprise-login/v1/business-user-login/";
+    private static final String CUSTOM_LOCAL_AUTHENTICATOR_PREFIX = "custom-";
 %>
 
 <%
@@ -1068,6 +1071,56 @@
                                 for (String localAuthenticator : localAuthenticatorNames) {
                                     if (registeredLocalAuthenticators.contains(localAuthenticator)) {
                                         continue;
+                                    }
+
+                                    if (localAuthenticator.startsWith(CUSTOM_LOCAL_AUTHENTICATOR_PREFIX)) {
+                                       
+                                        String customLocalAuthenticatorImageURL = "libs/themes/default/assets/images/authenticators/custom-authenticator.svg";
+                                        String customLocalAuthenticatorDisplayName = localAuthenticator;
+                                        Map<String, String> authenticatorConfigMap = new HashMap<>();
+                                        try {
+                                            AuthenticatorDataRetrievalClient authenticatorDataRetrievalClient = new AuthenticatorDataRetrievalClient();
+                                            authenticatorConfigMap = authenticatorDataRetrievalClient.getAuthenticatorConfig(tenantDomain, localAuthenticator);
+                                        } catch (AuthenticatorDataRetrievalClientException e) {
+                                            // Exception is ignored and the default values will be used as a fallback.
+                                        }
+
+                                        if (MapUtils.isNotEmpty(authenticatorConfigMap) && authenticatorConfigMap.containsKey("definedBy") 
+                                            && authenticatorConfigMap.get("definedBy").equals("USER")) {
+                                            
+                                            if (authenticatorConfigMap.containsKey("image")) {
+                                                customLocalAuthenticatorImageURL = authenticatorConfigMap.get("image");
+                                            }
+                                            customLocalAuthenticatorDisplayName = authenticatorConfigMap.get("displayName");
+                            %>
+                                <div class="social-login blurring social-dimmer">
+                                    <div class="field">
+                                            <button
+                                                type="button"
+                                                id="icon-<%=iconId%>"
+                                                class="ui button secondary"
+                                                data-testid="login-page-sign-in-with-<%=Encode.forHtmlAttribute(localAuthenticator)%>"
+                                                onclick="handleNoDomain(this,
+                                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
+                                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(localAuthenticator))%>')"
+                                            >
+                                            <img
+                                                class="ui image"
+                                                src="<%=Encode.forHtmlAttribute(customLocalAuthenticatorImageURL)%>"
+                                                alt="<%=Encode.forHtmlAttribute(localAuthenticator)%> Logo"
+                                                role="presentation">
+                                            <span>
+                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                                <%=Encode.forHtmlAttribute(customLocalAuthenticatorDisplayName)%>
+                                            </span>
+                                            </button>
+                                    </div>
+                                </div>
+                            <br>
+                            <br>
+                            <%
+                                            continue;   
+                                        } 
                                     }
                             %>
                                 <div class="social-login blurring social-dimmer">

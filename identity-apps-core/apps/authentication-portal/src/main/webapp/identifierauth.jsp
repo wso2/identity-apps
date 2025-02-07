@@ -105,6 +105,8 @@
 %>
 
 <%
+    final String IS_SAAS_APP = "isSaaSApp";
+
     String clientId = Encode.forJavaScriptBlock(request.getParameter("client_id"));
     String sp = Encode.forJava(request.getParameter("sp"));
     String spId = "";
@@ -261,7 +263,9 @@
     <% } %>
 
     <div class="field">
-     <% if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)) { %>
+     <% if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT) &&
+        Boolean.parseBoolean(request.getParameter(IS_SAAS_APP))) { %>
+        
             <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "email")%></label>
             <div class="ui fluid left icon input">
                 <input

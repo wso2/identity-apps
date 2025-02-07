@@ -172,6 +172,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     } = useApplicationTemplateMetadata();
     // Check if the user has the required scopes to update the application.
     const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
+    const hasBrandingViewPermissions: boolean = useRequiredScopes(featureConfig?.branding?.scopes?.read);
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
@@ -544,7 +545,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 featureConfig={ featureConfig }
                 template={ template }
                 isBrandingSectionHidden={ brandingDisabledFeatures.includes(BrandingPreferencesConstants.
-                    APP_WISE_BRANDING_FEATURE_TAG) }
+                    APP_WISE_BRANDING_FEATURE_TAG) || !hasBrandingViewPermissions }
                 readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
                     "APPLICATION_EDIT_GENERAL_SETTINGS", application) }
                 data-componentid={ `${ componentId }-general-settings` }
@@ -904,7 +905,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_SHARED_ACCESS"))
-                 && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
                     && !isFragmentApp
                     && !isM2MApplication
                     && applicationConfig.editApplication.showApplicationShare

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -79,6 +79,14 @@ export interface DangerZoneToggleProps {
      * ID of the toggle.
      */
     id?: string;
+    /**
+     * Disable state of the toggle.
+     */
+    disabled?: boolean;
+    /**
+     * Disable hint for the toggle.
+     */
+    disableHint?: string;
 }
 
 /**
@@ -130,14 +138,24 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
             {
                 toggle
                     ? (
-                        <Checkbox
-                            toggle
-                            id={ toggle?.id }
-                            onChange={ toggle?.onChange }
-                            checked={ toggle?.checked }
-                            className="danger-zone toggle-switch"
-                            data-componentid={ `${ componentId }-toggle` }
-                            data-testid={ `${ testId }-toggle` }
+                        <Popup
+                            trigger={ (
+                                <Checkbox
+                                    toggle
+                                    id={ toggle?.id }
+                                    onChange={ toggle?.onChange }
+                                    checked={ toggle?.checked }
+                                    className="danger-zone toggle-switch"
+                                    data-componentid={ `${ componentId }-toggle` }
+                                    data-testid={ `${ testId }-toggle` }
+                                    disabled={ toggle?.disabled }
+                                />
+                            ) }
+                            content={ toggle?.disableHint }
+                            position={ isMobileViewport ? "top center" : "top right" }
+                            size="mini"
+                            wide
+                            disabled={ !toggle?.disabled || !toggle?.disableHint }
                         />
                     )
                     : (

@@ -471,10 +471,12 @@
                     ],
                     "read": [
                         "internal_claim_meta_view",
+                        "internal_governance_view",
                         "internal_userstore_view"
                     ],
                     "update": [
-                        "internal_claim_meta_update"
+                        "internal_claim_meta_update",
+                        "internal_governance_update"
                     ]
                 }
             },
@@ -490,7 +492,8 @@
             },
             "branding": {
                 "disabledFeatures": [
-                    "branding.hostnameUrlBranding"
+                    "branding.hostnameUrlBranding",
+                    "branding.stylesAndText.application.text"
                 ],
                 "enabled": true,
                 "featureFlags": [

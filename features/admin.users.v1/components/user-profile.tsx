@@ -244,7 +244,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
         user[userConfig.userProfileSchema]?.accountLocked === true;
     const accountLockedReason: string = user[userConfig.userProfileSchema]?.lockedReason;
-    const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true";
+    const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true" ||
+        user[userConfig.userProfileSchema]?.accountDisabled === true;
     const oneTimePassword: string = user[userConfig.userProfileSchema]?.oneTimePassword;
     const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
         role.display === administratorConfig.adminRoleName) ?? false;
@@ -451,21 +452,20 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const schemaName: string = schemaNames[0];
                             const schemaSecondaryProperty: string = schemaNames[1];
 
-                            if (schema.extended && userInfo[userConfig.userProfileSchema]) {
-                                schemaName && schemaSecondaryProperty &&
-                                    userInfo[userConfig.userProfileSchema][schemaName] &&
-                                    userInfo[userConfig.userProfileSchema][schemaName][schemaSecondaryProperty] && (
-                                    tempProfileInfo.set(schema.name,
-                                        userInfo[userConfig.userProfileSchema][schemaName][schemaSecondaryProperty])
-                                );
-                            } else if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaName]) {
-                                const enterpriseUserInfo: {[key: string]: any}
-                                    = userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA];
+                            const userProfileSchema: string = userInfo
+                                ?.[userConfig.userProfileSchema]?.[schemaName]
+                                ?.[schemaSecondaryProperty];
 
-                                tempProfileInfo.set(
-                                    schema.name, enterpriseUserInfo[schemaName][schemaSecondaryProperty]
-                                );
+                            const enterpriseSchema: string = userInfo
+                                ?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaName]
+                                ?.[schemaSecondaryProperty];
+
+                            if (schema.extended && (userProfileSchema || enterpriseSchema)) {
+                                if (userProfileSchema) {
+                                    tempProfileInfo.set(schema.name, userProfileSchema);
+                                } else if (enterpriseSchema) {
+                                    tempProfileInfo.set(schema.name, enterpriseSchema);
+                                }
                             } else {
                                 const subValue: SubValueInterface = userInfo[schemaName] &&
                                     Array.isArray(userInfo[schemaName]) &&
@@ -1509,6 +1509,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                 onActionClick={ undefined }
                                                 toggle={ {
                                                     checked: accountLocked,
+                                                    disableHint: t("user:editUser.dangerZoneGroup." +
+                                                        "lockUserZone.disabledHint"),
+                                                    disabled: accountDisabled,
                                                     id: "accountLocked",
                                                     onChange: handleDangerZoneToggles
                                                 } }
@@ -2461,6 +2464,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @returns The resolved account locked reason in readable text.
      */
     const resolveUserAccountLockedReason = (): string => {
+        if (accountDisabled) {
+            return t("user:profile.accountDisabled");
+        }
+
         if (accountLockedReason) {
             return ACCOUNT_LOCK_REASON_MAP[accountLockedReason] ?? ACCOUNT_LOCK_REASON_MAP["DEFAULT"];
         }
@@ -2469,162 +2476,158 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     return (
-        !isReadOnlyUserStoresLoading
+        !isReadOnlyUserStoresLoading && !isEmpty(profileInfo)
             ? (<>
                 {
-                    accountLocked && accountLockedReason && (
+                    (accountLocked || accountDisabled) && (
                         <Alert severity="warning">
                             { t(resolveUserAccountLockedReason()) }
                         </Alert>
                     )
                 }
-                {
-                    !isEmpty(profileInfo) && (
-                        <EmphasizedSegment padded="very">
+                <EmphasizedSegment padded="very">
+                    {
+                        isReadOnly
+                        && (!isEmpty(tenantAdmin) || tenantAdmin !== null)
+                        && !user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
+                        && editUserDisclaimerMessage
+                    }
+                    <Forms
+                        data-testid={ `${ testId }-form` }
+                        onSubmit={ (values: Map<string, string | string[]>) => handleSubmit(values) }
+                        onStaleChange={ (stale: boolean) => setIsFormStale(stale) }
+                    >
+                        <Grid className="user-profile-form form-container with-max-width">
                             {
-                                isReadOnly
-                                && (!isEmpty(tenantAdmin) || tenantAdmin !== null)
-                                && !user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
-                                && editUserDisclaimerMessage
-                            }
-                            <Forms
-                                data-testid={ `${ testId }-form` }
-                                onSubmit={ (values: Map<string, string | string[]>) => handleSubmit(values) }
-                                onStaleChange={ (stale: boolean) => setIsFormStale(stale) }
-                            >
-                                <Grid className="user-profile-form form-container with-max-width">
-                                    {
-                                        user.id && (
-                                            <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                                    <Form.Field>
-                                                        <label>
-                                                            { t("user:profile.fields.userId") }
-                                                        </label>
-                                                        <Input
-                                                            name="userID"
-                                                            type="text"
-                                                            value={ user.id }
-                                                            readOnly={ true }
-                                                        />
-                                                    </Form.Field>
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        )
-                                    }
-                                    {
-                                        profileSchema
-                                        && profileSchema.map((schema: ProfileSchemaInterface, index: number) => {
-                                            if (!(schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
-                                                || schema.name === ProfileConstants?.
-                                                    SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
-                                                || schema.name === ProfileConstants?.
-                                                    SCIM2_SCHEMA_DICTIONARY.get("GROUPS")
-                                                || schema.name === ProfileConstants?.
-                                                    SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
-                                                || schema.name === ProfileConstants?.
-                                                    SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
-                                                || schema.name === ProfileConstants?.
-                                                    SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
-                                                || schema.name === ProfileConstants?.
-                                                    SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD")
-                                                || (!commonConfig.userEditSection.showEmail &&
-                                                    schema.name === ProfileConstants?.
-                                                        SCIM2_SCHEMA_DICTIONARY.get("EMAILS")))
-                                                && isFieldDisplayable(schema)) {
-                                                return (
-                                                    generateProfileEditForm(schema, index)
-                                                );
-                                            }
-                                        })
-                                    }
-                                    {
-                                        oneTimePassword && (
-                                            <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                                    <Field
-                                                        data-testid={ `${ testId }-profile-form-one-time-pw }
-                                                        -input` }
-                                                        name="oneTimePassword"
-                                                        label={ t("user:profile.fields." +
-                                                            "oneTimePassword") }
-                                                        required={ false }
-                                                        requiredErrorMessage=""
-                                                        type="text"
-                                                        hidden={ oneTimePassword === undefined }
-                                                        value={ oneTimePassword && oneTimePassword }
-                                                        readOnly={ true }
-                                                    />
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        )
-                                    }
-                                    {
-                                        createdDate && (
-                                            <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                                    <Form.Field>
-                                                        <label>
-                                                            { t("user:profile.fields." +
-                                                                "createdDate") }
-                                                        </label>
-                                                        <Input
-                                                            name="createdDate"
-                                                            type="text"
-                                                            value={ createdDate ?
-                                                                moment(createdDate).format("YYYY-MM-DD") : "" }
-                                                            readOnly={ true }
-                                                        />
-                                                    </Form.Field>
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        )
-                                    }
-                                    {
-                                        modifiedDate && (
-                                            <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                                    <Form.Field>
-                                                        <label>
-                                                            { t("user:profile.fields.modifiedDate") }
-                                                        </label>
-                                                        <Input
-                                                            name="modifiedDate"
-                                                            type="text"
-                                                            value={ modifiedDate ?
-                                                                moment(modifiedDate).format("YYYY-MM-DD") : "" }
-                                                            readOnly={ true }
-                                                        />
-                                                    </Form.Field>
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        )
-                                    }
+                                user.id && (
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                            {
-                                                !isReadOnly && (
-                                                    <Button
-                                                        data-testid={ `${ testId }-form-update-button` }
-                                                        primary
-                                                        type="submit"
-                                                        size="small"
-                                                        className="form-button"
-                                                        loading={ isSubmitting }
-                                                        disabled={ isSubmitting || !isFormStale }
-                                                    >
-                                                        { t("common:update") }
-                                                    </Button>
-                                                )
-                                            }
+                                            <Form.Field>
+                                                <label>
+                                                    { t("user:profile.fields.userId") }
+                                                </label>
+                                                <Input
+                                                    name="userID"
+                                                    type="text"
+                                                    value={ user.id }
+                                                    readOnly={ true }
+                                                />
+                                            </Form.Field>
                                         </Grid.Column>
                                     </Grid.Row>
-                                </Grid>
-                            </Forms>
-                        </EmphasizedSegment>
-                    )
-                }
+                                )
+                            }
+                            {
+                                profileSchema
+                                && profileSchema.map((schema: ProfileSchemaInterface, index: number) => {
+                                    if (!(schema.name === ProfileConstants?.
+                                        SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
+                                        || schema.name === ProfileConstants?.
+                                            SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
+                                        || schema.name === ProfileConstants?.
+                                            SCIM2_SCHEMA_DICTIONARY.get("GROUPS")
+                                        || schema.name === ProfileConstants?.
+                                            SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
+                                        || schema.name === ProfileConstants?.
+                                            SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                                        || schema.name === ProfileConstants?.
+                                            SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
+                                        || schema.name === ProfileConstants?.
+                                            SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD")
+                                        || (!commonConfig.userEditSection.showEmail &&
+                                            schema.name === ProfileConstants?.
+                                                SCIM2_SCHEMA_DICTIONARY.get("EMAILS")))
+                                        && isFieldDisplayable(schema)) {
+                                        return (
+                                            generateProfileEditForm(schema, index)
+                                        );
+                                    }
+                                })
+                            }
+                            {
+                                oneTimePassword && (
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Field
+                                                data-testid={ `${ testId }-profile-form-one-time-pw }
+                                                -input` }
+                                                name="oneTimePassword"
+                                                label={ t("user:profile.fields." +
+                                                    "oneTimePassword") }
+                                                required={ false }
+                                                requiredErrorMessage=""
+                                                type="text"
+                                                hidden={ oneTimePassword === undefined }
+                                                value={ oneTimePassword && oneTimePassword }
+                                                readOnly={ true }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
+                            {
+                                createdDate && (
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Form.Field>
+                                                <label>
+                                                    { t("user:profile.fields." +
+                                                        "createdDate") }
+                                                </label>
+                                                <Input
+                                                    name="createdDate"
+                                                    type="text"
+                                                    value={ createdDate ?
+                                                        moment(createdDate).format("YYYY-MM-DD") : "" }
+                                                    readOnly={ true }
+                                                />
+                                            </Form.Field>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
+                            {
+                                modifiedDate && (
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Form.Field>
+                                                <label>
+                                                    { t("user:profile.fields.modifiedDate") }
+                                                </label>
+                                                <Input
+                                                    name="modifiedDate"
+                                                    type="text"
+                                                    value={ modifiedDate ?
+                                                        moment(modifiedDate).format("YYYY-MM-DD") : "" }
+                                                    readOnly={ true }
+                                                />
+                                            </Form.Field>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    {
+                                        !isReadOnly && (
+                                            <Button
+                                                data-testid={ `${ testId }-form-update-button` }
+                                                primary
+                                                type="submit"
+                                                size="small"
+                                                className="form-button"
+                                                loading={ isSubmitting }
+                                                disabled={ isSubmitting || !isFormStale }
+                                            >
+                                                { t("common:update") }
+                                            </Button>
+                                        )
+                                    }
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </Forms>
+                </EmphasizedSegment>
                 <Divider hidden />
                 { resolveDangerActions() }
                 {

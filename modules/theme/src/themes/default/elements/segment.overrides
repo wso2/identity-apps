@@ -64,7 +64,6 @@
         background: transparent;
         box-shadow: none;
         border: 1px solid @red;
-        border-radius: @defaultBorderRadius;
 
         .header-wrapper {
             max-width: 75%;

@@ -16,16 +16,20 @@
  * under the License.
  */
 
-import { URLUtils } from "@wso2is/core/utils";
+import { I18n } from "@wso2is/i18n";
+import { FormValidation } from "@wso2is/validation";
 import { ActionsConstants } from "../constants/actions-constants";
-import { ActionConfigFormPropertyInterface, AuthenticationType } from "../models/actions";
+import {
+    ActionConfigFormPropertyInterface,
+    AuthenticationType,
+    EndpointConfigFormPropertyInterface
+} from "../models/actions";
 
 /**
  * Validates the ActionConfig form fields.
  *
  * @param values - Form values to validate.
  * @param options - Dynamic options for validation (e.g., flags and authenticationType).
- * @param t - localization translations
  * @returns A partial object containing validation errors.
  */
 export const validateActionCommonFields = (
@@ -34,44 +38,78 @@ export const validateActionCommonFields = (
         isCreateFormState: boolean;
         isAuthenticationUpdateFormState: boolean;
         authenticationType?: AuthenticationType;
-    },
-    t: (key: string, options?: any) => string
+    }
 ): Partial<ActionConfigFormPropertyInterface> => {
-    const { isCreateFormState, isAuthenticationUpdateFormState, authenticationType } = options;
     const errors: Partial<ActionConfigFormPropertyInterface> = {};
 
     if (!values?.name) {
-        errors.name = t("actions:fields.name.validations.empty");
+        errors.name = I18n.instance.t("actions:fields.name.validations.empty");
     }
 
     if (!ActionsConstants.ACTION_NAME_REGEX.test(values?.name)) {
-        errors.name = t("actions:fields.name.validations.invalid");
+        errors.name = I18n.instance.t("actions:fields.name.validations.invalid");
     }
+
+    return {
+        ...errors,
+        ...validateActionEndpointFields(values, options)
+    };
+};
+
+/**
+ * Validate endpoint fields of the ActionConfig form.
+ *
+ * @param values - Form values to validate.
+ * @param options - Dynamic options for validation (e.g., flags and authenticationType).
+ * @returns A partial object containing validation errors.
+ */
+export const validateActionEndpointFields = (
+    values: EndpointConfigFormPropertyInterface,
+    options: {
+        isCreateFormState?: boolean;
+        isAuthenticationUpdateFormState: boolean;
+        authenticationType?: AuthenticationType;
+    }
+): Partial<EndpointConfigFormPropertyInterface> => {
+    const { isCreateFormState, isAuthenticationUpdateFormState, authenticationType } = options;
+    const errors: Partial<EndpointConfigFormPropertyInterface> = {};
+
     if (!values?.endpointUri) {
-        errors.endpointUri = t("actions:fields.endpoint.validations.empty");
+        errors.endpointUri = I18n.instance.t("actions:fields.endpoint.validations.empty");
     }
-    if (URLUtils.isURLValid(values?.endpointUri)) {
-        if (!(URLUtils.isHttpsUrl(values?.endpointUri))) {
-            errors.endpointUri = t("actions:fields.endpoint.validations.notHttps");
-        }
-    } else {
-        errors.endpointUri = t("actions:fields.endpoint.validations.invalidUrl");
+
+    if (
+        !FormValidation.url(values?.endpointUri, {
+            domain: {
+                allowUnicode: true,
+                minDomainSegments: 1,
+                tlds: false
+            },
+            scheme: [ "https", "http" ]
+        })
+    ) {
+        errors.endpointUri = I18n.instance.t("actions:fields.endpoint.validations.invalidUrl");
     }
+
     if (!values?.authenticationType) {
-        errors.authenticationType = t("actions:fields.authenticationType.validations.empty");
+        errors.authenticationType = I18n.instance.t("actions:fields.authenticationType.validations.empty");
     }
 
     switch (authenticationType) {
         case AuthenticationType.BASIC:
-            if(isCreateFormState || isAuthenticationUpdateFormState ||
-                values?.usernameAuthProperty || values?.passwordAuthProperty) {
+            if (
+                isCreateFormState || isAuthenticationUpdateFormState || values?.usernameAuthProperty ||
+                    values?.passwordAuthProperty
+            ) {
                 if (!values?.usernameAuthProperty) {
-                    errors.usernameAuthProperty = t("actions:fields.authentication." +
-                        "types.basic.properties.username.validations.empty");
+                    errors.usernameAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.basic.properties.username.validations.empty"
+                    );
                 }
                 if (!values?.passwordAuthProperty) {
-                    errors.passwordAuthProperty = t("actions:fields.authentication." +
-                        "types.basic.properties.password.validations.empty");
+                    errors.passwordAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.basic.properties.password.validations.empty"
+                    );
                 }
             }
 
@@ -79,26 +117,31 @@ export const validateActionCommonFields = (
         case AuthenticationType.BEARER:
             if (isCreateFormState || isAuthenticationUpdateFormState) {
                 if (!values?.accessTokenAuthProperty) {
-                    errors.accessTokenAuthProperty = t("actions:fields.authentication." +
-                        "types.bearer.properties.accessToken.validations.empty");
+                    errors.accessTokenAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.bearer.properties.accessToken.validations.empty"
+                    );
                 }
             }
 
             break;
         case AuthenticationType.API_KEY:
-            if (isCreateFormState || isAuthenticationUpdateFormState ||
-                values?.headerAuthProperty || values?.valueAuthProperty) {
+            if (isCreateFormState || isAuthenticationUpdateFormState || values?.headerAuthProperty ||
+                   values?.valueAuthProperty
+            ) {
                 if (!values?.headerAuthProperty) {
-                    errors.headerAuthProperty = t("actions:fields.authentication." +
-                        "types.apiKey.properties.header.validations.empty");
+                    errors.headerAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.apiKey.properties.header.validations.empty"
+                    );
                 }
                 if (!ActionsConstants.API_HEADER_REGEX.test(values?.headerAuthProperty)) {
-                    errors.headerAuthProperty = t("actions:fields.authentication." +
-                        "types.apiKey.properties.header.validations.invalid");
+                    errors.headerAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.apiKey.properties.header.validations.invalid"
+                    );
                 }
                 if (!values?.valueAuthProperty) {
-                    errors.valueAuthProperty = t("actions:fields.authentication." +
-                        "types.apiKey.properties.value.validations.empty");
+                    errors.valueAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.apiKey.properties.value.validations.empty"
+                    );
                 }
             }
 
