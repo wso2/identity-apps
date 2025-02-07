@@ -553,7 +553,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 message: t(identityAppsError.getErrorMessage()),
                 traceId: identityAppsError.getErrorTraceId()
             });
-            setTimeout(() => setAlert(undefined), 4000);
+            setTimeout(() => setAlert(undefined), ConnectionUIConstants.WIZARD_ERROR_CLEAR_TIMEOUT);
 
             return;
         }
@@ -568,7 +568,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                     "customAuthentication:notifications.addCustomAuthenticator.genericError.message"
                 )
             });
-            setTimeout(() => setAlert(undefined), 8000);
+            setTimeout(() => setAlert(undefined), ConnectionUIConstants.WIZARD_ERROR_CLEAR_TIMEOUT);
 
             return;
         }
@@ -584,7 +584,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 level: AlertLevels.ERROR,
                 message: t("customAuthentication:notifications.addCustomAuthenticator.error.message")
             });
-            setTimeout(() => setAlert(undefined), 4000);
+            setTimeout(() => setAlert(undefined), ConnectionUIConstants.WIZARD_ERROR_CLEAR_TIMEOUT);
 
             return;
         }
@@ -595,7 +595,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             level: AlertLevels.ERROR,
             message: t("customAuthentication:notifications.addCustomAuthenticator.genericError.message")
         });
-        setTimeout(() => setAlert(undefined), 4000);
+        setTimeout(() => setAlert(undefined), ConnectionUIConstants.WIZARD_ERROR_CLEAR_TIMEOUT);
     };
 
     /**
