@@ -317,6 +317,7 @@ export const governanceConnectors: governanceConnectorsNS = {
                 },
                 accountDisableHandler: {
                     friendlyName: "Account Disable",
+                    description: "Configure account disable settings.",
                     properties: {
                         accountDisableHandlerEnable: {
                             hint: "Allow an administrative user to disable user accounts",
@@ -325,6 +326,18 @@ export const governanceConnectors: governanceConnectorsNS = {
                         accountDisableHandlerNotificationManageInternally: {
                             hint: "Disable, if the client application handles notification sending",
                             label: "Manage notification sending internally"
+                        }
+                    },
+                    notifications: {
+                        configurationUpdate: {
+                            error: {
+                                description: "An error occurred while updating the account disable configuration.",
+                                message: "Update Error"
+                            },
+                            success: {
+                                description: "Successfully updated the account disable configuration.",
+                                message: "Update Successful"
+                            }
                         }
                     }
                 },

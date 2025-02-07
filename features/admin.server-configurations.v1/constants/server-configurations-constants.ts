@@ -411,6 +411,7 @@ export class ServerConfigurationsConstants {
     public static readonly OUTBOUND_PROVISIONING_SETTINGS_CONNECTOR_ID: string = "outbound-provisioning-settings";
     public static readonly NOTIFICATION_SETTINGS_CATEGORY_ID: string = "notification-settings";
     public static readonly NOTIFICATION_SETTINGS_CONNECTOR_ID: string = "internal-notification-settings";
+    public static readonly ACCOUNT_MANAGEMENT_CUSTOM_CATEGORY_ID: string = "account-management";
 
     /**
 	 * Multi Attribute Login Constants.
