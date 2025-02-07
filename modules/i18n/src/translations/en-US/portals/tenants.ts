@@ -316,7 +316,7 @@ export const tenants: TenantsNS = {
         deActivate: "Disable",
         deActivated: "Disabled"
     },
-    subtitle: "Create and manage root organizations for enhanced separation and control.",
+    subtitle: "Create and manage your server by creating new root level organizations in your workspace.",
     systemSettings: {
         actions: {
             newTenant: {
