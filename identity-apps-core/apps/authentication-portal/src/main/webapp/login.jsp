@@ -1099,19 +1099,19 @@
                                                 type="button"
                                                 id="icon-<%=iconId%>"
                                                 class="ui button secondary"
-                                                data-testid="login-page-sign-in-with-custom-local-authenticator<%=localAuthenticator%>"
+                                                data-testid="login-page-sign-in-with-<%=Encode.forHtmlAttribute(localAuthenticator)%>"
                                                 onclick="handleNoDomain(this,
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
-                                                        '<%=localAuthenticator%>')"
+                                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(localAuthenticator))%>')"
                                             >
                                             <img
                                                 class="ui image"
                                                 src="<%=Encode.forHtmlAttribute(customLocalAuthenticatorImageURL)%>"
-                                                alt="<%=localAuthenticator%> Logo"
+                                                alt="<%=Encode.forHtmlAttribute(localAuthenticator)%> Logo"
                                                 role="presentation">
                                             <span>
                                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
-                                                <%=customLocalAuthenticatorDisplayName%>
+                                                <%=Encode.forHtmlAttribute(customLocalAuthenticatorDisplayName)%>
                                             </span>
                                             </button>
                                     </div>
