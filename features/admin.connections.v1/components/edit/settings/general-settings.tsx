@@ -143,7 +143,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isCustomLocalAuthenticator, setIsCustomLocalAuthenticator ] = useState<boolean>(undefined);
     const [ shouldFetchLocalAuthenticatorConnectedApps, setShouldFetchLocalAuthenticatorConnectedApps ] =
-    useState<boolean>(false);
+        useState<boolean>(false);
 
     const { CONNECTION_TEMPLATE_IDS: ConnectionTemplateIds } = CommonAuthenticatorConstants;
 
@@ -184,29 +184,31 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
      * If connected apps are available, a modal with the connected apps will be displayed.
      * If there are no any connected apps, then the delete confirmation modal will be displayed.
      */
-    const initiateConnectorDeleteAction = (): void => {
-        isCustomLocalAuthenticator ? handleLocalAuthenticatorDeleteAction() : handleIdentityProviderDeleteAction();
+    const handleConnectorDeleteInitiation = (): void => {
+        isCustomLocalAuthenticator ?
+            handleLocalAuthenticatorDeleteInitiation() :
+            handleIdentityProviderDeleteInitiation();
     };
 
     /**
      * This method handles the initiation of the delete action for federated authenticators.
      */
-    const handleIdentityProviderDeleteAction = (): void => {
+    const handleIdentityProviderDeleteInitiation = (): void => {
         setIsAppsLoading(true);
         getConnectedApps(editingIDP.id)
             .then(async (response: ConnectedAppsInterface) => {
-                if (response.count === 0) {
+                if (response?.count === 0) {
                     setShowDeleteConfirmationModal(true);
                 } else {
                     setShowDeleteErrorDueToConnectedAppsModal(true);
                     const appRequests: Promise<
                             ApplicationBasicInterface
-                        >[] = response.connectedApps.map((app: ConnectedAppInterface) =>
+                        >[] = response?.connectedApps?.map((app: ConnectedAppInterface) =>
                             getApplicationDetails(app.appId)
                         );
 
                     const results: ApplicationBasicInterface[] = (await Promise.all(
-                        appRequests.map((response: Promise<ApplicationBasicInterface>) =>
+                        appRequests?.map((response: Promise<ApplicationBasicInterface>) =>
                             response.catch((error: IdentityAppsError) => {
                                 dispatch(
                                     addAlert({
@@ -221,7 +223,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                         )
                     )) as ApplicationBasicInterface[];
 
-                    const appNames: string[] = results.map((app: ApplicationBasicInterface) => app?.name);
+                    const appNames: string[] = results?.map((app: ApplicationBasicInterface) => app?.name);
 
                     setConnectedApps(appNames);
                 }
@@ -244,23 +246,24 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     /**
      * This method handles the initiation of the delete action for local authenticators.
      *
-     * Currently only custom local authenticators delete is supported. System defined authenticators cannot be deleted.
+     * Currently only custom local authenticator deletion is supported.
+     * System defined authenticators cannot be deleted.
      */
-    const handleLocalAuthenticatorDeleteAction = async (): Promise<void> => {
+    const handleLocalAuthenticatorDeleteInitiation = async (): Promise<void> => {
         connectedAppsOfLocalAuthenticator ? setIsAppsLoading(false) : setIsAppsLoading(true);
 
-        if (connectedAppsOfLocalAuthenticator.count === 0) {
+        if (connectedAppsOfLocalAuthenticator?.count === 0) {
             setShowDeleteConfirmationModal(true);
         } else {
             setShowDeleteErrorDueToConnectedAppsModal(true);
 
             const appRequests: Promise<ApplicationBasicInterface>[]
-            = connectedAppsOfLocalAuthenticator.connectedApps.map((app: ConnectedAppInterface) =>
+            = connectedAppsOfLocalAuthenticator?.connectedApps?.map((app: ConnectedAppInterface) =>
                 getApplicationDetails(app.appId)
             );
 
             const results: ApplicationBasicInterface[] = (await Promise.all(
-                appRequests.map((response: Promise<ApplicationBasicInterface>) =>
+                appRequests?.map((response: Promise<ApplicationBasicInterface>) =>
                     response.catch((error: IdentityAppsError) => {
                         dispatch(
                             addAlert({
@@ -275,7 +278,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                 )
             )) as ApplicationBasicInterface[];
 
-            const appNames: string[] = results.map((app: ApplicationBasicInterface) => app?.name);
+            const appNames: string[] = results?.map((app: ApplicationBasicInterface) => app?.name);
 
             setConnectedApps(appNames);
         }
@@ -317,7 +320,8 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     /**
      * This method handles the local authenticator delete.
      *
-     * Currently only custom local authenticator delete is supported. System defined authenticators cannot be deleted.
+     * Currently only custom local authenticator deletion is supported.
+     * System defined authenticators cannot be deleted.
      */
     const handleLocalAuthenticatorDelete = (): void => {
         setLoading(true);
@@ -451,14 +455,15 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     /**
      * This method handles the local authenticator disable.
      *
-     * Currently only custom local authenticator disable is supported. System defined authenticators cannot be disabled.
+     * Currently only custom local authenticator disabling is supported.
+     * System defined authenticators cannot be disabled.
      * @param event - Form event.
      * @param data - Checkbox props.
      */
     const handleLocalAuthenticatorDisable = (event: FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
         connectedAppsOfLocalAuthenticator ? setIsAppsLoading(false) : setIsAppsLoading(true);
 
-        if (connectedAppsOfLocalAuthenticator.count === 0) {
+        if (connectedAppsOfLocalAuthenticator?.count === 0) {
             handleCustomAuthFormSubmit({
                 isEnabled: data.checked
             });
@@ -551,7 +556,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                             actionTitle={ t("authenticationProvider:dangerZoneGroup.deleteIDP.actionTitle") }
                             header={ t("authenticationProvider:dangerZoneGroup.deleteIDP.header") }
                             subheader={ t("authenticationProvider:dangerZoneGroup.deleteIDP.subheader") }
-                            onActionClick={ initiateConnectorDeleteAction }
+                            onActionClick={ handleConnectorDeleteInitiation }
                             data-testid={ `${testId}-delete-idp-danger-zone` }
                         />
                     </Show>
