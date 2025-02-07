@@ -1510,11 +1510,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                 onActionClick={ undefined }
                                                 toggle={ {
                                                     checked: accountLocked,
-                                                    id: "accountLocked",
-                                                    onChange: handleDangerZoneToggles,
-                                                    disabled: accountDisabled,
                                                     disableHint: t("user:editUser.dangerZoneGroup." +
-                                                        "lockUserZone.disabledHint")
+                                                        "lockUserZone.disabledHint"),
+                                                    disabled: accountDisabled,
+                                                    id: "accountLocked",
+                                                    onChange: handleDangerZoneToggles
                                                 } }
                                             />
                                         )

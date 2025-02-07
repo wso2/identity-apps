@@ -28,11 +28,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps } from "semantic-ui-react";
-import { getConnectorDetails, updateGovernanceConnector, useGetGovernanceConnectorById } from "../api/governance-connectors";
+import { updateGovernanceConnector, useGetGovernanceConnectorById } from "../api/governance-connectors";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
-    GovernanceConnectorInterface,
     UpdateGovernanceConnectorConfigInterface,
     UpdateGovernanceConnectorConfigPropertyInterface
 } from "../models/governance-connectors";
@@ -63,7 +62,7 @@ export const AccountDisablePage: FC<AccountDisablePageInterface> = (
     } = useGetGovernanceConnectorById(ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID,
         ServerConfigurationsConstants.ACCOUNT_DISABLE_CONNECTOR_ID);
 
-    const [ isAccountDisableEnabled, setIsAccountDisableEnabled] = useState<boolean>(false);
+    const [ isAccountDisableEnabled, setIsAccountDisableEnabled ] = useState<boolean>(false);
 
     useEffect(() => {
         const accountDisableProperty: UpdateGovernanceConnectorConfigPropertyInterface =
@@ -186,9 +185,12 @@ export const AccountDisablePage: FC<AccountDisablePageInterface> = (
 
     return (
         <PageLayout
-            title={ t("governanceConnectors:connectorCategories.accountManagement.connectors.accountDisableHandler.friendlyName") }
-            pageTitle={ t("governanceConnectors:connectorCategories.accountManagement.connectors.accountDisableHandler.friendlyName") }
-            description={ t("governanceConnectors:connectorCategories.accountManagement.connectors.accountDisableHandler.description") }
+            title={ t("governanceConnectors:connectorCategories.accountManagement.connectors." +
+                "accountDisableHandler.friendlyName") }
+            pageTitle={ t("governanceConnectors:connectorCategories.accountManagement.connectors." +
+                "accountDisableHandler.friendlyName") }
+            description={ t("governanceConnectors:connectorCategories.accountManagement.connectors." +
+                "accountDisableHandler.description") }
             data-componentid={ `${ componentId }-page-layout` }
             backButton={ {
                 "data-testid": `${ componentId }-page-back-button`,

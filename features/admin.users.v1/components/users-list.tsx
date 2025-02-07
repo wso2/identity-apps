@@ -53,11 +53,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
 import {
-    ReactComponent as RoundedLockSolidIcon
-} from "../../themes/default/assets/images/icons/solid-icons/rounded-lock.svg";
-import {
     ReactComponent as RemoveCircleSolidIcon
 } from "../../themes/default/assets/images/icons/solid-icons/remove-circle.svg";
+import {
+    ReactComponent as RoundedLockSolidIcon
+} from "../../themes/default/assets/images/icons/solid-icons/rounded-lock.svg";
 import { deleteUser } from "../api";
 import { ACCOUNT_LOCK_REASON_MAP, UserManagementConstants } from "../constants";
 import { UserBasicInterface, UserListInterface } from "../models/user";
