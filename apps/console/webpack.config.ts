@@ -24,7 +24,6 @@ import CompressionPlugin from "compression-webpack-plugin";
 import history from "connect-history-api-fallback";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
-import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import JsonMinimizerPlugin from "json-minimizer-webpack-plugin";
 import webpack, {
@@ -162,27 +161,18 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         config.plugins.splice(indexHtmlWebpackPluginIndex, 1);
     }
 
-    config.plugins.push(
-        new ForkTsCheckerWebpackPlugin({
-            typescript: {
-                memoryLimit: 4096
-            }
-        })
-    );
-
     if (isProduction && !isDeployedOnExternalStaticServer) {
+        /* eslint-disable max-len */
         config.plugins.push(
             (new HtmlWebpackPlugin({
                 authorizationCode: "<%=request.getParameter(\"code\")%>",
                 contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                     "pageEncoding=\"UTF-8\" %>",
-                // eslint-disable-next-line max-len
                 cookieproDomainScriptId: "<% String cookiepro_domain_script_id = System.getenv(\"cookiepro_domain_script_id\"); %>",
                 cookieproDomainScriptIdVar: "<%= cookiepro_domain_script_id %>",
                 cookieproEnabledCheck: "<% if ((Boolean.TRUE.toString()).equals(is_cookiepro_enabled)) { %>",
                 cookieproEnabledCheckEnd: "<% } %>",
                 cookieproEnabledFlag: "<% String is_cookiepro_enabled = System.getenv(\"is_cookiepro_enabled\"); %>",
-                // eslint-disable-next-line max-len
                 cookieproInitialScriptTypeCheck: "<% String initialScriptType = (Boolean.TRUE.toString()).equals(is_cookiepro_enabled) ? \"text/plain\" : \"text/javascript\"; %>",
                 cookieproInitialScriptTypeVar: "<%= initialScriptType %>",
                 filename: ABSOLUTE_PATHS.homeTemplateInDistribution,
@@ -215,7 +205,16 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     ? "<%= isOrganizationManagementEnabled() %>"
                     : "false",
                 minify: false,
+                proxyContextPath: !isDeployedOnExternalTomcatServer
+                    ? "<%=ServerConfiguration.getInstance().getFirstProperty(PROXY_CONTEXT_PATH)%>"
+                    : "",
+                proxyContextPathConstant: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"static org.wso2.carbon.identity.core.util.IdentityCoreConstants.PROXY_CONTEXT_PATH\" %>"
+                    : "",
                 publicPath: baseHref,
+                serverConfiguration: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"org.wso2.carbon.base.ServerConfiguration\" %>"
+                    : "",
                 serverUrl: !isDeployedOnExternalTomcatServer
                     ? "<%=getServerURL(\"\", true, true)%>"
                     : "",
@@ -234,7 +233,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 themeHash: getThemeConfigs(theme).styleSheetHash
             }) as unknown) as WebpackPluginInstance
         );
+        /* eslint-enable max-len */
 
+        /* eslint-disable max-len */
         config.plugins.push(
             (new HtmlWebpackPlugin({
                 authenticatedIdPs: "<%=request.getParameter(\"AuthenticatedIdPs\")%>",
@@ -267,12 +268,21 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     ? "<%= isAdaptiveAuthenticationAvailable() %>"
                     : "false",
                 minify: false,
+                proxyContextPath: !isDeployedOnExternalTomcatServer
+                    ? "<%=ServerConfiguration.getInstance().getFirstProperty(PROXY_CONTEXT_PATH)%>"
+                    : "",
+                proxyContextPathConstant: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"static org.wso2.carbon.identity.core.util.IdentityCoreConstants.PROXY_CONTEXT_PATH\" %>"
+                    : "",
                 publicPath: baseHref,
                 requestForwardSnippet: "if(request.getParameter(\"code\") != null && " +
                     "!request.getParameter(\"code\").trim().isEmpty()) " +
                     "{request.getRequestDispatcher(\"/authenticate?code=\"+request.getParameter(\"code\")+" +
                     "\"&AuthenticatedIdPs=\"+request.getParameter(\"AuthenticatedIdPs\")" +
                     "+\"&session_state=\"+request.getParameter(\"session_state\")).forward(request, response);}",
+                serverConfiguration: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"org.wso2.carbon.base.ServerConfiguration\" %>"
+                    : "",
                 serverUrl: !isDeployedOnExternalTomcatServer
                     ? "<%=getServerURL(\"\", true, true)%>"
                     : "",
@@ -291,6 +301,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 themeHash: getThemeConfigs(theme).styleSheetHash
             }) as unknown) as WebpackPluginInstance
         );
+        /* eslint-enable max-len */
     } else if (isPreAuthCheckEnabled) {
         config.plugins.push(
             (new HtmlWebpackPlugin({

@@ -35,6 +35,7 @@ import PasswordRecoveryMultiOptionFragment from "./fragments/password-recovery/p
 import PasswordRecoverySMSFragment from "./fragments/password-recovery/password-recovery-sms-otp-fragment";
 import PasswordResetFragment from "./fragments/password-reset-fragment";
 import PasswordResetSuccessFragment from "./fragments/password-reset-success-fragment";
+import PushAuthFragment from "./fragments/push-auth-fragment";
 import SignUpFragment from "./fragments/sign-up-fragment";
 import SMSOTPFragment from "./fragments/sms-otp-fragment";
 import TOTPFragment from "./fragments/totp-fragment";
@@ -83,6 +84,8 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (
             return <SignUpFragment />;
         } else if (selectedScreen === PreviewScreenType.EMAIL_OTP) {
             return <EmailOTPFragment />;
+        } else if (selectedScreen === PreviewScreenType.PUSH_AUTH) {
+            return <PushAuthFragment />;
         } else if (selectedScreen === PreviewScreenType.SMS_OTP) {
             return <SMSOTPFragment />;
         } else if (selectedScreen === PreviewScreenType.TOTP) {

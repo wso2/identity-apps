@@ -490,7 +490,7 @@
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection">
-            <div class="ui segment">
+            <div class="ui segment segment-layout">
                 <h3 class="ui header">
                     <%  if (Boolean.parseBoolean(promptAccountLinking)) { %>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "account.linking") %>

@@ -133,5 +133,12 @@ export interface customAuthenticationNS {
                 }
             }
         };
+        editPage: {
+            generalTab: {
+                iconUrl: {
+                    hint: string;
+                }
+            }
+        }
     };
 };

@@ -33,8 +33,8 @@
 
     .push-provider-template-ribbon {
         border-radius: 0;
-        position: absolute;
-        right: 0;
+        position: relative;
+        right: -23px;
         font-size: .8em;
         height: 24px;
         width: 75px;
@@ -54,10 +54,6 @@
         align-content: center;
         align-items: center;
         padding: 10px;
-
-        .push-provider-template-name-label{
-            margin-right: 40px;
-        }
 
         .push-provider-template-image-container {
             min-height: 35px;

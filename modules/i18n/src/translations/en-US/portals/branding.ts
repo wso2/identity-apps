@@ -172,6 +172,7 @@ export const branding: BrandingNS = {
         "password-recovery": "Password Recovery",
         "password-reset": "Password Reset",
         "password-reset-success": "Password Reset Link Sent",
+        "push-auth": "Push Authentication",
         "sign-up": "Sign Up",
         "sms-otp": "SMS OTP",
         "totp": "TOTP",

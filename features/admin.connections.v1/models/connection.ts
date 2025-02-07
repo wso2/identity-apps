@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 import { IdentifiableComponentInterface, LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIconProps } from "@wso2is/react-components";
 import { ComponentType, LazyExoticComponent, ReactElement } from "react";
@@ -753,7 +752,7 @@ export interface CustomAuthGeneralDetailsFormValuesInterface {
     /**
      * Display name of the connection
      */
-    displayName?: string
+    displayName?: string;
     /**
      * Description of the connection
      */
@@ -850,45 +849,9 @@ export interface CustomAuthenticationCreateWizardGeneralFormValuesInterface {
  */
 export interface EndpointAuthenticationUpdateInterface extends CustomAuthGeneralDetailsFormValuesInterface {
     /**
-     * Name of the Action.
-     */
-    name?: string;
-    /**
-     * Description of the Action.
-     */
-    description?: string;
-    /**
      * Endpoint configuration of the Action.
      */
-    endpoint?: Partial<EndpointInterface>;
-}
-
-/**
- *  Endpoint configuration.
- */
-export interface EndpointInterface {
-    /**
-     * External endpoint.
-     */
-    uri: string;
-    /**
-     * Authentication configurations of the Action.
-     */
-    authentication: AuthenticationInterface;
-}
-
-/**
- *  Endpoint authentication configuration.
- */
-interface AuthenticationInterface {
-    /**
-     * Authentication Type.
-     */
-    type: EndpointAuthenticationType;
-    /**
-     * Authentication properties.
-     */
-    properties: Partial<EndpointConfigFormPropertyInterface>;
+    endpoint?: Partial<ExternalEndpoint>;
 }
 
 /**

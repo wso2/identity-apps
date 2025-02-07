@@ -1,5 +1,18 @@
 # @wso2is/forms
 
+## 2.3.18
+
+### Patch Changes
+
+- [#7513](https://github.com/wso2/identity-apps/pull/7513) [`43ab5e89caf6862202104d13ecc45454c04c7fb0`](https://github.com/wso2/identity-apps/commit/43ab5e89caf6862202104d13ecc45454c04c7fb0) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Improve multi email and mobile fields to update with Update button
+
+## 2.3.17
+
+### Patch Changes
+
+- Updated dependencies [[`0aca53b8d7f18b9d8488911500b86c7178eb9be6`](https://github.com/wso2/identity-apps/commit/0aca53b8d7f18b9d8488911500b86c7178eb9be6)]:
+  - @wso2is/core@2.6.2
+
 ## 2.3.16
 
 ### Patch Changes

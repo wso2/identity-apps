@@ -418,7 +418,4 @@ export class ConnectionUIConstants {
             value: EndpointAuthenticationType.API_KEY
         }
     ];
-
-    public static readonly CUSTOM_LOCAL_AUTHENTICATOR_IMAGE_URI: string =
-        "assets/images/logos/custom-authentication.svg";
 }

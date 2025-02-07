@@ -172,6 +172,7 @@
     },
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
+    "proxyContextPath": "",
     "routePaths": {
         "home": "/getting-started",
         "login": "",
@@ -322,7 +323,16 @@
             "ai": {
                 "disabledFeatures": [],
                 "enabled": false,
-                "featureFlags": [],
+                "featureFlags": [
+                    {
+                        "feature": "ai.application.loginFlow.banner",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "ai.branding.banner",
+                        "flag": ""
+                    }
+                ],
                 "scopes": {
                     "create": [],
                     "delete": [],
