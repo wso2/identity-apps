@@ -22,6 +22,7 @@
         <script>
             var contextPathGlobal = "<%= htmlWebpackPlugin.options.publicPath %>";
             var serverOriginGlobal = startupConfig.serverUrlGlobal;
+            var proxyContextPathGlobal = startupConfig.proxyContextPathGlobal;
             var superTenantGlobal = startupConfig.superTenant;
             var tenantPrefixGlobal = startupConfig.tenantPrefix;
             var isAdaptiveAuthenticationAvailable;
@@ -35,8 +36,8 @@
         <!-- Start of custom scripts added to the head -->
         <script
             defer
-            type="text/javascript" 
-            data-public-path="<%= htmlWebpackPlugin.options.publicPath %>" 
+            type="text/javascript"
+            data-public-path="<%= htmlWebpackPlugin.options.publicPath %>"
             data-name="head-extensions"
             src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"
         ></script>

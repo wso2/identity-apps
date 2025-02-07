@@ -1,5 +1,294 @@
 # @wso2is/console
 
+## 2.41.3
+
+### Patch Changes
+
+- Updated dependencies [[`43ab5e89caf6862202104d13ecc45454c04c7fb0`](https://github.com/wso2/identity-apps/commit/43ab5e89caf6862202104d13ecc45454c04c7fb0)]:
+  - @wso2is/admin.users.v1@2.30.54
+  - @wso2is/forms@2.3.18
+  - @wso2is/admin.administrators.v1@2.29.144
+  - @wso2is/admin.alternative-login-identifier.v1@1.5.144
+  - @wso2is/admin.applications.v1@2.30.144
+  - @wso2is/admin.authentication.v1@2.25.144
+  - @wso2is/admin.claims.v1@2.27.54
+  - @wso2is/admin.console-settings.v1@2.25.144
+  - @wso2is/admin.core.v1@2.38.13
+  - @wso2is/admin.extensions.v1@2.36.69
+  - @wso2is/admin.groups.v1@2.27.54
+  - @wso2is/admin.organizations.v1@2.26.144
+  - @wso2is/admin.policy-administration.v1@1.0.60
+  - @wso2is/admin.remote-userstores.v1@1.7.100
+  - @wso2is/admin.roles.v1@2.25.144
+  - @wso2is/admin.roles.v2@2.27.88
+  - @wso2is/admin.server-configurations.v1@2.32.69
+  - @wso2is/admin.tenants.v1@2.28.118
+  - @wso2is/admin.validation.v1@2.27.82
+  - @wso2is/admin.api-resources.v1@2.25.144
+  - @wso2is/admin.api-resources.v2@2.25.144
+  - @wso2is/admin.authorization.v1@2.25.61
+  - @wso2is/admin.branding.v1@2.28.1
+  - @wso2is/admin.certificates.v1@2.25.144
+  - @wso2is/admin.connections.v1@2.33.27
+  - @wso2is/admin.email-and-sms.v1@2.25.144
+  - @wso2is/admin.email-management.v1@2.25.144
+  - @wso2is/admin.email-providers.v1@2.25.144
+  - @wso2is/admin.identity-verification-providers.v1@2.27.144
+  - @wso2is/admin.impersonation.v1@1.6.144
+  - @wso2is/admin.logs.v1@1.5.145
+  - @wso2is/admin.oidc-scopes.v1@2.25.144
+  - @wso2is/admin.org-insights.v1@2.25.144
+  - @wso2is/admin.organization-discovery.v1@2.25.144
+  - @wso2is/admin.private-key-jwt.v1@2.25.144
+  - @wso2is/admin.remote-repository-configuration.v1@2.25.144
+  - @wso2is/admin.saml2-configuration.v1@2.25.144
+  - @wso2is/admin.secrets.v1@2.25.144
+  - @wso2is/admin.session-management.v1@2.25.144
+  - @wso2is/admin.sms-providers.v1@2.25.144
+  - @wso2is/admin.sms-templates.v1@1.0.143
+  - @wso2is/admin.userstores.v1@2.26.103
+  - @wso2is/admin.workflow-approvals.v1@2.25.144
+  - @wso2is/admin.wsfed-configuration.v1@2.25.144
+  - @wso2is/admin.application-templates.v1@1.4.144
+  - @wso2is/admin.home.v1@1.6.144
+  - @wso2is/admin.username-validation.v1@1.5.144
+  - @wso2is/admin.actions.v1@1.11.9
+  - @wso2is/admin.feature-gate.v1@1.4.144
+  - @wso2is/admin.push-providers.v1@1.0.33
+  - @wso2is/admin.subscription.v1@1.5.144
+  - @wso2is/admin.template-core.v1@1.5.98
+
+## 2.41.2
+
+### Patch Changes
+
+- [#7522](https://github.com/wso2/identity-apps/pull/7522) [`06767914b6ff26d910972e9c05c0738a8002c86b`](https://github.com/wso2/identity-apps/commit/06767914b6ff26d910972e9c05c0738a8002c86b) Thanks [@brionmario](https://github.com/brionmario)! - Update `contextPath` resolving logic
+
+- Updated dependencies [[`cd117cf2ec84b7d54f6a4571151d8d13bdffaf53`](https://github.com/wso2/identity-apps/commit/cd117cf2ec84b7d54f6a4571151d8d13bdffaf53), [`0aca53b8d7f18b9d8488911500b86c7178eb9be6`](https://github.com/wso2/identity-apps/commit/0aca53b8d7f18b9d8488911500b86c7178eb9be6), [`36688f8894c54be04e79e8d2f2c97ddba30f688d`](https://github.com/wso2/identity-apps/commit/36688f8894c54be04e79e8d2f2c97ddba30f688d), [`04be5207ce0c3539ae960f3417151baa3d5bcddd`](https://github.com/wso2/identity-apps/commit/04be5207ce0c3539ae960f3417151baa3d5bcddd)]:
+  - @wso2is/admin.applications.v1@2.30.143
+  - @wso2is/react-components@2.9.5
+  - @wso2is/core@2.6.2
+  - @wso2is/admin.branding.v1@2.28.0
+  - @wso2is/i18n@2.19.4
+  - @wso2is/admin.connections.v1@2.33.26
+  - @wso2is/admin.administrators.v1@2.29.143
+  - @wso2is/admin.alternative-login-identifier.v1@1.5.143
+  - @wso2is/admin.application-templates.v1@1.4.143
+  - @wso2is/admin.console-settings.v1@2.25.143
+  - @wso2is/admin.core.v1@2.38.12
+  - @wso2is/admin.extensions.v1@2.36.68
+  - @wso2is/admin.groups.v1@2.27.53
+  - @wso2is/admin.home.v1@1.6.143
+  - @wso2is/admin.oidc-scopes.v1@2.25.143
+  - @wso2is/admin.organizations.v1@2.26.143
+  - @wso2is/admin.policy-administration.v1@1.0.59
+  - @wso2is/admin.remote-userstores.v1@1.7.99
+  - @wso2is/admin.roles.v2@2.27.87
+  - @wso2is/admin.username-validation.v1@1.5.143
+  - @wso2is/admin.actions.v1@1.11.8
+  - @wso2is/admin.api-resources.v1@2.25.143
+  - @wso2is/admin.api-resources.v2@2.25.143
+  - @wso2is/admin.authorization.v1@2.25.60
+  - @wso2is/admin.certificates.v1@2.25.143
+  - @wso2is/admin.claims.v1@2.27.53
+  - @wso2is/admin.email-and-sms.v1@2.25.143
+  - @wso2is/admin.email-management.v1@2.25.143
+  - @wso2is/admin.email-providers.v1@2.25.143
+  - @wso2is/admin.identity-verification-providers.v1@2.27.143
+  - @wso2is/admin.impersonation.v1@1.6.143
+  - @wso2is/admin.logs.v1@1.5.144
+  - @wso2is/admin.org-insights.v1@2.25.143
+  - @wso2is/admin.organization-discovery.v1@2.25.143
+  - @wso2is/admin.private-key-jwt.v1@2.25.143
+  - @wso2is/admin.remote-repository-configuration.v1@2.25.143
+  - @wso2is/admin.roles.v1@2.25.143
+  - @wso2is/admin.saml2-configuration.v1@2.25.143
+  - @wso2is/admin.secrets.v1@2.25.143
+  - @wso2is/admin.server-configurations.v1@2.32.68
+  - @wso2is/admin.session-management.v1@2.25.143
+  - @wso2is/admin.sms-providers.v1@2.25.143
+  - @wso2is/admin.sms-templates.v1@1.0.142
+  - @wso2is/admin.tenants.v1@2.28.117
+  - @wso2is/admin.users.v1@2.30.53
+  - @wso2is/admin.userstores.v1@2.26.102
+  - @wso2is/admin.validation.v1@2.27.81
+  - @wso2is/admin.workflow-approvals.v1@2.25.143
+  - @wso2is/admin.wsfed-configuration.v1@2.25.143
+  - @wso2is/dynamic-forms@2.4.33
+  - @wso2is/form@2.6.26
+  - @wso2is/admin.authentication.v1@2.25.143
+  - @wso2is/admin.feature-gate.v1@1.4.143
+  - @wso2is/admin.subscription.v1@1.5.143
+  - @wso2is/admin.template-core.v1@1.5.97
+  - @wso2is/access-control@3.3.16
+  - @wso2is/forms@2.3.17
+  - @wso2is/admin.push-providers.v1@1.0.32
+
+## 2.41.1
+
+### Patch Changes
+
+- Updated dependencies [[`e1fd42a4d68b6b9c3d06c36b749fa46bb04c064d`](https://github.com/wso2/identity-apps/commit/e1fd42a4d68b6b9c3d06c36b749fa46bb04c064d)]:
+  - @wso2is/admin.core.v1@2.38.11
+  - @wso2is/admin.actions.v1@1.11.7
+  - @wso2is/admin.administrators.v1@2.29.142
+  - @wso2is/admin.alternative-login-identifier.v1@1.5.142
+  - @wso2is/admin.api-resources.v1@2.25.142
+  - @wso2is/admin.api-resources.v2@2.25.142
+  - @wso2is/admin.application-templates.v1@1.4.142
+  - @wso2is/admin.applications.v1@2.30.142
+  - @wso2is/admin.authentication.v1@2.25.142
+  - @wso2is/admin.branding.v1@2.27.115
+  - @wso2is/admin.certificates.v1@2.25.142
+  - @wso2is/admin.claims.v1@2.27.52
+  - @wso2is/admin.connections.v1@2.33.25
+  - @wso2is/admin.console-settings.v1@2.25.142
+  - @wso2is/admin.email-and-sms.v1@2.25.142
+  - @wso2is/admin.email-management.v1@2.25.142
+  - @wso2is/admin.email-providers.v1@2.25.142
+  - @wso2is/admin.extensions.v1@2.36.67
+  - @wso2is/admin.feature-gate.v1@1.4.142
+  - @wso2is/admin.groups.v1@2.27.52
+  - @wso2is/admin.home.v1@1.6.142
+  - @wso2is/admin.identity-verification-providers.v1@2.27.142
+  - @wso2is/admin.impersonation.v1@1.6.142
+  - @wso2is/admin.logs.v1@1.5.143
+  - @wso2is/admin.oidc-scopes.v1@2.25.142
+  - @wso2is/admin.org-insights.v1@2.25.142
+  - @wso2is/admin.organization-discovery.v1@2.25.142
+  - @wso2is/admin.organizations.v1@2.26.142
+  - @wso2is/admin.policy-administration.v1@1.0.58
+  - @wso2is/admin.private-key-jwt.v1@2.25.142
+  - @wso2is/admin.push-providers.v1@1.0.31
+  - @wso2is/admin.remote-repository-configuration.v1@2.25.142
+  - @wso2is/admin.remote-userstores.v1@1.7.98
+  - @wso2is/admin.roles.v1@2.25.142
+  - @wso2is/admin.roles.v2@2.27.86
+  - @wso2is/admin.saml2-configuration.v1@2.25.142
+  - @wso2is/admin.secrets.v1@2.25.142
+  - @wso2is/admin.server-configurations.v1@2.32.67
+  - @wso2is/admin.session-management.v1@2.25.142
+  - @wso2is/admin.sms-providers.v1@2.25.142
+  - @wso2is/admin.sms-templates.v1@1.0.141
+  - @wso2is/admin.subscription.v1@1.5.142
+  - @wso2is/admin.template-core.v1@1.5.96
+  - @wso2is/admin.tenants.v1@2.28.116
+  - @wso2is/admin.username-validation.v1@1.5.142
+  - @wso2is/admin.users.v1@2.30.52
+  - @wso2is/admin.userstores.v1@2.26.101
+  - @wso2is/admin.validation.v1@2.27.80
+  - @wso2is/admin.workflow-approvals.v1@2.25.142
+  - @wso2is/admin.wsfed-configuration.v1@2.25.142
+
+## 2.41.0
+
+### Minor Changes
+
+- [#7484](https://github.com/wso2/identity-apps/pull/7484) [`935b7aba2e1cc618588ec76325945dc00c12cba5`](https://github.com/wso2/identity-apps/commit/935b7aba2e1cc618588ec76325945dc00c12cba5) Thanks [@brionmario](https://github.com/brionmario)! - This pull request introduces support for a configurable proxy context path across multiple files in the project. The changes ensure that the application can dynamically handle different proxy context paths based on the server configuration.
+
+  Ex: The My Account can be hosted under `https://is.dev.wso2.com/auth/t/brionmario.com/myaccount`.
+  ⚠️ Note that `auth` is the context path.
+
+  #### Pre-requisites
+
+  We currently need the following NGINX configuration.
+
+  - `auth` is the proxy context path.
+  - `https://is.dev.wso2.com` is the server host.
+
+  ```nginx
+  upstream ssl.is.dev.wso2.com {
+      server 127.0.0.1:9443;
+      ip_hash;
+  }
+
+  server {
+  listen 443 ssl;
+      server_name is.dev.wso2.com;
+      ssl_certificate /opt/homebrew/etc/nginx/ssl/certificate.crt;
+      ssl_certificate_key /opt/homebrew/etc/nginx/ssl/privateKey.key;
+
+      location /auth/ {
+          proxy_set_header X-Forwarded-Host $host;
+          proxy_set_header X-Forwarded-Server $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header Host $http_host;
+          proxy_read_timeout 5m;
+          proxy_send_timeout 5m;
+          proxy_pass https://ssl.is.dev.wso2.com/;
+
+          # Dynamically rewrite cookie paths based on the tenant
+          proxy_cookie_path ~^/(/)? /auth/$1;
+          proxy_cookie_path / /auth;
+
+          # Match and rewrite tenant-specific cookie paths
+          proxy_cookie_path ~^/auth/(t/[^/]+)/ /auth/$1;
+
+          proxy_redirect https://is.dev.wso2.com/auth/ https://is.dev.wso2.com/auth/;
+          proxy_redirect https://is.dev.wso2.com/ https://is.dev.wso2.com/auth/;
+          proxy_redirect https://is.dev.wso2.com:443/ https://is.dev.wso2.com/auth/;
+
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+      }
+
+      location /console {
+          rewrite ^/console(.*)$ /auth/console$1 last;
+
+          proxy_set_header X-Forwarded-Host $host;
+          proxy_set_header X-Forwarded-Server $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header Host $http_host;
+
+          proxy_read_timeout 5m;
+          proxy_send_timeout 5m;
+
+          # Forward the rewritten path to the backend
+          proxy_pass https://ssl.is.dev.wso2.com/;
+
+          # Dynamically handle tenant-specific redirects
+          proxy_redirect ~^https://is\.dev\.wso2\.com/auth/(t/[^/]+)/console https://is.dev.wso2.com/console;
+      }
+
+      location /myaccount {
+          rewrite ^/myaccount(.*)$ /auth/myaccount$1 last;
+
+          proxy_set_header X-Forwarded-Host $host;
+          proxy_set_header X-Forwarded-Server $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header Host $http_host;
+
+          proxy_read_timeout 5m;
+          proxy_send_timeout 5m;
+
+          # Forward the rewritten path to the backend
+          proxy_pass https://ssl.is.dev.wso2.com/;
+
+          # Dynamically handle tenant-specific redirects
+          proxy_redirect ~^https://is\.dev\.wso2\.com/auth/(t/[^/]+)/myaccount https://is.dev.wso2.com/myaccount;
+      }
+  }
+  ```
+
+  #### Consuming the context path
+
+  Context path configuration is consumed in different ways.
+
+  1. Get the `proxy context` path defined in `server.proxy_context_path` using the Java Util in the JSP files.
+
+  ```js
+  var proxyContextPathGlobal =
+    "<%=ServerConfiguration.getInstance().getFirstProperty(PROXY_CONTEXT_PATH)%>";
+  ```
+
+  2. Additionally, can override the context path per app with a TOML config.
+
+  ```toml
+  [console]
+  proxy_context_path = "auth"
+  ```
+
 ## 2.40.30
 
 ### Patch Changes

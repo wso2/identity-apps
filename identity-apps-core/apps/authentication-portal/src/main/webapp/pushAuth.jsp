@@ -189,7 +189,7 @@
                                     </h3>
                                     <% } else { %>
                                     <p class="text-center">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "push.notification.sent.msg")%>
+                                        <%=i18n(resourceBundle, customText, "push.notification.sent.msg")%>
                                     </p>
                                     <% } %>
                                 </div>
@@ -314,14 +314,12 @@
 
                 pollingInterval = setInterval(() => {
                     $.ajax({
-                        url: STATUS_URL,
+                        url: "<%= Encode.forJavaScriptBlock(identityServerEndpointContextParam)%>" + STATUS_URL,
                         type: "GET",
                         contentType: "application/json",
                         success: function (response) {
                             if (response.status === "COMPLETED") {
                                 clearInterval(pollingInterval);
-                                document.getElementById("instruction-div").style.display = "none";
-                                $("#responseReceived").transition("fade");
                                 setTimeout(() => {
                                     document.getElementById("scenario").value = "PROCEED_PUSH_AUTHENTICATION";
                                     $("#submitForm").submit();

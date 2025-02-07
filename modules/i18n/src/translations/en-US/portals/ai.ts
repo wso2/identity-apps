@@ -119,5 +119,6 @@ export const ai: aiNS = {
         },
         termsAndConditions: "Terms and Conditions",
         title: "Login Flow AI"
-    }
+    },
+    subscribeToAI: "To enjoy access to AI powered features, sign up for a free WSO2 AI account and get your subscription key."
 };

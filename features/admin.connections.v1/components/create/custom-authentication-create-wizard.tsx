@@ -64,6 +64,7 @@ import { createConnection, createCustomAuthentication, useGetConnectionTemplate 
 import { getConnectionWizardStepIcons } from "../../configs/ui";
 import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
+import { AuthenticatorMeta } from "../../meta/authenticator-meta";
 import {
     AuthenticationTypeDropdownOption,
     AvailableCustomAuthentications,
@@ -741,7 +742,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             customAuthenticator.name = prefixedIdentifier;
             customAuthenticator.displayName = values?.displayName?.toString();
             customAuthenticator.description = connectionTemplate.customLocalAuthenticator.description;
-            // TODO: Provide support to add local file URI as the image.
 
             customAuthenticator.endpoint.authentication.type = endpointAuthType;
             customAuthenticator.endpoint.uri = values?.endpointUri.toString();
@@ -758,7 +758,6 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
             setIsSubmitting(true);
             createCustomLocalAuthenticator(customAuthenticator);
         }
-
     };
 
     const wizardCommonFirstPage = () => (
@@ -1076,10 +1075,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                     data-componentid={ `${_componentId}-modal-header` }>
                     <div className={ "display-flex" }>
                         <GenericIcon
-                            icon={ ConnectionsManagementUtils.resolveConnectionResourcePath(
-                                "",
-                                "assets/images/logos/custom-authentication.svg"
-                            ) }
+                            icon={ AuthenticatorMeta.getCustomAuthenticatorIcon() }
                             size="x30"
                             transparent
                             spaced={ "right" }

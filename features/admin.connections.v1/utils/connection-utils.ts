@@ -257,6 +257,23 @@ export class ConnectionsManagementUtils {
     }
 
     /**
+     * Util to resolve the resource path relative to assets folder.
+     *
+     * @param path - Resource path.
+     * @returns - Relative path.
+     */
+    public static resolveConnectionRelativePath(path: string): string {
+        const assetsFolder: string = "assets";
+        const index: number = path.indexOf(assetsFolder);
+
+        if (index === -1) {
+            return path;
+        }
+
+        return path.slice(index);
+    }
+
+    /**
      * Util to resolve connection doc links.
      */
     public static resolveConnectionDocLink(id: string): string {

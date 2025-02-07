@@ -35,33 +35,35 @@ export class URLUtils {
     private constructor() { }
 
     /**
-     * Checks if the passed in url is a valid Http URL.
+     * Checks if the passed-in URL is a valid HTTP URL.
+     * If `forceRegexValidation` is false, it only checks if the URL starts with "http://".
      *
      * @param url - URL to evaluate.
-     *
-     * @returns True if the url is a http url.
+     * @param forceRegexValidation - Flag to use regex pattern validation (default: true).
+     * @returns True if the URL is a valid HTTP URL.
      */
-    public static isHttpUrl(url: string): boolean {
-        if (url.startsWith("http://")) {
-            return !!url.trim().match(PatternConstants.HTTP_URL_REGEX_PATTERN);
+    public static isHttpUrl(url: string, forceRegexValidation: boolean = true): boolean {
+        if (!forceRegexValidation) {
+            return url.trim().startsWith("http://");
         }
 
-        return false;
+        return !!url.trim().match(PatternConstants.HTTP_URL_REGEX_PATTERN);
     }
 
     /**
-     * Checks if the passed in url is a valid Https URL.
+     * Checks if the passed-in URL is a valid HTTPS URL.
+     * If `forceRegexValidation` is false, it only checks if the URL starts with "https://".
      *
      * @param url - URL to evaluate.
-     *
-     * @returns True if the url is a https url.
+     * @param forceRegexValidation - Flag to use regex pattern validation (default: true).
+     * @returns True if the URL is a valid HTTPS URL.
      */
-    public static isHttpsUrl(url: string): boolean {
-        if (url.startsWith("https://")) {
-            return !!url.trim().match(PatternConstants.HTTPS_URL_REGEX_PATTERN);
+    public static isHttpsUrl(url: string, forceRegexValidation: boolean = true): boolean {
+        if (!forceRegexValidation) {
+            return url.trim().startsWith("https://");
         }
 
-        return false;
+        return !!url.trim().match(PatternConstants.HTTPS_URL_REGEX_PATTERN);
     }
 
     /**

@@ -17,6 +17,7 @@
  */
 
 import BasicAuthIcon from "../../themes/default/assets/images/authenticators/basic-auth.png";
+import CustomAuthenticator from "../../themes/default/assets/images/authenticators/custom-authenticator.svg";
 import FIDOIcon from "../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
 import SalesforceLogo from "../../themes/default/assets/images/connectors/salesforce.png";
 import SCIMLogo from "../../themes/default/assets/images/connectors/scim.png";
@@ -86,6 +87,7 @@ export const getConnectionIcons = (): any => {
         apple: AppleLogo,
         basic: BasicAuthIcon,
         basicAuthenticator: BasicAuthIcon,
+        customAuthenticator: CustomAuthenticator,
         default: DefaultConnectionIcon,
         "email-otp-authenticator": EmailOTPIcon,
         emailOTP: EmailOTPIcon,

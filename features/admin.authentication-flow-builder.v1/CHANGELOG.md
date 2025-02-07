@@ -1,5 +1,52 @@
 # @wso2is/admin.authentication-flow-builder.v1
 
+## 2.24.144
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.144
+  - @wso2is/admin.core.v1@2.38.13
+  - @wso2is/admin.extensions.v1@2.36.69
+  - @wso2is/admin.organizations.v1@2.26.144
+  - @wso2is/admin.server-configurations.v1@2.32.69
+  - @wso2is/admin.connections.v1@2.33.27
+  - @wso2is/admin.identity-providers.v1@2.26.144
+  - @wso2is/admin.login-flow.ai.v1@2.27.39
+  - @wso2is/admin.secrets.v1@2.25.144
+
+## 2.24.143
+
+### Patch Changes
+
+- Updated dependencies [[`cd117cf2ec84b7d54f6a4571151d8d13bdffaf53`](https://github.com/wso2/identity-apps/commit/cd117cf2ec84b7d54f6a4571151d8d13bdffaf53), [`0aca53b8d7f18b9d8488911500b86c7178eb9be6`](https://github.com/wso2/identity-apps/commit/0aca53b8d7f18b9d8488911500b86c7178eb9be6), [`04be5207ce0c3539ae960f3417151baa3d5bcddd`](https://github.com/wso2/identity-apps/commit/04be5207ce0c3539ae960f3417151baa3d5bcddd)]:
+  - @wso2is/admin.applications.v1@2.30.143
+  - @wso2is/react-components@2.9.5
+  - @wso2is/core@2.6.2
+  - @wso2is/admin.connections.v1@2.33.26
+  - @wso2is/admin.core.v1@2.38.12
+  - @wso2is/admin.extensions.v1@2.36.68
+  - @wso2is/admin.identity-providers.v1@2.26.143
+  - @wso2is/admin.login-flow.ai.v1@2.27.38
+  - @wso2is/admin.organizations.v1@2.26.143
+  - @wso2is/admin.secrets.v1@2.25.143
+  - @wso2is/admin.server-configurations.v1@2.32.68
+
+## 2.24.142
+
+### Patch Changes
+
+- Updated dependencies [[`e1fd42a4d68b6b9c3d06c36b749fa46bb04c064d`](https://github.com/wso2/identity-apps/commit/e1fd42a4d68b6b9c3d06c36b749fa46bb04c064d)]:
+  - @wso2is/admin.core.v1@2.38.11
+  - @wso2is/admin.applications.v1@2.30.142
+  - @wso2is/admin.connections.v1@2.33.25
+  - @wso2is/admin.extensions.v1@2.36.67
+  - @wso2is/admin.identity-providers.v1@2.26.142
+  - @wso2is/admin.login-flow.ai.v1@2.27.37
+  - @wso2is/admin.organizations.v1@2.26.142
+  - @wso2is/admin.secrets.v1@2.25.142
+  - @wso2is/admin.server-configurations.v1@2.32.67
+
 ## 2.24.141
 
 ### Patch Changes

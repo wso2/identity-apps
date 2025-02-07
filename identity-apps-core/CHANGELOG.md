@@ -1,5 +1,19 @@
 # @wso2is/identity-apps-core
 
+## 2.12.10
+
+### Patch Changes
+
+- [#7525](https://github.com/wso2/identity-apps/pull/7525) [`250d8ec84aeee89aba7ddbacf400898dc972aeb5`](https://github.com/wso2/identity-apps/commit/250d8ec84aeee89aba7ddbacf400898dc972aeb5) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Fix push status check endpoint issue with tenanted users.
+
+## 2.12.9
+
+### Patch Changes
+
+- [#7509](https://github.com/wso2/identity-apps/pull/7509) [`36688f8894c54be04e79e8d2f2c97ddba30f688d`](https://github.com/wso2/identity-apps/commit/36688f8894c54be04e79e8d2f2c97ddba30f688d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Introduce branding support for push authentication screen
+
+* [#7518](https://github.com/wso2/identity-apps/pull/7518) [`7ae38c587abb3d0e2215e6997bab864d49455d6f`](https://github.com/wso2/identity-apps/commit/7ae38c587abb3d0e2215e6997bab864d49455d6f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix responsive issues in SMS OTP code input field
+
 ## 2.12.8
 
 ### Patch Changes

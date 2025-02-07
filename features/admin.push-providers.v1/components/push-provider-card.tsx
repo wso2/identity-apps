@@ -65,10 +65,10 @@ const PushProviderCard: FunctionComponent<PushProviderCardPropsInterface> = ({
     const { t } = useTranslation();
 
     const pushProviderFeatureFlagsConfig: FeatureFlagsInterface[] = useSelector(
-        (state: AppState) => state.config.ui.features.pushProviders.featureFlags
+        (state: AppState) => state.config.ui.features.pushProviders?.featureFlags
     );
 
-    const featureFlag: string = useFeatureFlag(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_TEMPLATES,
+    const featureFlag: string = useFeatureFlag(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.PUSH_PROVIDER_TEMPLATES,
         pushProviderFeatureFlagsConfig
     );
 
@@ -76,7 +76,8 @@ const PushProviderCard: FunctionComponent<PushProviderCardPropsInterface> = ({
         if (!template?.customAttributes
             || !Array.isArray(template?.customAttributes)
             || template?.customAttributes.length === 0) {
-            return false;
+
+            return null;
         }
 
         const property: CustomAttributeInterface = template?.customAttributes?.find(
@@ -88,7 +89,7 @@ const PushProviderCard: FunctionComponent<PushProviderCardPropsInterface> = ({
             return property?.value as PushProviderTemplateFeatureStatus;
         }
 
-        return property?.value;
+        return null;
     }, [ template ]);
 
     const resolveRibbonLabel = (featureStatus: PushProviderTemplateFeatureStatus): string => {
