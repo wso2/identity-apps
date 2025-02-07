@@ -449,21 +449,20 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const schemaName: string = schemaNames[0];
                             const schemaSecondaryProperty: string = schemaNames[1];
 
-                            if (schema.extended && userInfo[userConfig.userProfileSchema]) {
-                                schemaName && schemaSecondaryProperty &&
-                                    userInfo[userConfig.userProfileSchema][schemaName] &&
-                                    userInfo[userConfig.userProfileSchema][schemaName][schemaSecondaryProperty] && (
-                                    tempProfileInfo.set(schema.name,
-                                        userInfo[userConfig.userProfileSchema][schemaName][schemaSecondaryProperty])
-                                );
-                            } else if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaName]) {
-                                const enterpriseUserInfo: {[key: string]: any}
-                                    = userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA];
+                            const userProfileSchema: string = userInfo
+                                ?. [userConfig.userProfileSchema]?.[schemaName]
+                                ?. [schemaSecondaryProperty];
 
-                                tempProfileInfo.set(
-                                    schema.name, enterpriseUserInfo[schemaName][schemaSecondaryProperty]
-                                );
+                            const enterpriseSchema: string = userInfo
+                                ?. [ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaName]
+                                ?. [schemaSecondaryProperty];
+
+                            if (schema.extended && (userProfileSchema || enterpriseSchema)) {
+                                if (userProfileSchema) {
+                                    tempProfileInfo.set(schema.name, userProfileSchema);
+                                } else if (enterpriseSchema) {
+                                    tempProfileInfo.set(schema.name, enterpriseSchema);
+                                }
                             } else {
                                 const subValue: SubValueInterface = userInfo[schemaName] &&
                                     Array.isArray(userInfo[schemaName]) &&
