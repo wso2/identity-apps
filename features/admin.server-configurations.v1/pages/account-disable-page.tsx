@@ -49,10 +49,8 @@ type AccountDisablePageInterface = IdentifiableComponentInterface;
  * @returns Account Disable configuration page.
  */
 export const AccountDisablePage: FC<AccountDisablePageInterface> = (
-    props: AccountDisablePageInterface
+    { [ "data-componentid" ]: componentId = "account-disable" }: AccountDisablePageInterface
 ): ReactElement => {
-
-    const { [ "data-componentid" ]: componentId = "account-disable" } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
