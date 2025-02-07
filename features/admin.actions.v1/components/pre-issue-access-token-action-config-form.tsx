@@ -158,7 +158,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
             authenticationType: authenticationType,
             isAuthenticationUpdateFormState: isAuthenticationUpdateFormState,
             isCreateFormState: isCreateFormState
-        }, t);
+        });
     };
 
     const handleSubmit = (

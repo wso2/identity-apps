@@ -299,7 +299,7 @@ export interface ExternalEndpoint {
  */
 export interface ExternalEndpointAuthentication {
     type?: EndpointAuthenticationType;
-    properties?: string[]
+    properties?: Partial<AuthenticationPropertiesInterface>
 }
 
 /**

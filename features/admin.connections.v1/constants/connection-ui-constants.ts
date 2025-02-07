@@ -418,4 +418,9 @@ export class ConnectionUIConstants {
             value: EndpointAuthenticationType.API_KEY
         }
     ];
+
+    /**
+     * Number of seconds to wait before clearing the wizard error.
+     */
+    public static readonly WIZARD_ERROR_CLEAR_TIMEOUT: number = 4000;
 }
