@@ -18,8 +18,8 @@
 
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import { useDnD } from "@oxygen-ui/react/dnd";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { useDnD } from "@wso2is/dnd";
 import {
     Controls,
     Edge,
