@@ -207,8 +207,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     }, [ authenticators ]);
 
     /**
-     * This use effect handles deletion of custom local authenticators.
-     * This will be triggered only when the connected apps of the authenticator are fetched.
+     * This use effect initiates custom local authenticator delete action.
+     *
+     * This ensures that the deletion is initiated only after the connected apps are fetched.
+     * Initializing the delete process before the connected apps are fetched will result in unintended behavior.
      */
     useEffect(() => {
         connectedAppsOfLocalAuthenticator &&

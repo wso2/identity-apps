@@ -213,8 +213,8 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 dispatch(
                                     addAlert({
                                         description:
-                                                error?.description ||
-                                                "Error occurred while trying to retrieve connected applications.",
+                                            error?.description ||
+                                            "Error occurred while trying to retrieve connected applications.",
                                         level: AlertLevels.ERROR,
                                         message: error?.message || "Error Occurred."
                                     })
@@ -490,8 +490,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         isCustomLocalAuthenticator
             ? handleLocalAuthenticatorDisable(event, data)
             : handleIdentityProviderDisable(event, data);
-        // handleIdentityProviderDisable(event, data);
-        // handleLocalAuthenticatorDisable(event, data);
     };
 
     return !isLoading && !isIdPListRequestLoading ? (

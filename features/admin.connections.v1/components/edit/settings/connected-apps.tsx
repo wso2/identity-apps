@@ -214,6 +214,10 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      */
     useEffect(() => {
 
+        if (!isCustomLocalAuthenticator) {
+            return;
+        }
+
         if (!connectedAppsOfAuthenticator || isFetchConnectedAppsLoading) {
             setIsAppsLoading(true);
 
@@ -241,8 +245,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         response.catch((error: IdentityAppsError) => {
                             dispatch(
                                 addAlert({
-                                    description:
-                                        error?.description || t("idp:connectedApps.genericError.description"),
+                                    description: error?.description || t("idp:connectedApps.genericError.description"),
                                     level: AlertLevels.ERROR,
                                     message: error?.message || t("idp:connectedApps.genericError.message")
                                 })
@@ -264,7 +267,6 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      * This useEffect fetches the connected apps of the IDP and sets them to the state.
      */
     useEffect(() => {
-
         if (isCustomLocalAuthenticator === undefined || isCustomLocalAuthenticator) {
             return;
         }
