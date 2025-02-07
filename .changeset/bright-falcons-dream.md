@@ -6,6 +6,7 @@
 "@wso2is/admin.login-flow.ai.v1": patch
 "@wso2is/common.ai.v1": patch
 "@wso2is/i18n": patch
+"@wso2is/admin.push-providers.v1": patch
 ---
 
 Improve AI feature banners
