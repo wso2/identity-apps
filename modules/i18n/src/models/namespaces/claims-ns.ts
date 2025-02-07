@@ -539,6 +539,7 @@ export interface ClaimsNS {
                 requiredHint: string;
                 readonly: string;
                 readonlyHint: string;
+                selfRegistrationReadOnlyHint: string;
             };
         };
         dangerZone: {

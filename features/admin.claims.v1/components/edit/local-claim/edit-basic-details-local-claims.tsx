@@ -222,6 +222,19 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     }, [ fetchDialectsRequestError ]);
 
     /**
+     * Update attribute profile states from claims
+     */
+    useEffect(() => {
+        setIsConsoleRequired(claim?.profiles?.console?.required ?? claim?.required);
+        setIsEndUserRequired(claim?.profiles?.endUser?.required ?? claim?.required);
+        setIsSelfRegistrationRequired(claim?.profiles?.selfRegistration?.required ?? claim?.required);
+
+        setIsConsoleReadOnly(claim?.profiles?.console?.readOnly ?? claim?.readOnly);
+        setIsEndUserReadOnly(claim?.profiles?.endUser?.readOnly ?? claim?.readOnly);
+        setIsSelfRegistrationReadOnly(claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly);
+    }, [ claim ]);
+
+    /**
      * Get username configuration.
      */
     useEffect(() => {
@@ -845,18 +858,25 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     />
                 </TableCell>
                 <TableCell align="center">
-                    <Field.Checkbox
-                        ariaLabel="Read-only in self-registration"
-                        name="selfRegistrationReadOnly"
-                        required={ false }
-                        requiredErrorMessage=""
-                        defaultValue={ claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
-                        data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
-                        readOnly={ isSubOrganization() || isReadOnly }
-                        disabled={ isReadOnlyCheckboxDisabled }
-                        listen ={ (value: boolean) => {
-                            setIsSelfRegistrationReadOnly(value);
-                        } }
+                    <Tooltip
+                        trigger={ (
+                            <Field.Checkbox
+                                ariaLabel="Read-only in self-registration"
+                                name="selfRegistrationReadOnly"
+                                required={ false }
+                                requiredErrorMessage=""
+                                defaultValue={ claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
+                                data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
+                                readOnly
+                                listen ={ (value: boolean) => {
+                                    setIsSelfRegistrationReadOnly(value);
+                                } }
+                            />
+                        ) }
+                        content={
+                            t("claims:local.forms.profiles.selfRegistrationReadOnlyHint")
+                        }
+                        compact
                     />
                 </TableCell>
             </TableRow>

@@ -493,7 +493,8 @@ export const claims: ClaimsNS = {
                 readonlyHint: "If this is selected, the value of this attribute is read-only in the profile. Be sure to select this option if the attribute value is system-defined.",
                 required: "Required",
                 requiredHint: "If selected, the user must specify a value for this attribute in the profile.",
-                selfRegistration: "Self-Registration"
+                selfRegistration: "Self-Registration",
+                selfRegistrationReadOnlyHint: "Read-only configuration is not applicable in the self-registration profile."
             },
             readOnly: {
                 label: "Make this attribute read-only on the user's profile"
