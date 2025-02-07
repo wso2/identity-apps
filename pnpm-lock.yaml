@@ -952,11 +952,11 @@ importers:
         specifier: ^5.12.3
         version: 5.16.14(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
-        specifier: ^2.3.3
-        version: 2.3.3(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        specifier: ^2.3.4
+        version: 2.3.4(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
-        specifier: ^2.3.3
-        version: 2.3.3(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        specifier: ^2.3.4
+        version: 2.3.4(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/access-control':
         specifier: ^3.3.16
         version: link:../../modules/access-control
@@ -12357,11 +12357,11 @@ importers:
         specifier: ^5.12.3
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
-        specifier: ^2.3.3
-        version: 2.3.3(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        specifier: ^2.3.4
+        version: 2.3.4(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
-        specifier: ^2.3.3
-        version: 2.3.3(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        specifier: ^2.3.4
+        version: 2.3.4(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/access-control':
         specifier: ^3.3.16
         version: link:../../modules/access-control
@@ -14921,8 +14921,8 @@ importers:
         specifier: ^5.12.3
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
-        specifier: ^2.3.3
-        version: 2.3.3(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        specifier: ^2.3.4
+        version: 2.3.4(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/admin.core.v1':
         specifier: workspace:^
         version: link:../admin.core.v1
@@ -20765,8 +20765,8 @@ importers:
   modules/form:
     dependencies:
       '@oxygen-ui/react':
-        specifier: ^2.3.3
-        version: 2.3.3(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        specifier: ^2.3.4
+        version: 2.3.4(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/core':
         specifier: ^2.6.2
         version: link:../core
@@ -26621,8 +26621,8 @@ packages:
     resolution: {integrity: sha512-Aq58f5HiWdyDlFffbbSjAlv596h/cOnt2DO1w3DOC7OJ5EHs0hd/nycJfiu9RJbT6Yk6F1knnRRXNSpxoIVZ9Q==}
     dev: true
 
-  /@oxygen-ui/primitives@2.3.3:
-    resolution: {integrity: sha512-RQKp5ehuon2h8of6ZtCMhLhkseHwIJB014s2qRpjEpf08wpSFXlIg2xhfQmEN+sS6SxRpFQ0b+KcgGMgQyhOuQ==}
+  /@oxygen-ui/primitives@2.3.4:
+    resolution: {integrity: sha512-Soba/egRz3CMIu145nxQHoFDfLZul2eK2La9CN8rHQCGnTtbQ9CbarRPEkD7iFNam3IYmPEE6pseyLrPRUFZpg==}
     dev: false
 
   /@oxygen-ui/primitives@2.3.1:
@@ -26739,8 +26739,8 @@ packages:
       '@mui/system': 5.16.14(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/utils': 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@mui/x-data-grid': 6.20.4(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      '@oxygen-ui/primitives': 2.3.3
-      '@oxygen-ui/react-icons': 2.3.3(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+      '@oxygen-ui/primitives': 2.3.4
+      '@oxygen-ui/react-icons': 2.3.4(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       clsx: 1.2.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -26750,8 +26750,8 @@ packages:
       - '@types/react'
     dev: false
 
-  /@oxygen-ui/react@2.3.3(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5):
-    resolution: {integrity: sha512-yucm7p23HF0vDFLD5CGATUzpLhgZgYFn317kZhwtbpTUcBpnsJDcquAaNl5wQTTz6k6HypluV639V0eEIOwIeQ==}
+  /@oxygen-ui/react@2.3.4(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5):
+    resolution: {integrity: sha512-J9wVNQNR3jJQRIa1yqpefI/zd+/WSKJk/RAbZ8G773dhx6cJDuZDMAKnUyw0q+DEq6pPY3eV1rxZCNmwwAxFfA==}
     peerDependencies:
       '@emotion/react': ^11.10.5
       '@emotion/styled': ^11.10.5
@@ -26775,8 +26775,8 @@ packages:
       '@mui/system': 5.16.14(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/utils': 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@mui/x-data-grid': 6.20.4(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      '@oxygen-ui/primitives': 2.3.3
-      '@oxygen-ui/react-icons': 2.3.3(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+      '@oxygen-ui/primitives': 2.3.4
+      '@oxygen-ui/react-icons': 2.3.4(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       clsx: 1.2.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
