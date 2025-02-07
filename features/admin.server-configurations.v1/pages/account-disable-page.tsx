@@ -77,8 +77,6 @@ export const AccountDisablePage: FC<AccountDisablePageInterface> = (
             return;
         }
 
-        console.log(accountDisableProperty);
-
         setIsAccountDisableEnabled(accountDisableProperty?.value === "true");
     }, [ accountDisableConnectorData ]);
 
