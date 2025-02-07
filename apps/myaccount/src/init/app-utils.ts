@@ -73,6 +73,7 @@ export const AppUtils: AppUtilsInterface = (function() {
     const tenantResolutionStrategyFallback: string = "id_token";
     const proxyContextPathFallback: string = "";
 
+    const SERVER_ORIGIN_PLACEHOLDER: string = "${serverOrigin}";
     const SERVER_ORIGIN_IDP_URL_PLACEHOLDER: string = "${serverOrigin}";
     const TENANT_PREFIX_IDP_URL_PLACEHOLDER: string = "${tenantPrefix}";
     const USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER: string = "${userTenantDomain}";
@@ -193,7 +194,8 @@ export const AppUtils: AppUtilsInterface = (function() {
                 return null;
             }
             if (_config.consoleApp && _config.consoleApp.origin) {
-                _config.consoleAppOrigin = _config.consoleApp.origin;
+                _config.consoleAppOrigin = _config.consoleApp.origin
+                    .replace(SERVER_ORIGIN_PLACEHOLDER, _config.serverOrigin);
             }
 
             const tenantPath: string = this.getTenantPath();
