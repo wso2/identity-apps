@@ -19,8 +19,8 @@
 import { Show } from "@wso2is/access-control";
 import { getApplicationDetails } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models/application";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -33,9 +33,11 @@ import { Dispatch } from "redux";
 import { CheckboxProps, Divider, List } from "semantic-ui-react";
 import {
     deleteConnection,
+    deleteCustomAuthentication,
     getConnectedApps,
     updateCustomAuthentication,
     updateIdentityProviderDetails,
+    useGetConnectedAppsOfAuthenticator,
     useGetConnections
 } from "../../../api/connections";
 import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
@@ -139,11 +141,17 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     );
     const [ isAppsLoading, setIsAppsLoading ] = useState(true);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ isCustomLocalAuth, setIsCustomLocalAuth ] = useState<boolean>(false);
+    const [ isCustomLocalAuthenticator, setIsCustomLocalAuthenticator ] = useState<boolean>(undefined);
+    const [ shouldFetchLocalAuthenticatorConnectedApps, setShouldFetchLocalAuthenticatorConnectedApps ] =
+    useState<boolean>(false);
 
     const { CONNECTION_TEMPLATE_IDS: ConnectionTemplateIds } = CommonAuthenticatorConstants;
 
     const { data: idpList, isLoading: isIdPListRequestLoading, error: idpListError } = useGetConnections();
+
+    const {
+        data: connectedAppsOfLocalAuthenticator
+    } = useGetConnectedAppsOfAuthenticator(editingIDP?.id, shouldFetchLocalAuthenticatorConnectedApps);
 
     /**
      * Loads the identity provider authenticators on initial component load.
@@ -161,10 +169,28 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
             templateType == ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATION ||
             templateType == ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATION
         ) {
-            setIsCustomLocalAuth(true);
+            setIsCustomLocalAuthenticator(true);
+            setShouldFetchLocalAuthenticatorConnectedApps(true);
+
+            return;
         }
+        setIsCustomLocalAuthenticator(false);
     }, [ templateType ]);
 
+    /**
+     * This method handles the initiation of the delete action for both federated authenticators
+     * and custom local authenticators.
+     *
+     * If connected apps are available, a modal with the connected apps will be displayed.
+     * If there are no any connected apps, then the delete confirmation modal will be displayed.
+     */
+    const initiateConnectorDeleteAction = (): void => {
+        isCustomLocalAuthenticator ? handleLocalAuthenticatorDeleteAction() : handleIdentityProviderDeleteAction();
+    };
+
+    /**
+     * This method handles the initiation of the delete action for federated authenticators.
+     */
     const handleIdentityProviderDeleteAction = (): void => {
         setIsAppsLoading(true);
         getConnectedApps(editingIDP.id)
@@ -174,8 +200,10 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                 } else {
                     setShowDeleteErrorDueToConnectedAppsModal(true);
                     const appRequests: Promise<
-                        ApplicationBasicInterface
-                    >[] = response.connectedApps.map((app: ConnectedAppInterface) => getApplicationDetails(app.appId));
+                            ApplicationBasicInterface
+                        >[] = response.connectedApps.map((app: ConnectedAppInterface) =>
+                            getApplicationDetails(app.appId)
+                        );
 
                     const results: ApplicationBasicInterface[] = (await Promise.all(
                         appRequests.map((response: Promise<ApplicationBasicInterface>) =>
@@ -183,8 +211,8 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 dispatch(
                                     addAlert({
                                         description:
-                                            error?.description ||
-                                            "Error occurred while trying to retrieve connected applications.",
+                                                error?.description ||
+                                                "Error occurred while trying to retrieve connected applications.",
                                         level: AlertLevels.ERROR,
                                         message: error?.message || "Error Occurred."
                                     })
@@ -202,8 +230,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                 dispatch(
                     addAlert({
                         description:
-                            error?.description ||
-                            "Error occurred while trying to retrieve connected " + "applications.",
+                                error?.description || "Error occurred while trying to retrieve connected applications.",
                         level: AlertLevels.ERROR,
                         message: error?.message || "Error Occurred."
                     })
@@ -215,6 +242,53 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     };
 
     /**
+     * This method handles the initiation of the delete action for local authenticators.
+     *
+     * Currently only custom local authenticators delete is supported. System defined authenticators cannot be deleted.
+     */
+    const handleLocalAuthenticatorDeleteAction = async (): Promise<void> => {
+        connectedAppsOfLocalAuthenticator ? setIsAppsLoading(false) : setIsAppsLoading(true);
+
+        if (connectedAppsOfLocalAuthenticator.count === 0) {
+            setShowDeleteConfirmationModal(true);
+        } else {
+            setShowDeleteErrorDueToConnectedAppsModal(true);
+
+            const appRequests: Promise<ApplicationBasicInterface>[]
+            = connectedAppsOfLocalAuthenticator.connectedApps.map((app: ConnectedAppInterface) =>
+                getApplicationDetails(app.appId)
+            );
+
+            const results: ApplicationBasicInterface[] = (await Promise.all(
+                appRequests.map((response: Promise<ApplicationBasicInterface>) =>
+                    response.catch((error: IdentityAppsError) => {
+                        dispatch(
+                            addAlert({
+                                description:
+                                    error?.description ||
+                                    "Error occurred while trying to retrieve connected applications.",
+                                level: AlertLevels.ERROR,
+                                message: error?.message || "Error Occurred."
+                            })
+                        );
+                    })
+                )
+            )) as ApplicationBasicInterface[];
+
+            const appNames: string[] = results.map((app: ApplicationBasicInterface) => app?.name);
+
+            setConnectedApps(appNames);
+        }
+    };
+
+    /**
+     * This method handles disable action for both federated authenticators and custom local authenticators.
+     */
+    const handleConnectionDelete = (): void => {
+        isCustomLocalAuthenticator ? handleLocalAuthenticatorDelete() : handleIdentityProviderDelete();
+    };
+
+    /**
      * Deletes an identity provider.
      */
     const handleIdentityProviderDelete = (): void => {
@@ -223,9 +297,38 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
             .then(() => {
                 dispatch(
                     addAlert({
-                        description: t("authenticationProvider:notifications.deleteIDP." + "success.description"),
+                        description: t("authenticationProvider:notifications.deleteIDP.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("authenticationProvider:notifications.deleteIDP." + "success.message")
+                        message: t("authenticationProvider:notifications.deleteIDP.success.message")
+                    })
+                );
+
+                setShowDeleteConfirmationModal(false);
+                onDelete();
+            })
+            .catch((error: AxiosError) => {
+                handleConnectionDeleteError(error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
+
+    /**
+     * This method handles the local authenticator delete.
+     *
+     * Currently only custom local authenticator delete is supported. System defined authenticators cannot be deleted.
+     */
+    const handleLocalAuthenticatorDelete = (): void => {
+        setLoading(true);
+
+        deleteCustomAuthentication(editingIDP.id)
+            .then(() => {
+                dispatch(
+                    addAlert({
+                        description: t("authenticationProvider:notifications.deleteIDP.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("authenticationProvider:notifications.deleteIDP.success.message")
                     })
                 );
 
@@ -252,9 +355,9 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
             .then(() => {
                 dispatch(
                     addAlert({
-                        description: t("authenticationProvider:notifications.updateIDP." + "success.description"),
+                        description: t("authenticationProvider:notifications.updateIDP.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("authenticationProvider:notifications.updateIDP." + "success.message")
+                        message: t("authenticationProvider:notifications.updateIDP.success.message")
                     })
                 );
                 onUpdate(editingIDP.id);
@@ -268,23 +371,29 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     };
 
     /**
-     * Handles form submit action.
+     * This method handles form submit action for custom local authenticators.
      *
      * @param updatedDetails - Form values.
      */
     const handleCustomAuthFormSubmit = (updatedDetails: ConnectionInterface): void => {
         setIsSubmitting(true);
 
-        updateCustomAuthentication(
-            editingIDP.id,
-            updatedDetails as CustomAuthConnectionInterface
-        )
+        updateCustomAuthentication(editingIDP.id, {
+            displayName: (editingIDP as CustomAuthConnectionInterface)?.displayName,
+            endpoint: {
+                authentication: {
+                    type: (editingIDP as CustomAuthConnectionInterface).endpoint?.authentication?.type
+                },
+                uri: (editingIDP as CustomAuthConnectionInterface).endpoint?.uri
+            },
+            ...(updatedDetails as CustomAuthConnectionInterface)
+        })
             .then(() => {
                 dispatch(
                     addAlert({
-                        description: t("authenticationProvider:notifications.updateIDP." + "success.description"),
+                        description: t("authenticationProvider:notifications.updateIDP.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("authenticationProvider:notifications.updateIDP." + "success.message")
+                        message: t("authenticationProvider:notifications.updateIDP.success.message")
                     })
                 );
                 onUpdate(editingIDP.id);
@@ -297,8 +406,15 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
             });
     };
 
-    const handleIdentityProviderDisable = (event: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
+    /**
+     * This method handles the identity provider disable action.
+     *
+     * @param event - Form event.
+     * @param data - Checkbox props.
+     */
+    const handleIdentityProviderDisable = (event: FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
         setIsAppsLoading(true);
+
         getConnectedApps(editingIDP.id)
             .then(async (response: ConnectedAppsInterface) => {
                 if (response.count === 0) {
@@ -309,13 +425,10 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     dispatch(
                         addAlert({
                             description: t(
-                                "authenticationProvider:notifications" +
-                                    ".disableIDPWithConnectedApps.error.description"
+                                "authenticationProvider:notifications.disableIDPWithConnectedApps.error.description"
                             ),
                             level: AlertLevels.WARNING,
-                            message: t(
-                                "authenticationProvider:notifications" + ".disableIDPWithConnectedApps.error.message"
-                            )
+                            message: t("authenticationProvider:notifications.disableIDPWithConnectedApps.error.message")
                         })
                     );
                 }
@@ -324,8 +437,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                 dispatch(
                     addAlert({
                         description:
-                            error?.description ||
-                            "Error occurred while trying to retrieve connected " + "applications.",
+                            error?.description || "Error occurred while trying to retrieve connected applications.",
                         level: AlertLevels.ERROR,
                         message: error?.message || "Error Occurred."
                     })
@@ -334,6 +446,47 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
             .finally(() => {
                 setIsAppsLoading(false);
             });
+    };
+
+    /**
+     * This method handles the local authenticator disable.
+     *
+     * Currently only custom local authenticator disable is supported. System defined authenticators cannot be disabled.
+     * @param event - Form event.
+     * @param data - Checkbox props.
+     */
+    const handleLocalAuthenticatorDisable = (event: FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
+        connectedAppsOfLocalAuthenticator ? setIsAppsLoading(false) : setIsAppsLoading(true);
+
+        if (connectedAppsOfLocalAuthenticator.count === 0) {
+            handleCustomAuthFormSubmit({
+                isEnabled: data.checked
+            });
+        } else {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "authenticationProvider:notifications.disableIDPWithConnectedApps.error.description"
+                    ),
+                    level: AlertLevels.WARNING,
+                    message: t("authenticationProvider:notifications.disableIDPWithConnectedApps.error.message")
+                })
+            );
+        }
+    };
+
+    /**
+     * This method handles disable action for both federated authenticators and custom local authenticators.
+     *
+     * @param event - Form event.
+     * @param data - Checkbox props.
+     */
+    const handleConnectorDisable = (event: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
+        isCustomLocalAuthenticator
+            ? handleLocalAuthenticatorDisable(event, data)
+            : handleIdentityProviderDisable(event, data);
+        // handleIdentityProviderDisable(event, data);
+        // handleLocalAuthenticatorDisable(event, data);
     };
 
     return !isLoading && !isIdPListRequestLoading ? (
@@ -357,7 +510,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     templateType={ templateType }
                     hideIdPLogoEditField={ hideIdPLogoEditField }
                     editingIDP={ editingIDP }
-                    onSubmit={ isCustomLocalAuth ? handleCustomAuthFormSubmit : handleFormSubmit }
+                    onSubmit={ isCustomLocalAuthenticator ? handleCustomAuthFormSubmit : handleFormSubmit }
                     onUpdate={ onUpdate }
                     idpList={ idpList }
                     data-testid={ `${testId}-form` }
@@ -371,34 +524,34 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     featureConfig?.identityProviders?.scopes?.update || featureConfig?.identityProviders?.scopes?.delete
                 }
             >
-                <DangerZoneGroup sectionHeader={ t("authenticationProvider:" + "dangerZoneGroup.header") }>
+                <DangerZoneGroup sectionHeader={ t("authenticationProvider:dangerZoneGroup.header") }>
                     <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                         <DangerZone
-                            actionTitle={ t("authenticationProvider:" + "dangerZoneGroup.disableIDP.actionTitle", {
+                            actionTitle={ t("authenticationProvider:dangerZoneGroup.disableIDP.actionTitle", {
                                 state: editingIDP.isEnabled ? t("common:disable") : t("common:enable")
                             }) }
-                            header={ t("authenticationProvider:dangerZoneGroup." + "disableIDP.header", {
+                            header={ t("authenticationProvider:dangerZoneGroup.disableIDP.header", {
                                 state: editingIDP.isEnabled ? t("common:disable") : t("common:enable")
                             }) }
                             subheader={
                                 editingIDP.isEnabled
-                                    ? t("authenticationProvider:" + "dangerZoneGroup.disableIDP.subheader")
+                                    ? t("authenticationProvider:dangerZoneGroup.disableIDP.subheader")
                                     : t("authenticationProvider:dangerZoneGroup.disableIDP.subheader2")
                             }
                             onActionClick={ undefined }
                             toggle={ {
                                 checked: editingIDP.isEnabled,
-                                onChange: handleIdentityProviderDisable
+                                onChange: handleConnectorDisable
                             } }
                             data-testid={ `${testId}-disable-idp-danger-zone` }
                         />
                     </Show>
                     <Show when={ featureConfig?.identityProviders?.scopes?.delete }>
                         <DangerZone
-                            actionTitle={ t("authenticationProvider:" + "dangerZoneGroup.deleteIDP.actionTitle") }
-                            header={ t("authenticationProvider:" + "dangerZoneGroup.deleteIDP.header") }
-                            subheader={ t("authenticationProvider:" + "dangerZoneGroup.deleteIDP.subheader") }
-                            onActionClick={ handleIdentityProviderDeleteAction }
+                            actionTitle={ t("authenticationProvider:dangerZoneGroup.deleteIDP.actionTitle") }
+                            header={ t("authenticationProvider:dangerZoneGroup.deleteIDP.header") }
+                            subheader={ t("authenticationProvider:dangerZoneGroup.deleteIDP.subheader") }
+                            onActionClick={ initiateConnectorDeleteAction }
                             data-testid={ `${testId}-delete-idp-danger-zone` }
                         />
                     </Show>
@@ -411,23 +564,23 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     type="negative"
                     open={ showDeleteConfirmationModal }
                     assertion={ editingIDP.name }
-                    assertionHint={ t("authenticationProvider:" + "confirmations.deleteIDP.assertionHint") }
+                    assertionHint={ t("authenticationProvider:confirmations.deleteIDP.assertionHint") }
                     assertionType="checkbox"
                     primaryAction={ t("common:confirm") }
                     secondaryAction={ t("common:cancel") }
                     onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                    onPrimaryActionClick={ (): void => handleIdentityProviderDelete() }
+                    onPrimaryActionClick={ (): void => handleConnectionDelete() }
                     data-testid={ `${testId}-delete-idp-confirmation` }
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header data-testid={ `${testId}-delete-idp-confirmation` }>
-                        { t("authenticationProvider:" + "confirmations.deleteIDP.header") }
+                        { t("authenticationProvider:confirmations.deleteIDP.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message attached negative data-testid={ `${testId}-delete-idp-confirmation` }>
-                        { t("authenticationProvider:" + "confirmations.deleteIDP.message") }
+                        { t("authenticationProvider:confirmations.deleteIDP.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content data-testid={ `${testId}-delete-idp-confirmation` }>
-                        { t("authenticationProvider:" + "confirmations.deleteIDP.content") }
+                        { t("authenticationProvider:confirmations.deleteIDP.content") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }
@@ -442,13 +595,13 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header data-testid={ `${testId}-delete-idp-confirmation` }>
-                        { t("authenticationProvider:confirmations." + "deleteIDPWithConnectedApps.header") }
+                        { t("authenticationProvider:confirmations.deleteIDPWithConnectedApps.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message attached negative data-testid={ `${testId}-delete-idp-confirmation` }>
-                        { t("authenticationProvider:confirmations." + "deleteIDPWithConnectedApps.message") }
+                        { t("authenticationProvider:confirmations.deleteIDPWithConnectedApps.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content data-testid={ `${testId}-delete-idp-confirmation` }>
-                        { t("authenticationProvider:confirmations." + "deleteIDPWithConnectedApps.content") }
+                        { t("authenticationProvider:confirmations.deleteIDPWithConnectedApps.content") }
                         <Divider hidden />
                         <List ordered className="ml-6">
                             { isAppsLoading ? (

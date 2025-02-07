@@ -328,17 +328,17 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
         setIsDeletionLoading(true);
 
-        let deleteCustomAuth: (id: string) => Promise<AxiosResponse>;
+        let deleteAuthenticator: (id: string) => Promise<AxiosResponse>;
 
         if(connectionType === ConnectionTypes.IDVP) {
-            deleteCustomAuth = deleteIdentityVerificationProvider;
+            deleteAuthenticator = deleteIdentityVerificationProvider;
         } else if (isCustomLocalAuthenticator(deletingIDP)) {
-            deleteCustomAuth = deleteCustomAuthentication;
+            deleteAuthenticator = deleteCustomAuthentication;
         } else {
-            deleteCustomAuth = deleteConnection;
+            deleteAuthenticator = deleteConnection;
         }
 
-        deleteCustomAuth(id)
+        deleteAuthenticator(id)
             .then(() => {
                 dispatch(addAlert({
                     description: t("authenticationProvider:" +
