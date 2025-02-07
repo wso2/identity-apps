@@ -214,10 +214,6 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      */
     useEffect(() => {
 
-        if (!isCustomLocalAuthenticator) {
-            return;
-        }
-
         if (!connectedAppsOfAuthenticator || isFetchConnectedAppsLoading) {
             setIsAppsLoading(true);
 
