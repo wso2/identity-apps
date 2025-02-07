@@ -62,8 +62,8 @@ export const consoleSettings: ConsoleSettingsNS = {
         },
         tabLabel: "Roles",
         permissionLevels: {
-            edit: "Edit",
-            view: "View"
+            edit: "View & Edit",
+            view: "View Only"
         }
     }
 };
