@@ -194,7 +194,7 @@ export const AppUtils: AppUtilsInterface = (function() {
             }
             if (_config.consoleApp && _config.consoleApp.origin) {
                 _config.consoleAppOrigin = _config.consoleApp.origin
-                    .replace(SERVER_ORIGIN_PLACEHOLDER, _config.serverOrigin);
+                    .replace(SERVER_ORIGIN_URL_PLACEHOLDER, _config.serverOrigin);
             }
 
             const tenantPath: string = this.getTenantPath();
