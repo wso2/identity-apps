@@ -183,7 +183,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     } = useExtensionTemplates();
     const {
         data: connectedAppsOfAuthenticator,
-        isLoading: isFetchConnectedAppsLoading
+        isLoading: isAuthenticatorConnectedAppsLoading
     } = useGetAuthenticatorConnectedApps(editingIDP?.id, shouldFetchLocalAuthenticatorConnectedApps);
 
     /**
@@ -215,13 +215,16 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      */
     useEffect(() => {
 
-        if (!connectedAppsOfAuthenticator || isFetchConnectedAppsLoading) {
+        if (!connectedAppsOfAuthenticator || isAuthenticatorConnectedAppsLoading) {
             setIsAppsLoading(true);
 
             return;
         }
 
+        // If there are no connected apps, set the state and return.
         if (connectedAppsOfAuthenticator?.count === 0) {
+            setConnectedApps([]);
+            setFilterSelectedApps([]);
             setIsAppsLoading(false);
 
             return;
@@ -258,7 +261,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         };
 
         fetchAppDetails();
-    }, [ connectedAppsOfAuthenticator ]);
+    }, [ isCustomLocalAuthenticator, connectedAppsOfAuthenticator ]);
 
     /**
      * This useEffect fetches the connected apps of the IDP and sets them to the state.

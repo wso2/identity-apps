@@ -29,6 +29,9 @@ import { useRequiredScopes } from "@wso2is/access-control";
 import ApplicationTemplateMetadataProvider from
     "@wso2is/admin.application-templates.v1/provider/application-template-metadata-provider";
 import ApplicationTemplateProvider from "@wso2is/admin.application-templates.v1/provider/application-template-provider";
+import {
+    useGetAuthenticatorConnectedApps
+} from "@wso2is/admin.connections.v1/api/use-get-authenticator-connected-apps";
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import {
     AppConstants
@@ -161,6 +164,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const {
         data: applicationInboundConfigs
     } = useGetApplicationInboundConfigs(applicationId, SupportedAuthProtocolName.OIDC, !!applicationId);
+
+    const {
+        mutate: mutateAuthenticatorConnectedApps
+    } = useGetAuthenticatorConnectedApps(callBackIdpID, isCallBackLocalAuthenticator);
 
     const [ viewBannerDetails, setViewBannerDetails ] = useState<boolean>(false);
     const [ displayBanner, setDisplayBanner ] = useState<boolean>(false);
@@ -455,6 +462,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         };
 
         if (isCallBackLocalAuthenticator) {
+            mutateAuthenticatorConnectedApps();
             history.push({
                 pathname: AppConstants.getPaths().get("AUTH_EDIT").replace(":id", callBackIdpID),
                 state: state.targetTab
