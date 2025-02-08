@@ -1,5 +1,17 @@
 # @wso2is/admin.email-management.v1
 
+## 2.25.150
+
+### Patch Changes
+
+- [#7554](https://github.com/wso2/identity-apps/pull/7554) [`b283d0b29655f19b37bc851cbec7671b040515b3`](https://github.com/wso2/identity-apps/commit/b283d0b29655f19b37bc851cbec7671b040515b3) Thanks [@brionmario](https://github.com/brionmario)! - Stop the `undefined` API call in email templates feature
+  Fixes https://github.com/wso2/product-is/issues/22837
+- Updated dependencies [[`9959872b4af362b4d778edff0801e44eef29b86e`](https://github.com/wso2/identity-apps/commit/9959872b4af362b4d778edff0801e44eef29b86e)]:
+  - @wso2is/i18n@2.19.8
+  - @wso2is/admin.core.v1@2.38.19
+  - @wso2is/admin.branding.v1@2.28.7
+  - @wso2is/common.branding.v1@2.26.7
+
 ## 2.25.149
 
 ### Patch Changes
