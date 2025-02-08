@@ -154,7 +154,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     );
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
-    const [ listOffset, setListOffset ] = useState<number>(0);
+    const [ listOffset, setListOffset ] = useState<number>(1);
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -365,7 +365,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             return;
         }
 
-        setListOffset(0);
+        setListOffset(1);
         if (searchQuery === "userName co " || searchQuery === "" || searchQuery === null) {
             setPaginateGuestList(parentOrgUserInviteList?.invitations);
             setFilterGuestList([]);
@@ -553,11 +553,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      */
     const handleUserFilter = (query: string): void => {
         setSearchQuery(query);
-        setListOffset(0);
+        setListOffset(1);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
-        setListOffset((data.activePage as number - 1) * listItemLimit);
+        setListOffset(((data.activePage as number - 1) * listItemLimit) + 1);
     };
 
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
@@ -570,7 +570,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         } else {
             setSelectedUserStore(data.value as string);
         }
-        setListOffset(0);
+        setListOffset(1);
         setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     };
 
