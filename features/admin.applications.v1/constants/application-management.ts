@@ -435,16 +435,16 @@ export class ApplicationManagementConstants {
         APP_NAME_MAX_LENGTH: number,
         APP_NAME_PATTERN: RegExp
     } = {
-        ACCESS_URL_ALLOWED_PLACEHOLDERS: [
-            "\\${UserTenantHint}",
-            "\\${organizationIdHint}"
-        ],
-        ACCESS_URL_MAX_LENGTH: 1024,
-        ACCESS_URL_MIN_LENGTH: 3,
-        APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
-        APP_NAME_MAX_LENGTH: 50,
-        APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
-    };
+            ACCESS_URL_ALLOWED_PLACEHOLDERS: [
+                "\\${UserTenantHint}",
+                "\\${organizationIdHint}"
+            ],
+            ACCESS_URL_MAX_LENGTH: 1024,
+            ACCESS_URL_MIN_LENGTH: 3,
+            APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
+            APP_NAME_MAX_LENGTH: 50,
+            APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
+        };
 
     public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY: string = "isConditionalAuthTourViewed";
 
