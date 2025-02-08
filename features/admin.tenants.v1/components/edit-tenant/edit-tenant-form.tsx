@@ -73,7 +73,7 @@ export type EditTenantFormProps = IdentifiableComponentInterface & {
 
 export type EditTenantFormValues = Pick<Tenant, "domain" | "id"> & Omit<TenantOwner, "additionalDetails">;
 
-export type EditTenantFromErrors = Partial<EditTenantFormValues>;
+export type EditTenantFormErrors = Partial<EditTenantFormValues>;
 
 /**
  * Component to hold the tenant details edit/update form.
@@ -198,8 +198,8 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
      * @param values - Form values.
      * @returns Form errors.
      */
-    const handleValidate = (values: EditTenantFormValues): EditTenantFromErrors => {
-        const errors: EditTenantFromErrors = {
+    const handleValidate = (values: EditTenantFormValues): EditTenantFormErrors => {
+        const errors: EditTenantFormErrors = {
             email: undefined,
             firstname: undefined,
             lastname: undefined,
@@ -542,34 +542,44 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                                 maxLength={ 100 }
                                 minLength={ 0 }
                             />
-                            <Stack
-                                spacing={ { sm: 2, xs: 1 } }
-                                direction={ { sm: "row", xs: "column" } }
-                                alignItems="flex-end"
-                            >
-                                <div className="inline-flex-field">
-                                    <FinalFormField
-                                        key="password"
-                                        width={ 16 }
-                                        className="text-field-container"
-                                        ariaLabel="password"
-                                        required={ true }
-                                        data-componentid={ `${componentId}-password` }
-                                        name="password"
-                                        type="password"
-                                        label={ t("tenants:common.form.fields.password.label") }
-                                        placeholder={ t("tenants:common.form.fields.password.placeholder") }
-                                        component={ TextFieldAdapter }
-                                        maxLength={ 100 }
-                                        minLength={ 0 }
-                                    />
-                                </div>
-                                { passwordValidationConfig && (
-                                    <Button onClick={ () => form.mutators.setRandomPassword("password") }>
-                                        { t("tenants:common.form.fields.password.actions.generate.label") }
-                                    </Button>
+                            <FormSpy subscription={ { errors: true, modified: true } }>
+                                { ({
+                                    errors,
+                                    modified
+                                }: {
+                                    errors: EditTenantFormErrors;
+                                    modified?: { [key: string]: boolean };
+                                }) => (
+                                    <Stack
+                                        spacing={ { sm: 2, xs: 1 } }
+                                        direction={ { sm: "row", xs: "column" } }
+                                        alignItems={ modified?.password && errors?.password ? "center" : "flex-end" }
+                                    >
+                                        <div className="inline-flex-field">
+                                            <FinalFormField
+                                                key="password"
+                                                width={ 16 }
+                                                className="text-field-container"
+                                                ariaLabel="password"
+                                                required={ true }
+                                                data-componentid={ `${componentId}-password` }
+                                                name="password"
+                                                type="password"
+                                                label={ t("tenants:common.form.fields.password.label") }
+                                                placeholder={ t("tenants:common.form.fields.password.placeholder") }
+                                                component={ TextFieldAdapter }
+                                                maxLength={ 100 }
+                                                minLength={ 0 }
+                                            />
+                                        </div>
+                                        { passwordValidationConfig && (
+                                            <Button onClick={ () => form.mutators.setRandomPassword("password") }>
+                                                { t("tenants:common.form.fields.password.actions.generate.label") }
+                                            </Button>
+                                        ) }
+                                    </Stack>
                                 ) }
-                            </Stack>
+                            </FormSpy>
                             { passwordValidationConfig && renderPasswordValidationCriteria() }
                         </Stack>
                         <Button

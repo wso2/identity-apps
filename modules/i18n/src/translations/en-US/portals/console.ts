@@ -8555,10 +8555,6 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: "Templates - {{displayName}}"
             },
-            groups: {
-                subTitle: "Create and manage user groups, assign permissions for groups.",
-                title: "Groups"
-            },
             invite: {
                 subTitle: "Invite and manage admins and developers.",
                 title: "Admins & Developers"
@@ -8580,11 +8576,6 @@ export const console: ConsoleNS = {
                 subTitle: "Configure and  manage users, roles, attribute dialects, server configurations etc." +
                     "etc.",
                 title: "Welcome, {{firstName}}"
-            },
-            roles: {
-                alternateSubTitle: "View and manage roles.",
-                subTitle: "Create and manage roles, assign permissions for roles.",
-                title: "Roles"
             },
             rolesEdit: {
                 backButton: "Go back to {{type}}",

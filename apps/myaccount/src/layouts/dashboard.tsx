@@ -120,7 +120,8 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
             I18nModuleConstants.PREFERENCE_STORAGE_KEY,
             cookieSupportedLanguage,
             { days: 30 },
-            URLUtils.getDomain(window.location.href)
+            URLUtils.getDomain(window.location.href),
+            { secure: true }
         );
     };
 

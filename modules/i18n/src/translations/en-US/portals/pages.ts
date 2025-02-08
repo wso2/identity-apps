@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -68,7 +68,7 @@ export const pages: pagesNS = {
         title: "Templates - {{displayName}}"
     },
     groups: {
-        subTitle: "Create and manage user groups, assign permissions for groups.",
+        subTitle: "Create and manage groups, assign users to them.",
         title: "Groups"
     },
     groupsEdit: {
@@ -104,7 +104,7 @@ export const pages: pagesNS = {
     },
     roles: {
         alternateSubTitle: "View and manage roles.",
-        subTitle: "Create and manage roles, assign permissions for roles.",
+        subTitle: "Create and manage roles, assign permissions to them.",
         title: "Roles"
     },
     rolesEdit: {
