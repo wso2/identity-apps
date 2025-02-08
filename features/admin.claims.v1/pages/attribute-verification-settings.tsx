@@ -21,6 +21,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { getConnectorDetails, updateGovernanceConnector } from "@wso2is/admin.server-configurations.v1/api";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
 import {
@@ -86,6 +87,10 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
         CONNECTOR_NAMES.OTP_LENGTH,
         CONNECTOR_NAMES.SEND_OTP_IN_EMAIL
     ];
+
+    if (!attributeConfig?.isMobileNumberVerificationByPrivilegedUsersEnabled) {
+        HIDDEN_PROPERTIES.push(CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS);
+    }
 
     const [ connectorDetails, setConnectorDetails ] = useState<GovernanceConnectorInterface>(undefined);
     const [ formValues, setFormValues ] = useState<any>(undefined);
@@ -466,21 +471,40 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                         CATEGORY_NAME,
                         CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS,
                         formDisplayData?.
-                            [CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS]?.displayName)
-                    }
-                    defaultValue={ formValues?.[
-                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS ] == true }
-                    readOnly={ isReadOnly }
-                    disabled={ !isConnectorEnabled }
-                    width={ 16 }
-                    data-componentid={ `${ componentId }-enable-auto-login` }
-                    hint={ GovernanceConnectorUtils.resolveFieldLabel(
-                        CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS,
-                        formDisplayData?.
-                            [CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS]?.description)
+                            [CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME]?.description)
                     }
                 />
+                { attributeConfig?.isMobileNumberVerificationByPrivilegedUsersEnabled && (
+                    <Field.Checkbox
+                        ariaLabel={ GovernanceConnectorUtils.resolveFieldLabel(
+                            CATEGORY_NAME,
+                            CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS,
+                            formDisplayData?.
+                                [CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS]?.displayName)
+                        }
+                        name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                            CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS) }
+                        className="toggle"
+                        label={ GovernanceConnectorUtils.resolveFieldLabel(
+                            CATEGORY_NAME,
+                            CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS,
+                            formDisplayData?.
+                                [CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS]?.displayName)
+                        }
+                        defaultValue={ formValues?.[
+                            CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS ] == true }
+                        readOnly={ isReadOnly }
+                        disabled={ !isConnectorEnabled }
+                        width={ 16 }
+                        data-componentid={ `${ componentId }-enable-auto-login` }
+                        hint={ GovernanceConnectorUtils.resolveFieldLabel(
+                            CATEGORY_NAME,
+                            CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS,
+                            formDisplayData?.
+                                [CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS]?.description)
+                        }
+                    />
+                ) }
                 <Field.Button
                     form={ FORM_ID }
                     size="small"
