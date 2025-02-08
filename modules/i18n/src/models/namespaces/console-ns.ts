@@ -8238,10 +8238,6 @@ export interface ConsoleNS {
                 subTitle: string;
                 backButton: string;
             };
-            groups: {
-                title: string;
-                subTitle: string;
-            };
             organizations: {
                 title: string;
                 subTitle: string;
@@ -8258,11 +8254,6 @@ export interface ConsoleNS {
                 title: string;
                 subTitle: string;
                 backButton: string;
-            };
-            roles: {
-                title: string;
-                subTitle: string;
-                alternateSubTitle: string;
             };
             rolesEdit: {
                 title: string;
