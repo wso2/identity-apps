@@ -263,8 +263,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         getUserStores(null)
             .then((response: UserStoreDetails[]) => {
                 response?.forEach(async (item: UserStoreDetails, index: number) => {
-                    // Set read/write enabled userstores based on the type.
-                    if (await checkReadWriteUserStore(item)) {
+                    // Filter read/write enabled and bulk import supported user stores.
+                    if (await isBulkImportSupportedUserStore(item)) {
                         userStoreArray.push({
                             key: index,
                             text: item.name.toUpperCase(),
@@ -304,24 +304,26 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     };
 
     /**
-     * Check the given user store is Read/Write enabled
+     * Check the given user store is Read/Write enabled and bulk import supported.
      *
      * @param userStore - Userstore
-     * @returns If the given userstore is read only or not
+     * @returns If the given userstore is read only or not and bulk import is supported.
      */
-    const checkReadWriteUserStore = (userStore: UserStoreDetails): Promise<boolean> => {
+    const isBulkImportSupportedUserStore = (userStore: UserStoreDetails): Promise<boolean> => {
         let isReadWriteUserStore: boolean = false;
+        let isBulkImportSupported: boolean = false;
 
         return getAUserStore(userStore?.id).then((response: UserStoreDetails) => {
             response?.properties?.some((property: UserStoreProperty) => {
                 if (property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY) {
                     isReadWriteUserStore = property.value === "false";
-
-                    return true;
+                }
+                if (property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED) {
+                    isBulkImportSupported = property.value === "true";
                 }
             });
 
-            return isReadWriteUserStore;
+            return isReadWriteUserStore && isBulkImportSupported;
         }).catch(() => {
             dispatch(addAlert({
                 description: t("userstores:notifications.fetchUserstores.genericError." +
