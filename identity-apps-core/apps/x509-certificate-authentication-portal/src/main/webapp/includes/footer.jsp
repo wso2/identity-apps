@@ -63,7 +63,7 @@
      */
     function onCookieConsentClear(e) {
 
-        var cookieString = getCookieConsentCookieName() + "=true;max-age=31536000;path=/";
+        var cookieString = getCookieConsentCookieName() + "=true;max-age=31536000;path=/;Secure";
         var domain = URLUtils.getDomain(window.location.href);
 
         if (domain) {

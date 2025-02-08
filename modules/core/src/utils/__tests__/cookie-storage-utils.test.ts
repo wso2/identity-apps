@@ -90,5 +90,24 @@ describe("CookieStorageUtils", (): void => {
 
             expect(document.cookie).toBe(expectedCookie);
         });
+
+        it("should set a cookie with HttpOnly and Secure options", (): void => {
+            const name: string = "test";
+            const value: string = "value";
+            const options: {
+                httpOnly: boolean;
+                secure: boolean;
+            } = {
+                httpOnly: true,
+                secure: true
+            };
+
+            CookieStorageUtils.setCookie(name, value, { days: 1 }, undefined, options);
+
+            const expires: string = new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toUTCString();
+            const expectedCookie: string = `${name}=${value}; expires=${expires}; HttpOnly; Secure; path=/`;
+
+            expect(document.cookie).toBe(expectedCookie);
+        });
     });
 });
