@@ -73,7 +73,7 @@ import AdaptiveAuthTemplateChangeConfirmationModal from "./adaptive-auth-templat
 import AdaptiveAuthTemplateInfoModal from "./adaptive-auth-template-info-modal";
 import BasicLoginFlowTemplateChangeConfirmationModal from "./basic-login-flow-template-change-confimation-modal";
 import PredefinedSocialFlowHandlerModalFactory from "./predefined-social-flow-handler-modal-factory";
-import { 
+import {
     APPLE_LOGIN_SEQUENCE,
     ELK_RISK_BASED_TEMPLATE_NAME,
     PUSH_AUTH_FIRST_FACTOR_SEQUENCE,
