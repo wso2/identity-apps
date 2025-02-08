@@ -333,19 +333,3 @@ export const isUrl = (value: string): string => {
         ? undefined
         : "This URL is invalid.";
 };
-
-export const DEFAULT_NAME_ATTRIBUTE_FORMAT: string = "urn:oasis:names:tc:SAML:2.0:attrname-format:basic";
-
-export const supportedNameFormats: string[] = [
-    DEFAULT_NAME_ATTRIBUTE_FORMAT,
-    "urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
-];
-
-/**
- * Returns the available name attribute formats with the correct urn scheme.
- */
-export const getAvailableNameAttributeFormats = (): Array<SamlIdPListItemOption> => {
-    return supportedNameFormats.map((scheme: string, index: number) => ({
-        key: index, text: scheme, value: scheme
-    }));
-};

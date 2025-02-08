@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -526,6 +526,19 @@ export class ApplicationManagementConstants {
      * Login Flow tab index of My Account application in organization view.
      */
     public static readonly SUB_ORG_MY_ACCOUNT_LOGIN_FLOW_TAB: number = 0;
+
+    /**
+     * Default attribute name format for SAML attribute statement.
+     */
+    public static readonly DEFAULT_NAME_ATTRIBUTE_FORMAT: string = "urn:oasis:names:tc:SAML:2.0:attrname-format:basic";
+
+    /**
+     * Supported name formats for SAML attribute statement.
+     */
+    public static readonly SUPPORT_NAME_FORMATS: string[] = [
+        ApplicationManagementConstants.DEFAULT_NAME_ATTRIBUTE_FORMAT,
+        "urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+    ];
 }
 
 export enum ShareWithOrgStatus {

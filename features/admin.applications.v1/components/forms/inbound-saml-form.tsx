@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,11 +21,7 @@ import { ApplicationTabComponentsFilter } from
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { ApplicationTabIDs, applicationConfig, commonConfig } from "@wso2is/admin.extensions.v1";
-import {
-    DEFAULT_NAME_ATTRIBUTE_FORMAT,
-    getAvailableNameAttributeFormats,
-    getAvailableNameIDFormats
-} from "@wso2is/admin.identity-providers.v1/components/utils/saml-idp-utils";
+import { getAvailableNameIDFormats } from "@wso2is/admin.identity-providers.v1/components/utils/saml-idp-utils";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { CheckboxChild, DropdownChild, Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
@@ -37,6 +33,7 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, us
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import {
     ApplicationInterface,
     CertificateInterface,
@@ -1549,10 +1546,13 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         }
                                         name="attributeNameFormat"
                                         type="dropdown"
-                                        default={ DEFAULT_NAME_ATTRIBUTE_FORMAT }
+                                        default={ ApplicationManagementConstants.DEFAULT_NAME_ATTRIBUTE_FORMAT }
                                         required={ false }
                                         value={ initialValues?.attributeProfile?.nameFormat }
-                                        children={ getAvailableNameAttributeFormats() }
+                                        children={
+                                            ApplicationManagementConstants.SUPPORT_NAME_FORMATS.map((value: string) =>
+                                                ({ key: value, text: value, value: value }))
+                                        }
                                         readOnly={ readOnly }
                                         data-componentid=
                                             "application-edit-inbound-saml-form-attribute-name-format-input"
