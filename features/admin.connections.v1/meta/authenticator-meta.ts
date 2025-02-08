@@ -155,6 +155,24 @@ export class AuthenticatorMeta {
     }
 
     /**
+     * Get custom authenticator labels.
+     *
+     * @returns Authenticator labels.
+     */
+    public static getCustomAuthenticatorLabels(): string[] {
+        return [ AuthenticatorLabels.CUSTOM ];
+    }
+
+    /**
+     * Get custom authenticator second factor labels.
+     *
+     * @returns Authenticator labels.
+     */
+    public static getCustomAuthenticatorSecondFactorLabels(): string[] {
+        return [ AuthenticatorLabels.CUSTOM, AuthenticatorLabels.SECOND_FACTOR ];
+    }
+
+    /**
      * Get Authenticator Type display name.
      *
      * @param type - Type.

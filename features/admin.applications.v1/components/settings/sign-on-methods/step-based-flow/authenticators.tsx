@@ -20,8 +20,8 @@ import Chip from "@oxygen-ui/react/Chip";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
@@ -357,6 +357,17 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     const resolveAuthenticatorLabels = (authenticator: GenericAuthenticatorInterface): string[] => {
         if (!authenticator) {
             return [];
+        }
+
+        /**
+         * Currently authenticator id is being used to fetch authenticator labels from the meta content.
+         * The existing approach cannot be used for custom authenticators since the id of the
+         * custom authenticators are not pre defined.
+         */
+        if (SignInMethodUtils.isCustomAuthenticator) {
+            return AuthenticatorMeta.getCustomAuthenticatorLabels()
+        } else if (SignInMethodUtils.isCustomSecondFactorAuthenticator) {
+            return AuthenticatorMeta.getCustomAuthenticatorSecondFactorLabels();
         }
 
         return AuthenticatorMeta.getAuthenticatorLabels(authenticator?.defaultAuthenticator) ?? [];
