@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -76,7 +76,6 @@ import {
 } from "semantic-ui-react";
 import { getConnectedApps } from "../../../api/connections";
 import { useGetAuthenticatorConnectedApps } from "../../../api/use-get-authenticator-connected-apps";
-import { AuthenticatorTypes } from "../../../models/authenticators";
 import {
     ConnectedAppInterface,
     ConnectedAppsInterface,
@@ -191,17 +190,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      * If yes, it enables fetching the connected apps of the local authenticator.
      */
     useEffect(() => {
-        /**
-         * Check whether the connection is a custom local authenticator.
-         *
-         * @param idp - Connection to be evaluated.
-         * @returns - whether the connection is a custom local authenticator.
-         */
-        const checkCustomLocalAuthenticator = (idp: ConnectionInterface): boolean => {
-            return ConnectionsManagementUtils.IsCustomAuthenticator(idp) && idp?.type === AuthenticatorTypes.LOCAL;
-        };
-
-        if (checkCustomLocalAuthenticator(editingIDP)) {
+        if (ConnectionsManagementUtils.IsCustomLocalAuthenticator(editingIDP)) {
             setIsCustomLocalAuthenticator(true);
             setShouldFetchLocalAuthenticatorConnectedApps(true);
         } else {
@@ -214,7 +203,6 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      * This useEffect sets the fetched connected apps of the local authenticator to the state.
      */
     useEffect(() => {
-
         if (!connectedAppsOfAuthenticator || isAuthenticatorConnectedAppsLoading) {
             setIsAppsLoading(true);
 
@@ -281,18 +269,15 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     });
 
                     const results: ApplicationBasicInterface[] = await Promise.all(
-                        appRequests.map((response: Promise<any>) =>
-                            response.catch((error: IdentityAppsError) => {
-                                dispatch(
-                                    addAlert({
-                                        description:
-                                            error?.description || t("idp:connectedApps.genericError.description"),
-                                        level: AlertLevels.ERROR,
-                                        message: error?.message || t("idp:connectedApps.genericError.message")
-                                    })
-                                );
-                            })
-                        )
+                        appRequests.map((response: Promise<any>) => response.catch((error: IdentityAppsError) => {
+                            dispatch(addAlert({
+                                description: error?.description
+                                    || t("idp:connectedApps.genericError.description"),
+                                level: AlertLevels.ERROR,
+                                message: error?.message
+                                    || t("idp:connectedApps.genericError.message")
+                            }));
+                        }))
                     );
 
                     setConnectedApps(results);
@@ -300,13 +285,12 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 }
             })
             .catch((error: IdentityAppsError) => {
-                dispatch(
-                    addAlert({
-                        description: error?.description || t("idp:connectedApps.genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: error?.message || t("idp:connectedApps.genericError.message")
-                    })
-                );
+                dispatch(addAlert({
+                    description: error?.description
+                        || t("idp:connectedApps.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.message || t("idp:connectedApps.genericError.message")
+                }));
             })
             .finally(() => {
                 setIsAppsLoading(false);
@@ -539,21 +523,14 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
             }
 
             history.push({
-                pathname: AppConstants.getPaths()
-                    .get("APPLICATION_SIGN_IN_METHOD_EDIT")
-                    .replace(":id", appId)
-                    .replace(":tabName", tabName),
+                pathname: AppConstants.getPaths().get("APPLICATION_SIGN_IN_METHOD_EDIT")
+                    .replace(":id", appId).replace(":tabName", tabName),
 
-                search:
-                    access === ApplicationAccessTypes.READ
-                        ? `?${ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY}=true`
-                        : "",
+                search: access === ApplicationAccessTypes.READ
+                    ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
+                    : "",
 
-                state: {
-                    id: editingIDP.id,
-                    isLocalAuthenticator: isCustomLocalAuthenticator,
-                    name: editingIDP.name
-                }
+                state: { id: editingIDP.id, name: editingIDP.name }
             });
         }
     };
@@ -566,7 +543,6 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
         if (filterSelectedApps.length === 0 && connectedAppsCount !== 0) {
-
             return (
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
