@@ -83,7 +83,6 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
         CONNECTOR_NAMES.INCLUDE_LOWERCASE_CHARACTERS_IN_OTP,
         CONNECTOR_NAMES.INCLUDE_NUMBERS_IN_OTP,
         CONNECTOR_NAMES.INCLUDE_UPPERCASE_CHARACTERS_IN_OTP,
-        CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME,
         CONNECTOR_NAMES.OTP_LENGTH,
         CONNECTOR_NAMES.SEND_OTP_IN_EMAIL
     ];
@@ -457,19 +456,37 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                         formDisplayData?.[CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION]?.description)
                     }
                 />
-                <Field.Checkbox
+                <Field.Input
                     ariaLabel={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS,
+                        CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME,
                         formDisplayData?.
-                            [CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS]?.displayName)
+                            [CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME]?.displayName)
                     }
+                    inputType="number"
                     name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS) }
-                    className="toggle"
+                        CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME)
+                    }
+                    type="number"
+                    width={ 16 }
+                    required={ true }
+                    labelPosition="top"
+                    minLength={ 3 }
+                    maxLength={ 100 }
+                    readOnly={ isReadOnly }
+                    initialValue={ formValues?.[
+                        CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME ] }
+                    data-componentid={ `${ componentId }-otp-length` }
                     label={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS,
+                        CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME,
+                        formDisplayData?.
+                            [CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME]?.displayName)
+                    }
+                    disabled={ !isConnectorEnabled }
+                    hint={ GovernanceConnectorUtils.resolveFieldLabel(
+                        CATEGORY_NAME,
+                        CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME,
                         formDisplayData?.
                             [CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME]?.description)
                     }
