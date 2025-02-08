@@ -45,7 +45,6 @@ import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Icon } from "semantic-ui-react";
 import getTenantDomainAvailability from "../../api/get-tenant-domain-availability";
 import TenantConstants from "../../constants/tenant-constants";
 import { AddTenantRequestPayload, Tenant, TenantOwner, TenantStatus } from "../../models/tenants";
@@ -64,7 +63,7 @@ export interface AddTenantFormProps extends IdentifiableComponentInterface {
 
 export type AddTenantFormValues = Pick<Tenant, "domain" | "id"> & Omit<TenantOwner, "additionalDetails">;
 
-export type AddTenantFromErrors = Partial<AddTenantFormValues>;
+export type AddTenantFormErrors = Partial<AddTenantFormValues>;
 
 /**
  * Component to hold the form to add a tenant.
@@ -93,7 +92,6 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
     );
 
     const [ isPasswordValid, setIsPasswordValid ] = useState<boolean>(false);
-    const [ isPasswordVisible, setIsPasswordVisible ] = useState(false);
 
     const userNameValidationConfig: ValidationFormInterface = useMemo((): ValidationFormInterface => {
         return getUsernameConfiguration(validationData);
@@ -237,8 +235,8 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
      * @param values - Form values.
      * @returns Form errors.
      */
-    const handleValidate = (values: AddTenantFormValues): AddTenantFromErrors => {
-        const errors: AddTenantFromErrors = {
+    const handleValidate = (values: AddTenantFormValues): AddTenantFormErrors => {
+        const errors: AddTenantFormErrors = {
             domain: undefined,
             email: undefined,
             firstname: undefined,
@@ -418,20 +416,6 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
         </FormSpy>
     );
 
-    const renderInputAdornmentOfSecret = (showSecret: boolean, onClick: () => void): ReactElement => (
-        <InputAdornment position="end">
-            <Icon
-                link={ true }
-                className="list-icon reset-field-to-default-adornment"
-                size="small"
-                color="grey"
-                name={ !showSecret ? "eye" : "eye slash" }
-                data-componentid={ `${ componentId }-password-view-button` }
-                onClick={ onClick }
-            />
-        </InputAdornment>
-    );
-
     return (
         <FinalForm
             initialValues={ {} }
@@ -560,39 +544,44 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                                 maxLength={ 100 }
                                 minLength={ 0 }
                             />
-                            <Stack
-                                spacing={ { sm: 2, xs: 1 } }
-                                direction={ { sm: "row", xs: "column" } }
-                                alignItems="center"
-                            >
-                                <div className="inline-flex-field password-input-btn">
-                                    <FinalFormField
-                                        key="password"
-                                        width={ 16 }
-                                        className="text-field-container"
-                                        ariaLabel="password"
-                                        required={ true }
-                                        data-componentid={ `${componentId}-password` }
-                                        name="password"
-                                        type={ isPasswordVisible ? "text" : "password" }
-                                        InputProps={ {
-                                            endAdornment: renderInputAdornmentOfSecret(
-                                                isPasswordVisible,
-                                                () => setIsPasswordVisible(!isPasswordVisible))
-                                        } }
-                                        label={ t("tenants:common.form.fields.password.label") }
-                                        placeholder={ t("tenants:common.form.fields.password.placeholder") }
-                                        component={ TextFieldAdapter }
-                                        maxLength={ 100 }
-                                        minLength={ 0 }
-                                    />
-                                </div>
-                                { passwordValidationConfig && (
-                                    <Button onClick={ () => form.mutators.setRandomPassword("password") }>
-                                        { t("tenants:common.form.fields.password.actions.generate.label") }
-                                    </Button>
+                            <FormSpy subscription={ { errors: true, modified: true } }>
+                                { ({
+                                    errors,
+                                    modified
+                                }: {
+                                    errors: AddTenantFormErrors;
+                                    modified?: { [key: string]: boolean };
+                                }) => (
+                                    <Stack
+                                        spacing={ { sm: 2, xs: 1 } }
+                                        direction={ { sm: "row", xs: "column" } }
+                                        alignItems={ modified?.password && errors?.password ? "center" : "flex-end" }
+                                    >
+                                        <div className="inline-flex-field">
+                                            <FinalFormField
+                                                key="password"
+                                                width={ 16 }
+                                                className="text-field-container"
+                                                ariaLabel="password"
+                                                required={ true }
+                                                data-componentid={ `${componentId}-password` }
+                                                name="password"
+                                                type="password"
+                                                label={ t("tenants:common.form.fields.password.label") }
+                                                placeholder={ t("tenants:common.form.fields.password.placeholder") }
+                                                component={ TextFieldAdapter }
+                                                maxLength={ 100 }
+                                                minLength={ 0 }
+                                            />
+                                        </div>
+                                        { passwordValidationConfig && (
+                                            <Button onClick={ () => form.mutators.setRandomPassword("password") }>
+                                                { t("tenants:common.form.fields.password.actions.generate.label") }
+                                            </Button>
+                                        ) }
+                                    </Stack>
                                 ) }
-                            </Stack>
+                            </FormSpy>
                             { passwordValidationConfig && renderPasswordValidationCriteria() }
                         </Stack>
                     </form>
