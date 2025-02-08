@@ -520,7 +520,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ),
             exact: true,
             icon: { icon: getSidePanelIcons().identityVerificationProviders },
-            id: "identityVerificationProvidersEdit",
+            id: "identityVerificationProviders",
             name: "Identity Verification Providers Edit",
             order: 4,
             path: AppConstants.getPaths().get("IDVP_EDIT"),

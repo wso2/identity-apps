@@ -1,5 +1,16 @@
 # @wso2is/form
 
+## 2.6.28
+
+### Patch Changes
+
+- [#7547](https://github.com/wso2/identity-apps/pull/7547) [`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951) Thanks [@brionmario](https://github.com/brionmario)! - - Bump `@oxygen-ui` version.
+  - Fix https://github.com/wso2/product-is/issues/22470
+  - Fix https://github.com/wso2/product-is/issues/22471
+- Updated dependencies [[`8cebca0336f5769f65fda60960b78d8404049301`](https://github.com/wso2/identity-apps/commit/8cebca0336f5769f65fda60960b78d8404049301), [`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951)]:
+  - @wso2is/react-components@2.9.7
+  - @wso2is/core@2.6.3
+
 ## 2.6.27
 
 ### Patch Changes

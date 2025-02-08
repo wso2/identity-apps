@@ -1,5 +1,40 @@
 # @wso2is/admin.authentication-flow-builder.v1
 
+## 2.24.149
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.149
+  - @wso2is/admin.connections.v1@2.33.32
+  - @wso2is/admin.core.v1@2.38.18
+  - @wso2is/admin.extensions.v1@2.36.74
+  - @wso2is/admin.identity-providers.v1@2.26.149
+  - @wso2is/admin.login-flow.ai.v1@2.27.44
+  - @wso2is/admin.organizations.v1@2.26.149
+  - @wso2is/admin.secrets.v1@2.25.149
+  - @wso2is/admin.server-configurations.v1@2.32.74
+
+## 2.24.148
+
+### Patch Changes
+
+- [#7547](https://github.com/wso2/identity-apps/pull/7547) [`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951) Thanks [@brionmario](https://github.com/brionmario)! - - Bump `@oxygen-ui` version.
+  - Fix https://github.com/wso2/product-is/issues/22470
+  - Fix https://github.com/wso2/product-is/issues/22471
+- Updated dependencies [[`8cebca0336f5769f65fda60960b78d8404049301`](https://github.com/wso2/identity-apps/commit/8cebca0336f5769f65fda60960b78d8404049301), [`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951)]:
+  - @wso2is/react-components@2.9.7
+  - @wso2is/core@2.6.3
+  - @wso2is/admin.server-configurations.v1@2.32.73
+  - @wso2is/admin.identity-providers.v1@2.26.148
+  - @wso2is/admin.login-flow.ai.v1@2.27.43
+  - @wso2is/admin.organizations.v1@2.26.148
+  - @wso2is/admin.applications.v1@2.30.148
+  - @wso2is/admin.connections.v1@2.33.31
+  - @wso2is/admin.extensions.v1@2.36.73
+  - @wso2is/admin.secrets.v1@2.25.148
+  - @wso2is/admin.core.v1@2.38.17
+
 ## 2.24.147
 
 ### Patch Changes

@@ -74,12 +74,14 @@ export const useEmailTemplatesList = <Data = EmailTemplateType[], Error = Reques
  *
  * @param templateType - Template type.
  * @param locale - Locale of the template.
+ * @param shouldFetch - Should fetch the data.
  *
  * @returns Email template.
  */
 export const useEmailTemplate = <Data = EmailTemplate, Error = RequestErrorInterface>(
     templateType: string,
-    locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
+    locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     const emailLocale: string = locale.replace("-", "_");
 
@@ -98,7 +100,7 @@ export const useEmailTemplate = <Data = EmailTemplate, Error = RequestErrorInter
         error,
         isValidating,
         mutate
-    } = useRequest<Data, Error>(requestConfig,
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null,
         {
             onErrorRetry: (error: AxiosError) => {
                 if (error.response.status === 404) {

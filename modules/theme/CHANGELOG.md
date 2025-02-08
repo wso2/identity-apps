@@ -1,5 +1,15 @@
 # @wso2is/theme
 
+## 2.6.8
+
+### Patch Changes
+
+- [#7552](https://github.com/wso2/identity-apps/pull/7552) [`602921db40f920071cc38ccf8735f048a9486ebb`](https://github.com/wso2/identity-apps/commit/602921db40f920071cc38ccf8735f048a9486ebb) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix x509 authenticator option display issues
+
+* [#7547](https://github.com/wso2/identity-apps/pull/7547) [`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951) Thanks [@brionmario](https://github.com/brionmario)! - - Bump `@oxygen-ui` version.
+  - Fix https://github.com/wso2/product-is/issues/22470
+  - Fix https://github.com/wso2/product-is/issues/22471
+
 ## 2.6.7
 
 ### Patch Changes

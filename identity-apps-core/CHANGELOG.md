@@ -1,5 +1,27 @@
 # @wso2is/identity-apps-core
 
+## 2.12.13
+
+### Patch Changes
+
+- [#7561](https://github.com/wso2/identity-apps/pull/7561) [`d33c57dc6d4b9d68ca4cfde3002a6836911ca469`](https://github.com/wso2/identity-apps/commit/d33c57dc6d4b9d68ca4cfde3002a6836911ca469) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix URL double encoding issue
+
+## 2.12.12
+
+### Patch Changes
+
+- [#7541](https://github.com/wso2/identity-apps/pull/7541) [`8cebca0336f5769f65fda60960b78d8404049301`](https://github.com/wso2/identity-apps/commit/8cebca0336f5769f65fda60960b78d8404049301) Thanks [@brionmario](https://github.com/brionmario)! - Make the `ui_lang` & `accepts-cookies` preference cookies `Secure`
+
+* [#7553](https://github.com/wso2/identity-apps/pull/7553) [`488d203b317551a8bede7b9a9a5b52f37366bf7d`](https://github.com/wso2/identity-apps/commit/488d203b317551a8bede7b9a9a5b52f37366bf7d) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Fix push authenticator multi options page issue
+
+- [#7552](https://github.com/wso2/identity-apps/pull/7552) [`602921db40f920071cc38ccf8735f048a9486ebb`](https://github.com/wso2/identity-apps/commit/602921db40f920071cc38ccf8735f048a9486ebb) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix x509 authenticator option display issues
+
+* [#7547](https://github.com/wso2/identity-apps/pull/7547) [`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951) Thanks [@brionmario](https://github.com/brionmario)! - - Bump `@oxygen-ui` version.
+  - Fix https://github.com/wso2/product-is/issues/22470
+  - Fix https://github.com/wso2/product-is/issues/22471
+* Updated dependencies [[`602921db40f920071cc38ccf8735f048a9486ebb`](https://github.com/wso2/identity-apps/commit/602921db40f920071cc38ccf8735f048a9486ebb), [`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951)]:
+  - @wso2is/theme@2.6.8
+
 ## 2.12.11
 
 ### Patch Changes
