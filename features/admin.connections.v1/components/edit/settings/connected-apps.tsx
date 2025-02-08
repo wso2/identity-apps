@@ -74,14 +74,15 @@ import {
     Label,
     SemanticICONS
 } from "semantic-ui-react";
-import { getConnectedApps, useGetConnectedAppsOfAuthenticator } from "../../../api/connections";
+import { getConnectedApps } from "../../../api/connections";
+import { useGetAuthenticatorConnectedApps } from "../../../api/use-get-authenticator-connected-apps";
 import { AuthenticatorTypes } from "../../../models/authenticators";
 import {
     ConnectedAppInterface,
     ConnectedAppsInterface,
     ConnectionInterface
 } from "../../../models/connection";
-import { ConnectionsManagementUtils } from "../../../utils/connection-utils";
+import { ConnectionsManagementUtils, resolveCustomAuthenticatorDisplayName } from "../../../utils/connection-utils";
 
 /**
  * Proptypes for the advance settings component.
@@ -183,7 +184,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     const {
         data: connectedAppsOfAuthenticator,
         isLoading: isFetchConnectedAppsLoading
-    } = useGetConnectedAppsOfAuthenticator(editingIDP?.id, shouldFetchLocalAuthenticatorConnectedApps);
+    } = useGetAuthenticatorConnectedApps(editingIDP?.id, shouldFetchLocalAuthenticatorConnectedApps);
 
     /**
      * This useEffect checks whether the authenticator is a custom local authenticator.
@@ -662,6 +663,14 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         setFilterSelectedApps(appNameFilter);
     };
 
+    const resolveConnectorName = (): string => {
+        if (isCustomLocalAuthenticator) {
+            return resolveCustomAuthenticatorDisplayName(editingIDP, isCustomLocalAuthenticator);
+        } else {
+            return editingIDP.name;
+        }
+    };
+
     if (isAppsLoading) {
         return <Loader />;
     }
@@ -669,7 +678,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     return (
         <EmphasizedSegment padded="very">
             <Heading as="h4">{ t("idp:connectedApps.header",
-                { idpName: editingIDP.name }) }</Heading>
+                { idpName: resolveConnectorName() }) }</Heading>
             <Divider hidden />
             { connectedApps && (
                 <Input

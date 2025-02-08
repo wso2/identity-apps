@@ -37,9 +37,9 @@ import {
     getConnectedApps,
     updateCustomAuthentication,
     updateIdentityProviderDetails,
-    useGetConnectedAppsOfAuthenticator,
     useGetConnections
 } from "../../../api/connections";
+import { useGetAuthenticatorConnectedApps } from "../../../api/use-get-authenticator-connected-apps";
 import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectedAppInterface, ConnectedAppsInterface, ConnectionInterface, CustomAuthConnectionInterface }
     from "../../../models/connection";
@@ -151,7 +151,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
 
     const {
         data: connectedAppsOfLocalAuthenticator
-    } = useGetConnectedAppsOfAuthenticator(editingIDP?.id, shouldFetchLocalAuthenticatorConnectedApps);
+    } = useGetAuthenticatorConnectedApps(editingIDP?.id, shouldFetchLocalAuthenticatorConnectedApps);
 
     /**
      * Loads the identity provider authenticators on initial component load.
@@ -231,10 +231,9 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
             .catch((error: IdentityAppsError) => {
                 dispatch(
                     addAlert({
-                        description:
-                                error?.description || "Error occurred while trying to retrieve connected applications.",
+                        description: error?.description || t("idp:connectedApps.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: error?.message || "Error Occurred."
+                        message: error?.message || t("idp:connectedApps.genericError.message")
                     })
                 );
             })
@@ -267,11 +266,9 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     response.catch((error: IdentityAppsError) => {
                         dispatch(
                             addAlert({
-                                description:
-                                    error?.description ||
-                                    "Error occurred while trying to retrieve connected applications.",
+                                description: error?.description || t("idp:connectedApps.genericError.description"),
                                 level: AlertLevels.ERROR,
-                                message: error?.message || "Error Occurred."
+                                message: error?.message || t("idp:connectedApps.genericError.message")
                             })
                         );
                     })

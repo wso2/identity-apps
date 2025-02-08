@@ -860,38 +860,6 @@ export const getConnectedApps = (idpId: string): Promise<any> => {
 };
 
 /**
- * Hook to get connected apps of a local authenticator.
- *
- * @param authenticatorId - ID of the local authenticator.
- * @param shouldFetch - Whether the request should be fetched.
- * @returns Requested connected apps.
- */
-export const useGetConnectedAppsOfAuthenticator = <Data = ConnectedAppsInterface, Error = RequestErrorInterface>(
-    authenticatorId: string,
-    shouldFetch: boolean = true
-): RequestResultInterface<Data, Error> => {
-
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.authenticators + "/" + authenticatorId + "/connected-apps/"
-    };
-
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
-
-    return {
-        data,
-        error: error,
-        isLoading: shouldFetch ? !error && !data : null,
-        isValidating,
-        mutate
-    };
-};
-
-/**
  * Update identity provider details.
  *
  * @param connection - Connection.

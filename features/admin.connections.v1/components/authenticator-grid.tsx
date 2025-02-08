@@ -62,9 +62,9 @@ import { Dispatch } from "redux";
 import {
     deleteConnection,
     deleteCustomAuthentication,
-    getConnectedApps,
-    useGetConnectedAppsOfAuthenticator
+    getConnectedApps
 } from "../api/connections";
+import { useGetAuthenticatorConnectedApps } from "../api/use-get-authenticator-connected-apps";
 import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
@@ -195,7 +195,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     const {
         data: connectedAppsOfLocalAuthenticator,
         isLoading: isLoadingConnectedAppsOfLocalAuthenticator
-    } = useGetConnectedAppsOfAuthenticator(deletingAuthenticatorId, shouldFetchLocalAuthenticatorConnectedApps);
+    } = useGetAuthenticatorConnectedApps(deletingAuthenticatorId, shouldFetchLocalAuthenticatorConnectedApps);
 
     useEffect(() => {
         const shownAuthenticatorList: (ConnectionInterface | AuthenticatorInterface)[] =
@@ -293,6 +293,38 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     };
 
     /**
+     * This method fetches connected app details of the authenticator to be deleted and
+     * displays the modal with the connected app details.
+     */
+    const loadConnectedAppDetails = async (response: ConnectedAppsInterface): Promise<void> => {
+        const appRequests: Promise<any>[] = response.connectedApps.map((app: ConnectedAppInterface) => {
+            return getApplicationDetails(app.appId);
+        });
+
+        const results: ApplicationBasicInterface[] = await Promise.all(
+            appRequests.map((response: Promise<any>) =>
+                response.catch((error: AxiosError & { description: string; message: string }) => {
+                    dispatch(
+                        addAlert({
+                            description: error?.description || t("idp:connectedApps.genericError.description"),
+                            level: AlertLevels.ERROR,
+                            message: error?.message || t("idp:connectedApps.genericError.message")
+                        })
+                    );
+                })
+            )
+        );
+
+        const appNames: string[] = [];
+
+        results.forEach((app: ApplicationBasicInterface) => {
+            appNames.push(app.name);
+        });
+
+        setConnectedApps(appNames);
+    };
+
+    /**
      * This method handles the initiation of the delete action for federated authenticators.
      *
      * @param idpId - Identity provider id.
@@ -309,31 +341,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                     setShowDeleteConfirmationModal(true);
                 } else {
                     setShowDeleteErrorDueToConnectedAppsModal(true);
-
-                    const appRequests: Promise<any>[] = response.connectedApps.map((app: ConnectedAppInterface) => {
-                        return getApplicationDetails(app.appId);
-                    });
-
-                    const results: ApplicationBasicInterface[] = await Promise.all(
-                        appRequests.map((response: Promise<any>) => response
-                        //TODO: Refactor to access description & message from error?.response?.data.
-                            .catch((error: AxiosError & { description: string; message: string }) => {
-                                dispatch(addAlert({
-                                    description: error?.description
-                                        || "Error occurred while trying to retrieve connected applications.",
-                                    level: AlertLevels.ERROR,
-                                    message: error?.message || "Error Occurred."
-                                }));
-                            }))
-                    );
-
-                    const appNames: string[] = [];
-
-                    results.forEach((app: ApplicationBasicInterface) => {
-                        appNames.push(app.name);
-                    });
-
-                    setConnectedApps(appNames);
+                    loadConnectedAppDetails(response);
                 }
             })
             .catch((error: AxiosError & { description: string; message: string }) => {
@@ -368,36 +376,12 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             );
             setShowDeleteConfirmationModal(true);
         } else {
+            setIsConnectedAppsLoading(true);
+
             setShowDeleteErrorDueToConnectedAppsModal(true);
+            loadConnectedAppDetails(connectedAppsOfLocalAuthenticator);
 
-            const appRequests: Promise<ApplicationBasicInterface>[]
-            = connectedAppsOfLocalAuthenticator?.connectedApps?.map((app: ConnectedAppInterface) =>
-                getApplicationDetails(app.appId)
-            );
-
-            const results: ApplicationBasicInterface[] = await Promise.all(
-                appRequests?.map((response: Promise<any>) =>
-                    response.catch((error: AxiosError & { description: string; message: string }) => {
-                        dispatch(
-                            addAlert({
-                                description:
-                                    error?.description ||
-                                    "Error occurred while trying to retrieve connected applications.",
-                                level: AlertLevels.ERROR,
-                                message: error?.message || "Error Occurred."
-                            })
-                        );
-                    })
-                )
-            );
-
-            const appNames: string[] = [];
-
-            results.forEach((app: ApplicationBasicInterface) => {
-                appNames.push(app.name);
-            });
-
-            setConnectedApps(appNames);
+            setIsConnectedAppsLoading(false);
             setShouldFetchLocalAuthenticatorConnectedApps(false);
         };
     };
