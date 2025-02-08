@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.12.13
+
+### Patch Changes
+
+- [#7561](https://github.com/wso2/identity-apps/pull/7561) [`d33c57dc6d4b9d68ca4cfde3002a6836911ca469`](https://github.com/wso2/identity-apps/commit/d33c57dc6d4b9d68ca4cfde3002a6836911ca469) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix URL double encoding issue
+
 ## 2.12.12
 
 ### Patch Changes

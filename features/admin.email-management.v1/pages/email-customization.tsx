@@ -126,7 +126,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         isLoading: isEmailTemplateLoading,
         error: emailTemplateError,
         mutate: emailTemplateMutate
-    } = useEmailTemplate(selectedEmailTemplateId, selectedLocale);
+    } = useEmailTemplate(selectedEmailTemplateId, selectedLocale, !!selectedEmailTemplateId);
 
     useEffect(() => {
         // we don't have a good displayName and description coming from the backend

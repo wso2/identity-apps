@@ -1,5 +1,26 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.25.149
+
+### Patch Changes
+
+- [#7535](https://github.com/wso2/identity-apps/pull/7535) [`622d3517b93aedd535d531eb579977a57fe36763`](https://github.com/wso2/identity-apps/commit/622d3517b93aedd535d531eb579977a57fe36763) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Hide root organization console role permissions in sub-organizations.
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.149
+  - @wso2is/admin.core.v1@2.38.18
+  - @wso2is/admin.administrators.v1@2.29.149
+  - @wso2is/admin.extensions.v1@2.36.74
+  - @wso2is/admin.identity-providers.v1@2.26.149
+  - @wso2is/admin.login-flow.ai.v1@2.27.44
+  - @wso2is/admin.organizations.v1@2.26.149
+  - @wso2is/admin.roles.v2@2.27.93
+  - @wso2is/admin.authentication.v1@2.25.149
+  - @wso2is/admin.feature-gate.v1@1.4.149
+  - @wso2is/admin.server-configurations.v1@2.32.74
+  - @wso2is/admin.users.v1@2.30.59
+  - @wso2is/admin.userstores.v1@2.26.108
+
 ## 2.25.148
 
 ### Patch Changes
