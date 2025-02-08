@@ -919,17 +919,26 @@
                                 }
                                 if (localAuthenticatorNames.contains(X509_CERTIFICATE_AUTHENTICATOR)) {
                             %>
-                            <div class="field">
-                                <button class="ui grey labeled icon button fluid"
-                                    onclick="handleNoDomain(this,
+                            <div class="social-login blurring social-dimmer">
+                                <div class="field">
+                                    <button class="ui secondary button" onclick="handleNoDomain(this,
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
-                                        'x509CertificateAuthenticator')"
-                                    id="icon-<%=iconId%>"
-                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> X509 Certificate">
-                                    <i class="certificate icon"></i>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <strong>x509 Certificate</strong>
-                                </button>
+                                        'x509CertificateAuthenticator')" id="icon-<%=iconId%>"
+                                        title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> X509 Certificate"
+                                    >
+                                        <img
+                                            class="ui image"
+                                            src="libs/themes/default/assets/images/icons/x509-authenticator-icon.svg"
+                                            alt="Magic Link Logo"
+                                            role="presentation"
+                                        />
+                                        <span>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> x509 Certificate
+                                        </span>
+                                    </button>
+                                </div>
                             </div>
+                            <br />
                             <%
                                 }
                                 if (localAuthenticatorNames.contains(FIDO_AUTHENTICATOR)) {
