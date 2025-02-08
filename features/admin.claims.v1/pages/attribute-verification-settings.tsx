@@ -56,7 +56,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
     props: AttributeVerificationSettingsPage
 ): ReactElement => {
 
-    const { ["data-componentid"]: componentId } = props;
+    const { [ "data-componentid" ]: componentId = "attribute-verification-settings-form" } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -362,7 +362,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     readOnly={ isReadOnly }
                     disabled={ !isConnectorEnabled }
                     width={ 16 }
-                    data-componentid={ `${ componentId }-enable-auto-login` }
+                    data-componentid={ `${ componentId }-email-verification` }
                     hint={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,
                         CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION,
@@ -389,7 +389,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     readOnly={ isReadOnly }
                     initialValue={ formValues?.[
                         CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME ] }
-                    data-componentId={ `${ componentId }-otp-length` }
+                    data-componentid={ `${ componentId }-email-verification-link-expiry-time` }
                     label={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,
                         CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME,
@@ -449,7 +449,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     readOnly={ isReadOnly }
                     disabled={ !isConnectorEnabled }
                     width={ 16 }
-                    data-componentid={ `${ componentId }-enable-auto-login` }
+                    data-componentid={ `${ componentId }-mobile-verification` }
                     hint={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,
                         CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION,
@@ -476,7 +476,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     readOnly={ isReadOnly }
                     initialValue={ formValues?.[
                         CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME ] }
-                    data-componentid={ `${ componentId }-otp-length` }
+                    data-componentid={ `${ componentId }-mobile-verification-code-expiry-time` }
                     label={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,
                         CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME,
@@ -513,7 +513,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                         readOnly={ isReadOnly }
                         disabled={ !isConnectorEnabled }
                         width={ 16 }
-                        data-componentid={ `${ componentId }-enable-auto-login` }
+                        data-componentid={ `${ componentId }-mobile-verification-by-privileged-user` }
                         hint={ GovernanceConnectorUtils.resolveFieldLabel(
                             CATEGORY_NAME,
                             CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS,
@@ -528,7 +528,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     buttonType="primary_btn"
                     ariaLabel="Self registration update button"
                     name="update-button"
-                    data-componentId={ `${componentId}-submit-button` }
+                    data-componentid={ `${componentId}-submit-button` }
                     disabled={ !isConnectorEnabled || isSubmitting }
                     loading={ isSubmitting }
                     label={ t("common:update") }
@@ -572,13 +572,6 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
             </EmphasizedSegment>
         </PageLayout>
     );
-};
-
-/**
- * Default props for the component.
- */
-AttributeVerificationSettingsFormPage.defaultProps = {
-    "data-componentid": "attribute-verification-settings-form"
 };
 
 /**
