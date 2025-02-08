@@ -241,17 +241,15 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 );
 
                 const results: ApplicationBasicInterface[] = await Promise.all(
-                    appRequests.map((response: Promise<any>) =>
-                        response.catch((error: IdentityAppsError) => {
-                            dispatch(
-                                addAlert({
-                                    description: error?.description || t("idp:connectedApps.genericError.description"),
-                                    level: AlertLevels.ERROR,
-                                    message: error?.message || t("idp:connectedApps.genericError.message")
-                                })
-                            );
-                        })
-                    )
+                    appRequests.map((response: Promise<any>) => response.catch((error: IdentityAppsError) => {
+                        dispatch(addAlert({
+                            description: error?.description
+                                || t("idp:connectedApps.genericError.description"),
+                            level: AlertLevels.ERROR,
+                            message: error?.message
+                                || t("idp:connectedApps.genericError.message")
+                        }));
+                    }))
                 );
 
                 setConnectedApps(results);
@@ -272,12 +270,12 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         }
 
         setIsAppsLoading(true);
-
         getConnectedApps(editingIDP.id)
             .then(async (response: ConnectedAppsInterface) => {
                 setconnectedAppsCount(response.count);
 
                 if (response.count > 0) {
+
                     const appRequests: Promise<any>[] = response.connectedApps.map((app: ConnectedAppInterface) => {
                         return getApplicationDetails(app.appId);
                     });
