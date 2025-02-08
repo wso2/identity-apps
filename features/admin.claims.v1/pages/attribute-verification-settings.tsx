@@ -423,7 +423,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     readOnly={ isReadOnly }
                     disabled={ !isConnectorEnabled }
                     width={ 16 }
-                    data-componentid={ `${ componentId }-enable-auto-login` }
+                    data-componentid={ `${ componentId }-email-notification` }
                     hint={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,
                         CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION,
