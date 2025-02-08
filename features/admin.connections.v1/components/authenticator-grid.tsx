@@ -64,6 +64,7 @@ import {
     deleteCustomAuthentication,
     getConnectedApps
 } from "../api/connections";
+import { useGetAuthenticatorConnectedApps } from "../api/use-get-authenticator-connected-apps";
 import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
@@ -77,8 +78,7 @@ import {
     ConnectedAppInterface,
     ConnectedAppsInterface,
     ConnectionInterface,
-    ConnectionTypes,
-    CustomAuthConnectionInterface
+    ConnectionTypes
 } from "../models/connection";
 import { ConnectionsManagementUtils, handleConnectionDeleteError } from "../utils/connection-utils";
 
@@ -170,6 +170,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         (ConnectionInterface | AuthenticatorInterface)[]>([]);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingIDP, setDeletingIDP ] = useState<ConnectionInterface>(undefined);
+    const [ deletingAuthenticatorId, setDeletingAuthenticatorId ] = useState<string>(undefined);
     const [ isDeletionloading, setIsDeletionLoading ] = useState(false);
     const [ connectedApps, setConnectedApps ] = useState<string[]>(undefined);
     const [
@@ -177,6 +178,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         setShowDeleteErrorDueToConnectedAppsModal
     ] = useState<boolean>(false);
     const [ isConnectedAppsLoading, setIsConnectedAppsLoading ] = useState<boolean>(true);
+    const [ shouldFetchLocalAuthenticatorConnectedApps, setShouldFetchLocalAuthenticatorConnectedApps ] =
+        useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
@@ -189,6 +192,11 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
+    const {
+        data: connectedAppsOfLocalAuthenticator,
+        isLoading: isLoadingConnectedAppsOfLocalAuthenticator
+    } = useGetAuthenticatorConnectedApps(deletingAuthenticatorId, shouldFetchLocalAuthenticatorConnectedApps);
+
     useEffect(() => {
         const shownAuthenticatorList: (ConnectionInterface | AuthenticatorInterface)[] =
             authenticators.filter((authenticator:ConnectionInterface | AuthenticatorInterface)  => {
@@ -197,6 +205,17 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
         setDisplayingAuthenticators(shownAuthenticatorList);
     }, [ authenticators ]);
+
+    /**
+     * This use effect initiates custom local authenticator delete action.
+     *
+     * This ensures that the deletion is initiated only after the connected apps are fetched.
+     * Initializing the delete process before the connected apps are fetched will result in unintended behavior.
+     */
+    useEffect(() => {
+        connectedAppsOfLocalAuthenticator &&
+            handleLocalAuthenticatorDelete(deletingAuthenticatorId);
+    }, [ connectedAppsOfLocalAuthenticator, deletingAuthenticatorId ]);
 
     /**
      * Redirects to the authenticator edit page when the edit button is clicked.
@@ -240,9 +259,11 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      * Initiates the deletes of an authenticator. This will check for connected apps.
      *
      * @param idpId - Identity provider id.
+     * @param connectionType - Connection type.
      */
-    const handleAuthenticatorDeleteInitiation = async (idpId: string, connectionType: string,
-        isCustom?: boolean): Promise<void> => {
+    const handleAuthenticatorDelete = async (idpId: string, connectionType: string,
+        isCustomLocalAuthenticator?: boolean): Promise<void> => {
+
         // If the connection is an Identity Verification Provider, then skip checking for connected apps.
         if (connectionType === ConnectionTypes.IDVP) {
             setDeletingIDP(authenticators.find(
@@ -253,15 +274,55 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             return;
         }
 
-        if (isCustom) {
-            setDeletingIDP(authenticators.find(
-                (idp: ConnectionInterface | AuthenticatorInterface) => idp.id === idpId)
-            );
-            setShowDeleteConfirmationModal(true);
+        // If the connection is a custom local authenticator, then check for connected apps through a custom hook.
+        if (isCustomLocalAuthenticator) {
+            setDeletingAuthenticatorId(idpId);
+            setShouldFetchLocalAuthenticatorConnectedApps(true);
 
             return;
         }
 
+        handleFederatedAuthenticatorDelete(idpId);
+    };
+
+    /**
+     * This method fetches connected app details of the authenticator to be deleted and
+     * displays the modal with the connected app details.
+     */
+    const loadConnectedAppDetails = async (response: ConnectedAppsInterface): Promise<void> => {
+        const appRequests: Promise<any>[] = response.connectedApps.map((app: ConnectedAppInterface) => {
+            return getApplicationDetails(app.appId);
+        });
+
+        const results: ApplicationBasicInterface[] = await Promise.all(
+            appRequests.map((response: Promise<any>) =>
+                response.catch((error: AxiosError & { description: string; message: string }) => {
+                    dispatch(
+                        addAlert({
+                            description: error?.description || t("idp:connectedApps.genericError.description"),
+                            level: AlertLevels.ERROR,
+                            message: error?.message || t("idp:connectedApps.genericError.message")
+                        })
+                    );
+                })
+            )
+        );
+
+        const appNames: string[] = [];
+
+        results.forEach((app: ApplicationBasicInterface) => {
+            appNames.push(app.name);
+        });
+
+        setConnectedApps(appNames);
+    };
+
+    /**
+     * This method handles the initiation of the delete action for federated authenticators.
+     *
+     * @param idpId - Identity provider id.
+     */
+    const handleFederatedAuthenticatorDelete = async (idpId: string): Promise<void> => {
         setIsConnectedAppsLoading(true);
 
         getConnectedApps(idpId)
@@ -273,31 +334,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                     setShowDeleteConfirmationModal(true);
                 } else {
                     setShowDeleteErrorDueToConnectedAppsModal(true);
-
-                    const appRequests: Promise<any>[] = response.connectedApps.map((app: ConnectedAppInterface) => {
-                        return getApplicationDetails(app.appId);
-                    });
-
-                    const results: ApplicationBasicInterface[] = await Promise.all(
-                        appRequests.map((response: Promise<any>) => response
-                        //TODO: Refactor to access description & message from error?.response?.data.
-                            .catch((error: AxiosError & { description: string; message: string }) => {
-                                dispatch(addAlert({
-                                    description: error?.description
-                                        || "Error occurred while trying to retrieve connected applications.",
-                                    level: AlertLevels.ERROR,
-                                    message: error?.message || "Error Occurred."
-                                }));
-                            }))
-                    );
-
-                    const appNames: string[] = [];
-
-                    results.forEach((app: ApplicationBasicInterface) => {
-                        appNames.push(app.name);
-                    });
-
-                    setConnectedApps(appNames);
+                    loadConnectedAppDetails(response);
                 }
             })
             .catch((error: AxiosError & { description: string; message: string }) => {
@@ -313,9 +350,33 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             });
     };
 
-    const isCustomLocalAuthenticator = (idp: ConnectionInterface): boolean => {
-        return ConnectionsManagementUtils.IsCustomAuthenticator(idp) &&
-        idp?.type === AuthenticatorTypes.LOCAL;
+    /**
+     * This method handles the initiation of the delete action for local authenticators.
+     *
+     * Currently only custom local authenticator deletion is supported.
+     * System defined authenticators cannot be deleted.
+     */
+    const handleLocalAuthenticatorDelete = async (authenticatorId: string): Promise<void> => {
+        connectedAppsOfLocalAuthenticator ? setIsConnectedAppsLoading(false) : setIsConnectedAppsLoading(true);
+
+        if (isLoadingConnectedAppsOfLocalAuthenticator || !connectedAppsOfLocalAuthenticator) {
+            return;
+        }
+
+        if (connectedAppsOfLocalAuthenticator?.count === 0) {
+            setDeletingIDP(
+                authenticators.find((idp: ConnectionInterface | AuthenticatorInterface) => idp.id === authenticatorId)
+            );
+            setShowDeleteConfirmationModal(true);
+        } else {
+            setIsConnectedAppsLoading(true);
+
+            setShowDeleteErrorDueToConnectedAppsModal(true);
+            loadConnectedAppDetails(connectedAppsOfLocalAuthenticator);
+
+            setIsConnectedAppsLoading(false);
+            setShouldFetchLocalAuthenticatorConnectedApps(false);
+        };
     };
 
     /**
@@ -324,21 +385,21 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      *
      * @param id - Authenticator ID.
      */
-    const handleAuthenticatorDelete = (id: string, connectionType: ConnectionTypes): void => {
+    const deleteAuthenticator = (id: string, connectionType: ConnectionTypes): void => {
 
         setIsDeletionLoading(true);
 
-        let deleteCustomAuth: (id: string) => Promise<AxiosResponse>;
+        let deleteAuthenticator: (id: string) => Promise<AxiosResponse>;
 
         if(connectionType === ConnectionTypes.IDVP) {
-            deleteCustomAuth = deleteIdentityVerificationProvider;
-        } else if (isCustomLocalAuthenticator(deletingIDP)) {
-            deleteCustomAuth = deleteCustomAuthentication;
+            deleteAuthenticator = deleteIdentityVerificationProvider;
+        } else if (ConnectionsManagementUtils.IsCustomLocalAuthenticator(deletingIDP)) {
+            deleteAuthenticator = deleteCustomAuthentication;
         } else {
-            deleteCustomAuth = deleteConnection;
+            deleteAuthenticator = deleteConnection;
         }
 
-        deleteCustomAuth(id)
+        deleteAuthenticator(id)
             .then(() => {
                 dispatch(addAlert({
                     description: t("authenticationProvider:" +
@@ -490,7 +551,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     };
 
     const resolveAuthenticatorDescription = (authenticator: ConnectionInterface, isIdP: boolean): string => {
-        if (isCustomLocalAuthenticator(authenticator as CustomAuthConnectionInterface)) {
+        if (ConnectionsManagementUtils.IsCustomLocalAuthenticator(authenticator)) {
             return authenticator.description;
         }
 
@@ -550,10 +611,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                         });
                                         handleGridItemOnClick(e, authenticator);
                                     } }
-                                    onDelete={ () => handleAuthenticatorDeleteInitiation(
+                                    onDelete={ () => handleAuthenticatorDelete(
                                         authenticator.id,
                                         authenticator.type,
-                                        ConnectionsManagementUtils.IsCustomAuthenticator(authenticator)
+                                        ConnectionsManagementUtils.IsCustomLocalAuthenticator(authenticator)
                                     ) }
                                     showActions={ true }
                                     showResourceEdit={ true }
@@ -602,7 +663,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={
-                            (): void => handleAuthenticatorDelete(deletingIDP.id, deletingIDP.type as ConnectionTypes)
+                            (): void => deleteAuthenticator(deletingIDP.id, deletingIDP.type as ConnectionTypes)
                         }
                         data-testid={ `${ testId }-delete-confirmation-modal` }
                         closeOnDimmerClick={ false }
