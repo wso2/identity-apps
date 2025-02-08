@@ -452,11 +452,11 @@ export class SignInMethodUtils {
     }
 
     public static isCustomAuthenticator = (authenticator: GenericAuthenticatorInterface): boolean => {
-        return authenticator?.tags?.includes("Custom");
+        return authenticator?.defaultAuthenticator?.tags?.includes("Custom");
     };
 
     public static isCustomSecondFactorAuthenticator = (authenticator: GenericAuthenticatorInterface): boolean => {
-        return this.isCustomAuthenticator && authenticator?.tags?.includes("2FA");
+        return this.isCustomAuthenticator && authenticator?.defaultAuthenticator?.tags?.includes("2FA");
     };
 }
 
