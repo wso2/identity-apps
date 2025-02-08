@@ -317,6 +317,16 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.server-configurations.v1/pages/account-disable-page")
+                    ),
+                    exact: true,
+                    id: "accountDisable",
+                    path: AppConstants.getPaths().get("ACCOUNT_DISABLE"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() =>

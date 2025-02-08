@@ -73,7 +73,7 @@
         }
 
         .iproov-text {
-            padding: 12px 36px;
+            padding: 5px 5px 30px 0;
         }
 
         .scan-button, .iproov-state-screen a, .iproov-state-screen button {
@@ -107,7 +107,6 @@
             <div class="ui segment">
                 <%-- page content --%>
                 <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "iproov.heading")%></h2>
-                <div class="ui divider hidden"></div>
                 <div class="ui visible negative message" style="display: none;" id="error-msg"></div>
 
                 <div class="segment-form iproov-segment">

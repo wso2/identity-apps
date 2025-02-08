@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -28,14 +29,13 @@ import {
     UpdateGovernanceConnectorConfigInterface
 } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { GovernanceConnectorUtils } from "@wso2is/admin.server-configurations.v1/utils";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { ContentLoader, EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -95,20 +95,13 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isFormInitialized, setIsFormInitialized ] = useState<boolean>(false);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const isReadOnly: boolean = !useRequiredScopes(
+        featureConfig?.attributeDialects?.scopes?.update
+    );
 
     // TODO: Enable connector based on the feature flag.
     const isConnectorEnabled: boolean = true;
-    const isReadOnly: boolean = useMemo(
-        () =>
-            !hasRequiredScopes(
-                featureConfig?.governanceConnectors,
-                featureConfig?.governanceConnectors?.scopes?.update,
-                allowedScopes
-            ),
-        [ featureConfig, allowedScopes ]
-    );
 
     /**
      * Load Attributes verification connector details on page load.

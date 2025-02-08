@@ -1,5 +1,31 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.4.147
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.16
+  - @wso2is/admin.organizations.v1@2.26.147
+
+## 1.4.146
+
+### Patch Changes
+
+- Updated dependencies [[`8161cc441a1cf598f59f50e26d55527a1eb07cc7`](https://github.com/wso2/identity-apps/commit/8161cc441a1cf598f59f50e26d55527a1eb07cc7)]:
+  - @wso2is/admin.core.v1@2.38.15
+  - @wso2is/admin.organizations.v1@2.26.146
+
+## 1.4.145
+
+### Patch Changes
+
+- [#7519](https://github.com/wso2/identity-apps/pull/7519) [`b4cba28321177f383170ac4bb7b4d75ce7ca404b`](https://github.com/wso2/identity-apps/commit/b4cba28321177f383170ac4bb7b4d75ce7ca404b) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve AI feature banners
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.14
+  - @wso2is/admin.organizations.v1@2.26.145
+
 ## 1.4.144
 
 ### Patch Changes

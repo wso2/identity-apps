@@ -175,7 +175,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
             authenticationType: authenticationType,
             isAuthenticationUpdateFormState: isAuthenticationUpdateFormState,
             isCreateFormState: isCreateFormState
-        }, t);
+        });
 
         if (!values?.passwordSharing) {
             customError.passwordSharing = t("actions:fields.passwordSharing.format.validations") as PasswordFormat;

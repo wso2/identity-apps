@@ -19,8 +19,8 @@
 import { Show } from "@wso2is/access-control";
 import { getApplicationDetails } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models/application";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -47,7 +47,7 @@ import {
     handleGetConnectionListCallError
 } from "../../../utils/connection-utils";
 import { GeneralDetailsForm } from "../forms";
-import { CustomAuthGeneralDetailsForm } from "../forms/custom-auth-general-details-form";
+import { CustomAuthenticatorGeneralDetailsForm } from "../forms/custom-authenticator-general-details-form";
 
 /**
  * Proptypes for the identity provider general details component.
@@ -353,7 +353,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     isSubmitting={ isSubmitting }
                 />
             ) : (
-                <CustomAuthGeneralDetailsForm
+                <CustomAuthenticatorGeneralDetailsForm
                     templateType={ templateType }
                     hideIdPLogoEditField={ hideIdPLogoEditField }
                     editingIDP={ editingIDP }

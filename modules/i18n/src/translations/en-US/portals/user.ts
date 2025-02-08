@@ -72,6 +72,7 @@ export const user: userNS = {
             header: "Danger Zone",
             lockUserZone: {
                 actionTitle: "Lock User",
+                disabledHint: "To lock/unlock the user account, please enable the account first.",
                 header: "Lock user",
                 subheader: "Once you lock the account, the user can no longer log in to the system."
             },
@@ -366,6 +367,7 @@ export const user: userNS = {
         }
     },
     profile: {
+        accountDisabled: "The account has been disabled by an administrator.",
         accountLockReason: {
             adminInitiated: "The account has been manually locked by an administrator.",
             default: "The account is locked.",

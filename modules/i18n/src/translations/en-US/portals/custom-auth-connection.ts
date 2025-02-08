@@ -145,5 +145,45 @@ export const customAuthentication: customAuthenticationNS = {
                 }
             }
         }
+    },
+    notifications: {
+        addCustomAuthenticator: {
+            error: {
+                description: "{{ description }}",
+                message: "Create error"
+            },
+            genericError: {
+                description: "An error occurred while creating the custom authenticator.",
+                message: "Create error"
+            },
+            success: {
+                description: "Successfully created the custom authenticator.",
+                message: "Create successful"
+            }
+        },
+        getCustomAuthenticator: {
+            error: {
+                description: "{{ description }}",
+                message: "Retrieval error"
+            },
+            genericError: {
+                description: "An error occurred while retrieving the custom authenticator.",
+                message: "Retrieval error"
+            }
+        },
+        updateCustomAuthenticator: {
+            error: {
+                description: "{{ description }}",
+                message: "Update error"
+            },
+            genericError: {
+                description: "An error occurred while updating the custom authenticator.",
+                message: "Update error"
+            },
+            success: {
+                description: "Successfully updated the custom authenticator.",
+                message: "Update successful"
+            }
+        }
     }
 };

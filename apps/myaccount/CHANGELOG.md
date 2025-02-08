@@ -1,5 +1,35 @@
 # @wso2is/myaccount
 
+## 2.17.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.147
+  - @wso2is/common.branding.v1@2.26.4
+
+## 2.17.5
+
+### Patch Changes
+
+- [#7542](https://github.com/wso2/identity-apps/pull/7542) [`4aa42a7b50bfdf942d145a27032e71eea2969c54`](https://github.com/wso2/identity-apps/commit/4aa42a7b50bfdf942d145a27032e71eea2969c54) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - read consoleApp.path from deployment.toml
+
+- Updated dependencies [[`4a8f0320d82b3c2ed9f26473e0d950a74a6080a8`](https://github.com/wso2/identity-apps/commit/4a8f0320d82b3c2ed9f26473e0d950a74a6080a8), [`d1bb49ef3881a4569df6ff2c976a250bb886e091`](https://github.com/wso2/identity-apps/commit/d1bb49ef3881a4569df6ff2c976a250bb886e091), [`863e421af246486a4d00034666ff3d64c13f37ce`](https://github.com/wso2/identity-apps/commit/863e421af246486a4d00034666ff3d64c13f37ce), [`8156ef36ebc15563e88b42477a2ce40a936d7add`](https://github.com/wso2/identity-apps/commit/8156ef36ebc15563e88b42477a2ce40a936d7add), [`8161cc441a1cf598f59f50e26d55527a1eb07cc7`](https://github.com/wso2/identity-apps/commit/8161cc441a1cf598f59f50e26d55527a1eb07cc7)]:
+  - @wso2is/i18n@2.19.6
+  - @wso2is/theme@2.6.7
+  - @wso2is/react-components@2.9.6
+  - @wso2is/admin.organizations.v1@2.26.146
+  - @wso2is/common.branding.v1@2.26.3
+
+## 2.17.4
+
+### Patch Changes
+
+- Updated dependencies [[`b4cba28321177f383170ac4bb7b4d75ce7ca404b`](https://github.com/wso2/identity-apps/commit/b4cba28321177f383170ac4bb7b4d75ce7ca404b)]:
+  - @wso2is/i18n@2.19.5
+  - @wso2is/admin.organizations.v1@2.26.145
+  - @wso2is/common.branding.v1@2.26.2
+
 ## 2.17.3
 
 ### Patch Changes
