@@ -4569,7 +4569,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             userClaimUpdate: {
-                                friendlyName: "User Attribute Change Verification",
+                                friendlyName: "User Attribute Verification",
                                 properties: {
                                     userClaimUpdateEmailEnableVerification: {
                                         hint: "Trigger a verification notification when user's email address is updated.",
