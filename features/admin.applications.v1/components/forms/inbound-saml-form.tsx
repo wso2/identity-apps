@@ -234,8 +234,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                     assertionConsumerUrls: assertionConsumerUrls.split(","),
                     attributeProfile: {
                         alwaysIncludeAttributesInResponse: values.get("attributeProfile").includes("enabled"),
-                        attributeNameFormat: values.get("attributeNameFormat"),
-                        enabled: values.get("attributeProfile").includes("enabled")
+                        enabled: values.get("attributeProfile").includes("enabled"),
+                        nameFormat: values.get("attributeNameFormat")
                     },
                     defaultAssertionConsumerUrl: values.get("defaultAssertionConsumerUrl"),
                     enableAssertionQueryProfile:
@@ -1551,7 +1551,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         type="dropdown"
                                         default={ DEFAULT_NAME_ATTRIBUTE_FORMAT }
                                         required={ false }
-                                        value={ initialValues?.attributeProfile?.attributeNameFormat }
+                                        value={ initialValues?.attributeProfile?.nameFormat }
                                         children={ getAvailableNameAttributeFormats() }
                                         readOnly={ readOnly }
                                         data-componentid=

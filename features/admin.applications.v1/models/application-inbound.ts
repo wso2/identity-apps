@@ -299,9 +299,9 @@ interface SingleSignOnProfileInterface {
 }
 
 export interface SAMLAttributeProfileInterface {
-    attributeNameFormat?: string;
     enabled?: boolean;
     alwaysIncludeAttributesInResponse?: boolean;
+    nameFormat?: string;
 }
 
 export enum LogoutMethods {
