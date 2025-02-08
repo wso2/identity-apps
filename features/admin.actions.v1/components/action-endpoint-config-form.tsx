@@ -27,7 +27,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalFormField, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form/src";
+import { FinalFormField, FormSpy, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form/src";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -74,6 +74,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
     const [ isShowSecret2, setIsShowSecret2 ] = useState<boolean>(false);
     const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
     const hasActionCreatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.create);
+    const [ isHttpEndpointUri, setIsHttpEndpointUri ] = useState<boolean>(false);
 
     const { t } = useTranslation();
 
@@ -386,7 +387,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                             FormControlProps={ {
                                 margin: "dense"
                             } }
-                            ariaLabel="username"
+                            ariaLabel="authenticationType"
                             required={ true }
                             data-componentid={ `${_componentId}-authentication-type-dropdown` }
                             name="authenticationType"
@@ -463,6 +464,28 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 minLength={ 0 }
                 disabled={ getFieldDisabledStatus() }
             />
+            <FormSpy
+                onChange={ ({ values }: { values: EndpointConfigFormPropertyInterface }) => {
+                    if (values?.endpointUri?.startsWith("http://")) {
+                        setIsHttpEndpointUri(true);
+                    } else {
+                        setIsHttpEndpointUri(false);
+                    }
+                } }
+            />
+            { isHttpEndpointUri && (
+                <Alert
+                    severity="warning"
+                    className="endpoint-uri-alert"
+                    data-componentid={ `${_componentId}-endpoint-uri-alert` }
+                >
+                    <Trans
+                        i18nKey={ t("actions:fields.endpoint.validations.notHttps") }
+                    >
+                            The URL is not secure (HTTP). Use HTTPS for a secure connection.
+                    </Trans>
+                </Alert>
+            ) }
             <Divider className="divider-container"/>
             <Typography variant="h6" className="heading-container" >
                 { t("actions:fields.authentication.label") }

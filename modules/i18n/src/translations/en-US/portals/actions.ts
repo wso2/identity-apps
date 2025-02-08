@@ -148,7 +148,7 @@ export const actions: actionsNS = {
             validations: {
                 empty: "Endpoint is a required field.",
                 invalidUrl: "Please enter a valid URL.",
-                notHttps: "The entered URL is not HTTPS. Please add a valid URL."
+                notHttps: "The URL is not secure (HTTP). Use HTTPS for a secure connection."
             }
         },
         name: {
