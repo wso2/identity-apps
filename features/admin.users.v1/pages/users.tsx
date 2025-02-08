@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -425,7 +425,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     }, [ parentOrgUserInviteList?.invitations ]);
 
     /**
-     * User effect to handle Pagination for pending/expired Guest.
+     * Handles pagination for pending/expired Guest as the API does not support pagination.
      */
     useEffect(() => {
         if (invitationStatusOption === InvitationStatus.ACCEPTED) {
@@ -436,7 +436,9 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             (invitation: UserInviteInterface) => invitation.status === invitationStatusOption.toUpperCase());
 
         if (finalInvitations?.length > listItemLimit) {
-            finalInvitations = finalInvitations.slice(listOffset, listOffset + listItemLimit);
+            const _startIndex: number = listOffset - 1;
+
+            finalInvitations = finalInvitations.slice(_startIndex, _startIndex + listItemLimit);
             setFinalGuestList(finalInvitations);
             setIsNextPageAvailable(finalInvitations.length === listItemLimit);
         } else {
