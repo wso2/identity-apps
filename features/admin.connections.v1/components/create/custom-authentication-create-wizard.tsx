@@ -953,6 +953,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                     <Trans
                         i18nKey={ t("actions:fields.endpoint.validations.notHttps") }
                     >
+                        The URL is not secure (HTTP). Use HTTPS for a secure connection.
                     </Trans>
                 </Alert>
             ) }

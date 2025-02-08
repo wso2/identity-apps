@@ -387,7 +387,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                             FormControlProps={ {
                                 margin: "dense"
                             } }
-                            ariaLabel="authenticationType"
+                            ariaLabel="Authentication Type"
                             required={ true }
                             data-componentid={ `${_componentId}-authentication-type-dropdown` }
                             name="authenticationType"
