@@ -1,5 +1,17 @@
 # @wso2is/admin.push-providers.v1
 
+## 1.0.37
+
+### Patch Changes
+
+- [#7547](https://github.com/wso2/identity-apps/pull/7547) [`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951) Thanks [@brionmario](https://github.com/brionmario)! - - Bump `@oxygen-ui` version.
+  - Fix https://github.com/wso2/product-is/issues/22470
+  - Fix https://github.com/wso2/product-is/issues/22471
+- Updated dependencies [[`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951)]:
+  - @wso2is/admin.template-core.v1@1.5.102
+  - @wso2is/admin.feature-gate.v1@1.4.148
+  - @wso2is/admin.core.v1@2.38.17
+
 ## 1.0.36
 
 ### Patch Changes
