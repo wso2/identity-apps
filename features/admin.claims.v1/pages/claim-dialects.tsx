@@ -75,9 +75,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     const hasAttributeDialectsUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.attributeDialects?.scopes?.update
     );
-    const hasServerReadPermissions: boolean = useRequiredScopes(
-        featureConfig?.server?.scopes?.read
-    );
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const [ addEditClaim, setAddEditClaim ] = useState(false);
@@ -94,7 +91,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
         (state: AppState) => state.config.ui.listAllAttributeDialects
     );
     const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     /**
      * Fetches all the dialects.
@@ -332,9 +328,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                             </List>
                                         </EmphasizedSegment>
                                         { !isSubOrganization() &&
-                                        !isSAASDeployment &&
-                                        featureConfig?.server?.enabled &&
-                                        hasServerReadPermissions && (
+                                        hasAttributeDialectsReadPermissions && (
                                             <EmphasizedSegment
                                                 onClick={ () => {
                                                     history.push(AppConstants.getPaths()
