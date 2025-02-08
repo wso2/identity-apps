@@ -1,0 +1,4 @@
+[dir="rtl"] .ui.flag:before {
+  direction: ltr !important;
+  unicode-bidi: bidi-override;
+}
