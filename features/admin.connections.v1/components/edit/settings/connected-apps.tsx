@@ -530,8 +530,26 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
                     : "",
 
-                state: { id: editingIDP.id, name: editingIDP.name }
+                state: { id: editingIDP.id, isLocalAuthenticator: isCustomLocalAuthenticator, name: editingIDP.name }
             });
+        }
+    };
+
+    /**
+     * Resolves the display name of the authenticator.
+     *
+     * Display name of custom local authenticators and custom federated authenticators are returned from
+     * two distinct properties from the API response.
+     *
+     * @returns - Display name of the authenticator.
+     */
+    const resolveDisplayName = (): string[] => {
+        if (ConnectionsManagementUtils.IsCustomAuthenticator(editingIDP)) {
+            const displayName: string = resolveCustomAuthenticatorDisplayName(editingIDP, isCustomLocalAuthenticator);
+
+            return [ t("idp:connectedApps.placeholders.emptyList", { idpName: displayName }) ];
+        } else {
+            return [ t("idp:connectedApps.placeholders.emptyList", { idpName: editingIDP.name }) ];
         }
     };
 
@@ -563,11 +581,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    subtitle={ [
-                        t("idp:connectedApps.placeholders.emptyList",
-                            { idpName: editingIDP.name })
-                    ] }
-                    data-componentid={ `${ componentId }-empty-placeholder` }
+                    subtitle={ resolveDisplayName() }
+                    data-componentid={ `${componentId}-empty-placeholder` }
                 />
             );
         }
