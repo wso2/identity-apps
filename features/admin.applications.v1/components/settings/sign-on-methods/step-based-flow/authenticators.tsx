@@ -359,18 +359,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             return [];
         }
 
-        /**
-         * Currently authenticator id is being used to fetch authenticator labels from the meta content.
-         * The existing approach cannot be used for custom authenticators since the id of the
-         * custom authenticators are not pre defined.
-         */
-        if (SignInMethodUtils.isCustomSecondFactorAuthenticator(authenticator)) {
-            return AuthenticatorMeta.getCustomAuthenticatorSecondFactorLabels();
-        } else if (SignInMethodUtils.isCustomAuthenticator(authenticator)) {
-            return AuthenticatorMeta.getCustomAuthenticatorLabels();
-        } else {
-            return AuthenticatorMeta.getAuthenticatorLabels(authenticator?.defaultAuthenticator) ?? [];
-        }
+        return AuthenticatorMeta.getAuthenticatorLabels(authenticator?.defaultAuthenticator) ?? [];
 
     };
 

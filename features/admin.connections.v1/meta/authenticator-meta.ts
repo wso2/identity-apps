@@ -95,6 +95,19 @@ export class AuthenticatorMeta {
      */
     public static getAuthenticatorLabels(authenticator: FederatedAuthenticatorInterface): string[] {
 
+        /**
+         * Currently authenticator id is being used to fetch authenticator labels from the meta content.
+         * The existing approach cannot be used for custom authenticators since the id of the
+         * custom authenticators are not pre defined.
+         */
+        if (this.isCustomSecondFactorAuthenticator(authenticator)) {
+            return [ AuthenticatorLabels.CUSTOM, AuthenticatorLabels.SECOND_FACTOR ];
+        }
+
+        if (this.isCustomAuthenticator(authenticator)) {
+            return [ AuthenticatorLabels.CUSTOM ];
+        }
+
         const authenticatorId: string = authenticator?.authenticatorId;
 
         const authenticatorLabels: string[] = get({
@@ -154,23 +167,13 @@ export class AuthenticatorMeta {
         return authenticatorLabels;
     }
 
-    /**
-     * Get custom authenticator labels.
-     *
-     * @returns Authenticator labels.
-     */
-    public static getCustomAuthenticatorLabels(): string[] {
-        return [ AuthenticatorLabels.CUSTOM ];
-    }
+    private static isCustomAuthenticator = (authenticator: FederatedAuthenticatorInterface): boolean => {
+        return authenticator?.tags?.includes("Custom");
+    };
 
-    /**
-     * Get custom authenticator second factor labels.
-     *
-     * @returns Authenticator labels.
-     */
-    public static getCustomAuthenticatorSecondFactorLabels(): string[] {
-        return [ AuthenticatorLabels.CUSTOM, AuthenticatorLabels.SECOND_FACTOR ];
-    }
+    private static isCustomSecondFactorAuthenticator = (authenticator: FederatedAuthenticatorInterface): boolean => {
+        return this.isCustomAuthenticator && authenticator?.tags?.includes("2FA");
+    };
 
     /**
      * Get Authenticator Type display name.
