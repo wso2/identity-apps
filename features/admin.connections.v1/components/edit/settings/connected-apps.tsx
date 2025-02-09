@@ -582,7 +582,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ resolveDisplayName() }
-                    data-componentid={ `${componentId}-empty-placeholder` }
+                    data-componentid={ `${componentId }-empty-placeholder` }
                 />
             );
         }
