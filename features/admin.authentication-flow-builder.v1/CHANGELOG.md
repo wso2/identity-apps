@@ -1,5 +1,22 @@
 # @wso2is/admin.authentication-flow-builder.v1
 
+## 2.24.155
+
+### Patch Changes
+
+- [#7567](https://github.com/wso2/identity-apps/pull/7567) [`fd3ca709e6182de5b74d1b49a2312c0154de6f4e`](https://github.com/wso2/identity-apps/commit/fd3ca709e6182de5b74d1b49a2312c0154de6f4e) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Update Custom Authenticator Content in Application Edit Login Flow
+
+- Updated dependencies [[`fd3ca709e6182de5b74d1b49a2312c0154de6f4e`](https://github.com/wso2/identity-apps/commit/fd3ca709e6182de5b74d1b49a2312c0154de6f4e), [`d87d3a73019a4ea92ea9f4107cd88c72138f6ca9`](https://github.com/wso2/identity-apps/commit/d87d3a73019a4ea92ea9f4107cd88c72138f6ca9)]:
+  - @wso2is/admin.identity-providers.v1@2.26.155
+  - @wso2is/admin.applications.v1@2.31.3
+  - @wso2is/admin.connections.v1@2.33.38
+  - @wso2is/admin.core.v1@2.38.24
+  - @wso2is/admin.extensions.v1@2.36.80
+  - @wso2is/admin.login-flow.ai.v1@2.27.50
+  - @wso2is/admin.organizations.v1@2.26.155
+  - @wso2is/admin.server-configurations.v1@2.32.80
+  - @wso2is/admin.secrets.v1@2.25.155
+
 ## 2.24.154
 
 ### Patch Changes
