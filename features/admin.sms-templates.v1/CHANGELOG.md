@@ -1,5 +1,17 @@
 # @wso2is/admin.sms-templates.v1
 
+## 1.0.157
+
+### Patch Changes
+
+- [#7570](https://github.com/wso2/identity-apps/pull/7570) [`6d55049b2e893c5f570e17be340a348f9c76961d`](https://github.com/wso2/identity-apps/commit/6d55049b2e893c5f570e17be340a348f9c76961d) Thanks [@brionmario](https://github.com/brionmario)! - Stop the redundant API calls in SMS Templates feature
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.27
+  - @wso2is/admin.branding.v1@2.28.15
+  - @wso2is/admin.organizations.v1@2.26.158
+  - @wso2is/common.branding.v1@2.26.15
+
 ## 1.0.156
 
 ### Patch Changes
