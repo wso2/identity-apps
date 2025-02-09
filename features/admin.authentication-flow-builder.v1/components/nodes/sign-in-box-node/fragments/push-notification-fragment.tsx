@@ -86,11 +86,4 @@ const PushNotificationFragment = (props: PushNotificationFragmentPropsInterface)
     );
 };
 
-/**
- * Default props for the Push Notification fragment component.
- */
-PushNotificationFragment.defaultProps = {
-    "data-componentid": "push-notification-fragment"
-};
-
 export default PushNotificationFragment;
