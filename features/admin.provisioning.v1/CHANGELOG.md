@@ -1,5 +1,15 @@
 # @wso2is/admin.provisioning.v1
 
+## 2.25.153
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.31.1
+  - @wso2is/admin.core.v1@2.38.22
+  - @wso2is/admin.identity-providers.v1@2.26.153
+  - @wso2is/admin.connections.v1@2.33.36
+
 ## 2.25.152
 
 ### Patch Changes

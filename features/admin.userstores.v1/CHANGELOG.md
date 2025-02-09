@@ -1,5 +1,14 @@
 # @wso2is/admin.userstores.v1
 
+## 2.26.112
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.22
+  - @wso2is/admin.extensions.v1@2.36.78
+  - @wso2is/admin.remote-userstores.v1@1.7.109
+
 ## 2.26.111
 
 ### Patch Changes

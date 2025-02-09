@@ -1,5 +1,21 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.32.78
+
+### Patch Changes
+
+- [#7566](https://github.com/wso2/identity-apps/pull/7566) [`c1c517a789ccef7f8ce198bf61f4b49a43e83643`](https://github.com/wso2/identity-apps/commit/c1c517a789ccef7f8ce198bf61f4b49a43e83643) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in self registration form submission
+
+- Updated dependencies [[`c1c517a789ccef7f8ce198bf61f4b49a43e83643`](https://github.com/wso2/identity-apps/commit/c1c517a789ccef7f8ce198bf61f4b49a43e83643)]:
+  - @wso2is/admin.server-configurations.v1@2.32.78
+  - @wso2is/admin.core.v1@2.38.22
+  - @wso2is/admin.extensions.v1@2.36.78
+  - @wso2is/admin.identity-providers.v1@2.26.153
+  - @wso2is/admin.users.v1@2.30.63
+  - @wso2is/admin.validation.v1@2.27.91
+  - @wso2is/admin.organizations.v1@2.26.153
+  - @wso2is/admin.feature-gate.v1@1.4.153
+
 ## 2.32.77
 
 ### Patch Changes
