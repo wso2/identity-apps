@@ -314,7 +314,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         let isBulkImportSupported: boolean = false;
 
         return getAUserStore(userStore?.id).then((response: UserStoreDetails) => {
-            response?.properties?.some((property: UserStoreProperty) => {
+            response?.properties?.forEach((property: UserStoreProperty) => {
                 if (property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY) {
                     isReadWriteUserStore = property.value === "false";
                 }
