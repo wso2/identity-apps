@@ -1,5 +1,16 @@
 # @wso2is/identity-apps-core
 
+## 2.13.0
+
+### Minor Changes
+
+- [#7546](https://github.com/wso2/identity-apps/pull/7546) [`ac95a1967b870eabfb7fe9a03fd4417d11aaf3d8`](https://github.com/wso2/identity-apps/commit/ac95a1967b870eabfb7fe9a03fd4417d11aaf3d8) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add ReCAPTCH to identifier authenticator
+
+### Patch Changes
+
+- Updated dependencies [[`4fd677f7cfdef94cf0a01f9b0ada0671aeeb4831`](https://github.com/wso2/identity-apps/commit/4fd677f7cfdef94cf0a01f9b0ada0671aeeb4831)]:
+  - @wso2is/theme@2.6.9
+
 ## 2.12.13
 
 ### Patch Changes

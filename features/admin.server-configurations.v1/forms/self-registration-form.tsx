@@ -340,6 +340,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 "accountActivateImmediately",
                 "verificationLinkExpiryTime",
                 "showUsernameUnavailability",
+                "SelfRegistration.ShowUsernameUnavailability",
                 "signUpConfirmation",
                 "notifyAccountConfirmation",
                 "SelfRegistration.LockOnCreation",

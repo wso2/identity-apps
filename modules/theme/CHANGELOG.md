@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.6.9
+
+### Patch Changes
+
+- [#7574](https://github.com/wso2/identity-apps/pull/7574) [`4fd677f7cfdef94cf0a01f9b0ada0671aeeb4831`](https://github.com/wso2/identity-apps/commit/4fd677f7cfdef94cf0a01f9b0ada0671aeeb4831) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with rtlcss overrinding flag icon background-position
+
 ## 2.6.8
 
 ### Patch Changes

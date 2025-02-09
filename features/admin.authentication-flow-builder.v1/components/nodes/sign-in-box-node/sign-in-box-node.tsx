@@ -59,6 +59,7 @@ import ActiveSessionsLimitFragment from "./fragments/active-sessions-limit-fragm
 import BasicAuthFragment from "./fragments/basic-auth-fragment";
 import EmailOTPFragment from "./fragments/email-otp-fragment";
 import IdentifierFirstFragment from "./fragments/identifier-first-fragment";
+import PushNotificationFragment from "./fragments/push-notification-fragment";
 import SMSOTPFragment from "./fragments/sms-otp-fragment";
 import TOTPFragment from "./fragments/totp-fragment";
 import useAuthenticationFlow from "../../../hooks/use-authentication-flow";
@@ -256,6 +257,9 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                 } else if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
                     .SMS_OTP_AUTHENTICATOR_NAME) {
                     basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SMS_OTP_AUTHENTICATOR_NAME;
+                } else if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .PUSH_AUTHENTICATOR_NAME) {
+                    basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.PUSH_AUTHENTICATOR_NAME;
                 }
             }
         });
@@ -456,6 +460,19 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                         } }
                     />
                 </>
+            );
+        }
+
+        if (activeBasicSignInOption === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.PUSH_AUTHENTICATOR_NAME) {
+            return (
+                <PushNotificationFragment
+                    onOptionRemove={ (e: MouseEvent<HTMLButtonElement>, { toRemove }: { toRemove: string }) => {
+                        onSignInOptionRemove(e, {
+                            stepIndex,
+                            toRemove
+                        });
+                    } }
+                />
             );
         }
 
