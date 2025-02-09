@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.19.9
+
+### Patch Changes
+
+- [#7549](https://github.com/wso2/identity-apps/pull/7549) [`ac5462d1d31e99e66511f1288f5d0d9227e848c8`](https://github.com/wso2/identity-apps/commit/ac5462d1d31e99e66511f1288f5d0d9227e848c8) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Implement UI changes for the SAML attribute name format
+
 ## 2.19.8
 
 ### Patch Changes
