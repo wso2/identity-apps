@@ -20,8 +20,8 @@ import Chip from "@oxygen-ui/react/Chip";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
@@ -360,7 +360,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         }
 
         return AuthenticatorMeta.getAuthenticatorLabels(authenticator?.defaultAuthenticator) ?? [];
-
     };
 
     /**

@@ -167,10 +167,29 @@ export class AuthenticatorMeta {
         return authenticatorLabels;
     }
 
+    /**
+     * Check whether the authenticator is a custom authenticator.
+     *
+     * Since there is no any identifier in the API to distinguish the authenticator as a custom authenticator,
+     * the tags have to be used to identify the custom authenticators.
+     *
+     * @param authenticator - Authenticator to be evaluated.
+     * @returns whether the authenticator is a custom authenticator.
+     */
     private static isCustomAuthenticator = (authenticator: FederatedAuthenticatorInterface): boolean => {
         return authenticator?.tags?.includes("Custom");
     };
 
+    /**
+     * Check whether the authenticator is a custom second factor authenticator.
+     *
+     * Since there is no any identifier in the API to distinguish the authenticator as a custom
+     * second factor authenticator,
+     * the tags have to be used to identify the custom authenticators.
+     *
+     * @param authenticator - Authenticator to be evaluated.
+     * @returns whether the authenticator is a custom second factor authenticator.
+     */
     private static isCustomSecondFactorAuthenticator = (authenticator: FederatedAuthenticatorInterface): boolean => {
         return authenticator?.tags?.includes("2FA");
     };
