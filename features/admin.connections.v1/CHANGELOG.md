@@ -1,5 +1,28 @@
 # @wso2is/admin.connections.v1
 
+## 2.33.40
+
+### Patch Changes
+
+- [#7581](https://github.com/wso2/identity-apps/pull/7581) [`500f38bbec7b24a76e01fd7ce051be691cad77e1`](https://github.com/wso2/identity-apps/commit/500f38bbec7b24a76e01fd7ce051be691cad77e1) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Update connected apps page of custom local authenticator
+
+- Updated dependencies [[`500f38bbec7b24a76e01fd7ce051be691cad77e1`](https://github.com/wso2/identity-apps/commit/500f38bbec7b24a76e01fd7ce051be691cad77e1)]:
+  - @wso2is/admin.connections.v1@2.33.40
+  - @wso2is/admin.applications.v1@2.31.5
+  - @wso2is/admin.core.v1@2.38.26
+  - @wso2is/admin.extensions.v1@2.36.82
+  - @wso2is/admin.identity-providers.v1@2.26.157
+  - @wso2is/admin.identity-verification-providers.v1@2.27.157
+  - @wso2is/admin.organizations.v1@2.26.157
+  - @wso2is/admin.roles.v2@2.27.101
+  - @wso2is/admin.application-templates.v1@1.4.157
+  - @wso2is/admin.console-settings.v1@2.25.157
+  - @wso2is/admin.actions.v1@1.11.22
+  - @wso2is/admin.claims.v1@2.27.67
+  - @wso2is/admin.feature-gate.v1@1.4.157
+  - @wso2is/admin.template-core.v1@1.5.111
+  - @wso2is/admin.userstores.v1@2.26.116
+
 ## 2.33.39
 
 ### Patch Changes
