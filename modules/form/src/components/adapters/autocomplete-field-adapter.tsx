@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,13 +17,17 @@
  */
 
 import Autocomplete, { AutocompleteProps, AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import { FormControlProps } from "@oxygen-ui/react/FormControl";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import InputLabel, { InputLabelProps } from "@oxygen-ui/react/InputLabel";
 import TextField, { TextFieldProps } from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
+import React, { FunctionComponent, HTMLProps, ReactElement, SyntheticEvent, useMemo, useState } from "react";
 import { FieldRenderProps } from "react-final-form";
+import InfiniteScroll from "react-infinite-scroll-component";
+import "./autocomplete-field-adapter.scss";
+import { Item } from "semantic-ui-react";
 
 /**
  * Props interface of {@link AutocompleteFieldAdapter}
@@ -48,6 +52,26 @@ export interface AutocompleteFieldAdapterPropsInterface
      * Alias for `multiple` prop from `AutocompleteProps` since it's a reserved keyword in React Final Form.
      */
     multipleValues?: boolean;
+    /**
+     * Array of options.
+     */
+    options: ReadonlyArray<any>;
+    /**
+     * Flag indicating if there are more items to load.
+     */
+    hasMore?: boolean;
+    /**
+     * Callback to load more items when triggered.
+     */
+    loadMore?: () => void;
+    /**
+     * Callback to handle input changes.
+     */
+    handleInputChange?: () => void;
+    /**
+     * Callback to handle form changes.
+     */
+    handleOnChange?: () => void;
 }
 
 /**
@@ -73,12 +97,46 @@ const AutocompleteFieldAdapter: FunctionComponent<AutocompleteFieldAdapterPropsI
         helperText,
         label,
         multipleValues,
+        hasMore = false,
+        loadMore,
+        handleInputChange,
+        handleOnChange,
         ...rest
     } = props;
 
     const [ value, setValue ] = useState<unknown>(multipleValues ? [] : undefined);
 
     const isError: boolean = (meta.error || meta.submitError) && meta.touched;
+
+    /**
+     * Loading component.
+     */
+    const loadingComponent = () => {
+        return (
+            <Item className="loading-component">
+                <CircularProgress size={ 22 } className="list-item-loader"/>
+                <Item.Content className="list-item-content"></Item.Content>
+            </Item>
+        );
+    };
+
+    /**
+     * Custom listbox component with infinite scroll.
+     */
+    const customListboxComponent: (listboxProps: HTMLProps<HTMLDivElement>) => JSX.Element = useMemo(
+        () => (listboxProps: HTMLProps<HTMLDivElement>) => (
+            <InfiniteScroll
+                dataLength={ options.length }
+                next={ loadMore }
+                hasMore={ hasMore }
+                loader={ loadingComponent() }
+                height={ options.length < 10 ? "auto" : 360 }
+            >
+                <div style={ { overflow: "visible" } } { ...listboxProps }/>
+            </InfiniteScroll>
+        ),
+        [ options.length, loadMore, hasMore ]
+    );
 
     return (
         <>
@@ -120,11 +178,14 @@ const AutocompleteFieldAdapter: FunctionComponent<AutocompleteFieldAdapterPropsI
                         { isError && <FormHelperText error>{ meta.error || meta.submitError }</FormHelperText> }
                     </>
                 ) }
-                onChange={ (_: SyntheticEvent, value: any) => {
-                    input.onChange(value);
+                onChange={ (event: SyntheticEvent, value: any) => {
+                    handleOnChange?.();
                     setValue(value);
+                    input.onChange(value);
                 } }
                 options={ options }
+                ListboxComponent={ hasMore ? customListboxComponent : undefined }
+                onInputChange={ hasMore ? handleInputChange : undefined }
                 { ...rest }
             />
             <FormHelperText id={ `${input.name}-helper-text` }>{ helperText }</FormHelperText>

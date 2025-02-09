@@ -38,6 +38,7 @@
         "joi": "^17.4.0",
         "lodash-es": "^4.17.21",
         "react-final-form": "^6.5.3",
+        "react-infinite-scroll-component": "^6.1.0",
         "semantic-ui-react": "^2.1.3",
         "@oxygen-ui/react": "^2.3.4"
     },
