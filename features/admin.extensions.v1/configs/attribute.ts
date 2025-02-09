@@ -226,7 +226,6 @@ export const attributeConfig: AttributeConfig = {
             return true;
         }
     },
-    isMobileNumberVerificationByPrivilegedUsersEnabled: true,
     isRowSelectable: (claim: Claim | ExternalClaim | ClaimDialect): boolean => {
         if (isIdentityClaims(claim as ExternalClaim)) {
             return false;

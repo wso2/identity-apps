@@ -21,7 +21,6 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { getConnectorDetails, updateGovernanceConnector } from "@wso2is/admin.server-configurations.v1/api";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
 import {
@@ -30,6 +29,7 @@ import {
     UpdateGovernanceConnectorConfigInterface
 } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { GovernanceConnectorUtils } from "@wso2is/admin.server-configurations.v1/utils";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -40,6 +40,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { ClaimManagementConstants } from "../constants";
 
 /**
  * Props for alternative login identifier edit page.
@@ -87,10 +88,6 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
         CONNECTOR_NAMES.SEND_OTP_IN_EMAIL
     ];
 
-    if (!attributeConfig?.isMobileNumberVerificationByPrivilegedUsersEnabled) {
-        HIDDEN_PROPERTIES.push(CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS);
-    }
-
     const [ connectorDetails, setConnectorDetails ] = useState<GovernanceConnectorInterface>(undefined);
     const [ formValues, setFormValues ] = useState<any>(undefined);
     const [ formDisplayData, setFormDisplayData ] = useState<any>(undefined);
@@ -103,6 +100,14 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
     const isReadOnly: boolean = !useRequiredScopes(
         featureConfig?.attributeDialects?.scopes?.update
     );
+
+    const isMobileNumberVerificationByPrivilegedUsersSupported: boolean =
+        isFeatureEnabled(featureConfig?.attributeDialects,
+            ClaimManagementConstants.FEATURE_DICTIONARY.get("MOBILE_VERIFICATION_BY_PRIVILEGED_USERS"));
+
+    if (!isMobileNumberVerificationByPrivilegedUsersSupported) {
+        HIDDEN_PROPERTIES.push(CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS);
+    }
 
     // TODO: Enable connector based on the feature flag.
     const isConnectorEnabled: boolean = true;
@@ -491,7 +496,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                             [CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME]?.description)
                     }
                 />
-                { attributeConfig?.isMobileNumberVerificationByPrivilegedUsersEnabled && (
+                { isMobileNumberVerificationByPrivilegedUsersSupported && (
                     <Field.Checkbox
                         ariaLabel={ GovernanceConnectorUtils.resolveFieldLabel(
                             CATEGORY_NAME,

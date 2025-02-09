@@ -89,5 +89,4 @@ export interface AttributeConfig {
     showCustomDialectInSCIM: boolean;
     isRowSelectable: (claim: Claim | ExternalClaim | ClaimDialect) => boolean;
     isSCIMEditable: boolean;
-    isMobileNumberVerificationByPrivilegedUsersEnabled?: boolean;
 }
