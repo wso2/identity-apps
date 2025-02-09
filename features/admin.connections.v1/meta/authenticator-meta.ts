@@ -100,11 +100,11 @@ export class AuthenticatorMeta {
          * The existing approach cannot be used for custom authenticators since the id of the
          * custom authenticators are not pre defined.
          */
-        if (this.isCustomSecondFactorAuthenticator(authenticator)) {
-            return [ AuthenticatorLabels.CUSTOM, AuthenticatorLabels.SECOND_FACTOR ];
-        }
-
         if (this.isCustomAuthenticator(authenticator)) {
+            if (this.isCustomSecondFactorAuthenticator(authenticator)) {
+                return [ AuthenticatorLabels.CUSTOM, AuthenticatorLabels.SECOND_FACTOR ];
+            }
+
             return [ AuthenticatorLabels.CUSTOM ];
         }
 
@@ -172,7 +172,7 @@ export class AuthenticatorMeta {
     };
 
     private static isCustomSecondFactorAuthenticator = (authenticator: FederatedAuthenticatorInterface): boolean => {
-        return this.isCustomAuthenticator && authenticator?.tags?.includes("2FA");
+        return authenticator?.tags?.includes("2FA");
     };
 
     /**
