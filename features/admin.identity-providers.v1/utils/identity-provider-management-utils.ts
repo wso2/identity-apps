@@ -123,6 +123,12 @@ export class IdentityProviderManagementUtils {
 
         /**
          * Check if the authenticator is a custom local authenticator.
+         *
+         * Currently authenticator id is being used to fetch the respective authenticator data from the meta content.
+         * The existing approach cannot be used for custom authenticators since the id and the name of
+         * custom authenticators are not pre defined. Therefore, if the authenticator is a custom authenticator,
+         * then the respective details will be resolved from the API.
+         *
          * @param authenticator - Authenticator to be checked.
          * @returns whether the authenticator is a custom local authenticator or not.
          */
@@ -157,7 +163,9 @@ export class IdentityProviderManagementUtils {
                                 ? authenticator.tags
                                 : []
                         },
-                        description: AuthenticatorMeta.getAuthenticatorDescription(authenticator.id),
+                        description: isCustomLocalAuthenticator(authenticator) ?
+                            authenticator?.description :
+                            AuthenticatorMeta.getAuthenticatorDescription(authenticator.id),
                         displayName: authenticator.displayName,
                         id: authenticator.id,
                         idp: LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER,
