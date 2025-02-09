@@ -260,7 +260,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             }
         ];
 
-        getUserStores(null)
+        const params: Record<string, string> = {
+            requiredAttributes: [
+                UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY,
+                UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED
+            ].join(",")
+        };
+
+        getUserStores(params)
             .then((response: UserStoreDetails[]) => {
                 response?.forEach(async (item: UserStoreDetails, index: number) => {
                     // Filter read/write enabled and bulk import supported user stores.
@@ -309,31 +316,20 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @param userStore - Userstore
      * @returns If the given userstore is read only or not and bulk import is supported.
      */
-    const isBulkImportSupportedUserStore = (userStore: UserStoreDetails): Promise<boolean> => {
+    const isBulkImportSupportedUserStore = (userStore: UserStoreDetails): boolean => {
         let isReadWriteUserStore: boolean = false;
         let isBulkImportSupported: boolean = false;
 
-        return getAUserStore(userStore?.id).then((response: UserStoreDetails) => {
-            response?.properties?.forEach((property: UserStoreProperty) => {
-                if (property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY) {
-                    isReadWriteUserStore = property.value === "false";
-                }
-                if (property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED) {
-                    isBulkImportSupported = property.value === "true";
-                }
-            });
-
-            return isReadWriteUserStore && isBulkImportSupported;
-        }).catch(() => {
-            dispatch(addAlert({
-                description: t("userstores:notifications.fetchUserstores.genericError." +
-                    "description"),
-                level: AlertLevels.ERROR,
-                message: t("userstores:notifications.fetchUserstores.genericError.message")
-            }));
-
-            return false;
+        userStore?.properties?.forEach((property: UserStoreProperty) => {
+            if (property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY) {
+                isReadWriteUserStore = property.value === "false";
+            }
+            if (property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED) {
+                isBulkImportSupported = property.value === "true";
+            }
         });
+
+        return isReadWriteUserStore && isBulkImportSupported;
     };
 
     const hideUserStoreDropdown = (): boolean => {
