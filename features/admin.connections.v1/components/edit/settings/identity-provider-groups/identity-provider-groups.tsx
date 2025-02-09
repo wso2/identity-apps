@@ -43,6 +43,7 @@ import {
     ConnectionClaimMappingInterface,
     ConnectionInterface
 } from "../../../../models/connection";
+import { ConnectionsManagementUtils } from "../../../../utils/connection-utils";
 
 const FORM_ID: string = "idp-group-attributes-form";
 
@@ -228,6 +229,11 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                 info
             />
         );
+
+        // Hide the info message if the connection is a custom federated authenticator.
+        if(ConnectionsManagementUtils.IsCustomAuthenticator(editingIDP)) {
+            return;
+        }
 
         /**
          * If the claim mappings are empty,
