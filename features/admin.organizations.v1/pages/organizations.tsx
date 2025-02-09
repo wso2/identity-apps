@@ -385,14 +385,14 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * Handles organization delete action.
      */
     const handleOrganizationDelete = (): void => {
-        getOrganizationLists(listItemLimit, filterQuery, after, before);
+        getOrganizationLists(listItemLimit, filterQuery, "", "");
     };
 
     /**
      * Handles organization list update action.
      */
     const handleOrganizationListUpdate = (): void => {
-        getOrganizationLists(listItemLimit, filterQuery, after, before);
+        getOrganizationLists(listItemLimit, filterQuery, "", "");
         updateAuthorizedList();
     };
 
