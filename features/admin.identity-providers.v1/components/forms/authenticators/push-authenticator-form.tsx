@@ -173,7 +173,8 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
     // This can be used when `meta` support is there.
     const [ , setFormFields ] = useState<PushAuthenticatorFormFieldsInterface>(undefined);
     const [ initialValues, setInitialValues ] = useState<PushAuthenticatorFormInitialValuesInterface>(undefined);
-    const [ isReadOnly ] = useState<boolean>(isSubOrganization() || readOnly);
+
+    const isReadOnly: boolean = isSubOrganization() || readOnly;
 
     /**
      * Flattens and resolved form initial values and field metadata.
