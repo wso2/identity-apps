@@ -475,7 +475,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             shouldShowTab(type, ConnectionTabTypes.IDENTITY_PROVIDER_GROUPS) &&
             featureConfig?.identityProviderGroups?.enabled &&
             !isOrganizationEnterpriseAuthenticator &&
-            !isCustomAuthenticator
+            !isCustomLocalAuthenticator
         ) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.IDENTITY_PROVIDER_GROUPS,
