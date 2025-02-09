@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.19.10
+
+### Patch Changes
+
+- [#7580](https://github.com/wso2/identity-apps/pull/7580) [`968a51fa1d33112f4c40e65f3dd2e3a7576dae35`](https://github.com/wso2/identity-apps/commit/968a51fa1d33112f4c40e65f3dd2e3a7576dae35) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Add push authenticator fragment for login flow, add quickstart image for push connection, and disable push connection configs for sub organizations
+
 ## 2.19.9
 
 ### Patch Changes
