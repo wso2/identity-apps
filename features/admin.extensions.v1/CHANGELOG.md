@@ -1,5 +1,32 @@
 # @wso2is/admin.extensions.v1
 
+## 2.36.79
+
+### Patch Changes
+
+- [#7575](https://github.com/wso2/identity-apps/pull/7575) [`b041a8138ec334f5b8ca43759811aef2701b4fef`](https://github.com/wso2/identity-apps/commit/b041a8138ec334f5b8ca43759811aef2701b4fef) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - enble roles tab for shared apps
+
+- Updated dependencies [[`1fcc6b498d66115c4ecada2fb204e9aa02b4f902`](https://github.com/wso2/identity-apps/commit/1fcc6b498d66115c4ecada2fb204e9aa02b4f902), [`b041a8138ec334f5b8ca43759811aef2701b4fef`](https://github.com/wso2/identity-apps/commit/b041a8138ec334f5b8ca43759811aef2701b4fef)]:
+  - @wso2is/admin.organizations.v1@2.26.154
+  - @wso2is/admin.roles.v2@2.27.98
+  - @wso2is/admin.applications.v1@2.31.2
+  - @wso2is/admin.authentication.v1@2.25.154
+  - @wso2is/admin.claims.v1@2.27.64
+  - @wso2is/admin.connections.v1@2.33.37
+  - @wso2is/admin.core.v1@2.38.23
+  - @wso2is/admin.feature-gate.v1@1.4.154
+  - @wso2is/admin.groups.v1@2.27.64
+  - @wso2is/admin.identity-providers.v1@2.26.154
+  - @wso2is/admin.server-configurations.v1@2.32.79
+  - @wso2is/admin.tenants.v1@2.28.128
+  - @wso2is/admin.users.v1@2.30.64
+  - @wso2is/admin.validation.v1@2.27.92
+  - @wso2is/admin.api-resources.v1@2.25.154
+  - @wso2is/admin.remote-userstores.v1@1.7.110
+  - @wso2is/admin.sms-providers.v1@2.25.154
+  - @wso2is/admin.userstores.v1@2.26.113
+  - @wso2is/admin.provisioning.v1@2.25.154
+
 ## 2.36.78
 
 ### Patch Changes

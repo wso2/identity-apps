@@ -1,5 +1,13 @@
 # @wso2is/admin.impersonation.v1
 
+## 1.6.154
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.23
+  - @wso2is/admin.server-configurations.v1@2.32.79
+
 ## 1.6.153
 
 ### Patch Changes
