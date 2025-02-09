@@ -386,6 +386,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      */
     const handleOrganizationDelete = (): void => {
         getOrganizationLists(listItemLimit, filterQuery, "", "");
+        setAuthorizedListPrevCursor("");
+        setAuthorizedListNextCursor("");
     };
 
     /**
