@@ -1,5 +1,12 @@
 # @wso2is/admin.remote-repository-configuration.v1
 
+## 2.25.155
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.24
+
 ## 2.25.154
 
 ### Patch Changes
