@@ -240,7 +240,6 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             secondFactor: secondFactorAuthenticators,
             social: socialAuthenticators
         });
-
     }, [ authenticators ]);
 
     const isCustomLocalSecondFactorAuthenticator = (authenticator: GenericAuthenticatorInterface): boolean => {
