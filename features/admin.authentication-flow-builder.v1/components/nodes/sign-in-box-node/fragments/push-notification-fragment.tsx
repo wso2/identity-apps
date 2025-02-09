@@ -48,8 +48,8 @@ export interface PushNotificationFragmentPropsInterface extends IdentifiableComp
  * @returns Push Notification fragment login option as a React component.
  */
 const PushNotificationFragment = ({
-        onOptionRemove,
-        ["data-componentid"]: componentId = "push-notification-fragment"
+    onOptionRemove,
+    ["data-componentid"]: componentId = "push-notification-fragment"
 }: PushNotificationFragmentPropsInterface): ReactElement => {
 
     const { t } = useTranslation();
