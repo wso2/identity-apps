@@ -23,6 +23,7 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.io.BufferedReader" %>
 <%@ page import="java.io.FileReader" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%-- Localization --%>
 <jsp:directive.include file="localize.jsp" />
@@ -43,7 +44,7 @@
         const localeFromCookie = getCookie("ui_lang");
         var localeFromUrlParams = null;
         if (urlParams.has('ui_locales')) {
-            localeFromUrlParams = encodeURIComponent(urlParams.get('ui_locales'));
+            localeFromUrlParams = "<%= Encode.forHtmlAttribute(request.getParameter("ui_locales")) %>";
         }
         const browserLocale = "<%= userLocale %>"
         const computedLocale = computeLocale(localeFromCookie, localeFromUrlParams, browserLocale);
@@ -102,8 +103,8 @@
         if (localeFromCookie) {
             return localeFromCookie;
         } else if (localeFromUrlParams) {
-            const firstLangFromUrlParams = decodeURIComponent(localeFromUrlParams).split(" ")[0];
-            return encodeURIComponent(firstLangFromUrlParams);
+            const firstLangFromUrlParams = localeFromUrlParams.split(" ")[0];
+            return firstLangFromUrlParams;
         } else if (browserLocale) {
             return browserLocale;
         } else {
