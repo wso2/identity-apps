@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.19.11
+
+### Patch Changes
+
+- [#7587](https://github.com/wso2/identity-apps/pull/7587) [`36ddeaa0617e495a35379ee5012f109082c5f511`](https://github.com/wso2/identity-apps/commit/36ddeaa0617e495a35379ee5012f109082c5f511) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - UI improvements in the groups section
+
 ## 2.19.10
 
 ### Patch Changes
