@@ -16,16 +16,11 @@
  * under the License.
  */
 
-.loading-component {
-    margin-bottom: 1em;
+.list-item {
+    padding-left: 15px;
+}
 
-    .list-item-loader {
-        margin-left: 20px;
-        margin-top: 5px;
-    }
-
-    .list-item-content {
-        display: flex !important;
-        align-items: center;
-    }
+.list-item-loader {
+    margin-left: 20px;
+    margin-top: 5px;
 }

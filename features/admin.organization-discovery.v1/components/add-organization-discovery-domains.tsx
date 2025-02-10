@@ -139,7 +139,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
     const queryPrefix: string = "name co ";
 
     const {
-        data: _organizations,
+        data: organizationListResponse,
         isLoading: isOrganizationsFetchRequestLoading,
         isValidating: isOrganizationsFetchRequestValidating,
         error: organizationsFetchRequestError
@@ -149,14 +149,15 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
      * Fetches the organization list.
      */
     useEffect(() => {
-        if (!_organizations || isOrganizationsFetchRequestLoading || isOrganizationsFetchRequestValidating) return;
+        if (!organizationListResponse || isOrganizationsFetchRequestLoading
+            || isOrganizationsFetchRequestValidating) return;
 
         setParams((prevParams: Params) => ({
             ...prevParams,
             shouldFetch: false
         }));
 
-        const updatedOrganizationList: OrganizationInterface[] = (_organizations.organizations);
+        const updatedOrganizationList: OrganizationInterface[] = (organizationListResponse.organizations);
 
         setOrganizations((prevOptions: OrganizationInterface[]) => [
             ...prevOptions,
@@ -165,7 +166,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
 
         let nextFound: boolean = false;
 
-        _organizations?.links?.forEach((link: OrganizationLinkInterface) => {
+        organizationListResponse?.links?.forEach((link: OrganizationLinkInterface) => {
             if (link.rel === "next") {
                 const nextCursor: string = link.href.split("after=")[1];
 
@@ -179,7 +180,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
             setAfterCursor("");
             setHasMoreOrganizations(false);
         }
-    }, [ _organizations ]);
+    }, [ organizationListResponse ]);
 
     /**
      * Dispatches error notifications if organization fetch request fails.
@@ -217,14 +218,14 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
     }, [ organizationsFetchRequestError ]);
 
     /**
-     * Update the params state whenever inputValue or cursor changes
+     * Update the params state whenever inputValue or cursor changes.
      */
     const updateParams = (cursor: string, inputValue: string) => {
         setAfterCursor(cursor);
         setInputValue(inputValue);
         setParams((prevParams: Params) => ({
             ...prevParams,
-            after: cursor ? cursor : null,
+            after: cursor || null,
             filter: inputValue ? `${queryPrefix}${inputValue}` : "",
             shouldFetch: true
         }));
@@ -236,15 +237,16 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
      * @param _event - The change event.
      * @param data - The new input value.
      */
-    const handleInputChange: (_event: SyntheticEvent<HTMLElement>, data: string | null) => void = useCallback(
-        debounce((_event: SyntheticEvent<HTMLElement>, data: string | null) => {
-            const newInputValue: string = data ?? "";
+    const handleInputChange: (_event: SyntheticEvent<HTMLElement>, data: string | null, reason: string) => void =
+        useCallback(
+            debounce((_event: SyntheticEvent<HTMLElement>, data: string | null) => {
+                const newInputValue: string = data ?? "";
 
-            setOrganizations([]);
-            updateParams("", newInputValue);
-        }, 100),
-        [ updateParams ]
-    );
+                setOrganizations([]);
+                updateParams("", newInputValue);
+            }, 100),
+            [ updateParams ]
+        );
 
     /**
      * Handles changes in the field.
@@ -260,7 +262,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
     };
 
     /**
-     * Loads more meta attribute options when scrolled to the bottom.
+     * Loads more organization options when scrolled to the bottom.
      */
     const loadMoreOrganizations = () => {
         if (!hasMoreOrganizations) return;

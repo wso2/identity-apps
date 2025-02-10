@@ -27,7 +27,6 @@ import React, { FunctionComponent, HTMLProps, ReactElement, SyntheticEvent, useM
 import { FieldRenderProps } from "react-final-form";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "./autocomplete-field-adapter.scss";
-import { Item } from "semantic-ui-react";
 
 /**
  * Props interface of {@link AutocompleteFieldAdapter}
@@ -109,18 +108,6 @@ const AutocompleteFieldAdapter: FunctionComponent<AutocompleteFieldAdapterPropsI
     const isError: boolean = (meta.error || meta.submitError) && meta.touched;
 
     /**
-     * Loading component.
-     */
-    const loadingComponent = () => {
-        return (
-            <Item className="loading-component">
-                <CircularProgress size={ 22 } className="list-item-loader"/>
-                <Item.Content className="list-item-content"></Item.Content>
-            </Item>
-        );
-    };
-
-    /**
      * Custom listbox component with infinite scroll.
      */
     const customListboxComponent: (listboxProps: HTMLProps<HTMLDivElement>) => JSX.Element = useMemo(
@@ -129,7 +116,7 @@ const AutocompleteFieldAdapter: FunctionComponent<AutocompleteFieldAdapterPropsI
                 dataLength={ options.length }
                 next={ loadMore }
                 hasMore={ hasMore }
-                loader={ loadingComponent() }
+                loader={ <CircularProgress size={ 22 } className="list-item-loader"/> }
                 height={ options.length < 10 ? "auto" : 360 }
             >
                 <div style={ { overflow: "visible" } } { ...listboxProps }/>
@@ -178,14 +165,14 @@ const AutocompleteFieldAdapter: FunctionComponent<AutocompleteFieldAdapterPropsI
                         { isError && <FormHelperText error>{ meta.error || meta.submitError }</FormHelperText> }
                     </>
                 ) }
-                onChange={ (event: SyntheticEvent, value: any) => {
+                onChange={ (_: SyntheticEvent, value: any) => {
                     handleOnChange?.();
                     setValue(value);
                     input.onChange(value);
                 } }
                 options={ options }
-                ListboxComponent={ hasMore ? customListboxComponent : undefined }
-                onInputChange={ hasMore ? handleInputChange : undefined }
+                ListboxComponent={ loadMore ? customListboxComponent : undefined }
+                onInputChange={ handleInputChange || undefined }
                 { ...rest }
             />
             <FormHelperText id={ `${input.name}-helper-text` }>{ helperText }</FormHelperText>
