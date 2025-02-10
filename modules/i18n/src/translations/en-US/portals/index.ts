@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -37,6 +37,7 @@ export * from "./organizations";
 export * from "./authentication-flow";
 export * from "./remote-fetch";
 export * from "./roles";
+export * from "./application-roles";
 export * from "./server-configs";
 export * from "./saml2-config";
 export * from "./session-management";
@@ -65,3 +66,6 @@ export * from "./tenants";
 export * from "./sms-templates";
 export * from "./policy-administration";
 export * from "./remote-user-stores";
+export * from "./rules";
+export * from "./custom-auth-connection";
+export * from "./push-providers";

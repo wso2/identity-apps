@@ -22,7 +22,8 @@ import Grid from "@oxygen-ui/react/Grid";
 import Typography from "@oxygen-ui/react/Typography";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     AlertInterface,
@@ -221,7 +222,6 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
             availableSmsTemplatesList?.find((template: SMSTemplateType) => template.id === templateId)?.description
         );
         setShouldFetch(true);
-        mutateSmsTemplate();
     };
 
     const handleTemplateChange = (updatedTemplateAttributes: Partial<SMSTemplate>): void => {
@@ -239,7 +239,6 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         setIsInheritedTemplate(false);
         setSelectedLocale(locale);
         setShouldFetch(true);
-        mutateSmsTemplate();
     };
 
     const handleSubmit = (): void => {

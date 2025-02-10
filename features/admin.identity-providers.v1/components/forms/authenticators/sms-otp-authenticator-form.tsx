@@ -18,10 +18,8 @@
 
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
-import {
-    AppConstants,
-    history
-} from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";

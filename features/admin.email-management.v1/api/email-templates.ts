@@ -17,12 +17,13 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { I18nConstants, store } from "@wso2is/admin.core.v1";
+import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
@@ -73,12 +74,14 @@ export const useEmailTemplatesList = <Data = EmailTemplateType[], Error = Reques
  *
  * @param templateType - Template type.
  * @param locale - Locale of the template.
+ * @param shouldFetch - Should fetch the data.
  *
  * @returns Email template.
  */
 export const useEmailTemplate = <Data = EmailTemplate, Error = RequestErrorInterface>(
     templateType: string,
-    locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
+    locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     const emailLocale: string = locale.replace("-", "_");
 
@@ -97,7 +100,7 @@ export const useEmailTemplate = <Data = EmailTemplate, Error = RequestErrorInter
         error,
         isValidating,
         mutate
-    } = useRequest<Data, Error>(requestConfig,
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null,
         {
             onErrorRetry: (error: AxiosError) => {
                 if (error.response.status === 404) {

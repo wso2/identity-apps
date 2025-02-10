@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,10 +32,10 @@ import {
     UserGroupIcon
 } from "@oxygen-ui/react-icons";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
 import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
 import compact from "lodash-es/compact";
@@ -71,8 +71,9 @@ import FullScreenLayout from "../layouts/full-screen-layout";
 
 export const getAppViewRoutes = (): RouteInterface[] => {
     const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
-    const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
-        window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
+
+    const isPushProviderFeatureEnabled: boolean =
+        window["AppUtils"]?.getConfig()?.ui?.features?.pushProviders?.enabled;
 
     const defaultRoutes: RouteInterface[] = [
         {
@@ -134,7 +135,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 icon: getSidePanelIcons().policyAdministration
             },
             id: "policyAdministration",
-            name: "Policy Administration",
+            name: "policyAdministration:title",
             order: 30,
             path: AppConstants.getPaths().get("POLICY_ADMINISTRATION"),
             protected: true,
@@ -316,6 +317,16 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.server-configurations.v1/pages/account-disable-page")
+                    ),
+                    exact: true,
+                    id: "accountDisable",
+                    path: AppConstants.getPaths().get("ACCOUNT_DISABLE"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() =>
@@ -474,6 +485,20 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("IDP_EDIT"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.connections.v1/pages/authenticator-edit")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "authenticatorEdit",
+                    name: "Local Authenticators Edit",
+                    path: AppConstants.getPaths().get("AUTH_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() => import("@wso2is/admin.connections.v1/pages/connections")),
@@ -495,7 +520,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ),
             exact: true,
             icon: { icon: getSidePanelIcons().identityVerificationProviders },
-            id: "identityVerificationProvidersEdit",
+            id: "identityVerificationProviders",
             name: "Identity Verification Providers Edit",
             order: 4,
             path: AppConstants.getPaths().get("IDVP_EDIT"),
@@ -719,8 +744,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 import("@wso2is/admin.sms-templates.v1/pages/sms-customization")
             ),
             exact: true,
-            featureStatus: "NEW",
-            featureStatusLabel: FeatureStatusLabel.NEW,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.SMS_TEMPLATES,
             icon: {
                 icon: getSidePanelIcons().sms
             },
@@ -739,9 +763,11 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             exact: true,
             icon: { icon: <EnvelopeGearIcon fill="black" className="icon" /> },
             id: "notificationChannels",
-            name: "Email & SMS",
+            name:  isPushProviderFeatureEnabled ? "Notification Channels" : "Email & SMS",
             order: 16,
-            path: `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms`,
+            path: isPushProviderFeatureEnabled
+                ? AppConstants.getPaths().get("NOTIFICATION_CHANNELS")
+                : AppConstants.getPaths().get("EMAIL_AND_SMS"),
             protected: true,
             showOnSidePanel: true
         },
@@ -774,6 +800,22 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             name: "SMS",
             order: 17,
             path: AppConstants.getPaths().get("SMS_PROVIDER"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
+            category: "extensions:develop.sidePanel.categories.pushProvider",
+            component: lazy(() =>
+                import("@wso2is/admin.push-providers.v1/pages/push-providers")
+            ),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().push
+            },
+            id: "pushProviders",
+            name: "Push Notification Provider",
+            order: 18,
+            path: AppConstants.getPaths().get("PUSH_PROVIDER"),
             protected: true,
             showOnSidePanel: false
         },
@@ -1049,9 +1091,8 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             category: "extensions:develop.sidePanel.categories.monitor",
             component: lazy(() => import("@wso2is/admin.org-insights.v1/pages/org-insights")),
             exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.INSIGHTS,
             featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
-            featureStatus: "BETA",
-            featureStatusLabel: "common:beta",
             icon: {
                 icon: <LightbulbOnIcon fill="black" className="icon" />
             },
@@ -1239,8 +1280,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ],
             component: lazy(() => import("@wso2is/admin.roles.v2/pages/role")),
             exact: true,
-            featureStatus: showStatusLabelForNewAuthzRuntimeFeatures ? "NEW" : "",
-            featureStatusLabel: showStatusLabelForNewAuthzRuntimeFeatures ? "common:new": "",
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.USER_ROLES,
             icon: {
                 icon: getSidePanelIcons().applicationRoles
             },
@@ -1294,14 +1334,24 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.actions.v1/pages/action-configuration-page")
+                    ),
+                    exact: true,
+                    id: "pre-update-password",
+                    name: "Pre Update Password",
+                    path: AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() =>
                 import("@wso2is/admin.actions.v1/pages/actions")
             ),
             exact: true,
-            featureStatus: "BETA",
-            featureStatusLabel: FeatureStatusLabel.BETA,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS,
             icon: {
                 icon: <ProgressFlowIcon className="icon" fill="black" />
             },

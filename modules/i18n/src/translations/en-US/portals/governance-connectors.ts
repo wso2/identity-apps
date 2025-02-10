@@ -269,6 +269,28 @@ export const governanceConnectors: governanceConnectorsNS = {
                             label: "Max failed attempts for reCaptcha"
                         }
                     }
+                },
+                siftConnector: {
+                    properties: {
+                        name: "Fraud Detection",
+                        description: "Integrate Sift to detect and prevent fraudulent account logins.",
+                        siftConnectorApiKey: {
+                            label: "Sift API Key",
+                            placeholder: "Enter Sift API Key"
+                        }
+                    },
+                    notifications: {
+                        configurationUpdate: {
+                            error: {
+                                description: "An error occurred while updating the Sift configuration.",
+                                message: "Update Error"
+                            },
+                            success: {
+                                description: "Successfully updated the Sift configuration.",
+                                message: "Update Successful"
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -295,6 +317,7 @@ export const governanceConnectors: governanceConnectorsNS = {
                 },
                 accountDisableHandler: {
                     friendlyName: "Account Disable",
+                    description: "Configure account disable settings.",
                     properties: {
                         accountDisableHandlerEnable: {
                             hint: "Allow an administrative user to disable user accounts",
@@ -303,6 +326,18 @@ export const governanceConnectors: governanceConnectorsNS = {
                         accountDisableHandlerNotificationManageInternally: {
                             hint: "Disable, if the client application handles notification sending",
                             label: "Manage notification sending internally"
+                        }
+                    },
+                    notifications: {
+                        configurationUpdate: {
+                            error: {
+                                description: "An error occurred while updating the account disable configuration.",
+                                message: "Update Error"
+                            },
+                            success: {
+                                description: "Successfully updated the account disable configuration.",
+                                message: "Update Successful"
+                            }
                         }
                     }
                 },

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,10 @@
  * under the License.
  */
 
-import { AppConstants, store } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { store } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
@@ -27,6 +29,7 @@ import camelCase from "lodash-es/camelCase";
 import { getConnectorCategories } from "../api";
 import { ServerConfigurationsConstants } from "../constants";
 import {
+    ConnectorOverrideConfig,
     ConnectorPropertyInterface,
     GovernanceCategoryForOrgsInterface, GovernanceConnectorCategoryInterface,
     GovernanceConnectorForOrgsInterface,
@@ -390,7 +393,7 @@ export class GovernanceConnectorUtils {
                         header: I18n.instance.t("pages:emailDomainDiscovery.title"),
                         id: ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY,
                         route: AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
-                        status: FeatureStatusLabel.NEW,
+                        status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.LOGIN_AND_REGISTRATION_ORGANIZATION_DISCOVERY,
                         testId: "email-domain-discovery-card"
                     },
                     {
@@ -398,7 +401,8 @@ export class GovernanceConnectorUtils {
                         header: I18n.instance.t("pages:impersonation.title"),
                         id: ServerConfigurationsConstants.IMPERSONATION,
                         route: AppConstants.getPaths().get("IMPERSONATION"),
-                        status: FeatureStatusLabel.NEW,
+                        status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                            .LOGIN_AND_REGISTRATION_ORGANIZATION_IMPERSONATION,
                         testId: "impersonation-card"
                     }
                 ],
@@ -439,6 +443,26 @@ export class GovernanceConnectorUtils {
                 id: ServerConfigurationsConstants.NOTIFICATION_SETTINGS_CATEGORY_ID,
                 title: I18n.instance
                     .t("governanceConnectors:connectorCategories.internalNotificationSending.categoryTitle")
+            },
+            {
+                connectors: [
+                    {
+                        description: I18n.instance.t(
+                            "governanceConnectors:connectorCategories.accountManagement.connectors." +
+                            "accountDisableHandler.description"
+                        ),
+                        header: I18n.instance.t(
+                            "governanceConnectors:connectorCategories.accountManagement.connectors." +
+                            "accountDisableHandler.friendlyName"),
+                        id: ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CUSTOM_CATEGORY_ID,
+                        route: AppConstants.getPaths().get("ACCOUNT_DISABLE"),
+                        testId: "account-disable-settings-card"
+                    }
+                ],
+                displayOrder: 0,
+                id: ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CUSTOM_CATEGORY_ID,
+                title: I18n.instance
+                    .t("governanceConnectors:connectorCategories.accountManagement.name")
             }
         ];
     }
@@ -469,6 +493,56 @@ export class GovernanceConnectorUtils {
         }
 
         return fieldHint;
+    }
+
+    /**
+     * Get governance connector property overrides.
+     *
+     * @returns List of governance connector property overrides.
+     */
+    public static getConnectorPropertyOverrides(): ConnectorOverrideConfig[] {
+        return [
+            {
+                description: I18n.instance.t("governanceConnectors:connectorCategories" +
+                    ".loginAttemptsSecurity.connectors.siftConnector.properties.description"),
+                header: I18n.instance.t("governanceConnectors:connectorCategories" +
+                    ".loginAttemptsSecurity.connectors.siftConnector.properties.name"),
+                id: ServerConfigurationsConstants.SIFT_CONNECTOR_ID,
+                matchBy: "id"
+            }
+        ];
+    }
+
+    /**
+     * Override governance connector properties.
+     * @param connectors - List of governance connectors.
+     * @param overrides - List of connector overrides.
+     *
+     * @returns List of governance connectors with overridden properties.
+     */
+    public static overrideConnectorProperties(
+        connectors: GovernanceConnectorInterface[],
+        overrides: ConnectorOverrideConfig[]
+    ) {
+        return connectors.map((connector: GovernanceConnectorInterface) => {
+            const matchingOverride: ConnectorOverrideConfig = overrides.find((override: ConnectorOverrideConfig) => {
+                const matchBy: string = override.matchBy || "id";
+
+                return connector[matchBy] === override[matchBy];
+            });
+
+            if (matchingOverride) {
+                return {
+                    ...connector,
+                    ...Object.fromEntries(
+                        Object.entries(matchingOverride)
+                            .filter(([ key ]: [string, unknown]) => key !== "matchBy")
+                    )
+                };
+            }
+
+            return connector;
+        });
     }
 
     /**

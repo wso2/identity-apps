@@ -28,19 +28,15 @@ import { GuestUsersList } from "@wso2is/admin.administrators.v1/components/guest
 import { AdministratorConstants } from "@wso2is/admin.administrators.v1/constants/users";
 import { UseOrganizationConfigType } from "@wso2is/admin.administrators.v1/models/organization";
 import { AddAdministratorWizard } from "@wso2is/admin.administrators.v1/wizard/add-administrator-wizard";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConstants,
-    UserBasicInterface,
-    UserRoleInterface,
-    getEmptyPlaceholderIllustrations,
-    history,
-    store
-} from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
@@ -161,7 +157,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
         "consoleSettings.invitedExternalAdmins"
     );
 
-    const { isSubOrganization, isFirstLevelOrganization, isSuperOrganization } = useGetCurrentOrganizationType();
+    const { isSubOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
     const { unassignAdministratorRoles } = useBulkAssignAdministratorRoles();
 
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -335,7 +331,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
             });
         }
 
-        if (isSubOrganization()) {
+        if (isCurrentOrgSubOrganization) {
             addAdminOptions.push({
                 "data-componentid": `${componentId}-invite-new-user-dropdown-item`,
                 key: 2,
@@ -391,6 +387,16 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                     { t("consoleSettings:administrators.add.action") }
                 </PrimaryButton>
             );
+        } else {
+            return (
+                <PrimaryButton
+                    data-componentid={ `${componentId}-add-button` }
+                    onClick={ () => setShowAddExistingUserWizard(true) }
+                >
+                    <Icon data-componentid={ `${componentId}-add-button-icon` } name="add" />
+                    { t("consoleSettings:administrators.add.action") }
+                </PrimaryButton>
+            );
         }
     };
 
@@ -421,20 +427,16 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
             );
         }
 
-        if (isFirstLevelOrganization() || isSuperOrganization()) {
-            return (
-                <Dropdown
-                    data-testid="user-mgt-user-list-userstore-dropdown"
-                    selection
-                    options={ availableUserStores }
-                    onChange={ handleSelectedUserStoreChange }
-                    value={ selectedUserStore }
-                    defaultValue={ primaryUserStoreDomainName }
-                />
-            );
-        }
-
-        return null;
+        return (
+            <Dropdown
+                data-testid="user-mgt-user-list-userstore-dropdown"
+                selection
+                options={ availableUserStores }
+                onChange={ handleSelectedUserStoreChange }
+                value={ selectedUserStore }
+                defaultValue={ primaryUserStoreDomainName }
+            />
+        );
     };
 
     return (

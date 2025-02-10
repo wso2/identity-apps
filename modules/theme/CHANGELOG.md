@@ -1,5 +1,65 @@
 # @wso2is/theme
 
+## 2.6.9
+
+### Patch Changes
+
+- [#7574](https://github.com/wso2/identity-apps/pull/7574) [`4fd677f7cfdef94cf0a01f9b0ada0671aeeb4831`](https://github.com/wso2/identity-apps/commit/4fd677f7cfdef94cf0a01f9b0ada0671aeeb4831) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with rtlcss overrinding flag icon background-position
+
+## 2.6.8
+
+### Patch Changes
+
+- [#7552](https://github.com/wso2/identity-apps/pull/7552) [`602921db40f920071cc38ccf8735f048a9486ebb`](https://github.com/wso2/identity-apps/commit/602921db40f920071cc38ccf8735f048a9486ebb) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix x509 authenticator option display issues
+
+* [#7547](https://github.com/wso2/identity-apps/pull/7547) [`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951) Thanks [@brionmario](https://github.com/brionmario)! - - Bump `@oxygen-ui` version.
+  - Fix https://github.com/wso2/product-is/issues/22470
+  - Fix https://github.com/wso2/product-is/issues/22471
+
+## 2.6.7
+
+### Patch Changes
+
+- [#7544](https://github.com/wso2/identity-apps/pull/7544) [`863e421af246486a4d00034666ff3d64c13f37ce`](https://github.com/wso2/identity-apps/commit/863e421af246486a4d00034666ff3d64c13f37ce) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add icon resolving logic for custom local authenticators in login.jsp
+
+* [#7523](https://github.com/wso2/identity-apps/pull/7523) [`8161cc441a1cf598f59f50e26d55527a1eb07cc7`](https://github.com/wso2/identity-apps/commit/8161cc441a1cf598f59f50e26d55527a1eb07cc7) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Enable account disable feature in console
+
+## 2.6.6
+
+### Patch Changes
+
+- [#7507](https://github.com/wso2/identity-apps/pull/7507) [`6994a4d6ef9d39263556cb06ece735cd72c96bf5`](https://github.com/wso2/identity-apps/commit/6994a4d6ef9d39263556cb06ece735cd72c96bf5) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add min-width to login portal jsp pages.
+
+## 2.6.5
+
+### Patch Changes
+
+- [#7495](https://github.com/wso2/identity-apps/pull/7495) [`79babcaf1edcd195d6da04f39903056b106b1c32`](https://github.com/wso2/identity-apps/commit/79babcaf1edcd195d6da04f39903056b106b1c32) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Resolve Custom Local Authenticator Icon in the Login Flow
+
+## 2.6.4
+
+### Patch Changes
+
+- [#7332](https://github.com/wso2/identity-apps/pull/7332) [`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove barrel files from @wso2is/admin.core.v1 module
+
+## 2.6.3
+
+### Patch Changes
+
+- [#7370](https://github.com/wso2/identity-apps/pull/7370) [`9b6fe9141f5260d6e3760298badd6e0f6c7ec499`](https://github.com/wso2/identity-apps/commit/9b6fe9141f5260d6e3760298badd6e0f6c7ec499) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Add UI support for Push notification based authentication
+
+## 2.6.2
+
+### Patch Changes
+
+- [#7350](https://github.com/wso2/identity-apps/pull/7350) [`689dcc45ad43831b2805c3b91f04bdd254e1a7ef`](https://github.com/wso2/identity-apps/commit/689dcc45ad43831b2805c3b91f04bdd254e1a7ef) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Introduce push authenticator configuration support in my account
+
+## 2.6.1
+
+### Patch Changes
+
+- [#7336](https://github.com/wso2/identity-apps/pull/7336) [`3811ae3d223db8bf4fa5315f61d19a11aecc32a9`](https://github.com/wso2/identity-apps/commit/3811ae3d223db8bf4fa5315f61d19a11aecc32a9) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Add Create Wizard for Custom Authentication Feature
+
 ## 2.6.0
 
 ### Minor Changes

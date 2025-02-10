@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";

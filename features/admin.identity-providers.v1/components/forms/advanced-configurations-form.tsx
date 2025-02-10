@@ -18,7 +18,8 @@
 
 import { Show } from "@wso2is/access-control";
 import { ConnectionAdvanceInterface } from "@wso2is/admin.connections.v1";
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";

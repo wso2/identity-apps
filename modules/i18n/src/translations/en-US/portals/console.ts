@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -126,6 +126,26 @@ export const console: ConsoleNS = {
                 subtitle: "Talk to the {{productName}} team to obtain personalized assistance."
             },
             helpDropdownLink: "Get Help"
+        },
+        marketingConsent: {
+            heading: "Let's stay in touch!",
+            description: "Subscribe to get the latest news and product updates straight to your inbox.",
+            actions: {
+                subscribe: "Subscribe",
+                decline: "Don't show this again"
+            },
+            notifications: {
+                errors: {
+                    fetch: {
+                        message: "Something went wrong",
+                        description: "Something went wrong when getting user consent data"
+                    },
+                    update: {
+                        message: "Something went wrong",
+                        description: "Something went wrong when updating user consent"
+                    }
+                }
+            }
         },
         modals: {
             editAvatarModal: {
@@ -8292,6 +8312,11 @@ export const console: ConsoleNS = {
                 },
                 compareToLastPeriodMessage: "Compare to last period"
             },
+            pushProviders: {
+                heading: "Push Provider",
+                subHeading: "Configure a push provider to send push notifications to your users.",
+                description: "Configure the push provider settings according to your push provider."
+            },
             smsProviders: {
                 heading: "SMS Provider",
                 subHeading: "Configure a SMS provider to send SMS to your users.",
@@ -8299,7 +8324,7 @@ export const console: ConsoleNS = {
                 info: "You can customize the SMS content using <1>SMS Templates</1>.",
                 updateButton: "Update",
                 sendTestSMSButton: "Send Test SMS",
-                goBack: "Go back to Email & SMS",
+                goBack: "Go back to Notification Providers",
                 confirmationModal: {
                     assertionHint: "Please confirm your action.",
                     content: "If you delete this configuration, you will not receive SMS." +
@@ -8530,10 +8555,6 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: "Templates - {{displayName}}"
             },
-            groups: {
-                subTitle: "Create and manage user groups, assign permissions for groups.",
-                title: "Groups"
-            },
             invite: {
                 subTitle: "Invite and manage admins and developers.",
                 title: "Admins & Developers"
@@ -8555,11 +8576,6 @@ export const console: ConsoleNS = {
                 subTitle: "Configure and  manage users, roles, attribute dialects, server configurations etc." +
                     "etc.",
                 title: "Welcome, {{firstName}}"
-            },
-            roles: {
-                alternateSubTitle: "View and manage roles.",
-                subTitle: "Create and manage roles, assign permissions for roles.",
-                title: "Roles"
             },
             rolesEdit: {
                 backButton: "Go back to {{type}}",

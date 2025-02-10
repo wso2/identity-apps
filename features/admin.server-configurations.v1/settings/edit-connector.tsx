@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";

@@ -213,7 +213,7 @@
             // Check if the error is related to the confirmation code being invalid.
             // If so, navigate the users to the URL defined in `callback` URL param.
             if (errorCodeFromParams === invalidConfirmationErrorCode) {
-                window.location.href = "<%=Encode.forHtmlAttribute(callback)%>";
+                window.location.href = "<%=Encode.forJavaScript(callback)%>";
 
                 return;
             }

@@ -279,7 +279,7 @@
     List<Claim> claimsList;
     UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
     try {
-        claimsList = usernameRecoveryApi.claimsGet(user.getTenantDomain());
+        claimsList = usernameRecoveryApi.claimsGet(user.getTenantDomain(), true, "selfRegistration");
         if (claimsList != null) {
             claims = claimsList.toArray(new Claim[claimsList.size()]);
         }

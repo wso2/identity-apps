@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -227,6 +227,12 @@ export const organizations: organizationsNS = {
             success: {
                 description: "Successfully fetched the organization",
                 message: "Organization fetched successfully"
+            }
+        },
+        getConfiguration: {
+            error: {
+                description: "Error occurred while retrieving organization information",
+                message: "An error occurred"
             }
         },
         getMetaAttributesList: {

@@ -17,8 +17,8 @@
  */
 
 import { OrganizationManagementConstants, OrganizationType } from "@wso2is/admin.organizations.v1/constants";
-import { OrganizationReducerStateInterface } from "../../models";
-import { OrganizationAction, OrganizationActionTypes } from "../actions/types";
+import { OrganizationReducerStateInterface } from "../../models/reducer-state";
+import { OrganizationAction, OrganizationActionTypes } from "../actions/types/organization";
 
 const initialState: OrganizationReducerStateInterface = {
     currentOrganization: "",

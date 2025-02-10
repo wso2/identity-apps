@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { UIConstants, UserBasicInterface, UserListInterface, getUsersList } from "@wso2is/admin.core.v1";
+import { getUsersList } from "@wso2is/admin.core.v1/api/users";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { UserBasicInterface, UserListInterface } from "@wso2is/admin.core.v1/models/users";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -132,7 +134,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
             .then((response: UserListInterface) => {
                 // Exclude JIT users.
                 const responseUsers: UserBasicInterface[] = response?.Resources?.filter(
-                    (user: UserBasicInterface) => !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId);
+                    (user: UserBasicInterface) => !user[ SCIMConfigs.scim.systemSchema ]?.userSourceId);
 
                 if (responseUsers) {
                     responseUsers.sort((userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>
@@ -237,16 +239,12 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
         return;
     };
 
-    const handleAssignedItemCheckboxChange = (role: any) => {
-        const checkedGroups: any = [ ...checkedAssignedListItems ];
-
-        if (checkedGroups.includes(role)) {
-            checkedGroups.splice(checkedGroups.indexOf(role), 1);
-            setCheckedAssignedListItems(checkedGroups);
-        } else {
-            checkedGroups.push(role);
-            setCheckedAssignedListItems(checkedGroups);
-        }
+    const handleAssignedItemCheckboxChange = (role: UserBasicInterface) => {
+        setCheckedAssignedListItems((prevCheckedItems: UserBasicInterface[]) => {
+            return prevCheckedItems.some((user: UserBasicInterface) => user.id === role.id)
+                ? prevCheckedItems.filter((user: UserBasicInterface) => user.id !== role.id)
+                : [ ...prevCheckedItems, role ];
+        });
     };
 
     const resolveListItemElement = (listItemValue: string) => {

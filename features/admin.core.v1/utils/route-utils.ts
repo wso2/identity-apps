@@ -26,8 +26,8 @@ import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/featur
 import { NavCategory, NavRouteInterface, RouteInterface } from "@wso2is/core/models";
 import groupBy from "lodash-es/groupBy";
 import sortBy from "lodash-es/sortBy";
-import { AppConstants } from "../constants";
-import { history } from "../helpers";
+import { AppConstants } from "../constants/app-constants";
+import { history } from "../helpers/history";
 
 /**
  * Utility class for application routes related operations.
@@ -453,6 +453,9 @@ export class RouteUtils {
                 id: "notificationChannels",
                 selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
                     history.location.pathname === AppConstants.getPaths().get("SMS_PROVIDER") ||
+                    history.location.pathname === AppConstants.getPaths().get("PUSH_PROVIDER") ||
+                    history.location.pathname === AppConstants.getPaths().get("NOTIFICATION_CHANNELS") ||
+                    // remove this when enabling push notification provider support
                     history.location.pathname === AppConstants.getPaths().get("EMAIL_AND_SMS")
             },
             {

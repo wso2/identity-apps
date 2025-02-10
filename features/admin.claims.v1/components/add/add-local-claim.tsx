@@ -16,12 +16,13 @@
  * under the License.
  */
 
-import { AppState, EventPublisher } from "@wso2is/admin.core.v1";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
-import { history } from "@wso2is/admin.core.v1/helpers";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
-import { WizardStepInterface } from "@wso2is/admin.users.v1/models";
+import { WizardStepInterface } from "@wso2is/admin.users.v1/models/user";
 import { useUserStores } from "@wso2is/admin.userstores.v1/api";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -99,6 +100,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
 
     const [ firstStep, setFirstStep ] = useTrigger();
     const [ secondStep, setSecondStep ] = useTrigger();
@@ -169,7 +171,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
             await attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then((available: string) => {
                 if (available === "") {
-                    addDialect(attributeConfig.localAttributes.customDialectURI);
+                    addDialect(userSchemaURI);
                 }
             });
 
@@ -195,8 +197,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     if (!skipSCIM) {
                         attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then((claimId: string) => {
                             addExternalClaim(claimId, {
-                                claimURI: `${ attributeConfig.localAttributes.customDialectURI
-                                }:${ customMappings.get("scim") }`,
+                                claimURI: `${ userSchemaURI }:${ customMappings.get("scim") }`,
                                 mappedLocalClaimURI: data.claimURI
                             }).then(() => {
                                 fetchUpdatedSchemaList();

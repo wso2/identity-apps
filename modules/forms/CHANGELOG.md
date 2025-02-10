@@ -1,5 +1,60 @@
 # @wso2is/forms
 
+## 2.3.19
+
+### Patch Changes
+
+- Updated dependencies [[`8cebca0336f5769f65fda60960b78d8404049301`](https://github.com/wso2/identity-apps/commit/8cebca0336f5769f65fda60960b78d8404049301)]:
+  - @wso2is/core@2.6.3
+
+## 2.3.18
+
+### Patch Changes
+
+- [#7513](https://github.com/wso2/identity-apps/pull/7513) [`43ab5e89caf6862202104d13ecc45454c04c7fb0`](https://github.com/wso2/identity-apps/commit/43ab5e89caf6862202104d13ecc45454c04c7fb0) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Improve multi email and mobile fields to update with Update button
+
+## 2.3.17
+
+### Patch Changes
+
+- Updated dependencies [[`0aca53b8d7f18b9d8488911500b86c7178eb9be6`](https://github.com/wso2/identity-apps/commit/0aca53b8d7f18b9d8488911500b86c7178eb9be6)]:
+  - @wso2is/core@2.6.2
+
+## 2.3.16
+
+### Patch Changes
+
+- Updated dependencies [[`bb8c0b38541fe6bb367f74621b4c27587d82ebdd`](https://github.com/wso2/identity-apps/commit/bb8c0b38541fe6bb367f74621b4c27587d82ebdd)]:
+  - @wso2is/core@2.6.1
+
+## 2.3.15
+
+### Patch Changes
+
+- Updated dependencies [[`b67d22c81d5c8be72c09abd36ed829a88fb22a4b`](https://github.com/wso2/identity-apps/commit/b67d22c81d5c8be72c09abd36ed829a88fb22a4b)]:
+  - @wso2is/core@2.6.0
+
+## 2.3.14
+
+### Patch Changes
+
+- Updated dependencies [[`92a6766086071fd5e0986f91803804783b9159bf`](https://github.com/wso2/identity-apps/commit/92a6766086071fd5e0986f91803804783b9159bf)]:
+  - @wso2is/core@2.5.9
+
+## 2.3.13
+
+### Patch Changes
+
+- Updated dependencies [[`31b4e92ae73fea1372a03f9aa0511f062030e44f`](https://github.com/wso2/identity-apps/commit/31b4e92ae73fea1372a03f9aa0511f062030e44f)]:
+  - @wso2is/core@2.5.8
+
+## 2.3.12
+
+### Patch Changes
+
+- Updated dependencies [[`50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523`](https://github.com/wso2/identity-apps/commit/50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523), [`abf5c953b8f48db5cdb855e75f5c1b847d1e42f0`](https://github.com/wso2/identity-apps/commit/abf5c953b8f48db5cdb855e75f5c1b847d1e42f0)]:
+  - @wso2is/core@2.5.7
+
 ## 2.3.11
 
 ### Patch Changes

@@ -18,13 +18,11 @@
 
 import Grid from "@oxygen-ui/react/Grid";
 import { BuildingGearIcon, ChevronRightIcon, HierarchyIcon } from "@oxygen-ui/react-icons";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";

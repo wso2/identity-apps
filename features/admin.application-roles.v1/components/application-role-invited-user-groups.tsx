@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AppState, UIConstants } from "@wso2is/admin.core.v1";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { resolveUserstore } from "@wso2is/core/helpers";
@@ -82,11 +83,11 @@ const ApplicationRoleInvitedUserGroups = (props: ApplicationRoleGroupsProps): Re
                 || applicationRoleGroupDataFetchRequestError) {
             handleAlerts({
                 description: t(
-                    "extensions:console.applicationRoles.roleGroups.fetchGroups.error.description"
+                    "applicationRoles:roleGroups.fetchGroups.error.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "extensions:console.applicationRoles.roleGroups.fetchGroups.error.message"
+                    "applicationRoles:roleGroups.fetchGroups.error.message"
                 )
             });
         }
@@ -97,11 +98,11 @@ const ApplicationRoleInvitedUserGroups = (props: ApplicationRoleGroupsProps): Re
                 || descendantDataFetchRequestError) {
             handleAlerts({
                 description: t(
-                    "extensions:console.applicationRoles.roleGroups.fetchGroups.error.description"
+                    "applicationRoles:roleGroups.fetchGroups.error.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "extensions:console.applicationRoles.roleGroups.fetchGroups.error.message"
+                    "applicationRoles:roleGroups.fetchGroups.error.message"
                 )
             });
         }
@@ -203,9 +204,9 @@ const ApplicationRoleInvitedUserGroups = (props: ApplicationRoleGroupsProps): Re
             return (
                 <EmptyPlaceholder
                     data-testid={ `${ componentId }-search-empty-placeholder` }
-                    title={ t("extensions:console.applicationRoles.roleGroups.placeholder.title") }
+                    title={ t("applicationRoles:roleGroups.placeholder.title") }
                     subtitle={ [
-                        t("extensions:console.applicationRoles.roleGroups.placeholder.subTitle.0")
+                        t("applicationRoles:roleGroups.placeholder.subTitle.0")
                     ] }
                 />
             );
@@ -317,7 +318,7 @@ const ApplicationRoleInvitedUserGroups = (props: ApplicationRoleGroupsProps): Re
                                             onChange={ (e: ChangeEvent<HTMLInputElement>) =>
                                                 searchGroups(e.target.value) }
                                             value={ searchQuery }
-                                            placeholder={ t("extensions:console.applicationRoles.roleGroups." +
+                                            placeholder={ t("applicationRoles:roleGroups." +
                                                 "searchGroup") }
                                             floated="left"
                                             fluid

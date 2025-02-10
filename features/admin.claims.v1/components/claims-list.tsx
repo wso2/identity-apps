@@ -17,14 +17,12 @@
  */
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
 import { getUserStores } from "@wso2is/admin.userstores.v1/api/user-stores";

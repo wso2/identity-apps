@@ -18,6 +18,7 @@
 
 package org.wso2.identity.apps.common.internal;
 
+import org.wso2.carbon.identity.api.resource.collection.mgt.APIResourceCollectionManager;
 import org.wso2.carbon.identity.api.resource.mgt.APIResourceManager;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
@@ -47,6 +48,7 @@ public class AppsCommonDataHolder {
     private RoleManagementService roleManagementService;
 
     private APIResourceManager apiResourceManager;
+    private APIResourceCollectionManager apiResourceCollectionManager;
 
     private Set<String> systemAppConsumerKeys = new HashSet<>();
 
@@ -220,6 +222,26 @@ public class AppsCommonDataHolder {
     public APIResourceManager getAPIResourceManager() {
 
         return apiResourceManager;
+    }
+
+    /**
+     * Set API resource collection manager.
+     *
+     * @param apiResourceCollectionManager APIResourceCollectionManager.
+     */
+    public void setAPIResourceCollectionManager(APIResourceCollectionManager apiResourceCollectionManager) {
+
+        this.apiResourceCollectionManager = apiResourceCollectionManager;
+    }
+
+    /**
+     * Get API resource collection manager.
+     *
+     * @return apiResourceCollectionManager.
+     */
+    public APIResourceCollectionManager getApiResourceCollectionManager() {
+
+        return apiResourceCollectionManager;
     }
 
 

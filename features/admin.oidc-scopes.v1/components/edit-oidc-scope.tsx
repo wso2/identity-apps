@@ -19,7 +19,9 @@
 import { Show } from "@wso2is/access-control";
 import { AttributeSelectionWizardOtherDialect } from
     "@wso2is/admin.applications.v1/components/settings/attribute-management/attirbute-selection-wizard-other-dialect";
-import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ExternalClaim, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";

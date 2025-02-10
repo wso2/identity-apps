@@ -19,15 +19,12 @@
 import Grid from "@oxygen-ui/react/Grid";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { ConsoleSettingsModes } from "@wso2is/admin.console-settings.v1/models/ui";
-import {
-    AppConstants,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConfigInterface,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface, UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { applicationListConfig } from "@wso2is/admin.extensions.v1/configs/application-list";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";

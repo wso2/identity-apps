@@ -1,5 +1,738 @@
 # @wso2is/admin.userstores.v1
 
+## 2.26.118
+
+### Patch Changes
+
+- [#7565](https://github.com/wso2/identity-apps/pull/7565) [`0aa4f0fd6251b9a48a3ce6d6c2b6e66ebf1b90e8`](https://github.com/wso2/identity-apps/commit/0aa4f0fd6251b9a48a3ce6d6c2b6e66ebf1b90e8) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Check bulk import supported user store property when listing user store domains
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.28
+  - @wso2is/admin.extensions.v1@2.36.84
+  - @wso2is/admin.remote-userstores.v1@1.7.115
+
+## 2.26.117
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.27
+  - @wso2is/admin.extensions.v1@2.36.83
+  - @wso2is/admin.remote-userstores.v1@1.7.114
+
+## 2.26.116
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.26
+  - @wso2is/admin.extensions.v1@2.36.82
+  - @wso2is/admin.remote-userstores.v1@1.7.113
+
+## 2.26.115
+
+### Patch Changes
+
+- Updated dependencies [[`968a51fa1d33112f4c40e65f3dd2e3a7576dae35`](https://github.com/wso2/identity-apps/commit/968a51fa1d33112f4c40e65f3dd2e3a7576dae35), [`4fd677f7cfdef94cf0a01f9b0ada0671aeeb4831`](https://github.com/wso2/identity-apps/commit/4fd677f7cfdef94cf0a01f9b0ada0671aeeb4831)]:
+  - @wso2is/i18n@2.19.10
+  - @wso2is/theme@2.6.9
+  - @wso2is/admin.core.v1@2.38.25
+  - @wso2is/admin.extensions.v1@2.36.81
+  - @wso2is/react-components@2.9.8
+  - @wso2is/admin.remote-userstores.v1@1.7.112
+  - @wso2is/dynamic-forms@2.4.36
+  - @wso2is/form@2.6.29
+
+## 2.26.114
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.24
+  - @wso2is/admin.extensions.v1@2.36.80
+  - @wso2is/admin.remote-userstores.v1@1.7.111
+
+## 2.26.113
+
+### Patch Changes
+
+- Updated dependencies [[`b041a8138ec334f5b8ca43759811aef2701b4fef`](https://github.com/wso2/identity-apps/commit/b041a8138ec334f5b8ca43759811aef2701b4fef)]:
+  - @wso2is/admin.extensions.v1@2.36.79
+  - @wso2is/admin.core.v1@2.38.23
+  - @wso2is/admin.remote-userstores.v1@1.7.110
+
+## 2.26.112
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.22
+  - @wso2is/admin.extensions.v1@2.36.78
+  - @wso2is/admin.remote-userstores.v1@1.7.109
+
+## 2.26.111
+
+### Patch Changes
+
+- Updated dependencies [[`ac5462d1d31e99e66511f1288f5d0d9227e848c8`](https://github.com/wso2/identity-apps/commit/ac5462d1d31e99e66511f1288f5d0d9227e848c8)]:
+  - @wso2is/i18n@2.19.9
+  - @wso2is/admin.core.v1@2.38.21
+  - @wso2is/admin.extensions.v1@2.36.77
+  - @wso2is/admin.remote-userstores.v1@1.7.108
+
+## 2.26.110
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.20
+  - @wso2is/admin.extensions.v1@2.36.76
+  - @wso2is/admin.remote-userstores.v1@1.7.107
+
+## 2.26.109
+
+### Patch Changes
+
+- Updated dependencies [[`9959872b4af362b4d778edff0801e44eef29b86e`](https://github.com/wso2/identity-apps/commit/9959872b4af362b4d778edff0801e44eef29b86e)]:
+  - @wso2is/i18n@2.19.8
+  - @wso2is/admin.core.v1@2.38.19
+  - @wso2is/admin.extensions.v1@2.36.75
+  - @wso2is/admin.remote-userstores.v1@1.7.106
+
+## 2.26.108
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.18
+  - @wso2is/admin.extensions.v1@2.36.74
+  - @wso2is/admin.remote-userstores.v1@1.7.105
+
+## 2.26.107
+
+### Patch Changes
+
+- [#7547](https://github.com/wso2/identity-apps/pull/7547) [`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951) Thanks [@brionmario](https://github.com/brionmario)! - - Bump `@oxygen-ui` version.
+  - Fix https://github.com/wso2/product-is/issues/22470
+  - Fix https://github.com/wso2/product-is/issues/22471
+- Updated dependencies [[`8cebca0336f5769f65fda60960b78d8404049301`](https://github.com/wso2/identity-apps/commit/8cebca0336f5769f65fda60960b78d8404049301), [`2d217e1db4e15705aff2c18a68fcb8e51f4db319`](https://github.com/wso2/identity-apps/commit/2d217e1db4e15705aff2c18a68fcb8e51f4db319), [`602921db40f920071cc38ccf8735f048a9486ebb`](https://github.com/wso2/identity-apps/commit/602921db40f920071cc38ccf8735f048a9486ebb), [`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951)]:
+  - @wso2is/react-components@2.9.7
+  - @wso2is/core@2.6.3
+  - @wso2is/i18n@2.19.7
+  - @wso2is/theme@2.6.8
+  - @wso2is/admin.remote-userstores.v1@1.7.104
+  - @wso2is/admin.extensions.v1@2.36.73
+  - @wso2is/admin.core.v1@2.38.17
+  - @wso2is/dynamic-forms@2.4.35
+  - @wso2is/form@2.6.28
+  - @wso2is/access-control@3.3.17
+  - @wso2is/forms@2.3.19
+
+## 2.26.106
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.16
+  - @wso2is/admin.extensions.v1@2.36.72
+  - @wso2is/admin.remote-userstores.v1@1.7.103
+
+## 2.26.105
+
+### Patch Changes
+
+- Updated dependencies [[`4a8f0320d82b3c2ed9f26473e0d950a74a6080a8`](https://github.com/wso2/identity-apps/commit/4a8f0320d82b3c2ed9f26473e0d950a74a6080a8), [`d1bb49ef3881a4569df6ff2c976a250bb886e091`](https://github.com/wso2/identity-apps/commit/d1bb49ef3881a4569df6ff2c976a250bb886e091), [`863e421af246486a4d00034666ff3d64c13f37ce`](https://github.com/wso2/identity-apps/commit/863e421af246486a4d00034666ff3d64c13f37ce), [`8156ef36ebc15563e88b42477a2ce40a936d7add`](https://github.com/wso2/identity-apps/commit/8156ef36ebc15563e88b42477a2ce40a936d7add), [`8161cc441a1cf598f59f50e26d55527a1eb07cc7`](https://github.com/wso2/identity-apps/commit/8161cc441a1cf598f59f50e26d55527a1eb07cc7)]:
+  - @wso2is/i18n@2.19.6
+  - @wso2is/theme@2.6.7
+  - @wso2is/react-components@2.9.6
+  - @wso2is/admin.core.v1@2.38.15
+  - @wso2is/admin.extensions.v1@2.36.71
+  - @wso2is/admin.remote-userstores.v1@1.7.102
+  - @wso2is/dynamic-forms@2.4.34
+  - @wso2is/form@2.6.27
+
+## 2.26.104
+
+### Patch Changes
+
+- Updated dependencies [[`b4cba28321177f383170ac4bb7b4d75ce7ca404b`](https://github.com/wso2/identity-apps/commit/b4cba28321177f383170ac4bb7b4d75ce7ca404b)]:
+  - @wso2is/i18n@2.19.5
+  - @wso2is/admin.core.v1@2.38.14
+  - @wso2is/admin.extensions.v1@2.36.70
+  - @wso2is/admin.remote-userstores.v1@1.7.101
+
+## 2.26.103
+
+### Patch Changes
+
+- Updated dependencies [[`43ab5e89caf6862202104d13ecc45454c04c7fb0`](https://github.com/wso2/identity-apps/commit/43ab5e89caf6862202104d13ecc45454c04c7fb0)]:
+  - @wso2is/forms@2.3.18
+  - @wso2is/admin.core.v1@2.38.13
+  - @wso2is/admin.extensions.v1@2.36.69
+  - @wso2is/admin.remote-userstores.v1@1.7.100
+
+## 2.26.102
+
+### Patch Changes
+
+- Updated dependencies [[`0aca53b8d7f18b9d8488911500b86c7178eb9be6`](https://github.com/wso2/identity-apps/commit/0aca53b8d7f18b9d8488911500b86c7178eb9be6), [`36688f8894c54be04e79e8d2f2c97ddba30f688d`](https://github.com/wso2/identity-apps/commit/36688f8894c54be04e79e8d2f2c97ddba30f688d), [`04be5207ce0c3539ae960f3417151baa3d5bcddd`](https://github.com/wso2/identity-apps/commit/04be5207ce0c3539ae960f3417151baa3d5bcddd)]:
+  - @wso2is/react-components@2.9.5
+  - @wso2is/core@2.6.2
+  - @wso2is/i18n@2.19.4
+  - @wso2is/admin.core.v1@2.38.12
+  - @wso2is/admin.extensions.v1@2.36.68
+  - @wso2is/admin.remote-userstores.v1@1.7.99
+  - @wso2is/dynamic-forms@2.4.33
+  - @wso2is/form@2.6.26
+  - @wso2is/access-control@3.3.16
+  - @wso2is/forms@2.3.17
+
+## 2.26.101
+
+### Patch Changes
+
+- Updated dependencies [[`e1fd42a4d68b6b9c3d06c36b749fa46bb04c064d`](https://github.com/wso2/identity-apps/commit/e1fd42a4d68b6b9c3d06c36b749fa46bb04c064d)]:
+  - @wso2is/admin.core.v1@2.38.11
+  - @wso2is/admin.extensions.v1@2.36.67
+  - @wso2is/admin.remote-userstores.v1@1.7.98
+
+## 2.26.100
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.10
+  - @wso2is/admin.extensions.v1@2.36.66
+  - @wso2is/admin.remote-userstores.v1@1.7.97
+
+## 2.26.99
+
+### Patch Changes
+
+- Updated dependencies [[`6994a4d6ef9d39263556cb06ece735cd72c96bf5`](https://github.com/wso2/identity-apps/commit/6994a4d6ef9d39263556cb06ece735cd72c96bf5), [`2c831ff7dc0a263fc0ed20b4599f4a13dd4dc6df`](https://github.com/wso2/identity-apps/commit/2c831ff7dc0a263fc0ed20b4599f4a13dd4dc6df), [`a9231ac6175b28be3d696cb55004cca77191402e`](https://github.com/wso2/identity-apps/commit/a9231ac6175b28be3d696cb55004cca77191402e)]:
+  - @wso2is/theme@2.6.6
+  - @wso2is/react-components@2.9.4
+  - @wso2is/i18n@2.19.3
+  - @wso2is/admin.extensions.v1@2.36.65
+  - @wso2is/admin.core.v1@2.38.9
+  - @wso2is/admin.remote-userstores.v1@1.7.96
+  - @wso2is/dynamic-forms@2.4.32
+  - @wso2is/form@2.6.25
+
+## 2.26.98
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.8
+  - @wso2is/admin.extensions.v1@2.36.64
+  - @wso2is/admin.remote-userstores.v1@1.7.95
+
+## 2.26.97
+
+### Patch Changes
+
+- Updated dependencies [[`79babcaf1edcd195d6da04f39903056b106b1c32`](https://github.com/wso2/identity-apps/commit/79babcaf1edcd195d6da04f39903056b106b1c32)]:
+  - @wso2is/theme@2.6.5
+  - @wso2is/admin.core.v1@2.38.7
+  - @wso2is/admin.extensions.v1@2.36.63
+  - @wso2is/admin.remote-userstores.v1@1.7.94
+  - @wso2is/react-components@2.9.3
+  - @wso2is/dynamic-forms@2.4.31
+  - @wso2is/form@2.6.24
+
+## 2.26.96
+
+### Patch Changes
+
+- Updated dependencies [[`bb8c0b38541fe6bb367f74621b4c27587d82ebdd`](https://github.com/wso2/identity-apps/commit/bb8c0b38541fe6bb367f74621b4c27587d82ebdd)]:
+  - @wso2is/core@2.6.1
+  - @wso2is/admin.core.v1@2.38.6
+  - @wso2is/admin.extensions.v1@2.36.62
+  - @wso2is/admin.remote-userstores.v1@1.7.93
+  - @wso2is/access-control@3.3.15
+  - @wso2is/dynamic-forms@2.4.30
+  - @wso2is/form@2.6.23
+  - @wso2is/forms@2.3.16
+  - @wso2is/i18n@2.19.2
+  - @wso2is/react-components@2.9.2
+
+## 2.26.95
+
+### Patch Changes
+
+- Updated dependencies [[`18a74388ea24649a45d9cf9cf47cee491bd7b216`](https://github.com/wso2/identity-apps/commit/18a74388ea24649a45d9cf9cf47cee491bd7b216)]:
+  - @wso2is/i18n@2.19.1
+  - @wso2is/admin.core.v1@2.38.5
+  - @wso2is/admin.extensions.v1@2.36.61
+  - @wso2is/admin.remote-userstores.v1@1.7.92
+
+## 2.26.94
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.4
+  - @wso2is/admin.extensions.v1@2.36.60
+  - @wso2is/admin.remote-userstores.v1@1.7.91
+
+## 2.26.93
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.3
+  - @wso2is/admin.extensions.v1@2.36.59
+  - @wso2is/admin.remote-userstores.v1@1.7.90
+
+## 2.26.92
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.2
+  - @wso2is/admin.extensions.v1@2.36.58
+  - @wso2is/admin.remote-userstores.v1@1.7.89
+
+## 2.26.91
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.1
+  - @wso2is/admin.extensions.v1@2.36.57
+  - @wso2is/admin.remote-userstores.v1@1.7.88
+
+## 2.26.90
+
+### Patch Changes
+
+- Updated dependencies [[`5f74a67b842b049e740d0c006410c055249e5c0d`](https://github.com/wso2/identity-apps/commit/5f74a67b842b049e740d0c006410c055249e5c0d)]:
+  - @wso2is/admin.core.v1@2.38.0
+  - @wso2is/i18n@2.19.0
+  - @wso2is/admin.extensions.v1@2.36.56
+  - @wso2is/admin.remote-userstores.v1@1.7.87
+
+## 2.26.89
+
+### Patch Changes
+
+- Updated dependencies [[`0fe45738f242dfe6672745d4203e9cf7dad2bde7`](https://github.com/wso2/identity-apps/commit/0fe45738f242dfe6672745d4203e9cf7dad2bde7)]:
+  - @wso2is/admin.core.v1@2.37.38
+  - @wso2is/admin.extensions.v1@2.36.55
+  - @wso2is/admin.remote-userstores.v1@1.7.86
+
+## 2.26.88
+
+### Patch Changes
+
+- Updated dependencies [[`f8d897f936c4eaf890f0534abcce1aa66c7a5c95`](https://github.com/wso2/identity-apps/commit/f8d897f936c4eaf890f0534abcce1aa66c7a5c95)]:
+  - @wso2is/admin.core.v1@2.37.37
+  - @wso2is/admin.extensions.v1@2.36.54
+  - @wso2is/admin.remote-userstores.v1@1.7.85
+
+## 2.26.87
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.36
+  - @wso2is/admin.extensions.v1@2.36.53
+  - @wso2is/admin.remote-userstores.v1@1.7.84
+
+## 2.26.86
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.35
+  - @wso2is/admin.extensions.v1@2.36.52
+  - @wso2is/admin.remote-userstores.v1@1.7.83
+
+## 2.26.85
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.34
+  - @wso2is/admin.extensions.v1@2.36.51
+  - @wso2is/admin.remote-userstores.v1@1.7.82
+
+## 2.26.84
+
+### Patch Changes
+
+- Updated dependencies [[`216ef9336657dee546fd212705ccc023e61fb923`](https://github.com/wso2/identity-apps/commit/216ef9336657dee546fd212705ccc023e61fb923)]:
+  - @wso2is/i18n@2.18.3
+  - @wso2is/admin.core.v1@2.37.33
+  - @wso2is/admin.extensions.v1@2.36.50
+  - @wso2is/admin.remote-userstores.v1@1.7.81
+
+## 2.26.83
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.32
+  - @wso2is/admin.extensions.v1@2.36.49
+  - @wso2is/admin.remote-userstores.v1@1.7.80
+
+## 2.26.82
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.31
+  - @wso2is/admin.extensions.v1@2.36.48
+  - @wso2is/admin.remote-userstores.v1@1.7.79
+
+## 2.26.81
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.30
+  - @wso2is/admin.extensions.v1@2.36.47
+  - @wso2is/admin.remote-userstores.v1@1.7.78
+
+## 2.26.80
+
+### Patch Changes
+
+- Updated dependencies [[`18e8c1c6768f359ebfb0424152c6585df98249a5`](https://github.com/wso2/identity-apps/commit/18e8c1c6768f359ebfb0424152c6585df98249a5)]:
+  - @wso2is/admin.extensions.v1@2.36.46
+  - @wso2is/admin.core.v1@2.37.29
+  - @wso2is/admin.remote-userstores.v1@1.7.77
+
+## 2.26.79
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.28
+  - @wso2is/admin.extensions.v1@2.36.45
+  - @wso2is/admin.remote-userstores.v1@1.7.76
+
+## 2.26.78
+
+### Patch Changes
+
+- Updated dependencies [[`c9245493cf5b3ae0f02b13d85c3905223cfcb21d`](https://github.com/wso2/identity-apps/commit/c9245493cf5b3ae0f02b13d85c3905223cfcb21d)]:
+  - @wso2is/admin.remote-userstores.v1@1.7.75
+  - @wso2is/admin.extensions.v1@2.36.44
+  - @wso2is/admin.core.v1@2.37.27
+
+## 2.26.77
+
+### Patch Changes
+
+- [#7332](https://github.com/wso2/identity-apps/pull/7332) [`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove barrel files from @wso2is/admin.core.v1 module
+
+- Updated dependencies [[`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546)]:
+  - @wso2is/admin.remote-userstores.v1@1.7.74
+  - @wso2is/admin.extensions.v1@2.36.43
+  - @wso2is/react-components@2.9.1
+  - @wso2is/admin.core.v1@2.37.26
+  - @wso2is/dynamic-forms@2.4.29
+  - @wso2is/theme@2.6.4
+  - @wso2is/form@2.6.22
+  - @wso2is/i18n@2.18.2
+
+## 2.26.76
+
+### Patch Changes
+
+- Updated dependencies [[`b4f965e293948682763b30059ee9dca47f9bc744`](https://github.com/wso2/identity-apps/commit/b4f965e293948682763b30059ee9dca47f9bc744), [`756bca6449a5f4092cbea1a27939cd2c95452c4c`](https://github.com/wso2/identity-apps/commit/756bca6449a5f4092cbea1a27939cd2c95452c4c)]:
+  - @wso2is/admin.core.v1@2.37.25
+  - @wso2is/i18n@2.18.1
+  - @wso2is/admin.extensions.v1@2.36.42
+  - @wso2is/admin.remote-userstores.v1@1.7.73
+
+## 2.26.75
+
+### Patch Changes
+
+- Updated dependencies [[`6d6d70456efbff3725a566889de169fb91eba0a3`](https://github.com/wso2/identity-apps/commit/6d6d70456efbff3725a566889de169fb91eba0a3)]:
+  - @wso2is/i18n@2.18.0
+  - @wso2is/admin.core.v1@2.37.24
+  - @wso2is/admin.extensions.v1@2.36.41
+  - @wso2is/admin.remote-userstores.v1@1.7.72
+
+## 2.26.74
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.23
+  - @wso2is/admin.extensions.v1@2.36.40
+  - @wso2is/admin.remote-userstores.v1@1.7.71
+
+## 2.26.73
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.22
+  - @wso2is/admin.extensions.v1@2.36.39
+  - @wso2is/admin.remote-userstores.v1@1.7.70
+
+## 2.26.72
+
+### Patch Changes
+
+- Updated dependencies [[`b67d22c81d5c8be72c09abd36ed829a88fb22a4b`](https://github.com/wso2/identity-apps/commit/b67d22c81d5c8be72c09abd36ed829a88fb22a4b), [`985c81584c0d9d2a803b3ee12fc80d473249e341`](https://github.com/wso2/identity-apps/commit/985c81584c0d9d2a803b3ee12fc80d473249e341)]:
+  - @wso2is/react-components@2.9.0
+  - @wso2is/core@2.6.0
+  - @wso2is/i18n@2.17.0
+  - @wso2is/admin.core.v1@2.37.21
+  - @wso2is/admin.extensions.v1@2.36.38
+  - @wso2is/admin.remote-userstores.v1@1.7.69
+  - @wso2is/dynamic-forms@2.4.28
+  - @wso2is/form@2.6.21
+  - @wso2is/access-control@3.3.14
+  - @wso2is/forms@2.3.15
+
+## 2.26.71
+
+### Patch Changes
+
+- Updated dependencies [[`bbfb046145fb557911950c923dc7dd08507f6822`](https://github.com/wso2/identity-apps/commit/bbfb046145fb557911950c923dc7dd08507f6822)]:
+  - @wso2is/admin.extensions.v1@2.36.37
+  - @wso2is/i18n@2.16.12
+  - @wso2is/admin.core.v1@2.37.20
+  - @wso2is/admin.remote-userstores.v1@1.7.68
+
+## 2.26.70
+
+### Patch Changes
+
+- Updated dependencies [[`9b6fe9141f5260d6e3760298badd6e0f6c7ec499`](https://github.com/wso2/identity-apps/commit/9b6fe9141f5260d6e3760298badd6e0f6c7ec499)]:
+  - @wso2is/react-components@2.8.27
+  - @wso2is/admin.core.v1@2.37.19
+  - @wso2is/theme@2.6.3
+  - @wso2is/form@2.6.20
+  - @wso2is/i18n@2.16.11
+  - @wso2is/admin.extensions.v1@2.36.36
+  - @wso2is/admin.remote-userstores.v1@1.7.67
+  - @wso2is/dynamic-forms@2.4.27
+
+## 2.26.69
+
+### Patch Changes
+
+- Updated dependencies [[`f5eb7968aa0f8482f61b3d3fd8809dc82fb6457f`](https://github.com/wso2/identity-apps/commit/f5eb7968aa0f8482f61b3d3fd8809dc82fb6457f)]:
+  - @wso2is/i18n@2.16.10
+  - @wso2is/admin.core.v1@2.37.18
+  - @wso2is/admin.extensions.v1@2.36.35
+  - @wso2is/admin.remote-userstores.v1@1.7.66
+
+## 2.26.68
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.17
+  - @wso2is/admin.extensions.v1@2.36.34
+  - @wso2is/admin.remote-userstores.v1@1.7.65
+
+## 2.26.67
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.16
+  - @wso2is/admin.extensions.v1@2.36.33
+  - @wso2is/admin.remote-userstores.v1@1.7.64
+
+## 2.26.66
+
+### Patch Changes
+
+- Updated dependencies [[`651f2836dd609e7d87d67549b4d5faef2d7aee14`](https://github.com/wso2/identity-apps/commit/651f2836dd609e7d87d67549b4d5faef2d7aee14)]:
+  - @wso2is/i18n@2.16.9
+  - @wso2is/admin.core.v1@2.37.15
+  - @wso2is/admin.extensions.v1@2.36.32
+  - @wso2is/admin.remote-userstores.v1@1.7.63
+
+## 2.26.65
+
+### Patch Changes
+
+- Updated dependencies [[`6a86d803a5997538ab424336e29f7401c7fb3582`](https://github.com/wso2/identity-apps/commit/6a86d803a5997538ab424336e29f7401c7fb3582)]:
+  - @wso2is/admin.extensions.v1@2.36.31
+  - @wso2is/i18n@2.16.8
+  - @wso2is/admin.core.v1@2.37.14
+  - @wso2is/admin.remote-userstores.v1@1.7.62
+
+## 2.26.64
+
+### Patch Changes
+
+- Updated dependencies [[`92a6766086071fd5e0986f91803804783b9159bf`](https://github.com/wso2/identity-apps/commit/92a6766086071fd5e0986f91803804783b9159bf)]:
+  - @wso2is/core@2.5.9
+  - @wso2is/admin.core.v1@2.37.13
+  - @wso2is/admin.extensions.v1@2.36.30
+  - @wso2is/admin.remote-userstores.v1@1.7.61
+  - @wso2is/access-control@3.3.13
+  - @wso2is/dynamic-forms@2.4.26
+  - @wso2is/form@2.6.19
+  - @wso2is/forms@2.3.14
+  - @wso2is/i18n@2.16.7
+  - @wso2is/react-components@2.8.26
+
+## 2.26.63
+
+### Patch Changes
+
+- Updated dependencies [[`689dcc45ad43831b2805c3b91f04bdd254e1a7ef`](https://github.com/wso2/identity-apps/commit/689dcc45ad43831b2805c3b91f04bdd254e1a7ef)]:
+  - @wso2is/theme@2.6.2
+  - @wso2is/i18n@2.16.6
+  - @wso2is/admin.extensions.v1@2.36.29
+  - @wso2is/react-components@2.8.25
+  - @wso2is/admin.core.v1@2.37.12
+  - @wso2is/admin.remote-userstores.v1@1.7.60
+  - @wso2is/dynamic-forms@2.4.25
+  - @wso2is/form@2.6.18
+
+## 2.26.62
+
+### Patch Changes
+
+- Updated dependencies [[`897424e026699eb987ff8a0fb473e6bba5f8c117`](https://github.com/wso2/identity-apps/commit/897424e026699eb987ff8a0fb473e6bba5f8c117), [`9e3977c9c5e90cbe454147b42b121aecc28d9ab9`](https://github.com/wso2/identity-apps/commit/9e3977c9c5e90cbe454147b42b121aecc28d9ab9)]:
+  - @wso2is/i18n@2.16.5
+  - @wso2is/admin.core.v1@2.37.11
+  - @wso2is/admin.extensions.v1@2.36.28
+  - @wso2is/admin.remote-userstores.v1@1.7.59
+
+## 2.26.61
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.10
+  - @wso2is/admin.extensions.v1@2.36.27
+  - @wso2is/admin.remote-userstores.v1@1.7.58
+
+## 2.26.60
+
+### Patch Changes
+
+- Updated dependencies [[`0939ecb46c7e1d115924c6da953d2f575ebbf83a`](https://github.com/wso2/identity-apps/commit/0939ecb46c7e1d115924c6da953d2f575ebbf83a)]:
+  - @wso2is/i18n@2.16.4
+  - @wso2is/admin.core.v1@2.37.9
+  - @wso2is/admin.extensions.v1@2.36.26
+  - @wso2is/admin.remote-userstores.v1@1.7.57
+
+## 2.26.59
+
+### Patch Changes
+
+- Updated dependencies [[`20852203b5868edd1045c8ea236955076b85cdfc`](https://github.com/wso2/identity-apps/commit/20852203b5868edd1045c8ea236955076b85cdfc)]:
+  - @wso2is/admin.core.v1@2.37.8
+  - @wso2is/i18n@2.16.3
+  - @wso2is/admin.extensions.v1@2.36.25
+  - @wso2is/admin.remote-userstores.v1@1.7.56
+
+## 2.26.58
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.7
+  - @wso2is/admin.extensions.v1@2.36.24
+  - @wso2is/admin.remote-userstores.v1@1.7.55
+
+## 2.26.57
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.6
+  - @wso2is/admin.extensions.v1@2.36.23
+  - @wso2is/admin.remote-userstores.v1@1.7.54
+
+## 2.26.56
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.5
+  - @wso2is/admin.extensions.v1@2.36.22
+  - @wso2is/admin.remote-userstores.v1@1.7.53
+
+## 2.26.55
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.4
+  - @wso2is/admin.extensions.v1@2.36.21
+  - @wso2is/admin.remote-userstores.v1@1.7.52
+
+## 2.26.54
+
+### Patch Changes
+
+- Updated dependencies [[`31b4e92ae73fea1372a03f9aa0511f062030e44f`](https://github.com/wso2/identity-apps/commit/31b4e92ae73fea1372a03f9aa0511f062030e44f)]:
+  - @wso2is/admin.extensions.v1@2.36.20
+  - @wso2is/admin.core.v1@2.37.3
+  - @wso2is/core@2.5.8
+  - @wso2is/admin.remote-userstores.v1@1.7.51
+  - @wso2is/access-control@3.3.12
+  - @wso2is/dynamic-forms@2.4.24
+  - @wso2is/form@2.6.17
+  - @wso2is/forms@2.3.13
+  - @wso2is/i18n@2.16.2
+  - @wso2is/react-components@2.8.24
+
+## 2.26.53
+
+### Patch Changes
+
+- Updated dependencies [[`5d39c0975774564423edebcb268291eb24932e23`](https://github.com/wso2/identity-apps/commit/5d39c0975774564423edebcb268291eb24932e23), [`3811ae3d223db8bf4fa5315f61d19a11aecc32a9`](https://github.com/wso2/identity-apps/commit/3811ae3d223db8bf4fa5315f61d19a11aecc32a9), [`7de99c9b05b5f11e8350796ba370d54e8b2dc181`](https://github.com/wso2/identity-apps/commit/7de99c9b05b5f11e8350796ba370d54e8b2dc181)]:
+  - @wso2is/i18n@2.16.1
+  - @wso2is/theme@2.6.1
+  - @wso2is/admin.core.v1@2.37.2
+  - @wso2is/admin.extensions.v1@2.36.19
+  - @wso2is/react-components@2.8.23
+  - @wso2is/admin.remote-userstores.v1@1.7.50
+  - @wso2is/dynamic-forms@2.4.23
+  - @wso2is/form@2.6.16
+
+## 2.26.52
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.1
+  - @wso2is/admin.extensions.v1@2.36.18
+  - @wso2is/admin.remote-userstores.v1@1.7.49
+
+## 2.26.51
+
+### Patch Changes
+
+- Updated dependencies [[`363aeec4c658628cf89027a9f81f52f545421842`](https://github.com/wso2/identity-apps/commit/363aeec4c658628cf89027a9f81f52f545421842), [`50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523`](https://github.com/wso2/identity-apps/commit/50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523), [`abf5c953b8f48db5cdb855e75f5c1b847d1e42f0`](https://github.com/wso2/identity-apps/commit/abf5c953b8f48db5cdb855e75f5c1b847d1e42f0)]:
+  - @wso2is/admin.core.v1@2.37.0
+  - @wso2is/i18n@2.16.0
+  - @wso2is/core@2.5.7
+  - @wso2is/admin.extensions.v1@2.36.17
+  - @wso2is/admin.remote-userstores.v1@1.7.48
+  - @wso2is/access-control@3.3.11
+  - @wso2is/dynamic-forms@2.4.22
+  - @wso2is/form@2.6.15
+  - @wso2is/forms@2.3.12
+  - @wso2is/react-components@2.8.22
+
+## 2.26.50
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.36.1
+  - @wso2is/admin.extensions.v1@2.36.16
+  - @wso2is/admin.remote-userstores.v1@1.7.47
+
 ## 2.26.49
 
 ### Patch Changes

@@ -20,7 +20,8 @@ import {
     ApplicationInterface,
     ApplicationTemplateInterface
 } from "@wso2is/admin.applications.v1/models/application";
-import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import { Code, Hint, Link, Message, useDocumentation } from "@wso2is/react-components";

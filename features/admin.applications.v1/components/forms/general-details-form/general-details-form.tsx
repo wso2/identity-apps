@@ -21,7 +21,6 @@ import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
-import Chip from "@oxygen-ui/react/Chip";
 import Link from "@oxygen-ui/react/Link";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
@@ -29,13 +28,22 @@ import TextField from "@oxygen-ui/react/TextField";
 import { PaletteIcon } from "@oxygen-ui/react-icons";
 import { ApplicationTabComponentsFilter } from
     "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
-import { AppConstants, AppState, UIConfigInterface, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState  } from "@wso2is/admin.core.v1/store";
 import { ApplicationTabIDs, applicationConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useUserStores } from "@wso2is/admin.userstores.v1/api";
 import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
-import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    AlertLevels,
+    FeatureFlagsInterface,
+    IdentifiableComponentInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
@@ -207,6 +215,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const { getLink } = useDocumentation();
 
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
+    const brandingFeatureFlagsConfig: FeatureFlagsInterface[] = UIConfig?.features?.applications?.featureFlags;
+    const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
 
@@ -224,7 +234,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const [ activeOption, setActiveOption ] = useState<GroupMetadataInterface>(null);
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
-    const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
     const isSubOrganizationType: boolean = orgType === OrganizationType.SUBORGANIZATION;
 
     const {
@@ -871,10 +880,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     <>
                                         <Heading as="h4">
                                             { t("applications:forms.generalDetails.sections.branding.title") }
-                                            <Chip
-                                                size="small"
-                                                label={ t(FeatureStatusLabel.BETA) }
-                                                className="oxygen-chip-beta mb-1 ml-2"
+                                            <FeatureFlagLabel
+                                                featureFlags={ brandingFeatureFlagsConfig }
+                                                featureKey={
+                                                    FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                                                        .APPLICATION_EDIT_BRANDING_LINK
+                                                }
+                                                type="chip"
                                             />
                                         </Heading>
                                         <PaletteIcon fill="#ff7300" /> &nbsp;

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { UserBasicInterface } from "@wso2is/admin.core.v1";
+import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import {
@@ -391,7 +391,7 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
                     },
                     password: userInfo.newPassword ? userInfo.newPassword : "password",
                     profileUrl: userInfo.profileUrl,
-                    [SCIMConfigs.scim.enterpriseSchema]: {
+                    [SCIMConfigs.scim.systemSchema]: {
                         askPassword: "true"
                     },
                     userName: userName

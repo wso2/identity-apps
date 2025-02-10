@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { NotificationItem } from "../common";
+
 export interface governanceConnectorsNS {
     notifications: {
         getConnectorCategories: {
@@ -316,6 +318,22 @@ export interface governanceConnectorsNS {
                         };
                     };
                 };
+                siftConnector: {
+                    properties: {
+                        name: string;
+                        description: string;
+                        siftConnectorApiKey: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                    notifications: {
+                        configurationUpdate: {
+                            success: NotificationItem;
+                            error: NotificationItem;
+                        };
+                    };
+                };
             };
         };
         accountManagement: {
@@ -341,6 +359,7 @@ export interface governanceConnectorsNS {
                 };
                 accountDisableHandler: {
                     friendlyName: string;
+                    description: string;
                     properties: {
                         accountDisableHandlerEnable: {
                             hint: string;
@@ -349,6 +368,12 @@ export interface governanceConnectorsNS {
                         accountDisableHandlerNotificationManageInternally: {
                             hint: string;
                             label: string;
+                        };
+                    };
+                    notifications: {
+                        configurationUpdate: {
+                            success: NotificationItem;
+                            error: NotificationItem;
                         };
                     };
                 };

@@ -48,6 +48,12 @@
             <param-value>{{ downtime_banner.enabled }}</param-value>
         </context-param>
     {% endif %}
+    {% if event.default_listener.validation.enable is defined %}
+        <context-param>
+            <param-name>isPasswordInputValidationEnabled</param-name>
+            <param-value>{{ event.default_listener.validation.enable }}</param-value>
+        </context-param>
+    {% endif %}
     <!-- **************** End of Application specific configurations ************************* -->
 
     <!-- *************** Global configurations ********************** -->
@@ -338,6 +344,10 @@
         {"name": "mobile.do", "jsp": "/mobile.jsp", "url": "/mobile.do"},
         {"name": "sms_otp.do", "jsp": "/smsOtp.jsp", "url": "/sms_otp.do"},
         {"name": "sms_otp_error.do", "jsp": "/smsOtpError.jsp", "url": "/sms_otp_error.do"},
+        {"name": "push_auth.do", "jsp": "/pushAuth.jsp", "url": "/push_auth.do"},
+        {"name": "push_enroll.do", "jsp": "/pushEnroll.jsp", "url": "/push_enroll.do"},
+        {"name": "push_device_enroll_consent.do", "jsp": "/pushDeviceEnrollConsent.jsp", "url": "/push_device_enroll_consent.do"},
+        {"name": "push_auth_error.do", "jsp": "/pushAuthError.jsp", "url": "/push_aut_error.do"},
         {"name": "duo_error.do", "jsp": "/duoError.jsp", "url": "/duo_error.do"},
         {"name": "magic_link_notification.do", "jsp": "/magic_link_notification.jsp", "url": "/magic_link_notification.do"},
         {"name": "org_name.do", "jsp": "/org_name.jsp", "url": "/org_name.do"},

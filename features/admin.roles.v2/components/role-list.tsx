@@ -17,7 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";

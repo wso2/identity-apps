@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,8 +23,10 @@ import Alert from "@oxygen-ui/react/Alert";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models/application";
-import { OrganizationType, history, store } from "@wso2is/admin.core.v1";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { store } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
@@ -33,12 +35,10 @@ import { FormValidation } from "@wso2is/validation";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import React, {
     FunctionComponent,
-    MutableRefObject,
     ReactElement,
     SyntheticEvent,
     useCallback,
     useEffect,
-    useRef,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -97,11 +97,10 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const [ applicationListOptions, setApplicationListOptions ] = useState<DropdownProps[]>([]);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
 
-    const noApplicationsAvailable: MutableRefObject<boolean> = useRef<boolean>(false);
-
     const {
         data: applicationList,
         isLoading: isApplicationListFetchRequestLoading,
+        isValidating: isApplicationListFetchRequestValidating,
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
     } = useApplicationList("clientId,associatedRoles.allowedAudience,advancedConfigurations", null, null,
@@ -125,7 +124,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         }
 
         if (roleAudience === RoleAudienceTypes.APPLICATION) {
-            if (noApplicationsAvailable.current && !applicationSearchQuery) {
+            if (applicationListOptions?.length === 0 && !applicationSearchQuery) {
                 setIsDisplayNoAppScopeApplicatioError(true);
                 setIsDisplayApplicationList(false);
             } else {
@@ -136,7 +135,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             setIsDisplayNoAppScopeApplicatioError(false);
             setIsDisplayApplicationList(false);
         }
-    }, [ applicationListFetchRequestError, roleAudience ]);
+    }, [ applicationListFetchRequestError, roleAudience, applicationListOptions, applicationSearchQuery ]);
 
     useEffect(() => {
         if (isApplicationListFetchRequestLoading) {
@@ -182,10 +181,8 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             }
         });
 
-        noApplicationsAvailable.current = (options.length === 0);
-
         setApplicationListOptions(options);
-    }, [ isApplicationListFetchRequestLoading ]);
+    }, [ isApplicationListFetchRequestValidating ]);
 
     useEffect(() => {
         if (isFormError || isDisplayNoAppScopeApplicatioError) {

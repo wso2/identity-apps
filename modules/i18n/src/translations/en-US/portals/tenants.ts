@@ -170,6 +170,10 @@ export const tenants: TenantsNS = {
     },
     edit: {
         backButton: "Go back to Root Organizations",
+        consoleURL: {
+            hint: "If you try to login to <1>{{domain}}</1> organization's Console using the same browser, you will have to logout from this active session first.",
+            label: "Console URL"
+        },
         subtitle: "Crated on {{date}}"
     },
     editTenant: {
@@ -268,7 +272,7 @@ export const tenants: TenantsNS = {
             },
             subtitles: {
                 0: "There are no root organizations available at the moment.",
-                1: "Start with creating your first root organization. or configure system settings that applies to all the root organizations."
+                1: "Create your first root organization, or configure system settings that applies to all the root organizations."
             },
             title: "No groups assigned to the role."
         },
@@ -292,9 +296,6 @@ export const tenants: TenantsNS = {
                 edit: {
                     label: "Edit"
                 },
-                goToConsole: {
-                    label: "Go to Console"
-                },
                 more: {
                     label: "More"
                 }
@@ -315,7 +316,7 @@ export const tenants: TenantsNS = {
         deActivate: "Disable",
         deActivated: "Disabled"
     },
-    subtitle: "Configure and extend you server by creating new root level organizations in your workspace.",
+    subtitle: "Configure and manage your server by creating new root level organizations in your workspace.",
     systemSettings: {
         actions: {
             newTenant: {

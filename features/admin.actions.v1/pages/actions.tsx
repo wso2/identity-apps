@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,13 +28,17 @@ import {
     ProfileFlowIcon,
     UserFlowIcon
 } from "@oxygen-ui/react-icons";
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
     FeatureAccessConfigInterface,
+    FeatureFlagsInterface,
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -148,13 +152,13 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
 
         switch (actionType) {
             case ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH:
-                return isFeatureEnabled(actionsFeatureConfig, "actions.filterPreIssueAccessToken");
+                return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preIssueAccessToken");
             case ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH:
-                return isFeatureEnabled(actionsFeatureConfig, "actions.filterPreUpdatePassword");
+                return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preUpdatePassword");
             case ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH:
-                return isFeatureEnabled(actionsFeatureConfig, "actions.filterPreUpdateProfile");
+                return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preUpdateProfile");
             case ActionsConstants.PRE_REGISTRATION_URL_PATH:
-                return isFeatureEnabled(actionsFeatureConfig, "actions.filterPreRegistration");
+                return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preRegistration");
             default:
                 return false;
         }
@@ -173,15 +177,6 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             </DocumentationLink>
         </>
     );
-
-    const resolveFeatureLabelClass = (featureStatus: FeatureStatusLabel): string => {
-        switch (featureStatus) {
-            case FeatureStatusLabel.BETA:
-                return "oxygen-chip-beta";
-            case FeatureStatusLabel.COMING_SOON:
-                return "oxygen-chip-coming-soon";
-        }
-    };
 
     const renderActionConfiguredStatus = (actionType: string): ReactElement => {
         let count: number = 0;
@@ -233,43 +228,62 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
         }
     };
 
+    const isActionTypeDisabled = (actionType: string): boolean =>
+        actionsFeatureConfig["featureFlags"]?.some(
+            (featureFlag: FeatureFlagsInterface) => featureFlag.feature === actionType
+            && featureFlag.flag === ActionsConstants.ACTION_COMING_SOON_LABEL
+        );
+
     const actionTypesCardsInfo = (): ActionTypeCardInterface[] => {
         return [
             {
                 description: t("actions:types.preIssueAccessToken.description.shortened"),
-                disabled: false,
-                featureStatusLabel: FeatureStatusLabel.BETA,
+                disabled: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN),
+                featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN,
                 heading: t("actions:types.preIssueAccessToken.heading"),
                 icon: <KeyFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH,
-                route: AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT")
+                route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN) ? undefined :
+                    AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT")
             },
             {
                 description: t("actions:types.preUpdatePassword.description.shortened"),
-                disabled: true,
-                featureStatusLabel: FeatureStatusLabel.COMING_SOON,
+                disabled: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_UPDATE_PASSWORD),
+                featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PASSWORD,
                 heading: t("actions:types.preUpdatePassword.heading"),
                 icon: <PadlockAsteriskFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH,
-                route: AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT")
+                route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_UPDATE_PASSWORD) ? undefined
+                    : AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT")
             },
             {
                 description: t("actions:types.preUpdateProfile.description.shortened"),
-                disabled: true,
-                featureStatusLabel: FeatureStatusLabel.COMING_SOON,
+                disabled: isActionTypeDisabled(FeatureFlagConstants
+                    .FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PROFILE),
+                featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PROFILE,
                 heading: t("actions:types.preUpdateProfile.heading"),
                 icon: <ProfileFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH,
-                route: AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT")
+                route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_UPDATE_PASSWORD) ? undefined
+                    : AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT")
             },
             {
                 description: t("actions:types.preRegistration.description.shortened"),
-                disabled: true,
-                featureStatusLabel: FeatureStatusLabel.COMING_SOON,
+                disabled: isActionTypeDisabled(FeatureFlagConstants
+                    .FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_REGISTRATION),
+                featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_REGISTRATION,
                 heading: t("actions:types.preRegistration.heading"),
                 icon: <UserFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_REGISTRATION_URL_PATH,
-                route: AppConstants.getPaths().get("PRE_REGISTRATION_EDIT")
+                route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_UPDATE_PASSWORD) ? undefined
+                    : AppConstants.getPaths().get("PRE_UPDATE_REGISTRATION_EDIT")
             } ];
     };
 
@@ -365,14 +379,11 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
                                             { !cardProps.disabled ?
                                                 renderActionConfiguredStatus(cardProps.identifier) : null }
                                         </div>
-                                        <div
-                                            className={ "ribbon " +
-                                                        resolveFeatureLabelClass(cardProps.featureStatusLabel) }
-                                        >
-                                            <span className="MuiChip-label">
-                                                { t(cardProps.featureStatusLabel) }
-                                            </span>
-                                        </div>
+                                        <FeatureFlagLabel
+                                            featureFlags={ actionsFeatureConfig?.featureFlags }
+                                            featureKey={ cardProps.featureStatusKey }
+                                            type="ribbon"
+                                        />
                                     </CardContent>
                                     <CardContent>
                                         <Typography variant="body2" color="text.secondary">

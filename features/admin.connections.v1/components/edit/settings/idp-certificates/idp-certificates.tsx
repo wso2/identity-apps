@@ -19,7 +19,9 @@
 import Alert from "@oxygen-ui/react/Alert";
 import Grid from "@oxygen-ui/react/Grid";
 import { Show } from "@wso2is/access-control";
-import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";

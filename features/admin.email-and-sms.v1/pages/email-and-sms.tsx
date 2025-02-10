@@ -18,13 +18,17 @@
 
 import Grid from "@oxygen-ui/react/Grid";
 import { EnvelopeIcon } from "@oxygen-ui/react-icons";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { ReactComponent as PushIcon } from "../../themes/default/assets/images/icons/push-provider-icon.svg";
 import { ReactComponent as SMSIcon } from "../../themes/default/assets/images/icons/sms-icon.svg";
 import { SettingsSection } from "../settings/settings-section";
 import "./notification-channels.scss";
@@ -50,6 +54,8 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
 
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
+    const isPushProviderFeatureEnabled: boolean = featureConfig?.pushProviders?.enabled;
+
     /**
      * Handle connector advance setting selection.
      */
@@ -61,11 +67,27 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
         history.push(AppConstants.getPaths().get("EMAIL_PROVIDER"));
     };
 
+    const handlePushSelection = (): void => {
+        history.push(AppConstants.getPaths().get("PUSH_PROVIDER"));
+    };
+
     return (
         <PageLayout
-            pageTitle={ t("extensions:develop.notificationChannel.heading") }
-            title={ t("extensions:develop.notificationChannel.title") }
-            description={ t("extensions:develop.notificationChannel.description") }
+            pageTitle={
+                isPushProviderFeatureEnabled
+                    ? t("extensions:develop.notificationChannel.heading")
+                    : t("extensions:develop.emailAndSms.heading")
+            }
+            title={
+                isPushProviderFeatureEnabled
+                    ? t("extensions:develop.notificationChannel.title")
+                    : t("extensions:develop.emailAndSms.title")
+            }
+            description={
+                isPushProviderFeatureEnabled
+                    ? t("extensions:develop.notificationChannel.description")
+                    : t("extensions:develop.emailAndSms.description")
+            }
             data-testid={ `${componentid}-page-layout` }
         >
             <Grid container rowSpacing={ 3 } columnSpacing={ 3 }>
@@ -106,6 +128,20 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
                                 t("smsProviders:heading")
                             }
                             onPrimaryActionClick={ handleSMSSelection }
+                            primaryAction={ t("common:configure") }
+                            connectorEnabled
+                        />
+                    </Grid>
+                ) }
+
+                { featureConfig.pushProviders?.enabled && (
+                    <Grid xs={ 12 } md={ 6 } lg={ 4 }>
+                        <SettingsSection
+                            data-componentid={ "push-provider-card" }
+                            description={ t("pushProviders:description") }
+                            icon={ <PushIcon /> }
+                            header={ t("pushProviders:heading") }
+                            onPrimaryActionClick={ handlePushSelection }
                             primaryAction={ t("common:configure") }
                             connectorEnabled
                         />

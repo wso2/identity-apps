@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 

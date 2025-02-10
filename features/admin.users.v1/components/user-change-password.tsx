@@ -17,7 +17,11 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import {
@@ -27,7 +31,6 @@ import {
 import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
-import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
@@ -218,15 +221,14 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             return;
         }
 
+        const schemaURI: string = SCIMConfigs.scim.systemSchema;
+
         const data: PatchRoleDataInterface = {
             "Operations": [
                 {
                     "op": "add",
                     "value": {
-                        [ SCIMConfigs?.scimEnterpriseUserClaimUri?.forcePasswordReset?.
-                            startsWith(ProfileConstants.SCIM2_ENT_USER_SCHEMA)
-                            ? ProfileConstants.SCIM2_ENT_USER_SCHEMA
-                            : ProfileConstants.SCIM2_WSO2_USER_SCHEMA ]: {
+                        [ schemaURI ]: {
                             "forcePasswordReset": true
                         }
                     }

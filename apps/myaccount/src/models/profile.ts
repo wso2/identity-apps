@@ -122,6 +122,10 @@ export interface ProfileSchema {
     maxLength?: number;
     excludedUserStores?: string;
     /**
+    * Supported by default. Used to display in the attribute in the UI.
+    */
+    supportedByDefault?: string;
+    /**
      * Schema attribute profiles
      */
     profiles?: {
@@ -260,5 +264,5 @@ export const createEmptyProfile = (): BasicProfileInterface => ({
  */
 export type ProfilePatchOperationValue = Record<string, string
     | Record<string, string | string[]>
-    | Array<string>
+    | Array<string | MultiValue>
     | Array<Record<string, string>>>;

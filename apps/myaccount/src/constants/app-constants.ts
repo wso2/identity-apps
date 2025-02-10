@@ -191,6 +191,7 @@ export class AppConstants {
         .set("SECURITY_MFA", "security.mfa")
         .set("SECURITY_MFA_SMS", "security.mfa.sms")
         .set("SECURITY_MFA_FIDO", "security.mfa.fido")
+        .set("SECURITY_MFA_PUSH", "security.mfa.push")
         .set("SECURITY_MFA_TOTP", "security.mfa.totp")
         .set("SECURITY_MFA_BACKUP_CODE", "security.mfa.backupCode")
         .set("SECURITY_ACTIVE_SESSIONS", "security.activeSessions")

@@ -167,6 +167,7 @@
 
             var contextPathGlobal = "<%= htmlWebpackPlugin.options.publicPath %>";
             var serverOriginGlobal = startupConfig.serverUrlGlobal;
+            var proxyContextPathGlobal = startupConfig.proxyContextPathGlobal;
             var superTenantGlobal = startupConfig.superTenant;
             var tenantPrefixGlobal = startupConfig.tenantPrefix;
             var isAdaptiveAuthenticationAvailable = true;
@@ -258,12 +259,15 @@
                      * @returns {string} Contructed URL.
                      */
                     function signInRedirectURL() {
+                        // When there's no proxy context path, the IS server returns "null".
+                        var contextPath = (!proxyContextPathGlobal || proxyContextPathGlobal === "null") ? "" : "/" + proxyContextPathGlobal;
+
                         if (getTenantName() === startupConfig.superTenant) {
-                            return applicationDomain.replace(/\/+$/, '')
+                            return applicationDomain.replace(/\/+$/, '') + contextPath
                                 + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                         }
 
-                        return applicationDomain.replace(/\/+$/, '') + getTenantPath()
+                        return applicationDomain.replace(/\/+$/, '') + contextPath + getTenantPath()
                             + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                     }
 

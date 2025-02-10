@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { AppState, EventPublisher } from "@wso2is/admin.core.v1";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import {
     getOrganizations,
     getSharedOrganizations,

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 import { HttpMethod } from "@asgardeo/auth-react";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import { RuleExecuteCollectionWithoutIdInterface, RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { ReactNode } from "react";
 
 /**
@@ -49,6 +49,14 @@ enum ActionStatus {
 }
 
 /**
+ * Password Sharing Formats.
+ */
+export enum PasswordFormat {
+    PLAIN_TEXT = "PLAIN_TEXT",
+    SHA_256_HASHED = "SHA256_HASHED",
+}
+
+/**
  * Interface for the authentication type dropdown options.
  */
 export interface AuthenticationTypeDropdownOption {
@@ -73,6 +81,20 @@ export interface ActionInterface {
      * Endpoint configuration of the Action.
      */
     endpoint: EndpointInterface;
+    /**
+     * Rules to execute the action.
+     */
+    rule?: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
+}
+
+/**
+ *  Pre Update Password Action configuration.
+ */
+export interface PreUpdatePasswordActionInterface extends ActionInterface {
+    /**
+     * Password sharing type of the action.
+     */
+    passwordSharing: PasswordSharing;
 }
 
 /**
@@ -198,6 +220,34 @@ export interface ActionResponseInterface extends ActionBaseResponseInterface {
      * Endpoint configuration of the Action.
      */
     endpoint: EndpointResponseInterface;
+    /**
+     * Rules to execute the action.
+     */
+    rule?: RuleWithoutIdInterface;
+}
+
+/**
+ *  Pre Update Password Action Response.
+ */
+export interface PreUpdatePasswordActionResponseInterface extends ActionResponseInterface {
+    /**
+     * Password sharing type of the action.
+     */
+    passwordSharing: PasswordSharing;
+}
+
+/**
+ *  Password Sharing configuration.
+ */
+export interface PasswordSharing {
+    /**
+     * Password Sharing format.
+     */
+    format: PasswordFormat;
+    /**
+     * Certificate of the Password.
+     */
+    certificate?: string;
 }
 
 /**
@@ -235,6 +285,31 @@ export interface ActionUpdateInterface {
      * Endpoint configuration of the Action.
      */
     endpoint?: Partial<EndpointInterface>;
+    /**
+     * Rule configuration of the Action.
+     */
+    rule?: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
+}
+
+/**
+ *  Pre Update Password Action Update configuration.
+ */
+export interface PreUpdatePasswordActionUpdateInterface extends ActionUpdateInterface {
+    /**
+     * Password sharing type of the updating action.
+     */
+    passwordSharing?: PasswordSharingUpdate;
+}
+
+/**
+ *  Password Sharing Format in Update configuration
+ */
+export interface PasswordSharingUpdate {
+    /**
+     * Password Sharing format.
+     */
+    format?: PasswordFormat;
+    certificate?: string;
 }
 
 /**
@@ -288,7 +363,7 @@ export interface ActionTypesCountInterface {
 /**
  *  Action config form property Interface.
  */
-export interface ActionConfigFormPropertyInterface {
+export interface ActionConfigFormPropertyInterface extends EndpointConfigFormPropertyInterface {
     /**
      * Id of the Action.
      */
@@ -297,6 +372,13 @@ export interface ActionConfigFormPropertyInterface {
      * Name of the Action.
      */
     name: string;
+    /**
+     * Rule of the Action.
+     */
+    rule?: RuleWithoutIdInterface
+}
+
+export interface EndpointConfigFormPropertyInterface {
     /**
      * Endpoint Uri of the Action.
      */
@@ -328,6 +410,20 @@ export interface ActionConfigFormPropertyInterface {
 }
 
 /**
+ *  Pre Update Password Action config form property Interface.
+ */
+export interface PreUpdatePasswordActionConfigFormPropertyInterface extends ActionConfigFormPropertyInterface {
+    /**
+     * Password Sharing format.
+     */
+    passwordSharing: PasswordFormat;
+    /**
+     * Certificate of the Password.
+     */
+    certificate: string;
+}
+
+/**
  *  Action Type card info Interface.
  */
 export interface ActionTypeCardInterface {
@@ -338,7 +434,7 @@ export interface ActionTypeCardInterface {
     /**
      * Feature status label of the Action type.
      */
-    featureStatusLabel: FeatureStatusLabel,
+    featureStatusKey: string,
     /**
      * Heading of the Action type.
      */

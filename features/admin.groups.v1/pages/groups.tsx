@@ -17,16 +17,16 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { getAUserStore } from "@wso2is/admin.core.v1/api/user-store"; // No specific rule found
 import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    SharedUserStoreUtils,
-    UIConstants,
-    UserStoreProperty,
-    getAUserStore,
-    getEmptyPlaceholderIllustrations
-} from "@wso2is/admin.core.v1";
+    AdvancedSearchWithBasicFilters
+} from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters"; // No specific rule found
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui"; // No specific rule found
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants"; // No specific rule found
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { UserStoreProperty } from "@wso2is/admin.core.v1/models/user-store";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { commonConfig, groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
@@ -101,7 +101,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
     const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
-    const [ paginatedGroups, setPaginatedGroups ] = useState<GroupsInterface[]>([]);
+    const [ paginatedGroups, setPaginatedGroups ] = useState<GroupsInterface[]>(undefined);
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(GROUPS_SORTING_OPTIONS[ 0 ]);
 
     const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
@@ -243,6 +243,13 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
      * @param list - Role list.
      */
     const setGroupsPage = (offsetValue: number, itemLimit: number, list: GroupsInterface[]) => {
+
+        if (!list) {
+            setPaginatedGroups([]);
+
+            return;
+        }
+
         setPaginatedGroups(list?.slice(offsetValue, itemLimit + offsetValue));
     };
 

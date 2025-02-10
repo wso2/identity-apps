@@ -17,7 +17,8 @@
  */
 
 import Card from "@oxygen-ui/react/Card";
-import { AppState, getThemeVariables } from "@wso2is/admin.core.v1";
+import { getThemeVariables } from "@wso2is/admin.core.v1/api/theme";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import moment from "moment";

@@ -17,7 +17,9 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { AppState, AuthenticatorAccordion, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authenticator-accordion";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { RootOnlyComponent } from "@wso2is/admin.organizations.v1/components";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

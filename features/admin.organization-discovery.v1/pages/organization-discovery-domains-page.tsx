@@ -18,13 +18,11 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import { useRequiredScopes } from "@wso2is/access-control";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    history
-} from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -52,6 +50,8 @@ import {
     UpdateGovernanceConnectorConfigPropertyInterface,
     useGetGovernanceConnectorById
 } from "../../admin.server-configurations.v1";
+import addOrganizationDiscoveryConfig from "../api/add-organization-discovery-config";
+import deleteOrganizationDiscoveryConfig from "../api/delete-organization-discovery-config";
 import updateOrganizationDiscoveryConfig from "../api/update-organization-discovery-config";
 import useGetOrganizationDiscovery from "../api/use-get-organization-discovery";
 import useGetOrganizationDiscoveryConfig from "../api/use-get-organization-discovery-config";
@@ -84,7 +84,11 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
     const isEmailDomainDiscoveryForSelfRegFeatureEnabled: boolean = isFeatureEnabled(
         featureConfig?.organizationDiscovery,
         OrganizationDiscoveryConstants.FEATURE_DICTIONARY.get("ORGANIZATION_DISCOVERY_EMAIL_DOMAIN_FOR_SELF_REG"));
-    const isReadOnly: boolean = !useRequiredScopes(featureConfig?.organizationDiscovery?.scopes?.update);
+    const hasUpdateScopes: boolean = useRequiredScopes(featureConfig?.organizationDiscovery?.scopes?.update);
+    const hasCreateScopes: boolean = useRequiredScopes(featureConfig?.organizationDiscovery?.scopes?.create);
+    const hasDeleteScopes: boolean = useRequiredScopes(featureConfig?.organizationDiscovery?.scopes?.delete);
+    // To preserve backward compatibility with old console roles.
+    const isReadOnly: boolean = !hasUpdateScopes && !(hasCreateScopes && hasDeleteScopes);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -267,50 +271,123 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
             });
         }
 
-        updateOrganizationDiscoveryConfig(updateData)
-            .then(() => {
-                dispatch(
-                    addAlert({
-                        description: data.checked ? t(
-                            "organizationDiscovery:notifications." +
-                            "enableEmailDomainDiscovery.success.description"
-                        ) : t(
-                            "organizationDiscovery:notifications." +
-                            "disableEmailDomainDiscovery.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: data.checked ? t(
-                            "organizationDiscovery:notifications." +
-                            "enableEmailDomainDiscovery.success.message"
-                        ) : t(
-                            "organizationDiscovery:notifications." +
-                            "disableEmailDomainDiscovery.success.message"
-                        )
-                    })
-                );
+        // To preserve backward compatibility with old console roles.
+        if (hasUpdateScopes) {
+            updateOrganizationDiscoveryConfig(updateData)
+                .then(() => {
+                    dispatch(
+                        addAlert({
+                            description: data.checked ? t(
+                                "organizationDiscovery:notifications." +
+                                "enableEmailDomainDiscovery.success.description"
+                            ) : t(
+                                "organizationDiscovery:notifications." +
+                                "disableEmailDomainDiscovery.success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: data.checked ? t(
+                                "organizationDiscovery:notifications." +
+                                "enableEmailDomainDiscovery.success.message"
+                            ) : t(
+                                "organizationDiscovery:notifications." +
+                                "disableEmailDomainDiscovery.success.message"
+                            )
+                        })
+                    );
 
-                mutateOrganizationDiscoveryConfigFetchRequest();
-            })
-            .catch(() => {
-                dispatch(
-                    addAlert({
-                        description: data.checked ? t(
-                            "organizationDiscovery:notifications." +
-                            "enableEmailDomainDiscovery.error.description"
-                        ) : t(
-                            "organizationDiscovery:notifications." +
-                            "disableEmailDomainDiscovery.error.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: data.checked ? t(
-                            "organizationDiscovery:notifications." +
-                            "enableEmailDomainDiscovery.error.message"
-                        ) : t(
-                            "organizationDiscovery:notifications." +
-                            "disableEmailDomainDiscovery.error.message"
-                        )
+                    mutateOrganizationDiscoveryConfigFetchRequest();
+                })
+                .catch(() => {
+                    dispatch(
+                        addAlert({
+                            description: data.checked ? t(
+                                "organizationDiscovery:notifications." +
+                                "enableEmailDomainDiscovery.error.description"
+                            ) : t(
+                                "organizationDiscovery:notifications." +
+                                "disableEmailDomainDiscovery.error.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: data.checked ? t(
+                                "organizationDiscovery:notifications." +
+                                "enableEmailDomainDiscovery.error.message"
+                            ) : t(
+                                "organizationDiscovery:notifications." +
+                                "disableEmailDomainDiscovery.error.message"
+                            )
+                        })
+                    );
+                });
+        } else if (hasCreateScopes && hasDeleteScopes) {
+            if (data.checked) {
+                addOrganizationDiscoveryConfig(updateData)
+                    .then(() => {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "organizationDiscovery:notifications." +
+                                    "enableEmailDomainDiscovery.success.description"
+                                ),
+                                level: AlertLevels.SUCCESS,
+                                message: t(
+                                    "organizationDiscovery:notifications." +
+                                    "enableEmailDomainDiscovery.success.message"
+                                )
+                            })
+                        );
+
+                        mutateOrganizationDiscoveryConfigFetchRequest();
                     })
-                );
-            });
+                    .catch(() => {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "organizationDiscovery:notifications." +
+                                    "enableEmailDomainDiscovery.error.description"
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "organizationDiscovery:notifications." +
+                                    "enableEmailDomainDiscovery.error.message"
+                                )
+                            })
+                        );
+                    });
+            } else {
+                deleteOrganizationDiscoveryConfig()
+                    .then(() => {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "organizationDiscovery:notifications." +
+                                    "disableEmailDomainDiscovery.success.description"
+                                ),
+                                level: AlertLevels.SUCCESS,
+                                message: t(
+                                    "organizationDiscovery:notifications." +
+                                    "disableEmailDomainDiscovery.success.message"
+                                )
+                            })
+                        );
+
+                        mutateOrganizationDiscoveryConfigFetchRequest();
+                    })
+                    .catch(() => {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "organizationDiscovery:notifications." +
+                                    "disableEmailDomainDiscovery.error.description"
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "organizationDiscovery:notifications." +
+                                    "disableEmailDomainDiscovery.error.message"
+                                )
+                            })
+                        );
+                    });
+            }
+        }
     };
 
     /**
@@ -368,7 +445,7 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                                     label={ t("organizationDiscovery:selfRegistration.label") }
                                     listen={ (value: boolean) => handleEmailDomainBasedSelfRegistration(value) }
                                     checked={ isEmailDomainBasedSelfRegistrationEnabled }
-                                    disabled={ !isSelfRegEnabled }
+                                    disabled={ !isSelfRegEnabled || !hasUpdateScopes }
                                     width={ 16 }
                                     data-testid={ `${testId}-notify-account-confirmation` }
                                     hint={ isSelfRegEnabled && t("organizationDiscovery:selfRegistration.labelHint") }

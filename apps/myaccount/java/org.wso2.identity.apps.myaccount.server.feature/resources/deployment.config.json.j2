@@ -121,6 +121,9 @@
     {% elif legacy_authz_runtime.enable is defined %}
     "isSaas": {{ legacy_authz_runtime.enable }},
     {% endif %}
+    {% if myaccount.proxy_context_path is defined %}
+    "proxyContextPath": "{{ myaccount.proxy_context_path }}",
+    {% endif %}
     "session": {
         {% if myaccount.session.params is defined %}
             {% for param, value in myaccount.session.params.items() %}
@@ -377,6 +380,9 @@
             {% endfor %}
             {% endif %}
         },
+        {% if scim2.custom_user_schema_uri is defined %}
+        "customUserSchemaURI": "{{ scim2.custom_user_schema_uri }}",
+        {% endif %}
         "privacyPolicyConfigs": {
             {% if myaccount.privacy_policy_configs.items() is defined %}
             {% for key, value in myaccount.privacy_policy_configs.items() %}

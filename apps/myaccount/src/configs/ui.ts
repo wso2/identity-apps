@@ -49,6 +49,9 @@ import { ReactComponent as MonitorIcon } from "../themes/default/assets/images/i
 import { ReactComponent as MyAccountIcon } from "../themes/default/assets/images/icons/myaccount-icon.svg";
 import { ReactComponent as PackageIcon } from "../themes/default/assets/images/icons/package.svg";
 import {
+    ReactComponent as PushAuthenticatorAppIcon
+} from "../themes/default/assets/images/icons/push-authenticator-app-icon.svg";
+import {
     ReactComponent as SecurityQuestionsIcon
 } from "../themes/default/assets/images/icons/security-questions-icon.svg";
 import { ReactComponent as SMSIcon } from "../themes/default/assets/images/icons/sms-icon.svg";
@@ -153,6 +156,7 @@ export const getMFAIcons = (): {
     authenticatorApp: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     backupCodes: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     passkey: string;
+    pushAuthenticatorApp: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     sms: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     keyboard: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
  } => {
@@ -162,6 +166,7 @@ export const getMFAIcons = (): {
         backupCodes: BackupCodesIcon,
         keyboard: KeyboardIcon,
         passkey: PasskeyIcon,
+        pushAuthenticatorApp: PushAuthenticatorAppIcon,
         sms: SMSIcon
     };
 };

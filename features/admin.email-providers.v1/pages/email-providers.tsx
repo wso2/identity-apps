@@ -17,12 +17,10 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface
-} from "@wso2is/admin.core.v1";
-import { history } from "@wso2is/admin.core.v1/helpers";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -81,6 +79,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const isPushProviderFeatureEnabled: boolean = featureConfig?.pushProviders?.enabled;
 
     const pageContextRef : MutableRefObject<HTMLElement> = useRef(null);
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
@@ -423,7 +423,9 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
     };
 
     const handleBackButtonClick = () => {
-        history.push(`${AppConstants.getPaths().get("EMAIL_AND_SMS")}`);
+        history.push(isPushProviderFeatureEnabled
+            ? `${AppConstants.getPaths().get("NOTIFICATION_CHANNELS")}`
+            : `${AppConstants.getPaths().get("EMAIL_AND_SMS")}`);
     };
 
     const goToEmailTemplates = () => {
@@ -440,7 +442,9 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             pageHeaderMaxWidth={ true }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: t("extensions:develop.emailProviders.goBack")
+                text: isPushProviderFeatureEnabled
+                    ? t("extensions:develop.emailProviders.goBack")
+                    : t("extensions:develop.emailAndSms.goBack")
             } }
             action={
                 featureConfig.emailProviders?.enabled &&

@@ -17,7 +17,7 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
@@ -112,6 +112,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         return state.config.ui.features?.users?.disabledFeatures;
     });
 
+    const isUpdatingSharedProfilesEnabled: boolean = !userRolesDisabledFeatures?.includes(
+        UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_PROFILES")
+    );
+
     useEffect(() => {
         const userStore: string = user?.userName?.split("/").length > 1
             ? user?.userName?.split("/")[0]
@@ -120,8 +124,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
             || readOnlyUserStores?.includes(userStore?.toString())
             || !hasUsersUpdatePermissions
-            || user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
-            || user[ UserManagementConstants.CUSTOMSCHEMA ]?.isReadOnlyUser === "true"
+            || user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
+            || user[ SCIMConfigs.scim.systemSchema ]?.isReadOnlyUser === "true"
         ) {
             setReadOnly(true);
         }
@@ -137,9 +141,12 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     }, [ user ]);
 
     useEffect(() => {
-        if (user[ SCIMConfigs.scim.enterpriseSchema ]?.managedOrg) {
+        if (user[ SCIMConfigs.scim.systemSchema ]?.managedOrg) {
+            if (!isUpdatingSharedProfilesEnabled) {
+                setIsUserProfileReadOnly(true);
+            }
+
             setIsUserManagedByParentOrg(true);
-            setIsUserProfileReadOnly(true);
         }
     }, [ user ]);
 
@@ -218,7 +225,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         isUserManagedByParentOrg={ isUserManagedByParentOrg }
                         adminUserType={ AdminAccountTypes.INTERNAL }
                         allowDeleteOnly={
-                            user[ UserManagementConstants.CUSTOMSCHEMA ]?.isReadOnlyUser === "true"
+                            user[ SCIMConfigs.scim.systemSchema ]?.isReadOnlyUser === "true"
                         }
                         editUserDisclaimerMessage={ (
                             <Grid>

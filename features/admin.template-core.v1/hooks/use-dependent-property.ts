@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import get from "lodash-es/get";
 import set from "lodash-es/set";
 import { useSelector } from "react-redux";

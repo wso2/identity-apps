@@ -26,6 +26,7 @@ if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
         contextPath: contextPathGlobal,
         isAdaptiveAuthenticationAvailable: isAdaptiveAuthenticationAvailable,
         isOrganizationManagementEnabled: isOrganizationManagementEnabled,
+        proxyContextPath: proxyContextPathGlobal,
         serverOrigin: serverOriginGlobal,
         superTenant: superTenantGlobal,
         tenantPrefix: tenantPrefixGlobal

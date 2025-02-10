@@ -67,7 +67,7 @@ import {
     PayloadInterface,
     UserDetailsInterface,
     WizardStepInterface,
-    createEmptyUserDetails } from "../../models";
+    createEmptyUserDetails } from "../../models/user";
 import { generatePassword, getConfiguration, getUsernameConfiguration } from "../../utils";
 
 interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
@@ -683,7 +683,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     givenName: userInfo.firstName
                 },
                 profileUrl: userInfo.profileUrl,
-                [ SCIMConfigs.scim.enterpriseSchema ]: {
+                [ SCIMConfigs.scim.systemSchema ]: {
                     askPassword: "true"
                 },
                 userName: username

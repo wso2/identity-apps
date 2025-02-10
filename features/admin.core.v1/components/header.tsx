@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -51,12 +51,14 @@ import { ReactComponent as MyAccountIcon } from "../../themes/default/assets/ima
 import { ReactComponent as AskHelpIcon } from "../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
 import { ReactComponent as DocsIcon } from "../../themes/wso2is/assets/images/icons/docs-icon.svg";
 import { ReactComponent as BillingPortalIcon } from "../../themes/wso2is/assets/images/icons/dollar-icon.svg";
-import { AppConstants, OrganizationType } from "../constants";
-import { history } from "../helpers";
+import { AppConstants } from "../constants/app-constants";
+import { OrganizationType } from "../constants/organization-constants";
+import { history } from "../helpers/history";
 import useGlobalVariables from "../hooks/use-global-variables";
-import { ConfigReducerStateInterface } from "../models";
+import { ConfigReducerStateInterface } from "../models/reducer-state";
 import { AppState } from "../store";
-import { CommonUtils, EventPublisher } from "../utils";
+import { CommonUtils } from "../utils/common-utils";
+import { EventPublisher } from "../utils/event-publisher";
 import "./header.scss";
 
 /**
@@ -87,6 +89,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const privilegedUserAccountURL: string = useSelector(
         (state: AppState) => state.config.deployment.accountApp.tenantQualifiedPath
     );
+    const consumerAccountURL: string = useSelector((state: AppState) =>
+        state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const gettingStartedFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state.config.ui.features.gettingStarted);
@@ -100,7 +104,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
     const { tierName }: UseSubscriptionInterface = useSubscription();
 
-    const { organizationType } = useGetCurrentOrganizationType();
+    const { organizationType, isSubOrganization } = useGetCurrentOrganizationType();
 
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
@@ -307,6 +311,23 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         return !userOrganizationID || userOrganizationID === window["AppUtils"].getConfig().organizationName;
     };
 
+    /**
+     * Get the my account url based on the user.
+     *
+     * @returns my account url.
+     */
+    const getMyAccountUrl = (): string => {
+        if (isPrivilegedUser) {
+            return privilegedUserAccountURL;
+        }
+
+        if (isSubOrganization()) {
+            return consumerAccountURL;
+        }
+
+        return accountAppURL;
+    };
+
     const LOGO_IMAGE = () => {
         return (
             <Image
@@ -410,7 +431,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                             onClick={ () => {
                                 eventPublisher.publish("console-click-visit-my-account");
                                 window.open(
-                                    isPrivilegedUser ? privilegedUserAccountURL : accountAppURL,
+                                    getMyAccountUrl(),
                                     "_blank",
                                     "noopener"
                                 );

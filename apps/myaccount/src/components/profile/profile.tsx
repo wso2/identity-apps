@@ -89,6 +89,7 @@ import {
     AlertLevels,
     AuthStateInterface, BasicProfileInterface, ConfigReducerStateInterface,
     FeatureConfigInterface,
+    MultiValue,
     PreferenceConnectorResponse,
     PreferenceProperty,
     PreferenceRequest,
@@ -148,6 +149,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         state.authenticationInformation.profileInfo.isReadOnly);
     const hasLocalAccount: boolean = useSelector((state: AppState) => state.authenticationInformation.hasLocalAccount);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
@@ -178,6 +180,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         useState<{ value: string; schema?: ProfileSchema }>({ value: "" });
     const [ showMultiValuedFieldDeleteConfirmationModal, setShowMultiValuedFieldDeleteConfirmationModal ]
         = useState<boolean>(false);
+
+    const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.personalInfo?.disabledFeatures?.includes(
+        MyAccountProfileConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
+    );
+
     const handleMultiValuedFieldDeleteModalClose: () => void = useCallback(() => {
         setShowMultiValuedFieldDeleteConfirmationModal(false);
         setSelectedAttributeInfo({ value: "" });
@@ -363,8 +370,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     useEffect(() => {
 
         const getDisplayOrder = (schema: ProfileSchema): number => {
-            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE && !schema.displayOrder) return 6;
-            if (schema.name === MOBILE_NUMBERS_ATTRIBUTE && !schema.displayOrder) return 7;
+            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
+                && (!schema.displayOrder || schema.displayOrder == "0")) return 6;
+            if (schema.name === MOBILE_NUMBERS_ATTRIBUTE
+                && (!schema.displayOrder || schema.displayOrder == "0")) return 7;
 
             return schema.displayOrder ? parseInt(schema.displayOrder, 10) : -1;
         };
@@ -426,58 +435,46 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             tempProfileInfo.set(schema.name, primaryEmail);
                         }
                     } else {
-                        if (schema.extended
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
-                            tempProfileInfo.set(
-                                schema.name,
-                                profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                                    ? profileDetails?.profileInfo[
-                                        ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]
-                                    ]
-                                    : ""
-                            );
-
-                            return;
-                        }
-
-                        if (schema.extended
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]) {
-
-                            const multiValuedAttributes: string[] = [
-                                EMAIL_ADDRESSES_ATTRIBUTE,
-                                MOBILE_NUMBERS_ATTRIBUTE,
-                                VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
-                                VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
+                        if (schema.extended) {
+                            const schemaURIs: string[] = [
+                                ProfileConstants.SCIM2_ENT_USER_SCHEMA,
+                                ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA,
+                                userSchemaURI
                             ];
 
-                            if (multiValuedAttributes.includes(schemaNames[0])) {
+                            for (const schemaURI of schemaURIs) {
+                                if (profileDetails?.profileInfo[schemaURI]?.[schemaNames[0]]) {
 
-                                const attributeValue: string | string[] =
-                                    profileDetails?.profileInfo[
-                                        ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]?.[schemaNames[0]];
+                                    const multiValuedAttributes: string[] = [
+                                        EMAIL_ADDRESSES_ATTRIBUTE,
+                                        MOBILE_NUMBERS_ATTRIBUTE,
+                                        VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
+                                        VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
+                                    ];
 
-                                const formattedValue: string = Array.isArray(attributeValue)
-                                    ? attributeValue.join(",")
-                                    : "";
+                                    if (schemaURI === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA
+                                        && multiValuedAttributes.includes(schemaNames[0])) {
+                                        const attributeValue: string | string[] =
+                                            profileDetails?.profileInfo[schemaURI]?.[schemaNames[0]];
 
-                                tempProfileInfo.set(schema.name, formattedValue);
+                                        const formattedValue: string = Array.isArray(attributeValue)
+                                            ? attributeValue.join(",")
+                                            : "";
 
-                                return;
+                                        tempProfileInfo.set(schema.name, formattedValue);
+
+                                        return;
+                                    }
+
+                                    tempProfileInfo.set(
+                                        schema.name,
+                                        profileDetails?.profileInfo[schemaURI]?.[schemaNames[0]] ?? ""
+                                    );
+
+                                    return;
+                                }
                             }
-                            tempProfileInfo.set(
-                                schema.name,
-                                profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                                    ? profileDetails?.profileInfo[
-                                        ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA
-                                    ][schemaNames[0]]
-                                    : ""
-                            );
-
-                            return;
                         }
-
                         tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]]);
                     }
                 } else {
@@ -507,14 +504,20 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             }
                         }
                     } else {
-                        if (schema.extended) {
-                            tempProfileInfo.set(schema.name,
-                                profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]
-                                    ? profileDetails
-                                        ?.profileInfo[
-                                            ProfileConstants.SCIM2_ENT_USER_SCHEMA
-                                        ][schemaNames[0]][schemaNames[1]]
-                                    : "");
+                        if (schema.extended
+                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]) {
+                            tempProfileInfo.set(
+                                schema.name,
+                                profileDetails.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][
+                                    schemaNames[1]]
+                                ?? "");
+                        } else if (schema.extended &&
+                            profileDetails?.profileInfo[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[schemaNames[0]]) {
+                            tempProfileInfo.set(
+                                schema.name,
+                                profileDetails.profileInfo[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][schemaNames[0]][
+                                    schemaNames[1]]
+                                ?? "");
                         } else {
                             const subValue: BasicProfileInterface = profileDetails.profileInfo[schemaNames[0]]
                                 && profileDetails.profileInfo[schemaNames[0]].find(
@@ -639,9 +642,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 let primaryValue: string | null;
 
                 if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-                    primaryValue = profileDetails?.profileInfo?.emails?.length > 0
-                        ? profileDetails?.profileInfo?.emails[0]
-                        : null;
+                    primaryValue = profileDetails.profileInfo?.emails?.find(
+                        (subAttribute: string) => typeof subAttribute === "string");
                 } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
                     primaryValue = profileInfo.get(MOBILE_ATTRIBUTE);
                 }
@@ -660,16 +662,27 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 // If no primary value is set, set the first value as the primary value.
                 if (isEmpty(primaryValue) && !isEmpty(currentValues)) {
                     if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+                        const subAttributes: MultiValue[] = extractSubAttributes(EMAIL_ATTRIBUTE);
+
                         value = {
                             ...value,
-                            [EMAIL_ATTRIBUTE]: [ currentValues[0] ]
+                            [EMAIL_ATTRIBUTE]: [
+                                ...subAttributes,
+                                currentValues[0]
+                            ]
                         };
                     } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+
+                        const filteredSubAttributes: MultiValue[] = extractSubAttributes(
+                            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))
+                            .filter((attr: MultiValue) => attr?.type !== MyAccountProfileConstants.MOBILE);
+
                         value = {
                             ...value,
                             [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                                ...filteredSubAttributes,
                                 {
-                                    type: "mobile",
+                                    type: MyAccountProfileConstants.MOBILE,
                                     value: currentValues[0]
                                 }
                             ]
@@ -700,7 +713,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 if (values.get(formName)) {
                     value = {
                         ...value,
-                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                        [ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]: {
                             "verifyEmail": true
                         }
                     };
@@ -713,6 +726,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     primaryValue = profileDetails.profileInfo[schemaNames[0]]
                         && profileDetails.profileInfo[schemaNames[0]]
                             .find((subAttribute: string) => typeof subAttribute === "string");
+                    attributeValues.push(primaryValue);
                 }
 
                 // List of sub attributes.
@@ -731,7 +745,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 value = {
                     [schemaNames[0]]: [
                         ...attributeValues,
-                        primaryValue,
                         {
                             type: schemaNames[1],
                             value: values.get(formName)
@@ -742,7 +755,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 if (primaryValue) {
                     value = {
                         ...value,
-                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                        [ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]: {
                             "verifyEmail": true
                         }
                     };
@@ -940,6 +953,21 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     /**
+     * Extracts sub-attributes (objects) from the profile details.
+     *
+     * @param schemaKey - The attribute key to extract sub-attributes from.
+     * @returns Array of sub-attributes (objects).
+     */
+    const extractSubAttributes = (schemaKey: string): MultiValue[] => {
+
+        const attributes: MultiValue[] = profileDetails?.profileInfo?.[schemaKey];
+
+        return Array.isArray(attributes)
+            ? attributes.filter((subAttribute: unknown) => typeof subAttribute === "object")
+            : [];
+    };
+
+    /**
      * Assign primary email address or mobile number the multi-valued attribute.
      *
      * @param schema - Schema of the attribute
@@ -960,13 +988,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
 
+            const subAttributes: MultiValue[] = extractSubAttributes(EMAIL_ATTRIBUTE);
+
             data.Operations[0].value = {
-                [EMAIL_ATTRIBUTE]: [ attributeValue ]
+                [EMAIL_ATTRIBUTE]: [
+                    ...subAttributes,
+                    attributeValue
+                ]
             };
 
-            const existingPrimaryEmail: string = profileDetails?.profileInfo?.emails?.length > 0
-                ? profileDetails?.profileInfo?.emails[0]
-                : null;
+            const existingPrimaryEmail: string = profileDetails.profileInfo?.emails?.find(
+                (subAttribute: string) => typeof subAttribute === "string");
             const existingEmailList: string[] = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
 
             if (existingPrimaryEmail && !existingEmailList.includes(existingPrimaryEmail)) {
@@ -982,10 +1014,15 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             }
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
 
+            const filteredSubAttributes: MultiValue[] = extractSubAttributes(
+                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))
+                .filter((attr: MultiValue) => attr?.type !== MyAccountProfileConstants.MOBILE);
+
             data.Operations[0].value = {
                 [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                    ...filteredSubAttributes,
                     {
-                        type: "mobile",
+                        type: MyAccountProfileConstants.MOBILE,
                         value: attributeValue
                     }
                 ]
@@ -1058,9 +1095,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             const emailList: string[] = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
             const updatedEmailList: string[] = emailList.filter((email: string) => email !== attributeValue);
-            const primaryEmail: string = profileDetails?.profileInfo?.emails?.length > 0
-                ? profileDetails?.profileInfo?.emails[0]
-                : null;
+            const primaryEmail: string = profileDetails?.profileInfo?.emails?.find(
+                (subAttribute: string) => typeof subAttribute === "string");
 
             data.Operations[0].value = {
                 [schema.schemaId] : {
@@ -1069,10 +1105,15 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             };
 
             if (attributeValue === primaryEmail) {
+                const subAttributes: MultiValue[] = extractSubAttributes(EMAIL_ATTRIBUTE);
+
                 data.Operations.push({
                     op: "replace",
                     value: {
-                        [EMAIL_ATTRIBUTE]: []
+                        [EMAIL_ATTRIBUTE]: [
+                            ...subAttributes,
+                            ""
+                        ]
                     }
                 });
             }
@@ -1082,13 +1123,20 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             const primaryMobile: string = profileInfo.get(MOBILE_ATTRIBUTE);
 
             if (attributeValue === primaryMobile) {
+                const filteredSubAttributes: MultiValue[] = extractSubAttributes(
+                    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))
+                    .filter((attr: MultiValue) => attr?.type !== MyAccountProfileConstants.MOBILE);
+
                 data.Operations.push({
                     op: "replace",
                     value: {
-                        [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [ {
-                            type: "mobile",
-                            value: ""
-                        } ]
+                        [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                            ...filteredSubAttributes,
+                            {
+                                type: MyAccountProfileConstants.MOBILE,
+                                value: ""
+                            }
+                        ]
                     }
                 });
             }
@@ -1211,6 +1259,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * @returns Schema form.
      */
     const generateSchemaForm = (schema: ProfileSchema, index: number): JSX.Element => {
+        const { displayName, name } = schema;
 
         // Define schemas to hide.
         const attributesToHide: string[] = isMultipleEmailAndMobileNumberEnabled === true
@@ -1226,6 +1275,21 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         if (!showEmail && schema?.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             return;
+        }
+
+        // If the feature is enabled, check the supportedByDefault flag.
+        // Hide the field if the schema is not supported by default.
+        // This does not apply to the username field. It is always shown.
+        if (!isDistinctAttributeProfilesDisabled && name !== MyAccountProfileConstants.USERNAME_CLAIM_NAME) {
+            let resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+
+            if (schema?.profiles?.endUser?.supportedByDefault !== undefined) {
+                resolveSupportedByDefaultValue = schema?.profiles?.endUser?.supportedByDefault;
+            }
+
+            if (!resolveSupportedByDefaultValue) {
+                return;
+            }
         }
 
         /*
@@ -1247,7 +1311,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
          * the value matches.
          */
         const isProfileUsernameReadonly: boolean = config?.ui?.isProfileUsernameReadonly;
-        const { displayName, name } = schema;
 
         if (isProfileUsernameReadonly) {
             const usernameClaim: string = "username";
@@ -1474,10 +1537,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             pendingEmailAddress = profileDetails?.profileInfo?.pendingEmails?.length > 0
                 ? profileDetails?.profileInfo?.pendingEmails[0]?.value
                 : null;
-            primaryAttributeValue = profileDetails?.profileInfo?.emails?.length > 0
-                ? profileDetails?.profileInfo?.emails[0]
-                : null;
-            primaryAttributeValue = profileDetails?.profileInfo?.emails[0];
+            primaryAttributeValue = profileInfo.get(EMAIL_ATTRIBUTE);
             verificationEnabled = isEmailVerificationEnabled;
             primaryAttributeSchema = getSchemaFromName(EMAIL_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
@@ -1485,7 +1545,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             attributeValueList = profileInfo?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
             verifiedAttributeValueList = profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
-            primaryAttributeValue = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"));
+            primaryAttributeValue = profileInfo?.get(MOBILE_ATTRIBUTE);
             verificationEnabled = isMobileVerificationEnabled;
             primaryAttributeSchema = getSchemaFromName(MOBILE_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;
@@ -1580,11 +1640,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                             <TableCell align="left">
                                                 <div className="table-c1">
                                                     <Typography
-                                                        className={ `c1-value ${
-                                                            schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                                                                ? "mobile-label"
-                                                                : null}`
-                                                        }
+                                                        className="c1-value"
                                                         data-componentid={
                                                             `${testId}-editing-section-${
                                                                 schema.name.replace(".", "-")
@@ -1979,9 +2035,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             pendingEmailAddress = profileDetails?.profileInfo?.pendingEmails?.length > 0
                 ? profileDetails?.profileInfo?.pendingEmails[0]?.value
                 : null;
-            primaryAttributeValue = profileDetails?.profileInfo?.emails?.length > 0
-                ? profileDetails?.profileInfo?.emails[0]
-                : null;
+            primaryAttributeValue = profileInfo.get(EMAIL_ATTRIBUTE);
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             verificationEnabled = isMobileVerificationEnabled;
@@ -2019,10 +2073,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             return (
                 <div className="dropdown-row">
                     <Typography
-                        className={ `dropdown-label ${schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                            ? "mobile-label"
-                            : null}`
-                        }
+                        className="dropdown-label"
                         data-componentid={ `${testId}-readonly-section-${schema.name.replace(".", "-")}-value-${index}`
                         }
                     >

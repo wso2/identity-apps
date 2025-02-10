@@ -17,14 +17,12 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
@@ -55,11 +53,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
 import {
+    ReactComponent as RemoveCircleSolidIcon
+} from "../../themes/default/assets/images/icons/solid-icons/remove-circle.svg";
+import {
     ReactComponent as RoundedLockSolidIcon
 } from "../../themes/default/assets/images/icons/solid-icons/rounded-lock.svg";
 import { deleteUser } from "../api";
 import { ACCOUNT_LOCK_REASON_MAP, UserManagementConstants } from "../constants";
-import { UserBasicInterface, UserListInterface } from "../models";
+import { UserBasicInterface, UserListInterface } from "../models/user";
 import { UserManagementUtils } from "../utils/user-management-utils";
 
 /**
@@ -173,6 +174,9 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
     const isAuthUserPrivileged: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const isUpdatingSharedProfilesEnabled: boolean = !featureConfig?.users?.disabledFeatures?.includes(
+        UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_PROFILES")
+    );
 
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
@@ -227,7 +231,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     };
 
     const renderUserIdp = (user: UserBasicInterface): string => {
-        if (user[SCIMConfigs?.scim?.enterpriseSchema]?.managedOrg) {
+        if (user[SCIMConfigs?.scim?.systemSchema]?.managedOrg) {
             return UserManagementConstants.MANAGED_BY_PARENT_TEXT;
         }
 
@@ -235,7 +239,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             ? user?.userName?.split("/")[0]?.toUpperCase()
             : userstoresConfig.primaryUserstoreName;
 
-        const userIdp: string = user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType;
+        const userIdp: string = user[ SCIMConfigs.scim.systemSchema ]?.idpType;
 
         if (!userIdp) {
             return "N/A";
@@ -256,17 +260,37 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
     /**
      * Returns a locked icon if the account is locked.
+     * Returns a cross icon if the account is disabled.
      *
      * @param user - each admin user belonging to a row of the table.
      * @returns the locked icon.
      */
-    const resolveAccountLockStatus = (user: UserBasicInterface): ReactNode => {
+    const resolveAccountStatus = (user: UserBasicInterface): ReactNode => {
         const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
             user[userConfig.userProfileSchema]?.accountLocked === true;
+        const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true" ||
+            user[userConfig.userProfileSchema]?.accountDisabled === true;
         const accountLockedReason: string = user[userConfig.userProfileSchema]?.lockedReason;
 
         const accountLockedReasonContent: string = ACCOUNT_LOCK_REASON_MAP[accountLockedReason]
             ?? ACCOUNT_LOCK_REASON_MAP["DEFAULT"];
+
+        if (accountDisabled) {
+            return (
+                <Popup
+                    trigger={ (
+                        <Icon
+                            className="disabled-icon"
+                            size="small"
+                        >
+                            <RemoveCircleSolidIcon/>
+                        </Icon>
+                    ) }
+                    content={ t("user:profile.accountDisabled") }
+                    inverted
+                />
+            );
+        }
 
         if (accountLocked) {
             return (
@@ -321,13 +345,13 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 spaced="right"
                                 data-suppress=""
                             />
-                            { resolveAccountLockStatus(user) }
+                            { resolveAccountStatus(user) }
                             <Header.Content className="pl-0">
                                 <div>
                                     { header as ReactNode }
                                     {
                                         userConfig?.disableManagedByColumn
-                                            && user[SCIMConfigs?.scim?.enterpriseSchema]?.managedOrg
+                                            && user[SCIMConfigs?.scim?.systemSchema]?.managedOrg
                                             && (
                                                 <Label size="mini" className="client-id-label">
                                                     { t("parentOrgInvitations:invitedUserLabel") }
@@ -462,7 +486,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg
+                    || (!isUpdatingSharedProfilesEnabled && user[SCIMConfigs.scim.systemSchema]?.managedOrg)
                         ? "eye"
                         : "pencil alternate";
                 },
@@ -477,7 +501,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg
+                    || (!isUpdatingSharedProfilesEnabled && user[SCIMConfigs.scim.systemSchema]?.managedOrg)
                         ? t("common:view")
                         : t("common:edit");
                 },
@@ -634,7 +658,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     data-componentid={ `${ testId }-confirmation-modal-content` }
                 >
                     {
-                        deletingUser && deletingUser[SCIMConfigs.scim.enterpriseSchema]?.userSourceId
+                        deletingUser && deletingUser[SCIMConfigs.scim.systemSchema]?.userSourceId
                             ? t("user:deleteJITUser.confirmationModal.content")
                             : t("user:deleteUser.confirmationModal.content")
                     }

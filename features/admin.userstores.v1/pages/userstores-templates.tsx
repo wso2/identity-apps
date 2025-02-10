@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { AppConstants, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

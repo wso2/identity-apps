@@ -23,10 +23,12 @@ import TableCell from "@oxygen-ui/react/TableCell";
 import TableHead from "@oxygen-ui/react/TableHead";
 import TableRow from "@oxygen-ui/react/TableRow";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
-import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     ConnectorPropertyInterface,
@@ -43,14 +45,17 @@ import {
     AlertInterface,
     AlertLevels,
     Claim,
+    ClaimDialect,
     ExternalClaim,
     ProfileSchemaInterface,
+    SharedProfileValueResolvingMethod,
     TestableComponentInterface,
     UniquenessScope
 } from "@wso2is/core/models";
 import { Property } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
+import { DropDownItemInterface } from "@wso2is/form/src";
 import {
     ConfirmationModal,
     CopyInputField,
@@ -79,6 +84,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
+import useGetClaimDialects from "../../../api/use-get-claim-dialects";
 import { ClaimManagementConstants } from "../../../constants";
 
 /**
@@ -136,7 +142,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
+
     const hasAttributeUpdatePermissions: boolean = useRequiredScopes(featureConfig?.attributeDialects?.scopes?.update);
+    const isUpdatingSharedProfilesEnabled: boolean = !featureConfig?.attributeDialects?.disabledFeatures?.includes(
+        "attributeDialects.sharedProfileValueResolvingMethod"
+    );
     const [ hideSpecialClaims, setHideSpecialClaims ] = useState<boolean>(true);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
@@ -161,6 +172,67 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const { data: validationData } = useValidationConfigData();
 
     const { UIConfig } = useUIConfig();
+
+    const sharedProfileValueResolvingMethodOptions: DropDownItemInterface[] = [
+        {
+            text: t("claims:local.forms." +
+                "sharedProfileValueResolvingMethod.options.fromOrigin"),
+            value: SharedProfileValueResolvingMethod.FROM_ORIGIN
+        },
+        {
+            text: t("claims:local.forms.sharedProfileValueResolvingMethod." +
+                "options.fromSharedProfile"),
+            value: SharedProfileValueResolvingMethod.FROM_SHARED_PROFILE
+        },
+        {
+            text: t("claims:local.forms.sharedProfileValueResolvingMethod." +
+                "options.fromFirstFoundInHierarchy"),
+            value: SharedProfileValueResolvingMethod.FROM_FIRST_FOUND_IN_HIERARCHY
+        }
+    ];
+    const {
+        data: fetchedDialects,
+        error: fetchDialectsRequestError
+    } = useGetClaimDialects(null);
+
+    // Extract custom user schema ID.
+    const customUserSchemaID: string = useMemo(() => fetchedDialects?.find(
+        (dialect: ClaimDialect) => dialect?.dialectURI === userSchemaURI
+    )?.id || null, [ fetchedDialects ]);
+
+    /**
+     * Handle the fetch dialects request error.
+     */
+    useEffect(() => {
+        if (fetchDialectsRequestError) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:manage.features.claims.dialects.notifications.fetchDialects" +
+                            ".genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "console:manage.features.claims.dialects.notifications.fetchDialects" +
+                            ".genericError.message"
+                    )
+                })
+            );
+        }
+    }, [ fetchDialectsRequestError ]);
+
+    /**
+     * Update attribute profile states from claims
+     */
+    useEffect(() => {
+        setIsConsoleRequired(claim?.profiles?.console?.required ?? claim?.required);
+        setIsEndUserRequired(claim?.profiles?.endUser?.required ?? claim?.required);
+        setIsSelfRegistrationRequired(claim?.profiles?.selfRegistration?.required ?? claim?.required);
+
+        setIsConsoleReadOnly(claim?.profiles?.console?.readOnly ?? claim?.readOnly);
+        setIsEndUserReadOnly(claim?.profiles?.endUser?.readOnly ?? claim?.readOnly);
+        setIsSelfRegistrationReadOnly(claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly);
+    }, [ claim ]);
 
     /**
      * Get username configuration.
@@ -266,7 +338,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 }
             }).finally(() => setMappingChecked(true));
         }
-    }, [ claim ]);
+    }, [ claim, customUserSchemaID ]);
 
     useEffect(() => {
         getConnectorDetails(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
@@ -340,8 +412,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE"));
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE_USER"));
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"));
-        if (SCIMConfigs.scimDialectID?.customEnterpriseSchema) {
-            dialectID.push(SCIMConfigs.scimDialectID.customEnterpriseSchema);
+        dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_SYSTEM"));
+
+        if (customUserSchemaID) {
+            dialectID.push(customUserSchemaID);
         }
 
         return dialectID;
@@ -466,6 +540,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
                 regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
                 required: values?.required !== undefined && !values?.readOnly ? !!values.required : false,
+                sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod as
+                    SharedProfileValueResolvingMethod || SharedProfileValueResolvingMethod.FROM_ORIGIN,
                 supportedByDefault: values?.supportedByDefault !== undefined
                     ? !!values.supportedByDefault : claim?.supportedByDefault,
                 uniquenessScope: values?.uniquenessScope as UniquenessScope || UniquenessScope.NONE
@@ -518,10 +594,16 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
                 regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
                 required: values?.required !== undefined && !values?.readOnly ? !!values.required : false,
+                sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod as
+                    SharedProfileValueResolvingMethod || SharedProfileValueResolvingMethod.FROM_ORIGIN,
                 supportedByDefault: values?.supportedByDefault !== undefined
                     ? !!values.supportedByDefault : claim?.supportedByDefault,
                 uniquenessScope: values?.uniquenessScope as UniquenessScope || UniquenessScope.NONE
             };
+        }
+
+        if (isSystemClaim || !isUpdatingSharedProfilesEnabled) {
+            delete data.sharedProfileValueResolvingMethod;
         }
 
         setIsSubmitting(true);
@@ -776,18 +858,25 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     />
                 </TableCell>
                 <TableCell align="center">
-                    <Field.Checkbox
-                        ariaLabel="Read-only in self-registration"
-                        name="selfRegistrationReadOnly"
-                        required={ false }
-                        requiredErrorMessage=""
-                        defaultValue={ claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
-                        data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
-                        readOnly={ isSubOrganization() || isReadOnly }
-                        disabled={ isReadOnlyCheckboxDisabled }
-                        listen ={ (value: boolean) => {
-                            setIsSelfRegistrationReadOnly(value);
-                        } }
+                    <Tooltip
+                        trigger={ (
+                            <Field.Checkbox
+                                ariaLabel="Read-only in self-registration"
+                                name="selfRegistrationReadOnly"
+                                required={ false }
+                                requiredErrorMessage=""
+                                defaultValue={ claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
+                                data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
+                                readOnly
+                                listen ={ (value: boolean) => {
+                                    setIsSelfRegistrationReadOnly(value);
+                                } }
+                            />
+                        ) }
+                        content={
+                            t("claims:local.forms.profiles.selfRegistrationReadOnlyHint")
+                        }
+                        compact
                     />
                 </TableCell>
             </TableRow>
@@ -881,6 +970,22 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 minLength={ ClaimManagementConstants.REGEX_FIELD_MIN_LENGTH }
                                 hint={ t("claims:local.forms.regExHint") }
                                 readOnly={ isSubOrganization() || isReadOnly }
+                            />
+                        )
+                    }
+                    { isUpdatingSharedProfilesEnabled &&
+                        (
+                            <Field.Dropdown
+                                ariaLabel="shared-profile-value-resolving-method-dropdown"
+                                name={ ClaimManagementConstants.SHARED_PROFILE_VALUE_RESOLVING_METHOD_PROPERTY_NAME }
+                                label={ t("claims:local.forms.sharedProfileValueResolvingMethod.label") }
+                                data-componentid={ `${ testId }-form-shared-profile-value-resolving-method-dropdown` }
+                                hint={ t("claims:local.forms.sharedProfileValueResolvingMethod.hint") }
+                                disabled={ isSubOrganization() || isSystemClaim || isReadOnly }
+                                options={ sharedProfileValueResolvingMethodOptions }
+                                value={ claim?.sharedProfileValueResolvingMethod
+                                    || SharedProfileValueResolvingMethod.FROM_ORIGIN
+                                }
                             />
                         )
                     }

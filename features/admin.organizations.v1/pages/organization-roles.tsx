@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,14 +17,12 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    history
-} from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { CreateGroupMemberInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { CreateRoleInterface, CreateRoleMemberInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { IdentityAppsError } from "@wso2is/core/errors";
@@ -385,7 +383,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                 data-testid={ `${testId}-page-layout` }
                 backButton={ {
                     onClick: handleBackButtonClick,
-                    text: t("extensions:console.applicationRoles.roles.goBackToRoles")
+                    text: t("applicationRoles:roles.goBackToRoles")
                 } }
             >
                 { !isLoading ? (

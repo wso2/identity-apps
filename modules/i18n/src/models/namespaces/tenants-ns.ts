@@ -166,6 +166,10 @@ export interface TenantsNS {
     },
     edit: {
         backButton: string;
+        consoleURL: {
+            label: string;
+            hint: string;
+        };
         subtitle: string;
     };
     editTenant: {
@@ -286,9 +290,6 @@ export interface TenantsNS {
                     label: string;
                 };
                 edit: {
-                    label: string;
-                };
-                goToConsole: {
                     label: string;
                 };
                 more: {

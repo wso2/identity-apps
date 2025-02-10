@@ -18,7 +18,9 @@
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { getAllExternalClaims, getAllLocalClaims, getDialects } from "@wso2is/admin.claims.v1/api";
-import { AppState, EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { SubjectAttributeListItem } from "@wso2is/admin.identity-providers.v1/components/settings";
 import { useOIDCScopesList } from "@wso2is/admin.oidc-scopes.v1/api/oidc-scopes";

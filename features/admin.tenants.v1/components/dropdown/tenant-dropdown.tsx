@@ -33,8 +33,8 @@ import {
     useCheckFeatureStatus,
     useRequiredScopes
 } from "@wso2is/access-control";
-import { getMiscellaneousIcons } from "@wso2is/admin.core.v1/configs";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { getMiscellaneousIcons } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
@@ -263,11 +263,9 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             }).catch(() => {
                 dispatch(
                     addAlert({
-                        description: t("extensions:console.organizationInfo." +
-                        "notifications.getConfiguration.error.description"),
+                        description: t("organizations:notifications.getConfiguration.error.description"),
                         level: AlertLevels.ERROR,
-                        message: t("extensions:console.organizationInfo." +
-                        "notifications.getConfiguration.error.message")
+                        message: t("organizations:notifications.getConfiguration.error.message")
                     })
                 );
             });

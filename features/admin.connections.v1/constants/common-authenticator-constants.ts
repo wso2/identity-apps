@@ -31,12 +31,15 @@ export class CommonAuthenticatorConstants {
      */
     public static readonly CONNECTION_TEMPLATE_IDS: {
         APPLE: string;
+        CUSTOM_AUTHENTICATION: string;
         ENTERPRISE: string;
         EXPERT_MODE: string;
+        EXTERNAL_CUSTOM_AUTHENTICATION: string;
         FACEBOOK: string;
         GITHUB: string;
         GOOGLE: string;
         HYPR: string;
+        INTERNAL_CUSTOM_AUTHENTICATION: string;
         IPROOV: string;
         LINKEDIN: string;
         MICROSOFT: string;
@@ -45,14 +48,18 @@ export class CommonAuthenticatorConstants {
         SAML: string;
         SWE: string;
         TRUSTED_TOKEN_ISSUER: string;
+        TWO_FACTOR_CUSTOM_AUTHENTICATION: string;
     } = {
             APPLE: "apple-idp",
+            CUSTOM_AUTHENTICATION: "custom-authentication",
             ENTERPRISE: "enterprise-idp",
             EXPERT_MODE: "expert-mode-idp",
+            EXTERNAL_CUSTOM_AUTHENTICATION: "external-custom-authentication",
             FACEBOOK: "facebook-idp",
             GITHUB: "github-idp",
             GOOGLE: "google-idp",
             HYPR: "hypr-idp",
+            INTERNAL_CUSTOM_AUTHENTICATION: "internal-user-custom-authentication",
             IPROOV: "iproov-idp",
             LINKEDIN: "linkedin-idp",
             MICROSOFT: "microsoft-idp",
@@ -60,7 +67,8 @@ export class CommonAuthenticatorConstants {
             ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",
             SAML: "enterprise-saml-idp",
             SWE: "swe-idp",
-            TRUSTED_TOKEN_ISSUER: "trusted-token-issuer"
+            TRUSTED_TOKEN_ISSUER: "trusted-token-issuer",
+            TWO_FACTOR_CUSTOM_AUTHENTICATION: "two-factor-custom-authentication"
         };
 
     /**
@@ -86,4 +94,10 @@ export class CommonAuthenticatorConstants {
 
     public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY: string = "displayName";
     public static readonly PROVISIONING_CONNECTOR_GOOGLE: string = "googleapps";
+
+    public static readonly API_KEY_HEADER_REGEX: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9-.]+$/;
+    public static readonly IDENTIFIER_REGEX: RegExp = /^[a-zA-Z0-9_-]{3,}$/;
+    public static readonly DISPLAY_NAME_REGEX: RegExp = /^.{3,}$/;
+
+    public static readonly TEMPLATE_ID_FIELD: "templateId";
 }

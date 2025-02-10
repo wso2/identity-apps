@@ -19,3 +19,4 @@
 export { default as EmailOTPSecondFactorLoginSequence } from "./second-factor-email-otp-sequence.json";
 export { default as SMSOTPSecondFactorLoginSequence } from "./second-factor-sms-otp-sequence.json";
 export { default as TOTPSecondFactorLoginSequence } from "./second-factor-totp-sequence.json";
+export { default as PushAuthSecondFactorLoginSequence } from "./second-factor-push-auth-sequence.json";

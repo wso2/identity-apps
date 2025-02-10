@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
 import {
@@ -56,7 +56,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, DropdownItemProps, Grid, Menu, Placeholder, Segment } from "semantic-ui-react";
 import { IllustrationsPreview } from "./illustrations-preview";
-import * as LayoutDesignExtensions from "./layout-design-extensions/layout-design-extension-component-interface";
+import * as LayoutDesignExtensions from "./layout-design-extensions";
 import { LayoutSwatchAdapter } from "./layout-swatch/layout-swatch-adapter";
 import { ThemeSwatchUIConfigsInterface } from "./theme-swatch/theme-swatch";
 import { ThemeSwatchAdapter } from "./theme-swatch/theme-swatch-adapter";

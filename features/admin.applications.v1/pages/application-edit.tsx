@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,13 +29,20 @@ import { useRequiredScopes } from "@wso2is/access-control";
 import ApplicationTemplateMetadataProvider from
     "@wso2is/admin.application-templates.v1/provider/application-template-metadata-provider";
 import ApplicationTemplateProvider from "@wso2is/admin.application-templates.v1/provider/application-template-provider";
+import {
+    useGetAuthenticatorConnectedApps
+} from "@wso2is/admin.connections.v1/api/use-get-authenticator-connected-apps";
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
+    AppConstants
+} from "@wso2is/admin.core.v1/constants/app-constants";
+import {
     history
-} from "@wso2is/admin.core.v1";
+} from "@wso2is/admin.core.v1/helpers/history";
+import {
+    FeatureConfigInterface
+} from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
 import useGetExtensionTemplates from "@wso2is/admin.template-core.v1/api/use-get-extension-templates";
 import { ExtensionTemplateListInterface, ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
@@ -146,6 +153,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ callBackIdpID, setcallBackIdpID ] = useState<string>();
     const [ callBackIdpName, setcallBackIdpName ] = useState<string>();
     const [ callBackRedirect, setcallBackRedirect ] = useState<string>();
+    const [ isCallBackLocalAuthenticator, setIsCallBackLocalAuthenticator ] = useState<boolean>(false);
 
     const {
         data: application,
@@ -156,6 +164,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const {
         data: applicationInboundConfigs
     } = useGetApplicationInboundConfigs(applicationId, SupportedAuthProtocolName.OIDC, !!applicationId);
+
+    const {
+        mutate: mutateAuthenticatorConnectedApps
+    } = useGetAuthenticatorConnectedApps(callBackIdpID, isCallBackLocalAuthenticator);
 
     const [ viewBannerDetails, setViewBannerDetails ] = useState<boolean>(false);
     const [ displayBanner, setDisplayBanner ] = useState<boolean>(false);
@@ -412,6 +424,14 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
         setcallBackIdpID(idpInfo.id);
         setcallBackIdpName(idpInfo.name);
+        /**
+         * Check if the callback originates from a local authenticator.
+         * If it is, then redirects to /authenticators/<local-authenticator-id> route.
+         * Default case redirects to /connections/<idp-id> route.
+         * TODO: Refactor variables to match the generic use case of connectors including
+         * both IDPs and local authenticators.
+         */
+        setIsCallBackLocalAuthenticator(idpInfo.isLocalAuthenticator);
         idpInfo?.redirectTo && setcallBackRedirect(idpInfo.redirectTo);
     });
 
@@ -431,6 +451,31 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     }, [ featureConfig ]);
 
     /**
+     * Redirect back to either IDP edit page or local authenticator edit page.
+     * Currently only custom local authenticators are editable.
+     * TODO: Refactor variables to match the generic use case of connectors including
+     * both IDPs and local authenticators.
+     */
+    const handleConnectionEditPageRedirect = (): void => {
+        const state: { targetTab: string } = {
+            targetTab: ConnectionUIConstants.TabIds.CONNECTED_APPS
+        };
+
+        if (isCallBackLocalAuthenticator) {
+            mutateAuthenticatorConnectedApps();
+            history.push({
+                pathname: AppConstants.getPaths().get("AUTH_EDIT").replace(":id", callBackIdpID),
+                state: state.targetTab
+            });
+        } else {
+            history.push({
+                pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", callBackIdpID),
+                state: state.targetTab
+            });
+        }
+    };
+
+    /**
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
@@ -443,10 +488,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     state: ConnectionUIConstants.TabIds.CONNECTED_APPS
                 });
             } else {
-                history.push({
-                    pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", callBackIdpID),
-                    state: ConnectionUIConstants.TabIds.CONNECTED_APPS
-                });
+                handleConnectionEditPageRedirect();
             }
         }
     };

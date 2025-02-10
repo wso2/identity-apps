@@ -18,8 +18,9 @@
 
 import Typography from "@oxygen-ui/react/Typography";
 import { useRequiredScopes } from "@wso2is/access-control";
-import { AppState, FeatureConfigInterface, store  } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface  } from "@wso2is/admin.core.v1/models/config";
+import { AppState, store  } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -36,6 +37,7 @@ import { getConnectorCategories, getConnectorCategory } from "../api";
 import GovernanceConnectorCategoriesGrid from "../components/governance-connector-grid";
 import { ServerConfigurationsConstants } from "../constants";
 import {
+    ConnectorOverrideConfig,
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorInterface
 } from "../models";
@@ -226,9 +228,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const loadCategoryConnectors = (categoryId: string): Promise<GovernanceConnectorCategoryInterface | null> => {
         return getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
-                const connectorList: GovernanceConnectorInterface[] = response?.connectors?.filter(
+                let connectorList: GovernanceConnectorInterface[] = response?.connectors?.filter(
                     (connector: GovernanceConnectorInterface) =>
                         !serverConfigurationConfig.connectorsToHide.includes(connector.id));
+                const connectorOverrides: ConnectorOverrideConfig[] = GovernanceConnectorUtils
+                    .getConnectorPropertyOverrides();
 
                 // If there are no connectors, skip the rest of the logic.
                 if (!connectorList || connectorList.length < 1) {
@@ -244,6 +248,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                     connector.isCustom =  true;
                     connector.testId = `${ connector.name }-card`;
                 });
+
+                connectorList = GovernanceConnectorUtils.overrideConnectorProperties(connectorList, connectorOverrides);
 
                 // Group the connectors by category.
                 const connectorCategory: GovernanceConnectorCategoryInterface = {

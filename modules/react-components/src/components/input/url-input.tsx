@@ -513,8 +513,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     const resolveCORSStatusLabel = (url: string) => {
         const { origin, href } = URLUtils.urlComponents(url);
         const positive: boolean = isOriginIsKnownAndAllowed(url);
-        const isValid: boolean = (URLUtils.isURLValid(url, true) && (URLUtils.isHttpUrl(url) ||
-            URLUtils.isHttpsUrl(url)));
+        const isValid: boolean = (URLUtils.isURLValid(url, true) && (URLUtils.isHttpUrl(url, false) ||
+            URLUtils.isHttpsUrl(url, false)));
 
         /**
          * TODO : React Components should not depend on the product

@@ -18,16 +18,14 @@
 
 import { Show } from "@wso2is/access-control";
 import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    filterList,
-    history,
-    sortList
-} from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { filterList } from "@wso2is/admin.core.v1/utils/filter-list";
+import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";

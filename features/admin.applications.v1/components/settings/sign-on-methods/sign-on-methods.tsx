@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { SignOnMethodsWrapper } from "./components/sign-on-methods-wrapper";

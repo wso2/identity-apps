@@ -83,7 +83,7 @@
         "@babel/preset-typescript": "^7.10.4",
         "@babel/runtime-corejs3": "^7.11.2",
         "@changesets/changelog-github": "^0.4.8",
-        "@changesets/cli": "^2.26.1",
+        "@changesets/cli": "^2.27.11",
         "@nx/devkit": "17.0.0",
         "@nx/jest": "17.0.0",
         "@nx/js": "17.0.0",
@@ -202,6 +202,6 @@
     },
     "engines": {
         "node": ">=16",
-        "pnpm": ">=8"
+        "pnpm": ">=8 <9"
     }
 }

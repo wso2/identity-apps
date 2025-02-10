@@ -211,6 +211,14 @@ export interface ProfileSchemaInterface {
      */
     excludedUserStores?: string;
     /**
+     * Shared profile attribute value resolving method.
+     */
+    sharedProfileValueResolvingMethod?: string;
+    /**
+    * Supported by default. Used to display in the attribute in the UI.
+    */
+    supportedByDefault?: string;
+    /**
      * Schema attribute profiles
      */
     profiles?: {
@@ -225,7 +233,7 @@ export interface ProfileSchemaInterface {
         /**
          * Attribute profile for self registration
          */
-        selfRegister?: ProfileAttributeInterface;
+        selfRegistration?: ProfileAttributeInterface;
     }
 }
 

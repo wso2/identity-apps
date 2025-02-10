@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthReducerStateInterface } from "@wso2is/admin.core.v1/models";
+import { AuthReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 
 /**
  * Initial state for the common authenticate reducer.

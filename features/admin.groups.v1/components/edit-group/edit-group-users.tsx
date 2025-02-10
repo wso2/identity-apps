@@ -17,7 +17,9 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
-import { AdvancedSearchWithBasicFilters, UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { useUsersList } from "@wso2is/admin.users.v1/api";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";

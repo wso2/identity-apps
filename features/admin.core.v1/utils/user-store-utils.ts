@@ -24,9 +24,9 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
-import { getAUserStore, getPrimaryUserStore } from "../api";
-import { SharedUserStoreConstants } from "../constants";
-import { UserStoreDetails } from "../models";
+import { getAUserStore, getPrimaryUserStore } from "../api/user-store";
+import { SharedUserStoreConstants } from "../constants/user-store-constants";
+import { UserStoreDetails } from "../models/user-store";
 import { store } from "../store";
 
 /**
@@ -58,7 +58,8 @@ export class SharedUserStoreUtils {
                 if (!isEmpty(store)) {
                     return getAUserStore(store.id)
                         .then((resp: any) => {
-                            usernameRegEx = resp.properties.find((property: any) => property.name === regExName);
+                            usernameRegEx = resp.properties.find((property: any) =>
+                                property?.name?.toLowerCase() === regExName?.toLowerCase());
 
                             return usernameRegEx?.value;
                         });

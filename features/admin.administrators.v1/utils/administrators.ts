@@ -18,7 +18,7 @@
 import {
     UserBasicInterface,
     UserRoleInterface
-} from "@wso2is/admin.core.v1";
+} from "@wso2is/admin.core.v1/models/users";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { UserAccountTypes } from "@wso2is/admin.users.v1/constants/user-management-constants";
@@ -44,7 +44,7 @@ export const isAdminUser = (user: UserBasicInterface): boolean => {
  * @returns boolean - true if the user is the owner.
  */
 export const isOwner = (user: UserBasicInterface):boolean =>
-    user[ SCIMConfigs.scim.enterpriseSchema ]?.userAccountType === UserAccountTypes.OWNER;
+    user[ SCIMConfigs.scim.systemSchema ]?.userAccountType === UserAccountTypes.OWNER;
 
 /**
  * Checks whether the user is a collaborator.

@@ -30,7 +30,10 @@ import Checkbox from "@oxygen-ui/react/Checkbox";
 import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon } from "@oxygen-ui/react-icons";
-import { AppState, FeatureConfigInterface, UIConstants } from "@wso2is/admin.core.v1";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { CreateRolePermissionInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -123,6 +126,8 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         organization: {},
         tenant: {}
     });
+
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     /**
      * Initializes the permission tree with any initial values.
@@ -361,122 +366,124 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
     return (
         <div className="create-console-role-wizard-permissions-form" data-componentid={ componentId }>
-            <div className="accordion-container">
-                <Accordion
-                    elevation={ 0 }
-                    expanded={ expandedAccordions.includes(TENANT_PERMISSIONS_ACCORDION_ID) }
-                    onChange={ handleAccordionExpand(TENANT_PERMISSIONS_ACCORDION_ID) }
-                    className="tenant-permissions-accordion"
-                >
-                    <AccordionSummary
-                        expandIcon={ <ChevronDownIcon /> }
-                        aria-controls="tenant-permissions-content"
-                        id="tenant-permissions-header"
+            { !isSubOrganization() && (
+                <div className="accordion-container">
+                    <Accordion
+                        elevation={ 0 }
+                        expanded={ expandedAccordions.includes(TENANT_PERMISSIONS_ACCORDION_ID) }
+                        onChange={ handleAccordionExpand(TENANT_PERMISSIONS_ACCORDION_ID) }
+                        className="tenant-permissions-accordion"
                     >
-                        <Checkbox
-                            readOnly={ isReadOnly }
-                            disabled={ isReadOnly }
-                            color="primary"
-                            checked={
-                                Object.keys(selectedPermissions.tenant).length ===
-                                filteredTenantAPIResourceCollections?.apiResourceCollections?.length
-                            }
-                            onChange={ (e: ChangeEvent<HTMLInputElement>) => {
-                                handleSelectAll(e, APIResourceCollectionTypes.TENANT);
-                            } }
-                            inputProps={ {
-                                "aria-label": "Select all tenant permissions"
-                            } }
-                        />
-                        <Typography className="permissions-accordion-label">
-                            { t("consoleSettings:roles.add.tenantPermissions.label") }
-                        </Typography>
-                        <Typography variant="body2">
-                            { filteredTenantAPIResourceCollections?.apiResourceCollections?.length } Permissions
-                        </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <TableContainer component={ Paper } elevation={ 0 }>
-                            <Table className="permissions-table" size="small" aria-label="tenant permissions table">
-                                <TableBody>
-                                    { filteredTenantAPIResourceCollections?.apiResourceCollections?.map(
-                                        (collection: APIResourceCollectionInterface) => (
-                                            <TableRow key={ collection.id } className="permissions-table-data-row">
-                                                <TableCell padding="checkbox">
-                                                    <Checkbox
-                                                        readOnly={ isReadOnly }
-                                                        disabled={ isReadOnly }
-                                                        color="primary"
-                                                        checked={ Object.keys(selectedPermissions.tenant).includes(
-                                                            collection.id
-                                                        ) }
-                                                        onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                                                            handleSelect(
-                                                                e,
-                                                                collection,
-                                                                APIResourceCollectionTypes.TENANT
-                                                            )
-                                                        }
-                                                        inputProps={ {
-                                                            "aria-label":
-                                                                    `Select ${collection.displayName} permission`
-                                                        } }
-                                                    />
-                                                </TableCell>
-                                                <TableCell component="th" scope="row">
-                                                    { collection.displayName }
-                                                </TableCell>
-                                                <TableCell align="right">
-                                                    <ToggleButtonGroup
-                                                        disabled={ isReadOnly }
-                                                        value={
-                                                            Object.keys(selectedPermissions.tenant).includes(
+                        <AccordionSummary
+                            expandIcon={ <ChevronDownIcon /> }
+                            aria-controls="tenant-permissions-content"
+                            id="tenant-permissions-header"
+                        >
+                            <Checkbox
+                                readOnly={ isReadOnly }
+                                disabled={ isReadOnly }
+                                color="primary"
+                                checked={
+                                    Object.keys(selectedPermissions.tenant).length ===
+                                    filteredTenantAPIResourceCollections?.apiResourceCollections?.length
+                                }
+                                onChange={ (e: ChangeEvent<HTMLInputElement>) => {
+                                    handleSelectAll(e, APIResourceCollectionTypes.TENANT);
+                                } }
+                                inputProps={ {
+                                    "aria-label": "Select all tenant permissions"
+                                } }
+                            />
+                            <Typography className="permissions-accordion-label">
+                                { t("consoleSettings:roles.add.tenantPermissions.label") }
+                            </Typography>
+                            <Typography variant="body2">
+                                { filteredTenantAPIResourceCollections?.apiResourceCollections?.length } Permissions
+                            </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <TableContainer component={ Paper } elevation={ 0 }>
+                                <Table className="permissions-table" size="small" aria-label="tenant permissions table">
+                                    <TableBody>
+                                        { filteredTenantAPIResourceCollections?.apiResourceCollections?.map(
+                                            (collection: APIResourceCollectionInterface) => (
+                                                <TableRow key={ collection.id } className="permissions-table-data-row">
+                                                    <TableCell padding="checkbox">
+                                                        <Checkbox
+                                                            readOnly={ isReadOnly }
+                                                            disabled={ isReadOnly }
+                                                            color="primary"
+                                                            checked={ Object.keys(selectedPermissions.tenant).includes(
                                                                 collection.id
-                                                            )
-                                                                ? get(
-                                                                    selectedPermissions.tenant,
-                                                                    collection.id
-                                                                )?.write
-                                                                    ? "write"
-                                                                    : "read"
-                                                                : null
-                                                        }
-                                                        exclusive
-                                                        onChange={ (e: MouseEvent<HTMLElement>, value: string) => {
-                                                            // If no value is selected and exclusive is true
-                                                            // the value is null. Purpose of this if block is
-                                                            // to prevent the submit in the case of null value.
-                                                            if (!value) {
-                                                                return;
+                                                            ) }
+                                                            onChange={ (e: ChangeEvent<HTMLInputElement>) =>
+                                                                handleSelect(
+                                                                    e,
+                                                                    collection,
+                                                                    APIResourceCollectionTypes.TENANT
+                                                                )
                                                             }
+                                                            inputProps={ {
+                                                                "aria-label":
+                                                                        `Select ${collection.displayName} permission`
+                                                            } }
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell component="th" scope="row">
+                                                        { collection.displayName }
+                                                    </TableCell>
+                                                    <TableCell align="right">
+                                                        <ToggleButtonGroup
+                                                            disabled={ isReadOnly }
+                                                            value={
+                                                                Object.keys(selectedPermissions.tenant).includes(
+                                                                    collection.id
+                                                                )
+                                                                    ? get(
+                                                                        selectedPermissions.tenant,
+                                                                        collection.id
+                                                                    )?.write
+                                                                        ? "write"
+                                                                        : "read"
+                                                                    : null
+                                                            }
+                                                            exclusive
+                                                            onChange={ (e: MouseEvent<HTMLElement>, value: string) => {
+                                                                // If no value is selected and exclusive is true
+                                                                // the value is null. Purpose of this if block is
+                                                                // to prevent the submit in the case of null value.
+                                                                if (!value) {
+                                                                    return;
+                                                                }
 
-                                                            handlePermissionLevelChange(
-                                                                e,
-                                                                collection,
-                                                                value,
-                                                                APIResourceCollectionTypes.TENANT
-                                                            );
-                                                        } }
-                                                        aria-label="text alignment"
-                                                        size="small"
-                                                    >
-                                                        <ToggleButton value="read" aria-label="left aligned">
-                                                            { t("consoleSettings:roles.permissionLevels.view") }
-                                                        </ToggleButton>
-                                                        <ToggleButton value="write" aria-label="right aligned">
-                                                            { t("consoleSettings:roles.permissionLevels.edit") }
-                                                        </ToggleButton>
-                                                    </ToggleButtonGroup>
-                                                </TableCell>
-                                            </TableRow>
-                                        )
-                                    ) }
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </AccordionDetails>
-                </Accordion>
-            </div>
+                                                                handlePermissionLevelChange(
+                                                                    e,
+                                                                    collection,
+                                                                    value,
+                                                                    APIResourceCollectionTypes.TENANT
+                                                                );
+                                                            } }
+                                                            aria-label="text alignment"
+                                                            size="small"
+                                                        >
+                                                            <ToggleButton value="read" aria-label="left aligned">
+                                                                { t("consoleSettings:roles.permissionLevels.view") }
+                                                            </ToggleButton>
+                                                            <ToggleButton value="write" aria-label="right aligned">
+                                                                { t("consoleSettings:roles.permissionLevels.edit") }
+                                                            </ToggleButton>
+                                                        </ToggleButtonGroup>
+                                                    </TableCell>
+                                                </TableRow>
+                                            )
+                                        ) }
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </AccordionDetails>
+                    </Accordion>
+                </div>
+            ) }
             <div className="accordion-container">
                 <Accordion
                     elevation={ 0 }

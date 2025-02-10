@@ -656,7 +656,7 @@ export const myAccount: MyAccountNS = {
                 description: "You can use the authenticator app to get verification codes for " +
                     "two-factor authentication.",
                 enableHint: "Enable/Disable TOTP Authenticator",
-                heading: "Authenticator App",
+                heading: "TOTP Authenticator",
                 hint: "View",
                 modals: {
                     delete : {
@@ -889,6 +889,7 @@ export const myAccount: MyAccountNS = {
                         tryWithOlderDevice: "You may also try again with an older passkey."
                     }
                 },
+                noPassKeyMessage: "You don't have any passkeys enrolled yet.",
                 notifications: {
                     removeDevice: {
                         error: {
@@ -935,6 +936,64 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 tryButton: "Try with an older passkey"
+            },
+            pushAuthenticatorApp: {
+                addHint:"Configure",
+                configuredDescription: "You can use the login prompts generated from your configured " +
+                    "push authenticator app for two-factor authentication. If you don't have " +
+                    "access to the application you can set up a new authenticator app from here.",
+                deleteHint: "Remove",
+                description: "You can use the push authenticator app to get login prompts as push notifications for " +
+                    "two-factor authentication.",
+                heading: "Push Authenticator",
+                hint: "View",
+                modals: {
+                    deviceDeleteConfirmation: {
+                        assertionHint: "Please confirm your action.",
+                        content: "This action is irreversible and will permanently remove the device.",
+                        description: "If you remove this device, you may not be able to sign in to your account again. Please proceed with caution.",
+                        heading: "Are you sure?"
+                    },
+                    scan: {
+                        additionNote: "QR code has been successfully added to your profile!",
+                        done: "Success! Now you can use your Push Authenticator App for two-factor authentication",
+                        heading: "Set up the Push Authenticator App",
+                        messageBody: "You can find a list of Authenticator Apps available here.",
+                        subHeading: "Scan the QR code below using the push authenticator app"
+                    }
+                },
+                notifications: {
+                    delete: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "Error occurred while removing the registered device",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully removed the registered device",
+                            message: "Device deleted successfully"
+                        }
+                    },
+                    deviceListFetchError: {
+                        error: {
+                            description: "An error occurred while retrieving the registered devices for push authentication",
+                            message: "Something went wrong"
+                        }
+                    },
+                    initError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving the QR code",
+                            message: "Something went wrong"
+                        }
+                    }
+                }
             },
             smsOtp: {
                 descriptions: {

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { store } from "@wso2is/admin.core.v1";
+import { store } from "@wso2is/admin.core.v1/store";
 import { ServerConfigurationsInterface, getServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { getGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
@@ -233,9 +233,9 @@ const AssignGroupWizard = (props: AssignGroupProps): ReactElement => {
             data-componentId={ componentId }
         >
             <Modal.Header className="wizard-header">
-                { t("extensions:console.applicationRoles.assignGroupWizard.heading") }
+                { t("applicationRoles:assignGroupWizard.heading") }
                 <Heading as="h6">
-                    { t("extensions:console.applicationRoles.assignGroupWizard.subHeading") }
+                    { t("applicationRoles:assignGroupWizard.subHeading") }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
@@ -314,7 +314,7 @@ const AssignGroupWizard = (props: AssignGroupProps): ReactElement => {
                                 loading={ isSubmitting || isLoading }
                                 disabled={ isSubmitting || isLoading || groupList?.length === 0 }
                             >
-                                { t("extensions:console.applicationRoles.assign") }
+                                { t("applicationRoles:assign") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>

@@ -19,7 +19,7 @@
 import { SelectChangeEvent } from "@mui/material";
 import Card from "@oxygen-ui/react/Card";
 import Grid from "@oxygen-ui/react/Grid";
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, FinalForm, FinalFormField, SelectFieldAdapter } from "@wso2is/form";
 import { FormRenderProps } from "@wso2is/form/src";

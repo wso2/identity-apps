@@ -17,16 +17,18 @@
  */
 
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import { AppState, EventPublisher, history } from "@wso2is/admin.core.v1";
 import {
     getEmptyPlaceholderIllustrations
 } from "@wso2is/admin.core.v1/configs/ui";
 import {
     AppConstants
 } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-app-configs";
 import { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
     useGetIdVPTemplateList
@@ -399,6 +401,11 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                             // then prevent rendering it.
                             if (template.id === CommonAuthenticatorConstants
                                 .CONNECTION_TEMPLATE_IDS.ORGANIZATION_ENTERPRISE_IDP) {
+
+                                return null;
+                            }
+
+                            if (UIConfig?.hiddenConnectionTemplates?.includes(template.id)) {
 
                                 return null;
                             }

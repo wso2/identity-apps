@@ -38,7 +38,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Icon } from "semantic-ui-react";
 import { PolicyList } from "./policy-list";
 import { NewPolicyWizard } from "./wizard/new-policy-wizard";
-import { useGetAlgorithm } from "../api/use-get-algorithm";
+import { useGetEntitlementPolicyCombiningAlgorithm } from "../api/use-get-entitlement-policy-combining-algorithm";
 import { useGetPolicies } from "../api/use-get-policies";
 import EditPolicyAlgorithmModal from "../components/edit-policy-algorithm/edit-policy-algorithm";
 import "./policy-administration-page-layout.scss";
@@ -77,31 +77,25 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
 
     const {
         data: inactivePolicyArray,
-        isLoading: isLoadingInactivePolicies,
         error: inactivePolicyError,
         mutate: mutateInactivePolicy
-    } = useGetPolicies(true, pageInactive, false, submittedSearchQuery &&
-    submittedSearchQuery.trim() !== "" ? submittedSearchQuery : "*", "ALL");
+    } = useGetPolicies(true, pageInactive, false, submittedSearchQuery, "ALL");
 
     const {
         data: activePolicyArray,
-        isLoading: isLoadingActivePolicies,
         error: activePolicyError,
         mutate: mutateActivePolicy
-    } = useGetPolicies(true, pageActive, true, submittedSearchQuery &&
-    submittedSearchQuery.trim() !== "" ? submittedSearchQuery : "*", "ALL");
+    } = useGetPolicies(true, pageActive, true, submittedSearchQuery, "ALL");
 
     const {
         data: algorithm,
-        isLoading: isLoadingAlgorithm,
-        error: getAlgorithmError,
         mutate: mutateAlgorithm
-    } = useGetAlgorithm();
+    } = useGetEntitlementPolicyCombiningAlgorithm();
 
     useEffect(() => {
         if (algorithm) {
             const selectedAlgorithm: AlgorithmOption =
-                algorithmOptions.find((option: AlgorithmOption) => option.label === algorithm);
+                algorithmOptions.find((option: AlgorithmOption) => option.id === algorithm);
 
             setSelectedAlgorithm(selectedAlgorithm);
             setIsAlgorithmLoading(false);
@@ -210,21 +204,21 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
             }
             action={
                 (
-                    <Grid container spacing={ 3 } alignItems={ "center" }>
+                    <Grid container spacing={ 9 } alignItems={ "center" }>
                         <Grid xs={ 6 }>
                             <Button
                                 variant={ "outlined" }
                                 className="policy-algorithm-btn"
                                 onClick={ () => setShowAlgorithmModal(true) }
                             >
-                                <GearIcon size={ 20 }/>
+                                <GearIcon className="gear-icon" size={ 20 }/>
                                 <Stack direction="column" className="algorithm-txt">
                                     <Typography variant="body1" noWrap>
                                         { t("policyAdministration:buttons.policyAlgorithm") }
                                     </Typography>
-                                    { !isAlgorithmLoading && selectedAlgorithm?.label && (
+                                    { !isAlgorithmLoading && (
                                         <Typography variant="body2">
-                                            { selectedAlgorithm.label }
+                                            { algorithm }
                                         </Typography>
                                     ) }
                                     { isAlgorithmLoading && <CircularProgress size={ 12 } /> }

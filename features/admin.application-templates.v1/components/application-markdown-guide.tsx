@@ -28,7 +28,7 @@ import {
     SupportedAuthProtocolTypes,
     WSTrustConfigurationInterface
 } from "@wso2is/admin.applications.v1/models/application-inbound";
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { MarkdownGuide } from "@wso2is/admin.template-core.v1/components/markdown-guide";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import set from "lodash-es/set";

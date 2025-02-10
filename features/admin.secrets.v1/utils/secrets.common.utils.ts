@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppConstants } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 
 const IMAGES_PATH: string = "libs/themes/default/assets/images";
 

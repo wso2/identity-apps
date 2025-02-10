@@ -29,7 +29,6 @@ import Stack from "@oxygen-ui/react/Stack";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography/Typography";
 import {
-    ArrowUpRightFromSquareIcon,
     BanIcon,
     CircleCheckFilledIcon,
     EllipsisVerticalIcon,
@@ -68,13 +67,9 @@ export interface TenantCardProps extends LoadableComponentInterface {
  * @param props - Props injected to the component.
  * @returns Tenant Card component.
  */
-const TenantCard: FunctionComponent<TenantCardProps> = ({
-    isLoading,
-    tenant
-}: TenantCardProps): ReactElement => {
+const TenantCard: FunctionComponent<TenantCardProps> = ({ isLoading, tenant }: TenantCardProps): ReactElement => {
     const { t } = useTranslation();
 
-    const clientHost: string = useSelector((state: AppState) => state.config?.deployment?.clientHost);
     const isTenantDeletionEnabled: boolean = useSelector((state: AppState) => {
         return !state?.config?.ui?.features?.tenants?.disabledFeatures?.includes(
             TenantConstants.FEATURE_DICTIONARY.TENANT_DELETION
@@ -93,16 +88,6 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({
 
     const handleClose = (): void => {
         setAnchorEl(null);
-    };
-
-    /**
-     * Builds a Console URL for the passed in tenant domain by replacing the tenant domain in the client host URL.
-     *
-     * @param tenantDomain - Tenant domain.
-     * @returns Built tenant console URL.
-     */
-    const buildTenantConsoleURL = (tenantDomain: string): string => {
-        return clientHost.replace(/\/t\/[^/]+\//, `/t/${tenantDomain}/`);
     };
 
     if (isLoading) {
@@ -216,17 +201,6 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({
                             onClose={ handleClose }
                             className="tenant-card-footer-dropdown"
                         >
-                            <MenuItem
-                                className="tenant-card-footer-dropdown-item"
-                                onClick={ () =>
-                                    window.open(buildTenantConsoleURL(tenant.domain), "_blank", "noopener noreferrer")
-                                }
-                            >
-                                <ListItemIcon>
-                                    <ArrowUpRightFromSquareIcon />
-                                </ListItemIcon>
-                                <ListItemText>{ t("tenants:listing.item.actions.goToConsole.label") }</ListItemText>
-                            </MenuItem>
                             <MenuItem
                                 className={ classNames("tenant-card-footer-dropdown-item", {
                                     error: tenant?.lifecycleStatus?.activated,

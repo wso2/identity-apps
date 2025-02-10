@@ -654,7 +654,7 @@ export const myAccount: MyAccountNS = {
                     "මත පදනම් වූ, එක් වරක් මුර කේත (TOTP ලෙසද හැඳින්වේ) භාවිතා " +
                     "කිරීමට Authenticator යෙදුමක් භාවිතයෙන් QR කේතය පරිලෝකනය කරන්න.",
                 enableHint: "TOTP සබල/අබල කරන්න",
-                heading: "සත්‍යාපන යෙදුම",
+                heading: "TOTP සත්‍යාපකය",
                 hint: "පෙන්වන්න",
                 modals: {
                     delete : {
@@ -888,6 +888,7 @@ export const myAccount: MyAccountNS = {
                         tryWithOlderDevice: "ඔබට පැරණි මුර යතුරක් සමඟ නැවත උත්සාහ කිරීමටද හැකිය."
                     }
                 },
+                noPassKeyMessage: "ඔබට දැන් තවමත් කිසිදු මුරපදයක් ලියාපදිංචි කර නොමැත.",
                 notifications: {
                     removeDevice: {
                         error: {
@@ -934,6 +935,61 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 tryButton: "පැරණි මුර යතුර සමඟ උත්සාහ කරන්න"
+            },
+            "pushAuthenticatorApp": {
+                "addHint": "සකසන්න",
+                "configuredDescription": "ඔබගේ සකසා ඇති push authenticator යෙදුමෙන් උත්පාදනය කරන ලද ලොගින් ප්‍රතිඥා තහවුරු කිරීම් දෙකක් සඳහා භාවිතා කළ හැක. යෙදුමට ප්‍රවේශ නොමැති නම්, නව authenticator යෙදුමක් මෙහි සිට සකස් කළ හැක.",
+                "deleteHint": "ඉවත් කරන්න",
+                "description": "Push authenticator යෙදුම භාවිතා කර ඔබට ලොගින් ප්‍රතිඥා push විද්‍යුත් පණිවිඩ ලෙස ලබාගත හැක, දෙකේ තහවුරුකිරීම සඳහා.",
+                "heading": "Push Authenticator",
+                "hint": "නරඹන්න",
+                "modals": {
+                    "deviceDeleteConfirmation": {
+                        "assertionHint": "කරුණාකර ඔබේ ක්‍රියාව තහවුරු කරන්න.",
+                        "content": "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර, උපාංගය සම්පූර්ණයෙන්ම ඉවත් කෙරේ.",
+                        "description": "මෙම උපාංගය ඉවත් කළහොත්, ඔබට ඔබේ ගිණුමට නැවත ඇතුල්වීමක් සිදු නොවිය හැක. කරුණාකර අවධානයෙන් පසුවන්න.",
+                        "heading": "ඔබට විශ්වාසද?"
+                    },
+                    "scan": {
+                        "additionNote": "QR කේතය සාර්ථකව ඔබේ පැතිකඩට එක්කර ඇත!",
+                        "done": "සාර්ථකයි! දැන් ඔබට push authenticator යෙදුම භාවිතා කර තහවුරුකිරීම් දෙකක් කිරීමට හැකියාව ඇත.",
+                        "heading": "Push Authenticator යෙදුම සකසන්න",
+                        "messageBody": "ඔබට ලබා ගත හැකි Authenticator යෙදුම් ලැයිස්තුවක් මෙහි සොයා ගත හැක.",
+                        "subHeading": "Push authenticator යෙදුම භාවිතා කර පහත QR කේතය ස්කෑන් කරන්න"
+                    }
+                },
+                "notifications": {
+                    "delete": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "කුමක් හෝ වැරැද්දක් සිදුවිය"
+                        },
+                        "genericError": {
+                            "description": "ලියාපදිංචි උපාංගය ඉවත් කිරීමේදී දෝෂයක් සිදුවිය",
+                            "message": "කුමක් හෝ වැරැද්දක් සිදුවිය"
+                        },
+                        "success": {
+                            "description": "ලියාපදිංචි උපාංගය සාර්ථකව ඉවත් කරන ලදි",
+                            "message": "උපාංගය සාර්ථකව ඉවත් කරන ලදි"
+                        }
+                    },
+                    "deviceListFetchError": {
+                        "error": {
+                            "description": "Push authentication සඳහා ලියාපදිංචි උපාංග ලබාගැනීමේදී දෝෂයක් සිදුවිය",
+                            "message": "කුමක් හෝ වැරැද්දක් සිදුවිය"
+                        }
+                    },
+                    "initError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "කුමක් හෝ වැරැද්දක් සිදුවිය"
+                        },
+                        "genericError": {
+                            "description": "QR කේතය ලබා ගැනීමේදී දෝෂයක් සිදුවිය",
+                            "message": "කුමක් හෝ වැරැද්දක් සිදුවිය"
+                        }
+                    }
+                }
             },
             smsOtp: {
                 descriptions: {

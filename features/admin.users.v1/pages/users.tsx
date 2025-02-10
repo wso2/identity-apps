@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,19 +18,17 @@
 
 import Chip from "@oxygen-ui/react/Chip";
 import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    SharedUserStoreUtils,
-    UIConstants,
-    UserBasicInterface,
-    getAUserStore,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
+import { getAUserStore } from "@wso2is/admin.core.v1/api/user-store";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
@@ -101,7 +99,7 @@ import {
     UserAddOptionTypes,
     UserManagementConstants
 } from "../constants";
-import { InvitationStatus, UserListInterface } from "../models";
+import { InvitationStatus, UserListInterface } from "../models/user";
 import "./users.scss";
 
 /**
@@ -156,7 +154,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     );
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
-    const [ listOffset, setListOffset ] = useState<number>(0);
+    const [ listOffset, setListOffset ] = useState<number>(1);
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -367,7 +365,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             return;
         }
 
-        setListOffset(0);
+        setListOffset(1);
         if (searchQuery === "userName co " || searchQuery === "" || searchQuery === null) {
             setPaginateGuestList(parentOrgUserInviteList?.invitations);
             setFilterGuestList([]);
@@ -427,7 +425,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     }, [ parentOrgUserInviteList?.invitations ]);
 
     /**
-     * User effect to handle Pagination for pending/expired Guest.
+     * Handles pagination for pending/expired Guest as the API does not support pagination.
      */
     useEffect(() => {
         if (invitationStatusOption === InvitationStatus.ACCEPTED) {
@@ -438,7 +436,9 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             (invitation: UserInviteInterface) => invitation.status === invitationStatusOption.toUpperCase());
 
         if (finalInvitations?.length > listItemLimit) {
-            finalInvitations = finalInvitations.slice(listOffset, listOffset + listItemLimit);
+            const _startIndex: number = listOffset - 1;
+
+            finalInvitations = finalInvitations.slice(_startIndex, _startIndex + listItemLimit);
             setFinalGuestList(finalInvitations);
             setIsNextPageAvailable(finalInvitations.length === listItemLimit);
         } else {
@@ -555,11 +555,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      */
     const handleUserFilter = (query: string): void => {
         setSearchQuery(query);
-        setListOffset(0);
+        setListOffset(1);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
-        setListOffset((data.activePage as number - 1) * listItemLimit);
+        setListOffset(((data.activePage as number - 1) * listItemLimit) + 1);
     };
 
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
@@ -572,7 +572,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         } else {
             setSelectedUserStore(data.value as string);
         }
-        setListOffset(0);
+        setListOffset(1);
         setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     };
 

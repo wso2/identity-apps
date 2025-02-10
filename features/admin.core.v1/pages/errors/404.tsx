@@ -23,8 +23,8 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations } from "../../configs";
-import { ConfigReducerStateInterface } from "../../models";
+import { getEmptyPlaceholderIllustrations } from "../../configs/ui";
+import { ConfigReducerStateInterface } from "../../models/reducer-state";
 import { AppState } from "../../store";
 
 type PageNotFoundInterface = IdentifiableComponentInterface;

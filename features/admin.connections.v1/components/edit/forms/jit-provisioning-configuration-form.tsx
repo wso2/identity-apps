@@ -18,7 +18,8 @@
 
 import { Show } from "@wso2is/access-control";
 import { SimpleUserStoreListItemInterface } from "@wso2is/admin.applications.v1/models/application";
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { TestableComponentInterface } from "@wso2is/core/models";

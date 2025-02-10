@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,14 +18,11 @@
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { getDialects } from "@wso2is/admin.claims.v1/api";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    getSidePanelIcons,
-    getTechnologyLogos,
-    history
-} from "@wso2is/admin.core.v1";
+import { getSidePanelIcons, getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -96,7 +93,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     const listAllAttributeDialects: boolean = useSelector(
         (state: AppState) => state.config.ui.listAllAttributeDialects
     );
-
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     /**
@@ -153,7 +150,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         eidas.push(attributeMapping);
                     } else {
                         if (attributeConfig.showCustomDialectInSCIM) {
-                            if (attributeMapping.dialectURI !== attributeConfig.localAttributes.customDialectURI) {
+                            if (attributeMapping.dialectURI !== userSchemaURI) {
                                 others.push(attributeMapping);
                             }
                         } else {

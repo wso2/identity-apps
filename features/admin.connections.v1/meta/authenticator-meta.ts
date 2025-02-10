@@ -79,7 +79,10 @@ export class AuthenticatorMeta {
                 "recovery option.",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .X509_CERTIFICATE_AUTHENTICATOR_ID ]: "Authenticate clients using " +
-                "client certificates."
+                "client certificates.",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .PUSH_AUTHENTICATOR_ID ]: "Two-factor authentication via " +
+                "mobile push notifications."
         }, authenticatorId);
     }
 
@@ -91,6 +94,19 @@ export class AuthenticatorMeta {
      * @returns Authenticator labels.
      */
     public static getAuthenticatorLabels(authenticator: FederatedAuthenticatorInterface): string[] {
+
+        /**
+         * Currently authenticator id is being used to fetch authenticator labels from the meta content.
+         * The existing approach cannot be used for custom authenticators since the id of the
+         * custom authenticators are not pre defined.
+         */
+        if (this.isCustomAuthenticator(authenticator)) {
+            if (this.isCustomSecondFactorAuthenticator(authenticator)) {
+                return [ AuthenticatorLabels.CUSTOM, AuthenticatorLabels.SECOND_FACTOR ];
+            }
+
+            return [ AuthenticatorLabels.CUSTOM ];
+        }
 
         const authenticatorId: string = authenticator?.authenticatorId;
 
@@ -152,6 +168,33 @@ export class AuthenticatorMeta {
     }
 
     /**
+     * Check whether the authenticator is a custom authenticator.
+     *
+     * Since there is no any identifier in the API to distinguish the authenticator as a custom authenticator,
+     * the tags have to be used to identify the custom authenticators.
+     *
+     * @param authenticator - Authenticator to be evaluated.
+     * @returns whether the authenticator is a custom authenticator.
+     */
+    private static isCustomAuthenticator = (authenticator: FederatedAuthenticatorInterface): boolean => {
+        return authenticator?.tags?.includes("Custom");
+    };
+
+    /**
+     * Check whether the authenticator is a custom second factor authenticator.
+     *
+     * Since there is no any identifier in the API to distinguish the authenticator as a custom
+     * second factor authenticator,
+     * the tags have to be used to identify the custom authenticators.
+     *
+     * @param authenticator - Authenticator to be evaluated.
+     * @returns whether the authenticator is a custom second factor authenticator.
+     */
+    private static isCustomSecondFactorAuthenticator = (authenticator: FederatedAuthenticatorInterface): boolean => {
+        return authenticator?.tags?.includes("2FA");
+    };
+
+    /**
      * Get Authenticator Type display name.
      *
      * @param type - Type.
@@ -203,15 +246,31 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .EMAIL_OTP_AUTHENTICATOR_ID ]: getConnectionIcons()?.emailOTP,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: getConnectionIcons()?.smsOTP,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: getConnectionIcons()?.push,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .MAGIC_LINK_AUTHENTICATOR_ID ]: getConnectionIcons()?.magicLink,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .BACKUP_CODE_AUTHENTICATOR_ID ]: getConnectionIcons()?.backupCode,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .PUSH_AUTHENTICATOR_ID ]: getConnectionIcons()?.push,
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
                 .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID ]: getConnectionIcons()?.organizationSSO
         }, authenticatorId);
 
         return icon ?? getConnectionIcons().default;
+    }
+
+    /**
+     * Get Custom Authenticator Icon.
+     *
+     * Currently authenticator id is being used to fetch the respective authenticator icon.
+     * Existing function could not be used since the id and the name of
+     * custom authenticators are not pre defined.
+     *
+     * @returns Custom Authenticator Icon.
+     */
+    public static getCustomAuthenticatorIcon(): string {
+        return getConnectionIcons()?.customAuthenticator;
     }
 
     /**
@@ -231,7 +290,8 @@ export class AuthenticatorMeta {
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: "OIDC",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ]: "SAML",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined",
-            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined"
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: "Predefined"
         }, authenticatorId);
     }
 
@@ -272,6 +332,7 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: "sms-otp",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID ]: "email-otp",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "identifier-first",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: "push",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: "enterprise-oidc",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ]: "enterprise-saml"
         }, authenticatorId);
@@ -328,6 +389,16 @@ export class AuthenticatorMeta {
                 isComingSoon: false,
                 isEnabled: true,
                 useAuthenticatorsAPI: true
+            },
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: {
+                content: {
+                    quickStart: lazy(() => import(
+                        "../components/authenticators/push/quick-start"
+                    ))
+                },
+                isComingSoon: false,
+                isEnabled: true,
+                useAuthenticatorsAPI: false
             }
         };
     }

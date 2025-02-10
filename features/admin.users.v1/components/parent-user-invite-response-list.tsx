@@ -19,7 +19,8 @@
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Typography from "@oxygen-ui/react/Typography";
-import { UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import {
     DataTable,
     EmptyPlaceholder,

@@ -16,12 +16,10 @@
  * under the License.
  */
 
-import {
-    AppConstants,
-    AppState,
-    EventPublisher,
-    history
-} from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";

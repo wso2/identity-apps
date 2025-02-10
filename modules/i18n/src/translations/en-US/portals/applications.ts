@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,6 +25,71 @@ import { ApplicationsNS } from "../../../models";
 /* eslint-disable sort-keys */
 
 export const applications: ApplicationsNS = {
+    quickStart: {
+        addUserOption: {
+            description: "You need a <1>user account</1> to log in to the application.",
+            hint:
+                "If you don’t already have a user account, click the below button to create one. " +
+                "Alternatively, go to <1>User Management > Users</1><3></3> and create users.",
+            message:
+                "If you do not already have a user account, contact your organization " +
+                "administrator."
+        },
+        spa: {
+            customConfig: {
+                heading: "You can implement login using <1>Authorization Code flow with PKCE</1> " +
+                    "with Asgardeo for any SPA technology.",
+                anySPATechnology: "or any SPA Technology",
+                configurations: "Configurations",
+                protocolConfig: "Use the following configurations to integrate your application with Asgardeo. " +
+                    "For more details on configurations, go to the <1>Protocol</1> tab.",
+                clientId: "Client ID",
+                baseUrl: "Base URL",
+                redirectUrl: "Redirect URL",
+                scope: "Scope",
+                serverEndpoints: "Details on the server endpoints are available in the <1>Info</1> tab."
+            },
+            techSelection: {
+                heading: "Use the SDKs curated by Asgardeo and 3rd party integrations."
+            }
+        },
+        technologySelectionWrapper: {
+            subHeading:
+                "Use the <1>server endpoint " +
+                "details</1> and start integrating your own app or read through our <3>documentation</3> " +
+                "to learn  more.",
+            otherTechnology: "or any mobile technology"
+        },
+        twa: {
+            common: {
+                orAnyTechnology: "or any technology"
+            },
+            oidc: {
+                customConfig: {
+                    clientSecret: "Client Secret",
+                    heading: "You can implement login using <1>Authorization Code flow</1> " +
+                        "with Asgardeo for any traditional web application."
+                }
+            },
+            saml: {
+                customConfig: {
+                    heading: "Discover <1>SAML configurations</1> to integrate Asgardeo with" +
+                        " any traditional web application.",
+                    issuer: "Issuer",
+                    acsUrl: "Assertion Consumer Service URL",
+                    idpEntityId: "IdP Entity ID",
+                    idpUrl: "IdP URL"
+                }
+            }
+        },
+        m2m: {
+            customConfig: {
+                tokenEndpoint: "Token Endpoint",
+                tokenRequest: "Token Request",
+                configurations: "Configurations"
+            }
+        }
+    },
     URLInput: {
         withLabel: {
             negative: {
@@ -2021,6 +2086,11 @@ export const applications: ApplicationsNS = {
                 },
                 attributeProfile: {
                     fields: {
+                        attributeNameFormat: {
+                            hint: "This specifies the format for attribute names in the attribute statement of the " +
+                                "SAML assertion.",
+                            label: "Attribute name format"
+                        },
                         enable: {
                             hint: "This specifies whether to include the user’s attributes in the " +
                                 "SAML assertions as part of the attribute statement.",

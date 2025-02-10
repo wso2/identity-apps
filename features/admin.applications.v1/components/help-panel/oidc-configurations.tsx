@@ -17,7 +17,7 @@
  */
 
 import { AsgardeoSPAClient, OIDCEndpoints } from "@asgardeo/auth-react";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

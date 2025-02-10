@@ -16,8 +16,7 @@
  * under the License.
  */
 
-// Keep statement as this to avoid cyclic dependency. Do not import from config index.
-import { UserRoleInterface } from "@wso2is/admin.core.v1";
+import { UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { GroupsInterface, GroupsMemberInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterface } from "@wso2is/core/models";
@@ -196,7 +195,7 @@ export const createEmptyUserDetails = (): UserDetailsInterface => ({
     },
     password: "",
     profileUrl: "",
-    [SCIMConfigs.scim.enterpriseSchema]: {
+    [SCIMConfigs.scim.systemSchema]: {
         askPassword: ""
     },
     userName: ""
@@ -400,7 +399,7 @@ export interface PatchUserAddOpInterface {
  */
 export type PatchUserOperationValue = Record<string, string
     | Record<string, string | string[]>
-    | Array<string>
+    | Array<string | Record<string, string>>
     | Array<Record<string, string>>>;
 
 /**

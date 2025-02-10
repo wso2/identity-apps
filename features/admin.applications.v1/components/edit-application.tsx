@@ -26,16 +26,14 @@ import {
     ApplicationEditTabMetadataInterface
 } from "@wso2is/admin.application-templates.v1/models/templates";
 import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants/branding-preferences-constants";
-import {
-    AppConstants,
-    AppState,
-    CORSOriginsListInterface,
-    EventPublisher,
-    FeatureConfigInterface,
-    getCORSOrigins,
-    history
-} from "@wso2is/admin.core.v1";
+import { getCORSOrigins } from "@wso2is/admin.core.v1/api/cors-configurations";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { CORSOriginsListInterface } from "@wso2is/admin.core.v1/models/cors-configurations";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
 import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-login-flow-provider";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
@@ -174,6 +172,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     } = useApplicationTemplateMetadata();
     // Check if the user has the required scopes to update the application.
     const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
+    const hasBrandingViewPermissions: boolean = useRequiredScopes(featureConfig?.branding?.scopes?.read);
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
@@ -546,7 +545,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 featureConfig={ featureConfig }
                 template={ template }
                 isBrandingSectionHidden={ brandingDisabledFeatures.includes(BrandingPreferencesConstants.
-                    APP_WISE_BRANDING_FEATURE_TAG) }
+                    APP_WISE_BRANDING_FEATURE_TAG) || !hasBrandingViewPermissions }
                 readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
                     "APPLICATION_EDIT_GENERAL_SETTINGS", application) }
                 data-componentid={ `${ componentId }-general-settings` }
@@ -841,7 +840,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))
-                && !isM2MApplication) {
+                && !isM2MApplication
+                && (isSuperOrganization() || (isSubOrganization() && isFragmentApp) || isFirstLevelOrg)) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
@@ -859,7 +859,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (applicationConfig.editApplication.showProvisioningSettings
                 && isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))
-                && !isFragmentApp
+                && !isSubOrganization()
                 && !isM2MApplication
                 && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
                     application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
@@ -875,7 +875,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))
-                && !isFragmentApp
+                && !isSubOrganization()
                 && !isM2MApplication
                 && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
                     application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
@@ -905,7 +905,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_SHARED_ACCESS"))
-                 && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
                     && !isFragmentApp
                     && !isM2MApplication
                     && applicationConfig.editApplication.showApplicationShare
@@ -928,7 +927,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
-                 && !isFragmentApp
+                 && !isSubOrganization()
                  && !isMyAccount) {
 
                 applicationConfig.editApplication.

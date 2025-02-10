@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { DeploymentConfigInterface, store } from "@wso2is/admin.core.v1";
+import { DeploymentConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { store } from "@wso2is/admin.core.v1/store";
 import { ExtendedFeatureResourceEndpointsInterface } from "./models";
 
 /**

@@ -175,6 +175,7 @@ export interface BrandingNS {
         "password-recovery": string;
         "password-reset": string;
         "password-reset-success": string;
+        "push-auth": string;
         "username-recovery-claim": string;
         "username-recovery-channel-selection": string;
         "username-recovery-success": string;

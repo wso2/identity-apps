@@ -19,14 +19,12 @@
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
-import {
-    AppState,
-    SharedUserStoreUtils,
-    UIConstants,
-    UserBasicInterface,
-    getUsersList
-} from "@wso2is/admin.core.v1";
-import { EventPublisher } from "@wso2is/admin.core.v1/utils";
+import { getUsersList } from "@wso2is/admin.core.v1/api/users";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { getRolesList } from "@wso2is/admin.roles.v2/api";
@@ -253,7 +251,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                 // Exclude JIT users, internal admin users and collaborators.
                 const responseUsers: UserBasicInterface[] = response?.Resources?.filter(
                     (user: UserBasicInterface) =>
-                        !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId &&
+                        !user[ SCIMConfigs.scim.systemSchema ]?.userSourceId &&
                     !isAdminUser(user) &&
                     !isCollaboratorUser(user));
 

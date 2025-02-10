@@ -96,11 +96,11 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
                 || applicationRoleGroupDataFetchRequestError) {
             handleAlerts({
                 description: t(
-                    "extensions:console.applicationRoles.roleGroups.fetchGroups.error.description"
+                    "applicationRoles:roleGroups.notifications.fetchGroups.error.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "extensions:console.applicationRoles.roleGroups.fetchGroups.error.message"
+                    "applicationRoles:roleGroups.notifications.fetchGroups.error.message"
                 )
             });
 
@@ -203,11 +203,11 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
             .then(() => {
                 handleAlerts({
                     description: t(
-                        "extensions:console.applicationRoles.roleGroups.notifications.addGroups.success.description"
+                        "applicationRoles:roleGroups.notifications.addGroups.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "extensions:console.applicationRoles.roleGroups.notifications.addGroups.success.message"
+                        "applicationRoles:roleGroups.notifications.addGroups.success.message"
                     )
                 });
                 mutateApplicationRoleGroupData();
@@ -215,11 +215,11 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
             .catch(() => {
                 handleAlerts({
                     description: t(
-                        "extensions:console.applicationRoles.roleGroups.notifications.addGroups.error.message"
+                        "applicationRoles:roleGroups.notifications.addGroups.error.message"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "extensions:console.applicationRoles.roleGroups.notifications.addGroups.error.message"
+                        "applicationRoles:roleGroups.notifications.addGroups.error.message"
                     )
                 });
             }).finally(() => {
@@ -271,14 +271,14 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
                                 onClick={ () => setShowWizard(true) }
                             >
                                 <Icon name="add"/>
-                                { t("extensions:console.applicationRoles.roleGroups.assignGroup") }
+                                { t("applicationRoles:roleGroups.assignGroup") }
                             </PrimaryButton>
                         </Show>
                     ) }
-                    title={ t("extensions:console.applicationRoles.roleGroups.placeholder.title") }
+                    title={ t("applicationRoles:roleGroups.placeholder.title") }
                     subtitle={ [
-                        t("extensions:console.applicationRoles.roleGroups.placeholder.subTitle.0"),
-                        t("extensions:console.applicationRoles.roleGroups.placeholder.subTitle.1")
+                        t("applicationRoles:roleGroups.placeholder.subTitle.0"),
+                        t("applicationRoles:roleGroups.placeholder.subTitle.1")
                     ] }
                 />
             );
@@ -402,7 +402,7 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
                                             onChange={ (e: ChangeEvent<HTMLInputElement>) =>
                                                 searchGroups(e.target.value) }
                                             value={ searchQuery }
-                                            placeholder={ t("extensions:console.applicationRoles.roleGroups." +
+                                            placeholder={ t("applicationRoles:roleGroups." +
                                                 "searchGroup") }
                                             floated="left"
                                             fluid
@@ -416,7 +416,7 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
                                                 floated="right"
                                             >
                                                 <Icon name="add"/>
-                                                { t("extensions:console.applicationRoles.roleGroups.assignGroup") }
+                                                { t("applicationRoles:roleGroups.assignGroup") }
                                             </PrimaryButton>
                                         </Grid.Column>
                                     </Show>
@@ -465,11 +465,11 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
                                         { t("roles:list.confirmations.deleteItem.header") }
                                     </ConfirmationModal.Header>
                                     <ConfirmationModal.Message attached negative>
-                                        { t("extensions:console.applicationRoles.roleGroups.confirmation." +
+                                        { t("applicationRoles:roleGroups.confirmation." +
                                         "deleteRole.message") }
                                     </ConfirmationModal.Message>
                                     <ConfirmationModal.Content>
-                                        { t("extensions:console.applicationRoles.roleGroups.confirmation." +
+                                        { t("applicationRoles:roleGroups.confirmation." +
                                         "deleteRole.content") }
                                     </ConfirmationModal.Content>
                                 </ConfirmationModal>

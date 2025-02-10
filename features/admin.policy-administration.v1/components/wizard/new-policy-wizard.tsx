@@ -23,11 +23,11 @@ import DialogContent from "@oxygen-ui/react/DialogContent";
 import DialogTitle from "@oxygen-ui/react/DialogTitle";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography/Typography";
-import { getCertificateIllustrations } from "@wso2is/admin.core.v1";
+import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FilePicker, PickerResult, XMLFileStrategy } from "@wso2is/react-components";
-import React, { FunctionComponent, MouseEvent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -67,9 +67,9 @@ export const NewPolicyWizard: FunctionComponent<NewPolicyWizardPropsInterface> =
         if (!pastedContent || pastedContent.trim().length === 0) {
             dispatch(
                 addAlert({
-                    description: t("policyAdministration:createPolicy.notifications.emptyContent.description"),
+                    description: t("policyAdministration:alerts.createFailure.description"),
                     level: AlertLevels.ERROR,
-                    message: t("policyAdministration:createPolicy.notifications.emptyContent.message")
+                    message: t("policyAdministration:alerts.createFailure.message")
                 })
             );
 
@@ -150,7 +150,7 @@ export const NewPolicyWizard: FunctionComponent<NewPolicyWizardPropsInterface> =
                         setSelectedXMLFile(result?.file || null);
 
                         if (result?.file) {
-                            const decodedXml = result.serialized ? atob(result.serialized) : "";
+                            const decodedXml: string = result.serialized ? atob(result.serialized) : "";
 
                             setPastedContent(decodedXml);
                         } else {
@@ -184,7 +184,7 @@ export const NewPolicyWizard: FunctionComponent<NewPolicyWizardPropsInterface> =
                         <Button
                             variant="text"
                             color="primary"
-                            onClick={ (e: MouseEvent<HTMLButtonElement>) => closeWizard() }
+                            onClick={ () => closeWizard() }
                         >
                             { t("tenants:addTenant.actions.cancel.label") }
                         </Button>

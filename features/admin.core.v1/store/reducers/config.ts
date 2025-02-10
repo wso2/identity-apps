@@ -23,7 +23,7 @@ import {
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface,
     UIConfigInterface
-} from "../../models";
+} from "../../models/config";
 
 /**
  * Initial state for the common config reducer.
@@ -86,6 +86,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             accountRecovery: "",
             actions: "",
             adminAdvisoryBanner: "",
+            apiRoot: "",
             applicationTemplate: "",
             applicationTemplateMetadata: "",
             applications: "",
@@ -103,6 +104,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             clientCertificates: "",
             createSecret: "",
             createSecretType: "",
+            customAuthenticators: "",
             dcrConfiguration: "",
             deleteSecret: "",
             deleteSecretType: "",
@@ -147,6 +149,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             rolesWithoutOrgPath: "",
             rootOrganization: "",
             rootUsersOrganization: "",
+            rulesMetaData: "",
             saml2Configurations: "",
             saml2Meta: "",
             schemas: "",
