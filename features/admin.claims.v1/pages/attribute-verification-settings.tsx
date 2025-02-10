@@ -33,7 +33,7 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
-import { ContentLoader, EmphasizedSegment, PageLayout } from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment, Heading, PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -144,7 +144,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                 updateFormDataFromConnector(response);
             })
             .catch((error: AxiosError) => {
-                if (error.response && error.response.data && error.response.data.detail) {
+                if (error.response && error.response.data && error.response.data.description) {
                     dispatch(
                         addAlert({
                             description: t(
@@ -254,11 +254,13 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
         dispatch(
             addAlert({
                 description: t(
-                    "extensions:manage.accountLogin.alternativeLoginIdentifierPage.notification.success.description"
+                    "governanceConnectors:connectorCategories.otherSettings.connectors.userClaimUpdate.update." +
+                    "success.description"
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "governanceConnectors:notifications." + "updateConnector.success.message"
+                    "governanceConnectors:connectorCategories.otherSettings.connectors.userClaimUpdate.update." +
+                    "success.message"
                 )
             })
         );
@@ -270,15 +272,17 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
      * @param error - Error response.
      */
     const handleUpdateError = (error: AxiosError) => {
-        if (error.response && error.response.data && error.response.data.detail) {
+        if (error.response && error.response.data && error.response.data.description) {
             dispatch(
                 addAlert({
                     description: t(
-                        "extensions:manage.accountLogin.alternativeLoginIdentifierPage.notification.error.description"
+                        "governanceConnectors:connectorCategories.otherSettings.connectors.userClaimUpdate.update." +
+                        "error.description", { description: error?.response?.data?.description }
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "governanceConnectors:notifications.updateConnector.error.message"
+                        "governanceConnectors:connectorCategories.otherSettings.connectors.userClaimUpdate.update." +
+                        "error.message"
                     )
                 })
             );
@@ -287,13 +291,13 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
             dispatch(
                 addAlert({
                     description: t(
-                        "governanceConnectors:notifications." +
-                        "updateConnector.genericError.description"
+                        "governanceConnectors:connectorCategories.otherSettings.connectors.userClaimUpdate.update." +
+                        "genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "governanceConnectors:notifications." +
-                        "updateConnector.genericError.message"
+                        "governanceConnectors:connectorCategories.otherSettings.connectors.userClaimUpdate.update." +
+                        "genericError.message"
                     )
                 })
             );
@@ -348,6 +352,10 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     updateFormData(getUpdatedConfigurations(values))
                 }
             >
+                <Heading as="h4">
+                    { t("governanceConnectors:connectorCategories.otherSettings.connectors.userClaimUpdate." +
+                        "subHeadings.emailConfiguration") }
+                </Heading>
                 <Field.Checkbox
                     ariaLabel={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,
@@ -435,6 +443,10 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                         formDisplayData?.[CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION]?.description)
                     }
                 />
+                <Heading as="h4">
+                    { t("governanceConnectors:connectorCategories.otherSettings.connectors.userClaimUpdate." +
+                        "subHeadings.mobileConfiguration") }
+                </Heading>
                 <Field.Checkbox
                     ariaLabel={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,

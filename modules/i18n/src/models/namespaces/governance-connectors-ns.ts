@@ -631,6 +631,24 @@ export interface governanceConnectorsNS {
                 };
                 userClaimUpdate: {
                     friendlyName: string;
+                    update: {
+                        error: {
+                            description: string;
+                            message: string;
+                        },
+                        genericError: {
+                            description: string;
+                            message: string;
+                        },
+                        success: {
+                            description: string;
+                            message: string;
+                        }
+                    },
+                    subHeadings: {
+                        emailConfiguration: string;
+                        mobileConfiguration: string;
+                    },
                     properties: {
                         userClaimUpdateEmailEnableVerification: {
                             hint: string;

@@ -620,6 +620,25 @@ export const governanceConnectors: governanceConnectorsNS = {
                             hint: "Allow privileged users to initiate mobile number verification on update.",
                             label: "Enable mobile number verification by privileged users"
                         }
+                    },
+                    update: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update Error"
+                        },
+                        genericError: {
+                            description:
+                                "An error occurred while updating attribute verification configurations.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Attribute verification configurations updated successfully.",
+                            message: "Update Successful."
+                        }
+                    },
+                    subHeadings: {
+                        emailConfiguration: "Email Configuration",
+                        mobileConfiguration: "Mobile Configuration"
                     }
                 }
             }
