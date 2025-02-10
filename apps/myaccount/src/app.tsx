@@ -31,6 +31,7 @@ import {
     SessionManagementProvider,
     SessionTimeoutModalTypes
 } from "@wso2is/react-components";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import isEmpty from "lodash-es/isEmpty";
 import * as moment from "moment";
 import React, { ReactElement, Suspense, useContext, useEffect, useState } from "react";
@@ -39,7 +40,6 @@ import { useSelector } from "react-redux";
 import { Redirect, Route, RouteProps, Router, Switch } from "react-router-dom";
 import { PreLoader, ProtectedRoute } from "./components";
 import { getBaseRoutes } from "./configs";
-import { AppConstants } from "./constants";
 import { history } from "./helpers";
 import {
     ConfigReducerStateInterface,

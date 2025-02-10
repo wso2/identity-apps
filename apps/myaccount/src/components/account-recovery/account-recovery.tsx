@@ -23,6 +23,7 @@
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,7 +31,6 @@ import { useSelector } from "react-redux";
 import { List, Placeholder } from "semantic-ui-react";
 import { EmailRecovery, SMSRecovery, SecurityQuestionsComponent } from "./options";
 import { getPreference } from "../../api";
-import { AppConstants } from "../../constants";
 import {
     AlertInterface,
     AlertLevels,

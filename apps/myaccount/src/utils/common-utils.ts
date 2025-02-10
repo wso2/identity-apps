@@ -17,12 +17,12 @@
  */
 
 import { StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
+import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import set from "lodash-es/set";
 import { AppUtils } from "./app-utils";
-import { CommonConstants } from "../constants";
 
 /**
  * Utility class for common util operations.

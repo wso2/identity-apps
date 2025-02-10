@@ -18,7 +18,7 @@
 
 import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import { AuthenticateUtils } from "@wso2is/core/utils";
-import { AppConstants } from "../constants";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import { history } from "../helpers";
 import { store } from "../store";
 import { hideGlobalLoader, showGlobalLoader } from "../store/actions";

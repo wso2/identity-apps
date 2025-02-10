@@ -18,8 +18,8 @@
 
 import { HomeIcon, ShieldCheckIcon, TilesIcon, UserDocumentIcon } from "@oxygen-ui/react-icons";
 import { RouteInterface } from "@wso2is/core/models";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import React,{ FunctionComponent, lazy } from "react";
-import { AppConstants } from "../constants";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../layouts";
 
 /**

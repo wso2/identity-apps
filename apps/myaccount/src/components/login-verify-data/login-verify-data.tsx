@@ -24,7 +24,7 @@ import { useSelector } from "react-redux";
 import { List } from "semantic-ui-react";
 import { TypingDNA } from "./data";
 import { isTypingDNAEnabled } from "../../api";
-import { AppConstants } from "../../constants";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import { AlertInterface, FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
 import { SettingsSection } from "../shared";

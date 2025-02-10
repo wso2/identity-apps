@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppConstants } from "../constants/app-constants";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 
 /**
  * Resolves the full URL for an image by combining the external store URL and the image path.

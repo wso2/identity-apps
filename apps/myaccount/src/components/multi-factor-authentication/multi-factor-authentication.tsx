@@ -20,6 +20,7 @@
 // eslint-disable-next-line no-restricted-imports
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,7 +29,6 @@ import { Grid, List } from "semantic-ui-react";
 import { BackupCodeAuthenticator, FIDOAuthenticator, SMSOTPAuthenticator, TOTPAuthenticator } from "./authenticators";
 import { PushAuthenticator } from "./authenticators/push-authenticator";
 import { getEnabledAuthenticators } from "../../api";
-import { AppConstants } from "../../constants";
 import { commonConfig } from "../../extensions";
 import {
     AlertInterface,

@@ -16,8 +16,6 @@
  * under the License.
  */
 
-export * from "./app-constants";
-export * from "./common-constants";
 export * from "./token-constants";
 export * from "./ui-constants";
 export * from "./filter-constants";

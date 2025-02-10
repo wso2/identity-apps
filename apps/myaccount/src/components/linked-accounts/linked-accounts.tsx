@@ -18,6 +18,7 @@
 
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, useEffect } from "react";
@@ -32,7 +33,7 @@ import {
     removeLinkedAccount
 } from "../../api";
 import { getSettingsSectionIcons } from "../../configs";
-import { CommonConstants, UIConstants } from "../../constants";
+import { UIConstants } from "../../constants";
 import {
     AlertInterface,
     AlertLevels,

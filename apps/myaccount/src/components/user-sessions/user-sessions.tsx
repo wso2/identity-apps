@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import { AxiosError } from "axios";
 import reverse from "lodash-es/reverse";
 import sortBy from "lodash-es/sortBy";
@@ -26,7 +27,6 @@ import { useTranslation } from "react-i18next";
 import { Button, ButtonProps, Container, Modal, Placeholder } from "semantic-ui-react";
 import { UserSessionsList } from "./user-sessions-list";
 import { fetchUserSessions, terminateAllUserSessions, terminateUserSession } from "../../api";
-import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
 import {
     AlertInterface,

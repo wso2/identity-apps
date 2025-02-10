@@ -35,12 +35,12 @@ import {
 } from "@wso2is/core/store";
 import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
 import { useDispatch } from "react-redux";
 import { AnyAction, Dispatch } from "redux";
 import useOrganizations from "./use-organizations";
 import { Config } from "../configs/app";
-import { AppConstants } from "../constants/app-constants";
-import { CommonConstants } from "../constants/common-constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models/app-config";
 import { getProfileInformation, resolveIdpURLSAfterTenantResolves } from "../store/actions/authenticate";
 import { setOrganizationType, setUserOrganizationId } from "../store/actions/organization";

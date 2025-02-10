@@ -34,6 +34,7 @@ import {
     LanguageChangeException,
     isLanguageSupported
 } from "@wso2is/i18n";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import axios, { AxiosResponse } from "axios";
 import React, { FunctionComponent, LazyExoticComponent, ReactElement, lazy, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
@@ -41,7 +42,6 @@ import { useSelector } from "react-redux";
 import { useGetBrandingPreference } from "./api/branding-preferences";
 import { PreLoader } from "./components";
 import { Config } from "./configs";
-import { AppConstants } from "./constants";
 import { history } from "./helpers";
 import useSignIn from "./hooks/use-sign-in";
 import { AppState, store } from "./store";

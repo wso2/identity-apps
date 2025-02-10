@@ -18,11 +18,11 @@
 
 import { RouteInterface } from "@wso2is/core/models";
 import { ContentLoader, ErrorLayout as ErrorLayoutSkeleton } from "@wso2is/react-components";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, Suspense, useEffect, useState } from "react";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { ProtectedRoute } from "../components";
 import { getErrorLayoutRoutes } from "../configs";
-import { AppConstants } from "../constants";
 
 /**
  * Error layout Prop types.

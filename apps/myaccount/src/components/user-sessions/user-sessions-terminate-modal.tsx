@@ -19,14 +19,15 @@
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LinkButton } from "@wso2is/react-components";
-import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Modal } from "semantic-ui-react";
 import { terminateAllUserSessions } from "../../api";
-import { AppConstants, CommonConstants } from "../../constants";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
 import { history } from "../../helpers";
 
 /**

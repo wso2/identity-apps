@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -24,7 +25,7 @@ import { Divider, Grid } from "semantic-ui-react";
 import { AllApplications } from "./all-applications";
 import { RecentApplications } from "./recent-applications";
 import { fetchApplications } from "../../api";
-import { AppConstants, UIConstants } from "../../constants";
+import { UIConstants } from "../../constants";
 import {
     AlertInterface,
     AlertLevels,

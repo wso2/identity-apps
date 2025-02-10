@@ -61,6 +61,8 @@ import {
     UserAvatar,
     useMediaContext
 } from "@wso2is/react-components";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
 import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
@@ -77,8 +79,6 @@ import {
     updateProfileInfo
 } from "../../api";
 import {
-    AppConstants,
-    CommonConstants,
     LocaleJoiningSymbol,
     ProfileConstants as MyAccountProfileConstants,
     UIConstants

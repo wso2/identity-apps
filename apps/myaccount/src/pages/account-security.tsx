@@ -24,6 +24,8 @@ import { ProfileConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -44,7 +46,6 @@ import {
     MultiFactorAuthentication,
     UserSessionsComponent
 } from "../components";
-import { AppConstants, CommonConstants } from "../constants";
 import { commonConfig } from "../extensions";
 import { SCIMConfigs } from "../extensions/configs/scim";
 import { resolveUserstore } from "../helpers";

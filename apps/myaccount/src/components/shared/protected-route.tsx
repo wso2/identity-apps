@@ -22,7 +22,7 @@ import { AuthenticateUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router-dom";
-import { AppConstants } from "../../constants";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import { AppState } from "../../store";
 
 /**

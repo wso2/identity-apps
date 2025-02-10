@@ -31,6 +31,7 @@ import {
 } from "@wso2is/core/utils";
 import { I18n, I18nModuleConstants, LanguageChangeException } from "@wso2is/i18n";
 import { Alert, ContentLoader, EmptyPlaceholder, ErrorBoundary, LinkButton } from "@wso2is/react-components";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
 import moment from "moment";
@@ -44,7 +45,7 @@ import { Dispatch } from "redux";
 import { fetchApplications } from "../api";
 import { Header, ProtectedRoute } from "../components";
 import { getDashboardLayoutRoutes, getEmptyPlaceholderIllustrations } from "../configs";
-import { AppConstants, UIConstants } from "../constants";
+import { UIConstants } from "../constants";
 import { history } from "../helpers";
 import { Application, ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";

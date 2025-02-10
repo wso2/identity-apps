@@ -17,12 +17,12 @@
  */
 
 import { EmptyPlaceholder } from "@wso2is/react-components";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations } from "../../configs";
-import { AppConstants } from "../../constants";
 
 /**
  * 404 error page.

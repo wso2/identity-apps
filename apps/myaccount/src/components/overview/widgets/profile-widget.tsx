@@ -18,13 +18,15 @@
 
 import { useThemeProvider } from "@wso2is/common.branding.v1/hooks/use-theme-provider";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Progress } from "semantic-ui-react";
 import { getWidgetIcons } from "../../../configs";
-import { AppConstants, CommonConstants, UIConstants } from "../../../constants";
+import { UIConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import { ConfigReducerStateInterface, ProfileCompletion, ProfileCompletionStatus } from "../../../models";
 import { AppState } from "../../../store";

@@ -23,6 +23,7 @@ import {
     Alert,
     ContentLoader
 } from "@wso2is/react-components";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -38,7 +39,7 @@ import { Header, ProtectedRoute } from "../components";
 import {
     getDefaultLayoutRoutes
 } from "../configs";
-import { AppConstants, UIConstants } from "../constants";
+import { UIConstants } from "../constants";
 import { AppState } from "../store";
 
 /**

@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { GenericIcon } from "@wso2is/react-components";
+import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
 import { AxiosError } from "axios";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,7 +28,6 @@ import { Dispatch } from "redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../../../api";
 import { getAccountRecoveryIcons } from "../../../configs";
-import { CommonConstants } from "../../../constants";
 import {
     AlertInterface,
     AlertLevels,

@@ -20,6 +20,7 @@ import { UserAgentParser } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { ConfirmationModal, GenericIcon, Message, Popup } from "@wso2is/react-components";
+import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, useEffect, useState } from "react";
@@ -37,7 +38,6 @@ import {
     updateDeviceName
 } from "../../../api";
 import { getMFAIcons } from "../../../configs";
-import { CommonConstants } from "../../../constants";
 import { commonConfig } from "../../../extensions";
 import { AlertInterface, AlertLevels } from "../../../models";
 import { FIDODevice } from "../../../models/fido-authenticator";

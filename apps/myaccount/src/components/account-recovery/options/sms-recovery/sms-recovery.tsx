@@ -19,6 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalForm, FinalFormField, FormRenderProps, FormValue, TextFieldAdapter } from "@wso2is/form";
 import { Button, GenericIcon, Hint, PrimaryButton, SecondaryButton } from "@wso2is/react-components";
+import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
@@ -30,7 +31,6 @@ import { ThunkDispatch } from "redux-thunk";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { updateProfileInfo } from "../../../../api";
 import { getAccountRecoveryIcons } from "../../../../configs";
-import { CommonConstants } from "../../../../constants";
 import { commonConfig } from "../../../../extensions";
 import { AlertInterface, AlertLevels, BasicProfileInterface, MultiValue, ProfileSchema } from "../../../../models";
 import { AppState } from "../../../../store";

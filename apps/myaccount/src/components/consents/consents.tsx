@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import cloneDeep from "lodash-es/cloneDeep";
 import flatten from "lodash-es/flatten";
 import React, { FunctionComponent, useEffect, useState } from "react";
@@ -32,7 +33,7 @@ import {
     revokeConsentedApp,
     updateConsentedClaims
 } from "../../api/consents";
-import { AppConstants, ConsentConstants } from "../../constants";
+import { ConsentConstants } from "../../constants";
 import {
     AlertInterface,
     AlertLevels,

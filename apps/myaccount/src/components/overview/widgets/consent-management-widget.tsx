@@ -20,7 +20,8 @@ import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { getWidgetIcons } from "../../../configs";
-import { AppConstants, CommonConstants } from "../../../constants";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
 import { history } from "../../../helpers";
 import { SettingsSection } from "../../shared";
 

@@ -43,6 +43,7 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { CookieStorageUtils, StringUtils, URLUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleConstants, LanguageChangeException, LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
 import React, {
@@ -57,7 +58,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Action, AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Gravatar } from "./gravatar";
-import { AppConstants } from "../../constants";
 import { commonConfig } from "../../extensions";
 import { history, resolveUserstore } from "../../helpers";
 import { AuthStateInterface, ConfigReducerStateInterface } from "../../models";
