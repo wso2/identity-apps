@@ -1,5 +1,27 @@
 # @wso2is/admin.users.v1
 
+## 2.30.69
+
+### Patch Changes
+
+- [#7565](https://github.com/wso2/identity-apps/pull/7565) [`0aa4f0fd6251b9a48a3ce6d6c2b6e66ebf1b90e8`](https://github.com/wso2/identity-apps/commit/0aa4f0fd6251b9a48a3ce6d6c2b6e66ebf1b90e8) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Check bulk import supported user store property when listing user store domains
+
+- Updated dependencies [[`0aa4f0fd6251b9a48a3ce6d6c2b6e66ebf1b90e8`](https://github.com/wso2/identity-apps/commit/0aa4f0fd6251b9a48a3ce6d6c2b6e66ebf1b90e8)]:
+  - @wso2is/admin.userstores.v1@2.26.118
+  - @wso2is/admin.users.v1@2.30.69
+  - @wso2is/admin.core.v1@2.38.28
+  - @wso2is/admin.extensions.v1@2.36.84
+  - @wso2is/admin.identity-providers.v1@2.26.159
+  - @wso2is/admin.organizations.v1@2.26.159
+  - @wso2is/admin.roles.v2@2.27.103
+  - @wso2is/admin.authentication.v1@2.25.159
+  - @wso2is/admin.claims.v1@2.27.69
+  - @wso2is/admin.groups.v1@2.27.69
+  - @wso2is/admin.server-configurations.v1@2.32.84
+  - @wso2is/admin.tenants.v1@2.28.133
+  - @wso2is/admin.validation.v1@2.27.97
+  - @wso2is/admin.feature-gate.v1@1.4.159
+
 ## 2.30.68
 
 ### Patch Changes

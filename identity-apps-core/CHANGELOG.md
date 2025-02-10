@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.13.1
+
+### Patch Changes
+
+- [#7569](https://github.com/wso2/identity-apps/pull/7569) [`d394ca8a1659e592f71cdaadb552f6018e4dc6b4`](https://github.com/wso2/identity-apps/commit/d394ca8a1659e592f71cdaadb552f6018e4dc6b4) Thanks [@sandushi](https://github.com/sandushi)! - Change the encode method of the ui_locales param
+
 ## 2.13.0
 
 ### Minor Changes
