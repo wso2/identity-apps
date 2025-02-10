@@ -1,5 +1,16 @@
 # @wso2is/admin.userstores.v1
 
+## 2.26.118
+
+### Patch Changes
+
+- [#7565](https://github.com/wso2/identity-apps/pull/7565) [`0aa4f0fd6251b9a48a3ce6d6c2b6e66ebf1b90e8`](https://github.com/wso2/identity-apps/commit/0aa4f0fd6251b9a48a3ce6d6c2b6e66ebf1b90e8) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Check bulk import supported user store property when listing user store domains
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.28
+  - @wso2is/admin.extensions.v1@2.36.84
+  - @wso2is/admin.remote-userstores.v1@1.7.115
+
 ## 2.26.117
 
 ### Patch Changes
