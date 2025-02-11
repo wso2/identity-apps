@@ -141,14 +141,14 @@ export const getValidation = (
 export const memoizedValidation = <FieldType, FieldsType>(
     fn: (
         value: FieldType,
-        allValues: FieldsType,
-        meta: FieldState<FieldType>
+        allValues?: FieldsType,
+        meta?: FieldState<FieldType>
     ) => Promise<string | undefined>
 ) => {
     let lastArg: FieldType;
     let lastResult: string | undefined;
 
-    return async (value: FieldType, allValues: FieldsType, meta: FieldState<FieldType>) => {
+    return async (value: FieldType, allValues?: FieldsType, meta?: FieldState<FieldType>) => {
         if (lastArg === value) {
             return lastResult;
         }

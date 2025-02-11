@@ -42,7 +42,7 @@ import {
 import { memoizedValidation } from "@wso2is/form/src/utils/validate";
 import { Hint, PasswordValidation } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { FieldState, FormState } from "final-form";
+import { FormState } from "final-form";
 import React, { FunctionComponent, ReactElement, useCallback, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -163,58 +163,56 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
      * @param value - Input value.
      * @returns An error if the value is not valid else undefined.
      */
-    const validateDomain: (
-        value: string,
-        allValues: AddTenantFormValues,
-        meta: FieldState<string>
-    ) => Promise<string | undefined> = useCallback(memoizedValidation<string, AddTenantFormValues>(
-        async (value: string): Promise<string | undefined> => {
-            if (!value) {
-                return undefined;
-            }
+    const validateDomain: (value: string) => Promise<string | undefined> = useCallback(
+        memoizedValidation<string, AddTenantFormValues>(
+            async (value: string): Promise<string | undefined> => {
+                if (!value) {
+                    return undefined;
+                }
 
-            let isAvailable: boolean = true;
+                let isAvailable: boolean = true;
 
-            try {
-                isAvailable = await getTenantDomainAvailability(value);
-            } catch (error) {
-                isAvailable = false;
-            }
+                try {
+                    isAvailable = await getTenantDomainAvailability(value);
+                } catch (error) {
+                    isAvailable = false;
+                }
 
-            if (!isAvailable) {
-                return t("tenants:common.form.fields.domain.validations.domainUnavailable");
-            }
+                if (!isAvailable) {
+                    return t("tenants:common.form.fields.domain.validations.domainUnavailable");
+                }
 
-            if (isTenantDomainDotExtensionMandatory) {
-                const lastIndexOfDot: number = value.lastIndexOf(".");
+                if (isTenantDomainDotExtensionMandatory) {
+                    const lastIndexOfDot: number = value.lastIndexOf(".");
 
-                if (lastIndexOfDot <= 0) {
-                    return t("tenants:common.form.fields.domain.validations.domainMandatoryExtension");
+                    if (lastIndexOfDot <= 0) {
+                        return t("tenants:common.form.fields.domain.validations.domainMandatoryExtension");
+                    }
+                }
+
+                if (tenantDomainRegex) {
+                    const regex: RegExp = new RegExp(tenantDomainRegex);
+
+                    if (!regex.test(value)) {
+                        return t("tenants:common.form.fields.domain.validations.domainInvalidPattern");
+                    }
+                }
+
+                const indexOfDot: number = value.indexOf(".");
+
+                if (indexOfDot == 0) {
+                    return t("tenants:common.form.fields.domain.validations.domainStartingWithDot");
+                }
+
+                if (tenantDomainIllegalCharactersRegex) {
+                    const regex: RegExp = new RegExp(tenantDomainIllegalCharactersRegex);
+
+                    if (regex.test(value)) {
+                        return t("tenants:common.form.fields.domain.validations.domainInvalidCharPattern");
+                    }
                 }
             }
-
-            if (tenantDomainRegex) {
-                const regex: RegExp = new RegExp(tenantDomainRegex);
-
-                if (!regex.test(value)) {
-                    return t("tenants:common.form.fields.domain.validations.domainInvalidPattern");
-                }
-            }
-
-            const indexOfDot: number = value.indexOf(".");
-
-            if (indexOfDot == 0) {
-                return t("tenants:common.form.fields.domain.validations.domainStartingWithDot");
-            }
-
-            if (tenantDomainIllegalCharactersRegex) {
-                const regex: RegExp = new RegExp(tenantDomainIllegalCharactersRegex);
-
-                if (regex.test(value)) {
-                    return t("tenants:common.form.fields.domain.validations.domainInvalidCharPattern");
-                }
-            }
-        }), []);
+        ), []);
 
     /**
      * Handles the form submit action.
