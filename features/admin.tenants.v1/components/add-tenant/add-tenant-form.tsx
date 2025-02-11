@@ -39,10 +39,10 @@ import {
     Tools,
     composeValidators
 } from "@wso2is/form";
-import { memoizedValidation } from "@wso2is/form/src/utils/validate";
 import { Hint, PasswordValidation } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { FormState } from "final-form";
+import memoize from "lodash-es/memoize";
 import React, { FunctionComponent, ReactElement, useCallback, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -164,7 +164,7 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
      * @returns An error if the value is not valid else undefined.
      */
     const validateDomain: (value: string) => Promise<string | undefined> = useCallback(
-        memoizedValidation<string, AddTenantFormValues>(
+        memoize(
             async (value: string): Promise<string | undefined> => {
                 if (!value) {
                     return undefined;

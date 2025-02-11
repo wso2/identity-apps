@@ -17,7 +17,6 @@
  */
 
 import { FormValidation } from "@wso2is/validation";
-import { FieldState } from "final-form";
 import { FieldConstants } from "../constants";
 import { FieldInputTypes } from "../models";
 
@@ -130,31 +129,4 @@ export const getValidation = (
     }
 
     return getDefaultValidation(field, fieldType, value);
-};
-
-/**
- * Memoizes the result of the validation function based on the input value.
- *
- * @param fn - The react final-form field level validation function to be memoized.
- * @returns The memoized validation function.
- */
-export const memoizedValidation = <FieldType, FieldsType>(
-    fn: (
-        value: FieldType,
-        allValues?: FieldsType,
-        meta?: FieldState<FieldType>
-    ) => Promise<string | undefined>
-) => {
-    let lastArg: FieldType;
-    let lastResult: string | undefined;
-
-    return async (value: FieldType, allValues?: FieldsType, meta?: FieldState<FieldType>) => {
-        if (lastArg === value) {
-            return lastResult;
-        }
-        lastArg = value;
-        lastResult = await fn(value, allValues, meta);
-
-        return lastResult;
-    };
 };
