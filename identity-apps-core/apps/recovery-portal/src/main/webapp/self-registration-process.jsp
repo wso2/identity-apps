@@ -216,8 +216,9 @@
     }
 
     Integer userNameValidityStatusCode = usernameValidityResponse.getInt("code");
+    String errorCode = String.valueOf(userNameValidityStatusCode);
     if (!SelfRegistrationStatusCodes.CODE_USER_NAME_AVAILABLE.equalsIgnoreCase(userNameValidityStatusCode.toString())) {
-        if (allowchangeusername || !skipSignUpEnableCheck) {
+        if (allowchangeusername) {
             request.setAttribute("error", true);
             request.setAttribute("errorCode", userNameValidityStatusCode);
             if (usernameValidityResponse.has("message")) {
@@ -226,8 +227,22 @@
                 }
             }
             request.getRequestDispatcher("register.do").forward(request, response);
+        } else if (!skipSignUpEnableCheck 
+            && SelfRegistrationStatusCodes.ERROR_CODE_USER_ALREADY_EXISTS.equalsIgnoreCase(errorCode)) {
+            if (isAccountVerificationEnabled && !isShowUsernameUnavailabilityEnabled) {
+                request.setAttribute("callback", callback);
+                if (StringUtils.isNotBlank(srtenantDomain)) {
+                    request.setAttribute("srtenantDomain", srtenantDomain);
+                }
+                request.setAttribute("sessionDataKey", sessionDataKey);
+                request.getRequestDispatcher("self-registration-complete.jsp").forward(request, response);
+            } else {
+                request.setAttribute("error", true);
+                request.setAttribute("errorCode", userNameValidityStatusCode);
+                request.getRequestDispatcher("register.do").forward(request, response);
+            }
+            return;
         } else {
-            String errorCode = String.valueOf(userNameValidityStatusCode);
             if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_TENANT.equalsIgnoreCase(errorCode)) {
                 errorMsg = "Invalid tenant domain - " + user.getTenantDomain() + ".";
             } else if (SelfRegistrationStatusCodes.ERROR_CODE_USER_ALREADY_EXISTS.equalsIgnoreCase(errorCode)) {
@@ -416,11 +431,11 @@
 
     } catch (Exception e) {
         IdentityManagementEndpointUtil.addErrorInformation(request, e);
-        String errorCode = (String) request.getAttribute("errorCode");
+        String errorCode1 = (String) request.getAttribute("errorCode");
         String errorMsg1 = (String) request.getAttribute("errorMsg");
-        if (passwordPatternErrorCode.equals(errorCode)) {
-            String i18Resource = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, errorCode);
-            if (!i18Resource.equals(errorCode)) {
+        if (passwordPatternErrorCode.equals(errorCode1)) {
+            String i18Resource = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, errorCode1);
+            if (!i18Resource.equals(errorCode1)) {
                 request.setAttribute(ERROR_MESSAGE, i18Resource);
             }
             if (isSelfRegistrationWithVerification) {
@@ -431,14 +446,14 @@
                         response);
             }
             return;
-        } else if (usernamePatternErrorCode.equals(errorCode)) {
-            String i18Resource = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, errorCode);
-            if (!i18Resource.equals(errorCode)) {
+        } else if (usernamePatternErrorCode.equals(errorCode1)) {
+            String i18Resource = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, errorCode1);
+            if (!i18Resource.equals(errorCode1)) {
                 request.setAttribute(ERROR_MESSAGE, i18Resource);
             }
             request.getRequestDispatcher("register.do").forward(request, response);
             return;
-        } else if (isAccountVerificationEnabled && !isShowUsernameUnavailabilityEnabled && usernameAlreadyExistsErrorCode.equals(errorCode)) {
+        } else if (isAccountVerificationEnabled && !isShowUsernameUnavailabilityEnabled && usernameAlreadyExistsErrorCode.equals(errorCode1)) {
             request.setAttribute("callback", callback);
             if (StringUtils.isNotBlank(srtenantDomain)) {
                 request.setAttribute("srtenantDomain", srtenantDomain);
