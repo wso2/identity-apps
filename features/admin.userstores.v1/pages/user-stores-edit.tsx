@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import {  AppState  } from "@wso2is/admin.core.v1/store";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, ResourceTab, ResourceTabPaneInterface, TabPageLayout } from "@wso2is/react-components";
@@ -83,7 +83,8 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
     const { t } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const hasUserStoresUpdatePermission: boolean = useRequiredScopes(featureConfig?.userStores?.scopes?.update);
 
     /**
      * Fetches the userstore by its id
@@ -143,8 +144,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
      * @returns If an userstore is Read Only or not.
      */
     const resolveReadOnlyState = (): boolean => {
-        return !hasRequiredScopes(featureConfig?.userStores, featureConfig?.userStores?.scopes?.update,
-            allowedScopes);
+        return !hasUserStoresUpdatePermission;
     };
 
     /**
@@ -189,7 +189,6 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
                     <EditUserDetails
                         readOnly={ resolveReadOnlyState() }
                         update={ getUserStore }
-                        type={ type }
                         id={ userStoreId }
                         properties={ properties?.user }
                         data-testid={ `${ testId }-userstore-user-details-edit` }
