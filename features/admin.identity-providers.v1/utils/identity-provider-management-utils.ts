@@ -143,12 +143,11 @@ export class IdentityProviderManagementUtils {
          * @returns image URI of the authenticator.
          */
         const resolveLocalAuthenticatorImage = (authenticator: LocalAuthenticatorInterface): string => {
-            if (!isCustomLocalAuthenticator(authenticator)) {
-                return AuthenticatorMeta.getAuthenticatorIcon(authenticator.id);
+            if (isCustomLocalAuthenticator(authenticator)) {
+                return AuthenticatorMeta.getCustomAuthenticatorIcon(authenticator);
             }
 
-            // Resolve image URI of custom local authenticators.
-            return AuthenticatorMeta.getCustomAuthenticatorIcon(authenticator);
+            return AuthenticatorMeta.getAuthenticatorIcon(authenticator.id);
         };
 
         return axios.all(getPromises())
