@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ReactElement } from "react";
+import { FunctionComponent, ReactElement, SVGProps } from "react";
 
 /**
  * Type of user store type.
@@ -269,7 +269,7 @@ export interface UserStoreItem {
  */
 export interface WizardStepInterface {
     content: ReactElement;
-    icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    icon: FunctionComponent<SVGProps<SVGSVGElement>>;
     title: string;
     name?: string;
 }
