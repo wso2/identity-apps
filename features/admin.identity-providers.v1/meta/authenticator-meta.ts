@@ -24,7 +24,7 @@ import { AuthenticatorLabels } from "@wso2is/admin.connections.v1/models/authent
 import get from "lodash-es/get";
 import { ReactNode } from "react";
 import { getAuthenticatorIcons } from "../configs/ui";
-import { AuthenticatorCategories } from "../models";
+import { AuthenticatorCategories, LocalAuthenticatorInterface } from "../models";
 
 export class AuthenticatorMeta {
 
@@ -165,10 +165,16 @@ export class AuthenticatorMeta {
      * Currently authenticator id is being used to fetch the respective authenticator icon.
      * Existing function could not be used since the id and the name of
      * custom authenticators are not pre defined.
+     * For custom local authenticators, it returns the authenticator's own image URI if available,
+     * or falls back to a default custom authenticator icon.
      *
      * @returns Custom Authenticator Icon.
      */
-    public static getCustomAuthenticatorIcon(): string {
+    public static getCustomAuthenticatorIcon(authenticator: LocalAuthenticatorInterface): string {
+        if (authenticator?.image) {
+            return authenticator.image;
+        }
+
         return getAuthenticatorIcons()?.customAuthenticator;
     }
 
