@@ -136,6 +136,29 @@ export class IdentityProviderManagementUtils {
             return authenticator?.tags?.includes("Custom");
         };
 
+        /**
+         * Resolves the image of the local authenticator.
+         *
+         * For system defined user authenticators, the function retrieves the default icon.
+         * For custom local authenticators, it returns the authenticator's own image URI if available,
+         * or falls back to a default custom authenticator icon.
+         *
+         * @param authenticator - Authenticator.
+         * @returns image URI of the authenticator.
+         */
+        const resolveLocalAuthenticatorImage = (authenticator: LocalAuthenticatorInterface): string => {
+            if (!isCustomLocalAuthenticator(authenticator)) {
+                AuthenticatorMeta.getAuthenticatorIcon(authenticator.id);
+            }
+
+            // Resolve image URI of custom local authenticators.
+            if (authenticator?.image) {
+                return authenticator.image;
+            } else {
+                AuthenticatorMeta.getCustomAuthenticatorIcon();
+            }
+        };
+
         return axios.all(getPromises())
             .then(axios.spread((local: LocalAuthenticatorInterface[],
                 federated: IdentityProviderListResponseInterface) => {
@@ -169,9 +192,7 @@ export class IdentityProviderManagementUtils {
                         displayName: authenticator.displayName,
                         id: authenticator.id,
                         idp: LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER,
-                        image: isCustomLocalAuthenticator(authenticator) ?
-                            AuthenticatorMeta.getCustomAuthenticatorIcon() :
-                            AuthenticatorMeta.getAuthenticatorIcon(authenticator.id),
+                        image: resolveLocalAuthenticatorImage(authenticator),
                         isEnabled: authenticator.isEnabled,
                         name: authenticator.name
                     });
