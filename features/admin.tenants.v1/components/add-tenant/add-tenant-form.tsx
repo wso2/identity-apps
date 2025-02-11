@@ -93,7 +93,6 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
     );
 
     const [ isPasswordValid, setIsPasswordValid ] = useState<boolean>(false);
-    const [ domainValidationError, setDomainValidationError ] = useState<string>(null);
 
     const userNameValidationConfig: ValidationFormInterface = useMemo((): ValidationFormInterface => {
         return getUsernameConfiguration(validationData);
