@@ -1,5 +1,21 @@
 # @wso2is/admin.branding.v1
 
+## 2.28.18
+
+### Patch Changes
+
+- [#7588](https://github.com/wso2/identity-apps/pull/7588) [`8a064729c69eb10c3768848370f98998ced18760`](https://github.com/wso2/identity-apps/commit/8a064729c69eb10c3768848370f98998ced18760) Thanks [@brionmario](https://github.com/brionmario)! - Consider branding to be enabled from API to show the unpublished disclaimer
+  Fix: https://github.com/wso2/product-is/issues/21453
+- Updated dependencies [[`f87912f707015c530d64ec344f20433f6e0fa485`](https://github.com/wso2/identity-apps/commit/f87912f707015c530d64ec344f20433f6e0fa485)]:
+  - @wso2is/i18n@2.19.12
+  - @wso2is/admin.core.v1@2.38.30
+  - @wso2is/admin.extensions.v1@2.36.86
+  - @wso2is/admin.organizations.v1@2.26.161
+  - @wso2is/admin.server-configurations.v1@2.32.86
+  - @wso2is/admin.branding.ai.v1@2.27.56
+  - @wso2is/admin.feature-gate.v1@1.4.161
+  - @wso2is/common.branding.v1@2.26.18
+
 ## 2.28.17
 
 ### Patch Changes

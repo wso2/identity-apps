@@ -1,5 +1,29 @@
 # @wso2is/admin.users.v1
 
+## 2.30.71
+
+### Patch Changes
+
+- [#7595](https://github.com/wso2/identity-apps/pull/7595) [`f87912f707015c530d64ec344f20433f6e0fa485`](https://github.com/wso2/identity-apps/commit/f87912f707015c530d64ec344f20433f6e0fa485) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix client error showing issue in admin update user password wizard
+
+- Updated dependencies [[`e657fb2c52925745bbe1b72e8ee2c123c2892d6d`](https://github.com/wso2/identity-apps/commit/e657fb2c52925745bbe1b72e8ee2c123c2892d6d), [`f87912f707015c530d64ec344f20433f6e0fa485`](https://github.com/wso2/identity-apps/commit/f87912f707015c530d64ec344f20433f6e0fa485), [`86cfa121e7a18a2d095eea97a42188c0afb378eb`](https://github.com/wso2/identity-apps/commit/86cfa121e7a18a2d095eea97a42188c0afb378eb)]:
+  - @wso2is/admin.identity-providers.v1@2.26.161
+  - @wso2is/admin.users.v1@2.30.71
+  - @wso2is/i18n@2.19.12
+  - @wso2is/admin.userstores.v1@2.26.120
+  - @wso2is/admin.core.v1@2.38.30
+  - @wso2is/admin.extensions.v1@2.36.86
+  - @wso2is/admin.organizations.v1@2.26.161
+  - @wso2is/admin.roles.v2@2.27.105
+  - @wso2is/admin.server-configurations.v1@2.32.86
+  - @wso2is/admin.authentication.v1@2.25.161
+  - @wso2is/admin.claims.v1@2.27.71
+  - @wso2is/admin.groups.v1@2.27.71
+  - @wso2is/admin.tenants.v1@2.28.135
+  - @wso2is/admin.validation.v1@2.27.99
+  - @wso2is/admin.authorization.v1@2.25.69
+  - @wso2is/admin.feature-gate.v1@1.4.161
+
 ## 2.30.70
 
 ### Patch Changes
