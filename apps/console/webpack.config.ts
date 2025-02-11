@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,10 +18,11 @@
 
 import fs from "fs";
 import path from "path";
+import { ParsedUrlQuery } from "querystring";
+import url, { UrlWithParsedQuery } from "url";
 import zlib, { BrotliOptions } from "zlib";
 import nxReactWebpackConfig from "@nx/react/plugins/webpack.js";
 import CompressionPlugin from "compression-webpack-plugin";
-import history from "connect-history-api-fallback";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
@@ -35,6 +36,12 @@ import webpack, {
 } from "webpack";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import DeploymentConfig from "./src/public/deployment.config.json";
+
+// Enable debug logs.
+const DEBUG_ENABLED: boolean = false;
+const DEBUG_LOG_KEY: string = "webpack-dev-server";
+// eslint-disable-next-line @typescript-eslint/typedef, no-console
+const log = console.log;
 
 /**
  * Different Server Types.
@@ -669,15 +676,87 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     if (isDeployedOnExternalStaticServer && isPreAuthCheckEnabled) {
         config.devServer = {
             ...config.devServer,
-            onBeforeSetupMiddleware: (devServer: { app: { use: (arg0: any) => void; }; }) => {
-                devServer.app.use(history({
-                    rewrites: [
-                        { from: /^\/$/, to: "/app" },
-                        { from: /^\/app(\/(login)?)?$/, to: "/app/index.html" },
-                        { from: /^\/o\/.*$/, to: "/app/index.html" },
-                        { from: /^\/t(\/.*)?$/, to: "/app/index.html" }
-                    ]
-                }));
+            setupMiddlewares: (middlewares: any, devServer: any) => {
+                if (!devServer) {
+                    throw new Error("webpack-dev-server is not defined");
+                }
+
+                devServer.app.use((req: any, res: any, next: any) => {
+                    const originalUrl: string = req.url;
+
+                    // **🔹 Do NOT rewrite requests for static files**
+                    if (
+                        req.url.startsWith("/app/static/") || // Webpack JS & CSS chunks
+                        req.url.startsWith("/static/") || // Other static assets
+                        req.url.match(
+                            /\.(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|ico|json|map)$/) // Common asset types
+                    ) {
+                        if (DEBUG_ENABLED) {
+                            log(`${DEBUG_LOG_KEY}: Serving static file - ${originalUrl}`);
+                        }
+
+                        return next(); // Let Webpack DevServer serve the static file
+                    }
+
+                    // Parse the original URL
+                    const parsedUrl: UrlWithParsedQuery = url.parse(originalUrl, true);
+                    const pathWithoutQuery: string = parsedUrl.pathname;
+                    const query: ParsedUrlQuery = parsedUrl.query;
+
+                    const indexHTMLPath: string = path.join(__dirname, "build/console/index.html");
+                    const appHTMLPath: string = path.join(__dirname, "build/console/app/index.html");
+
+                    if (DEBUG_ENABLED) {
+                        log(`${DEBUG_LOG_KEY}: Request URL - ${originalUrl}`);
+                        log(`${DEBUG_LOG_KEY}: Path without query - ${pathWithoutQuery}`);
+                        log(`${DEBUG_LOG_KEY}: Query Params =`, query);
+                    }
+
+                    // Regex patterns to match specific paths
+                    const patterns: RegExp[] = [
+                        /^\/app(\?.+)?$/,
+                        /^\/t\/[^/?]+\/app(\?.+)?$/,
+                        /^\/t\/[^/?]+\/o\/[^/?]+\/app(\?.+)?$/
+                    ];
+
+                    // Determine if the request matches one of the patterns and has `code`
+                    let matchFound: boolean = false;
+
+                    for (const pattern of patterns) {
+                        if (pattern.test(pathWithoutQuery) && query.code) {
+                            matchFound = true;
+
+                            break;
+                        }
+                    }
+
+                    if (matchFound) {
+                        if (fs.existsSync(appHTMLPath)) {
+                            if (DEBUG_ENABLED) log(`${DEBUG_LOG_KEY}: Serving app.html`);
+                            res.setHeader("Content-Type", "text/html");
+
+                            return res.status(200).send(fs.readFileSync(appHTMLPath, "utf8"));
+                        } else {
+                            if (DEBUG_ENABLED) log(`${DEBUG_LOG_KEY}: app.html not found`);
+
+                            return res.status(404).send("app.html not found");
+                        }
+                    }
+
+                    // Serve index.html as the fallback
+                    if (fs.existsSync(indexHTMLPath)) {
+                        if (DEBUG_ENABLED) log(`${DEBUG_LOG_KEY}: Serving index.html`);
+                        res.setHeader("Content-Type", "text/html");
+
+                        return res.status(200).send(fs.readFileSync(indexHTMLPath, "utf8"));
+                    } else {
+                        if (DEBUG_ENABLED) log(`${DEBUG_LOG_KEY}: index.html not found`);
+
+                        return res.status(404).send("index.html not found");
+                    }
+                });
+
+                return middlewares;
             }
         };
     } else {
