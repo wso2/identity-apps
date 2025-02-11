@@ -18,11 +18,12 @@
 
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -127,7 +128,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             onClose();
 
             history.push(AppConstants.getPaths().get("USERSTORES"));
-        }).catch((error: IdentityAppsApiException) => {
+        }).catch((error: AxiosError & IdentityAppsError) => {
 
             if (error.response?.status === 403 &&
                 error.response.data?.code === UserStoreManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
@@ -142,7 +143,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             }
 
             setAlert({
-                description: error?.name ?? t("userstores:notifications.addUserstore" +
+                description: error?.description ?? t("userstores:notifications.addUserstore" +
                     ".genericError.description"),
                 level: AlertLevels.ERROR,
                 message: error?.message ?? t("userstores:notifications.addUserstore" +
