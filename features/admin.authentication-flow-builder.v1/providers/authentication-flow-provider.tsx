@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -55,6 +55,7 @@ import AuthenticationFlowContext from "../context/authentication-flow-context";
 import DefaultFlowConfigurationSequenceTemplate from "../data/flow-sequences/basic/default-sequence.json";
 import { AuthenticationFlowBuilderModes } from "../models/flow-builder";
 import { VisualEditorFlowNodeMetaInterface } from "../models/visual-editor";
+import { isCustomAuthenticator, isSecondFactorAuthenticator } from "../utils/authentication-flow-builder-utils";
 
 /**
  * Props interface for the Authentication flow provider.
@@ -194,7 +195,8 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         localAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
             if (authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME) {
                 recoveryAuthenticators.push(authenticator);
-            } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.id)) {
+            } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.id) ||
+                isCustomLocalSecondFactorAuthenticator(authenticator)) {
                 secondFactorAuthenticators.push(authenticator);
             } else {
                 moderatedLocalAuthenticators.push(authenticator);
@@ -239,6 +241,10 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             social: socialAuthenticators
         });
     }, [ authenticators ]);
+
+    const isCustomLocalSecondFactorAuthenticator = (authenticator: GenericAuthenticatorInterface): boolean => {
+        return isCustomAuthenticator(authenticator) && isSecondFactorAuthenticator(authenticator);
+    };
 
     const isAdaptiveAuthAvailable: boolean = useMemo(() => {
         if (orgType === OrganizationType.SUBORGANIZATION) {

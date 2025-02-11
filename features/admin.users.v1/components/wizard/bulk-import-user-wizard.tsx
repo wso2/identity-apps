@@ -43,7 +43,7 @@ import { getGroupList, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
-import { getAUserStore, getUserStores } from "@wso2is/admin.userstores.v1/api";
+import { getUserStores } from "@wso2is/admin.userstores.v1/api";
 import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
@@ -260,11 +260,18 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             }
         ];
 
-        getUserStores(null)
+        const params: Record<string, string> = {
+            requiredAttributes: [
+                UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY,
+                UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED
+            ].join(",")
+        };
+
+        getUserStores(params)
             .then((response: UserStoreDetails[]) => {
                 response?.forEach(async (item: UserStoreDetails, index: number) => {
-                    // Set read/write enabled userstores based on the type.
-                    if (await checkReadWriteUserStore(item)) {
+                    // Filter read/write enabled and bulk import supported user stores.
+                    if (await isBulkImportSupportedUserStore(item)) {
                         userStoreArray.push({
                             key: index,
                             text: item.name.toUpperCase(),
@@ -304,34 +311,25 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     };
 
     /**
-     * Check the given user store is Read/Write enabled
+     * Check the given user store is Read/Write enabled and bulk import supported.
      *
      * @param userStore - Userstore
-     * @returns If the given userstore is read only or not
+     * @returns If the given userstore is read only or not and bulk import is supported.
      */
-    const checkReadWriteUserStore = (userStore: UserStoreDetails): Promise<boolean> => {
+    const isBulkImportSupportedUserStore = (userStore: UserStoreDetails): boolean => {
         let isReadWriteUserStore: boolean = false;
+        let isBulkImportSupported: boolean = false;
 
-        return getAUserStore(userStore?.id).then((response: UserStoreDetails) => {
-            response?.properties?.some((property: UserStoreProperty) => {
-                if (property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY) {
-                    isReadWriteUserStore = property.value === "false";
-
-                    return true;
-                }
-            });
-
-            return isReadWriteUserStore;
-        }).catch(() => {
-            dispatch(addAlert({
-                description: t("userstores:notifications.fetchUserstores.genericError." +
-                    "description"),
-                level: AlertLevels.ERROR,
-                message: t("userstores:notifications.fetchUserstores.genericError.message")
-            }));
-
-            return false;
+        userStore?.properties?.forEach((property: UserStoreProperty) => {
+            if (property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY) {
+                isReadWriteUserStore = property.value === "false";
+            }
+            if (property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED) {
+                isBulkImportSupported = property.value === "true";
+            }
         });
+
+        return isReadWriteUserStore && isBulkImportSupported;
     };
 
     const hideUserStoreDropdown = (): boolean => {

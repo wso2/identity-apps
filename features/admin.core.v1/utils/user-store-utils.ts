@@ -58,7 +58,8 @@ export class SharedUserStoreUtils {
                 if (!isEmpty(store)) {
                     return getAUserStore(store.id)
                         .then((resp: any) => {
-                            usernameRegEx = resp.properties.find((property: any) => property.name === regExName);
+                            usernameRegEx = resp.properties.find((property: any) =>
+                                property?.name?.toLowerCase() === regExName?.toLowerCase());
 
                             return usernameRegEx?.value;
                         });

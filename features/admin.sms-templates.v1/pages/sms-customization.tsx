@@ -222,7 +222,6 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
             availableSmsTemplatesList?.find((template: SMSTemplateType) => template.id === templateId)?.description
         );
         setShouldFetch(true);
-        mutateSmsTemplate();
     };
 
     const handleTemplateChange = (updatedTemplateAttributes: Partial<SMSTemplate>): void => {
@@ -240,7 +239,6 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         setIsInheritedTemplate(false);
         setSelectedLocale(locale);
         setShouldFetch(true);
-        mutateSmsTemplate();
     };
 
     const handleSubmit = (): void => {

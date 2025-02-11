@@ -2078,6 +2078,11 @@ export const applications: ApplicationsNS = {
                 },
                 attributeProfile: {
                     fields: {
+                        attributeNameFormat: {
+                            hint: "This specifies the format for attribute names in the attribute statement of the " +
+                                "SAML assertion.",
+                            label: "Attribute name format"
+                        },
                         enable: {
                             hint: "This specifies whether to include the user’s attributes in the " +
                                 "SAML assertions as part of the attribute statement.",

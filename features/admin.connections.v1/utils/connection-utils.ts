@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,7 +30,7 @@ import { getConnections } from "../api/connections";
 import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
-import { AuthenticatorLabels, MultiFactorAuthenticatorInterface } from "../models/authenticators";
+import { AuthenticatorLabels, AuthenticatorTypes, MultiFactorAuthenticatorInterface } from "../models/authenticators";
 import {
     ConnectionInterface,
     ConnectionListResponseInterface,
@@ -95,11 +95,24 @@ export class ConnectionsManagementUtils {
      * @param authenticator - Authenticator to evaluate.
      * @returns - `true` if the authenticator is a custom authenticator.
      */
-    public static IsCustomAuthenticator = (authenticator: ConnectionInterface) => {
+    public static IsCustomAuthenticator = (authenticator: ConnectionInterface): boolean => {
         const tags: string[] = (authenticator as CustomAuthConnectionInterface)?.tags ?? [];
         const isCustom: boolean = tags.some((tag: string) => tag === AuthenticatorLabels.CUSTOM);
 
         return isCustom;
+    };
+
+    /**
+     * Type-guard to check if the connector is a custom local authenticator.
+     *
+     * @param authenticator - Authenticator to evaluate.
+     * @returns - `true` if the authenticator is a custom local authenticator.
+     */
+    public static IsCustomLocalAuthenticator = (authenticator: ConnectionInterface): boolean => {
+        return (
+            this.IsCustomAuthenticator(authenticator) &&
+            authenticator?.type === AuthenticatorTypes.LOCAL
+        );
     };
 
     /**
@@ -310,6 +323,27 @@ export const resolveConnectionName = (name: string): string => {
         return "Custom Connector";
     } else {
         return name;
+    }
+};
+
+/**
+ * This method resolves the custom authenticator display name.
+ *
+ * This method is necessary since the display name is stored in two different properties in custom federated
+ * authenticators and custom local authenticators.
+ *
+ * @param authenticator - Authenticator object.
+ * @param isCustomLocalAuthenticator - Whether the authenticator is a custom local authenticator.
+ * @returns - Resolved display name.x
+ */
+export const resolveCustomAuthenticatorDisplayName = (
+    authenticator: ConnectionInterface | CustomAuthConnectionInterface,
+    isCustomLocalAuthenticator: boolean
+): string => {
+    if (isCustomLocalAuthenticator) {
+        return (authenticator as CustomAuthConnectionInterface)?.displayName;
+    } else {
+        return (authenticator as ConnectionInterface)?.name;
     }
 };
 

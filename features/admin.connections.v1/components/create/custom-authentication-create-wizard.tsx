@@ -17,6 +17,7 @@
  */
 
 import Backdrop from "@mui/material/Backdrop";
+import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Divider from "@oxygen-ui/react/Divider";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
@@ -28,8 +29,8 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { URLUtils } from "@wso2is/core/utils";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
+import { FormSpy } from "@wso2is/form/src";
 import {
     ContentLoader,
     GenericIcon,
@@ -41,6 +42,7 @@ import {
     Steps,
     useWizardAlert
 } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
@@ -132,6 +134,7 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
     const [ showPrimarySecret, setShowPrimarySecret ] = useState<boolean>(false);
     const [ showSecondarySecret, setShowSecondarySecret ] = useState<boolean>(false);
     const [ endpointAuthType, setEndpointAuthType ] = useState<EndpointAuthenticationType>(null);
+    const [ isHttpEndpointUri, setIsHttpEndpointUri ] = useState<boolean>(false);
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
 
     const dispatch: Dispatch = useDispatch();
@@ -445,13 +448,17 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 "customAuthentication:fields.createWizard.configurationsStep.endpoint.validations.empty"
             );
         }
-        if (URLUtils.isURLValid(values?.endpointUri)) {
-            if (!URLUtils.isHttpsUrl(values?.endpointUri)) {
-                errors.endpointUri = t(
-                    "customAuthentication:fields.createWizard.configurationsStep.endpoint.validations.invalid"
-                );
-            }
-        } else {
+
+        if (
+            !FormValidation.url(values?.endpointUri, {
+                domain: {
+                    allowUnicode: true,
+                    minDomainSegments: 1,
+                    tlds: false
+                },
+                scheme: [ "https", "http" ]
+            })
+        ) {
             errors.endpointUri = t(
                 "customAuthentication:fields.createWizard.configurationsStep.endpoint.validations.general"
             );
@@ -928,6 +935,28 @@ const CustomAuthenticationCreateWizard: FunctionComponent<CustomAuthenticationCr
                 data-componentid={ `${_componentId}-create-wizard-endpoint-uri` }
                 width={ 15 }
             />
+            <FormSpy
+                onChange={ ({ values }: { values: EndpointConfigFormPropertyInterface }) => {
+                    if (values?.endpointUri?.startsWith("http://")) {
+                        setIsHttpEndpointUri(true);
+                    } else {
+                        setIsHttpEndpointUri(false);
+                    }
+                } }
+            />
+            { isHttpEndpointUri && (
+                <Alert
+                    severity="warning"
+                    className="endpoint-uri-alert"
+                    data-componentid={ `${_componentId}-endpoint-uri-alert` }
+                >
+                    <Trans
+                        i18nKey={ t("actions:fields.endpoint.validations.notHttps") }
+                    >
+                        The URL is not secure (HTTP). Use HTTPS for a secure connection.
+                    </Trans>
+                </Alert>
+            ) }
             <Divider className="divider-container" />
             <Heading className="heading-container" as="h5">
                 { t("customAuthentication:fields.createWizard.configurationsStep.authenticationTypeDropdown.title") }

@@ -89,6 +89,7 @@
     private static final String SMS_OTP_AUTHENTICATOR = "sms-otp-authenticator";
     private static final String EMAIL_OTP_AUTHENTICATOR = "email-otp-authenticator";
     private static final String TOTP_AUTHENTICATOR = "totp";
+    private static final String PUSH_NOTIFICATION_AUTHENTICATOR = "push-notification-authenticator";
     private static final String ENTERPRISE_LOGIN_KEY = "isEnterpriseLoginEnabled";
     private static final String ENTERPRISE_API_RELATIVE_PATH = "/api/asgardeo-enterprise-login/v1/business-user-login/";
     private static final String CUSTOM_LOCAL_AUTHENTICATOR_PREFIX = "custom-";
@@ -182,7 +183,8 @@
         BACKUP_CODE_AUTHENTICATOR, TOTP_AUTHENTICATOR, EMAIL_OTP_AUTHENTICATOR,
         MAGIC_LINK_AUTHENTICATOR,SMS_OTP_AUTHENTICATOR,OPEN_ID_AUTHENTICATOR,
         IDENTIFIER_EXECUTOR,JWT_BASIC_AUTHENTICATOR,BASIC_AUTHENTICATOR,
-        IWA_AUTHENTICATOR,X509_CERTIFICATE_AUTHENTICATOR,FIDO_AUTHENTICATOR
+        IWA_AUTHENTICATOR,X509_CERTIFICATE_AUTHENTICATOR,FIDO_AUTHENTICATOR,
+        PUSH_NOTIFICATION_AUTHENTICATOR
    );
 
 
@@ -456,7 +458,8 @@
     <% } %>
 
     <%
-        if (reCaptchaEnabled || reCaptchaResendEnabled) {
+        boolean genericReCaptchaEnabled = CaptchaUtil.isGenericRecaptchaEnabledAuthenticator("IdentifierExecutor");
+        if (reCaptchaEnabled || reCaptchaResendEnabled || genericReCaptchaEnabled) {
             String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
         <script src='<%=(reCaptchaAPI)%>'></script>
@@ -1070,6 +1073,34 @@
                                         <span>
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "email.otp")%>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                            <br>
+                            <%
+                                        }
+                                if (localAuthenticatorNames.contains("push-notification-authenticator")) {
+                            %>
+                                <div class="social-login blurring social-dimmer">
+                                <div class="field">
+                                        <button
+                                            type="button"
+                                            id="icon-<%=iconId%>"
+                                            class="ui button secondary"
+                                            data-testid="login-page-sign-in-with-push-notification"
+                                            onclick="handleNoDomain(this,
+                                                    '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
+                                                    'push-notification-authenticator')"
+                                        >
+                                        <img
+                                            class="ui image"
+                                            src="libs/themes/default/assets/images/icons/push.svg"
+                                            alt="Push Notification Logo"
+                                            role="presentation">
+                                        <span>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "push.notification")%>
                                         </span>
                                     </button>
                                 </div>
