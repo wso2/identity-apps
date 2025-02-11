@@ -17,11 +17,11 @@
  */
 
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
-import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
-import { I18nConstants } from "../constants";
+import { AppConstants } from "../constants/app-constants";
+import { I18nConstants } from "../constants/i18n-constants";
 import { UserManagementConstants } from "../constants/user-management-constants";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
-import { SCIMConfigs } from "../extensions/configs/scim";
+import { SCIMConfigs } from "@wso2is/selfcare.extensions.v1/configs/scim";
 import { AppUtils } from "../init/app-utils";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 import { store } from "../store";

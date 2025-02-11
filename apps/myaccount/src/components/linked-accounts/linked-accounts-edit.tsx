@@ -18,11 +18,11 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
+import { EditSection } from "@wso2is/selfcare.core.v1/components";
+import { UIConstants } from "@wso2is/selfcare.core.v1/constants/ui-constants";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Grid, Input, InputOnChangeData } from "semantic-ui-react";
-import { UIConstants } from "../../constants";
-import { EditSection } from "../shared";
 
 /**
  * Model for user linked  account

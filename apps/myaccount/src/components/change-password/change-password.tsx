@@ -20,20 +20,20 @@ import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { PasswordValidation, ValidationStatusInterface } from "@wso2is/react-components";
+import { updatePassword } from "@wso2is/selfcare.core.v1/api";
+import { fetchPasswordValidationConfig, getPasswordConfig } from "@wso2is/selfcare.core.v1/api/validation";
+import { EditSection, SettingsSection } from "@wso2is/selfcare.core.v1/components";
+import { getSettingsSectionIcons } from "@wso2is/selfcare.core.v1/configs";
 import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
+import { AlertInterface, AlertLevels } from "@wso2is/selfcare.core.v1/models";
+import { ValidationFormInterface } from "@wso2is/selfcare.core.v1/models/validation";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
+import { setActiveForm } from "@wso2is/selfcare.core.v1/store/actions";
 import React, { Dispatch, FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
-import { updatePassword } from "../../api";
-import { fetchPasswordValidationConfig, getPasswordConfig } from "../../api/validation";
-import { getSettingsSectionIcons } from "../../configs";
-import { AlertInterface, AlertLevels } from "../../models";
-import { ValidationFormInterface } from "../../models/validation";
-import { AppState } from "../../store";
-import { setActiveForm } from "../../store/actions";
 import { useEndUserSession } from "../../utils";
-import { EditSection, SettingsSection } from "../shared";
 
 /**
  * Constant to store the change password from identifier.

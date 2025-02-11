@@ -19,6 +19,21 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { ContentLoader, GenericIcon, Heading, LinkButton, Popup } from "@wso2is/react-components";
+import {
+    deleteBackupCode,
+    generateBackupCodes,
+    getRemainingBackupCodesCount,
+    updateEnabledAuthenticators
+} from "@wso2is/selfcare.core.v1/api";
+import { getMFAIcons } from "@wso2is/selfcare.core.v1/configs";
+import {
+    AlertInterface,
+    AlertLevels,
+    BackupCodeInterface,
+    BackupCodesCountInterface,
+    EnabledAuthenticatorUpdateAction
+} from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
 import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -34,21 +49,6 @@ import {
     Modal,
     Segment
 } from "semantic-ui-react";
-import {
-    deleteBackupCode,
-    generateBackupCodes,
-    getRemainingBackupCodesCount,
-    updateEnabledAuthenticators
-} from "../../../api";
-import { getMFAIcons } from "../../../configs";
-import {
-    AlertInterface,
-    AlertLevels,
-    BackupCodeInterface,
-    BackupCodesCountInterface,
-    EnabledAuthenticatorUpdateAction
-} from "../../../models";
-import { AppState } from "../../../store";
 
 /**
  * Property types for the backup code component.

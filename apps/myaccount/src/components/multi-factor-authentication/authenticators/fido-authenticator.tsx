@@ -20,14 +20,6 @@ import { UserAgentParser } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { ConfirmationModal, GenericIcon, Message, Popup } from "@wso2is/react-components";
-import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
-import { AxiosResponse } from "axios";
-import isEmpty from "lodash-es/isEmpty";
-import React, { ReactElement, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import { Button, Divider, Form, Grid, Icon, Label, List, ModalContent } from "semantic-ui-react";
 import {
     connectToDevice,
     decodePublicKeyCredentialCreationOptions,
@@ -36,14 +28,22 @@ import {
     startFidoFlow,
     startFidoUsernamelessFlow,
     updateDeviceName
-} from "../../../api";
-import { getMFAIcons } from "../../../configs";
+} from "@wso2is/selfcare.core.v1/api";
+import { EditSection, ModalComponent } from "@wso2is/selfcare.core.v1/components";
+import { getMFAIcons } from "@wso2is/selfcare.core.v1/configs";
+import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
+import { AlertInterface, AlertLevels } from "@wso2is/selfcare.core.v1/models";
+import { FIDODevice } from "@wso2is/selfcare.core.v1/models/fido-authenticator";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
+import { setActiveForm } from "@wso2is/selfcare.core.v1/store/actions";
+import { AxiosResponse } from "axios";
+import isEmpty from "lodash-es/isEmpty";
+import React, { ReactElement, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { Button, Divider, Form, Grid, Icon, Label, List, ModalContent } from "semantic-ui-react";
 import { commonConfig } from "../../../extensions";
-import { AlertInterface, AlertLevels } from "../../../models";
-import { FIDODevice } from "../../../models/fido-authenticator";
-import { AppState } from "../../../store";
-import { setActiveForm } from "../../../store/actions";
-import { EditSection, ModalComponent } from "../../shared";
 
 /**
  * FIDO key.

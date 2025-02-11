@@ -21,17 +21,17 @@ import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Message, PageLayout } from "@wso2is/react-components";
 import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
+import { addAlert, getProfileInformation } from "@wso2is/selfcare.core.v1/store/actions";
+import { CommonUtils } from "@wso2is/selfcare.core.v1/utils/common-utils";
+import { commonConfig } from "@wso2is/selfcare.extensions.v1";
+import { SCIMConfigs } from "@wso2is/selfcare.extensions.v1/configs/scim";
 import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { FederatedAssociations, LinkedAccounts, Profile, ProfileExport } from "../components";
-import { commonConfig } from "../extensions";
-import { SCIMConfigs } from "../extensions/configs/scim";
-import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
-import { AppState } from "../store";
-import { addAlert, getProfileInformation } from "../store/actions";
-import { CommonUtils } from "../utils";
 
 /**
  * Prop types for the basic details component.

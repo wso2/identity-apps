@@ -20,7 +20,14 @@ import { ProfileConstants } from "@wso2is/core/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { GenericIcon, Hint, Popup } from "@wso2is/react-components";
+import { updateProfileInfo } from "@wso2is/selfcare.core.v1/api";
+import { EditSection } from "@wso2is/selfcare.core.v1/components";
+import { getAccountRecoveryIcons } from "@wso2is/selfcare.core.v1/configs";
 import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
+import { AlertInterface, AlertLevels, BasicProfileInterface, ProfileSchema } from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
+import { getProfileInformation, setActiveForm } from "@wso2is/selfcare.core.v1/store/actions";
+import { commonConfig } from "@wso2is/selfcare.extensions.v1";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
@@ -30,13 +37,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
-import { updateProfileInfo } from "../../../api";
-import { getAccountRecoveryIcons } from "../../../configs";
-import { commonConfig } from "../../../extensions";
-import { AlertInterface, AlertLevels, BasicProfileInterface, ProfileSchema } from "../../../models";
-import { AppState } from "../../../store";
-import { getProfileInformation, setActiveForm } from "../../../store/actions";
-import { EditSection } from "../../shared";
 
 /**
  * Email key.

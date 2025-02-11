@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppUtilsInterface } from "../models";
+import { AppUtilsInterface } from "@wso2is/selfcare.core.v1/models";
 
 function loadUserConfig(configFile: string, callback: (responseText: string | null) => void) {
     const request: XMLHttpRequest = new XMLHttpRequest();

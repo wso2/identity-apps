@@ -16,17 +16,18 @@
  * under the License.
  */
 
+// eslint-disable-next-line no-restricted-imports
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { FeatureConfigInterface } from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
+import { commonConfig } from "@wso2is/selfcare.extensions.v1";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Divider, Grid, SemanticWIDTHS } from "semantic-ui-react";
 import { AccountSecurityWidget, AccountStatusWidget, ConsentManagementWidget, UserSessionsWidget } from "./widgets";
 import { ProfileWidget } from "./widgets/profile-widget";
-import { commonConfig } from "../../extensions";
-import { FeatureConfigInterface } from "../../models";
-import { AppState } from "../../store";
 
 /**
  * Prop types for the overview edit component.

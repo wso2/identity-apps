@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,13 +17,13 @@
  */
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
-import { useTranslation } from "react-i18next";
-import { getWidgetIcons } from "../../../configs";
+import { SettingsSection } from "@wso2is/selfcare.core.v1/components";
+import { getWidgetIcons } from "@wso2is/selfcare.core.v1/configs";
 import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
+import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { history } from "../../../helpers";
-import { SettingsSection } from "../../shared";
 
 type ConsentManagementWidgetPropsInterface = TestableComponentInterface & IdentifiableComponentInterface;
 

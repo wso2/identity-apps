@@ -18,10 +18,10 @@
 
 import { RouteInterface } from "@wso2is/core/models";
 import { AuthLayout as AuthLayoutSkeleton } from "@wso2is/react-components";
+import { PreLoader, ProtectedRoute } from "@wso2is/selfcare.core.v1/components";
 import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
-import { PreLoader, ProtectedRoute } from "../components";
 import { getAuthLayoutRoutes } from "../configs";
 
 /**

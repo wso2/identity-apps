@@ -18,6 +18,7 @@
 
 import { AuthParams, AuthProvider, ResponseMode, SPAUtils } from "@asgardeo/auth-react";
 import { ContextUtils, StringUtils } from "@wso2is/core/utils";
+import { PreLoader } from "@wso2is/selfcare.core.v1/components";
 import axios, { AxiosResponse } from "axios";
 import * as React from "react";
 import "react-app-polyfill/ie11";
@@ -26,7 +27,6 @@ import "react-app-polyfill/stable";
 import ReactDOM, { Root } from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { PreLoader } from "./components";
 import { Config } from "./configs";
 import { ProtectedApp } from "./protected-app";
 import AppSettingsProvider from "./providers/app-settings-provider";

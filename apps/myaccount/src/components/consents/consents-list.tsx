@@ -18,12 +18,12 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Media } from "@wso2is/react-components";
+import { ConsentedAppIcon } from "@wso2is/selfcare.core.v1/configs";
+import { ConsentInterface, ConsentState, PIICategoryClaimToggleItem } from "@wso2is/selfcare.core.v1/models";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List } from "semantic-ui-react";
 import { AppConsentEdit } from "./consent-edit";
-import { ConsentedAppIcon } from "../../configs";
-import { ConsentInterface, ConsentState, PIICategoryClaimToggleItem } from "../../models";
 import { toSentenceCase } from "../../utils";
 
 /**

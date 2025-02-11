@@ -18,7 +18,21 @@
 
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { SettingsSection } from "@wso2is/selfcare.core.v1/components";
+import { getSettingsSectionIcons } from "@wso2is/selfcare.core.v1/configs";
 import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
+import { UIConstants } from "@wso2is/selfcare.core.v1/constants/ui-constants";
+import {
+    AlertInterface,
+    AlertLevels,
+    LinkedAccountInterface
+} from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
+import {
+    getProfileLinkedAccounts,
+    handleAccountSwitching,
+    setActiveForm
+} from "@wso2is/selfcare.core.v1/store/actions";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, useEffect } from "react";
@@ -32,17 +46,7 @@ import {
     addAccountAssociation,
     removeLinkedAccount
 } from "../../api";
-import { getSettingsSectionIcons } from "../../configs";
-import { UIConstants } from "../../constants";
-import {
-    AlertInterface,
-    AlertLevels,
-    LinkedAccountInterface
-} from "../../models";
-import { AppState } from "../../store";
-import { getProfileLinkedAccounts, handleAccountSwitching, setActiveForm } from "../../store/actions";
 import { refreshPage } from "../../utils";
-import { SettingsSection } from "../shared";
 
 /**
  * Prop types for the liked accounts component.

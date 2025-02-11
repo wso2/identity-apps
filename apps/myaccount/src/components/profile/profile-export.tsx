@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,13 +17,13 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { SettingsSection } from "@wso2is/selfcare.core.v1/components";
+import { getSettingsSectionIcons } from "@wso2is/selfcare.core.v1/configs";
+import { AlertInterface, AlertLevels } from "@wso2is/selfcare.core.v1/models";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { getUserInfo } from "../../api";
-import { getSettingsSectionIcons } from "../../configs";
-import { AlertInterface, AlertLevels } from "../../models";
-import { SettingsSection } from "../shared";
 
 /**
  * Prop types for the profile export component.

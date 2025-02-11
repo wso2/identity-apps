@@ -17,25 +17,25 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { fetchApplications } from "@wso2is/selfcare.core.v1/api";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/selfcare.core.v1/components";
 import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Divider, Grid } from "semantic-ui-react";
-import { AllApplications } from "./all-applications";
-import { RecentApplications } from "./recent-applications";
-import { fetchApplications } from "../../api";
-import { UIConstants } from "../../constants";
+import { UIConstants } from "@wso2is/selfcare.core.v1/constants/ui-constants";
 import {
     AlertInterface,
     AlertLevels,
     Application,
     StorageApplicationSettingsInterface,
     emptyStorageApplicationSettingsItem
-} from "../../models";
-import { AppState } from "../../store";
+} from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { Divider, Grid } from "semantic-ui-react";
+import { AllApplications } from "./all-applications";
+import { RecentApplications } from "./recent-applications";
 import { getValueFromLocalStorage, setValueInLocalStorage } from "../../utils";
-import { AdvancedSearchWithBasicFilters } from "../shared";
 
 /**
  * Prop-types for the applications component.

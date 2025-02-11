@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,27 +21,32 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { GenericIcon, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { updateProfileInfo } from "@wso2is/selfcare.core.v1/api";
+import { EditSection } from "@wso2is/selfcare.core.v1/components";
+import { MobileUpdateWizard } from "@wso2is/selfcare.core.v1/components/mobile-update-wizard";
+import { getMFAIcons } from "@wso2is/selfcare.core.v1/configs";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
+import {
+    AlertInterface,
+    AlertLevels,
+    BasicProfileInterface,
+    FeatureConfigInterface
+} from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
+import { getProfileInformation, setActiveForm } from "@wso2is/selfcare.core.v1/store/actions";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
-import { updateProfileInfo } from "../../../api";
-import { getMFAIcons } from "../../../configs";
-import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
-import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
 import { profileConfig } from "../../../extensions";
-import { AlertInterface, AlertLevels, BasicProfileInterface, FeatureConfigInterface } from "../../../models";
-import { AppState } from "../../../store";
-import { getProfileInformation, setActiveForm } from "../../../store/actions";
-import { EditSection } from "../../shared";
-import { MobileUpdateWizard } from "../../shared/mobile-update-wizard";
 
 /**
  * SMS key.
  */
-const SMS = "sms";
+const SMS: string = "sms";
 
 /**
  * Prop types for the SMS OTP component.
@@ -84,7 +89,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
     }, []);
 
     const setMobileNo = (response) => {
-        let mobileNumber = "";
+        let mobileNumber: string = "";
 
         response.phoneNumbers.map((mobileNo) => {
             mobileNumber = mobileNo.value;
@@ -99,7 +104,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
         }
     }, [ profileInfo ]);
 
-    const handleUpdate = (mobileNumber) => {
+    const handleUpdate = (mobileNumber: string) => {
         const data = {
             Operations: [
                 {
@@ -135,7 +140,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                 dispatch(setActiveForm(null));
                 handleSessionTerminationModalVisibility(true);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 if (error?.response?.data && error?.response?.detail) {
                     onAlertFired({
                         description: t(
@@ -313,7 +318,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                 featureConfig?.personalInfo,
                 AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_MOBILE_VERIFICATION")
             )
-                ? generateUpdateFormForMobileVerification() 
+                ? generateUpdateFormForMobileVerification()
                 : (
                     <EditSection data-testid={ `${testId}-edit-section` }>
                         <Grid>
@@ -351,7 +356,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                                                     profileConfig?.attributes?.
                                                                         getRegExpValidationError(
                                                                             ProfileConstants.SCIM2_SCHEMA_DICTIONARY
-                                                                                .get("PHONE_NUMBERS")), 
+                                                                                .get("PHONE_NUMBERS")),
                                                                     {
                                                                         fieldName: "Mobile"
                                                                     }

@@ -18,10 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import flatten from "lodash-es/flatten";
-import React, { FunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
-import { Button, Checkbox, Divider, Grid, List } from "semantic-ui-react";
+import { EditSection } from "@wso2is/selfcare.core.v1/components";
 import {
     ConsentInterface,
     PIICategory,
@@ -29,9 +26,12 @@ import {
     PIICategoryWithStatus,
     PurposeInterface,
     ServiceInterface
-} from "../../models";
+} from "@wso2is/selfcare.core.v1/models";
+import flatten from "lodash-es/flatten";
+import React, { FunctionComponent } from "react";
+import { useTranslation } from "react-i18next";
+import { Button, Checkbox, Divider, Grid, List } from "semantic-ui-react";
 import { toSentenceCase } from "../../utils";
-import { EditSection } from "../shared";
 
 /**
  * Proptypes for the application consent edit component.

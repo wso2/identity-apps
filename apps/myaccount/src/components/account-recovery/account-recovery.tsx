@@ -23,14 +23,9 @@
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
+import { getPreference } from "@wso2is/selfcare.core.v1/api";
+import { SettingsSection } from "@wso2is/selfcare.core.v1/components";
 import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
-import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { List, Placeholder } from "semantic-ui-react";
-import { EmailRecovery, SMSRecovery, SecurityQuestionsComponent } from "./options";
-import { getPreference } from "../../api";
 import {
     AlertInterface,
     AlertLevels,
@@ -38,9 +33,14 @@ import {
     PreferenceConnectorResponse,
     PreferenceProperty,
     PreferenceRequest
-} from "../../models";
-import { AppState } from "../../store";
-import { SettingsSection } from "../shared";
+} from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
+import { AxiosError } from "axios";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { List, Placeholder } from "semantic-ui-react";
+import { EmailRecovery, SMSRecovery, SecurityQuestionsComponent } from "./options";
 
 /**
  * Prop types for AccountRecoveryComponent component.

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,11 @@
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
+import { SettingsSection } from "@wso2is/selfcare.core.v1/components";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
+import { AlertLevels, UserSession, UserSessions, emptyUserSessions } from "@wso2is/selfcare.core.v1/models";
+import { addAlert } from "@wso2is/selfcare.core.v1/store/actions";
 import { AxiosError } from "axios";
 import reverse from "lodash-es/reverse";
 import sortBy from "lodash-es/sortBy";
@@ -27,12 +32,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Placeholder } from "semantic-ui-react";
 import { fetchUserSessions } from "../../../api";
-import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
-import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
 import { history } from "../../../helpers";
-import { AlertLevels, UserSession, UserSessions, emptyUserSessions } from "../../../models";
-import { addAlert } from "../../../store/actions";
-import { SettingsSection } from "../../shared";
 import { UserSessionsList } from "../../user-sessions";
 
 /**

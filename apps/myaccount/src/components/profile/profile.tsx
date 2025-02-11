@@ -28,7 +28,7 @@ import MenuItem from "@oxygen-ui/react/MenuItem";
 import Paper from "@oxygen-ui/react/Paper";
 import Select from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
-import { ProfileConstants } from "@wso2is/core/constants";
+import { ProfileConstants, UIConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 
 /**
@@ -61,29 +61,21 @@ import {
     UserAvatar,
     useMediaContext
 } from "@wso2is/react-components";
-import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
-import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
-import { AxiosError, AxiosResponse } from "axios";
-import isEmpty from "lodash-es/isEmpty";
-import moment from "moment";
-import React, { FunctionComponent, MouseEvent, ReactElement, useCallback, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import { Container, DropdownItemProps, Form, Grid, Icon, List, Placeholder } from "semantic-ui-react";
 import {
     fetchPasswordValidationConfig,
     getPreference,
     getUsernameConfiguration,
     updateProfileImageURL,
     updateProfileInfo
-} from "../../api";
+} from "@wso2is/selfcare.core.v1/api";
+import { EditSection, SettingsSection } from "@wso2is/selfcare.core.v1/components";
+import { MobileUpdateWizard } from "@wso2is/selfcare.core.v1/components/mobile-update-wizard";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
 import {
     LocaleJoiningSymbol,
-    ProfileConstants as MyAccountProfileConstants,
-    UIConstants
-} from "../../constants";
-import { commonConfig, profileConfig } from "../../extensions";
+    ProfileConstants as MyAccountProfileConstants
+} from "@wso2is/selfcare.core.v1/constants/profile-constants";
 import {
     AlertInterface,
     AlertLevels,
@@ -96,12 +88,19 @@ import {
     ProfilePatchOperationValue,
     ProfileSchema,
     ValidationFormInterface
-} from "../../models";
-import { AppState } from "../../store";
-import { getProfileInformation, setActiveForm } from "../../store/actions";
-import { CommonUtils } from "../../utils";
-import { EditSection, SettingsSection } from "../shared";
-import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
+} from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
+import { getProfileInformation, setActiveForm } from "@wso2is/selfcare.core.v1/store/actions";
+import { CommonUtils } from "@wso2is/selfcare.core.v1/utils/common-utils";
+import { commonConfig, profileConfig } from "@wso2is/selfcare.extensions.v1";
+import { AxiosError, AxiosResponse } from "axios";
+import isEmpty from "lodash-es/isEmpty";
+import moment from "moment";
+import React, { FunctionComponent, MouseEvent, ReactElement, useCallback, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { Container, DropdownItemProps, Form, Grid, Icon, List, Placeholder } from "semantic-ui-react";
 import "./profile.scss";
 
 const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");

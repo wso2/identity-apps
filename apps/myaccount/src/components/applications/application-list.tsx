@@ -18,13 +18,13 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, LinkButton, Popup, Text } from "@wso2is/react-components";
+import { EmptyPlaceholder } from "@wso2is/selfcare.core.v1/components";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/selfcare.core.v1/configs";
+import { Application } from "@wso2is/selfcare.core.v1/models";
 import React, { Fragment, FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { ApplicationListItem } from "./application-list-item";
-import { getEmptyPlaceholderIllustrations } from "../../configs";
-import { Application } from "../../models";
-import { EmptyPlaceholder } from "../shared";
 
 /**
  * Proptypes for the application list component.

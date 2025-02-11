@@ -21,6 +21,8 @@ import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ConfirmationModal, GenericIcon, Popup } from "@wso2is/react-components";
+import { getMFAIcons } from "@wso2is/selfcare.core.v1/configs";
+import { PushAuthRegisteredDevice } from "@wso2is/selfcare.core.v1/models/push-authenticator";
 import QRCode from "qrcode.react";
 import React, { PropsWithChildren, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -34,9 +36,7 @@ import {
     Modal,
     Segment
 } from "semantic-ui-react";
-import { getMFAIcons } from "../../../configs";
 import usePushAuthenticator from "../../../hooks/use-push-authenticator";
-import { PushAuthRegisteredDevice } from "../../../models/push-authenticator";
 import "./push-authenticator.scss";
 
 /**

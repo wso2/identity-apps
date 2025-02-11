@@ -18,20 +18,24 @@
 
 import { useThemeProvider } from "@wso2is/common.branding.v1/hooks/use-theme-provider";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { SettingsSection } from "@wso2is/selfcare.core.v1/components";
+import { getWidgetIcons } from "@wso2is/selfcare.core.v1/configs";
 import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
+import { UIConstants } from "@wso2is/selfcare.core.v1/constants/ui-constants";
+import {
+    ConfigReducerStateInterface,
+    ProfileCompletion,
+    ProfileCompletionStatus
+} from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Progress } from "semantic-ui-react";
-import { getWidgetIcons } from "../../../configs";
-import { UIConstants } from "../../../constants";
 import { history } from "../../../helpers";
-import { ConfigReducerStateInterface, ProfileCompletion, ProfileCompletionStatus } from "../../../models";
-import { AppState } from "../../../store";
-import { CommonUtils } from "../../../utils";
-import { SettingsSection } from "../../shared";
+import { CommonUtils } from "../../../utils/common-utils";
 
 /**
  * Prop-types for the user sessions edit component.

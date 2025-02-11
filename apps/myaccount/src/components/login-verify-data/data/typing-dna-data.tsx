@@ -1,30 +1,30 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
+ * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
  */
 
 import { SBACInterface } from "@wso2is/core/models";
 import { GenericIcon } from "@wso2is/react-components";
+import { SettingsSection } from "@wso2is/selfcare.core.v1/components";
+import { getMFAIcons } from "@wso2is/selfcare.core.v1/configs";
+import { AlertInterface, AlertLevels, FeatureConfigInterface } from "@wso2is/selfcare.core.v1/models";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Container, Grid, Icon, List, Modal } from "semantic-ui-react";
 import { deleteTypingPatterns } from "../../../api";
-import { getMFAIcons } from "../../../configs";
-import { AlertInterface, AlertLevels, FeatureConfigInterface } from "../../../models";
-import { SettingsSection } from "../../shared";
 
 /**
  * Prop types for the TypingDNA component.
@@ -42,7 +42,7 @@ interface TypingDNAProps extends SBACInterface<FeatureConfigInterface> {
  */
 export const TypingDNA: React.FunctionComponent<TypingDNAProps> = (props: TypingDNAProps): JSX.Element => {
     const { t } = useTranslation();
-    const [isRevokeClearTypingPatternsModalVisible,setRevokeClearTypingPatternsModalVisible] = useState(false);
+    const [ isRevokeClearTypingPatternsModalVisible,setRevokeClearTypingPatternsModalVisible ] = useState(false);
     const { onAlertFired, featureConfig } = props;
 
     const handleClearTypingPatternsClick = () => {
@@ -111,43 +111,43 @@ export const TypingDNA: React.FunctionComponent<TypingDNAProps> = (props: Typing
 
         return (
             <>
-            <Grid padded={ true }>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column width={ 11 } className="first-column">
-                        <List.Content floated="left">
-                            <GenericIcon
-                                icon={ getMFAIcons().keyboard }
-                                size="mini"
-                                twoTone={ true }
-                                transparent={ true }
-                                square={ true }
-                                rounded={ true }
-                                relaxed={ true }
-                            />
-                        </List.Content>
-                        <List.Content>
-                            <List.Header>
-                                { t("myAccount:components.loginVerifyData.typingdna.heading") }
-                            </List.Header>
-                            <List.Description>
-                                { t("myAccount:components.loginVerifyData.typingdna.description") }
-                            </List.Description>
-                        </List.Content>
-                    </Grid.Column>
-                    <Grid.Column width={ 5 } className="last-column">
-                        <List.Content floated="right">
-                            <Icon
-                                link={ true }
-                                onClick={ handleClearTypingPatternsClick }
-                                className="list-icon"
-                                color="grey"
-                                name="eraser"
-                            />
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-            { clearTypingPatternsModal }
+                <Grid padded={ true }>
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column width={ 11 } className="first-column">
+                            <List.Content floated="left">
+                                <GenericIcon
+                                    icon={ getMFAIcons().keyboard }
+                                    size="mini"
+                                    twoTone={ true }
+                                    transparent={ true }
+                                    square={ true }
+                                    rounded={ true }
+                                    relaxed={ true }
+                                />
+                            </List.Content>
+                            <List.Content>
+                                <List.Header>
+                                    { t("myAccount:components.loginVerifyData.typingdna.heading") }
+                                </List.Header>
+                                <List.Description>
+                                    { t("myAccount:components.loginVerifyData.typingdna.description") }
+                                </List.Description>
+                            </List.Content>
+                        </Grid.Column>
+                        <Grid.Column width={ 5 } className="last-column">
+                            <List.Content floated="right">
+                                <Icon
+                                    link={ true }
+                                    onClick={ handleClearTypingPatternsClick }
+                                    className="list-icon"
+                                    color="grey"
+                                    name="eraser"
+                                />
+                            </List.Content>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+                { clearTypingPatternsModal }
             </>
         );
     };

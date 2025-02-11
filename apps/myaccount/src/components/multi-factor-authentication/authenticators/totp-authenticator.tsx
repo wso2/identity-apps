@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,22 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, LinkButton, Popup } from "@wso2is/react-components";
+import {
+    checkIfTOTPEnabled,
+    deleteTOTP,
+    initTOTPCode,
+    refreshTOTPCode,
+    updateEnabledAuthenticators,
+    validateTOTPCode,
+    viewTOTPCode
+} from "@wso2is/selfcare.core.v1/api";
+import { getMFAIcons } from "@wso2is/selfcare.core.v1/configs";
+import {
+    AlertInterface,
+    AlertLevels,
+    EnabledAuthenticatorUpdateAction
+} from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
 import QRCode from "qrcode.react";
 import React, { FormEvent, PropsWithChildren, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -35,23 +51,7 @@ import {
     Modal,
     Segment
 } from "semantic-ui-react";
-import {
-    checkIfTOTPEnabled,
-    deleteTOTP,
-    initTOTPCode,
-    refreshTOTPCode,
-    updateEnabledAuthenticators,
-    validateTOTPCode,
-    viewTOTPCode
-} from "../../../api";
-import { getMFAIcons } from "../../../configs";
 import { commonConfig } from "../../../extensions";
-import {
-    AlertInterface,
-    AlertLevels,
-    EnabledAuthenticatorUpdateAction
-} from "../../../models";
-import { AppState } from "../../../store";
 
 /**
  * Property types for the TOTP component.

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,14 +18,14 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Popup } from "@wso2is/react-components";
+import { getAccountStatusShields } from "@wso2is/selfcare.core.v1/configs";
+import { UIConstants } from "@wso2is/selfcare.core.v1/constants/ui-constants";
+import { ProfileCompletion, ProfileCompletionStatus } from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid, Header, Icon, Progress } from "semantic-ui-react";
-import { getAccountStatusShields } from "../../../configs";
-import { UIConstants } from "../../../constants";
-import { ProfileCompletion, ProfileCompletionStatus } from "../../../models";
-import { AppState } from "../../../store";
 
 /**
  * Account status widget.
@@ -101,7 +101,7 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
      * @returns Status shield component.
      */
     const resolveStatusShield = () => {
-        const status = getProfileStatus();
+        const status: ProfileCompletionStatus = getProfileStatus();
 
         if (status === ProfileCompletionStatus.SUCCESS) {
             return getAccountStatusShields().good;

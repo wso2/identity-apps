@@ -34,18 +34,23 @@ import {
     LanguageChangeException,
     isLanguageSupported
 } from "@wso2is/i18n";
+import { useGetBrandingPreference } from "@wso2is/selfcare.core.v1/api/branding-preferences";
+import { PreLoader } from "@wso2is/selfcare.core.v1/components";
+import { Config } from "@wso2is/selfcare.core.v1/configs";
 import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { history } from "@wso2is/selfcare.core.v1/helpers";
+import useSignIn from "@wso2is/selfcare.core.v1/hooks/use-sign-in";
+import { AppState, store } from "@wso2is/selfcare.core.v1/store";
+import {
+    onHttpRequestError,
+    onHttpRequestFinish,
+    onHttpRequestStart,
+    onHttpRequestSuccess
+} from "@wso2is/selfcare.core.v1/utils/http-utils";
 import axios, { AxiosResponse } from "axios";
 import React, { FunctionComponent, LazyExoticComponent, ReactElement, lazy, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useGetBrandingPreference } from "./api/branding-preferences";
-import { PreLoader } from "./components";
-import { Config } from "./configs";
-import { history } from "./helpers";
-import useSignIn from "./hooks/use-sign-in";
-import { AppState, store } from "./store";
-import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
 
 const App: LazyExoticComponent<() => ReactElement> = lazy(() => import("./app"));
 

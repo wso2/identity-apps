@@ -19,15 +19,10 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { GenericIcon } from "@wso2is/react-components";
+import { addSecurityQs, getSecurityQs, updateSecurityQs } from "@wso2is/selfcare.core.v1/api";
+import { EditSection } from "@wso2is/selfcare.core.v1/components";
+import { getAccountRecoveryIcons } from "@wso2is/selfcare.core.v1/configs";
 import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
-import { AxiosError } from "axios";
-import React, { ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import { Form, Grid, Icon, List } from "semantic-ui-react";
-import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../../../api";
-import { getAccountRecoveryIcons } from "../../../configs";
 import {
     AlertInterface,
     AlertLevels,
@@ -36,10 +31,15 @@ import {
     QuestionSetsInterface,
     QuestionsInterface,
     createEmptyChallenge
-} from "../../../models";
-import { AppState } from "../../../store";
-import { setActiveForm } from "../../../store/actions";
-import { EditSection } from "../../shared";
+} from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
+import { setActiveForm } from "@wso2is/selfcare.core.v1/store/actions";
+import { AxiosError } from "axios";
+import React, { ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { Form, Grid, Icon, List } from "semantic-ui-react";
 
 /**
  * Question key.

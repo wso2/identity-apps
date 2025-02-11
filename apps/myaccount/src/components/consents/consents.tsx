@@ -17,7 +17,24 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { ModalComponent, SettingsSection } from "@wso2is/selfcare.core.v1/components";
 import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import {
+    AlertInterface,
+    AlertLevels,
+    ConsentInterface,
+    ConsentReceiptInterface,
+    ConsentState,
+    PIICategory,
+    PIICategoryClaimToggleItem,
+    PIICategoryWithStatus,
+    PurposeInterface,
+    PurposeModel,
+    PurposeModelPIICategory,
+    PurposeModelPartial,
+    ServiceInterface
+} from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
 import cloneDeep from "lodash-es/cloneDeep";
 import flatten from "lodash-es/flatten";
 import React, { FunctionComponent, useEffect, useState } from "react";
@@ -34,24 +51,7 @@ import {
     updateConsentedClaims
 } from "../../api/consents";
 import { ConsentConstants } from "../../constants";
-import {
-    AlertInterface,
-    AlertLevels,
-    ConsentInterface,
-    ConsentReceiptInterface,
-    ConsentState,
-    PIICategory,
-    PIICategoryClaimToggleItem,
-    PIICategoryWithStatus,
-    PurposeInterface,
-    PurposeModel,
-    PurposeModelPIICategory,
-    PurposeModelPartial,
-    ServiceInterface
-} from "../../models";
-import { AppState } from "../../store";
 import { useEndUserSession } from "../../utils";
-import { ModalComponent, SettingsSection } from "../shared";
 
 /**
  * Proptypes for the user sessions component.

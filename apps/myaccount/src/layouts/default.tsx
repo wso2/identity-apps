@@ -23,6 +23,7 @@ import {
     Alert,
     ContentLoader
 } from "@wso2is/react-components";
+import { Header, ProtectedRoute } from "@wso2is/selfcare.core.v1/components";
 import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import React, {
     FunctionComponent,
@@ -35,7 +36,6 @@ import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Dispatch } from "redux";
-import { Header, ProtectedRoute } from "../components";
 import {
     getDefaultLayoutRoutes
 } from "../configs";
