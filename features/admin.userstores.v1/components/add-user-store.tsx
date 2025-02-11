@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,7 @@
 
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
@@ -25,6 +26,7 @@ import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails } from "./wizards";
 import { addUserStore } from "../api";
@@ -35,7 +37,8 @@ import {
     TypeProperty,
     UserStorePostData,
     UserStoreProperty,
-    UserstoreType
+    UserstoreType,
+    WizardStepInterface
 } from "../models";
 import { reOrganizeProperties } from "../utils";
 
@@ -60,9 +63,9 @@ interface AddUserStoreProps extends TestableComponentInterface {
 /**
  * This component renders the Add Userstore Wizard.
  *
- * @param {AddUserStoreProps} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {ReactElement}
+ * @returns add userstore wizard component.
  */
 export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUserStoreProps): ReactElement => {
 
@@ -85,7 +88,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
     const [ secondStep, setSecondStep ] = useTrigger();
     const [ thirdStep, setThirdStep ] = useTrigger();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -124,7 +127,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             onClose();
 
             history.push(AppConstants.getPaths().get("USERSTORES"));
-        }).catch(error => {
+        }).catch((error: IdentityAppsApiException) => {
 
             if (error.response?.status === 403 &&
                 error.response.data?.code === UserStoreManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
@@ -139,7 +142,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             }
 
             setAlert({
-                description: error?.description ?? t("userstores:notifications.addUserstore" +
+                description: error?.name ?? t("userstores:notifications.addUserstore" +
                     ".genericError.description"),
                 level: AlertLevels.ERROR,
                 message: error?.message ?? t("userstores:notifications.addUserstore" +
@@ -152,7 +155,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
 
     /**
      * This saves the General Details values along with the Type
-     * @param {Map<string, FormValue>} values Connection Details Values
+     * @param values - Connection Details Values
      */
     const onSubmitGeneralDetails = (values: Map<string, FormValue>): void => {
         setGeneralDetailsData(values);
@@ -180,28 +183,29 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
     };
 
     const serializeProperties = (): UserStoreProperty[] => {
-        const connectionProperties: UserStoreProperty[] = properties.connection.required.map(property => {
-            return {
-                name: property.name,
-                value: generalDetailsData.get(property.name)?.toString()
-            };
-        });
+        const connectionProperties: UserStoreProperty[] = properties.connection.required.map(
+            (property: TypeProperty) => {
+                return {
+                    name: property.name,
+                    value: generalDetailsData.get(property.name)?.toString()
+                };
+            });
 
-        const userProperties: UserStoreProperty[] = properties.user.required.map(property => {
+        const userProperties: UserStoreProperty[] = properties.user.required.map((property: TypeProperty) => {
             return {
                 name: property.name,
                 value: userDetailsData.get(property.name)?.toString()
             };
         });
 
-        const groupProperties: UserStoreProperty[] = properties.group.required.map(property => {
+        const groupProperties: UserStoreProperty[] = properties.group.required.map((property: TypeProperty) => {
             return {
                 name: property.name,
                 value: groupDetailsData.get(property.name)?.toString()
             };
         });
 
-        const basicProperties: UserStoreProperty[] = properties.basic.required.map(property => {
+        const basicProperties: UserStoreProperty[] = properties.basic.required.map((property: TypeProperty) => {
             return {
                 name: property.name,
                 value: generalDetailsData.get(property.name)?.toString()
@@ -230,7 +234,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             })
         );
 
-        const updatedProperties = [
+        const updatedProperties: UserStoreProperty[] = [
             ...connectionProperties,
             ...userProperties,
             ...groupProperties,
@@ -238,7 +242,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
         ];
 
         return allProperties.map((property: UserStoreProperty) => {
-            const updatedProperty = updatedProperties
+            const updatedProperty: UserStoreProperty = updatedProperties
                 .find((updatedProperty: UserStoreProperty) => updatedProperty.name === property.name);
 
             if (updatedProperty) {
@@ -252,7 +256,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
     /**
      * This contains the wizard steps
      */
-    const STEPS = [
+    const STEPS: WizardStepInterface[] = [
         {
             content: (
                 <GeneralDetailsUserstore
@@ -275,7 +279,6 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     onSubmit={ onSubmitUserDetails }
                     values={ userDetailsData }
                     properties={ properties?.user?.required }
-                    type={ type?.typeName }
                     data-testid={ `${ testId }-user-details` }
                 />
             ),
@@ -369,7 +372,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 <Steps.Group
                     current={ currentWizardStep }
                 >
-                    { STEPS.map((step, index) => (
+                    { STEPS.map((step: WizardStepInterface, index: number) => (
                         <Steps.Step
                             key={ index }
                             icon={ step.icon }
