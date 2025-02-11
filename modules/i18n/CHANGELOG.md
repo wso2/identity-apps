@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.19.12
+
+### Patch Changes
+
+- [#7595](https://github.com/wso2/identity-apps/pull/7595) [`f87912f707015c530d64ec344f20433f6e0fa485`](https://github.com/wso2/identity-apps/commit/f87912f707015c530d64ec344f20433f6e0fa485) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix client error showing issue in admin update user password wizard
+
 ## 2.19.11
 
 ### Patch Changes

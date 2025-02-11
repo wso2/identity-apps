@@ -1,5 +1,21 @@
 # @wso2is/admin.policy-administration.v1
 
+## 1.0.77
+
+### Patch Changes
+
+- [#7592](https://github.com/wso2/identity-apps/pull/7592) [`31c43a45f42628616e50797fe09fc9ed90fb2502`](https://github.com/wso2/identity-apps/commit/31c43a45f42628616e50797fe09fc9ed90fb2502) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Fix policy edit view expanding not persisting changes done already
+
+- Updated dependencies [[`f87912f707015c530d64ec344f20433f6e0fa485`](https://github.com/wso2/identity-apps/commit/f87912f707015c530d64ec344f20433f6e0fa485)]:
+  - @wso2is/admin.users.v1@2.30.71
+  - @wso2is/i18n@2.19.12
+  - @wso2is/admin.applications.v1@2.31.9
+  - @wso2is/admin.core.v1@2.38.30
+  - @wso2is/admin.extensions.v1@2.36.86
+  - @wso2is/admin.organizations.v1@2.26.161
+  - @wso2is/admin.validation.v1@2.27.99
+  - @wso2is/admin.feature-gate.v1@1.4.161
+
 ## 1.0.76
 
 ### Patch Changes

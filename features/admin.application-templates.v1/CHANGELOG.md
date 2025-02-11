@@ -1,5 +1,15 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.4.161
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.31.9
+  - @wso2is/admin.core.v1@2.38.30
+  - @wso2is/admin.feature-gate.v1@1.4.161
+  - @wso2is/admin.template-core.v1@1.5.115
+
 ## 1.4.160
 
 ### Patch Changes

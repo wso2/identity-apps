@@ -1,5 +1,60 @@
 # @wso2is/admin.core.v1
 
+## 2.38.30
+
+### Patch Changes
+
+- Updated dependencies [[`e657fb2c52925745bbe1b72e8ee2c123c2892d6d`](https://github.com/wso2/identity-apps/commit/e657fb2c52925745bbe1b72e8ee2c123c2892d6d), [`f87912f707015c530d64ec344f20433f6e0fa485`](https://github.com/wso2/identity-apps/commit/f87912f707015c530d64ec344f20433f6e0fa485), [`31c43a45f42628616e50797fe09fc9ed90fb2502`](https://github.com/wso2/identity-apps/commit/31c43a45f42628616e50797fe09fc9ed90fb2502), [`8a064729c69eb10c3768848370f98998ced18760`](https://github.com/wso2/identity-apps/commit/8a064729c69eb10c3768848370f98998ced18760), [`86cfa121e7a18a2d095eea97a42188c0afb378eb`](https://github.com/wso2/identity-apps/commit/86cfa121e7a18a2d095eea97a42188c0afb378eb)]:
+  - @wso2is/admin.identity-providers.v1@2.26.161
+  - @wso2is/admin.users.v1@2.30.71
+  - @wso2is/i18n@2.19.12
+  - @wso2is/admin.policy-administration.v1@1.0.77
+  - @wso2is/admin.branding.v1@2.28.18
+  - @wso2is/admin.userstores.v1@2.26.120
+  - @wso2is/admin.applications.v1@2.31.9
+  - @wso2is/admin.connections.v1@2.33.44
+  - @wso2is/admin.console-settings.v1@2.25.161
+  - @wso2is/admin.extensions.v1@2.36.86
+  - @wso2is/admin.organizations.v1@2.26.161
+  - @wso2is/admin.roles.v2@2.27.105
+  - @wso2is/admin.server-configurations.v1@2.32.86
+  - @wso2is/admin.administrators.v1@2.29.161
+  - @wso2is/admin.authentication.v1@2.25.161
+  - @wso2is/admin.claims.v1@2.27.71
+  - @wso2is/admin.groups.v1@2.27.71
+  - @wso2is/admin.roles.v1@2.25.161
+  - @wso2is/admin.tenants.v1@2.28.135
+  - @wso2is/admin.validation.v1@2.27.99
+  - @wso2is/admin.actions.v1@1.11.26
+  - @wso2is/admin.authorization.v1@2.25.69
+  - @wso2is/admin.certificates.v1@2.25.161
+  - @wso2is/admin.email-and-sms.v1@2.25.161
+  - @wso2is/admin.email-management.v1@2.25.161
+  - @wso2is/admin.email-providers.v1@2.25.161
+  - @wso2is/admin.email-templates.v1@2.25.161
+  - @wso2is/admin.identity-verification-providers.v1@2.27.161
+  - @wso2is/admin.impersonation.v1@1.6.161
+  - @wso2is/admin.oidc-scopes.v1@2.25.161
+  - @wso2is/admin.org-insights.v1@2.25.161
+  - @wso2is/admin.organization-discovery.v1@2.25.161
+  - @wso2is/admin.private-key-jwt.v1@2.25.161
+  - @wso2is/admin.remote-repository-configuration.v1@2.25.161
+  - @wso2is/admin.saml2-configuration.v1@2.25.161
+  - @wso2is/admin.secrets.v1@2.25.161
+  - @wso2is/admin.session-management.v1@2.25.161
+  - @wso2is/admin.sms-providers.v1@2.25.161
+  - @wso2is/admin.sms-templates.v1@1.0.160
+  - @wso2is/admin.workflow-approvals.v1@2.25.161
+  - @wso2is/admin.wsfed-configuration.v1@2.25.161
+  - @wso2is/admin.application-templates.v1@1.4.161
+  - @wso2is/admin.api-resources.v1@2.25.161
+  - @wso2is/admin.api-resources.v2@2.25.161
+  - @wso2is/admin.feature-gate.v1@1.4.161
+  - @wso2is/admin.push-providers.v1@1.0.50
+  - @wso2is/admin.rules.v1@0.3.30
+  - @wso2is/admin.subscription.v1@1.5.161
+  - @wso2is/admin.template-core.v1@1.5.115
+
 ## 2.38.29
 
 ### Patch Changes
