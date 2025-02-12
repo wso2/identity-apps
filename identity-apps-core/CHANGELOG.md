@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.13.2
+
+### Patch Changes
+
+- [#7590](https://github.com/wso2/identity-apps/pull/7590) [`4ef5f4c53dcf40d16ba67c01b89a7a3e41fcefad`](https://github.com/wso2/identity-apps/commit/4ef5f4c53dcf40d16ba67c01b89a7a3e41fcefad) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Improve i18n experience for backend errors
+
 ## 2.13.1
 
 ### Patch Changes
