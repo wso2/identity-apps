@@ -75,8 +75,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     const hasAttributeDialectsUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.attributeDialects?.scopes?.update
     );
-    const hasServerReadPermissions: boolean = useRequiredScopes(
-        featureConfig?.server?.scopes?.read
+    const hasAttributeVerificationReadPermissions: boolean = useRequiredScopes(
+        featureConfig?.attributeVerification?.scopes?.read
     );
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
@@ -333,8 +333,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                         </EmphasizedSegment>
                                         { !isSubOrganization() &&
                                         !isSAASDeployment &&
-                                        featureConfig?.server?.enabled &&
-                                        hasServerReadPermissions && (
+                                        featureConfig?.attributeVerification?.enabled &&
+                                        hasAttributeVerificationReadPermissions && (
                                             <EmphasizedSegment
                                                 onClick={ () => {
                                                     history.push(AppConstants.getPaths()
