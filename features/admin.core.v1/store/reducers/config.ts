@@ -210,6 +210,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 applications: null,
                 approvals: null,
                 attributeDialects: null,
+                attributeVerification: null,
                 certificates: null,
                 emailTemplates: null,
                 governanceConnectors: null,
