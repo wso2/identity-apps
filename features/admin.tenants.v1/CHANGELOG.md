@@ -1,5 +1,19 @@
 # @wso2is/admin.tenants.v1
 
+## 2.28.136
+
+### Patch Changes
+
+- [#7600](https://github.com/wso2/identity-apps/pull/7600) [`975fda9273e09ff4bf04ea32b4303d8dddf3b9cb`](https://github.com/wso2/identity-apps/commit/975fda9273e09ff4bf04ea32b4303d8dddf3b9cb) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Avoid invoking HEAD Call to check domain availability on each character typing in Non-Domain fields
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.31
+  - @wso2is/admin.extensions.v1@2.36.87
+  - @wso2is/admin.organizations.v1@2.26.162
+  - @wso2is/admin.users.v1@2.30.72
+  - @wso2is/admin.feature-gate.v1@1.4.162
+  - @wso2is/admin.validation.v1@2.27.100
+
 ## 2.28.135
 
 ### Patch Changes
