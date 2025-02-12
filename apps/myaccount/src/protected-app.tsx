@@ -34,18 +34,26 @@ import {
     LanguageChangeException,
     isLanguageSupported
 } from "@wso2is/i18n";
+import { Config } from "@wso2is/selfcare.core.v1/configs/app";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { history } from "@wso2is/selfcare.core.v1/helpers";
+import { AppState, store } from "@wso2is/selfcare.core.v1/store";
+import {
+    onHttpRequestError,
+    onHttpRequestFinish,
+    onHttpRequestStart,
+    onHttpRequestSuccess
+} from "@wso2is/selfcare.core.v1/utils/http-utils";
 import axios, { AxiosResponse } from "axios";
 import React, { FunctionComponent, LazyExoticComponent, ReactElement, lazy, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useGetBrandingPreference } from "./api/branding-preferences";
-import { PreLoader } from "./components";
-import { Config } from "./configs";
-import { AppConstants } from "./constants";
-import { history } from "./helpers";
+import { PreLoader } from "./components/pre-loader";
 import useSignIn from "./hooks/use-sign-in";
-import { AppState, store } from "./store";
-import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
+import { AppUtils } from "./init/app-utils";
+
+Config.init(AppUtils);
 
 const App: LazyExoticComponent<() => ReactElement> = lazy(() => import("./app"));
 
@@ -141,7 +149,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         const resolvedAppBaseNameWithoutTenant: string = StringUtils.removeSlashesFromPath(
             Config.getDeploymentConfig().appBaseNameWithoutTenant
         )
-            ? `/${ StringUtils.removeSlashesFromPath(Config.getDeploymentConfig().appBaseNameWithoutTenant) }`
+            ? "/" +
+              StringUtils.removeSlashesFromPath(Config.getDeploymentConfig().appBaseNameWithoutTenant)
             : "";
 
         const metaFileNames: string[] = I18nModuleConstants.META_FILENAME.split(".");

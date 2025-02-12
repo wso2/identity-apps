@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { store } from "../store";
+import { store } from "@wso2is/selfcare.core.v1/store";
 
 /**
  * Get OAuth2 token request header.

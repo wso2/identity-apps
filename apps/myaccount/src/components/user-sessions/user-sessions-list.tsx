@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,12 +19,12 @@
 import { UserAgentParser } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Media, Text } from "@wso2is/react-components";
+import { UserSession } from "@wso2is/selfcare.core.v1/models";
 import moment from "moment";
 import React, { FunctionComponent, MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, ButtonProps, Grid, Icon, List, SemanticICONS } from "semantic-ui-react";
 import { UserSessionsEdit } from "./user-sessions-edit";
-import { UserSession } from "../../models";
 
 /**
  * Prop-types for the user sessions list component.

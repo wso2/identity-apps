@@ -35,15 +35,19 @@ import {
 } from "@wso2is/core/store";
 import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { Config } from "@wso2is/selfcare.core.v1/configs/app";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
+import useOrganizations from "@wso2is/selfcare.core.v1/hooks/use-organizations";
+import {
+    DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface
+} from "@wso2is/selfcare.core.v1/models/app-config";
+import {
+    getProfileInformation, resolveIdpURLSAfterTenantResolves
+} from "@wso2is/selfcare.core.v1/store/actions/authenticate";
+import { setOrganizationType, setUserOrganizationId } from "@wso2is/selfcare.core.v1/store/actions/organization";
 import { useDispatch } from "react-redux";
 import { AnyAction, Dispatch } from "redux";
-import useOrganizations from "./use-organizations";
-import { Config } from "../configs/app";
-import { AppConstants } from "../constants/app-constants";
-import { CommonConstants } from "../constants/common-constants";
-import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models/app-config";
-import { getProfileInformation, resolveIdpURLSAfterTenantResolves } from "../store/actions/authenticate";
-import { setOrganizationType, setUserOrganizationId } from "../store/actions/organization";
 
 const AUTHORIZATION_ENDPOINT: string = "authorization_endpoint";
 const TOKEN_ENDPOINT: string = "token_endpoint";

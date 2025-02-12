@@ -17,14 +17,14 @@
  */
 
 import { PageLayout } from "@wso2is/react-components";
+import { AlertInterface } from "@wso2is/selfcare.core.v1/models";
+import { addAlert } from "@wso2is/selfcare.core.v1/store/actions";
 import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import { Applications } from "../components";
-import { AlertInterface } from "../models";
-import { addAlert } from "../store/actions";
 
 /**
  * Applications page.

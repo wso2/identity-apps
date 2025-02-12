@@ -19,7 +19,7 @@
 import { AuthReactConfig, Hooks, ResponseMode, Storage, useAuthContext } from "@asgardeo/auth-react";
 import { TokenConstants } from "@wso2is/core/constants";
 import { UserAgentParser } from "@wso2is/core/helpers";
-import { store } from "../store";
+import { store } from "@wso2is/selfcare.core.v1/store";
 
 /**
  * Clears the session related information and sign out from the session.

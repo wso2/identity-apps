@@ -18,10 +18,10 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Popup, Text } from "@wso2is/react-components";
+import { Application } from "@wso2is/selfcare.core.v1/models";
 import React, { FunctionComponent } from "react";
 import { Grid } from "semantic-ui-react";
 import { RecentApplicationCard } from "./recent-application-card";
-import { Application } from "../../models";
 
 /**
  * Proptypes for the recent applications component.

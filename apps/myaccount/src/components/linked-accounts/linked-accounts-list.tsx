@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,13 +18,13 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Popup } from "@wso2is/react-components";
+import { getGravatarImage } from "@wso2is/selfcare.core.v1/api";
+import { UserAvatar } from "@wso2is/selfcare.core.v1/components";
+import { LinkedAccountInterface } from "@wso2is/selfcare.core.v1/models";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Modal } from "semantic-ui-react";
-import { getGravatarImage } from "../../api";
 import { resolveUsername } from "../../helpers";
-import { LinkedAccountInterface } from "../../models";
-import { UserAvatar } from "../shared";
 
 /**
  * Prop types for the liked accounts list component.
@@ -103,7 +103,7 @@ export const LinkedAccountsList: FunctionComponent<LinkedAccountsListProps> = (
             { requestConfirmation() }
             <List divided verticalAlign="middle" className="main-content-inner">
                 {
-                    linkedAccounts.map((account, index) => (
+                    linkedAccounts.map((account: LinkedAccountInterface, index: number) => (
                         <List.Item className="inner-list-item" key={ index } data-testid={ testId }>
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>

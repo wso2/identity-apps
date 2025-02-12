@@ -17,11 +17,11 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { AppAvatar } from "@wso2is/selfcare.core.v1/components";
+import { Application } from "@wso2is/selfcare.core.v1/models";
 import classNames from "classnames";
 import React, { FunctionComponent } from "react";
 import { Card, Icon } from "semantic-ui-react";
-import { Application } from "../../models";
-import { AppAvatar } from "../shared";
 
 /**
  * Proptypes for the recent application card component.

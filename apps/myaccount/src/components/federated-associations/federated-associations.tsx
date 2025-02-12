@@ -21,21 +21,24 @@ import {
 } from "@asgardeo/auth-react";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { AppAvatar, Popup } from "@wso2is/react-components";
+import {
+    deleteFederatedAssociation,
+    getFederatedAssociations
+} from "@wso2is/selfcare.core.v1/api/federated-associations";
+import { SettingsSection } from "@wso2is/selfcare.core.v1/components";
+import { getSettingsSectionIcons } from "@wso2is/selfcare.core.v1/configs";
+import {
+    AlertInterface,
+    AlertLevels
+} from "@wso2is/selfcare.core.v1/models";
+import { FederatedAssociation } from "@wso2is/selfcare.core.v1/models/federated-associations";
+import { commonConfig } from "@wso2is/selfcare.extensions.v1";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Modal } from "semantic-ui-react";
-import { deleteFederatedAssociation, getFederatedAssociations } from "../../api/federated-associations";
-import { getSettingsSectionIcons } from "../../configs";
-import { commonConfig } from "../../extensions";
-import {
-    AlertInterface,
-    AlertLevels
-} from "../../models";
-import { FederatedAssociation } from "../../models/federated-associations";
 import ConnectionIcon from "../../themes/default/assets/images/icons/connection.svg";
 import resolveConnectionImagePath from "../../utils/resolve-connection-image-path";
-import { SettingsSection } from "../shared";
 
 /**
  * Prop types for `FederatedAssociations` component

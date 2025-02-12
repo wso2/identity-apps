@@ -17,13 +17,6 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import cloneDeep from "lodash-es/cloneDeep";
-import flatten from "lodash-es/flatten";
-import React, { FunctionComponent, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Message, Modal } from "semantic-ui-react";
-import { AppConsentList } from "./consents-list";
 import {
     fetchAllPurposes,
     fetchConsentReceipt,
@@ -31,8 +24,9 @@ import {
     fetchPurposesByIDs,
     revokeConsentedApp,
     updateConsentedClaims
-} from "../../api/consents";
-import { AppConstants, ConsentConstants } from "../../constants";
+} from "@wso2is/selfcare.core.v1/api/consents";
+import { ModalComponent, SettingsSection } from "@wso2is/selfcare.core.v1/components";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import {
     AlertInterface,
     AlertLevels,
@@ -47,10 +41,17 @@ import {
     PurposeModelPIICategory,
     PurposeModelPartial,
     ServiceInterface
-} from "../../models";
-import { AppState } from "../../store";
+} from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
+import cloneDeep from "lodash-es/cloneDeep";
+import flatten from "lodash-es/flatten";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { Message, Modal } from "semantic-ui-react";
+import { AppConsentList } from "./consents-list";
+import { ConsentConstants } from "../../constants";
 import { useEndUserSession } from "../../utils";
-import { ModalComponent, SettingsSection } from "../shared";
 
 /**
  * Proptypes for the user sessions component.
