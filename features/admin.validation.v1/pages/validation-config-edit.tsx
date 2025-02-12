@@ -639,6 +639,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
 
         setSubmitting(true);
 
+        // Temporary workaround to address intermittent backend cache invalidation issues.
         serverConfigurationConfig
             .processPasswordPoliciesSubmitData(
                 processedFormValues,
