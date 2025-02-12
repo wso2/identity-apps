@@ -69,7 +69,6 @@ import {
     PasswordExpiryRule,
     PasswordExpiryRuleAttribute,
     PasswordExpiryRuleOperator,
-    ValidationDataInterface,
     ValidationFormInterface
 } from "../models";
 import "./password-validation-form.scss";
