@@ -16,89 +16,92 @@
  * under the License.
  */
 
-import { ReactComponent as StatusShieldDanger } from "../themes/default/assets/images/accounts-status-icons/danger.svg";
-import { ReactComponent as StatusShieldGood } from "../themes/default/assets/images/accounts-status-icons/good.svg";
+import {
+    ReactComponent as StatusShieldDanger
+} from "../../themes/default/assets/images/accounts-status-icons/danger.svg";
+import { ReactComponent as StatusShieldGood } from "../../themes/default/assets/images/accounts-status-icons/good.svg";
 import {
     ReactComponent as StatusShieldWarning
-} from "../themes/default/assets/images/accounts-status-icons/warning.svg";
-import OrangeAppIconBackground from "../themes/default/assets/images/app-icon-background.png";
-import PasskeyIcon from "../themes/default/assets/images/authenticators/fido-passkey-black.svg";
-import GravatarLogo from "../themes/default/assets/images/gravatar-logo.png";
-import { ReactComponent as AppIcon } from "../themes/default/assets/images/icons/app-icon.svg";
+} from "../../themes/default/assets/images/accounts-status-icons/warning.svg";
+import OrangeAppIconBackground from "../../themes/default/assets/images/app-icon-background.png";
+import PasskeyIcon from "../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
+import GravatarLogo from "../../themes/default/assets/images/gravatar-logo.png";
+import { ReactComponent as AppIcon } from "../../themes/default/assets/images/icons/app-icon.svg";
 import {
     ReactComponent as AuthenticatorAppIcon
-} from "../themes/default/assets/images/icons/authenticator-app-icon.svg";
-import { ReactComponent as BackupCodesIcon } from "../themes/default/assets/images/icons/backup-code-icon.svg";
+} from "../../themes/default/assets/images/icons/authenticator-app-icon.svg";
+import { ReactComponent as BackupCodesIcon } from "../../themes/default/assets/images/icons/backup-code-icon.svg";
 import {
     ReactComponent as BlockedMagnifierIcon
-} from "../themes/default/assets/images/icons/blocked-magnifier-icon.svg";
-import { ReactComponent as BoxIcon } from "../themes/default/assets/images/icons/box-icon.svg";
-import { ReactComponent as CloseIcon } from "../themes/default/assets/images/icons/close-icon.svg";
-import { ReactComponent as CodeIcon } from "../themes/default/assets/images/icons/code-icon.svg";
-import { ReactComponent as ConsoleIcon } from "../themes/default/assets/images/icons/console-icon.svg";
-import { ReactComponent as ControlsIcon } from "../themes/default/assets/images/icons/controls-icon.svg";
-import { ReactComponent as CrossIcon } from "../themes/default/assets/images/icons/cross-icon.svg";
-import { ReactComponent as DashboardIcon } from "../themes/default/assets/images/icons/dashboard-icon.svg";
-import { ReactComponent as EmailIcon } from "../themes/default/assets/images/icons/email-icon.svg";
-import { ReactComponent as ErrorIcon } from "../themes/default/assets/images/icons/error-icon.svg";
-import { ReactComponent as ForbiddenIcon } from "../themes/default/assets/images/icons/forbidden-icon.svg";
-import { ReactComponent as InfoIcon } from "../themes/default/assets/images/icons/info-icon.svg";
-import { ReactComponent as KeyboardIcon } from "../themes/default/assets/images/icons/keyboard.svg";
-import { ReactComponent as LockIcon } from "../themes/default/assets/images/icons/lock-icon.svg";
-import { ReactComponent as MonitorIcon } from "../themes/default/assets/images/icons/monitor-icon.svg";
-import { ReactComponent as MyAccountIcon } from "../themes/default/assets/images/icons/myaccount-icon.svg";
-import { ReactComponent as PackageIcon } from "../themes/default/assets/images/icons/package.svg";
+} from "../../themes/default/assets/images/icons/blocked-magnifier-icon.svg";
+import { ReactComponent as BoxIcon } from "../../themes/default/assets/images/icons/box-icon.svg";
+import { ReactComponent as CloseIcon } from "../../themes/default/assets/images/icons/close-icon.svg";
+import { ReactComponent as CodeIcon } from "../../themes/default/assets/images/icons/code-icon.svg";
+import { ReactComponent as ConsoleIcon } from "../../themes/default/assets/images/icons/console-icon.svg";
+import { ReactComponent as ControlsIcon } from "../../themes/default/assets/images/icons/controls-icon.svg";
+import { ReactComponent as CrossIcon } from "../../themes/default/assets/images/icons/cross-icon.svg";
+import { ReactComponent as DashboardIcon } from "../../themes/default/assets/images/icons/dashboard-icon.svg";
+import { ReactComponent as EmailIcon } from "../../themes/default/assets/images/icons/email-icon.svg";
+import { ReactComponent as ErrorIcon } from "../../themes/default/assets/images/icons/error-icon.svg";
+import { ReactComponent as ForbiddenIcon } from "../../themes/default/assets/images/icons/forbidden-icon.svg";
+import { ReactComponent as InfoIcon } from "../../themes/default/assets/images/icons/info-icon.svg";
+import { ReactComponent as KeyboardIcon } from "../../themes/default/assets/images/icons/keyboard.svg";
+import { ReactComponent as LockIcon } from "../../themes/default/assets/images/icons/lock-icon.svg";
+import { ReactComponent as MonitorIcon } from "../../themes/default/assets/images/icons/monitor-icon.svg";
+import { ReactComponent as MyAccountIcon } from "../../themes/default/assets/images/icons/myaccount-icon.svg";
+import { ReactComponent as PackageIcon } from "../../themes/default/assets/images/icons/package.svg";
 import {
     ReactComponent as PushAuthenticatorAppIcon
-} from "../themes/default/assets/images/icons/push-authenticator-app-icon.svg";
+} from "../../themes/default/assets/images/icons/push-authenticator-app-icon.svg";
 import {
     ReactComponent as SecurityQuestionsIcon
-} from "../themes/default/assets/images/icons/security-questions-icon.svg";
-import { ReactComponent as SMSIcon } from "../themes/default/assets/images/icons/sms-icon.svg";
-import { ReactComponent as SuccessIcon } from "../themes/default/assets/images/icons/success-icon.svg";
-import { ReactComponent as TickCircleIcon } from "../themes/default/assets/images/icons/tick-circle-icon.svg";
-import { ReactComponent as UserIcon } from "../themes/default/assets/images/icons/user-icon.svg";
-import { ReactComponent as WarningIcon } from "../themes/default/assets/images/icons/warning-icon.svg";
+} from "../../themes/default/assets/images/icons/security-questions-icon.svg";
+import { ReactComponent as SMSIcon } from "../../themes/default/assets/images/icons/sms-icon.svg";
+import { ReactComponent as SuccessIcon } from "../../themes/default/assets/images/icons/success-icon.svg";
+import { ReactComponent as TickCircleIcon } from "../../themes/default/assets/images/icons/tick-circle-icon.svg";
+import { ReactComponent as UserIcon } from "../../themes/default/assets/images/icons/user-icon.svg";
+import { ReactComponent as WarningIcon } from "../../themes/default/assets/images/icons/warning-icon.svg";
 import {
     ReactComponent as EnterVerificationCodeIcon
-} from "../themes/default/assets/images/illustrations/enter-verification-code.svg";
-import FederatedAssociationsMini from "../themes/default/assets/images/illustrations/federated-associations-mini.svg";
-import FederatedAssociations from "../themes/default/assets/images/illustrations/federated-associations.svg";
+} from "../../themes/default/assets/images/illustrations/enter-verification-code.svg";
+import FederatedAssociationsMini from
+    "../../themes/default/assets/images/illustrations/federated-associations-mini.svg";
+import FederatedAssociations from "../../themes/default/assets/images/illustrations/federated-associations.svg";
 import {
     ReactComponent as QRCodeScanIcon
-} from "../themes/default/assets/images/illustrations/qrcode-scan.svg";
+} from "../../themes/default/assets/images/illustrations/qrcode-scan.svg";
 import {
     ReactComponent as SecurityQuestionsMini
-} from "../themes/default/assets/images/illustrations/security-questions-mini.svg";
+} from "../../themes/default/assets/images/illustrations/security-questions-mini.svg";
 import {
     ReactComponent as SecurityQuestions
-} from "../themes/default/assets/images/illustrations/security-questions.svg";
+} from "../../themes/default/assets/images/illustrations/security-questions.svg";
 import {
     ReactComponent as AccountSecurityIconIllustration
-} from "../themes/default/assets/images/illustrations/selfcare-account-security.svg";
+} from "../../themes/default/assets/images/illustrations/selfcare-account-security.svg";
 import {
     ReactComponent as AssociatedAccounts
-} from "../themes/default/assets/images/illustrations/selfcare-associated-accounts.svg";
+} from "../../themes/default/assets/images/illustrations/selfcare-associated-accounts.svg";
 import {
     ReactComponent as ChangePasswordIllustration
-} from "../themes/default/assets/images/illustrations/selfcare-change-password.svg";
+} from "../../themes/default/assets/images/illustrations/selfcare-change-password.svg";
 import {
     ReactComponent as ConsentIllustration
-} from "../themes/default/assets/images/illustrations/selfcare-consent.svg";
+} from "../../themes/default/assets/images/illustrations/selfcare-consent.svg";
 import {
     ReactComponent as ProfileExport
-} from "../themes/default/assets/images/illustrations/selfcare-export-profile.svg";
+} from "../../themes/default/assets/images/illustrations/selfcare-export-profile.svg";
 import {
     ReactComponent as ProfileIllustration
-} from "../themes/default/assets/images/illustrations/selfcare-profile.svg";
+} from "../../themes/default/assets/images/illustrations/selfcare-profile.svg";
 import {
     ReactComponent as EmptyListResultsIllustration
-} from "../themes/default/assets/images/placeholder-illustrations/empty-list-illustration.svg";
+} from "../../themes/default/assets/images/placeholder-illustrations/empty-list-illustration.svg";
 
 import {
     ReactComponent as EmptySearchResultsIllustration
-} from "../themes/default/assets/images/placeholder-illustrations/empty-search-illustration.svg";
-import DummyUser from "../themes/default/assets/images/user.png";
+} from "../../themes/default/assets/images/placeholder-illustrations/empty-search-illustration.svg";
+import DummyUser from "../../themes/default/assets/images/user.png";
 
 export const UserImage: string = DummyUser;
 export const ConsentedAppIcon: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = PackageIcon;

@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { ConfigInterface } from "@wso2is/selfcare.core.v1/models";
 import React from "react";
-import { ConfigInterface } from "../models";
 
 /**
  * This creates a React context that will hold the application configuration

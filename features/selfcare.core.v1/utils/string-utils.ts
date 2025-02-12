@@ -17,31 +17,6 @@
  */
 
 /**
- * Transforms a string to sentence case.
- *
- * @param raw - Raw string.
- * @returns - Sentence cased string.
- */
-export const toSentenceCase = (raw: string): string => {
-    const parts: string[] = raw.split(" ");
-    let newStr: string = "";
-
-    parts.forEach((part: string, index: number) => {
-        part = part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
-
-        if (index === 0) {
-            newStr = part;
-
-            return; // forEach doesn't support `continue`.
-        }
-
-        newStr = newStr + " " + part;
-    });
-
-    return newStr;
-};
-
-/**
  * Parses a string valued boolean into a boolean.
  *
  * Casting strings like "true" / "false" to a absolute boolean

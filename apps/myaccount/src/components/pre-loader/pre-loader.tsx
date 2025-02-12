@@ -22,11 +22,11 @@ import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { ContentLoader } from "@wso2is/react-components";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import { commonConfig } from "@wso2is/selfcare.extensions.v1";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider } from "semantic-ui-react";
-import { useGetBrandingPreference } from "../../api";
-import { AppConstants } from "../../constants/app-constants";
+import { useGetBrandingPreference } from "../../api/branding-preferences";
 
 /**
  * Pre loader component props interface.

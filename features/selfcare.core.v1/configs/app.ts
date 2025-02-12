@@ -17,25 +17,33 @@
  */
 
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
+// Keep statement as this to avoid cyclic dependency. Do not import from config index.
+import { SCIMConfigs } from "@wso2is/selfcare.extensions.v1/configs/scim";
 import { AppConstants } from "../constants/app-constants";
 import { I18nConstants } from "../constants/i18n-constants";
 import { UserManagementConstants } from "../constants/user-management-constants";
-// Keep statement as this to avoid cyclic dependency. Do not import from config index.
-import { SCIMConfigs } from "@wso2is/selfcare.extensions.v1/configs/scim";
-import { AppUtils } from "../init/app-utils";
-import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
+import {
+    AppUtilsInterface,
+    DeploymentConfigInterface,
+    ServiceResourceEndpointsInterface,
+    UIConfigInterface
+} from "../models";
 import { store } from "../store";
 
 /**
  * Class to handle application config operations.
  */
 export class Config {
-    /**
-     * Private constructor to avoid object instantiation from outside
-     * the class.
-     */
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private constructor() {}
+
+    static appUtils: AppUtilsInterface;
+
+    private constructor() {
+
+    }
+
+    public static init(appUtils: AppUtilsInterface) {
+        Config.appUtils = appUtils;
+    }
 
     /**
      * Get the deployment config.
@@ -79,7 +87,7 @@ export class Config {
             associations: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/associations`,
             authorize: `${this.getDeploymentConfig()?.serverHost}/oauth2/authorize`,
             backupCode: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/backup-codes`,
-            brandingPreference: `${AppUtils.getOrganizationName()
+            brandingPreference: `${this.appUtils.getOrganizationName()
                 ? window["AppUtils"]?.getConfig()?.serverOriginWithOrganization
                 : this.getDeploymentConfig()?.serverHost}/api/server/v1/branding-preference`,
             challengeAnswers: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/challenge-answers`,
@@ -131,7 +139,7 @@ export class Config {
                 this.getDeploymentConfig()?.serverHost
             }/api/identity/typingdna/v1.0/server/typingdnaConfig`,
             user: `${this.getDeploymentConfig()?.serverHost}/api/identity/user/v1.0/me`,
-            validationMgt: `${AppUtils.getOrganizationName()
+            validationMgt: `${Config.appUtils.getOrganizationName()
                 ? window["AppUtils"]?.getConfig()?.serverOriginWithOrganization
                 : this.getDeploymentConfig()?.serverHost}/api/server/v1/validation-rules`,
             wellKnown: `${this.getDeploymentConfig()?.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`

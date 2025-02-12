@@ -29,13 +29,13 @@ import {
     ProfileCompletionStatus
 } from "@wso2is/selfcare.core.v1/models";
 import { AppState } from "@wso2is/selfcare.core.v1/store";
+import { CommonUtils } from "@wso2is/selfcare.core.v1/utils/common-utils";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Progress } from "semantic-ui-react";
 import { history } from "../../../helpers";
-import { CommonUtils } from "../../../utils/common-utils";
 
 /**
  * Prop-types for the user sessions edit component.

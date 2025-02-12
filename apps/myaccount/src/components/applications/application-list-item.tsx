@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { AnimatedAvatar, AppAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
 import { Icon, Item, List } from "semantic-ui-react";
-import { Application } from "../../models";
+import { Application } from "@wso2is/selfcare.core.v1/models";
 
 /**
  * Proptypes for the application list item component.

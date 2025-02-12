@@ -17,6 +17,7 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
+// eslint-disable-next-line no-restricted-imports
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Message, PageLayout } from "@wso2is/react-components";

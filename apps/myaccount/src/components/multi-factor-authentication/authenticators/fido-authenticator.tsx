@@ -36,6 +36,7 @@ import { AlertInterface, AlertLevels } from "@wso2is/selfcare.core.v1/models";
 import { FIDODevice } from "@wso2is/selfcare.core.v1/models/fido-authenticator";
 import { AppState } from "@wso2is/selfcare.core.v1/store";
 import { setActiveForm } from "@wso2is/selfcare.core.v1/store/actions";
+import { commonConfig } from "@wso2is/selfcare.extensions.v1";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, useEffect, useState } from "react";
@@ -43,7 +44,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid, Icon, Label, List, ModalContent } from "semantic-ui-react";
-import { commonConfig } from "../../../extensions";
 
 /**
  * FIDO key.

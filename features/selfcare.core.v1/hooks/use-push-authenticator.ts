@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import {
-    deletePushAuthRegisteredDevice,
-    initPushAuthenticatorQRCode
-} from "@wso2is/selfcare.core.v1/api/multi-factor-push";
-import { AlertLevels } from "@wso2is/selfcare.core.v1/models/alert";
-import { HttpResponse } from "@wso2is/selfcare.core.v1/models/api";
-import { addAlert } from "@wso2is/selfcare.core.v1/store/actions/global";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import useGetPushAuthRegisteredDevices from "./use-get-push-auth-registered-devices";
+import {
+    deletePushAuthRegisteredDevice,
+    initPushAuthenticatorQRCode
+} from "../api/multi-factor-push";
+import { AlertLevels } from "../models/alert";
+import { HttpResponse } from "../models/api";
+import { addAlert } from "../store/actions/global";
 
 /**
  * Custom hook to handle the component state and behaviour of {@Link PushAuthenticator} component

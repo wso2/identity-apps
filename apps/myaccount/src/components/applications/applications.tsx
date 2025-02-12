@@ -29,13 +29,13 @@ import {
     emptyStorageApplicationSettingsItem
 } from "@wso2is/selfcare.core.v1/models";
 import { AppState } from "@wso2is/selfcare.core.v1/store";
+import { getValueFromLocalStorage, setValueInLocalStorage } from "@wso2is/selfcare.core.v1/utils/storage-utils";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { AllApplications } from "./all-applications";
 import { RecentApplications } from "./recent-applications";
-import { getValueFromLocalStorage, setValueInLocalStorage } from "../../utils";
 
 /**
  * Prop-types for the applications component.

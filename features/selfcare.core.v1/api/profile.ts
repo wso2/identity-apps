@@ -23,7 +23,7 @@ import { PatchOperationRequest, ProfileInfoInterface, ProfileSchemaInterface } f
 import { CommonUtils } from "@wso2is/core/utils";
 import axios, { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import { Config } from "../configs";
+import { Config } from "../configs/app";
 import { AppConstants } from "../constants/app-constants";
 import { history } from "../helpers";
 import { BasicProfileInterface, HttpMethods, ReadOnlyUserStatus } from "../models";

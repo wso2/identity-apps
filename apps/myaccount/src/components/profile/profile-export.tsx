@@ -17,13 +17,13 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { getUserInfo } from "@wso2is/selfcare.core.v1/api";
 import { SettingsSection } from "@wso2is/selfcare.core.v1/components";
 import { getSettingsSectionIcons } from "@wso2is/selfcare.core.v1/configs";
 import { AlertInterface, AlertLevels } from "@wso2is/selfcare.core.v1/models";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import { getUserInfo } from "../../api";
 
 /**
  * Prop types for the profile export component.

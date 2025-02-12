@@ -25,16 +25,17 @@ import {
     ErrorBoundary,
     LinkButton
 } from "@wso2is/react-components";
-import { PreLoader, ProtectedRoute } from "@wso2is/selfcare.core.v1/components";
+import { ProtectedRoute } from "@wso2is/selfcare.core.v1/components";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/selfcare.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { AppState, store } from "@wso2is/selfcare.core.v1/store";
+import { AppUtils } from "@wso2is/selfcare.core.v1/utils/app-utils";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { PreLoader } from "../components/pre-loader";
 import { getAppLayoutRoutes } from "../configs/routes";
-import { getEmptyPlaceholderIllustrations } from "../configs/ui";
-import { AppState, store } from "../store";
-import { AppUtils } from "../utils";
 
 /**
  * Implementation of the Main app layout skeleton.

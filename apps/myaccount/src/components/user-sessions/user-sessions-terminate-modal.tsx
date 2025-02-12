@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,18 +16,18 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LinkButton } from "@wso2is/react-components";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { terminateAllUserSessions } from "@wso2is/selfcare.core.v1/api";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Modal } from "semantic-ui-react";
-import { terminateAllUserSessions } from "../../api";
-import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
-import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
 import { history } from "../../helpers";
 
 /**

@@ -25,6 +25,8 @@ import {
 } from "@wso2is/react-components";
 import { Header, ProtectedRoute } from "@wso2is/selfcare.core.v1/components";
 import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/selfcare.core.v1/constants/ui-constants";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -38,9 +40,7 @@ import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Dispatch } from "redux";
 import {
     getDefaultLayoutRoutes
-} from "../configs";
-import { UIConstants } from "../constants";
-import { AppState } from "../store";
+} from "../configs/routes";
 
 /**
  * Default page layout.

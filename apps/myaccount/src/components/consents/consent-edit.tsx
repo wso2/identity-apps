@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { StringUtils } from "@wso2is/core/utils";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import { EditSection } from "@wso2is/selfcare.core.v1/components";
 import {
@@ -31,7 +32,6 @@ import flatten from "lodash-es/flatten";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Divider, Grid, List } from "semantic-ui-react";
-import { toSentenceCase } from "../../utils";
 
 /**
  * Proptypes for the application consent edit component.
@@ -221,10 +221,10 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
             <React.Fragment key={ purpose.purposeId }>
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 16 }>
-                        <strong>{ toSentenceCase(purpose.purpose) }</strong>
+                        <strong>{ StringUtils.toSentenceCase(purpose.purpose) }</strong>
                     </Grid.Column>
                     <Grid.Column width={ 16 }>
-                        <em>{ toSentenceCase(purpose.description ?? "") }</em>
+                        <em>{ StringUtils.toSentenceCase(purpose.description ?? "") }</em>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>

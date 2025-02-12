@@ -31,8 +31,17 @@ import {
 } from "@wso2is/core/utils";
 import { I18n, I18nModuleConstants, LanguageChangeException } from "@wso2is/i18n";
 import { Alert, ContentLoader, EmptyPlaceholder, ErrorBoundary, LinkButton } from "@wso2is/react-components";
+import { fetchApplications } from "@wso2is/selfcare.core.v1/api";
 import { Header, ProtectedRoute } from "@wso2is/selfcare.core.v1/components";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/selfcare.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/selfcare.core.v1/constants/ui-constants";
+import { Application, ConfigReducerStateInterface } from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
+import { toggleApplicationsPageVisibility } from "@wso2is/selfcare.core.v1/store/actions";
+import { AppUtils } from "@wso2is/selfcare.core.v1/utils/app-utils";
+import { CommonUtils as MyAccountCommonUtils } from "@wso2is/selfcare.core.v1/utils/common-utils";
+import { filterRoutes } from "@wso2is/selfcare.core.v1/utils/filter-utils";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
 import moment from "moment";
@@ -43,14 +52,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { StaticContext } from "react-router";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Dispatch } from "redux";
-import { fetchApplications } from "../api";
-import { getDashboardLayoutRoutes, getEmptyPlaceholderIllustrations } from "../configs";
-import { UIConstants } from "../constants";
+import { getDashboardLayoutRoutes } from "../configs/routes";
 import { history } from "../helpers";
-import { Application, ConfigReducerStateInterface } from "../models";
-import { AppState } from "../store";
-import { toggleApplicationsPageVisibility } from "../store/actions";
-import { AppUtils, CommonUtils as MyAccountCommonUtils, filterRoutes } from "../utils";
 
 /**
  * Dashboard page layout component Prop types.

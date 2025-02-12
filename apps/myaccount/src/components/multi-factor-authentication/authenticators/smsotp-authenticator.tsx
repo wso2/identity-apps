@@ -18,7 +18,7 @@
 
 import { ProfileConstants } from "@wso2is/core/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { PatchOperation, PatchOperationRequest, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { GenericIcon, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { updateProfileInfo } from "@wso2is/selfcare.core.v1/api";
@@ -35,13 +35,13 @@ import {
 } from "@wso2is/selfcare.core.v1/models";
 import { AppState } from "@wso2is/selfcare.core.v1/store";
 import { getProfileInformation, setActiveForm } from "@wso2is/selfcare.core.v1/store/actions";
+import { profileConfig } from "@wso2is/selfcare.extensions.v1";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
-import { profileConfig } from "../../../extensions";
 
 /**
  * SMS key.
@@ -105,7 +105,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
     }, [ profileInfo ]);
 
     const handleUpdate = (mobileNumber: string) => {
-        const data = {
+        const data: Record<string,unknown> = {
             Operations: [
                 {
                     op: "replace",

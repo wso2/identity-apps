@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { StringUtils } from "@wso2is/core/utils";
 import { GenericIcon, Media } from "@wso2is/react-components";
 import { ConsentedAppIcon } from "@wso2is/selfcare.core.v1/configs";
 import { ConsentInterface, ConsentState, PIICategoryClaimToggleItem } from "@wso2is/selfcare.core.v1/models";
@@ -24,7 +25,6 @@ import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List } from "semantic-ui-react";
 import { AppConsentEdit } from "./consent-edit";
-import { toSentenceCase } from "../../utils";
 
 /**
  * Prop-types for the application consents list component.
@@ -108,7 +108,7 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
                                                                 className={ `active-label ${ resolveStateClassname(
                                                                     consent.state) }` }
                                                             />
-                                                            { toSentenceCase(consent.state) }
+                                                            { StringUtils.toSentenceCase(consent.state) }
                                                         </p>
                                                     </List.Description>
                                                 </List.Content>

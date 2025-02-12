@@ -21,15 +21,15 @@ import {
     BrandingPreferenceTypes
 } from "@wso2is/common.branding.v1/models";
 import { HttpMethods } from "@wso2is/core/models";
-import { I18nConstants } from "../constants/i18n-constants";
+import { I18nConstants } from "@wso2is/selfcare.core.v1/constants/i18n-constants";
 import {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface,
     useRequest
-} from "../hooks/use-request";
+} from "@wso2is/selfcare.core.v1/hooks/use-request";
+import { store } from "@wso2is/selfcare.core.v1/store";
 import { getMigratedBrandingPreference } from "../migrations/branding-preference";
-import { store } from "../store";
 
 /**
  * Hook to get the branding preference via Branding Preferences API.

@@ -20,13 +20,13 @@ import { Hooks, useAuthContext } from "@asgardeo/auth-react";
 import { AppConstants } from "@wso2is/core/constants";
 import { setSignOut } from "@wso2is/core/store";
 import { AuthenticateUtils } from "@wso2is/core/utils";
-import { PreLoader } from "@wso2is/selfcare.core.v1/components/pre-loader/pre-loader";
+import useOrganizations from "@wso2is/selfcare.core.v1/hooks/use-organizations";
 import { AppState } from "@wso2is/selfcare.core.v1/store";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { PreLoader } from "../../components/pre-loader/pre-loader";
 import { history } from "../../helpers";
-import useOrganizations from "../../hooks/use-organizations";
 
 /**
  * Virtual component used to handle Sign in action.

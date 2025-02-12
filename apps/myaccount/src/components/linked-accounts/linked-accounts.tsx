@@ -18,6 +18,10 @@
 
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import {
+    addAccountAssociation,
+    removeLinkedAccount
+} from "@wso2is/selfcare.core.v1/api";
 import { SettingsSection } from "@wso2is/selfcare.core.v1/components";
 import { getSettingsSectionIcons } from "@wso2is/selfcare.core.v1/configs";
 import { CommonConstants } from "@wso2is/selfcare.core.v1/constants/common-constants";
@@ -42,10 +46,6 @@ import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { LinkedAccountsEdit } from "./linked-accounts-edit";
 import { LinkedAccountsList } from "./linked-accounts-list";
-import {
-    addAccountAssociation,
-    removeLinkedAccount
-} from "../../api";
 import { refreshPage } from "../../utils";
 
 /**

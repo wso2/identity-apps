@@ -17,6 +17,14 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import {
+    fetchAllPurposes,
+    fetchConsentReceipt,
+    fetchConsentedApps,
+    fetchPurposesByIDs,
+    revokeConsentedApp,
+    updateConsentedClaims
+} from "@wso2is/selfcare.core.v1/api/consents";
 import { ModalComponent, SettingsSection } from "@wso2is/selfcare.core.v1/components";
 import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import {
@@ -42,14 +50,6 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Message, Modal } from "semantic-ui-react";
 import { AppConsentList } from "./consents-list";
-import {
-    fetchAllPurposes,
-    fetchConsentReceipt,
-    fetchConsentedApps,
-    fetchPurposesByIDs,
-    revokeConsentedApp,
-    updateConsentedClaims
-} from "../../api/consents";
 import { ConsentConstants } from "../../constants";
 import { useEndUserSession } from "../../utils";
 

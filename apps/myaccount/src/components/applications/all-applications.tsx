@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { ApplicationList } from "./application-list";
-import { Application } from "../../models";
+import { Application } from "@wso2is/selfcare.core.v1/models";
 
 /**
  * Proptypes for the all applications component.

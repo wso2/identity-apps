@@ -18,13 +18,12 @@
 
 import { SBACInterface } from "@wso2is/core/models";
 import { GenericIcon } from "@wso2is/react-components";
-import { SettingsSection } from "@wso2is/selfcare.core.v1/components";
+import { deleteTypingPatterns } from "@wso2is/selfcare.core.v1/api";
 import { getMFAIcons } from "@wso2is/selfcare.core.v1/configs";
 import { AlertInterface, AlertLevels, FeatureConfigInterface } from "@wso2is/selfcare.core.v1/models";
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Container, Grid, Icon, List, Modal } from "semantic-ui-react";
-import { deleteTypingPatterns } from "../../../api";
 
 /**
  * Prop types for the TypingDNA component.
@@ -37,13 +36,13 @@ interface TypingDNAProps extends SBACInterface<FeatureConfigInterface> {
 /**
  * TypingDNA Delete typing patterns section.
  *
- * @params {<TypingDNAProps>} props - Props injected to the component
- * @return {JSX.Element}
+ * @param props - Props injected to the component
+ * @returns TypingDNA management widget
  */
 export const TypingDNA: React.FunctionComponent<TypingDNAProps> = (props: TypingDNAProps): JSX.Element => {
     const { t } = useTranslation();
     const [ isRevokeClearTypingPatternsModalVisible,setRevokeClearTypingPatternsModalVisible ] = useState(false);
-    const { onAlertFired, featureConfig } = props;
+    const { onAlertFired } = props;
 
     const handleClearTypingPatternsClick = () => {
         setRevokeClearTypingPatternsModalVisible(true);
@@ -82,7 +81,7 @@ export const TypingDNA: React.FunctionComponent<TypingDNAProps> = (props: Typing
             });
     };
 
-    const clearTypingPatternsModal = (
+    const clearTypingPatternsModal: ReactNode = (
         <Modal
             size="mini"
             open={ isRevokeClearTypingPatternsModalVisible }

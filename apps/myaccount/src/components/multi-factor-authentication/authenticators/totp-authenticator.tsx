@@ -34,6 +34,7 @@ import {
     EnabledAuthenticatorUpdateAction
 } from "@wso2is/selfcare.core.v1/models";
 import { AppState } from "@wso2is/selfcare.core.v1/store";
+import { commonConfig } from "@wso2is/selfcare.extensions.v1";
 import QRCode from "qrcode.react";
 import React, { FormEvent, PropsWithChildren, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -51,7 +52,6 @@ import {
     Modal,
     Segment
 } from "semantic-ui-react";
-import { commonConfig } from "../../../extensions";
 
 /**
  * Property types for the TOTP component.

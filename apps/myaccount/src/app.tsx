@@ -31,22 +31,24 @@ import {
     SessionManagementProvider,
     SessionTimeoutModalTypes
 } from "@wso2is/react-components";
-import { PreLoader, ProtectedRoute } from "@wso2is/selfcare.core.v1/components";
+import { ProtectedRoute } from "@wso2is/selfcare.core.v1/components";
 import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import {
     ConfigReducerStateInterface,
     FeatureConfigInterface
 } from "@wso2is/selfcare.core.v1/models";
 import { AppState } from "@wso2is/selfcare.core.v1/store";
+import { filterRoutes } from "@wso2is/selfcare.core.v1/utils/filter-utils";
 import isEmpty from "lodash-es/isEmpty";
 import * as moment from "moment";
 import React, { ReactElement, Suspense, useContext, useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteProps, Router, Switch } from "react-router-dom";
+import { PreLoader } from "./components/pre-loader";
 import { getBaseRoutes } from "./configs/routes";
 import { history } from "./helpers";
-import { EventPublisher, filterRoutes } from "./utils";
+import { EventPublisher } from "./utils";
 
 /**
  * Main App component.

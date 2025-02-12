@@ -34,12 +34,9 @@ import {
     LanguageChangeException,
     isLanguageSupported
 } from "@wso2is/i18n";
-import { useGetBrandingPreference } from "@wso2is/selfcare.core.v1/api/branding-preferences";
-import { PreLoader } from "@wso2is/selfcare.core.v1/components";
-import { Config } from "@wso2is/selfcare.core.v1/configs";
+import { Config } from "@wso2is/selfcare.core.v1/configs/app";
 import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import { history } from "@wso2is/selfcare.core.v1/helpers";
-import useSignIn from "@wso2is/selfcare.core.v1/hooks/use-sign-in";
 import { AppState, store } from "@wso2is/selfcare.core.v1/store";
 import {
     onHttpRequestError,
@@ -51,6 +48,12 @@ import axios, { AxiosResponse } from "axios";
 import React, { FunctionComponent, LazyExoticComponent, ReactElement, lazy, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import { useSelector } from "react-redux";
+import { useGetBrandingPreference } from "./api/branding-preferences";
+import { PreLoader } from "./components/pre-loader";
+import useSignIn from "./hooks/use-sign-in";
+import { AppUtils } from "./init/app-utils";
+
+Config.init(AppUtils);
 
 const App: LazyExoticComponent<() => ReactElement> = lazy(() => import("./app"));
 
@@ -146,7 +149,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         const resolvedAppBaseNameWithoutTenant: string = StringUtils.removeSlashesFromPath(
             Config.getDeploymentConfig().appBaseNameWithoutTenant
         )
-            ? `/${ StringUtils.removeSlashesFromPath(Config.getDeploymentConfig().appBaseNameWithoutTenant) }`
+            ? "/" +
+              StringUtils.removeSlashesFromPath(Config.getDeploymentConfig().appBaseNameWithoutTenant)
             : "";
 
         const metaFileNames: string[] = I18nModuleConstants.META_FILENAME.split(".");

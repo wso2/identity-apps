@@ -19,15 +19,15 @@
 import { ProfileConstants } from "@wso2is/core/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
+import { AuthStateInterface } from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
+import { commonConfig } from "@wso2is/selfcare.extensions.v1";
+import { SCIMConfigs } from "@wso2is/selfcare.extensions.v1/configs/scim";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Overview } from "../components";
-import { commonConfig } from "../extensions";
-import { SCIMConfigs } from "../extensions/configs/scim";
 import { resolveUserProfileName, resolveUserstore } from "../helpers";
-import { AuthStateInterface } from "../models";
-import { AppState } from "../store";
 
 /**
  * Prop types for the overview page.

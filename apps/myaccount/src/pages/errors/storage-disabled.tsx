@@ -17,11 +17,11 @@
  */
 
 import { EmptyPlaceholder } from "@wso2is/react-components";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/selfcare.core.v1/configs";
 import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router-dom";
-import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { history } from "../../helpers";
 
 /**

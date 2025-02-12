@@ -18,7 +18,9 @@
 
 import { AuthParams, AuthProvider, ResponseMode, SPAUtils } from "@asgardeo/auth-react";
 import { ContextUtils, StringUtils } from "@wso2is/core/utils";
-import { PreLoader } from "@wso2is/selfcare.core.v1/components";
+import { Config } from "@wso2is/selfcare.core.v1/configs/app";
+import AppSettingsProvider from "@wso2is/selfcare.core.v1/providers/app-settings-provider";
+import { store } from "@wso2is/selfcare.core.v1/store";
 import axios, { AxiosResponse } from "axios";
 import * as React from "react";
 import "react-app-polyfill/ie11";
@@ -27,10 +29,8 @@ import "react-app-polyfill/stable";
 import ReactDOM, { Root } from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { Config } from "./configs";
+import { PreLoader } from "./components/pre-loader";
 import { ProtectedApp } from "./protected-app";
-import AppSettingsProvider from "./providers/app-settings-provider";
-import { store } from "./store";
 import { getAuthInitializeConfig } from "./utils";
 
 // Set the runtime config in the context.
