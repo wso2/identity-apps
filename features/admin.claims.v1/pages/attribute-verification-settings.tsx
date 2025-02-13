@@ -65,7 +65,6 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
     const dispatch: Dispatch = useDispatch();
 
     const FORM_ID: string = "governance-connectors-attribute-verification-form";
-    const CATEGORY_NAME: string = "Attribute Verification Settings";
     const CONNECTOR_ID: string = ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID;
     const CATEGORY_ID: string = ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID;
     const CONNECTOR_NAMES: any = {
@@ -479,7 +478,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                         label={ resolveInputFieldLabel(
                             CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS) }
                         defaultValue={ formValues?.[
-                            CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS ] == true }
+                            CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS ] === true }
                         readOnly={ isReadOnly }
                         disabled={ !isConnectorEnabled }
                         width={ 16 }
