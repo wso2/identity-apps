@@ -26,7 +26,6 @@ import { getLocalAuthenticator } from "../../../api/authenticators";
 import { getFederatedAuthenticatorDetails } from "../../../api/connections";
 import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
-import { AuthenticatorMeta } from "../../../meta/authenticator-meta";
 import {
     ConnectionInterface,
     ConnectionListResponseInterface,
@@ -37,7 +36,6 @@ import {
     FederatedAuthenticatorListItemInterface
 } from "../../../models/connection";
 import {
-    ConnectionsManagementUtils,
     handleGetCustomAuthenticatorError,
     resolveCustomAuthenticatorDisplayName
 } from "../../../utils/connection-utils";
