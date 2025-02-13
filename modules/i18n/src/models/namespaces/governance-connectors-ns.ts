@@ -631,6 +631,7 @@ export interface governanceConnectorsNS {
                 };
                 userClaimUpdate: {
                     friendlyName: string;
+                    subTitle: string;
                     update: {
                         error: {
                             description: string;
