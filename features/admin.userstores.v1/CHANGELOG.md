@@ -1,5 +1,35 @@
 # @wso2is/admin.userstores.v1
 
+## 2.26.122
+
+### Patch Changes
+
+- Updated dependencies [[`7262137d3207877ea593c9b95db6bda098e41702`](https://github.com/wso2/identity-apps/commit/7262137d3207877ea593c9b95db6bda098e41702)]:
+  - @wso2is/admin.core.v1@2.38.32
+  - @wso2is/admin.extensions.v1@2.36.88
+  - @wso2is/admin.remote-userstores.v1@1.7.119
+
+## 2.26.121
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.31
+  - @wso2is/admin.extensions.v1@2.36.87
+  - @wso2is/admin.remote-userstores.v1@1.7.118
+
+## 2.26.120
+
+### Patch Changes
+
+- [#7597](https://github.com/wso2/identity-apps/pull/7597) [`86cfa121e7a18a2d095eea97a42188c0afb378eb`](https://github.com/wso2/identity-apps/commit/86cfa121e7a18a2d095eea97a42188c0afb378eb) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Remove the temp fix to hide ReadOnly property in UniqueIDReadOnlyLDAPUserStoreManager
+
+- Updated dependencies [[`f87912f707015c530d64ec344f20433f6e0fa485`](https://github.com/wso2/identity-apps/commit/f87912f707015c530d64ec344f20433f6e0fa485)]:
+  - @wso2is/i18n@2.19.12
+  - @wso2is/admin.core.v1@2.38.30
+  - @wso2is/admin.extensions.v1@2.36.86
+  - @wso2is/admin.remote-userstores.v1@1.7.117
+
 ## 2.26.119
 
 ### Patch Changes

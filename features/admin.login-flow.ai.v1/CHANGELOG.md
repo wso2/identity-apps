@@ -1,5 +1,45 @@
 # @wso2is/admin.login-flow.ai.v1
 
+## 2.27.58
+
+### Patch Changes
+
+- Updated dependencies [[`7262137d3207877ea593c9b95db6bda098e41702`](https://github.com/wso2/identity-apps/commit/7262137d3207877ea593c9b95db6bda098e41702)]:
+  - @wso2is/admin.claims.v1@2.27.73
+  - @wso2is/admin.core.v1@2.38.32
+  - @wso2is/admin.applications.v1@2.31.11
+  - @wso2is/admin.identity-providers.v1@2.26.163
+  - @wso2is/admin.feature-gate.v1@1.4.163
+  - @wso2is/admin.organizations.v1@2.26.163
+  - @wso2is/common.ai.v1@2.25.163
+
+## 2.27.57
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.31
+  - @wso2is/admin.organizations.v1@2.26.162
+  - @wso2is/admin.applications.v1@2.31.10
+  - @wso2is/admin.claims.v1@2.27.72
+  - @wso2is/admin.feature-gate.v1@1.4.162
+  - @wso2is/admin.identity-providers.v1@2.26.162
+  - @wso2is/common.ai.v1@2.25.162
+
+## 2.27.56
+
+### Patch Changes
+
+- Updated dependencies [[`e657fb2c52925745bbe1b72e8ee2c123c2892d6d`](https://github.com/wso2/identity-apps/commit/e657fb2c52925745bbe1b72e8ee2c123c2892d6d), [`f87912f707015c530d64ec344f20433f6e0fa485`](https://github.com/wso2/identity-apps/commit/f87912f707015c530d64ec344f20433f6e0fa485)]:
+  - @wso2is/admin.identity-providers.v1@2.26.161
+  - @wso2is/i18n@2.19.12
+  - @wso2is/admin.applications.v1@2.31.9
+  - @wso2is/admin.core.v1@2.38.30
+  - @wso2is/admin.organizations.v1@2.26.161
+  - @wso2is/admin.claims.v1@2.27.71
+  - @wso2is/common.ai.v1@2.25.161
+  - @wso2is/admin.feature-gate.v1@1.4.161
+
 ## 2.27.55
 
 ### Patch Changes

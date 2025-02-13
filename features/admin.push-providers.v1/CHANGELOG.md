@@ -1,5 +1,32 @@
 # @wso2is/admin.push-providers.v1
 
+## 1.0.52
+
+### Patch Changes
+
+- Updated dependencies [[`7262137d3207877ea593c9b95db6bda098e41702`](https://github.com/wso2/identity-apps/commit/7262137d3207877ea593c9b95db6bda098e41702)]:
+  - @wso2is/admin.core.v1@2.38.32
+  - @wso2is/admin.feature-gate.v1@1.4.163
+  - @wso2is/admin.template-core.v1@1.5.117
+
+## 1.0.51
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.31
+  - @wso2is/admin.feature-gate.v1@1.4.162
+  - @wso2is/admin.template-core.v1@1.5.116
+
+## 1.0.50
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.30
+  - @wso2is/admin.feature-gate.v1@1.4.161
+  - @wso2is/admin.template-core.v1@1.5.115
+
 ## 1.0.49
 
 ### Patch Changes

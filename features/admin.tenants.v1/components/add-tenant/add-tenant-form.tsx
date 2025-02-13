@@ -34,7 +34,6 @@ import {
     FinalForm,
     FinalFormField,
     FormRenderProps,
-    FormSpy,
     MutableState,
     TextFieldAdapter,
     Tools,
@@ -42,7 +41,9 @@ import {
 } from "@wso2is/form";
 import { Hint, PasswordValidation } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
+import { FormState } from "final-form";
+import memoize from "lodash-es/memoize";
+import React, { FunctionComponent, ReactElement, useCallback, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import getTenantDomainAvailability from "../../api/get-tenant-domain-availability";
@@ -162,53 +163,56 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
      * @param value - Input value.
      * @returns An error if the value is not valid else undefined.
      */
-    const validateDomain = async (value: string): Promise<string | undefined> => {
-        if (!value) {
-            return undefined;
-        }
+    const validateDomain: (value: string) => Promise<string | undefined> = useCallback(
+        memoize(
+            async (value: string): Promise<string | undefined> => {
+                if (!value) {
+                    return undefined;
+                }
 
-        let isAvailable: boolean = true;
+                let isAvailable: boolean = true;
 
-        try {
-            isAvailable = await getTenantDomainAvailability(value);
-        } catch (error) {
-            isAvailable = false;
-        }
+                try {
+                    isAvailable = await getTenantDomainAvailability(value);
+                } catch (error) {
+                    isAvailable = false;
+                }
 
-        if (!isAvailable) {
-            return t("tenants:common.form.fields.domain.validations.domainUnavailable");
-        }
+                if (!isAvailable) {
+                    return t("tenants:common.form.fields.domain.validations.domainUnavailable");
+                }
 
-        if (isTenantDomainDotExtensionMandatory) {
-            const lastIndexOfDot: number = value.lastIndexOf(".");
+                if (isTenantDomainDotExtensionMandatory) {
+                    const lastIndexOfDot: number = value.lastIndexOf(".");
 
-            if (lastIndexOfDot <= 0) {
-                return t("tenants:common.form.fields.domain.validations.domainMandatoryExtension");
+                    if (lastIndexOfDot <= 0) {
+                        return t("tenants:common.form.fields.domain.validations.domainMandatoryExtension");
+                    }
+                }
+
+                if (tenantDomainRegex) {
+                    const regex: RegExp = new RegExp(tenantDomainRegex);
+
+                    if (!regex.test(value)) {
+                        return t("tenants:common.form.fields.domain.validations.domainInvalidPattern");
+                    }
+                }
+
+                const indexOfDot: number = value.indexOf(".");
+
+                if (indexOfDot == 0) {
+                    return t("tenants:common.form.fields.domain.validations.domainStartingWithDot");
+                }
+
+                if (tenantDomainIllegalCharactersRegex) {
+                    const regex: RegExp = new RegExp(tenantDomainIllegalCharactersRegex);
+
+                    if (regex.test(value)) {
+                        return t("tenants:common.form.fields.domain.validations.domainInvalidCharPattern");
+                    }
+                }
             }
-        }
-
-        if (tenantDomainRegex) {
-            const regex: RegExp = new RegExp(tenantDomainRegex);
-
-            if (!regex.test(value)) {
-                return t("tenants:common.form.fields.domain.validations.domainInvalidPattern");
-            }
-        }
-
-        const indexOfDot: number = value.indexOf(".");
-
-        if (indexOfDot == 0) {
-            return t("tenants:common.form.fields.domain.validations.domainStartingWithDot");
-        }
-
-        if (tenantDomainIllegalCharactersRegex) {
-            const regex: RegExp = new RegExp(tenantDomainIllegalCharactersRegex);
-
-            if (regex.test(value)) {
-                return t("tenants:common.form.fields.domain.validations.domainInvalidCharPattern");
-            }
-        }
-    };
+        ), []);
 
     /**
      * Handles the form submit action.
@@ -358,62 +362,60 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
 
     /**
      * Renders the password validation criteria with the help of `PasswordValidation` component.
+     *
+     * @param formState - Form state.
      * @returns Password validation criteria.
      */
-    const renderPasswordValidationCriteria = (): ReactElement => (
-        <FormSpy subscription={ { values: true } }>
-            { ({ values }: { values: AddTenantFormValues }) => (
-                <PasswordValidation
-                    password={ values?.password ?? "" }
-                    minLength={ Number(passwordValidationConfig.minLength) }
-                    maxLength={ Number(passwordValidationConfig.maxLength) }
-                    minNumbers={ Number(passwordValidationConfig.minNumbers) }
-                    minUpperCase={ Number(passwordValidationConfig.minUpperCaseCharacters) }
-                    minLowerCase={ Number(passwordValidationConfig.minLowerCaseCharacters) }
-                    minSpecialChr={ Number(passwordValidationConfig.minSpecialCharacters) }
-                    minUniqueChr={ Number(passwordValidationConfig.minUniqueCharacters) }
-                    maxConsecutiveChr={ Number(passwordValidationConfig.maxConsecutiveCharacters) }
-                    onPasswordValidate={ (isValid: boolean): void => {
-                        setIsPasswordValid(isValid);
-                    } }
-                    translations={ {
-                        case:
-                            Number(passwordValidationConfig?.minUpperCaseCharacters) > 0 &&
-                            Number(passwordValidationConfig?.minLowerCaseCharacters) > 0
-                                ? t("tenants:common.form.fields.password.validations.criteria.passwordCase", {
-                                    minLowerCase: passwordValidationConfig.minLowerCaseCharacters,
-                                    minUpperCase: passwordValidationConfig.minUpperCaseCharacters
-                                })
-                                : Number(passwordValidationConfig?.minUpperCaseCharacters) > 0
-                                    ? t("tenants:common.form.fields.password.validations.criteria.upperCase", {
-                                        minUpperCase: passwordValidationConfig.minUpperCaseCharacters
-                                    })
-                                    : t("tenants:common.form.fields.password.validations.criteria.lowerCase", {
-                                        minLowerCase: passwordValidationConfig.minLowerCaseCharacters
-                                    }),
-                        consecutiveChr: t(
-                            "tenants:common.form.fields.password.validations.criteria.consecutiveCharacters",
-                            {
-                                repeatedChr: passwordValidationConfig.maxConsecutiveCharacters
-                            }
-                        ),
-                        length: t("tenants:common.form.fields.password.validations.criteria.passwordLength", {
-                            max: passwordValidationConfig.maxLength,
-                            min: passwordValidationConfig.minLength
-                        }),
-                        numbers: t("tenants:common.form.fields.password.validations.criteria.passwordNumeric", {
-                            min: passwordValidationConfig.minNumbers
-                        }),
-                        specialChr: t("tenants:common.form.fields.password.validations.criteria.specialCharacter", {
-                            specialChr: passwordValidationConfig.minSpecialCharacters
-                        }),
-                        uniqueChr: t("tenants:common.form.fields.password.validations.criteria.uniqueCharacters", {
-                            uniqueChr: passwordValidationConfig.minUniqueCharacters
+    const renderPasswordValidationCriteria = (formState: FormState<AddTenantFormValues>): ReactElement => (
+        <PasswordValidation
+            password={ formState?.values?.password ?? "" }
+            minLength={ Number(passwordValidationConfig.minLength) }
+            maxLength={ Number(passwordValidationConfig.maxLength) }
+            minNumbers={ Number(passwordValidationConfig.minNumbers) }
+            minUpperCase={ Number(passwordValidationConfig.minUpperCaseCharacters) }
+            minLowerCase={ Number(passwordValidationConfig.minLowerCaseCharacters) }
+            minSpecialChr={ Number(passwordValidationConfig.minSpecialCharacters) }
+            minUniqueChr={ Number(passwordValidationConfig.minUniqueCharacters) }
+            maxConsecutiveChr={ Number(passwordValidationConfig.maxConsecutiveCharacters) }
+            onPasswordValidate={ (isValid: boolean): void => {
+                setIsPasswordValid(isValid);
+            } }
+            translations={ {
+                case:
+                    Number(passwordValidationConfig?.minUpperCaseCharacters) > 0 &&
+                    Number(passwordValidationConfig?.minLowerCaseCharacters) > 0
+                        ? t("tenants:common.form.fields.password.validations.criteria.passwordCase", {
+                            minLowerCase: passwordValidationConfig.minLowerCaseCharacters,
+                            minUpperCase: passwordValidationConfig.minUpperCaseCharacters
                         })
-                    } }
-                />
-            ) }
-        </FormSpy>
+                        : Number(passwordValidationConfig?.minUpperCaseCharacters) > 0
+                            ? t("tenants:common.form.fields.password.validations.criteria.upperCase", {
+                                minUpperCase: passwordValidationConfig.minUpperCaseCharacters
+                            })
+                            : t("tenants:common.form.fields.password.validations.criteria.lowerCase", {
+                                minLowerCase: passwordValidationConfig.minLowerCaseCharacters
+                            }),
+                consecutiveChr: t(
+                    "tenants:common.form.fields.password.validations.criteria.consecutiveCharacters",
+                    {
+                        repeatedChr: passwordValidationConfig.maxConsecutiveCharacters
+                    }
+                ),
+                length: t("tenants:common.form.fields.password.validations.criteria.passwordLength", {
+                    max: passwordValidationConfig.maxLength,
+                    min: passwordValidationConfig.minLength
+                }),
+                numbers: t("tenants:common.form.fields.password.validations.criteria.passwordNumeric", {
+                    min: passwordValidationConfig.minNumbers
+                }),
+                specialChr: t("tenants:common.form.fields.password.validations.criteria.specialCharacter", {
+                    specialChr: passwordValidationConfig.minSpecialCharacters
+                }),
+                uniqueChr: t("tenants:common.form.fields.password.validations.criteria.uniqueCharacters", {
+                    uniqueChr: passwordValidationConfig.minUniqueCharacters
+                })
+            } }
+        />
     );
 
     return (
@@ -445,6 +447,9 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                 }
             } }
             render={ ({ form, handleSubmit }: FormRenderProps) => {
+                const formState: FormState<AddTenantFormValues> =
+                    form.getState() as unknown as FormState<AddTenantFormValues>;
+
                 return (
                     <form
                         id={ TenantConstants.ADD_TENANT_FORM_ID }
@@ -544,45 +549,40 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                                 maxLength={ 100 }
                                 minLength={ 0 }
                             />
-                            <FormSpy subscription={ { errors: true, modified: true } }>
-                                { ({
-                                    errors,
-                                    modified
-                                }: {
-                                    errors: AddTenantFormErrors;
-                                    modified?: { [key: string]: boolean };
-                                }) => (
-                                    <Stack
-                                        spacing={ { sm: 2, xs: 1 } }
-                                        direction={ { sm: "row", xs: "column" } }
-                                        alignItems={ modified?.password && errors?.password ? "center" : "flex-end" }
-                                    >
-                                        <div className="inline-flex-field">
-                                            <FinalFormField
-                                                key="password"
-                                                width={ 16 }
-                                                className="text-field-container"
-                                                ariaLabel="password"
-                                                required={ true }
-                                                data-componentid={ `${componentId}-password` }
-                                                name="password"
-                                                type="password"
-                                                label={ t("tenants:common.form.fields.password.label") }
-                                                placeholder={ t("tenants:common.form.fields.password.placeholder") }
-                                                component={ TextFieldAdapter }
-                                                maxLength={ 100 }
-                                                minLength={ 0 }
-                                            />
-                                        </div>
-                                        { passwordValidationConfig && (
-                                            <Button onClick={ () => form.mutators.setRandomPassword("password") }>
-                                                { t("tenants:common.form.fields.password.actions.generate.label") }
-                                            </Button>
-                                        ) }
-                                    </Stack>
+                            <Stack
+                                spacing={ { sm: 2, xs: 1 } }
+                                direction={ { sm: "row", xs: "column" } }
+                                alignItems={
+                                    formState?.modified?.password &&
+                                        formState?.errors?.password &&
+                                        formState?.touched?.password
+                                        ? "center" : "flex-end"
+                                }
+                            >
+                                <div className="inline-flex-field">
+                                    <FinalFormField
+                                        key="password"
+                                        width={ 16 }
+                                        className="text-field-container"
+                                        ariaLabel="password"
+                                        required={ true }
+                                        data-componentid={ `${componentId}-password` }
+                                        name="password"
+                                        type="password"
+                                        label={ t("tenants:common.form.fields.password.label") }
+                                        placeholder={ t("tenants:common.form.fields.password.placeholder") }
+                                        component={ TextFieldAdapter }
+                                        maxLength={ 100 }
+                                        minLength={ 0 }
+                                    />
+                                </div>
+                                { passwordValidationConfig && (
+                                    <Button onClick={ () => form.mutators.setRandomPassword("password") }>
+                                        { t("tenants:common.form.fields.password.actions.generate.label") }
+                                    </Button>
                                 ) }
-                            </FormSpy>
-                            { passwordValidationConfig && renderPasswordValidationCriteria() }
+                            </Stack>
+                            { passwordValidationConfig && renderPasswordValidationCriteria(formState) }
                         </Stack>
                     </form>
                 );
