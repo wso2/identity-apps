@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -714,21 +714,21 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             "users:notifications.addUser.success.message"
                         )
                     }));
+                }
 
-                    if (userInfo?.groups) {
-                        assignUserGroups(response.data, userInfo?.groups);
-                    }
+                if (userInfo?.groups) {
+                    assignUserGroups(response.data, userInfo?.groups);
+                }
 
-                    // Saving the user ID to redirect user after the summary
-                    setNewUserId(response.data?.id);
-                    // Close the wizard as the summary will not be shown
-                    if(!isUserSummaryEnabled) {
-                        closeWizard();
-                        onSuccessfulUserAddition(response.data?.id);
-                    } else {
-                        // Once the user is created, take the user to next step which is the summary.
-                        setCurrentWizardStep(currentWizardStep + 1);
-                    }
+                // Saving the user ID to redirect user after the summary
+                setNewUserId(response.data?.id);
+                // Close the wizard as the summary will not be shown
+                if(!isUserSummaryEnabled) {
+                    closeWizard();
+                    onSuccessfulUserAddition(response.data?.id);
+                } else {
+                    // Once the user is created, take the user to next step which is the summary.
+                    setCurrentWizardStep(currentWizardStep + 1);
                 }
             })
             .catch((error: AxiosError) => {
