@@ -35,8 +35,7 @@ export class ClaimManagementConstants {
      * Set of keys used to enable/disable features.
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("MOBILE_VERIFICATION_BY_PRIVILEGED_USERS",
-            "attributeDialects.verification.mobileVerificationByPrivilegedUser");
+        .set("MOBILE_VERIFICATION_BY_PRIVILEGED_USERS", "attributeVerification.mobileVerificationByPrivilegedUser");
 
     /**
      * Claim URI Attribute key.
