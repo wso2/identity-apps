@@ -923,8 +923,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         if (adminUserType === AdminAccountTypes.INTERNAL) {
             profileSchema.forEach((schema: ProfileSchemaInterface) => {
                 const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
+                const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
 
-                if (resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA) {
+                if (resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA || (isUserManagedByParentOrg &&
+                    sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)) {
                     return;
                 }
                 if (!isFieldDisplayable(schema)) return;
