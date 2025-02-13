@@ -440,10 +440,15 @@ export interface LocalAuthenticatorInterface extends CommonPluggableComponentInt
      */
     displayName?: string;
     /**
-     * Description for the local authenticator.
+     * Description of the local authenticator.
      * This property is used only with custom local authenticators.
      */
     description?: string;
+    /**
+     * Image URI of the local authenticator.
+     * This property is used only with custom local authenticators.
+     */
+    image?: string;
     /**
      * Is authenticator enabled.
      */
@@ -452,7 +457,7 @@ export interface LocalAuthenticatorInterface extends CommonPluggableComponentInt
      * Authenticator Type.
      * @example [ LOCAL, REQUEST_PATH ]
      */
-    type?:  string;
+    type?: string;
     /**
      * Details endpoint.
      */

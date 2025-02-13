@@ -474,7 +474,7 @@ export const user: userNS = {
             changeUserPassword: {
                 error: {
                     description: "{{description}}",
-                    message: "Error occurred while changing the user password."
+                    message: "Error while changing user password."
                 },
                 genericError: {
                     description: "Error occurred while changing the user password.",

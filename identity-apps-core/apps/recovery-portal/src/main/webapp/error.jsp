@@ -24,6 +24,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
+<%@ page import="org.wso2.carbon.identity.mgt.constants.SelfRegistrationStatusCodes" %>
 <%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
@@ -135,7 +136,47 @@
                                 .equals(errorCode)) {
                     %>
                         <%=i18n(recoveryResourceBundle, customText, "email.link.expiry.message")%>
-                    <% } else { %>
+                    <% } else  if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_LOCKED_ACCOUNT.getCode()
+                        .equals(errorCode)) {
+                        String[] splitErrorMsg = errorMsg.split("-");
+                        String username = splitErrorMsg[1].trim();
+                        String finalMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "user.account.locked") + (" - ") + username;
+                    %>
+                        <%=finalMessage%>
+                    <%
+                    } else if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_PENDING_SELF_REGISTERED_ACCOUNT.getCode().equals(errorCode)) {
+                        String[] splitErrorMsg = errorMsg.split("-");
+                        String username = splitErrorMsg[1].trim();
+                        String finalMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "pending.user.account.verification") + (" - ") + username;
+                    %>
+                        <%=finalMessage%>
+                    <%
+                    } else if ( SelfRegistrationStatusCodes.ERROR_CODE_DUPLICATE_CLAIM_VALUE.equals(errorCode)) {
+                        String[] splitErrorMsg = errorMsg.split("for");
+                        String[] attributeList = splitErrorMsg[1].split("are|is")[0].trim().split(",");
+                        String attributeString = " ";
+                        String finalMessage = "";
+                        for (int i = 0; i < attributeList.length; i++) {
+                            attributeString = attributeString + IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, attributeList[i].trim());
+
+                            if (i < attributeList.length - 1) {
+                                attributeString = attributeString + (", ");
+                            } else {
+                                attributeString = attributeString + (" ");
+                            }
+                        }
+
+                        if (errorMsg.contains("is")) {
+                            finalMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "value.defined.for")
+                                + attributeString + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "is.already.used.by.different.user");
+                        }   else {
+                            finalMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "values.defined.for")
+                                + attributeString + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "are.already.used.by.different.users");
+                        }
+                    %>
+                        <%=finalMessage%>
+                    <%
+                    } else { %>
                         <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
                     <% } %>
                 </h3>

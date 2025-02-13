@@ -1,5 +1,44 @@
 # @wso2is/admin.tenants.v1
 
+## 2.28.137
+
+### Patch Changes
+
+- Updated dependencies [[`7262137d3207877ea593c9b95db6bda098e41702`](https://github.com/wso2/identity-apps/commit/7262137d3207877ea593c9b95db6bda098e41702), [`de1309533a723bd96043d1447a90f685bd307e5a`](https://github.com/wso2/identity-apps/commit/de1309533a723bd96043d1447a90f685bd307e5a)]:
+  - @wso2is/admin.core.v1@2.38.32
+  - @wso2is/admin.validation.v1@2.27.101
+  - @wso2is/admin.extensions.v1@2.36.88
+  - @wso2is/admin.users.v1@2.30.73
+  - @wso2is/admin.feature-gate.v1@1.4.163
+  - @wso2is/admin.organizations.v1@2.26.163
+
+## 2.28.136
+
+### Patch Changes
+
+- [#7600](https://github.com/wso2/identity-apps/pull/7600) [`975fda9273e09ff4bf04ea32b4303d8dddf3b9cb`](https://github.com/wso2/identity-apps/commit/975fda9273e09ff4bf04ea32b4303d8dddf3b9cb) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Avoid invoking HEAD Call to check domain availability on each character typing in Non-Domain fields
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.31
+  - @wso2is/admin.extensions.v1@2.36.87
+  - @wso2is/admin.organizations.v1@2.26.162
+  - @wso2is/admin.users.v1@2.30.72
+  - @wso2is/admin.feature-gate.v1@1.4.162
+  - @wso2is/admin.validation.v1@2.27.100
+
+## 2.28.135
+
+### Patch Changes
+
+- Updated dependencies [[`f87912f707015c530d64ec344f20433f6e0fa485`](https://github.com/wso2/identity-apps/commit/f87912f707015c530d64ec344f20433f6e0fa485)]:
+  - @wso2is/admin.users.v1@2.30.71
+  - @wso2is/i18n@2.19.12
+  - @wso2is/admin.core.v1@2.38.30
+  - @wso2is/admin.extensions.v1@2.36.86
+  - @wso2is/admin.organizations.v1@2.26.161
+  - @wso2is/admin.validation.v1@2.27.99
+  - @wso2is/admin.feature-gate.v1@1.4.161
+
 ## 2.28.134
 
 ### Patch Changes

@@ -101,6 +101,10 @@ export interface FeatureConfigInterface {
      */
     attributeDialects?: FeatureAccessConfigInterface;
     /**
+     * Attribute verification feature.
+     */
+    attributeVerification?: FeatureAccessConfigInterface;
+    /**
      * Branding configurations feature.
      */
     branding?: FeatureAccessConfigInterface;

@@ -20,8 +20,8 @@ import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
-import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PageLayout } from "@wso2is/react-components";
@@ -36,6 +36,7 @@ import { updatePolicy } from "../api/entitlement-policies";
 import { useGetPolicy } from "../api/use-get-policy";
 import PolicyEditor from "../components/policy-editor/policy-editor";
 import { PolicyInterface } from "../models/policies";
+import { unformatXML } from "../utils/utils";
 
 
 
@@ -82,7 +83,7 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
         const updatedPolicy: Partial<PolicyInterface> = {
             active: policy.active,
             attributeDTOs: [],
-            policy: updatedPolicyScript,
+            policy: unformatXML(updatedPolicyScript),
             policyEditorData: policy.policyEditorData,
             policyId: policy.policyId,
             policyIdReferences: policy.policyIdReferences,
@@ -141,7 +142,7 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
             { !isLoading && !error && policy && (
                 <Box className="script-editor">
                     <PolicyEditor
-                        policyScript ={ policy.policy }
+                        policyScript ={ updatedPolicyScript || policy.policy }
                         data-componentid={ `${componentId}-policy-editor` }
                         onScriptChange={ (updatedScript: string) => setUpdatedPolicyScript(updatedScript) }
                     />
