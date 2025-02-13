@@ -331,7 +331,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                             </List>
                                         </EmphasizedSegment>
                                         { !isSubOrganization() &&
-                                        !isSAASDeployment &&
                                         featureConfig?.attributeVerification?.enabled &&
                                         hasAttributeVerificationReadPermissions && (
                                             <EmphasizedSegment
