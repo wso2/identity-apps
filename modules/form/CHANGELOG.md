@@ -1,5 +1,11 @@
 # @wso2is/form
 
+## 2.6.30
+
+### Patch Changes
+
+- [#7582](https://github.com/wso2/identity-apps/pull/7582) [`f035717c13b4f7b38d903cfc571e7c73129aaf20`](https://github.com/wso2/identity-apps/commit/f035717c13b4f7b38d903cfc571e7c73129aaf20) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add infinite scrolling to organization list in assign email domains
+
 ## 2.6.29
 
 ### Patch Changes

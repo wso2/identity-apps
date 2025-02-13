@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.13.3
+
+### Patch Changes
+
+- [#7596](https://github.com/wso2/identity-apps/pull/7596) [`5b00a4c46473d845dc40583fda4a9d3c0b31e736`](https://github.com/wso2/identity-apps/commit/5b00a4c46473d845dc40583fda4a9d3c0b31e736) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix self registration with SelfRegistration.ShowUsernameUnavailability config
+
 ## 2.13.2
 
 ### Patch Changes
