@@ -638,8 +638,8 @@ export const governanceConnectors: governanceConnectorsNS = {
                         }
                     },
                     subHeadings: {
-                        emailConfiguration: "Email Configuration",
-                        mobileConfiguration: "Mobile Configuration"
+                        emailConfiguration: "Email Configurations",
+                        mobileConfiguration: "Mobile Configurations"
                     }
                 }
             }
