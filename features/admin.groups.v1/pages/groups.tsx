@@ -460,7 +460,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                             WizardStepsFormTypes.BASIC_DETAILS,
                             WizardStepsFormTypes.ROLE_LIST
                         ] }
-                        showStepper={ isSuperOrganization() }
                     />
                 )
             }
