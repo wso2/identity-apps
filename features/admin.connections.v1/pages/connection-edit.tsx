@@ -650,7 +650,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                     { identityProviderTemplate?.name && (
                         <Label size="small">
                             { identityProviderTemplate.name === "Expert Mode"
-                                ? "Custom Connector"
+                                ? CommonAuthenticatorConstants.CUSTOM_AUTHENTICATOR_PLUGIN_BASED_NAME
                                 : identityProviderTemplate?.name }
                         </Label>
                     ) }

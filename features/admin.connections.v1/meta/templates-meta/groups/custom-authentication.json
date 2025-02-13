@@ -6,7 +6,7 @@
     "id": "custom-authentication",
     "docLink": "",
     "image": "assets/images/logos/custom-authenticator.svg",
-    "name": "Custom Authenticator",
+    "name": "Custom Authenticator (Service-based)",
     "services": [],
     "disabled": false,
     "type": "DEFAULT",

@@ -320,7 +320,7 @@ export const resolveConnectionName = (name: string): string => {
     if (name === "Enterprise") {
         return "Standard-Based IdP";
     } else if (name === "Expert Mode") {
-        return "Custom Connector";
+        return CommonAuthenticatorConstants.CUSTOM_AUTHENTICATOR_PLUGIN_BASED_NAME;
     } else {
         return name;
     }
