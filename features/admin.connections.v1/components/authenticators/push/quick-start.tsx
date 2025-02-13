@@ -94,7 +94,7 @@ const PushAuthQuickStart: FunctionComponent<PushAuthQuickStartPropsInterface> = 
                                 ".content" }
                         >
                             Go to <strong>Login Flow</strong> tab and click on the <strong>Username & Password + Push
-                            </strong> option from the Multi-factor login section to configure a basic
+                            Notifications </strong> option from the Multi-factor login section to configure a basic
                             Push Authentication flow.
                         </Trans>
                     </Text>

@@ -97,7 +97,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const isReadOnly: boolean = !useRequiredScopes(
-        featureConfig?.attributeDialects?.scopes?.update
+        featureConfig?.attributeVerification?.scopes?.update
     );
 
     // TODO: Enable connector based on the feature flag.

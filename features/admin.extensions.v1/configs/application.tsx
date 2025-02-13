@@ -277,8 +277,6 @@ export const applicationConfig: ApplicationConfig = {
 
             // Enable the roles tab for supported templates when the api resources config is enabled.
             if (apiResourceFeatureEnabled
-                && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
-                    applicationRoles?.enabled)
                 && (
                     application?.advancedConfigurations?.fragment ||
                     (application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
@@ -302,7 +300,7 @@ export const applicationConfig: ApplicationConfig = {
                             <ResourceTab.Pane controlledSegmentation>
                                 <ApplicationRoles
                                     onUpdate={ onApplicationUpdate }
-                                    readOnly={ isReadOnly }
+                                    readOnly={ isReadOnly || application?.advancedConfigurations?.fragment }
                                 />
                             </ResourceTab.Pane>
                         )

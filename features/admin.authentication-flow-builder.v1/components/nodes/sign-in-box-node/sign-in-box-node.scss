@@ -225,6 +225,12 @@
     }
 }
 
+.push-fragment {
+    .resend-button {
+        color: white;
+    }
+}
+
 .active-sessions-limit-fragment {
     table, th, td {
         border: 1px solid var(--oxygen-palette-divider);

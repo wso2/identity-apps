@@ -157,7 +157,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
         "consoleSettings.invitedExternalAdmins"
     );
 
-    const { isSubOrganization, isFirstLevelOrganization, isSuperOrganization } = useGetCurrentOrganizationType();
+    const { isSubOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
     const { unassignAdministratorRoles } = useBulkAssignAdministratorRoles();
 
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -427,20 +427,16 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
             );
         }
 
-        if (isFirstLevelOrganization() || isSuperOrganization()) {
-            return (
-                <Dropdown
-                    data-testid="user-mgt-user-list-userstore-dropdown"
-                    selection
-                    options={ availableUserStores }
-                    onChange={ handleSelectedUserStoreChange }
-                    value={ selectedUserStore }
-                    defaultValue={ primaryUserStoreDomainName }
-                />
-            );
-        }
-
-        return null;
+        return (
+            <Dropdown
+                data-testid="user-mgt-user-list-userstore-dropdown"
+                selection
+                options={ availableUserStores }
+                onChange={ handleSelectedUserStoreChange }
+                value={ selectedUserStore }
+                defaultValue={ primaryUserStoreDomainName }
+            />
+        );
     };
 
     return (

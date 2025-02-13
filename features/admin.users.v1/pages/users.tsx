@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -154,7 +154,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     );
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
-    const [ listOffset, setListOffset ] = useState<number>(0);
+    const [ listOffset, setListOffset ] = useState<number>(1);
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -365,7 +365,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             return;
         }
 
-        setListOffset(0);
+        setListOffset(1);
         if (searchQuery === "userName co " || searchQuery === "" || searchQuery === null) {
             setPaginateGuestList(parentOrgUserInviteList?.invitations);
             setFilterGuestList([]);
@@ -425,7 +425,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     }, [ parentOrgUserInviteList?.invitations ]);
 
     /**
-     * User effect to handle Pagination for pending/expired Guest.
+     * Handles pagination for pending/expired Guest as the API does not support pagination.
      */
     useEffect(() => {
         if (invitationStatusOption === InvitationStatus.ACCEPTED) {
@@ -436,7 +436,9 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             (invitation: UserInviteInterface) => invitation.status === invitationStatusOption.toUpperCase());
 
         if (finalInvitations?.length > listItemLimit) {
-            finalInvitations = finalInvitations.slice(listOffset, listOffset + listItemLimit);
+            const _startIndex: number = listOffset - 1;
+
+            finalInvitations = finalInvitations.slice(_startIndex, _startIndex + listItemLimit);
             setFinalGuestList(finalInvitations);
             setIsNextPageAvailable(finalInvitations.length === listItemLimit);
         } else {
@@ -553,11 +555,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      */
     const handleUserFilter = (query: string): void => {
         setSearchQuery(query);
-        setListOffset(0);
+        setListOffset(1);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
-        setListOffset((data.activePage as number - 1) * listItemLimit);
+        setListOffset(((data.activePage as number - 1) * listItemLimit) + 1);
     };
 
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
@@ -570,7 +572,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         } else {
             setSelectedUserStore(data.value as string);
         }
-        setListOffset(0);
+        setListOffset(1);
         setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     };
 

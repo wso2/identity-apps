@@ -471,11 +471,25 @@
                     ],
                     "read": [
                         "internal_claim_meta_view",
-                        "internal_governance_view",
                         "internal_userstore_view"
                     ],
                     "update": [
-                        "internal_claim_meta_update",
+                        "internal_claim_meta_update"
+                    ]
+                }
+            },
+            "attributeVerification": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [
+                        "internal_governance_view"
+                    ],
+                    "update": [
                         "internal_governance_update"
                     ]
                 }

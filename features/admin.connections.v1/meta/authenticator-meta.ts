@@ -95,6 +95,19 @@ export class AuthenticatorMeta {
      */
     public static getAuthenticatorLabels(authenticator: FederatedAuthenticatorInterface): string[] {
 
+        /**
+         * Currently authenticator id is being used to fetch authenticator labels from the meta content.
+         * The existing approach cannot be used for custom authenticators since the id of the
+         * custom authenticators are not pre defined.
+         */
+        if (this.isCustomAuthenticator(authenticator)) {
+            if (this.isCustomSecondFactorAuthenticator(authenticator)) {
+                return [ AuthenticatorLabels.CUSTOM, AuthenticatorLabels.SECOND_FACTOR ];
+            }
+
+            return [ AuthenticatorLabels.CUSTOM ];
+        }
+
         const authenticatorId: string = authenticator?.authenticatorId;
 
         const authenticatorLabels: string[] = get({
@@ -153,6 +166,33 @@ export class AuthenticatorMeta {
 
         return authenticatorLabels;
     }
+
+    /**
+     * Check whether the authenticator is a custom authenticator.
+     *
+     * Since there is no any identifier in the API to distinguish the authenticator as a custom authenticator,
+     * the tags have to be used to identify the custom authenticators.
+     *
+     * @param authenticator - Authenticator to be evaluated.
+     * @returns whether the authenticator is a custom authenticator.
+     */
+    private static isCustomAuthenticator = (authenticator: FederatedAuthenticatorInterface): boolean => {
+        return authenticator?.tags?.includes("Custom");
+    };
+
+    /**
+     * Check whether the authenticator is a custom second factor authenticator.
+     *
+     * Since there is no any identifier in the API to distinguish the authenticator as a custom
+     * second factor authenticator,
+     * the tags have to be used to identify the custom authenticators.
+     *
+     * @param authenticator - Authenticator to be evaluated.
+     * @returns whether the authenticator is a custom second factor authenticator.
+     */
+    private static isCustomSecondFactorAuthenticator = (authenticator: FederatedAuthenticatorInterface): boolean => {
+        return authenticator?.tags?.includes("2FA");
+    };
 
     /**
      * Get Authenticator Type display name.

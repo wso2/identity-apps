@@ -1,5 +1,34 @@
 # @wso2is/identity-apps-core
 
+## 2.13.2
+
+### Patch Changes
+
+- [#7590](https://github.com/wso2/identity-apps/pull/7590) [`4ef5f4c53dcf40d16ba67c01b89a7a3e41fcefad`](https://github.com/wso2/identity-apps/commit/4ef5f4c53dcf40d16ba67c01b89a7a3e41fcefad) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Improve i18n experience for backend errors
+
+## 2.13.1
+
+### Patch Changes
+
+- [#7569](https://github.com/wso2/identity-apps/pull/7569) [`d394ca8a1659e592f71cdaadb552f6018e4dc6b4`](https://github.com/wso2/identity-apps/commit/d394ca8a1659e592f71cdaadb552f6018e4dc6b4) Thanks [@sandushi](https://github.com/sandushi)! - Change the encode method of the ui_locales param
+
+## 2.13.0
+
+### Minor Changes
+
+- [#7546](https://github.com/wso2/identity-apps/pull/7546) [`ac95a1967b870eabfb7fe9a03fd4417d11aaf3d8`](https://github.com/wso2/identity-apps/commit/ac95a1967b870eabfb7fe9a03fd4417d11aaf3d8) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add ReCAPTCH to identifier authenticator
+
+### Patch Changes
+
+- Updated dependencies [[`4fd677f7cfdef94cf0a01f9b0ada0671aeeb4831`](https://github.com/wso2/identity-apps/commit/4fd677f7cfdef94cf0a01f9b0ada0671aeeb4831)]:
+  - @wso2is/theme@2.6.9
+
+## 2.12.13
+
+### Patch Changes
+
+- [#7561](https://github.com/wso2/identity-apps/pull/7561) [`d33c57dc6d4b9d68ca4cfde3002a6836911ca469`](https://github.com/wso2/identity-apps/commit/d33c57dc6d4b9d68ca4cfde3002a6836911ca469) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix URL double encoding issue
+
 ## 2.12.12
 
 ### Patch Changes

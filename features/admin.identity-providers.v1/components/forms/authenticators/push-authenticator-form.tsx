@@ -174,6 +174,8 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
     const [ , setFormFields ] = useState<PushAuthenticatorFormFieldsInterface>(undefined);
     const [ initialValues, setInitialValues ] = useState<PushAuthenticatorFormInitialValuesInterface>(undefined);
 
+    const isReadOnly: boolean = isSubOrganization() || readOnly;
+
     /**
      * Flattens and resolved form initial values and field metadata.
      */
@@ -387,7 +389,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                         Please check this checkbox to enable number challenge during authentication.
                     </Trans>)
                 }
-                readOnly={ readOnly }
+                readOnly={ isReadOnly }
                 width={ 16 }
                 data-testid={ `${ testId }-push-enable-number-challenge-checkbox` }
             />
@@ -408,7 +410,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                         Please check this checkbox to enable progressive enrollment.
                     </Trans>)
                 }
-                readOnly={ readOnly }
+                readOnly={ isReadOnly }
                 width={ 16 }
                 data-testid={ `${ testId }-push-enable-progressive-enrollment-checkbox` }
             />
@@ -436,7 +438,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                     </Trans>)
                 }
                 required={ true }
-                readOnly={ readOnly }
+                readOnly={ isReadOnly }
                 min={
                     ConnectionUIConstants
                         .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MIN_VALUE
@@ -485,7 +487,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                     </Trans>)
                 }
                 required={ true }
-                readOnly={ readOnly }
+                readOnly={ isReadOnly }
                 min={
                     ConnectionUIConstants
                         .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE
@@ -519,7 +521,7 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                 disabled={ isSubmitting }
                 loading={ isSubmitting }
                 label={ t("common:update") }
-                hidden={ readOnly }
+                hidden={ isReadOnly }
             />
         </Form>
     );

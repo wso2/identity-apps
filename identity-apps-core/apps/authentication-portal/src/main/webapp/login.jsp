@@ -458,7 +458,8 @@
     <% } %>
 
     <%
-        if (reCaptchaEnabled || reCaptchaResendEnabled) {
+        boolean genericReCaptchaEnabled = CaptchaUtil.isGenericRecaptchaEnabledAuthenticator("IdentifierExecutor");
+        if (reCaptchaEnabled || reCaptchaResendEnabled || genericReCaptchaEnabled) {
             String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
         <script src='<%=(reCaptchaAPI)%>'></script>

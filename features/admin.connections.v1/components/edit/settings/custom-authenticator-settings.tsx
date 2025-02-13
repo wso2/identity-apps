@@ -96,11 +96,11 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
     const [ isEndpointAuthenticationUpdated, setIsEndpointAuthenticationUpdated ] = useState<boolean>(false);
 
     /**
-    * This useEffect is utilized only for custom authenticators in order to fetch additional
-    * details related to authenticators.
-    * This is not required for other connections since all the required details
-    * are passed from the parent component.
-    */
+     * This useEffect is utilized only for custom authenticators in order to fetch additional
+     * details related to authenticators.
+     * This is not required for other connections since all the required details
+     * are passed from the parent component.
+     */
     useEffect(() => {
         let customAuthenticatorId: string;
 

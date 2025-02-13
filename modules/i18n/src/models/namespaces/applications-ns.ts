@@ -1772,6 +1772,10 @@ export interface ApplicationsNS {
                 attributeProfile: {
                     heading: string;
                     fields: {
+                        attributeNameFormat: {
+                            hint: string;
+                            label: string;
+                        };
                         enable: {
                             hint: string;
                             label: string;

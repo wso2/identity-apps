@@ -101,7 +101,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
     const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
-    const [ paginatedGroups, setPaginatedGroups ] = useState<GroupsInterface[]>([]);
+    const [ paginatedGroups, setPaginatedGroups ] = useState<GroupsInterface[]>(undefined);
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(GROUPS_SORTING_OPTIONS[ 0 ]);
 
     const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
@@ -243,6 +243,13 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
      * @param list - Role list.
      */
     const setGroupsPage = (offsetValue: number, itemLimit: number, list: GroupsInterface[]) => {
+
+        if (!list) {
+            setPaginatedGroups([]);
+
+            return;
+        }
+
         setPaginatedGroups(list?.slice(offsetValue, itemLimit + offsetValue));
     };
 
