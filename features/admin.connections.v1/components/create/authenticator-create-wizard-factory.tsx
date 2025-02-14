@@ -23,7 +23,7 @@ import React, { FC, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { CreateConnectionWizard } from "./add-connection-wizard";
-import CustomAuthenticationCreateWizard from "./custom-authentication-create-wizard";
+import CustomAuthenticatorCreateWizard from "./custom-authenticator-create-wizard";
 import { EnterpriseConnectionCreateWizard } from "./enterprise-connection-create-wizard";
 import { useGetConnectionTemplate, useGetConnections } from "../../api/connections";
 import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
@@ -160,7 +160,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
 
         if (type === "enterprise-protocols") {
             setSelectedTemplate(parentSelectedTemplate);
-        } else if (type === "custom-authentication") {
+        } else if (type === "custom-authenticator") {
             setSelectedTemplate(parentSelectedTemplate);
         } else {
             if (!connectionTemplate) {
@@ -315,11 +315,11 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                     />
                 );
 
-            case CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.CUSTOM_AUTHENTICATION:
+            case CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.CUSTOM_AUTHENTICATOR:
                 return (
-                    <CustomAuthenticationCreateWizard
-                        title={ t("customAuthentication:fields.createWizard.title") }
-                        subTitle={ t("customAuthentication:fields.createWizard.subTitle") }
+                    <CustomAuthenticatorCreateWizard
+                        title={ t("customAuthenticator:fields.createWizard.title") }
+                        subTitle={ t("customAuthenticator:fields.createWizard.subTitle") }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);

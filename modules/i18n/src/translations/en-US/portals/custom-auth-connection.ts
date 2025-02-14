@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { customAuthenticationNS } from "../../../models";
+import { customAuthenticatorNS } from "../../../models";
 
-export const customAuthentication: customAuthenticationNS = {
+export const customAuthenticator: customAuthenticatorNS = {
     fields: {
         createWizard: {
             authenticationTypeStep: {
