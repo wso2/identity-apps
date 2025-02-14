@@ -1,5 +1,29 @@
 # @wso2is/admin.actions.v1
 
+## 1.11.30
+
+### Patch Changes
+
+- [#7608](https://github.com/wso2/identity-apps/pull/7608) [`20af0423bbea23d484d3a990a8430a57091c256b`](https://github.com/wso2/identity-apps/commit/20af0423bbea23d484d3a990a8430a57091c256b) Thanks [@osandamaleesha](https://github.com/osandamaleesha)! - Fix minor UX bug
+
+- Updated dependencies [[`5df48682c36c54efb1142b9e4a254b5cd94e44a6`](https://github.com/wso2/identity-apps/commit/5df48682c36c54efb1142b9e4a254b5cd94e44a6)]:
+  - @wso2is/i18n@2.19.13
+  - @wso2is/admin.core.v1@2.38.34
+  - @wso2is/admin.extensions.v1@2.36.90
+  - @wso2is/admin.feature-gate.v1@1.4.165
+  - @wso2is/admin.rules.v1@0.3.34
+
+## 1.11.29
+
+### Patch Changes
+
+- Updated dependencies [[`f035717c13b4f7b38d903cfc571e7c73129aaf20`](https://github.com/wso2/identity-apps/commit/f035717c13b4f7b38d903cfc571e7c73129aaf20)]:
+  - @wso2is/form@2.6.30
+  - @wso2is/admin.core.v1@2.38.33
+  - @wso2is/admin.extensions.v1@2.36.89
+  - @wso2is/admin.feature-gate.v1@1.4.164
+  - @wso2is/admin.rules.v1@0.3.33
+
 ## 1.11.28
 
 ### Patch Changes

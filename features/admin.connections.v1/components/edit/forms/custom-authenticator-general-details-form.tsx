@@ -26,7 +26,6 @@ import { getLocalAuthenticator } from "../../../api/authenticators";
 import { getFederatedAuthenticatorDetails } from "../../../api/connections";
 import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
-import { AuthenticatorMeta } from "../../../meta/authenticator-meta";
 import {
     ConnectionInterface,
     ConnectionListResponseInterface,
@@ -37,7 +36,6 @@ import {
     FederatedAuthenticatorListItemInterface
 } from "../../../models/connection";
 import {
-    ConnectionsManagementUtils,
     handleGetCustomAuthenticatorError,
     resolveCustomAuthenticatorDisplayName
 } from "../../../utils/connection-utils";
@@ -210,26 +208,6 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
     };
 
     /**
-     * Resolve the authenticator image.
-     *
-     * Custom federated authenticator stores either external image URL or relative image URI in the database.
-     * But in custom local authenticator, the image URI is persisted only if an external image URL is not provided.
-     * Therefore, when it is a custom local authenticator image URL needs to be resolved  from the local file
-     * system if the image URI is not provided.
-     *
-     * @returns - Resolved image URL.
-     */
-    const resolveAuthenticatorImage = (): string => {
-        if (isCustomLocalAuth && !editingIDP?.image) {
-            return ConnectionsManagementUtils.resolveConnectionRelativePath(
-                AuthenticatorMeta.getCustomAuthenticatorIcon()
-            );
-        } else {
-            return editingIDP.image;
-        };
-    };
-
-    /**
      * This method validates the general settings fields.
      *
      * @param values - values to be validated.
@@ -311,7 +289,7 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
                         label={ "Icon URL" }
                         required={ false }
                         placeholder={ t("authenticationProvider:forms.generalDetails.image.placeholder") }
-                        value={ resolveAuthenticatorImage() }
+                        value={ editingIDP.image }
                         data-componentid={ `${_componentId}-idp-image` }
                         maxLength={ ConnectionUIConstants.GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MAX_LENGTH as number }
                         minLength={ ConnectionUIConstants.GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MIN_LENGTH as number }

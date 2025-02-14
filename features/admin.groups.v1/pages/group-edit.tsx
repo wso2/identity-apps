@@ -34,7 +34,7 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
 
     const [ roleId, setGroupId ] = useState<string>(undefined);
     const [ group, setGroup ] = useState<GroupsInterface>();
-    const [ isGroupDetailsRequestLoading, setIsGroupDetailsRequestLoading ] = useState<boolean>(false);
+    const [ isGroupDetailsRequestLoading, setIsGroupDetailsRequestLoading ] = useState<boolean>(true);
 
     /**
      * Get Group data from URL id
