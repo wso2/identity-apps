@@ -312,7 +312,8 @@ export class AuthenticatorMeta {
             AuthenticatorLabels.SOCIAL,
             AuthenticatorLabels.SAML,
             AuthenticatorLabels.PASSKEY,
-            AuthenticatorLabels.API_AUTHENTICATION
+            AuthenticatorLabels.API_AUTHENTICATION,
+            AuthenticatorLabels.CUSTOM
         ];
     }
 
