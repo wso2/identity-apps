@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.19.13
+
+### Patch Changes
+
+- [#7610](https://github.com/wso2/identity-apps/pull/7610) [`5df48682c36c54efb1142b9e4a254b5cd94e44a6`](https://github.com/wso2/identity-apps/commit/5df48682c36c54efb1142b9e4a254b5cd94e44a6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix header disappearing issue for non-super tenants in group creation wizard
+
 ## 2.19.12
 
 ### Patch Changes
