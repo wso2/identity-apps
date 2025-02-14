@@ -218,7 +218,16 @@ export class AuthenticatorMeta {
                 "addAuthenticatorModal.content.authenticatorGroups.social.heading",
             [ AuthenticatorCategories.RECOVERY ]: "applications:edit.sections.signOnMethod.sections."+
             "authenticationFlow.sections.stepBased." +
-                "addAuthenticatorModal.content.authenticatorGroups.backupCodes.heading"
+                "addAuthenticatorModal.content.authenticatorGroups.backupCodes.heading",
+            [ AuthenticatorCategories.EXTERNAL ]: "applications:edit.sections.signOnMethod.sections."+
+            "authenticationFlow.sections.stepBased." +
+                "addAuthenticatorModal.content.authenticatorGroups.external.heading",
+            [ AuthenticatorCategories.INTERNAL ]: "applications:edit.sections.signOnMethod.sections."+
+            "authenticationFlow.sections.stepBased." +
+                "addAuthenticatorModal.content.authenticatorGroups.internal.heading",
+            [ AuthenticatorCategories.TWO_FACTOR_CUSTOM ]: "applications:edit.sections.signOnMethod.sections."+
+            "authenticationFlow.sections.stepBased." +
+                "addAuthenticatorModal.content.authenticatorGroups.twoFactorCustom.heading"
         }, type);
     }
 

@@ -51,6 +51,9 @@ export type AuthenticationFlowContextProps = {
         enterprise: GenericAuthenticatorInterface[];
         secondFactor: GenericAuthenticatorInterface[];
         recovery: GenericAuthenticatorInterface[];
+        external: GenericAuthenticatorInterface[];
+        internal: GenericAuthenticatorInterface[];
+        twoFactorCustom: GenericAuthenticatorInterface[];
     };
     /**
      * List of hidden authenticators.

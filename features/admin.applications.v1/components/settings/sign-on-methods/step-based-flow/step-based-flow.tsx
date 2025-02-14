@@ -18,6 +18,10 @@
 
 import { useRequiredScopes } from "@wso2is/access-control";
 import {
+    isCustomAuthenticator,
+    isSecondFactorAuthenticator }
+    from "@wso2is/admin.authentication-flow-builder.v1/utils/authentication-flow-builder-utils";
+import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
@@ -130,6 +134,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const [ localAuthenticators, setLocalAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ secondFactorAuthenticators, setSecondFactorAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ recoveryAuthenticators, setRecoveryAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
+    const [ externalUserAuthenticators, setExternalUserAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
+    const [ internalUserAuthenticators, setInternalUserAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
+    const [ twoFactorAuthenticators, setTwoFactorAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ authenticationSteps, setAuthenticationSteps ] = useState<AuthenticationStepInterface[]>([]);
     const [ subjectStepId, setSubjectStepId ] = useState<number>(1);
     const [ attributeStepId, setAttributeStepId ] = useState<number>(1);
@@ -164,6 +171,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         const filteredSocialAuthenticators: GenericAuthenticatorInterface[] = [];
         const filteredEnterpriseAuthenticators: GenericAuthenticatorInterface[] = [];
 
+        // custom authenticators
+        const customExternalUserAuthentication: GenericAuthenticatorInterface[] = [];
+        const customInternalUserAuthentication: GenericAuthenticatorInterface[] = [];
+        const customTwoFactorAuthentication: GenericAuthenticatorInterface[] = [];
+
         const moderatedLocalAuthenticators: GenericAuthenticatorInterface[] = [];
         const secondFactorAuth: GenericAuthenticatorInterface[] = [];
         const recoveryAuth: GenericAuthenticatorInterface[] = [];
@@ -173,6 +185,12 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 recoveryAuth.push(authenticator);
             } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.id)) {
                 secondFactorAuth.push(authenticator);
+            } else if (SignInMethodUtils.isCustomAuthenticator(authenticator)) {
+                if (SignInMethodUtils.isSecondFactorAuthenticator) {
+                    customTwoFactorAuthentication.push(authenticator);
+                } else {
+                    customInternalUserAuthentication.push(authenticator);
+                }
             } else {
                 moderatedLocalAuthenticators.push(authenticator);
             }
@@ -186,6 +204,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS
                 .includes(authenticator.defaultAuthenticator.authenticatorId)) {
                 secondFactorAuth.push(authenticator);
+            } else if (SignInMethodUtils.isCustomAuthenticator(authenticator)) {
+                customExternalUserAuthentication.push(authenticator);
             } else {
                 filteredEnterpriseAuthenticators.push(authenticator);
             }
@@ -196,6 +216,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         setLocalAuthenticators(moderatedLocalAuthenticators);
         setEnterpriseAuthenticators(filteredEnterpriseAuthenticators);
         setSocialAuthenticators(filteredSocialAuthenticators);
+        setExternalUserAuthenticators(customExternalUserAuthentication);
+        setInternalUserAuthenticators(customInternalUserAuthentication);
+        setTwoFactorAuthenticators(customTwoFactorAuthentication);
     }, [ authenticators ]);
 
     /**
@@ -331,7 +354,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             ...enterpriseAuthenticators,
             ...socialAuthenticators,
             ...secondFactorAuthenticators,
-            ...recoveryAuthenticators
+            ...recoveryAuthenticators,
+            ...externalUserAuthenticators,
+            ...internalUserAuthenticators,
+            ...twoFactorAuthenticators
         ];
 
         const authenticator: GenericAuthenticatorInterface = authenticators
@@ -356,7 +382,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         const isFirstFactorAuth: boolean =
             ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS.includes(authenticatorId);
         const isSecondFactorAuth: boolean =
-            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId);
+            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId) ||
+            (isCustomAuthenticator(authenticator) && isSecondFactorAuthenticator(authenticator)) ;
         const isValidSecondFactorAddition: boolean = SignInMethodUtils.isSecondFactorAdditionValid(
             authenticator?.defaultAuthenticator?.authenticatorId,
             stepIndex,
@@ -882,10 +909,13 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 }
                 authenticators={ {
                     enterprise: enterpriseAuthenticators,
+                    external: externalUserAuthenticators,
+                    internal: internalUserAuthenticators,
                     local: localAuthenticators,
                     recovery: recoveryAuthenticators,
                     secondFactor: secondFactorAuthenticators,
-                    social: socialAuthenticators
+                    social: socialAuthenticators,
+                    twoFactorCustom: twoFactorAuthenticators
                 } }
                 showStepSelector={ false }
                 stepCount={ authenticationSteps.length }
@@ -971,7 +1001,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                             ...enterpriseAuthenticators,
                                             ...socialAuthenticators,
                                             ...secondFactorAuthenticators,
-                                            ...recoveryAuthenticators
+                                            ...recoveryAuthenticators,
+                                            ...externalUserAuthenticators,
+                                            ...internalUserAuthenticators,
+                                            ...twoFactorAuthenticators
                                         ] }
                                         onStepDelete={ handleStepDelete }
                                         onStepOptionAuthenticatorChange={

@@ -20,8 +20,8 @@ import Chip from "@oxygen-ui/react/Chip";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
@@ -131,7 +131,10 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     }, [ selected ]);
 
     const isFactorEnabled = (authenticator: GenericAuthenticatorInterface): boolean => {
-        if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
+        if (
+            authenticator.category === AuthenticatorCategories.SECOND_FACTOR ||
+            authenticator.category === AuthenticatorCategories.TWO_FACTOR_CUSTOM
+        ) {
             // If there is only one step in the flow, second factor authenticators shouldn't be allowed.
             if (currentStep === 0) {
                 return false;
@@ -195,7 +198,10 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             </Label>
         );
 
-        if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
+        if (
+            authenticator.category === AuthenticatorCategories.SECOND_FACTOR ||
+            authenticator.category === AuthenticatorCategories.TWO_FACTOR_CUSTOM
+        ) {
             return (
                 <>
                     { currentStep === 0 ? (

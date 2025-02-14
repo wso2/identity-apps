@@ -750,6 +750,15 @@ export const applications: ApplicationsNS = {
                                             backupCodes: {
                                                 description: "Two-factor authentication recovery option.",
                                                 heading: "MFA Recovery"
+                                            },
+                                            external: {
+                                                heading: "External user authentication"
+                                            },
+                                            internal: {
+                                                heading: "Internal user authentication"
+                                            },
+                                            twoFactorCustom: {
+                                                heading: "2FA authentication"
                                             }
                                         },
                                         goBackButton: "Go back to selection",

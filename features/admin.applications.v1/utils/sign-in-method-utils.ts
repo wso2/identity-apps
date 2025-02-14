@@ -450,6 +450,14 @@ export class SignInMethodUtils {
             return false;
         }
     }
+
+    public static isCustomAuthenticator = (authenticator: GenericAuthenticatorInterface): boolean => {
+        return authenticator?.defaultAuthenticator?.tags?.includes("Custom");
+    };
+
+    public static isSecondFactorAuthenticator = (authenticator: GenericAuthenticatorInterface): boolean => {
+        return authenticator?.defaultAuthenticator?.tags?.includes("2FA");
+    };
 }
 
 export type ConnectionsJITUPConflictWithMFAArgs = {
