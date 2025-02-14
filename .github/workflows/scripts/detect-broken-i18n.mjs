@@ -119,53 +119,69 @@ const getPropertyAccessChain = async (args) => {
 const i18nEnUsLangBundlePath = path.resolve(__dirname, "..", "modules", "i18n", "dist", "bundle", "en-US", "portals");
 
 // get file path as cmd argument.
-const filePathFromArg = process.argv[2]
+let filePathsFromArg = process.argv[2]
+
+if (!filePathsFromArg) {
+  console.error("Pass a list of file names separated by space")
+  process.exit(1);
+}
+
+filePathsFromArg = filePathsFromArg.split(" ");
 
 // Initialize a ts-morph Project
 const project = new Project();
 
-if (isTSFile(filePathFromArg)) {
-  project.addSourceFileAtPath(filePathFromArg)
-} else {
-  console.error("Invalid file: " + filePathFromArg);
-  process.exit(1);
-}
-
-const sourceFile = project.getSourceFileOrThrow(filePathFromArg);
-const calls = sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression);
-
+const brokenI18nErrorMessages = []
 const i18nManualReviewFlags = []
 
-for (const call of calls) {
-  const expression = call.getExpression();
+for(const filePath of filePathsFromArg) {
+  if (!isTSFile(filePath)) {
+    console.warn("Invalid file: " + filePath);
+    continue;
+  }  
+  
+  project.addSourceFileAtPath(filePath)
+  const sourceFile = project.getSourceFileOrThrow(filePath);
+  const calls = sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression);
 
-  if (expression.getText() === "t") {
-      console.log(`Found t("") call in ${filePathFromArg}:`);
+  for (const call of calls) {
+    const expression = call.getExpression();
 
-      const args = call.getArguments();
-      console.log(args[0].getKind())
-      const i18nKey = await getPropertyAccessChain(args);
+    if (expression.getText() === "t") {
+        console.log(`Found t("") call in ${filePath}:`);
 
-      if (!i18nKey) {
-          i18nManualReviewFlags.push("Couldn't resolve the i18n usage at " + filePathFromArg + "#L" + call.getStartLineNumber());
-          continue; // Use `continue` instead of `return` to skip the current iteration
-      }
+        const args = call.getArguments();
+        console.log(args[0].getKind())
+        const i18nKey = await getPropertyAccessChain(args);
 
-      console.log(`  - Text: ${i18nKey}\n`);
+        if (!i18nKey) {
+            i18nManualReviewFlags.push("Couldn't resolve the i18n usage at " + filePathFromArg + "#L" + call.getStartLineNumber());
+            continue; // Use `continue` instead of `return` to skip the current iteration
+        }
 
-      const i18nNamespace = i18nKey.split(":")[0];
-      const i18nStringPath = i18nKey.split(":")[1];
+        console.log(`  - Text: ${i18nKey}\n`);
 
-      // Using async/await for dynamicImport instead of then()
-      const langBundle = await dynamicImport(i18nNamespace);
-      const value = getValueAtPath(langBundle, i18nStringPath);
+        const i18nNamespace = i18nKey.split(":")[0];
+        const i18nStringPath = i18nKey.split(":")[1];
 
-      if (!value) {
-          console.error("Broken i18n key found: " + i18nKey);
-      }
+        // Using async/await for dynamicImport instead of then()
+        const langBundle = await dynamicImport(i18nNamespace);
+        const value = getValueAtPath(langBundle, i18nStringPath);
+
+        if (!value) {
+          brokenI18nErrorMessages.push("Broken i18n key: " + i18nKey + " at " + filePath);
+        }
+    }
   }
 }
 
 for(const warning of i18nManualReviewFlags) {
   console.warn(warning)
+}
+
+if (brokenI18nErrorMessages.length > 0) {
+  for(const error of brokenI18nErrorMessages) {
+    console.error(error)
+  }
+  process.exit(1)
 }
