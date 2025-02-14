@@ -100,6 +100,4 @@ export class CommonAuthenticatorConstants {
     public static readonly DISPLAY_NAME_REGEX: RegExp = /^.{3,}$/;
 
     public static readonly TEMPLATE_ID_FIELD: string = "templateId";
-
-    public static readonly CUSTOM_AUTHENTICATOR_PLUGIN_BASED_NAME: string = "Custom Authenticator (Plugin-based)";
 }
