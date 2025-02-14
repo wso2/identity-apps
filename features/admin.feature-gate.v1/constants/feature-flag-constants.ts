@@ -46,6 +46,7 @@ class FeatureFlagConstants {
         BRANDING_STYLES_AND_TEXT_TITLE: "branding.stylesAndText.application.title",
         INSIGHTS: "insights",
         LOGIN_AND_REGISTRATION: "loginAndRegistration",
+        LOGIN_AND_REGISTRATION_FRAUD_DETECTION: "loginAndRegistration.loginSecurity.fraudDetection",
         LOGIN_AND_REGISTRATION_ORGANIZATION_DISCOVERY: "loginAndRegistration.organizationSettings.discovery",
         LOGIN_AND_REGISTRATION_ORGANIZATION_IMPERSONATION: "loginAndRegistration.organizationSettings.impersonation",
         ORGANIZATION_BRANDING_TEXT: "branding.stylesAndText.organization.text",
