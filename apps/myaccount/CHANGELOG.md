@@ -1,5 +1,13 @@
 # @wso2is/myaccount
 
+## 2.17.25
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.166
+  - @wso2is/common.branding.v1@2.26.23
+
 ## 2.17.24
 
 ### Patch Changes

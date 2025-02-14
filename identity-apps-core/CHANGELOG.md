@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.13.4
+
+### Patch Changes
+
+- [#7617](https://github.com/wso2/identity-apps/pull/7617) [`bce49e5eb022a5471f980c509f525c8d499ad6d0`](https://github.com/wso2/identity-apps/commit/bce49e5eb022a5471f980c509f525c8d499ad6d0) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add data test id
+
 ## 2.13.3
 
 ### Patch Changes

@@ -1,5 +1,27 @@
 # @wso2is/admin.users.v1
 
+## 2.30.76
+
+### Patch Changes
+
+- [#7614](https://github.com/wso2/identity-apps/pull/7614) [`e324a36fca92e7d5226a5d7471652509f86f1c47`](https://github.com/wso2/identity-apps/commit/e324a36fca92e7d5226a5d7471652509f86f1c47) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Update only allowed attributes of users managed by parent org
+
+- Updated dependencies [[`6a3ae944300cccc0dab91705b4a077fc43c983da`](https://github.com/wso2/identity-apps/commit/6a3ae944300cccc0dab91705b4a077fc43c983da), [`e324a36fca92e7d5226a5d7471652509f86f1c47`](https://github.com/wso2/identity-apps/commit/e324a36fca92e7d5226a5d7471652509f86f1c47)]:
+  - @wso2is/admin.roles.v2@2.27.110
+  - @wso2is/admin.users.v1@2.30.76
+  - @wso2is/admin.core.v1@2.38.35
+  - @wso2is/admin.extensions.v1@2.36.91
+  - @wso2is/admin.groups.v1@2.27.76
+  - @wso2is/admin.identity-providers.v1@2.26.166
+  - @wso2is/admin.organizations.v1@2.26.166
+  - @wso2is/admin.validation.v1@2.27.104
+  - @wso2is/admin.authentication.v1@2.25.166
+  - @wso2is/admin.claims.v1@2.27.76
+  - @wso2is/admin.server-configurations.v1@2.32.91
+  - @wso2is/admin.tenants.v1@2.28.140
+  - @wso2is/admin.feature-gate.v1@1.4.166
+  - @wso2is/admin.userstores.v1@2.26.125
+
 ## 2.30.75
 
 ### Patch Changes
