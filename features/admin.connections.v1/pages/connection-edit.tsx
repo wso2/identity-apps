@@ -386,11 +386,11 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(
                         addAlert({
-                            description: t("authenticationProvider:" + "notifications.getIDP.error.description", {
+                            description: t("authenticationProvider:notifications.getIDP.error.description", {
                                 description: error.response.data.description
                             }),
                             level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:" + "notifications.getIDP.error.message")
+                            message: t("authenticationProvider:notifications.getIDP.error.message")
                         })
                     );
 
@@ -399,9 +399,9 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
 
                 dispatch(
                     addAlert({
-                        description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
+                        description: t("authenticationProvider:notifications.getIDP.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
+                        message: t("authenticationProvider:notifications.getIDP.genericError.message")
                     })
                 );
             })
@@ -434,12 +434,12 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                         dispatch(
                             addAlert({
                                 description: t(
-                                    "authenticationProvider:" + "notifications.getConnectionDetails.error.description",
+                                    "authenticationProvider:notifications.getConnectionDetails.error.description",
                                     { description: error.response.data.description }
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "authenticationProvider:" + "notifications.getConnectionDetails.error.message"
+                                    "authenticationProvider:notifications.getConnectionDetails.error.message"
                                 )
                             })
                         );
@@ -455,7 +455,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "authenticationProvider:" + "notifications.getConnectionDetails.genericError.message"
+                                "authenticationProvider:notifications.getConnectionDetails.genericError.message"
                             )
                         })
                     );
@@ -538,15 +538,15 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return (
                 <LabelWithPopup
                     popupHeader={ t("authenticationProvider:popups.appStatus.enabled.header") }
-                    popupSubHeader={ t("authenticationProvider:popups.appStatus." + "enabled.content") }
+                    popupSubHeader={ t("authenticationProvider:popups.appStatus.enabled.content") }
                     labelColor="green"
                 />
             );
         } else {
             return (
                 <LabelWithPopup
-                    popupHeader={ t("authenticationProvider:popups.appStatus." + "disabled.header") }
-                    popupSubHeader={ t("authenticationProvider:popups.appStatus." + "disabled.content") }
+                    popupHeader={ t("authenticationProvider:popups.appStatus.disabled.header") }
+                    popupSubHeader={ t("authenticationProvider:popups.appStatus.disabled.content") }
                     labelColor="grey"
                 />
             );
@@ -650,7 +650,8 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                     { identityProviderTemplate?.name && (
                         <Label size="small">
                             { identityProviderTemplate.name === "Expert Mode"
-                                ? CommonAuthenticatorConstants.CUSTOM_AUTHENTICATOR_PLUGIN_BASED_NAME
+                                ? t("authenticationProvider:overrides.authenticators.customAuthenticators." +
+                                    "pluginBased.name")
                                 : identityProviderTemplate?.name }
                         </Label>
                     ) }

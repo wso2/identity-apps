@@ -2133,5 +2133,14 @@ export const authenticationProvider:AuthenticationProviderNS = {
             next: "Next",
             previous: "Previous"
         }
+    },
+    overrides: {
+        authenticators: {
+            customAuthenticators: {
+                pluginBased: {
+                    name: "Custom Authenticator (Plugin-based)"
+                }
+            }
+        }
     }
 };
