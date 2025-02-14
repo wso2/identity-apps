@@ -163,19 +163,21 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ emailVerificationEnabled, setEmailVerificationEnabled ] = useState<boolean>(undefined);
     const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(undefined);
-    const [ isUsersNextPageAvailable ] = useState<boolean>(undefined);
+    const [ isInvitedUsersNextPageAvailable, setIsInvitedUsersNextPageAvailable ] = useState<boolean>(undefined);
     const [ selectedAddUserType ] = useState<UserAccountTypes>(UserAccountTypes.USER);
     const [ userType, setUserType ] = useState<string>();
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>(userstoresConfig.primaryUserstoreName);
     const [ invitationStatusOption, setInvitationStatusOption ] = useState<string>(InvitationStatus.PENDING);
     const [ isSelectedUserStoreReadOnly ] = useState<boolean>(false);
     const [ isInvitationStatusOptionChanged, setIsInvitationStatusOptionChanged ] = useState<boolean>(false);
-    const [ filterGuestList, setFilterGuestList ] = useState<UserInviteInterface[]>();
     const [ finalGuestList, setFinalGuestList ] = useState<UserInviteInterface[]>([]);
     const [ paginatedGuestList, setPaginateGuestList ] = useState<UserInviteInterface[]>([]);
     const [ showMultipleInviteConfirmationModal, setShowMultipleInviteConfirmationModal ] = useState<boolean>(false);
     const [ connectorConfigLoading, setConnecterConfigLoading ] = useState<boolean>(false);
     const [ showInviteParentUserWizard, setShowInviteParentUserWizard ] = useState<boolean>(false);
+    const [ invitedUserListItemLimit, setInvitedUserListItemLimit ]
+        = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [ invitedUserListOffset, setInvitedUserListOffset ] = useState<number>(1);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -365,18 +367,14 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             return;
         }
 
-        setListOffset(1);
+        setInvitedUserListOffset(1);
         if (searchQuery === "userName co " || searchQuery === "" || searchQuery === null) {
             setPaginateGuestList(parentOrgUserInviteList?.invitations);
-            setFilterGuestList([]);
 
             return;
         } else if (searchQuery) {
             let searchList: UserInviteInterface[] = parentOrgUserInviteList?.invitations;
 
-            if (filterGuestList?.length > 0) {
-                searchList = filterGuestList;
-            }
             if (searchQuery.includes("userName sw ")) {
                 const searchValue: string = searchQuery.split("sw ")[1];
 
@@ -403,7 +401,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 });
             }
             setPaginateGuestList(searchList);
-            setFilterGuestList(searchList);
         }
     }, [ searchQuery ]);
 
@@ -419,7 +416,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Handles parent user invitation pagination.
      */
     useEffect(() => {
-        setFinalGuestList(parentOrgUserInviteList?.invitations?.filter((invitation: UserInviteInterface) =>
+        setPaginateGuestList(parentOrgUserInviteList?.invitations?.filter((invitation: UserInviteInterface) =>
             invitation.status === InvitationStatus.PENDING.toUpperCase()));
 
     }, [ parentOrgUserInviteList?.invitations ]);
@@ -435,17 +432,18 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         let finalInvitations: UserInviteInterface[] = paginatedGuestList?.filter(
             (invitation: UserInviteInterface) => invitation.status === invitationStatusOption.toUpperCase());
 
-        if (finalInvitations?.length > listItemLimit) {
-            const _startIndex: number = listOffset - 1;
+        if (finalInvitations?.length > invitedUserListItemLimit) {
+            const _startIndex: number = invitedUserListOffset - 1;
 
-            finalInvitations = finalInvitations.slice(_startIndex, _startIndex + listItemLimit);
+            finalInvitations = finalInvitations.slice(_startIndex, _startIndex + invitedUserListItemLimit);
             setFinalGuestList(finalInvitations);
-            setIsNextPageAvailable(finalInvitations.length === listItemLimit);
+            setIsInvitedUsersNextPageAvailable(finalInvitations.length === invitedUserListItemLimit);
         } else {
             setFinalGuestList(finalInvitations);
-            setIsNextPageAvailable(false);
+            setIsInvitedUsersNextPageAvailable(false);
         }
-    }, [ paginatedGuestList, listOffset, listItemLimit, isInvitationStatusOptionChanged, invitationStatusOption ]);
+    }, [ paginatedGuestList, invitedUserListOffset, invitedUserListItemLimit, isInvitationStatusOptionChanged,
+        invitationStatusOption ]);
 
     /**
      * Returns a moderated users list.
@@ -556,6 +554,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const handleUserFilter = (query: string): void => {
         setSearchQuery(query);
         setListOffset(1);
+        setInvitedUserListOffset(1);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
@@ -564,6 +563,17 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
+    };
+
+    const handleInvitedUserPaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
+        setInvitedUserListOffset(((data.activePage as number - 1) * invitedUserListItemLimit) + 1);
+    };
+
+    const handleInvitedUserItemsPerPageDropdownChange = (
+        event: React.MouseEvent<HTMLAnchorElement>,
+        data: DropdownProps
+    ) => {
+        setInvitedUserListItemLimit(data.value as number);
     };
 
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
@@ -624,34 +634,48 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         </PrimaryButton>
     );
 
-
-    const advancedSearchFilter = (): ReactElement => (
+    /**
+     * Renders an advanced search filter for users list and invitations list.
+     *
+     * @param isUserList - If `true`, allows filtering by username, email, first name, and last name.
+     *                     If `false`, allows filtering only by username (for invitation list).
+     * @returns The search filter component.
+     */
+    const advancedSearchFilter = (isUserList: boolean): ReactElement => (
         <AdvancedSearchWithBasicFilters
             onFilter={ handleUserFilter }
-            filterAttributeOptions={ [
-                {
-                    key: 0,
-                    text: t("users:advancedSearch.form.dropdown." +
-                        "filterAttributeOptions.username"),
-                    value: "userName"
-                },
-                {
-                    key: 1,
-                    text: t("users:advancedSearch.form.dropdown." +
-                        "filterAttributeOptions.email"),
-                    value: "emails"
-                },
-                {
-                    key: 2,
-                    text: "First Name",
-                    value: "name.givenName"
-                },
-                {
-                    key: 3,
-                    text: "Last Name",
-                    value: "name.familyName"
-                }
-            ] }
+            filterAttributeOptions={
+                isUserList
+                    ? [
+                        {
+                            key: 0,
+                            text: t("users:advancedSearch.form.dropdown." + "filterAttributeOptions.username"),
+                            value: "userName"
+                        },
+                        {
+                            key: 1,
+                            text: t("users:advancedSearch.form.dropdown." + "filterAttributeOptions.email"),
+                            value: "emails"
+                        },
+                        {
+                            key: 2,
+                            text: "First Name",
+                            value: "name.givenName"
+                        },
+                        {
+                            key: 3,
+                            text: "Last Name",
+                            value: "name.familyName"
+                        }
+                    ]
+                    : [
+                        {
+                            key: 0,
+                            text: t("users:advancedSearch.form.dropdown." + "filterAttributeOptions.username"),
+                            value: "userName"
+                        }
+                    ]
+            }
             filterAttributePlaceholder={
                 t("users:advancedSearch.form.inputs.filterAttribute" +
                     ".placeholder")
@@ -685,7 +709,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             <ListLayout
                 // TODO add sorting functionality.
                 className="sub-org-users-list"
-                advancedSearch={ advancedSearchFilter() }
+                advancedSearch={ advancedSearchFilter(true) }
                 currentListSize={ usersList?.itemsPerPage }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
@@ -722,7 +746,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         imageSize="tiny"
                     />)
                     : (<UsersList
-                        advancedSearch={ advancedSearchFilter() }
+                        advancedSearch={ advancedSearchFilter(true) }
                         usersList={ usersList }
                         onUserDelete={ onUserDelete }
                         userMetaListContent={ null }
@@ -871,22 +895,22 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         return (
             <ListLayout
                 className="sub-org-users-list"
-                advancedSearch={ advancedSearchFilter() }
-                currentListSize={ usersList?.itemsPerPage }
-                listItemLimit={ listItemLimit }
-                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                advancedSearch={ advancedSearchFilter(false) }
+                currentListSize={ parentOrgUserInviteList?.invitations?.length || null }
+                listItemLimit={ invitedUserListItemLimit }
+                onItemsPerPageDropdownChange={ handleInvitedUserItemsPerPageDropdownChange }
                 data-componentid={ `${ componentId }-user-mgt-user-list-layout` }
                 data-testid={ `${ testId }-user-mgt-user-list-layout` }
-                onPageChange={ handlePaginationChange }
+                onPageChange={ handleInvitedUserPaginationChange }
                 showPagination={ true }
                 totalPages={ resolveTotalPages() }
-                totalListSize={ usersList?.totalResults }
+                totalListSize={ finalGuestList?.length }
                 isLoading={
                     isUserListFetchRequestLoading
                     || isParentOrgUserInviteListLoading
                 }
                 paginationOptions={ {
-                    disableNextButton: !isUsersNextPageAvailable,
+                    disableNextButton: !isInvitedUsersNextPageAvailable,
                     showItemsPerPageDropdown: selectedUserStore === userstoresConfig.primaryUserstoreName
                         ? true
                         : false
