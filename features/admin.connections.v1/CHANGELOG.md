@@ -1,5 +1,26 @@
 # @wso2is/admin.connections.v1
 
+## 2.33.49
+
+### Patch Changes
+
+- Updated dependencies [[`6a3ae944300cccc0dab91705b4a077fc43c983da`](https://github.com/wso2/identity-apps/commit/6a3ae944300cccc0dab91705b4a077fc43c983da)]:
+  - @wso2is/admin.roles.v2@2.27.110
+  - @wso2is/admin.applications.v1@2.31.14
+  - @wso2is/admin.connections.v1@2.33.49
+  - @wso2is/admin.console-settings.v1@2.25.166
+  - @wso2is/admin.core.v1@2.38.35
+  - @wso2is/admin.extensions.v1@2.36.91
+  - @wso2is/admin.identity-providers.v1@2.26.166
+  - @wso2is/admin.organizations.v1@2.26.166
+  - @wso2is/admin.claims.v1@2.27.76
+  - @wso2is/admin.application-templates.v1@1.4.166
+  - @wso2is/admin.identity-verification-providers.v1@2.27.166
+  - @wso2is/admin.actions.v1@1.11.31
+  - @wso2is/admin.feature-gate.v1@1.4.166
+  - @wso2is/admin.template-core.v1@1.5.120
+  - @wso2is/admin.userstores.v1@2.26.125
+
 ## 2.33.48
 
 ### Patch Changes
