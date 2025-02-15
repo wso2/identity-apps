@@ -120,6 +120,7 @@ const i18nEnUsLangBundlePath = path.resolve(__dirname, "..", "..", "..", "module
 
 // get file path as cmd argument.
 let filePathsFromArg = process.argv[2]
+const logLevel = process.argv[3]
 
 if (!filePathsFromArg) {
   console.error("Pass a list of file names separated by space")
@@ -138,7 +139,10 @@ for(const relativeFilePath of filePathsFromArg) {
   const filePath = path.resolve(__dirname, "..", "..", "..", relativeFilePath)
 
   if (!isTSFile(filePath)) {
-    console.warn("Invalid file: " + filePath);
+    if (logLevel === "DEBUG") {
+      console.warn("Invalid file: " + filePath);
+    }
+
     continue;
   }  
   
@@ -150,28 +154,32 @@ for(const relativeFilePath of filePathsFromArg) {
     const expression = call.getExpression();
 
     if (expression.getText() === "t") {
+      if (logLevel === "DEBUG") {
         console.log(`Found t("") call in ${filePath}:`);
+      }
 
-        const args = call.getArguments();
-        const i18nKey = await getPropertyAccessChain(args);
+      const args = call.getArguments();
+      const i18nKey = await getPropertyAccessChain(args);
 
-        if (!i18nKey) {
-            i18nManualReviewFlags.push("Couldn't resolve the i18n usage at " + filePathFromArg + "#L" + call.getStartLineNumber());
-            continue; // Use `continue` instead of `return` to skip the current iteration
-        }
+      if (!i18nKey) {
+          i18nManualReviewFlags.push("Couldn't resolve the i18n usage at " + filePathFromArg + "#L" + call.getStartLineNumber());
+          continue; // Use `continue` instead of `return` to skip the current iteration
+      }
 
+      if (logLevel === "DEBUG") {
         console.log(`  - Text: ${i18nKey}\n`);
+      }
 
-        const i18nNamespace = i18nKey.split(":")[0];
-        const i18nStringPath = i18nKey.split(":")[1];
+      const i18nNamespace = i18nKey.split(":")[0];
+      const i18nStringPath = i18nKey.split(":")[1];
 
-        // Using async/await for dynamicImport instead of then()
-        const langBundle = await dynamicImport(i18nNamespace);
-        const value = getValueAtPath(langBundle, i18nStringPath);
+      // Using async/await for dynamicImport instead of then()
+      const langBundle = await dynamicImport(i18nNamespace);
+      const value = getValueAtPath(langBundle, i18nStringPath);
 
-        if (!value) {
-          brokenI18nErrorMessages.push("Broken i18n key: " + i18nKey + " at " + filePath);
-        }
+      if (!value) {
+        brokenI18nErrorMessages.push("Broken i18n key: " + i18nKey + " at " + filePath);
+      }
     }
   }
 }

@@ -311,7 +311,7 @@ jobs:
             fi
 
             # Run broken i18n check script
-            node ./scripts/detect-broken-i18n.mjs "$changed_files"
+            node ./scripts/detect-broken-i18n.mjs "$changed_files" --experimental-json-modules
 
       - name: 🏗️ Maven Build identity-apps-core
         id: build-with-maven
