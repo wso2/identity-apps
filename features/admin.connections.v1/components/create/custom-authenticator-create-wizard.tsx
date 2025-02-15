@@ -760,7 +760,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                         centered={ true }
                         image={ ConnectionsManagementUtils.resolveConnectionResourcePath(
                             "",
-                            "assets/images/icons/external-authenticator-icon.svg"
+                            "assets/images/icons/external-authentication-icon.svg"
                         ) }
                         header={
                             (<div>
@@ -801,7 +801,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                         centered={ true }
                         image={ ConnectionsManagementUtils.resolveConnectionResourcePath(
                             "",
-                            "assets/images/icons/internal-user-authenticator-icon.svg"
+                            "assets/images/icons/internal-user-authentication-icon.svg"
                         ) }
                         header={
                             (<div>
@@ -842,7 +842,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                         centered={ true }
                         image={ ConnectionsManagementUtils.resolveConnectionResourcePath(
                             "",
-                            "assets/images/icons/two-factor-custom-authenticator-icon.svg"
+                            "assets/images/icons/two-factor-custom-authentication-icon.svg"
                         ) }
                         header={
                             (<div>
