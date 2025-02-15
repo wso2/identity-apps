@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,25 @@ import useRequest, {
 import { store } from "@wso2is/admin.core.v1/store";
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
 import { HttpMethods } from "@wso2is/core/models";
-import { AgentConnectionInterface } from "../models/remote-user-stores";
+import { AgentConnectionAPIResponseInterface, AgentConnectionInterface } from "../models/remote-user-stores";
+
+/**
+ * Function to normalize the agent connection data due to the API response inconsistency
+ * between remote and on-prem user store agents.
+ *
+ * @param apiAgentConnection - Agent connection data to be normalized.
+ * @returns The normalized agent connection data.
+ */
+export const normalizeAgentConnection = (
+    apiAgentConnection: AgentConnectionAPIResponseInterface
+): AgentConnectionInterface => ({
+    agent: {
+        agentId: apiAgentConnection.agent?.Id ?? apiAgentConnection.agent?.id ?? "",
+        displayName: apiAgentConnection.agent?.displayName
+    },
+    connected: apiAgentConnection.connected,
+    tokenId: apiAgentConnection.tokenId
+});
 
 /**
  * Hook to get connections list of a user store.
@@ -34,7 +52,7 @@ import { AgentConnectionInterface } from "../models/remote-user-stores";
  * @param userStoreManager - User store manager type.
  * @param shouldFetch - If true, will fetch the data.
  *
- * @returns the list of available connections of a user store
+ * @returns the list of available connections of a user store.
  */
 const useGetUserStoreAgentConnections = <Data = AgentConnectionInterface[], Error = RequestErrorInterface>(
     userStoreId: string,
@@ -62,8 +80,12 @@ const useGetUserStoreAgentConnections = <Data = AgentConnectionInterface[], Erro
         mutate
     } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
+    const normalizedData: AgentConnectionInterface[] | undefined = Array.isArray(data)
+        ? data.map(normalizeAgentConnection)
+        : undefined;
+
     return {
-        data,
+        data: normalizedData as Data,
         error,
         isLoading,
         isValidating,
