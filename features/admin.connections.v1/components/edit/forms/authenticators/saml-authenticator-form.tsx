@@ -137,7 +137,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         onSubmit,
         readOnly,
         isSubmitting,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId = "saml-authenticator-settings-form"
     } = props;
 
     const disabledFeatures: string[] = useSelector((state: AppState) =>
@@ -342,6 +342,9 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
     }, [ isLogoutReqSigned, isAuthnReqSigned ]);
 
     const onFormSubmit = (values: { [ key: string ]: any }): void => {
+        
+        debugger;
+        
         const manualOverride: { [key: string]: boolean | string | string[] } = {
             "AuthnContextClassRef": selectedAuthnContextClasses?.map(
                 (authnContextClass: DropdownChild) => authnContextClass.value
@@ -1080,13 +1083,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         </Form>
     );
 
-};
-
-/**
- * Default properties for {@link SamlAuthenticatorSettingsForm}
- */
-SamlAuthenticatorSettingsForm.defaultProps = {
-    "data-testid": "saml-authenticator-settings-form"
 };
 
 const SectionRow: FunctionComponent<PropsWithChildren<{ width?: SemanticWIDTHS }>> = (

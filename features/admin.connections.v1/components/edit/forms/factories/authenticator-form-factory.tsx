@@ -19,6 +19,7 @@
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
+import { Grid } from "semantic-ui-react";
 import { CommonAuthenticatorConstants } from "../../../../constants/common-authenticator-constants";
 import { FederatedAuthenticatorConstants } from "../../../../constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "../../../../constants/local-authenticator-constants";
@@ -42,6 +43,7 @@ import {
     SMSOTPAuthenticatorForm
 } from "../authenticators";
 import { SamlAuthenticatorSettingsForm } from "../authenticators/saml-authenticator-form";
+import SamlAuthenticatorSettingsFinalForm from "../authenticators/saml-authenticator-form-finalform";
 import { SIWEAuthenticatorForm } from "../authenticators/swe-authenticator-form";
 
 /**
@@ -247,13 +249,31 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
             );
         case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID:
             return (
-                <SamlAuthenticatorSettingsForm
-                    mode={ mode }
-                    onSubmit={ onSubmit }
-                    authenticator={ authenticator }
-                    readOnly={ isReadOnly }
-                    isSubmitting={ isSubmitting }
-                />
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column width={ 6 }>
+                            <SamlAuthenticatorSettingsForm
+                                mode={ mode }
+                                onSubmit={ onSubmit }
+                                authenticator={ authenticator }
+                                readOnly={ isReadOnly }
+                                isSubmitting={ isSubmitting }
+                            />
+                        </Grid.Column>
+                        <Grid.Column width={ 6 }>
+                            <SamlAuthenticatorSettingsFinalForm
+                                mode={ mode }
+                                onSubmit={ onSubmit }
+                                authenticator={ authenticator }
+                                readOnly={ isReadOnly }
+                                isSubmitting={ isSubmitting }
+                            />
+                        </Grid.Column>
+
+                    </Grid.Row>
+
+
+                </Grid>
             );
         case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.MICROSOFT_AUTHENTICATOR_ID:
             if (templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT){
