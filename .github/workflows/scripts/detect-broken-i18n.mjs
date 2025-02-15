@@ -134,8 +134,9 @@ const project = new Project();
 const brokenI18nErrorMessages = []
 const i18nManualReviewFlags = []
 
-for(const filePath of filePathsFromArg) {
-  console.log(filePath)
+for(const relativeFilePath of filePathsFromArg) {
+  const filePath = path.resolve(__dirname, "..", "..", "..", relativeFilePath)
+
   if (!isTSFile(filePath)) {
     console.warn("Invalid file: " + filePath);
     continue;
