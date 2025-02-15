@@ -18,12 +18,12 @@ concurrency:
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  SHOULD_RUN: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' || github.event_name == 'workflow_dispatch' }}
+#  SHOULD_RUN: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' || github.event_name == 'workflow_dispatch' }}
 
 jobs:
   lint:
     name: ⬣ ESLint (STATIC ANALYSIS)
-    if: ${{ env.SHOULD_RUN == 'true' }}
+#   if: ${{ env.SHOULD_RUN == 'true' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -97,7 +97,7 @@ jobs:
 
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
-    if: env.SHOULD_RUN
+#    if: env.SHOULD_RUN
     runs-on: ubuntu-latest
     strategy:
       matrix:
