@@ -36,7 +36,7 @@ import { Dispatch } from "redux";
 import { getLocalAuthenticator } from "../../../api/authenticators";
 import {
     getFederatedAuthenticatorDetails,
-    updateCustomAuthentication,
+    updateCustomAuthenticator,
     updateFederatedAuthenticator
 } from "../../../api/connections";
 import {
@@ -183,6 +183,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
         authProperties: Partial<AuthenticationPropertiesInterface>
     ) => {
         const updatingValues: EndpointAuthenticationUpdateInterface = {
+            description: connector.description,
             displayName: resolveDisplayName(),
             endpoint: {
                 authentication: {
@@ -191,11 +192,12 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                 },
                 uri: values?.endpointUri
             },
+            image: connector.image,
             isEnabled: connector.isEnabled,
             isPrimary: connector.isPrimary
         };
 
-        updateCustomAuthentication(connector.id, updatingValues as CustomAuthConnectionInterface)
+        updateCustomAuthenticator(connector.id, updatingValues as CustomAuthConnectionInterface)
             .then(() => {
                 dispatch(
                     addAlert({
@@ -245,10 +247,10 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                 dispatch(
                     addAlert({
                         description: t(
-                            "customAuthentication:notifications.updateCustomAuthenticator.success.description"
+                            "customAuthenticator:notifications.updateCustomAuthenticator.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
-                        message: t("customAuthentication:notifications.updateCustomAuthenticator.success.message")
+                        message: t("customAuthenticator:notifications.updateCustomAuthenticator.success.message")
                     })
                 );
                 onUpdate(connector.id);
@@ -297,7 +299,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
     };
 
     return (
-        <div className="custom-authentication-settings-tab">
+        <div className="custom-authenticator-settings-tab">
             <FinalForm
                 onSubmit={ handleSubmit }
                 initialValues={ initialValues }

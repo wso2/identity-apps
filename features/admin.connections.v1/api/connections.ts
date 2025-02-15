@@ -92,7 +92,7 @@ export const createConnection = (
  *
  * @param connection - Connection settings data.
  */
-export const createCustomAuthentication = (
+export const createCustomAuthenticator = (
     connection: CustomAuthConnectionInterface
 ): Promise<AxiosResponse<CustomAuthConnectionInterface>> => {
 
@@ -121,10 +121,10 @@ export const createCustomAuthentication = (
 /**
  * Function to update custom local authenticator.
  *
- * @param id - ID of the custom authentication.
+ * @param id - ID of the custom authenticator.
  * @param connection - Connection settings data.
  */
-export const updateCustomAuthentication = (
+export const updateCustomAuthenticator = (
     id: string,
     connection: CustomAuthConnectionInterface
 ): Promise<AxiosResponse<CustomAuthConnectionInterface>> => {
@@ -152,11 +152,11 @@ export const updateCustomAuthentication = (
 };
 
 /**
- * Function to delete a custom authentication.
+ * Function to delete a custom authenticator.
  *
- * @param id - ID of the custom authentication
+ * @param id - ID of the custom authenticator.
  */
-export const deleteCustomAuthentication = (
+export const deleteCustomAuthenticator = (
     id: string
 ): Promise<AxiosResponse<CustomAuthConnectionInterface>> => {
 

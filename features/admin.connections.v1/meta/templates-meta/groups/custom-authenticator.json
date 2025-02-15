@@ -3,7 +3,7 @@
     "description": "Enable login for users with external authentication service.",
     "enabled": true,
     "displayOrder": 12,
-    "id": "custom-authentication",
+    "id": "custom-authenticator",
     "docLink": "",
     "image": "assets/images/logos/custom-authenticator.svg",
     "name": "Custom Authenticator (Service-based)",
@@ -11,5 +11,5 @@
     "disabled": false,
     "type": "DEFAULT",
     "tags": [ "Custom" ],
-    "templateId": "custom-authentication"
+    "templateId": "custom-authenticator"
 }

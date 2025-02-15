@@ -594,32 +594,52 @@ export const governanceConnectors: governanceConnectorsNS = {
                     }
                 },
                 userClaimUpdate: {
-                    friendlyName: "User Attribute Change Verification",
+                    friendlyName: "Attribute Update Settings",
+                    subTitle: "Configure verification & notification settings when updating user attributes.",
                     properties: {
                         userClaimUpdateEmailEnableVerification: {
-                            hint: "Trigger verification notifications for user's email addresses.",
+                            hint: "Send a verification email with a link to the new address when the email attribute is updated.",
                             label: "Enable user email verification"
                         },
                         userClaimUpdateEmailVerificationCodeExpiryTime: {
                             hint: "Validity time of the email confirmation link in minutes.",
-                            label: "Email verification on update link expiry time"
+                            label: "Email verification link expiration time"
                         },
                         userClaimUpdateEmailEnableNotification: {
-                            hint: "Trigger a notification to the existing email address when the user attempts to update the existing email address.",
-                            label: "Enable user email notification on update"
+                            hint: "Send a notification to the current email address when the user attempts to change the email attribute.",
+                            label: "Enable email update notifications"
                         },
                         userClaimUpdateMobileNumberEnableVerification: {
-                            hint: "Trigger verification SMS OTP for user's mobile numbers.",
+                            hint: "Send a verification SMS OTP to the new mobile number when the mobile attribute is updated.",
                             label: "Enable user mobile number verification"
                         },
                         userClaimUpdateMobileNumberVerificationCodeExpiryTime: {
                             hint: "Validity time of the mobile number confirmation OTP in minutes.",
-                            label: "Mobile number verification on update SMS OTP expiry time"
+                            label: "Mobile number verification SMS OTP expiration time"
                         },
                         userClaimUpdateMobileNumberEnableVerificationByPrivilegedUser: {
                             hint: "Allow privileged users to initiate mobile number verification on update.",
                             label: "Enable mobile number verification by privileged users"
                         }
+                    },
+                    update: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update Error"
+                        },
+                        genericError: {
+                            description:
+                                "An error occurred while updating attribute verification configurations.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Attribute verification configurations updated successfully.",
+                            message: "Update Successful."
+                        }
+                    },
+                    subHeadings: {
+                        emailConfiguration: "Email Configurations",
+                        mobileConfiguration: "Mobile Configurations"
                     }
                 }
             }
