@@ -304,7 +304,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-   i18n:
+  i18n:
     name: ⬣ Detect Broken
     needs: [ 'build' ]
     runs-on: ubuntu-latest
