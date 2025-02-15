@@ -37,6 +37,7 @@ import { RouteUtils } from "@wso2is/admin.core.v1/utils/route-utils";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     AlertInterface,
     AnnouncementBannerInterface,
@@ -156,6 +157,8 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
 
         return [ ...developRoutes ];
     }, [ developFilteredRoutes ]);
+
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     /**
      * Collapse Navbar for Mobile screens.
@@ -316,6 +319,10 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
 
         const featureFlag: FeatureFlagsInterface = config?.featureFlags?.find(
             (featureFlag: FeatureFlagsInterface) => featureFlag.feature === featureKey);
+
+        if (featureFlag?.subOrgsOnly === "true" && !isSubOrganization()) {
+            return null;
+        }
 
         return FeatureStatusLabel[featureFlag?.flag];
     };

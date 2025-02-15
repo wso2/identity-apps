@@ -358,6 +358,11 @@ export interface FeatureFlagsInterface {
      * Value of the feature flag.
      */
     flag: string;
+    /**
+     * Specifies whether the feature flag should apply to sub-organizations only.
+     */
+    subOrgsOnly?: string;
+
 }
 
 export interface DeprecatedFeatureInterface {
