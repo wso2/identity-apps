@@ -23,7 +23,7 @@ env:
 jobs:
   lint:
     name: ⬣ ESLint (STATIC ANALYSIS)
-    if: env.SHOULD_RUN
+    if: ${{ env.SHOULD_RUN == 'true' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
