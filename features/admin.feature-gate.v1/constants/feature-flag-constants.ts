@@ -42,6 +42,7 @@ class FeatureFlagConstants {
         APPLICATION_BRANDING_TEXT: "branding.stylesAndText.application.text",
         APPLICATION_EDIT_BRANDING_LINK: "applications.edit.general.branding",
         APPLICATION_TEMPLATES: "applications.templates",
+        ATTRIBUTE_DIALECTS: "attributeDialects",
         BRANDING: "branding",
         BRANDING_STYLES_AND_TEXT_TITLE: "branding.stylesAndText.application.title",
         INSIGHTS: "insights",
@@ -52,7 +53,8 @@ class FeatureFlagConstants {
         PUSH_PROVIDERS: "pushProviders",
         PUSH_PROVIDER_TEMPLATES: "pushProviders.templates",
         SMS_TEMPLATES: "smsTemplates",
-        USER_ROLES: "userRoles"
+        USER_ROLES: "userRoles",
+        USER_STORES: "userStores"
     };
 }
 
