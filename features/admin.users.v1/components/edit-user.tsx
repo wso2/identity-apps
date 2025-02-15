@@ -29,7 +29,7 @@ import { AlertInterface, AlertLevels, ProfileInfoInterface, SBACInterface } from
 import { addAlert } from "@wso2is/core/store";
 import { Message, ResourceTab } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -116,13 +116,20 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_PROFILES")
     );
 
-    useEffect(() => {
+    /**
+     * Check whether the user is in a read only user store.
+     */
+    const isReadOnlyUserStore: boolean = useMemo(() => {
         const userStore: string = user?.userName?.split("/").length > 1
             ? user?.userName?.split("/")[0]
             : userstoresConfig.primaryUserstoreName;
 
+        return readOnlyUserStores?.includes(userStore.toString());
+    }, [ user, readOnlyUserStores ]);
+
+    useEffect(() => {
         if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
-            || readOnlyUserStores?.includes(userStore?.toString())
+            || isReadOnlyUserStore
             || !hasUsersUpdatePermissions
             || user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
             || user[ SCIMConfigs.scim.systemSchema ]?.isReadOnlyUser === "true"
@@ -130,7 +137,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             setReadOnly(true);
         }
 
-    }, [ user, readOnlyUserStores ]);
+    }, [ user, isReadOnlyUserStore ]);
 
     useEffect(() => {
         if (!isSuperOrganization()) {
@@ -222,6 +229,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         isReadOnly={ isReadOnly || isUserProfileReadOnly }
                         connectorProperties={ connectorProperties }
                         isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
+                        isReadOnlyUserStore={ isReadOnlyUserStore }
                         isUserManagedByParentOrg={ isUserManagedByParentOrg }
                         adminUserType={ AdminAccountTypes.INTERNAL }
                         allowDeleteOnly={

@@ -6796,40 +6796,6 @@ export const console: ConsoleNS = {
                     }
                 },
                 editUser: {
-                    dangerZoneGroup: {
-                        deleteUserZone: {
-                            actionTitle: "Delete User",
-                            buttonDisableHint: "Delete option is disabled because this user is managed in a remote " +
-                                "user store.",
-                            header: "Delete user",
-                            subheader: "This action will permanently delete the user from the organization. Please " +
-                                "be certain before you proceed."
-                        },
-                        disableUserZone: {
-                            actionTitle: "Disable User",
-                            header: "Disable user",
-                            subheader: "Once you disable an account, the user cannot access the system."
-                        },
-                        header: "Danger Zone",
-                        lockUserZone: {
-                            actionTitle: "Lock User",
-                            header: "Lock user",
-                            subheader: "Once you lock the account, the user can no longer log in to the system."
-                        },
-                        passwordResetZone: {
-                            actionTitle: "Reset Password",
-                            buttonHint: "This user account should be unlocked to reset the password.",
-                            header: "Reset password",
-                            subheader: "Once you change the password, the user will no longer be able to log in to " +
-                                "any application using the current password."
-                        },
-                        deleteAdminPriviledgeZone: {
-                            actionTitle: "Revoke Privileges",
-                            header: "Revoke admin privileges",
-                            subheader: "This action will remove the user's admin privileges, " +
-                                "but the user will continue to be in the organization."
-                        }
-                    },
                     dateOfBirth: {
                         placeholder: {
                             part1:"Enter the",

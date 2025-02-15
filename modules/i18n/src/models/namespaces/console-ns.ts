@@ -6751,36 +6751,6 @@ export interface ConsoleNS {
                     };
                 };
                 editUser: {
-                    dangerZoneGroup: {
-                        header: string;
-                        deleteUserZone: {
-                            actionTitle: string;
-                            header: string;
-                            subheader: string;
-                            buttonDisableHint: string;
-                        };
-                        disableUserZone: {
-                            actionTitle: string;
-                            header: string;
-                            subheader: string;
-                        };
-                        lockUserZone: {
-                            actionTitle: string;
-                            header: string;
-                            subheader: string;
-                        };
-                        passwordResetZone: {
-                            actionTitle: string;
-                            header: string;
-                            subheader: string;
-                            buttonHint: string;
-                        };
-                        deleteAdminPriviledgeZone: {
-                            actionTitle: string;
-                            header: string;
-                            subheader: string;
-                        };
-                    };
                     dateOfBirth: {
                         placeholder: {
                             part1: string;
