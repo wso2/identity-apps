@@ -135,8 +135,8 @@ jobs:
         id: install-dependencies
         run: pnpm install
 
-      - name: 🦄 Lint Changed Files
-        id: lint-changed-with-eslint
+      - name: 🦄 Check broken i18n keys
+        id: check-broken-1i8n-in-changed
         working-directory: .github/workflows
         run: |
             SUPPORTED_EXT=(ts tsx)
@@ -150,6 +150,13 @@ jobs:
             # Filter and print files with supported extensions
             changed_files=$(echo "$raw_changed_files" | grep -E "\.($ext_pattern)$" | tr '\n' ' ')
 
+            # Check if changed_files is empty
+            if [ -z "$changed_files" ]; then
+                echo "No files with supported extensions have been changed. Exiting."
+                exit 0
+            fi
+
+            # Run broken i18n check script
             node ./scripts/detect-broken-i18n.mjs "$changed_files"
   
   typecheck:
