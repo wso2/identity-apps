@@ -19,11 +19,8 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getLocalAuthenticator } from "../../../api/authenticators";
-import { getFederatedAuthenticatorDetails } from "../../../api/connections";
 import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import {
@@ -31,12 +28,9 @@ import {
     ConnectionListResponseInterface,
     CustomAuthConnectionInterface,
     CustomAuthGeneralDetailsFormValuesInterface,
-    CustomAuthenticationCreateWizardGeneralFormValuesInterface,
-    ExternalEndpoint,
-    FederatedAuthenticatorListItemInterface
+    CustomAuthenticationCreateWizardGeneralFormValuesInterface
 } from "../../../models/connection";
 import {
-    handleGetCustomAuthenticatorError,
     resolveCustomAuthenticatorDisplayName
 } from "../../../utils/connection-utils";
 
@@ -114,7 +108,6 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
     const { t } = useTranslation();
 
     const [ isCustomLocalAuth, setIsCustomLocalAuth ] = useState<boolean>(undefined);
-    const [ authenticatorEndpoint, setAuthenticatorEndpoint ] = useState<ExternalEndpoint>(null);
 
     const { CONNECTION_TEMPLATE_IDS: ConnectionTemplateIds } = CommonAuthenticatorConstants;
 
@@ -130,35 +123,6 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
         }
     }, [ templateType ]);
 
-    useEffect(() => {
-        if (isCustomLocalAuth === undefined) {
-            return;
-        }
-
-        let localAuthenticatorId: string;
-
-        if (isCustomLocalAuth) {
-
-            localAuthenticatorId = (editingIDP as CustomAuthConnectionInterface)?.id;
-            getLocalAuthenticator(localAuthenticatorId)
-                .then((data: CustomAuthConnectionInterface) => {
-                    setAuthenticatorEndpoint(data?.endpoint);
-                })
-                .catch((error: AxiosError) => {
-                    handleGetCustomAuthenticatorError(error);
-                });
-        } else {
-            localAuthenticatorId = editingIDP?.federatedAuthenticators?.authenticators[0].authenticatorId;
-            getFederatedAuthenticatorDetails(editingIDP.id, localAuthenticatorId)
-                .then((data: FederatedAuthenticatorListItemInterface) => {
-                    setAuthenticatorEndpoint(data?.endpoint);
-                })
-                .catch((error: AxiosError) => {
-                    handleGetCustomAuthenticatorError(error);
-                });
-        }
-    }, [ isCustomLocalAuth ]);
-
     /**
      * Prepare form values for submitting.
      *
@@ -171,7 +135,7 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
             onSubmit({
                 description: values.description?.toString(),
                 displayName: values.displayName?.toString(),
-                endpoint: authenticatorEndpoint,
+                endpoint: (editingIDP as CustomAuthConnectionInterface)?.endpoint,
                 image: values.image?.toString(),
                 isEnabled: values?.isEnabled
             });
