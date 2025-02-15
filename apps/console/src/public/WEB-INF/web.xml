@@ -19,6 +19,11 @@
 
     <display-name>console</display-name>
 
+    <mime-mapping>
+        <extension>json</extension>
+        <mime-type>application/json</mime-type>
+    </mime-mapping>
+
     <error-page>
         <error-code>404</error-code>
         <location>/index.jsp</location>
