@@ -19,8 +19,8 @@
 import { useRequiredScopes } from "@wso2is/access-control";
 import {
     isCustomAuthenticator,
-    isSecondFactorAuthenticator }
-    from "@wso2is/admin.authentication-flow-builder.v1/utils/authentication-flow-builder-utils";
+    isSecondFactorAuthenticator
+} from "@wso2is/admin.authentication-flow-builder.v1/utils/authentication-flow-builder-utils";
 import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
