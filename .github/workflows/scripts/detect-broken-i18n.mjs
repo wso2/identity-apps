@@ -116,7 +116,7 @@ const getPropertyAccessChain = async (args) => {
 
 /* Script logic begins here */
 
-const i18nEnUsLangBundlePath = path.resolve(__dirname, "..", "modules", "i18n", "dist", "bundle", "en-US", "portals");
+const i18nEnUsLangBundlePath = path.resolve(__dirname, "..", "..", "..", "modules", "i18n", "dist", "bundle", "en-US", "portals");
 
 // get file path as cmd argument.
 let filePathsFromArg = process.argv[2]
@@ -153,7 +153,6 @@ for(const relativeFilePath of filePathsFromArg) {
         console.log(`Found t("") call in ${filePath}:`);
 
         const args = call.getArguments();
-        console.log(args[0].getKind())
         const i18nKey = await getPropertyAccessChain(args);
 
         if (!i18nKey) {
