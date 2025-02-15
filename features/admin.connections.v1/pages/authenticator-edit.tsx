@@ -155,8 +155,8 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
         const has2FA: boolean = tags.some((tag: string) => tag.toUpperCase() === AuthenticatorLabels.SECOND_FACTOR);
 
         return has2FA
-            ? ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATION
-            : ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATION;
+            ? ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATOR
+            : ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATOR;
     };
 
     /**
@@ -299,12 +299,12 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
         return (
             <Label size="small">
                 { getCustomLocalAuthTemplateId(connector)
-                    === ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATION ?
+                    === ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATOR ?
                     t(
-                        "customAuthentication:fields.createWizard.authenticationTypeStep." +
+                        "customAuthenticator:fields.createWizard.authenticationTypeStep." +
                     "twoFactorAuthenticationCard.header"
                     ) : t(
-                        "customAuthentication:fields.createWizard.authenticationTypeStep." +
+                        "customAuthenticator:fields.createWizard.authenticationTypeStep." +
                     "internalUserAuthenticationCard.header"
                     ) }
             </Label>
