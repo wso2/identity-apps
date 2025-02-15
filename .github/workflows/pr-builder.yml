@@ -289,6 +289,30 @@ jobs:
         id: build-with-pnpm
         run: pnpm build
 
+      - name: 🦄 Check broken i18n keys
+        id: check-broken-1i8n-in-changed
+        working-directory: .github/workflows
+        run: |
+            SUPPORTED_EXT=(ts tsx)
+
+            # Get the changed files in the PR
+            raw_changed_files=$(gh pr diff "${{ github.event.pull_request.number }}" --name-only)
+
+            # Convert array to a regex pattern (e.g., "ts|tsx")
+            ext_pattern="$(IFS='|'; echo "${SUPPORTED_EXT[*]}")"
+
+            # Filter and print files with supported extensions
+            changed_files=$(echo "$raw_changed_files" | grep -E "\.($ext_pattern)$" | tr '\n' ' ')
+
+            # Check if changed_files is empty
+            if [ -z "$changed_files" ]; then
+                echo "No files with supported extensions have been changed. Exiting."
+                exit 0
+            fi
+
+            # Run broken i18n check script
+            node ./scripts/detect-broken-i18n.mjs "$changed_files"
+
       - name: 🏗️ Maven Build identity-apps-core
         id: build-with-maven
         run: |
@@ -303,3 +327,4 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+  
