@@ -146,7 +146,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
             }
         } catch (ex: any) {
             onAlertFired({
-                description: "Unable to update the application configuration",
+                description: "Error updating the application configuration",
                 level: AlertLevels.ERROR,
                 message: t("Improper JSON format for Android Attestation Service Credentials")
             });
