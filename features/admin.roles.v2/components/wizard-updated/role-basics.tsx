@@ -368,23 +368,13 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             </div>
             {
                 !isDisplayNoAppScopeApplicatioError
-                    ? (
+                    ? roleAudience === RoleAudienceTypes.APPLICATION && (
                         <Alert severity="info">
                             {
-                                !isSubOrg ? (
-                                    roleAudience === RoleAudienceTypes.ORGANIZATION
-                                        ? t("roles:addRoleWizard.forms.roleBasicDetails.notes" +
-                                            ".orgNote")
-                                        : t("roles:addRoleWizard.forms.roleBasicDetails.notes" +
-                                            ".appNote")
                                 // TODO: need to add a learn more for this.
-                                ) : (
-                                    roleAudience === RoleAudienceTypes.ORGANIZATION
-                                        ? t("roles:addRoleWizard.forms.roleBasicDetails.notes.subOrganization" +
-                                            ".orgNote")
-                                        : t("roles:addRoleWizard.forms.roleBasicDetails.notes.subOrganization" +
-                                            ".appNote")
-                                )
+                                !isSubOrg
+                                    ? t("roles:addRoleWizard.forms.roleBasicDetails.notes.appNote")
+                                    : t("roles:addRoleWizard.forms.roleBasicDetails.notes.subOrganization.appNote")
                             }
                         </Alert>
                     ) : (
