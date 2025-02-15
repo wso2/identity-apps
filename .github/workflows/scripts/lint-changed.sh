@@ -45,7 +45,7 @@ command -v gh >/dev/null 2>&1 || { echo >&2 "Error: $0 script requires 'gh' to c
 if [ -n "$GITHUB_PR_NUMBER" ]; then
   raw_changed_files=$(gh pr diff "$GITHUB_PR_NUMBER" --name-only)
 else
-  raw_changed_files=$(git diff --name-only master HEAD)
+  raw_changed_files=$(git diff --name-only origin/master HEAD)
 fi
 
 changed_files=()
