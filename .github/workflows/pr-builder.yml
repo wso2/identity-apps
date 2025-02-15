@@ -36,12 +36,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set upstream
-        id: set-upstream
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        run: |
-          git remote add upstream https://github.com/wso2/identity-apps.git
-
       - name: 🟢 Setup node
         id: setup-node
         uses: actions/setup-node@v2
