@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export interface customAuthenticationNS {
+export interface customAuthenticatorNS {
     fields: {
         createWizard: {
             title: string;

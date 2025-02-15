@@ -61,7 +61,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import {
     deleteConnection,
-    deleteCustomAuthentication,
+    deleteCustomAuthenticator,
     getConnectedApps
 } from "../api/connections";
 import { useGetAuthenticatorConnectedApps } from "../api/use-get-authenticator-connected-apps";
@@ -394,7 +394,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         if(connectionType === ConnectionTypes.IDVP) {
             deleteAuthenticator = deleteIdentityVerificationProvider;
         } else if (ConnectionsManagementUtils.IsCustomLocalAuthenticator(deletingIDP)) {
-            deleteAuthenticator = deleteCustomAuthentication;
+            deleteAuthenticator = deleteCustomAuthenticator;
         } else {
             deleteAuthenticator = deleteConnection;
         }
