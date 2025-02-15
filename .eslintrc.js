@@ -367,6 +367,9 @@ module.exports = {
         "react/no-children-prop": 0,
         "react/no-danger": 2,
         "react/prop-types": 1,
+        "react/require-default-props": [ "warn", {
+            functions: "defaultArguments"
+        } ],
         semi: 1,
         "sort-imports": [
             "warn",
