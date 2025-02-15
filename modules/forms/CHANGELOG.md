@@ -1,5 +1,12 @@
 # @wso2is/forms
 
+## 2.3.20
+
+### Patch Changes
+
+- Updated dependencies [[`ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578`](https://github.com/wso2/identity-apps/commit/ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578)]:
+  - @wso2is/core@2.6.4
+
 ## 2.3.19
 
 ### Patch Changes
