@@ -995,6 +995,12 @@ export interface ApplicationsNS {
                                 empty: string;
                                 invalid: string;
                             };
+                            errors: {
+                                invalid: {
+                                    message: string;
+                                    description: string;
+                                }
+                            }
                         };
                     };
                 };

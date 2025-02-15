@@ -146,9 +146,13 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
             }
         } catch (ex: any) {
             onAlertFired({
-                description: "Error updating the application configuration",
+                description: t("applications:forms." +
+                    "advancedConfig.sections.clientAttestation.fields." +
+                    "androidAttestationServiceCredentials.errors.invalid.description"),
                 level: AlertLevels.ERROR,
-                message: t("Improper JSON format for Android Attestation Service Credentials")
+                message: t("applications:forms." +
+                    "advancedConfig.sections.clientAttestation.fields." +
+                    "androidAttestationServiceCredentials.errors.invalid.message")
             });
 
             return;
@@ -254,7 +258,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                     && Object.keys(androidAttestationServiceCredentialsObject).length) {
 
                     errors.androidPackageName = t("applications:forms.advancedConfig." +
-                        "sections.platformSettings.fields." +
+                        "sections.platformSettings.field." +
                         "android.fields.androidPackageName.validations.emptyForAttestation");
                 } else if (values.androidPackageName?.toString().trim()
                     && !Object.keys(androidAttestationServiceCredentialsObject).length) {

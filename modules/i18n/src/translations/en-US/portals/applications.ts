@@ -1203,6 +1203,12 @@ export const applications: ApplicationsNS = {
                             validations: {
                                 empty: "Google service account credentials are required for client attestation.",
                                 invalid: "Invalid Google service account credentials"
+                            },
+                            errors: {
+                                invalid: {
+                                    message: "Error updating the application configuration",
+                                    description: "Improper JSON format for Android Attestation Service Credentials"
+                                }
                             }
                         }
                     }
