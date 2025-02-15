@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -218,7 +218,16 @@ export class AuthenticatorMeta {
                 "addAuthenticatorModal.content.authenticatorGroups.social.heading",
             [ AuthenticatorCategories.RECOVERY ]: "applications:edit.sections.signOnMethod.sections."+
             "authenticationFlow.sections.stepBased." +
-                "addAuthenticatorModal.content.authenticatorGroups.backupCodes.heading"
+                "addAuthenticatorModal.content.authenticatorGroups.backupCodes.heading",
+            [ AuthenticatorCategories.EXTERNAL ]: "applications:edit.sections.signOnMethod.sections."+
+            "authenticationFlow.sections.stepBased." +
+                "addAuthenticatorModal.content.authenticatorGroups.external.heading",
+            [ AuthenticatorCategories.INTERNAL ]: "applications:edit.sections.signOnMethod.sections."+
+            "authenticationFlow.sections.stepBased." +
+                "addAuthenticatorModal.content.authenticatorGroups.internal.heading",
+            [ AuthenticatorCategories.TWO_FACTOR_CUSTOM ]: "applications:edit.sections.signOnMethod.sections."+
+            "authenticationFlow.sections.stepBased." +
+                "addAuthenticatorModal.content.authenticatorGroups.twoFactorCustom.heading"
         }, type);
     }
 

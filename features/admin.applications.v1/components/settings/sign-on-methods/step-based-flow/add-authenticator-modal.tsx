@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -103,6 +103,9 @@ export interface AddAuthenticatorModalPropsInterface extends TestableComponentIn
         enterprise: GenericAuthenticatorInterface[];
         secondFactor: GenericAuthenticatorInterface[];
         recovery: GenericAuthenticatorInterface[];
+        external: GenericAuthenticatorInterface[];
+        internal: GenericAuthenticatorInterface[];
+        twoFactorCustom: GenericAuthenticatorInterface[];
     };
     /**
      * Configured authentication steps.
@@ -272,7 +275,16 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.ENTERPRISE))),
             ...moderateAuthenticators(unfilteredAuthenticators.recovery,
                 AuthenticatorCategories.RECOVERY,
-                t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.RECOVERY)))
+                t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.RECOVERY))),
+            ...moderateAuthenticators(unfilteredAuthenticators.external,
+                AuthenticatorCategories.EXTERNAL,
+                t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.EXTERNAL))),
+            ...moderateAuthenticators(unfilteredAuthenticators.internal,
+                AuthenticatorCategories.INTERNAL,
+                t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.INTERNAL))),
+            ...moderateAuthenticators(unfilteredAuthenticators.twoFactorCustom,
+                AuthenticatorCategories.TWO_FACTOR_CUSTOM,
+                t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.TWO_FACTOR_CUSTOM)))
         ];
 
         // Remove organization SSO authenticator from the list, as organization SSO authenticator
