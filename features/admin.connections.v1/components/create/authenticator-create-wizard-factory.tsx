@@ -337,7 +337,8 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                     <ExpertModeAuthenticationProviderCreateWizard
                         title={
                             selectedTemplateWithUniqueName?.name === "Expert Mode"
-                                ? "Custom Connector"
+                                ? t("authenticationProvider:overrides.authenticators.customAuthenticators." +
+                                    "pluginBased.name")
                                 : selectedTemplateWithUniqueName?.name
                         }
                         subTitle={ selectedTemplateWithUniqueName?.description }
