@@ -380,6 +380,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         setIsSubmitting(true);
 
         updateCustomAuthenticator(editingIDP.id, {
+            description: (editingIDP as CustomAuthConnectionInterface)?.description,
             displayName: (editingIDP as CustomAuthConnectionInterface)?.displayName,
             endpoint: {
                 authentication: {
@@ -387,6 +388,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                 },
                 uri: (editingIDP as CustomAuthConnectionInterface).endpoint?.uri
             },
+            image: (editingIDP as CustomAuthConnectionInterface)?.image,
             ...(updatedDetails as CustomAuthConnectionInterface)
         })
             .then(() => {
