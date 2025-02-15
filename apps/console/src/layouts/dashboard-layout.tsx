@@ -320,7 +320,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
         const featureFlag: FeatureFlagsInterface = config?.featureFlags?.find(
             (featureFlag: FeatureFlagsInterface) => featureFlag.feature === featureKey);
 
-        if (featureFlag?.subOrgsOnly === "true" && !isSubOrganization()) {
+        if (featureFlag?.subOrgsOnly === "TRUE" && !isSubOrganization()) {
             return null;
         }
 
