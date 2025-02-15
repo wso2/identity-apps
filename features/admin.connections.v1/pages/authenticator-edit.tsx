@@ -179,7 +179,7 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
                                 description: error.response.data.description
                             }),
                             level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:" + "notifications.getIDP.error.message")
+                            message: t("authenticationProvider:notifications.getIDP.error.message")
                         })
                     );
 
@@ -188,9 +188,9 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
 
                 dispatch(
                     addAlert({
-                        description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
+                        description: t("authenticationProvider:notifications.getIDP.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
+                        message: t("authenticationProvider:notifications.getIDP.genericError.message")
                     })
                 );
             })
@@ -254,15 +254,15 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
             return (
                 <LabelWithPopup
                     popupHeader={ t("authenticationProvider:popups.appStatus.enabled.header") }
-                    popupSubHeader={ t("authenticationProvider:popups.appStatus." + "enabled.content") }
+                    popupSubHeader={ t("authenticationProvider:popups.appStatus.enabled.content") }
                     labelColor="green"
                 />
             );
         } else {
             return (
                 <LabelWithPopup
-                    popupHeader={ t("authenticationProvider:popups.appStatus." + "disabled.header") }
-                    popupSubHeader={ t("authenticationProvider:popups.appStatus." + "disabled.content") }
+                    popupHeader={ t("authenticationProvider:popups.appStatus.disabled.header") }
+                    popupSubHeader={ t("authenticationProvider:popups.appStatus.disabled.content") }
                     labelColor="grey"
                 />
             );
