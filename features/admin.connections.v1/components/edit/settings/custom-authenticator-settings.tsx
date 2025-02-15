@@ -183,6 +183,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
         authProperties: Partial<AuthenticationPropertiesInterface>
     ) => {
         const updatingValues: EndpointAuthenticationUpdateInterface = {
+            description: connector.description,
             displayName: resolveDisplayName(),
             endpoint: {
                 authentication: {
@@ -191,6 +192,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                 },
                 uri: values?.endpointUri
             },
+            image: connector.image,
             isEnabled: connector.isEnabled,
             isPrimary: connector.isPrimary
         };
