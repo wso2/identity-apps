@@ -135,6 +135,7 @@ const brokenI18nErrorMessages = []
 const i18nManualReviewFlags = []
 
 for(const filePath of filePathsFromArg) {
+  console.log(filePath)
   if (!isTSFile(filePath)) {
     console.warn("Invalid file: " + filePath);
     continue;
