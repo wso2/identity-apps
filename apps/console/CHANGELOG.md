@@ -1,5 +1,65 @@
 # @wso2is/console
 
+## 2.41.26
+
+### Patch Changes
+
+- [#7555](https://github.com/wso2/identity-apps/pull/7555) [`28ce00c62618b523387d3b81812903b4028db804`](https://github.com/wso2/identity-apps/commit/28ce00c62618b523387d3b81812903b4028db804) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add mobile number verification on update expiry time
+
+- Updated dependencies [[`28ce00c62618b523387d3b81812903b4028db804`](https://github.com/wso2/identity-apps/commit/28ce00c62618b523387d3b81812903b4028db804), [`dc82f34bd265ad68d8ddaeb857e91eccafe25c4f`](https://github.com/wso2/identity-apps/commit/dc82f34bd265ad68d8ddaeb857e91eccafe25c4f)]:
+  - @wso2is/admin.claims.v1@2.27.77
+  - @wso2is/i18n@2.19.14
+  - @wso2is/admin.users.v1@2.30.77
+  - @wso2is/admin.alternative-login-identifier.v1@1.5.167
+  - @wso2is/admin.applications.v1@2.31.15
+  - @wso2is/admin.connections.v1@2.33.50
+  - @wso2is/admin.core.v1@2.38.36
+  - @wso2is/admin.extensions.v1@2.36.92
+  - @wso2is/admin.identity-verification-providers.v1@2.27.167
+  - @wso2is/admin.oidc-scopes.v1@2.25.167
+  - @wso2is/admin.remote-userstores.v1@1.7.123
+  - @wso2is/admin.actions.v1@1.11.32
+  - @wso2is/admin.authentication.v1@2.25.167
+  - @wso2is/admin.authorization.v1@2.25.72
+  - @wso2is/admin.branding.v1@2.28.24
+  - @wso2is/admin.certificates.v1@2.25.167
+  - @wso2is/admin.console-settings.v1@2.25.167
+  - @wso2is/admin.email-and-sms.v1@2.25.167
+  - @wso2is/admin.email-management.v1@2.25.167
+  - @wso2is/admin.email-providers.v1@2.25.167
+  - @wso2is/admin.groups.v1@2.27.77
+  - @wso2is/admin.home.v1@1.6.167
+  - @wso2is/admin.impersonation.v1@1.6.167
+  - @wso2is/admin.logs.v1@1.5.168
+  - @wso2is/admin.org-insights.v1@2.25.167
+  - @wso2is/admin.organization-discovery.v1@2.25.167
+  - @wso2is/admin.organizations.v1@2.26.167
+  - @wso2is/admin.policy-administration.v1@1.0.83
+  - @wso2is/admin.private-key-jwt.v1@2.25.167
+  - @wso2is/admin.remote-repository-configuration.v1@2.25.167
+  - @wso2is/admin.roles.v1@2.25.167
+  - @wso2is/admin.roles.v2@2.27.111
+  - @wso2is/admin.saml2-configuration.v1@2.25.167
+  - @wso2is/admin.secrets.v1@2.25.167
+  - @wso2is/admin.server-configurations.v1@2.32.92
+  - @wso2is/admin.session-management.v1@2.25.167
+  - @wso2is/admin.sms-providers.v1@2.25.167
+  - @wso2is/admin.sms-templates.v1@1.0.166
+  - @wso2is/admin.tenants.v1@2.28.141
+  - @wso2is/admin.userstores.v1@2.26.126
+  - @wso2is/admin.validation.v1@2.27.105
+  - @wso2is/admin.workflow-approvals.v1@2.25.167
+  - @wso2is/admin.wsfed-configuration.v1@2.25.167
+  - @wso2is/admin.administrators.v1@2.29.167
+  - @wso2is/admin.application-templates.v1@1.4.167
+  - @wso2is/admin.username-validation.v1@1.5.167
+  - @wso2is/admin.api-resources.v1@2.25.167
+  - @wso2is/admin.api-resources.v2@2.25.167
+  - @wso2is/admin.feature-gate.v1@1.4.167
+  - @wso2is/admin.push-providers.v1@1.0.56
+  - @wso2is/admin.subscription.v1@1.5.167
+  - @wso2is/admin.template-core.v1@1.5.121
+
 ## 2.41.25
 
 ### Patch Changes

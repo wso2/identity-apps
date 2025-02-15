@@ -1,5 +1,22 @@
 # @wso2is/admin.claims.v1
 
+## 2.27.77
+
+### Patch Changes
+
+- [#7555](https://github.com/wso2/identity-apps/pull/7555) [`28ce00c62618b523387d3b81812903b4028db804`](https://github.com/wso2/identity-apps/commit/28ce00c62618b523387d3b81812903b4028db804) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add mobile number verification on update expiry time
+
+- Updated dependencies [[`28ce00c62618b523387d3b81812903b4028db804`](https://github.com/wso2/identity-apps/commit/28ce00c62618b523387d3b81812903b4028db804), [`dc82f34bd265ad68d8ddaeb857e91eccafe25c4f`](https://github.com/wso2/identity-apps/commit/dc82f34bd265ad68d8ddaeb857e91eccafe25c4f)]:
+  - @wso2is/admin.claims.v1@2.27.77
+  - @wso2is/i18n@2.19.14
+  - @wso2is/admin.users.v1@2.30.77
+  - @wso2is/admin.core.v1@2.38.36
+  - @wso2is/admin.extensions.v1@2.36.92
+  - @wso2is/admin.organizations.v1@2.26.167
+  - @wso2is/admin.server-configurations.v1@2.32.92
+  - @wso2is/admin.userstores.v1@2.26.126
+  - @wso2is/admin.validation.v1@2.27.105
+
 ## 2.27.76
 
 ### Patch Changes
