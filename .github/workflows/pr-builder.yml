@@ -289,73 +289,6 @@ jobs:
         id: build-with-pnpm
         run: pnpm build
 
-      - name: 🏗️ Maven Build identity-apps-core
-        id: build-with-maven
-        run: |
-          cd identity-apps-core
-          mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
-
-      - name: 💾 Cache local Maven repository
-        id: cache-maven-m2
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-  i18n:
-    name: ⬣ Detect Broken
-    needs: [ 'build' ]
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ lts/* ]
-        pnpm-version: [ 8.7.4 ]
-    steps:
-      - name: ⬇️ Checkout
-        id: checkout
-        uses: actions/checkout@v2.3.3
-        with:
-          fetch-depth: 0
-
-      - name: 🟢 Setup node
-        id: setup-node
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: 🐳 Set SHAs for Nx
-        id: set-shas
-        uses: nrwl/nx-set-shas@v3
-        with:
-          main-branch-name: "master"
-
-      - name: 🥡 Setup pnpm
-        id: setup-pnpm
-        uses: pnpm/action-setup@v2.1.0
-        with:
-          version: ${{ matrix.pnpm-version }}
-          run_install: false
-
-      - name: 🎈 Get pnpm store directory
-        id: get-pnpm-cache-dir
-        run: |
-          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
-
-      - name: 🔆 Cache pnpm modules
-        uses: actions/cache@v3
-        id: pnpm-cache
-        with:
-          path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: 🧩 Install Dependencies
-        id: install-dependencies
-        run: pnpm install
-
       - name: 🦄 Check broken i18n keys
         id: check-broken-1i8n-in-changed
         working-directory: .github/workflows
@@ -379,4 +312,19 @@ jobs:
 
             # Run broken i18n check script
             node ./scripts/detect-broken-i18n.mjs "$changed_files"
+
+      - name: 🏗️ Maven Build identity-apps-core
+        id: build-with-maven
+        run: |
+          cd identity-apps-core
+          mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
+
+      - name: 💾 Cache local Maven repository
+        id: cache-maven-m2
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
   
