@@ -1,5 +1,16 @@
 # @wso2is/i18n
 
+## 2.19.15
+
+### Patch Changes
+
+- [#7624](https://github.com/wso2/identity-apps/pull/7624) [`484542389020cc30563621fcb420fd814214b121`](https://github.com/wso2/identity-apps/commit/484542389020cc30563621fcb420fd814214b121) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Rename all string occurrences from "authentication" to "authenticator" for consistency
+
+* [#7621](https://github.com/wso2/identity-apps/pull/7621) [`84aeb0b9b3edd7c4d1db93631b4c73db50426525`](https://github.com/wso2/identity-apps/commit/84aeb0b9b3edd7c4d1db93631b4c73db50426525) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Add New Login Flow Authenticator Categories related to Custom Authenticators
+
+* Updated dependencies [[`ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578`](https://github.com/wso2/identity-apps/commit/ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578)]:
+  - @wso2is/core@2.6.4
+
 ## 2.19.14
 
 ### Patch Changes

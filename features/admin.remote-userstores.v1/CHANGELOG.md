@@ -1,5 +1,22 @@
 # @wso2is/admin.remote-userstores.v1
 
+## 1.7.124
+
+### Patch Changes
+
+- Updated dependencies [[`484542389020cc30563621fcb420fd814214b121`](https://github.com/wso2/identity-apps/commit/484542389020cc30563621fcb420fd814214b121), [`84aeb0b9b3edd7c4d1db93631b4c73db50426525`](https://github.com/wso2/identity-apps/commit/84aeb0b9b3edd7c4d1db93631b4c73db50426525), [`ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578`](https://github.com/wso2/identity-apps/commit/ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578), [`97b2bd85075f00752190f276e496f272177b13ba`](https://github.com/wso2/identity-apps/commit/97b2bd85075f00752190f276e496f272177b13ba)]:
+  - @wso2is/admin.core.v1@2.38.37
+  - @wso2is/admin.applications.v1@2.31.16
+  - @wso2is/admin.extensions.v1@2.36.93
+  - @wso2is/core@2.6.4
+  - @wso2is/admin.users.v1@2.30.78
+  - @wso2is/admin.claims.v1@2.27.78
+  - @wso2is/admin.userstores.v1@2.26.127
+  - @wso2is/admin.validation.v1@2.27.106
+  - @wso2is/form@2.6.31
+  - @wso2is/forms@2.3.20
+  - @wso2is/react-components@2.9.9
+
 ## 1.7.123
 
 ### Patch Changes

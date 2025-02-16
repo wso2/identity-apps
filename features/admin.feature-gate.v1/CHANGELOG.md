@@ -1,5 +1,17 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.4.168
+
+### Patch Changes
+
+- [#7626](https://github.com/wso2/identity-apps/pull/7626) [`ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578`](https://github.com/wso2/identity-apps/commit/ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add support to configure feature flags for sub-organizations.
+
+- Updated dependencies [[`484542389020cc30563621fcb420fd814214b121`](https://github.com/wso2/identity-apps/commit/484542389020cc30563621fcb420fd814214b121), [`ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578`](https://github.com/wso2/identity-apps/commit/ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578)]:
+  - @wso2is/admin.core.v1@2.38.37
+  - @wso2is/core@2.6.4
+  - @wso2is/admin.organizations.v1@2.26.168
+  - @wso2is/access-control@3.3.18
+
 ## 1.4.167
 
 ### Patch Changes
