@@ -103,7 +103,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
     );
 
     const isMobileNumberVerificationByPrivilegedUsersSupported: boolean =
-        isFeatureEnabled(featureConfig?.attributeDialects,
+        isFeatureEnabled(featureConfig?.attributeVerification,
             ClaimManagementConstants.FEATURE_DICTIONARY.get("MOBILE_VERIFICATION_BY_PRIVILEGED_USERS"));
 
     if (!isMobileNumberVerificationByPrivilegedUsersSupported) {
