@@ -87,7 +87,7 @@ const dynamicImport = async (namespace) => {
 
     // Dynamically import the JSON file
     const importedData = await import(filePath, {
-      assert: { type: "json" },
+      with: { type: "json" },
     });
 
     return importedData.default || importedData;
