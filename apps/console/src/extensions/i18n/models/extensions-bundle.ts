@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export interface ExtensionsBundle { 
+export interface ExtensionsBundle {
     name: string;
     extensions: any;
 }
