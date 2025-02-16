@@ -168,7 +168,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { organizationType, isSubOrganization } = useGetCurrentOrganizationType();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
@@ -519,8 +519,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     ? user?.userName?.split("/")[0]
                     : userstoresConfig.primaryUserstoreName;
 
-                if (isSubOrganization() 
-                        && user[SCIMConfigs?.scim?.systemSchema]?.sharedType 
+                if (isSubOrganization()
+                        && user[SCIMConfigs?.scim?.systemSchema]?.sharedType
                         && user[SCIMConfigs?.scim?.systemSchema]?.sharedType!=UserSharedType.INVITED
                 ) {
                     return true;
