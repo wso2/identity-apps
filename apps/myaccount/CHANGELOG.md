@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.17.28
+
+### Patch Changes
+
+- [#7636](https://github.com/wso2/identity-apps/pull/7636) [`64b957d696e6e3504f21bf8dac690edea49dee0a`](https://github.com/wso2/identity-apps/commit/64b957d696e6e3504f21bf8dac690edea49dee0a) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix attribute sorting in user profiles
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.169
+  - @wso2is/common.branding.v1@2.26.26
+
 ## 2.17.27
 
 ### Patch Changes
