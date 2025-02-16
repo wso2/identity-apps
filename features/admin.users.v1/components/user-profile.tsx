@@ -304,28 +304,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     useEffect(() => {
 
         const getDisplayOrder = (schema: ProfileSchemaInterface): number => {
+            if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")) return 0;
             if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
                 && (!schema.displayOrder || schema.displayOrder == "0")) return 6;
             if (schema.name === MOBILE_NUMBERS_ATTRIBUTE
                 && (!schema.displayOrder || schema.displayOrder == "0")) return 7;
+            if (!schema.displayOrder || schema.displayOrder == "0") return Number.MAX_SAFE_INTEGER;
 
-            return schema.displayOrder ? parseInt(schema.displayOrder, 10) : -1;
+            return schema.displayOrder ? parseInt(schema.displayOrder, 10) : Number.MAX_SAFE_INTEGER;
         };
 
         const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
             .filter((item: ProfileSchemaInterface) =>
                 item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"))
             .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
-                const orderA: number = getDisplayOrder(a);
-                const orderB: number = getDisplayOrder(b);
-
-                if (orderA === -1) {
-                    return -1;
-                } else if (orderB === -1) {
-                    return 1;
-                } else {
-                    return orderA - orderB;
-                }
+                return getDisplayOrder(a) - getDisplayOrder(b);
             });
 
         setProfileSchema(sortedSchemas);
