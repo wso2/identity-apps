@@ -256,20 +256,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ primaryValues, setPrimaryValues ] = useState<Record<string, string>>({}); // For multi-valued attributes.
     const [ isMultiValuedItemInvalid, setIsMultiValuedItemInvalid ] =  useState<Record<string, boolean>>({});
 
-    // Multi-valued attribute delete confirmation modal related states.
-    const [ selectedAttributeInfo, setSelectedAttributeInfo ] =
-        useState<{ value: string; schema?: ProfileSchemaInterface }>({ value: "" });
-    const [ showMultiValuedItemDeleteConfirmationModal, setShowMultiValuedItemDeleteConfirmationModal ] =
-        useState<boolean>(false);
-    const handleMultiValuedItemDeleteModalClose: () => void = useCallback(() => {
-        setShowMultiValuedItemDeleteConfirmationModal(false);
-        setSelectedAttributeInfo({ value: "" });
-    }, []);
-    const handleMultiValuedItemDeleteConfirmClick: ()=> void = useCallback(() => {
-        handleMultiValuedItemDelete(selectedAttributeInfo.schema, selectedAttributeInfo.value);
-        handleMultiValuedItemDeleteModalClose();
-    }, [ selectedAttributeInfo, handleMultiValuedItemDeleteModalClose ]);
-
     const isMultipleEmailAndMobileNumberEnabled: boolean = useMemo(() => {
         return isMultipleEmailsAndMobileNumbersEnabled(profileInfo,profileSchema);
     }, [ profileSchema, profileInfo ]);
@@ -883,19 +869,22 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         const tempPrimaryMobile: string = primaryValues[MOBILE_ATTRIBUTE];
         const mobileNumbersInputFieldValue: string = multiValuedInputFieldValue[MOBILE_NUMBERS_ATTRIBUTE];
 
-        if (!isEmpty(tempPrimaryMobile)) {
+        if (tempPrimaryMobile !== undefined && tempPrimaryMobile !== null) {
             values.set(MOBILE_ATTRIBUTE, tempPrimaryMobile);
-        } else if (!isEmpty(mobileNumbersInputFieldValue)) {
+        }
+
+        if (isEmpty(tempPrimaryMobile) && !isEmpty(mobileNumbersInputFieldValue)) {
             values.set(MOBILE_ATTRIBUTE, mobileNumbersInputFieldValue);
         }
 
-        const tempPrimaryEmail: string = primaryValues[EMAIL_ATTRIBUTE];
-        const newEmail: string = multiValuedInputFieldValue[EMAIL_ADDRESSES_ATTRIBUTE];
+        const tempPrimaryEmail: string = primaryValues[EMAIL_ATTRIBUTE] ?? "";
+        const emailsInputFieldValue: string = multiValuedInputFieldValue[EMAIL_ADDRESSES_ATTRIBUTE];
 
-        if (!isEmpty(tempPrimaryEmail)) {
+        if (tempPrimaryEmail !== undefined && tempPrimaryEmail !== null) {
             values.set(EMAIL_ATTRIBUTE, tempPrimaryEmail);
-        } else if (!isEmpty(newEmail)) {
-            values.set(EMAIL_ATTRIBUTE, newEmail);
+        }
+        if (isEmpty(tempPrimaryEmail) && !isEmpty(emailsInputFieldValue)) {
+            values.set(EMAIL_ATTRIBUTE, emailsInputFieldValue);
         }
     };
 
@@ -1636,7 +1625,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             };
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             translationKey = "user:profile.notifications.verifyMobile.";
-            setSelectedAttributeInfo({ schema, value: attributeValue });
             const verifiedMobileList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
                 get("VERIFIED_MOBILE_NUMBERS"))?.split(",") || [];
 
@@ -2000,8 +1988,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                         size="small"
                                                         hidden={ !showDeleteButton(value) }
                                                         onClick={ () => {
-                                                            setSelectedAttributeInfo({ schema, value });
-                                                            setShowMultiValuedItemDeleteConfirmationModal(true);
+                                                            handleMultiValuedItemDelete(schema, value);
                                                         } }
                                                         data-componentid={
                                                             `${testId}-profile-form` +
@@ -2407,60 +2394,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         );
     };
 
-    /**
-     * This methods generates and returns the delete confirmation modal.
-     *
-     * @returns ReactElement Generates the delete confirmation modal.
-     */
-    const generateDeleteConfirmationModalForMultiValuedField = (): JSX.Element => {
-        if (isEmpty(selectedAttributeInfo?.value)) {
-            return null;
-        }
-
-        const translationKey: string = "user:profile.confirmationModals.deleteAttributeConfirmation.";
-        let attributeDisplayName: string = "";
-        let primaryAttributeSchema: ProfileSchemaInterface;
-
-        if (selectedAttributeInfo?.schema?.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
-                schema.name === EMAIL_ATTRIBUTE);
-        } else if (selectedAttributeInfo?.schema?.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
-                schema.name === MOBILE_ATTRIBUTE);
-        }
-        attributeDisplayName = primaryAttributeSchema?.displayName;
-
-        return (
-            <ConfirmationModal
-                data-componentid={ `${testId}-confirmation-modal` }
-                onClose={ handleMultiValuedItemDeleteModalClose }
-                type="negative"
-                open={ Boolean(selectedAttributeInfo?.value) }
-                assertionHint={ t(`${translationKey}assertionHint`) }
-                assertionType="checkbox"
-                primaryAction={ t("common:confirm") }
-                secondaryAction={ t("common:cancel") }
-                onSecondaryActionClick={ handleMultiValuedItemDeleteModalClose }
-                onPrimaryActionClick={ handleMultiValuedItemDeleteConfirmClick }
-                closeOnDimmerClick={ false }
-            >
-                <ConfirmationModal.Header data-componentid={ `${testId}-confirmation-modal-header` }>
-                    { t(`${translationKey}heading`) }
-                </ConfirmationModal.Header>
-                <ConfirmationModal.Message
-                    data-componentid={ `${testId}-confirmation-modal-message` }
-                    attached
-                    negative
-                >
-                    { t(`${translationKey}description`, { attributeDisplayName }) }
-                </ConfirmationModal.Message>
-                <ConfirmationModal.Content data-componentid={ `${testId}-confirmation-modal-content` }>
-                    { t(`${translationKey}content`, { attributeDisplayName }) }
-                </ConfirmationModal.Content>
-            </ConfirmationModal>
-        );
-    };
-
     /*
      * Resolves the user account locked reason text.
      * @returns The resolved account locked reason in readable text.
@@ -2759,9 +2692,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             </ConfirmationModal.Content>
                         </ConfirmationModal>
                     )
-                }
-                {
-                    showMultiValuedItemDeleteConfirmationModal && generateDeleteConfirmationModalForMultiValuedField()
                 }
                 <ChangePasswordComponent
                     handleForcePasswordResetTrigger={ null }
