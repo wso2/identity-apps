@@ -41,7 +41,6 @@ MAX_FILE_THRESHOLD_FOR_LINTER=30
 command -v pnpm >/dev/null 2>&1 || { echo >&2 "Error: $0 script requires 'pnpm' for buid.  Aborting as not found."; exit 1; }
 command -v gh >/dev/null 2>&1 || { echo >&2 "Error: $0 script requires 'gh' to call GitHub APIs.  Aborting as not found."; exit 1; }
 
-
 if [ -n "$GITHUB_PR_NUMBER" ]; then
   raw_changed_files=$(gh pr diff "$GITHUB_PR_NUMBER" --name-only)
 else
