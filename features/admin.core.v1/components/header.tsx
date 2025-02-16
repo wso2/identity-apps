@@ -128,8 +128,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
 
     const {
         data: myAccountApplicationData,
-        isLoading: isMyAccountApplicationDataFetchRequestLoading
-    } = useMyAccountApplicationData();
+        isLoading: isMyAccountAppDataLoading
+    } = useMyAccountApplicationData(null, showAppSwitchButton);
 
     useEffect(() => {
         if (saasFeatureStatus === FeatureStatus.DISABLED) {
@@ -321,8 +321,11 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
             return false;
         }
 
-        return (!userOrganizationID || userOrganizationID === window["AppUtils"].getConfig().organizationName) &&
-            (!isMyAccountApplicationDataFetchRequestLoading && myAccountApplicationData?.applications?.length !== 0);
+        if (isMyAccountAppDataLoading || myAccountApplicationData?.applications?.length === 0) {
+            return false;
+        }
+
+        return !userOrganizationID || userOrganizationID === window["AppUtils"].getConfig().organizationName;
     };
 
     /**
