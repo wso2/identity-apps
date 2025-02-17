@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.rules.v1",
-    "version": "0.3.41",
+    "version": "0.3.42",
     "description": "Manage conditional rules.",
     "author": "WSO2",
     "license": "Apache-2.0",
