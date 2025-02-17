@@ -1,5 +1,29 @@
 # @wso2is/admin.users.v1
 
+## 2.30.80
+
+### Patch Changes
+
+- [#7616](https://github.com/wso2/identity-apps/pull/7616) [`588d8475fc682f241b92a3ee7a8759fa7f2ce840`](https://github.com/wso2/identity-apps/commit/588d8475fc682f241b92a3ee7a8759fa7f2ce840) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix UI issues with readonly user stores' user view
+
+- Updated dependencies [[`588d8475fc682f241b92a3ee7a8759fa7f2ce840`](https://github.com/wso2/identity-apps/commit/588d8475fc682f241b92a3ee7a8759fa7f2ce840)]:
+  - @wso2is/admin.users.v1@2.30.80
+  - @wso2is/i18n@2.19.16
+  - @wso2is/admin.authentication.v1@2.25.170
+  - @wso2is/admin.claims.v1@2.27.80
+  - @wso2is/admin.core.v1@2.38.39
+  - @wso2is/admin.extensions.v1@2.36.95
+  - @wso2is/admin.groups.v1@2.27.80
+  - @wso2is/admin.organizations.v1@2.26.170
+  - @wso2is/admin.roles.v2@2.27.114
+  - @wso2is/admin.server-configurations.v1@2.32.95
+  - @wso2is/admin.tenants.v1@2.28.144
+  - @wso2is/admin.validation.v1@2.27.108
+  - @wso2is/admin.authorization.v1@2.25.74
+  - @wso2is/admin.identity-providers.v1@2.26.170
+  - @wso2is/admin.userstores.v1@2.26.129
+  - @wso2is/admin.feature-gate.v1@1.4.170
+
 ## 2.30.79
 
 ### Patch Changes

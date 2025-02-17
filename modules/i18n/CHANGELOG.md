@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.19.16
+
+### Patch Changes
+
+- [#7616](https://github.com/wso2/identity-apps/pull/7616) [`588d8475fc682f241b92a3ee7a8759fa7f2ce840`](https://github.com/wso2/identity-apps/commit/588d8475fc682f241b92a3ee7a8759fa7f2ce840) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix UI issues with readonly user stores' user view
+
 ## 2.19.15
 
 ### Patch Changes
