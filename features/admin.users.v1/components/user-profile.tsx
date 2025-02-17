@@ -97,6 +97,7 @@ import {
 import "./user-profile.scss";
 import {
     constructPatchOpValueForMultiValuedAttribute,
+    getDisplayOrder,
     isMultipleEmailsAndMobileNumbersEnabled
 } from "../utils/user-management-utils";
 
@@ -302,17 +303,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * Sort the elements of the profileSchema state accordingly by the displayOrder attribute in the ascending order.
      */
     useEffect(() => {
-
-        const getDisplayOrder = (schema: ProfileSchemaInterface): number => {
-            if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")) return 0;
-            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
-                && (!schema.displayOrder || schema.displayOrder == "0")) return 6;
-            if (schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                && (!schema.displayOrder || schema.displayOrder == "0")) return 7;
-            if (!schema.displayOrder || schema.displayOrder == "0") return Number.MAX_SAFE_INTEGER;
-
-            return schema.displayOrder ? parseInt(schema.displayOrder, 10) : Number.MAX_SAFE_INTEGER;
-        };
 
         const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
             .filter((item: ProfileSchemaInterface) =>
