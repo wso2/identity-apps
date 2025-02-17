@@ -319,6 +319,31 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
         setSearchQuery("");
     };
 
+
+    const resolveFilterAttributeOptions = (): DropdownChild[] => {
+        const filterAttributeOptions: DropdownChild[] = [
+            {
+                key: 0,
+                text: t("users:advancedSearch.form.dropdown." + "filterAttributeOptions.username"),
+                value: "userName"
+            }
+        ];
+
+        userSearchAttributes?.map((attribute: DropdownChild) => {
+            const i8nKey: string = "console:manage.features.users.advancedSearch.form.dropdown." +
+                "filterAttributeOptions." + camelCase(attribute.text.toString());
+            const i18nSupportedDisplayVal: string = t(i8nKey, { defaultValue: attribute.text.toString() });
+
+            filterAttributeOptions.push({
+                key: attribute.value,
+                text: i18nSupportedDisplayVal,
+                value: attribute.value
+            });
+        });
+
+        return filterAttributeOptions;
+    };
+
     const renderAdministratorAddOptions = (): ReactElement => {
 
         const isCurrentOrgSubOrganization: boolean = isSubOrganization();
@@ -456,18 +481,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
             advancedSearch={ (
                 <AdvancedSearchWithBasicFilters
                     onFilter={ handleListFilter }
-                    filterAttributeOptions={ userSearchAttributes.map((attribute:DropdownChild): DropdownChild => {
-                        const i8nKey: string =
-                        "console:manage.features.users.advancedSearch.form.dropdown.filterAttributeOptions."
-                        + camelCase(attribute.text.toString());
-                        const i18nSupportedDisplayVal:string = t(i8nKey, { defaultValue: attribute.text.toString() });
-
-                        return {
-                            key: attribute.value,
-                            text: i18nSupportedDisplayVal,
-                            value: attribute.value
-                        };
-                    } ) }
+                    filterAttributeOptions={ resolveFilterAttributeOptions() }
                     filterAttributePlaceholder={ t(
                         "users:advancedSearch.form.inputs.filterAttribute. " + "placeholder"
                     ) }
