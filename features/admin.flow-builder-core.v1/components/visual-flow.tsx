@@ -43,9 +43,8 @@ import BaseEdge from "./react-flow-overrides/base-edge";
 import StepFactory from "./resources/steps/step-factory";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
 import { Payload } from "../models/api";
-import { ElementCategories } from "../models/elements";
-import { Resources } from "../models/resources";
-import { Step, StepCategories } from "../models/steps";
+import { ResourceTypes, Resources } from "../models/resources";
+import { Step } from "../models/steps";
 import getKnownEdgeTypes from "../utils/get-known-edge-types";
 import resolveKnownEdges from "../utils/resolve-known-edges";
 import transformFlow from "../utils/transform-flow";
@@ -110,7 +109,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
             event.preventDefault();
 
             // check if the dropped element is valid
-            if (!node?.type || node?.category !== StepCategories.Interface) {
+            if (!node?.type || node?.resourceType !== ResourceTypes.Step) {
                 return;
             }
 

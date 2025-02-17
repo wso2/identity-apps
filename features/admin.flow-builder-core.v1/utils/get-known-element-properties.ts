@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { ElementTypes } from "../models/elements";
-import { Element } from "../models/resources";
+import { Element, ElementTypes } from "../models/elements";
 
 /**
  * Returns a mapping of known properties for a given element.
