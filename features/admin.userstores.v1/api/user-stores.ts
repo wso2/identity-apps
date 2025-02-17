@@ -127,6 +127,8 @@ export const getUserStoreList = (): Promise<UserstoreListResponseInterface[] | a
 
 /**
  * Hook to get the Userstores from the API.
+ * @deprecated - This hook will be removed in the future.
+ * Use the hook from admin.userstores.v1/api/use-get-user-stores.ts
  *
  * @param params - sort, filter, limit, attributes, offset.
  * @returns user store list with SWR hook

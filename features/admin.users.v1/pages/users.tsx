@@ -28,7 +28,6 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
-import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
@@ -45,6 +44,7 @@ import {
 } from "@wso2is/admin.server-configurations.v1";
 import { useUserStores } from "@wso2is/admin.userstores.v1/api";
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
+import useUserStoresContext from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import {
     UserStoreItem,
     UserStoreListItem,
@@ -143,6 +143,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
+    const { readOnlyUserStoreNamesList, isUserStoreReadOnly } = useUserStoresContext();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -162,7 +163,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ showBulkImportWizard, setShowBulkImportWizard ] = useState<boolean>(false);
-    const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>([]);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ emailVerificationEnabled, setEmailVerificationEnabled ] = useState<boolean>(undefined);
     const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(undefined);
@@ -238,7 +238,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const {
         data: orginalUserStoreList,
         isLoading: isUserStoreListFetchRequestLoading,
-        isValidating: isUserStoreListFetchRequestValidating,
         error: userStoreListFetchRequestError
     } = useUserStores(null);
 
@@ -286,24 +285,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Indicates whether the currently selected user store is read-only or not.
      */
     const isReadOnlyUserStore: boolean = useMemo(() => {
-        if (readOnlyUserStoresList?.includes(selectedUserStore)) {
-            return true;
-        }
-
-        return false;
-    }, [ selectedUserStore ]);
-
-    /**
-     * Get read-only user stores from the user store list.
-     */
-    useEffect(() => {
-        if (isUserStoreListFetchRequestValidating || isUserStoreListFetchRequestLoading ||
-             !orginalUserStoreList || orginalUserStoreList.length < 1) {
-            return;
-        }
-
-        getReadOnlyUserStoresList(orginalUserStoreList);
-    }, [ orginalUserStoreList ]);
+        return isUserStoreReadOnly(selectedUserStore);
+    }, [ selectedUserStore, readOnlyUserStoreNamesList ]);
 
     /**
      * Handles the user list fetch request error.
@@ -529,17 +512,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     }, [ profileSchemas ]);
 
     /**
-     * Fetches the read-only user stores.
-     *
-     * @param userstore - Userstore list.
-     */
-    const getReadOnlyUserStoresList = (userstore: UserStoreListItem[]): void => {
-        SharedUserStoreUtils.getReadOnlyUserStores(userstore).then((response: string[]) => {
-            setReadOnlyUserStoresList(response);
-        });
-    };
-
-    /**
      * Handles the `onSearchQueryClear` callback action.
      */
     const handleSearchQueryClear = (): void => {
@@ -751,7 +723,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         onSearchQueryClear={ handleSearchQueryClear }
                         searchQuery={ searchQuery }
                         data-testid="user-mgt-user-list"
-                        readOnlyUserStores={ readOnlyUserStoresList }
                         featureConfig={ featureConfig }
                         isReadOnlyUserStore={ isReadOnlyUserStore }
                     />)

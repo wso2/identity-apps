@@ -235,3 +235,10 @@ export enum RemoteUserStoreManagerType {
     RemoteUserStoreManager = "RemoteUserStoreManager",
     AsgardeoBusinessUserStoreManager = "AsgardeoBusinessUserStoreManager"
 }
+
+/**
+ * On-prem read only user store types.
+ */
+export const ON_PREM_READ_ONLY_USER_STORE_TYPE_NAMES: string[] = [
+    "UniqueIDReadOnlyLDAPUserStoreManager"
+];

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,6 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import { useGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api";
@@ -81,10 +80,8 @@ const UserEditPage = (): ReactElement => {
         featureConfig?.users?.scopes?.update
     );
 
-    const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
     const [ connectorProperties, setConnectorProperties ] = useState<ConnectorPropertyInterface[]>(undefined);
-    const [ isReadOnlyUserStoresLoading, setReadOnlyUserStoresLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const path: string[] = history.location.pathname.split("/");
@@ -166,17 +163,6 @@ const UserEditPage = (): ReactElement => {
         }
         setConnectorProperties(properties);
     }, [ originalAccountManagementConnectorData, originalUserOnboardingConnectorData, otherSettingsConnectorData ]);
-
-    useEffect(() => {
-        setReadOnlyUserStoresLoading(true);
-        SharedUserStoreUtils.getReadOnlyUserStores()
-            .then((response: string[]) => {
-                setReadOnlyUserStoresList(response);
-            })
-            .finally(() => {
-                setReadOnlyUserStoresLoading(false);
-            });
-    }, []);
 
     useEffect(() => {
         if (!userDetailsFetchRequestError) {
@@ -482,10 +468,8 @@ const UserEditPage = (): ReactElement => {
                     featureConfig={ featureConfig }
                     user={ user }
                     handleUserUpdate={ handleUserUpdate }
-                    readOnlyUserStores={ readOnlyUserStoresList }
                     connectorProperties={ connectorProperties }
                     isLoading={ isUserDetailsFetchRequestLoading || isUserDetailsFetchRequestValidating }
-                    isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
                 />
                 {
                     showEditAvatarModal && (
