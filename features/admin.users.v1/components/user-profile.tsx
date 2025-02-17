@@ -2276,6 +2276,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             }
         }
 
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+            return !isEmpty(multiValuedAttributeValues[schema.name])
+                || (!isReadOnly && resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA);
+        }
+
         return (!isEmpty(profileInfo.get(schema.name)) ||
             (!isReadOnly && (resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA)));
     };

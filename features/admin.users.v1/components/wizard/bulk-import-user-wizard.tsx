@@ -271,7 +271,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             .then((response: UserStoreDetails[]) => {
                 response?.forEach(async (item: UserStoreDetails, index: number) => {
                     // Filter read/write enabled and bulk import supported user stores.
-                    if (await isBulkImportSupportedUserStore(item)) {
+                    if (isBulkImportSupportedUserStore(item)) {
                         userStoreArray.push({
                             key: index,
                             text: item.name.toUpperCase(),
@@ -317,15 +317,17 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @returns If the given userstore is read only or not and bulk import is supported.
      */
     const isBulkImportSupportedUserStore = (userStore: UserStoreDetails): boolean => {
-        let isReadWriteUserStore: boolean = false;
-        let isBulkImportSupported: boolean = false;
+        let isReadWriteUserStore: boolean = true;
+        let isBulkImportSupported: boolean = true;
 
         userStore?.properties?.forEach((property: UserStoreProperty) => {
-            if (property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY) {
-                isReadWriteUserStore = property.value === "false";
+            if (property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY
+                && property.value === "true") {
+                isReadWriteUserStore = false;
             }
-            if (property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED) {
-                isBulkImportSupported = property.value === "true";
+            if (property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED
+                && property.value === "false") {
+                isBulkImportSupported = false;
             }
         });
 
