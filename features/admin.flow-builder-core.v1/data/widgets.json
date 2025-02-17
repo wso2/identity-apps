@@ -1,6 +1,6 @@
 [
     {
-        "category": "WIDGET",
+        "category": "COMPOSITE",
         "type": "IDENTIFIER_PASSWORD",
         "version": "0.1.0",
         "deprecated": false,
@@ -87,7 +87,7 @@
         }
     },
     {
-        "category": "WIDGET",
+        "category": "FLOW",
         "type": "EMAIL_OTP",
         "version": "0.1.0",
         "deprecated": false,
@@ -101,7 +101,7 @@
         }
     },
     {
-        "category": "WIDGET",
+        "category": "FLOW",
         "type": "SMS_OTP",
         "version": "0.1.0",
         "deprecated": false,
@@ -115,7 +115,7 @@
         }
     },
     {
-        "category": "WIDGET",
+        "category": "SECURITY",
         "type": "RECAPTCHA",
         "version": "0.1.0",
         "deprecated": false,

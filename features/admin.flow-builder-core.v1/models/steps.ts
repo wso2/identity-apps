@@ -16,24 +16,26 @@
  * under the License.
  */
 
-import { ElementTypes } from "../models/elements";
-import { Element } from "../models/resources";
+import { Base } from "./base";
+import { Resource } from "./resources";
 
 /**
- * Returns a mapping of known properties for a given element.
- *
- * @param element - The element for which to get the known properties.
- * @returns An object with known element properties.
+ * Interface for a Step.
  */
-const getKnownElementProperties = (element: Element): Record<string, string[]> => {
-    if (element.type === ElementTypes.Button) {
-        return {
-            color: [ "primary", "secondary", "success", "error", "info", "warning" ],
-            variant: [ "contained", "outlined", "text" ]
-        };
-    }
+export type Step = Base;
 
-    return {};
-};
+export enum StepCategories {
+    Decision = "DECISION",
+    Interface = "INTERFACE",
+    Workflow = "WORKFLOW"
+}
 
-export default getKnownElementProperties;
+export enum StepTypes {
+    View = "VIEW",
+    Rule = "RULE"
+}
+
+export interface StepData {
+    components: Resource[];
+    [key: string]: any;
+}

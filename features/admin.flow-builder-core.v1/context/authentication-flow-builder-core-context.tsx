@@ -19,45 +19,46 @@
 import { Claim } from "@wso2is/core/models";
 import { Context, Dispatch, FunctionComponent, ReactNode, SetStateAction, createContext } from "react";
 import { Base } from "../models/base";
+import { Resource } from "../models/resources";
 
 /**
  * Props interface of {@link AuthenticationFlowBuilderCoreContext}
  */
 export interface AuthenticationFlowBuilderCoreContextProps {
     /**
-     * The properties of the active element.
+     * The properties of the last interacted resource.
      */
-    lastInteractedElement: Base;
+    lastInteractedResource: Base;
     /**
-     * The ID of the active element node.
+     * The ID of the last user interacted resource node.
      */
-    lastInteractedNodeId: string;
+    lastInteractedResourceId: string;
     /**
-     * The wrapper for the element properties factory.
+     * The wrapper for the resource properties factory.
      */
-    ElementProperties: FunctionComponent<any>;
+    ResourceProperties: FunctionComponent<any>;
     /**
      * The heading for the element properties panel.
      */
-    elementPropertiesPanelHeading: ReactNode;
+    resourcePropertiesPanelHeading: ReactNode;
     /**
      * Indicates whether the element panel is open.
      */
-    isElementPanelOpen: boolean;
+    isResourcePanelOpen: boolean;
     /**
      * Indicates whether the element properties panel is open.
      */
-    isElementPropertiesPanelOpen: boolean;
+    isResourcePropertiesPanelOpen: boolean;
     /**
      * The factory for creating components.
      */
-    ComponentFactory: FunctionComponent<any>;
+    ElementFactory: FunctionComponent<any>;
     /**
      * Function to be called when an element is dropped on the canvas.
      * @param element - The element that was dropped on the canvas.
      * @param nodeId - The ID of the node on which the element was dropped.
      */
-    onElementDropOnCanvas: (element: Base, nodeId: string) => void;
+    onResourceDropOnCanvas: (element: Base, nodeId: string) => void;
     /**
      * The set of attributes that are selected for the flow that are maintained per node.
      */
@@ -65,31 +66,31 @@ export interface AuthenticationFlowBuilderCoreContextProps {
         [key: string]: Claim[];
     };
     /**
-     * Sets the active element in the canvas.
+     * Sets the latest interacted resource inside the canvas.
      */
-    setLastInteractedElement: (element: Base) => void;
+    setLastInteractedResource: (resource: Resource) => void;
     /**
      * Sets the active element node ID.
      */
-    setLastInteractedNodeId: Dispatch<SetStateAction<string>>;
+    setLastInteractedResourceId: Dispatch<SetStateAction<string>>;
     /**
      * Sets the heading for the element properties panel.
      *
      * @param heading - The heading to set for the element properties panel.
      */
-    setElementPropertiesPanelHeading: Dispatch<SetStateAction<ReactNode>>;
+    setResourcePropertiesPanelHeading: Dispatch<SetStateAction<ReactNode>>;
     /**
      * Function to set the state of the element panel.
      *
      * @param isOpen - Boolean indicating whether the element panel should be open.
      */
-    setIsElementPanelOpen: Dispatch<SetStateAction<boolean>>;
+    setIsResourcePanelOpen: Dispatch<SetStateAction<boolean>>;
     /**
      * Function to set the state of the element properties panel.
      *
      * @param isOpen - Boolean indicating whether the element properties panel should be open.
      */
-    setIsOpenElementPropertiesPanel: Dispatch<SetStateAction<boolean>>;
+    setIsOpenResourcePropertiesPanel: Dispatch<SetStateAction<boolean>>;
     /**
      * Sets the selected attributes for the flow.
      */
@@ -103,20 +104,20 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
     null | AuthenticationFlowBuilderCoreContextProps
 >(
     {
-        ComponentFactory: () => null,
-        ElementProperties: () => null,
-        elementPropertiesPanelHeading: null,
-        isElementPanelOpen: true,
-        isElementPropertiesPanelOpen: false,
-        lastInteractedElement: null,
-        lastInteractedNodeId: "",
-        onElementDropOnCanvas: () => {},
+        ElementFactory: () => null,
+        ResourceProperties: () => null,
+        isResourcePanelOpen: true,
+        isResourcePropertiesPanelOpen: false,
+        lastInteractedResource: null,
+        lastInteractedResourceId: "",
+        onResourceDropOnCanvas: () => {},
+        resourcePropertiesPanelHeading: null,
         selectedAttributes: {},
-        setElementPropertiesPanelHeading: () => {},
-        setIsElementPanelOpen: () => {},
-        setIsOpenElementPropertiesPanel: () => {},
-        setLastInteractedElement: () => {},
-        setLastInteractedNodeId: () => {},
+        setIsOpenResourcePropertiesPanel: () => {},
+        setIsResourcePanelOpen: () => {},
+        setLastInteractedResource: () => {},
+        setLastInteractedResourceId: () => {},
+        setResourcePropertiesPanelHeading: () => {},
         setSelectedAttributes: () => {}
     }
 );

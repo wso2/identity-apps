@@ -22,10 +22,10 @@ import AuthenticationFlowBuilderCoreProvider from
     "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import ElementProperties from "./element-property-panel/element-properties";
-import ComponentFactory from "./elements/components/component-factory";
+import ResourceProperties from "./resource-property-panel/resource-properties";
+import ElementFactory from "./resources/elements/element-factory";
 import configureRegistrationFlow from "../api/configure-registration-flow";
-import useGetRegistrationFlowBuilderElements from "../api/use-get-registration-flow-builder-elements";
+import useGetRegistrationFlowBuilderResources from "../api/use-get-registration-flow-builder-resources";
 import RegistrationFlowBuilderProvider from "../providers/registration-flow-builder-provider";
 
 /**
@@ -43,7 +43,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
     "data-componentid": componentId = "authentication-flow-builder",
     ...rest
 }: RegistrationFlowBuilderPropsInterface): ReactElement => {
-    const { data: elements } = useGetRegistrationFlowBuilderElements();
+    const { data: components } = useGetRegistrationFlowBuilderResources();
 
     const handleFlowSubmit = (payload: Payload) => {
         configureRegistrationFlow(payload)
@@ -57,12 +57,12 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
 
     return (
         <AuthenticationFlowBuilderCoreProvider
-            ComponentFactory={ ComponentFactory }
-            ElementProperties={ ElementProperties }
+            ElementFactory={ ElementFactory }
+            ResourceProperties={ ResourceProperties }
         >
             <RegistrationFlowBuilderProvider>
                 <DecoratedVisualFlow
-                    elements={ elements }
+                    resources={ components }
                     data-componentid={ componentId }
                     onFlowSubmit={ handleFlowSubmit }
                     { ...rest }

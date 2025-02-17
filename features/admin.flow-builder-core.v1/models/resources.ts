@@ -16,22 +16,32 @@
  * under the License.
  */
 
-import { Resource } from "../models/resources";
+import { Element } from "./elements";
+import { Step } from "./steps";
+import { Widget } from "./widget";
+
+export type Resource = Element | Step | Widget;
+
+export enum ResourceTypes {
+    Step = "STEP",
+    Element = "ELEMENT",
+    Widget = "WIDGET"
+}
 
 /**
- * Checks if the given component is a widget.
- *
- * A widget is identified by the presence of a `flow` property in its configuration.
- *
- * @param component - The component to check.
- * @returns True if the component is a widget, otherwise false.
- *
- * @example
- * const result = isWidget(component);
- * console.log(result); // true
+ * Interface for the entire JSON structure.
  */
-const isWidget = (component: Resource): boolean => {
-    return component?.config?.flow;
-};
-
-export default isWidget;
+export interface Resources {
+    /**
+     * List of blocks.
+     */
+    elements: Element[];
+    /**
+     * List of nodes.
+     */
+    steps: Step[];
+    /**
+     * List of widgets.
+     */
+    widgets: Widget[];
+}

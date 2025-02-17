@@ -23,8 +23,8 @@ import { Claim } from "@wso2is/core/models";
 import capitalize from "lodash-es/capitalize";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode, useState } from "react";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
-import { Element, ElementCategories } from "../models/elements";
-import { NodeTypes } from "../models/node";
+import { Resource, ResourceTypes } from "../models/resources";
+import { StepTypes } from "../models/steps";
 
 /**
  * Props interface of {@link AuthenticationFlowBuilderCoreProvider}
@@ -33,11 +33,11 @@ export interface AuthenticationFlowBuilderProviderProps {
     /**
      * The factory for creating nodes.
      */
-    ComponentFactory: FunctionComponent<any>;
+    ElementFactory: FunctionComponent<any>;
     /**
      * The factory for creating element properties.
      */
-    ElementProperties: FunctionComponent<any>;
+    ResourceProperties: FunctionComponent<any>;
 }
 
 /**
@@ -47,63 +47,63 @@ export interface AuthenticationFlowBuilderProviderProps {
  * @returns The AuthenticationFlowBuilderCoreProvider component.
  */
 const AuthenticationFlowBuilderCoreProvider = ({
-    ComponentFactory,
-    ElementProperties,
+    ElementFactory,
+    ResourceProperties,
     children
 }: PropsWithChildren<AuthenticationFlowBuilderProviderProps>): ReactElement => {
-    const [ isElementPanelOpen, setIsElementPanelOpen ] = useState<boolean>(true);
-    const [ isElementPropertiesPanelOpen, setIsOpenElementPropertiesPanel ] = useState<boolean>(false);
-    const [ elementPropertiesPanelHeading, setElementPropertiesPanelHeading ] = useState<ReactNode>(null);
-    const [ lastInteractedElementInternal, setLastInteractedElementInternal ] = useState<Element>(null);
-    const [ lastInteractedNodeId, setLastInteractedNodeId ] = useState<string>("");
+    const [ isResourcePanelOpen, setIsResourcePanelOpen ] = useState<boolean>(true);
+    const [ isResourcePropertiesPanelOpen, setIsOpenResourcePropertiesPanel ] = useState<boolean>(false);
+    const [ resourcePropertiesPanelHeading, setResourcePropertiesPanelHeading ] = useState<ReactNode>(null);
+    const [ lastInteractedElementInternal, setLastInteractedElementInternal ] = useState<Resource>(null);
+    const [ lastInteractedResourceId, setLastInteractedResourceId ] = useState<string>("");
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Claim[] }>({});
 
-    const onElementDropOnCanvas = (element: Element, nodeId: string): void => {
-        setLastInteractedElement(element);
-        setLastInteractedNodeId(nodeId);
+    const onResourceDropOnCanvas = (resource: Resource, resourceId: string): void => {
+        setLastInteractedResource(resource);
+        setLastInteractedResourceId(resourceId);
     };
 
-    const setLastInteractedElement = (element: Element): void => {
+    const setLastInteractedResource = (resource: Resource): void => {
         // TODO: Internationalize this string and get from a mapping.
-        setElementPropertiesPanelHeading(
+        setResourcePropertiesPanelHeading(
             <Stack>
-                <Typography variant="h6">{ capitalize(element.category) } Properties</Typography>
+                <Typography variant="h6">{ capitalize(resource.category) } Properties</Typography>
                 <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
-                    <Avatar src={ element?.display?.image } variant="square" />
-                    <Typography variant="body2">{ capitalize(element.variant ?? element.type) }</Typography>
+                    <Avatar src={ resource?.display?.image } variant="square" />
+                    <Typography variant="body2">{ capitalize(resource.variant ?? resource.type) }</Typography>
                 </Stack>
             </Stack>
         );
-        setLastInteractedElementInternal(element);
+        setLastInteractedElementInternal(resource);
 
         // If the element is a step node, do not open the properties panel for now.
         // TODO: Figure out if there are properties for a step.
-        if (element.category === ElementCategories.Nodes && element.type === NodeTypes.Step) {
-            setIsOpenElementPropertiesPanel(false);
+        if (resource.category === ResourceTypes.Step && resource.type === StepTypes.View) {
+            setIsOpenResourcePropertiesPanel(false);
 
             return;
         }
 
-        setIsOpenElementPropertiesPanel(true);
+        setIsOpenResourcePropertiesPanel(true);
     };
 
     return (
         <AuthenticationFlowBuilderCoreContext.Provider
             value={ {
-                ComponentFactory,
-                ElementProperties,
-                elementPropertiesPanelHeading,
-                isElementPanelOpen,
-                isElementPropertiesPanelOpen,
-                lastInteractedElement: lastInteractedElementInternal,
-                lastInteractedNodeId,
-                onElementDropOnCanvas,
+                ElementFactory,
+                ResourceProperties,
+                isResourcePanelOpen,
+                isResourcePropertiesPanelOpen,
+                lastInteractedResource: lastInteractedElementInternal,
+                lastInteractedResourceId,
+                onResourceDropOnCanvas,
+                resourcePropertiesPanelHeading,
                 selectedAttributes,
-                setElementPropertiesPanelHeading,
-                setIsElementPanelOpen,
-                setIsOpenElementPropertiesPanel,
-                setLastInteractedElement,
-                setLastInteractedNodeId,
+                setIsOpenResourcePropertiesPanel,
+                setIsResourcePanelOpen,
+                setLastInteractedResource,
+                setLastInteractedResourceId,
+                setResourcePropertiesPanelHeading,
                 setSelectedAttributes
             } }
         >
