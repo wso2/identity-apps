@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.17.32
+
+### Patch Changes
+
+- [#7645](https://github.com/wso2/identity-apps/pull/7645) [`0afe5d5ec9fa5ab010b383b7fb0e841ad79a9988`](https://github.com/wso2/identity-apps/commit/0afe5d5ec9fa5ab010b383b7fb0e841ad79a9988) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix read only field displaying logic in user profiles
+
+* [#7650](https://github.com/wso2/identity-apps/pull/7650) [`d3a1214fb77f8d2f718113850981c37c3e16be85`](https://github.com/wso2/identity-apps/commit/d3a1214fb77f8d2f718113850981c37c3e16be85) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix primary email retrieval logic in my account
+
+* Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.173
+  - @wso2is/common.branding.v1@2.26.30
+
 ## 2.17.31
 
 ### Patch Changes
