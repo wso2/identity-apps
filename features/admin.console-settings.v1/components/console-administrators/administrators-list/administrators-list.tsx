@@ -55,7 +55,6 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { DropdownChild } from "@wso2is/forms";
 import { Button, EmptyPlaceholder, ListLayout, PrimaryButton } from "@wso2is/react-components";
-import camelCase from "lodash-es/camelCase";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -319,27 +318,15 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
         setSearchQuery("");
     };
 
-
     const resolveFilterAttributeOptions = (): DropdownChild[] => {
         const filterAttributeOptions: DropdownChild[] = [
             {
                 key: 0,
                 text: t("users:advancedSearch.form.dropdown." + "filterAttributeOptions.username"),
                 value: "userName"
-            }
+            },
+            ...userSearchAttributes
         ];
-
-        userSearchAttributes?.map((attribute: DropdownChild) => {
-            const i8nKey: string = "console:manage.features.users.advancedSearch.form.dropdown." +
-                "filterAttributeOptions." + camelCase(attribute.text.toString());
-            const i18nSupportedDisplayVal: string = t(i8nKey, { defaultValue: attribute.text.toString() });
-
-            filterAttributeOptions.push({
-                key: attribute.value,
-                text: i18nSupportedDisplayVal,
-                value: attribute.value
-            });
-        });
 
         return filterAttributeOptions;
     };
