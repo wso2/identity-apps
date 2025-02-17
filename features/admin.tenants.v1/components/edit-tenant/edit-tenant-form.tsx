@@ -24,10 +24,7 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography/Typography";
 import { CopyIcon, GlobeIcon } from "@oxygen-ui/react-icons";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
-import { UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { generatePassword, getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
-import getUsertoreUsernameValidationPattern from "@wso2is/admin.users.v1/utils/get-usertore-usernam-validation-pattern";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api/validation-config";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models/validation-config";
@@ -41,10 +38,9 @@ import {
     FormSpy,
     MutableState,
     TextFieldAdapter,
-    Tools,
-    composeValidators
+    Tools
 } from "@wso2is/form";
-import { Hint, PasswordValidation } from "@wso2is/react-components";
+import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";

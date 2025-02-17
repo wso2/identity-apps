@@ -39,11 +39,11 @@ import {
     Tools,
     composeValidators
 } from "@wso2is/form";
-import { Hint, PasswordValidation } from "@wso2is/react-components";
+import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { FormState } from "final-form";
 import memoize from "lodash-es/memoize";
-import React, { FunctionComponent, ReactElement, useCallback, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import getTenantDomainAvailability from "../../api/get-tenant-domain-availability";
@@ -114,41 +114,6 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
 
         if (!SharedUserStoreUtils.validateInputAgainstRegEx(value, userRegex) || !FormValidation.email(value)) {
             return t("tenants:common.form.fields.username.validations.regExViolation");
-        }
-    };
-
-    /**
-     * Form validator to validate the username against the alphanumeric regex.
-     * @param value - Input value.
-     * @returns An error if the value is not valid else undefined.
-     */
-    const validateAlphanumericUsername = (value: string): string | undefined => {
-        if (!value) {
-            return undefined;
-        }
-
-        // Regular expression to validate having alphanumeric characters.
-        let regExpInvalidUsername: RegExp = new RegExp(UserManagementConstants.USERNAME_VALIDATION_REGEX);
-
-        // Check if special characters enabled for username.
-        if (!userNameValidationConfig?.isAlphanumericOnly) {
-            regExpInvalidUsername = new RegExp(UserManagementConstants.USERNAME_VALIDATION_REGEX_WITH_SPECIAL_CHARS);
-        }
-
-        if (
-            value.length < Number(userNameValidationConfig.minLength) ||
-            value.length > Number(userNameValidationConfig.maxLength)
-        ) {
-            return t("tenants:common.form.fields.username.validations.usernameLength", {
-                maxLength: userNameValidationConfig?.maxLength,
-                minLength: userNameValidationConfig?.minLength
-            });
-        } else if (!regExpInvalidUsername.test(value)) {
-            if (userNameValidationConfig?.isAlphanumericOnly) {
-                return t("tenants:common.form.fields.username.validations.usernameSymbols");
-            } else {
-                return t("tenants:common.form.fields.username.validations.usernameSpecialCharSymbols");
-            }
         }
     };
 

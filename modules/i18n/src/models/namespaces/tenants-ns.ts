@@ -82,8 +82,8 @@ export interface TenantsNS {
                     label: string;
                     placeholder: string;
                     validations: {
-                        required: string;
                         invalid: string;
+                        required: string;
                     };
                 };
                 emailUsername: {
