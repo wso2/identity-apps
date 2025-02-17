@@ -1,5 +1,94 @@
 # @wso2is/admin.applications.v1
 
+## 2.31.19
+
+### Patch Changes
+
+- Updated dependencies [[`a9c9a67492fbaf6a78e9bc0fa00f27ffb221b71d`](https://github.com/wso2/identity-apps/commit/a9c9a67492fbaf6a78e9bc0fa00f27ffb221b71d), [`6c74317ac2e2ce9dcc9dc924eb9be20dd976fd92`](https://github.com/wso2/identity-apps/commit/6c74317ac2e2ce9dcc9dc924eb9be20dd976fd92)]:
+  - @wso2is/admin.feature-gate.v1@1.4.171
+  - @wso2is/admin.roles.v2@2.27.115
+  - @wso2is/admin.application-templates.v1@1.4.171
+  - @wso2is/admin.branding.v1@2.28.28
+  - @wso2is/admin.connections.v1@2.33.54
+  - @wso2is/admin.console-settings.v1@2.25.171
+  - @wso2is/admin.core.v1@2.38.40
+  - @wso2is/admin.extensions.v1@2.36.96
+  - @wso2is/admin.login-flow.ai.v1@2.27.66
+  - @wso2is/admin.server-configurations.v1@2.32.96
+  - @wso2is/admin.users.v1@2.30.81
+  - @wso2is/admin.organizations.v1@2.26.171
+  - @wso2is/admin.identity-providers.v1@2.26.171
+  - @wso2is/admin.authorization.v1@2.25.75
+  - @wso2is/admin.claims.v1@2.27.81
+  - @wso2is/admin.impersonation.v1@1.6.171
+  - @wso2is/admin.oidc-scopes.v1@2.25.171
+  - @wso2is/admin.secrets.v1@2.25.171
+  - @wso2is/admin.userstores.v1@2.26.130
+  - @wso2is/admin.wsfed-configuration.v1@2.25.171
+  - @wso2is/react-components@2.9.10
+  - @wso2is/admin.authentication-flow-builder.v1@2.24.171
+  - @wso2is/admin.api-resources.v2@2.25.171
+  - @wso2is/admin.template-core.v1@1.5.125
+  - @wso2is/form@2.6.32
+
+## 2.31.18
+
+### Patch Changes
+
+- Updated dependencies [[`588d8475fc682f241b92a3ee7a8759fa7f2ce840`](https://github.com/wso2/identity-apps/commit/588d8475fc682f241b92a3ee7a8759fa7f2ce840)]:
+  - @wso2is/admin.users.v1@2.30.80
+  - @wso2is/i18n@2.19.16
+  - @wso2is/admin.claims.v1@2.27.80
+  - @wso2is/admin.console-settings.v1@2.25.170
+  - @wso2is/admin.core.v1@2.38.39
+  - @wso2is/admin.extensions.v1@2.36.95
+  - @wso2is/admin.organizations.v1@2.26.170
+  - @wso2is/admin.roles.v2@2.27.114
+  - @wso2is/admin.server-configurations.v1@2.32.95
+  - @wso2is/admin.authorization.v1@2.25.74
+  - @wso2is/admin.branding.v1@2.28.27
+  - @wso2is/admin.connections.v1@2.33.53
+  - @wso2is/admin.identity-providers.v1@2.26.170
+  - @wso2is/admin.impersonation.v1@1.6.170
+  - @wso2is/admin.login-flow.ai.v1@2.27.65
+  - @wso2is/admin.oidc-scopes.v1@2.25.170
+  - @wso2is/admin.secrets.v1@2.25.170
+  - @wso2is/admin.userstores.v1@2.26.129
+  - @wso2is/admin.wsfed-configuration.v1@2.25.170
+  - @wso2is/admin.application-templates.v1@1.4.170
+  - @wso2is/admin.authentication-flow-builder.v1@2.24.170
+  - @wso2is/admin.api-resources.v2@2.25.170
+  - @wso2is/admin.feature-gate.v1@1.4.170
+  - @wso2is/admin.template-core.v1@1.5.124
+
+## 2.31.17
+
+### Patch Changes
+
+- Updated dependencies [[`dccc229979d7cf244ada41117bf2e393bd494eaf`](https://github.com/wso2/identity-apps/commit/dccc229979d7cf244ada41117bf2e393bd494eaf), [`64b957d696e6e3504f21bf8dac690edea49dee0a`](https://github.com/wso2/identity-apps/commit/64b957d696e6e3504f21bf8dac690edea49dee0a), [`54d830f55a940d7c8fb08ce733e8c09390ea9669`](https://github.com/wso2/identity-apps/commit/54d830f55a940d7c8fb08ce733e8c09390ea9669)]:
+  - @wso2is/admin.claims.v1@2.27.79
+  - @wso2is/admin.users.v1@2.30.79
+  - @wso2is/admin.core.v1@2.38.38
+  - @wso2is/admin.connections.v1@2.33.52
+  - @wso2is/admin.extensions.v1@2.36.94
+  - @wso2is/admin.identity-providers.v1@2.26.169
+  - @wso2is/admin.login-flow.ai.v1@2.27.64
+  - @wso2is/admin.oidc-scopes.v1@2.25.169
+  - @wso2is/admin.console-settings.v1@2.25.169
+  - @wso2is/admin.organizations.v1@2.26.169
+  - @wso2is/admin.roles.v2@2.27.113
+  - @wso2is/admin.server-configurations.v1@2.32.94
+  - @wso2is/admin.api-resources.v2@2.25.169
+  - @wso2is/admin.application-templates.v1@1.4.169
+  - @wso2is/admin.authentication-flow-builder.v1@2.24.169
+  - @wso2is/admin.branding.v1@2.28.26
+  - @wso2is/admin.feature-gate.v1@1.4.169
+  - @wso2is/admin.impersonation.v1@1.6.169
+  - @wso2is/admin.secrets.v1@2.25.169
+  - @wso2is/admin.template-core.v1@1.5.123
+  - @wso2is/admin.userstores.v1@2.26.128
+  - @wso2is/admin.wsfed-configuration.v1@2.25.169
+
 ## 2.31.16
 
 ### Patch Changes

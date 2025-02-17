@@ -2416,6 +2416,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 <EmphasizedSegment padded="very">
                     {
                         isReadOnly
+                        && !isReadOnlyUserStore
                         && (!isEmpty(tenantAdmin) || tenantAdmin !== null)
                         && !user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
                         && editUserDisclaimerMessage

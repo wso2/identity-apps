@@ -1,5 +1,31 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.4.171
+
+### Patch Changes
+
+- [#7622](https://github.com/wso2/identity-apps/pull/7622) [`a9c9a67492fbaf6a78e9bc0fa00f27ffb221b71d`](https://github.com/wso2/identity-apps/commit/a9c9a67492fbaf6a78e9bc0fa00f27ffb221b71d) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce feature flag for fraud detection
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.40
+  - @wso2is/admin.organizations.v1@2.26.171
+
+## 1.4.170
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.39
+  - @wso2is/admin.organizations.v1@2.26.170
+
+## 1.4.169
+
+### Patch Changes
+
+- Updated dependencies [[`54d830f55a940d7c8fb08ce733e8c09390ea9669`](https://github.com/wso2/identity-apps/commit/54d830f55a940d7c8fb08ce733e8c09390ea9669)]:
+  - @wso2is/admin.core.v1@2.38.38
+  - @wso2is/admin.organizations.v1@2.26.169
+
 ## 1.4.168
 
 ### Patch Changes
