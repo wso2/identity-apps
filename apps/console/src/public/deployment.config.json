@@ -404,7 +404,6 @@
             },
             "applications": {
                 "disabledFeatures": [
-                    "applications.loginFlow.legacyEditor"
                 ],
                 "enabled": true,
                 "featureFlags": [
