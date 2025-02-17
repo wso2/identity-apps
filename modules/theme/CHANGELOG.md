@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.6.10
+
+### Patch Changes
+
+- [#7619](https://github.com/wso2/identity-apps/pull/7619) [`6c74317ac2e2ce9dcc9dc924eb9be20dd976fd92`](https://github.com/wso2/identity-apps/commit/6c74317ac2e2ce9dcc9dc924eb9be20dd976fd92) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix UI issues in roles and groups sections
+
 ## 2.6.9
 
 ### Patch Changes

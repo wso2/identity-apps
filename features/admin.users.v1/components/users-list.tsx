@@ -26,6 +26,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
 import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -59,7 +60,7 @@ import {
     ReactComponent as RoundedLockSolidIcon
 } from "../../themes/default/assets/images/icons/solid-icons/rounded-lock.svg";
 import { deleteUser } from "../api";
-import { ACCOUNT_LOCK_REASON_MAP, UserManagementConstants } from "../constants";
+import { ACCOUNT_LOCK_REASON_MAP, UserManagementConstants, UserSharedType } from "../constants";
 import { UserBasicInterface, UserListInterface } from "../models/user";
 import { UserManagementUtils } from "../utils/user-management-utils";
 
@@ -167,6 +168,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
@@ -516,6 +518,13 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 const userStore: string = user?.userName?.split("/").length > 1
                     ? user?.userName?.split("/")[0]
                     : userstoresConfig.primaryUserstoreName;
+
+                if (isSubOrganization()
+                        && user[SCIMConfigs?.scim?.systemSchema]?.sharedType
+                        && user[SCIMConfigs?.scim?.systemSchema]?.sharedType!=UserSharedType.INVITED
+                ) {
+                    return true;
+                }
 
                 return !isFeatureEnabled(featureConfig?.users,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
