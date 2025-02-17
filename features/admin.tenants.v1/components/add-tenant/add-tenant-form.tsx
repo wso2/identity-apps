@@ -273,7 +273,6 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
             errors.username = t("tenants:common.form.fields.username.validations.required");
         }
 
-
         return errors;
     };
 
