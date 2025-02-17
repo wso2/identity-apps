@@ -7515,8 +7515,8 @@ export const console: ConsoleNS = {
                     form: {
                         dropdown: {
                             filterAttributeOptions: {
-                                username: "Username",
-                                email: "Email"
+                                email: "Email",
+                                username: "Username"
                             }
                         },
                         inputs: {
