@@ -20,13 +20,13 @@ import get from "lodash-es/get";
 import merge from "lodash-es/merge";
 import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import UserPreferencesContext from "../context/user-preferences-context";
-import { AppState } from "../store";
+import UserPreferencesContext from "../contexts/user-preferences-context";
+import { AppState } from "@wso2is/admin.core.v1/store";
 
 /**
- * Props interface of {@link UserPreferenceProvider}
+ * Props interface of {@link UserPreferencesProvider}
  */
-export interface UserPreferenceProviderProps<T> {
+export interface UserPreferencesProviderProps<T> {
     /**
      * Initial preferences.
      */
@@ -45,15 +45,13 @@ const USER_PREFERENCES_STORAGE_KEY: string = "user-preferences";
  * The type of the preferences should be passed as a generic type.
  *
  * @example
- * `<UserPreferenceProvider<Preference> initialPreferences={ { "orgId": { "key": "value" } } }>`
+ * `<UserPreferencesProvider<Preference> initialPreferences={ { "orgId": { "key": "value" } } }>`
  *
  * @param props - Props for the client.
  * @returns App settings provider.
  */
-const UserPreferenceProvider = <T, >(props: PropsWithChildren<UserPreferenceProviderProps<T>>): ReactElement => {
-    const { children, storageStrategy } = props;
-
-    const userIdentifier: string = useSelector((state: AppState) => {
+const UserPreferencesProvider = <T, >({ children, storageStrategy = "localstorage", userId }: PropsWithChildren<UserPreferencesProviderProps<T>>): ReactElement => {
+    const userId: string = useSelector((state: AppState) => {
         return state?.auth?.username;
     });
 
@@ -92,7 +90,7 @@ const UserPreferenceProvider = <T, >(props: PropsWithChildren<UserPreferenceProv
      * @param userId - Optional user Id. If provided, the preferences for the passed in user-id will be updated.
      */
     const setPreferences = (preferencesToUpdate: T, userId?: string) => {
-        const _userId: string = userId ?? userIdentifier;
+        const _userId: string = userId ?? userId;
 
         const updatedPreferences: T = merge({}, preferencesInContext, {
             [_userId]: {
@@ -126,7 +124,7 @@ const UserPreferenceProvider = <T, >(props: PropsWithChildren<UserPreferenceProv
      * @param userId - Optional user Id. If provided, the preferences for the passed in user-id will be updated.
      */
     const getPreferences = (key: string, userId?: string) => {
-        const _userId: string = userId ?? userIdentifier;
+        const _userId: string = userId ?? userId;
 
         return get(preferencesInContext, `${_userId}.${key}`, null);
     };
@@ -140,7 +138,7 @@ const UserPreferenceProvider = <T, >(props: PropsWithChildren<UserPreferenceProv
      * @param userId - Optional user Id. If provided, the preferences for the passed in user-id will be updated.
      */
     const getFlatPreferences = (userId?: string) => {
-        const _userId: string = userId ?? userIdentifier;
+        const _userId: string = userId ?? userId;
 
         return get(preferencesInContext, _userId, {});
     };
@@ -158,8 +156,4 @@ const UserPreferenceProvider = <T, >(props: PropsWithChildren<UserPreferenceProv
     );
 };
 
-UserPreferenceProvider.defaultProps = {
-    storageStrategy: "localstorage"
-};
-
-export default UserPreferenceProvider;
+export default UserPreferencesProvider;

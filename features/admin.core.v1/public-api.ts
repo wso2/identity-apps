@@ -47,14 +47,14 @@ export * from "./constants/shared/role-management";
 /**
  * Export models.
  */
-export * from "./models/user-preferences";
+export * from "../common.ui.v1/models/user-preferences";
 
 /**
  * Export providers.
  */
 export * from "./providers/app-config-provider";
 export * from "./providers/app-settings-provider";
-export * from "./providers/user-preferences-provider";
+export * from "../common.ui.v1/providers/user-preferences-provider";
 
 /**
  * Export hooks.

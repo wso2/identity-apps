@@ -17,7 +17,7 @@
  */
 
 import { useContext } from "react";
-import UserPreferenceContext, { UserPreferencesContextProps } from "../context/user-preferences-context";
+import UserPreferenceContext, { UserPreferencesContextProps } from "../contexts/user-preferences-context";
 
 /**
  * Hook that provides access to the user's preference context.

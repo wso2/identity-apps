@@ -96,6 +96,7 @@
         "@wso2is/admin.userstores.v1": "^2.26.118",
         "@wso2is/admin.workflow-approvals.v1": "^2.25.159",
         "@wso2is/admin.wsfed-configuration.v1": "^2.25.159",
+        "@wso2is/common.ui.v1": "^0.0.0",
         "@wso2is/core": "^2.6.3",
         "@wso2is/dynamic-forms": "^2.4.36",
         "@wso2is/form": "^2.6.29",

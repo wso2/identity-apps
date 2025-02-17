@@ -22,11 +22,9 @@ import { ThemeProvider } from "@oxygen-ui/react/theme";
 import { AuthenticateUtils } from "@wso2is/admin.authentication.v1";
 import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
-import { UserPreferencesInterface } from "@wso2is/admin.core.v1/models/user-preferences";
 import { AppConfigProvider } from "@wso2is/admin.core.v1/providers/app-config-provider";
 import AppSettingsProvider from "@wso2is/admin.core.v1/providers/app-settings-provider";
 import GlobalVariablesProvider from "@wso2is/admin.core.v1/providers/global-variables-provider";
-import UserPreferencesProvider from "@wso2is/admin.core.v1/providers/user-preferences-provider";
 import { store } from "@wso2is/admin.core.v1/store";
 import OrganizationsProvider from "@wso2is/admin.organizations.v1/providers/organizations-provider";
 import { ContextUtils } from "@wso2is/core/utils";
@@ -104,21 +102,19 @@ const RootWithConfig = (): ReactElement => {
             <AppSettingsProvider>
                 <ThemeProvider theme={ Theme } defaultMode="light" modeStorageKey="console-oxygen-mode">
                     <Provider store={ store }>
-                        <UserPreferencesProvider<UserPreferencesInterface>>
-                            <BrowserRouter>
-                                <AuthProvider
-                                    config={ AuthenticateUtils.getInitializeConfig() }
-                                    fallback={ <PreLoader /> }
-                                    getAuthParams={ AuthenticateUtils.getAuthParams }
-                                >
-                                    <AppConfigProvider>
-                                        <OrganizationsProvider>
-                                            <ProtectedApp />
-                                        </OrganizationsProvider>
-                                    </AppConfigProvider>
-                                </AuthProvider>
-                            </BrowserRouter>
-                        </UserPreferencesProvider>
+                        <BrowserRouter>
+                            <AuthProvider
+                                config={ AuthenticateUtils.getInitializeConfig() }
+                                fallback={ <PreLoader /> }
+                                getAuthParams={ AuthenticateUtils.getAuthParams }
+                            >
+                                <AppConfigProvider>
+                                    <OrganizationsProvider>
+                                        <ProtectedApp />
+                                    </OrganizationsProvider>
+                                </AppConfigProvider>
+                            </AuthProvider>
+                        </BrowserRouter>
                     </Provider>
                 </ThemeProvider>
             </AppSettingsProvider>
