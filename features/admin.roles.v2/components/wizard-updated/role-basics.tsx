@@ -372,9 +372,9 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                         <Alert severity="info">
                             {
                                 // TODO: need to add a learn more for this.
-                                !isSubOrg
-                                    ? t("roles:addRoleWizard.forms.roleBasicDetails.notes.appNote")
-                                    : t("roles:addRoleWizard.forms.roleBasicDetails.notes.subOrganization.appNote")
+                                isSubOrg
+                                    ? t("roles:addRoleWizard.forms.roleBasicDetails.notes.subOrganization.appNote")
+                                    : t("roles:addRoleWizard.forms.roleBasicDetails.notes.appNote")
                             }
                         </Alert>
                     ) : (
