@@ -28,8 +28,10 @@ import {
     ValidationPropertyInterface
 } from "@wso2is/admin.validation.v1/models";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
-import { ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
+import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
+import { FeatureAccessConfigInterface, ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
+import { ProfileUtils } from "@wso2is/core/utils";
+import { DropdownChild } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
 import { UserManagementConstants } from "../constants/user-management-constants";
 import { MultipleInviteMode, MultipleInvitesDisplayNames, UserBasicInterface } from "../models/user";
@@ -325,4 +327,45 @@ export const constructPatchOpValueForMultiValuedAttribute = (
     }
 
     return { [attributeSchemaName]: currentValues };
+};
+
+/**
+ * Resolves the attributes by which users can be searched.
+ *
+ * @param profileSchemas  - SCIM profile schemas.
+ * @returns Header of the user list item.
+ */
+export const resolveUserSearchAttributes = (
+    profileSchemas: ProfileSchemaInterface[]
+): DropdownChild[] => {
+    const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
+        .filter((item: ProfileSchemaInterface) =>
+            item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"))
+        .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
+            if (!a.displayOrder) {
+                return -1;
+            } else if (!b.displayOrder) {
+                return 1;
+            } else {
+                return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
+            }
+        });
+
+    let searchAttributes:DropdownChild[] = [];
+
+    if (sortedSchemas) {
+        searchAttributes = sortedSchemas.map((schema: ProfileSchemaInterface, index: number) => {
+            const extendedSchemaSupportedName:string = schema?.schemaId
+                ? schema.schemaId + ":" + schema.name
+                : schema.name;
+
+            return {
+                key: index,
+                text: schema.displayName,
+                value: extendedSchemaSupportedName
+            };
+        });
+    }
+
+    return searchAttributes;
 };

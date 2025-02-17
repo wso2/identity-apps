@@ -56,9 +56,11 @@ import {
     AlertLevels,
     IdentifiableComponentInterface,
     MultiValueAttributeInterface,
+    ProfileSchemaInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { DropdownChild } from "@wso2is/forms";
 import {
     ConfirmationModal,
     DocumentationLink,
@@ -72,6 +74,7 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import camelCase from "lodash-es/camelCase";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, {
     FunctionComponent,
@@ -101,6 +104,7 @@ import {
 } from "../constants";
 import { InvitationStatus, UserListInterface } from "../models/user";
 import "./users.scss";
+import { resolveUserSearchAttributes } from "../utils/user-management-utils";
 
 /**
  * Props for the Users page.
@@ -178,6 +182,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ invitedUserListItemLimit, setInvitedUserListItemLimit ]
         = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ invitedUserListOffset, setInvitedUserListOffset ] = useState<number>(1);
+    const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state?.profile?.profileSchemas);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -518,6 +523,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const usersList: UserListInterface = useMemo(() => transformUserList(originalUserList), [ originalUserList ]);
 
     /**
+     * Resolves the attributes by which the users can be searched.
+     */
+    const userSearchAttributes: DropdownChild[] = useMemo(() => {
+        return resolveUserSearchAttributes(profileSchemas);
+    }, [ profileSchemas ]);
+
+    /**
      * Fetches the read-only user stores.
      *
      * @param userstore - Userstore list.
@@ -644,38 +656,18 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const advancedSearchFilter = (isUserList: boolean): ReactElement => (
         <AdvancedSearchWithBasicFilters
             onFilter={ handleUserFilter }
-            filterAttributeOptions={
-                isUserList
-                    ? [
-                        {
-                            key: 0,
-                            text: t("users:advancedSearch.form.dropdown." + "filterAttributeOptions.username"),
-                            value: "userName"
-                        },
-                        {
-                            key: 1,
-                            text: t("users:advancedSearch.form.dropdown." + "filterAttributeOptions.email"),
-                            value: "emails"
-                        },
-                        {
-                            key: 2,
-                            text: "First Name",
-                            value: "name.givenName"
-                        },
-                        {
-                            key: 3,
-                            text: "Last Name",
-                            value: "name.familyName"
-                        }
-                    ]
-                    : [
-                        {
-                            key: 0,
-                            text: t("users:advancedSearch.form.dropdown." + "filterAttributeOptions.username"),
-                            value: "userName"
-                        }
-                    ]
-            }
+            filterAttributeOptions={ userSearchAttributes.map((attribute:DropdownChild): DropdownChild => {
+                const i8nKey: string =
+                "console:manage.features.users.advancedSearch.form.dropdown.filterAttributeOptions."
+                + camelCase(attribute.text.toString());
+                const i18nSupportedDisplayVal:string = t(i8nKey, { defaultValue: attribute.text.toString() });
+
+                return {
+                    key: attribute.value,
+                    text: i18nSupportedDisplayVal,
+                    value: attribute.value
+                };
+            } ) }
             filterAttributePlaceholder={
                 t("users:advancedSearch.form.inputs.filterAttribute" +
                     ".placeholder")
