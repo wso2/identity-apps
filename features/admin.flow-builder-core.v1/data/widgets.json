@@ -1,5 +1,6 @@
 [
     {
+        "resourceType": "WIDGET",
         "category": "COMPOSITE",
         "type": "IDENTIFIER_PASSWORD",
         "version": "0.1.0",
@@ -26,6 +27,7 @@
                 ],
                 "elements": [
                     {
+                        "resourceType": "ELEMENT",
                         "category": "FIELD",
                         "type": "INPUT",
                         "variant": "TEXT",
@@ -46,6 +48,7 @@
                         "id": "dnd-element_d6707724-df80-4f69-bbbd-6303217b660e"
                     },
                     {
+                        "resourceType": "ELEMENT",
                         "category": "FIELD",
                         "type": "INPUT",
                         "variant": "PASSWORD",
@@ -66,6 +69,7 @@
                         "id": "dnd-element_4f84cb89-62de-488d-aeb4-163dcb948148"
                     },
                     {
+                        "resourceType": "ELEMENT",
                         "category": "ACTION",
                         "type": "BUTTON",
                         "id": "dnd-element_b5c04863-dc63-4fe6-831b-df8a2a946a9f",
@@ -87,6 +91,7 @@
         }
     },
     {
+        "resourceType": "WIDGET",
         "category": "FLOW",
         "type": "EMAIL_OTP",
         "version": "0.1.0",
@@ -101,6 +106,7 @@
         }
     },
     {
+        "resourceType": "WIDGET",
         "category": "FLOW",
         "type": "SMS_OTP",
         "version": "0.1.0",
@@ -115,6 +121,7 @@
         }
     },
     {
+        "resourceType": "WIDGET",
         "category": "SECURITY",
         "type": "RECAPTCHA",
         "version": "0.1.0",

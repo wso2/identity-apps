@@ -1,5 +1,6 @@
 [
     {
+        "resourceType": "STEP",
         "category": "INTERFACE",
         "type": "VIEW",
         "version": "0.1.0",
@@ -13,6 +14,7 @@
         }
     },
     {
+        "resourceType": "STEP",
         "category": "DECISION",
         "type": "RULE",
         "version": "0.1.0",
@@ -26,6 +28,7 @@
         }
     },
     {
+        "resourceType": "STEP",
         "category": "WORKFLOW",
         "type": "TRIGGER",
         "version": "0.1.0",
