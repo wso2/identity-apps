@@ -74,7 +74,6 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import camelCase from "lodash-es/camelCase";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, {
     FunctionComponent,
@@ -603,7 +602,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     const resolveFilterAttributeOptions = (useConsoleAttributeList: boolean): DropdownChild[] => {
-        const filterAttributeOptions: DropdownChild[] = [
+        let filterAttributeOptions: DropdownChild[] = [
             {
                 key: 0,
                 text: t("users:advancedSearch.form.dropdown." + "filterAttributeOptions.username"),
@@ -612,17 +611,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         ];
 
         if (useConsoleAttributeList) {
-            userSearchAttributes?.map((attribute: DropdownChild) => {
-                const i8nKey: string = "console:manage.features.users.advancedSearch.form.dropdown." +
-                    "filterAttributeOptions." + camelCase(attribute.text.toString());
-                const i18nSupportedDisplayVal: string = t(i8nKey, { defaultValue: attribute.text.toString() });
-
-                filterAttributeOptions.push({
-                    key: attribute.value,
-                    text: i18nSupportedDisplayVal,
-                    value: attribute.value
-                });
-            });
+            filterAttributeOptions = filterAttributeOptions.concat(userSearchAttributes);
         }
 
         return filterAttributeOptions;
