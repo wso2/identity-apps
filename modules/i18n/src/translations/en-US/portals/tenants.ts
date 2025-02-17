@@ -86,7 +86,10 @@ export const tenants: TenantsNS = {
                     label: "Email",
                     placeholder: "Enter the admin’s email address.",
                     validations: {
-                        required: "Email is required."
+                        required: "Email is required.",
+                        invalid: "Please enter a valid email address. You can use alphanumeric " +
+                            "characters, unicode characters, underscores (_), dashes (-), periods (.), " +
+                            "and an at sign (@)."
                     }
                 },
                 emailUsername: {

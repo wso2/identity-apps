@@ -83,6 +83,7 @@ export interface TenantsNS {
                     placeholder: string;
                     validations: {
                         required: string;
+                        invalid?: string;
                     };
                 };
                 emailUsername: {
