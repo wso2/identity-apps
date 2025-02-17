@@ -2634,6 +2634,22 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 : schema.name === MOBILE_ATTRIBUTE
         );
 
+    /**
+     * Check whether the value is empty or not.
+     * @param schema - Profile schema
+     * @returns boolean - Whether value is empty or not.
+     */
+    const isValueEmpty = (schema: ProfileSchema): boolean => {
+
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+            return isEmpty(profileInfo.get(schema.name)) && isEmpty(profileInfo.get(EMAIL_ATTRIBUTE));
+        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+            return isEmpty(profileInfo.get(schema.name)) && isEmpty(profileInfo.get(MOBILE_ATTRIBUTE));
+        }
+
+        return isEmpty(profileInfo.get(schema.name));
+    };
+
     return (
         <>
             <SettingsSection
@@ -2715,11 +2731,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                             : null
                                                     }
                                                     {
-                                                        !isEmpty(profileInfo.get(schema.name)) ||
-                                        (!CommonUtils.isProfileReadOnly(isReadOnlyUser)
-                                            && (resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA)
-                                            && hasRequiredScopes(featureConfig?.personalInfo,
-                                                featureConfig?.personalInfo?.scopes?.update, allowedScopes))
+                                                        !isValueEmpty(schema)
+                                                            || (!CommonUtils.isProfileReadOnly(isReadOnlyUser)
+                                                            && (resolvedMutabilityValue
+                                                                !== ProfileConstants.READONLY_SCHEMA)
+                                                                && hasRequiredScopes(featureConfig?.personalInfo,
+                                                                    featureConfig?.personalInfo?.scopes?.update,
+                                                                    allowedScopes))
                                                             ? generateSchemaForm(schema, index)
                                                             : null
                                                     }
