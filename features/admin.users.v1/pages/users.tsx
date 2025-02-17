@@ -602,6 +602,32 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         mutateUserListFetchRequest();
     };
 
+    const resolveFilterAttributeOptions = (useConsoleAttributeList: boolean): DropdownChild[] => {
+        const filterAttributeOptions: DropdownChild[] = [
+            {
+                key: 0,
+                text: t("users:advancedSearch.form.dropdown." + "filterAttributeOptions.username"),
+                value: "userName"
+            }
+        ];
+
+        if (useConsoleAttributeList) {
+            userSearchAttributes?.map((attribute: DropdownChild) => {
+                const i8nKey: string = "console:manage.features.users.advancedSearch.form.dropdown." +
+                    "filterAttributeOptions." + camelCase(attribute.text.toString());
+                const i18nSupportedDisplayVal: string = t(i8nKey, { defaultValue: attribute.text.toString() });
+
+                filterAttributeOptions.push({
+                    key: attribute.value,
+                    text: i18nSupportedDisplayVal,
+                    value: attribute.value
+                });
+            });
+        }
+
+        return filterAttributeOptions;
+    };
+
     /**
      * Handles the click event of the create new user button.
      */
@@ -649,25 +675,14 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     /**
      * Renders an advanced search filter for users list and invitations list.
      *
-     * @param isUserList - If `true`, allows filtering by username, email, first name, and last name.
+     * @param isUserList - If `true`, allows filtering by other available attributes.
      *                     If `false`, allows filtering only by username (for invitation list).
      * @returns The search filter component.
      */
     const advancedSearchFilter = (isUserList: boolean): ReactElement => (
         <AdvancedSearchWithBasicFilters
             onFilter={ handleUserFilter }
-            filterAttributeOptions={ userSearchAttributes.map((attribute:DropdownChild): DropdownChild => {
-                const i8nKey: string =
-                "console:manage.features.users.advancedSearch.form.dropdown.filterAttributeOptions."
-                + camelCase(attribute.text.toString());
-                const i18nSupportedDisplayVal:string = t(i8nKey, { defaultValue: attribute.text.toString() });
-
-                return {
-                    key: attribute.value,
-                    text: i18nSupportedDisplayVal,
-                    value: attribute.value
-                };
-            } ) }
+            filterAttributeOptions={ resolveFilterAttributeOptions(isUserList) }
             filterAttributePlaceholder={
                 t("users:advancedSearch.form.inputs.filterAttribute" +
                     ".placeholder")
