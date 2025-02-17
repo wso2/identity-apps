@@ -461,6 +461,43 @@ const useSignIn = (): UseSignInInterface => {
                     signOutRedirectURL = null;
                 }
 
+                // This is a temporary fix to handle the logout redirection for sub-org logins.
+                // This should be supported by the SDK itself to change the post logout redirect URL.
+                // Tracker: https://github.com/asgardeo/asgardeo-auth-react-sdk/issues/278
+                const isSwitchedFromRootOrg: boolean = getUserOrgInLocalStorage() === "undefined";
+
+                if (orgType === OrganizationType.SUBORGANIZATION && !isSwitchedFromRootOrg) {
+                    Object.entries(sessionStorage).forEach(([ key, value ]: [ key: string, value: string ]) => {
+                        if (key.startsWith(LOGOUT_URL) && key.includes(window["AppUtils"]?.getConfig()?.clientID)) {
+                            const _signOutRedirectURL: URL = new URL(value);
+
+                            let postLogoutRedirectUri: string = signOutRedirectURL
+                                ?.searchParams?.get("post_logout_redirect_uri");
+
+                            if (postLogoutRedirectUri) {
+                                const postLogoutURL: URL = new URL(postLogoutRedirectUri);
+                                const tenantPrefix: string  = window["AppUtils"]?.getConfig()?.tenantPrefix;
+
+                                if (postLogoutRedirectUri.includes(tenantPrefix)) {
+                                    postLogoutRedirectUri = window["AppUtils"]?.getConfig()?.clientOriginWithTenant +
+                                        postLogoutURL?.pathname?.split("/")?.slice(3)?.join("/");
+                                } else {
+                                    postLogoutRedirectUri = window["AppUtils"]?.getConfig()?.clientOriginWithTenant +
+                                        postLogoutURL?.pathname;
+                                }
+                                console.log(postLogoutRedirectUri);
+
+                                _signOutRedirectURL?.searchParams?.set(
+                                    "post_logout_redirect_uri",
+                                    postLogoutRedirectUri
+                                );
+
+                                sessionStorage.setItem(key, _signOutRedirectURL.href);
+                            }
+                        }
+                    });
+                }
+
                 /**
                  * If,
                  *  (i) the experimental Platform IdP is enabled, and
