@@ -92,8 +92,6 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
         (state: AppState) => state.config?.ui?.multiTenancy?.isTenantDomainDotExtensionMandatory
     );
 
-    const [ isPasswordValid, setIsPasswordValid ] = useState<boolean>(false);
-
     const userNameValidationConfig: ValidationFormInterface = useMemo((): ValidationFormInterface => {
         return getUsernameConfiguration(validationData);
     }, [ validationData ]);
@@ -263,17 +261,18 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
 
         if (!values.email) {
             errors.email = t("tenants:common.form.fields.email.validations.required");
+        } else if (!FormValidation.email(values.email)) {
+            errors.email = t("tenants:common.form.fields.email.validations.invalid");
         }
 
         if (!values.password) {
             errors.password = t("tenants:common.form.fields.password.validations.required");
-        } else if (!isPasswordValid) {
-            errors.password = "";
         }
 
         if (!values.username) {
             errors.username = t("tenants:common.form.fields.username.validations.required");
         }
+
 
         return errors;
     };
@@ -294,15 +293,6 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                     data-componentid={ `${componentId}-username` }
                     name="username"
                     type={ enableEmailDomain ? "email" : "text" }
-                    helperText={
-                        (<Hint>
-                            <Typography variant="inherit">
-                                { enableEmailDomain
-                                    ? t("tenants:common.form.fields.emailUsername.helperText")
-                                    : t("tenants:common.form.fields.username.helperText") }
-                            </Typography>
-                        </Hint>)
-                    }
                     label={
                         enableEmailDomain
                             ? t("tenants:common.form.fields.emailUsername.label")
@@ -331,92 +321,14 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                 data-componentid={ `${componentId}-username` }
                 name="username"
                 type="text"
-                helperText={
-                    (<Hint>
-                        <Typography variant="inherit">
-                            { userNameValidationConfig?.isAlphanumericOnly
-                                ? t("tenants:common.form.fields.alphanumericUsername." + "validations.usernameHint", {
-                                    maxLength: userNameValidationConfig?.maxLength,
-                                    minLength: userNameValidationConfig?.minLength
-                                })
-                                : t(
-                                    "tenants:common.form.fields.alphanumericUsername." +
-                                          "validations.usernameSpecialCharHint",
-                                    {
-                                        maxLength: userNameValidationConfig?.maxLength,
-                                        minLength: userNameValidationConfig?.minLength
-                                    }
-                                ) }
-                        </Typography>
-                    </Hint>)
-                }
                 label={ t("tenants:common.form.fields.alphanumericUsername.label") }
                 placeholder={ t("tenants:common.form.fields.alphanumericUsername.placeholder") }
                 component={ TextFieldAdapter }
-                validate={ composeValidators(validateAlphanumericUsername) }
                 maxLength={ 100 }
                 minLength={ 0 }
             />
         );
     };
-
-    /**
-     * Renders the password validation criteria with the help of `PasswordValidation` component.
-     *
-     * @param formState - Form state.
-     * @returns Password validation criteria.
-     */
-    const renderPasswordValidationCriteria = (formState: FormState<AddTenantFormValues>): ReactElement => (
-        <PasswordValidation
-            password={ formState?.values?.password ?? "" }
-            minLength={ Number(passwordValidationConfig.minLength) }
-            maxLength={ Number(passwordValidationConfig.maxLength) }
-            minNumbers={ Number(passwordValidationConfig.minNumbers) }
-            minUpperCase={ Number(passwordValidationConfig.minUpperCaseCharacters) }
-            minLowerCase={ Number(passwordValidationConfig.minLowerCaseCharacters) }
-            minSpecialChr={ Number(passwordValidationConfig.minSpecialCharacters) }
-            minUniqueChr={ Number(passwordValidationConfig.minUniqueCharacters) }
-            maxConsecutiveChr={ Number(passwordValidationConfig.maxConsecutiveCharacters) }
-            onPasswordValidate={ (isValid: boolean): void => {
-                setIsPasswordValid(isValid);
-            } }
-            translations={ {
-                case:
-                    Number(passwordValidationConfig?.minUpperCaseCharacters) > 0 &&
-                    Number(passwordValidationConfig?.minLowerCaseCharacters) > 0
-                        ? t("tenants:common.form.fields.password.validations.criteria.passwordCase", {
-                            minLowerCase: passwordValidationConfig.minLowerCaseCharacters,
-                            minUpperCase: passwordValidationConfig.minUpperCaseCharacters
-                        })
-                        : Number(passwordValidationConfig?.minUpperCaseCharacters) > 0
-                            ? t("tenants:common.form.fields.password.validations.criteria.upperCase", {
-                                minUpperCase: passwordValidationConfig.minUpperCaseCharacters
-                            })
-                            : t("tenants:common.form.fields.password.validations.criteria.lowerCase", {
-                                minLowerCase: passwordValidationConfig.minLowerCaseCharacters
-                            }),
-                consecutiveChr: t(
-                    "tenants:common.form.fields.password.validations.criteria.consecutiveCharacters",
-                    {
-                        repeatedChr: passwordValidationConfig.maxConsecutiveCharacters
-                    }
-                ),
-                length: t("tenants:common.form.fields.password.validations.criteria.passwordLength", {
-                    max: passwordValidationConfig.maxLength,
-                    min: passwordValidationConfig.minLength
-                }),
-                numbers: t("tenants:common.form.fields.password.validations.criteria.passwordNumeric", {
-                    min: passwordValidationConfig.minNumbers
-                }),
-                specialChr: t("tenants:common.form.fields.password.validations.criteria.specialCharacter", {
-                    specialChr: passwordValidationConfig.minSpecialCharacters
-                }),
-                uniqueChr: t("tenants:common.form.fields.password.validations.criteria.uniqueCharacters", {
-                    uniqueChr: passwordValidationConfig.minUniqueCharacters
-                })
-            } }
-        />
-    );
 
     return (
         <FinalForm
@@ -582,7 +494,6 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                                     </Button>
                                 ) }
                             </Stack>
-                            { passwordValidationConfig && renderPasswordValidationCriteria(formState) }
                         </Stack>
                     </form>
                 );
