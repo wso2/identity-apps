@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,8 +28,8 @@ import {
     ValidationPropertyInterface
 } from "@wso2is/admin.validation.v1/models";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
-import { FeatureAccessConfigInterface, ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
+import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
+import { ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { DropdownChild } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
@@ -330,6 +330,23 @@ export const constructPatchOpValueForMultiValuedAttribute = (
 };
 
 /**
+ * Resolves the display order of the given schema.
+ *
+ * @param schema - SCIM profile schema.
+ * @returns the display order of the schema.
+ */
+export const getDisplayOrder = (schema: ProfileSchemaInterface): number => {
+    if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")) return 0;
+    if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")
+        && (!schema.displayOrder || schema.displayOrder == "0")) return 6;
+    if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")
+        && (!schema.displayOrder || schema.displayOrder == "0")) return 7;
+    if (!schema.displayOrder || schema.displayOrder == "0") return Number.MAX_SAFE_INTEGER;
+
+    return schema.displayOrder ? parseInt(schema.displayOrder, 10) : Number.MAX_SAFE_INTEGER;
+};
+
+/**
  * Resolves the attributes by which users can be searched.
  *
  * @param profileSchemas  - SCIM profile schemas.
@@ -339,16 +356,23 @@ export const resolveUserSearchAttributes = (
     profileSchemas: ProfileSchemaInterface[]
 ): DropdownChild[] => {
     const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
-        .filter((item: ProfileSchemaInterface) =>
-            item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"))
-        .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
-            if (!a.displayOrder) {
-                return -1;
-            } else if (!b.displayOrder) {
-                return 1;
-            } else {
-                return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
+        .filter((schema: ProfileSchemaInterface) => {
+            // The global supportedByDefault value is a string. Hence, it needs to be converted to a boolean.
+            let resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+
+            if (schema?.profiles?.console?.supportedByDefault !== undefined) {
+                resolveSupportedByDefaultValue = schema?.profiles?.console?.supportedByDefault;
             }
+
+            // If the schema is not supported by default and the value is empty, the field should not be displayed.
+            if (!resolveSupportedByDefaultValue) {
+                return false;
+            }
+
+            return true;
+        })
+        .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
+            return getDisplayOrder(a) - getDisplayOrder(b);
         });
 
     let searchAttributes:DropdownChild[] = [];
