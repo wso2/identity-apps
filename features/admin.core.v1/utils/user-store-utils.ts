@@ -200,7 +200,6 @@ export class SharedUserStoreUtils {
      */
     public static async getPrimaryUserStore(): Promise<void | UserStoreDetails> {
         return getPrimaryUserStore(userstoresConfig.primaryUserstoreId).then((response: any) => {
-
             return response;
         }).catch(() => {
             store.dispatch(addAlert({
