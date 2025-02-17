@@ -16,12 +16,14 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import useGetUserStoreDetails from "../api/use-get-user-store-details";
 import { useGetUserStores } from "../api/use-get-user-stores";
@@ -47,17 +49,27 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
         UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED
     ];
 
+    const userStoreFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userStores);
+
+    const hasUserStoresReadPermission: boolean = useRequiredScopes(userStoreFeatureConfig?.scopes?.read);
+
     const {
         data: fetchedUserStores,
         isLoading: isUserStoreGetRequestLoading,
         error: userStoreGetRequestError
-    } = useGetUserStores(null, null, null, null, requiredUserStoreAttributes.join(","));
+    } = useGetUserStores(null, null, null, null, requiredUserStoreAttributes.join(","), hasUserStoresReadPermission);
 
     const shouldFetchPrimaryUserStore: boolean = useMemo(
-        () =>
-            !(fetchedUserStores?.some(
+        () => {
+            if (!hasUserStoresReadPermission) {
+                return false;
+            }
+
+            return !(fetchedUserStores?.some(
                 (userStore: UserStoreListItem) => userStore.id === userstoresConfig.primaryUserstoreId
-            ) ?? true),
+            ) ?? true);
+        },
         [ fetchedUserStores ]
     );
 
