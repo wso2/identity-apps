@@ -57,7 +57,7 @@
 <%
     String stat = request.getParameter(Constants.STATUS);
     String statusMessage = request.getParameter(Constants.STATUS_MSG);
-    String sp = request.getParameter("sp");
+    String sp = Encode.forJava(request.getParameter("sp"));
     String errorCode = request.getParameter("errorCode");
     String remainingAttempts = request.getParameter("remainingAttempts");
     String applicationAccessURLWithoutEncoding = null;

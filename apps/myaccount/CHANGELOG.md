@@ -1,5 +1,39 @@
 # @wso2is/myaccount
 
+## 2.17.33
+
+### Patch Changes
+
+- [#7618](https://github.com/wso2/identity-apps/pull/7618) [`ade5fcc4b0b9187195bd237860d6afa33472bc70`](https://github.com/wso2/identity-apps/commit/ade5fcc4b0b9187195bd237860d6afa33472bc70) Thanks [@sandushi](https://github.com/sandushi)! - Add content type as application/json for json files
+
+- Updated dependencies [[`47c768b2179f9768ebf9c858463e831ca4f079b3`](https://github.com/wso2/identity-apps/commit/47c768b2179f9768ebf9c858463e831ca4f079b3)]:
+  - @wso2is/i18n@2.19.18
+  - @wso2is/admin.organizations.v1@2.26.174
+  - @wso2is/common.branding.v1@2.26.31
+
+## 2.17.32
+
+### Patch Changes
+
+- [#7645](https://github.com/wso2/identity-apps/pull/7645) [`0afe5d5ec9fa5ab010b383b7fb0e841ad79a9988`](https://github.com/wso2/identity-apps/commit/0afe5d5ec9fa5ab010b383b7fb0e841ad79a9988) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix read only field displaying logic in user profiles
+
+- [#7650](https://github.com/wso2/identity-apps/pull/7650) [`d3a1214fb77f8d2f718113850981c37c3e16be85`](https://github.com/wso2/identity-apps/commit/d3a1214fb77f8d2f718113850981c37c3e16be85) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix primary email retrieval logic in my account
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.173
+  - @wso2is/common.branding.v1@2.26.30
+
+## 2.17.31
+
+### Patch Changes
+
+- [#7642](https://github.com/wso2/identity-apps/pull/7642) [`f71ef6f43835ce68d1562fe3989d5046b9474dfb`](https://github.com/wso2/identity-apps/commit/f71ef6f43835ce68d1562fe3989d5046b9474dfb) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the logout redirection issue for sub-org users in MyAccount.
+
+- Updated dependencies [[`3e098ee7cace95919ee2ed56c4cd4bfbaea6873d`](https://github.com/wso2/identity-apps/commit/3e098ee7cace95919ee2ed56c4cd4bfbaea6873d)]:
+  - @wso2is/i18n@2.19.17
+  - @wso2is/admin.organizations.v1@2.26.172
+  - @wso2is/common.branding.v1@2.26.29
+
 ## 2.17.30
 
 ### Patch Changes

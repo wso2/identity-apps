@@ -1,5 +1,17 @@
 # @wso2is/i18n
 
+## 2.19.18
+
+### Patch Changes
+
+- [#7648](https://github.com/wso2/identity-apps/pull/7648) [`47c768b2179f9768ebf9c858463e831ca4f079b3`](https://github.com/wso2/identity-apps/commit/47c768b2179f9768ebf9c858463e831ca4f079b3) Thanks [@inthirakumaaran](https://github.com/inthirakumaaran)! - Remove root admin validation
+
+## 2.19.17
+
+### Patch Changes
+
+- [#7644](https://github.com/wso2/identity-apps/pull/7644) [`3e098ee7cace95919ee2ed56c4cd4bfbaea6873d`](https://github.com/wso2/identity-apps/commit/3e098ee7cace95919ee2ed56c4cd4bfbaea6873d) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix state update issue in the distinct attribute profile UI
+
 ## 2.19.16
 
 ### Patch Changes

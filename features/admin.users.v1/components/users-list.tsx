@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,6 +28,7 @@ import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -130,10 +131,6 @@ interface UsersListProps extends SBACInterface<FeatureConfigInterface>, Loadable
      */
     usersList: UserListInterface;
     /**
-     * List of readOnly user stores.
-     */
-    readOnlyUserStores?: string[];
-    /**
      * Indicates whether the currently selected user store is read-only or not.
      */
     isReadOnlyUserStore?: boolean;
@@ -151,7 +148,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         defaultListItemLimit,
         onUserDelete,
         isLoading,
-        readOnlyUserStores,
         featureConfig,
         onColumnSelectionChange,
         onListItemClick,
@@ -169,6 +165,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const { isSubOrganization } = useGetCurrentOrganizationType();
+
+    const { readOnlyUserStoreNamesList: readOnlyUserStores } = useUserStores();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
@@ -571,7 +569,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             );
         }
 
-        if (usersList.totalResults === 0) {
+        if (usersList?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
                     data-testid={ `${testId}-empty-placeholder` }
@@ -612,7 +610,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 } }
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
-                data={ usersList.Resources }
+                data={ usersList?.Resources }
                 onColumnSelectionChange={ onColumnSelectionChange }
                 onRowClick={ (e: SyntheticEvent, user: UserBasicInterface): void => {
                     handleUserEdit(user?.id);

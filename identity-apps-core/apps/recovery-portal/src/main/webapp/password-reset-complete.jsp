@@ -66,7 +66,7 @@
     String ERROR_CODE = "errorCode";
     String PASSWORD_RESET_PAGE = "password-reset.jsp";
     String AUTO_LOGIN_COOKIE_NAME = "ALOR";
-    String AUTO_LOGIN_FLOW_TYPE = "RECOVERY";
+    String AUTO_LOGIN_FLOW_TYPE = "ACCOUNT_RECOVERY";
     String AUTO_LOGIN_COOKIE_DOMAIN = "AutoLoginCookieDomain";
     String USERSTORE_DOMAIN = "userstoredomain";
     String RECOVERY_TYPE_INVITE = "invite";
@@ -80,7 +80,7 @@
             IdentityManagementEndpointUtil.getStringValue(request.getSession().getAttribute("confirmationKey"));
     String newPassword = request.getParameter("reset-password");
     String callback = request.getParameter("callback");
-    String spId = request.getParameter("spId");
+    String spId = Encode.forJava(request.getParameter("spId"));
     if (StringUtils.isBlank(spId)) {
         spId = (String)request.getAttribute("spId");
     }

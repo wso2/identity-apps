@@ -1,5 +1,46 @@
 # @wso2is/admin.policy-administration.v1
 
+## 1.0.90
+
+### Patch Changes
+
+- Updated dependencies [[`b467e279a1973e67aaadf0586cb72a4dc1391c5f`](https://github.com/wso2/identity-apps/commit/b467e279a1973e67aaadf0586cb72a4dc1391c5f), [`47c768b2179f9768ebf9c858463e831ca4f079b3`](https://github.com/wso2/identity-apps/commit/47c768b2179f9768ebf9c858463e831ca4f079b3), [`785e8f986338acb7bff2eececf717b7c4f7c5575`](https://github.com/wso2/identity-apps/commit/785e8f986338acb7bff2eececf717b7c4f7c5575), [`e4657499f151f319f1dec5f2fe8166e590dde979`](https://github.com/wso2/identity-apps/commit/e4657499f151f319f1dec5f2fe8166e590dde979)]:
+  - @wso2is/admin.users.v1@2.30.84
+  - @wso2is/i18n@2.19.18
+  - @wso2is/admin.core.v1@2.39.0
+  - @wso2is/admin.extensions.v1@2.36.99
+  - @wso2is/admin.organizations.v1@2.26.174
+  - @wso2is/admin.validation.v1@2.27.112
+  - @wso2is/admin.applications.v1@2.31.22
+  - @wso2is/admin.feature-gate.v1@1.4.174
+
+## 1.0.89
+
+### Patch Changes
+
+- Updated dependencies [[`0afe5d5ec9fa5ab010b383b7fb0e841ad79a9988`](https://github.com/wso2/identity-apps/commit/0afe5d5ec9fa5ab010b383b7fb0e841ad79a9988), [`de5b007ec4edabb377f2c495a43554f09d0ec3c4`](https://github.com/wso2/identity-apps/commit/de5b007ec4edabb377f2c495a43554f09d0ec3c4)]:
+  - @wso2is/admin.users.v1@2.30.83
+  - @wso2is/admin.applications.v1@2.31.21
+  - @wso2is/admin.core.v1@2.38.42
+  - @wso2is/admin.extensions.v1@2.36.98
+  - @wso2is/admin.organizations.v1@2.26.173
+  - @wso2is/admin.validation.v1@2.27.111
+  - @wso2is/admin.feature-gate.v1@1.4.173
+
+## 1.0.88
+
+### Patch Changes
+
+- Updated dependencies [[`3e098ee7cace95919ee2ed56c4cd4bfbaea6873d`](https://github.com/wso2/identity-apps/commit/3e098ee7cace95919ee2ed56c4cd4bfbaea6873d), [`f7bb42d096766936209f550330a21b0d8b095dcb`](https://github.com/wso2/identity-apps/commit/f7bb42d096766936209f550330a21b0d8b095dcb)]:
+  - @wso2is/i18n@2.19.17
+  - @wso2is/admin.users.v1@2.30.82
+  - @wso2is/admin.applications.v1@2.31.20
+  - @wso2is/admin.core.v1@2.38.41
+  - @wso2is/admin.extensions.v1@2.36.97
+  - @wso2is/admin.organizations.v1@2.26.172
+  - @wso2is/admin.validation.v1@2.27.110
+  - @wso2is/admin.feature-gate.v1@1.4.172
+
 ## 1.0.87
 
 ### Patch Changes
