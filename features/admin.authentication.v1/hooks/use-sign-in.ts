@@ -471,25 +471,13 @@ const useSignIn = (): UseSignInInterface => {
                         if (key.startsWith(LOGOUT_URL) && key.includes(window["AppUtils"]?.getConfig()?.clientID)) {
                             const _signOutRedirectURL: URL = new URL(value);
 
-                            let postLogoutRedirectUri: string = signOutRedirectURL
+                            const postLogoutRedirectUri: string = _signOutRedirectURL
                                 ?.searchParams?.get("post_logout_redirect_uri");
 
                             if (postLogoutRedirectUri) {
-                                const postLogoutURL: URL = new URL(postLogoutRedirectUri);
-                                const tenantPrefix: string  = window["AppUtils"]?.getConfig()?.tenantPrefix;
-
-                                if (postLogoutRedirectUri.includes(tenantPrefix)) {
-                                    postLogoutRedirectUri = window["AppUtils"]?.getConfig()?.clientOriginWithTenant +
-                                        postLogoutURL?.pathname?.split("/")?.slice(3)?.join("/");
-                                } else {
-                                    postLogoutRedirectUri = window["AppUtils"]?.getConfig()?.clientOriginWithTenant +
-                                        postLogoutURL?.pathname;
-                                }
-                                console.log(postLogoutRedirectUri);
-
                                 _signOutRedirectURL?.searchParams?.set(
                                     "post_logout_redirect_uri",
-                                    postLogoutRedirectUri
+                                    window["AppUtils"]?.getConfig()?.clientOriginWithTenant
                                 );
 
                                 sessionStorage.setItem(key, _signOutRedirectURL.href);
