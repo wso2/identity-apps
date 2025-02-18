@@ -1,5 +1,24 @@
 # @wso2is/admin.groups.v1
 
+## 2.27.84
+
+### Patch Changes
+
+- [#7656](https://github.com/wso2/identity-apps/pull/7656) [`b467e279a1973e67aaadf0586cb72a4dc1391c5f`](https://github.com/wso2/identity-apps/commit/b467e279a1973e67aaadf0586cb72a4dc1391c5f) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues related to read-only LDAP user store
+
+* [#7662](https://github.com/wso2/identity-apps/pull/7662) [`785e8f986338acb7bff2eececf717b7c4f7c5575`](https://github.com/wso2/identity-apps/commit/785e8f986338acb7bff2eececf717b7c4f7c5575) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix readonly userstores appearing in group and user creation wizards
+
+* Updated dependencies [[`b467e279a1973e67aaadf0586cb72a4dc1391c5f`](https://github.com/wso2/identity-apps/commit/b467e279a1973e67aaadf0586cb72a4dc1391c5f), [`b467e279a1973e67aaadf0586cb72a4dc1391c5f`](https://github.com/wso2/identity-apps/commit/b467e279a1973e67aaadf0586cb72a4dc1391c5f), [`47c768b2179f9768ebf9c858463e831ca4f079b3`](https://github.com/wso2/identity-apps/commit/47c768b2179f9768ebf9c858463e831ca4f079b3), [`785e8f986338acb7bff2eececf717b7c4f7c5575`](https://github.com/wso2/identity-apps/commit/785e8f986338acb7bff2eececf717b7c4f7c5575), [`e4657499f151f319f1dec5f2fe8166e590dde979`](https://github.com/wso2/identity-apps/commit/e4657499f151f319f1dec5f2fe8166e590dde979)]:
+  - @wso2is/admin.users.v1@2.30.84
+  - @wso2is/admin.userstores.v1@2.27.0
+  - @wso2is/i18n@2.19.18
+  - @wso2is/admin.core.v1@2.39.0
+  - @wso2is/admin.extensions.v1@2.36.99
+  - @wso2is/admin.organizations.v1@2.26.174
+  - @wso2is/admin.roles.v2@2.27.118
+  - @wso2is/admin.applications.v1@2.31.22
+  - @wso2is/admin.authorization.v1@2.25.77
+
 ## 2.27.83
 
 ### Patch Changes

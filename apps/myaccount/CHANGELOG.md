@@ -1,5 +1,16 @@
 # @wso2is/myaccount
 
+## 2.17.33
+
+### Patch Changes
+
+- [#7618](https://github.com/wso2/identity-apps/pull/7618) [`ade5fcc4b0b9187195bd237860d6afa33472bc70`](https://github.com/wso2/identity-apps/commit/ade5fcc4b0b9187195bd237860d6afa33472bc70) Thanks [@sandushi](https://github.com/sandushi)! - Add content type as application/json for json files
+
+- Updated dependencies [[`47c768b2179f9768ebf9c858463e831ca4f079b3`](https://github.com/wso2/identity-apps/commit/47c768b2179f9768ebf9c858463e831ca4f079b3)]:
+  - @wso2is/i18n@2.19.18
+  - @wso2is/admin.organizations.v1@2.26.174
+  - @wso2is/common.branding.v1@2.26.31
+
 ## 2.17.32
 
 ### Patch Changes
