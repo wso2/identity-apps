@@ -924,7 +924,7 @@
     </div>
 
     <script type="text/javascript" src="libs/handlebars.min-v4.7.7.js"></script>
-    <script type="text/javascript" src="libs/jstree/dist/jstree.min.js"></script>
+    <script type="text/javascript" src="libs/jstree/src/jstree.js"></script>
     <script type="text/javascript" src="libs/jstree/src/jstree-actions.js"></script>
     <script type="text/javascript" src="js/consent_template_1.js"></script>
     <script type="text/javascript" src="js/consent_template_2.js"></script>
@@ -1303,15 +1303,15 @@
             if (hasPurposes) {
                 if(consentDisplayType == "template") {
                     %>
-            renderReceiptDetailsFromTemplate(<%= Encode.forJavaScript(purposes) %>);
+            renderReceiptDetailsFromTemplate(JSON.parse("<%= Encode.forJava(purposes) %>"));
             <%
                 } else if (consentDisplayType == "tree") {
             %>
-            renderReceiptDetails(<%= Encode.forJavaScript(purposes)%>);
+            renderReceiptDetails(JSON.parse("<%= Encode.forJava(purposes) %>"));
             <%
                 } else if (consentDisplayType == "row"){
             %>
-            renderReceiptDetailsFromRows(<%= Encode.forJavaScript(purposes)%>);
+            renderReceiptDetailsFromRows(JSON.parse("<%= Encode.forJava(purposes) %>"));
             <%
                 }
             }
