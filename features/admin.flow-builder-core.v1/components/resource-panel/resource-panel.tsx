@@ -32,6 +32,7 @@ import ResourcePanelDraggableNode from "./resource-panel-draggable-node";
 import { Element } from "../../models/elements";
 import { Resources } from "../../models/resources";
 import { Step } from "../../models/steps";
+import { Template } from "../../models/templates";
 import { Widget } from "../../models/widget";
 import "./resource-panel.scss";
 
@@ -126,7 +127,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
     resources,
     ...rest
 }: ResourcePanelPropsInterface): ReactElement => {
-    const { elements, widgets, steps } = resources;
+    const { elements, widgets, steps, templates } = resources;
 
     return (
         <Box
@@ -179,6 +180,61 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
+                            <Typography variant="h6">Starter Templates</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails className="flow-builder-element-panel-category-details">
+                            <Typography variant="body2">
+                                Choose one of these templates to start building registration experience
+                            </Typography>
+                            <Stack direction="column" spacing={ 1 }>
+                                { templates.map((template: Template) => (
+                                    <ResourcePanelDraggableNode
+                                        id={ template.type }
+                                        key={ template.type }
+                                        resource={ template }
+                                    />
+                                )) }
+                            </Stack>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion square disableGutters className={ classNames("flow-builder-element-panel-categories") }>
+                        <AccordionSummary
+                            className="flow-builder-element-panel-category-heading"
+                            expandIcon={ <ChevronRightIcon size={ 14 } /> }
+                            aria-controls="panel1-content"
+                            id="panel1-header"
+                        >
+                            <IconButton>
+                                <WidgetsIcon height={ 16 } width={ 16 } />
+                            </IconButton>
+                            <Typography variant="h6">Widgets</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails className="flow-builder-element-panel-category-details">
+                            <Typography variant="body2">
+                                Use these widgets to build up the flow using per-created flow blocks
+                            </Typography>
+                            <Stack direction="column" spacing={ 1 }>
+                                { widgets.map((widget: Widget) => (
+                                    <ResourcePanelDraggableNode
+                                        id={ widget.type }
+                                        key={ widget.type }
+                                        resource={ widget }
+                                    />
+                                )) }
+                            </Stack>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion
+                        square
+                        disableGutters
+                        className={ classNames("flow-builder-element-panel-categories") }
+                    >
+                        <AccordionSummary
+                            className="flow-builder-element-panel-category-heading"
+                            expandIcon={ <ChevronRightIcon size={ 14 } /> }
+                            aria-controls="panel1-content"
+                            id="panel1-header"
+                        >
                             <IconButton>
                                 <NodesIcon height={ 16 } width={ 16 } />
                             </IconButton>
@@ -193,11 +249,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                             </Stack>
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion
-                        square
-                        disableGutters
-                        className={ classNames("flow-builder-element-panel-categories") }
-                    >
+                    <Accordion square disableGutters className={ classNames("flow-builder-element-panel-categories") }>
                         <AccordionSummary
                             className="flow-builder-element-panel-category-heading"
                             expandIcon={ <ChevronRightIcon size={ 14 } /> }
@@ -210,40 +262,13 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                             <Typography variant="h6">Components</Typography>
                         </AccordionSummary>
                         <AccordionDetails className="flow-builder-element-panel-category-details">
-                            <Typography variant="body2">Use these components to build up custom UI blocks</Typography>
+                            <Typography variant="body2">Use these components to build up your vies</Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { elements.map((element: Element) => (
-                                    <ResourcePanelDraggableNode id={ element.type } key={ element.type } resource={ element } />
-                                )) }
-                            </Stack>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion
-                        square
-                        disableGutters
-                        className={ classNames("flow-builder-element-panel-categories") }
-                    >
-                        <AccordionSummary
-                            className="flow-builder-element-panel-category-heading"
-                            expandIcon={ <ChevronRightIcon size={ 14 } /> }
-                            aria-controls="panel1-content"
-                            id="panel1-header"
-                        >
-                            <IconButton>
-                                <WidgetsIcon height={ 16 } width={ 16 } />
-                            </IconButton>
-                            <Typography variant="h6">Widgets</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails className="flow-builder-element-panel-category-details">
-                            <Typography variant="body2">
-                                Use these widgets to build up custom UI prompts and collect data
-                            </Typography>
-                            <Stack direction="column" spacing={ 1 }>
-                                { widgets.map((widget: Widget) => (
                                     <ResourcePanelDraggableNode
-                                        id={ widget.type }
-                                        key={ widget.type }
-                                        resource={ widget }
+                                        id={ element.type }
+                                        key={ element.type }
+                                        resource={ element }
                                     />
                                 )) }
                             </Stack>

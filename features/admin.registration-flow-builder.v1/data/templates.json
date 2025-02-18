@@ -1,0 +1,32 @@
+[
+    {
+        "resourceType": "TEMPLATES",
+        "category": "TEMPLATES",
+        "type": "BASIC_DETAILS",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Basic Details",
+            "description": "Basic registration experience with minimal data collect",
+            "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg"
+        },
+        "config": {
+            "field": {}
+        }
+    },
+    {
+        "resourceType": "TEMPLATES",
+        "category": "TEMPLATES",
+        "type": "BASIC_GOOGLE",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Basic + Google",
+            "description": "Google registration additional to basic registration experience",
+            "image": "https://www.svgrepo.com/show/461597/google.svg"
+        },
+        "config": {
+            "field": {}
+        }
+    }
+]

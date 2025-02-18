@@ -18,6 +18,7 @@
 
 import { Element } from "./elements";
 import { Step } from "./steps";
+import { Template } from "./templates";
 import { Widget } from "./widget";
 
 export type Resource = Element | Step | Widget;
@@ -44,4 +45,8 @@ export interface Resources {
      * List of widgets.
      */
     widgets: Widget[];
+    /**
+     * List of templates.
+     */
+    templates: Template[];
 }
