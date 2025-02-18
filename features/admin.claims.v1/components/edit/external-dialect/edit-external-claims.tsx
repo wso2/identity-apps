@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,13 +28,12 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { filterList } from "@wso2is/admin.core.v1/utils/filter-list";
 import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
 import { SCIMConfigs, attributeConfig } from "@wso2is/admin.extensions.v1";
-import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { LinkButton, ListLayout, PrimaryButton, SecondaryButton } from "@wso2is/react-components";
 import kebabCase from "lodash-es/kebabCase";
-import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Modal, PaginationProps } from "semantic-ui-react";
@@ -155,7 +154,6 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ disableSubmit, setDisableSubmit ] = useState<boolean>(true);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ hasServerSupportedClaimsToMap, setHasServerSupportedClaimsToMap ] = useState<boolean>(false);
     const [ serverSupportedClaims, setServerSupportedClaims ] = useState<string[]>([]);
 
     const [ triggerAddExternalClaim, setTriggerAddExternalClaim ] = useTrigger();
@@ -174,19 +172,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
         if (!SCIMConfigs.serverSupportedClaimsAvailable.includes(attributeUri)) {
             return;
         }
-        getServerSupportedClaimsForSchema(dialectID)
-            .then((response: ServerSupportedClaimsInterface) => {
-                setServerSupportedClaims(response.attributes);
-            })
-            .catch((error: IdentityAppsError) => {
-                dispatch(addAlert({
-                    description: error?.description
-                        || t("claims:local.notifications.getClaims.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.message
-                        || t("claims:local.notifications.getClaims.genericError.message")
-                }));
-            });
+        fetchServerSupportedClaims();
     }, [ dialectID ]);
 
     useEffect(() => {
@@ -200,8 +186,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
         ]);
     }, [ filteredClaims ]);
 
-    useEffect(() => {
-        setHasServerSupportedClaimsToMap(!!serverSupportedClaims?.length);
+    const hasServerSupportedClaimsToMap: boolean = useMemo(() => {
+        return serverSupportedClaims?.length > 0;
     }, [ serverSupportedClaims ]);
 
     useEffect(() => {
@@ -347,6 +333,27 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
      */
     const handleClaimListChange = (buttonState: boolean): void => {
         setDisableSubmit(buttonState);
+    };
+
+    /**
+     * Fetches the server supported claims for the dialect.
+     */
+    const fetchServerSupportedClaims = async (): Promise<void> => {
+
+        try {
+            const response: ServerSupportedClaimsInterface = await getServerSupportedClaimsForSchema(dialectID);
+
+            setServerSupportedClaims(response.attributes);
+        } catch (error) {
+            dispatch(addAlert({
+                description:
+                    error?.response?.data?.description
+                    || t("claims:local.notifications.getClaims.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: error?.response?.data?.message
+                    || t("claims:local.notifications.getClaims.genericError.message")
+            }));
+        }
     };
 
     return (
