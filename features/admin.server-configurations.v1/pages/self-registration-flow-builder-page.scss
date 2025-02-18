@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,4 +16,17 @@
  * under the License.
  */
 
-export { default as FlowsPage } from "./pages/flows-page";
+.self-registration-flow-builder-page {
+    .page-layout {
+        .page-header {
+            border-bottom: 1px solid var(--oxygen-palette-divider);
+            padding: var(--oxygen-spacing-1) var(--oxygen-spacing-3);
+            box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);
+            height: 60px;
+        }
+    }
+
+    .visual-editor {
+        height: 90vh;
+    }
+}

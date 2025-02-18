@@ -43,6 +43,8 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid, Icon, Message, Ref } from "semantic-ui-react";
+import RegistrationFlowBuilderBanner
+    from "../../admin.registration-flow-builder.v1/components/registration-flow-builder-banner";
 import { getConnectorDetails, updateGovernanceConnector } from "../api/governance-connectors";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { ConnectorFormFactory } from "../forms";
@@ -662,6 +664,18 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
         ) : null;
     };
 
+    /**
+     * Renders a feature enhancement banner showcasing additional information about the feature.
+     * @returns Feature enhancement banner.
+     */
+    const renderFeatureEnhancementBanner = (): ReactElement => {
+        if (connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID) {
+            return <RegistrationFlowBuilderBanner />;
+        }
+
+        return null;
+    };
+
     return !isConnectorRequestLoading && connectorId ? (
         <PageLayout
             title={ resolveConnectorTitle(connector) }
@@ -676,6 +690,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             pageHeaderMaxWidth={ true }
             data-testid={ `${ testId }-${ connectorId }-page-layout` }
         >
+            { renderFeatureEnhancementBanner() }
             { resolveConnectorToggleProperty(connector) ? connectorToggle() : null }
             { pageInfo(connector) }
             { !(connectorId === ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID) ? (
