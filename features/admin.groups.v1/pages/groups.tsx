@@ -26,14 +26,13 @@ import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants"; // N
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { UserStoreProperty } from "@wso2is/admin.core.v1/models/user-store";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { commonConfig, groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import {
     CONSUMER_USERSTORE,
     RemoteUserStoreManagerType
 } from "@wso2is/admin.userstores.v1/constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStorePostData } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertInterface, AlertLevels, RolesInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -85,6 +84,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
+    const { readOnlyUserStoreNamesList, isUserStoreReadOnly, mutateUserStoreList } = useUserStores();
+
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
@@ -99,12 +100,9 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         commonConfig?.primaryUserstoreOnly ? primaryUserStoreDomainName : CONSUMER_USERSTORE);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
-    const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
     const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
     const [ paginatedGroups, setPaginatedGroups ] = useState<GroupsInterface[]>(undefined);
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(GROUPS_SORTING_OPTIONS[ 0 ]);
-
-    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     const {
         data,
@@ -122,12 +120,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
      * Indicates whether the currently selected user store is read-only or not.
      */
     const isReadOnlyUserStore: boolean = useMemo(() => {
-        if (readOnlyUserStoresList?.includes(userStore)) {
-            return true;
-        }
-
-        return false;
-    }, [ userStore ]);
+        return isUserStoreReadOnly(userStore);
+    }, [ userStore, readOnlyUserStoreNamesList ]);
 
     useEffect(() => {
         getUserStores();
@@ -154,19 +148,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             }));
         }
     },[ groupsError ]);
-
-    useEffect(() => {
-        if (!(
-            isSuperOrganization()
-            || isFirstLevelOrganization()
-        )) {
-            return;
-        }
-
-        SharedUserStoreUtils.getReadOnlyUserStores().then((response: string[]) => {
-            setReadOnlyUserStoresList(response);
-        });
-    }, [ userStore ]);
 
     /**
      * The following function fetches the user store list and sets it to the state.
@@ -218,6 +199,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 setUserStoresList(storeOptions);
             }).finally(() => {
                 setUserStoresListRequestLoading(false);
+                mutateUserStoreList();
             });
 
         setUserStoresList(storeOptions);
@@ -442,7 +424,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         } }
                         groupList={ paginatedGroups }
                         searchQuery={ searchQuery }
-                        readOnlyUserStores={ readOnlyUserStoresList }
                         featureConfig={ featureConfig }
                         isReadOnlyUserStore={ isReadOnlyUserStore }
                         isUserstoreAddDisabled={ isUserstoreAddDisabled }
