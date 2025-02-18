@@ -141,8 +141,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
         state.config.ui.features.attributeDialects);
     const oidcScopesFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state.config.ui.features.oidcScopes);
-    const hasDialectCreateScopes: boolean = useRequiredScopes(attributeDialectFeatureConfig?.scopes?.create);
-    const hasOIDCFeatureScopes: boolean = useRequiredScopes(oidcScopesFeatureConfig?.scopes?.feature);
+    const hasDialectCreatePermissions: boolean = useRequiredScopes(attributeDialectFeatureConfig?.scopes?.create);
+    const hasOIDCFeaturePermissions: boolean = useRequiredScopes(oidcScopesFeatureConfig?.scopes?.feature);
 
     const [ offset, setOffset ] = useState(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -411,7 +411,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                 (<>
                     {
                         attributeConfig?.editAttributeMappings?.showAddExternalAttributeButton(dialectID)
-                        && hasDialectCreateScopes
+                        && hasDialectCreatePermissions
                         && isAttributeButtonEnabled
                         && hasServerSupportedClaimsToMap
                         && (
@@ -446,7 +446,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                     }
                     { attributeType === ClaimManagementConstants.OIDC &&
                     featureConfig?.oidcScopes?.enabled &&
-                    hasOIDCFeatureScopes && (
+                    hasOIDCFeaturePermissions && (
                         <SecondaryButton
                             onClick={ () => {
                                 history.push(AppConstants.getPaths().get("OIDC_SCOPES"));
