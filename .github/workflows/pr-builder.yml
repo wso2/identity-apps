@@ -9,6 +9,7 @@ on:
     paths-ignore:
       - "**.md"
       - "LICENSE"
+      - "**.jsp"
   workflow_dispatch:
 
 # Avoid running multiple builds for the same PR.
