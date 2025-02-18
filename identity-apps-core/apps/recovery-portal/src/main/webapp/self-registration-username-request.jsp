@@ -1351,6 +1351,11 @@
         <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
+    <script type="text/javascript" src="libs/handlebars.min-v4.7.7.js"></script>
+    <script type="text/javascript" src="libs/jstree/dist/jstree.min.js"></script>
+    <script type="text/javascript" src="libs/jstree/src/jstree-actions.js"></script>
+    <script type="text/javascript" src="js/consent_template_1.js"></script>
+    <script type="text/javascript" src="js/consent_template_2.js"></script>
     <script>
         const ALPHANUMERIC_USERNAME_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/;
         const USERNAME_WITH_SPECIAL_CHARS_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$&'+\\=^.{|}~-]+$/;
@@ -1367,6 +1372,7 @@
         var specialChr = /[!#$%&'()*+,\-\.\/:;<=>?@[\]^_{|}~]/g;
         var consecutiveChr = /([^])\1+/g;
         var errorMessage = getErrorMessage();
+        var validConsentPurpose = true;
 
         if (passwordConfig.minLength> 0 || passwordConfig.maxLength > 0) {
             document.getElementById("length").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.between")%>' +
@@ -1541,6 +1547,249 @@
             hideCountryValidationStatus();
         });
 
+        function unflatten(arr) {
+            var tree = [],
+                mappedArr = {},
+                arrElem,
+                mappedElem;
+
+            // First map the nodes of the array to an object -> create a hash table.
+            for (var i = 0, len = arr.length; i < len; i++) {
+                arrElem = arr[i];
+                mappedArr[arrElem.id] = arrElem;
+                mappedArr[arrElem.id]['children'] = [];
+            }
+
+            for (var id in mappedArr) {
+                if (mappedArr.hasOwnProperty(id)) {
+                    mappedElem = mappedArr[id];
+                    // If the element is not at the root level, add it to its parent array of children.
+                    if (mappedElem.parent && mappedElem.parent != "#" && mappedArr[mappedElem['parent']]) {
+                        mappedArr[mappedElem['parent']]['children'].push(mappedElem);
+                    }
+                    // If the element is at the root level, add it to first level elements array.
+                    else {
+                        tree.push(mappedElem);
+                    }
+                }
+            }
+            return tree;
+        }
+
+        // Process the consent purposes for submission using tree view.
+        function addReciptInformation(container) {
+            // var oldReceipt = receiptData.receipts;
+            var newReceipt = {};
+            var services = [];
+            var service = {};
+            var mandatoryPiis = [];
+            var selectedMandatoryPiis = [];
+
+            var selectedNodes = container.jstree(true).get_selected('full', true);
+            var undeterminedNodes = container.jstree(true).get_undetermined('full', true);
+            var allTreeNodes = container.jstree(true).get_json('#', {flat: true});
+
+            $.each(allTreeNodes, function (i, val) {
+                if (typeof (val.li_attr.mandetorypiicatergory) != "undefined" &&
+                    val.li_attr.mandetorypiicatergory == "true") {
+                    mandatoryPiis.push(val.li_attr.piicategoryid);
+                }
+            });
+
+            $.each(selectedNodes, function (i, val) {
+                if (val.hasOwnProperty('li_attr')) {
+                    selectedMandatoryPiis.push(selectedNodes[i].li_attr.piicategoryid);
+                }
+            });
+
+            var allMandatoryPiisSelected = mandatoryPiis.every(function (val) {
+                return selectedMandatoryPiis.indexOf(val) >= 0;
+            });
+
+            if (!allMandatoryPiisSelected) {
+                $("#mandetory_pii_selection_validation").modal({blurring: true}).modal("show");
+                validConsentPurpose = false;
+            } else {
+                validConsentPurpose = true;
+            }
+
+            if (!selectedNodes || selectedNodes.length < 1) {
+                //revokeReceipt(oldReceipt.consentReceiptID);
+                return;
+            }
+            selectedNodes = selectedNodes.concat(undeterminedNodes);
+            var relationshipTree = unflatten(selectedNodes); //Build relationship tree
+            var purposes = relationshipTree[0].children;
+            var newPurposes = [];
+
+            for (var i = 0; i < purposes.length; i++) {
+                var purpose = purposes[i];
+                var newPurpose = {};
+                newPurpose["purposeId"] = purpose.li_attr.purposeid;
+                newPurpose['piiCategory'] = [];
+                newPurpose['purposeCategoryId'] = [<%=defaultPurposeCatId%>];
+
+                var piiCategory = [];
+                var categories = purpose.children;
+                for (var j = 0; j < categories.length; j++) {
+                    var category = categories[j];
+                    var c = {};
+                    c['piiCategoryId'] = category.li_attr.piicategoryid;
+                    piiCategory.push(c);
+                }
+                newPurpose['piiCategory'] = piiCategory;
+                newPurposes.push(newPurpose);
+            }
+            service['purposes'] = newPurposes;
+            services.push(service);
+            newReceipt['services'] = services;
+
+            return newReceipt;
+        }
+
+        // Process the consent purposes for submission using template view.
+        function addReciptInformationFromTemplate() {
+            var newReceipt = {};
+            var services = [];
+            var service = {};
+            var newPurposes = [];
+
+            $('.consent-statement input[type="checkbox"], .consent-statement strong label')
+                .each(function (i, element) {
+                    var checked = $(element).prop('checked');
+                    var isLable = $(element).is("lable");
+                    var newPurpose = {};
+                    var piiCategories = [];
+                    var isExistingPurpose = false;
+
+                    if (!isLable && checked) {
+                        var purposeId = element.data("purposeid");
+
+                        if (newPurposes.length != 0) {
+                            for (var i = 0; i < newPurposes.length; i++) {
+                                var selectedPurpose = newPurposes[i];
+                                if (selectedPurpose.purposeId == purposeId) {
+                                    newPurpose = selectedPurpose;
+                                    piiCategories = newPurpose.piiCategory;
+                                    isExistingPurpose = true;
+                                }
+                            }
+                        }
+                    }
+
+                    var newPiiCategory = {};
+
+                    newPurpose["purposeId"] = element.data("purposeid");
+                    newPiiCategory['piiCategoryId'] = element.data("piicategoryid");
+                    piiCategories.push(newPiiCategory);
+                    newPurpose['piiCategory'] = piiCategories;
+                    newPurpose['purposeCategoryId'] = [<%=defaultPurposeCatId%>];
+                    if (!isExistingPurpose) {
+                        newPurposes.push(newPurpose);
+                    }
+                });
+            service['purposes'] = newPurposes;
+            services.push(service);
+            newReceipt['services'] = services;
+
+            return newReceipt;
+        }
+
+        // Process the consent purposes for submission using row view.
+        function addReciptInformationFromRows() {
+            var newReceipt = {};
+            var services = [];
+            var service = {};
+            var newPurposes = [];
+            var mandatoryPiis = [];
+            var selectedMandatoryPiis = [];
+
+            $('#row-container input[type="checkbox"]').each(function (i, checkbox) {
+                var checkboxLabel = $(checkbox).next();
+                var checked = $(checkbox).prop('checked');
+                var newPurpose = {};
+                var piiCategories = [];
+                var isExistingPurpose = false;
+
+                if (checkboxLabel.data("mandetorypiicatergory")) {
+                    mandatoryPiis.push(checkboxLabel.data("piicategoryid"));
+                }
+
+                if (checked) {
+                    var purposeId = checkboxLabel.data("purposeid");
+                    selectedMandatoryPiis.push(checkboxLabel.data("piicategoryid"));
+                    if (newPurposes.length != 0) {
+                        for (var i = 0; i < newPurposes.length; i++) {
+                            var selectedPurpose = newPurposes[i];
+                            if (selectedPurpose.purposeId == purposeId) {
+                                newPurpose = selectedPurpose;
+                                piiCategories = newPurpose.piiCategory;
+                                isExistingPurpose = true;
+                            }
+                        }
+                    }
+                    var newPiiCategory = {};
+
+                    newPurpose["purposeId"] = checkboxLabel.data("purposeid");
+                    newPiiCategory['piiCategoryId'] = checkboxLabel.data("piicategoryid");
+                    piiCategories.push(newPiiCategory);
+                    newPurpose['piiCategory'] = piiCategories;
+                    newPurpose['purposeCategoryId'] = [<%=defaultPurposeCatId%>];
+                    if (!isExistingPurpose) {
+                        newPurposes.push(newPurpose);
+                    }
+                }
+            });
+            service['purposes'] = newPurposes;
+            services.push(service);
+            newReceipt['services'] = services;
+
+            var allMandatoryPiisSelected = mandatoryPiis.every(function (val) {
+                return selectedMandatoryPiis.indexOf(val) >= 0;
+            });
+
+            if (!allMandatoryPiisSelected) {
+                $("#mandetory_pii_selection_validation").modal({blurring: true}).modal("show");
+                validConsentPurpose = false;
+            } else {
+                validConsentPurpose = true;
+            }
+
+            return newReceipt;
+        }
+
+        // Handle the consent purpose submission.
+        function handleConsentPurpose() {
+            <%
+                if (hasPurposes) {
+            %>
+                    var receipt;
+            <%
+                    if (consentDisplayType == "template") {
+            %>
+                        receipt = addReciptInformationFromTemplate();
+            <%
+                    } else if (consentDisplayType == "tree") {
+            %>
+                        receipt = addReciptInformation(container);
+            <%
+                    } else if (consentDisplayType == "row")  {
+            %>
+                        receipt = addReciptInformationFromRows();
+            <%
+                    }
+            %>
+                    if (validConsentPurpose) {
+                        $('<input />').attr('type', 'hidden')
+                            .attr('name', "consent")
+                            .attr('value', JSON.stringify(receipt))
+                            .appendTo('#register');
+                    }
+            <%
+                }
+            %>
+        }
+
         // Handle form submission preventing double submission.
         $(document).ready(function(){
 
@@ -1633,6 +1882,136 @@
                     }
                 }
             });
+
+            <%
+                if (hasPurposes) {
+                    if(consentDisplayType == "template") {
+            %>
+                        renderReceiptDetailsFromTemplate(<%= Encode.forJavaScript(purposes) %>);
+            <%
+                    } else if (consentDisplayType == "tree") {
+            %>
+                        renderReceiptDetails(<%= Encode.forJavaScript(purposes) %>);
+            <%
+                    } else if (consentDisplayType == "row"){
+            %>
+                        renderReceiptDetailsFromRows(<%= Encode.forJavaScript(purposes) %>);
+            <%
+                    }
+                }
+            %>
+
+            // Render the consent purposes through tree view.
+            function renderReceiptDetails(data) {
+
+                var treeTemplate =
+                    '<div id="html1">' +
+                    '<ul><li class="jstree-open" data-jstree=\'{"icon":"icon-book"}\'>All' +
+                    '<ul>' +
+                    '{{#purposes}}' +
+                    '<li data-jstree=\'{"icon":"icon-book"}\' purposeid="{{purposeId}}" mandetorypurpose={{mandatory}}>' +
+                    '{{purpose}}{{#if mandatory}}<span class="required_consent">*</span>{{/if}} {{#if description}}<img src="images/info.png" class="form-info" data-toggle="tooltip" data-content="{{description}}" data-placement="right"/>{{/if}}<ul>' +
+                    '{{#piiCategories}}' +
+                    '<li data-jstree=\'{"icon":"icon-user"}\' piicategoryid="{{piiCategoryId}}" mandetorypiicatergory={{mandatory}}>{{#if displayName}}{{displayName}}{{else}}{{piiCategory}}{{/if}}{{#if mandatory}}<span class="required_consent">*</span>{{/if}}</li>' +
+                    '</li>' +
+                    '{{/piiCategories}}' +
+                    '</ul>' +
+                    '{{/purposes}}' +
+                    '</ul></li>' +
+                    '</ul>' +
+                    '</div>';
+
+                var tree = Handlebars.compile(treeTemplate);
+                var treeRendered = tree(data);
+
+                $("#tree-table").html(treeRendered);
+
+                container = $("#html1").jstree({
+                    plugins: ["table", "sort", "checkbox", "actions"],
+                    checkbox: {"keep_selected_style": false},
+                });
+
+                container.bind('hover_node.jstree', function () {
+                    var bar = $(this).find('.jstree-wholerow-hovered');
+                    bar.css('height',
+                        bar.parent().children('a.jstree-anchor').height() + 'px');
+                });
+
+                container.on('ready.jstree', function (event, data) {
+                    var $tree = $(this);
+                    $($tree.jstree().get_json($tree, {
+                        flat: true
+                    }))
+                        .each(function (index, value) {
+                            var node = container.jstree().get_node(this.id);
+                            allAttributes.push(node.id);
+                        });
+                    container.jstree('open_all');
+                });
+
+            }
+
+            // Render the consent purposes through template view.
+            function renderReceiptDetailsFromTemplate(receipt) {
+                /*
+                 *   Available when consentDisplayType is set to "template"
+                 *   customConsentTempalte1 is from the js file which is loaded as a normal js resource
+                 *   also try customConsentTempalte2 located at assets/js/consent_template_2.js
+                 */
+                var templateString = customConsentTempalte1;
+                var purp, purpose, piiCategory, piiCategoryInputTemplate;
+                $(receipt.purposes).each(function (i, e) {
+                    purp = e.purpose;
+                    purpose = "{{purpose:" + purp + "}}";
+                    var purposeInputTemplate = '<strong data-id="' + purpose + '">' + purp + '</strong>';
+                    templateString = templateString.replaceAll(purpose, purposeInputTemplate);
+                    $(e.piiCategories).each(function (i, ee) {
+                        piiCategory = "{{pii:" + purp + ":" + ee.displayName + "}}";
+                        var piiCategoryMin = piiCategory.replace(/\s/g, '');
+                        if (ee.mandatory == true) {
+                            piiCategoryInputTemplate = '<strong><label id="' + piiCategoryMin + '" data-id="' +
+                                piiCategory + '" data-piiCategoryId="' + ee.piiCategoryId + '" data-purposeId="' +
+                                e.purposeId + '" data-mandetoryPiiCategory="' + ee.mandatory + '">' + ee.displayName +
+                                '<span class="required_consent">*</span></label></strong>';
+                        } else {
+                            piiCategoryInputTemplate = '<span><label for="' + piiCategoryMin + '"><input type="checkbox" id="' + piiCategoryMin + '" data-id="' +
+                                piiCategory + '" data-piiCategoryId="' + ee.piiCategoryId + '" data-purposeId="' + e.purposeId + '"' +
+                                'data-mandetoryPiiCategory="' + ee.mandatory + '" name="" value="">' + ee.displayName + '</label></span>';
+                        }
+                        templateString = templateString.replaceAll(piiCategory, piiCategoryInputTemplate);
+                    });
+                });
+
+                $(".consent-statement").html(templateString);
+            }
+
+            // Render the consent purposes through row view.
+            function renderReceiptDetailsFromRows(data) {
+                var rowTemplate =
+                    '{{#purposes}}' +
+                    '<div class="ui bulleted list">' +
+                    '<div class="item"><span>{{purpose}} {{#if description}}<span id="description-{{purposeId}}" data-tooltip="{{description}}"" data-inverted=""><i class="info circle icon"></i></span>{{/if}}</span></div></div>' +
+                    '<div class="ui form">' +
+                    '{{#grouped_each 2 piiCategories}}' +
+                    '{{#each this }}' +
+                    '<div class="{{#if mandatory}}required{{/if}} field">'+
+                    '<div class="ui checkbox">' +
+                    '<input type="checkbox" name="switch" id="consent-checkbox-{{../../purposeId}}-{{piiCategoryId}}" {{#if mandatory}}required{{/if}} />' +
+                    '<label for="consent-checkbox-{{../../purposeId}}-{{piiCategoryId}}" data-piicategoryid="{{piiCategoryId}}" data-mandetorypiicatergory="{{mandatory}}" data-purposeid="{{../../purposeId}}">' +
+                    '<span>{{#if displayName}}{{displayName}}{{else}}{{piiCategory}}{{/if}}'+
+                    '</label></div>' +
+                    '</div>'+
+                    '{{/each}}' +
+                    '{{/grouped_each}}' +
+                    '</div></div>' +
+                    '{{/purposes}}';
+
+                var rows = Handlebars.compile(rowTemplate);
+                var rowsRendered = rows(data);
+
+                $("#row-container").html(rowsRendered);
+                $("#description").popup();
+            }
 
             $(".form-info").popup();
 
@@ -1733,9 +2112,11 @@
                             error_msg = $("#server-error-msg");
                         }
 
+                        handleConsentPurpose();
+
                         // If the input is not valid,
                         // This will return false and prevent form submission.
-                        if (!validInput) {
+                        if (!validInput || !validConsentPurpose) {
                             return false;
                         }
 
@@ -1839,8 +2220,11 @@
                     $("#error-msg").hide();
                     error_msg = $("#server-error-msg");
                 }
+
+                handleConsentPurpose();
+
                 // Do the form submission if the inputs are valid.
-                if (validInput) {
+                if (validInput && validConsentPurpose) {
                     $form.data("submitted", true);
                     document.getElementById("register").submit();
                 } else {
