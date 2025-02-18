@@ -34,8 +34,14 @@ import {
 import UserStoresContext from "../context/user-stores-context";
 import { UserStoreListItem, UserStoreProperty } from "../models/user-stores";
 
+/**
+ * Props for the UserStoresProvider.
+ */
 export type UserStoresProviderProps = PropsWithChildren;
 
+/**
+ * Provider for userstores.
+ */
 const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
     props: UserStoresProviderProps
 ): ReactElement => {
@@ -61,6 +67,10 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
         mutate: fetchUserStores
     } = useGetUserStores(null, null, null, null, requiredUserStoreAttributes.join(","), hasUserStoresReadPermission);
 
+    /**
+     * Determines whether the primary user store should be fetched.
+     * If the primary user store is not present in the list of user stores, then it should be fetched separately.
+     */
     const shouldFetchPrimaryUserStore: boolean = useMemo(
         () => {
             if (!hasUserStoresReadPermission) {
@@ -80,6 +90,9 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
         error: primaryUserStoreDetailsRequestError
     } = useGetUserStoreDetails(userstoresConfig.primaryUserstoreId, shouldFetchPrimaryUserStore);
 
+    /**
+     * List of read only user stores.
+     */
     const readOnlyUserStoreNames: string[] = useMemo(
         () => {
             if (isUserStoreGetRequestLoading || isPrimaryUserStoreDetailsRequestLoading) {
@@ -143,6 +156,7 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
      * Utility function to mutate the user store list.
      * Since there is a delay in updating user stores,
      * capability to mutate the user store list with a delay is added.
+     *
      * @param delay - The wait time in milliseconds.
      */
     const mutateUserStoreList = (delay: number = 0): void => {
