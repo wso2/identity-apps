@@ -265,6 +265,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const params: Record<string, string> = {
             requiredAttributes: [
                 UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY,
+                UserStoreManagementConstants.USER_STORE_PROPERTY_DISABLED,
                 UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED,
                 UserStoreManagementConstants.USER_STORE_PROPERTY_IS_BULK_IMPORT_SUPPORTED
             ].join(",")
@@ -329,8 +330,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 ].includes(property?.name?.toLowerCase()) &&
                 property?.value?.toLowerCase() === "false"
         );
+        const isDisabledUserStore: boolean = userStore.properties?.some(
+            (property: UserStoreProperty) =>
+                property?.name?.toLowerCase()
+                === UserStoreManagementConstants.USER_STORE_PROPERTY_DISABLED.toLowerCase() &&
+                property?.value?.toLowerCase() === "true"
+        );
 
-        return isReadWriteUserStore && isBulkImportSupported;
+        return isReadWriteUserStore && isBulkImportSupported && !isDisabledUserStore;
     };
 
     const hideUserStoreDropdown = (): boolean => {
