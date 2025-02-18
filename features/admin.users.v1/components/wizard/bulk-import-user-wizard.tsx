@@ -265,7 +265,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const params: Record<string, string> = {
             requiredAttributes: [
                 UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY,
-                UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED
+                UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED,
+                UserStoreManagementConstants.USER_STORE_PROPERTY_IS_BULK_IMPORT_SUPPORTED
             ].join(",")
         };
 
@@ -320,10 +321,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      */
     const isBulkImportSupportedUserStore = (userStore: UserStoreDetails): boolean => {
         const isReadWriteUserStore: boolean = !isUserStoreReadOnly(userStore?.name);
-        const isBulkImportSupported: boolean =  !userStore.properties?.some(
+        const isBulkImportSupported: boolean = !userStore.properties?.some(
             (property: UserStoreProperty) =>
-                property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED &&
-                property.value === "false"
+                [
+                    UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED.toLowerCase(),
+                    UserStoreManagementConstants.USER_STORE_PROPERTY_IS_BULK_IMPORT_SUPPORTED.toLowerCase()
+                ].includes(property?.name?.toLowerCase()) &&
+                property?.value?.toLowerCase() === "false"
         );
 
         return isReadWriteUserStore && isBulkImportSupported;
