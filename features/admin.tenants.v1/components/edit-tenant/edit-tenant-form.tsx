@@ -40,7 +40,7 @@ import {
     TextFieldAdapter,
     Tools
 } from "@wso2is/form";
-import { Hint } from "@wso2is/react-components";
+import { Hint, PasswordValidation } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -94,6 +94,8 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
     const { data: validationData } = useValidationConfigData();
 
     const enableEmailDomain: boolean = useSelector((state: AppState) => state.config?.ui?.enableEmailDomain);
+
+    const [ isPasswordValid, setIsPasswordValid ] = useState<boolean>(false);
 
     const userNameValidationConfig: ValidationFormInterface = useMemo((): ValidationFormInterface => {
         return getUsernameConfiguration(validationData);
@@ -164,6 +166,8 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
 
         if (!values.password) {
             errors.password = t("tenants:common.form.fields.password.validations.required");
+        } else if (!isPasswordValid) {
+            errors.password = "";
         }
 
         return errors;
@@ -222,6 +226,66 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
             />
         );
     };
+
+    /**
+     * Renders the password validation criteria with the help of `PasswordValidation` component.
+     * @returns Password validation criteria.
+     */
+    const renderPasswordValidationCriteria = (): ReactElement => (
+        <FormSpy subscription={ { values: true } }>
+            { ({ values }: { values: EditTenantFormValues }) => (
+                <PasswordValidation
+                    password={ values?.password ?? "" }
+                    minLength={ Number(passwordValidationConfig.minLength) }
+                    maxLength={ Number(passwordValidationConfig.maxLength) }
+                    minNumbers={ Number(passwordValidationConfig.minNumbers) }
+                    minUpperCase={ Number(passwordValidationConfig.minUpperCaseCharacters) }
+                    minLowerCase={ Number(passwordValidationConfig.minLowerCaseCharacters) }
+                    minSpecialChr={ Number(passwordValidationConfig.minSpecialCharacters) }
+                    minUniqueChr={ Number(passwordValidationConfig.minUniqueCharacters) }
+                    maxConsecutiveChr={ Number(passwordValidationConfig.maxConsecutiveCharacters) }
+                    onPasswordValidate={ (isValid: boolean): void => {
+                        setIsPasswordValid(isValid);
+                    } }
+                    translations={ {
+                        case:
+                            Number(passwordValidationConfig?.minUpperCaseCharacters) > 0 &&
+                            Number(passwordValidationConfig?.minLowerCaseCharacters) > 0
+                                ? t("tenants:common.form.fields.password.validations.criteria.passwordCase", {
+                                    minLowerCase: passwordValidationConfig.minLowerCaseCharacters,
+                                    minUpperCase: passwordValidationConfig.minUpperCaseCharacters
+                                })
+                                : Number(passwordValidationConfig?.minUpperCaseCharacters) > 0
+                                    ? t("tenants:common.form.fields.password.validations.criteria.upperCase", {
+                                        minUpperCase: passwordValidationConfig.minUpperCaseCharacters
+                                    })
+                                    : t("tenants:common.form.fields.password.validations.criteria.lowerCase", {
+                                        minLowerCase: passwordValidationConfig.minLowerCaseCharacters
+                                    }),
+                        consecutiveChr: t(
+                            "tenants:common.form.fields.password.validations.criteria.consecutiveCharacters",
+                            {
+                                repeatedChr: passwordValidationConfig.maxConsecutiveCharacters
+                            }
+                        ),
+                        length: t("tenants:common.form.fields.password.validations.criteria.passwordLength", {
+                            max: passwordValidationConfig.maxLength,
+                            min: passwordValidationConfig.minLength
+                        }),
+                        numbers: t("tenants:common.form.fields.password.validations.criteria.passwordNumeric", {
+                            min: passwordValidationConfig.minNumbers
+                        }),
+                        specialChr: t("tenants:common.form.fields.password.validations.criteria.specialCharacter", {
+                            specialChr: passwordValidationConfig.minSpecialCharacters
+                        }),
+                        uniqueChr: t("tenants:common.form.fields.password.validations.criteria.uniqueCharacters", {
+                            uniqueChr: passwordValidationConfig.minUniqueCharacters
+                        })
+                    } }
+                />
+            ) }
+        </FormSpy>
+    );
 
     return (
         <FinalForm
@@ -432,6 +496,7 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                                     </Stack>
                                 ) }
                             </FormSpy>
+                            { passwordValidationConfig && renderPasswordValidationCriteria() }
                         </Stack>
                         <Button
                             autoFocus
