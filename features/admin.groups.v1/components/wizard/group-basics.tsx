@@ -145,7 +145,12 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
         try {
             const response: UserStoreDetails = await getAUserStore(userStoreID);
 
-            return !isUserStoreReadOnly(response?.name);
+            // Check whether the user store is disabled.
+            const isDisabled: boolean = response.properties.find(
+                (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
+
+            // If the user store not read only and not disabled, return true.
+            return !isUserStoreReadOnly(response?.name) && !isDisabled;
         } catch (error) {
             dispatch(addAlert({
                 description: t("userstores:notifications.fetchUserstores.genericError." +
