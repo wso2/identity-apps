@@ -95,6 +95,10 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
      */
     const readOnlyUserStoreNames: string[] = useMemo(
         () => {
+            if (!hasUserStoresReadPermission) {
+                return [];
+            }
+
             if (isUserStoreGetRequestLoading || isPrimaryUserStoreDetailsRequestLoading) {
                 return [];
             }
