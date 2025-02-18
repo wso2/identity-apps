@@ -1,5 +1,16 @@
 # @wso2is/myaccount
 
+## 2.17.35
+
+### Patch Changes
+
+- [#7673](https://github.com/wso2/identity-apps/pull/7673) [`fda759a0e5ee25cc4dd04cb8ee53c066228d3c1f`](https://github.com/wso2/identity-apps/commit/fda759a0e5ee25cc4dd04cb8ee53c066228d3c1f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add logic to modify the post-logout redirect URL for direct sub-organization login
+
+- Updated dependencies [[`6bb877f16b0274c87924bf33316e865310ab98f9`](https://github.com/wso2/identity-apps/commit/6bb877f16b0274c87924bf33316e865310ab98f9)]:
+  - @wso2is/i18n@2.19.19
+  - @wso2is/admin.organizations.v1@2.26.176
+  - @wso2is/common.branding.v1@2.26.33
+
 ## 2.17.34
 
 ### Patch Changes

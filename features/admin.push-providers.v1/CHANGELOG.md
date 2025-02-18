@@ -1,5 +1,14 @@
 # @wso2is/admin.push-providers.v1
 
+## 1.0.65
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.2
+  - @wso2is/admin.feature-gate.v1@1.4.176
+  - @wso2is/admin.template-core.v1@1.5.130
+
 ## 1.0.64
 
 ### Patch Changes
