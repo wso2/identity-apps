@@ -45,9 +45,10 @@ export type CommonResourcePropertiesPropsInterface = IdentifiableComponentInterf
     onChange: (propertyKey: string, newValue: any, resource: Resource) => void;
     /**
      * The event handler for the variant change.
-     * @param variant - The variant of the resource.
+     * @param variant - The variant of the element.
+     * @param resource - Partial resource properties to override.
      */
-    onVariantChange?: (variant: string) => void;
+    onVariantChange?: (variant: string, resource?: Partial<Resource>) => void;
 };
 
 /**
@@ -67,10 +68,14 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         lastInteractedResourceId
     } = useAuthenticationFlowBuilderCore();
 
-    const changeSelectedVariant = (selected: string) => {
-        const selectedVariant: Resource = lastInteractedResource?.variants?.find(
+    const changeSelectedVariant = (selected: string, element?: Partial<Element>) => {
+        let selectedVariant: Resource = lastInteractedResource?.variants?.find(
             (resource: Resource) => resource.variant === selected
         );
+
+        if (element) {
+            selectedVariant = merge(selectedVariant, element);
+        }
 
         updateNodeData(lastInteractedResourceId, (node: any) => {
             const components: Resource = node?.data?.components?.map((component: any) => {

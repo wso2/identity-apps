@@ -93,6 +93,7 @@ const CommonStepPropertyFactory: FunctionComponent<CommonStepPropertyFactoryProp
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
                     onChange(propertyKey, propertyValue, e.target.value, resource)
                 }
+                placeholder={ `Enter ${startCase(propertyKey)}` }
                 data-componentid={ `${componentId}-${propertyKey}` }
             />
         );
