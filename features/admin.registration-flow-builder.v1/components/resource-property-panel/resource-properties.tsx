@@ -27,10 +27,10 @@ import { StepCategories, StepTypes } from "@wso2is/admin.flow-builder-core.v1/mo
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
-import ResourcePropertyFactory from "./resource-property-factory";
 import ButtonExtendedProperties from "./extended-properties/button-extended-properties";
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
 import RulesProperties from "./nodes/rules-properties";
+import ResourcePropertyFactory from "./resource-property-factory";
 
 /**
  * Props interface of {@link ResourceProperties}

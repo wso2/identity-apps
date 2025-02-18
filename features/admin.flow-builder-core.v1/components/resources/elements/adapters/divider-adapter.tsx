@@ -19,7 +19,7 @@
 import Divider, { DividerProps } from "@oxygen-ui/react/Divider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Element, DividerVariants } from "../../../../models/elements";
+import { DividerVariants, Element } from "../../../../models/elements";
 
 /**
  * Props interface of {@link DividerAdapter}
