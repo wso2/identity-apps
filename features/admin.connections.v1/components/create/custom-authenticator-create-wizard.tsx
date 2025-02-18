@@ -889,7 +889,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
      * @returns React Element
      */
     const customPrefix = (): ReactElement => {
-        return <span>custom-</span>;
+        return <span>{ ConnectionUIConstants.CUSTOM_AUTHENTICATOR_IDENTIFIER_PREFIX }</span>;
     };
 
     const generalSettingsPage = () => (

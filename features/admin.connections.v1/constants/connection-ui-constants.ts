@@ -423,4 +423,9 @@ export class ConnectionUIConstants {
      * Number of seconds to wait before clearing the wizard error.
      */
     public static readonly WIZARD_ERROR_CLEAR_TIMEOUT: number = 4000;
+
+    /**
+     * Custom authenticator identifier prefix.
+     */
+    public static readonly CUSTOM_AUTHENTICATOR_IDENTIFIER_PREFIX: string = "custom-";
 }
