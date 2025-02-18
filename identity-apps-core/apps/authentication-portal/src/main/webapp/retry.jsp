@@ -157,11 +157,11 @@
                     if (IdentityCoreConstants.LOGIN_FAILED_GENERIC_ERROR_CODE.equals(errorCode)) {
                 %>
                     <h3 class="ui header text-center slogan-message mt-3 mb-6">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unable.to.proceed")%>
+                        <%=i18n(resourceBundle, customText, "unable.to.proceed")%>
                     </h3>
 
                     <p class="portal-tagline-description">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login.failed.generic")%>
+                        <%=i18n(resourceBundle, customText, "login.failed.generic")%>
                     </p>
                 <%
                     } else if (StringUtils.equals(errorCode, IdentityCoreConstants.USER_ACCOUNT_LOCKED_ERROR_CODE) &&
@@ -181,11 +181,11 @@
                     } else if (IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE.equals(errorCode)) {
                 %>
                     <h3 class="ui header text-center slogan-message mt-3 mb-6">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unable.to.proceed")%>
+                        <%=i18n(resourceBundle, customText, "unable.to.proceed")%>
                     </h3>
 
                     <p class="portal-tagline-description">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "account.confirmation.pending")%>
+                        <%=i18n(resourceBundle, customText, "account.confirmation.pending")%>
                     </p>
                 <%
                     } else if (IdentityCoreConstants.USER_ACCOUNT_DISABLED_ERROR_CODE.equals(errorCode)) {
