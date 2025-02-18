@@ -45,6 +45,7 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { getUserStores } from "@wso2is/admin.userstores.v1/api";
 import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
+import useUserStoresContext from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -219,6 +220,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             userLimit ? userLimit : userConfig.bulkUserImportLimit.userCount  // Row Count.
         );
     }, [ userLimit ]);
+    const { isUserStoreReadOnly } = useUserStoresContext();
 
     const optionsArray: string[] = [];
 
@@ -263,7 +265,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const params: Record<string, string> = {
             requiredAttributes: [
                 UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY,
-                UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED
+                UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED,
+                UserStoreManagementConstants.USER_STORE_PROPERTY_IS_BULK_IMPORT_SUPPORTED
             ].join(",")
         };
 
@@ -317,19 +320,15 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @returns If the given userstore is read only or not and bulk import is supported.
      */
     const isBulkImportSupportedUserStore = (userStore: UserStoreDetails): boolean => {
-        let isReadWriteUserStore: boolean = true;
-        let isBulkImportSupported: boolean = true;
-
-        userStore?.properties?.forEach((property: UserStoreProperty) => {
-            if (property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY
-                && property.value === "true") {
-                isReadWriteUserStore = false;
-            }
-            if (property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED
-                && property.value === "false") {
-                isBulkImportSupported = false;
-            }
-        });
+        const isReadWriteUserStore: boolean = !isUserStoreReadOnly(userStore?.name);
+        const isBulkImportSupported: boolean = !userStore.properties?.some(
+            (property: UserStoreProperty) =>
+                [
+                    UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED.toLowerCase(),
+                    UserStoreManagementConstants.USER_STORE_PROPERTY_IS_BULK_IMPORT_SUPPORTED.toLowerCase()
+                ].includes(property?.name?.toLowerCase()) &&
+                property?.value?.toLowerCase() === "false"
+        );
 
         return isReadWriteUserStore && isBulkImportSupported;
     };

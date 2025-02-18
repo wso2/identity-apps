@@ -49,6 +49,7 @@ export class UserStoreManagementConstants {
     // Name of the readonly DEFAULT userstore property.
     public static readonly USER_STORE_PROPERTY_READ_ONLY: string = "ReadOnly";
     public static readonly USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED: string = "BulkImportSupported";
+    public static readonly USER_STORE_PROPERTY_IS_BULK_IMPORT_SUPPORTED: string = "IsBulkImportSupported";
 
     /**
      * Set of keys used to enable/disable features.
