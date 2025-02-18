@@ -1512,6 +1512,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         }
     };
 
+    const getExistingPrimaryEmail = (): string => {
+        return profileDetails.profileInfo[EMAIL_ATTRIBUTE] &&
+            profileDetails.profileInfo[EMAIL_ATTRIBUTE]
+                .find((subAttribute: string) => typeof subAttribute === "string");
+    };
+
     const generateMultiValuedField = (schema: ProfileSchema, fieldName: string): JSX.Element => {
 
         let primaryAttributeSchema: ProfileSchema;
@@ -1530,7 +1536,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             pendingEmailAddress = profileDetails?.profileInfo?.pendingEmails?.length > 0
                 ? profileDetails?.profileInfo?.pendingEmails[0]?.value
                 : null;
-            primaryAttributeValue = profileInfo.get(EMAIL_ATTRIBUTE);
+            primaryAttributeValue = getExistingPrimaryEmail();
             verificationEnabled = isEmailVerificationEnabled;
             primaryAttributeSchema = getSchemaFromName(EMAIL_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
@@ -2028,7 +2034,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             pendingEmailAddress = profileDetails?.profileInfo?.pendingEmails?.length > 0
                 ? profileDetails?.profileInfo?.pendingEmails[0]?.value
                 : null;
-            primaryAttributeValue = profileInfo.get(EMAIL_ATTRIBUTE);
+            primaryAttributeValue = getExistingPrimaryEmail();
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             verificationEnabled = isMobileVerificationEnabled;
@@ -2634,6 +2640,22 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 : schema.name === MOBILE_ATTRIBUTE
         );
 
+    /**
+     * Check whether the value is empty or not.
+     * @param schema - Profile schema
+     * @returns boolean - Whether value is empty or not.
+     */
+    const isValueEmpty = (schema: ProfileSchema): boolean => {
+
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+            return isEmpty(profileInfo.get(schema.name)) && isEmpty(getExistingPrimaryEmail());
+        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+            return isEmpty(profileInfo.get(schema.name)) && isEmpty(profileInfo.get(MOBILE_ATTRIBUTE));
+        }
+
+        return isEmpty(profileInfo.get(schema.name));
+    };
+
     return (
         <>
             <SettingsSection
@@ -2715,11 +2737,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                             : null
                                                     }
                                                     {
-                                                        !isEmpty(profileInfo.get(schema.name)) ||
-                                        (!CommonUtils.isProfileReadOnly(isReadOnlyUser)
-                                            && (resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA)
-                                            && hasRequiredScopes(featureConfig?.personalInfo,
-                                                featureConfig?.personalInfo?.scopes?.update, allowedScopes))
+                                                        !isValueEmpty(schema)
+                                                            || (!CommonUtils.isProfileReadOnly(isReadOnlyUser)
+                                                            && (resolvedMutabilityValue
+                                                                !== ProfileConstants.READONLY_SCHEMA)
+                                                                && hasRequiredScopes(featureConfig?.personalInfo,
+                                                                    featureConfig?.personalInfo?.scopes?.update,
+                                                                    allowedScopes))
                                                             ? generateSchemaForm(schema, index)
                                                             : null
                                                     }

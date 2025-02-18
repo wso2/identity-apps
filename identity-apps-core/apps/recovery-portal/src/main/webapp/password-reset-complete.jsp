@@ -80,7 +80,7 @@
             IdentityManagementEndpointUtil.getStringValue(request.getSession().getAttribute("confirmationKey"));
     String newPassword = request.getParameter("reset-password");
     String callback = request.getParameter("callback");
-    String spId = request.getParameter("spId");
+    String spId = Encode.forJava(request.getParameter("spId"));
     if (StringUtils.isBlank(spId)) {
         spId = (String)request.getAttribute("spId");
     }

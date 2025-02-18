@@ -94,7 +94,9 @@ export interface UserStoreListItem {
     description: string;
     self: string;
     enabled: boolean;
+    isLocal?: boolean;
     typeName?: string;
+    properties?: UserStoreProperty[];
 }
 
 /**

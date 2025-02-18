@@ -22,7 +22,7 @@ env:
 jobs:
   lint:
     name: ⬣ ESLint (STATIC ANALYSIS)
-    if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' }}
+    if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -76,7 +76,12 @@ jobs:
         id: lint-changed-with-eslint
         working-directory: .github/workflows
         run: |
-            bash ./scripts/lint-changed.sh ${{ github.event.pull_request.number }}
+            if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+              bash ./scripts/lint-changed.sh
+            else
+              bash ./scripts/lint-changed.sh ${{ github.event.pull_request.number }}
+            fi
+
 
       # Temporarily disable linting all files as it is failing intermittently.
       # - name: ⏳ Lint All Files
@@ -85,7 +90,7 @@ jobs:
 
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
-    if: ${{ github.event.label.name == 'trigger-pr-builder' || github.event_name == 'pull_request'}}
+    if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
