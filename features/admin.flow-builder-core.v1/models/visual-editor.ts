@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Component } from "./component";
-import { Node } from "./node";
+import { Element } from "./elements";
+import { Step } from "./steps";
 
-export type SupportedCanvasNodes = Component | Node;
+export type SupportedCanvasResources = Element | Step;

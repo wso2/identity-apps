@@ -17,9 +17,9 @@
  */
 
 import { Payload } from "./api";
-import { Component } from "./component";
+import { Base } from "./base";
 
-export type Widget = Component<WidgetExtendedConfig>;
+export type Widget = Base<WidgetExtendedConfig>;
 
 export type SubFlow = Partial<Payload>;
 
@@ -35,6 +35,12 @@ export interface WidgetExtendedConfig {
      * Sub flow to render for the widget.
      */
     flow?: SubFlow;
+}
+
+export enum WidgetCategories {
+    Composite = "COMPOSITE",
+    Flow = "FLOW",
+    Security = "SECURITY",
 }
 
 export enum WidgetTypes {

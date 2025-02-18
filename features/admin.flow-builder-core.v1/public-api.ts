@@ -16,12 +16,12 @@
  * under the License.
  */
 
-export { default as useGetFlowBuilderCoreElements } from "./api/use-get-flow-builder-core-elements";
+export { default as useGetFlowBuilderCoreResources } from "./api/use-get-flow-builder-core-resources";
 
 export * from "./models/base";
-export * from "./models/component";
 export * from "./models/elements";
-export * from "./models/node";
+export * from "./models/resources";
+export * from "./models/steps";
 export * from "./models/visual-editor";
 export * from "./models/widget";
 
@@ -31,11 +31,11 @@ export {
 export { default as AuthenticationFlowBuilderCoreContext } from "./context/authentication-flow-builder-core-context";
 export { default as useAuthenticationFlowBuilderCore } from "./hooks/use-authentication-flow-builder-core-context";
 
-export { default as CommonComponentFactory } from "./components/elements/components/common-component-factory";
+export { default as CommonElementFactory } from "./components/resources/elements/common-element-factory";
 export {
-    default as CommonComponentPropertyFactory
-} from "./components/element-property-panel/common-component-property-factory";
+    default as CommonElementPropertyFactory
+} from "./components/resource-property-panel/common-element-property-factory";
 export {
     default as CommonWidgetPropertyFactory
-} from "./components/element-property-panel/common-widget-property-factory";
+} from "./components/resource-property-panel/common-widget-property-factory";
 export { default as DecoratedVisualFlow } from "./components/decorated-visual-flow";

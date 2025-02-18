@@ -1,0 +1,44 @@
+[
+    {
+        "resourceType": "STEP",
+        "category": "INTERFACE",
+        "type": "VIEW",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "View",
+            "image": "https://www.svgrepo.com/show/448632/step.svg"
+        },
+        "config": {
+            "field": {}
+        }
+    },
+    {
+        "resourceType": "STEP",
+        "category": "DECISION",
+        "type": "RULE",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Rule",
+            "image": "https://www.svgrepo.com/show/413199/decide.svg"
+        },
+        "config": {
+            "field": {}
+        }
+    },
+    {
+        "resourceType": "STEP",
+        "category": "WORKFLOW",
+        "type": "TRIGGER",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Trigger",
+            "image": "https://www.svgrepo.com/show/431022/git-pull-request.svg"
+        },
+        "config": {
+            "field": {}
+        }
+    }
+]

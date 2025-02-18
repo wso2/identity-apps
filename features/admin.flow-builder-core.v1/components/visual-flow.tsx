@@ -18,17 +18,17 @@
 
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import { useDnD } from "@oxygen-ui/react/dnd";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { useDnD } from "@wso2is/dnd";
 import {
     Controls,
     Edge,
     MarkerType,
+    Node,
     OnConnect,
     OnNodesDelete,
     ReactFlow,
     ReactFlowProps,
-    Node as XYFlowNode,
     XYPosition,
     addEdge,
     getConnectedEdges,
@@ -39,12 +39,12 @@ import {
     useReactFlow
 } from "@xyflow/react";
 import React, { DragEvent, FC, FunctionComponent, ReactElement, useCallback, useMemo } from "react";
-import NodeFactory from "./elements/nodes/node-factory";
 import BaseEdge from "./react-flow-overrides/base-edge";
+import StepFactory from "./resources/steps/step-factory";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
 import { Payload } from "../models/api";
-import { ElementCategories, Elements } from "../models/elements";
-import { Node } from "../models/node";
+import { ResourceTypes, Resources } from "../models/resources";
+import { Step } from "../models/steps";
 import getKnownEdgeTypes from "../utils/get-known-edge-types";
 import resolveKnownEdges from "../utils/resolve-known-edges";
 import transformFlow from "../utils/transform-flow";
@@ -57,9 +57,9 @@ import "./visual-flow.scss";
  */
 export interface VisualFlowPropsInterface extends IdentifiableComponentInterface, ReactFlowProps<any, any> {
     /**
-     * Flow elements.
+     * Flow resources.
      */
-    elements: Elements;
+    resources: Resources;
     /**
      * Callback to be fired when the flow is submitted.
      * @param payload - Payload of the flow.
@@ -76,7 +76,7 @@ export interface VisualFlowPropsInterface extends IdentifiableComponentInterface
      * @param connection - Connection object.
      * @returns Edge object.
      */
-    onEdgeResolve?: (connection: any, nodes: XYFlowNode[]) => Edge;
+    onEdgeResolve?: (connection: any, nodes: Node[]) => Edge;
 }
 
 /**
@@ -87,7 +87,7 @@ export interface VisualFlowPropsInterface extends IdentifiableComponentInterface
  */
 const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-flow",
-    elements,
+    resources,
     customEdgeTypes,
     onFlowSubmit,
     onEdgeResolve,
@@ -97,7 +97,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
     const { screenToFlowPosition, toObject } = useReactFlow();
     const { node, generateComponentId } = useDnD();
-    const { onElementDropOnCanvas } = useAuthenticationFlowBuilderCore();
+    const { onResourceDropOnCanvas } = useAuthenticationFlowBuilderCore();
 
     const onDragOver: (event: DragEvent) => void = useCallback((event: DragEvent) => {
         event.preventDefault();
@@ -109,7 +109,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
             event.preventDefault();
 
             // check if the dropped element is valid
-            if (!node?.type || node?.category !== ElementCategories.Nodes) {
+            if (!node?.type || node?.resourceType !== ResourceTypes.Step) {
                 return;
             }
 
@@ -121,7 +121,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                 y: event.clientY
             });
 
-            const newNode: XYFlowNode = {
+            const newNode: Node = {
                 data: {
                     label: `${node.type} node`,
                     ...node
@@ -131,9 +131,9 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                 type: node.type as string
             };
 
-            setNodes((nodes: XYFlowNode[]) => nodes.concat(newNode));
+            setNodes((nodes: Node[]) => nodes.concat(newNode));
 
-            onElementDropOnCanvas(node, null);
+            onResourceDropOnCanvas(node, null);
         },
         [ screenToFlowPosition, node?.type ]
     );
@@ -157,12 +157,12 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
         [ setEdges, nodes ]
     );
 
-    const onNodesDelete: OnNodesDelete<XYFlowNode> = useCallback(
-        (deleted: XYFlowNode[]) => {
+    const onNodesDelete: OnNodesDelete<Node> = useCallback(
+        (deleted: Node[]) => {
             setEdges(
-                deleted.reduce((acc: Edge[], node: XYFlowNode) => {
-                    const incomers: XYFlowNode[] = getIncomers(node, nodes, edges);
-                    const outgoers: XYFlowNode[] = getOutgoers(node, nodes, edges);
+                deleted.reduce((acc: Edge[], node: Node) => {
+                    const incomers: Node[] = getIncomers(node, nodes, edges);
+                    const outgoers: Node[] = getOutgoers(node, nodes, edges);
                     const connectedEdges: Edge[] = getConnectedEdges([ node ], edges);
 
                     const remainingEdges: Edge[] = acc.filter((edge: Edge) => !connectedEdges.includes(edge));
@@ -190,18 +190,18 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     };
 
     const generateNodeTypes = () => {
-        if (!elements?.nodes) {
+        if (!resources?.steps) {
             return {};
         }
 
-        return elements.nodes.reduce((acc: Record<string, FC<XYFlowNode>>, node: Node) => {
-            acc[node.type] = (props: any) => <NodeFactory { ...props } node={ node } />;
+        return resources.steps.reduce((acc: Record<string, FC<Node>>, resource: Step) => {
+            acc[resource.type] = (props: any) => <StepFactory { ...props } resource={ resource } />;
 
             return acc;
-        }, {} as Record<string, FC<XYFlowNode>>);
+        }, {} as Record<string, FC<Node>>);
     };
 
-    const nodeTypes: { [key: string]: FC<XYFlowNode> } = useMemo(() => generateNodeTypes(), []);
+    const nodeTypes: { [key: string]: FC<Node> } = useMemo(() => generateNodeTypes(), []);
     const edgeTypes: { [key: string]: FC<Edge> } = useMemo(() => {
         return {
             "base-edge": BaseEdge,

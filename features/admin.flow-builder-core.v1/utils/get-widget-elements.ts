@@ -17,6 +17,7 @@
  */
 
 import { Element } from "../models/elements";
+import { Widget } from "../models/widget";
 
 /**
  * Retrieves the elements of a widget.
@@ -24,14 +25,14 @@ import { Element } from "../models/elements";
  * A widget is identified by the presence of a `flow` property in its configuration.
  * This function returns the elements defined in the widget's flow configuration.
  *
- * @param element - The widget element to retrieve elements from.
+ * @param widget - The widget to retrieve elements from.
  * @returns An array of elements if the widget has a flow configuration, otherwise an empty array.
  *
  * @example
  * const elements = getWidgetElements(widget); // Returns an array of elements.
  */
-const getWidgetElements = (element: Element): Element[] => {
-    return element?.config?.flow?.elements;
+const getWidgetElements = (widget: Widget): Element[] => {
+    return widget?.config?.flow?.elements;
 };
 
 export default getWidgetElements;

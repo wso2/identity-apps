@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { ComponentTypes } from "../models/component";
-import { Element } from "../models/elements";
+import { Element, ElementTypes } from "../models/elements";
 
 /**
  * Returns a mapping of known properties for a given element.
@@ -26,7 +25,7 @@ import { Element } from "../models/elements";
  * @returns An object with known element properties.
  */
 const getKnownElementProperties = (element: Element): Record<string, string[]> => {
-    if (element.type === ComponentTypes.Button) {
+    if (element.type === ElementTypes.Button) {
         return {
             color: [ "primary", "secondary", "success", "error", "info", "warning" ],
             variant: [ "contained", "outlined", "text" ]

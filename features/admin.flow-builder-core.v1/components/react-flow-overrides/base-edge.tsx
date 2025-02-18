@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { EdgeLabelRenderer, EdgeProps, BaseEdge as XYFlowBaseEdge, getBezierPath } from "@xyflow/react";
+import { EdgeLabelRenderer, EdgeProps, BaseEdge as _BaseEdge, getBezierPath } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
 
 /**
@@ -53,7 +53,7 @@ const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
 
     return (
         <>
-            <XYFlowBaseEdge id={ id } path={ edgePath } { ...rest } />
+            <_BaseEdge id={ id } path={ edgePath } { ...rest } />
             <EdgeLabelRenderer>
                 <div
                     style={ {

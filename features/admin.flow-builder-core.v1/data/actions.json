@@ -1,5 +1,6 @@
 [
     {
+        "resourceType": "ELEMENT",
         "category": "NAVIGATION",
         "display": {
             "label": "Navigation",
@@ -25,6 +26,7 @@
         ]
     },
     {
+        "resourceType": "ELEMENT",
         "category": "VERIFICATION",
         "display": {
             "label": "Verification",
@@ -45,6 +47,7 @@
         ]
     },
     {
+        "resourceType": "ELEMENT",
         "category": "ONBOARDING",
         "display": {
             "label": "Onboarding",
@@ -59,7 +62,7 @@
                     }
                 ],
                 "display": {
-                    "label": "Onboard Password",
+                    "label": "Continue with Password",
                     "image": "https://www.svgrepo.com/show/526627/password.svg",
                     "defaultVariant": "PRIMARY"
                 }
@@ -72,7 +75,7 @@
                     }
                 ],
                 "display": {
-                    "label": "Onboard Email",
+                    "label": "Continue with Email OTP",
                     "image": "https://www.svgrepo.com/show/479622/email-18.svg",
                     "defaultVariant": "PRIMARY"
                 }
@@ -80,6 +83,7 @@
         ]
     },
     {
+        "resourceType": "ELEMENT",
         "category": "SOCIAL",
         "display": {
             "label": "Social",
@@ -97,7 +101,7 @@
                     }
                 ],
                 "display": {
-                    "label": "Continue with Google Sign Up",
+                    "label": "Continue with Google",
                     "image": "https://www.svgrepo.com/show/475656/google-color.svg",
                     "defaultVariant": "SOCIAL"
                 }

@@ -16,34 +16,58 @@
  * under the License.
  */
 
-import { Component } from "./component";
-import { Node } from "./node";
-import { Widget } from "./widget";
-
-export type Element = Component | Node | Widget;
+import { Base } from "./base";
 
 /**
- * Interface for the entire JSON structure.
+ * Interface for a component.
  */
-export interface Elements {
-    /**
-     * List of blocks.
-     */
-    components: Component[];
-    /**
-     * List of nodes.
-     */
-    nodes: Node[];
-    /**
-     * List of widgets.
-     */
-    widgets: Widget[];
-}
+export type Element<T = any> = Base<T>;
 
 export enum ElementCategories {
     Action = "ACTION",
     Display = "DISPLAY",
-    Field = "FIELD",
-    Nodes = "NODE",
-    Widget = "WIDGET"
+    Field = "FIELD"
+}
+
+export enum ElementTypes {
+    Input = "INPUT",
+    Button = "BUTTON",
+    Divider = "DIVIDER",
+    Choice = "CHOICE",
+    Image = "IMAGE",
+    RichText = "RICH_TEXT",
+    Typography = "TYPOGRAPHY",
+}
+
+export enum InputVariants {
+    Text = "TEXT",
+    Password = "PASSWORD",
+    Email = "EMAIL",
+    Telephone = "TELEPHONE",
+    Number = "NUMBER",
+    Checkbox = "CHECKBOX",
+    OTP = "OTP"
+}
+
+export enum ButtonVariants {
+    Primary = "PRIMARY",
+    Secondary = "SECONDARY",
+    Social = "SOCIAL",
+    Text = "TEXT"
+}
+
+export enum TypographyVariants {
+    H1 = "H1",
+    H2 = "H2",
+    H3 = "H3",
+    H4 = "H4",
+    H5 = "H5",
+    H6 = "H6",
+    Body1 = "BODY1",
+    Body2 = "BODY2"
+}
+
+export enum DividerVariants {
+    Horizontal = "HORIZONTAL",
+    Vertical = "VERTICAL"
 }

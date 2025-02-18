@@ -16,16 +16,15 @@
  * under the License.
  */
 
+import { DnDProvider } from "@oxygen-ui/react/dnd";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DnDProvider } from "@wso2is/dnd";
 import { ReactFlowProvider } from "@xyflow/react";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
-import ElementPanel from "./element-panel/element-panel";
-import ElementPropertiesPanel from "./element-property-panel/element-property-panel";
+import ResourcePanel from "./resource-panel/resource-panel";
+import ElementPropertiesPanel from "./resource-property-panel/resource-property-panel";
 import VisualFlow, { VisualFlowPropsInterface } from "./visual-flow";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
-
 
 /**
  * Props interface of {@link DecoratedVisualFlow}
@@ -40,10 +39,10 @@ export type DecoratedVisualFlowPropsInterface = VisualFlowPropsInterface & Ident
  */
 const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-editor",
-    elements,
+    resources,
     ...rest
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
-    const { isElementPanelOpen, isElementPropertiesPanelOpen } = useAuthenticationFlowBuilderCore();
+    const { isResourcePanelOpen, isResourcePropertiesPanelOpen } = useAuthenticationFlowBuilderCore();
 
     return (
         <div
@@ -52,11 +51,11 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         >
             <ReactFlowProvider>
                 <DnDProvider>
-                    <ElementPanel elements={ elements } open={ isElementPanelOpen }>
-                        <ElementPropertiesPanel open={ isElementPropertiesPanelOpen }>
-                            <VisualFlow elements={ elements } { ...rest } />
+                    <ResourcePanel resources={ resources } open={ isResourcePanelOpen }>
+                        <ElementPropertiesPanel open={ isResourcePropertiesPanelOpen }>
+                            <VisualFlow resources={ resources } { ...rest } />
                         </ElementPropertiesPanel>
-                    </ElementPanel>
+                    </ResourcePanel>
                 </DnDProvider>
             </ReactFlowProvider>
         </div>

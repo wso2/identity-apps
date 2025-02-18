@@ -17,7 +17,7 @@
  */
 
 import { CSSProperties } from "react";
-import { ComponentTypes } from "./component";
+import { ElementTypes } from "./elements";
 
 /**
  * Base interface for a component or a primitive.
@@ -125,7 +125,7 @@ export interface StrictField {
     /**
      * The type of the field.
      */
-    type: ComponentTypes;
+    type: ElementTypes;
     /**
      * Options of the field.
      */

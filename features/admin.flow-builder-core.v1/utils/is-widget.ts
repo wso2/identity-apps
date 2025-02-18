@@ -16,22 +16,22 @@
  * under the License.
  */
 
-import { Element } from "../models/elements";
+import { Resource } from "../models/resources";
 
 /**
- * Checks if the given element is a widget.
+ * Checks if the given resource is a widget.
  *
  * A widget is identified by the presence of a `flow` property in its configuration.
  *
- * @param element - The element to check.
- * @returns True if the element is a widget, otherwise false.
+ * @param resource - The resource to check.
+ * @returns True if the resource is a widget, otherwise false.
  *
  * @example
- * const result = isWidget(element);
+ * const result = isWidget(resource);
  * console.log(result); // true
  */
-const isWidget = (element: Element): boolean => {
-    return element?.config?.flow;
+const isWidget = (resource: Resource): boolean => {
+    return resource?.config?.flow;
 };
 
 export default isWidget;

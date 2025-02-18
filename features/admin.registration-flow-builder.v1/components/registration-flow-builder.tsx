@@ -20,12 +20,15 @@ import DecoratedVisualFlow from "@wso2is/admin.flow-builder-core.v1/components/d
 import { Payload } from "@wso2is/admin.flow-builder-core.v1/models/api";
 import AuthenticationFlowBuilderCoreProvider from
     "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement } from "react";
-import ElementProperties from "./element-property-panel/element-properties";
-import ComponentFactory from "./elements/components/component-factory";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import ResourceProperties from "./resource-property-panel/resource-properties";
+import ElementFactory from "./resources/elements/element-factory";
 import configureRegistrationFlow from "../api/configure-registration-flow";
-import useGetRegistrationFlowBuilderElements from "../api/use-get-registration-flow-builder-elements";
+import useGetRegistrationFlowBuilderResources from "../api/use-get-registration-flow-builder-resources";
 import RegistrationFlowBuilderProvider from "../providers/registration-flow-builder-provider";
 
 /**
@@ -40,29 +43,39 @@ export type RegistrationFlowBuilderPropsInterface = IdentifiableComponentInterfa
  * @returns Entry point component for the registration flow builder.
  */
 const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInterface> = ({
-    "data-componentid": componentId = "authentication-flow-builder",
+    "data-componentid": componentId = "registration-flow-builder",
     ...rest
 }: RegistrationFlowBuilderPropsInterface): ReactElement => {
-    const { data: elements } = useGetRegistrationFlowBuilderElements();
+    const { data: components } = useGetRegistrationFlowBuilderResources();
+
+    const dispatch: Dispatch = useDispatch();
 
     const handleFlowSubmit = (payload: Payload) => {
         configureRegistrationFlow(payload)
             .then(() => {
-                // Handle success.
+                dispatch(addAlert({
+                    description: "Registration flow updated successfully.",
+                    level: AlertLevels.SUCCESS,
+                    message: "Flow Updated Successfully"
+                }));
             })
             .catch(() => {
-                // Handle error.
+                dispatch(addAlert({
+                    description: "Failed to update the registration flow.",
+                    level: AlertLevels.ERROR,
+                    message: "Flow Updated Failure"
+                }));
             });
     };
 
     return (
         <AuthenticationFlowBuilderCoreProvider
-            ComponentFactory={ ComponentFactory }
-            ElementProperties={ ElementProperties }
+            ElementFactory={ ElementFactory }
+            ResourceProperties={ ResourceProperties }
         >
             <RegistrationFlowBuilderProvider>
                 <DecoratedVisualFlow
-                    elements={ elements }
+                    resources={ components }
                     data-componentid={ componentId }
                     onFlowSubmit={ handleFlowSubmit }
                     { ...rest }
