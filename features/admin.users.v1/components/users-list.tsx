@@ -571,7 +571,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             );
         }
 
-        if (usersList.totalResults === 0) {
+        if (usersList?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
                     data-testid={ `${testId}-empty-placeholder` }
@@ -612,7 +612,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 } }
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
-                data={ usersList.Resources }
+                data={ usersList?.Resources }
                 onColumnSelectionChange={ onColumnSelectionChange }
                 onRowClick={ (e: SyntheticEvent, user: UserBasicInterface): void => {
                     handleUserEdit(user?.id);
