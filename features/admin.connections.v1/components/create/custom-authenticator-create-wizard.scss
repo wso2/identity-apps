@@ -138,29 +138,22 @@
     }
 
     .identifier-field {
-        .input>.button:first-child {
-            background-color: #e8e8e8;
-            pointer-events: none;
-            border: 1px solid rgba(34,36,38,.15);
-            border-right: none;
-            box-shadow: none;
-            padding-left: 14px;
-            padding-right: 4.5px;
+        .input input {
+            padding-left: 70px !important;
         }
-        .input input{
-            padding-left: 4.5px;
-            border-left: none;
+       .ui.icon.input>i.icon {
+            display: flex;
+            width: fit-content;
+            align-items: center;
+            height: 100%;
+            font-family: inherit;
+            opacity: 0.7;
+            padding-left: 10px;
         }
     }
     .error {
-        .input>.button:first-child {
-            background-color: #e8e8e8;
-            pointer-events: none;
-            border: 1px solid rgba(34,36,38,.15);
-            border-right: none;
-            box-shadow: none;
-            padding-left: 14px;
-            padding-right: 4.5px;
+        .ui.icon.input>i.icon {
+            color: #e7bdbc;
         }
     }
  }

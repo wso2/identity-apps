@@ -126,7 +126,7 @@ export const customAuthenticator: customAuthenticatorNS = {
                     hint: "Must be a string containing only letters (a-z, A-Z) numbers (0-9), " +
                     "underscore (_) and hyphen (-). ",
                     label: "Identifier",
-                    placeholder: "Authenticator Identifier",
+                    placeholder: "authenticator-identifier",
                     validations: {
                         empty: "",
                         invalid: "Invalid Identifier"
