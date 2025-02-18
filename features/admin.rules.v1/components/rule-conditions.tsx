@@ -25,11 +25,12 @@ import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Divider from "@oxygen-ui/react/Divider";
 import Fab from "@oxygen-ui/react/Fab";
 import FormControl from "@oxygen-ui/react/FormControl";
+import Link from "@oxygen-ui/react/Link";
 import { ListItemProps } from "@oxygen-ui/react/ListItem";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
-import { MinusIcon, PlusIcon } from "@oxygen-ui/react-icons";
+import { MinusIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import debounce from "lodash-es/debounce";
 import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -213,8 +214,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
         useEffect(() => {
             if (resourceDetails) {
-                setInputValue(resourceDetails[valueReferenceAttribute]);
-                setInputValueLabel(resourceDetails[valueDisplayAttribute]);
+                setInputValue(resourceDetails[valueReferenceAttribute] || null);
+                setInputValueLabel(resourceDetails[valueDisplayAttribute] || null);
             }
         }, [ resourceDetails ]);
 
@@ -232,10 +233,10 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             } else {
                 if (initialResources && Array.isArray(initialResources[resourceType])) {
                     const initialOptions: ValueInputAutocompleteOptionsInterface[] =
-                        initialResources[resourceType].map((resource: ResourceInterface) => ({
-                            id: resource[valueReferenceAttribute],
-                            label: resource[valueDisplayAttribute]
-                        }));
+                            initialResources[resourceType].map((resource: ResourceInterface) => ({
+                                id: resource[valueReferenceAttribute],
+                                label: resource[valueDisplayAttribute]
+                            }));
 
                     setOptions(initialOptions);
                 }
@@ -252,15 +253,24 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 open={ open }
                 onOpen={ () => setOpen(true) }
                 onClose={ () => setOpen(false) }
-                options={
-                    hasMoreItems
-                        ? [ ...options, {
+                options={ [
+                    ...options,
+                    ...(hasMoreItems
+                        ? [ {
                             id: "more-items",
                             isDisabled: true,
                             label: t("rules:fields.autocomplete.moreItemsMessage")
                         } ]
-                        : options  || []
-                }
+                        : []),
+                    ...(inputValueLabel
+                        ? [ {
+                            id: "clear-option",
+                            isDisabled: false,
+                            label: t("rules:fields.autocomplete.clearFilterActionText")
+                        } ]
+                        : [])
+                ] }
+                filterOptions={ (options: ValueInputAutocompleteOptionsInterface[]) => options }
                 getOptionLabel={ (option: ValueInputAutocompleteOptionsInterface) => option.label || "" }
                 value={ resourceDetails ? { id: inputValue, label: inputValueLabel } : null }
                 isOptionEqualToValue={ (
@@ -269,12 +279,17 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 ) =>
                     value?.id && option.id === value.id
                 }
-                loading={ isInitialLoading || isFiltering }
+                loading={ isFiltering }
                 onChange={ (e: React.ChangeEvent, value: ResourceInterface) => {
-                    if (value?.isDisabled) {
-                        // Prevent selection of the disabled option
+                    if (value?.isDisabled) return; // Prevent selection of disabled option
+
+                    if (value?.id === "clear-option") {
+                        setInputValueLabel("");
+                        setTimeout(() => setOpen(true), 0);
+
                         return;
                     }
+
                     if (value) {
                         handleExpressionChangeDebounced(
                             value.id,
@@ -294,6 +309,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     <TextField
                         { ...params }
                         variant="outlined"
+                        placeholder="Please select a resource or type to search ..."
                         value={ inputValueLabel }
                         InputProps={ {
                             ...params.InputProps,
@@ -308,18 +324,28 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         } }
                     />
                 ) }
-                renderOption={ (props: ListItemProps, option: { label: string; id: string, isDisabled: boolean }) => {
+                renderOption={ (props: ListItemProps, option: { label: string; id: string; isDisabled: boolean }) => {
                     if (option.id === "more-items") {
                         return (
                             <li
                                 { ...props }
                                 className="MuiAutocomplete-moreItemsAvailableMessage"
-                                style={ {
-                                    pointerEvents: option.isDisabled ? "none" : "auto"
-                                } }
                                 key={ option.id }
                             >
                                 { option.label }
+                            </li>
+                        );
+                    }
+
+                    if (option.id === "clear-option") {
+                        return (
+                            <li
+                                { ...props }
+                                key={ option.id }
+                            >
+                                <Link className="MuiAutocomplete-clearFilterLink">
+                                    <TrashIcon className="icon" /> <span className="text">{ option.label }</span>
+                                </Link>
                             </li>
                         );
                     }
@@ -365,7 +391,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         }
 
         const {
-            data: fetchedResourcesList
+            data: fetchedResourcesList,
+            isLoading: isResourcesListLoading
         } = useGetResourceListOrResourceDetails(initialResourcesLoadUrl);
 
         const {
@@ -385,7 +412,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             }
         }, [ isResourceDetailsLoading, resourceDetailsError ]);
 
-        if (fetchedResourcesList) {
+        if (fetchedResourcesList && !isResourcesListLoading) {
             // Set first value of the list if option is empty
             if (expressionValue === "") {
                 handleExpressionChangeDebounced(

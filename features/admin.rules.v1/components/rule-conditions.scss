@@ -20,6 +20,26 @@
     .MuiAutocomplete-moreItemsAvailableMessage {
         color: #666666;
         font-style: italic;
-        padding: 12px 15px 5px;
+        padding: 5px 15px 5px;
+        pointer-events: none;
+    }
+
+    .MuiAutocomplete-clearFilterLink {
+        font-style: italic;
+        padding: 5px 0;
+        cursor: pointer;
+
+        > .icon {
+            margin-right: 3px;
+        }
+
+        > span.text {
+            text-decoration: underline;
+        }
+
+        &:hover > span.text,
+        &:hover {
+            text-decoration: none;
+        }
     }
 }
