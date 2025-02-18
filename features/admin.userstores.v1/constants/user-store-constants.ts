@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -56,6 +56,11 @@ export class UserStoreManagementConstants {
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("USER_STORE_REMOTE", "userStores.type.remote")
         .set("USER_STORE_PRIMARY", "PRIMARY");
+
+    /**
+     * Mutation wait time.
+     */
+    public static readonly USER_STORE_MUTATION_WAIT_TIME: number = 5000;
 }
 
 /**

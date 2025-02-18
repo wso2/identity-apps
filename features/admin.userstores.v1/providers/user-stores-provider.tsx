@@ -57,7 +57,8 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
     const {
         data: fetchedUserStores,
         isLoading: isUserStoreGetRequestLoading,
-        error: userStoreGetRequestError
+        error: userStoreGetRequestError,
+        mutate: fetchUserStores
     } = useGetUserStores(null, null, null, null, requiredUserStoreAttributes.join(","), hasUserStoresReadPermission);
 
     const shouldFetchPrimaryUserStore: boolean = useMemo(
@@ -138,11 +139,24 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
         return readOnlyUserStoreNames.includes(userStoreName.toUpperCase());
     };
 
+    /**
+     * Utility function to mutate the user store list.
+     * Since there is a delay in updating user stores,
+     * capability to mutate the user store list with a delay is added.
+     * @param delay - The wait time in milliseconds.
+     */
+    const mutateUserStoreList = (delay: number = 0): void => {
+        setTimeout(() => {
+            fetchUserStores();
+        }, delay);
+    };
+
     return (
         <UserStoresContext.Provider
             value={ {
                 isLoading: isUserStoreGetRequestLoading || !readOnlyUserStoreNames,
                 isUserStoreReadOnly,
+                mutateUserStoreList,
                 readOnlyUserStoreNamesList: readOnlyUserStoreNames,
                 userStoresList: fetchedUserStores
             } }

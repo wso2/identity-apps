@@ -84,7 +84,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const { readOnlyUserStoreNamesList, isUserStoreReadOnly } = useUserStores();
+    const { readOnlyUserStoreNamesList, isUserStoreReadOnly, mutateUserStoreList } = useUserStores();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
@@ -199,6 +199,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 setUserStoresList(storeOptions);
             }).finally(() => {
                 setUserStoresListRequestLoading(false);
+                mutateUserStoreList();
             });
 
         setUserStoresList(storeOptions);

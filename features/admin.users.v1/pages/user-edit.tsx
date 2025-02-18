@@ -32,6 +32,7 @@ import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
 } from "@wso2is/admin.server-configurations.v1/models";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import {
     getUserNameWithoutDomain,
     resolveUserDisplayName,
@@ -72,6 +73,8 @@ const UserEditPage = (): ReactElement => {
     const { t } = useTranslation();
 
     const dispatch: Dispatch<any> = useDispatch();
+
+    const { mutateUserStoreList } = useUserStores();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
@@ -116,6 +119,14 @@ const UserEditPage = (): ReactElement => {
 
     const isNameAvailable: boolean = user?.name?.familyName === undefined &&
         user?.name?.givenName === undefined;
+
+    /**
+     * As there is a delay in updating user stores,
+     * user stores list needs be mutated in page load to avoid stale data.
+     */
+    useEffect(() => {
+        mutateUserStoreList();
+    }, []);
 
     /**
      * Set the connector properties.

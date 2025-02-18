@@ -41,6 +41,10 @@ export interface UserStoresContextProps {
      * @param userStoreName - User store name.
      */
     isUserStoreReadOnly: (userStoreName: string) => boolean;
+    /**
+     * Function to mutate the user stores list.
+     */
+    mutateUserStoreList: (delay?: number) => void;
 }
 
 /**

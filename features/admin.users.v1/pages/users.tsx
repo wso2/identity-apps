@@ -143,7 +143,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
-    const { readOnlyUserStoreNamesList, isUserStoreReadOnly } = useUserStoresContext();
+    const { readOnlyUserStoreNamesList, isUserStoreReadOnly, mutateUserStoreList } = useUserStoresContext();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -287,6 +287,14 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const isReadOnlyUserStore: boolean = useMemo(() => {
         return isUserStoreReadOnly(selectedUserStore);
     }, [ selectedUserStore, readOnlyUserStoreNamesList ]);
+
+    /**
+     * As there is a delay in updating user stores,
+     * user stores list needs be mutated in page load to avoid stale data.
+     */
+    useEffect(() => {
+        mutateUserStoreList();
+    }, []);
 
     /**
      * Handles the user list fetch request error.
