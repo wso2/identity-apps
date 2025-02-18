@@ -150,7 +150,7 @@ export const __DEPRECATED__TextFieldAdapter = (props:FieldRenderProps<any> ): Re
             iconPosition={ childFieldProps?.iconPosition }
         >
             <input />
-            <Icon>{ childFieldProps?.adornment }</Icon>
+            { childFieldProps?.adornment && <Icon>{ childFieldProps.adornment }</Icon> }
         </Form.Input>
     );
 };
