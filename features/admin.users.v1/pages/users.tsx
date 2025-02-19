@@ -28,7 +28,6 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
-import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
@@ -45,6 +44,7 @@ import {
 } from "@wso2is/admin.server-configurations.v1";
 import { useUserStores } from "@wso2is/admin.userstores.v1/api";
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
+import useUserStoresContext from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import {
     UserStoreItem,
     UserStoreListItem,
@@ -56,9 +56,11 @@ import {
     AlertLevels,
     IdentifiableComponentInterface,
     MultiValueAttributeInterface,
+    ProfileSchemaInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { DropdownChild } from "@wso2is/forms";
 import {
     ConfirmationModal,
     DocumentationLink,
@@ -101,6 +103,7 @@ import {
 } from "../constants";
 import { InvitationStatus, UserListInterface } from "../models/user";
 import "./users.scss";
+import { resolveUserSearchAttributes } from "../utils/user-management-utils";
 
 /**
  * Props for the Users page.
@@ -140,6 +143,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
+    const { readOnlyUserStoreNamesList, isUserStoreReadOnly, mutateUserStoreList } = useUserStoresContext();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -159,23 +163,25 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ showBulkImportWizard, setShowBulkImportWizard ] = useState<boolean>(false);
-    const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>([]);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ emailVerificationEnabled, setEmailVerificationEnabled ] = useState<boolean>(undefined);
     const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(undefined);
-    const [ isUsersNextPageAvailable ] = useState<boolean>(undefined);
+    const [ isInvitedUsersNextPageAvailable, setIsInvitedUsersNextPageAvailable ] = useState<boolean>(undefined);
     const [ selectedAddUserType ] = useState<UserAccountTypes>(UserAccountTypes.USER);
     const [ userType, setUserType ] = useState<string>();
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>(userstoresConfig.primaryUserstoreName);
     const [ invitationStatusOption, setInvitationStatusOption ] = useState<string>(InvitationStatus.PENDING);
     const [ isSelectedUserStoreReadOnly ] = useState<boolean>(false);
     const [ isInvitationStatusOptionChanged, setIsInvitationStatusOptionChanged ] = useState<boolean>(false);
-    const [ filterGuestList, setFilterGuestList ] = useState<UserInviteInterface[]>();
     const [ finalGuestList, setFinalGuestList ] = useState<UserInviteInterface[]>([]);
     const [ paginatedGuestList, setPaginateGuestList ] = useState<UserInviteInterface[]>([]);
     const [ showMultipleInviteConfirmationModal, setShowMultipleInviteConfirmationModal ] = useState<boolean>(false);
     const [ connectorConfigLoading, setConnecterConfigLoading ] = useState<boolean>(false);
     const [ showInviteParentUserWizard, setShowInviteParentUserWizard ] = useState<boolean>(false);
+    const [ invitedUserListItemLimit, setInvitedUserListItemLimit ]
+        = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [ invitedUserListOffset, setInvitedUserListOffset ] = useState<number>(1);
+    const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state?.profile?.profileSchemas);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -232,7 +238,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const {
         data: orginalUserStoreList,
         isLoading: isUserStoreListFetchRequestLoading,
-        isValidating: isUserStoreListFetchRequestValidating,
         error: userStoreListFetchRequestError
     } = useUserStores(null);
 
@@ -280,24 +285,16 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Indicates whether the currently selected user store is read-only or not.
      */
     const isReadOnlyUserStore: boolean = useMemo(() => {
-        if (readOnlyUserStoresList?.includes(selectedUserStore)) {
-            return true;
-        }
-
-        return false;
-    }, [ selectedUserStore ]);
+        return isUserStoreReadOnly(selectedUserStore);
+    }, [ selectedUserStore, readOnlyUserStoreNamesList ]);
 
     /**
-     * Get read-only user stores from the user store list.
+     * As there is a delay in updating user stores,
+     * user stores list needs be mutated in page load to avoid stale data.
      */
     useEffect(() => {
-        if (isUserStoreListFetchRequestValidating || isUserStoreListFetchRequestLoading ||
-             !orginalUserStoreList || orginalUserStoreList.length < 1) {
-            return;
-        }
-
-        getReadOnlyUserStoresList(orginalUserStoreList);
-    }, [ orginalUserStoreList ]);
+        mutateUserStoreList();
+    }, []);
 
     /**
      * Handles the user list fetch request error.
@@ -365,18 +362,14 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             return;
         }
 
-        setListOffset(1);
+        setInvitedUserListOffset(1);
         if (searchQuery === "userName co " || searchQuery === "" || searchQuery === null) {
             setPaginateGuestList(parentOrgUserInviteList?.invitations);
-            setFilterGuestList([]);
 
             return;
         } else if (searchQuery) {
             let searchList: UserInviteInterface[] = parentOrgUserInviteList?.invitations;
 
-            if (filterGuestList?.length > 0) {
-                searchList = filterGuestList;
-            }
             if (searchQuery.includes("userName sw ")) {
                 const searchValue: string = searchQuery.split("sw ")[1];
 
@@ -403,7 +396,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 });
             }
             setPaginateGuestList(searchList);
-            setFilterGuestList(searchList);
         }
     }, [ searchQuery ]);
 
@@ -419,7 +411,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Handles parent user invitation pagination.
      */
     useEffect(() => {
-        setFinalGuestList(parentOrgUserInviteList?.invitations?.filter((invitation: UserInviteInterface) =>
+        setPaginateGuestList(parentOrgUserInviteList?.invitations?.filter((invitation: UserInviteInterface) =>
             invitation.status === InvitationStatus.PENDING.toUpperCase()));
 
     }, [ parentOrgUserInviteList?.invitations ]);
@@ -435,17 +427,18 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         let finalInvitations: UserInviteInterface[] = paginatedGuestList?.filter(
             (invitation: UserInviteInterface) => invitation.status === invitationStatusOption.toUpperCase());
 
-        if (finalInvitations?.length > listItemLimit) {
-            const _startIndex: number = listOffset - 1;
+        if (finalInvitations?.length > invitedUserListItemLimit) {
+            const _startIndex: number = invitedUserListOffset - 1;
 
-            finalInvitations = finalInvitations.slice(_startIndex, _startIndex + listItemLimit);
+            finalInvitations = finalInvitations.slice(_startIndex, _startIndex + invitedUserListItemLimit);
             setFinalGuestList(finalInvitations);
-            setIsNextPageAvailable(finalInvitations.length === listItemLimit);
+            setIsInvitedUsersNextPageAvailable(finalInvitations.length === invitedUserListItemLimit);
         } else {
             setFinalGuestList(finalInvitations);
-            setIsNextPageAvailable(false);
+            setIsInvitedUsersNextPageAvailable(false);
         }
-    }, [ paginatedGuestList, listOffset, listItemLimit, isInvitationStatusOptionChanged, invitationStatusOption ]);
+    }, [ paginatedGuestList, invitedUserListOffset, invitedUserListItemLimit, isInvitationStatusOptionChanged,
+        invitationStatusOption ]);
 
     /**
      * Returns a moderated users list.
@@ -520,15 +513,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const usersList: UserListInterface = useMemo(() => transformUserList(originalUserList), [ originalUserList ]);
 
     /**
-     * Fetches the read-only user stores.
-     *
-     * @param userstore - Userstore list.
+     * Resolves the attributes by which the users can be searched.
      */
-    const getReadOnlyUserStoresList = (userstore: UserStoreListItem[]): void => {
-        SharedUserStoreUtils.getReadOnlyUserStores(userstore).then((response: string[]) => {
-            setReadOnlyUserStoresList(response);
-        });
-    };
+    const userSearchAttributes: DropdownChild[] = useMemo(() => {
+        return resolveUserSearchAttributes(profileSchemas);
+    }, [ profileSchemas ]);
 
     /**
      * Handles the `onSearchQueryClear` callback action.
@@ -556,6 +545,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const handleUserFilter = (query: string): void => {
         setSearchQuery(query);
         setListOffset(1);
+        setInvitedUserListOffset(1);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
@@ -564,6 +554,17 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
+    };
+
+    const handleInvitedUserPaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
+        setInvitedUserListOffset(((data.activePage as number - 1) * invitedUserListItemLimit) + 1);
+    };
+
+    const handleInvitedUserItemsPerPageDropdownChange = (
+        event: React.MouseEvent<HTMLAnchorElement>,
+        data: DropdownProps
+    ) => {
+        setInvitedUserListItemLimit(data.value as number);
     };
 
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
@@ -578,6 +579,22 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const onUserDelete = (): void => {
         mutateUserListFetchRequest();
+    };
+
+    const resolveFilterAttributeOptions = (useConsoleAttributeList: boolean): DropdownChild[] => {
+        let filterAttributeOptions: DropdownChild[] = [
+            {
+                key: 0,
+                text: t("users:advancedSearch.form.dropdown." + "filterAttributeOptions.username"),
+                value: "userName"
+            }
+        ];
+
+        if (useConsoleAttributeList) {
+            filterAttributeOptions = filterAttributeOptions.concat(userSearchAttributes);
+        }
+
+        return filterAttributeOptions;
     };
 
     /**
@@ -624,34 +641,17 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         </PrimaryButton>
     );
 
-
-    const advancedSearchFilter = (): ReactElement => (
+    /**
+     * Renders an advanced search filter for users list and invitations list.
+     *
+     * @param isUserList - If `true`, allows filtering by other available attributes.
+     *                     If `false`, allows filtering only by username (for invitation list).
+     * @returns The search filter component.
+     */
+    const advancedSearchFilter = (isUserList: boolean): ReactElement => (
         <AdvancedSearchWithBasicFilters
             onFilter={ handleUserFilter }
-            filterAttributeOptions={ [
-                {
-                    key: 0,
-                    text: t("users:advancedSearch.form.dropdown." +
-                        "filterAttributeOptions.username"),
-                    value: "userName"
-                },
-                {
-                    key: 1,
-                    text: t("users:advancedSearch.form.dropdown." +
-                        "filterAttributeOptions.email"),
-                    value: "emails"
-                },
-                {
-                    key: 2,
-                    text: "First Name",
-                    value: "name.givenName"
-                },
-                {
-                    key: 3,
-                    text: "Last Name",
-                    value: "name.familyName"
-                }
-            ] }
+            filterAttributeOptions={ resolveFilterAttributeOptions(isUserList) }
             filterAttributePlaceholder={
                 t("users:advancedSearch.form.inputs.filterAttribute" +
                     ".placeholder")
@@ -685,7 +685,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             <ListLayout
                 // TODO add sorting functionality.
                 className="sub-org-users-list"
-                advancedSearch={ advancedSearchFilter() }
+                advancedSearch={ advancedSearchFilter(true) }
                 currentListSize={ usersList?.itemsPerPage }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
@@ -722,7 +722,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         imageSize="tiny"
                     />)
                     : (<UsersList
-                        advancedSearch={ advancedSearchFilter() }
+                        advancedSearch={ advancedSearchFilter(true) }
                         usersList={ usersList }
                         onUserDelete={ onUserDelete }
                         userMetaListContent={ null }
@@ -731,7 +731,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         onSearchQueryClear={ handleSearchQueryClear }
                         searchQuery={ searchQuery }
                         data-testid="user-mgt-user-list"
-                        readOnlyUserStores={ readOnlyUserStoresList }
                         featureConfig={ featureConfig }
                         isReadOnlyUserStore={ isReadOnlyUserStore }
                     />)
@@ -871,22 +870,22 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         return (
             <ListLayout
                 className="sub-org-users-list"
-                advancedSearch={ advancedSearchFilter() }
-                currentListSize={ usersList?.itemsPerPage }
-                listItemLimit={ listItemLimit }
-                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                advancedSearch={ advancedSearchFilter(false) }
+                currentListSize={ parentOrgUserInviteList?.invitations?.length || null }
+                listItemLimit={ invitedUserListItemLimit }
+                onItemsPerPageDropdownChange={ handleInvitedUserItemsPerPageDropdownChange }
                 data-componentid={ `${ componentId }-user-mgt-user-list-layout` }
                 data-testid={ `${ testId }-user-mgt-user-list-layout` }
-                onPageChange={ handlePaginationChange }
+                onPageChange={ handleInvitedUserPaginationChange }
                 showPagination={ true }
                 totalPages={ resolveTotalPages() }
-                totalListSize={ usersList?.totalResults }
+                totalListSize={ finalGuestList?.length }
                 isLoading={
                     isUserListFetchRequestLoading
                     || isParentOrgUserInviteListLoading
                 }
                 paginationOptions={ {
-                    disableNextButton: !isUsersNextPageAvailable,
+                    disableNextButton: !isInvitedUsersNextPageAvailable,
                     showItemsPerPageDropdown: selectedUserStore === userstoresConfig.primaryUserstoreName
                         ? true
                         : false

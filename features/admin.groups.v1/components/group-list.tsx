@@ -25,6 +25,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
@@ -96,10 +97,6 @@ interface GroupListProps extends SBACInterface<FeatureConfigInterface>,
      */
     showMetaContent?: boolean;
     /**
-     * List of readOnly user stores.
-     */
-    readOnlyUserStores?: string[];
-    /**
      * Indicates whether the currently selected user store is read-only or not.
      */
     isReadOnlyUserStore?: boolean;
@@ -126,7 +123,6 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
         defaultListItemLimit,
         handleGroupDelete,
         isLoading,
-        readOnlyUserStores,
         featureConfig,
         onEmptyListPlaceholderActionClick,
         onListItemClick,
@@ -146,6 +142,8 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
+
+    const { readOnlyUserStoreNamesList: readOnlyUserStores } = useUserStores();
 
     const [ showGroupDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedGroup, setCurrentDeletedGroup ] = useState<GroupsInterface>();
@@ -227,7 +225,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
             );
         }
 
-        if (!groupList || groupList?.length === 0) {
+        if (groupList?.length === 0) {
             return (
                 <EmptyPlaceholder
                     data-testid={ `${ testId }-empty-list-empty-placeholder` }

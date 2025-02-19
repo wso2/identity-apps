@@ -33,9 +33,9 @@ import { Dispatch } from "redux";
 import { CheckboxProps, Divider, List } from "semantic-ui-react";
 import {
     deleteConnection,
-    deleteCustomAuthentication,
+    deleteCustomAuthenticator,
     getConnectedApps,
-    updateCustomAuthentication,
+    updateCustomAuthenticator,
     updateIdentityProviderDetails,
     useGetConnections
 } from "../../../api/connections";
@@ -166,8 +166,8 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         }
 
         if (
-            templateType == ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATION ||
-            templateType == ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATION
+            templateType == ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATOR ||
+            templateType == ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATOR
         ) {
             setIsCustomLocalAuthenticator(true);
             setShouldFetchLocalAuthenticatorConnectedApps(true);
@@ -323,7 +323,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     const handleLocalAuthenticatorDelete = (): void => {
         setLoading(true);
 
-        deleteCustomAuthentication(editingIDP.id)
+        deleteCustomAuthenticator(editingIDP.id)
             .then(() => {
                 dispatch(
                     addAlert({
@@ -379,7 +379,8 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     const handleCustomAuthFormSubmit = (updatedDetails: ConnectionInterface): void => {
         setIsSubmitting(true);
 
-        updateCustomAuthentication(editingIDP.id, {
+        updateCustomAuthenticator(editingIDP.id, {
+            description: (editingIDP as CustomAuthConnectionInterface)?.description,
             displayName: (editingIDP as CustomAuthConnectionInterface)?.displayName,
             endpoint: {
                 authentication: {
@@ -387,6 +388,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                 },
                 uri: (editingIDP as CustomAuthConnectionInterface).endpoint?.uri
             },
+            image: (editingIDP as CustomAuthConnectionInterface)?.image,
             ...(updatedDetails as CustomAuthConnectionInterface)
         })
             .then(() => {

@@ -16,19 +16,19 @@
  * under the License.
  */
 
-import { SharedUserStoreConstants  } from "@wso2is/admin.core.v1/constants/user-store-constants";
 import { UserStoreDetails } from "@wso2is/admin.core.v1/models/user-store";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { getAUserStore, getUserStoreList } from "@wso2is/admin.userstores.v1/api/user-stores";
-import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
+import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants";
+import useUserStoresContext from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 import { AlertLevels, IdentifiableComponentInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { Code, Hint } from "@wso2is/react-components";
+import { Hint } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -66,6 +66,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { isUserStoreReadOnly } = useUserStoresContext();
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
@@ -77,6 +78,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
     const groupName: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
 
     useEffect(() => {
+        // To-do: Replace this with userstore provider logic.
         getUserStores();
     }, []);
 
@@ -106,7 +108,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
         if (userStore && !StringUtils.isEqualCaseInsensitive(userStore, primaryUserStoreDomainName)) {
             await SharedUserStoreUtils.getUserStoreRegEx(userStore,
-                SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
+                USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
                 .then((response: string) => {
                     setRegExLoading(true);
                     userStoreRegEx = response;
@@ -116,7 +118,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                 setRegExLoading(true);
                 if (response && response.properties) {
                     userStoreRegEx = response?.properties?.filter((property: UserStoreProperty) => {
-                        return property.name === "RolenameJavaScriptRegEx";
+                        return property.name === USERSTORE_REGEX_PROPERTIES.RolenameRegEx;
                     })[ 0 ].value;
                 }
             });
@@ -143,9 +145,12 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
         try {
             const response: UserStoreDetails = await getAUserStore(userStoreID);
 
-            return response?.properties?.some(({ name, value }: UserStoreProperty) =>
-                name === UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY && value === "false"
-            ) || false;
+            // Check whether the user store is disabled.
+            const isDisabled: boolean = response.properties.find(
+                (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
+
+            // If the user store not read only and not disabled, return true.
+            return !isUserStoreReadOnly(response?.name) && !isDisabled;
         } catch (error) {
             dispatch(addAlert({
                 description: t("userstores:notifications.fetchUserstores.genericError." +
@@ -263,16 +268,23 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                 "roleBasicDetails.roleName.validations.empty", { type: "Group" }) }
                             validation={ async (value: string, validation: Validation) => {
                                 let isGroupNameValid: boolean = true;
+                                let userstoreRegex: string = "";
 
                                 await validateGroupNamePattern().then((regex: string) => {
+                                    userstoreRegex = regex;
                                     isGroupNameValid = SharedUserStoreUtils.validateInputAgainstRegEx(value, regex);
                                 });
 
                                 if (!isGroupNameValid) {
                                     validation.isValid = false;
-                                    validation.errorMessages.push(t("console:manage.features.businessGroups" +
-                                        ".fields.groupName.validations.invalid",
-                                    { type: "group" }));
+                                    if (userstoreRegex === groupConfig.defaultUserstoreRegex) {
+                                        // If the userstore regex is the default regex, show the default error message.
+                                        validation.errorMessages.push(t(groupConfig?.groupPrimaryUserstoreRegexHint));
+                                    } else {
+                                        // If the userstore regex is a custom regex, show the custom regex.
+                                        validation.errorMessages.push(t("groups:groupCreateWizard" +
+                                            ".groupNameRegexCustomHint", { regex: userstoreRegex }));;
+                                    }
                                 }
 
                                 const searchData: SearchGroupInterface = {
@@ -306,10 +318,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                             loading={ isRegExLoading }
                         />
                         <Hint>
-                            A name for the group.
-                            { " " }
-                            Can contain between 3 to 30 alphanumeric characters, dashes (<Code>-</Code>),{ " " }
-                            and underscores (<Code>_</Code>).
+                            { t(groupConfig?.groupPrimaryUserstoreRegexHint) }
                         </Hint>
                     </GridColumn>
                 </GridRow>

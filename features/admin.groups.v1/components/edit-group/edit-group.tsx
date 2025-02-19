@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,8 @@
 
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -52,10 +54,6 @@ interface EditGroupProps {
      * Handle group update callback.
      */
     onGroupUpdate: () => void;
-    /**
-     * List of readOnly user stores.
-     */
-    readOnlyUserStores?: string[];
 }
 
 /**
@@ -69,12 +67,13 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
         groupId,
         group,
         isLoading,
-        onGroupUpdate,
-        readOnlyUserStores
+        onGroupUpdate
     } = props;
 
     const { t } = useTranslation();
     const { activeTab, updateActiveTab } = useGroupManagement();
+
+    const { readOnlyUserStoreNamesList: readOnlyUserStores } = useUserStores();
 
     const groupsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.groups);
@@ -84,11 +83,14 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
 
     useEffect(() => {
-        if(!group) {
+        if (!group) {
             return;
         }
 
-        const userStore: string[] = group?.displayName.split("/");
+        const groupNameParts: string[] = group.displayName.split("/");
+        const userStore: string = groupNameParts.length > 1
+            ? groupNameParts[0]
+            : userstoresConfig?.primaryUserstoreName;
 
         if (!isFeatureEnabled(groupsFeatureConfig, GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
             || readOnlyUserStores?.includes(userStore?.toString())

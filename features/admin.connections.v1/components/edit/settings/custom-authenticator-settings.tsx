@@ -33,10 +33,9 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { getLocalAuthenticator } from "../../../api/authenticators";
 import {
     getFederatedAuthenticatorDetails,
-    updateCustomAuthentication,
+    updateCustomAuthenticator,
     updateFederatedAuthenticator
 } from "../../../api/connections";
 import {
@@ -95,60 +94,30 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
     const [ endpointAuthenticationType, setEndpointAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isEndpointAuthenticationUpdated, setIsEndpointAuthenticationUpdated ] = useState<boolean>(false);
 
+    useEffect(() => {
+        if (isCustomLocalAuthenticator) {
+            setInitialValues({
+                authenticationType: (connector as CustomAuthConnectionInterface)?.endpoint?.authentication?.type,
+                endpointUri: (connector as CustomAuthConnectionInterface)?.endpoint?.uri
+            });
+        } else {
+            const customAuthenticatorId: string = connector?.federatedAuthenticators?.
+                authenticators[0]?.authenticatorId;
+
+            getCustomFederatedAuthenticatorInitialValues(customAuthenticatorId);
+        }
+    }, []);
+
     /**
-     * This useEffect is utilized only for custom authenticators in order to fetch additional
-     * details related to authenticators.
+     * This function is utilized only for custom federated authenticators since endpoint details are not
+     * returned from the get IDP API. Therefore, the specific federated authenticator GET API is triggered.
+     *
      * This is not required for other connections since all the required details
      * are passed from the parent component.
+     *
+     * @param customFederatedAuthenticatorId - Custom federated authenticator id.
      */
-    useEffect(() => {
-        let customAuthenticatorId: string;
-
-        if (isCustomLocalAuthenticator) {
-            customAuthenticatorId = (connector as CustomAuthConnectionInterface)?.id;
-            getCustomLocalAuthenticator(customAuthenticatorId);
-        } else {
-            customAuthenticatorId = connector?.federatedAuthenticators?.authenticators[0]?.authenticatorId;
-            getCustomFederatedAuthenticator(customAuthenticatorId);
-        }
-    }, [ isCustomLocalAuthenticator ]);
-
-    const resolveDisplayName = (): string => {
-        if (isCustomLocalAuthenticator) {
-            return (connector as CustomAuthConnectionInterface)?.displayName;
-        } else {
-            return (connector as ConnectionInterface)?.name;
-        }
-    };
-
-    /**
-    * This function is used to get the custom local authenticator details which includes endpoint
-    * configurations that need to be accessed from the "Settings" tab.
-    *
-    * @param customLocalAuthenticatorId - Custom local authenticator id.
-    */
-    const getCustomLocalAuthenticator = (customLocalAuthenticatorId: string) => {
-        getLocalAuthenticator(customLocalAuthenticatorId)
-            .then((data: CustomAuthConnectionInterface) => {
-                const endpointAuth: EndpointConfigFormPropertyInterface = {
-                    authenticationType: data?.endpoint?.authentication?.type,
-                    endpointUri: data?.endpoint?.uri
-                };
-
-                setInitialValues(endpointAuth);
-            })
-            .catch((error: AxiosError) => {
-                handleGetCustomAuthenticatorError(error);
-            });
-    };
-
-    /**
-    * This function is used to get the custom federated authenticator details which includes endpoint
-    * configurations that need to be accessed from the "Settings" tab.
-    *
-    * @param customFederatedAuthenticatorId - Custom federated authenticator id.
-    */
-    const getCustomFederatedAuthenticator = (customFederatedAuthenticatorId: string) => {
+    const getCustomFederatedAuthenticatorInitialValues = (customFederatedAuthenticatorId: string) => {
         getFederatedAuthenticatorDetails(connector?.id, customFederatedAuthenticatorId)
             .then((data: FederatedAuthenticatorListItemInterface) => {
                 const endpointAuth: EndpointConfigFormPropertyInterface = {
@@ -161,6 +130,14 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
             .catch((error: AxiosError) => {
                 handleGetCustomAuthenticatorError(error);
             });
+    };
+
+    const resolveDisplayName = (): string => {
+        if (isCustomLocalAuthenticator) {
+            return (connector as CustomAuthConnectionInterface)?.displayName;
+        } else {
+            return (connector as ConnectionInterface)?.name;
+        }
     };
 
     const validateForm = (values: EndpointConfigFormPropertyInterface):
@@ -183,6 +160,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
         authProperties: Partial<AuthenticationPropertiesInterface>
     ) => {
         const updatingValues: EndpointAuthenticationUpdateInterface = {
+            description: connector.description,
             displayName: resolveDisplayName(),
             endpoint: {
                 authentication: {
@@ -191,11 +169,12 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                 },
                 uri: values?.endpointUri
             },
+            image: connector.image,
             isEnabled: connector.isEnabled,
             isPrimary: connector.isPrimary
         };
 
-        updateCustomAuthentication(connector.id, updatingValues as CustomAuthConnectionInterface)
+        updateCustomAuthenticator(connector.id, updatingValues as CustomAuthConnectionInterface)
             .then(() => {
                 dispatch(
                     addAlert({
@@ -208,9 +187,6 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
             })
             .catch((error: AxiosError) => {
                 handleConnectionUpdateError(error);
-            })
-            .finally(() => {
-                getCustomLocalAuthenticator(connector.id);
             });
     };
 
@@ -245,19 +221,16 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                 dispatch(
                     addAlert({
                         description: t(
-                            "customAuthentication:notifications.updateCustomAuthenticator.success.description"
+                            "customAuthenticator:notifications.updateCustomAuthenticator.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
-                        message: t("customAuthentication:notifications.updateCustomAuthenticator.success.message")
+                        message: t("customAuthenticator:notifications.updateCustomAuthenticator.success.message")
                     })
                 );
                 onUpdate(connector.id);
             })
             .catch((error: AxiosError) => {
                 handleCustomAuthenticatorUpdateError(error);
-            })
-            .finally(() => {
-                getCustomFederatedAuthenticator(federatedAuthenticatorId);
             });
     };
 
@@ -297,7 +270,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
     };
 
     return (
-        <div className="custom-authentication-settings-tab">
+        <div className="custom-authenticator-settings-tab">
             <FinalForm
                 onSubmit={ handleSubmit }
                 initialValues={ initialValues }

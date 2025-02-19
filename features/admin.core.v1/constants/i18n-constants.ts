@@ -298,8 +298,8 @@ export class I18nConstants {
     /**
      * Custom Authentication namespace.
      */
-    public static readonly CUSTOM_AUTHENTICATION_NAMESPACE: string =
-        I18nModuleConstants.CUSTOM_AUTHENTICATION_NAMESPACE;
+    public static readonly CUSTOM_AUTHENTICATOR_NAMESPACE: string =
+        I18nModuleConstants.CUSTOM_AUTHENTICATOR_NAMESPACE;
 
     /**
      * Locations of the I18n namespaces.
@@ -353,7 +353,7 @@ export class I18nConstants {
         [ I18nConstants.IMPERSONATION_CONFIGURATION_NAMESPACE, "portals" ],
         [ I18nConstants.ACTIONS_NAMESPACE, "portals" ],
         [ I18nConstants.TENANTS_NAMESPACE, "portals" ],
-        [ I18nConstants.CUSTOM_AUTHENTICATION_NAMESPACE, "portals" ],
+        [ I18nConstants.CUSTOM_AUTHENTICATOR_NAMESPACE, "portals" ],
         [ I18nConstants.POLICY_ADMINISTRATION_NAMESPACE, "portals" ],
         [ I18nConstants.REMOTE_USER_STORES_NAMESPACE, "portals" ],
         [ I18nConstants.RULES_NAMESPACE, "portals" ],
