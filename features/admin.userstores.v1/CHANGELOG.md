@@ -1,5 +1,53 @@
 # @wso2is/admin.userstores.v1
 
+## 2.27.3
+
+### Patch Changes
+
+- Updated dependencies [[`7307019fcddc8f82f59cf236a2ac4d698ae3d992`](https://github.com/wso2/identity-apps/commit/7307019fcddc8f82f59cf236a2ac4d698ae3d992)]:
+  - @wso2is/admin.extensions.v1@2.36.102
+  - @wso2is/admin.core.v1@2.39.3
+  - @wso2is/admin.remote-userstores.v1@1.7.133
+
+## 2.27.2
+
+### Patch Changes
+
+- Updated dependencies [[`6bb877f16b0274c87924bf33316e865310ab98f9`](https://github.com/wso2/identity-apps/commit/6bb877f16b0274c87924bf33316e865310ab98f9)]:
+  - @wso2is/i18n@2.19.19
+  - @wso2is/admin.core.v1@2.39.2
+  - @wso2is/admin.extensions.v1@2.36.101
+  - @wso2is/admin.remote-userstores.v1@1.7.132
+
+## 2.27.1
+
+### Patch Changes
+
+- [#7667](https://github.com/wso2/identity-apps/pull/7667) [`43ec90ed4870404cc792ff5200c688e9950ec374`](https://github.com/wso2/identity-apps/commit/43ec90ed4870404cc792ff5200c688e9950ec374) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in user stores provider when access is limited
+
+* [#7671](https://github.com/wso2/identity-apps/pull/7671) [`08a178715b4ed016cfcb7ce04cad67ec68d392a4`](https://github.com/wso2/identity-apps/commit/08a178715b4ed016cfcb7ce04cad67ec68d392a4) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Check disabled state in bulk import wizard
+
+- [#7668](https://github.com/wso2/identity-apps/pull/7668) [`50f5cf243b0d0ece263bb4ab5b1ce386ac45c5c5`](https://github.com/wso2/identity-apps/commit/50f5cf243b0d0ece263bb4ab5b1ce386ac45c5c5) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Update readonly user store checking logic in bulk user import wizard
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.1
+  - @wso2is/admin.extensions.v1@2.36.100
+  - @wso2is/admin.remote-userstores.v1@1.7.131
+
+## 2.27.0
+
+### Minor Changes
+
+- [#7656](https://github.com/wso2/identity-apps/pull/7656) [`b467e279a1973e67aaadf0586cb72a4dc1391c5f`](https://github.com/wso2/identity-apps/commit/b467e279a1973e67aaadf0586cb72a4dc1391c5f) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce user stores context provider
+
+### Patch Changes
+
+- Updated dependencies [[`47c768b2179f9768ebf9c858463e831ca4f079b3`](https://github.com/wso2/identity-apps/commit/47c768b2179f9768ebf9c858463e831ca4f079b3), [`e4657499f151f319f1dec5f2fe8166e590dde979`](https://github.com/wso2/identity-apps/commit/e4657499f151f319f1dec5f2fe8166e590dde979)]:
+  - @wso2is/i18n@2.19.18
+  - @wso2is/admin.core.v1@2.39.0
+  - @wso2is/admin.extensions.v1@2.36.99
+  - @wso2is/admin.remote-userstores.v1@1.7.130
+
 ## 2.26.132
 
 ### Patch Changes

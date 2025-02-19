@@ -1,5 +1,27 @@
 # @wso2is/identity-apps-core
 
+## 2.13.8
+
+### Patch Changes
+
+- [#7659](https://github.com/wso2/identity-apps/pull/7659) [`6ce252e6e135734cd4f5ed74918048ea6523f29f`](https://github.com/wso2/identity-apps/commit/6ce252e6e135734cd4f5ed74918048ea6523f29f) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Encode type parameter
+
+* [#7679](https://github.com/wso2/identity-apps/pull/7679) [`66e83462043aa3a7796c3a44ea41ad52362e74bb`](https://github.com/wso2/identity-apps/commit/66e83462043aa3a7796c3a44ea41ad52362e74bb) Thanks [@KD23243](https://github.com/KD23243)! - Add JSP directive for UTF-8 encoding
+
+- [#7661](https://github.com/wso2/identity-apps/pull/7661) [`c076fd45b3195bfe82845bf9fc2b3ce7823db8fa`](https://github.com/wso2/identity-apps/commit/c076fd45b3195bfe82845bf9fc2b3ce7823db8fa) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Encode username
+
+## 2.13.7
+
+### Patch Changes
+
+- [#7660](https://github.com/wso2/identity-apps/pull/7660) [`1ebe4f1e07a2fc3e1dfefc6a1b19fc009783e33e`](https://github.com/wso2/identity-apps/commit/1ebe4f1e07a2fc3e1dfefc6a1b19fc009783e33e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the UI rendering of consent purposes in the JIT and self-registration flows
+
+* [#7658](https://github.com/wso2/identity-apps/pull/7658) [`8a155aec1c8a4fa63d8edd0c2475004a560c7c04`](https://github.com/wso2/identity-apps/commit/8a155aec1c8a4fa63d8edd0c2475004a560c7c04) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Rename login flows
+
+- [#7620](https://github.com/wso2/identity-apps/pull/7620) [`3cfd3de4c42c91c3b304230feaf49e205db5a492`](https://github.com/wso2/identity-apps/commit/3cfd3de4c42c91c3b304230feaf49e205db5a492) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - encode sp parameter
+
+* [#7646](https://github.com/wso2/identity-apps/pull/7646) [`d4db8916d1b755c6eb36f27de2f94b7727356fa1`](https://github.com/wso2/identity-apps/commit/d4db8916d1b755c6eb36f27de2f94b7727356fa1) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Encode spId of application
+
 ## 2.13.6
 
 ### Patch Changes

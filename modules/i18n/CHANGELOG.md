@@ -1,5 +1,17 @@
 # @wso2is/i18n
 
+## 2.19.19
+
+### Patch Changes
+
+- [#7664](https://github.com/wso2/identity-apps/pull/7664) [`6bb877f16b0274c87924bf33316e865310ab98f9`](https://github.com/wso2/identity-apps/commit/6bb877f16b0274c87924bf33316e865310ab98f9) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Improve UX of custom authenticator identifier text field
+
+## 2.19.18
+
+### Patch Changes
+
+- [#7648](https://github.com/wso2/identity-apps/pull/7648) [`47c768b2179f9768ebf9c858463e831ca4f079b3`](https://github.com/wso2/identity-apps/commit/47c768b2179f9768ebf9c858463e831ca4f079b3) Thanks [@inthirakumaaran](https://github.com/inthirakumaaran)! - Remove root admin validation
+
 ## 2.19.17
 
 ### Patch Changes

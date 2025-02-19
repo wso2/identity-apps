@@ -66,7 +66,7 @@
     String ERROR_CODE = "errorCode";
     String PASSWORD_RESET_PAGE = "password-reset.jsp";
     String AUTO_LOGIN_COOKIE_NAME = "ALOR";
-    String AUTO_LOGIN_FLOW_TYPE = "RECOVERY";
+    String AUTO_LOGIN_FLOW_TYPE = "ACCOUNT_RECOVERY";
     String AUTO_LOGIN_COOKIE_DOMAIN = "AutoLoginCookieDomain";
     String USERSTORE_DOMAIN = "userstoredomain";
     String RECOVERY_TYPE_INVITE = "invite";
@@ -89,7 +89,7 @@
         sp = (String)request.getAttribute("sp");
     }
     String userStoreDomain = request.getParameter(USERSTORE_DOMAIN);
-    String type = request.getParameter("type");
+    String type = Encode.forJava(request.getParameter("type"));
     String orgId = request.getParameter("orgid");
     String username = null;
     String tenantAwareUsername = null;

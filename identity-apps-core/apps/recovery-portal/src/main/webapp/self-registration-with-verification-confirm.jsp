@@ -54,7 +54,7 @@
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
     String AUTO_LOGIN_COOKIE_NAME = "ALOR";
     String AUTO_LOGIN_COOKIE_DOMAIN = "AutoLoginCookieDomain";
-    String AUTO_LOGIN_FLOW_TYPE = "SIGNUP";
+    String AUTO_LOGIN_FLOW_TYPE = "SELF_SIGNUP";
     String username = null;
     String applicationAccessUrl = "";
 
