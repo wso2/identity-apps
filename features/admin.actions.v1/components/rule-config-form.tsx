@@ -24,7 +24,7 @@ import Rules from "@wso2is/admin.rules.v1/components/rules";
 import useRulesContext from "@wso2is/admin.rules.v1/hooks/use-rules-context";
 import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Heading } from "@wso2is/react-components";
+import { Code, Heading } from "@wso2is/react-components";
 import isEqual from "lodash-es/isEqual";
 import React, { Dispatch, FunctionComponent, ReactElement, useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -32,6 +32,7 @@ import { Trans, useTranslation } from "react-i18next";
 interface RuleConfigFormInterface extends IdentifiableComponentInterface {
     readonly: boolean;
     rule: RuleWithoutIdInterface;
+    actionTypeOfRule: string;
     isHasRule : boolean;
     setIsHasRule: (value: boolean) => void;
     setRule: Dispatch<React.SetStateAction<RuleWithoutIdInterface>>;
@@ -40,6 +41,7 @@ interface RuleConfigFormInterface extends IdentifiableComponentInterface {
 const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
     readonly,
     rule,
+    actionTypeOfRule: ruleActionType,
     isHasRule,
     setIsHasRule,
     setRule,
@@ -70,7 +72,7 @@ const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
         <>
             <Divider className="divider-container" />
             <Heading className="heading-container" as="h5">
-                <Trans i18nKey={ t("actions:fields.rules.label") }>
+                <Trans i18nKey={ "actions:fields.rules.label" }>
                     Execution Rule
                 </Trans>
             </Heading>
@@ -82,15 +84,20 @@ const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
                         className="alert-title"
                         data-componentid={ `${ _componentId }-rule-info-box-title` }
                     >
-                        <Trans i18nKey={ t("actions:fields.rules.info.title") }>
+                        <Trans i18nKey={ "actions:fields.rules.info.title" }>
                             No execution rule is configured.
                         </Trans>
                     </AlertTitle>
                     <Trans
-                        i18nKey={ t("actions:fields.authentication.info.message") }
-                    >
-                        This action will be executed without any conditions.
-                    </Trans>
+                        i18nKey={ "actions:fields.rules.info.message." + ruleActionType }
+                        defaults="This action will be executed without any conditions."
+                        components={ [
+                            <Code key="code1">authorization_code</Code>,
+                            <Code key="code1">client_credentials</Code>,
+                            <Code key="code1">password</Code>,
+                            <Code key="code1">refresh_token</Code>
+                        ] }
+                    />
                     { !readonly && (
                         <div>
                             <Button

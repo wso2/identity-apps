@@ -350,6 +350,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                     <RuleConfigForm
                         readonly={ getFieldDisabledStatus() }
                         rule={ rule }
+                        actionTypeOfRule={ actionTypeApiPath }
                         setRule={ setRule }
                         isHasRule={ isHasRule }
                         setIsHasRule={ setIsHasRule }
