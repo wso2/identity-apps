@@ -278,8 +278,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     if (isBulkImportSupportedUserStore(item)) {
                         userStoreArray.push({
                             key: index,
-                            text: item.name.toUpperCase(),
-                            value: item.name.toUpperCase()
+                            text: item.name,
+                            value: item.name
                         });
                     }});
 
