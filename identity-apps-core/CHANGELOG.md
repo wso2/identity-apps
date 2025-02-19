@@ -1,5 +1,58 @@
 # @wso2is/identity-apps-core
 
+## 2.13.8
+
+### Patch Changes
+
+- [#7659](https://github.com/wso2/identity-apps/pull/7659) [`6ce252e6e135734cd4f5ed74918048ea6523f29f`](https://github.com/wso2/identity-apps/commit/6ce252e6e135734cd4f5ed74918048ea6523f29f) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Encode type parameter
+
+* [#7679](https://github.com/wso2/identity-apps/pull/7679) [`66e83462043aa3a7796c3a44ea41ad52362e74bb`](https://github.com/wso2/identity-apps/commit/66e83462043aa3a7796c3a44ea41ad52362e74bb) Thanks [@KD23243](https://github.com/KD23243)! - Add JSP directive for UTF-8 encoding
+
+- [#7661](https://github.com/wso2/identity-apps/pull/7661) [`c076fd45b3195bfe82845bf9fc2b3ce7823db8fa`](https://github.com/wso2/identity-apps/commit/c076fd45b3195bfe82845bf9fc2b3ce7823db8fa) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Encode username
+
+## 2.13.7
+
+### Patch Changes
+
+- [#7660](https://github.com/wso2/identity-apps/pull/7660) [`1ebe4f1e07a2fc3e1dfefc6a1b19fc009783e33e`](https://github.com/wso2/identity-apps/commit/1ebe4f1e07a2fc3e1dfefc6a1b19fc009783e33e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the UI rendering of consent purposes in the JIT and self-registration flows
+
+* [#7658](https://github.com/wso2/identity-apps/pull/7658) [`8a155aec1c8a4fa63d8edd0c2475004a560c7c04`](https://github.com/wso2/identity-apps/commit/8a155aec1c8a4fa63d8edd0c2475004a560c7c04) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Rename login flows
+
+- [#7620](https://github.com/wso2/identity-apps/pull/7620) [`3cfd3de4c42c91c3b304230feaf49e205db5a492`](https://github.com/wso2/identity-apps/commit/3cfd3de4c42c91c3b304230feaf49e205db5a492) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - encode sp parameter
+
+* [#7646](https://github.com/wso2/identity-apps/pull/7646) [`d4db8916d1b755c6eb36f27de2f94b7727356fa1`](https://github.com/wso2/identity-apps/commit/d4db8916d1b755c6eb36f27de2f94b7727356fa1) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Encode spId of application
+
+## 2.13.6
+
+### Patch Changes
+
+- Updated dependencies [[`6c74317ac2e2ce9dcc9dc924eb9be20dd976fd92`](https://github.com/wso2/identity-apps/commit/6c74317ac2e2ce9dcc9dc924eb9be20dd976fd92)]:
+  - @wso2is/theme@2.6.10
+
+## 2.13.5
+
+### Patch Changes
+
+- [#7628](https://github.com/wso2/identity-apps/pull/7628) [`04f935ab2fc28a62cea947db238885eb1da41946`](https://github.com/wso2/identity-apps/commit/04f935ab2fc28a62cea947db238885eb1da41946) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - reverting i18n improvement for backend errors
+
+## 2.13.4
+
+### Patch Changes
+
+- [#7617](https://github.com/wso2/identity-apps/pull/7617) [`bce49e5eb022a5471f980c509f525c8d499ad6d0`](https://github.com/wso2/identity-apps/commit/bce49e5eb022a5471f980c509f525c8d499ad6d0) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add data test id
+
+## 2.13.3
+
+### Patch Changes
+
+- [#7596](https://github.com/wso2/identity-apps/pull/7596) [`5b00a4c46473d845dc40583fda4a9d3c0b31e736`](https://github.com/wso2/identity-apps/commit/5b00a4c46473d845dc40583fda4a9d3c0b31e736) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix self registration with SelfRegistration.ShowUsernameUnavailability config
+
+## 2.13.2
+
+### Patch Changes
+
+- [#7590](https://github.com/wso2/identity-apps/pull/7590) [`4ef5f4c53dcf40d16ba67c01b89a7a3e41fcefad`](https://github.com/wso2/identity-apps/commit/4ef5f4c53dcf40d16ba67c01b89a7a3e41fcefad) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Improve i18n experience for backend errors
+
 ## 2.13.1
 
 ### Patch Changes

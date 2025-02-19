@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,7 @@ import { updateGroupDetails, useGroupList } from "@wso2is/admin.groups.v1/api/gr
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getAUserStore, useUserStores } from "@wso2is/admin.userstores.v1/api";
-import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
+import useUserStoresContext from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
@@ -124,6 +124,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const dispatch: Dispatch = useDispatch();
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
     const { isSubOrganization } = useGetCurrentOrganizationType();
+    const { isUserStoreReadOnly } = useUserStoresContext();
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitGroupList, setSubmitGroupList ] = useTrigger();
@@ -178,6 +179,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     );
 
     // Hook to get the user store list.
+    // To-do: Replace this with userstore provider logic.
     const {
         data: originalUserStoreList,
         isLoading: isUserStoreListFetchRequestLoading,
@@ -208,10 +210,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         const isDisabled: boolean = response.properties.find(
                             (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
 
-                        const isReadOnly: boolean = response.properties.find(
-                            (property: UserStoreProperty) =>
-                                property.name === UserStoreManagementConstants.
-                                    USER_STORE_PROPERTY_READ_ONLY)?.value === "true";
+                        const isReadOnly: boolean = isUserStoreReadOnly(store.name);
 
                         if (!isDisabled && !isReadOnly) {
                             const storeOption: DropdownItemProps = {
@@ -714,21 +713,21 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             "users:notifications.addUser.success.message"
                         )
                     }));
+                }
 
-                    if (userInfo?.groups) {
-                        assignUserGroups(response.data, userInfo?.groups);
-                    }
+                if (userInfo?.groups) {
+                    assignUserGroups(response.data, userInfo?.groups);
+                }
 
-                    // Saving the user ID to redirect user after the summary
-                    setNewUserId(response.data?.id);
-                    // Close the wizard as the summary will not be shown
-                    if(!isUserSummaryEnabled) {
-                        closeWizard();
-                        onSuccessfulUserAddition(response.data?.id);
-                    } else {
-                        // Once the user is created, take the user to next step which is the summary.
-                        setCurrentWizardStep(currentWizardStep + 1);
-                    }
+                // Saving the user ID to redirect user after the summary
+                setNewUserId(response.data?.id);
+                // Close the wizard as the summary will not be shown
+                if(!isUserSummaryEnabled) {
+                    closeWizard();
+                    onSuccessfulUserAddition(response.data?.id);
+                } else {
+                    // Once the user is created, take the user to next step which is the summary.
+                    setCurrentWizardStep(currentWizardStep + 1);
                 }
             })
             .catch((error: AxiosError) => {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -48,7 +48,9 @@ export class UserStoreManagementConstants {
 
     // Name of the readonly DEFAULT userstore property.
     public static readonly USER_STORE_PROPERTY_READ_ONLY: string = "ReadOnly";
+    public static readonly USER_STORE_PROPERTY_DISABLED: string = "Disabled";
     public static readonly USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED: string = "BulkImportSupported";
+    public static readonly USER_STORE_PROPERTY_IS_BULK_IMPORT_SUPPORTED: string = "IsBulkImportSupported";
 
     /**
      * Set of keys used to enable/disable features.
@@ -56,6 +58,11 @@ export class UserStoreManagementConstants {
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("USER_STORE_REMOTE", "userStores.type.remote")
         .set("USER_STORE_PRIMARY", "PRIMARY");
+
+    /**
+     * Mutation wait time.
+     */
+    public static readonly USER_STORE_MUTATION_WAIT_TIME: number = 5000;
 }
 
 /**
@@ -235,3 +242,10 @@ export enum RemoteUserStoreManagerType {
     RemoteUserStoreManager = "RemoteUserStoreManager",
     AsgardeoBusinessUserStoreManager = "AsgardeoBusinessUserStoreManager"
 }
+
+/**
+ * On-prem read only user store types.
+ */
+export const ON_PREM_READ_ONLY_USER_STORE_TYPE_NAMES: string[] = [
+    "UniqueIDReadOnlyLDAPUserStoreManager"
+];

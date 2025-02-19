@@ -1,5 +1,58 @@
 # @wso2is/i18n
 
+## 2.19.19
+
+### Patch Changes
+
+- [#7664](https://github.com/wso2/identity-apps/pull/7664) [`6bb877f16b0274c87924bf33316e865310ab98f9`](https://github.com/wso2/identity-apps/commit/6bb877f16b0274c87924bf33316e865310ab98f9) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Improve UX of custom authenticator identifier text field
+
+## 2.19.18
+
+### Patch Changes
+
+- [#7648](https://github.com/wso2/identity-apps/pull/7648) [`47c768b2179f9768ebf9c858463e831ca4f079b3`](https://github.com/wso2/identity-apps/commit/47c768b2179f9768ebf9c858463e831ca4f079b3) Thanks [@inthirakumaaran](https://github.com/inthirakumaaran)! - Remove root admin validation
+
+## 2.19.17
+
+### Patch Changes
+
+- [#7644](https://github.com/wso2/identity-apps/pull/7644) [`3e098ee7cace95919ee2ed56c4cd4bfbaea6873d`](https://github.com/wso2/identity-apps/commit/3e098ee7cace95919ee2ed56c4cd4bfbaea6873d) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix state update issue in the distinct attribute profile UI
+
+## 2.19.16
+
+### Patch Changes
+
+- [#7616](https://github.com/wso2/identity-apps/pull/7616) [`588d8475fc682f241b92a3ee7a8759fa7f2ce840`](https://github.com/wso2/identity-apps/commit/588d8475fc682f241b92a3ee7a8759fa7f2ce840) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix UI issues with readonly user stores' user view
+
+## 2.19.15
+
+### Patch Changes
+
+- [#7624](https://github.com/wso2/identity-apps/pull/7624) [`484542389020cc30563621fcb420fd814214b121`](https://github.com/wso2/identity-apps/commit/484542389020cc30563621fcb420fd814214b121) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Rename all string occurrences from "authentication" to "authenticator" for consistency
+
+* [#7621](https://github.com/wso2/identity-apps/pull/7621) [`84aeb0b9b3edd7c4d1db93631b4c73db50426525`](https://github.com/wso2/identity-apps/commit/84aeb0b9b3edd7c4d1db93631b4c73db50426525) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Add New Login Flow Authenticator Categories related to Custom Authenticators
+
+* Updated dependencies [[`ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578`](https://github.com/wso2/identity-apps/commit/ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578)]:
+  - @wso2is/core@2.6.4
+
+## 2.19.14
+
+### Patch Changes
+
+- [#7555](https://github.com/wso2/identity-apps/pull/7555) [`28ce00c62618b523387d3b81812903b4028db804`](https://github.com/wso2/identity-apps/commit/28ce00c62618b523387d3b81812903b4028db804) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add mobile number verification on update expiry time
+
+## 2.19.13
+
+### Patch Changes
+
+- [#7610](https://github.com/wso2/identity-apps/pull/7610) [`5df48682c36c54efb1142b9e4a254b5cd94e44a6`](https://github.com/wso2/identity-apps/commit/5df48682c36c54efb1142b9e4a254b5cd94e44a6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix header disappearing issue for non-super tenants in group creation wizard
+
+## 2.19.12
+
+### Patch Changes
+
+- [#7595](https://github.com/wso2/identity-apps/pull/7595) [`f87912f707015c530d64ec344f20433f6e0fa485`](https://github.com/wso2/identity-apps/commit/f87912f707015c530d64ec344f20433f6e0fa485) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix client error showing issue in admin update user password wizard
+
 ## 2.19.11
 
 ### Patch Changes

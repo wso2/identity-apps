@@ -19,26 +19,18 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getLocalAuthenticator } from "../../../api/authenticators";
-import { getFederatedAuthenticatorDetails } from "../../../api/connections";
 import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
-import { AuthenticatorMeta } from "../../../meta/authenticator-meta";
 import {
     ConnectionInterface,
     ConnectionListResponseInterface,
     CustomAuthConnectionInterface,
     CustomAuthGeneralDetailsFormValuesInterface,
-    CustomAuthenticationCreateWizardGeneralFormValuesInterface,
-    ExternalEndpoint,
-    FederatedAuthenticatorListItemInterface
+    CustomAuthenticatorCreateWizardGeneralFormValuesInterface
 } from "../../../models/connection";
 import {
-    ConnectionsManagementUtils,
-    handleGetCustomAuthenticatorError,
     resolveCustomAuthenticatorDisplayName
 } from "../../../utils/connection-utils";
 
@@ -116,7 +108,6 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
     const { t } = useTranslation();
 
     const [ isCustomLocalAuth, setIsCustomLocalAuth ] = useState<boolean>(undefined);
-    const [ authenticatorEndpoint, setAuthenticatorEndpoint ] = useState<ExternalEndpoint>(null);
 
     const { CONNECTION_TEMPLATE_IDS: ConnectionTemplateIds } = CommonAuthenticatorConstants;
 
@@ -125,41 +116,12 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
             return;
         }
 
-        if (templateType == ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATION ||
-            templateType == ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATION) {
+        if (templateType == ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATOR ||
+            templateType == ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATOR) {
 
             setIsCustomLocalAuth(true);
         }
     }, [ templateType ]);
-
-    useEffect(() => {
-        if (isCustomLocalAuth === undefined) {
-            return;
-        }
-
-        let localAuthenticatorId: string;
-
-        if (isCustomLocalAuth) {
-
-            localAuthenticatorId = (editingIDP as CustomAuthConnectionInterface)?.id;
-            getLocalAuthenticator(localAuthenticatorId)
-                .then((data: CustomAuthConnectionInterface) => {
-                    setAuthenticatorEndpoint(data?.endpoint);
-                })
-                .catch((error: AxiosError) => {
-                    handleGetCustomAuthenticatorError(error);
-                });
-        } else {
-            localAuthenticatorId = editingIDP?.federatedAuthenticators?.authenticators[0].authenticatorId;
-            getFederatedAuthenticatorDetails(editingIDP.id, localAuthenticatorId)
-                .then((data: FederatedAuthenticatorListItemInterface) => {
-                    setAuthenticatorEndpoint(data?.endpoint);
-                })
-                .catch((error: AxiosError) => {
-                    handleGetCustomAuthenticatorError(error);
-                });
-        }
-    }, [ isCustomLocalAuth ]);
 
     /**
      * Prepare form values for submitting.
@@ -173,7 +135,7 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
             onSubmit({
                 description: values.description?.toString(),
                 displayName: values.displayName?.toString(),
-                endpoint: authenticatorEndpoint,
+                endpoint: (editingIDP as CustomAuthConnectionInterface)?.endpoint,
                 image: values.image?.toString(),
                 isEnabled: values?.isEnabled
             });
@@ -210,45 +172,25 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
     };
 
     /**
-     * Resolve the authenticator image.
-     *
-     * Custom federated authenticator stores either external image URL or relative image URI in the database.
-     * But in custom local authenticator, the image URI is persisted only if an external image URL is not provided.
-     * Therefore, when it is a custom local authenticator image URL needs to be resolved  from the local file
-     * system if the image URI is not provided.
-     *
-     * @returns - Resolved image URL.
-     */
-    const resolveAuthenticatorImage = (): string => {
-        if (isCustomLocalAuth && !editingIDP?.image) {
-            return ConnectionsManagementUtils.resolveConnectionRelativePath(
-                AuthenticatorMeta.getCustomAuthenticatorIcon()
-            );
-        } else {
-            return editingIDP.image;
-        };
-    };
-
-    /**
      * This method validates the general settings fields.
      *
      * @param values - values to be validated.
      * @returns - errors object.
      */
     const validateGeneralSettingsField = (
-        values: CustomAuthenticationCreateWizardGeneralFormValuesInterface
-    ): Partial<CustomAuthenticationCreateWizardGeneralFormValuesInterface> => {
-        const errors: Partial<CustomAuthenticationCreateWizardGeneralFormValuesInterface> = {};
+        values: CustomAuthenticatorCreateWizardGeneralFormValuesInterface
+    ): Partial<CustomAuthenticatorCreateWizardGeneralFormValuesInterface> => {
+        const errors: Partial<CustomAuthenticatorCreateWizardGeneralFormValuesInterface> = {};
 
         if (!CommonAuthenticatorConstants.IDENTIFIER_REGEX.test(values?.identifier)) {
             errors.identifier = t(
-                "customAuthentication:fields.createWizard.generalSettingsStep.identifier.validations.invalid"
+                "customAuthenticator:fields.createWizard.generalSettingsStep.identifier.validations.invalid"
             );
         }
 
         if (!CommonAuthenticatorConstants.DISPLAY_NAME_REGEX.test(values?.displayName)) {
             errors.displayName = t(
-                "customAuthentication:fields.createWizard.generalSettingsStep.displayName.validations.invalid"
+                "customAuthenticator:fields.createWizard.generalSettingsStep.displayName.validations.invalid"
             );
         }
 
@@ -278,15 +220,15 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
                         ariaLabel="identifier"
                         inputType="text"
                         name="identifier"
-                        label={ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.label") }
+                        label={ t("customAuthenticator:fields.createWizard.generalSettingsStep.identifier.label") }
                         placeholder={ t(
-                            "customAuthentication:fields.createWizard.generalSettingsStep.identifier.placeholder"
+                            "customAuthenticator:fields.createWizard.generalSettingsStep.identifier.placeholder"
                         ) }
                         maxLength={ 100 }
                         minLength={ 3 }
                         data-componentid={ `${_componentId}-form-wizard-identifier` }
                         hint={ t(
-                            "customAuthentication:fields.createWizard.generalSettingsStep.helpPanel." +
+                            "customAuthenticator:fields.createWizard.generalSettingsStep.helpPanel." +
                                 "identifier.description"
                         ) }
                         readOnly={ true }
@@ -295,9 +237,9 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
                         ariaLabel="displayName"
                         inputType="text"
                         name="displayName"
-                        label={ t("customAuthentication:fields.createWizard.generalSettingsStep.displayName.label") }
+                        label={ t("customAuthenticator:fields.createWizard.generalSettingsStep.displayName.label") }
                         placeholder={ t(
-                            "customAuthentication:fields.createWizard.generalSettingsStep.displayName.placeholder"
+                            "customAuthenticator:fields.createWizard.generalSettingsStep.displayName.placeholder"
                         ) }
                         required={ true }
                         maxLength={ 100 }
@@ -311,11 +253,11 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
                         label={ "Icon URL" }
                         required={ false }
                         placeholder={ t("authenticationProvider:forms.generalDetails.image.placeholder") }
-                        value={ resolveAuthenticatorImage() }
+                        value={ editingIDP.image }
                         data-componentid={ `${_componentId}-idp-image` }
                         maxLength={ ConnectionUIConstants.GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MAX_LENGTH as number }
                         minLength={ ConnectionUIConstants.GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MIN_LENGTH as number }
-                        hint={ t("customAuthentication:fields.editPage.generalTab.iconUrl.hint") }
+                        hint={ t("customAuthenticator:fields.editPage.generalTab.iconUrl.hint") }
                         readOnly={ isReadOnly }
                     />
                     <Field.Textarea

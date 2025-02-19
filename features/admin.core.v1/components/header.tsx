@@ -30,6 +30,7 @@ import MenuItem from "@oxygen-ui/react/MenuItem";
 import Typography from "@oxygen-ui/react/Typography";
 import { DiamondIcon, DiscordIcon, StackOverflowIcon, TalkingHeadsetIcon } from "@oxygen-ui/react-icons";
 import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
+import { useMyAccountApplicationData } from "@wso2is/admin.applications.v1/api/application";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
@@ -124,6 +125,11 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const [ upgradeButtonURL, setUpgradeButtonURL ] = useState<string>(undefined);
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const {
+        data: myAccountApplicationData,
+        isLoading: isMyAccountAppDataLoading
+    } = useMyAccountApplicationData(null, showAppSwitchButton);
 
     useEffect(() => {
         if (saasFeatureStatus === FeatureStatus.DISABLED) {
@@ -303,8 +309,19 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         )
     ];
 
+    /**
+     * Check if the my account switch button should be shown.
+     * Will be shown if the user is logged into their resident org and
+     * my account application is available in that organization.
+     *
+     * @returns If the app switch button should be shown.
+     */
     const isShowAppSwitchButton = (): boolean => {
         if (!showAppSwitchButton) {
+            return false;
+        }
+
+        if (isMyAccountAppDataLoading || myAccountApplicationData?.applications?.length === 0) {
             return false;
         }
 

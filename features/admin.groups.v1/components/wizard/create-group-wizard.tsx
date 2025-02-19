@@ -588,10 +588,12 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
                         ? " - " + wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.groupName
                         :""
                 }
-                <Heading as="h6">Create new group and add users to the group.</Heading>
+                <Heading as="h6">
+                    { t("groups:groupCreateWizard.subHeading") }
+                </Heading>
             </Modal.Header>
             {
-                showStepper && !isRoleReadOnly && (
+                showStepper && !isRoleReadOnly && WIZARD_STEPS?.length > 1 && (
                     <Modal.Content className="steps-container">
                         <Steps.Group
                             current={ currentStep }
@@ -670,5 +672,5 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
 
 CreateGroupWizard.defaultProps = {
     initStep: 0,
-    showStepper: false
+    showStepper: true
 };

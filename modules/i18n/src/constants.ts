@@ -357,7 +357,7 @@ export class I18nModuleConstants {
     /**
      * Custom Authentication namespace.
      */
-    public static readonly CUSTOM_AUTHENTICATION_NAMESPACE: string = "customAuthentication";
+    public static readonly CUSTOM_AUTHENTICATOR_NAMESPACE: string = "customAuthenticator";
 
     /**
      * Rules namespace.

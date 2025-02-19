@@ -69,7 +69,6 @@ import {
     PasswordExpiryRule,
     PasswordExpiryRuleAttribute,
     PasswordExpiryRuleOperator,
-    ValidationDataInterface,
     ValidationFormInterface
 } from "../models";
 import "./password-validation-form.scss";
@@ -620,11 +619,6 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             processedFormValues.passwordExpiryTime = defaultPasswordExpiryTime;
         }
 
-        const updatePasswordPolicies: Promise<void> = serverConfigurationConfig.processPasswordPoliciesSubmitData(
-            processedFormValues,
-            !isPasswordInputValidationEnabled
-        );
-
         if (
             values.uniqueCharacterValidatorEnabled &&
             values.minUniqueCharacters === "0"
@@ -645,13 +639,21 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
 
         setSubmitting(true);
 
-        const promises: Promise<void | ValidationDataInterface[]>[] = [ updatePasswordPolicies ];
-
-        if (isPasswordInputValidationEnabled) {
-            promises.push(updateValidationConfigData(processedFormValues, null, validationData[0]));
-        }
-
-        Promise.all(promises)
+        // Temporary workaround to address intermittent backend cache invalidation issues.
+        serverConfigurationConfig
+            .processPasswordPoliciesSubmitData(
+                processedFormValues,
+                !isPasswordInputValidationEnabled
+            )
+            .then(() => {
+                if (isPasswordInputValidationEnabled) {
+                    return updateValidationConfigData(
+                        processedFormValues,
+                        null,
+                        validationData[0]
+                    );
+                }
+            })
             .then(() => {
                 mutatePasswordHistoryCount();
                 mutatePasswordExpiry();

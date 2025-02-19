@@ -324,7 +324,11 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                 <>
                     { breadcrumbList?.map(
                         (breadcrumb: BreadcrumbItem, index: number) => {
-                            if (index === 0 && !isSAASDeployment) {
+                            // Hide the super organization breadcrumb for SAAS deployment.
+                            if (
+                                index === 0 &&
+                                !(isSAASDeployment && OrganizationUtils.isSuperOrganization(breadcrumb))
+                            ) {
                                 return (
                                     <>
                                         { generateSuperBreadcrumbItem(breadcrumb) }
