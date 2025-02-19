@@ -246,7 +246,8 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                     required={ true }
                                     element={ <div></div> }
                                     listen={ handleDomainChange }
-                                    value={ initialValues?.basicDetails?.domain ?? userStoreOptions[ 0 ]?.value }
+                                    value={ initialValues?.basicDetails?.domain ?? userStore ??
+                                        userStoreOptions[ 0 ]?.value }
                                 />
                             </GridColumn>
                         </GridRow>

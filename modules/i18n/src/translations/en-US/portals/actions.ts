@@ -188,7 +188,8 @@ export const actions: actionsNS = {
             info: {
                 message: {
                     preIssueAccessToken: "Executes for JWT token requests from any application for <0>authorization_code</0>, " +
-                    "<1>client_credentials</1>, <2>password</2>, and <3>refresh_token</3> grant types when no specific rules is configured.",
+                    "<1>client_credentials</1>, <2>password</2>, and <3>refresh_token</3> grant types when no specific" +
+                    "rules is configured.",
                     preUpdatePassword: "Executes for any user or admin-initiated password update/reset flows."
                 },
                 title: "No execution rule is configured."

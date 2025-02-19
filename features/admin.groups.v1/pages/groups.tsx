@@ -17,24 +17,20 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { getAUserStore } from "@wso2is/admin.core.v1/api/user-store"; // No specific rule found
 import {
     AdvancedSearchWithBasicFilters
 } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters"; // No specific rule found
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui"; // No specific rule found
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants"; // No specific rule found
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
-import { UserStoreProperty } from "@wso2is/admin.core.v1/models/user-store";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { commonConfig, groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
-import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import { groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import {
-    CONSUMER_USERSTORE,
     RemoteUserStoreManagerType
 } from "@wso2is/admin.userstores.v1/constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
-import { UserStorePostData } from "@wso2is/admin.userstores.v1/models/user-stores";
-import { AlertInterface, AlertLevels, RolesInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
+import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     DocumentationLink,
@@ -44,7 +40,6 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
 import find from "lodash-es/find";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -84,20 +79,15 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const { readOnlyUserStoreNamesList, isUserStoreReadOnly, mutateUserStoreList } = useUserStores();
+    const { readOnlyUserStoreNamesList, isUserStoreReadOnly, mutateUserStoreList, userStoresList } = useUserStores();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ userStoreOptions, setUserStoresList ] = useState<DropdownItemProps[]>([]);
-    const [ isUserStoresListRequestLoading, setUserStoresListRequestLoading ] = useState<boolean>(false);
-    const [ isUserStoreRequestLoading, setUserStoreRequestLoading ] = useState<boolean>(false);
-    const [ userStore, setUserStore ] = useState(
-        commonConfig?.primaryUserstoreOnly ? primaryUserStoreDomainName : CONSUMER_USERSTORE);
+    const [ userStore, setUserStore ] = useState(userstoresConfig.primaryUserstoreName);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
@@ -153,6 +143,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
      * The following function fetches the user store list and sets it to the state.
      */
     const getUserStores = () => {
+        mutateUserStoreList();
         const storeOptions: DropdownItemProps[] = [
             {
                 key: -1,
@@ -161,46 +152,20 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             }
         ];
 
-        let storeOption: DropdownItemProps = {
-            key: null,
-            text: "",
-            value: ""
-        };
+        if (userStoresList?.length > 0) {
+            userStoresList.map((store: UserStoreListItem, index: number) => {
+                if (store.enabled && store.name !== userstoresConfig.primaryUserstoreName) {
+                    const storeOption: DropdownItemProps = {
+                        disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
+                        key: index,
+                        text: store.name,
+                        value: store.name
+                    };
 
-        setUserStoresListRequestLoading(true);
-        getUserStoreList()
-            .then((response: AxiosResponse<UserstoreListResponseInterface[]>) => {
-                if (storeOptions?.length === 0) {
                     storeOptions.push(storeOption);
                 }
-
-                response.data.map((store: UserstoreListResponseInterface, index: number) => {
-                    if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName) {
-                        setUserStoreRequestLoading(true);
-                        getAUserStore(store.id).then((response: UserStorePostData) => {
-                            const isDisabled: boolean = response.properties.find(
-                                (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
-
-                            if (!isDisabled) {
-                                storeOption = {
-                                    disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
-                                    key: index,
-                                    text: store.name,
-                                    value: store.name
-                                };
-                                storeOptions.push(storeOption);
-                            }
-                        }).finally(() => {
-                            setUserStoreRequestLoading(false);
-                        });
-                    }
-                });
-
-                setUserStoresList(storeOptions);
-            }).finally(() => {
-                setUserStoresListRequestLoading(false);
-                mutateUserStoreList();
             });
+        }
 
         setUserStoresList(storeOptions);
     };
@@ -367,7 +332,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         options={ userStoreOptions && userStoreOptions }
                         placeholder={ t("console:manage.features.groups.list.storeOptions") }
                         onChange={ handleDomainChange }
-                        loading={ isUserStoresListRequestLoading || isUserStoreRequestLoading }
                         defaultValue={ userstoresConfig.primaryUserstoreName }
                     />
                 ) }
@@ -441,6 +405,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                             WizardStepsFormTypes.BASIC_DETAILS,
                             WizardStepsFormTypes.ROLE_LIST
                         ] }
+                        userSelectedUserStore={ userStore }
                     />
                 )
             }
