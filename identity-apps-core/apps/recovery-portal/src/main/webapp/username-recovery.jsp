@@ -35,7 +35,6 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%-- Localization --%>
@@ -86,7 +85,6 @@
 
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
-    String errorCode = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorCode"));
 
     boolean isFirstNameInClaims = false;
     boolean isLastNameInClaims = false;
@@ -260,7 +258,7 @@
                             <label for="contact" class="control-label"><%=i18n(recoveryResourceBundle, customText,
                                     "contact")%></label>
                             <input id="contact" type="text" name="contact"
-                                placeholder="<%=i18n(recoveryResourceBundle, customText, "contact")%>"
+                               placeholder="<%=i18n(recoveryResourceBundle, customText, "contact")%>"
                                     required class="form-control" />
                         </div>
                         <% } %>
