@@ -532,27 +532,45 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             data = {
                 attributeMapping: claim.attributeMapping,
                 claimURI: claim.claimURI,
-                description: values?.description !== undefined ? values.description?.toString() : claim?.description,
-                displayName: values?.name !== undefined ? values.name?.toString() : claim?.displayName,
+                description: values?.description !== undefined
+                    ? values.description?.toString()
+                    : claim?.description,
+                displayName: values?.name !== undefined
+                    ? values.name?.toString()
+                    : claim?.displayName,
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
                 properties: claim?.properties,
-                readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
-                regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
-                required: values?.required !== undefined && !values?.readOnly ? !!values.required : false,
-                sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod as
-                    SharedProfileValueResolvingMethod || SharedProfileValueResolvingMethod.FROM_ORIGIN,
+                readOnly: values?.readOnly !== undefined
+                    ? !!values.readOnly
+                    : claim?.readOnly,
+                regEx:  values?.regularExpression !== undefined
+                    ? values.regularExpression?.toString()
+                    : claim?.regEx,
+                required: values?.required !== undefined && !values?.readOnly
+                    ? !!values.required
+                    : false,
+                sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod !== undefined
+                    ? values?.sharedProfileValueResolvingMethod as SharedProfileValueResolvingMethod
+                    : claim?.sharedProfileValueResolvingMethod,
                 supportedByDefault: values?.supportedByDefault !== undefined
-                    ? !!values.supportedByDefault : claim?.supportedByDefault,
-                uniquenessScope: values?.uniquenessScope as UniquenessScope || UniquenessScope.NONE
+                    ? !!values.supportedByDefault
+                    : claim?.supportedByDefault,
+                uniquenessScope: values?.uniquenessScope !== undefined
+                    ? values?.uniquenessScope as UniquenessScope
+                    : claim?.uniquenessScope
             };
         } else {
             // Use the new configuration.
             data = {
                 attributeMapping: claim.attributeMapping,
                 claimURI: claim.claimURI,
-                description: values?.description !== undefined ? values.description?.toString() : claim?.description,
-                displayName: values?.name !== undefined ? values.name?.toString() : claim?.displayName,
+                description: values?.description !== undefined
+                    ? values.description?.toString()
+                    : claim?.description,
+                displayName: values?.name !== undefined
+                    ? values.name?.toString()
+                    : claim?.displayName,
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
                 profiles: {
@@ -594,11 +612,14 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
                 regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
                 required: values?.required !== undefined && !values?.readOnly ? !!values.required : false,
-                sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod as
-                    SharedProfileValueResolvingMethod || SharedProfileValueResolvingMethod.FROM_ORIGIN,
+                sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod !== undefined
+                    ? values?.sharedProfileValueResolvingMethod as SharedProfileValueResolvingMethod
+                    : claim?.sharedProfileValueResolvingMethod,
                 supportedByDefault: values?.supportedByDefault !== undefined
                     ? !!values.supportedByDefault : claim?.supportedByDefault,
-                uniquenessScope: values?.uniquenessScope as UniquenessScope || UniquenessScope.NONE
+                uniquenessScope: values?.uniquenessScope !== undefined
+                    ? values?.uniquenessScope as UniquenessScope
+                    : claim?.uniquenessScope
             };
         }
 
@@ -932,7 +953,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         hint={ t("claims:local.forms.descriptionHint") }
                         readOnly={ isSubOrganization() || isReadOnly }
                     />
-
                     { !attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims
                         && (
                             <Field.Input
