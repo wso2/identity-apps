@@ -86,7 +86,7 @@
             Boolean.parseBoolean(request.getParameter("isSelfRegistrationWithVerification"));
     boolean allowchangeusername = Boolean.parseBoolean(request.getParameter("allowchangeusername"));
     String userLocaleForClaim = request.getHeader("Accept-Language");
-    String username = request.getParameter("username");
+    String username = Encode.forJava(request.getParameter("username"));
     String password = request.getParameter("password");
     String sessionDataKey = request.getParameter("sessionDataKey");
     String sp = Encode.forJava(request.getParameter("sp"));
@@ -227,7 +227,7 @@
                 }
             }
             request.getRequestDispatcher("register.do").forward(request, response);
-        } else if (!skipSignUpEnableCheck 
+        } else if (!skipSignUpEnableCheck
             && SelfRegistrationStatusCodes.ERROR_CODE_USER_ALREADY_EXISTS.equalsIgnoreCase(errorCode)) {
             if (isAccountVerificationEnabled && !isShowUsernameUnavailabilityEnabled) {
                 request.setAttribute("callback", callback);
