@@ -1056,7 +1056,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         listOffset={ listOffset }
                         listItemLimit={ listItemLimit }
                         updateList={ () => mutateUserListFetchRequest() }
-                        userStore= { selectedUserStore }
+                        userStore= { selectedUserStore ?? userstoresConfig.primaryUserstoreName }
                     />
                 )
             }
@@ -1068,7 +1068,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     <BulkImportUserWizard
                         data-componentid="user-mgt-bulk-import-user-wizard-modal"
                         closeWizard={ handleBulkImportWizardClose }
-                        userstore={ userstoresConfig.primaryUserstoreName }
+                        userstore={ selectedUserStore ?? userstoresConfig.primaryUserstoreName }
                     />
                 )
             }
