@@ -154,7 +154,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
 
         if (userStoresList?.length > 0) {
             userStoresList.map((store: UserStoreListItem, index: number) => {
-                if (store.enabled) {
+                if (store.enabled && store.name !== userstoresConfig.primaryUserstoreName) {
                     const storeOption: DropdownItemProps = {
                         disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
                         key: index,

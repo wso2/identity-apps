@@ -193,7 +193,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 const isReadOnly: boolean = isUserStoreReadOnly(store.name);
                 const isEnabled: boolean = store.enabled;
 
-                if (!isReadOnly && isEnabled) {
+                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && !isReadOnly && isEnabled) {
                     const storeOption: DropdownItemProps = {
                         key: index,
                         text: store.name,
@@ -202,7 +202,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
                     storeOptions.push(storeOption);
                 }
-
             });
         }
 
