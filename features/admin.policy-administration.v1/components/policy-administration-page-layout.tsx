@@ -187,7 +187,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
      *
      * @param policyId - The policy ID.
      */
-    const handleDeleteActivePolicy = (policyId: string) => {
+    const handleDeleteActivePolicy = (policyId: string): void => {
         const newActivePolicies: Map<string, PolicyInterface> = new Map(activePolicies);
 
         newActivePolicies.delete(policyId);
@@ -201,7 +201,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
      *
      * @param policyId - The policy ID.
      */
-    const handleDeleteInactivePolicy = (policyId: string) => {
+    const handleDeleteInactivePolicy = (policyId: string): void => {
         const newInactivePolicies: Map<string, PolicyInterface> = new Map(inactivePolicies);
 
         newInactivePolicies.delete(policyId);
@@ -215,7 +215,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
      *
      * @param policyId - The policy ID.
      */
-    const handleDeactivatePolicy = (policyId: string) => {
+    const handleDeactivatePolicy = (policyId: string): void => {
         const newActivePolicies: Map<string, PolicyInterface> = new Map(activePolicies);
         const newInactivePolicies: Map<string, PolicyInterface> = new Map(inactivePolicies);
 
@@ -232,7 +232,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
      *
      * @param policyId - The policy ID.
      */
-    const handleActivatePolicy = (policyId: string) => {
+    const handleActivatePolicy = (policyId: string): void => {
         const newActivePolicies: Map<string, PolicyInterface> = new Map(activePolicies);
         const newInactivePolicies: Map<string, PolicyInterface> = new Map(inactivePolicies);
 
