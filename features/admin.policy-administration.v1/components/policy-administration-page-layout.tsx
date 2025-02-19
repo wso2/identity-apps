@@ -108,50 +108,27 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         if (!inactivePolicyArray) {
             return;
         }
+        const filteredInactivePolicies: PolicyInterface[] = inactivePolicyArray.policySet ?? []
+            .filter((policy: PolicyInterface) => policy !== null || []);
 
-        const activePolicyIds: string[] = activePolicies.map(
-            ((activePolicy: PolicyInterface) => activePolicy.policyId)
-        );
-
-        const filteredInactivePolicies: PolicyInterface[] = (inactivePolicyArray.policySet ?? [])
-            .filter((policy: PolicyInterface) =>
-                policy !== null && !activePolicyIds.includes(policy.policyId)
-            );
-
-        if (pageInactive === 0) {
-            setInactivePolicies(filteredInactivePolicies);
-        } else {
-            setInactivePolicies(
-                (prev: PolicyInterface[]): PolicyInterface[] => [ ...prev, ...filteredInactivePolicies ]
-            );
-        }
-
+        setInactivePolicies(filteredInactivePolicies);
         if ((pageInactive + 1) >= (inactivePolicyArray.numberOfPages ?? 1)) {
             setHasMoreInactivePolicies(false);
         }
 
-    }, [ inactivePolicyArray, activePolicyArray ]);
-
+    }, [ inactivePolicyArray ]);
     useEffect(() => {
-        if (!activePolicyArray){
+        if (!activePolicyArray) {
             return;
         }
+        const filteredActivePolicies: PolicyInterface[] = activePolicyArray.policySet ?? []
+            .filter((policy: PolicyInterface) => policy !== null || []);
 
-        const rawActivePolicies: PolicyInterface[] = activePolicyArray.policySet?.filter(
-            (policy: PolicyInterface) => policy !== null) || [];
-
-        if (pageActive === 0) {
-            setActivePolicies(rawActivePolicies);
-        } else {
-            setActivePolicies((prev: PolicyInterface[]): PolicyInterface[] => [ ...prev, ...rawActivePolicies ]);
-        }
-
+        setActivePolicies(filteredActivePolicies);
         if ((pageActive + 1) >= (activePolicyArray.numberOfPages ?? 1)) {
             setHasMoreActivePolicies(false);
         }
-
     }, [ activePolicyArray ]);
-
 
     useEffect(() => {
         setPageInactive(0);
@@ -183,7 +160,6 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
     const fetchMoreInactivePolicies = (): void => {
         setPageInactive((prevPage: number) => prevPage + 1);
     };
-
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
