@@ -1,5 +1,12 @@
 # @wso2is/admin.session-management.v1
 
+## 2.25.179
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.5
+
 ## 2.25.178
 
 ### Patch Changes
