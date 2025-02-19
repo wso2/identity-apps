@@ -348,8 +348,8 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                                         <CircularProgress />
                                     </div>)
                                 }
-                                dataLength={ activePoliciesList.length }
-                                scrollableTarget={ "active-policy-list-container" }
+                                dataLength={ activePoliciesList?.length }
+                                scrollableTarget="active-policy-list-container"
                                 style={ { overflow: "unset" } }
                             >
                                 <CardContent>
@@ -381,7 +381,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                                 </div>)
                             }
                             dataLength={ inactivePoliciesList?.length }
-                            scrollableTarget={ "inactive-policy-list-container" }
+                            scrollableTarget="inactive-policy-list-container"
                             style={ { overflow: "unset" } }
                         >
                             <CardContent>
