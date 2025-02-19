@@ -131,9 +131,6 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const [ initialPasswordExpiryRules, setInitialPasswordExpiryRules ] = useState<PasswordExpiryRule[]>([]);
     const [ passwordExpiryRules, setPasswordExpiryRules ] = useState<PasswordExpiryRule[]>([]);
     const [ hasPasswordExpiryRuleErrors, setHasPasswordExpiryRuleErrors ] = useState<boolean>(false);
-
-    const [ allRoleList, setAllRoleList ] = useState<RolesInterface[]>([]);
-    const [ roleListOffset, setRoleListOffset ] = useState<number>(1);
     const rolesListItemLimit: number = 100;
 
     // State variables required to support legacy password policies.
@@ -177,12 +174,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     );
 
     const {
-        data: currentRoleList,
+        data: fetchedRoleList,
         isLoading: isRolesListLoading,
         error: rolesListError
     } = useGetRolesList(
         rolesListItemLimit,
-        roleListOffset,
+        null,
         null,
         "users,groups,permissions,associatedApplications",
         !isRuleBasedPasswordExpiryDisabled
@@ -213,27 +210,6 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             }));
         }
     }, [ groupsListError, rolesListError ]);
-
-    useEffect(() => {
-        if (!currentRoleList || !currentRoleList?.Resources) {
-            return;
-        }
-
-        if (roleListOffset === 1) {
-            setAllRoleList(currentRoleList?.Resources);
-        } else {
-            setAllRoleList((prevRoles: RolesInterface[]) =>
-            {
-                const newRoles: RolesInterface[] = [ ...prevRoles, ...currentRoleList?.Resources ];
-
-                if (newRoles?.length < currentRoleList?.totalResults) {
-                    setRoleListOffset((prevOffset: number) => prevOffset + rolesListItemLimit);
-                }
-
-                return newRoles;
-            });
-        }
-    }, [ currentRoleList ]);
 
     // Handle rule based password expiry related data.
     useEffect(() => {
@@ -986,7 +962,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     isSkipFallbackEnabled={ passwordExpirySkipFallback }
                     defaultPasswordExpiryTime={ defaultPasswordExpiryTime }
                     ruleList={ passwordExpiryRules ?? [] }
-                    rolesList={ allRoleList ?? [] }
+                    rolesList={ fetchedRoleList?.Resources ?? [] }
                     groupsList={ groupsList?.Resources ?? [] }
                     isReadOnly={ isReadOnly }
                     onDefaultPasswordExpiryTimeChange={ (days: number) => setDefaultPasswordExpiryTime(days) }
