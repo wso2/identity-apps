@@ -18,11 +18,16 @@
 
 import { Context, Dispatch, SetStateAction, createContext } from "react";
 import { Attribute } from "../models/attributes";
+import { RegistrationFlow } from "../models/flow";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderContext}
  */
 export interface RegistrationFlowBuilderContextProps {
+    /**
+     * The registration flow object.
+     */
+    flow: RegistrationFlow;
     /**
      * The set of attributes that are selected for the flow that are maintained per node.
      */
@@ -42,6 +47,7 @@ const RegistrationFlowBuilderContext: Context<
     RegistrationFlowBuilderContextProps
 > = createContext<null | RegistrationFlowBuilderContextProps>(
     {
+        flow: null,
         selectedAttributes: {},
         setSelectedAttributes: () => {}
     }

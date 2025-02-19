@@ -35,6 +35,9 @@ import { getScopesResourceEndpoints } from "@wso2is/admin.oidc-scopes.v1";
 import { getInsightsResourceEndpoints } from "@wso2is/admin.org-insights.v1/config/org-insights";
 import { getOrganizationsResourceEndpoints } from "@wso2is/admin.organizations.v1/configs";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
+import {
+    getRegistrationFlowBuilderResourceEndpoints
+} from "@wso2is/admin.registration-flow-builder.v1/config/endpoints";
 import { getRemoteFetchConfigResourceEndpoints } from "@wso2is/admin.remote-repository-configuration.v1";
 import { getRolesResourceEndpoints } from "@wso2is/admin.roles.v2/configs/endpoints";
 import { getRulesEndpoints } from "@wso2is/admin.rules.v1/configs/endpoints";
@@ -272,6 +275,7 @@ export class Config {
             ...getActionsResourceEndpoints(this.resolveServerHost()),
             ...getRulesEndpoints(this.resolveServerHost()),
             ...getSmsTemplateResourceEndpoints(this.resolveServerHost()),
+            ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,

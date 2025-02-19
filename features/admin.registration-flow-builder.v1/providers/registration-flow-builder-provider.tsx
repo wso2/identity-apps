@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import React, { PropsWithChildren, ReactElement, useState } from "react";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import useGetRegistrationFlow from "../api/use-get-registration-flow";
 import RegistrationFlowBuilderContext from "../context/registration-flow-builder-context";
 import { Attribute } from "../models/attributes";
 
@@ -34,11 +39,29 @@ export type RegistrationFlowBuilderProviderProps = unknown;
 const RegistrationFlowBuilderProvider = ({
     children
 }: PropsWithChildren<RegistrationFlowBuilderProviderProps>): ReactElement => {
+    const dispatch: Dispatch = useDispatch();
+
+    const { data: flow, error: flowFetchError } = useGetRegistrationFlow();
+
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
+
+    /**
+     * Dispatches an error alert if the flow fetch fails.
+     */
+    useEffect(() => {
+        if (flowFetchError) {
+            dispatch(addAlert({
+                description: "An error occurred while fetching the registration flow.",
+                level: AlertLevels.ERROR,
+                message: "Couldn't retrieve the registration flow."
+            }));
+        }
+    }, [ flowFetchError ]);
 
     return (
         <RegistrationFlowBuilderContext.Provider
             value={ {
+                flow,
                 selectedAttributes,
                 setSelectedAttributes
             } }

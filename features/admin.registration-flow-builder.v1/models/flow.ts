@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,17 +16,14 @@
  * under the License.
  */
 
-import { RegistrationFlowBuilderResourceEndpointsInterface } from "../models/endpoints";
+import { Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 
 /**
- * Get the resource endpoints for the Registration flow builder related features.
- *
- * @returns Registration flow builder resource endpoints.
+ * Interface for a registration flow API schema.
  */
-export const getRegistrationFlowBuilderResourceEndpoints = (
-    serverOrigin: string
-): RegistrationFlowBuilderResourceEndpointsInterface => {
-    return {
-        registrationFlow: `${ serverOrigin }/api/server/v1/registration-flow`
-    };
-};
+export interface RegistrationFlow {
+    /**
+     * Steps of the registration flow.
+     */
+    steps: Step[];
+}

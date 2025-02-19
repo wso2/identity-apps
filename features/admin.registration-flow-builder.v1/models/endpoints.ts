@@ -21,8 +21,8 @@
  */
 export interface RegistrationFlowBuilderResourceEndpointsInterface {
     /**
-     * API to configure the registration flow.
-     * @example `https://{serverUrl}/t/{tenantDomain}/api/server/v1/reg-orchestration/config`
+     * API to configure the GET/UPDATE registration flow.
+     * @example `https://{serverUrl}/t/{tenantDomain}/api/server/v1/registration-flow`
     */
-    configure: string;
+    registrationFlow: string;
 }
