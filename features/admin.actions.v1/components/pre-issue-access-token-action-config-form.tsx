@@ -274,7 +274,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                     <RuleConfigForm
                         readonly={ getFieldDisabledStatus() }
                         rule={ rule }
-                        actionTypeOfRule={ actionTypeApiPath }
+                        ruleActionType={ actionTypeApiPath }
                         setRule={ setRule }
                         isHasRule={ isHasRule }
                         setIsHasRule={ setIsHasRule }
