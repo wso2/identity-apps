@@ -192,6 +192,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
 
         newActivePolicies.delete(policyId);
         setActivePolicies(newActivePolicies);
+        activePageRequestHistory.current = new Map<number, boolean>();
         setPageActive(0);
         mutateActivePolicies();
     };
@@ -206,6 +207,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
 
         newInactivePolicies.delete(policyId);
         setInactivePolicies(newInactivePolicies);
+        inactivePageRequestHistory.current = new Map<number, boolean>();
         setPageInactive(0);
         mutateInactivePolicies();
     };
@@ -223,6 +225,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         newInactivePolicies.set(policyId, activePolicies.get(policyId));
         setInactivePolicies(newInactivePolicies);
         setActivePolicies(newActivePolicies);
+        activePageRequestHistory.current = new Map<number, boolean>();
         setPageActive(0);
         mutateActivePolicies();
     };
@@ -240,6 +243,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         newActivePolicies.set(policyId, inactivePolicies.get(policyId));
         setInactivePolicies(newInactivePolicies);
         setActivePolicies(newActivePolicies);
+        inactivePageRequestHistory.current = new Map<number, boolean>();
         setPageInactive(0);
         mutateInactivePolicies();
     };
