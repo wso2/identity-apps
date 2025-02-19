@@ -30,6 +30,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
+<%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.HashMap" %>
@@ -85,6 +86,7 @@
 
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
+    String errorCode = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorCode"));
 
     boolean isFirstNameInClaims = false;
     boolean isLastNameInClaims = false;
@@ -192,10 +194,10 @@
                     <div class="ui visible negative message" id="server-error-msg">
                         <% if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_MULTIPLE_MATCHING_USERS.getCode().equals(errorCode)) {
                         %>
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "multiple.users.found")%>
+                            <%=i18n(recoveryResourceBundle, customText, "multiple.users.found")%>
                         <% } else if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_NO_USER_FOUND.getCode().equals(errorCode)) {
                         %>
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "no.user.found")%>
+                            <%=i18n(recoveryResourceBundle, customText, "no.user.found")%>
                         <% } else { %>
                             <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
                         <% } %>
