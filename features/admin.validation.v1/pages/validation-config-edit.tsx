@@ -133,8 +133,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const [ hasPasswordExpiryRuleErrors, setHasPasswordExpiryRuleErrors ] = useState<boolean>(false);
 
     const [ allRoleList, setAllRoleList ] = useState<RolesInterface[]>([]);
-    const [ roleListOffset, setRoleListOffset ] = useState<number>(0);
-    const rolesListItemLimit: number = 50;
+    const [ roleListOffset, setRoleListOffset ] = useState<number>(1);
+    const rolesListItemLimit: number = 100;
 
     // State variables required to support legacy password policies.
     const [ isLegacyPasswordPolicyEnabled, setIsLegacyPasswordPolicyEnabled ] = useState<boolean>(undefined);
@@ -218,9 +218,20 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         if (!currentRoleList || !currentRoleList?.Resources) {
             return;
         }
-        setAllRoleList((prevRoles: RolesInterface[]) => [ ...prevRoles, ...currentRoleList?.Resources ]);
-        if (allRoleList?.length < currentRoleList?.totalResults) {
-            setRoleListOffset((prevOffset: number) => prevOffset + rolesListItemLimit);
+
+        if (roleListOffset === 1) {
+            setAllRoleList(currentRoleList?.Resources);
+        } else {
+            setAllRoleList((prevRoles: RolesInterface[]) =>
+            {
+                const newRoles: RolesInterface[] = [ ...prevRoles, ...currentRoleList?.Resources ];
+
+                if (newRoles?.length < currentRoleList?.totalResults) {
+                    setRoleListOffset((prevOffset: number) => prevOffset + rolesListItemLimit);
+                }
+
+                return newRoles;
+            });
         }
     }, [ currentRoleList ]);
 
