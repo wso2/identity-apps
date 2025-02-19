@@ -78,7 +78,9 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         new Map<string, PolicyInterface>());
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ submittedSearchQuery, setSubmittedSearchQuery ] = useState<string>("");
-    const pageRequestHistory: MutableRefObject<Map<number, boolean>> = useRef<Map<number, boolean>>(
+    const activePageRequestHistory: MutableRefObject<Map<number, boolean>> = useRef<Map<number, boolean>>(
+        new Map<number, boolean>());
+    const inactivePageRequestHistory: MutableRefObject<Map<number, boolean>> = useRef<Map<number, boolean>>(
         new Map<number, boolean>());
 
     const {
@@ -109,7 +111,9 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
     }, [ algorithm ]);
 
     useEffect(() => {
-        if (!inactivePolicyArray?.policySet) {
+        if (!inactivePolicyArray?.policySet || !inactivePageRequestHistory.current.has(pageInactive)) {
+            inactivePageRequestHistory.current.set(pageInactive, true);
+
             return;
         }
 
@@ -128,8 +132,8 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
     }, [ inactivePolicyArray ]);
 
     useEffect(() => {
-        if (!activePolicyArray?.policySet || !pageRequestHistory.current.has(pageActive)){
-            pageRequestHistory.current.set(pageActive, true);
+        if (!activePolicyArray?.policySet || !activePageRequestHistory.current.has(pageActive)){
+            activePageRequestHistory.current.set(pageActive, true);
 
             return;
         }
