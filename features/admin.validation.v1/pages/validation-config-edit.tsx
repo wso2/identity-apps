@@ -35,8 +35,7 @@ import {
 import { getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
 import {
     AlertLevels,
-    IdentifiableComponentInterface,
-    RolesInterface
+    IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
