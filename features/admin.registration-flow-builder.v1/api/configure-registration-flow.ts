@@ -18,6 +18,7 @@
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 import { Payload } from "@wso2is/admin.flow-builder-core.v1/models/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
@@ -33,8 +34,9 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpReque
  *
  * This function calls the POST method of the following endpoint to update the tenant status.
  *  - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/tenants`
+ * - TODO: Fill this
  * For more details, refer to the documentation:
- * {@link https://is.docs.wso2.com/en/latest/apis/tenant-management-rest-api/#tag/Tenants/operation/addTenant}
+ * {@link https://TODO:<fillthis>)}
  *
  * @param payload - Request payload.
  * @returns A promise that resolves when the operation is complete.
@@ -43,13 +45,9 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpReque
 const configureRegistrationFlow = (payload: Payload): Promise<AxiosResponse> => {
     const requestConfig: RequestConfigInterface = {
         data: payload,
-        method: HttpMethods.POST,
-        url: "https://localhost:9443/reg-orchestration/config"
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.registrationFlow
     };
-
-    if (payload.nodes?.length === 5) {
-        // requestConfig.data = samplePayload;
-    }
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
