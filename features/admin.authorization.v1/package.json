@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.authorization.v1",
-    "version": "2.25.78",
+    "version": "2.25.79",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -25,7 +25,7 @@
         "@wso2is/dynamic-forms": "^2.4.38",
         "@wso2is/form": "^2.6.32",
         "@wso2is/forms": "^2.3.20",
-        "@wso2is/i18n": "^2.19.19",
+        "@wso2is/i18n": "^2.19.20",
         "@wso2is/react-components": "^2.9.10",
         "@wso2is/theme": "^2.6.10",
         "@wso2is/validation": "^2.4.0",

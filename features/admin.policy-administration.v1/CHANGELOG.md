@@ -1,5 +1,21 @@
 # @wso2is/admin.policy-administration.v1
 
+## 1.0.96
+
+### Patch Changes
+
+- [#7694](https://github.com/wso2/identity-apps/pull/7694) [`be3464b7142c0b59f5efec0be2af7a6db6dd38be`](https://github.com/wso2/identity-apps/commit/be3464b7142c0b59f5efec0be2af7a6db6dd38be) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Handle transferring XACML policies between inactive and active lists with infinite scrolling
+
+- Updated dependencies [[`1166cdeb139983e4920a31dc43896628a869a5ef`](https://github.com/wso2/identity-apps/commit/1166cdeb139983e4920a31dc43896628a869a5ef)]:
+  - @wso2is/i18n@2.19.20
+  - @wso2is/admin.core.v1@2.39.6
+  - @wso2is/admin.applications.v1@2.31.28
+  - @wso2is/admin.extensions.v1@2.36.105
+  - @wso2is/admin.organizations.v1@2.26.180
+  - @wso2is/admin.users.v1@2.30.90
+  - @wso2is/admin.validation.v1@2.27.118
+  - @wso2is/admin.feature-gate.v1@1.4.180
+
 ## 1.0.95
 
 ### Patch Changes

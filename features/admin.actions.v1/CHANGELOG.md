@@ -1,5 +1,18 @@
 # @wso2is/admin.actions.v1
 
+## 1.11.45
+
+### Patch Changes
+
+- [#7695](https://github.com/wso2/identity-apps/pull/7695) [`1166cdeb139983e4920a31dc43896628a869a5ef`](https://github.com/wso2/identity-apps/commit/1166cdeb139983e4920a31dc43896628a869a5ef) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Generalize the rule config form to conditionally render info message
+
+- Updated dependencies [[`1166cdeb139983e4920a31dc43896628a869a5ef`](https://github.com/wso2/identity-apps/commit/1166cdeb139983e4920a31dc43896628a869a5ef)]:
+  - @wso2is/i18n@2.19.20
+  - @wso2is/admin.core.v1@2.39.6
+  - @wso2is/admin.extensions.v1@2.36.105
+  - @wso2is/admin.feature-gate.v1@1.4.180
+  - @wso2is/admin.rules.v1@0.3.49
+
 ## 1.11.44
 
 ### Patch Changes
