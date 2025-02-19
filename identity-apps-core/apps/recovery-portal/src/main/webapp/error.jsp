@@ -143,15 +143,13 @@
                         String finalMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "user.account.locked") + (" - ") + username;
                     %>
                         <%=finalMessage%>
-                    <%
-                    } else if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_PENDING_SELF_REGISTERED_ACCOUNT.getCode().equals(errorCode)) {
+                    <% } else if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_PENDING_SELF_REGISTERED_ACCOUNT.getCode().equals(errorCode)) {
                         String[] splitErrorMsg = errorMsg.split("-");
                         String username = splitErrorMsg[1].trim();
                         String finalMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "pending.user.account.verification") + (" - ") + username;
                     %>
                         <%=finalMessage%>
-                    <%
-                    } else if ( SelfRegistrationStatusCodes.ERROR_CODE_DUPLICATE_CLAIM_VALUE.equals(errorCode)) {
+                    <% } else if ( SelfRegistrationStatusCodes.ERROR_CODE_DUPLICATE_CLAIM_VALUE.equals(errorCode)) {
                         String[] splitErrorMsg = errorMsg.split("for");
                         String[] attributeList = splitErrorMsg[1].split("are|is")[0].trim().split(",");
                         String attributeString = " ";
@@ -175,6 +173,22 @@
                         }
                     %>
                         <%=finalMessage%>
+                    <% } else if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_DISABLED_ACCOUNT.getCode().equals(errorCode)) {
+                        String[] splitErrorMsg = errorMsg.split(" ");
+                        String username = splitErrorMsg[4].trim();
+                        String finalMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "user.account.disabled") + (" ") + username;
+                    %>
+                        <%=finalMessage%>
+                    <% } else if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_INVALID_USER.getCode().equals(errorCode)) {
+                        String[] splitErrorMsg = errorMsg.split(" ");
+                        String username = splitErrorMsg[2].trim();
+                        String finalMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.user") + (" ") + username;
+                    %>
+                        <%=finalMessage%>
+                    <%
+                    } else if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_UNEXPECTED.getCode().equals(errorCode)) {
+                    %>
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "internal.server.error")%>
                     <%
                     } else { %>
                         <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
