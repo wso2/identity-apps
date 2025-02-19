@@ -154,7 +154,17 @@
         <layout:component componentName="MainSection">
             <div class="ui orange attached segment mt-3">
                 <%
-                    if (StringUtils.equals(errorCode, IdentityCoreConstants.USER_ACCOUNT_LOCKED_ERROR_CODE) &&
+                    if (IdentityCoreConstants.LOGIN_FAILED_GENERIC_ERROR_CODE.equals(errorCode)) {
+                %>
+                    <h3 class="ui header text-center slogan-message mt-3 mb-6">
+                        <%=i18n(resourceBundle, customText, "unable.to.proceed")%>
+                    </h3>
+
+                    <p class="portal-tagline-description">
+                        <%=i18n(resourceBundle, customText, "login.failed.generic")%>
+                    </p>
+                <%
+                    } else if (StringUtils.equals(errorCode, IdentityCoreConstants.USER_ACCOUNT_LOCKED_ERROR_CODE) &&
                             StringUtils.isBlank(remainingAttempts)) {
                 %>
                     <h3 class="ui header text-center slogan-message mt-3 mb-6">
@@ -166,6 +176,16 @@
                         <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
                             <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
                         </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "for.assistance")%>
+                    </p>
+                <%
+                    } else if (IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE.equals(errorCode)) {
+                %>
+                    <h3 class="ui header text-center slogan-message mt-3 mb-6">
+                        <%=i18n(resourceBundle, customText, "unable.to.proceed")%>
+                    </h3>
+
+                    <p class="portal-tagline-description">
+                        <%=i18n(resourceBundle, customText, "account.confirmation.pending")%>
                     </p>
                 <%
                     } else if (IdentityCoreConstants.USER_ACCOUNT_DISABLED_ERROR_CODE.equals(errorCode)) {
