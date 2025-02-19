@@ -187,8 +187,15 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     }, [ filteredClaims ]);
 
     const hasServerSupportedClaimsToMap: boolean = useMemo(() => {
-        return serverSupportedClaims?.length > 0;
-    }, [ serverSupportedClaims ]);
+        if (!filteredClaims?.length && serverSupportedClaims?.length > 0) {
+            return true;
+        }
+        const _extClaims: Set<string> = new Set(filteredClaims.map(
+            (c: ExternalClaim) => c.claimURI
+        ));
+
+        return serverSupportedClaims?.some((c: string) => !_extClaims.has(c));
+    }, [ serverSupportedClaims, filteredClaims ]);
 
     useEffect(() => {
         if (claims) {
