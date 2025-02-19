@@ -159,7 +159,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
                         key: index,
                         text: store.name,
-                        value: store.id
+                        value: store.name
                     };
 
                     storeOptions.push(storeOption);
@@ -405,6 +405,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                             WizardStepsFormTypes.BASIC_DETAILS,
                             WizardStepsFormTypes.ROLE_LIST
                         ] }
+                        userSelectedUserStore={ userStore }
                     />
                 )
             }
