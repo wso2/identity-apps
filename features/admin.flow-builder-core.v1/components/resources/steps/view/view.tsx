@@ -77,41 +77,41 @@ export const View: FunctionComponent<StepPropsInterface> = ({
             const droppedData: string = event.dataTransfer.getData("application/json");
 
             if (droppedData) {
-                let newComponent: Element = {
+                let newElement: Element = {
                     ...JSON.parse(droppedData),
                     id: generateComponentId("element")
                 };
 
                 // If the component has variants, add the default variant to the root.
-                if (!isEmpty(newComponent?.variants)) {
+                if (!isEmpty(newElement?.variants)) {
                     const defaultVariantType: string =
-                        newComponent?.display?.defaultVariant ?? newComponent?.variants[0]?.variant;
-                    const defaultVariant: Element = newComponent.variants.find(
+                        newElement?.display?.defaultVariant ?? newElement?.variants[0]?.variant;
+                    const defaultVariant: Element = newElement.variants.find(
                         (variant: Element) => variant.variant === defaultVariantType
                     );
 
-                    newComponent = {
-                        ...newComponent,
+                    newElement = {
+                        ...newElement,
                         ...defaultVariant
                     };
                 }
 
                 updateNodeData(nodeId, (node: any) => {
                     return {
-                        components: [ ...(node?.data?.components || []), newComponent ]
+                        elements: [ ...(node?.data?.elements || []), newElement ]
                     };
                 });
 
-                onResourceDropOnCanvas(newComponent, nodeId);
+                onResourceDropOnCanvas(newElement, nodeId);
             }
         },
         [ data?.type ]
     );
 
-    const handleOrderChange = (orderedNodes: Element[]) => {
+    const handleOrderChange = (orderedElements: Element[]) => {
         updateNodeData(nodeId, () => {
             return {
-                components: orderedNodes
+                elements: orderedElements
             };
         });
     };
@@ -150,7 +150,7 @@ export const View: FunctionComponent<StepPropsInterface> = ({
                     <Box className="flow-builder-step-content-form">
                         <FormGroup>
                             <DroppableContainer
-                                nodes={ (node?.data?.components || []) as Element[] }
+                                nodes={ (node?.data?.elements || []) as Element[] }
                                 onOrderChange={ handleOrderChange }
                             >
                                 { ({

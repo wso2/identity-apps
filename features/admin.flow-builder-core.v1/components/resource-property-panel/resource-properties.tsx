@@ -26,6 +26,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Properties } from "../../models/base";
 import { Resource } from "../../models/resources";
+import { Element } from "../../models/elements";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -69,8 +70,8 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
     } = useAuthenticationFlowBuilderCore();
 
     const changeSelectedVariant = (selected: string, element?: Partial<Element>) => {
-        let selectedVariant: Resource = lastInteractedResource?.variants?.find(
-            (resource: Resource) => resource.variant === selected
+        let selectedVariant: Element = lastInteractedResource?.variants?.find(
+            (resource: Element) => resource.variant === selected
         );
 
         if (element) {
@@ -78,34 +79,34 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         }
 
         updateNodeData(lastInteractedResourceId, (node: any) => {
-            const components: Resource = node?.data?.components?.map((component: any) => {
-                if (component.id === lastInteractedResource.id) {
-                    return merge(component, selectedVariant);
+            const elements: Element[] = node?.data?.elements?.map((_element: Element) => {
+                if (_element.id === lastInteractedResource.id) {
+                    return merge(_element, selectedVariant);
                 }
 
-                return component;
+                return _element;
             });
 
             setLastInteractedResource(merge(lastInteractedResource, selectedVariant));
 
             return {
-                components
+                elements
             };
         });
     };
 
-    const handlePropertyChange = (propertyKey: string, newValue: any, resource: Resource) => {
+    const handlePropertyChange = (propertyKey: string, newValue: any, element: Element) => {
         updateNodeData(lastInteractedResourceId, (node: any) => {
-            const components: Resource[] = node?.data?.components?.map((component: any) => {
-                if (component.id === resource.id) {
-                    set(component, propertyKey, newValue);
+            const elements: Element[] = node?.data?.elements?.map((_element: any) => {
+                if (_element.id === element.id) {
+                    set(_element, propertyKey, newValue);
                 }
 
-                return component;
+                return _element;
             });
 
             return {
-                components
+                elements
             };
         });
     };

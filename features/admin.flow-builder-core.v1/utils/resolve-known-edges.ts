@@ -34,8 +34,8 @@ const resolveKnownEdges = (connection: Edge, nodes: Node[]): Edge => {
         .replace(ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX, "")
         .replace(ButtonAdapterConstants.PREVIOUS_BUTTON_HANDLE_SUFFIX, "");
     const sourceElement: Element | undefined = nodes
-        .flatMap((node: Node) => node?.data?.components as Element[])
-        .find((component: Element) => component?.id === sourceElementId);
+        .flatMap((node: Node) => node?.data?.elements as Element[])
+        .find((element: Element) => element?.id === sourceElementId);
 
     if (sourceElement?.category === ElementCategories.Action) {
         if (sourceElement.variant === ActionVariants.SOCIAL) {

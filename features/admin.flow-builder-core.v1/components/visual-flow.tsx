@@ -182,7 +182,6 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
         [ nodes, edges ]
     );
 
-    // TODO: Handle the submit
     const handlePublish = (): void => {
         const flow: any = toObject();
 
