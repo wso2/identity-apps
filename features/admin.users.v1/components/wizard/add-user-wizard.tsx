@@ -361,11 +361,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         let selectedUserstoreId: string = userstoresConfig.primaryUserstoreId;
 
         if (selectedUserStore) {
-            userStoresList?.find((store: UserStoreListItem) => {
-                if (store.name === selectedUserStore) {
-                    selectedUserstoreId = store.id;
-                }
-            });
+            const selected: UserStoreListItem = userStoresList?.find(
+                (store: UserStoreListItem) => store.name === selectedUserStore);
+
+            selectedUserstoreId = selected.id;
         }
 
         return selectedUserstoreId;
