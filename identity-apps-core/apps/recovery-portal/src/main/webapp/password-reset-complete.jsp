@@ -89,7 +89,7 @@
         sp = (String)request.getAttribute("sp");
     }
     String userStoreDomain = request.getParameter(USERSTORE_DOMAIN);
-    String type = request.getParameter("type");
+    String type = Encode.forJava(request.getParameter("type"));
     String orgId = request.getParameter("orgid");
     String username = null;
     String tenantAwareUsername = null;
