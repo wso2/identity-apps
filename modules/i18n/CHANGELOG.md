@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.19.20
+
+### Patch Changes
+
+- [#7695](https://github.com/wso2/identity-apps/pull/7695) [`1166cdeb139983e4920a31dc43896628a869a5ef`](https://github.com/wso2/identity-apps/commit/1166cdeb139983e4920a31dc43896628a869a5ef) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Generalize the rule config form to conditionally render info message
+
 ## 2.19.19
 
 ### Patch Changes
