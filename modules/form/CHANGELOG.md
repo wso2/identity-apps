@@ -1,5 +1,13 @@
 # @wso2is/form
 
+## 2.6.34
+
+### Patch Changes
+
+- [#7707](https://github.com/wso2/identity-apps/pull/7707) [`550d087571863f97af85e1f37a84582d230bbe94`](https://github.com/wso2/identity-apps/commit/550d087571863f97af85e1f37a84582d230bbe94) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Add a new input field adapter for custom authenticator text with adornment
+
+* [#7708](https://github.com/wso2/identity-apps/pull/7708) [`ae40c90f3a834fcbd18e7443ff348088e46457be`](https://github.com/wso2/identity-apps/commit/ae40c90f3a834fcbd18e7443ff348088e46457be) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a new input field adapter for custom authenticator text with adornment
+
 ## 2.6.33
 
 ### Patch Changes
