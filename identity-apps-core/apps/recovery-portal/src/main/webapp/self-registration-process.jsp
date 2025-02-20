@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -72,6 +72,7 @@
     String SELF_REGISTRATION_WITHOUT_VERIFICATION_PAGE = "* self-registration-without-verification.jsp";
     String passwordPatternErrorCode = "20035";
     String usernamePatternErrorCode = "20045";
+    String duplicateClaimValueErrorCode = "60007";
     String usernameAlreadyExistsErrorCode = "20030";
     String AUTO_LOGIN_COOKIE_NAME = "ALOR";
     String AUTO_LOGIN_COOKIE_DOMAIN = "AutoLoginCookieDomain";
@@ -433,7 +434,7 @@
         IdentityManagementEndpointUtil.addErrorInformation(request, e);
         String errorCode1 = (String) request.getAttribute("errorCode");
         String errorMsg1 = (String) request.getAttribute("errorMsg");
-        if (passwordPatternErrorCode.equals(errorCode1)) {
+        if (passwordPatternErrorCode.equals(errorCode1) || duplicateClaimValueErrorCode.equals(errorCode1)) {
             String i18Resource = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, errorCode1);
             if (!i18Resource.equals(errorCode1)) {
                 request.setAttribute(ERROR_MESSAGE, i18Resource);
