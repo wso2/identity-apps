@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.20.0
+
+### Minor Changes
+
+- [#7683](https://github.com/wso2/identity-apps/pull/7683) [`6e3c598e5c4d2b2bbd8cb5543ab3eea0fa4243df`](https://github.com/wso2/identity-apps/commit/6e3c598e5c4d2b2bbd8cb5543ab3eea0fa4243df) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Add search clear option to rule component autocomplete drop list
+
 ## 2.19.21
 
 ### Patch Changes

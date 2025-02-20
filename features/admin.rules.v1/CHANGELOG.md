@@ -1,5 +1,16 @@
 # @wso2is/admin.rules.v1
 
+## 0.4.0
+
+### Minor Changes
+
+- [#7683](https://github.com/wso2/identity-apps/pull/7683) [`6e3c598e5c4d2b2bbd8cb5543ab3eea0fa4243df`](https://github.com/wso2/identity-apps/commit/6e3c598e5c4d2b2bbd8cb5543ab3eea0fa4243df) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Add search clear option to rule component autocomplete drop list
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.10
+
 ## 0.3.52
 
 ### Patch Changes
