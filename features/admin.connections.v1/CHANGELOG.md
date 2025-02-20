@@ -1,5 +1,30 @@
 # @wso2is/admin.connections.v1
 
+## 2.33.69
+
+### Patch Changes
+
+- [#7713](https://github.com/wso2/identity-apps/pull/7713) [`5cdf74271a03fe50199a0057ba5253860d17bb07`](https://github.com/wso2/identity-apps/commit/5cdf74271a03fe50199a0057ba5253860d17bb07) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Fix the issue of UI persisting stale data in authenticator connected apps list
+
+* [#7714](https://github.com/wso2/identity-apps/pull/7714) [`8c9e44c27458ffa8c71fce34a96e3dbce3733e1e`](https://github.com/wso2/identity-apps/commit/8c9e44c27458ffa8c71fce34a96e3dbce3733e1e) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Enable read-only mode in custom authenticators for users without write permission
+
+* Updated dependencies [[`5cdf74271a03fe50199a0057ba5253860d17bb07`](https://github.com/wso2/identity-apps/commit/5cdf74271a03fe50199a0057ba5253860d17bb07), [`8c9e44c27458ffa8c71fce34a96e3dbce3733e1e`](https://github.com/wso2/identity-apps/commit/8c9e44c27458ffa8c71fce34a96e3dbce3733e1e)]:
+  - @wso2is/admin.connections.v1@2.33.69
+  - @wso2is/admin.applications.v1@2.31.34
+  - @wso2is/admin.core.v1@2.39.12
+  - @wso2is/admin.extensions.v1@2.36.111
+  - @wso2is/admin.identity-providers.v1@2.26.186
+  - @wso2is/admin.identity-verification-providers.v1@2.27.186
+  - @wso2is/admin.organizations.v1@2.26.186
+  - @wso2is/admin.roles.v2@2.27.130
+  - @wso2is/admin.application-templates.v1@1.4.186
+  - @wso2is/admin.console-settings.v1@2.25.186
+  - @wso2is/admin.actions.v1@1.11.51
+  - @wso2is/admin.claims.v1@2.27.96
+  - @wso2is/admin.feature-gate.v1@1.4.186
+  - @wso2is/admin.template-core.v1@1.5.140
+  - @wso2is/admin.userstores.v1@2.27.12
+
 ## 2.33.68
 
 ### Patch Changes
