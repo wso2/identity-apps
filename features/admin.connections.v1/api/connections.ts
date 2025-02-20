@@ -864,7 +864,7 @@ export const getConnectedApps = (idpId: string): Promise<any> => {
  *
  * Currently, connected apps can be added only to custom local authenticators and federated authenticators.
  *
- * @param idpId - ID of the authenticator.
+ * @param authenticatorId - ID of the authenticator.
  * @returns  A promise containing the response.
  */
 export const getConnectedAppsOfAuthenticator = (authenticatorId: string): Promise<any> => {

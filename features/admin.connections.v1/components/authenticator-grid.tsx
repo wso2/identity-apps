@@ -343,7 +343,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                 if (response.count === 0) {
                     setDeletingIDP(
                         authenticators.find(
-                            (idp: ConnectionInterface | AuthenticatorInterface) => idp.id === authenticatorId
+                            (authenticator: ConnectionInterface | AuthenticatorInterface) =>
+                                authenticator.id === authenticatorId
                         )
                     );
                     setShowDeleteConfirmationModal(true);
