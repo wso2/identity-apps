@@ -1,5 +1,21 @@
 # @wso2is/admin.claims.v1
 
+## 2.27.91
+
+### Patch Changes
+
+- [#7696](https://github.com/wso2/identity-apps/pull/7696) [`fe2ddf488812e6211d5b677e691f3d2bb2663ba7`](https://github.com/wso2/identity-apps/commit/fe2ddf488812e6211d5b677e691f3d2bb2663ba7) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix attribute settings reverting back to default state in uniquness property
+
+- Updated dependencies [[`fe2ddf488812e6211d5b677e691f3d2bb2663ba7`](https://github.com/wso2/identity-apps/commit/fe2ddf488812e6211d5b677e691f3d2bb2663ba7), [`bc745eb2efbeee6f3ccc4356027a4d9f7b23e78d`](https://github.com/wso2/identity-apps/commit/bc745eb2efbeee6f3ccc4356027a4d9f7b23e78d)]:
+  - @wso2is/admin.claims.v1@2.27.91
+  - @wso2is/admin.users.v1@2.30.91
+  - @wso2is/admin.core.v1@2.39.7
+  - @wso2is/admin.extensions.v1@2.36.106
+  - @wso2is/admin.organizations.v1@2.26.181
+  - @wso2is/admin.server-configurations.v1@2.32.106
+  - @wso2is/admin.validation.v1@2.27.119
+  - @wso2is/admin.userstores.v1@2.27.7
+
 ## 2.27.90
 
 ### Patch Changes
