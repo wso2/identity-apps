@@ -203,6 +203,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         const [ options, setOptions ] = useState<ValueInputAutocompleteOptionsInterface[]>([]);
         const [ open, setOpen ] = useState<boolean>(false);
 
+        const MORE_ITEMS: string = "more-items";
+        const CLEAR_OPTION: string = "clear-option";
+
         const filterUrl: string = inputValueLabel
             ? filterBaseResourcesUrl?.replace("filter=", `filter=name+sw+${inputValueLabel}`)
             : initialResourcesLoadUrl;
@@ -257,14 +260,14 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     ...options,
                     ...(hasMoreItems
                         ? [ {
-                            id: "more-items",
+                            id: MORE_ITEMS,
                             isDisabled: true,
                             label: t("rules:fields.autocomplete.moreItemsMessage")
                         } ]
                         : []),
                     ...(inputValueLabel
                         ? [ {
-                            id: "clear-option",
+                            id: CLEAR_OPTION,
                             isDisabled: false,
                             label: t("rules:fields.autocomplete.clearFilterActionText")
                         } ]
@@ -283,7 +286,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 onChange={ (e: React.ChangeEvent, value: ResourceInterface) => {
                     if (value?.isDisabled) return; // Prevent selection of disabled option
 
-                    if (value?.id === "clear-option") {
+                    if (value?.id === CLEAR_OPTION) {
                         setInputValueLabel("");
                         setTimeout(() => setOpen(true), 0);
 
@@ -309,7 +312,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     <TextField
                         { ...params }
                         variant="outlined"
-                        placeholder="Please select a resource or type to search ..."
+                        placeholder={ t("rules:fields.autocomplete.placeholderText") }
                         value={ inputValueLabel }
                         InputProps={ {
                             ...params.InputProps,
@@ -325,7 +328,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     />
                 ) }
                 renderOption={ (props: ListItemProps, option: { label: string; id: string; isDisabled: boolean }) => {
-                    if (option.id === "more-items") {
+                    if (option.id === MORE_ITEMS) {
                         return (
                             <li
                                 { ...props }
@@ -337,7 +340,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         );
                     }
 
-                    if (option.id === "clear-option") {
+                    if (option.id === CLEAR_OPTION) {
                         return (
                             <li
                                 { ...props }

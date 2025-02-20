@@ -33,6 +33,7 @@ export interface rulesNS {
         autocomplete: {
             clearFilterActionText: string;
             moreItemsMessage: string;
+            placeholderText: string;
         };
     };
     texts: {

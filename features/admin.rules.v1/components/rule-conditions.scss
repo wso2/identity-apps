@@ -29,11 +29,11 @@
         padding: 5px 0;
         cursor: pointer;
 
-        > .icon {
+        & > .icon {
             margin-right: 3px;
         }
 
-        > span.text {
+        & > span.text {
             text-decoration: underline;
         }
 
