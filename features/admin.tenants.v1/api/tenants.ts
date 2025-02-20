@@ -21,7 +21,7 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { ADU, ADUResponse, TenantRequestResponse } from "../models";
+import { DeploymentUnit, DeploymentUnitResponse, TenantRequestResponse } from "../models";
 
 const getDomainQueryParam = (): string => {
     const tenantDomain: string = store.getState().auth.tenantDomain;
@@ -47,10 +47,10 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  *
  * @param tenantName - new tenant name
  */
-export const addNewTenant = (tenantName: string, adu?: ADU): Promise<AxiosResponse> => {
+export const addNewTenant = (tenantName: string, deploymentUnit?: DeploymentUnit): Promise<AxiosResponse> => {
     const requestConfig: AxiosRequestConfig = {
         data: {
-            adu: adu?.adu,
+            deploymentUnit: deploymentUnit?.name,
             domain: tenantName
         },
         headers: {
@@ -163,16 +163,16 @@ export const getAssociatedTenants = (
 };
 
 /**
- * Get the ADUs (Asgardeo Deployment Units).
+ * Get the deployment units.
  *
- * @returns - A promise that resolves with the ADU response object.
+ * @returns - A promise that resolves with the Deployment response object.
  */
-export const getADUs = (
-): Promise<ADUResponse> => {
+export const getDeploymentUnits = (
+): Promise<DeploymentUnitResponse> => {
 
     const requestConfig: AxiosRequestConfig = {
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.adu + getDomainQueryParam()
+        url: store.getState().config.endpoints.deploymentUnit + getDomainQueryParam()
     };
 
     return httpClient(requestConfig)

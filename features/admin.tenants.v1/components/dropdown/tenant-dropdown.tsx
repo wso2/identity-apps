@@ -71,11 +71,11 @@ import {
     Placeholder,
     SemanticICONS
 } from "semantic-ui-react";
-import { getADUs, getAssociatedTenants, makeTenantDefault } from "../../api";
+import { getDeploymentUnits, getAssociatedTenants, makeTenantDefault } from "../../api";
 import TenantConstants from "../../constants/tenant-constants";
 import {
-    ADU,
-    ADUResponse,
+    DeploymentUnit,
+    DeploymentUnitResponse,
     TenantInfo,
     TenantRequestResponse,
     TriggerPropTypesInterface
@@ -166,7 +166,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     const [ tempTenantAssociationsList, setTempTenantAssociationsList ] = useState<TenantInfo[]>(undefined);
     const [ showTenantAddModal, setShowTenantAddModal ] = useState<boolean>(false);
     const [ isSwitchTenantsSelected, setIsSwitchTenantsSelected ] = useState<boolean>(false);
-    const [ adus, setAdus ] = useState<ADU[]>([]);
+    const [ deploymentUnits, setDeploymentUnits ] = useState<DeploymentUnit[]>([]);
     const [ isSetDefaultTenantInProgress, setIsSetDefaultTenantInProgress ] = useState<boolean>(false);
     const [ associatedTenants, setAssociatedTenants ] = useState<TenantInfo[]>([]);
     const [ associatedTenantsOffset, setAssociatedTenantsOffset ] = useState<number>(0);
@@ -251,20 +251,20 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
     useEffect(() => {
         if (isCentralDeploymentEnabled) {
-            getADUs()
-                .then((response: ADUResponse) => {
-                    setAdus(response.adus);
+            getDeploymentUnits()
+                .then((response: DeploymentUnitResponse) => {
+                    setDeploymentUnits(response.deploymentUnits);
                 })
                 .catch((error: any) => {
                     dispatch(
                         addAlert({
                             description:
                                 error?.description &&
-                                t("extensions:manage.features.tenant.notifications." + "getADUs.description"),
+                                t("tenants:listDeploymentUnits.description"),
                             level: AlertLevels.ERROR,
                             message:
                                 error?.description &&
-                                t("extensions:manage.features.tenant.notifications." + "getADUs.message")
+                                t("tenants:listDeploymentUnits.message")
                         })
                     );
                 });
@@ -383,7 +383,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                             data-testid={ `${ tempTenantAssociation?.domain }-tenant-la-name` }
                         >
                             { tempTenantAssociation?.domain + (isCentralDeploymentEnabled ?
-                                " (" + tempTenantAssociation?.adu + ")" : "") }
+                                " (" + tempTenantAssociation?.deploymentUnitName + ")" : "") }
                         </div>
                     </Item.Content>
                 </Item>
@@ -686,7 +686,8 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                             : tenantAssociations
                                                                 ? tenantAssociations.currentTenant?.domain +
                                                                 (isCentralDeploymentEnabled ? " (" +
-                                                                    tenantAssociations.currentTenant?.adu + ")" : "")
+                                                                    tenantAssociations.currentTenant
+                                                                        ?.deploymentUnitName + ")" : "")
                                                                 : (
                                                                     <Placeholder>
                                                                         <Placeholder.Line />
@@ -797,7 +798,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                     ? (
                         <AddTenantWizard
                             openModal={ showTenantAddModal }
-                            adus={ adus }
+                            deploymentUnits={ deploymentUnits }
                             onCloseHandler={ () => setShowTenantAddModal(false) } />
                     )
                     : null
