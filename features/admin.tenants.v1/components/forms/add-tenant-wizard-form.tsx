@@ -37,6 +37,7 @@ import { useSelector } from "react-redux";
 import { Divider, Segment } from "semantic-ui-react";
 import { checkDuplicateTenants } from "../../api";
 import { TenantManagementConstants } from "../../constants";
+import { ADU, ADUDropdownOptionsInterface } from "../../models";
 
 /**
  * Interface to capture add tenant wizard form props.
@@ -48,6 +49,7 @@ interface AddTenantWizardFormPropsInterface extends TestableComponentInterface {
     setTenantDuplicate: Dispatch<SetStateAction<boolean>>;
     isCheckingTenantExistence: boolean;
     setCheckingTenantExistence: Dispatch<SetStateAction<boolean>>;
+    adus: ADU[]
 }
 
 /**
@@ -55,6 +57,7 @@ interface AddTenantWizardFormPropsInterface extends TestableComponentInterface {
  */
 export interface AddTenantWizardFormErrorValidationsInterface {
     tenantName: string;
+    adu?: string
 }
 
 /**
@@ -62,6 +65,7 @@ export interface AddTenantWizardFormErrorValidationsInterface {
  */
 export interface AddTenantWizardFormValuesInterface {
     tenantName: string;
+    adu?: string;
 }
 
 const FORM_ID: string = "add-tenant-wizard-form";
@@ -82,20 +86,26 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         setTenantDuplicate,
         isCheckingTenantExistence,
         setCheckingTenantExistence,
+        adus,
         [ "data-testid" ]: testId
     } = props;
 
     const [ newTenantName, setNewTenantName ] = useState<string>(
         TenantManagementConstants.TENANT_URI_PLACEHOLDER
     );
+    const [ selectedADU, setSelectedADU ] = useState<string>(undefined);
     const [ isTenantValid, setIsTenantValid ] = useState<boolean>(false);
-
+    const [ isADUValid, setIsADUValid ] = useState<boolean>(false);
     const regionQualifiedConsoleUrl: string = useSelector((state: AppState) => {
         return state.config?.deployment?.extensions?.regionQualifiedConsoleUrl as string;
     });
 
     const tenantPrefix: string = useSelector((state: AppState) => {
         return state.config?.deployment?.tenantPrefix as string;
+    });
+
+    const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.centralDeploymentEnabled;
     });
 
     const { t } = useTranslation();
@@ -153,6 +163,23 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         }
     };
 
+    const updateAdu = (adu: string): void => {
+        if (adu === undefined) {
+            setIsADUValid(false);
+        } else {
+            setSelectedADU(adu);
+            setIsADUValid(true);
+        }
+    };
+
+    const aduOptions: ADUDropdownOptionsInterface[] = adus.map((adu: ADU) => {
+        return {
+            key: adu.adu,
+            text: adu.aduDisplayName,
+            value: JSON.stringify(adu)
+        };
+    });
+
     /**
      * Validate input data.
      *
@@ -163,6 +190,7 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         values: AddTenantWizardFormValuesInterface
     ): AddTenantWizardFormErrorValidationsInterface => {
         const error: AddTenantWizardFormErrorValidationsInterface = {
+            adu: undefined,
             tenantName: undefined
         };
 
@@ -175,6 +203,11 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         } else if (!values.tenantName) {
             error.tenantName = t(
                 "extensions:manage.features.tenant.wizards.addTenant.forms.fields.tenantName.validations.empty"
+            );
+        }
+        if (!isADUValid){
+            error.adu = t(
+                "extensions:manage.features.tenant.wizards.addTenant.forms.fields.adu.validations.empty"
             );
         }
 
@@ -193,7 +226,8 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                 validate={
                     (tenantDuplicate ||
                         newTenantName ===
-                        TenantManagementConstants.TENANT_URI_PLACEHOLDER) &&
+                        TenantManagementConstants.TENANT_URI_PLACEHOLDER ||
+                        isCentralDeploymentEnabled && !selectedADU) &&
                     validateForm
                 }
             >
@@ -349,6 +383,26 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                     width={ 16 }
                     data-testid={ `${ testId }-type-input` }
                 />
+                { isCentralDeploymentEnabled  ? (
+                    <Field.Dropdown
+                        ariaLabel="Region"
+                        name="adu"
+                        label={
+                            t("extensions:manage.features.tenant.wizards.addTenant.forms.fields.adu.label")
+                        }
+                        placeholder = {
+                            t("extensions:manage.features.tenant.wizards.addTenant.forms.fields.adu.placeholder")
+                        }
+                        required={ true }
+                        options={ aduOptions }
+                        readOnly={ true }
+                        data-testid={ `${ testId }-adu-dropdown` }
+                        listen={ updateAdu }
+                        enableReinitialize={ true }
+                        hint={ "ADU" }
+                    />
+                ) : null }
+
             </Form>
             <Divider className="mt-1" hidden />
             { isCheckingTenantExistence ? (

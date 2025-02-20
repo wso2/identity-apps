@@ -21,7 +21,7 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { TenantRequestResponse } from "../models";
+import { ADU, ADUResponse, TenantRequestResponse } from "../models";
 
 const getDomainQueryParam = (): string => {
     const tenantDomain: string = store.getState().auth.tenantDomain;
@@ -47,9 +47,10 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  *
  * @param tenantName - new tenant name
  */
-export const addNewTenant = (tenantName: string): Promise<AxiosResponse> => {
+export const addNewTenant = (tenantName: string, adu?: ADU): Promise<AxiosResponse> => {
     const requestConfig: AxiosRequestConfig = {
         data: {
+            adu: adu?.adu,
             domain: tenantName
         },
         headers: {
@@ -150,6 +151,28 @@ export const getAssociatedTenants = (
             offset
         },
         url: store.getState().config.endpoints.tenantAssociationApi + getDomainQueryParam()
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response?.data);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error?.response?.data);
+        });
+};
+
+/**
+ * Get the ADUs (Asgardeo Deployment Units).
+ *
+ * @returns - A promise that resolves with the ADU response object.
+ */
+export const getADUs = (
+): Promise<ADUResponse> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.adu + getDomainQueryParam()
     };
 
     return httpClient(requestConfig)

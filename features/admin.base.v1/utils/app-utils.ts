@@ -235,6 +235,7 @@ export const AppUtils: any = (function() {
                 appBase: _config.appBaseName,
                 appBaseNameForHistoryAPI: this.constructAppBaseNameForHistoryAPI(),
                 appBaseWithTenant: this.getAppBaseWithTenantAndOrganization(),
+                centralDeploymentEnabled: _config.centralDeploymentEnabled,
                 clientID: this.getClientId(),
                 clientOrigin: _config.clientOrigin,
                 clientOriginWithTenant: this.getClientOriginWithTenant(),

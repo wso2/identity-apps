@@ -29,6 +29,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { addNewTenant, checkDuplicateTenants } from "../../api";
+import { ADU } from "../../models";
 import { handleTenantSwitch } from "../../utils";
 import { AddTenantWizardForm, AddTenantWizardFormValuesInterface } from "../forms";
 
@@ -38,6 +39,7 @@ import { AddTenantWizardForm, AddTenantWizardFormValuesInterface } from "../form
 interface AddTenantWizardPropsInterface extends TestableComponentInterface {
     openModal: boolean;
     onCloseHandler: () => void;
+    adus: ADU[];
 }
 
 /**
@@ -52,6 +54,7 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
 
     const {
         openModal,
+        adus,
         onCloseHandler,
         [ "data-testid" ]: testId
     } = props;
@@ -99,7 +102,7 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
             .catch((error: AxiosError) => {
                 if (error.response.status == 404) {
                     // Proceed to tenant creation if tenant does not exist.
-                    addTenant(submissionValue.tenantName);
+                    addTenant(submissionValue.tenantName, JSON.parse(submissionValue.adu));
                 } else {
                     setIsNewTenantLoading(false);
                     setAlert({
@@ -134,16 +137,17 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
                 setTenantDuplicate={ setIsTenantDuplicate }
                 isCheckingTenantExistence={ isCheckingTenantExistence }
                 setCheckingTenantExistence={ setCheckingTenantExistence }
+                adus={ adus }
             />
         ),
         icon: "", // TODO: Add icon
         title: t("extensions:manage.features.tenant.wizards.addTenant.heading")
     } ];
 
-    const addTenant = (tenantName: string): void => {
+    const addTenant = (tenantName: string, adu?: ADU): void => {
         setIsNewTenantLoading(true);
         setTenantLoaderText(t("extensions:manage.features.tenant.wizards.addTenant.forms.loaderMessages.tenantCreate"));
-        addNewTenant(tenantName)
+        addNewTenant(tenantName, adu)
             .then((response: AxiosResponse) => {
                 if (response.status === 201) {
                     eventPublisher.publish("create-new-organization");
@@ -162,7 +166,7 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
                     delay(() => {
                         setIsNewTenantLoading(false);
                         onCloseHandler();
-                        handleTenantSwitch(tenantName);
+                        handleTenantSwitch(tenantName, adu?.consoleHostname);
                     }, 5000);
                 }
             })

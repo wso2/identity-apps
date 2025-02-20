@@ -170,6 +170,7 @@
             var proxyContextPathGlobal = startupConfig.proxyContextPathGlobal;
             var superTenantGlobal = startupConfig.superTenant;
             var tenantPrefixGlobal = startupConfig.tenantPrefix;
+            var isCentralDeploymentEnabled = startupConfig.enableCentralDeployment;
             var isAdaptiveAuthenticationAvailable = true;
             var isOrganizationManagementEnabled = true;
 
@@ -179,13 +180,14 @@
                 sessionStorage.setItem("auth_callback_url_console", authCallbackUrl);
             }
 
-            var serverOrigin = startupConfig.serverUrl;
+            var serverOrigin = isCentralDeploymentEnabled ? startupConfig.centralServerUrl : startupConfig.serverUrl;
+            var deploymentUnitServerOrigin = startupConfig.serverUrl;
             var authorizationCode = urlParams.get("code");
             var authSessionState = urlParams.get("session_state");
             var authIdPs = urlParams.get("AuthenticatedIdPs");
 
             function authenticateWithSDK() {
-                if(!authorizationCode) {
+                if (!authorizationCode || isCentralDeploymentEnabled) {
                     function getTenantName() {
                         var path = window.location.pathname;
                         var pathChunks = path.split("/");
@@ -222,6 +224,27 @@
                         }
 
                         return serverOrigin + getTenantPath(tenantDomain);
+                    }
+
+                    /**
+                     * Get the deployment unit API path.
+                     * 
+                     * @param {string} path - Path to be appended to the API path.
+                     * @param {string} tenantDomain - Tenant domain.
+                     * @returns {string} Constructed API path.
+                     */
+                    function getDeploymentUnitApiPath(path, tenantDomain) {
+                        if (!tenantDomain) {
+                            if (startupConfig.superTenantProxy) {
+                                tenantDomain = startupConfig.superTenantProxy;
+                            } else {
+                                tenantDomain = startupConfig.superTenant;
+                            }
+                        }
+                        if (path) {
+                            return deploymentUnitServerOrigin + getTenantPath(tenantDomain) + path;
+                        }
+                        return deploymentUnitServerOrigin + getTenantPath(tenantDomain);
                     }
 
                     /**
@@ -262,12 +285,25 @@
                         // When there's no proxy context path, the IS server returns "null".
                         var contextPath = (!proxyContextPathGlobal || proxyContextPathGlobal === "null") ? "" : "/" + proxyContextPathGlobal;
 
+                        if (isCentralDeploymentEnabled) {
+                            return applicationDomain 
+                        }
                         if (getTenantName() === startupConfig.superTenant) {
                             return applicationDomain.replace(/\/+$/, '') + contextPath
                                 + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                         }
 
-                        return applicationDomain.replace(/\/+$/, '') + contextPath + getTenantPath()
+                        return applicationDomain.replace(/\/+$/, '') + getTenantPath()
+                            + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
+                    }
+
+                    /**
+                     * Construct the sign-in redirect URL for deployment unit.
+                     * 
+                     * @returns {string} Constructed URL
+                     */
+                    function deploymentUnitSignInRedirectURL(tenantDomain) {
+                        return `${applicationDomain}/${tenantPrefixGlobal}/${tenantDomain}` 
                             + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                     }
 
@@ -333,7 +369,22 @@
                     }
 
                     var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
+                    if (isCentralDeploymentEnabled) {
+                        auth = AsgardeoAuth.AsgardeoSPAClient.getInstance("primary");
+                    }
 
+                    var endpoints = {
+                        authorizationEndpoint: getApiPath("/oauth2/authorize"),
+                        clockTolerance: 300,
+                        jwksEndpointURL: isCentralDeploymentEnabled ? ("/oauth2/jwks") : undefined,
+                        logoutEndpointURL: getApiPath("/oidc/logout"),
+                        oidcSessionIFrameEndpointURL: getApiPath("/oidc/checksession"),
+                        tokenEndpointURL: undefined,
+                        tokenRevocationEndpointURL: isCentralDeploymentEnabled ? ("/oauth2/revoke") : undefined
+                    };
+                    if (isCentralDeploymentEnabled) {
+                        endpoints.issuer = `${serverOrigin}/oauth2/token`;
+                    }
                     var authConfig = {
                         signInRedirectURL: signInRedirectURL(),
                         signOutRedirectURL: getSignOutRedirectURL(),
@@ -344,15 +395,7 @@
                         storage: "webWorker",
                         disableTrySignInSilently: true,
                         enableOIDCSessionManagement: false,
-                        endpoints: {
-                            authorizationEndpoint: getApiPath("/oauth2/authorize"),
-                            clockTolerance: 300,
-                            jwksEndpointURL: undefined,
-                            logoutEndpointURL: getApiPath("/oidc/logout"),
-                            oidcSessionIFrameEndpointURL: getApiPath("/oidc/checksession"),
-                            tokenEndpointURL: undefined,
-                            tokenRevocationEndpointURL: undefined
-                        },
+                        endpoints: endpoints,
                         enablePKCE: true
                     }
 
@@ -385,13 +428,54 @@
                             sessionStorage.setItem("auth_callback_url_console", authCallbackUrl);
                         }
 
-                        auth.signIn(getAuthParams({}));
+                        if (isCentralDeploymentEnabled) {
+                            if (authorizationCode) {
+                                auth.signIn({callOnlyOnRedirect: true})
+                                    .then((response) => {
+                                        auth.getDecodedIDToken().then((token) => {
+                                            var defaultTenant = token["default_tenant"]
+                                            var authConfigRegion = {
+                                                signInRedirectURL: deploymentUnitSignInRedirectURL(defaultTenant),
+                                                signOutRedirectURL: getSignOutRedirectURL(),
+                                                clientID: "<%= htmlWebpackPlugin.options.clientID %>",
+                                                baseUrl: getDeploymentUnitApiPath(defaultTenant),
+                                                responseMode: "query",
+                                                scope: ["openid SYSTEM profile"],
+                                                storage: "webWorker",
+                                                disableTrySignInSilently: false,
+                                                enableOIDCSessionManagement: false,
+                                                endpoints: {
+                                                    authorizationEndpoint: getDeploymentUnitApiPath("/oauth2/authorize", defaultTenant),
+                                                    clockTolerance: 300,
+                                                    jwksEndpointURL: getDeploymentUnitApiPath("/oauth2/jwks", defaultTenant),
+                                                    logoutEndpointURL: getDeploymentUnitApiPath("/oidc/logout", defaultTenant),
+                                                    oidcSessionIFrameEndpointURL: getDeploymentUnitApiPath("/oidc/checksession", defaultTenant),
+                                                    tokenEndpointURL: getDeploymentUnitApiPath("/oauth2/token", defaultTenant),
+                                                    tokenRevocationEndpointURL: getDeploymentUnitApiPath("/oauth2/revoke", defaultTenant),
+                                                    issuer: getDeploymentUnitApiPath("/oauth2/token", defaultTenant)
+                                                },
+                                                enablePKCE: true
+                                            }
+                                            var authSecondary = AsgardeoAuth.AsgardeoSPAClient.getInstance("secondary");
+
+                                            authSecondary.initialize(authConfigRegion);
+
+                                            authSecondary.signIn({prompt: "login",fidp: "PlatformIDP"})
+                                            
+                                        })
+                                    })
+                            } else {
+                                auth.signIn(getAuthParams({}))
+                            }
+                        } else {
+                            auth.signIn(getAuthParams({}));
+                        }
                     }
                 }
             }
         </script>
         <script>
-            if(!authorizationCode) {
+            if(!authorizationCode || isCentralDeploymentEnabled) {
                 var authSPAJS = document.createElement("script");
                 var authScriptSrc = "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename + '/auth-spa-3.1.2.min.js' : '/auth-spa-3.1.2.min.js'%>";
 

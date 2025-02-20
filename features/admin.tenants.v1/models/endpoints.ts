@@ -20,6 +20,7 @@
  * Interface for the Tenant Management feature resource endpoints.
  */
 export interface TenantResourceEndpointsInterface {
+    adu: string;
     tenantAssociationApi: string;
     tenantManagementApi: string;
     tenantSubscriptionApi: string;

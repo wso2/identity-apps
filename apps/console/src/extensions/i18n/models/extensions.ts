@@ -2532,6 +2532,13 @@ export interface Extensions {
                                         invalidLength: string;
                                     };
                                 };
+                                adu: {
+                                    label: string;
+                                    placeholder: string;
+                                    validations: {
+                                        empty: string;
+                                    }
+                                }
                             };
                             loaderMessages: {
                                 duplicateCheck: string;
@@ -2567,6 +2574,7 @@ export interface Extensions {
                     defaultTenant: Notification;
                     missingClaims: NotificationItem;
                     getTenants: NotificationItem;
+                    getADUs: NotificationItem;
                 };
             };
             userStores: {
