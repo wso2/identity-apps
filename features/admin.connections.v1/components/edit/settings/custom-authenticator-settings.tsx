@@ -65,6 +65,10 @@ export interface CustomAuthenticatorSettingsPagePropsInterface extends Identifia
      */
     isLoading?: boolean;
     /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
+    /**
      * Connection details.
      */
     connector: CustomAuthConnectionInterface | ConnectionInterface;
@@ -83,6 +87,7 @@ export interface CustomAuthenticatorSettingsPagePropsInterface extends Identifia
 export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettingsPagePropsInterface> = ({
     isCustomLocalAuthenticator,
     isLoading,
+    isReadOnly,
     connector,
     onUpdate,
     ["data-componentid"]: componentId = "custom-authenticator-settings-page"
@@ -294,7 +299,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                                         setIsEndpointAuthenticationUpdated(isAuthenticationUpdated);
                                     } }
                                 />
-                                { !isLoading && (
+                                { !isLoading && !isReadOnly && (
                                     <Button
                                         size="medium"
                                         variant="contained"
