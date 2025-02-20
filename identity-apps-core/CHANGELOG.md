@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.14.2
+
+### Patch Changes
+
+- [#7711](https://github.com/wso2/identity-apps/pull/7711) [`d29c0354d9a62afd5d1a89f9794edca6b90b7a50`](https://github.com/wso2/identity-apps/commit/d29c0354d9a62afd5d1a89f9794edca6b90b7a50) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix field alignment issue in self-registration
+
 ## 2.14.1
 
 ### Patch Changes
