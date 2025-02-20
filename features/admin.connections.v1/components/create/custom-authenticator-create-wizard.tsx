@@ -897,7 +897,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
             <Field.Input
                 className="identifier-field"
                 ariaLabel="identifier"
-                inputType="text"
+                inputType="text_with_adornment"
                 name="identifier"
                 label={ t("customAuthenticator:fields.createWizard.generalSettingsStep.identifier.label") }
                 placeholder={ t("customAuthenticator:fields.createWizard.generalSettingsStep.identifier.placeholder") }

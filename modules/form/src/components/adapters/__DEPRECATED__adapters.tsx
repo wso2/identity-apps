@@ -148,6 +148,102 @@ export const __DEPRECATED__TextFieldAdapter = (props:FieldRenderProps<any> ): Re
                     : (): void => { return; }
             }
             iconPosition={ childFieldProps?.iconPosition }
+        />
+    );
+};
+
+/**
+ * Deprecated Semantic UI Text Field adapter.
+ *
+ * @param props - Props injected to the component.
+ * @returns Text Field Adapter.
+ */
+export const TextFieldWithAdornmentAdapter = (props:FieldRenderProps<any> ): ReactElement => {
+
+    const { childFieldProps, input, meta, parentFormProps } = props;
+
+    return (
+        <Form.Input
+            aria-label={ childFieldProps?.ariaLabel }
+            key={ childFieldProps?.testId }
+            required={ childFieldProps?.required }
+            data-testid={ childFieldProps?.testId }
+            label={ childFieldProps?.label !== "" ? childFieldProps?.label : null }
+            onKeyPress={ (event: React.KeyboardEvent, data: any) => {
+                event.key === ENTER_KEY && input.onBlur(data?.name);
+            } }
+            onChange={ (_event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
+                if (childFieldProps?.listen && typeof childFieldProps?.listen === "function") {
+                    childFieldProps?.listen(data?.value);
+                }
+
+                input.onChange(data?.value);
+            } }
+            onBlur={ (event: any) => input.onBlur(event) }
+            control={ Input }
+            autoFocus={ childFieldProps?.autoFocus || false }
+            value={ meta.modified
+                ? input.value
+                : (childFieldProps?.value
+                    ? childFieldProps?.value
+                    : (parentFormProps?.values[ childFieldProps?.name ]
+                        ? parentFormProps?.values[ childFieldProps?.name ]
+                        : "")) }
+            { ...omit(childFieldProps, [ "value", "listen" ]) }
+            type={
+                childFieldProps?.inputType === "number"
+                    ? "number"
+                    : "text"
+            }
+            error={ ((meta.error || meta.submitError) && meta.touched)
+                ? {
+                    content: ((meta.error || meta.submitError) && meta.touched)
+                        ? meta.error || meta.submitError
+                        : null,
+                    "data-componentid": `${childFieldProps["data-componentid"]}-error`
+                }
+                : false
+            }
+            onKeyDown={
+                // Restrict typing non-numeric characters in the "number" input fields.
+                // Setting `type=number` is not sufficient to support firefox & IE.
+                // Port fix from https://github.com/wso2/identity-apps/pull/2035
+                childFieldProps?.inputType === "number"
+                    ? ((event: KeyboardEvent) => {
+                        const isNumber: boolean = /^[0-9]$/i.test(event.key);
+                        const isAllowed: boolean = (
+                            (event.key === "a"
+                                || event.key === "v"
+                                || event.key === "c"
+                                || event.key === "x")
+                            && (event.ctrlKey === true
+                                || event.metaKey === true)
+                        )
+                            || (
+                                event.key === "ArrowRight"
+                                || event.key == "ArrowLeft")
+                            || (
+                                event.key === "Delete"
+                                || event.key === "Backspace");
+
+                        !isNumber && !isAllowed && event.preventDefault();
+                    })
+                    : (): void => { return; }
+            }
+            onPaste={
+                // Restrict pasting non-numeric characters in the "number" input fields
+                // Setting `type=number` is not sufficient to support firefox & IE.
+                // Port fix from https://github.com/wso2/identity-apps/pull/2035
+                childFieldProps?.inputType === "number"
+                    ? ((event: ClipboardEvent) => {
+                        const data: string = event.clipboardData.getData("Text") ;
+                        const isNumber: boolean = /^[0-9]+$/i.test(data);
+
+                        !isNumber && event.preventDefault();
+                    })
+                    : (): void => { return; }
+            }
+            iconPosition={ childFieldProps?.iconPosition }
         >
             <input />
             { childFieldProps?.adornment && <Icon>{ childFieldProps.adornment }</Icon> }
