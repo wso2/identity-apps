@@ -1,5 +1,15 @@
 # @wso2is/admin.template-core.v1
 
+## 1.5.136
+
+### Patch Changes
+
+- [#7701](https://github.com/wso2/identity-apps/pull/7701) [`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger patch release to all packages to prepare for RC
+
+- Updated dependencies [[`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce)]:
+  - @wso2is/admin.core.v1@2.39.8
+  - @wso2is/core@2.6.5
+
 ## 1.5.135
 
 ### Patch Changes

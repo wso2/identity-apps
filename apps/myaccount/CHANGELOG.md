@@ -1,5 +1,22 @@
 # @wso2is/myaccount
 
+## 2.17.41
+
+### Patch Changes
+
+- [#7701](https://github.com/wso2/identity-apps/pull/7701) [`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger patch release to all packages to prepare for RC
+
+- Updated dependencies [[`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce)]:
+  - @wso2is/admin.organizations.v1@2.26.182
+  - @wso2is/common.branding.v1@2.26.39
+  - @wso2is/access-control@3.3.19
+  - @wso2is/core@2.6.5
+  - @wso2is/forms@2.3.21
+  - @wso2is/i18n@2.19.21
+  - @wso2is/react-components@2.9.11
+  - @wso2is/theme@2.6.11
+  - @wso2is/validation@2.4.1
+
 ## 2.17.40
 
 ### Patch Changes

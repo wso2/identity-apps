@@ -1,5 +1,21 @@
 # @wso2is/admin.authentication.v1
 
+## 2.25.182
+
+### Patch Changes
+
+- [#7701](https://github.com/wso2/identity-apps/pull/7701) [`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger patch release to all packages to prepare for RC
+
+- Updated dependencies [[`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce)]:
+  - @wso2is/admin.authorization.v1@2.25.80
+  - @wso2is/admin.core.v1@2.39.8
+  - @wso2is/admin.extensions.v1@2.36.107
+  - @wso2is/admin.organizations.v1@2.26.182
+  - @wso2is/admin.users.v1@2.30.92
+  - @wso2is/admin.userstores.v1@2.27.8
+  - @wso2is/core@2.6.5
+  - @wso2is/i18n@2.19.21
+
 ## 2.25.181
 
 ### Patch Changes
