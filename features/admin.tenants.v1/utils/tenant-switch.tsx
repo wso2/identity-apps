@@ -24,12 +24,14 @@ import { SessionStorageUtils } from "@wso2is/core/utils";
  *
  * @param tenantName - Name of the tenant being switched to.
  */
-export const handleTenantSwitch = (tenantName: string): void => {
-    const newTenantedPath: URL = new URL(
-        `${window["AppUtils"].getConfig().clientOrigin}/${window["AppUtils"].getConfig().tenantPrefix}/${tenantName}/${
-            window["AppUtils"].getConfig().appBase
-        }`
-    );
+export const handleTenantSwitch = (tenantName: string, consoleHostname?: string): void => {
+    let clientOrigin: string = `${window["AppUtils"].getConfig().clientOrigin}`;
+
+    if (consoleHostname) {
+        clientOrigin = consoleHostname;
+    }
+    const newTenantedPath: URL = new URL(`${clientOrigin}/${window["AppUtils"].getConfig().tenantPrefix}` +
+    `/${tenantName}/${window["AppUtils"].getConfig().appBase}`);
 
     newTenantedPath.searchParams.set("disable_silent_sign_in", "true");
     newTenantedPath.searchParams.set("switch_tenant", "true");

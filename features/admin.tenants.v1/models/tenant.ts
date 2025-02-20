@@ -33,6 +33,8 @@ export interface TenantInfo {
     domain: string;
     associationType: string;
     default: boolean;
+    adu?: string;
+    consoleHostname?: string;
 }
 
 /**
@@ -47,4 +49,29 @@ export interface TenantRequestResponse {
 
 export interface TriggerPropTypesInterface extends IdentifiableComponentInterface {
     currentTenant: string;
+}
+
+/**
+ * Interface for the ADU (Asgardeo Deployment Unit).
+ */
+export interface ADU {
+    adu: string;
+    aduDisplayName: string;
+    consoleHostname: string;
+}
+
+/**
+ * Interface for the response returned by the get ADUs request.
+ */
+export interface ADUResponse {
+    adus: ADU[];
+}
+
+/**
+ * Interface for the ADU dropdown options.
+ */
+export interface ADUDropdownOptionsInterface {
+    key: string;
+    text: any;
+    value: string;
 }

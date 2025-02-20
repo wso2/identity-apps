@@ -2715,6 +2715,13 @@ export const extensions: Extensions = {
                                             " alphanumeric characters</2><3>begin with an alphabetic character</3>" +
                                             "</3s>"
                                     }
+                                },
+                                adu: {
+                                    label: "Region",
+                                    placeholder: "Select a region (E. g., us)",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
                                 }
                             },
                             loaderMessages: {
@@ -2781,6 +2788,10 @@ export const extensions: Extensions = {
                     getTenants: {
                         message: "Unable to fetch your organizations",
                         description: "An error occurred while fetching your organizations."
+                    },
+                    getADUs: {
+                        message: "Unable to fetch regions",
+                        description: "An error occurred while fetching regions."
                     }
                 }
             },
