@@ -50,10 +50,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Card, Divider, Flag, FlagNameValues, Grid, Icon } from "semantic-ui-react";
-import { addNewTenant, checkDuplicateTenants, getADUs } from "../api";
+import { addNewTenant, checkDuplicateTenants, getDeploymentUnits } from "../api";
 import { TenantCreationIcons } from "../configs";
 import { TenantManagementConstants } from "../constants";
-import { ADU, ADUDropdownOptionsInterface, ADUResponse } from "../models";
+import { DeploymentUnit, DeploymentUnitDropdownOptionsInterface, DeploymentUnitResponse } from "../models";
 import { Region } from "../models/region";
 import { handleTenantSwitch } from "../utils";
 
@@ -69,7 +69,7 @@ export interface AddTenantFormErrorValidationsInterface {
  */
 export interface AddTenantFormValuesInterface {
     tenantName: string;
-    adu?: string;
+    deploymentUnitJson?: string;
 }
 
 const FORM_ID: string = "create-tenant-form";
@@ -101,8 +101,8 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
     const [ tenantLoaderText, setTenantLoaderText ] = useState<string>();
     const [ newTenantName, setNewTenantName ] = useState<string>(TenantManagementConstants.TENANT_URI_PLACEHOLDER);
     const [ submissionValue, setSubmissionValue ] = useState<AddTenantFormValuesInterface>();
-    const [ adus, setAdus ] = useState<ADU[]>([]);
-    const [ selectedADU, setSelectedADU ] = useState<string>(undefined);
+    const [ deploymentUnits, setDeploymentUnits ] = useState<DeploymentUnit[]>([]);
+    const [ selectedDeploymentUnit, setSelectedDeploymentUnit ] = useState<DeploymentUnit>(undefined);
 
     const deploymentRegion: Region = useSelector((state: AppState) => {
         return state.config?.deployment?.extensions?.deploymentRegion as Region;
@@ -186,20 +186,20 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
 
     useEffect(() => {
         if (isCentralDeploymentEnabled) {
-            getADUs()
-                .then((response: ADUResponse) => {
-                    setAdus(response.adus);
+            getDeploymentUnits()
+                .then((response: DeploymentUnitResponse) => {
+                    setDeploymentUnits(response.deploymentUnits);
                 })
                 .catch((error: any) => {
                     dispatch(
                         addAlert({
                             description:
                                 error?.description &&
-                                t("extensions:manage.features.tenant.notifications." + "getADUs.description"),
+                                t("tenants:listDeploymentUnits.description"),
                             level: AlertLevels.ERROR,
                             message:
                                 error?.description &&
-                                t("extensions:manage.features.tenant.notifications." + "getADUs.message")
+                                t("tenants:listDeploymentUnits.message"),
                         })
                     );
                 });
@@ -220,8 +220,8 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
         }
     };
 
-    const updateAdu = (adu: string): void => {
-        setSelectedADU(adu);
+    const updateDeploymentUnit = (deploymentUnitJson: string): void => {
+        setSelectedDeploymentUnit(deploymentUnitJson??JSON.parse(deploymentUnitJson));
     };
 
     /**
@@ -284,7 +284,7 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
             .catch((error: AxiosError) => {
                 if (error.response.status == 404) {
                     // Proceed to tenant creation if tenant does not exist.
-                    addTenant(submissionValue.tenantName, JSON.parse(submissionValue.adu));
+                    addTenant(submissionValue.tenantName, JSON.parse(submissionValue.deploymentUnitJson));
                 } else {
                     setIsNewTenantLoading (false);
                     setAlert({
@@ -300,10 +300,10 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
     /**
      * Function which contains the logic to add a new tenant by calling APIs.
      */
-    const addTenant = (tenantName: string, adu?: ADU): void => {
+    const addTenant = (tenantName: string, deploymentUnit?: DeploymentUnit): void => {
         setIsNewTenantLoading(true);
         setTenantLoaderText(t("extensions:manage.features.tenant.wizards.addTenant.forms.loaderMessages.tenantCreate"));
-        addNewTenant(tenantName, adu)
+        addNewTenant(tenantName, deploymentUnit)
             .then((response: AxiosResponse) => {
                 if (response.status === 201) {
                     eventPublisher.publish("create-new-organization");
@@ -455,14 +455,14 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
         }
     };
 
-    const aduOptions: ADUDropdownOptionsInterface[] = useMemo(() => {
+    const deploymentUnitOptions: DeploymentUnitDropdownOptionsInterface[] = useMemo(() => {
 
-        return adus?.map((adu: ADU) => ({
-            key: adu.adu,
-            text: adu.aduDisplayName,
-            value: JSON.stringify(adu)
+        return deploymentUnits?.map((deploymentUnit: DeploymentUnit) => ({
+            key: deploymentUnit.name,
+            text: deploymentUnit.displayName,
+            value: JSON.stringify(deploymentUnit)
         }));
-    }, [ adus ]);
+    }, [ deploymentUnits ]);
 
     return (
         <PageLayout
@@ -592,20 +592,14 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                                 { isCentralDeploymentEnabled  ? (
                                     <Field.Dropdown
                                         ariaLabel="Region"
-                                        name="adu"
-                                        label={
-                                            t("extensions:manage.features.tenant.wizards." +
-                                                "addTenant.forms.fields.adu.label")
-                                        }
-                                        placeholder = {
-                                            t("extensions:manage.features.tenant.wizards." +
-                                                "addTenant.forms.fields.adu.placeholder")
-                                        }
+                                        name="deploymentUnit"
+                                        label={ t("tenants:deploymentUtits.label") }
+                                        placeholder = { t("tenants:deploymentUtits.placeholder") }
                                         required={ true }
-                                        options={ aduOptions }
+                                        options={ deploymentUnitOptions }
                                         readOnly={ true }
-                                        data-testid={ `${ testId }-adu-dropdown` }
-                                        listen={ updateAdu }
+                                        data-testid={ `${ testId }-deployment-unit-dropdown` }
+                                        listen={ updateDeploymentUnit }
                                         enableReinitialize={ true }
                                     />
                                 ) : null }
@@ -613,16 +607,18 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                             { isCheckingTenantExistence
                                 ? (
                                     <Text className="tenant-uri-prefix">
-                                        { `${isCentralDeploymentEnabled && selectedADU ?
-                                            adus.find((adu: ADU) => adu.adu == selectedADU).consoleHostname :
+                                        { `${isCentralDeploymentEnabled && selectedDeploymentUnit ?
+                                            deploymentUnits.find((deploymentUnit: DeploymentUnit) =>
+                                                deploymentUnit.name == selectedDeploymentUnit.name).consoleHostname :
                                             regionQualifiedConsoleUrl ??
                                                 "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/` }
                                         <Icon name="circle notched" color="grey" loading/>
                                     </Text>
                                 ) : (
                                     <span>
-                                        { `${ isCentralDeploymentEnabled && selectedADU ?
-                                            adus.find((adu: ADU) => adu.adu == selectedADU).consoleHostname :
+                                        { `${ isCentralDeploymentEnabled && selectedDeploymentUnit ?
+                                            deploymentUnits.find((deploymentUnit: DeploymentUnit) =>
+                                                deploymentUnit.name == selectedDeploymentUnit.name).consoleHostname :
                                             regionQualifiedConsoleUrl ??
                                                 "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/` }
                                         <span

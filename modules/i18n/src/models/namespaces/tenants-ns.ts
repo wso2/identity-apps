@@ -165,6 +165,13 @@ export interface TenantsNS {
             secondaryAction: string;
         };
     },
+    deploymentUtits: {
+        label: string;
+        placeholder: string;
+        validations: {
+            empty: string;
+        };
+    };
     edit: {
         backButton: string;
         consoleURL: {
@@ -233,6 +240,10 @@ export interface TenantsNS {
                 };
             };
         };
+    };
+    listDeploymentUnits: {
+        description: string;
+        message: string;
     };
     listing: {
         advancedSearch: {

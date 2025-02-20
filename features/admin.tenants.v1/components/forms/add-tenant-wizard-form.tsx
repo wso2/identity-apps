@@ -37,7 +37,7 @@ import { useSelector } from "react-redux";
 import { Divider, Segment } from "semantic-ui-react";
 import { checkDuplicateTenants } from "../../api";
 import { TenantManagementConstants } from "../../constants";
-import { ADU, ADUDropdownOptionsInterface } from "../../models";
+import { DeploymentUnit, DeploymentUnitDropdownOptionsInterface } from "../../models";
 
 /**
  * Interface to capture add tenant wizard form props.
@@ -49,7 +49,7 @@ interface AddTenantWizardFormPropsInterface extends TestableComponentInterface {
     setTenantDuplicate: Dispatch<SetStateAction<boolean>>;
     isCheckingTenantExistence: boolean;
     setCheckingTenantExistence: Dispatch<SetStateAction<boolean>>;
-    adus: ADU[]
+    deploymentUnits: DeploymentUnit[]
 }
 
 /**
@@ -57,7 +57,7 @@ interface AddTenantWizardFormPropsInterface extends TestableComponentInterface {
  */
 export interface AddTenantWizardFormErrorValidationsInterface {
     tenantName: string;
-    adu?: string
+    deploymentUnitName?: string
 }
 
 /**
@@ -65,7 +65,7 @@ export interface AddTenantWizardFormErrorValidationsInterface {
  */
 export interface AddTenantWizardFormValuesInterface {
     tenantName: string;
-    adu?: string;
+    deploymentUnitName?: string;
 }
 
 const FORM_ID: string = "add-tenant-wizard-form";
@@ -86,16 +86,16 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         setTenantDuplicate,
         isCheckingTenantExistence,
         setCheckingTenantExistence,
-        adus,
+        deploymentUnits,
         [ "data-testid" ]: testId
     } = props;
 
     const [ newTenantName, setNewTenantName ] = useState<string>(
         TenantManagementConstants.TENANT_URI_PLACEHOLDER
     );
-    const [ selectedADU, setSelectedADU ] = useState<string>(undefined);
+    const [ selectedDeploymentUnit, setSelectedDeploymentUnit ] = useState<DeploymentUnit>(undefined);
     const [ isTenantValid, setIsTenantValid ] = useState<boolean>(false);
-    const [ isADUValid, setIsADUValid ] = useState<boolean>(false);
+    const [ isValidDeploymentUnit, setIsValidDeploymentUnit ] = useState<boolean>(false);
     const regionQualifiedConsoleUrl: string = useSelector((state: AppState) => {
         return state.config?.deployment?.extensions?.regionQualifiedConsoleUrl as string;
     });
@@ -163,22 +163,23 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         }
     };
 
-    const updateAdu = (adu: string): void => {
-        if (adu === undefined) {
-            setIsADUValid(false);
+    const updateDeploymentUnit = (deploymentUnitJson: string): void => {
+        if (deploymentUnitJson === undefined) {
+            setIsValidDeploymentUnit(false);
         } else {
-            setSelectedADU(adu);
-            setIsADUValid(true);
+            setSelectedDeploymentUnit(deploymentUnitJson??JSON.parse(deploymentUnitJson));
+            setIsValidDeploymentUnit(true);
         }
     };
 
-    const aduOptions: ADUDropdownOptionsInterface[] = adus.map((adu: ADU) => {
-        return {
-            key: adu.adu,
-            text: adu.aduDisplayName,
-            value: JSON.stringify(adu)
-        };
-    });
+    const deploymentUnitOptions: DeploymentUnitDropdownOptionsInterface[] =
+        deploymentUnits.map((deploymentUnit: DeploymentUnit) => {
+            return {
+                key: deploymentUnit.name,
+                text: deploymentUnit.displayName,
+                value: JSON.stringify(deploymentUnit)
+            };
+        });
 
     /**
      * Validate input data.
@@ -190,7 +191,7 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         values: AddTenantWizardFormValuesInterface
     ): AddTenantWizardFormErrorValidationsInterface => {
         const error: AddTenantWizardFormErrorValidationsInterface = {
-            adu: undefined,
+            deploymentUnitName: undefined,
             tenantName: undefined
         };
 
@@ -205,10 +206,8 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                 "extensions:manage.features.tenant.wizards.addTenant.forms.fields.tenantName.validations.empty"
             );
         }
-        if (!isADUValid){
-            error.adu = t(
-                "extensions:manage.features.tenant.wizards.addTenant.forms.fields.adu.validations.empty"
-            );
+        if (!isValidDeploymentUnit){
+            error.deploymentUnitName = t("tenants:deploymentUtits.validations.empty");
         }
 
         return error;
@@ -227,7 +226,7 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                     (tenantDuplicate ||
                         newTenantName ===
                         TenantManagementConstants.TENANT_URI_PLACEHOLDER ||
-                        isCentralDeploymentEnabled && !selectedADU) &&
+                        isCentralDeploymentEnabled && !selectedDeploymentUnit) &&
                     validateForm
                 }
             >
@@ -386,20 +385,15 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                 { isCentralDeploymentEnabled  ? (
                     <Field.Dropdown
                         ariaLabel="Region"
-                        name="adu"
-                        label={
-                            t("extensions:manage.features.tenant.wizards.addTenant.forms.fields.adu.label")
-                        }
-                        placeholder = {
-                            t("extensions:manage.features.tenant.wizards.addTenant.forms.fields.adu.placeholder")
-                        }
+                        name="deploymentUnit"
+                        label={ t("tenants:deploymentUtits.label") }
+                        placeholder = { t("tenants:deploymentUtits.placeholder") }
                         required={ true }
-                        options={ aduOptions }
+                        options={ deploymentUnitOptions }
                         readOnly={ true }
-                        data-testid={ `${ testId }-adu-dropdown` }
-                        listen={ updateAdu }
+                        data-testid={ `${ testId }-deployment-unit-dropdown` }
+                        listen={ updateDeploymentUnit }
                         enableReinitialize={ true }
-                        hint={ "ADU" }
                     />
                 ) : null }
 
