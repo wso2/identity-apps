@@ -240,10 +240,8 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                                         minLength={ 0 }
                                         width={ 16 }
                                         data-componentid={ `${componentId}-general-form-identifier` }
+                                        value={ apiResourceData.identifier }
                                     >
-                                        <CopyInputField
-                                            value={ apiResourceData.identifier }
-                                        />
                                     </Field.Input>
                                 )
                             }
