@@ -1,5 +1,15 @@
 # @wso2is/identity-apps-core
 
+## 2.14.0
+
+### Minor Changes
+
+- [#7688](https://github.com/wso2/identity-apps/pull/7688) [`4951d27a683c9bf120a3c29bc9e5171b410050ad`](https://github.com/wso2/identity-apps/commit/4951d27a683c9bf120a3c29bc9e5171b410050ad) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Improve i18n experience for backend errors
+
+### Patch Changes
+
+- [#7657](https://github.com/wso2/identity-apps/pull/7657) [`63182bb74dae72883c8f18d9ca46d347c76a74d0`](https://github.com/wso2/identity-apps/commit/63182bb74dae72883c8f18d9ca46d347c76a74d0) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Add Error Messages for Generic and Pending Verification Scenarios In JIT flow
+
 ## 2.13.8
 
 ### Patch Changes
