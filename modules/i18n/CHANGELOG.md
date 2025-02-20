@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.20.1
+
+### Patch Changes
+
+- [#7709](https://github.com/wso2/identity-apps/pull/7709) [`063fe9d369c650df20207653449962881bb3e963`](https://github.com/wso2/identity-apps/commit/063fe9d369c650df20207653449962881bb3e963) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Improve string formatting in actions rule config form
+
 ## 2.20.0
 
 ### Minor Changes
