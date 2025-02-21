@@ -1,5 +1,35 @@
 # @wso2is/admin.applications.v1
 
+## 2.31.37
+
+### Patch Changes
+
+- [#7722](https://github.com/wso2/identity-apps/pull/7722) [`85cd0800bc8f45b7e3d0d32cda732236761cdf7e`](https://github.com/wso2/identity-apps/commit/85cd0800bc8f45b7e3d0d32cda732236761cdf7e) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Fix custom internal user authenticator is categorized under 2fa in the classic login editor
+
+- Updated dependencies [[`60c1151f0be16d1fcd5acfa9058bb07e1b01c3eb`](https://github.com/wso2/identity-apps/commit/60c1151f0be16d1fcd5acfa9058bb07e1b01c3eb)]:
+  - @wso2is/admin.connections.v1@2.33.72
+  - @wso2is/admin.authentication-flow-builder.v1@2.24.189
+  - @wso2is/admin.core.v1@2.39.15
+  - @wso2is/admin.extensions.v1@2.36.114
+  - @wso2is/admin.identity-providers.v1@2.26.189
+  - @wso2is/admin.organizations.v1@2.26.189
+  - @wso2is/admin.roles.v2@2.27.133
+  - @wso2is/admin.application-templates.v1@1.4.189
+  - @wso2is/admin.console-settings.v1@2.25.189
+  - @wso2is/admin.login-flow.ai.v1@2.27.84
+  - @wso2is/admin.oidc-scopes.v1@2.25.189
+  - @wso2is/admin.api-resources.v2@2.25.189
+  - @wso2is/admin.branding.v1@2.28.46
+  - @wso2is/admin.claims.v1@2.27.99
+  - @wso2is/admin.feature-gate.v1@1.4.189
+  - @wso2is/admin.impersonation.v1@1.6.189
+  - @wso2is/admin.secrets.v1@2.25.189
+  - @wso2is/admin.server-configurations.v1@2.32.114
+  - @wso2is/admin.template-core.v1@1.5.143
+  - @wso2is/admin.users.v1@2.30.99
+  - @wso2is/admin.userstores.v1@2.27.15
+  - @wso2is/admin.wsfed-configuration.v1@2.25.189
+
 ## 2.31.36
 
 ### Patch Changes

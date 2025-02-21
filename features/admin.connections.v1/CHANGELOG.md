@@ -1,5 +1,28 @@
 # @wso2is/admin.connections.v1
 
+## 2.33.72
+
+### Patch Changes
+
+- [#7719](https://github.com/wso2/identity-apps/pull/7719) [`60c1151f0be16d1fcd5acfa9058bb07e1b01c3eb`](https://github.com/wso2/identity-apps/commit/60c1151f0be16d1fcd5acfa9058bb07e1b01c3eb) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Add a loader to custom federated authenticator settings tab
+
+- Updated dependencies [[`60c1151f0be16d1fcd5acfa9058bb07e1b01c3eb`](https://github.com/wso2/identity-apps/commit/60c1151f0be16d1fcd5acfa9058bb07e1b01c3eb), [`85cd0800bc8f45b7e3d0d32cda732236761cdf7e`](https://github.com/wso2/identity-apps/commit/85cd0800bc8f45b7e3d0d32cda732236761cdf7e)]:
+  - @wso2is/admin.connections.v1@2.33.72
+  - @wso2is/admin.applications.v1@2.31.37
+  - @wso2is/admin.core.v1@2.39.15
+  - @wso2is/admin.extensions.v1@2.36.114
+  - @wso2is/admin.identity-providers.v1@2.26.189
+  - @wso2is/admin.identity-verification-providers.v1@2.27.189
+  - @wso2is/admin.organizations.v1@2.26.189
+  - @wso2is/admin.roles.v2@2.27.133
+  - @wso2is/admin.application-templates.v1@1.4.189
+  - @wso2is/admin.console-settings.v1@2.25.189
+  - @wso2is/admin.actions.v1@1.11.54
+  - @wso2is/admin.claims.v1@2.27.99
+  - @wso2is/admin.feature-gate.v1@1.4.189
+  - @wso2is/admin.template-core.v1@1.5.143
+  - @wso2is/admin.userstores.v1@2.27.15
+
 ## 2.33.71
 
 ### Patch Changes
