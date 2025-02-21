@@ -175,20 +175,16 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
         fetchServerSupportedClaims();
     }, [ dialectID ]);
 
-    useEffect(() => {
-        if (!filteredClaims?.length) return;
+    const hasServerSupportedClaimsToMap: boolean = useMemo(() => {
+        if (!filteredClaims?.length && serverSupportedClaims?.length > 0) {
+            return true;
+        }
         const _extClaims: Set<string> = new Set(filteredClaims.map(
             (c: ExternalClaim) => c.claimURI
         ));
 
-        setServerSupportedClaims([
-            ...(serverSupportedClaims ?? []).filter((c: string) => !_extClaims.has(c))
-        ]);
-    }, [ filteredClaims ]);
-
-    const hasServerSupportedClaimsToMap: boolean = useMemo(() => {
-        return serverSupportedClaims?.length > 0;
-    }, [ serverSupportedClaims ]);
+        return serverSupportedClaims?.some((c: string) => !_extClaims.has(c));
+    }, [ serverSupportedClaims, filteredClaims ]);
 
     useEffect(() => {
         if (claims) {
