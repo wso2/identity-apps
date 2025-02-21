@@ -1202,6 +1202,7 @@ export interface ApplicationsNS {
                 };
             };
             managementAppBanner: string;
+            discoverableGroupsBanner: string;
         };
         inboundCustom: {
             fields: {

@@ -650,8 +650,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         )
                     }
                     {
-                        !isM2MApplication && isMyAccountEnabled &&
-                            (!isSubOrganizationType || (isSubOrganizationType && isDiscoverable)) && (
+                        !isM2MApplication && isMyAccountEnabled && !isSubOrganizationType && (
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     { !isSubOrganizationType && <Divider /> }
@@ -664,7 +663,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         required={ false }
                                         label={ t("common:enable") }
                                         initialValue={ isDiscoverable }
-                                        readOnly={ readOnly || (isSubOrganizationType && isDiscoverable) }
+                                        readOnly={ readOnly }
                                         data-testid={ `${ testId }-application-discoverable-checkbox` }
                                         listen={ (value: boolean) => setDiscoverability(value) }
                                         hint={ (
@@ -713,9 +712,19 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             </Grid.Row>
                         )
                     }
+                    { Object.keys(selectedGroupsFromUserStore).length === 0 &&
+                        application?.advancedConfigurations?.discoverableByEndUsers && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Message
+                                    type="warning"
+                                    content={ t("applications:forms.generalDetails.discoverableGroupsBanner") }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) }
                     {
-                        !isM2MApplication && isMyAccountEnabled &&
-                            (!isSubOrganizationType || (isSubOrganizationType && isDiscoverable)) && (
+                        !isM2MApplication && isMyAccountEnabled && !isSubOrganizationType && (
                             <Grid.Row columns={ 16 } className="application-general-discoverable-groups">
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Heading as="h6">
