@@ -76,6 +76,10 @@ export interface CustomAuthenticatorSettingsPagePropsInterface extends Identifia
      * Callback to update the connector details.
      */
     onUpdate: (id: string, tabName?: string) => void;
+    /**
+     * Loading Component.
+     */
+    loader: () => ReactElement;
 }
 
 /**
@@ -90,6 +94,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
     isReadOnly,
     connector,
     onUpdate,
+    loader: Loader,
     ["data-componentid"]: componentId = "custom-authenticator-settings-page"
 }: CustomAuthenticatorSettingsPagePropsInterface): ReactElement => {
     const dispatch: Dispatch = useDispatch();
@@ -98,6 +103,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
     const [ initialValues, setInitialValues ] = useState<EndpointConfigFormPropertyInterface>(null);
     const [ endpointAuthenticationType, setEndpointAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isEndpointAuthenticationUpdated, setIsEndpointAuthenticationUpdated ] = useState<boolean>(false);
+    const [ isEndpointDetailsLoading, setIsEndpointDetailsLoading ] = useState<boolean>(false);
 
     useEffect(() => {
         if (isCustomLocalAuthenticator) {
@@ -123,6 +129,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
      * @param customFederatedAuthenticatorId - Custom federated authenticator id.
      */
     const getCustomFederatedAuthenticatorInitialValues = (customFederatedAuthenticatorId: string) => {
+        setIsEndpointDetailsLoading(true);
         getFederatedAuthenticatorDetails(connector?.id, customFederatedAuthenticatorId)
             .then((data: FederatedAuthenticatorListItemInterface) => {
                 const endpointAuth: EndpointConfigFormPropertyInterface = {
@@ -134,6 +141,8 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
             })
             .catch((error: AxiosError) => {
                 handleGetCustomAuthenticatorError(error);
+            }).finally(() => {
+                setIsEndpointDetailsLoading(false);
             });
     };
 
@@ -273,6 +282,10 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
             handleUpdateCustomFederatedAuthenticator(values, authProperties);
         }
     };
+
+    if (isLoading || isEndpointDetailsLoading) {
+        return <Loader />;
+    }
 
     return (
         <div className="custom-authenticator-settings-tab">
