@@ -781,6 +781,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                     validation.isValid = false;
                                     validation.errorMessages.push(
                                         USERNAME_HAS_INVALID_LENGTH_ERROR_MESSAGE);
+                                    scrollToInValidField("email");
                                 // Check username validity against userstore regex.
                                 } else if (!regExpInvalidUsername.test(value)) {
                                     validation.isValid = false;
@@ -791,6 +792,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                         validation.errorMessages.push(
                                             USERNAME_HAS_INVALID_SPECIAL_SYMBOLS_ERROR_MESSAGE);
                                     }
+                                    scrollToInValidField("email");
                                 }
                             } else if (!isEmpty(userStoreUsernameRegEx)) {
                                 // Check username validity against userstore regex.
@@ -808,6 +810,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                                 regex: userStoreUsernameRegEx
                                             }));
                                     }
+                                    scrollToInValidField("email");
                                 }
                             }
 
