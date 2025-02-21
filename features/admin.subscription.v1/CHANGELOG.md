@@ -1,5 +1,13 @@
 # @wso2is/admin.subscription.v1
 
+## 1.5.190
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.16
+  - @wso2is/admin.organizations.v1@2.26.190
+
 ## 1.5.189
 
 ### Patch Changes
