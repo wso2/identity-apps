@@ -892,7 +892,6 @@ export const getConnectedAppsOfAuthenticator = (authenticatorId: string): Promis
         });
 };
 
-
 /**
  * Update identity provider details.
  *
