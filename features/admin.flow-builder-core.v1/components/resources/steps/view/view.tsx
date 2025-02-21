@@ -130,7 +130,7 @@ export const View: FunctionComponent<StepPropsInterface> = ({
                     data-componentid={ `${componentId}-heading-text` }
                     className="flow-builder-step-id"
                 >
-                    Step
+                    View
                 </Typography>
                 <Tooltip title={ "Remove" }>
                     <IconButton
