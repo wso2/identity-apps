@@ -102,7 +102,10 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
             .catch((error: AxiosError) => {
                 if (error.response.status == 404) {
                     // Proceed to tenant creation if tenant does not exist.
-                    addTenant(submissionValue.tenantName, JSON.parse(submissionValue.deploymentUnitName));
+                    addTenant(
+                        submissionValue.tenantName,
+                        submissionValue.deploymentUnitJson ?? JSON.parse(submissionValue.deploymentUnitJson)
+                    );
                 } else {
                     setIsNewTenantLoading(false);
                     setAlert({

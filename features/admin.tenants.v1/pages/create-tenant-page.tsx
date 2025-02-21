@@ -199,7 +199,7 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                             level: AlertLevels.ERROR,
                             message:
                                 error?.description &&
-                                t("tenants:listDeploymentUnits.message"),
+                                t("tenants:listDeploymentUnits.message")
                         })
                     );
                 });
@@ -221,7 +221,7 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
     };
 
     const updateDeploymentUnit = (deploymentUnitJson: string): void => {
-        setSelectedDeploymentUnit(deploymentUnitJson??JSON.parse(deploymentUnitJson));
+        setSelectedDeploymentUnit(deploymentUnitJson ?? JSON.parse(deploymentUnitJson));
     };
 
     /**
@@ -284,7 +284,10 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
             .catch((error: AxiosError) => {
                 if (error.response.status == 404) {
                     // Proceed to tenant creation if tenant does not exist.
-                    addTenant(submissionValue.tenantName, JSON.parse(submissionValue.deploymentUnitJson));
+                    addTenant(
+                        submissionValue.tenantName,
+                        submissionValue.deploymentUnitJson ?? JSON.parse(submissionValue.deploymentUnitJson)
+                    );
                 } else {
                     setIsNewTenantLoading (false);
                     setAlert({
