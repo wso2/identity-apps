@@ -24,7 +24,7 @@ name: 📩 Receive PR
 
 on:
     pull_request:
-        branches: [master]
+        branches: [master, temp-main-2]
 
 jobs:
     save-pr-information:
