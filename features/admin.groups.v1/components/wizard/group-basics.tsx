@@ -21,7 +21,8 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { getAUserStore, getUserStoreList } from "@wso2is/admin.userstores.v1/api/user-stores";
-import { USERSTORE_REGEX_PROPERTIES, UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
+import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants";
+import useUserStoresContext from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 import { AlertLevels, IdentifiableComponentInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -65,6 +66,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { isUserStoreReadOnly } = useUserStoresContext();
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
@@ -76,6 +78,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
     const groupName: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
 
     useEffect(() => {
+        // To-do: Replace this with userstore provider logic.
         getUserStores();
     }, []);
 
@@ -142,9 +145,12 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
         try {
             const response: UserStoreDetails = await getAUserStore(userStoreID);
 
-            return response?.properties?.some(({ name, value }: UserStoreProperty) =>
-                name === UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY && value === "false"
-            ) || false;
+            // Check whether the user store is disabled.
+            const isDisabled: boolean = response.properties.find(
+                (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
+
+            // If the user store not read only and not disabled, return true.
+            return !isUserStoreReadOnly(response?.name) && !isDisabled;
         } catch (error) {
             dispatch(addAlert({
                 description: t("userstores:notifications.fetchUserstores.genericError." +
@@ -240,7 +246,8 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                     required={ true }
                                     element={ <div></div> }
                                     listen={ handleDomainChange }
-                                    value={ initialValues?.basicDetails?.domain ?? userStoreOptions[ 0 ]?.value }
+                                    value={ initialValues?.basicDetails?.domain ?? userStore ??
+                                        userStoreOptions[ 0 ]?.value }
                                 />
                             </GridColumn>
                         </GridRow>

@@ -1,5 +1,241 @@
 # @wso2is/admin.push-providers.v1
 
+## 1.0.76
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.13
+  - @wso2is/admin.feature-gate.v1@1.4.187
+  - @wso2is/admin.template-core.v1@1.5.141
+
+## 1.0.75
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.12
+  - @wso2is/admin.feature-gate.v1@1.4.186
+  - @wso2is/admin.template-core.v1@1.5.140
+
+## 1.0.74
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.11
+  - @wso2is/admin.feature-gate.v1@1.4.185
+  - @wso2is/admin.template-core.v1@1.5.139
+
+## 1.0.73
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.10
+  - @wso2is/admin.feature-gate.v1@1.4.184
+  - @wso2is/admin.template-core.v1@1.5.138
+
+## 1.0.72
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.9
+  - @wso2is/admin.feature-gate.v1@1.4.183
+  - @wso2is/admin.template-core.v1@1.5.137
+
+## 1.0.71
+
+### Patch Changes
+
+- [#7701](https://github.com/wso2/identity-apps/pull/7701) [`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger patch release to all packages to prepare for RC
+
+- Updated dependencies [[`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce)]:
+  - @wso2is/admin.core.v1@2.39.8
+  - @wso2is/admin.feature-gate.v1@1.4.182
+  - @wso2is/admin.template-core.v1@1.5.136
+
+## 1.0.70
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.7
+  - @wso2is/admin.feature-gate.v1@1.4.181
+  - @wso2is/admin.template-core.v1@1.5.135
+
+## 1.0.69
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.6
+  - @wso2is/admin.feature-gate.v1@1.4.180
+  - @wso2is/admin.template-core.v1@1.5.134
+
+## 1.0.68
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.5
+  - @wso2is/admin.feature-gate.v1@1.4.179
+  - @wso2is/admin.template-core.v1@1.5.133
+
+## 1.0.67
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.4
+  - @wso2is/admin.feature-gate.v1@1.4.178
+  - @wso2is/admin.template-core.v1@1.5.132
+
+## 1.0.66
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.3
+  - @wso2is/admin.feature-gate.v1@1.4.177
+  - @wso2is/admin.template-core.v1@1.5.131
+
+## 1.0.65
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.2
+  - @wso2is/admin.feature-gate.v1@1.4.176
+  - @wso2is/admin.template-core.v1@1.5.130
+
+## 1.0.64
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.1
+  - @wso2is/admin.feature-gate.v1@1.4.175
+  - @wso2is/admin.template-core.v1@1.5.129
+
+## 1.0.63
+
+### Patch Changes
+
+- Updated dependencies [[`e4657499f151f319f1dec5f2fe8166e590dde979`](https://github.com/wso2/identity-apps/commit/e4657499f151f319f1dec5f2fe8166e590dde979)]:
+  - @wso2is/admin.core.v1@2.39.0
+  - @wso2is/admin.feature-gate.v1@1.4.174
+  - @wso2is/admin.template-core.v1@1.5.128
+
+## 1.0.62
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.42
+  - @wso2is/admin.feature-gate.v1@1.4.173
+  - @wso2is/admin.template-core.v1@1.5.127
+
+## 1.0.61
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.41
+  - @wso2is/admin.feature-gate.v1@1.4.172
+  - @wso2is/admin.template-core.v1@1.5.126
+
+## 1.0.60
+
+### Patch Changes
+
+- Updated dependencies [[`a9c9a67492fbaf6a78e9bc0fa00f27ffb221b71d`](https://github.com/wso2/identity-apps/commit/a9c9a67492fbaf6a78e9bc0fa00f27ffb221b71d)]:
+  - @wso2is/admin.feature-gate.v1@1.4.171
+  - @wso2is/admin.core.v1@2.38.40
+  - @wso2is/admin.template-core.v1@1.5.125
+
+## 1.0.59
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.39
+  - @wso2is/admin.feature-gate.v1@1.4.170
+  - @wso2is/admin.template-core.v1@1.5.124
+
+## 1.0.58
+
+### Patch Changes
+
+- Updated dependencies [[`54d830f55a940d7c8fb08ce733e8c09390ea9669`](https://github.com/wso2/identity-apps/commit/54d830f55a940d7c8fb08ce733e8c09390ea9669)]:
+  - @wso2is/admin.core.v1@2.38.38
+  - @wso2is/admin.feature-gate.v1@1.4.169
+  - @wso2is/admin.template-core.v1@1.5.123
+
+## 1.0.57
+
+### Patch Changes
+
+- Updated dependencies [[`484542389020cc30563621fcb420fd814214b121`](https://github.com/wso2/identity-apps/commit/484542389020cc30563621fcb420fd814214b121), [`ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578`](https://github.com/wso2/identity-apps/commit/ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578)]:
+  - @wso2is/admin.core.v1@2.38.37
+  - @wso2is/admin.feature-gate.v1@1.4.168
+  - @wso2is/admin.template-core.v1@1.5.122
+
+## 1.0.56
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.36
+  - @wso2is/admin.feature-gate.v1@1.4.167
+  - @wso2is/admin.template-core.v1@1.5.121
+
+## 1.0.55
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.35
+  - @wso2is/admin.feature-gate.v1@1.4.166
+  - @wso2is/admin.template-core.v1@1.5.120
+
+## 1.0.54
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.34
+  - @wso2is/admin.feature-gate.v1@1.4.165
+  - @wso2is/admin.template-core.v1@1.5.119
+
+## 1.0.53
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.33
+  - @wso2is/admin.feature-gate.v1@1.4.164
+  - @wso2is/admin.template-core.v1@1.5.118
+
+## 1.0.52
+
+### Patch Changes
+
+- Updated dependencies [[`7262137d3207877ea593c9b95db6bda098e41702`](https://github.com/wso2/identity-apps/commit/7262137d3207877ea593c9b95db6bda098e41702)]:
+  - @wso2is/admin.core.v1@2.38.32
+  - @wso2is/admin.feature-gate.v1@1.4.163
+  - @wso2is/admin.template-core.v1@1.5.117
+
+## 1.0.51
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.31
+  - @wso2is/admin.feature-gate.v1@1.4.162
+  - @wso2is/admin.template-core.v1@1.5.116
+
 ## 1.0.50
 
 ### Patch Changes

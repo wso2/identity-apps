@@ -269,6 +269,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 <CustomAuthenticatorSettings
                     isCustomLocalAuthenticator={ isCustomLocalAuthenticator }
                     isLoading={ isLoading }
+                    isReadOnly={ isReadOnly }
                     connector={ identityProvider }
                     onUpdate={ onUpdate }
                     data-componentid={ `${ testId }-authenticator-settings` }
@@ -361,13 +362,13 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         setIsTrustedTokenIssuer(type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER);
         setIsExpertMode(type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE);
         setIsCustomAuthenticator(
-            type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXTERNAL_CUSTOM_AUTHENTICATION ||
-                type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATION ||
-                type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATION
+            type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXTERNAL_CUSTOM_AUTHENTICATOR ||
+                type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATOR ||
+                type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATOR
         );
         setIsCustomLocalAuthenticator(
-            type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATION ||
-                type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATION
+            type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATOR ||
+                type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATOR
         );
     }, [ type ]);
 

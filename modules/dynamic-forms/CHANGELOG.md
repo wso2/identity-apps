@@ -1,5 +1,31 @@
 # @wso2is/dynamic-forms
 
+## 2.4.39
+
+### Patch Changes
+
+- [#7701](https://github.com/wso2/identity-apps/pull/7701) [`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger patch release to all packages to prepare for RC
+
+- Updated dependencies [[`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce)]:
+  - @wso2is/core@2.6.5
+  - @wso2is/react-components@2.9.11
+  - @wso2is/validation@2.4.1
+
+## 2.4.38
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.9.10
+
+## 2.4.37
+
+### Patch Changes
+
+- Updated dependencies [[`ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578`](https://github.com/wso2/identity-apps/commit/ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578)]:
+  - @wso2is/core@2.6.4
+  - @wso2is/react-components@2.9.9
+
 ## 2.4.36
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @wso2is/core
 
+## 2.6.5
+
+### Patch Changes
+
+- [#7701](https://github.com/wso2/identity-apps/pull/7701) [`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger patch release to all packages to prepare for RC
+
+## 2.6.4
+
+### Patch Changes
+
+- [#7626](https://github.com/wso2/identity-apps/pull/7626) [`ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578`](https://github.com/wso2/identity-apps/commit/ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add support to configure feature flags for sub-organizations.
+
 ## 2.6.3
 
 ### Patch Changes

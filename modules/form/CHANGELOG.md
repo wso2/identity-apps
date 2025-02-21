@@ -1,5 +1,45 @@
 # @wso2is/form
 
+## 2.6.34
+
+### Patch Changes
+
+- [#7707](https://github.com/wso2/identity-apps/pull/7707) [`550d087571863f97af85e1f37a84582d230bbe94`](https://github.com/wso2/identity-apps/commit/550d087571863f97af85e1f37a84582d230bbe94) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Add a new input field adapter for custom authenticator text with adornment
+
+* [#7708](https://github.com/wso2/identity-apps/pull/7708) [`ae40c90f3a834fcbd18e7443ff348088e46457be`](https://github.com/wso2/identity-apps/commit/ae40c90f3a834fcbd18e7443ff348088e46457be) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a new input field adapter for custom authenticator text with adornment
+
+## 2.6.33
+
+### Patch Changes
+
+- [#7701](https://github.com/wso2/identity-apps/pull/7701) [`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger patch release to all packages to prepare for RC
+
+- Updated dependencies [[`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce)]:
+  - @wso2is/core@2.6.5
+  - @wso2is/react-components@2.9.11
+  - @wso2is/validation@2.4.1
+
+## 2.6.32
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.9.10
+
+## 2.6.31
+
+### Patch Changes
+
+- Updated dependencies [[`ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578`](https://github.com/wso2/identity-apps/commit/ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578)]:
+  - @wso2is/core@2.6.4
+  - @wso2is/react-components@2.9.9
+
+## 2.6.30
+
+### Patch Changes
+
+- [#7582](https://github.com/wso2/identity-apps/pull/7582) [`f035717c13b4f7b38d903cfc571e7c73129aaf20`](https://github.com/wso2/identity-apps/commit/f035717c13b4f7b38d903cfc571e7c73129aaf20) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add infinite scrolling to organization list in assign email domains
+
 ## 2.6.29
 
 ### Patch Changes

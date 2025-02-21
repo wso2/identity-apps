@@ -369,12 +369,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     useEffect(() => {
 
         const getDisplayOrder = (schema: ProfileSchema): number => {
+            if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")) return 0;
             if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
                 && (!schema.displayOrder || schema.displayOrder == "0")) return 6;
             if (schema.name === MOBILE_NUMBERS_ATTRIBUTE
                 && (!schema.displayOrder || schema.displayOrder == "0")) return 7;
+            if (!schema.displayOrder || schema.displayOrder == "0") return Number.MAX_SAFE_INTEGER;
 
-            return schema.displayOrder ? parseInt(schema.displayOrder, 10) : -1;
+            return schema.displayOrder ? parseInt(schema.displayOrder, 10) : Number.MAX_SAFE_INTEGER;;
         };
 
         const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas(
@@ -382,16 +384,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         ).filter((item: ProfileSchemaInterface) =>
             item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION")
         ).sort((a: ProfileSchema, b: ProfileSchema) => {
-            const orderA: number = getDisplayOrder(a);
-            const orderB: number = getDisplayOrder(b);
-
-            if (orderA === -1) {
-                return -1;
-            } else if (orderB === -1) {
-                return 1;
-            } else {
-                return orderA - orderB;
-            }
+            return getDisplayOrder(a) - getDisplayOrder(b);
         });
 
         setProfileSchema(sortedSchemas);
@@ -1518,6 +1511,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         }
     };
 
+    const getExistingPrimaryEmail = (): string => {
+        return profileDetails.profileInfo[EMAIL_ATTRIBUTE] &&
+            profileDetails.profileInfo[EMAIL_ATTRIBUTE]
+                .find((subAttribute: string) => typeof subAttribute === "string");
+    };
+
     const generateMultiValuedField = (schema: ProfileSchema, fieldName: string): JSX.Element => {
 
         let primaryAttributeSchema: ProfileSchema;
@@ -1536,7 +1535,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             pendingEmailAddress = profileDetails?.profileInfo?.pendingEmails?.length > 0
                 ? profileDetails?.profileInfo?.pendingEmails[0]?.value
                 : null;
-            primaryAttributeValue = profileInfo.get(EMAIL_ATTRIBUTE);
+            primaryAttributeValue = getExistingPrimaryEmail();
             verificationEnabled = isEmailVerificationEnabled;
             primaryAttributeSchema = getSchemaFromName(EMAIL_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
@@ -2034,7 +2033,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             pendingEmailAddress = profileDetails?.profileInfo?.pendingEmails?.length > 0
                 ? profileDetails?.profileInfo?.pendingEmails[0]?.value
                 : null;
-            primaryAttributeValue = profileInfo.get(EMAIL_ATTRIBUTE);
+            primaryAttributeValue = getExistingPrimaryEmail();
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             verificationEnabled = isMobileVerificationEnabled;
@@ -2640,6 +2639,22 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 : schema.name === MOBILE_ATTRIBUTE
         );
 
+    /**
+     * Check whether the value is empty or not.
+     * @param schema - Profile schema
+     * @returns boolean - Whether value is empty or not.
+     */
+    const isValueEmpty = (schema: ProfileSchema): boolean => {
+
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+            return isEmpty(profileInfo.get(schema.name)) && isEmpty(getExistingPrimaryEmail());
+        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+            return isEmpty(profileInfo.get(schema.name)) && isEmpty(profileInfo.get(MOBILE_ATTRIBUTE));
+        }
+
+        return isEmpty(profileInfo.get(schema.name));
+    };
+
     return (
         <>
             <SettingsSection
@@ -2721,11 +2736,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                             : null
                                                     }
                                                     {
-                                                        !isEmpty(profileInfo.get(schema.name)) ||
-                                        (!CommonUtils.isProfileReadOnly(isReadOnlyUser)
-                                            && (resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA)
-                                            && hasRequiredScopes(featureConfig?.personalInfo,
-                                                featureConfig?.personalInfo?.scopes?.update, allowedScopes))
+                                                        !isValueEmpty(schema)
+                                                            || (!CommonUtils.isProfileReadOnly(isReadOnlyUser)
+                                                            && (resolvedMutabilityValue
+                                                                !== ProfileConstants.READONLY_SCHEMA)
+                                                                && hasRequiredScopes(featureConfig?.personalInfo,
+                                                                    featureConfig?.personalInfo?.scopes?.update,
+                                                                    allowedScopes))
                                                             ? generateSchemaForm(schema, index)
                                                             : null
                                                     }

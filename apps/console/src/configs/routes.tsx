@@ -594,6 +594,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ],
             component: lazy(() => import("@wso2is/admin.claims.v1/pages/claim-dialects")),
             exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ATTRIBUTE_DIALECTS,
             icon: {
                 icon: getSidePanelIcons().claims
             },

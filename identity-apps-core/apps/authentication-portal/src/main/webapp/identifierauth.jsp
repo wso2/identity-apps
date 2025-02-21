@@ -352,7 +352,7 @@
 
     <div class="mt-4">
         <div class="buttons">
-            <button type="submit" class="ui primary fluid large button" role="button">
+            <button type="submit" class="ui primary fluid large button" role="button" data-testid="identifier-auth-continue-button">
                 <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "continue"))%>
             </button>
         </div>

@@ -155,8 +155,8 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
         const has2FA: boolean = tags.some((tag: string) => tag.toUpperCase() === AuthenticatorLabels.SECOND_FACTOR);
 
         return has2FA
-            ? ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATION
-            : ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATION;
+            ? ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATOR
+            : ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATOR;
     };
 
     /**
@@ -179,7 +179,7 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
                                 description: error.response.data.description
                             }),
                             level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:" + "notifications.getIDP.error.message")
+                            message: t("authenticationProvider:notifications.getIDP.error.message")
                         })
                     );
 
@@ -188,9 +188,9 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
 
                 dispatch(
                     addAlert({
-                        description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
+                        description: t("authenticationProvider:notifications.getIDP.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
+                        message: t("authenticationProvider:notifications.getIDP.genericError.message")
                     })
                 );
             })
@@ -254,15 +254,15 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
             return (
                 <LabelWithPopup
                     popupHeader={ t("authenticationProvider:popups.appStatus.enabled.header") }
-                    popupSubHeader={ t("authenticationProvider:popups.appStatus." + "enabled.content") }
+                    popupSubHeader={ t("authenticationProvider:popups.appStatus.enabled.content") }
                     labelColor="green"
                 />
             );
         } else {
             return (
                 <LabelWithPopup
-                    popupHeader={ t("authenticationProvider:popups.appStatus." + "disabled.header") }
-                    popupSubHeader={ t("authenticationProvider:popups.appStatus." + "disabled.content") }
+                    popupHeader={ t("authenticationProvider:popups.appStatus.disabled.header") }
+                    popupSubHeader={ t("authenticationProvider:popups.appStatus.disabled.content") }
                     labelColor="grey"
                 />
             );
@@ -299,12 +299,12 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
         return (
             <Label size="small">
                 { getCustomLocalAuthTemplateId(connector)
-                    === ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATION ?
+                    === ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATOR ?
                     t(
-                        "customAuthentication:fields.createWizard.authenticationTypeStep." +
+                        "customAuthenticator:fields.createWizard.authenticationTypeStep." +
                     "twoFactorAuthenticationCard.header"
                     ) : t(
-                        "customAuthentication:fields.createWizard.authenticationTypeStep." +
+                        "customAuthenticator:fields.createWizard.authenticationTypeStep." +
                     "internalUserAuthenticationCard.header"
                     ) }
             </Label>

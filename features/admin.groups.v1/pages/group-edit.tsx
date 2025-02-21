@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,7 @@
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { TabPageLayout } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -32,9 +33,11 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
 
     const { t } = useTranslation();
 
+    const { mutateUserStoreList } = useUserStores();
+
     const [ roleId, setGroupId ] = useState<string>(undefined);
     const [ group, setGroup ] = useState<GroupsInterface>();
-    const [ isGroupDetailsRequestLoading, setIsGroupDetailsRequestLoading ] = useState<boolean>(false);
+    const [ isGroupDetailsRequestLoading, setIsGroupDetailsRequestLoading ] = useState<boolean>(true);
 
     /**
      * Get Group data from URL id
@@ -45,6 +48,14 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
 
         setGroupId(roleId);
         getGroupDetails(roleId);
+    }, []);
+
+    /**
+     * As there is a delay in updating user stores,
+     * user stores list needs be mutated in page load to avoid stale data.
+     */
+    useEffect(() => {
+        mutateUserStoreList();
     }, []);
 
     const getGroupDetails = (roleId: string ): void => {

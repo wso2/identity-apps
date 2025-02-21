@@ -167,15 +167,6 @@
         <script>
             // Handles myaccount tenanted signout before auth sdk get loaded
             var applicationDomain = window.location.origin;
-            var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
-
-            if(isSignOutSuccess && userTenant) {
-                if (startupConfig.subdomainApplication) {
-                    window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant;
-                } else {
-                    window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant + "/myaccount";
-                }
-            }
 
             var serverOrigin = "<%= htmlWebpackPlugin.options.serverUrl %>";
             var authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>" != "null"

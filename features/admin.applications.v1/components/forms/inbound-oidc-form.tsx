@@ -3665,11 +3665,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Trans
                                     i18nKey={
                                         "applications:forms.inboundOIDC.sections.idToken" +
-                                        ".fields.algorithm.hint"
+                                        ".fields.signing.hint"
                                     }
                                 >
                                     The dropdown contains the supported <Code withBackground>id_token</Code>
-                                    encryption algorithms.
+                                    signing algorithms.
                                 </Trans>
                             </Hint>
                         </Grid.Column>

@@ -31,6 +31,7 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -108,6 +109,15 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
         mutate: mutateActions
     } = useGetActionsByType(actionTypeApiPath);
 
+    useEffect(() => {
+        if (actions?.length >= 1) {
+            setShowCreateForm(false);
+            setIsActive(actions[0]?.status.toString() === ActionsConstants.ACTIVE_STATUS);
+        } else {
+            setShowCreateForm(true);
+        }
+    }, [ actions ]);
+
     const actionId: string = useMemo(() => actions?.[0]?.id || null, [ actions ]);
 
     const {
@@ -148,15 +158,6 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 return null;
             }
         }, [ action ]);
-
-    useEffect(() => {
-        if (actions?.length >= 1) {
-            setShowCreateForm(false);
-            setIsActive(actions[0]?.status.toString() === ActionsConstants.ACTIVE_STATUS);
-        } else {
-            setShowCreateForm(true);
-        }
-    }, [ actions ]);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching Actions by Type.
@@ -310,7 +311,6 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
         const handleToggle = (e: SyntheticEvent, data: CheckboxProps) => {
             const toggleOperation: string = data.checked ? ActionsConstants.ACTIVATE : ActionsConstants.DEACTIVATE;
 
-            setIsActive(data.checked);
             setIsSubmitting(true);
             changeActionStatus(
                 actionTypeApiPath,
@@ -323,12 +323,13 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                     handleError(error, toggleOperation);
                 })
                 .finally(() => {
+                    setIsActive(data.checked);
                     mutateAction();
                     setIsSubmitting(false);
                 });
         };
 
-        return !isLoading && !showCreateForm && (
+        return !isLoading && !showCreateForm && !isEmpty(actions) && (
             <Checkbox
                 label={
                     isActive
@@ -403,7 +404,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                     </Grid.Row>
                 </Grid>
             }
-            { !isLoading && !showCreateForm && (
+            { !isLoading && !showCreateForm && !isEmpty(actions) && (
                 <Show
                     when={ actionsFeatureConfig?.scopes?.delete }
                 >
