@@ -413,7 +413,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                         attributeConfig?.editAttributeMappings?.showAddExternalAttributeButton(dialectID)
                         && hasDialectCreatePermissions
                         && isAttributeButtonEnabled
-                        && hasServerSupportedClaimsToMap
+                        && (!SCIMConfigs.serverSupportedClaimsAvailable.includes(attributeUri)
+                            || hasServerSupportedClaimsToMap)
                         && (
                             /**
                              * `loading` property is used to check whether the current selected
