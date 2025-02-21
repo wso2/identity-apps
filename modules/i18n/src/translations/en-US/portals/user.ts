@@ -152,7 +152,7 @@ export const user: userNS = {
                 },
                 username: {
                     hint: {
-                        defaultRegex: "Must be 3-50 characters long and cannot contain spaces, '*', '?', or '%'."
+                        defaultRegex: "Must be a 3-50 character string without spaces, '*', '?', or '%', and can include letters, numbers, and other symbols."
                     },
                     label: "Username",
                     placeholder: "Enter the username",
