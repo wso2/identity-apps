@@ -1,5 +1,28 @@
 # @wso2is/admin.connections.v1
 
+## 2.33.70
+
+### Patch Changes
+
+- [#7716](https://github.com/wso2/identity-apps/pull/7716) [`9f12c5d944e8404248e08a315f68c634a198837a`](https://github.com/wso2/identity-apps/commit/9f12c5d944e8404248e08a315f68c634a198837a) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Fix the issue of UI persisting stale data in authenticator connected apps tab
+
+- Updated dependencies [[`9f12c5d944e8404248e08a315f68c634a198837a`](https://github.com/wso2/identity-apps/commit/9f12c5d944e8404248e08a315f68c634a198837a)]:
+  - @wso2is/admin.connections.v1@2.33.70
+  - @wso2is/admin.applications.v1@2.31.35
+  - @wso2is/admin.core.v1@2.39.13
+  - @wso2is/admin.extensions.v1@2.36.112
+  - @wso2is/admin.identity-providers.v1@2.26.187
+  - @wso2is/admin.identity-verification-providers.v1@2.27.187
+  - @wso2is/admin.organizations.v1@2.26.187
+  - @wso2is/admin.roles.v2@2.27.131
+  - @wso2is/admin.application-templates.v1@1.4.187
+  - @wso2is/admin.console-settings.v1@2.25.187
+  - @wso2is/admin.actions.v1@1.11.52
+  - @wso2is/admin.claims.v1@2.27.97
+  - @wso2is/admin.feature-gate.v1@1.4.187
+  - @wso2is/admin.template-core.v1@1.5.141
+  - @wso2is/admin.userstores.v1@2.27.13
+
 ## 2.33.69
 
 ### Patch Changes
