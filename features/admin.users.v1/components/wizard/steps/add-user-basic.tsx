@@ -804,7 +804,9 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                             .push(t("user:forms.addUserForm.inputs.username.validations.defaultRegex"));
                                     } else {
                                         validation.errorMessages
-                                            .push(t("user:forms.addUserForm.inputs.username.validations.customRegex"));
+                                            .push(t("user:forms.addUserForm.inputs.username.validations.customRegex", {
+                                                regex: userStoreUsernameRegEx
+                                            }));
                                     }
                                 }
                             }
