@@ -65,7 +65,7 @@ export interface AddTenantWizardFormErrorValidationsInterface {
  */
 export interface AddTenantWizardFormValuesInterface {
     tenantName: string;
-    deploymentUnitName?: string;
+    deploymentUnitJson?: string;
 }
 
 const FORM_ID: string = "add-tenant-wizard-form";
@@ -167,7 +167,7 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         if (deploymentUnitJson === undefined) {
             setIsValidDeploymentUnit(false);
         } else {
-            setSelectedDeploymentUnit(deploymentUnitJson??JSON.parse(deploymentUnitJson));
+            setSelectedDeploymentUnit(deploymentUnitJson ?? JSON.parse(deploymentUnitJson));
             setIsValidDeploymentUnit(true);
         }
     };
@@ -390,7 +390,6 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                         placeholder = { t("tenants:deploymentUtits.placeholder") }
                         required={ true }
                         options={ deploymentUnitOptions }
-                        readOnly={ true }
                         data-testid={ `${ testId }-deployment-unit-dropdown` }
                         listen={ updateDeploymentUnit }
                         enableReinitialize={ true }

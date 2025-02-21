@@ -71,7 +71,7 @@ import {
     Placeholder,
     SemanticICONS
 } from "semantic-ui-react";
-import { getDeploymentUnits, getAssociatedTenants, makeTenantDefault } from "../../api";
+import { getAssociatedTenants, getDeploymentUnits, makeTenantDefault } from "../../api";
 import TenantConstants from "../../constants/tenant-constants";
 import {
     DeploymentUnit,
