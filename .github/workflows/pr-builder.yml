@@ -4,7 +4,7 @@ name: 👷 PR Builder
 
 on:
   pull_request:
-    types: [ opened, synchronize, labeled ]
+    types: [ labeled ]
     branches: [ master ]
     paths-ignore:
       - "**.md"
