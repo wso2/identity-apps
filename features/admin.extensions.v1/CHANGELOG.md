@@ -1,5 +1,34 @@
 # @wso2is/admin.extensions.v1
 
+## 2.36.115
+
+### Patch Changes
+
+- [#7727](https://github.com/wso2/identity-apps/pull/7727) [`0e488f4fe3a8e1c080e19b097deed1c0cdc5bc90`](https://github.com/wso2/identity-apps/commit/0e488f4fe3a8e1c080e19b097deed1c0cdc5bc90) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update username validation to conditionally use validation API
+
+- Updated dependencies [[`6c571c3244bd863c9bd6d02bd7e6383ebf98b5fc`](https://github.com/wso2/identity-apps/commit/6c571c3244bd863c9bd6d02bd7e6383ebf98b5fc), [`0e488f4fe3a8e1c080e19b097deed1c0cdc5bc90`](https://github.com/wso2/identity-apps/commit/0e488f4fe3a8e1c080e19b097deed1c0cdc5bc90)]:
+  - @wso2is/admin.claims.v1@2.27.100
+  - @wso2is/admin.users.v1@2.30.100
+  - @wso2is/i18n@2.20.2
+  - @wso2is/admin.applications.v1@2.31.38
+  - @wso2is/admin.connections.v1@2.33.73
+  - @wso2is/admin.core.v1@2.39.16
+  - @wso2is/admin.identity-providers.v1@2.26.190
+  - @wso2is/admin.remote-userstores.v1@1.7.146
+  - @wso2is/admin.api-resources.v1@2.25.190
+  - @wso2is/admin.authentication.v1@2.25.190
+  - @wso2is/admin.groups.v1@2.27.100
+  - @wso2is/admin.organizations.v1@2.26.190
+  - @wso2is/admin.roles.v2@2.27.134
+  - @wso2is/admin.server-configurations.v1@2.32.115
+  - @wso2is/admin.sms-providers.v1@2.25.190
+  - @wso2is/admin.tenants.v1@2.28.164
+  - @wso2is/admin.userstores.v1@2.27.16
+  - @wso2is/admin.validation.v1@2.27.128
+  - @wso2is/admin.authorization.v1@2.25.83
+  - @wso2is/admin.provisioning.v1@2.25.190
+  - @wso2is/admin.feature-gate.v1@1.4.190
+
 ## 2.36.114
 
 ### Patch Changes

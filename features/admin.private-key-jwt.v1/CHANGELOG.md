@@ -1,5 +1,14 @@
 # @wso2is/admin.private-key-jwt.v1
 
+## 2.25.190
+
+### Patch Changes
+
+- Updated dependencies [[`0e488f4fe3a8e1c080e19b097deed1c0cdc5bc90`](https://github.com/wso2/identity-apps/commit/0e488f4fe3a8e1c080e19b097deed1c0cdc5bc90)]:
+  - @wso2is/i18n@2.20.2
+  - @wso2is/admin.core.v1@2.39.16
+  - @wso2is/admin.server-configurations.v1@2.32.115
+
 ## 2.25.189
 
 ### Patch Changes
