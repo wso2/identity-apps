@@ -18,7 +18,6 @@
 
 import Chip from "@oxygen-ui/react/Chip";
 import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
-import { getAUserStore } from "@wso2is/admin.core.v1/api/user-store";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -42,14 +41,11 @@ import {
     getConnectorCategory,
     useServerConfigs
 } from "@wso2is/admin.server-configurations.v1";
-import { useUserStores } from "@wso2is/admin.userstores.v1/api";
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
 import useUserStoresContext from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import {
     UserStoreItem,
-    UserStoreListItem,
-    UserStorePostData,
-    UserStoreProperty
+    UserStoreListItem
 } from "@wso2is/admin.userstores.v1/models/user-stores";
 import {
     AlertInterface,
@@ -143,7 +139,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
-    const { readOnlyUserStoreNamesList, isUserStoreReadOnly, mutateUserStoreList } = useUserStoresContext();
+    const {
+        isLoading: isUserStoreListFetchRequestLoading,
+        isUserStoreReadOnly,
+        mutateUserStoreList,
+        readOnlyUserStoreNamesList,
+        userStoresList
+    } = useUserStoresContext();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -234,13 +236,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         excludedAttributes
     );
 
-    // Get userstores list.
-    const {
-        data: orginalUserStoreList,
-        isLoading: isUserStoreListFetchRequestLoading,
-        error: userStoreListFetchRequestError
-    } = useUserStores(null);
-
     const realmConfigs: RealmConfigInterface = useMemo(() => originalServerConfigs?.realmConfig,
         [ originalServerConfigs ]);
 
@@ -256,30 +251,23 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             }
         ];
 
-        if (orginalUserStoreList?.length > 0) {
-            orginalUserStoreList.map((store: UserStoreListItem, index: number) => {
-                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName) {
-                    getAUserStore(store.id).then((response: UserStorePostData) => {
-                        const isDisabled: boolean = response.properties.find(
-                            (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
+        if (userStoresList?.length > 0) {
+            userStoresList.map((store: UserStoreListItem, index: number) => {
+                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && store.enabled) {
+                    const storeOption: UserStoreItem = {
+                        disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
+                        key: index,
+                        text: store.name,
+                        value: store.name
+                    };
 
-                        if (!isDisabled) {
-                            const storeOption: UserStoreItem = {
-                                disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
-                                key: index,
-                                text: store.name,
-                                value: store.name
-                            };
-
-                            storeOptions.push(storeOption);
-                        }
-                    });
+                    storeOptions.push(storeOption);
                 }
             });
         }
 
         return storeOptions;
-    }, [ orginalUserStoreList ]);
+    }, [ userStoresList ]);
 
     /**
      * Indicates whether the currently selected user store is read-only or not.
@@ -324,35 +312,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
         }));
     }, [ userListFetchRequestError ]);
-
-    /**
-     * Handles the userstore list fetch request error.
-     */
-    useEffect(() => {
-        if (!userStoreListFetchRequestError) {
-            return;
-        }
-
-        if (userStoreListFetchRequestError.response
-            && userStoreListFetchRequestError.response.data
-            && userStoreListFetchRequestError.response.data.description) {
-            dispatch(addAlert({
-                description: userStoreListFetchRequestError.response.data.description,
-                level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications." +
-                    "fetchUsers.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("console:manage.features.users.notifications.fetchUserstores.genericError." +
-                "description"),
-            level: AlertLevels.ERROR,
-            message: t("console:manage.features.users.notifications.fetchUserstores.genericError.message")
-        }));
-    }, [ userStoreListFetchRequestError ]);
 
     /**
      * Handles the parent user invitations search query changes.
@@ -713,7 +672,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 } }
                 isLoading={ isUserListFetchRequestLoading }
             >
-                { userStoreListFetchRequestError
+                { !isUserStoreListFetchRequestLoading && userStoreOptions?.length === 0
                     ? (<EmptyPlaceholder
                         subtitle={ [ t("users:placeholders.userstoreError.subtitles.0"),
                             t("users:placeholders.userstoreError.subtitles.1")     ] }
@@ -910,7 +869,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 }
             >
                 {
-                    userStoreListFetchRequestError
+                    !isUserStoreListFetchRequestLoading && userStoreOptions?.length === 0
                         ? (
                             <EmptyPlaceholder
                                 subtitle={ [ t("users:placeholders.userstoreError.subtitles.0"),
@@ -1056,7 +1015,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         listOffset={ listOffset }
                         listItemLimit={ listItemLimit }
                         updateList={ () => mutateUserListFetchRequest() }
-                        userStore= { selectedUserStore }
+                        userStore= { selectedUserStore ?? userstoresConfig.primaryUserstoreName }
                     />
                 )
             }
@@ -1068,7 +1027,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     <BulkImportUserWizard
                         data-componentid="user-mgt-bulk-import-user-wizard-modal"
                         closeWizard={ handleBulkImportWizardClose }
-                        userstore={ userstoresConfig.primaryUserstoreName }
+                        userstore={ selectedUserStore ?? userstoresConfig.primaryUserstoreName }
                     />
                 )
             }

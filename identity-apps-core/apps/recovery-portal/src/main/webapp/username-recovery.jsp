@@ -30,6 +30,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
+<%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.HashMap" %>
@@ -85,6 +86,7 @@
 
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
+    String errorCode = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorCode"));
 
     boolean isFirstNameInClaims = false;
     boolean isLastNameInClaims = false;
@@ -190,7 +192,15 @@
                 <h2><%=i18n(recoveryResourceBundle, customText, "username.recovery.heading")%></h2>
                 <% if (error) { %>
                     <div class="ui visible negative message" id="server-error-msg">
-                        <%= IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg) %>
+                        <% if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_MULTIPLE_MATCHING_USERS.getCode().equals(errorCode)) {
+                        %>
+                            <%=i18n(recoveryResourceBundle, customText, "multiple.users.found")%>
+                        <% } else if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_NO_USER_FOUND.getCode().equals(errorCode)) {
+                        %>
+                            <%=i18n(recoveryResourceBundle, customText, "no.user.found")%>
+                        <% } else { %>
+                            <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
+                        <% } %>
                     </div>
                 <% } %>
                 <div class="ui negative message" id="error-msg" hidden="hidden"></div>
@@ -208,8 +218,8 @@
                                 <label>
                                     <%=i18n(recoveryResourceBundle, customText, "First.name")%>
                                 </label>
-                                <input id="first-name" type="text" 
-                                    <%= isFirstNameRequired ? "required" : "" %> 
+                                <input id="first-name" type="text"
+                                    <%= isFirstNameRequired ? "required" : "" %>
                                     name="http://wso2.org/claims/givenname"
                                     placeholder="<%=i18n(recoveryResourceBundle, customText, "First.name")%>" />
                             </div>
@@ -249,8 +259,8 @@
                         <div class="required field">
                             <label for="contact" class="control-label"><%=i18n(recoveryResourceBundle, customText,
                                     "contact")%></label>
-                            <input id="contact" type="text" name="contact" 
-                                placeholder="<%=i18n(recoveryResourceBundle, customText, "contact")%>" 
+                            <input id="contact" type="text" name="contact"
+                               placeholder="<%=i18n(recoveryResourceBundle, customText, "contact")%>"
                                     required class="form-control" />
                         </div>
                         <% } %>
@@ -278,7 +288,7 @@
                                     !StringUtils.equals(claim.getUri(),
                                             IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM) &&
                                     !StringUtils.equals(claim.getUri(),
-                                            IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM) && 
+                                            IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM) &&
                                     !StringUtils.equals(claim.getUri(),
                                             IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM)) {
                         %>
@@ -317,7 +327,7 @@
                             <button id="recoverySubmit" class="ui primary button large fluid" type="submit">
                                 <%=i18n(recoveryResourceBundle, customText, "username.recovery.next.button")%>
                             </button>
-    
+
                         </div>
                         <div class="mt-1 align-center">
                             <a href="javascript:goBack()" class="ui button secondary large fluid">

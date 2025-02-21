@@ -269,6 +269,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 <CustomAuthenticatorSettings
                     isCustomLocalAuthenticator={ isCustomLocalAuthenticator }
                     isLoading={ isLoading }
+                    isReadOnly={ isReadOnly }
                     connector={ identityProvider }
                     onUpdate={ onUpdate }
                     data-componentid={ `${ testId }-authenticator-settings` }

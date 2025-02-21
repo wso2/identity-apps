@@ -860,6 +860,39 @@ export const getConnectedApps = (idpId: string): Promise<any> => {
 };
 
 /**
+ * Get connected apps of the authenticator.
+ *
+ * Currently, connected apps can be added only to custom local authenticators and federated authenticators.
+ *
+ * @param authenticatorId - ID of the authenticator.
+ * @returns  A promise containing the response.
+ */
+export const getConnectedAppsOfAuthenticator = (authenticatorId: string): Promise<any> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.authenticators + "/" + authenticatorId + "/connected-apps/"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error("Failed to get connected apps for the authenticator: " + authenticatorId)
+                );
+            }
+
+            return Promise.resolve(response.data as ConnectedAppsInterface);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
  * Update identity provider details.
  *
  * @param connection - Connection.

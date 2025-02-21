@@ -1,5 +1,30 @@
 # @wso2is/identity-apps-core
 
+## 2.14.2
+
+### Patch Changes
+
+- [#7711](https://github.com/wso2/identity-apps/pull/7711) [`d29c0354d9a62afd5d1a89f9794edca6b90b7a50`](https://github.com/wso2/identity-apps/commit/d29c0354d9a62afd5d1a89f9794edca6b90b7a50) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix field alignment issue in self-registration
+
+## 2.14.1
+
+### Patch Changes
+
+- [#7701](https://github.com/wso2/identity-apps/pull/7701) [`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger patch release to all packages to prepare for RC
+
+- Updated dependencies [[`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce)]:
+  - @wso2is/theme@2.6.11
+
+## 2.14.0
+
+### Minor Changes
+
+- [#7688](https://github.com/wso2/identity-apps/pull/7688) [`4951d27a683c9bf120a3c29bc9e5171b410050ad`](https://github.com/wso2/identity-apps/commit/4951d27a683c9bf120a3c29bc9e5171b410050ad) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Improve i18n experience for backend errors
+
+### Patch Changes
+
+- [#7657](https://github.com/wso2/identity-apps/pull/7657) [`63182bb74dae72883c8f18d9ca46d347c76a74d0`](https://github.com/wso2/identity-apps/commit/63182bb74dae72883c8f18d9ca46d347c76a74d0) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Add Error Messages for Generic and Pending Verification Scenarios In JIT flow
+
 ## 2.13.8
 
 ### Patch Changes
