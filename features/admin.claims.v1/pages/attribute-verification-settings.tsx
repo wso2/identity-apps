@@ -29,16 +29,20 @@ import {
     UpdateGovernanceConnectorConfigInterface
 } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { GovernanceConnectorUtils } from "@wso2is/admin.server-configurations.v1/utils";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
-import { ContentLoader, EmphasizedSegment, PageLayout } from "@wso2is/react-components";
+import { I18n } from "@wso2is/i18n";
+import { ContentLoader, EmphasizedSegment, Heading, PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import camelCase from "lodash-es/camelCase";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { ClaimManagementConstants } from "../constants";
 
 /**
  * Props for alternative login identifier edit page.
@@ -55,13 +59,12 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
     props: AttributeVerificationSettingsPage
 ): ReactElement => {
 
-    const { ["data-componentid"]: componentId } = props;
+    const { [ "data-componentid" ]: componentId = "attribute-verification-settings-form" } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
     const FORM_ID: string = "governance-connectors-attribute-verification-form";
-    const CATEGORY_NAME: string = "Attribute Verification Settings";
     const CONNECTOR_ID: string = ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID;
     const CATEGORY_ID: string = ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID;
     const CONNECTOR_NAMES: any = {
@@ -82,7 +85,6 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
         CONNECTOR_NAMES.INCLUDE_LOWERCASE_CHARACTERS_IN_OTP,
         CONNECTOR_NAMES.INCLUDE_NUMBERS_IN_OTP,
         CONNECTOR_NAMES.INCLUDE_UPPERCASE_CHARACTERS_IN_OTP,
-        CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME,
         CONNECTOR_NAMES.OTP_LENGTH,
         CONNECTOR_NAMES.SEND_OTP_IN_EMAIL
     ];
@@ -97,8 +99,16 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const isReadOnly: boolean = !useRequiredScopes(
-        featureConfig?.attributeDialects?.scopes?.update
+        featureConfig?.attributeVerification?.scopes?.update
     );
+
+    const isMobileNumberVerificationByPrivilegedUsersSupported: boolean =
+        isFeatureEnabled(featureConfig?.attributeVerification,
+            ClaimManagementConstants.FEATURE_DICTIONARY.get("MOBILE_VERIFICATION_BY_PRIVILEGED_USERS"));
+
+    if (!isMobileNumberVerificationByPrivilegedUsersSupported) {
+        HIDDEN_PROPERTIES.push(CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS);
+    }
 
     // TODO: Enable connector based on the feature flag.
     const isConnectorEnabled: boolean = true;
@@ -135,7 +145,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                 updateFormDataFromConnector(response);
             })
             .catch((error: AxiosError) => {
-                if (error.response && error.response.data && error.response.data.detail) {
+                if (error.response && error.response.data && error.response.data.description) {
                     dispatch(
                         addAlert({
                             description: t(
@@ -245,11 +255,13 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
         dispatch(
             addAlert({
                 description: t(
-                    "extensions:manage.accountLogin.alternativeLoginIdentifierPage.notification.success.description"
+                    "governanceConnectors:connectorCategories.otherSettings.connectors.userClaimUpdate.update." +
+                    "success.description"
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "governanceConnectors:notifications." + "updateConnector.success.message"
+                    "governanceConnectors:connectorCategories.otherSettings.connectors.userClaimUpdate.update." +
+                    "success.message"
                 )
             })
         );
@@ -261,15 +273,17 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
      * @param error - Error response.
      */
     const handleUpdateError = (error: AxiosError) => {
-        if (error.response && error.response.data && error.response.data.detail) {
+        if (error.response && error.response.data && error.response.data.description) {
             dispatch(
                 addAlert({
                     description: t(
-                        "extensions:manage.accountLogin.alternativeLoginIdentifierPage.notification.error.description"
+                        "governanceConnectors:connectorCategories.otherSettings.connectors.userClaimUpdate.update." +
+                        "error.description", { description: error?.response?.data?.description }
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "governanceConnectors:notifications.updateConnector.error.message"
+                        "governanceConnectors:connectorCategories.otherSettings.connectors.userClaimUpdate.update." +
+                        "error.message"
                     )
                 })
             );
@@ -278,13 +292,13 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
             dispatch(
                 addAlert({
                     description: t(
-                        "governanceConnectors:notifications." +
-                        "updateConnector.genericError.description"
+                        "governanceConnectors:connectorCategories.otherSettings.connectors.userClaimUpdate.update." +
+                        "genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "governanceConnectors:notifications." +
-                        "updateConnector.genericError.message"
+                        "governanceConnectors:connectorCategories.otherSettings.connectors.userClaimUpdate.update." +
+                        "genericError.message"
                     )
                 })
             );
@@ -326,6 +340,32 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
             });
     };
 
+    const resolveInputFieldLabel = (key: string): string => {
+        let fieldLabel: string = formDisplayData?.[key]?.displayName;
+        const property: string = camelCase(key);
+        const fieldLabelKey: string = "governanceConnectors:connectorCategories.otherSettings.connectors" +
+            `.userClaimUpdate.properties.${property}.label`;
+
+        if (I18n.instance.exists(fieldLabelKey)) {
+            fieldLabel = I18n.instance.t(fieldLabelKey);
+        }
+
+        return fieldLabel;
+    };
+
+    const resolveInputFieldHint = (key: string): string => {
+        let fieldHint: string = formDisplayData?.[key]?.description;
+        const property: string = camelCase(key);
+        const fieldHintKey: string = "governanceConnectors:connectorCategories.otherSettings.connectors" +
+            `.userClaimUpdate.properties.${property}.hint`;
+
+        if (I18n.instance.exists(fieldHintKey)) {
+            fieldHint = I18n.instance.t(fieldHintKey);
+        }
+
+        return fieldHint;
+    };
+
     /**
      * Form content component.
      */
@@ -339,39 +379,26 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     updateFormData(getUpdatedConfigurations(values))
                 }
             >
+                <Heading as="h4">
+                    { t("governanceConnectors:connectorCategories.otherSettings.connectors.userClaimUpdate." +
+                        "subHeadings.emailConfiguration") }
+                </Heading>
                 <Field.Checkbox
-                    ariaLabel={ GovernanceConnectorUtils.resolveFieldLabel(
-                        CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION,
-                        formDisplayData?.[CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION]?.displayName)
-                    }
+                    ariaLabel={ resolveInputFieldLabel(CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION) }
                     name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
                         CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION) }
                     className="toggle"
-                    label={ GovernanceConnectorUtils.resolveFieldLabel(
-                        CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION,
-                        formDisplayData?.[CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION]?.displayName)
-                    }
+                    label= { resolveInputFieldLabel(CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION) }
                     defaultValue={ formValues?.[
                         CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION ] == true }
                     readOnly={ isReadOnly }
                     disabled={ !isConnectorEnabled }
                     width={ 16 }
-                    data-componentid={ `${ componentId }-enable-auto-login` }
-                    hint={ GovernanceConnectorUtils.resolveFieldLabel(
-                        CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION,
-                        formDisplayData?.[CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION]?.description)
-                    }
+                    data-componentid={ `${ componentId }-email-verification` }
+                    hint={ resolveInputFieldHint(CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION) }
                 />
                 <Field.Input
-                    ariaLabel={ GovernanceConnectorUtils.resolveFieldLabel(
-                        CATEGORY_NAME,
-                        CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME,
-                        formDisplayData?.
-                            [CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME]?.displayName)
-                    }
+                    ariaLabel={ resolveInputFieldLabel(CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME) }
                     inputType="number"
                     name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
                         CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME)
@@ -385,109 +412,89 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     readOnly={ isReadOnly }
                     initialValue={ formValues?.[
                         CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME ] }
-                    data-componentId={ `${ componentId }-otp-length` }
-                    label={ GovernanceConnectorUtils.resolveFieldLabel(
-                        CATEGORY_NAME,
-                        CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME,
-                        formDisplayData?.
-                            [CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME]?.displayName)
-                    }
+                    data-componentid={ `${ componentId }-email-verification-link-expiry-time` }
+                    label={ resolveInputFieldLabel(CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME) }
                     disabled={ !isConnectorEnabled }
-                    hint={ GovernanceConnectorUtils.resolveFieldLabel(
-                        CATEGORY_NAME,
-                        CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME,
-                        formDisplayData?.
-                            [CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME]?.description)
-                    }
+                    hint={ resolveInputFieldHint(CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME) }
                 />
                 <Field.Checkbox
-                    ariaLabel={ GovernanceConnectorUtils.resolveFieldLabel(
-                        CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION,
-                        formDisplayData?.[CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION]?.displayName)
-                    }
+                    ariaLabel={ resolveInputFieldLabel(CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION) }
                     name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
                         CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION) }
                     className="toggle"
-                    label={ GovernanceConnectorUtils.resolveFieldLabel(
-                        CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION,
-                        formDisplayData?.[CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION]?.displayName)
-                    }
+                    label={ resolveInputFieldLabel(CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION) }
                     defaultValue={ formValues?.[
                         CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION ] == true }
                     readOnly={ isReadOnly }
                     disabled={ !isConnectorEnabled }
                     width={ 16 }
-                    data-componentid={ `${ componentId }-enable-auto-login` }
-                    hint={ GovernanceConnectorUtils.resolveFieldLabel(
-                        CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION,
-                        formDisplayData?.[CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION]?.description)
-                    }
+                    data-componentid={ `${ componentId }-email-notification` }
+                    hint={ resolveInputFieldHint(CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION) }
                 />
+                <Heading as="h4">
+                    { t("governanceConnectors:connectorCategories.otherSettings.connectors.userClaimUpdate." +
+                        "subHeadings.mobileConfiguration") }
+                </Heading>
                 <Field.Checkbox
-                    ariaLabel={ GovernanceConnectorUtils.resolveFieldLabel(
-                        CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION,
-                        formDisplayData?.[CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION]?.displayName)
-                    }
+                    ariaLabel={ resolveInputFieldLabel(CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION) }
                     name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
                         CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION) }
                     className="toggle"
-                    label={ GovernanceConnectorUtils.resolveFieldLabel(
-                        CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION,
-                        formDisplayData?.[CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION]?.displayName)
-                    }
+                    label={ resolveInputFieldLabel(CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION) }
                     defaultValue={ formValues?.[
                         CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION ] == true }
                     readOnly={ isReadOnly }
                     disabled={ !isConnectorEnabled }
                     width={ 16 }
-                    data-componentid={ `${ componentId }-enable-auto-login` }
-                    hint={ GovernanceConnectorUtils.resolveFieldLabel(
-                        CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION,
-                        formDisplayData?.[CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION]?.description)
-                    }
+                    data-componentid={ `${ componentId }-mobile-verification` }
+                    hint={ resolveInputFieldHint(CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION) }
                 />
-                <Field.Checkbox
-                    ariaLabel={ GovernanceConnectorUtils.resolveFieldLabel(
-                        CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS,
-                        formDisplayData?.
-                            [CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS]?.displayName)
-                    }
+                <Field.Input
+                    ariaLabel={ resolveInputFieldLabel(CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME) }
+                    inputType="number"
                     name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS) }
-                    className="toggle"
-                    label={ GovernanceConnectorUtils.resolveFieldLabel(
-                        CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS,
-                        formDisplayData?.
-                            [CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS]?.displayName)
+                        CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME)
                     }
-                    defaultValue={ formValues?.[
-                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS ] == true }
-                    readOnly={ isReadOnly }
-                    disabled={ !isConnectorEnabled }
+                    type="number"
                     width={ 16 }
-                    data-componentid={ `${ componentId }-enable-auto-login` }
-                    hint={ GovernanceConnectorUtils.resolveFieldLabel(
-                        CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS,
-                        formDisplayData?.
-                            [CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS]?.description)
-                    }
+                    required={ true }
+                    labelPosition="top"
+                    minLength={ 3 }
+                    maxLength={ 100 }
+                    readOnly={ isReadOnly }
+                    initialValue={ formValues?.[CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME ] }
+                    data-componentid={ `${ componentId }-mobile-verification-code-expiry-time` }
+                    label={ resolveInputFieldLabel(CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME) }
+                    disabled={ !isConnectorEnabled }
+                    hint={ resolveInputFieldHint(CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME) }
                 />
+                { isMobileNumberVerificationByPrivilegedUsersSupported && (
+                    <Field.Checkbox
+                        ariaLabel={ resolveInputFieldLabel(
+                            CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS) }
+                        name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                            CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS) }
+                        className="toggle"
+                        label={ resolveInputFieldLabel(
+                            CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS) }
+                        defaultValue={ formValues?.[
+                            CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS ] === true }
+                        readOnly={ isReadOnly }
+                        disabled={ !isConnectorEnabled }
+                        width={ 16 }
+                        data-componentid={ `${ componentId }-mobile-verification-by-privileged-user` }
+                        hint={
+                            resolveInputFieldHint(CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS)
+                        }
+                    />
+                ) }
                 <Field.Button
                     form={ FORM_ID }
                     size="small"
                     buttonType="primary_btn"
                     ariaLabel="Self registration update button"
                     name="update-button"
-                    data-componentId={ `${componentId}-submit-button` }
+                    data-componentid={ `${componentId}-submit-button` }
                     disabled={ !isConnectorEnabled || isSubmitting }
                     loading={ isSubmitting }
                     label={ t("common:update") }
@@ -508,11 +515,8 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                 "userClaimUpdate.friendlyName"
             ) }
             description={ t(
-                "governanceConnectors:connectorSubHeading",
-                { name: t(
-                    "governanceConnectors:connectorCategories.otherSettings.connectors." +
-                    "userClaimUpdate.friendlyName"
-                ) }
+                "governanceConnectors:connectorCategories.otherSettings.connectors." +
+                "userClaimUpdate.subTitle"
             ) }
             data-componentid={ `${componentId}-page-layout` }
             backButton={ {
@@ -531,13 +535,6 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
             </EmphasizedSegment>
         </PageLayout>
     );
-};
-
-/**
- * Default props for the component.
- */
-AttributeVerificationSettingsFormPage.defaultProps = {
-    "data-componentid": "attribute-verification-settings-form"
 };
 
 /**

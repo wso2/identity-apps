@@ -75,8 +75,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     const hasAttributeDialectsUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.attributeDialects?.scopes?.update
     );
-    const hasServerReadPermissions: boolean = useRequiredScopes(
-        featureConfig?.server?.scopes?.read
+    const hasAttributeVerificationReadPermissions: boolean = useRequiredScopes(
+        featureConfig?.attributeVerification?.scopes?.read
     );
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
@@ -94,7 +94,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
         (state: AppState) => state.config.ui.listAllAttributeDialects
     );
     const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     /**
      * Fetches all the dialects.
@@ -332,9 +331,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                             </List>
                                         </EmphasizedSegment>
                                         { !isSubOrganization() &&
-                                        !isSAASDeployment &&
-                                        featureConfig?.server?.enabled &&
-                                        hasServerReadPermissions && (
+                                        featureConfig?.attributeVerification?.enabled &&
+                                        hasAttributeVerificationReadPermissions && (
                                             <EmphasizedSegment
                                                 onClick={ () => {
                                                     history.push(AppConstants.getPaths()
@@ -359,12 +357,9 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                     />
                                                                     <List.Header>
                                                                         { t(
-                                                                            "console:manage.features." +
-                                                                            "governanceConnectors." +
-                                                                            "connectorCategories." +
-                                                                            "otherSettings.connectors." +
-                                                                            "userClaimUpdate." +
-                                                                            "friendlyName"
+                                                                            "governanceConnectors:" +
+                                                                            "connectorCategories.otherSettings." +
+                                                                            "connectors.userClaimUpdate.friendlyName"
                                                                         ) }
                                                                     </List.Header>
                                                                     <List.Description
@@ -374,16 +369,9 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                         }
                                                                     >
                                                                         { t(
-                                                                            "console:manage.features." +
-                                                                            "governanceConnectors." +
-                                                                            "connectorSubHeading",
-                                                                            { name: t(
-                                                                                "console:manage.features." +
-                                                                                "governanceConnectors." +
-                                                                                "connectorCategories." +
-                                                                                "otherSettings.connectors." +
-                                                                                "userClaimUpdate.friendlyName"
-                                                                            ) }
+                                                                            "governanceConnectors:" +
+                                                                            "connectorCategories.otherSettings." +
+                                                                            "connectors.userClaimUpdate.subTitle"
                                                                         ) }
                                                                     </List.Description>
                                                                 </Grid.Column>

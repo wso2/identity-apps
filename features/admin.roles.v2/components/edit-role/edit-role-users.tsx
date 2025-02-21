@@ -455,8 +455,6 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                         <Grid xs={ 12 } sm={ 4 } md={ 8 }>
                                             <Autocomplete
                                                 multiple
-                                                style={ { padding: 0 } }
-                                                size="small"
                                                 disableCloseOnSelect
                                                 loading={ isUserListFetchRequestLoading || isUserSearchLoading }
                                                 options={ users }

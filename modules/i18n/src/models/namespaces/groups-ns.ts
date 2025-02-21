@@ -160,5 +160,6 @@ export interface groupsNS {
         groupNameRegexHint: string;
         groupNameRegexAlternativeHint: string;
         groupNameRegexCustomHint: string;
+        subHeading: string;
     };
 }

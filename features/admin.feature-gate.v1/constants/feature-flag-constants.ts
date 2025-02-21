@@ -42,17 +42,20 @@ class FeatureFlagConstants {
         APPLICATION_BRANDING_TEXT: "branding.stylesAndText.application.text",
         APPLICATION_EDIT_BRANDING_LINK: "applications.edit.general.branding",
         APPLICATION_TEMPLATES: "applications.templates",
+        ATTRIBUTE_DIALECTS: "attributeDialects",
         BRANDING: "branding",
         BRANDING_STYLES_AND_TEXT_TITLE: "branding.stylesAndText.application.title",
         INSIGHTS: "insights",
         LOGIN_AND_REGISTRATION: "loginAndRegistration",
+        LOGIN_AND_REGISTRATION_FRAUD_DETECTION: "loginAndRegistration.loginSecurity.fraudDetection",
         LOGIN_AND_REGISTRATION_ORGANIZATION_DISCOVERY: "loginAndRegistration.organizationSettings.discovery",
         LOGIN_AND_REGISTRATION_ORGANIZATION_IMPERSONATION: "loginAndRegistration.organizationSettings.impersonation",
         ORGANIZATION_BRANDING_TEXT: "branding.stylesAndText.organization.text",
         PUSH_PROVIDERS: "pushProviders",
         PUSH_PROVIDER_TEMPLATES: "pushProviders.templates",
         SMS_TEMPLATES: "smsTemplates",
-        USER_ROLES: "userRoles"
+        USER_ROLES: "userRoles",
+        USER_STORES: "userStores"
     };
 }
 

@@ -110,6 +110,16 @@
             {
                 "displayName": "Account Disabled",
                 "id": "QWNjb3VudERpc2FibGU"
+            },
+            {
+                "description": "This email informs the user that the email address is updated",
+                "displayName": "Email update without verification",
+                "id": "bm90aWZ5T25FeGlzdGluZ0VtYWlsVXBkYXRlV2l0aG91dFZlcmlmaWNhdGlvbg"
+            },
+            {
+                "description": "This email informs the user that the email address is updated",
+                "displayName": "Email Update Notification",
+                "id": "bm90aWZ5T25FeGlzdGluZ0VtYWlsVXBkYXRl"
             }
         ],
         "outboundProvisioningConnectors": [],
@@ -471,11 +481,25 @@
                     ],
                     "read": [
                         "internal_claim_meta_view",
-                        "internal_governance_view",
                         "internal_userstore_view"
                     ],
                     "update": [
-                        "internal_claim_meta_update",
+                        "internal_claim_meta_update"
+                    ]
+                }
+            },
+            "attributeVerification": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [
+                        "internal_governance_view"
+                    ],
+                    "update": [
                         "internal_governance_update"
                     ]
                 }
@@ -851,6 +875,10 @@
                 "featureFlags": [
                     {
                         "feature": "loginAndRegistration",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "loginAndRegistration.loginSecurity.fraudDetection",
                         "flag": ""
                     },
                     {

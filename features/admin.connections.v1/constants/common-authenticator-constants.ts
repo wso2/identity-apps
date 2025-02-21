@@ -31,15 +31,15 @@ export class CommonAuthenticatorConstants {
      */
     public static readonly CONNECTION_TEMPLATE_IDS: {
         APPLE: string;
-        CUSTOM_AUTHENTICATION: string;
+        CUSTOM_AUTHENTICATOR: string;
         ENTERPRISE: string;
         EXPERT_MODE: string;
-        EXTERNAL_CUSTOM_AUTHENTICATION: string;
+        EXTERNAL_CUSTOM_AUTHENTICATOR: string;
         FACEBOOK: string;
         GITHUB: string;
         GOOGLE: string;
         HYPR: string;
-        INTERNAL_CUSTOM_AUTHENTICATION: string;
+        INTERNAL_CUSTOM_AUTHENTICATOR: string;
         IPROOV: string;
         LINKEDIN: string;
         MICROSOFT: string;
@@ -48,18 +48,18 @@ export class CommonAuthenticatorConstants {
         SAML: string;
         SWE: string;
         TRUSTED_TOKEN_ISSUER: string;
-        TWO_FACTOR_CUSTOM_AUTHENTICATION: string;
+        TWO_FACTOR_CUSTOM_AUTHENTICATOR: string;
     } = {
             APPLE: "apple-idp",
-            CUSTOM_AUTHENTICATION: "custom-authentication",
+            CUSTOM_AUTHENTICATOR: "custom-authenticator",
             ENTERPRISE: "enterprise-idp",
             EXPERT_MODE: "expert-mode-idp",
-            EXTERNAL_CUSTOM_AUTHENTICATION: "external-custom-authentication",
+            EXTERNAL_CUSTOM_AUTHENTICATOR: "external-custom-authenticator",
             FACEBOOK: "facebook-idp",
             GITHUB: "github-idp",
             GOOGLE: "google-idp",
             HYPR: "hypr-idp",
-            INTERNAL_CUSTOM_AUTHENTICATION: "internal-user-custom-authentication",
+            INTERNAL_CUSTOM_AUTHENTICATOR: "internal-user-custom-authenticator",
             IPROOV: "iproov-idp",
             LINKEDIN: "linkedin-idp",
             MICROSOFT: "microsoft-idp",
@@ -68,7 +68,7 @@ export class CommonAuthenticatorConstants {
             SAML: "enterprise-saml-idp",
             SWE: "swe-idp",
             TRUSTED_TOKEN_ISSUER: "trusted-token-issuer",
-            TWO_FACTOR_CUSTOM_AUTHENTICATION: "two-factor-custom-authentication"
+            TWO_FACTOR_CUSTOM_AUTHENTICATOR: "two-factor-custom-authenticator"
         };
 
     /**
@@ -99,5 +99,5 @@ export class CommonAuthenticatorConstants {
     public static readonly IDENTIFIER_REGEX: RegExp = /^[a-zA-Z0-9_-]{3,}$/;
     public static readonly DISPLAY_NAME_REGEX: RegExp = /^.{3,}$/;
 
-    public static readonly TEMPLATE_ID_FIELD: "templateId";
+    public static readonly TEMPLATE_ID_FIELD: string = "templateId";
 }

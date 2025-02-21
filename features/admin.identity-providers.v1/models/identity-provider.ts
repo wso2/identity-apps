@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -440,10 +440,15 @@ export interface LocalAuthenticatorInterface extends CommonPluggableComponentInt
      */
     displayName?: string;
     /**
-     * Description for the local authenticator.
+     * Description of the local authenticator.
      * This property is used only with custom local authenticators.
      */
     description?: string;
+    /**
+     * Image URI of the local authenticator.
+     * This property is used only with custom local authenticators.
+     */
+    image?: string;
     /**
      * Is authenticator enabled.
      */
@@ -452,7 +457,7 @@ export interface LocalAuthenticatorInterface extends CommonPluggableComponentInt
      * Authenticator Type.
      * @example [ LOCAL, REQUEST_PATH ]
      */
-    type?:  string;
+    type?: string;
     /**
      * Details endpoint.
      */
@@ -620,7 +625,10 @@ export enum AuthenticatorCategories {
     LOCAL = "LOCAL",
     SECOND_FACTOR = "SECOND_FACTOR",
     SOCIAL = "SOCIAL",
-    RECOVERY = "RECOVERY"
+    RECOVERY = "RECOVERY",
+    EXTERNAL = "EXTERNAL",
+    INTERNAL = "INTERNAL",
+    TWO_FACTOR_CUSTOM = "TWO_FACTOR_CUSTOM"
 }
 
 /**

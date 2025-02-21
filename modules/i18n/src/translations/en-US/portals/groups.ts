@@ -78,7 +78,8 @@ export const groups: groupsNS = {
     groupCreateWizard: {
         groupNameRegexAlternativeHint: "Name for the group can contain between 3 to 30 alphanumeric characters, dashes (-), and underscores (_).",
         groupNameRegexCustomHint: "Name for the group should match the following regex pattern {{regex}}",
-        groupNameRegexHint: "Name for the group can contain between 3 to 30 characters."
+        groupNameRegexHint: "Name for the group can contain between 3 to 30 characters.",
+        subHeading: "Create new group and add users to the group."
     },
     list: {
         columns: {
