@@ -36,14 +36,30 @@ interface PolicyListProps extends IdentifiableComponentInterface {
     policies?: PolicyInterface[]; // Use PolicyInterface[]
     containerId: string;
     isDraggable?: boolean; // Add a prop to control drag functionality
-    mutateInactivePolicyList?: () => void;
-    mutateActivePolicyList?: () => void;
-    setInactivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
-    setPageInactive?: React.Dispatch<React.SetStateAction<number>>;
-    setHasMoreInactivePolicies?: React.Dispatch<React.SetStateAction<boolean>>;
-    setActivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
-    setPageActive?: React.Dispatch<React.SetStateAction<number>>;
-    setHasMoreActivePolicies?: React.Dispatch<React.SetStateAction<boolean>>;
+    /**
+     * Delete an active policy.
+     *
+     * @param policyId - The policy ID.
+     */
+    deleteActivePolicy?: (policyId: string) => void;
+    /**
+     * Delete an inactive policy.
+     *
+     * @param policyId - The policy ID.
+     */
+    deleteInactivePolicy?: (policyId: string) => void;
+    /**
+     * Deactivate a policy.
+     *
+     * @param policyId - The policy ID.
+     */
+    deactivatePolicy?: (policyId: string) => void;
+    /**
+     * Activate a policy.
+     *
+     * @param policyId - The policy ID.
+     */
+    activatePolicy?: (policyId: string) => void;
 }
 
 
@@ -51,13 +67,10 @@ interface PolicyListProps extends IdentifiableComponentInterface {
 export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
     onDrop,
     policies = [],
-    mutateInactivePolicyList, setInactivePolicies,
-    setPageInactive,
-    setHasMoreInactivePolicies,
-    setActivePolicies,
-    setPageActive,
-    setHasMoreActivePolicies,
-    mutateActivePolicyList,
+    deleteActivePolicy,
+    deleteInactivePolicy,
+    activatePolicy,
+    deactivatePolicy,
     containerId,
     isDraggable = true // Default to draggable
 }: PolicyListProps): ReactElement => {
@@ -76,7 +89,7 @@ export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
         ) : (
             <DroppableContainer
                 nodes={ policies }
-                onDrop={ () => onDrop?.(containerId) }
+                onDrop={ () => onDrop(containerId) }
             >
                 { ({
                     nodes,
@@ -101,12 +114,8 @@ export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
                                 <PolicyListDraggableNode
                                     policy={ policy }
                                     data-componentid={ generateComponentId() }
-                                    mutateActivePolicyList={ mutateActivePolicyList }
-                                    mutateInactivePolicyList={ mutateInactivePolicyList }
-                                    setPageActive={ setPageActive }
-                                    setHasMoreActivePolicies={ setHasMoreActivePolicies }
-                                    setActivePolicies={ setActivePolicies }
-
+                                    onDelete={ deleteActivePolicy }
+                                    onDeactivate={ deactivatePolicy }
                                 />
                             </div>
                         );
@@ -131,11 +140,8 @@ export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
                     key={ policy.policyId }
                     policy={ policy }
                     data-componentid={ generateComponentId() }
-                    mutateInactivePolicyList={ mutateInactivePolicyList }
-                    mutateActivePolicyList={ mutateActivePolicyList }
-                    setInactivePolicies={ setInactivePolicies }
-                    setPageInactive={ setPageInactive }
-                    setHasMoreInactivePolicies={ setHasMoreInactivePolicies }
+                    onDelete={ deleteInactivePolicy }
+                    onActivate={ activatePolicy }
                 />
             ))
             ) }

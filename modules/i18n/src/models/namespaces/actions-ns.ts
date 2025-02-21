@@ -178,7 +178,10 @@ export interface actionsNS {
             button: string;
             info: {
                 title: string;
-                message: string;
+                message: {
+                    preIssueAccessToken: string;
+                    preUpdatePassword: string;
+                }
             };
             label: string;
         }

@@ -71,7 +71,7 @@
 <%
     String stat = request.getParameter("status");
     String statusMessage = request.getParameter("statusMsg");
-    String sp = request.getParameter("sp");
+    String sp = Encode.forJava(request.getParameter("sp"));
     String applicationAccessURLWithoutEncoding = null;
     if (stat == null || statusMessage == null) {
         stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");

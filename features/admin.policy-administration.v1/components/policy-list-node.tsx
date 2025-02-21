@@ -43,21 +43,25 @@ export interface PolicyListDraggableNodePropsInterface
      * The node that is being dragged.
      */
     policy: PolicyInterface;
-    mutateInactivePolicyList?: () => void;
-    setInactivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
-    setPageInactive: React.Dispatch<React.SetStateAction<number>>;
-    setHasMoreInactivePolicies: React.Dispatch<React.SetStateAction<boolean>>;
-    mutateActivePolicyList?: () => void;
+    /**
+     * Delete an inactive policy.
+     *
+     * @param policyId - The policy ID.
+     */
+    onDelete: (policyId: string) => void;
+    /**
+     * Activate a policy.
+     *
+     * @param policyId - The policy ID.
+     */
+    onActivate: (policyId: string) => void;
 }
 
 const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> = ({
     "data-componentid": componentId = "policy-list--node",
     policy,
-    mutateInactivePolicyList,
-    setInactivePolicies,
-    setPageInactive,
-    setHasMoreInactivePolicies,
-    mutateActivePolicyList
+    onDelete,
+    onActivate
 }: PolicyListDraggableNodePropsInterface): ReactElement => {
     const { t } = useTranslation();
 
@@ -71,18 +75,13 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
         try {
             await deletePolicy(btoa(policy.policyId));
 
-            setPageInactive(0);
-            setHasMoreInactivePolicies(true);
-            setInactivePolicies([]);
-
             dispatch(addAlert({
                 description: t("policyAdministration:alerts.deleteSuccess.description"),
                 level: AlertLevels.SUCCESS,
                 message: t("policyAdministration:alerts.deleteSuccess.message")
             }));
 
-            mutateInactivePolicyList();
-
+            onDelete(policy.policyId);
         } catch (error) {
             // Dispatch the error alert.
             dispatch(addAlert({
@@ -92,10 +91,6 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
             }));
         }
     };
-
-
-
-
 
     const handleActivate = async () : Promise<void> => {
         try{
@@ -113,9 +108,7 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
                 message: t("policyAdministration:alerts.activateSuccess.message")
             }));
 
-            mutateActivePolicyList();
-            mutateInactivePolicyList();
-
+            onActivate(policy.policyId);
         } catch ( error ) {
             dispatch(addAlert({
                 description: t("policyAdministration:alerts.activateFailure.description"),

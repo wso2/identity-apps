@@ -46,6 +46,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%-- Include tenant context --%>
 <%@ include file="tenant-resolve.jsp"%>
@@ -303,7 +304,8 @@
             request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
             return;
         }
-        request.setAttribute("spId", request.getParameter("spId"));
+        String spId = Encode.forJava(request.getParameter("spId"));
+        request.setAttribute("spId", spId);
         request.getRequestDispatcher("password-reset.jsp").forward(request, response);
     } else if (RecoveryStage.RESET.equalsValue(recoveryStage)) {
         request.setAttribute("useRecoveryV2API", "true");

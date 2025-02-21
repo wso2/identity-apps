@@ -487,12 +487,12 @@ export const claims: ClaimsNS = {
                     title: "Attribute Configurations"
                 },
                 displayByDefault: "Display",
-                displayByDefaultHint: "If selected, this attribute will be displayed by default in the profile.",
+                displayByDefaultHint: "If selected, this attribute will be displayed by default in the profile. Required attributes must be displayed.",
                 endUserProfile: "End-User Profile",
                 readonly: "Read-only",
                 readonlyHint: "If this is selected, the value of this attribute is read-only in the profile. Be sure to select this option if the attribute value is system-defined.",
                 required: "Required",
-                requiredHint: "If selected, the user must specify a value for this attribute in the profile.",
+                requiredHint: "If selected, the user must specify a value for this attribute in the profile. Read-only attributes cannot be marked as required.",
                 selfRegistration: "Self-Registration",
                 selfRegistrationReadOnlyHint: "Read-only configuration is not applicable in the self-registration profile."
             },

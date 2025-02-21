@@ -883,23 +883,32 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
         </WizardPage>
     );
 
+    /**
+     * In order to display that the "custom-" will be prefixed to the identifier, this is rendered
+     * inside the Input field similar to an adornment.
+     * @returns React Element
+     */
+    const customPrefix = (): ReactElement => {
+        return <span>{ ConnectionUIConstants.CUSTOM_AUTHENTICATOR_IDENTIFIER_PREFIX }</span>;
+    };
+
     const generalSettingsPage = () => (
         <WizardPage validate={ validateGeneralSettingsField }>
             <Field.Input
                 className="identifier-field"
                 ariaLabel="identifier"
-                inputType="text"
+                inputType="text_with_adornment"
                 name="identifier"
                 label={ t("customAuthenticator:fields.createWizard.generalSettingsStep.identifier.label") }
                 placeholder={ t("customAuthenticator:fields.createWizard.generalSettingsStep.identifier.placeholder") }
                 initialValue={ initialValues.identifier }
-                action={ { content: "custom-" } }
-                actionPosition="left"
                 required={ true }
                 maxLength={ 100 }
                 minLength={ 3 }
                 data-componentid={ `${_componentId}-create-wizard-identifier` }
                 width={ 15 }
+                iconPosition="left"
+                adornment={ customPrefix() }
             />
             <Hint>{ t("customAuthenticator:fields.createWizard.generalSettingsStep.identifier.hint") }</Hint>
             <Field.Input

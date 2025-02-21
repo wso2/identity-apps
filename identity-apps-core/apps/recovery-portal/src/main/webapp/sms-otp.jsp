@@ -73,7 +73,7 @@
         // Exception is caught and ignored. otpLength will be kept as 10 to trigger the full input field.
     }
 
-    String username = request.getParameter("username");
+    String username = Encode.forJava(request.getParameter("username"));
     if (username == null) {
         username = (String) request.getAttribute("username");
     }

@@ -33,6 +33,7 @@ import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails }
 import { addUserStore } from "../api";
 import { getAddUserstoreWizardStepIcons } from "../configs";
 import { USERSTORE_TYPE_DISPLAY_NAMES, UserStoreManagementConstants } from "../constants";
+import useUserStores from "../hooks/use-user-stores";
 import {
     CategorizedProperties,
     TypeProperty,
@@ -76,6 +77,8 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
         type,
         [ "data-testid" ]: testId
     } = props;
+
+    const { mutateUserStoreList } = useUserStores();
 
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(0);
     const [ generalDetailsData, setGeneralDetailsData ] = useState<Map<string, FormValue>>(null);
@@ -127,6 +130,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
 
             onClose();
 
+            mutateUserStoreList(UserStoreManagementConstants.USER_STORE_MUTATION_WAIT_TIME);
             history.push(AppConstants.getPaths().get("USERSTORES"));
         }).catch((error: AxiosError & IdentityAppsError) => {
 

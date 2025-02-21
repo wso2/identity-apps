@@ -44,7 +44,7 @@ public class AppsCommonServiceStartupObserver implements ServerStartupObserver {
             log.info(appPortal.getName() + " URL : " + IdentityUtil
                 .getServerURL(appPortal.getEndpoint(), true, true));
         }
-        log.info("Identity apps common service component activated successfully.");
+        log.debug("Identity apps common service component activated successfully.");
     }
 
 }

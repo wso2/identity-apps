@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,13 +22,12 @@ import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
-import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import {
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { useUserStore } from "@wso2is/admin.userstores.v1/api/user-stores";
 import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants";
-import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models/user-stores";
+import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 import { ValidationDataInterface, ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Button, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
@@ -53,7 +52,6 @@ import {
     getUsernameConfiguration
 } from "../../../utils";
 
-
 /**
  * Proptypes for the add user component.
  */
@@ -77,7 +75,7 @@ export interface AddUserProps {
     isBasicDetailsLoading?: boolean;
     setBasicDetailsLoading?: (toggle: boolean) => void;
     readWriteUserStoresList: DropdownItemProps[];
-    isUserStoreError: boolean;
+    selectedUserStoreId: string;
 }
 
 /**
@@ -107,7 +105,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         setBasicDetailsLoading,
         validationConfig,
         readWriteUserStoresList,
-        isUserStoreError
+        selectedUserStoreId
     } = props;
 
     const [ passwordOption, setPasswordOption ] = useState<PasswordOptionTypes>(userConfig.defaultPasswordOption);
@@ -117,7 +115,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
     const [ isValidPassword, setIsValidPassword ] = useState<boolean>(true);
     const [ randomPassword, setRandomPassword ] = useState<string>(undefined);
-    const [ userStore, setUserStore ] = useState<string>(userstoresConfig.primaryUserstoreId);
+    const [ userStore, setUserStore ] = useState<string>(selectedUserStoreId);
     const [ isValidEmail, setIsValidEmail ] = useState<boolean>(false);
     const [ isEmailFilled, setIsEmailFilled ] = useState<boolean>(false);
 
@@ -888,7 +886,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
             <Grid>
                 {
                     !hiddenFields.includes(HiddenFieldNames.USERSTORE) &&
-                        !isUserStoreError && (
+                    (
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <div ref={ emailRef }/>

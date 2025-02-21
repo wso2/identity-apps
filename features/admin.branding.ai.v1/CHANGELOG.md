@@ -1,5 +1,243 @@
 # @wso2is/admin.branding.ai.v1
 
+## 2.27.83
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.14
+  - @wso2is/admin.organizations.v1@2.26.188
+  - @wso2is/admin.branding.v1@2.28.45
+  - @wso2is/admin.feature-gate.v1@1.4.188
+  - @wso2is/common.ai.v1@2.25.188
+  - @wso2is/common.branding.v1@2.26.45
+
+## 2.27.82
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.13
+  - @wso2is/admin.organizations.v1@2.26.187
+  - @wso2is/admin.branding.v1@2.28.44
+  - @wso2is/admin.feature-gate.v1@1.4.187
+  - @wso2is/common.ai.v1@2.25.187
+  - @wso2is/common.branding.v1@2.26.44
+
+## 2.27.81
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.12
+  - @wso2is/admin.organizations.v1@2.26.186
+  - @wso2is/admin.branding.v1@2.28.43
+  - @wso2is/admin.feature-gate.v1@1.4.186
+  - @wso2is/common.ai.v1@2.25.186
+  - @wso2is/common.branding.v1@2.26.43
+
+## 2.27.80
+
+### Patch Changes
+
+- Updated dependencies [[`550d087571863f97af85e1f37a84582d230bbe94`](https://github.com/wso2/identity-apps/commit/550d087571863f97af85e1f37a84582d230bbe94), [`063fe9d369c650df20207653449962881bb3e963`](https://github.com/wso2/identity-apps/commit/063fe9d369c650df20207653449962881bb3e963), [`ae40c90f3a834fcbd18e7443ff348088e46457be`](https://github.com/wso2/identity-apps/commit/ae40c90f3a834fcbd18e7443ff348088e46457be)]:
+  - @wso2is/form@2.6.34
+  - @wso2is/i18n@2.20.1
+  - @wso2is/admin.core.v1@2.39.11
+  - @wso2is/admin.organizations.v1@2.26.185
+  - @wso2is/admin.branding.v1@2.28.42
+  - @wso2is/common.ai.v1@2.25.185
+  - @wso2is/admin.feature-gate.v1@1.4.185
+  - @wso2is/common.branding.v1@2.26.42
+
+## 2.27.79
+
+### Patch Changes
+
+- Updated dependencies [[`6e3c598e5c4d2b2bbd8cb5543ab3eea0fa4243df`](https://github.com/wso2/identity-apps/commit/6e3c598e5c4d2b2bbd8cb5543ab3eea0fa4243df)]:
+  - @wso2is/i18n@2.20.0
+  - @wso2is/admin.core.v1@2.39.10
+  - @wso2is/admin.branding.v1@2.28.41
+  - @wso2is/admin.organizations.v1@2.26.184
+  - @wso2is/common.ai.v1@2.25.184
+  - @wso2is/admin.feature-gate.v1@1.4.184
+  - @wso2is/common.branding.v1@2.26.41
+
+## 2.27.78
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.9
+  - @wso2is/admin.organizations.v1@2.26.183
+  - @wso2is/admin.branding.v1@2.28.40
+  - @wso2is/admin.feature-gate.v1@1.4.183
+  - @wso2is/common.ai.v1@2.25.183
+  - @wso2is/common.branding.v1@2.26.40
+
+## 2.27.77
+
+### Patch Changes
+
+- [#7701](https://github.com/wso2/identity-apps/pull/7701) [`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger patch release to all packages to prepare for RC
+
+- Updated dependencies [[`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce)]:
+  - @wso2is/admin.branding.v1@2.28.39
+  - @wso2is/admin.core.v1@2.39.8
+  - @wso2is/admin.feature-gate.v1@1.4.182
+  - @wso2is/admin.organizations.v1@2.26.182
+  - @wso2is/common.ai.v1@2.25.182
+  - @wso2is/common.branding.v1@2.26.39
+  - @wso2is/access-control@3.3.19
+  - @wso2is/core@2.6.5
+  - @wso2is/dynamic-forms@2.4.39
+  - @wso2is/form@2.6.33
+  - @wso2is/forms@2.3.21
+  - @wso2is/i18n@2.19.21
+  - @wso2is/react-components@2.9.11
+  - @wso2is/theme@2.6.11
+  - @wso2is/validation@2.4.1
+
+## 2.27.76
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.7
+  - @wso2is/admin.organizations.v1@2.26.181
+  - @wso2is/admin.branding.v1@2.28.38
+  - @wso2is/admin.feature-gate.v1@1.4.181
+  - @wso2is/common.ai.v1@2.25.181
+  - @wso2is/common.branding.v1@2.26.38
+
+## 2.27.75
+
+### Patch Changes
+
+- Updated dependencies [[`1166cdeb139983e4920a31dc43896628a869a5ef`](https://github.com/wso2/identity-apps/commit/1166cdeb139983e4920a31dc43896628a869a5ef)]:
+  - @wso2is/i18n@2.19.20
+  - @wso2is/admin.core.v1@2.39.6
+  - @wso2is/admin.branding.v1@2.28.37
+  - @wso2is/admin.organizations.v1@2.26.180
+  - @wso2is/common.ai.v1@2.25.180
+  - @wso2is/admin.feature-gate.v1@1.4.180
+  - @wso2is/common.branding.v1@2.26.37
+
+## 2.27.74
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.5
+  - @wso2is/admin.organizations.v1@2.26.179
+  - @wso2is/admin.branding.v1@2.28.36
+  - @wso2is/admin.feature-gate.v1@1.4.179
+  - @wso2is/common.ai.v1@2.25.179
+  - @wso2is/common.branding.v1@2.26.36
+
+## 2.27.73
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.4
+  - @wso2is/admin.organizations.v1@2.26.178
+  - @wso2is/admin.branding.v1@2.28.35
+  - @wso2is/admin.feature-gate.v1@1.4.178
+  - @wso2is/common.ai.v1@2.25.178
+  - @wso2is/common.branding.v1@2.26.35
+
+## 2.27.72
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.28.34
+  - @wso2is/admin.core.v1@2.39.3
+  - @wso2is/admin.organizations.v1@2.26.177
+  - @wso2is/admin.feature-gate.v1@1.4.177
+  - @wso2is/common.ai.v1@2.25.177
+  - @wso2is/common.branding.v1@2.26.34
+
+## 2.27.71
+
+### Patch Changes
+
+- Updated dependencies [[`6bb877f16b0274c87924bf33316e865310ab98f9`](https://github.com/wso2/identity-apps/commit/6bb877f16b0274c87924bf33316e865310ab98f9)]:
+  - @wso2is/i18n@2.19.19
+  - @wso2is/admin.core.v1@2.39.2
+  - @wso2is/admin.organizations.v1@2.26.176
+  - @wso2is/admin.branding.v1@2.28.33
+  - @wso2is/common.ai.v1@2.25.176
+  - @wso2is/admin.feature-gate.v1@1.4.176
+  - @wso2is/common.branding.v1@2.26.33
+
+## 2.27.70
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.1
+  - @wso2is/admin.organizations.v1@2.26.175
+  - @wso2is/admin.branding.v1@2.28.32
+  - @wso2is/admin.feature-gate.v1@1.4.175
+  - @wso2is/common.ai.v1@2.25.175
+  - @wso2is/common.branding.v1@2.26.32
+
+## 2.27.69
+
+### Patch Changes
+
+- Updated dependencies [[`47c768b2179f9768ebf9c858463e831ca4f079b3`](https://github.com/wso2/identity-apps/commit/47c768b2179f9768ebf9c858463e831ca4f079b3), [`e4657499f151f319f1dec5f2fe8166e590dde979`](https://github.com/wso2/identity-apps/commit/e4657499f151f319f1dec5f2fe8166e590dde979)]:
+  - @wso2is/i18n@2.19.18
+  - @wso2is/admin.core.v1@2.39.0
+  - @wso2is/admin.organizations.v1@2.26.174
+  - @wso2is/admin.branding.v1@2.28.31
+  - @wso2is/common.ai.v1@2.25.174
+  - @wso2is/admin.feature-gate.v1@1.4.174
+  - @wso2is/common.branding.v1@2.26.31
+
+## 2.27.68
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.42
+  - @wso2is/admin.organizations.v1@2.26.173
+  - @wso2is/admin.branding.v1@2.28.30
+  - @wso2is/admin.feature-gate.v1@1.4.173
+  - @wso2is/common.ai.v1@2.25.173
+  - @wso2is/common.branding.v1@2.26.30
+
+## 2.27.67
+
+### Patch Changes
+
+- Updated dependencies [[`3e098ee7cace95919ee2ed56c4cd4bfbaea6873d`](https://github.com/wso2/identity-apps/commit/3e098ee7cace95919ee2ed56c4cd4bfbaea6873d)]:
+  - @wso2is/i18n@2.19.17
+  - @wso2is/admin.core.v1@2.38.41
+  - @wso2is/admin.branding.v1@2.28.29
+  - @wso2is/admin.organizations.v1@2.26.172
+  - @wso2is/common.ai.v1@2.25.172
+  - @wso2is/admin.feature-gate.v1@1.4.172
+  - @wso2is/common.branding.v1@2.26.29
+
+## 2.27.66
+
+### Patch Changes
+
+- Updated dependencies [[`a9c9a67492fbaf6a78e9bc0fa00f27ffb221b71d`](https://github.com/wso2/identity-apps/commit/a9c9a67492fbaf6a78e9bc0fa00f27ffb221b71d), [`6c74317ac2e2ce9dcc9dc924eb9be20dd976fd92`](https://github.com/wso2/identity-apps/commit/6c74317ac2e2ce9dcc9dc924eb9be20dd976fd92)]:
+  - @wso2is/admin.feature-gate.v1@1.4.171
+  - @wso2is/theme@2.6.10
+  - @wso2is/admin.branding.v1@2.28.28
+  - @wso2is/admin.core.v1@2.38.40
+  - @wso2is/admin.organizations.v1@2.26.171
+  - @wso2is/common.ai.v1@2.25.171
+  - @wso2is/react-components@2.9.10
+  - @wso2is/common.branding.v1@2.26.28
+  - @wso2is/dynamic-forms@2.4.38
+  - @wso2is/form@2.6.32
+
 ## 2.27.65
 
 ### Patch Changes

@@ -878,6 +878,10 @@
                         "flag": ""
                     },
                     {
+                        "feature": "loginAndRegistration.loginSecurity.fraudDetection",
+                        "flag": ""
+                    },
+                    {
                         "feature": "loginAndRegistration.organizationSettings.discovery",
                         "flag": ""
                     },

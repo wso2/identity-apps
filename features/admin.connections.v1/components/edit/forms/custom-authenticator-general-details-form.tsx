@@ -245,6 +245,7 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
                         maxLength={ 100 }
                         minLength={ 3 }
                         data-componentid={ `${_componentId}-form-wizard-display-name` }
+                        readOnly={ isReadOnly }
                     />
                     <Field.Input
                         name="image"

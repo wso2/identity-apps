@@ -35,8 +35,7 @@ import {
 import { getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
 import {
     AlertLevels,
-    IdentifiableComponentInterface,
-    RolesInterface
+    IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -131,10 +130,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const [ initialPasswordExpiryRules, setInitialPasswordExpiryRules ] = useState<PasswordExpiryRule[]>([]);
     const [ passwordExpiryRules, setPasswordExpiryRules ] = useState<PasswordExpiryRule[]>([]);
     const [ hasPasswordExpiryRuleErrors, setHasPasswordExpiryRuleErrors ] = useState<boolean>(false);
-
-    const [ allRoleList, setAllRoleList ] = useState<RolesInterface[]>([]);
-    const [ roleListOffset, setRoleListOffset ] = useState<number>(0);
-    const rolesListItemLimit: number = 50;
+    const rolesListItemLimit: number = 100;
 
     // State variables required to support legacy password policies.
     const [ isLegacyPasswordPolicyEnabled, setIsLegacyPasswordPolicyEnabled ] = useState<boolean>(undefined);
@@ -177,12 +173,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     );
 
     const {
-        data: currentRoleList,
+        data: fetchedRoleList,
         isLoading: isRolesListLoading,
         error: rolesListError
     } = useGetRolesList(
         rolesListItemLimit,
-        roleListOffset,
+        null,
         null,
         "users,groups,permissions,associatedApplications",
         !isRuleBasedPasswordExpiryDisabled
@@ -213,16 +209,6 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             }));
         }
     }, [ groupsListError, rolesListError ]);
-
-    useEffect(() => {
-        if (!currentRoleList || !currentRoleList?.Resources) {
-            return;
-        }
-        setAllRoleList((prevRoles: RolesInterface[]) => [ ...prevRoles, ...currentRoleList?.Resources ]);
-        if (allRoleList?.length < currentRoleList?.totalResults) {
-            setRoleListOffset((prevOffset: number) => prevOffset + rolesListItemLimit);
-        }
-    }, [ currentRoleList ]);
 
     // Handle rule based password expiry related data.
     useEffect(() => {
@@ -975,7 +961,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     isSkipFallbackEnabled={ passwordExpirySkipFallback }
                     defaultPasswordExpiryTime={ defaultPasswordExpiryTime }
                     ruleList={ passwordExpiryRules ?? [] }
-                    rolesList={ allRoleList ?? [] }
+                    rolesList={ fetchedRoleList?.Resources ?? [] }
                     groupsList={ groupsList?.Resources ?? [] }
                     isReadOnly={ isReadOnly }
                     onDefaultPasswordExpiryTimeChange={ (days: number) => setDefaultPasswordExpiryTime(days) }

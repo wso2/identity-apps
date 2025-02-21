@@ -333,6 +333,17 @@ export enum LocaleJoiningSymbol {
 }
 
 /**
+ * Enum for type of the user association.
+ *
+ * @readonly
+ */
+export enum UserSharedType {
+    OWNER = "OWNER",
+    INVITED = "INVITED",
+    SHARED = "SHARED"
+}
+
+/**
  *  user account locked reason.
  *
  * @readonly

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,14 +18,13 @@
 
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
-import { UserStore, UserStoreListItem, UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
+import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
 import { getAUserStore, getPrimaryUserStore } from "../api/user-store";
-import { SharedUserStoreConstants } from "../constants/user-store-constants";
 import { UserStoreDetails } from "../models/user-store";
 import { store } from "../store";
 
@@ -164,38 +163,6 @@ export class SharedUserStoreUtils {
     }
 
     /**
-     * The following method fetch the user store ids list.
-     *
-     * @param userstores - Externally provided usertores list.
-     * @returns userstores list
-     */
-    public static async getUserStoreIds(userstores?: UserStoreListItem[]): Promise<string[] | void> {
-
-        const getIds = (_userstores: UserStoreListItem[]): string[] => {
-            const userStoreIds: string[] = [];
-
-            _userstores.map((userStore: UserStoreListItem) => {
-                userStoreIds.push(userStore.id);
-            });
-
-            return userStoreIds;
-        };
-
-        if (userstores) {
-            return getIds(userstores);
-        }
-
-        return getUserStoreList()
-            .then((response: any) => {
-                return getIds(response.data);
-            })
-            .catch(() => {
-                // Add debug logs here one a logger is added.
-                // Tracked here https://github.com/wso2/product-is/issues/11650.
-            });
-    }
-
-    /**
      * The following method will fetch the primary user store details.
      */
     public static async getPrimaryUserStore(): Promise<void | UserStoreDetails> {
@@ -210,41 +177,5 @@ export class SharedUserStoreUtils {
                     "genericError.message")
             }));
         });
-    }
-
-    /**
-     * The following method fetch the readonly user stores list.
-     *
-     * @param userstores - Externally provided usertores list.
-     */
-    public static async getReadOnlyUserStores(userstores?: UserStoreListItem[]): Promise<string[]> {
-        const readOnlyUserStores: string[] = [];
-        const ids: string[] = await SharedUserStoreUtils.getUserStoreIds(userstores) as string[];
-
-        if (!ids.includes(userstoresConfig.primaryUserstoreId)) {
-            const primaryUserStore: void | UserStoreDetails = await SharedUserStoreUtils
-                .getPrimaryUserStore();
-
-            // Checks if the primary user store is readonly as well.
-            if (primaryUserStore && primaryUserStore.properties.find((property: UserStoreProperty) => {
-                return property.name === SharedUserStoreConstants.READONLY_USER_STORE; }).value === "true"
-            ) {
-                readOnlyUserStores.push(primaryUserStore.name.toUpperCase());
-            }
-        }
-
-        for (const id of ids) {
-            await getAUserStore(id)
-                .then((res: UserStore) => {
-                    res.properties.map((property: UserStoreProperty) => {
-                        if (property.name === SharedUserStoreConstants.READONLY_USER_STORE
-                            && property.value === "true") {
-                            readOnlyUserStores.push(res.name.toUpperCase());
-                        }
-                    });
-                });
-        }
-
-        return readOnlyUserStores;
     }
 }

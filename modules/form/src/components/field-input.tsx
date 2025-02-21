@@ -23,6 +23,7 @@ import { Field as FinalFormField } from "react-final-form";
 import {
     CopyFieldAdapter,
     PasswordFieldAdapter,
+    TextFieldWithAdornmentAdapter,
     __DEPRECATED__TextFieldAdapter
 } from "./adapters/__DEPRECATED__adapters";
 import { FormFieldPropsInterface } from "./field";
@@ -46,7 +47,8 @@ export interface FieldInputPropsInterface extends FormFieldPropsInterface {
         | "copy_input"
         | "password"
         | "phoneNumber"
-        | "roleName";
+        | "roleName"
+        | "text_with_adornment";
     /**
      * Hint of the form field.
      */
@@ -129,7 +131,22 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     { ...rest }
                 />
             );
-        } else {
+        } else if (inputType == FieldInputTypes.INPUT_TEXT_WITH_ADORNMENT) {
+            return (
+                <FinalFormField
+                    key={ testId }
+                    type="text"
+                    name={ props.name }
+                    parse={ (value: any) => value }
+                    component={ TextFieldWithAdornmentAdapter }
+                    validate={ (value: any, allValues: Record<string, unknown>, meta: FieldState<any>) =>
+                        getValidation(value, allValues, meta, "text", props.required, inputType, validation)
+                    }
+                    { ...props }
+                />
+            );
+        }
+        else {
             return (
                 <FinalFormField
                     key={ testId }
