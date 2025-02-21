@@ -625,26 +625,25 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         if (list?.length === 0) {
             return (
                 <EmptyPlaceholder
-                    action={ attributeConfig.attributesPlaceholderAddButton(attributeType)
-                        && (
-                            <Show when={ featureConfig?.oidcScopes?.scopes?.create }>
-                                <PrimaryButton
-                                    onClick={ onEmptyListPlaceholderActionClick }
-                                >
-                                    <Icon name="add"/>
-                                    {
-                                        isLocalClaim(list)
-                                            ?  t("claims:list.placeholders.emptyList." +
-                                                "action.local")
-                                            : isDialect(list)
-                                                ? t("claims:list.placeholders.emptyList." +
-                                                    "action.dialect", { type: resolveType(attributeType, true) })
-                                                : t("claims:list.placeholders." +
-                                            "emptyList.action.external", { type: resolveType(attributeType, true) })
-                                    }
-                                </PrimaryButton>
-                            </Show>
-                        ) }
+                    action={ (
+                        <Show when={ featureConfig?.oidcScopes?.scopes?.create }>
+                            <PrimaryButton
+                                onClick={ onEmptyListPlaceholderActionClick }
+                            >
+                                <Icon name="add"/>
+                                {
+                                    isLocalClaim(list)
+                                        ?  t("claims:list.placeholders.emptyList." +
+                                            "action.local")
+                                        : isDialect(list)
+                                            ? t("claims:list.placeholders.emptyList." +
+                                                "action.dialect", { type: resolveType(attributeType, true) })
+                                            : t("claims:list.placeholders." +
+                                        "emptyList.action.external", { type: resolveType(attributeType, true) })
+                                }
+                            </PrimaryButton>
+                        </Show>
+                    ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={
