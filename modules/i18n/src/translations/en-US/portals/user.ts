@@ -151,9 +151,14 @@ export const user: userNS = {
                     }
                 },
                 username: {
+                    hint: {
+                        defaultRegex: "Must be 3-50 characters long and cannot contain spaces, '*', '?', or '%'."
+                    },
                     label: "Username",
                     placeholder: "Enter the username",
                     validations: {
+                        customRegex: "The username must match the following regular expression: {{regex}}",
+                        defaultRegex: "The username must be 3-50 characters long and cannot contain spaces, '*', '?', or '%'.",
                         empty: "Username is a required field",
                         invalid: "A user already exists with this username.",
                         invalidCharacters: "Username seems to contain invalid characters.",

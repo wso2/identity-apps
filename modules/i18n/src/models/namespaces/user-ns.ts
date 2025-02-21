@@ -119,9 +119,14 @@ export interface userNS {
                     };
                 };
                 username: {
+                    hint: {
+                        defaultRegex: string;
+                    }
                     label: string;
                     placeholder: string;
                     validations: {
+                        customRegex: string;
+                        defaultRegex: string;
                         empty: string;
                         invalid: string;
                         invalidCharacters: string;

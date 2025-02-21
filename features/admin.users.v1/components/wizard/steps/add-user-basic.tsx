@@ -32,6 +32,7 @@ import { ValidationDataInterface, ValidationFormInterface } from "@wso2is/admin.
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Button, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
+import isEmpty from "lodash-es/isEmpty";
 import React, { MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Menu, Message, Radio } from "semantic-ui-react";
@@ -153,7 +154,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         userStore
     );
 
-    const userStoreRegex: string = useMemo(() => {
+    const userStoreUsernameRegEx: string = useMemo(() => {
         if (originalUserStore) {
             return originalUserStore?.properties?.find(
                 (property: UserStoreProperty) => property.name === USERSTORE_REGEX_PROPERTIES.UsernameRegEx)?.value;
@@ -590,7 +591,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 // Check username validity against userstore regex.
                                 if (value && (
                                     !SharedUserStoreUtils.validateInputAgainstRegEx(
-                                        value, userStoreRegex))
+                                        value, userStoreUsernameRegEx))
                                         || !FormValidation.email(value)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
@@ -672,7 +673,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 // Check username validity against userstore regex.
                                 if (value && (
                                     !SharedUserStoreUtils.validateInputAgainstRegEx(
-                                        value, userStoreRegex))
+                                        value, userStoreUsernameRegEx))
                                         || !FormValidation.email(value)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
@@ -727,6 +728,27 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
             );
         }
 
+        const resolveUsernameFieldHint = () => {
+            if (
+                !userConfig?.userNameValidation?.validateViaAPI &&
+                userStoreUsernameRegEx === userConfig?.userNameValidation?.defaultRegex
+            ) {
+                return t("user:forms.addUserForm.inputs.username.hint.defaultRegex");
+            }
+
+            if (usernameConfig?.isAlphanumericOnly) {
+                return t("extensions:manage.features.user.addUser.validation.usernameHint", {
+                    maxLength: usernameConfig?.maxLength,
+                    minLength: usernameConfig?.minLength
+                });
+            }
+
+            return t("extensions:manage.features.user.addUser.validation.usernameSpecialCharHint", {
+                maxLength: usernameConfig?.maxLength,
+                minLength: usernameConfig?.minLength
+            });
+        };
+
         return (
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
@@ -743,30 +765,47 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                         requiredErrorMessage={ t("extensions:manage.features.user.addUser.validation" +
                             ".usernameEmpty") }
                         validation={ async (value: string, validation: Validation) => {
-                            let regExpInvalidUsername: RegExp = new RegExp(
-                                UserManagementConstants.USERNAME_VALIDATION_REGEX);
+                            if (userConfig?.userNameValidation?.validateViaAPI) {
+                                let regExpInvalidUsername: RegExp = new RegExp(
+                                    UserManagementConstants.USERNAME_VALIDATION_REGEX);
 
-                            // Check if special characters enabled for username.
-                            if (!usernameConfig?.isAlphanumericOnly) {
-                                regExpInvalidUsername = new RegExp(
-                                    UserManagementConstants.USERNAME_VALIDATION_REGEX_WITH_SPECIAL_CHARS);
-                            }
+                                // Check if special characters enabled for username.
+                                if (!usernameConfig?.isAlphanumericOnly) {
+                                    regExpInvalidUsername = new RegExp(
+                                        UserManagementConstants.USERNAME_VALIDATION_REGEX_WITH_SPECIAL_CHARS);
+                                }
 
-                            // Check username length validations.
-                            if (value.length < Number(usernameConfig.minLength)
-                                || value.length > Number(usernameConfig.maxLength)) {
-                                validation.isValid = false;
-                                validation.errorMessages.push(
-                                    USERNAME_HAS_INVALID_LENGTH_ERROR_MESSAGE);
-                            // Check username validity against userstore regex.
-                            } else if (!regExpInvalidUsername.test(value)) {
-                                validation.isValid = false;
-                                if (usernameConfig?.isAlphanumericOnly) {
+                                // Check username length validations.
+                                if (value.length < Number(usernameConfig.minLength)
+                                    || value.length > Number(usernameConfig.maxLength)) {
+                                    validation.isValid = false;
                                     validation.errorMessages.push(
-                                        USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE);
-                                } else {
-                                    validation.errorMessages.push(
-                                        USERNAME_HAS_INVALID_SPECIAL_SYMBOLS_ERROR_MESSAGE);
+                                        USERNAME_HAS_INVALID_LENGTH_ERROR_MESSAGE);
+                                // Check username validity against userstore regex.
+                                } else if (!regExpInvalidUsername.test(value)) {
+                                    validation.isValid = false;
+                                    if (usernameConfig?.isAlphanumericOnly) {
+                                        validation.errorMessages.push(
+                                            USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE);
+                                    } else {
+                                        validation.errorMessages.push(
+                                            USERNAME_HAS_INVALID_SPECIAL_SYMBOLS_ERROR_MESSAGE);
+                                    }
+                                }
+                            } else if (!isEmpty(userStoreUsernameRegEx)) {
+                                // Check username validity against userstore regex.
+                                const _userStoreUsernameRegEx: RegExp = new RegExp(userStoreUsernameRegEx);
+
+                                if (!_userStoreUsernameRegEx.test(value)) {
+                                    validation.isValid = false;
+
+                                    if (userStoreUsernameRegEx === userConfig?.userNameValidation?.defaultRegex) {
+                                        validation.errorMessages
+                                            .push(t("user:forms.addUserForm.inputs.username.validations.defaultRegex"));
+                                    } else {
+                                        validation.errorMessages
+                                            .push(t("user:forms.addUserForm.inputs.username.validations.customRegex"));
+                                    }
                                 }
                             }
 
@@ -813,17 +852,10 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                         tabIndex={ 1 }
                         maxLength={ 60 }
                     />
-                    <Hint>
-                        { usernameConfig?.isAlphanumericOnly ? t("extensions:manage.features." +
-                                "user.addUser.validation.usernameHint", {
-                            maxLength: usernameConfig?.maxLength,
-                            minLength: usernameConfig?.minLength
-                        }) : t("extensions:manage.features.user.addUser.validation" +
-                        ".usernameSpecialCharHint", {
-                            maxLength: usernameConfig?.maxLength,
-                            minLength: usernameConfig?.minLength
-                        }) }
-                    </Hint>
+                    { (userConfig?.userNameValidation?.validateViaAPI ||
+                        userStoreUsernameRegEx === userConfig?.userNameValidation?.defaultRegex) && (
+                        <Hint>{ resolveUsernameFieldHint() }</Hint>
+                    ) }
                     <Field
                         data-testid="user-mgt-add-user-form-alphanumeric-email-input"
                         label={ "Email" }
@@ -843,7 +875,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                             // Check username validity against userstore regex.
                             if (value && (
                                 !SharedUserStoreUtils.validateInputAgainstRegEx(
-                                    value, userStoreRegex))
+                                    value, userStoreUsernameRegEx))
                                     || !FormValidation.email(value)) {
                                 validation.isValid = false;
                                 validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
