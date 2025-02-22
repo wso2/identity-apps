@@ -55,8 +55,8 @@ jobs:
 
             - name: Set up Git user
               run: |
-                git config user.name ${{ env.BOT_USERNAME }}}
-                git config user.email ${{ env.BOT_EMAIL }}}
+                git config user.name ${{ env.BOT_USERNAME }}
+                git config user.email ${{ env.BOT_EMAIL }}
 
             - name: 🟢 Setup node
               id: setup-node
