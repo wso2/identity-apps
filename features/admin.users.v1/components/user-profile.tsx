@@ -1746,6 +1746,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         const showPrimaryPopup = (value: string): boolean => {
+            if (verificationEnabled && !verifiedAttributeValueList.includes(value)) {
+                return value === fetchedPrimaryAttributeValue;
+            }
+
             return value === primaryAttributeValue;
         };
 
