@@ -1711,6 +1711,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         let attributeValueList: string[] = [];
         let verifiedAttributeValueList: string[] = [];
         let primaryAttributeValue: string = "";
+        let fetchedPrimaryAttributeValue: string = "";
         let verificationEnabled: boolean = false;
         let primaryAttributeSchema: ProfileSchemaInterface;
         let maxAllowedLimit: number = 0;
@@ -1719,6 +1720,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             attributeValueList = multiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] ?? [];
             verifiedAttributeValueList = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
             primaryAttributeValue = primaryValues[EMAIL_ATTRIBUTE];
+            fetchedPrimaryAttributeValue = profileInfo?.get(EMAIL_ATTRIBUTE);
             verificationEnabled = configSettings?.isEmailVerificationEnabled === "true";
             primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
                 schema.name === EMAIL_ATTRIBUTE);
@@ -1728,6 +1730,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             attributeValueList = multiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] ?? [];
             verifiedAttributeValueList = profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
             primaryAttributeValue = primaryValues[MOBILE_ATTRIBUTE];
+            fetchedPrimaryAttributeValue = profileInfo?.get(MOBILE_ATTRIBUTE);
             verificationEnabled = configSettings?.isMobileVerificationEnabled === "true"
                 || configSettings?.isMobileVerificationByPrivilegeUserEnabled === "true";
             primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
@@ -1739,7 +1742,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         const showVerifiedPopup = (value: string): boolean => {
             return verificationEnabled &&
-                (verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
+                (verifiedAttributeValueList.includes(value) || value === fetchedPrimaryAttributeValue);
         };
 
         const showPrimaryPopup = (value: string): boolean => {
