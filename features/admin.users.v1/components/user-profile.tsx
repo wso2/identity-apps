@@ -885,6 +885,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             verifiedValueList: verifiedAttributeValueList
         });
 
+        if (!operation) return;
         data.Operations.push(operation);
     };
 
@@ -901,6 +902,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             verifiedValueList: verifiedAttributeValueList
         });
 
+        if (!operation) return;
         data.Operations.push(operation);
     };
 

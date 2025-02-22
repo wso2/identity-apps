@@ -357,13 +357,9 @@ export const constructPatchOperationForMultiValuedVerifiedAttribute = ({
     }): ScimOperationsInterface => {
     const modifiedVerifiedList: string[] = cloneDeep(verifiedValueList);
 
-    if (
-        !isEmpty(primaryValue) &&
-      !verifiedValueList.includes(primaryValue) &&
-      valueList?.includes(primaryValue)
-    ) {
-        modifiedVerifiedList.push(primaryValue);
-    }
+    if (isEmpty(primaryValue) || verifiedValueList.includes(primaryValue) || !valueList?.includes(primaryValue)) return;
+
+    modifiedVerifiedList.push(primaryValue);
 
     const verifiedSchema: ProfileSchemaInterface | undefined = profileSchema.find(
         (schema: ProfileSchemaInterface) => schema.name === verifiedAttrSchemaName
