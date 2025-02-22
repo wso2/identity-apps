@@ -1,5 +1,17 @@
 # @wso2is/i18n
 
+## 2.20.3
+
+### Patch Changes
+
+- [#7731](https://github.com/wso2/identity-apps/pull/7731) [`b9724d43eb1b3ca457161f35d92944df1ba7649a`](https://github.com/wso2/identity-apps/commit/b9724d43eb1b3ca457161f35d92944df1ba7649a) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Update action rule config form info message
+
+* [#7734](https://github.com/wso2/identity-apps/pull/7734) [`6f2881510fbf5f6cf66e8cdbda001a8b3daa7887`](https://github.com/wso2/identity-apps/commit/6f2881510fbf5f6cf66e8cdbda001a8b3daa7887) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Custom authenticator patches
+
+- [#7732](https://github.com/wso2/identity-apps/pull/7732) [`698a0f90286bd0621ee7cdbd8209c68e7fcc5120`](https://github.com/wso2/identity-apps/commit/698a0f90286bd0621ee7cdbd8209c68e7fcc5120) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Add changeset for Update action rule config form info message
+
+* [#7730](https://github.com/wso2/identity-apps/pull/7730) [`1724eb611da9ff3d985ea8edd68047c97d75941b`](https://github.com/wso2/identity-apps/commit/1724eb611da9ff3d985ea8edd68047c97d75941b) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Update action rule config form info message
+
 ## 2.20.2
 
 ### Patch Changes
