@@ -51,6 +51,10 @@ interface ActionEndpointConfigFormInterface extends IdentifiableComponentInterfa
      */
     isCreateFormState: boolean;
     /**
+     * Specifies whether to skip update permission checks
+     */
+    skipUpdatePermission?: boolean;
+    /**
      * Callback function triggered when the authentication type is changed.
      *
      * @param updatedValue - The new authentication type selected.
@@ -62,6 +66,7 @@ interface ActionEndpointConfigFormInterface extends IdentifiableComponentInterfa
 const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterface> = ({
     initialValues,
     isCreateFormState,
+    skipUpdatePermission,
     onAuthenticationTypeChange,
     [ "data-componentid" ]: _componentId = "action-endpoint-config-form"
 }: ActionEndpointConfigFormInterface): ReactElement => {
@@ -79,6 +84,15 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
     const { t } = useTranslation();
 
     const getFieldDisabledStatus = (): boolean => {
+        /**
+         * When skipUpdatePermission flag is set to true, all the fields are enabled.
+         * This is currently being used with custom authenticators to enable/disable
+         * form update based on connection specific permissions.
+         */
+        if (skipUpdatePermission) {
+            return hasActionUpdatePermissions;
+        }
+
         if (isCreateFormState) {
             return !hasActionCreatePermissions;
         } else {

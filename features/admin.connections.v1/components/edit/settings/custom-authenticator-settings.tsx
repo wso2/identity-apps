@@ -104,6 +104,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
     const [ endpointAuthenticationType, setEndpointAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isEndpointAuthenticationUpdated, setIsEndpointAuthenticationUpdated ] = useState<boolean>(false);
     const [ isEndpointDetailsLoading, setIsEndpointDetailsLoading ] = useState<boolean>(false);
+    const [ skipActionUpdatePermission, setSkipActionUpdatePermission ] = useState<boolean>(false);
 
     useEffect(() => {
         if (isCustomLocalAuthenticator) {
@@ -118,6 +119,17 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
             getCustomFederatedAuthenticatorInitialValues(customAuthenticatorId);
         }
     }, []);
+
+    /**
+     * When the user has connection edit permission, skip inherent permission check in the action configuration form.
+     */
+    useEffect(() => {
+        if (isReadOnly) {
+            return;
+        }
+
+        setSkipActionUpdatePermission(true);
+    }, [ isReadOnly ]);
 
     /**
      * This function is utilized only for custom federated authenticators since endpoint details are not
@@ -304,6 +316,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                                 <ActionEndpointConfigForm
                                     initialValues={ initialValues }
                                     isCreateFormState={ false }
+                                    skipUpdatePermission={ skipActionUpdatePermission }
                                     onAuthenticationTypeChange={ (
                                         authenticationType: AuthenticationType,
                                         isAuthenticationUpdated: boolean
