@@ -90,7 +90,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
          * form update based on connection specific permissions.
          */
         if (skipUpdatePermission) {
-            return hasActionUpdatePermissions;
+            return false;
         }
 
         if (isCreateFormState) {
