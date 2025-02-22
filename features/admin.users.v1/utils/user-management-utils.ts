@@ -20,6 +20,7 @@ import { UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { store } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { OperationValueInterface, ScimOperationsInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import {
     ValidationConfInterface,
@@ -32,6 +33,7 @@ import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { DropdownChild } from "@wso2is/forms";
+import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import { UserManagementConstants } from "../constants/user-management-constants";
 import { MultipleInviteMode, MultipleInvitesDisplayNames, UserBasicInterface } from "../models/user";
@@ -327,6 +329,57 @@ export const constructPatchOpValueForMultiValuedAttribute = (
     }
 
     return { [attributeSchemaName]: currentValues };
+};
+
+/**
+ * Constructs a SCIM patch operation for a multi-valued verified attribute.
+ *
+ * @param params - The parameters for constructing the patch operation:
+ *   - **verifiedAttrSchemaName**: The name of the verified attribute schema.
+ *   - **valueList**: The list of values from the multi-valued attribute.
+ *   - **verifiedValueList**: The current list of verified values.
+ *   - **primaryValue**: The primary value to be potentially added to the verified list.
+ *   - **profileSchema**: The array of profile schema definitions.
+ * @returns A SCIM patch operation object with the updated verified attribute values.
+ */
+export const constructPatchOperationForMultiValuedVerifiedAttribute = ({
+    verifiedAttrSchemaName,
+    valueList,
+    verifiedValueList,
+    primaryValue,
+    profileSchema
+}: {
+        verifiedAttrSchemaName: string,
+        valueList: string[],
+        verifiedValueList: string[],
+        primaryValue: string,
+        profileSchema: ProfileSchemaInterface[]
+    }): ScimOperationsInterface => {
+    const modifiedVerifiedList: string[] = cloneDeep(verifiedValueList);
+
+    if (
+        !isEmpty(primaryValue) &&
+      !verifiedValueList.includes(primaryValue) &&
+      valueList?.includes(primaryValue)
+    ) {
+        modifiedVerifiedList.push(primaryValue);
+    }
+
+    const verifiedSchema: ProfileSchemaInterface | undefined = profileSchema.find(
+        (schema: ProfileSchemaInterface) => schema.name === verifiedAttrSchemaName
+    );
+
+    if (!verifiedSchema) return;
+    const opValue: OperationValueInterface = {
+        [verifiedSchema.schemaId]: {
+            [verifiedAttrSchemaName]: modifiedVerifiedList
+        }
+    };
+
+    return {
+        op: "replace",
+        value: opValue
+    };
 };
 
 /**

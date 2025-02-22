@@ -97,6 +97,7 @@ import {
 import "./user-profile.scss";
 import {
     constructPatchOpValueForMultiValuedAttribute,
+    constructPatchOperationForMultiValuedVerifiedAttribute,
     getDisplayOrder,
     isMultipleEmailsAndMobileNumbersEnabled
 } from "../utils/user-management-utils";
@@ -871,6 +872,38 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
     };
 
+    const handleVerifiedEmailAddresses = (data: PatchRoleDataInterface): void => {
+        if (!isMultipleEmailAndMobileNumberEnabled || configSettings?.isEmailVerificationEnabled !== "true") return;
+
+        const verifiedAttributeValueList: string[]
+            = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
+        const operation: ScimOperationsInterface = constructPatchOperationForMultiValuedVerifiedAttribute({
+            primaryValue: profileInfo?.get(EMAIL_ATTRIBUTE),
+            profileSchema,
+            valueList: multiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE],
+            verifiedAttrSchemaName: VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
+            verifiedValueList: verifiedAttributeValueList
+        });
+
+        data.Operations.push(operation);
+    };
+
+    const handleVerifiedMobileNumbers = (data: PatchRoleDataInterface): void => {
+        if (!isMultipleEmailAndMobileNumberEnabled || configSettings?.isMobileVerificationEnabled !== "true") return;
+
+        const verifiedAttributeValueList: string[]
+            = profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
+        const operation: ScimOperationsInterface = constructPatchOperationForMultiValuedVerifiedAttribute({
+            primaryValue: profileInfo?.get(MOBILE_ATTRIBUTE),
+            profileSchema,
+            valueList: multiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE],
+            verifiedAttrSchemaName: VERIFIED_MOBILE_NUMBERS_ATTRIBUTE,
+            verifiedValueList: verifiedAttributeValueList
+        });
+
+        data.Operations.push(operation);
+    };
+
     /**
      * The following method handles the `onSubmit` event of forms.
      *
@@ -890,6 +923,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         if (isMultipleEmailAndMobileNumberEnabled) {
             handlePrimaryEmailAndMobile(values);
+            handleVerifiedEmailAddresses(data);
+            handleVerifiedMobileNumbers(data);
         }
 
         if (adminUserType === AdminAccountTypes.INTERNAL) {
