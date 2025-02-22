@@ -1,5 +1,17 @@
 # @wso2is/admin.actions.v1
 
+## 1.11.56
+
+### Patch Changes
+
+- [#7728](https://github.com/wso2/identity-apps/pull/7728) [`eada128a19c5a8095c001d3cc5d8cc639d64083d`](https://github.com/wso2/identity-apps/commit/eada128a19c5a8095c001d3cc5d8cc639d64083d) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Fix Settings of created Custom Authenticator (Service-based) in sub organizations are not modifiable
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.17
+  - @wso2is/admin.extensions.v1@2.36.116
+  - @wso2is/admin.feature-gate.v1@1.4.191
+  - @wso2is/admin.rules.v1@0.4.7
+
 ## 1.11.55
 
 ### Patch Changes
