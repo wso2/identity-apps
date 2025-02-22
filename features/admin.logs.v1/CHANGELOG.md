@@ -1,5 +1,13 @@
 # @wso2is/admin.logs.v1
 
+## 1.5.193
+
+### Patch Changes
+
+- Updated dependencies [[`b9724d43eb1b3ca457161f35d92944df1ba7649a`](https://github.com/wso2/identity-apps/commit/b9724d43eb1b3ca457161f35d92944df1ba7649a), [`6f2881510fbf5f6cf66e8cdbda001a8b3daa7887`](https://github.com/wso2/identity-apps/commit/6f2881510fbf5f6cf66e8cdbda001a8b3daa7887), [`698a0f90286bd0621ee7cdbd8209c68e7fcc5120`](https://github.com/wso2/identity-apps/commit/698a0f90286bd0621ee7cdbd8209c68e7fcc5120), [`1724eb611da9ff3d985ea8edd68047c97d75941b`](https://github.com/wso2/identity-apps/commit/1724eb611da9ff3d985ea8edd68047c97d75941b)]:
+  - @wso2is/i18n@2.20.3
+  - @wso2is/admin.core.v1@2.39.18
+
 ## 1.5.192
 
 ### Patch Changes
