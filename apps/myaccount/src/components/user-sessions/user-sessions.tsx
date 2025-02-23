@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,16 +18,9 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import { AxiosError } from "axios";
-import reverse from "lodash-es/reverse";
-import sortBy from "lodash-es/sortBy";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Button, ButtonProps, Container, Modal, Placeholder } from "semantic-ui-react";
-import { UserSessionsList } from "./user-sessions-list";
-import { fetchUserSessions, terminateAllUserSessions, terminateUserSession } from "../../api";
-import { AppConstants } from "../../constants";
-import { history } from "../../helpers";
+import { fetchUserSessions, terminateAllUserSessions, terminateUserSession } from "@wso2is/selfcare.core.v1/api";
+import { SettingsSection } from "@wso2is/selfcare.core.v1/components";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
 import {
     AlertInterface,
     AlertLevels,
@@ -35,8 +28,15 @@ import {
     UserSessions,
     emptyUserSession,
     emptyUserSessions
-} from "../../models";
-import { SettingsSection } from "../shared";
+} from "@wso2is/selfcare.core.v1/models";
+import { AxiosError } from "axios";
+import reverse from "lodash-es/reverse";
+import sortBy from "lodash-es/sortBy";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Button, ButtonProps, Container, Modal, Placeholder } from "semantic-ui-react";
+import { UserSessionsList } from "./user-sessions-list";
+import { history } from "../../helpers";
 
 /**
  * Proptypes for the user sessions component.

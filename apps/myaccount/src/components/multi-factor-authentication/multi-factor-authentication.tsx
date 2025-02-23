@@ -20,6 +20,19 @@
 // eslint-disable-next-line no-restricted-imports
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { getEnabledAuthenticators } from "@wso2is/selfcare.core.v1/api";
+import { SettingsSection } from "@wso2is/selfcare.core.v1/components";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import {
+    AlertInterface,
+    AlertLevels,
+    EnabledAuthenticatorsInterface,
+    FeatureConfigInterface
+} from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
+import { getProfileInformation } from "@wso2is/selfcare.core.v1/store/actions";
+import { CommonUtils } from "@wso2is/selfcare.core.v1/utils/common-utils";
+import { commonConfig } from "@wso2is/selfcare.extensions.v1";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,19 +40,6 @@ import { Dispatch } from "redux";
 import { Grid, List } from "semantic-ui-react";
 import { BackupCodeAuthenticator, FIDOAuthenticator, SMSOTPAuthenticator, TOTPAuthenticator } from "./authenticators";
 import { PushAuthenticator } from "./authenticators/push-authenticator";
-import { getEnabledAuthenticators } from "../../api";
-import { AppConstants } from "../../constants";
-import { commonConfig } from "../../extensions";
-import {
-    AlertInterface,
-    AlertLevels,
-    EnabledAuthenticatorsInterface,
-    FeatureConfigInterface
-} from "../../models";
-import { AppState } from "../../store";
-import { getProfileInformation } from "../../store/actions";
-import { CommonUtils } from "../../utils";
-import { SettingsSection } from "../shared";
 import { UserSessionTerminationModal } from "../user-sessions";
 
 /**

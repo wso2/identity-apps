@@ -17,12 +17,12 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { SettingsSection } from "@wso2is/selfcare.core.v1/components";
+import { AlertInterface } from "@wso2is/selfcare.core.v1/models";
+import { AppState } from "@wso2is/selfcare.core.v1/store";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AlertInterface } from "../../models";
-import { AppState } from "../../store";
-import { SettingsSection } from "../shared";
 
 /**
  * Prop types for the change password component.

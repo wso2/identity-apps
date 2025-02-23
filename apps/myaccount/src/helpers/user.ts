@@ -18,9 +18,9 @@
 
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { ProfileSchemaInterface } from "@wso2is/core/models";
-import { AppConstants } from "../constants";
-import { UserManagementConstants } from "../constants/user-management-constants";
-import { AuthStateInterface } from "../models";
+import { AppConstants } from "@wso2is/selfcare.core.v1/constants/app-constants";
+import { UserManagementConstants } from "@wso2is/selfcare.core.v1/constants/user-management-constants";
+import { AuthStateInterface } from "@wso2is/selfcare.core.v1/models";
 
 /**
  * Resolves the user's display name.
