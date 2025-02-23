@@ -37,6 +37,7 @@ import { useSelector } from "react-redux";
 import { Divider, Segment } from "semantic-ui-react";
 import { checkDuplicateTenants } from "../../api";
 import { TenantManagementConstants } from "../../constants";
+import { DeploymentUnit, DeploymentUnitDropdownOptionsInterface } from "../../models";
 
 /**
  * Interface to capture add tenant wizard form props.
@@ -48,6 +49,7 @@ interface AddTenantWizardFormPropsInterface extends TestableComponentInterface {
     setTenantDuplicate: Dispatch<SetStateAction<boolean>>;
     isCheckingTenantExistence: boolean;
     setCheckingTenantExistence: Dispatch<SetStateAction<boolean>>;
+    deploymentUnits: DeploymentUnit[]
 }
 
 /**
@@ -55,6 +57,7 @@ interface AddTenantWizardFormPropsInterface extends TestableComponentInterface {
  */
 export interface AddTenantWizardFormErrorValidationsInterface {
     tenantName: string;
+    deploymentUnitName?: string
 }
 
 /**
@@ -62,6 +65,7 @@ export interface AddTenantWizardFormErrorValidationsInterface {
  */
 export interface AddTenantWizardFormValuesInterface {
     tenantName: string;
+    deploymentUnitJson?: string;
 }
 
 const FORM_ID: string = "add-tenant-wizard-form";
@@ -82,20 +86,26 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         setTenantDuplicate,
         isCheckingTenantExistence,
         setCheckingTenantExistence,
+        deploymentUnits,
         [ "data-testid" ]: testId
     } = props;
 
     const [ newTenantName, setNewTenantName ] = useState<string>(
         TenantManagementConstants.TENANT_URI_PLACEHOLDER
     );
+    const [ selectedDeploymentUnit, setSelectedDeploymentUnit ] = useState<DeploymentUnit>(undefined);
     const [ isTenantValid, setIsTenantValid ] = useState<boolean>(false);
-
+    const [ isValidDeploymentUnit, setIsValidDeploymentUnit ] = useState<boolean>(false);
     const regionQualifiedConsoleUrl: string = useSelector((state: AppState) => {
         return state.config?.deployment?.extensions?.regionQualifiedConsoleUrl as string;
     });
 
     const tenantPrefix: string = useSelector((state: AppState) => {
         return state.config?.deployment?.tenantPrefix as string;
+    });
+
+    const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.centralDeploymentEnabled;
     });
 
     const { t } = useTranslation();
@@ -153,6 +163,24 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         }
     };
 
+    const updateDeploymentUnit = (deploymentUnitJson: string): void => {
+        if (deploymentUnitJson === undefined) {
+            setIsValidDeploymentUnit(false);
+        } else {
+            setSelectedDeploymentUnit(deploymentUnitJson ?? JSON.parse(deploymentUnitJson));
+            setIsValidDeploymentUnit(true);
+        }
+    };
+
+    const deploymentUnitOptions: DeploymentUnitDropdownOptionsInterface[] =
+        deploymentUnits.map((deploymentUnit: DeploymentUnit) => {
+            return {
+                key: deploymentUnit.name,
+                text: deploymentUnit.displayName,
+                value: JSON.stringify(deploymentUnit)
+            };
+        });
+
     /**
      * Validate input data.
      *
@@ -163,6 +191,7 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         values: AddTenantWizardFormValuesInterface
     ): AddTenantWizardFormErrorValidationsInterface => {
         const error: AddTenantWizardFormErrorValidationsInterface = {
+            deploymentUnitName: undefined,
             tenantName: undefined
         };
 
@@ -176,6 +205,9 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
             error.tenantName = t(
                 "extensions:manage.features.tenant.wizards.addTenant.forms.fields.tenantName.validations.empty"
             );
+        }
+        if (!isValidDeploymentUnit){
+            error.deploymentUnitName = t("tenants:deploymentUtits.validations.empty");
         }
 
         return error;
@@ -193,7 +225,8 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                 validate={
                     (tenantDuplicate ||
                         newTenantName ===
-                        TenantManagementConstants.TENANT_URI_PLACEHOLDER) &&
+                        TenantManagementConstants.TENANT_URI_PLACEHOLDER ||
+                        isCentralDeploymentEnabled && !selectedDeploymentUnit) &&
                     validateForm
                 }
             >
@@ -349,6 +382,20 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                     width={ 16 }
                     data-testid={ `${ testId }-type-input` }
                 />
+                { isCentralDeploymentEnabled  ? (
+                    <Field.Dropdown
+                        ariaLabel="Region"
+                        name="deploymentUnit"
+                        label={ t("tenants:deploymentUtits.label") }
+                        placeholder = { t("tenants:deploymentUtits.placeholder") }
+                        required={ true }
+                        options={ deploymentUnitOptions }
+                        data-testid={ `${ testId }-deployment-unit-dropdown` }
+                        listen={ updateDeploymentUnit }
+                        enableReinitialize={ true }
+                    />
+                ) : null }
+
             </Form>
             <Divider className="mt-1" hidden />
             { isCheckingTenantExistence ? (

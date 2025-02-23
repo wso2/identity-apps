@@ -171,6 +171,13 @@ export const tenants: TenantsNS = {
             secondaryAction: "Cancel"
         }
     },
+    deploymentUtits: {
+        label: "Region",
+        placeholder: "Select a region (e.g., US).",
+        validations: {
+            empty: "This is a required field."
+        }
+    },
     edit: {
         backButton: "Go back to Root Organizations",
         consoleURL: {
@@ -239,6 +246,10 @@ export const tenants: TenantsNS = {
                 }
             }
         }
+    },
+    listDeploymentUnits: {
+        description: "An error occurred while fetching regions.",
+        message: "Unable to fetch regions"
     },
     listing: {
         advancedSearch: {

@@ -50,9 +50,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Card, Divider, Flag, FlagNameValues, Grid, Icon } from "semantic-ui-react";
-import { addNewTenant, checkDuplicateTenants } from "../api";
+import { addNewTenant, checkDuplicateTenants, getDeploymentUnits } from "../api";
 import { TenantCreationIcons } from "../configs";
 import { TenantManagementConstants } from "../constants";
+import { DeploymentUnit, DeploymentUnitDropdownOptionsInterface, DeploymentUnitResponse } from "../models";
 import { Region } from "../models/region";
 import { handleTenantSwitch } from "../utils";
 
@@ -68,6 +69,7 @@ export interface AddTenantFormErrorValidationsInterface {
  */
 export interface AddTenantFormValuesInterface {
     tenantName: string;
+    deploymentUnitJson?: string;
 }
 
 const FORM_ID: string = "create-tenant-form";
@@ -99,6 +101,8 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
     const [ tenantLoaderText, setTenantLoaderText ] = useState<string>();
     const [ newTenantName, setNewTenantName ] = useState<string>(TenantManagementConstants.TENANT_URI_PLACEHOLDER);
     const [ submissionValue, setSubmissionValue ] = useState<AddTenantFormValuesInterface>();
+    const [ deploymentUnits, setDeploymentUnits ] = useState<DeploymentUnit[]>([]);
+    const [ selectedDeploymentUnit, setSelectedDeploymentUnit ] = useState<DeploymentUnit>(undefined);
 
     const deploymentRegion: Region = useSelector((state: AppState) => {
         return state.config?.deployment?.extensions?.deploymentRegion as Region;
@@ -110,6 +114,10 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
 
     const tenantPrefix: string = useSelector((state: AppState) => {
         return state.config?.deployment?.tenantPrefix as string;
+    });
+
+    const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.centralDeploymentEnabled;
     });
 
     const alternativeRegion: Region = useMemo(() => {
@@ -176,6 +184,28 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
         }
     }, [ submissionValue, finishSubmit ]);
 
+    useEffect(() => {
+        if (isCentralDeploymentEnabled) {
+            getDeploymentUnits()
+                .then((response: DeploymentUnitResponse) => {
+                    setDeploymentUnits(response.deploymentUnits);
+                })
+                .catch((error: any) => {
+                    dispatch(
+                        addAlert({
+                            description:
+                                error?.description &&
+                                t("tenants:listDeploymentUnits.description"),
+                            level: AlertLevels.ERROR,
+                            message:
+                                error?.description &&
+                                t("tenants:listDeploymentUnits.message")
+                        })
+                    );
+                });
+        }
+    }, []);
+
     /**
      * Function to update the tenant URL as the user types a tenant name.
      */
@@ -188,6 +218,10 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
             setNewTenantName(tenantName);
             setIsTenantValid(checkTenantValidity(tenantName));
         }
+    };
+
+    const updateDeploymentUnit = (deploymentUnitJson: string): void => {
+        setSelectedDeploymentUnit(deploymentUnitJson ?? JSON.parse(deploymentUnitJson));
     };
 
     /**
@@ -250,9 +284,12 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
             .catch((error: AxiosError) => {
                 if (error.response.status == 404) {
                     // Proceed to tenant creation if tenant does not exist.
-                    addTenant(submissionValue.tenantName);
+                    addTenant(
+                        submissionValue.tenantName,
+                        submissionValue.deploymentUnitJson ?? JSON.parse(submissionValue.deploymentUnitJson)
+                    );
                 } else {
-                    setIsNewTenantLoading(false);
+                    setIsNewTenantLoading (false);
                     setAlert({
                         description: t("extensions:manage.features.tenant.notifications.addTenant" +
                             ".genericError.description"),
@@ -266,10 +303,10 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
     /**
      * Function which contains the logic to add a new tenant by calling APIs.
      */
-    const addTenant = (tenantName: string): void => {
+    const addTenant = (tenantName: string, deploymentUnit?: DeploymentUnit): void => {
         setIsNewTenantLoading(true);
         setTenantLoaderText(t("extensions:manage.features.tenant.wizards.addTenant.forms.loaderMessages.tenantCreate"));
-        addNewTenant(tenantName)
+        addNewTenant(tenantName, deploymentUnit)
             .then((response: AxiosResponse) => {
                 if (response.status === 201) {
                     eventPublisher.publish("create-new-organization");
@@ -421,6 +458,15 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
         }
     };
 
+    const deploymentUnitOptions: DeploymentUnitDropdownOptionsInterface[] = useMemo(() => {
+
+        return deploymentUnits?.map((deploymentUnit: DeploymentUnit) => ({
+            key: deploymentUnit.name,
+            text: deploymentUnit.displayName,
+            value: JSON.stringify(deploymentUnit)
+        }));
+    }, [ deploymentUnits ]);
+
     return (
         <PageLayout
             padded={ false }
@@ -546,18 +592,38 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                                     onFocus={ () => setIsFocused(true) }
                                     data-testid={ `${ testId }-type-input` }
                                 />
+                                { isCentralDeploymentEnabled  ? (
+                                    <Field.Dropdown
+                                        ariaLabel="Region"
+                                        name="deploymentUnit"
+                                        label={ t("tenants:deploymentUtits.label") }
+                                        placeholder = { t("tenants:deploymentUtits.placeholder") }
+                                        required={ true }
+                                        options={ deploymentUnitOptions }
+                                        readOnly={ true }
+                                        data-testid={ `${ testId }-deployment-unit-dropdown` }
+                                        listen={ updateDeploymentUnit }
+                                        enableReinitialize={ true }
+                                    />
+                                ) : null }
                             </Form>
                             { isCheckingTenantExistence
                                 ? (
                                     <Text className="tenant-uri-prefix">
-                                        { `${regionQualifiedConsoleUrl ??
-                                            "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/` }
+                                        { `${isCentralDeploymentEnabled && selectedDeploymentUnit ?
+                                            deploymentUnits.find((deploymentUnit: DeploymentUnit) =>
+                                                deploymentUnit.name == selectedDeploymentUnit.name).consoleHostname :
+                                            regionQualifiedConsoleUrl ??
+                                                "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/` }
                                         <Icon name="circle notched" color="grey" loading/>
                                     </Text>
                                 ) : (
                                     <span>
-                                        { `${regionQualifiedConsoleUrl ??
-                                            "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/` }
+                                        { `${ isCentralDeploymentEnabled && selectedDeploymentUnit ?
+                                            deploymentUnits.find((deploymentUnit: DeploymentUnit) =>
+                                                deploymentUnit.name == selectedDeploymentUnit.name).consoleHostname :
+                                            regionQualifiedConsoleUrl ??
+                                                "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/` }
                                         <span
                                             className={ `${
                                                 newTenantName !== TenantManagementConstants.TENANT_URI_PLACEHOLDER
