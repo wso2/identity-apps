@@ -30,7 +30,7 @@ import {
 } from "@wso2is/admin.validation.v1/models";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
-import { ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
+import { ProfileInfoInterface, ProfileSchemaInterface, SharedProfileValueResolvingMethod } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { DropdownChild } from "@wso2is/forms";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -308,6 +308,24 @@ export const extractSubAttributes = (user: ProfileInfoInterface, schemaKey: stri
 };
 
 /**
+ * Determines whether the specified schema should be treated as read-only.
+ *
+ * @param schema - The profile schema object to evaluate.
+ * @param isUserManagedByParentOrg - Indicates whether the user is managed by a parent organization.
+ * @returns True if the schema is read-only; otherwise, false.
+ */
+export const isSchemaReadOnly = (
+    schema: ProfileSchemaInterface,
+    isUserManagedByParentOrg: boolean
+): boolean => {
+    const resolvedMutability: string = schema?.profiles?.console?.mutability ?? schema?.mutability;
+
+    return resolvedMutability === ProfileConstants.READONLY_SCHEMA ||
+        (isUserManagedByParentOrg &&
+         schema.sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN);
+};
+
+/**
  * Constructs the patch operation value for a multi-valued attribute.
  *
  * @param attributeSchemaName - The schema name of the attribute.
@@ -332,43 +350,42 @@ export const constructPatchOpValueForMultiValuedAttribute = (
 };
 
 /**
- * Constructs a SCIM patch operation for a multi-valued verified attribute.
+ * Constructs a SCIM patch operation to update a multi-valued verified attribute.
  *
- * @param params - The parameters for constructing the patch operation:
- *   - **verifiedAttrSchemaName**: The name of the verified attribute schema.
- *   - **valueList**: The list of values from the multi-valued attribute.
- *   - **verifiedValueList**: The current list of verified values.
- *   - **primaryValue**: The primary value to be potentially added to the verified list.
- *   - **profileSchema**: The array of profile schema definitions.
+ * @param params - An object containing the following properties:
+ *   - `verifiedAttributeSchema`: The schema definition for the verified attribute.
+ *   - `valueList`: An array of values from the multi-valued attribute.
+ *   - `verifiedValueList`: An array of current verified values.
+ *   - `primaryValue`: The primary value to potentially add to the verified list.
  * @returns A SCIM patch operation object with the updated verified attribute values.
  */
 export const constructPatchOperationForMultiValuedVerifiedAttribute = ({
-    verifiedAttrSchemaName,
+    verifiedAttributeSchema,
     valueList,
     verifiedValueList,
-    primaryValue,
-    profileSchema
+    primaryValue
 }: {
-        verifiedAttrSchemaName: string,
+        verifiedAttributeSchema: ProfileSchemaInterface,
         valueList: string[],
         verifiedValueList: string[],
         primaryValue: string,
-        profileSchema: ProfileSchemaInterface[]
     }): ScimOperationsInterface => {
-    const modifiedVerifiedList: string[] = cloneDeep(verifiedValueList);
+    if (
+        isEmpty(primaryValue) ||
+        verifiedValueList.includes(primaryValue) ||
+        !valueList?.includes(primaryValue) ||
+        !verifiedAttributeSchema
+    ) {
+        return;
+    }
 
-    if (isEmpty(primaryValue) || verifiedValueList.includes(primaryValue) || !valueList?.includes(primaryValue)) return;
+    const modifiedVerifiedList: string[] = cloneDeep(verifiedValueList);
 
     modifiedVerifiedList.push(primaryValue);
 
-    const verifiedSchema: ProfileSchemaInterface | undefined = profileSchema.find(
-        (schema: ProfileSchemaInterface) => schema.name === verifiedAttrSchemaName
-    );
-
-    if (!verifiedSchema) return;
     const opValue: OperationValueInterface = {
-        [verifiedSchema.schemaId]: {
-            [verifiedAttrSchemaName]: modifiedVerifiedList
+        [verifiedAttributeSchema.schemaId]: {
+            [verifiedAttributeSchema.name]: modifiedVerifiedList
         }
     };
 

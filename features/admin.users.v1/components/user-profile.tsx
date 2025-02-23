@@ -99,7 +99,8 @@ import {
     constructPatchOpValueForMultiValuedAttribute,
     constructPatchOperationForMultiValuedVerifiedAttribute,
     getDisplayOrder,
-    isMultipleEmailsAndMobileNumbersEnabled
+    isMultipleEmailsAndMobileNumbersEnabled,
+    isSchemaReadOnly
 } from "../utils/user-management-utils";
 
 const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
@@ -850,38 +851,57 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param values - The Map of form values.
      */
     const handlePrimaryEmailAndMobile = (values: Map<string, string | string[]>): void => {
-        const tempPrimaryMobile: string = primaryValues[MOBILE_ATTRIBUTE];
-        const mobileNumbersInputFieldValue: string = multiValuedInputFieldValue[MOBILE_NUMBERS_ATTRIBUTE];
 
-        if (tempPrimaryMobile !== undefined && tempPrimaryMobile !== null) {
-            values.set(MOBILE_ATTRIBUTE, tempPrimaryMobile);
+        const mobileSchema: ProfileSchemaInterface = profileSchema.find(
+            (schema: ProfileSchemaInterface) => schema.name === MOBILE_ATTRIBUTE
+        );
+
+        if (!isSchemaReadOnly(mobileSchema, isUserManagedByParentOrg)) {
+            const tempPrimaryMobile: string = primaryValues[MOBILE_ATTRIBUTE];
+            const mobileNumbersInputFieldValue: string = multiValuedInputFieldValue[MOBILE_NUMBERS_ATTRIBUTE];
+
+            if (tempPrimaryMobile !== undefined && tempPrimaryMobile !== null) {
+                values.set(MOBILE_ATTRIBUTE, tempPrimaryMobile);
+            }
+
+            if (isEmpty(tempPrimaryMobile) && !isEmpty(mobileNumbersInputFieldValue)) {
+                values.set(MOBILE_ATTRIBUTE, mobileNumbersInputFieldValue);
+            }
         }
 
-        if (isEmpty(tempPrimaryMobile) && !isEmpty(mobileNumbersInputFieldValue)) {
-            values.set(MOBILE_ATTRIBUTE, mobileNumbersInputFieldValue);
-        }
+        const emailSchema: ProfileSchemaInterface = profileSchema.find(
+            (schema: ProfileSchemaInterface) => schema.name === EMAIL_ATTRIBUTE
+        );
 
-        const tempPrimaryEmail: string = primaryValues[EMAIL_ATTRIBUTE] ?? "";
-        const emailsInputFieldValue: string = multiValuedInputFieldValue[EMAIL_ADDRESSES_ATTRIBUTE];
+        if (!isSchemaReadOnly(emailSchema, isUserManagedByParentOrg)) {
+            const tempPrimaryEmail: string = primaryValues[EMAIL_ATTRIBUTE] ?? "";
+            const emailsInputFieldValue: string = multiValuedInputFieldValue[EMAIL_ADDRESSES_ATTRIBUTE];
 
-        if (tempPrimaryEmail !== undefined && tempPrimaryEmail !== null) {
-            values.set(EMAIL_ATTRIBUTE, tempPrimaryEmail);
-        }
-        if (isEmpty(tempPrimaryEmail) && !isEmpty(emailsInputFieldValue)) {
-            values.set(EMAIL_ATTRIBUTE, emailsInputFieldValue);
+            if (tempPrimaryEmail !== undefined && tempPrimaryEmail !== null) {
+                values.set(EMAIL_ATTRIBUTE, tempPrimaryEmail);
+            }
+            if (isEmpty(tempPrimaryEmail) && !isEmpty(emailsInputFieldValue)) {
+                values.set(EMAIL_ATTRIBUTE, emailsInputFieldValue);
+            }
         }
     };
 
     const handleVerifiedEmailAddresses = (data: PatchRoleDataInterface): void => {
-        if (!isMultipleEmailAndMobileNumberEnabled || configSettings?.isEmailVerificationEnabled !== "true") return;
+
+        const verifiedAttributeSchema: ProfileSchemaInterface | undefined = profileSchema.find(
+            (schema: ProfileSchemaInterface) => schema.name === VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE
+        );
+
+        if (!isMultipleEmailAndMobileNumberEnabled
+            || configSettings?.isEmailVerificationEnabled !== "true"
+            || isSchemaReadOnly(verifiedAttributeSchema, isUserManagedByParentOrg)) return;
 
         const verifiedAttributeValueList: string[]
             = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
         const operation: ScimOperationsInterface = constructPatchOperationForMultiValuedVerifiedAttribute({
             primaryValue: profileInfo?.get(EMAIL_ATTRIBUTE),
-            profileSchema,
             valueList: multiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE],
-            verifiedAttrSchemaName: VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
+            verifiedAttributeSchema,
             verifiedValueList: verifiedAttributeValueList
         });
 
@@ -890,15 +910,20 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     const handleVerifiedMobileNumbers = (data: PatchRoleDataInterface): void => {
-        if (!isMultipleEmailAndMobileNumberEnabled || configSettings?.isMobileVerificationEnabled !== "true") return;
+        const verifiedAttributeSchema: ProfileSchemaInterface | undefined = profileSchema.find(
+            (schema: ProfileSchemaInterface) => schema.name === VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE
+        );
+
+        if (!isMultipleEmailAndMobileNumberEnabled
+            || configSettings?.isMobileVerificationEnabled !== "true"
+            || isSchemaReadOnly(verifiedAttributeSchema, isUserManagedByParentOrg)) return;
 
         const verifiedAttributeValueList: string[]
             = profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
         const operation: ScimOperationsInterface = constructPatchOperationForMultiValuedVerifiedAttribute({
             primaryValue: profileInfo?.get(MOBILE_ATTRIBUTE),
-            profileSchema,
             valueList: multiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE],
-            verifiedAttrSchemaName: VERIFIED_MOBILE_NUMBERS_ATTRIBUTE,
+            verifiedAttributeSchema,
             verifiedValueList: verifiedAttributeValueList
         });
 
