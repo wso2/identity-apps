@@ -16,34 +16,36 @@
  * under the License.
  */
 
-.application-general-discoverable-groups {
-    div:nth-of-type(2) {
-        padding-right: 0.5rem !important;
-    }
-
-    div:nth-of-type(3) {
-        padding-left: 0.5rem !important;
-    }
-
-    .ui.header.heading {
-        margin: 0;
-        margin-bottom: 8px;
-    }
-
-    .MuiInputBase-root {
-        &.oxygen-select {
-            height: 50px;
+ .application-general-settings {
+    .discoverable-groups {
+        div:nth-of-type(2) {
+            padding-right: 0.5rem !important;
         }
-    }
 
-    .oxygen-text-field {
+        div:nth-of-type(3) {
+            padding-left: 0.5rem !important;
+        }
+
+        .ui.header.heading {
+            margin: 0;
+            margin-bottom: 8px;
+        }
+
         .MuiInputBase-root {
-            min-height: 50px;
+            &.oxygen-select {
+                height: 50px;
+            }
+        }
 
-            .MuiInputBase-input {
-                border: none !important;
-                width: auto !important;
+        .oxygen-text-field {
+            .MuiInputBase-root {
+                min-height: 50px;
+
+                .MuiInputBase-input {
+                    border: none !important;
+                    width: auto !important;
+                }
             }
         }
     }
-}
+ }

@@ -512,7 +512,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             } }
             validate={ validateForm }
         >
-            <Grid>
+            <Grid className="application-general-settings">
                 <ApplicationTabComponentsFilter
                     tabId={ ApplicationTabIDs.GENERAL }
                 >
@@ -701,7 +701,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     ) }
                     {
                         !isM2MApplication && isMyAccountEnabled && !isSubOrganizationType && (
-                            <Grid.Row columns={ 16 } className="application-general-discoverable-groups">
+                            <Grid.Row columns={ 16 } className="discoverable-groups">
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Heading as="h6">
                                         { t("applications:forms.generalDetails.fields.discoverableGroups.label") }

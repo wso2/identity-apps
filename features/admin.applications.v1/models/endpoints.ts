@@ -30,7 +30,7 @@ export interface ApplicationsResourceEndpointsInterface {
      */
     dcrConfiguration: string;
     /**
-     * Below route is to fetch the group data from the application api.
+     * Below route is to fetch the group list as metadata from the application API.
      */
     groupMetadata: string;
 }
