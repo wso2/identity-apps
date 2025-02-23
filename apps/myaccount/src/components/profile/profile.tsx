@@ -633,25 +633,42 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
                 const currentValues: string[] = resolveProfileInfoSchemaValue(schema)?.split(",") || [];
                 let primaryValue: string | null;
+                let isVerificationEnabled: boolean = false;
+                let verifiedAttributeName: string = "";
+                let verifiedValues: string[] = [];
 
                 if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
                     primaryValue = profileDetails.profileInfo?.emails?.find(
                         (subAttribute: string) => typeof subAttribute === "string");
+                    isVerificationEnabled = isEmailVerificationEnabled;
+                    verifiedAttributeName = VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE;
+                    verifiedValues = profileInfo.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
                 } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
                     primaryValue = profileInfo.get(MOBILE_ATTRIBUTE);
+                    isVerificationEnabled = isMobileVerificationEnabled;
+                    verifiedAttributeName = VERIFIED_MOBILE_NUMBERS_ATTRIBUTE;
+                    verifiedValues = profileInfo.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
                 }
+
+                // If the verification is enabled and existing primary value is not in the verified list, add it.
+                if (isVerificationEnabled && primaryValue && !verifiedValues.includes(primaryValue)) {
+                    value[schema.schemaId] = {
+                        [verifiedAttributeName]: [ ...verifiedValues, primaryValue ]
+                    };
+                }
+
+                // If the primary value is not in the current values, add it.
                 if (primaryValue && !currentValues.includes(primaryValue)) {
                     currentValues.push(primaryValue);
                 }
 
                 currentValues.push(values.get(formName) as string);
                 values.set(formName, currentValues);
-
-                value = {
-                    [schema.schemaId]: {
-                        [schemaNames[0]]: currentValues
-                    }
+                value[schema.schemaId] = {
+                    ...value[schema.schemaId],
+                    [schemaNames[0]]: currentValues
                 };
+
                 // If no primary value is set, set the first value as the primary value.
                 if (isEmpty(primaryValue) && !isEmpty(currentValues)) {
                     if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
