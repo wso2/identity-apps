@@ -1005,6 +1005,23 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     }
                 });
             }
+
+            if (isEmailVerificationEnabled) {
+                const existingVerifiedEmails: string[] =
+                    profileInfo.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
+
+                if (existingPrimaryEmail && !existingVerifiedEmails.includes(existingPrimaryEmail)) {
+                    existingVerifiedEmails.push(existingPrimaryEmail);
+                    data.Operations.push({
+                        op: "replace",
+                        value: {
+                            [schema.schemaId]: {
+                                [VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE]: existingVerifiedEmails
+                            }
+                        }
+                    });
+                }
+            }
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
 
             const filteredSubAttributes: MultiValue[] = extractSubAttributes(
@@ -1034,6 +1051,23 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         }
                     }
                 });
+            }
+
+            if (isMobileVerificationEnabled) {
+                const existingVerifiedMobiles: string[] =
+                    profileInfo.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
+
+                if (existingPrimaryMobile && !existingVerifiedMobiles.includes(existingPrimaryMobile)) {
+                    existingVerifiedMobiles.push(existingPrimaryMobile);
+                    data.Operations.push({
+                        op: "replace",
+                        value: {
+                            [schema.schemaId]: {
+                                [VERIFIED_MOBILE_NUMBERS_ATTRIBUTE]: existingVerifiedMobiles
+                            }
+                        }
+                    });
+                }
             }
         }
         updateProfileInfo(data as unknown as Record<string, unknown>).then((response: AxiosResponse) => {
