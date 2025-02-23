@@ -911,7 +911,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const handleVerifiedMobileNumbers = (data: PatchRoleDataInterface): void => {
         const verifiedAttributeSchema: ProfileSchemaInterface | undefined = profileSchema.find(
-            (schema: ProfileSchemaInterface) => schema.name === VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE
+            (schema: ProfileSchemaInterface) => schema.name === VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
         );
 
         if (!isMultipleEmailAndMobileNumberEnabled
