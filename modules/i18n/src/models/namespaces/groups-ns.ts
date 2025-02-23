@@ -140,10 +140,6 @@ export interface groupsNS {
             };
         };
         fetchGroups: {
-            error: {
-                message: string;
-                description: string;
-            };
             genericError: {
                 message: string;
                 description: string;

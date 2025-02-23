@@ -35,10 +35,6 @@ export interface userstoresNS {
     };
     notifications: {
         fetchUserstores: {
-            error: {
-                message: string;
-                description: string;
-            };
             genericError: {
                 message: string;
                 description: string;

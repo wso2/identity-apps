@@ -302,18 +302,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             return;
         }
 
-        if (userStoreListFetchError?.response?.data?.description) {
-            dispatch(addAlert({
-                description: t("userstores:notifications.fetchUserstores.error.description", {
-                    description: userStoreListFetchError.response.data.description
-                }),
-                level: AlertLevels.ERROR,
-                message: t("userstores:notifications.fetchUserstores.error.message")
-            }));
-
-            return;
-        }
-
         dispatch(addAlert({
             description: t("userstores:notifications.fetchUserstores.genericError.description"),
             level: AlertLevels.ERROR,
@@ -326,18 +314,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     useEffect(() => {
         if (!groupsListFetchError) {
-            return;
-        }
-
-        if (groupsListFetchError?.response?.data?.description) {
-            dispatch(addAlert({
-                description: t("groups:notifications.fetchGroups.error.description", {
-                    description: groupsListFetchError.response.data.description
-                }),
-                level: AlertLevels.ERROR,
-                message: t("groups:notifications.fetchGroups.error.message")
-            }));
-
             return;
         }
 

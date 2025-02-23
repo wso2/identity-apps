@@ -134,10 +134,6 @@ export const groups: groupsNS = {
             }
         },
         fetchGroups: {
-            error: {
-                description: "{{description}}",
-                message: "Failed to fetch the groups"
-            },
             genericError: {
                 description: "An error occurred while fetching groups.",
                 message: "Something went wrong"
