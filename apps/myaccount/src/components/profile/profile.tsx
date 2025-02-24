@@ -1161,10 +1161,33 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     }
                 });
             }
+
+            if (isEmailVerificationEnabled) {
+                const verifiedEmailList: string[]
+                    = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
+                const updatedVerifiedEmailList: string[] =
+                    verifiedEmailList.filter((email: string) => email !== attributeValue);
+
+                data.Operations.push({
+                    op: "replace",
+                    value: {
+                        [schema.schemaId] : {
+                            [EMAIL_ADDRESSES_ATTRIBUTE]: updatedEmailList,
+                            [VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE]: updatedVerifiedEmailList
+                        }
+                    }
+                });
+            }
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             const mobileList: string[] = profileInfo?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
             const updatedMobileList: string[] = mobileList.filter((mobile: string) => mobile !== attributeValue);
             const primaryMobile: string = profileInfo.get(MOBILE_ATTRIBUTE);
+
+            data.Operations[0].value = {
+                [schema.schemaId]: {
+                    [MOBILE_NUMBERS_ATTRIBUTE]: updatedMobileList
+                }
+            };
 
             if (attributeValue === primaryMobile) {
                 const filteredSubAttributes: MultiValue[] = extractSubAttributes(
@@ -1185,11 +1208,21 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 });
             }
 
-            data.Operations[0].value = {
-                [schema.schemaId]: {
-                    [MOBILE_NUMBERS_ATTRIBUTE]: updatedMobileList
-                }
-            };
+            if (isMobileVerificationEnabled) {
+                const verifiedMobileList: string[] =
+                    profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
+                const verifiedUpdatedMobileList: string[] =
+                    verifiedMobileList.filter((mobile: string) => mobile !== attributeValue);
+
+                data.Operations.push({
+                    op: "replace",
+                    value: {
+                        [schema.schemaId] : {
+                            [VERIFIED_MOBILE_NUMBERS_ATTRIBUTE]: verifiedUpdatedMobileList
+                        }
+                    }
+                });
+            }
         }
         updateProfileInfo(data as unknown as Record<string, unknown>).then((response: AxiosResponse) => {
             if (response.status === 200) {
