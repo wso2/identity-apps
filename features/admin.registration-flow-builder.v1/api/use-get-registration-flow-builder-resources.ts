@@ -36,17 +36,17 @@ import widgets from "../data/widgets.json";
 const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = RequestErrorInterface>(
     _shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
-    const { data: coreElements } = useGetFlowBuilderCoreResources();
+    const { data: coreResources } = useGetFlowBuilderCoreResources();
 
     return {
         data: ({
-            ...coreElements,
+            ...coreResources,
             templates: [
-                ...coreElements?.templates,
+                ...coreResources?.templates,
                 ...templates
             ],
             widgets: [
-                ...coreElements?.widgets,
+                ...coreResources?.widgets,
                 ...widgets
             ]
         } as unknown) as Data,

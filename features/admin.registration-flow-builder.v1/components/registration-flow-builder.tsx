@@ -46,7 +46,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
     "data-componentid": componentId = "registration-flow-builder",
     ...rest
 }: RegistrationFlowBuilderPropsInterface): ReactElement => {
-    const { data: components } = useGetRegistrationFlowBuilderResources();
+    const { data: resources } = useGetRegistrationFlowBuilderResources();
 
     const dispatch: Dispatch = useDispatch();
 
@@ -75,7 +75,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
         >
             <RegistrationFlowBuilderProvider>
                 <DecoratedVisualFlow
-                    resources={ components }
+                    resources={ resources }
                     data-componentid={ componentId }
                     onFlowSubmit={ handleFlowSubmit }
                     { ...rest }
