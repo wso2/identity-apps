@@ -370,10 +370,44 @@
                             <% } %>
 
                             <div class="">
-                                <% if (error) { %>
-                                <div class="ui negative message" id="server-error-msg">
-                                    <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
-                                </div>
+                                <% if (error) %>
+                                    <% if ( SelfRegistrationStatusCodes.ERROR_CODE_DUPLICATE_CLAIM_VALUE.equals(errorCodeFromRequest)) {
+                                        String[] splitErrorMsg = errorMsg.split("for");
+                                        String[] attributeList = splitErrorMsg[1].split("are|is")[0].trim().split(",");
+                                        String attributeString = " ";
+                                        String finalMessage = "";
+                                        for (int i = 0; i < attributeList.length; i++) {
+                                            attributeString = attributeString + IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, attributeList[i].trim());
+
+                                            if (i < attributeList.length - 1) {
+                                                attributeString = attributeString + (", ");
+                                            } else {
+                                                attributeString = attributeString + (" ");
+                                            }
+                                        }
+
+                                        if (errorMsg.contains("is")) {
+                                            finalMessage = new StringBuilder()
+                                                .append(i18n(recoveryResourceBundle, customText, "values.defined.for"))
+                                                .append(attributeString)
+                                                .append(i18n(recoveryResourceBundle, customText, "are.already.used.by.different.users"))
+                                                .toString();
+                                        }   else {
+                                            finalMessage = new StringBuilder()
+                                                .append(i18n(recoveryResourceBundle, customText, "values.defined.for"))
+                                                .append(attributeString)
+                                                .append(i18n(recoveryResourceBundle, customText, "are.already.used.by.different.users"))
+                                                .toString();
+                                        }
+                                    %>
+                                        <div class="ui negative message" id="server-error-msg">
+                                            <%=finalMessage%>
+                                        </div>
+                                    <% } else { %>
+                                        <div class="ui negative message" id="server-error-msg">
+                                            <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
+                                        </div>
+                                    <% } %>
                                 <% } %>
 
                                 <div class="ui negative message" id="error-msg" hidden="hidden">
