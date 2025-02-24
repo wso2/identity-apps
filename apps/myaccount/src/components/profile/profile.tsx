@@ -1006,8 +1006,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 ]
             };
 
-            const existingPrimaryEmail: string = profileDetails.profileInfo?.emails?.find(
-                (subAttribute: string) => typeof subAttribute === "string");
+            const existingPrimaryEmail: string = getExistingPrimaryEmail();
             const existingEmailList: string[] = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
 
             if (existingPrimaryEmail && !existingEmailList.includes(existingPrimaryEmail)) {
@@ -1138,8 +1137,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             const emailList: string[] = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
             const updatedEmailList: string[] = emailList.filter((email: string) => email !== attributeValue);
-            const primaryEmail: string = profileDetails?.profileInfo?.emails?.find(
-                (subAttribute: string) => typeof subAttribute === "string");
+            const primaryEmail: string = getExistingPrimaryEmail();
 
             data.Operations[0].value = {
                 [schema.schemaId] : {
@@ -1595,8 +1593,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     const getExistingPrimaryEmail = (): string => {
-        return profileDetails.profileInfo[EMAIL_ATTRIBUTE] &&
-            profileDetails.profileInfo[EMAIL_ATTRIBUTE]
+        return profileDetails.profileInfo[EMAIL_ATTRIBUTE]
+            && Array.isArray(profileDetails.profileInfo[EMAIL_ATTRIBUTE])
+            && profileDetails.profileInfo[EMAIL_ATTRIBUTE]
                 .find((subAttribute: string) => typeof subAttribute === "string");
     };
 
