@@ -228,7 +228,7 @@
                 },
                 "config": {
                     "field": {
-                        "type": "submit",
+                        "type": "button",
                         "text": "Button"
                     }
                 }
