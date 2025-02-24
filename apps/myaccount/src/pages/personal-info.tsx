@@ -17,6 +17,10 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
+/**
+ * `useRequiredScopes` is not supported for myaccount.
+ */
+// eslint-disable-next-line no-restricted-imports
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Message, PageLayout } from "@wso2is/react-components";
@@ -84,11 +88,11 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
             return;
         }
         // Verifies if the user is a user without local credentials.
-        const localCredentialExist: string = profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
+        const localCredentialExist: string = profileDetails?.profileInfo?.[SCIMConfigs.scim.systemSchema]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")];
 
         // Requires to validate if user is logged in from different IDP other than the source IDP.
-        setUserSourceIdp(profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
+        setUserSourceIdp(profileDetails?.profileInfo?.[SCIMConfigs.scim.systemSchema]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("IDP_TYPE")]);
 
         if (localCredentialExist && localCredentialExist == "false") {
