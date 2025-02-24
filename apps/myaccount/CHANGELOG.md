@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.17.52
+
+### Patch Changes
+
+- [#7739](https://github.com/wso2/identity-apps/pull/7739) [`ffcdf3afe21e600c49c78aa72b75a76d57abeea3`](https://github.com/wso2/identity-apps/commit/ffcdf3afe21e600c49c78aa72b75a76d57abeea3) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix system schema attribute usages
+
 ## 2.17.51
 
 ### Patch Changes
