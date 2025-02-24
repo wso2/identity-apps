@@ -701,8 +701,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             } else if (schemaNames.length === 1) {
                 // List of sub attributes.
                 const subValue: string[] = profileDetails.profileInfo[schemaNames[0]]
-                    && profileDetails.profileInfo[schemaNames[0]]
-                        .filter((subAttribute: string) => typeof subAttribute === "object");
+                    && profileDetails.profileInfo[schemaNames[0]]?.filter(
+                        (subAttribute: string) => typeof subAttribute === "object");
 
                 if (subValue && subValue.length > 0) {
                     subValue.map((value: string) => {
@@ -732,10 +732,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
                 // The primary value of the email attribute.
                 if (schemaNames[0] === "emails" && profileDetails?.profileInfo[schemaNames[0]]) {
-                    primaryValue = profileDetails.profileInfo[schemaNames[0]]
-                        && profileDetails.profileInfo[schemaNames[0]]
-                            .find((subAttribute: string) => typeof subAttribute === "string");
-                    attributeValues.push(primaryValue);
+                    primaryValue = getExistingPrimaryEmail();
+                    if (primaryValue) {
+                        attributeValues.push(primaryValue);
+                    }
                 }
 
                 // List of sub attributes.
