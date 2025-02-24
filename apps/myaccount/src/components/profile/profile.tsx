@@ -1172,7 +1172,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     op: "replace",
                     value: {
                         [schema.schemaId] : {
-                            [EMAIL_ADDRESSES_ATTRIBUTE]: updatedEmailList,
                             [VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE]: updatedVerifiedEmailList
                         }
                     }
@@ -1211,14 +1210,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             if (isMobileVerificationEnabled) {
                 const verifiedMobileList: string[] =
                     profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
-                const verifiedUpdatedMobileList: string[] =
+                const updatedVerifiedMobileList: string[] =
                     verifiedMobileList.filter((mobile: string) => mobile !== attributeValue);
 
                 data.Operations.push({
                     op: "replace",
                     value: {
                         [schema.schemaId] : {
-                            [VERIFIED_MOBILE_NUMBERS_ATTRIBUTE]: verifiedUpdatedMobileList
+                            [VERIFIED_MOBILE_NUMBERS_ATTRIBUTE]: updatedVerifiedMobileList
                         }
                     }
                 });
