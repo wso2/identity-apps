@@ -164,7 +164,7 @@ jobs:
             - name: 📣 Create Release Pull Request or Publish to npm
               if: ${{ env.SHOULD_GENERATE_CHANGESET == 'true' }}
               id: changesets
-              uses: changesets/action@v1
+              uses: changesets/action@v1.4.9
               with:
                   title: "[Release] [GitHub Action] Update package versions"
                   publish: pnpm publish:packages
