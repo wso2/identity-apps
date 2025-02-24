@@ -41,12 +41,18 @@ export const useGetGroupsMetadata = <Data = GroupMetadataInterface[], Error = Re
         url: store?.getState()?.config?.endpoints?.groupMetadata
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
+    const {
+        data,
+        error,
+        isValidating,
+        mutate,
+        isLoading
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,
         error: error,
-        isLoading: shouldFetch && !error && !data,
+        isLoading,
         isValidating,
         mutate
     };
