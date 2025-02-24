@@ -1171,6 +1171,13 @@ export interface ApplicationsNS {
                     hint: string;
                     label: string;
                 };
+                discoverableGroups: {
+                    hint: string;
+                    label: string;
+                    action: {
+                        assign: string;
+                    }
+                };
                 accessUrl: {
                     hint: string;
                     label: string;
@@ -1195,6 +1202,7 @@ export interface ApplicationsNS {
                 };
             };
             managementAppBanner: string;
+            discoverableGroupsBanner: string;
         };
         inboundCustom: {
             fields: {
