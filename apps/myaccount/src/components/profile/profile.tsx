@@ -638,8 +638,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 let verifiedValues: string[] = [];
 
                 if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-                    primaryValue = profileDetails.profileInfo?.emails?.find(
-                        (subAttribute: string) => typeof subAttribute === "string");
+                    primaryValue = getExistingPrimaryEmail();
                     isVerificationEnabled = isEmailVerificationEnabled;
                     verifiedAttributeName = VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE;
                     verifiedValues = profileInfo.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
@@ -2473,7 +2472,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     const getSchemaFromName = (schemaName: string): ProfileSchema => {
 
-        return profileSchema.find((schema: ProfileSchema) => schema.name === schemaName);
+        return profileSchema?.find((schema: ProfileSchema) => schema.name === schemaName);
     };
 
     /**
