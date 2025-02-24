@@ -2730,7 +2730,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 readOnly={ readOnly }
                                 data-testid={ `${ testId }-access-token-type-radio-group` }
                             />
-                            { isJWTAccessTokenTypeSelected &&
+                            { isJWTAccessTokenTypeSelected && !isM2MApplication &&
                                 isFeatureEnabled(applicationFeatureConfig, "applications.accessTokenAttributes") ? (
                                     <Grid.Row>
                                         <Grid.Column width={ 8 }>
