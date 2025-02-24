@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.17.53
+
+### Patch Changes
+
+- [#7738](https://github.com/wso2/identity-apps/pull/7738) [`1bb85bae9a71a678d1a955d4ae4ab9ff4b9375bc`](https://github.com/wso2/identity-apps/commit/1bb85bae9a71a678d1a955d4ae4ab9ff4b9375bc) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Improve my account and console user profiles to add existing primary to verified list, when verification enabled
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.193
+  - @wso2is/common.branding.v1@2.26.50
+
 ## 2.17.52
 
 ### Patch Changes
