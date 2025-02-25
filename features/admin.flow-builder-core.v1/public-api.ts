@@ -38,4 +38,4 @@ export {
 export {
     default as CommonWidgetPropertyFactory
 } from "./components/resource-property-panel/common-widget-property-factory";
-export { default as DecoratedVisualFlow } from "./components/decorated-visual-flow";
+export { default as DecoratedVisualFlow } from "./components/visual-flow/decorated-visual-flow";

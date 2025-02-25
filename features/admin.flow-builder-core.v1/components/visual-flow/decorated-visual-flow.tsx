@@ -21,10 +21,10 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ReactFlowProvider } from "@xyflow/react";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
-import ResourcePanel from "./resource-panel/resource-panel";
-import ElementPropertiesPanel from "./resource-property-panel/resource-property-panel";
+import ResourcePanel from "../resource-panel/resource-panel";
+import ElementPropertiesPanel from "../resource-property-panel/resource-property-panel";
 import VisualFlow, { VisualFlowPropsInterface } from "./visual-flow";
-import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
+import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 
 /**
  * Props interface of {@link DecoratedVisualFlow}

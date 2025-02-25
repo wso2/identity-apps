@@ -39,15 +39,15 @@ import {
     useReactFlow
 } from "@xyflow/react";
 import React, { DragEvent, FC, FunctionComponent, ReactElement, useCallback, useMemo } from "react";
-import BaseEdge from "./react-flow-overrides/base-edge";
-import StepFactory from "./resources/steps/step-factory";
-import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
-import { Payload } from "../models/api";
-import { ResourceTypes, Resources } from "../models/resources";
-import { Step } from "../models/steps";
-import getKnownEdgeTypes from "../utils/get-known-edge-types";
-import resolveKnownEdges from "../utils/resolve-known-edges";
-import transformFlow from "../utils/transform-flow";
+import DoneNode from "./nodes/done-node";
+import BaseEdge from "../react-flow-overrides/base-edge";
+import StepFactory from "../resources/steps/step-factory";
+import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
+import { ResourceTypes, Resources } from "../../models/resources";
+import { Step } from "../../models/steps";
+import getKnownEdgeTypes from "../../utils/get-known-edge-types";
+import resolveKnownEdges from "../../utils/resolve-known-edges";
+import transformFlow from "../../utils/transform-flow";
 // IMPORTANT: `@xyflow/react/dist/style.css` should be at the top of the stylesheet import list.
 import "@xyflow/react/dist/style.css";
 import "./visual-flow.scss";
@@ -64,7 +64,7 @@ export interface VisualFlowPropsInterface extends IdentifiableComponentInterface
      * Callback to be fired when the flow is submitted.
      * @param payload - Payload of the flow.
      */
-    onFlowSubmit: (payload: Payload) => void;
+    onFlowSubmit: (payload: any) => void;
     /**
      * Custom edges to be rendered.
      */
@@ -93,8 +93,34 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     onEdgeResolve,
     ...rest
 }: VisualFlowPropsInterface): ReactElement => {
-    const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
-    const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
+    const initialNodes = useMemo<Node[]>(() => [
+        {
+            id: "start",
+            type: "start",
+            position: { x: 100, y: 100 },
+            data: { label: "Start" }
+        },
+        {
+            id: "box",
+            type: "default",
+            position: { x: 100, y: 200 },
+            data: { label: "Box" }
+        },
+        {
+            id: "done",
+            type: "done",
+            position: { x: 100, y: 300 },
+            data: { label: "End" }
+        }
+    ], []);
+
+    const initialEdges = useMemo<Edge[]>(() => [
+        { id: "start-box", source: "start", target: "box", animated: true },
+        { id: "box-done", source: "box", target: "done", animated: true }
+    ], []);
+
+    const [ nodes, setNodes, onNodesChange ] = useNodesState(initialNodes);
+    const [ edges, setEdges, onEdgesChange ] = useEdgesState(initialEdges);
     const { screenToFlowPosition, toObject } = useReactFlow();
     const { node, generateComponentId } = useDnD();
     const { onResourceDropOnCanvas } = useAuthenticationFlowBuilderCore();
@@ -193,11 +219,19 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
             return {};
         }
 
-        return resources.steps.reduce((acc: Record<string, FC<Node>>, resource: Step) => {
-            acc[resource.type] = (props: any) => <StepFactory { ...props } resource={ resource } />;
+        const steps: Record<string, FC<Node>> = resources.steps.reduce(
+            (acc: Record<string, FC<Node>>, resource: Step) => {
+                acc[resource.type] = (props: any) => <StepFactory { ...props } resource={ resource } />;
 
-            return acc;
-        }, {} as Record<string, FC<Node>>);
+                return acc;
+            },
+            {} as Record<string, FC<Node>>
+        );
+
+        return {
+            DONE: DoneNode,
+            ...steps
+        };
     };
 
     const nodeTypes: { [key: string]: FC<Node> } = useMemo(() => generateNodeTypes(), []);

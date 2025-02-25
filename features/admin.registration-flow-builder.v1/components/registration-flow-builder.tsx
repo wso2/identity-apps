@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import DecoratedVisualFlow from "@wso2is/admin.flow-builder-core.v1/components/decorated-visual-flow";
+import DecoratedVisualFlow from "@wso2is/admin.flow-builder-core.v1/components/visual-flow/decorated-visual-flow";
 import { Payload } from "@wso2is/admin.flow-builder-core.v1/models/api";
 import AuthenticationFlowBuilderCoreProvider from
     "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
