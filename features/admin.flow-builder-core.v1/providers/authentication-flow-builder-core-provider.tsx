@@ -66,12 +66,11 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const setLastInteractedResource = (resource: Resource): void => {
         // TODO: Internationalize this string and get from a mapping.
         setResourcePropertiesPanelHeading(
-            <Stack>
-                <Typography variant="h6">{ capitalize(resource.category) } Properties</Typography>
-                <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
-                    <Avatar src={ resource?.display?.image } variant="square" />
-                    <Typography variant="body2">{ capitalize(resource.variant ?? resource.type) }</Typography>
-                </Stack>
+            <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
+                <Avatar src={ resource?.display?.image } variant="square" />
+                <Typography variant="h6">
+                    { capitalize(resource.variant ?? resource.type) } Properties
+                </Typography>
             </Stack>
         );
         setLastInteractedElementInternal(resource);
