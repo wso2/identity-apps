@@ -28,7 +28,7 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { filterList } from "@wso2is/admin.core.v1/utils/filter-list";
 import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
 import { SCIMConfigs, attributeConfig } from "@wso2is/admin.extensions.v1";
-import { AlertLevels, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { LinkButton, ListLayout, PrimaryButton, SecondaryButton } from "@wso2is/react-components";
@@ -38,7 +38,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Modal, PaginationProps } from "semantic-ui-react";
 import { ClaimsList, ListType } from "../../";
-import { addExternalClaim, getServerSupportedClaimsForSchema } from "../../../api";
+import { addDialect, addExternalClaim, getDialects, getServerSupportedClaimsForSchema } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim, ServerSupportedClaimsInterface } from "../../../models";
 import { resolveType } from "../../../utils";
@@ -85,6 +85,10 @@ interface EditExternalClaimsPropsInterface extends TestableComponentInterface {
      * Update mapped claims on delete or edit
      */
     updateMappedClaims?: Dispatch<SetStateAction<boolean>>;
+    /**
+     * Update dialects on add
+     */
+    updateDialects?: Dispatch<SetStateAction<boolean>>;
 }
 
 /**
@@ -114,6 +118,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
         isAttributeButtonEnabled,
         attributeButtonText,
         updateMappedClaims,
+        updateDialects,
         [ "data-testid" ]: testId
     } = props;
 
@@ -191,10 +196,13 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     }, [ serverSupportedClaims ]);
 
     useEffect(() => {
-        if (claims) {
-            setFilteredClaims(claims);
-            handleSearchQueryClear(); // Clear the search field upon new claims
+        if (!claims) {
+            setFilteredClaims([]);
+
+            return;
         }
+        setFilteredClaims(claims);
+        handleSearchQueryClear();
     }, [ claims ]);
 
     useEffect(() => {
@@ -286,17 +294,39 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
         setFilteredClaims(claims);
     };
 
-    const handleAttributesSubmit = (claims: AddExternalClaim[]): void => {
-
-        const addAttributesRequests: Promise<AddExternalClaim>[] = claims.map((claim: AddExternalClaim) => {
-            return addExternalClaim(dialectID, {
-                claimURI: claim.claimURI,
-                mappedLocalClaimURI: claim.mappedLocalClaimURI
-            });
-        });
+    const handleAttributesSubmit = async (claims: AddExternalClaim[]): Promise<void> => {
 
         setIsSubmitting(true);
-        Promise.all(addAttributesRequests).then(() => {
+        const dialectPromise: Promise<string> = dialectID
+            ? Promise.resolve(dialectID)
+            : addDialect(attributeUri)
+                .then(() => {
+                    updateDialects(true);
+
+                    return getDialects({});
+                })
+                .then((dialects: ClaimDialect[]) => {
+                    const currentDialect: ClaimDialect = dialects.find(
+                        (dialect: ClaimDialect) => dialect.dialectURI === attributeUri
+                    );
+
+                    if (!currentDialect) {
+                        throw new Error("Dialect not found after creation.");
+                    }
+
+                    return currentDialect.id;
+                });
+
+        dialectPromise.then((resolvedDialectID: string) => {
+            const addAttributesRequests: Promise<AddExternalClaim>[] = claims.map((claim: AddExternalClaim) => {
+                return addExternalClaim(resolvedDialectID, {
+                    claimURI: claim.claimURI,
+                    mappedLocalClaimURI: claim.mappedLocalClaimURI
+                });
+            });
+
+            return Promise.all(addAttributesRequests);
+        }).then(() => {
             dispatch(addAlert(
                 {
                     description: t("claims:external.notifications." +
@@ -425,7 +455,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                             <PrimaryButton
                                 loading={ claims && attributeUri !== claims[0]?.claimDialectURI }
                                 onClick={ (): void => {
-                                    if (attributeUri !== claims[0]?.claimDialectURI) {
+                                    if (claims && attributeUri !== claims[0]?.claimDialectURI) {
                                         return;
                                     }
                                     setShowAddExternalClaim(true);
