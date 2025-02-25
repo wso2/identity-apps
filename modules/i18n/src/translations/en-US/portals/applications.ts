@@ -1393,10 +1393,13 @@ export const applications: ApplicationsNS = {
                     label: "Discoverable application"
                 },
                 discoverableGroups: {
-                    hint: "Select the user groups that can discover the application.",
                     label: "Discoverable Groups",
                     action: {
                         assign: "Type group name/s to search and assign groups"
+                    },
+                    radioOptions: {
+                        everyone: "Everyone in the organization can discover this application",
+                        userGroups: "Only a selected group of users can discover this application"
                     }
                 },
                 imageUrl: {
@@ -1434,9 +1437,7 @@ export const applications: ApplicationsNS = {
                 }
             },
             managementAppBanner: "The application is allowed to access the management APIs of this " +
-                "organization.",
-            discoverableGroupsBanner: "Since you haven't selected any discoverable groups, the application will" +
-                " be visible to everyone in the organization."
+                "organization."
         },
         inboundCustom: {
             fields: {

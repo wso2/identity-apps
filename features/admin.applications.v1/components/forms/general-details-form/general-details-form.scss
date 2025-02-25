@@ -18,17 +18,22 @@
 
  .application-general-settings {
     .discoverable-groups {
+        .radio-section {
+            margin-bottom: 1em !important;
+        }
+
         div:nth-of-type(2) {
-            padding-right: 0.5rem !important;
+            padding-right: 0.5em !important;
         }
 
         div:nth-of-type(3) {
-            padding-left: 0.5rem !important;
+            padding-left: 2.6em !important;
+            padding-right: 0 !important;
         }
 
         .ui.header.heading {
             margin: 0;
-            margin-bottom: 8px;
+            margin-bottom: 1em;
         }
 
         .MuiInputBase-root {

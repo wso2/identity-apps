@@ -1172,11 +1172,14 @@ export interface ApplicationsNS {
                     label: string;
                 };
                 discoverableGroups: {
-                    hint: string;
                     label: string;
                     action: {
                         assign: string;
-                    }
+                    };
+                    radioOptions: {
+                        everyone: string;
+                        userGroups: string;
+                    };
                 };
                 accessUrl: {
                     hint: string;
@@ -1202,7 +1205,6 @@ export interface ApplicationsNS {
                 };
             };
             managementAppBanner: string;
-            discoverableGroupsBanner: string;
         };
         inboundCustom: {
             fields: {

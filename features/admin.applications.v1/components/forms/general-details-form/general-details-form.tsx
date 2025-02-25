@@ -47,6 +47,7 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
+import { RadioChild } from "@wso2is/forms";
 import {
     ContentLoader,
     DocumentationLink,
@@ -181,6 +182,28 @@ export interface GeneralDetailsFormErrorValidationsInterface {
 const FORM_ID: string = "application-general-details";
 
 /**
+ * Enum for discoverable groups radio options.
+ */
+enum DiscoverableGroupsRadioOptionType {
+    EVERYONE = "everyone",
+    USER_GROUPS = "user-groups"
+}
+
+/**
+ * This will be used to render the discoverable groups radio options.
+ */
+const DISCOVERABLE_GROUPS_RADIO_OPTIONS: RadioChild[] = [
+    {
+        label: "applications:forms.generalDetails.fields.discoverableGroups.radioOptions.everyone",
+        value: DiscoverableGroupsRadioOptionType.EVERYONE
+    },
+    {
+        label: "applications:forms.generalDetails.fields.discoverableGroups.radioOptions.userGroups",
+        value: DiscoverableGroupsRadioOptionType.USER_GROUPS
+    }
+];
+
+/**
  * Form to edit general details of the application.
  *
  * @param props - Props injected to the component.
@@ -232,6 +255,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         setSelectedGroupsFromUserStore
     ] = useState<{ [ key: string ]: GroupMetadataInterface[] }>({});
     const [ activeOption, setActiveOption ] = useState<GroupMetadataInterface>(null);
+    const [ discoverableGroupOption, setDiscoverableGroupOption ] = useState<string>(
+        DiscoverableGroupsRadioOptionType.EVERYONE);
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
     const isSubOrganizationType: boolean = orgType === OrganizationType.SUBORGANIZATION;
@@ -250,6 +275,21 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         isLoading: isGroupsListLoading,
         error: groupsListFetchError
     } = useGetGroupsMetadata(selectedUserStoreDomain, searchTerm);
+
+    /**
+     * Handle the discoverable group option based on the application configuration.
+     */
+    useEffect(() => {
+        if (!application) {
+            return;
+        }
+
+        if (application?.advancedConfigurations?.discoverableGroups?.length > 0) {
+            setDiscoverableGroupOption(DiscoverableGroupsRadioOptionType.USER_GROUPS);
+        } else {
+            setDiscoverableGroupOption(DiscoverableGroupsRadioOptionType.EVERYONE);
+        }
+    }, [ application ]);
 
     /**
      * Available user stores for the application.
@@ -350,6 +390,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     const resolveUpdatedDiscoverableGroupList = (): DiscoverableGroupInterface[] => {
         const discoverableGroups: DiscoverableGroupInterface[] = [];
+
+        if (discoverableGroupOption === DiscoverableGroupsRadioOptionType.EVERYONE || !isDiscoverable) {
+            return discoverableGroups;
+        }
 
         Object.keys(selectedGroupsFromUserStore).forEach((key: string) => {
             if (selectedGroupsFromUserStore[key]?.length > 0) {
@@ -641,7 +685,16 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         initialValue={ isDiscoverable }
                                         readOnly={ readOnly }
                                         data-testid={ `${ testId }-application-discoverable-checkbox` }
-                                        listen={ (value: boolean) => setDiscoverability(value) }
+                                        listen={ (value: boolean) => {
+                                            setDiscoverability(value);
+                                            if (value && Object.keys(selectedGroupsFromUserStore).length > 0) {
+                                                setDiscoverableGroupOption(
+                                                    DiscoverableGroupsRadioOptionType.USER_GROUPS);
+                                            } else {
+                                                setDiscoverableGroupOption(
+                                                    DiscoverableGroupsRadioOptionType.EVERYONE);
+                                            }
+                                        } }
                                         hint={ (
                                             <Trans
                                                 i18nKey={
@@ -688,17 +741,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             </Grid.Row>
                         )
                     }
-                    { Object.keys(selectedGroupsFromUserStore).length === 0 &&
-                        application?.advancedConfigurations?.discoverableByEndUsers && (
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Message
-                                    type="warning"
-                                    content={ t("applications:forms.generalDetails.discoverableGroupsBanner") }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                    ) }
                     {
                         !isM2MApplication && isMyAccountEnabled && !isSubOrganizationType && (
                             <Grid.Row columns={ 16 } className="discoverable-groups">
@@ -707,109 +749,140 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         { t("applications:forms.generalDetails.fields.discoverableGroups.label") }
                                     </Heading>
                                 </Grid.Column>
-                                <Grid.Column mobile={ 16 } tablet={ 6 } computer={ 3 } stretched>
-                                    <Select
-                                        value={ selectedUserStoreDomain }
-                                        onChange={
-                                            (e: SelectChangeEvent<string>) =>
-                                                setSelectedUserStoreDomain(e.target.value)
-                                        }
-                                        data-componentid={
-                                            `${ componentId }-group-store-domain-dropdown`
-                                        }
-                                        disabled={ !isDiscoverable }
-                                    >
-                                        { isUserStoresLoading
-                                            ? <p>{ t("common:loading") }</p>
-                                            : availableUserStores?.map(
-                                                (userStore: UserStoreDropdownItem) =>
-                                                    (<MenuItem
-                                                        key={ userStore.key }
-                                                        value={ userStore.value }
-                                                    >
-                                                        { userStore.text }
-                                                    </MenuItem>)
-                                            )
-                                        }
-                                    </Select>
-                                </Grid.Column>
-                                <Grid.Column mobile={ 16 } tablet={ 10 } computer={ 13 } stretched>
-                                    <Autocomplete
-                                        multiple
-                                        style={ { padding: 0 } }
-                                        disableCloseOnSelect
-                                        loading={ isGroupsListLoading }
-                                        options={ groupsList ?? [] }
-                                        value={ selectedGroupsFromUserStore[selectedUserStoreDomain] ?? [] }
-                                        data-componentid={ `${ componentId }-group-search-text-input` }
-                                        getOptionLabel={ (group: GroupMetadataInterface) => group?.name }
-                                        renderInput={ (params: AutocompleteRenderInputParams) => (
-                                            <TextField
-                                                { ...params }
-                                                placeholder= { t("applications:forms.generalDetails.fields." +
-                                                    "discoverableGroups.action.assign") }
+                                <Grid.Column
+                                    mobile={ 16 }
+                                    tablet={ 16 }
+                                    computer={ 16 }
+                                    className={ discoverableGroupOption ===
+                                        DiscoverableGroupsRadioOptionType.USER_GROUPS ? "radio-section" : "" }
+                                >
+                                    {
+                                        DISCOVERABLE_GROUPS_RADIO_OPTIONS.map((option: RadioChild) => (
+                                            <Field.Radio
+                                                key={ option.value }
+                                                ariaLabel={ t(option.label) }
+                                                label={ t(option.label) }
+                                                name="discoverableGroupType"
+                                                type="radio"
+                                                value={ option.value }
+                                                checked={ discoverableGroupOption === option.value }
+                                                listen={ () => setDiscoverableGroupOption(option.value) }
+                                                readOnly={ readOnly }
+                                                data-componentid={ `${ componentId }-discoverable-group-radio-option` }
+                                                disabled={ !isDiscoverable }
                                             />
-                                        ) }
-                                        onChange={ (_event: SyntheticEvent, groups: GroupMetadataInterface[]) => {
-                                            const updatedGroups: {
-                                                [ key: string ]: GroupMetadataInterface[]
-                                            } = cloneDeep(selectedGroupsFromUserStore);
-
-                                            updatedGroups[selectedUserStoreDomain] = groups;
-                                            setSelectedGroupsFromUserStore(updatedGroups);
-                                        } }
-                                        filterOptions={ (groups: GroupMetadataInterface[]) => groups }
-                                        inputValue={ searchTerm }
-                                        onInputChange={
-                                            (
-                                                _event: SyntheticEvent,
-                                                searchTerm: string,
-                                                reason: AutocompleteInputChangeReason
-                                            ) => {
-                                                if (reason === "input") {
-                                                    setSearchTerm(searchTerm);
+                                        ))
+                                    }
+                                </Grid.Column>
+                                {
+                                    discoverableGroupOption === DiscoverableGroupsRadioOptionType.USER_GROUPS && (
+                                        <Grid.Column mobile={ 16 } tablet={ 6 } computer={ 4 } stretched>
+                                            <Select
+                                                value={ selectedUserStoreDomain }
+                                                onChange={
+                                                    (e: SelectChangeEvent<string>) =>
+                                                        setSelectedUserStoreDomain(e.target.value)
                                                 }
-                                            }
-                                        }
-                                        isOptionEqualToValue={
-                                            (option: GroupMetadataInterface, value: GroupMetadataInterface) =>
-                                                option.id === value.id
-                                        }
-                                        renderTags={ (
-                                            value: GroupMetadataInterface[],
-                                            getTagProps: AutocompleteRenderGetTagProps
-                                        ) => value.map((option: GroupMetadataInterface, index: number) => (
-                                            <DiscoverableGroupRenderChip
-                                                { ...getTagProps({ index }) }
-                                                key={ index }
-                                                primaryText={ option.name }
-                                                userStore={ selectedUserStoreDomain }
-                                                option={ option }
-                                                activeOption={ activeOption }
-                                                setActiveOption={ setActiveOption }
-                                                variant="filled"
+                                                data-componentid={
+                                                    `${ componentId }-group-store-domain-dropdown`
+                                                }
+                                                disabled={ !isDiscoverable }
+                                            >
+                                                { isUserStoresLoading
+                                                    ? <p>{ t("common:loading") }</p>
+                                                    : availableUserStores?.map(
+                                                        (userStore: UserStoreDropdownItem) =>
+                                                            (<MenuItem
+                                                                key={ userStore.key }
+                                                                value={ userStore.value }
+                                                            >
+                                                                { userStore.text }
+                                                            </MenuItem>)
+                                                    )
+                                                }
+                                            </Select>
+                                        </Grid.Column>
+                                    )
+                                }
+                                {
+                                    discoverableGroupOption === DiscoverableGroupsRadioOptionType.USER_GROUPS && (
+                                        <Grid.Column mobile={ 16 } tablet={ 10 } computer={ 12 } stretched>
+                                            <Autocomplete
+                                                multiple
+                                                style={ { padding: 0 } }
+                                                disableCloseOnSelect
+                                                loading={ isGroupsListLoading }
+                                                options={ groupsList ?? [] }
+                                                value={ selectedGroupsFromUserStore[selectedUserStoreDomain] ?? [] }
+                                                data-componentid={ `${ componentId }-group-search-text-input` }
+                                                getOptionLabel={ (group: GroupMetadataInterface) => group?.name }
+                                                renderInput={ (params: AutocompleteRenderInputParams) => (
+                                                    <TextField
+                                                        { ...params }
+                                                        placeholder= { t("applications:forms.generalDetails.fields." +
+                                                            "discoverableGroups.action.assign") }
+                                                    />
+                                                ) }
+                                                onChange={ (
+                                                    _event: SyntheticEvent,
+                                                    groups: GroupMetadataInterface[]
+                                                ) => {
+                                                    const updatedGroups: {
+                                                        [ key: string ]: GroupMetadataInterface[]
+                                                    } = cloneDeep(selectedGroupsFromUserStore);
+
+                                                    updatedGroups[selectedUserStoreDomain] = groups;
+                                                    setSelectedGroupsFromUserStore(updatedGroups);
+                                                } }
+                                                filterOptions={ (groups: GroupMetadataInterface[]) => groups }
+                                                inputValue={ searchTerm }
+                                                onInputChange={
+                                                    (
+                                                        _event: SyntheticEvent,
+                                                        searchTerm: string,
+                                                        reason: AutocompleteInputChangeReason
+                                                    ) => {
+                                                        if (reason === "input") {
+                                                            setSearchTerm(searchTerm);
+                                                        }
+                                                    }
+                                                }
+                                                isOptionEqualToValue={
+                                                    (option: GroupMetadataInterface, value: GroupMetadataInterface) =>
+                                                        option.id === value.id
+                                                }
+                                                renderTags={ (
+                                                    value: GroupMetadataInterface[],
+                                                    getTagProps: AutocompleteRenderGetTagProps
+                                                ) => value.map((option: GroupMetadataInterface, index: number) => (
+                                                    <DiscoverableGroupRenderChip
+                                                        { ...getTagProps({ index }) }
+                                                        key={ index }
+                                                        primaryText={ option.name }
+                                                        userStore={ selectedUserStoreDomain }
+                                                        option={ option }
+                                                        activeOption={ activeOption }
+                                                        setActiveOption={ setActiveOption }
+                                                        variant="filled"
+                                                    />
+                                                )) }
+                                                renderOption={ (
+                                                    props: HTMLAttributes<HTMLLIElement>,
+                                                    option: GroupMetadataInterface,
+                                                    { selected }: { selected: boolean }
+                                                ) => (
+                                                    <DiscoverableGroupRenderOption
+                                                        selected={ selected }
+                                                        displayName={ option.name }
+                                                        userStore={ selectedUserStoreDomain }
+                                                        renderOptionProps={ props }
+                                                    />
+                                                ) }
+                                                disabled={ !isDiscoverable }
                                             />
-                                        )) }
-                                        renderOption={ (
-                                            props: HTMLAttributes<HTMLLIElement>,
-                                            option: GroupMetadataInterface,
-                                            { selected }: { selected: boolean }
-                                        ) => (
-                                            <DiscoverableGroupRenderOption
-                                                selected={ selected }
-                                                displayName={ option.name }
-                                                userStore={ selectedUserStoreDomain }
-                                                renderOptionProps={ props }
-                                            />
-                                        ) }
-                                        disabled={ !isDiscoverable }
-                                    />
-                                </Grid.Column>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Hint>
-                                        { t("applications:forms.generalDetails.fields.discoverableGroups.hint") }
-                                    </Hint>
-                                </Grid.Column>
+                                        </Grid.Column>
+                                    )
+                                }
                             </Grid.Row>
                         )
                     }
