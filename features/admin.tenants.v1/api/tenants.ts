@@ -17,6 +17,12 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface,
+    SWRConfig
+} from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { HttpMethods } from "@wso2is/core/models";
@@ -167,19 +173,46 @@ export const getAssociatedTenants = (
  *
  * @returns - A promise that resolves with the Deployment response object.
  */
-export const getDeploymentUnits = (
-): Promise<DeploymentUnitResponse> => {
+// export const getDeploymentUnits = (
+// ): Promise<DeploymentUnitResponse> => {
 
-    const requestConfig: AxiosRequestConfig = {
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.deploymentUnit + getDomainQueryParam()
+//     const requestConfig: AxiosRequestConfig = {
+//         method: HttpMethods.GET,
+//         url: store.getState().config.endpoints.deploymentUnit + getDomainQueryParam()
+//     };
+
+//     return httpClient(requestConfig)
+//         .then((response: AxiosResponse) => {
+//             return Promise.resolve(response?.data);
+//         })
+//         .catch((error: AxiosError) => {
+//             return Promise.reject(error?.response?.data);
+//         });
+// };
+
+
+export const useDeploymentUnits =
+    <Data = DeploymentUnitResponse, Error = RequestErrorInterface>
+    (
+        requestOptions: SWRConfig<Data, Error>,
+        shouldFetch: boolean = false
+    ) : RequestResultInterface<Data, Error> => {
+        const requestConfig: RequestConfigInterface = {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method: HttpMethods.GET,
+            url: store.getState().config.endpoints.deploymentUnit + getDomainQueryParam()
+        };
+
+        const { data, error, isValidating, mutate } = useRequest<Data, Error>(
+            shouldFetch ? requestConfig : null);
+
+        return {
+            data,
+            error: error,
+            isLoading: !error && !data,
+            isValidating,
+            mutate: mutate
+        };
     };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            return Promise.resolve(response?.data);
-        })
-        .catch((error: AxiosError) => {
-            return Promise.reject(error?.response?.data);
-        });
-};

@@ -21,7 +21,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
+import { DropdownChild, Field, Form } from "@wso2is/form";
 import {
     ContentLoader,
     GenericIcon,
@@ -50,10 +50,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Card, Divider, Flag, FlagNameValues, Grid, Icon } from "semantic-ui-react";
-import { addNewTenant, checkDuplicateTenants, getDeploymentUnits } from "../api";
+import { addNewTenant, checkDuplicateTenants, useDeploymentUnits } from "../api";
 import { TenantCreationIcons } from "../configs";
 import { TenantManagementConstants } from "../constants";
-import { DeploymentUnit, DeploymentUnitDropdownOptionsInterface, DeploymentUnitResponse } from "../models";
+import { DeploymentUnit } from "../models";
 import { Region } from "../models/region";
 import { handleTenantSwitch } from "../utils";
 
@@ -69,7 +69,7 @@ export interface AddTenantFormErrorValidationsInterface {
  */
 export interface AddTenantFormValuesInterface {
     tenantName: string;
-    deploymentUnitJson?: string;
+    deploymentUnitName?: string;
 }
 
 const FORM_ID: string = "create-tenant-form";
@@ -177,34 +177,55 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
+    const {
+        data: deploymentUnitResponse,
+        isLoading: isDeploymentUnitsLoading,
+        error: deploymentUnitFetchRequestError
+    } = useDeploymentUnits(
+        {
+            revalidateIfStale: true
+        },
+        isCentralDeploymentEnabled
+    );
+
+    useEffect(() => {
+        setDeploymentUnits(deploymentUnitResponse?.deploymentUnits);
+    }, [ isDeploymentUnitsLoading ]);
+
+    /**
+     * Dispatches error notifications if deployment unit fetch request fails.
+     */
+    useEffect(() => {
+        if (!deploymentUnitFetchRequestError) {
+            return;
+        }
+
+        if (deploymentUnitFetchRequestError?.response?.data?.description) {
+            dispatch(addAlert({
+                description: deploymentUnitFetchRequestError?.response?.data?.description
+                    ?? deploymentUnitFetchRequestError?.response?.data?.detail
+                        ?? t("tenants:listDeploymentUnits.description"),
+                level: AlertLevels.ERROR,
+                message: deploymentUnitFetchRequestError?.response?.data?.message
+                    ?? t("tenants:listDeploymentUnits.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("tenants:listDeploymentUnits.description"),
+            level: AlertLevels.ERROR,
+            message: t("tenants:listDeploymentUnits.message")
+        }));
+    }, [ deploymentUnitFetchRequestError ]);
+
     useEffect(() => {
         if (submissionValue && finishSubmit && isTenantValid && !tenantDuplicate) {
             setFinishSubmit(false);
             handleFormSubmit();
         }
     }, [ submissionValue, finishSubmit ]);
-
-    useEffect(() => {
-        if (isCentralDeploymentEnabled) {
-            getDeploymentUnits()
-                .then((response: DeploymentUnitResponse) => {
-                    setDeploymentUnits(response.deploymentUnits);
-                })
-                .catch((error: any) => {
-                    dispatch(
-                        addAlert({
-                            description:
-                                error?.description &&
-                                t("tenants:listDeploymentUnits.description"),
-                            level: AlertLevels.ERROR,
-                            message:
-                                error?.description &&
-                                t("tenants:listDeploymentUnits.message")
-                        })
-                    );
-                });
-        }
-    }, []);
 
     /**
      * Function to update the tenant URL as the user types a tenant name.
@@ -220,8 +241,14 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
         }
     };
 
-    const updateDeploymentUnit = (deploymentUnitJson: string): void => {
-        setSelectedDeploymentUnit(deploymentUnitJson ?? JSON.parse(deploymentUnitJson));
+    /**
+     * Function to update the deployment unit.
+     *
+     * @param deploymentUnitName - Deployment unit name.
+     */
+    const updateDeploymentUnit = (deploymentUnitName: string): void => {
+        setSelectedDeploymentUnit(deploymentUnits.find((deploymentUnit: DeploymentUnit) =>
+            deploymentUnit.name == deploymentUnitName));
     };
 
     /**
@@ -286,7 +313,8 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                     // Proceed to tenant creation if tenant does not exist.
                     addTenant(
                         submissionValue.tenantName,
-                        submissionValue.deploymentUnitJson ?? JSON.parse(submissionValue.deploymentUnitJson)
+                        deploymentUnits.find((deploymentUnit: DeploymentUnit) =>
+                            deploymentUnit.name == submissionValue.deploymentUnitName)
                     );
                 } else {
                     setIsNewTenantLoading (false);
@@ -458,12 +486,12 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
         }
     };
 
-    const deploymentUnitOptions: DeploymentUnitDropdownOptionsInterface[] = useMemo(() => {
+    const deploymentUnitOptions: DropdownChild[] = useMemo(() => {
 
         return deploymentUnits?.map((deploymentUnit: DeploymentUnit) => ({
             key: deploymentUnit.name,
             text: deploymentUnit.displayName,
-            value: JSON.stringify(deploymentUnit)
+            value: deploymentUnit.name
         }));
     }, [ deploymentUnits ]);
 
@@ -595,9 +623,9 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                                 { isCentralDeploymentEnabled  ? (
                                     <Field.Dropdown
                                         ariaLabel="Region"
-                                        name="deploymentUnit"
-                                        label={ t("tenants:deploymentUtits.label") }
-                                        placeholder = { t("tenants:deploymentUtits.placeholder") }
+                                        name="deploymentUnitName"
+                                        label={ t("tenants:deploymentUnits.label") }
+                                        placeholder = { t("tenants:deploymentUnits.placeholder") }
                                         required={ true }
                                         options={ deploymentUnitOptions }
                                         readOnly={ true }

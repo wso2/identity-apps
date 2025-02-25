@@ -165,7 +165,7 @@ export interface TenantsNS {
             secondaryAction: string;
         };
     },
-    deploymentUtits: {
+    deploymentUnits: {
         label: string;
         placeholder: string;
         validations: {

@@ -18,7 +18,7 @@
 
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/form";
+import { DropdownChild, Field, Form } from "@wso2is/form";
 import { Hint, Message } from "@wso2is/react-components";
 import { ContentLoader } from "@wso2is/react-components/src/components/loader/content-loader";
 import { AxiosError, AxiosResponse } from "axios";
@@ -37,7 +37,7 @@ import { useSelector } from "react-redux";
 import { Divider, Segment } from "semantic-ui-react";
 import { checkDuplicateTenants } from "../../api";
 import { TenantManagementConstants } from "../../constants";
-import { DeploymentUnit, DeploymentUnitDropdownOptionsInterface } from "../../models";
+import { DeploymentUnit } from "../../models";
 
 /**
  * Interface to capture add tenant wizard form props.
@@ -65,7 +65,7 @@ export interface AddTenantWizardFormErrorValidationsInterface {
  */
 export interface AddTenantWizardFormValuesInterface {
     tenantName: string;
-    deploymentUnitJson?: string;
+    deploymentUnitName?: string;
 }
 
 const FORM_ID: string = "add-tenant-wizard-form";
@@ -163,21 +163,29 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         }
     };
 
-    const updateDeploymentUnit = (deploymentUnitJson: string): void => {
-        if (deploymentUnitJson === undefined) {
+    /**
+     * Function to update the deployment unit.
+     *
+     * @param deploymentUnitJson - Deployment unit name.
+     */
+    const updateDeploymentUnit = (deploymentUnitName: string): void => {
+        if (deploymentUnitName === undefined) {
             setIsValidDeploymentUnit(false);
         } else {
-            setSelectedDeploymentUnit(deploymentUnitJson ?? JSON.parse(deploymentUnitJson));
+            setSelectedDeploymentUnit(deploymentUnits.find((unit: DeploymentUnit) => unit.name === deploymentUnitName));
             setIsValidDeploymentUnit(true);
         }
     };
 
-    const deploymentUnitOptions: DeploymentUnitDropdownOptionsInterface[] =
+    /**
+     * Options for the deployment unit dropdown.
+     */
+    const deploymentUnitOptions: DropdownChild[] =
         deploymentUnits.map((deploymentUnit: DeploymentUnit) => {
             return {
                 key: deploymentUnit.name,
                 text: deploymentUnit.displayName,
-                value: JSON.stringify(deploymentUnit)
+                value: deploymentUnit.name
             };
         });
 
@@ -207,7 +215,7 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
             );
         }
         if (!isValidDeploymentUnit){
-            error.deploymentUnitName = t("tenants:deploymentUtits.validations.empty");
+            error.deploymentUnitName = t("tenants:deploymentUnits.validations.empty");
         }
 
         return error;
@@ -385,9 +393,9 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                 { isCentralDeploymentEnabled  ? (
                     <Field.Dropdown
                         ariaLabel="Region"
-                        name="deploymentUnit"
-                        label={ t("tenants:deploymentUtits.label") }
-                        placeholder = { t("tenants:deploymentUtits.placeholder") }
+                        name="deploymentUnitName"
+                        label={ t("tenants:deploymentUnits.label") }
+                        placeholder = { t("tenants:deploymentUnits.placeholder") }
                         required={ true }
                         options={ deploymentUnitOptions }
                         data-testid={ `${ testId }-deployment-unit-dropdown` }

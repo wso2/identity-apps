@@ -17,6 +17,7 @@
         }
     },
     "appBaseName": "console",
+    "centralDeploymentEnabled": false,
     "clientID": "CONSOLE",
     "debug": false,
     "developerApp": {

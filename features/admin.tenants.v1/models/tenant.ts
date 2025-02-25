@@ -66,12 +66,3 @@ export interface DeploymentUnit {
 export interface DeploymentUnitResponse {
     deploymentUnits: DeploymentUnit[];
 }
-
-/**
- * Interface for the Deployment unit dropdown options.
- */
-export interface DeploymentUnitDropdownOptionsInterface {
-    key: string;
-    text: any;
-    value: string;
-}

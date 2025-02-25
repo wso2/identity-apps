@@ -104,7 +104,7 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
                     // Proceed to tenant creation if tenant does not exist.
                     addTenant(
                         submissionValue.tenantName,
-                        submissionValue.deploymentUnitJson ?? JSON.parse(submissionValue.deploymentUnitJson)
+                        deploymentUnits.find((unit: DeploymentUnit) => unit.name === submissionValue.deploymentUnitName)
                     );
                 } else {
                     setIsNewTenantLoading(false);

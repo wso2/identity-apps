@@ -71,7 +71,7 @@ import {
     Placeholder,
     SemanticICONS
 } from "semantic-ui-react";
-import { getAssociatedTenants, getDeploymentUnits, makeTenantDefault } from "../../api";
+import { getAssociatedTenants, makeTenantDefault, useDeploymentUnits } from "../../api";
 import TenantConstants from "../../constants/tenant-constants";
 import {
     DeploymentUnit,
@@ -249,27 +249,49 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         setTenantAssociations(association);
     }, [ associatedTenants, defaultTenant, currentTenant ]);
 
+    const {
+        data: deploymentUnitResponse,
+        isLoading: isDeploymentUnitsLoading,
+        error: deploymentUnitFetchRequestError
+    } = useDeploymentUnits(
+        {
+            revalidateIfStale: true
+        },
+        isCentralDeploymentEnabled
+    );
+
     useEffect(() => {
-        if (isCentralDeploymentEnabled) {
-            getDeploymentUnits()
-                .then((response: DeploymentUnitResponse) => {
-                    setDeploymentUnits(response.deploymentUnits);
-                })
-                .catch((error: any) => {
-                    dispatch(
-                        addAlert({
-                            description:
-                                error?.description &&
-                                t("tenants:listDeploymentUnits.description"),
-                            level: AlertLevels.ERROR,
-                            message:
-                                error?.description &&
-                                t("tenants:listDeploymentUnits.message")
-                        })
-                    );
-                });
+        setDeploymentUnits(deploymentUnitResponse?.deploymentUnits);
+    }, [ isDeploymentUnitsLoading ]);
+
+    /**
+     * Dispatches error notifications if deployment unit fetch request fails.
+     */
+    useEffect(() => {
+        if (!deploymentUnitFetchRequestError) {
+            return;
         }
-    }, []);
+
+        if (deploymentUnitFetchRequestError?.response?.data?.description) {
+            dispatch(addAlert({
+                description: deploymentUnitFetchRequestError?.response?.data?.description
+                    ?? deploymentUnitFetchRequestError?.response?.data?.detail
+                        ?? t("tenants:listDeploymentUnits.description"),
+                level: AlertLevels.ERROR,
+                message: deploymentUnitFetchRequestError?.response?.data?.message
+                    ?? t("tenants:listDeploymentUnits.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("tenants:listDeploymentUnits.description"),
+            level: AlertLevels.ERROR,
+            message: t("tenants:listDeploymentUnits.message")
+        }));
+    }, [ deploymentUnitFetchRequestError ]);
+
 
     /**
      * Stops the dropdown from closing on click.
@@ -636,6 +658,22 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         return options;
     };
 
+    const displayCurrentTenant: string | ReactElement = (
+
+        organizationType === OrganizationType.SUBORGANIZATION
+            ? organizationName
+            : tenantAssociations
+                ? tenantAssociations.currentTenant?.domain +
+                (isCentralDeploymentEnabled ? " (" +
+                    tenantAssociations.currentTenant
+                        ?.deploymentUnitName + ")" : "")
+                : (
+                    <Placeholder>
+                        <Placeholder.Line />
+                    </Placeholder>
+                )
+    );
+
     const tenantDropdownMenu: ReactElement = (
         <Menu.Item
             compact
@@ -681,18 +719,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                     }
                                                 >
                                                     {
-                                                        organizationType === OrganizationType.SUBORGANIZATION
-                                                            ? organizationName
-                                                            : tenantAssociations
-                                                                ? tenantAssociations.currentTenant?.domain +
-                                                                (isCentralDeploymentEnabled ? " (" +
-                                                                    tenantAssociations.currentTenant
-                                                                        ?.deploymentUnitName + ")" : "")
-                                                                : (
-                                                                    <Placeholder>
-                                                                        <Placeholder.Line />
-                                                                    </Placeholder>
-                                                                )
+                                                        displayCurrentTenant
                                                     }
                                                     { isSuperOrganization() && (
                                                         <Chip

@@ -180,6 +180,10 @@
                 sessionStorage.setItem("auth_callback_url_console", authCallbackUrl);
             }
 
+            if (isCentralDeploymentEnabled) {
+                sessionStorage.setItem("user_requested_tenant", userTenant);
+            }
+
             var serverOrigin = isCentralDeploymentEnabled ? startupConfig.centralServerUrl : startupConfig.serverUrl;
             var deploymentUnitServerOrigin = startupConfig.serverUrl;
             var authorizationCode = urlParams.get("code");
@@ -433,26 +437,35 @@
                                 auth.signIn({callOnlyOnRedirect: true})
                                     .then((response) => {
                                         auth.getDecodedIDToken().then((token) => {
-                                            var defaultTenant = token["default_tenant"]
+                                            var loginTenant = token["default_tenant"]
+                                            var associatedOrganizationsString = token["org_user_associations"];
+                                            var orgUserAssociations = JSON.parse(associatedOrganizationsString);
+                                            var requestedTenant = sessionStorage.getItem("user_requested_tenant");
+                                            sessionStorage.removeItem("user_requested_tenant");
+                                            if (requestedTenant && orgUserAssociations.array.forEach(element => {
+                                                element.orgHandle === requestedTenant
+                                            })) {
+                                                loginTenant = requestedTenant;
+                                            }
                                             var authConfigRegion = {
-                                                signInRedirectURL: deploymentUnitSignInRedirectURL(defaultTenant),
+                                                signInRedirectURL: deploymentUnitSignInRedirectURL(loginTenant),
                                                 signOutRedirectURL: getSignOutRedirectURL(),
                                                 clientID: "<%= htmlWebpackPlugin.options.clientID %>",
-                                                baseUrl: getDeploymentUnitApiPath(defaultTenant),
+                                                baseUrl: getDeploymentUnitApiPath(loginTenant),
                                                 responseMode: "query",
                                                 scope: ["openid SYSTEM profile"],
                                                 storage: "webWorker",
                                                 disableTrySignInSilently: false,
                                                 enableOIDCSessionManagement: false,
                                                 endpoints: {
-                                                    authorizationEndpoint: getDeploymentUnitApiPath("/oauth2/authorize", defaultTenant),
+                                                    authorizationEndpoint: getDeploymentUnitApiPath("/oauth2/authorize", loginTenant),
                                                     clockTolerance: 300,
-                                                    jwksEndpointURL: getDeploymentUnitApiPath("/oauth2/jwks", defaultTenant),
-                                                    logoutEndpointURL: getDeploymentUnitApiPath("/oidc/logout", defaultTenant),
-                                                    oidcSessionIFrameEndpointURL: getDeploymentUnitApiPath("/oidc/checksession", defaultTenant),
-                                                    tokenEndpointURL: getDeploymentUnitApiPath("/oauth2/token", defaultTenant),
-                                                    tokenRevocationEndpointURL: getDeploymentUnitApiPath("/oauth2/revoke", defaultTenant),
-                                                    issuer: getDeploymentUnitApiPath("/oauth2/token", defaultTenant)
+                                                    jwksEndpointURL: getDeploymentUnitApiPath("/oauth2/jwks", loginTenant),
+                                                    logoutEndpointURL: getDeploymentUnitApiPath("/oidc/logout", loginTenant),
+                                                    oidcSessionIFrameEndpointURL: getDeploymentUnitApiPath("/oidc/checksession", loginTenant),
+                                                    tokenEndpointURL: getDeploymentUnitApiPath("/oauth2/token", loginTenant),
+                                                    tokenRevocationEndpointURL: getDeploymentUnitApiPath("/oauth2/revoke", loginTenant),
+                                                    issuer: getDeploymentUnitApiPath("/oauth2/token", loginTenant)
                                                 },
                                                 enablePKCE: true
                                             }

@@ -171,7 +171,7 @@ export const tenants: TenantsNS = {
             secondaryAction: "Cancel"
         }
     },
-    deploymentUtits: {
+    deploymentUnits: {
         label: "Region",
         placeholder: "Select a region (e.g., US).",
         validations: {

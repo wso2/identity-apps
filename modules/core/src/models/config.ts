@@ -90,10 +90,6 @@ export interface CommonDeploymentConfigInterface<T = Record<string, unknown>, S 
      */
     appLogoutPath: string;
     /**
-     * Central deployment enabled.
-     */
-    centralDeploymentEnabled: boolean;
-    /**
      * Host of the client application.
      * ex: `https://localhost:9001`
      */
