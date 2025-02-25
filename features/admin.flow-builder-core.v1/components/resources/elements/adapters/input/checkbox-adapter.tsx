@@ -47,11 +47,11 @@ export const CheckboxAdapter: FunctionComponent<CheckboxAdapterPropsInterface> =
 }: CheckboxAdapterPropsInterface): ReactElement => (
     <FormControlLabel
         control={ <Checkbox defaultChecked /> }
-        className={ resource.config?.field?.className }
-        defaultValue={ resource.config?.field?.defaultValue }
-        label={ resource.config?.field?.label }
-        placeholder={ resource.config?.field?.placeholder || "" }
-        required={ resource.config?.field?.required }
+        className={ resource.config?.className }
+        defaultValue={ resource.config?.defaultValue }
+        label={ resource.config?.label }
+        placeholder={ resource.config?.placeholder || "" }
+        required={ resource.config?.required }
         style={ resource.config?.styles }
     />
 );

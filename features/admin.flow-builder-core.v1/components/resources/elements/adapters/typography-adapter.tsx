@@ -62,7 +62,7 @@ export const TypographyAdapter: FunctionComponent<TypographyAdapterPropsInterfac
 
     return (
         <Typography variant={ resource?.variant.toLowerCase() } style={ resource?.config?.styles } { ...config }>
-            { resource?.config?.field?.text }
+            { resource?.config?.text }
         </Typography>
     );
 };

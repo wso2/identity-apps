@@ -50,9 +50,9 @@ export const ChoiceAdapter: FunctionComponent<ChoiceAdapterPropsInterface> = ({
     resource
 }: ChoiceAdapterPropsInterface): ReactElement => (
     <FormControl sx={ { my: 2 } }>
-        <FormLabel id={ resource.config?.field?.id }>{ resource.config?.field?.label }</FormLabel>
-        <RadioGroup defaultValue={ resource.config?.field?.defaultValue }>
-            { resource.config?.field?.options?.map((option: FieldOption) => (
+        <FormLabel id={ resource.config?.id }>{ resource.config?.label }</FormLabel>
+        <RadioGroup defaultValue={ resource.config?.defaultValue }>
+            { resource.config?.options?.map((option: FieldOption) => (
                 <FormControlLabel
                     key={ option?.key }
                     value={ option?.value }

@@ -76,7 +76,7 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
                 control={ <Checkbox defaultChecked={ propertyValue } /> }
                 label={ startCase(propertyKey) }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                    onChange(`config.field.${propertyKey}`, e.target.checked, resource)
+                    onChange(`config.${propertyKey}`, e.target.checked, resource)
                 }
                 data-componentid={ `${componentId}-${propertyKey}` }
             />
@@ -90,7 +90,7 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
                 label={ startCase(propertyKey) }
                 defaultValue={ propertyValue }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                    onChange(`config.field.${propertyKey}`, e.target.value, resource)
+                    onChange(`config.${propertyKey}`, e.target.value, resource)
                 }
                 placeholder={ `Enter ${startCase(propertyKey)}` }
                 data-componentid={ `${componentId}-${propertyKey}` }

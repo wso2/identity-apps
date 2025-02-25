@@ -25,8 +25,8 @@ import set from "lodash-es/set";
 import React, { FunctionComponent, ReactElement } from "react";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Properties } from "../../models/base";
-import { Resource } from "../../models/resources";
 import { Element } from "../../models/elements";
+import { Resource } from "../../models/resources";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -118,7 +118,7 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
                     { lastInteractedResource && (
                         <ResourceProperties
                             resource={ lastInteractedResource }
-                            properties={ lastInteractedResource?.config?.field }
+                            properties={ lastInteractedResource?.config }
                             onChange={ handlePropertyChange }
                             onVariantChange={ changeSelectedVariant }
                         />

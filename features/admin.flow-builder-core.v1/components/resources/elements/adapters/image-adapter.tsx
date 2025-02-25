@@ -46,8 +46,8 @@ export const ImageAdapter: FunctionComponent<ImageAdapterPropsInterface> = ({
 }: ImageAdapterPropsInterface): ReactElement => (
     <Box display="flex" alignItems="center" justifyContent="center">
         <img
-            src={ resource?.config?.field?.src }
-            alt={ resource?.config?.field?.alt }
+            src={ resource?.config?.src }
+            alt={ resource?.config?.alt }
             width="100%"
             style={ resource?.config?.styles }
         />

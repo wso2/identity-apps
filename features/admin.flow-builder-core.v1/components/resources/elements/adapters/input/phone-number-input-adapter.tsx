@@ -45,11 +45,11 @@ export const PhoneNumberInputAdapter: FunctionComponent<PhoneNumberInputAdapterP
     resource
 }: PhoneNumberInputAdapterPropsInterface): ReactElement => (
     <PhoneNumberInput
-        className={ resource.config?.field?.className }
-        label={ resource.config?.field?.label }
-        placeholder={ resource.config?.field?.placeholder || "" }
+        className={ resource.config?.className }
+        label={ resource.config?.label }
+        placeholder={ resource.config?.placeholder || "" }
         InputLabelProps={ {
-            required: resource.config?.field?.required
+            required: resource.config?.required
         } }
     />
 );

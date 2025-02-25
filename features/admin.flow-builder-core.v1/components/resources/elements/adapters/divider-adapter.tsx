@@ -58,7 +58,7 @@ export const DividerAdapter: FunctionComponent<DividerAdapterPropsInterface> = (
         };
     }
 
-    return <Divider { ...config }>{ resource?.config?.field?.text }</Divider>;
+    return <Divider { ...config }>{ resource?.config?.text }</Divider>;
 };
 
 export default DividerAdapter;

@@ -48,9 +48,9 @@ export const OTPInputAdapter: FunctionComponent<OTPInputAdapterPropsInterface> =
     resource
 }: OTPInputAdapterPropsInterface): ReactElement => {
     return (
-        <div className={ resource.config?.field?.className }>
-            <InputLabel htmlFor="otp-input-adapter" required={ resource.config?.field?.required } disableAnimation>
-                { resource.config?.field?.label }
+        <div className={ resource.config?.className }>
+            <InputLabel htmlFor="otp-input-adapter" required={ resource.config?.required } disableAnimation>
+                { resource.config?.label }
             </InputLabel>
             <Box display="flex" flexDirection="row" gap={ 1 }>
                 { [ ...Array(6) ].map((_: number, index: number) => (
@@ -58,14 +58,14 @@ export const OTPInputAdapter: FunctionComponent<OTPInputAdapterPropsInterface> =
                         key={ index }
                         size="small"
                         id="otp-input-adapter"
-                        type={ resource.config?.field?.type }
+                        type={ resource.config?.type }
                         style={ resource.config?.styles }
-                        placeholder={ resource.config?.field?.placeholder || "" }
+                        placeholder={ resource.config?.placeholder || "" }
                     />
                 )) }
             </Box>
-            { resource.config?.field?.hint && (
-                <FormHelperText id="otp-input-adapter-helper-text">{ resource.config?.field?.hint }</FormHelperText>
+            { resource.config?.hint && (
+                <FormHelperText id="otp-input-adapter-helper-text">{ resource.config?.hint }</FormHelperText>
             ) }
         </div>
     );

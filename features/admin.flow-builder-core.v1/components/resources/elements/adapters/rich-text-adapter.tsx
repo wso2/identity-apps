@@ -47,7 +47,7 @@ export const RichTextAdapter: FunctionComponent<RichTextAdapterPropsInterface> =
     resource
 }: RichTextAdapterPropsInterface): ReactElement => (
     <>
-        { parse(Encode.forHtml(resource?.config?.field?.text), {
+        { parse(Encode.forHtml(resource?.config?.text), {
             replace(domNode: any) {
                 if (((domNode as unknown) as any).name === "h1") {
                     <Typography variant="h1">{ domToReact(((domNode as unknown) as any).children) }</Typography>;
