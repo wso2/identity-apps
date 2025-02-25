@@ -266,6 +266,15 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
         return isValidTenantName;
     };
 
+
+    const redirectingConsoleUrl = (): string => {
+        return `${ isCentralDeploymentEnabled && selectedDeploymentUnit ?
+            deploymentUnits.find((deploymentUnit: DeploymentUnit) =>
+                deploymentUnit.name == selectedDeploymentUnit.name).consoleHostname :
+            regionQualifiedConsoleUrl ??
+                "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/`;
+    };
+
     /**
      * Function to check if the tenant name user entered is already taken. A debounced version of the function is used
      * to trigger the API call only after user stops typing for 1000ms.
@@ -313,11 +322,11 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                     // Proceed to tenant creation if tenant does not exist.
                     addTenant(
                         submissionValue.tenantName,
-                        deploymentUnits.find((deploymentUnit: DeploymentUnit) =>
-                            deploymentUnit.name == submissionValue.deploymentUnitName)
+                        isCentralDeploymentEnabled ? deploymentUnits?.find((deploymentUnit: DeploymentUnit) =>
+                            deploymentUnit.name == submissionValue.deploymentUnitName) : undefined
                     );
                 } else {
-                    setIsNewTenantLoading (false);
+                    setIsNewTenantLoading(false);
                     setAlert({
                         description: t("extensions:manage.features.tenant.notifications.addTenant" +
                             ".genericError.description"),
@@ -353,7 +362,10 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                     delay(() => {
                         setIsNewTenantLoading(false);
                         // onCloseHandler();
-                        handleTenantSwitch(tenantName);
+                        handleTenantSwitch(
+                            tenantName,
+                            isCentralDeploymentEnabled ? deploymentUnit.consoleHostname : undefined
+                        );
                     }, 5000);
                 }
             })
@@ -638,20 +650,12 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                             { isCheckingTenantExistence
                                 ? (
                                     <Text className="tenant-uri-prefix">
-                                        { `${isCentralDeploymentEnabled && selectedDeploymentUnit ?
-                                            deploymentUnits.find((deploymentUnit: DeploymentUnit) =>
-                                                deploymentUnit.name == selectedDeploymentUnit.name).consoleHostname :
-                                            regionQualifiedConsoleUrl ??
-                                                "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/` }
+                                        { redirectingConsoleUrl() }
                                         <Icon name="circle notched" color="grey" loading/>
                                     </Text>
                                 ) : (
                                     <span>
-                                        { `${ isCentralDeploymentEnabled && selectedDeploymentUnit ?
-                                            deploymentUnits.find((deploymentUnit: DeploymentUnit) =>
-                                                deploymentUnit.name == selectedDeploymentUnit.name).consoleHostname :
-                                            regionQualifiedConsoleUrl ??
-                                                "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/` }
+                                        { redirectingConsoleUrl() }
                                         <span
                                             className={ `${
                                                 newTenantName !== TenantManagementConstants.TENANT_URI_PLACEHOLDER

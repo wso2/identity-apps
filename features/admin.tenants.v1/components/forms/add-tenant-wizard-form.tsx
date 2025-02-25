@@ -30,6 +30,7 @@ import React, {
     ReactElement,
     SetStateAction,
     useCallback,
+    useMemo,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -180,14 +181,14 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
     /**
      * Options for the deployment unit dropdown.
      */
-    const deploymentUnitOptions: DropdownChild[] =
-        deploymentUnits.map((deploymentUnit: DeploymentUnit) => {
-            return {
-                key: deploymentUnit.name,
-                text: deploymentUnit.displayName,
-                value: deploymentUnit.name
-            };
-        });
+    const deploymentUnitOptions: DropdownChild[] = useMemo(() => {
+
+        return deploymentUnits?.map((deploymentUnit: DeploymentUnit) => ({
+            key: deploymentUnit.name,
+            text: deploymentUnit.displayName,
+            value: deploymentUnit.name
+        }));
+    }, [ deploymentUnits ]);
 
     /**
      * Validate input data.

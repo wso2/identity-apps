@@ -170,7 +170,7 @@
             var proxyContextPathGlobal = startupConfig.proxyContextPathGlobal;
             var superTenantGlobal = startupConfig.superTenant;
             var tenantPrefixGlobal = startupConfig.tenantPrefix;
-            var isCentralDeploymentEnabled = startupConfig.enableCentralDeployment;
+            var isCentralDeploymentEnabled = startupConfig.centralDeploymentEnabled;
             var isAdaptiveAuthenticationAvailable = true;
             var isOrganizationManagementEnabled = true;
 
@@ -181,7 +181,7 @@
             }
 
             if (isCentralDeploymentEnabled) {
-                sessionStorage.setItem("user_requested_tenant", userTenant);
+                localStorage.setItem("user_requested_tenant", userTenant);
             }
 
             var serverOrigin = isCentralDeploymentEnabled ? startupConfig.centralServerUrl : startupConfig.serverUrl;
@@ -297,8 +297,7 @@
                                 + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                         }
 
-                        return applicationDomain.replace(/\/+$/, '') + getTenantPath()
-                            + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
+                        return applicationDomain.replace(/\/+$/, '') + contextPath + getTenantPath()
                     }
 
                     /**
@@ -380,11 +379,11 @@
                     var endpoints = {
                         authorizationEndpoint: getApiPath("/oauth2/authorize"),
                         clockTolerance: 300,
-                        jwksEndpointURL: isCentralDeploymentEnabled ? ("/oauth2/jwks") : undefined,
+                        jwksEndpointURL: isCentralDeploymentEnabled ? getApiPath("/oauth2/jwks") : undefined,
                         logoutEndpointURL: getApiPath("/oidc/logout"),
                         oidcSessionIFrameEndpointURL: getApiPath("/oidc/checksession"),
                         tokenEndpointURL: undefined,
-                        tokenRevocationEndpointURL: isCentralDeploymentEnabled ? ("/oauth2/revoke") : undefined
+                        tokenRevocationEndpointURL: isCentralDeploymentEnabled ? getApiPath("/oauth2/revoke") : undefined
                     };
                     if (isCentralDeploymentEnabled) {
                         endpoints.issuer = `${serverOrigin}/oauth2/token`;
@@ -440,8 +439,8 @@
                                             var loginTenant = token["default_tenant"]
                                             var associatedOrganizationsString = token["org_user_associations"];
                                             var orgUserAssociations = JSON.parse(associatedOrganizationsString);
-                                            var requestedTenant = sessionStorage.getItem("user_requested_tenant");
-                                            sessionStorage.removeItem("user_requested_tenant");
+                                            var requestedTenant = localStorage.getItem("user_requested_tenant");
+                                            localStorage.removeItem("user_requested_tenant");
                                             if (requestedTenant && orgUserAssociations.array.forEach(element => {
                                                 element.orgHandle === requestedTenant
                                             })) {

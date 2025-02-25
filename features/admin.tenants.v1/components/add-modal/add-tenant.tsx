@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -25,7 +26,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import delay from "lodash-es/delay";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { addNewTenant, checkDuplicateTenants } from "../../api";
@@ -75,6 +76,10 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
+    const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.centralDeploymentEnabled;
+    });
+
     useEffect(() => {
         if (submissionValue && finishSubmit) {
             handleFormSubmit();
@@ -104,7 +109,8 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
                     // Proceed to tenant creation if tenant does not exist.
                     addTenant(
                         submissionValue.tenantName,
-                        deploymentUnits.find((unit: DeploymentUnit) => unit.name === submissionValue.deploymentUnitName)
+                        isCentralDeploymentEnabled ? deploymentUnits?.find((unit: DeploymentUnit) =>
+                            unit.name === submissionValue.deploymentUnitName) : undefined
                     );
                 } else {
                     setIsNewTenantLoading(false);
@@ -169,7 +175,10 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
                     delay(() => {
                         setIsNewTenantLoading(false);
                         onCloseHandler();
-                        handleTenantSwitch(tenantName, deploymentUnit?.consoleHostname);
+                        handleTenantSwitch(
+                            tenantName,
+                            isCentralDeploymentEnabled ? deploymentUnit?.consoleHostname : undefined
+                        );
                     }, 5000);
                 }
             })

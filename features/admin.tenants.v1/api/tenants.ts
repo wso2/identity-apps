@@ -168,29 +168,6 @@ export const getAssociatedTenants = (
         });
 };
 
-/**
- * Get the deployment units.
- *
- * @returns - A promise that resolves with the Deployment response object.
- */
-// export const getDeploymentUnits = (
-// ): Promise<DeploymentUnitResponse> => {
-
-//     const requestConfig: AxiosRequestConfig = {
-//         method: HttpMethods.GET,
-//         url: store.getState().config.endpoints.deploymentUnit + getDomainQueryParam()
-//     };
-
-//     return httpClient(requestConfig)
-//         .then((response: AxiosResponse) => {
-//             return Promise.resolve(response?.data);
-//         })
-//         .catch((error: AxiosError) => {
-//             return Promise.reject(error?.response?.data);
-//         });
-// };
-
-
 export const useDeploymentUnits =
     <Data = DeploymentUnitResponse, Error = RequestErrorInterface>
     (
@@ -202,11 +179,11 @@ export const useDeploymentUnits =
                 "Content-Type": "application/json"
             },
             method: HttpMethods.GET,
-            url: store.getState().config.endpoints.deploymentUnit + getDomainQueryParam()
+            url: store.getState().config.endpoints.deploymentUnits + getDomainQueryParam()
         };
 
         const { data, error, isValidating, mutate } = useRequest<Data, Error>(
-            shouldFetch ? requestConfig : null);
+            shouldFetch ? requestConfig : null, requestOptions);
 
         return {
             data,

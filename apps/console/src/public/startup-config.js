@@ -18,6 +18,8 @@
 
 // eslint-disable-next-line no-unused-vars
 var startupConfig = {
+    centralDeploymentEnabled: false,
+    centralServerUrl: "",
     enableDefaultPreLoader: true,
     orgPrefix: "o",
     pathExtension: "",

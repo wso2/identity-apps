@@ -75,7 +75,6 @@ import { getAssociatedTenants, makeTenantDefault, useDeploymentUnits } from "../
 import TenantConstants from "../../constants/tenant-constants";
 import {
     DeploymentUnit,
-    DeploymentUnitResponse,
     TenantInfo,
     TenantRequestResponse,
     TriggerPropTypesInterface
@@ -390,7 +389,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                     className="tenant-account"
                     key={ index }
                     onClick={ () => handleTenantSwitch(tempTenantAssociation.domain,
-                        tempTenantAssociation.consoleHostname) }
+                        isCentralDeploymentEnabled ? tempTenantAssociation.consoleHostname: undefined) }
                 >
                     <GenericIcon
                         icon={ getMiscellaneousIcons().tenantIcon }
@@ -658,6 +657,9 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         return options;
     };
 
+    /**
+     * Display the current tenant.
+     */
     const displayCurrentTenant: string | ReactElement = (
 
         organizationType === OrganizationType.SUBORGANIZATION
