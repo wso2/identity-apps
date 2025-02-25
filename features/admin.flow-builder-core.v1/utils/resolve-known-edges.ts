@@ -31,11 +31,11 @@ import { Element, ElementCategories } from "../models/elements";
  */
 const resolveKnownEdges = (connection: Edge, nodes: Node[]): Edge => {
     const sourceElementId: string = connection.sourceHandle
-        .replace(ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX, "")
-        .replace(ButtonAdapterConstants.PREVIOUS_BUTTON_HANDLE_SUFFIX, "");
+        ?.replace(ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX, "")
+        ?.replace(ButtonAdapterConstants.PREVIOUS_BUTTON_HANDLE_SUFFIX, "");
     const sourceElement: Element | undefined = nodes
-        .flatMap((node: Node) => node?.data?.elements as Element[])
-        .find((element: Element) => element?.id === sourceElementId);
+        ?.flatMap((node: Node) => node?.data?.elements as Element[])
+        ?.find((element: Element) => element?.id === sourceElementId);
 
     if (sourceElement?.category === ElementCategories.Action) {
         if (sourceElement.variant === ActionVariants.SOCIAL) {
