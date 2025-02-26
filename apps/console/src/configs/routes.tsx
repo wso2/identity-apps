@@ -1142,7 +1142,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             },
             id: "dynamicConnector",
             name: "Dynamic Connector",
-            order: 24,
+            order: 998,
             path: AppConstants.getPaths()
                 .get("GOVERNANCE_CONNECTOR_EDIT"),
             protected: true,
