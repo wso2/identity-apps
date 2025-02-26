@@ -17,10 +17,10 @@
  */
 
 import DecoratedVisualFlow from "@wso2is/admin.flow-builder-core.v1/components/visual-flow/decorated-visual-flow";
+import useFlowComponentId from "@wso2is/admin.flow-builder-core.v1/hooks/use-flow-component-id";
 import { Payload } from "@wso2is/admin.flow-builder-core.v1/models/api";
 import { StaticStepTypes, Step, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
-import AuthenticationFlowBuilderCoreProvider from
-    "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
+import AuthenticationFlowBuilderCoreProvider from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Edge, Node, NodeTypes } from "@xyflow/react";
@@ -52,25 +52,35 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
 }: RegistrationFlowBuilderPropsInterface): ReactElement => {
     const { data: resources } = useGetRegistrationFlowBuilderResources();
 
+    const { generate } = useFlowComponentId();
+
     const dispatch: Dispatch = useDispatch();
 
     const handleFlowSubmit = (payload: Payload) => {
         configureRegistrationFlow(payload)
             .then(() => {
-                dispatch(addAlert({
-                    description: "Registration flow updated successfully.",
-                    level: AlertLevels.SUCCESS,
-                    message: "Flow Updated Successfully"
-                }));
+                dispatch(
+                    addAlert({
+                        description: "Registration flow updated successfully.",
+                        level: AlertLevels.SUCCESS,
+                        message: "Flow Updated Successfully"
+                    })
+                );
             })
             .catch(() => {
-                dispatch(addAlert({
-                    description: "Failed to update the registration flow.",
-                    level: AlertLevels.ERROR,
-                    message: "Flow Updated Failure"
-                }));
+                dispatch(
+                    addAlert({
+                        description: "Failed to update the registration flow.",
+                        level: AlertLevels.ERROR,
+                        message: "Flow Updated Failure"
+                    })
+                );
             });
     };
+
+    const INITIAL_FLOW_START_STEP_ID: string = StaticStepTypes.Start.toLowerCase();
+    const INITIAL_FLOW_VIEW_STEP_ID: string = generate(StepTypes.View.toLowerCase());
+    const INITIAL_FLOW_DONE_STEP_ID: string = StaticStepTypes.Done.toLowerCase();
 
     const initialNodes: Node[] = useMemo<Node[]>(
         () => [
@@ -78,13 +88,13 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
                 data: {
                     displayOnly: true
                 },
-                id: "start",
+                id: INITIAL_FLOW_START_STEP_ID,
                 position: { x: 100, y: 100 },
                 type: StaticStepTypes.Start
             },
             {
-                data: { label: "Box" },
-                id: "box",
+                data: {},
+                id: INITIAL_FLOW_VIEW_STEP_ID,
                 position: { x: 300, y: 200 },
                 type: StepTypes.View
             },
@@ -92,7 +102,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
                 data: {
                     displayOnly: true
                 },
-                id: "COMPLETE",
+                id: INITIAL_FLOW_DONE_STEP_ID,
                 position: { x: 850, y: 100 },
                 type: StaticStepTypes.Done
             }
@@ -102,8 +112,18 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
 
     const initialEdges: Edge[] = useMemo<Edge[]>(
         () => [
-            { animated: false, id: "start-box", source: "start", target: "box" },
-            { animated: false, id: "box-done", source: "box", target: "done" }
+            {
+                animated: false,
+                id: `${INITIAL_FLOW_START_STEP_ID}-${INITIAL_FLOW_VIEW_STEP_ID}`,
+                source: INITIAL_FLOW_START_STEP_ID,
+                target: INITIAL_FLOW_VIEW_STEP_ID
+            },
+            {
+                animated: false,
+                id: `${INITIAL_FLOW_VIEW_STEP_ID}-${INITIAL_FLOW_DONE_STEP_ID}`,
+                source: INITIAL_FLOW_VIEW_STEP_ID,
+                target: INITIAL_FLOW_DONE_STEP_ID
+            }
         ],
         []
     );
@@ -113,14 +133,11 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
             return {};
         }
 
-        const stepNodes: NodeTypes = resources.steps.reduce(
-            (acc: NodeTypes, resource: Step) => {
-                acc[resource.type] = (props: any) => <StepFactory resource={ resource } { ...props } />;
+        const stepNodes: NodeTypes = resources.steps.reduce((acc: NodeTypes, resource: Step) => {
+            acc[resource.type] = (props: any) => <StepFactory resource={ resource } { ...props } />;
 
-                return acc;
-            },
-            {}
-        );
+            return acc;
+        }, {});
 
         const staticStepNodes: NodeTypes = Object.values(StaticStepTypes).reduce(
             (acc: NodeTypes, type: StaticStepTypes) => {
@@ -138,10 +155,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
     };
 
     return (
-        <AuthenticationFlowBuilderCoreProvider
-            ElementFactory={ ElementFactory }
-            ResourceProperties={ ResourceProperties }
-        >
+        <AuthenticationFlowBuilderCoreProvider ElementFactory={ ElementFactory } ResourceProperties={ ResourceProperties }>
             <RegistrationFlowBuilderProvider>
                 <DecoratedVisualFlow
                     resources={ resources }

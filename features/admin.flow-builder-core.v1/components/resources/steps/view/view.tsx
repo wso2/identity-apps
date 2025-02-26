@@ -17,7 +17,7 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
-import { DroppableContainer, GetDragItemProps, useDnD } from "@oxygen-ui/react/dnd";
+import { DroppableContainer, GetDragItemProps } from "@oxygen-ui/react/dnd";
 import FormGroup from "@oxygen-ui/react/FormGroup";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
@@ -39,6 +39,7 @@ import React, {
 } from "react";
 import ReorderableElement from "./reorderable-element";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
+import useFlowComponentId from "../../../../hooks/use-flow-component-id";
 import { Element } from "../../../../models/elements";
 import "./view.scss";
 
@@ -61,7 +62,7 @@ export const View: FunctionComponent<StepPropsInterface> = ({
     const node: Pick<Node, "data"> = useNodesData(nodeId);
     const { deleteElements, updateNodeData } = useReactFlow();
     const { onResourceDropOnCanvas } = useAuthenticationFlowBuilderCore();
-    const { generateComponentId } = useDnD();
+    const { generate } = useFlowComponentId();
 
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
@@ -77,9 +78,11 @@ export const View: FunctionComponent<StepPropsInterface> = ({
             const droppedData: string = event.dataTransfer.getData("application/json");
 
             if (droppedData) {
-                let newElement: Element = {
-                    ...JSON.parse(droppedData),
-                    id: generateComponentId("element")
+                let newElement: Element = JSON.parse(droppedData);
+
+                newElement = {
+                    ...newElement,
+                    id: generate(newElement.category.toLowerCase())
                 };
 
                 // If the component has variants, add the default variant to the root.
