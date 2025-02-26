@@ -22,7 +22,7 @@ export * from "./models/base";
 export * from "./models/elements";
 export * from "./models/resources";
 export * from "./models/steps";
-export * from "./models/visual-editor";
+export * from "./models/visual-flow";
 export * from "./models/widget";
 
 export {

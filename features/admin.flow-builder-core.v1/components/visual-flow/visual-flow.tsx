@@ -25,6 +25,7 @@ import {
     Edge,
     MarkerType,
     Node,
+    NodeTypes,
     OnConnect,
     OnNodesDelete,
     ReactFlow,
@@ -39,15 +40,12 @@ import {
     useReactFlow
 } from "@xyflow/react";
 import React, { DragEvent, FC, FunctionComponent, ReactElement, useCallback, useMemo } from "react";
-import DoneNode from "./nodes/done-node";
-import BaseEdge from "../react-flow-overrides/base-edge";
-import StepFactory from "../resources/steps/step-factory";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { ResourceTypes, Resources } from "../../models/resources";
-import { Step } from "../../models/steps";
 import getKnownEdgeTypes from "../../utils/get-known-edge-types";
 import resolveKnownEdges from "../../utils/resolve-known-edges";
 import transformFlow from "../../utils/transform-flow";
+import BaseEdge from "../react-flow-overrides/base-edge";
 // IMPORTANT: `@xyflow/react/dist/style.css` should be at the top of the stylesheet import list.
 import "@xyflow/react/dist/style.css";
 import "./visual-flow.scss";
@@ -77,6 +75,18 @@ export interface VisualFlowPropsInterface extends IdentifiableComponentInterface
      * @returns Edge object.
      */
     onEdgeResolve?: (connection: any, nodes: Node[]) => Edge;
+    /**
+     * Initial nodes and edges to be rendered.
+     */
+    initialNodes?: Node[];
+    /**
+     * Initial nodes and edges to be rendered.
+     */
+    initialEdges?: Edge[];
+    /**
+     * Node types to be rendered.
+     */
+    nodeTypes?: NodeTypes;
 }
 
 /**
@@ -87,38 +97,14 @@ export interface VisualFlowPropsInterface extends IdentifiableComponentInterface
  */
 const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-flow",
-    resources,
     customEdgeTypes,
     onFlowSubmit,
     onEdgeResolve,
+    nodeTypes,
+    initialNodes = [],
+    initialEdges = [],
     ...rest
 }: VisualFlowPropsInterface): ReactElement => {
-    const initialNodes = useMemo<Node[]>(() => [
-        {
-            id: "start",
-            type: "start",
-            position: { x: 100, y: 100 },
-            data: { label: "Start" }
-        },
-        {
-            id: "box",
-            type: "default",
-            position: { x: 100, y: 200 },
-            data: { label: "Box" }
-        },
-        {
-            id: "done",
-            type: "done",
-            position: { x: 100, y: 300 },
-            data: { label: "End" }
-        }
-    ], []);
-
-    const initialEdges = useMemo<Edge[]>(() => [
-        { id: "start-box", source: "start", target: "box", animated: true },
-        { id: "box-done", source: "box", target: "done", animated: true }
-    ], []);
-
     const [ nodes, setNodes, onNodesChange ] = useNodesState(initialNodes);
     const [ edges, setEdges, onEdgesChange ] = useEdgesState(initialEdges);
     const { screenToFlowPosition, toObject } = useReactFlow();
@@ -214,27 +200,6 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
         onFlowSubmit(transformFlow(flow));
     };
 
-    const generateNodeTypes = () => {
-        if (!resources?.steps) {
-            return {};
-        }
-
-        const steps: Record<string, FC<Node>> = resources.steps.reduce(
-            (acc: Record<string, FC<Node>>, resource: Step) => {
-                acc[resource.type] = (props: any) => <StepFactory { ...props } resource={ resource } />;
-
-                return acc;
-            },
-            {} as Record<string, FC<Node>>
-        );
-
-        return {
-            DONE: DoneNode,
-            ...steps
-        };
-    };
-
-    const nodeTypes: { [key: string]: FC<Node> } = useMemo(() => generateNodeTypes(), []);
     const edgeTypes: { [key: string]: FC<Edge> } = useMemo(() => {
         return {
             "base-edge": BaseEdge,
@@ -260,7 +225,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                 fitView
                 nodes={ nodes }
                 edges={ edges }
-                nodeTypes={ nodeTypes as any }
+                nodeTypes={ useMemo(() => nodeTypes, []) }
                 edgeTypes={ edgeTypes as any }
                 onNodesChange={ onNodesChange }
                 onEdgesChange={ onEdgesChange }

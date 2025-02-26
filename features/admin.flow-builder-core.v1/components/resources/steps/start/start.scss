@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,31 +16,12 @@
  * under the License.
  */
 
-import { Base } from "./base";
-import { Resource } from "./resources";
-
-/**
- * Interface for a Step.
- */
-export type Step = Base;
-
-export enum StepCategories {
-    Decision = "DECISION",
-    Interface = "INTERFACE",
-    Workflow = "WORKFLOW"
-}
-
-export enum StepTypes {
-    View = "VIEW",
-    Rule = "RULE"
-}
-
-export interface StepData {
-    components: Resource[];
-    [key: string]: any;
-}
-
-export enum StaticStepTypes {
-    Done = "DONE",
-    Start = "START",
+.start.MuiFab-root {
+    z-index: 0;
+    pointer-events: none;
+    color: var(--oxygen-palette-common-white);
+    border-radius: 30px;
+    background: linear-gradient(90deg, #146791 -31%, #1F94CF 68.06%);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
+    padding: 0 2em;
 }

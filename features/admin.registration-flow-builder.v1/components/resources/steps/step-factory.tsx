@@ -16,47 +16,31 @@
  * under the License.
  */
 
+import CommonStepFactory, {
+    CommonStepFactoryPropsInterface
+} from "@wso2is/admin.flow-builder-core.v1/components/resources/steps/common-step-factory";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
-import Rule from "./rule/rule";
-import View from "./view/view";
-import { Step, StepTypes } from "../../../models/steps";
 
 /**
  * Props interface of {@link StepFactory}
  */
-export interface StepFactoryPropsInterface extends Node, IdentifiableComponentInterface {
-    /**
-     * The flow id of the resource.
-     */
-    resourceId: string;
-    /**
-     * The resource properties.
-     */
-    resource: Step;
-}
+export type StepFactoryPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Factory for creating steps.
+ * Extends the {@link CommonStepFactory} component.
  *
  * @param props - Props injected to the component.
  * @returns The StepFactory component.
  */
 export const StepFactory: FunctionComponent<StepFactoryPropsInterface> = ({
     resource,
-    "data-componentid": componentId = "step-factory",
+    resourceId,
     ...rest
-}: StepFactoryPropsInterface): ReactElement => {
-    if (resource.type === StepTypes.View) {
-        return <View data-componentid={ componentId } { ...rest } />;
-    }
-
-    if (resource.type === StepTypes.Rule) {
-        return <Rule data-componentid={ componentId } { ...rest } />;
-    }
-
-    return null;
+}: StepFactoryPropsInterface & Node): ReactElement => {
+    return <CommonStepFactory resource={ resource } resourceId={ resourceId } { ...rest } />;
 };
 
 export default StepFactory;
