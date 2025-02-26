@@ -51,7 +51,7 @@ const configureRegistrationFlow = (payload: Payload): Promise<AxiosResponse> => 
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            if (response.status !== 201) {
+            if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     RegistrationFlowBuilderConstants.FLOW_CONFIG_INVALID_STATUS_ERROR,
                     null,
