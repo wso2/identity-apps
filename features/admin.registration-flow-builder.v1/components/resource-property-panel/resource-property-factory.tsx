@@ -49,6 +49,10 @@ export interface ResourcePropertyFactoryPropsInterface extends IdentifiableCompo
      * @param resource - The resource associated with the property.
      */
     onChange: (propertyKey: string, newValue: any, resource: Resource) => void;
+    /**
+     * Additional props.
+     */
+    [ key: string ]: any;
 }
 
 /**
@@ -62,7 +66,8 @@ const ResourcePropertyFactory: FunctionComponent<ResourcePropertyFactoryPropsInt
     resource,
     propertyKey,
     propertyValue,
-    onChange
+    onChange,
+    ...rest
 }: ResourcePropertyFactoryPropsInterface): ReactElement | null => {
     switch (resource.category) {
         case ElementCategories.Field:
@@ -75,6 +80,7 @@ const ResourcePropertyFactory: FunctionComponent<ResourcePropertyFactoryPropsInt
                     propertyValue={ propertyValue }
                     data-componentid={ componentId }
                     onChange={ onChange }
+                    { ...rest }
                 />
             );
         case StepCategories.Interface:
@@ -87,6 +93,7 @@ const ResourcePropertyFactory: FunctionComponent<ResourcePropertyFactoryPropsInt
                     propertyValue={ propertyValue }
                     data-componentid={ componentId }
                     onChange={ onChange }
+                    { ...rest }
                 />
             );
         case WidgetCategories.Composite:
@@ -99,6 +106,7 @@ const ResourcePropertyFactory: FunctionComponent<ResourcePropertyFactoryPropsInt
                     propertyValue={ propertyValue }
                     data-componentid={ componentId }
                     onChange={ onChange }
+                    { ...rest }
                 />
             );
         default:

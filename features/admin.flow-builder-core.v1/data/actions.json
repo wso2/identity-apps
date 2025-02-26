@@ -27,27 +27,6 @@
     },
     {
         "resourceType": "ELEMENT",
-        "category": "VERIFICATION",
-        "display": {
-            "label": "Verification",
-            "image": ""
-        },
-        "types": [
-            {
-                "type": "NEXT",
-                "meta": {
-                    "actionType": "VERIFICATION"
-                },
-                "display": {
-                    "label": "Verify OTP",
-                    "image": "https://www.svgrepo.com/show/497630/verify.svg",
-                    "defaultVariant": "PRIMARY"
-                }
-            }
-        ]
-    },
-    {
-        "resourceType": "ELEMENT",
         "category": "ONBOARDING",
         "display": {
             "label": "Onboarding",
@@ -56,11 +35,9 @@
         "types": [
             {
                 "type": "EXECUTOR",
-                "executors": [
-                    {
-                        "name": "PasswordOnboarder"
-                    }
-                ],
+                "executor": {
+                  "name": "PasswordOnboardExecutor"
+                },
                 "display": {
                     "label": "Continue with Password",
                     "image": "https://www.svgrepo.com/show/526627/password.svg",
@@ -69,11 +46,9 @@
             },
             {
                 "type": "EXECUTOR",
-                "executors": [
-                    {
-                        "name": "EmailOTPVerifier"
-                    }
-                ],
+                "executor": {
+                    "name": "EmailOTPVerifier"
+                },
                 "display": {
                     "label": "Continue with Email OTP",
                     "image": "https://www.svgrepo.com/show/479622/email-18.svg",

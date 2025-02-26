@@ -43,6 +43,10 @@ export interface CommonWidgetPropertyFactoryPropsInterface extends IdentifiableC
      * @param resource - The resource associated with the property.
      */
     onChange: (propertyKey: string,  newValue: any, resource: Resource) => void;
+    /**
+     * Additional props.
+     */
+    [ key: string ]: any;
 }
 
 /**

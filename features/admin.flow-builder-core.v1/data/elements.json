@@ -1,6 +1,18 @@
 [
     {
         "resourceType": "ELEMENT",
+        "category": "BLOCK",
+        "type": "FORM",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Form",
+            "image": "https://www.svgrepo.com/show/381655/form.svg"
+        },
+        "config": {}
+    },
+    {
+        "resourceType": "ELEMENT",
         "category": "FIELD",
         "type": "INPUT",
         "version": "0.1.0",

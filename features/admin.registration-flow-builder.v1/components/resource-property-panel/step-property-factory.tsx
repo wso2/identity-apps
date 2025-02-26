@@ -39,7 +39,8 @@ const StepPropertyFactory: FunctionComponent<StepPropertyFactoryPropsInterface> 
     resource,
     propertyKey,
     propertyValue,
-    onChange
+    onChange,
+    ...rest
 }: StepPropertyFactoryPropsInterface): ReactElement | null => {
     switch (resource.type) {
         case StepTypes.Rule:
@@ -51,6 +52,7 @@ const StepPropertyFactory: FunctionComponent<StepPropertyFactoryPropsInterface> 
                     propertyKey={ propertyKey }
                     propertyValue={ propertyValue }
                     onChange={ onChange }
+                    { ...rest }
                 />
             );
     }

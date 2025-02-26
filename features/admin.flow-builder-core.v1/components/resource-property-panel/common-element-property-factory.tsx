@@ -49,6 +49,10 @@ export interface CommonElementPropertyFactoryPropsInterface extends Identifiable
      * @param resource - The resource associated with the property.
      */
     onChange: (propertyKey: string, newValue: any, resource: Resource) => void;
+    /**
+     * Additional props.
+     */
+    [ key: string ]: any;
 }
 
 /**
@@ -62,11 +66,12 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
     resource,
     propertyKey,
     propertyValue,
-    onChange
+    onChange,
+    ...rest
 }: CommonElementPropertyFactoryPropsInterface): ReactElement | null => {
     if (propertyKey === "text") {
         if (resource.type === ElementTypes.RichText) {
-            return <RichText ToolbarProps={ { history: false, strikeThrough: false } } />;
+            return <RichText ToolbarProps={ { history: false, strikeThrough: false } } { ...rest } />;
         }
     }
 
@@ -79,6 +84,7 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
                     onChange(`config.${propertyKey}`, e.target.checked, resource)
                 }
                 data-componentid={ `${componentId}-${propertyKey}` }
+                { ...rest }
             />
         );
     }
@@ -94,6 +100,7 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
                 }
                 placeholder={ `Enter ${startCase(propertyKey)}` }
                 data-componentid={ `${componentId}-${propertyKey}` }
+                { ...rest }
             />
         );
     }
