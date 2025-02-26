@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ActionTypes } from "../models/actions";
+
 class ButtonAdapterConstants {
     /**
      * Private constructor to avoid object instantiation from outside
@@ -23,8 +25,8 @@ class ButtonAdapterConstants {
      */
     private constructor() { }
 
-    public static readonly NEXT_BUTTON_HANDLE_SUFFIX: string = "-NEXT";
-    public static readonly PREVIOUS_BUTTON_HANDLE_SUFFIX: string = "-PREVIOUS";
+    public static readonly NEXT_BUTTON_HANDLE_SUFFIX: string = `-${ ActionTypes.Next }`;
+    public static readonly PREVIOUS_BUTTON_HANDLE_SUFFIX: string = `-${ ActionTypes.Previous }`;
 }
 
 export default ButtonAdapterConstants;

@@ -80,11 +80,6 @@ export const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
 
     return (
         <div className="adapter button-adapter">
-            <Handle
-                id={ `${resource?.id}${ButtonAdapterConstants.PREVIOUS_BUTTON_HANDLE_SUFFIX}` }
-                type="source"
-                position={ Position.Left }
-            />
             <Button sx={ resource?.config.styles } { ...config }>
                 { resource?.config?.text }
             </Button>
