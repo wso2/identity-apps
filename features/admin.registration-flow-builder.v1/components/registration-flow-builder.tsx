@@ -106,6 +106,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
                 data: {
                     displayOnly: true
                 },
+                deletable: false,
                 id: INITIAL_FLOW_START_STEP_ID,
                 position: { x: 100, y: 100 },
                 type: StaticStepTypes.Start
@@ -114,6 +115,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
                 data: {
                     components: defaultTemplateComponents
                 },
+                deletable: false,
                 id: INITIAL_FLOW_VIEW_STEP_ID,
                 position: { x: 300, y: 200 },
                 type: StepTypes.View
@@ -122,6 +124,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
                 data: {
                     displayOnly: true
                 },
+                deletable: false,
                 id: INITIAL_FLOW_DONE_STEP_ID,
                 position: { x: 850, y: 100 },
                 type: StaticStepTypes.Done
@@ -131,11 +134,9 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
     );
 
     const initialEdges: Edge[] = useMemo<Edge[]>(() => {
-        let defaultTemplateActionId: string = defaultTemplateComponents?.find(
+        const defaultTemplateActionId: string = defaultTemplateComponents?.find(
             (component: Element) => component.category === ElementCategories.Action
         )?.id;
-        // Actions have `NEXT` and `PREVIOUS` handles (dots on the right and left side of the element).
-        // defaultTemplateActionId = `${defaultTemplateActionId}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`
 
         return [
             {
