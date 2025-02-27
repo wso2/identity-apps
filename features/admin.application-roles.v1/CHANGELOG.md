@@ -1,5 +1,18 @@
 # @wso2is/admin.application-roles.v1
 
+## 2.26.195
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.31.43
+  - @wso2is/admin.connections.v1@2.33.78
+  - @wso2is/admin.core.v1@2.39.21
+  - @wso2is/admin.extensions.v1@2.36.120
+  - @wso2is/admin.groups.v1@2.27.105
+  - @wso2is/admin.identity-providers.v1@2.26.195
+  - @wso2is/admin.userstores.v1@2.27.21
+
 ## 2.26.194
 
 ### Patch Changes

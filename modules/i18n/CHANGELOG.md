@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.20.4
+
+### Patch Changes
+
+- [#7748](https://github.com/wso2/identity-apps/pull/7748) [`0d61257ef6c3cae8be7b9bd7be7cc6b54654b243`](https://github.com/wso2/identity-apps/commit/0d61257ef6c3cae8be7b9bd7be7cc6b54654b243) Thanks [@Malith-19](https://github.com/Malith-19)! - Improve the confirmation model content for sms provider deletion.
+
 ## 2.20.3
 
 ### Patch Changes
