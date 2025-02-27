@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.14.3
+
+### Patch Changes
+
+- [#7742](https://github.com/wso2/identity-apps/pull/7742) [`67bfa9c4ce2410dd80d9aca6dd653879c4f4c292`](https://github.com/wso2/identity-apps/commit/67bfa9c4ce2410dd80d9aca6dd653879c4f4c292) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix i18n experience for duplicate claim value error
+
 ## 2.14.2
 
 ### Patch Changes

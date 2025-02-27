@@ -1,5 +1,14 @@
 # @wso2is/admin.username-validation.v1
 
+## 1.5.194
+
+### Patch Changes
+
+- Updated dependencies [[`ea321ccbcbb8a40339794b420fa8d9efee5deb67`](https://github.com/wso2/identity-apps/commit/ea321ccbcbb8a40339794b420fa8d9efee5deb67)]:
+  - @wso2is/admin.validation.v1@2.27.132
+  - @wso2is/admin.core.v1@2.39.20
+  - @wso2is/admin.applications.v1@2.31.42
+
 ## 1.5.193
 
 ### Patch Changes
