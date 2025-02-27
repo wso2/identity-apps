@@ -294,10 +294,10 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
         setFilteredClaims(claims);
     };
 
-    const handleAttributesSubmit = async (claims: AddExternalClaim[]): Promise<void> => {
+    const handleAttributesSubmit = (claims: AddExternalClaim[]): void => {
 
         setIsSubmitting(true);
-        const dialectPromise: Promise<string> = dialectID
+        const resolvedDialectIDPromise: Promise<string> = dialectID
             ? Promise.resolve(dialectID)
             : addDialect(attributeUri)
                 .then(() => {
@@ -317,7 +317,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                     return currentDialect.id;
                 });
 
-        dialectPromise.then((resolvedDialectID: string) => {
+        resolvedDialectIDPromise.then((resolvedDialectID: string) => {
             const addAttributesRequests: Promise<AddExternalClaim>[] = claims.map((claim: AddExternalClaim) => {
                 return addExternalClaim(resolvedDialectID, {
                     claimURI: claim.claimURI,
@@ -325,7 +325,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                 });
             });
 
-            return Promise.all(addAttributesRequests);
+            Promise.all(addAttributesRequests);
         }).then(() => {
             dispatch(addAlert(
                 {
