@@ -27,7 +27,6 @@ import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Node, Position, useNodeId, useNodesData, useReactFlow } from "@xyflow/react";
 import classNames from "classnames";
-import isEmpty from "lodash-es/isEmpty";
 import React, {
     DragEvent,
     FunctionComponent,
@@ -39,9 +38,9 @@ import React, {
 } from "react";
 import ReorderableElement from "./reorderable-element";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
-import useFlowComponentId from "../../../../hooks/use-flow-component-id";
 import { Element } from "../../../../models/elements";
 import "./view.scss";
+import useGenerateStepElement from "../../../../hooks/use-generate-step-element";
 
 /**
  * Props interface of {@link View}
@@ -62,7 +61,7 @@ export const View: FunctionComponent<StepPropsInterface> = ({
     const node: Pick<Node, "data"> = useNodesData(nodeId);
     const { deleteElements, updateNodeData } = useReactFlow();
     const { onResourceDropOnCanvas } = useAuthenticationFlowBuilderCore();
-    const { generate } = useFlowComponentId();
+    const { generateStepElement } = useGenerateStepElement();
 
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
@@ -78,34 +77,15 @@ export const View: FunctionComponent<StepPropsInterface> = ({
             const droppedData: string = event.dataTransfer.getData("application/json");
 
             if (droppedData) {
-                let newElement: Element = JSON.parse(droppedData);
-
-                newElement = {
-                    ...newElement,
-                    id: generate(newElement.category.toLowerCase())
-                };
-
-                // If the component has variants, add the default variant to the root.
-                if (!isEmpty(newElement?.variants)) {
-                    const defaultVariantType: string =
-                        newElement?.display?.defaultVariant ?? newElement?.variants[0]?.variant;
-                    const defaultVariant: Element = newElement.variants.find(
-                        (variant: Element) => variant.variant === defaultVariantType
-                    );
-
-                    newElement = {
-                        ...newElement,
-                        ...defaultVariant
-                    };
-                }
+                const generatedElement: Element = generateStepElement(JSON.parse(droppedData));
 
                 updateNodeData(nodeId, (node: any) => {
                     return {
-                        elements: [ ...(node?.data?.elements || []), newElement ]
+                        components: [ ...(node?.data?.components || []), generatedElement ]
                     };
                 });
 
-                onResourceDropOnCanvas(newElement, nodeId);
+                onResourceDropOnCanvas(generatedElement, nodeId);
             }
         },
         [ data?.type ]
@@ -114,7 +94,7 @@ export const View: FunctionComponent<StepPropsInterface> = ({
     const handleOrderChange = (orderedElements: Element[]) => {
         updateNodeData(nodeId, () => {
             return {
-                elements: orderedElements
+                components: orderedElements
             };
         });
     };
@@ -153,7 +133,7 @@ export const View: FunctionComponent<StepPropsInterface> = ({
                     <Box className="flow-builder-step-content-form">
                         <FormGroup>
                             <DroppableContainer
-                                nodes={ (node?.data?.elements || []) as Element[] }
+                                nodes={ (node?.data?.components || []) as Element[] }
                                 onOrderChange={ handleOrderChange }
                             >
                                 { ({

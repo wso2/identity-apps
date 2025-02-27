@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,24 +16,17 @@
  * under the License.
  */
 
-import { Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
-
-/**
- * Interface for a registration flow API schema.
- */
-export interface RegistrationFlow {
-    /**
-     * Steps of the registration flow.
-     */
-    steps: (Step & StepSize & StepPosition)[];
-}
-
-export interface StepSize {
-    height: number;
-    width: number;
-}
-
-export interface StepPosition {
-    x: number;
-    y: number;
+.flow-builder-step {
+    .flow-builder-step-content {
+        .adapter.form-adapter {
+            background: var(--oxygen-palette-grey-200);
+            min-height: 80px;
+            border-radius: var(--oxygen-shape-borderRadius);
+            border: 1px dashed var(--oxygen-palette-grey-300);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: var(--oxygen-spacing-3) 0;
+        }
+    }
 }

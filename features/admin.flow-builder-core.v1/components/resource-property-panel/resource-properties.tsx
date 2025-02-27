@@ -79,34 +79,34 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         }
 
         updateNodeData(lastInteractedResourceId, (node: any) => {
-            const elements: Element[] = node?.data?.elements?.map((_element: Element) => {
-                if (_element.id === lastInteractedResource.id) {
-                    return merge(_element, selectedVariant);
+            const components: Element[] = node?.data?.components?.map((component: Element) => {
+                if (component.id === lastInteractedResource.id) {
+                    return merge(component, selectedVariant);
                 }
 
-                return _element;
+                return component;
             });
 
             setLastInteractedResource(merge(lastInteractedResource, selectedVariant));
 
             return {
-                elements
+                components
             };
         });
     };
 
     const handlePropertyChange = (propertyKey: string, newValue: any, element: Element) => {
         updateNodeData(lastInteractedResourceId, (node: any) => {
-            const elements: Element[] = node?.data?.elements?.map((_element: any) => {
-                if (_element.id === element.id) {
-                    set(_element, propertyKey, newValue);
+            const components: Element[] = node?.data?.components?.map((component: any) => {
+                if (component.id === element.id) {
+                    set(component, propertyKey, newValue);
                 }
 
-                return _element;
+                return component;
             });
 
             return {
-                elements
+                components
             };
         });
     };

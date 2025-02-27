@@ -17,7 +17,7 @@
  */
 
 import { ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
-import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
+import { Resource, ResourceTypes } from "@wso2is/admin.flow-builder-core.v1/models/resources";
 import { StepCategories } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { WidgetCategories } from "@wso2is/admin.flow-builder-core.v1/models/widget";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -69,10 +69,8 @@ const ResourcePropertyFactory: FunctionComponent<ResourcePropertyFactoryPropsInt
     onChange,
     ...rest
 }: ResourcePropertyFactoryPropsInterface): ReactElement | null => {
-    switch (resource.category) {
-        case ElementCategories.Field:
-        case ElementCategories.Action:
-        case ElementCategories.Display:
+    switch (resource.resourceType) {
+        case ResourceTypes.Element:
             return (
                 <ElementPropertyFactory
                     resource={ resource }
@@ -83,9 +81,7 @@ const ResourcePropertyFactory: FunctionComponent<ResourcePropertyFactoryPropsInt
                     { ...rest }
                 />
             );
-        case StepCategories.Interface:
-        case StepCategories.Decision:
-        case StepCategories.Workflow:
+        case ResourceTypes.Step:
             return (
                 <StepPropertyFactory
                     resource={ resource }
@@ -96,9 +92,7 @@ const ResourcePropertyFactory: FunctionComponent<ResourcePropertyFactoryPropsInt
                     { ...rest }
                 />
             );
-        case WidgetCategories.Composite:
-        case WidgetCategories.Flow:
-        case WidgetCategories.Security:
+        case ResourceTypes.Widget:
             return (
                 <WidgetPropertyFactory
                     resource={ resource }

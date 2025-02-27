@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,15 @@
  * under the License.
  */
 
-import { useDnD } from "@oxygen-ui/react/dnd";
+import isEmpty from "lodash-es/isEmpty";
+import useFlowComponentId from "./use-flow-component-id";
+import { Element } from "../models/elements";
 
 /**
- * Props interface of {@link useFlowComponentId}
+ * Props interface of {@link useGenerateStepElement}
  */
-export type UseFlowComponentIdInterface = {
-    generate: (prefix?: string) => string;
+export type UseGenerateStepElement = {
+    generateStepElement: (element: Element) => Element;
 };
 
 /**
@@ -42,17 +44,36 @@ export type UseFlowComponentIdInterface = {
  * const id = generate("element", 4); // Generates an ID like "element_374d"
  * ```
  */
-const useFlowComponentId = (): UseFlowComponentIdInterface => {
-    // TODO: Refactor `generateComponentId` to be more generic.
-    const { generateComponentId: _generateComponentId } = useDnD();
+const useGenerateStepElement = (): UseGenerateStepElement => {
+    // TODO: Use from `@oxygen-ui/react/dnd`.
+    const { generate } = useFlowComponentId();
 
-    const generate = (prefix: string = "component", charCount: number = 4): string => {
-        return `${prefix}_${Math.random().toString(36).substring(2, 2 + charCount)}`;
+    const generateStepElement = (element: Element): Element => {
+        let updatedElement: Element = {
+            ...element,
+            id: generate(element.category.toLowerCase())
+        };
+
+        // If the component has variants, add the default variant to the root.
+        if (!isEmpty(updatedElement?.variants)) {
+            const defaultVariantType: string =
+                updatedElement?.display?.defaultVariant ?? updatedElement?.variants[0]?.variant;
+            const defaultVariant: Element = updatedElement.variants.find(
+                (variant: Element) => variant.variant === defaultVariantType
+            );
+
+            updatedElement = {
+                ...updatedElement,
+                ...defaultVariant
+            };
+        }
+
+        return updatedElement;
     };
 
     return {
-        generate
+        generateStepElement
     };
 };
 
-export default useFlowComponentId;
+export default useGenerateStepElement;

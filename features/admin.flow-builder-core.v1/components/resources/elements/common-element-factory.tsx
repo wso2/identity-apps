@@ -29,7 +29,8 @@ import OTPInputAdapter from "./adapters/input/otp-input-adapter";
 import PhoneNumberInputAdapter from "./adapters/input/phone-number-input-adapter";
 import RichTextAdapter from "./adapters/rich-text-adapter";
 import TypographyAdapter from "./adapters/typography-adapter";
-import { Element, ElementTypes, InputVariants } from "../../../models/elements";
+import { BlockTypes, Element, ElementTypes, InputVariants } from "../../../models/elements";
+import FormAdapter from "./adapters/form-adapter";
 
 /**
  * Props interface of {@link CommonElementFactory}
@@ -55,7 +56,9 @@ export const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsIn
     resourceId,
     resource
 }: CommonElementFactoryPropsInterface & Node): ReactElement => {
-    if (resource.type === ElementTypes.Input) {
+    if (resource.type === BlockTypes.Form) {
+        return <FormAdapter resourceId={ resourceId } resource={ resource } />;
+    } else if (resource.type === ElementTypes.Input) {
         if (resource.variant === InputVariants.Checkbox) {
             return <CheckboxAdapter resourceId={ resourceId } resource={ resource } />;
         }

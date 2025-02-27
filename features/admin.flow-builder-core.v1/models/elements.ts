@@ -21,10 +21,17 @@ import { Base } from "./base";
 /**
  * Interface for a component.
  */
-export type Element<T = any> = Base<T>;
+export interface Element<T = any> extends Base<T> {
+    /**
+     * Nested set of elements.
+     * @remarks Some elements like `Form` can have nested elements.
+     */
+    components?: Element[];
+};
 
 export enum ElementCategories {
     Action = "ACTION",
+    Block = "BLOCK",
     Display = "DISPLAY",
     Field = "FIELD"
 }
@@ -37,6 +44,10 @@ export enum ElementTypes {
     Image = "IMAGE",
     RichText = "RICH_TEXT",
     Typography = "TYPOGRAPHY",
+}
+
+export enum BlockTypes {
+    Form = "FORM"
 }
 
 export enum InputVariants {

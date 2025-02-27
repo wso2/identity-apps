@@ -81,6 +81,10 @@ const transformFlow = (flowState: any) => {
 
         const processElements = (elements: Element[]) => {
             const _elements: Element[] = elements.map((element: any) => {
+                if (element.components) {
+                    element.components = processElements(element.components);
+                }
+
                 return processActions(filterElementPropertiesForPayload(element), stepNavigationMap);
             });
 
@@ -94,7 +98,7 @@ const transformFlow = (flowState: any) => {
             size: measured,
             position,
             data: {
-                components: processElements(data.elements)
+                components: processElements(data.components)
             }
         });
         /* eslint-disable sort-keys */
