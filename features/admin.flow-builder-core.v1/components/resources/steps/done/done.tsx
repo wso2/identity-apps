@@ -50,7 +50,7 @@ const Done: FunctionComponent = ({
             >
                 <CheckIcon data-componentid={ `${componentId}-done-node-check-icon` } />
             </Fab>
-            <Handle className="hidden-handle" id="targetLeft" type="target" position={ Position.Left } />
+            <Handle type="target" position={ Position.Left } />
         </div>
     );
 };

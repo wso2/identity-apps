@@ -127,7 +127,23 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
     resources,
     ...rest
 }: ResourcePanelPropsInterface): ReactElement => {
-    const { elements, widgets, steps, templates } = resources;
+    const {
+        elements: unfilteredElements,
+        widgets: unfilteredWidgets,
+        steps: unfilteredSteps,
+        templates: unfilteredTemplates
+    } = resources;
+
+    const elements: Element[] = unfilteredElements.filter(
+        (element: Element) => element.display?.showOnResourcePanel !== false
+    );
+    const widgets: Widget[] = unfilteredWidgets.filter(
+        (widget: Widget) => widget.display?.showOnResourcePanel !== false
+    );
+    const steps: Step[] = unfilteredSteps.filter((step: Step) => step.display?.showOnResourcePanel !== false);
+    const templates: Template[] = unfilteredTemplates.filter(
+        (template: Template) => template.display?.showOnResourcePanel !== false
+    );
 
     return (
         <Box

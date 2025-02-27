@@ -17,8 +17,8 @@
  */
 
 import isEmpty from "lodash-es/isEmpty";
-import useFlowComponentId from "./use-flow-component-id";
 import { Element } from "../models/elements";
+import generateResourceId from "../utils/generate-resource-id";
 
 /**
  * Props interface of {@link useGenerateStepElement}
@@ -28,30 +28,23 @@ export type UseGenerateStepElement = {
 };
 
 /**
- * Hook that provides access to the Authentication Flow Builder Core context.
+ * Hook that provides a function to generate a step element with a unique ID.
  *
- * This hook allows components to access authentication flow builder core-related data and functions
- * provided by the {@link AuthenticationFlowBuilderCoreProvider}. It returns an object containing
- * the context values defined in {@link AuthenticationFlowBuilderCoreContext}.
+ * This hook allows components to generate a step element with a unique ID and default variant if applicable.
  *
- * @returns An object containing the context values of {@link AuthenticationFlowBuilderCoreContext}.
- *
- * @throws Will throw an error if the hook is used outside of an AuthenticationFlowBuilderCoreProvider.
+ * @returns An object containing the `generateStepElement` function.
  *
  * @example
  * ```tsx
- * const { generate } = useFlowComponentId();
- * const id = generate("element", 4); // Generates an ID like "element_374d"
+ * const { generateStepElement } = useGenerateStepElement();
+ * const element = generateStepElement({ category: "ACTION", variants: [...] });
  * ```
  */
 const useGenerateStepElement = (): UseGenerateStepElement => {
-    // TODO: Use from `@oxygen-ui/react/dnd`.
-    const { generate } = useFlowComponentId();
-
     const generateStepElement = (element: Element): Element => {
         let updatedElement: Element = {
             ...element,
-            id: generate(element.category.toLowerCase())
+            id: generateResourceId(element.category.toLowerCase())
         };
 
         // If the component has variants, add the default variant to the root.

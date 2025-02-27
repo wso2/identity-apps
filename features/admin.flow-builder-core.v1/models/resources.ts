@@ -34,7 +34,8 @@ export type Resource = (Element | Step | Widget) & ResourceDisplayOnlyMeta;
 export enum ResourceTypes {
     Step = "STEP",
     Element = "ELEMENT",
-    Widget = "WIDGET"
+    Widget = "WIDGET",
+    Template = "TEMPLATE",
 }
 
 /**

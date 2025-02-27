@@ -92,6 +92,10 @@ export interface BaseDisplay {
      * Description of the component or the primitive.
      */
     description?: string;
+    /**
+     * Should the component be shown on the resource panel.
+     */
+    showOnResourcePanel: boolean;
 }
 
 /**

@@ -34,13 +34,14 @@ import React, {
     MutableRefObject,
     ReactElement,
     useCallback,
+    useEffect,
     useRef
 } from "react";
 import ReorderableElement from "./reorderable-element";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
+import useGenerateStepElement from "../../../../hooks/use-generate-step-element";
 import { Element } from "../../../../models/elements";
 import "./view.scss";
-import useGenerateStepElement from "../../../../hooks/use-generate-step-element";
 
 /**
  * Props interface of {@link View}
@@ -64,6 +65,18 @@ export const View: FunctionComponent<StepPropsInterface> = ({
     const { generateStepElement } = useGenerateStepElement();
 
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if ((data?.components as Element[])?.length <= 0) {
+            return;
+        }
+
+        updateNodeData(nodeId, () => {
+            return {
+                components: data?.components
+            };
+        });
+    }, []);
 
     const handleDragOver: (event: DragEvent) => void = useCallback((event: DragEvent) => {
         event.preventDefault();
@@ -143,7 +156,7 @@ export const View: FunctionComponent<StepPropsInterface> = ({
                                     nodes: Element[];
                                     getDragItemProps: GetDragItemProps;
                                 }) =>
-                                    nodes.map((element: Element, index: number) => {
+                                    nodes.length > 0 && nodes?.map((element: Element, index: number) => {
                                         const {
                                             className: dragItemClassName,
                                             ...otherDragItemProps

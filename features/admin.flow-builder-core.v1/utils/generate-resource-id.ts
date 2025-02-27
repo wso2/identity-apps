@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,17 +16,8 @@
  * under the License.
  */
 
-import { ActionTypes } from "../models/actions";
+const generateResourceId = (prefix: string = "resource", charCount: number = 4): string => {
+    return `${prefix}_${Math.random().toString(36).substring(2, 2 + charCount)}`;
+};
 
-class ButtonAdapterConstants {
-    /**
-     * Private constructor to avoid object instantiation from outside
-     * the class.
-     */
-    private constructor() { }
-
-    public static readonly NEXT_BUTTON_HANDLE_SUFFIX: string = `_${ ActionTypes.Next }`;
-    public static readonly PREVIOUS_BUTTON_HANDLE_SUFFIX: string = `_${ ActionTypes.Previous }`;
-}
-
-export default ButtonAdapterConstants;
+export default generateResourceId;

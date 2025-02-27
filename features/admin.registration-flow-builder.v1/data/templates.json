@@ -1,32 +1,94 @@
 [
     {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "DEFAULT",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Default",
+            "description": "Default starter template for a blank flow",
+            "image": "https://www.svgrepo.com/show/509936/flow-line.svg",
+            "showOnResourcePanel": false
+        },
+        "config": {
+            "data": {
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 300,
+                            "y": 200
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "{{ID}}",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Register Account"
+                                    }
+                                },
+                                {
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "id": "{{ID}}"
+                                },
+                                {
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "id": "{{ID}}",
+                                    "variant": "PRIMARY",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Continue"
+                                    },
+                                    "action": {
+                                        "next": "done",
+                                        "type": "NEXT"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },  
+    {
         "resourceType": "TEMPLATES",
-        "category": "TEMPLATES",
-        "type": "BASIC_DETAILS",
+        "category": "STARTER",
+        "type": "BASIC",
         "version": "0.1.0",
         "deprecated": false,
         "display": {
             "label": "Basic Details",
             "description": "Basic registration experience with minimal data collect",
-            "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg"
+            "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg",
+            "showOnResourcePanel": true
         },
-        "config": {
-            "field": {}
-        }
+        "config": {}
     },
     {
         "resourceType": "TEMPLATES",
-        "category": "TEMPLATES",
-        "type": "BASIC_GOOGLE",
+        "category": "STARTER",
+        "type": "BASIC_FEDERATED",
         "version": "0.1.0",
         "deprecated": false,
         "display": {
             "label": "Basic + Google",
             "description": "Google registration additional to basic registration experience",
-            "image": "https://www.svgrepo.com/show/461597/google.svg"
+            "image": "https://www.svgrepo.com/show/461597/google.svg",
+            "showOnResourcePanel": true
         },
-        "config": {
-            "field": {}
-        }
+        "config": {}
     }
 ]

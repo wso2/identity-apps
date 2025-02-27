@@ -16,16 +16,13 @@
  * under the License.
  */
 
-import { Edge, Node, Node as XYFlowNode } from "@xyflow/react";
-import omit from "lodash-es/omit";
-import set from "lodash-es/set";
-import { v4 as uuidv4 } from "uuid";
+import { Node } from "@xyflow/react";
+import ButtonAdapterConstants from "../constants/button-adapter-constants";
 import { ActionTypes } from "../models/actions";
-import { Element, ElementCategories, InputVariants } from "../models/elements";
-import { Resource } from "../models/resources";
-import { StepData } from "../models/steps";
+import { Element, ElementCategories } from "../models/elements";
+import omit from "lodash-es/omit";
 
-const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [ "display", "version", "variants", "deprecated", "meta" ];
+const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [ "display", "version", "variants", "deprecated", "meta", "resourceType" ];
 
 const processActions = (component, navigations) => {
     if (component.category === ElementCategories.Action) {
@@ -36,13 +33,13 @@ const processActions = (component, navigations) => {
         if (component?.meta?.type === ActionTypes.Next) {
             action = {
                 ...action,
-                type: ActionTypes.Next,
+                type: ActionTypes.Next
             };
         } else if (component?.meta?.type === ActionTypes.Executor) {
             action = {
                 ...action,
                 type: ActionTypes.Executor,
-                executor: component.meta?.executor,
+                executor: component.meta?.executor
             };
         }
 
@@ -55,12 +52,6 @@ const processActions = (component, navigations) => {
     return component;
 };
 
-const filterElementPropertiesForPayload = element => {
-    const { deprecated, display, resourceType, version, variants, ...rest } = element;
-
-    return rest;
-};
-
 const transformFlow = (flowState: any) => {
     const { nodes: flowNodes, edges: flowEdges } = flowState;
 
@@ -71,7 +62,11 @@ const transformFlow = (flowState: any) => {
     const stepNavigationMap: Record<string, string> = {};
 
     flowEdges.forEach((edge: any) => {
-        stepNavigationMap[edge.sourceHandle?.replace("-NEXT", "")?.replace("-PREVIOUS", "")] = edge.target;
+        stepNavigationMap[
+            edge.sourceHandle
+                ?.replace(ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX, "")
+                ?.replace(ButtonAdapterConstants.PREVIOUS_BUTTON_HANDLE_SUFFIX, "")
+        ] = edge.target;
     });
 
     const filteredFlowNodes = flowNodes.filter((node: Node) => node.data.displayOnly !== true);
@@ -85,7 +80,7 @@ const transformFlow = (flowState: any) => {
                     element.components = processElements(element.components);
                 }
 
-                return processActions(filterElementPropertiesForPayload(element), stepNavigationMap);
+                return processActions(omit(element, DISPLAY_ONLY_ELEMENT_PROPERTIES), stepNavigationMap);
             });
 
             return _elements;

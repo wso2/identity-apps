@@ -17,13 +17,17 @@
  */
 
 import DecoratedVisualFlow from "@wso2is/admin.flow-builder-core.v1/components/visual-flow/decorated-visual-flow";
-import useFlowComponentId from "@wso2is/admin.flow-builder-core.v1/hooks/use-flow-component-id";
 import { Payload } from "@wso2is/admin.flow-builder-core.v1/models/api";
+import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { StaticStepTypes, Step, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
 import AuthenticationFlowBuilderCoreProvider from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
+import generateIdsForTemplates from "@wso2is/admin.flow-builder-core.v1/utils/generate-ids-for-templates";
+import generateResourceId from "@wso2is/admin.flow-builder-core.v1/utils/generate-resource-id";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Edge, Node, NodeTypes } from "@xyflow/react";
+import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -34,6 +38,7 @@ import StepFactory from "./resources/steps/step-factory";
 import configureRegistrationFlow from "../api/configure-registration-flow";
 import useGetRegistrationFlowBuilderResources from "../api/use-get-registration-flow-builder-resources";
 import RegistrationFlowBuilderProvider from "../providers/registration-flow-builder-provider";
+import ButtonAdapterConstants from "@wso2is/admin.flow-builder-core.v1/constants/button-adapter-constants";
 
 /**
  * Props interface of {@link RegistrationFlowBuilder}
@@ -51,8 +56,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
     ...rest
 }: RegistrationFlowBuilderPropsInterface): ReactElement => {
     const { data: resources } = useGetRegistrationFlowBuilderResources();
-
-    const { generate } = useFlowComponentId();
+    const { steps, templates } = resources;
 
     const dispatch: Dispatch = useDispatch();
 
@@ -79,8 +83,22 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
     };
 
     const INITIAL_FLOW_START_STEP_ID: string = StaticStepTypes.Start.toLowerCase();
-    const INITIAL_FLOW_VIEW_STEP_ID: string = generate(StepTypes.View.toLowerCase());
+    const INITIAL_FLOW_VIEW_STEP_ID: string = generateResourceId(StepTypes.View.toLowerCase());
     const INITIAL_FLOW_DONE_STEP_ID: string = StaticStepTypes.Done.toLowerCase();
+
+    const getDefaultTemplateComponents = (): Element[] => {
+        const defaultTemplate: Template = cloneDeep(
+            templates.find((template: Template) => template.type === TemplateTypes.Default)
+        );
+
+        if (defaultTemplate?.config?.data?.steps?.length > 0) {
+            defaultTemplate.config.data.steps[0].id = INITIAL_FLOW_START_STEP_ID;
+        }
+
+        return generateIdsForTemplates(defaultTemplate)?.config?.data?.steps[0]?.data?.components;
+    };
+
+    const defaultTemplateComponents = useMemo(() => getDefaultTemplateComponents(), [resources]);
 
     const initialNodes: Node[] = useMemo<Node[]>(
         () => [
@@ -93,7 +111,9 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
                 type: StaticStepTypes.Start
             },
             {
-                data: {},
+                data: {
+                    components: defaultTemplateComponents
+                },
                 id: INITIAL_FLOW_VIEW_STEP_ID,
                 position: { x: 300, y: 200 },
                 type: StepTypes.View
@@ -110,8 +130,14 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
         []
     );
 
-    const initialEdges: Edge[] = useMemo<Edge[]>(
-        () => [
+    const initialEdges: Edge[] = useMemo<Edge[]>(() => {
+        let defaultTemplateActionId: string = defaultTemplateComponents?.find(
+            (component: Element) => component.category === ElementCategories.Action
+        )?.id;
+        // Actions have `NEXT` and `PREVIOUS` handles (dots on the right and left side of the element).
+        // defaultTemplateActionId = `${defaultTemplateActionId}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`
+
+        return [
             {
                 animated: false,
                 id: `${INITIAL_FLOW_START_STEP_ID}-${INITIAL_FLOW_VIEW_STEP_ID}`,
@@ -120,20 +146,20 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
             },
             {
                 animated: false,
-                id: `${INITIAL_FLOW_VIEW_STEP_ID}-${INITIAL_FLOW_DONE_STEP_ID}`,
+                id: defaultTemplateActionId,
                 source: INITIAL_FLOW_VIEW_STEP_ID,
+                sourceHandle: `${defaultTemplateActionId}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
                 target: INITIAL_FLOW_DONE_STEP_ID
             }
-        ],
-        []
-    );
+        ];
+    }, []);
 
     const generateNodeTypes = (): NodeTypes => {
-        if (!resources?.steps) {
+        if (!steps) {
             return {};
         }
 
-        const stepNodes: NodeTypes = resources.steps.reduce((acc: NodeTypes, resource: Step) => {
+        const stepNodes: NodeTypes = steps.reduce((acc: NodeTypes, resource: Step) => {
             acc[resource.type] = (props: any) => <StepFactory resource={ resource } { ...props } />;
 
             return acc;
