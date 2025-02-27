@@ -188,15 +188,6 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             });
     };
 
-    useEffect(() => {
-        if (!dialectId) {
-            setDialect(null);
-
-            return;
-        }
-        getDialect();
-    }, [ dialectId ]);
-
     /**
      * Fetch external claims.
      *
@@ -251,10 +242,12 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
     useEffect(() => {
         if (!dialectId) {
+            setDialect(null);
             setClaims(undefined);
 
             return;
         }
+        getDialect();
         getExternalClaims();
     }, [ dialectId ]);
 
