@@ -98,19 +98,18 @@ const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
                             <Code key="refresh_token">refresh_token</Code>
                         ] }
                     />
-                    { !readonly && (
-                        <div>
-                            <Button
-                                onClick={ () => setIsHasRule(true) }
-                                variant="outlined"
-                                size="small"
-                                className={ "secondary-button" }
-                                data-componentid={ `${ _componentId }-configure-rule-button` }
-                            >
-                                { t("actions:fields.rules.button") }
-                            </Button>
-                        </div>
-                    ) }
+                    <div>
+                        <Button
+                            onClick={ () => setIsHasRule(true) }
+                            variant="outlined"
+                            size="small"
+                            className={ "secondary-button" }
+                            data-componentid={ `${ _componentId }-configure-rule-button` }
+                            disabled={ readonly }
+                        >
+                            { t("actions:fields.rules.button") }
+                        </Button>
+                    </div>
                 </Alert>
             ) }
         </>

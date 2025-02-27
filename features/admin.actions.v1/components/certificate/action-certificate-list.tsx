@@ -71,6 +71,10 @@ interface ActionCertificatesPropsListInterface extends IdentifiableComponentInte
      * The ID of the action.
      */
     actionId: string;
+    /**
+     * Indicates if the form is in read only mode.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -87,6 +91,7 @@ export const ActionCertificatesListComponent: FunctionComponent<ActionCertificat
     isCreateFormState,
     actionTypeApiPath,
     actionId,
+    readOnly,
     [ "data-componentid" ]: _componentId = "action-certificate-list"
 }: ActionCertificatesPropsListInterface ): ReactElement => {
 
@@ -328,6 +333,7 @@ export const ActionCertificatesListComponent: FunctionComponent<ActionCertificat
                                                     {
                                                         "data-componentid": `${ _componentId }-edit-cert-${ index }
                                                         -button`,
+                                                        disabled: readOnly,
                                                         icon: "pencil",
                                                         onClick: () => setShowWizard(true),
                                                         popupText: t("actions:fields.passwordSharing.certificate"+
@@ -348,6 +354,7 @@ export const ActionCertificatesListComponent: FunctionComponent<ActionCertificat
                                                     {
                                                         "data-componentid": `${ _componentId }-delete-cert-${ index }
                                                         -button`,
+                                                        disabled: readOnly,
                                                         icon: "trash alternate",
                                                         onClick: handleDeleteCertificate,
                                                         popupText: t("actions:fields.passwordSharing.certificate"+
@@ -402,6 +409,7 @@ export const ActionCertificatesListComponent: FunctionComponent<ActionCertificat
                                 variant="outlined"
                                 size="small"
                                 className={ "secondary-button" }
+                                disabled={ readOnly }
                             >
                                 { t("actions:buttons.addCertificate") }
                             </Button>

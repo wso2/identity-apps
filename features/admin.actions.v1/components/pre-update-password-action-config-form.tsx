@@ -330,6 +330,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                         ]
                     }
                     clearable={ true }
+                    disabled={ getFieldDisabledStatus() }
                 />
                 <FormLabel className="certificate-label" >
                     { t("actions:fields.passwordSharing.certificate.label") }
@@ -345,6 +346,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                     certificate={ PEMValue }
                     actionTypeApiPath={ actionTypeApiPath }
                     actionId={ initialValues?.id }
+                    readOnly={ getFieldDisabledStatus() }
                 />
                 { RuleExpressionsMetaData && showRuleComponent && (
                     <RuleConfigForm
