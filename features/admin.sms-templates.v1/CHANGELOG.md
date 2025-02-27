@@ -1,5 +1,67 @@
 # @wso2is/admin.sms-templates.v1
 
+## 1.0.192
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.19
+  - @wso2is/admin.organizations.v1@2.26.193
+  - @wso2is/admin.branding.v1@2.28.50
+  - @wso2is/common.branding.v1@2.26.50
+
+## 1.0.191
+
+### Patch Changes
+
+- Updated dependencies [[`b9724d43eb1b3ca457161f35d92944df1ba7649a`](https://github.com/wso2/identity-apps/commit/b9724d43eb1b3ca457161f35d92944df1ba7649a), [`6f2881510fbf5f6cf66e8cdbda001a8b3daa7887`](https://github.com/wso2/identity-apps/commit/6f2881510fbf5f6cf66e8cdbda001a8b3daa7887), [`698a0f90286bd0621ee7cdbd8209c68e7fcc5120`](https://github.com/wso2/identity-apps/commit/698a0f90286bd0621ee7cdbd8209c68e7fcc5120), [`1724eb611da9ff3d985ea8edd68047c97d75941b`](https://github.com/wso2/identity-apps/commit/1724eb611da9ff3d985ea8edd68047c97d75941b)]:
+  - @wso2is/i18n@2.20.3
+  - @wso2is/admin.core.v1@2.39.18
+  - @wso2is/admin.branding.v1@2.28.49
+  - @wso2is/admin.organizations.v1@2.26.192
+  - @wso2is/common.branding.v1@2.26.49
+
+## 1.0.190
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.17
+  - @wso2is/admin.organizations.v1@2.26.191
+  - @wso2is/admin.branding.v1@2.28.48
+  - @wso2is/common.branding.v1@2.26.48
+
+## 1.0.189
+
+### Patch Changes
+
+- Updated dependencies [[`0e488f4fe3a8e1c080e19b097deed1c0cdc5bc90`](https://github.com/wso2/identity-apps/commit/0e488f4fe3a8e1c080e19b097deed1c0cdc5bc90)]:
+  - @wso2is/i18n@2.20.2
+  - @wso2is/admin.core.v1@2.39.16
+  - @wso2is/admin.branding.v1@2.28.47
+  - @wso2is/admin.organizations.v1@2.26.190
+  - @wso2is/common.branding.v1@2.26.47
+
+## 1.0.188
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.15
+  - @wso2is/admin.organizations.v1@2.26.189
+  - @wso2is/admin.branding.v1@2.28.46
+  - @wso2is/common.branding.v1@2.26.46
+
+## 1.0.187
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.14
+  - @wso2is/admin.organizations.v1@2.26.188
+  - @wso2is/admin.branding.v1@2.28.45
+  - @wso2is/common.branding.v1@2.26.45
+
 ## 1.0.186
 
 ### Patch Changes

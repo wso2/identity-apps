@@ -1,5 +1,79 @@
 # @wso2is/admin.tenants.v1
 
+## 2.28.167
+
+### Patch Changes
+
+- Updated dependencies [[`1bb85bae9a71a678d1a955d4ae4ab9ff4b9375bc`](https://github.com/wso2/identity-apps/commit/1bb85bae9a71a678d1a955d4ae4ab9ff4b9375bc)]:
+  - @wso2is/admin.users.v1@2.30.103
+  - @wso2is/admin.core.v1@2.39.19
+  - @wso2is/admin.extensions.v1@2.36.118
+  - @wso2is/admin.organizations.v1@2.26.193
+  - @wso2is/admin.validation.v1@2.27.131
+  - @wso2is/admin.feature-gate.v1@1.4.193
+
+## 2.28.166
+
+### Patch Changes
+
+- Updated dependencies [[`b9724d43eb1b3ca457161f35d92944df1ba7649a`](https://github.com/wso2/identity-apps/commit/b9724d43eb1b3ca457161f35d92944df1ba7649a), [`6f2881510fbf5f6cf66e8cdbda001a8b3daa7887`](https://github.com/wso2/identity-apps/commit/6f2881510fbf5f6cf66e8cdbda001a8b3daa7887), [`698a0f90286bd0621ee7cdbd8209c68e7fcc5120`](https://github.com/wso2/identity-apps/commit/698a0f90286bd0621ee7cdbd8209c68e7fcc5120), [`1724eb611da9ff3d985ea8edd68047c97d75941b`](https://github.com/wso2/identity-apps/commit/1724eb611da9ff3d985ea8edd68047c97d75941b)]:
+  - @wso2is/i18n@2.20.3
+  - @wso2is/admin.core.v1@2.39.18
+  - @wso2is/admin.extensions.v1@2.36.117
+  - @wso2is/admin.organizations.v1@2.26.192
+  - @wso2is/admin.users.v1@2.30.102
+  - @wso2is/admin.validation.v1@2.27.130
+  - @wso2is/admin.feature-gate.v1@1.4.192
+
+## 2.28.165
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.17
+  - @wso2is/admin.extensions.v1@2.36.116
+  - @wso2is/admin.organizations.v1@2.26.191
+  - @wso2is/admin.feature-gate.v1@1.4.191
+  - @wso2is/admin.users.v1@2.30.101
+  - @wso2is/admin.validation.v1@2.27.129
+
+## 2.28.164
+
+### Patch Changes
+
+- Updated dependencies [[`0e488f4fe3a8e1c080e19b097deed1c0cdc5bc90`](https://github.com/wso2/identity-apps/commit/0e488f4fe3a8e1c080e19b097deed1c0cdc5bc90)]:
+  - @wso2is/admin.extensions.v1@2.36.115
+  - @wso2is/admin.users.v1@2.30.100
+  - @wso2is/i18n@2.20.2
+  - @wso2is/admin.core.v1@2.39.16
+  - @wso2is/admin.organizations.v1@2.26.190
+  - @wso2is/admin.validation.v1@2.27.128
+  - @wso2is/admin.feature-gate.v1@1.4.190
+
+## 2.28.163
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.15
+  - @wso2is/admin.extensions.v1@2.36.114
+  - @wso2is/admin.organizations.v1@2.26.189
+  - @wso2is/admin.feature-gate.v1@1.4.189
+  - @wso2is/admin.users.v1@2.30.99
+  - @wso2is/admin.validation.v1@2.27.127
+
+## 2.28.162
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.14
+  - @wso2is/admin.extensions.v1@2.36.113
+  - @wso2is/admin.users.v1@2.30.98
+  - @wso2is/admin.organizations.v1@2.26.188
+  - @wso2is/admin.feature-gate.v1@1.4.188
+  - @wso2is/admin.validation.v1@2.27.126
+
 ## 2.28.161
 
 ### Patch Changes

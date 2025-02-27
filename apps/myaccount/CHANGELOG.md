@@ -1,5 +1,63 @@
 # @wso2is/myaccount
 
+## 2.17.53
+
+### Patch Changes
+
+- [#7738](https://github.com/wso2/identity-apps/pull/7738) [`1bb85bae9a71a678d1a955d4ae4ab9ff4b9375bc`](https://github.com/wso2/identity-apps/commit/1bb85bae9a71a678d1a955d4ae4ab9ff4b9375bc) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Improve my account and console user profiles to add existing primary to verified list, when verification enabled
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.193
+  - @wso2is/common.branding.v1@2.26.50
+
+## 2.17.52
+
+### Patch Changes
+
+- [#7739](https://github.com/wso2/identity-apps/pull/7739) [`ffcdf3afe21e600c49c78aa72b75a76d57abeea3`](https://github.com/wso2/identity-apps/commit/ffcdf3afe21e600c49c78aa72b75a76d57abeea3) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix system schema attribute usages
+
+## 2.17.51
+
+### Patch Changes
+
+- Updated dependencies [[`b9724d43eb1b3ca457161f35d92944df1ba7649a`](https://github.com/wso2/identity-apps/commit/b9724d43eb1b3ca457161f35d92944df1ba7649a), [`6f2881510fbf5f6cf66e8cdbda001a8b3daa7887`](https://github.com/wso2/identity-apps/commit/6f2881510fbf5f6cf66e8cdbda001a8b3daa7887), [`698a0f90286bd0621ee7cdbd8209c68e7fcc5120`](https://github.com/wso2/identity-apps/commit/698a0f90286bd0621ee7cdbd8209c68e7fcc5120), [`1724eb611da9ff3d985ea8edd68047c97d75941b`](https://github.com/wso2/identity-apps/commit/1724eb611da9ff3d985ea8edd68047c97d75941b)]:
+  - @wso2is/i18n@2.20.3
+  - @wso2is/admin.organizations.v1@2.26.192
+  - @wso2is/common.branding.v1@2.26.49
+
+## 2.17.50
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.191
+  - @wso2is/common.branding.v1@2.26.48
+
+## 2.17.49
+
+### Patch Changes
+
+- Updated dependencies [[`0e488f4fe3a8e1c080e19b097deed1c0cdc5bc90`](https://github.com/wso2/identity-apps/commit/0e488f4fe3a8e1c080e19b097deed1c0cdc5bc90)]:
+  - @wso2is/i18n@2.20.2
+  - @wso2is/admin.organizations.v1@2.26.190
+  - @wso2is/common.branding.v1@2.26.47
+
+## 2.17.48
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.189
+  - @wso2is/common.branding.v1@2.26.46
+
+## 2.17.47
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.188
+  - @wso2is/common.branding.v1@2.26.45
+
 ## 2.17.46
 
 ### Patch Changes

@@ -1,5 +1,59 @@
 # @wso2is/admin.push-providers.v1
 
+## 1.0.82
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.19
+  - @wso2is/admin.feature-gate.v1@1.4.193
+  - @wso2is/admin.template-core.v1@1.5.147
+
+## 1.0.81
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.18
+  - @wso2is/admin.feature-gate.v1@1.4.192
+  - @wso2is/admin.template-core.v1@1.5.146
+
+## 1.0.80
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.17
+  - @wso2is/admin.feature-gate.v1@1.4.191
+  - @wso2is/admin.template-core.v1@1.5.145
+
+## 1.0.79
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.16
+  - @wso2is/admin.feature-gate.v1@1.4.190
+  - @wso2is/admin.template-core.v1@1.5.144
+
+## 1.0.78
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.15
+  - @wso2is/admin.feature-gate.v1@1.4.189
+  - @wso2is/admin.template-core.v1@1.5.143
+
+## 1.0.77
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.14
+  - @wso2is/admin.feature-gate.v1@1.4.188
+  - @wso2is/admin.template-core.v1@1.5.142
+
 ## 1.0.76
 
 ### Patch Changes

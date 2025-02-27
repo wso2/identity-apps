@@ -1,5 +1,77 @@
 # @wso2is/admin.actions.v1
 
+## 1.11.58
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.19
+  - @wso2is/admin.extensions.v1@2.36.118
+  - @wso2is/admin.feature-gate.v1@1.4.193
+  - @wso2is/admin.rules.v1@0.4.9
+
+## 1.11.57
+
+### Patch Changes
+
+- [#7733](https://github.com/wso2/identity-apps/pull/7733) [`abfefd69c33f8d479226dcd4984346172a1430fe`](https://github.com/wso2/identity-apps/commit/abfefd69c33f8d479226dcd4984346172a1430fe) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Update custom authenticator settings form behaviour with connection edit permissions
+
+* [#7734](https://github.com/wso2/identity-apps/pull/7734) [`6f2881510fbf5f6cf66e8cdbda001a8b3daa7887`](https://github.com/wso2/identity-apps/commit/6f2881510fbf5f6cf66e8cdbda001a8b3daa7887) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Custom authenticator patches
+
+- [#7736](https://github.com/wso2/identity-apps/pull/7736) [`a0d2fba364da751d8156d0686dbba6fa57bb80a3`](https://github.com/wso2/identity-apps/commit/a0d2fba364da751d8156d0686dbba6fa57bb80a3) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Remove extra curly braces
+
+* [#7735](https://github.com/wso2/identity-apps/pull/7735) [`76370fb86bb289cab7549bf241083af0244537a2`](https://github.com/wso2/identity-apps/commit/76370fb86bb289cab7549bf241083af0244537a2) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Release console
+
+* Updated dependencies [[`b9724d43eb1b3ca457161f35d92944df1ba7649a`](https://github.com/wso2/identity-apps/commit/b9724d43eb1b3ca457161f35d92944df1ba7649a), [`6f2881510fbf5f6cf66e8cdbda001a8b3daa7887`](https://github.com/wso2/identity-apps/commit/6f2881510fbf5f6cf66e8cdbda001a8b3daa7887), [`698a0f90286bd0621ee7cdbd8209c68e7fcc5120`](https://github.com/wso2/identity-apps/commit/698a0f90286bd0621ee7cdbd8209c68e7fcc5120), [`1724eb611da9ff3d985ea8edd68047c97d75941b`](https://github.com/wso2/identity-apps/commit/1724eb611da9ff3d985ea8edd68047c97d75941b)]:
+  - @wso2is/i18n@2.20.3
+  - @wso2is/admin.core.v1@2.39.18
+  - @wso2is/admin.extensions.v1@2.36.117
+  - @wso2is/admin.feature-gate.v1@1.4.192
+  - @wso2is/admin.rules.v1@0.4.8
+
+## 1.11.56
+
+### Patch Changes
+
+- [#7728](https://github.com/wso2/identity-apps/pull/7728) [`eada128a19c5a8095c001d3cc5d8cc639d64083d`](https://github.com/wso2/identity-apps/commit/eada128a19c5a8095c001d3cc5d8cc639d64083d) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Fix Settings of created Custom Authenticator (Service-based) in sub organizations are not modifiable
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.17
+  - @wso2is/admin.extensions.v1@2.36.116
+  - @wso2is/admin.feature-gate.v1@1.4.191
+  - @wso2is/admin.rules.v1@0.4.7
+
+## 1.11.55
+
+### Patch Changes
+
+- Updated dependencies [[`0e488f4fe3a8e1c080e19b097deed1c0cdc5bc90`](https://github.com/wso2/identity-apps/commit/0e488f4fe3a8e1c080e19b097deed1c0cdc5bc90)]:
+  - @wso2is/admin.extensions.v1@2.36.115
+  - @wso2is/i18n@2.20.2
+  - @wso2is/admin.core.v1@2.39.16
+  - @wso2is/admin.feature-gate.v1@1.4.190
+  - @wso2is/admin.rules.v1@0.4.6
+
+## 1.11.54
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.15
+  - @wso2is/admin.extensions.v1@2.36.114
+  - @wso2is/admin.feature-gate.v1@1.4.189
+  - @wso2is/admin.rules.v1@0.4.5
+
+## 1.11.53
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.14
+  - @wso2is/admin.extensions.v1@2.36.113
+  - @wso2is/admin.feature-gate.v1@1.4.188
+  - @wso2is/admin.rules.v1@0.4.4
+
 ## 1.11.52
 
 ### Patch Changes

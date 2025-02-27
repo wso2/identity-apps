@@ -20,6 +20,7 @@ import { UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { store } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { OperationValueInterface, ScimOperationsInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import {
     ValidationConfInterface,
@@ -29,9 +30,10 @@ import {
 } from "@wso2is/admin.validation.v1/models";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
-import { ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
+import { ProfileInfoInterface, ProfileSchemaInterface, SharedProfileValueResolvingMethod } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { DropdownChild } from "@wso2is/forms";
+import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import { UserManagementConstants } from "../constants/user-management-constants";
 import { MultipleInviteMode, MultipleInvitesDisplayNames, UserBasicInterface } from "../models/user";
@@ -306,6 +308,24 @@ export const extractSubAttributes = (user: ProfileInfoInterface, schemaKey: stri
 };
 
 /**
+ * Determines whether the specified schema should be treated as read-only.
+ *
+ * @param schema - The profile schema object to evaluate.
+ * @param isUserManagedByParentOrg - Indicates whether the user is managed by a parent organization.
+ * @returns True if the schema is read-only; otherwise, false.
+ */
+export const isSchemaReadOnly = (
+    schema: ProfileSchemaInterface,
+    isUserManagedByParentOrg: boolean
+): boolean => {
+    const resolvedMutability: string = schema?.profiles?.console?.mutability ?? schema?.mutability;
+
+    return resolvedMutability === ProfileConstants.READONLY_SCHEMA ||
+        (isUserManagedByParentOrg &&
+         schema.sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN);
+};
+
+/**
  * Constructs the patch operation value for a multi-valued attribute.
  *
  * @param attributeSchemaName - The schema name of the attribute.
@@ -327,6 +347,52 @@ export const constructPatchOpValueForMultiValuedAttribute = (
     }
 
     return { [attributeSchemaName]: currentValues };
+};
+
+/**
+ * Constructs a SCIM patch operation to update a multi-valued verified attribute.
+ *
+ * @param params - An object containing the following properties:
+ *   - `verifiedAttributeSchema`: The schema definition for the verified attribute.
+ *   - `valueList`: An array of values from the multi-valued attribute.
+ *   - `verifiedValueList`: An array of current verified values.
+ *   - `primaryValue`: The primary value to potentially add to the verified list.
+ * @returns A SCIM patch operation object with the updated verified attribute values.
+ */
+export const constructPatchOperationForMultiValuedVerifiedAttribute = ({
+    verifiedAttributeSchema,
+    valueList,
+    verifiedValueList,
+    primaryValue
+}: {
+        verifiedAttributeSchema: ProfileSchemaInterface,
+        valueList: string[],
+        verifiedValueList: string[],
+        primaryValue: string,
+    }): ScimOperationsInterface => {
+    if (
+        isEmpty(primaryValue) ||
+        verifiedValueList.includes(primaryValue) ||
+        !valueList?.includes(primaryValue) ||
+        !verifiedAttributeSchema
+    ) {
+        return;
+    }
+
+    const modifiedVerifiedList: string[] = cloneDeep(verifiedValueList);
+
+    modifiedVerifiedList.push(primaryValue);
+
+    const opValue: OperationValueInterface = {
+        [verifiedAttributeSchema.schemaId]: {
+            [verifiedAttributeSchema.name]: modifiedVerifiedList
+        }
+    };
+
+    return {
+        op: "replace",
+        value: opValue
+    };
 };
 
 /**

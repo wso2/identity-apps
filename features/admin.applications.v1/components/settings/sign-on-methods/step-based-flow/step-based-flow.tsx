@@ -186,7 +186,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.id)) {
                 secondFactorAuth.push(authenticator);
             } else if (SignInMethodUtils.isCustomAuthenticator(authenticator)) {
-                if (SignInMethodUtils.isSecondFactorAuthenticator) {
+                if (SignInMethodUtils.isSecondFactorAuthenticator(authenticator)) {
                     customTwoFactorAuthentication.push(authenticator);
                 } else {
                     customInternalUserAuthentication.push(authenticator);
