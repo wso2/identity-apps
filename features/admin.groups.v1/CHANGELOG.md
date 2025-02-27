@@ -1,5 +1,20 @@
 # @wso2is/admin.groups.v1
 
+## 2.27.104
+
+### Patch Changes
+
+- [#7747](https://github.com/wso2/identity-apps/pull/7747) [`ea321ccbcbb8a40339794b420fa8d9efee5deb67`](https://github.com/wso2/identity-apps/commit/ea321ccbcbb8a40339794b420fa8d9efee5deb67) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix alignment issues in the password expiry UI and fix the groups patch operation issue with userstores names with spaces
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.20
+  - @wso2is/admin.extensions.v1@2.36.119
+  - @wso2is/admin.users.v1@2.30.104
+  - @wso2is/admin.organizations.v1@2.26.194
+  - @wso2is/admin.roles.v2@2.27.138
+  - @wso2is/admin.applications.v1@2.31.42
+  - @wso2is/admin.userstores.v1@2.27.20
+
 ## 2.27.103
 
 ### Patch Changes
