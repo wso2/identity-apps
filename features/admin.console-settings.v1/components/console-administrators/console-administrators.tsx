@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,15 +22,13 @@ import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { FeatureAccessConfigInterface, FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { useOrganizationConfigV2 } from "@wso2is/admin.administrators.v1/api/useOrganizationConfigV2";
 import { UseOrganizationConfigType } from "@wso2is/admin.administrators.v1/models/organization";
-import { getAUserStore } from "@wso2is/admin.core.v1/api/user-store";
-import { UserStoreProperty } from "@wso2is/admin.core.v1/models/user-store";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { useUserStores } from "@wso2is/admin.userstores.v1/api";
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
-import { UserStoreDropdownItem, UserStoreListItem, UserStorePostData } from "@wso2is/admin.userstores.v1/models";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     ChangeEvent,
@@ -100,12 +98,17 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
     }, [ isOrgConfigRequestLoading, isOrgConfigRequestRevalidating ]);
 
     const {
-        data: userStoreList,
-        isLoading: isUserStoreListFetchRequestLoading
-    } = useUserStores(null);
+        isLoading: isUserStoreListFetchRequestLoading,
+        mutateUserStoreList,
+        userStoresList
+    } = useUserStores();
 
     useEffect(() => {
-        if (userStoreList && !isUserStoreListFetchRequestLoading) {
+        mutateUserStoreList();
+    }, []);
+
+    useEffect(() => {
+        if (userStoresList && !isUserStoreListFetchRequestLoading) {
             const storeOptions: UserStoreDropdownItem[] = [
                 {
                     key: -1,
@@ -114,38 +117,28 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
                 }
             ];
 
-            let storeOption: UserStoreDropdownItem = {
-                key: null,
-                text: "",
-                value: ""
-            };
-
-            userStoreList?.forEach((store: UserStoreListItem, index: number) => {
+            userStoresList?.forEach((store: UserStoreListItem, index: number) => {
                 // Skip the remote user store in administrators listing as it is not supporting user listing.
                 if (store?.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager) {
                     return;
                 }
 
                 if (store?.name?.toUpperCase() !== userstoresConfig?.primaryUserstoreName) {
-                    getAUserStore(store.id).then((response: UserStorePostData) => {
-                        const isDisabled: boolean = response.properties.find(
-                            (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
+                    if (store.enabled) {
+                        const storeOption: UserStoreDropdownItem = {
+                            key: index,
+                            text: store.name,
+                            value: store.name
+                        };
 
-                        if (!isDisabled) {
-                            storeOption = {
-                                key: index,
-                                text: store.name,
-                                value: store.name
-                            };
-                            storeOptions.push(storeOption);
-                        }
-                    });
+                        storeOptions.push(storeOption);
+                    }
                 }
             });
 
             setAvailableUserStores(storeOptions);
         }
-    }, [ userStoreList, isUserStoreListFetchRequestLoading ]);
+    }, [ userStoresList, isUserStoreListFetchRequestLoading ]);
 
     const renderSelectedAdministratorGroup = (): ReactElement => {
         switch (activeAdministratorGroup) {
