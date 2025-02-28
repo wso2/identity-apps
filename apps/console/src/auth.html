@@ -469,13 +469,13 @@
                                                 loginTenant = superTenantGlobal;
                                             }
                                             
-                                            var authConfigRegion = {
+                                            var regionalAuthConfig = {
                                                 signInRedirectURL: deploymentUnitSignInRedirectURL(loginTenant),
                                                 signOutRedirectURL: getSignOutRedirectURL(),
                                                 clientID: "<%= htmlWebpackPlugin.options.clientID %>",
                                                 baseUrl: getDeploymentUnitApiPath(loginTenant),
                                                 responseMode: "query",
-                                                scope: ["openid SYSTEM profile"],
+                                                scope: ["openid SYSTEM profile email"],
                                                 storage: "webWorker",
                                                 disableTrySignInSilently: false,
                                                 enableOIDCSessionManagement: false,
@@ -493,7 +493,7 @@
                                             }
                                             var authSecondary = AsgardeoAuth.AsgardeoSPAClient.getInstance("secondary");
 
-                                            authSecondary.initialize(authConfigRegion);
+                                            authSecondary.initialize(regionalAuthConfig);
                                             if (loginTenant !== superTenantGlobal) {
                                                 authSecondary.signIn({prompt: "login",fidp: "PlatformIDP"})
                                             } else {
