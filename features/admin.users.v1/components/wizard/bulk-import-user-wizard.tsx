@@ -45,7 +45,7 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { getUserStores } from "@wso2is/admin.userstores.v1/api";
 import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
-import useUserStoresContext from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -177,6 +177,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
     const { t } = useTranslation();
     const { isSubOrganization } = useGetCurrentOrganizationType();
+    const { isUserStoreReadOnly } = useUserStores();
 
     const dispatch: Dispatch = useDispatch();
 
@@ -220,7 +221,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             userLimit ? userLimit : userConfig.bulkUserImportLimit.userCount  // Row Count.
         );
     }, [ userLimit ]);
-    const { isUserStoreReadOnly } = useUserStoresContext();
 
     const optionsArray: string[] = [];
 

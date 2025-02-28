@@ -22,7 +22,7 @@ import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-uti
 import { groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { getAUserStore, getUserStoreList } from "@wso2is/admin.userstores.v1/api/user-stores";
 import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants";
-import useUserStoresContext from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 import { AlertLevels, IdentifiableComponentInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -66,7 +66,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { isUserStoreReadOnly } = useUserStoresContext();
+    const { isUserStoreReadOnly } = useUserStores();
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
