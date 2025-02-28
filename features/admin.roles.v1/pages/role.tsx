@@ -21,17 +21,13 @@ import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import {
     AlertInterface,
     AlertLevels,
     RoleListInterface,
     RolesInterface,
-    UserstoreListResponseInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { StringUtils } from "@wso2is/core/utils";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import find from "lodash-es/find";
@@ -91,15 +87,11 @@ const RolesPage = (): ReactElement => {
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ , setListUpdated ] = useState(false);
-    // TODO: Check the usage and delete if not required.
-    const [ , setUserStoresList ] = useState([]);
     const [ userStore ] = useState(undefined);
     const [ filterBy, setFilterBy ] = useState<string>("all");
     const [ searchQuery, setSearchQuery ] = useState<string>("");
@@ -111,10 +103,6 @@ const RolesPage = (): ReactElement => {
     const [ paginatedRoles, setPaginatedRoles ] = useState<RoleListInterface>();
 
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(ROLES_SORTING_OPTIONS[ 0 ]);
-
-    useEffect(() => {
-        getUserStores();
-    }, []);
 
     useEffect(() => {
         getRoles();
@@ -148,50 +136,6 @@ const RolesPage = (): ReactElement => {
             .finally(() => {
                 setRoleListFetchRequestLoading(false);
             });
-    };
-
-    /**
-     * The following function fetch the user store list and set it to the state.
-     */
-    const getUserStores = () => {
-        const storeOptions: DropdownItemProps[] = [
-            {
-                key: -2,
-                text: "All user stores",
-                value: null
-            },
-            {
-                key: -1,
-                text: StringUtils.isEqualCaseInsensitive(primaryUserStoreDomainName, PRIMARY_USERSTORE)
-                    ? t("console:manage.features.users.userstores.userstoreOptions.primary")
-                    : primaryUserStoreDomainName,
-                value: primaryUserStoreDomainName
-            }
-        ];
-        let storeOption: DropdownItemProps = {
-            key: null,
-            text: "",
-            value: ""
-        };
-
-        getUserStoreList()
-            .then((response: AxiosResponse<UserstoreListResponseInterface[]>) => {
-                if (storeOptions.length === 0) {
-                    storeOptions.push(storeOption);
-                }
-                response.data.map((store: UserstoreListResponseInterface, index: number) => {
-                    storeOption = {
-                        key: index,
-                        text: store.name,
-                        value: store.name
-                    };
-                    storeOptions.push(storeOption);
-                }
-                );
-                setUserStoresList(storeOptions);
-            });
-
-        setUserStoresList(storeOptions);
     };
 
     /**

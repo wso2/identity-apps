@@ -56,6 +56,7 @@ import React, {
     SyntheticEvent,
     useCallback,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -95,7 +96,6 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ users, setUsers ] = useState<UserBasicInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ activeOption, setActiveOption ] = useState<GroupsInterface|UserBasicInterface>(undefined);
-    const [ availableUserStores, setAvailableUserStores ] = useState<UserStoreDropdownItem[]>([]);
     const [ selectedUserStoreDomainName, setSelectedUserStoreDomainName ] = useState<string>();
     const [ isPlaceholderVisible, setIsPlaceholderVisible ] = useState<boolean>(true);
     const [ selectedUsersFromUserStore, setSelectedUsersFromUserStore ] = useState<UserBasicInterface[]>([]);
@@ -120,24 +120,16 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         !!selectedUserStoreDomainName || !!userSearchValue
     );
 
-    const isUserBelongToSelectedUserStore = (user: UserBasicInterface, userStoreName: string) => {
-        const userNameChunks: string[] = user.userName.split("/");
+    const availableUserStores: UserStoreDropdownItem[] = useMemo(() => {
+        const storeOptions: UserStoreDropdownItem[] = [
+            {
+                key: -1,
+                text: userstoresConfig?.primaryUserstoreName,
+                value: userstoresConfig?.primaryUserstoreName
+            }
+        ];
 
-        return (userNameChunks.length === 1 &&
-            StringUtils.isEqualCaseInsensitive(userStoreName, primaryUserStoreDomainName))
-        || (userNameChunks.length === 2 && StringUtils.isEqualCaseInsensitive(userNameChunks[0], userStoreName));
-    };
-
-    useEffect(() => {
         if (userStoresList && !isUserStoresLoading) {
-            const storeOptions: UserStoreDropdownItem[] = [
-                {
-                    key: -1,
-                    text: userstoresConfig?.primaryUserstoreName,
-                    value: userstoresConfig?.primaryUserstoreName
-                }
-            ];
-
             if (userStoresList?.length > 0) {
                 userStoresList.map((store: UserStoreListItem, index: number) => {
                     const isEnabled: boolean = store.enabled;
@@ -153,9 +145,9 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                     }
                 });
             }
-
-            setAvailableUserStores(storeOptions);
         }
+
+        return storeOptions;
     }, [ userStoresList, isUserStoresLoading ]);
 
     useEffect(() => {
@@ -228,6 +220,14 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             );
         }
     }, [ userListFetchRequestError ]);
+
+    const isUserBelongToSelectedUserStore = (user: UserBasicInterface, userStoreName: string) => {
+        const userNameChunks: string[] = user.userName.split("/");
+
+        return (userNameChunks.length === 1 &&
+            StringUtils.isEqualCaseInsensitive(userStoreName, primaryUserStoreDomainName))
+        || (userNameChunks.length === 2 && StringUtils.isEqualCaseInsensitive(userNameChunks[0], userStoreName));
+    };
 
     /**
      * Get the place holder components.

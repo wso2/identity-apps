@@ -271,6 +271,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             ].join(",")
         };
 
+        // TODO: Use the Provider to fetch the user store list.
         getUserStores(params)
             .then((response: UserStoreDetails[]) => {
                 response?.forEach(async (item: UserStoreDetails, index: number) => {

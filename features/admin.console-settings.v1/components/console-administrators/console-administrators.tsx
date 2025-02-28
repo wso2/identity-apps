@@ -35,6 +35,7 @@ import React, {
     FunctionComponent,
     ReactElement,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -70,7 +71,6 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
 
     const [ activeAdministratorGroup, setActiveAdministratorGroup ] =
         useState(isSubOrganization() ? "activeUsers" : "administrators");
-    const [ availableUserStores, setAvailableUserStores ] = useState<UserStoreDropdownItem[]>([]);
     const [ isEnterpriseLoginEnabled, setIsEnterpriseLoginEnabled ] = useState<boolean>(false);
 
     const organizationName: string = store.getState().auth.tenantDomain;
@@ -103,20 +103,16 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
         userStoresList
     } = useUserStores();
 
-    useEffect(() => {
-        mutateUserStoreList();
-    }, []);
+    const availableUserStores: UserStoreDropdownItem[] = useMemo(() => {
+        const storeOptions: UserStoreDropdownItem[] = [
+            {
+                key: -1,
+                text: userstoresConfig?.primaryUserstoreName,
+                value: userstoresConfig?.primaryUserstoreName
+            }
+        ];
 
-    useEffect(() => {
         if (userStoresList && !isUserStoreListFetchRequestLoading) {
-            const storeOptions: UserStoreDropdownItem[] = [
-                {
-                    key: -1,
-                    text: userstoresConfig?.primaryUserstoreName,
-                    value: userstoresConfig?.primaryUserstoreName
-                }
-            ];
-
             userStoresList?.forEach((store: UserStoreListItem, index: number) => {
                 // Skip the remote user store in administrators listing as it is not supporting user listing.
                 if (store?.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager) {
@@ -135,10 +131,14 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
                     }
                 }
             });
-
-            setAvailableUserStores(storeOptions);
         }
+
+        return storeOptions;
     }, [ userStoresList, isUserStoreListFetchRequestLoading ]);
+
+    useEffect(() => {
+        mutateUserStoreList();
+    }, []);
 
     const renderSelectedAdministratorGroup = (): ReactElement => {
         switch (activeAdministratorGroup) {

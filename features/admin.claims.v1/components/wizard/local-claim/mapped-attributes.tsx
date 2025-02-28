@@ -22,7 +22,7 @@ import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
@@ -63,7 +63,6 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
         [ "data-testid" ]: testId
     } = props;
 
-    const [ userStore, setUserStore ] = useState<UserStoreListItem[]>([]);
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores ?? []);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName ?? userstoresConfig.primaryUserstoreName);
@@ -75,7 +74,7 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
         userStoresList
     } = useUserStores();
 
-    useEffect(() => {
+    const userStore: UserStoreListItem[] = useMemo(() => {
         const userstore: UserStoreListItem[] = [];
 
         if (attributeConfig.localAttributes.createWizard.showPrimaryUserStore) {
@@ -96,7 +95,7 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
             });
         }
 
-        setUserStore(userstore);
+        return userstore;
     }, [ userStoresList, isUserStoreListFetchRequestLoading ]);
 
     return (
