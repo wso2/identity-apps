@@ -340,7 +340,7 @@
                         clientID: "<%= htmlWebpackPlugin.options.clientID %>",
                         baseUrl: getApiPath(),
                         responseMode: "query",
-                        scope: ["openid SYSTEM profile"],
+                        scope: ["openid SYSTEM profile email"],
                         storage: "webWorker",
                         disableTrySignInSilently: true,
                         enableOIDCSessionManagement: false,
