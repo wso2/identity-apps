@@ -197,8 +197,8 @@ export const AccountDisablePage: FC<AccountDisablePageInterface> = (
                 "accountDisableHandler.friendlyName") }
             pageTitle={ t("governanceConnectors:connectorCategories.accountManagement.connectors." +
                 "accountDisableHandler.friendlyName") }
-            description={ (
-                <>
+            description={
+                (<>
                     { t("governanceConnectors:connectorCategories.accountManagement.connectors." +
                         "accountDisableHandler.description") }
                     <DocumentationLink
@@ -206,8 +206,7 @@ export const AccountDisablePage: FC<AccountDisablePageInterface> = (
                     >
                         { t("common:learnMore") }
                     </DocumentationLink>
-                </>
-            )
+                </>)
             }
             data-componentid={ `${ componentId }-page-layout` }
             backButton={ {
