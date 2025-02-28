@@ -306,6 +306,13 @@
                      * @returns {string} Constructed URL
                      */
                     function deploymentUnitSignInRedirectURL(tenantDomain) {
+                        
+                        var contextPath = (!proxyContextPathGlobal || proxyContextPathGlobal === "null") ? "" : "/" + proxyContextPathGlobal;
+
+                        if (tenantDomain === startupConfig.superTenant) {
+                            return applicationDomain.replace(/\/+$/, '') + contextPath
+                                + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
+                        }
                         return `${applicationDomain}/${tenantPrefixGlobal}/${tenantDomain}` 
                             + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                     }
@@ -436,16 +443,32 @@
                                 auth.signIn({callOnlyOnRedirect: true})
                                     .then((response) => {
                                         auth.getDecodedIDToken().then((token) => {
-                                            var loginTenant = token["default_tenant"]
-                                            var associatedOrganizationsString = token["org_user_associations"];
-                                            var orgUserAssociations = JSON.parse(associatedOrganizationsString);
-                                            var requestedTenant = localStorage.getItem("user_requested_tenant");
+                                            let loginTenant = token["default_tenant"];
+                                            const associatedOrgJson = token["org_user_associations"]?.join(",");
+                                            const orgUserAssociations = associatedOrgJson ? JSON.parse(associatedOrgJson) : undefined;
+                                            const requestedTenant = localStorage.getItem("user_requested_tenant");
+
                                             localStorage.removeItem("user_requested_tenant");
-                                            if (requestedTenant && orgUserAssociations.array.forEach(element => {
-                                                element.orgHandle === requestedTenant
-                                            })) {
-                                                loginTenant = requestedTenant;
+
+                                            let loginTenantAssociation;
+
+                                            if (requestedTenant) {
+                                                loginTenantAssociation = orgUserAssociations?.find((org) => org.orgHandle === requestedTenant);
+                                                if (loginTenantAssociation) {
+                                                    loginTenant = requestedTenant;
+                                                }
+                                            } else {
+                                                loginTenantAssociation = orgUserAssociations?.find((org) => org.orgHandle === loginTenant);
                                             }
+
+                                            if (!loginTenantAssociation && orgUserAssociations?.length) {
+                                                loginTenantAssociation = orgUserAssociations[0];
+                                            }
+
+                                            if (!loginTenantAssociation) {
+                                                loginTenant = superTenantGlobal;
+                                            }
+                                            
                                             var authConfigRegion = {
                                                 signInRedirectURL: deploymentUnitSignInRedirectURL(loginTenant),
                                                 signOutRedirectURL: getSignOutRedirectURL(),
@@ -471,9 +494,11 @@
                                             var authSecondary = AsgardeoAuth.AsgardeoSPAClient.getInstance("secondary");
 
                                             authSecondary.initialize(authConfigRegion);
-
-                                            authSecondary.signIn({prompt: "login",fidp: "PlatformIDP"})
-                                            
+                                            if (loginTenant !== superTenantGlobal) {
+                                                authSecondary.signIn({prompt: "login",fidp: "PlatformIDP"})
+                                            } else {
+                                                authSecondary.signIn(getAuthParams({}));
+                                            }
                                         })
                                     })
                             } else {
