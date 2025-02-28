@@ -37,12 +37,6 @@ import webpack, {
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import DeploymentConfig from "./src/public/deployment.config.json";
 
-// Enable debug logs.
-const DEBUG_ENABLED: boolean = false;
-const DEBUG_LOG_KEY: string = "webpack-dev-server";
-// eslint-disable-next-line @typescript-eslint/typedef, no-console
-const log = console.log;
-
 /**
  * Different Server Types.
  */
@@ -684,21 +678,16 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 devServer.app.use((req: any, res: any, next: any) => {
                     const originalUrl: string = req.url;
 
-                    // **🔹 Do NOT rewrite requests for static files**
+                    // Skip rewrite requests for static files.
                     if (
-                        req.url.startsWith("/app/static/") || // Webpack JS & CSS chunks
-                        req.url.startsWith("/static/") || // Other static assets
+                        req.url.startsWith("/app/static/") ||
+                        req.url.startsWith("/static/") ||
                         req.url.match(
-                            /\.(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|ico|json|map)$/) // Common asset types
+                            /\.(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|ico|json|map)$/)
                     ) {
-                        if (DEBUG_ENABLED) {
-                            log(`${DEBUG_LOG_KEY}: Serving static file - ${originalUrl}`);
-                        }
-
-                        return next(); // Let Webpack DevServer serve the static file
+                        return next(); // Let Webpack DevServer serve the static file.
                     }
 
-                    // Parse the original URL
                     const parsedUrl: UrlWithParsedQuery = url.parse(originalUrl, true);
                     const pathWithoutQuery: string = parsedUrl.pathname;
                     const query: ParsedUrlQuery = parsedUrl.query;
@@ -706,20 +695,13 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     const indexHTMLPath: string = path.join(__dirname, "build/console/index.html");
                     const appHTMLPath: string = path.join(__dirname, "build/console/app/index.html");
 
-                    if (DEBUG_ENABLED) {
-                        log(`${DEBUG_LOG_KEY}: Request URL - ${originalUrl}`);
-                        log(`${DEBUG_LOG_KEY}: Path without query - ${pathWithoutQuery}`);
-                        log(`${DEBUG_LOG_KEY}: Query Params =`, query);
-                    }
-
-                    // Regex patterns to match specific paths
                     const patterns: RegExp[] = [
                         /^\/app(\?.+)?$/,
                         /^\/t\/[^/?]+\/app(\?.+)?$/,
                         /^\/t\/[^/?]+\/o\/[^/?]+\/app(\?.+)?$/
                     ];
 
-                    // Determine if the request matches one of the patterns and has `code`
+                    // Determine if the request matches one of the patterns and has `code`.
                     let matchFound: boolean = false;
 
                     for (const pattern of patterns) {
@@ -732,26 +714,20 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
 
                     if (matchFound) {
                         if (fs.existsSync(appHTMLPath)) {
-                            if (DEBUG_ENABLED) log(`${DEBUG_LOG_KEY}: Serving app.html`);
                             res.setHeader("Content-Type", "text/html");
 
                             return res.status(200).send(fs.readFileSync(appHTMLPath, "utf8"));
                         } else {
-                            if (DEBUG_ENABLED) log(`${DEBUG_LOG_KEY}: app.html not found`);
-
                             return res.status(404).send("app.html not found");
                         }
                     }
 
-                    // Serve index.html as the fallback
+                    // Serve index.html as the fallback.
                     if (fs.existsSync(indexHTMLPath)) {
-                        if (DEBUG_ENABLED) log(`${DEBUG_LOG_KEY}: Serving index.html`);
                         res.setHeader("Content-Type", "text/html");
 
                         return res.status(200).send(fs.readFileSync(indexHTMLPath, "utf8"));
                     } else {
-                        if (DEBUG_ENABLED) log(`${DEBUG_LOG_KEY}: index.html not found`);
-
                         return res.status(404).send("index.html not found");
                     }
                 });
