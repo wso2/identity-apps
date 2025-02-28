@@ -1,5 +1,28 @@
 # @wso2is/admin.actions.v1
 
+## 1.11.61
+
+### Patch Changes
+
+- Updated dependencies [[`7e3fe5ae0d4985f1e72d02cb32cd76664d6bb2c6`](https://github.com/wso2/identity-apps/commit/7e3fe5ae0d4985f1e72d02cb32cd76664d6bb2c6)]:
+  - @wso2is/admin.extensions.v1@2.36.121
+  - @wso2is/admin.core.v1@2.39.22
+  - @wso2is/admin.feature-gate.v1@1.4.196
+  - @wso2is/admin.rules.v1@0.4.12
+
+## 1.11.60
+
+### Patch Changes
+
+- [#7750](https://github.com/wso2/identity-apps/pull/7750) [`bb225118ea8a48d0f9c1b0da13337c2465c7e8ee`](https://github.com/wso2/identity-apps/commit/bb225118ea8a48d0f9c1b0da13337c2465c7e8ee) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix disabled state of few fields in pre update password action ui
+
+- Updated dependencies [[`0d61257ef6c3cae8be7b9bd7be7cc6b54654b243`](https://github.com/wso2/identity-apps/commit/0d61257ef6c3cae8be7b9bd7be7cc6b54654b243)]:
+  - @wso2is/i18n@2.20.4
+  - @wso2is/admin.core.v1@2.39.21
+  - @wso2is/admin.extensions.v1@2.36.120
+  - @wso2is/admin.feature-gate.v1@1.4.195
+  - @wso2is/admin.rules.v1@0.4.11
+
 ## 1.11.59
 
 ### Patch Changes

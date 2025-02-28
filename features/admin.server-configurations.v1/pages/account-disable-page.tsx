@@ -21,7 +21,14 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmphasizedSegment, Hint, PageLayout } from "@wso2is/react-components";
+import {
+    ContentLoader,
+    DocumentationLink,
+    EmphasizedSegment,
+    Hint,
+    PageLayout,
+    useDocumentation
+} from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FC, FormEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -53,6 +60,7 @@ export const AccountDisablePage: FC<AccountDisablePageInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { getLink } = useDocumentation();
 
     const {
         data: accountDisableConnectorData,
@@ -189,8 +197,17 @@ export const AccountDisablePage: FC<AccountDisablePageInterface> = (
                 "accountDisableHandler.friendlyName") }
             pageTitle={ t("governanceConnectors:connectorCategories.accountManagement.connectors." +
                 "accountDisableHandler.friendlyName") }
-            description={ t("governanceConnectors:connectorCategories.accountManagement.connectors." +
-                "accountDisableHandler.description") }
+            description={
+                (<>
+                    { t("governanceConnectors:connectorCategories.accountManagement.connectors." +
+                        "accountDisableHandler.description") }
+                    <DocumentationLink
+                        link={ getLink("manage.accountDisable.learnMore") }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>)
+            }
             data-componentid={ `${ componentId }-page-layout` }
             backButton={ {
                 "data-testid": `${ componentId }-page-back-button`,
@@ -204,28 +221,36 @@ export const AccountDisablePage: FC<AccountDisablePageInterface> = (
         >
             <Grid className={ "mt-5" }>
                 <EmphasizedSegment className="form-wrapper" padded={ "very" }>
-                    <Checkbox
-                        ariaLabel={ t("governanceConnectors:connectorCategories." +
-                            "accountManagement.connectors.accountDisableHandler.properties." +
-                            "accountDisableHandlerEnable.label") }
-                        name="accountDisable"
-                        label={ t("governanceConnectors:connectorCategories." +
-                            "accountManagement.connectors.accountDisableHandler.properties." +
-                            "accountDisableHandlerEnable.label") }
-                        width={ 16 }
-                        data-componentid={
-                            `${componentId}-toggle` }
-                        toggle
-                        onChange={ (event: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
-                            handleCheckboxToggle(data);
-                        } }
-                        checked={ isAccountDisableEnabled }
-                    />
-                    <Hint>
-                        { t("governanceConnectors:connectorCategories." +
-                            "accountManagement.connectors.accountDisableHandler.properties." +
-                            "accountDisableHandlerEnable.hint") }
-                    </Hint>
+                    {
+                        accountDisableFetchRequestLoading
+                            ? <ContentLoader />
+                            : (
+                                <>
+                                    <Checkbox
+                                        ariaLabel={ t("governanceConnectors:connectorCategories." +
+                                            "accountManagement.connectors.accountDisableHandler.properties." +
+                                            "accountDisableHandlerEnable.label") }
+                                        name="accountDisable"
+                                        label={ t("governanceConnectors:connectorCategories." +
+                                            "accountManagement.connectors.accountDisableHandler.properties." +
+                                            "accountDisableHandlerEnable.label") }
+                                        width={ 16 }
+                                        data-componentid={
+                                            `${componentId}-toggle` }
+                                        toggle
+                                        onChange={ (event: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
+                                            handleCheckboxToggle(data);
+                                        } }
+                                        checked={ isAccountDisableEnabled }
+                                    />
+                                    <Hint>
+                                        { t("governanceConnectors:connectorCategories." +
+                                            "accountManagement.connectors.accountDisableHandler.properties." +
+                                            "accountDisableHandlerEnable.hint") }
+                                    </Hint>
+                                </>
+                            )
+                    }
                 </EmphasizedSegment>
             </Grid>
         </PageLayout>
