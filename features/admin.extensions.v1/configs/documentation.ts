@@ -388,6 +388,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
             }
         },
         manage: {
+            accountDisable: {
+                learnMore: undefined
+            },
             accountRecovery: {
                 passwordRecovery: {
                     learnMore: undefined

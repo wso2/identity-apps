@@ -566,6 +566,13 @@ interface MultiTenancyDocumentationLinksInterface {
 }
 
 /**
+ * Interface for the account disable section documentation structure.
+ */
+interface AccountDisableDocumentationLinksInterface {
+    learnMore: string;
+}
+
+/**
  * Interface for the console documentation structure.
  */
 export interface DocumentationLinksExtensionInterface {
@@ -622,6 +629,10 @@ export interface DocumentationLinksExtensionInterface {
      * Documentation links for manage section elements.
      */
     manage: {
+        /**
+         * Documentation links for account disable elements.
+         */
+        accountDisable: AccountDisableDocumentationLinksInterface;
         /**
          * Documentation links for account recovery elements.
          */
