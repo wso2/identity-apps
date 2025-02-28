@@ -127,6 +127,15 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         return isValidTenantName;
     };
 
+    const redirectingConsoleUrl = (): string => {
+        if (isCentralDeploymentEnabled && selectedDeploymentUnit) {
+            return `${ deploymentUnits.find((deploymentUnit: DeploymentUnit) =>
+                deploymentUnit.name == selectedDeploymentUnit.name).consoleHostname }/${ tenantPrefix ?? "t" }/`;
+        }
+
+        return `${regionQualifiedConsoleUrl ?? "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/`;
+    };
+
     /**
      * Function to check if the tenant name user entered is already taken. A debounced version of the function is used
      * to trigger the API call only after user stops typing for 1000ms.
@@ -409,7 +418,7 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
             <Divider className="mt-1" hidden />
             { isCheckingTenantExistence ? (
                 <span className="display-flex">
-                    { `${regionQualifiedConsoleUrl ?? "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/` }
+                    { redirectingConsoleUrl() }
                     <Segment basic size="mini">
                         <ContentLoader
                             className="p-0"
@@ -422,7 +431,7 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                 </span>
             ) : (
                 <span>
-                    { `${regionQualifiedConsoleUrl ?? "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/` }
+                    { redirectingConsoleUrl() }
                     <span
                         className={ `${ newTenantName !==
                                 TenantManagementConstants.TENANT_URI_PLACEHOLDER

@@ -28,7 +28,7 @@ export const getTenantResourceEndpoints = (
     serverOrigin: string
 ): TenantResourceEndpointsInterface => {
     return {
-        deploymentUnit: `${ serverOrigin }/api/asgardeo/v1/tenant/deployment-units`,
+        deploymentUnits: `${ serverOrigin }/api/asgardeo/v1/tenant/deployment-units`,
         tenantAssociationApi: `${ serverOrigin }/api/asgardeo/v1/tenant/me`,
         tenantManagementApi: `${ serverOrigin }/api/asgardeo/v1/tenant`,
         tenantSubscriptionApi: `${ serverOrigin }${ Config.getDeploymentConfig().extensions?.subscriptionApiPath }`,

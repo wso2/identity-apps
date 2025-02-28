@@ -45,6 +45,7 @@ export const handleTenantSwitch = (tenantName: string, consoleHostname?: string)
 
     // Clear the callback url of the previous tenant.
     SessionStorageUtils.clearItemFromSessionStorage("auth_callback_url_console");
+    SessionStorageUtils.clearItemFromSessionStorage("user_requested_tenant");
 
     // Redirect the user to the newly selected tenant path.
     window.location.replace(newTenantedPath);

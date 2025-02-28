@@ -109,7 +109,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             dcrConfiguration: "",
             deleteSecret: "",
             deleteSecretType: "",
-            deploymentUnit: "",
+            deploymentUnits: "",
             entitlementPoliciesApi: "",
             entitlementPolicyCombiningAlgorithmApi: "",
             entitlementPolicyPublishApi: "",

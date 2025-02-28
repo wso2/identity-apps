@@ -71,7 +71,8 @@ import {
     Placeholder,
     SemanticICONS
 } from "semantic-ui-react";
-import { getAssociatedTenants, makeTenantDefault, useDeploymentUnits } from "../../api";
+import { getAssociatedTenants, makeTenantDefault } from "../../api";
+import useGetDeploymentUnits from "../../api/use-get-deployment-units";
 import TenantConstants from "../../constants/tenant-constants";
 import {
     DeploymentUnit,
@@ -252,12 +253,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         data: deploymentUnitResponse,
         isLoading: isDeploymentUnitsLoading,
         error: deploymentUnitFetchRequestError
-    } = useDeploymentUnits(
-        {
-            revalidateIfStale: true
-        },
-        isCentralDeploymentEnabled
-    );
+    } = useGetDeploymentUnits(isCentralDeploymentEnabled);
 
     useEffect(() => {
         setDeploymentUnits(deploymentUnitResponse?.deploymentUnits);
@@ -660,21 +656,27 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     /**
      * Display the current tenant.
      */
-    const displayCurrentTenant: string | ReactElement = (
+    const displayCurrentTenant = (): string | ReactElement => {
 
-        organizationType === OrganizationType.SUBORGANIZATION
-            ? organizationName
-            : tenantAssociations
-                ? tenantAssociations.currentTenant?.domain +
-                (isCentralDeploymentEnabled ? " (" +
-                    tenantAssociations.currentTenant
-                        ?.deploymentUnitName + ")" : "")
-                : (
-                    <Placeholder>
-                        <Placeholder.Line />
-                    </Placeholder>
-                )
-    );
+        if (organizationType === OrganizationType.SUPER_ORGANIZATION) {
+            return organizationName;
+        }
+
+        if (tenantAssociations) {
+            const { currentTenant } = tenantAssociations;
+            const deploymentUnitName: string = isCentralDeploymentEnabled
+                ? ` (${currentTenant?.deploymentUnitName})`
+                : "";
+
+            return currentTenant?.domain + deploymentUnitName;
+        }
+
+        return (
+            <Placeholder>
+                <Placeholder.Line />
+            </Placeholder>
+        );
+    };
 
     const tenantDropdownMenu: ReactElement = (
         <Menu.Item
@@ -721,7 +723,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                     }
                                                 >
                                                     {
-                                                        displayCurrentTenant
+                                                        displayCurrentTenant()
                                                     }
                                                     { isSuperOrganization() && (
                                                         <Chip

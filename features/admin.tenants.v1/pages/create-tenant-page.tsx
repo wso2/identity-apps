@@ -50,7 +50,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Card, Divider, Flag, FlagNameValues, Grid, Icon } from "semantic-ui-react";
-import { addNewTenant, checkDuplicateTenants, useDeploymentUnits } from "../api";
+import { addNewTenant, checkDuplicateTenants } from "../api";
+import useGetDeploymentUnits from "../api/use-get-deployment-units";
 import { TenantCreationIcons } from "../configs";
 import { TenantManagementConstants } from "../constants";
 import { DeploymentUnit } from "../models";
@@ -181,12 +182,7 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
         data: deploymentUnitResponse,
         isLoading: isDeploymentUnitsLoading,
         error: deploymentUnitFetchRequestError
-    } = useDeploymentUnits(
-        {
-            revalidateIfStale: true
-        },
-        isCentralDeploymentEnabled
-    );
+    } = useGetDeploymentUnits(isCentralDeploymentEnabled);
 
     useEffect(() => {
         setDeploymentUnits(deploymentUnitResponse?.deploymentUnits);
@@ -268,11 +264,12 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
 
 
     const redirectingConsoleUrl = (): string => {
-        return `${ isCentralDeploymentEnabled && selectedDeploymentUnit ?
-            deploymentUnits.find((deploymentUnit: DeploymentUnit) =>
-                deploymentUnit.name == selectedDeploymentUnit.name).consoleHostname :
-            regionQualifiedConsoleUrl ??
-                "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/`;
+        if (isCentralDeploymentEnabled && selectedDeploymentUnit) {
+            return `${ deploymentUnits.find((deploymentUnit: DeploymentUnit) =>
+                deploymentUnit.name == selectedDeploymentUnit.name).consoleHostname }/${ tenantPrefix ?? "t" }/`;
+        }
+
+        return `${regionQualifiedConsoleUrl ?? "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/`;
     };
 
     /**
