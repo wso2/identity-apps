@@ -1,5 +1,22 @@
 # @wso2is/admin.claims.v1
 
+## 2.27.105
+
+### Patch Changes
+
+- [#7746](https://github.com/wso2/identity-apps/pull/7746) [`3d2355ed161bed5a218f456c5ee85406b0d9bd58`](https://github.com/wso2/identity-apps/commit/3d2355ed161bed5a218f456c5ee85406b0d9bd58) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Show SCIM2 custom schema tab by default
+
+- Updated dependencies [[`0d61257ef6c3cae8be7b9bd7be7cc6b54654b243`](https://github.com/wso2/identity-apps/commit/0d61257ef6c3cae8be7b9bd7be7cc6b54654b243), [`3d2355ed161bed5a218f456c5ee85406b0d9bd58`](https://github.com/wso2/identity-apps/commit/3d2355ed161bed5a218f456c5ee85406b0d9bd58)]:
+  - @wso2is/i18n@2.20.4
+  - @wso2is/admin.claims.v1@2.27.105
+  - @wso2is/admin.core.v1@2.39.21
+  - @wso2is/admin.extensions.v1@2.36.120
+  - @wso2is/admin.organizations.v1@2.26.195
+  - @wso2is/admin.server-configurations.v1@2.32.120
+  - @wso2is/admin.users.v1@2.30.105
+  - @wso2is/admin.userstores.v1@2.27.21
+  - @wso2is/admin.validation.v1@2.27.133
+
 ## 2.27.104
 
 ### Patch Changes
