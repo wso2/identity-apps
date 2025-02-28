@@ -17,12 +17,11 @@
  */
 
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { attributeConfig } from "@wso2is/admin.extensions.v1";
-import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import { attributeConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -65,11 +64,16 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
     } = props;
 
     const [ userStore, setUserStore ] = useState<UserStoreListItem[]>([]);
-    const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
+    const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores ?? []);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
+        state?.config?.ui?.primaryUserStoreDomainName ?? userstoresConfig.primaryUserstoreName);
 
     const { t } = useTranslation();
+
+    const {
+        isLoading: isUserStoreListFetchRequestLoading,
+        userStoresList
+    } = useUserStores();
 
     useEffect(() => {
         const userstore: UserStoreListItem[] = [];
@@ -83,21 +87,17 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
                 self: ""
             });
         }
-        getUserStoreList().then((response: AxiosResponse) => {
-            if (hiddenUserStores && hiddenUserStores.length > 0) {
-                response.data.map((store: UserStoreListItem) => {
-                    if (hiddenUserStores.length > 0 && !hiddenUserStores.includes(store.name)) {
-                        userstore.push(store);
-                    }
-                });
-            } else {
-                userstore.push(...response.data);
-            }
-            setUserStore(userstore);
-        }).catch(() => {
-            setUserStore(userstore);
-        });
-    }, []);
+
+        if (!isUserStoreListFetchRequestLoading && userStoresList?.length > 0) {
+            userStoresList.map((store: UserStoreListItem) => {
+                if (store.enabled && !hiddenUserStores.includes(store.name)) {
+                    userstore.push(store);
+                }
+            });
+        }
+
+        setUserStore(userstore);
+    }, [ userStoresList, isUserStoreListFetchRequestLoading ]);
 
     return (
         <Grid data-testid={ testId }>
