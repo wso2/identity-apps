@@ -372,7 +372,8 @@ const RemoteUserStoreCreatePage: FunctionComponent<RemoteCustomerUserStoreCreate
         if (userStoreImplType === RemoteUserStoreImplType.OPTIMIZED) {
             return (
                 <Trans i18nKey="remoteUserStores:pages.create.message.optimized">
-                    This configuration supports Authentication Only. User and group management features are not
+                    This configuration supports Authentication and User Attribute retrieval
+                    only. User and group management features are not
                     available in this setup. If user management is an essential requirement, please use
                     the <a onClick={ onNavigate }>Classic User Store Connection</a> instead.
                 </Trans>
