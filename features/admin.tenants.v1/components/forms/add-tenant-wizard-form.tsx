@@ -18,7 +18,7 @@
 
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/form";
+import { DropdownChild, Field, Form } from "@wso2is/form";
 import { Hint, Message } from "@wso2is/react-components";
 import { ContentLoader } from "@wso2is/react-components/src/components/loader/content-loader";
 import { AxiosError, AxiosResponse } from "axios";
@@ -30,6 +30,7 @@ import React, {
     ReactElement,
     SetStateAction,
     useCallback,
+    useMemo,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -37,6 +38,7 @@ import { useSelector } from "react-redux";
 import { Divider, Segment } from "semantic-ui-react";
 import { checkDuplicateTenants } from "../../api";
 import { TenantManagementConstants } from "../../constants";
+import { DeploymentUnit } from "../../models";
 
 /**
  * Interface to capture add tenant wizard form props.
@@ -48,6 +50,7 @@ interface AddTenantWizardFormPropsInterface extends TestableComponentInterface {
     setTenantDuplicate: Dispatch<SetStateAction<boolean>>;
     isCheckingTenantExistence: boolean;
     setCheckingTenantExistence: Dispatch<SetStateAction<boolean>>;
+    deploymentUnits: DeploymentUnit[]
 }
 
 /**
@@ -55,6 +58,7 @@ interface AddTenantWizardFormPropsInterface extends TestableComponentInterface {
  */
 export interface AddTenantWizardFormErrorValidationsInterface {
     tenantName: string;
+    deploymentUnitName?: string
 }
 
 /**
@@ -62,6 +66,7 @@ export interface AddTenantWizardFormErrorValidationsInterface {
  */
 export interface AddTenantWizardFormValuesInterface {
     tenantName: string;
+    deploymentUnitName?: string;
 }
 
 const FORM_ID: string = "add-tenant-wizard-form";
@@ -82,20 +87,26 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         setTenantDuplicate,
         isCheckingTenantExistence,
         setCheckingTenantExistence,
+        deploymentUnits,
         [ "data-testid" ]: testId
     } = props;
 
     const [ newTenantName, setNewTenantName ] = useState<string>(
         TenantManagementConstants.TENANT_URI_PLACEHOLDER
     );
+    const [ selectedDeploymentUnit, setSelectedDeploymentUnit ] = useState<DeploymentUnit>(undefined);
     const [ isTenantValid, setIsTenantValid ] = useState<boolean>(false);
-
+    const [ isValidDeploymentUnit, setIsValidDeploymentUnit ] = useState<boolean>(false);
     const regionQualifiedConsoleUrl: string = useSelector((state: AppState) => {
         return state.config?.deployment?.extensions?.regionQualifiedConsoleUrl as string;
     });
 
     const tenantPrefix: string = useSelector((state: AppState) => {
         return state.config?.deployment?.tenantPrefix as string;
+    });
+
+    const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.centralDeploymentEnabled;
     });
 
     const { t } = useTranslation();
@@ -114,6 +125,15 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         }
 
         return isValidTenantName;
+    };
+
+    const redirectingConsoleUrl = (): string => {
+        if (isCentralDeploymentEnabled && selectedDeploymentUnit) {
+            return `${ deploymentUnits.find((deploymentUnit: DeploymentUnit) =>
+                deploymentUnit.name == selectedDeploymentUnit.name).consoleHostname }/${ tenantPrefix ?? "t" }/`;
+        }
+
+        return `${regionQualifiedConsoleUrl ?? "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/`;
     };
 
     /**
@@ -154,6 +174,32 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
     };
 
     /**
+     * Function to update the deployment unit.
+     *
+     * @param deploymentUnitJson - Deployment unit name.
+     */
+    const updateDeploymentUnit = (deploymentUnitName: string): void => {
+        if (deploymentUnitName === undefined) {
+            setIsValidDeploymentUnit(false);
+        } else {
+            setSelectedDeploymentUnit(deploymentUnits.find((unit: DeploymentUnit) => unit.name === deploymentUnitName));
+            setIsValidDeploymentUnit(true);
+        }
+    };
+
+    /**
+     * Options for the deployment unit dropdown.
+     */
+    const deploymentUnitOptions: DropdownChild[] = useMemo(() => {
+
+        return deploymentUnits?.map((deploymentUnit: DeploymentUnit) => ({
+            key: deploymentUnit.name,
+            text: deploymentUnit.displayName,
+            value: deploymentUnit.name
+        }));
+    }, [ deploymentUnits ]);
+
+    /**
      * Validate input data.
      *
      * @param values - Form Values.
@@ -163,6 +209,7 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         values: AddTenantWizardFormValuesInterface
     ): AddTenantWizardFormErrorValidationsInterface => {
         const error: AddTenantWizardFormErrorValidationsInterface = {
+            deploymentUnitName: undefined,
             tenantName: undefined
         };
 
@@ -176,6 +223,9 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
             error.tenantName = t(
                 "extensions:manage.features.tenant.wizards.addTenant.forms.fields.tenantName.validations.empty"
             );
+        }
+        if (!isValidDeploymentUnit){
+            error.deploymentUnitName = t("tenants:deploymentUnits.validations.empty");
         }
 
         return error;
@@ -193,7 +243,8 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                 validate={
                     (tenantDuplicate ||
                         newTenantName ===
-                        TenantManagementConstants.TENANT_URI_PLACEHOLDER) &&
+                        TenantManagementConstants.TENANT_URI_PLACEHOLDER ||
+                        isCentralDeploymentEnabled && !selectedDeploymentUnit) &&
                     validateForm
                 }
             >
@@ -349,11 +400,25 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                     width={ 16 }
                     data-testid={ `${ testId }-type-input` }
                 />
+                { isCentralDeploymentEnabled  ? (
+                    <Field.Dropdown
+                        ariaLabel="Region"
+                        name="deploymentUnitName"
+                        label={ t("tenants:deploymentUnits.label") }
+                        placeholder = { t("tenants:deploymentUnits.placeholder") }
+                        required={ true }
+                        options={ deploymentUnitOptions }
+                        data-testid={ `${ testId }-deployment-unit-dropdown` }
+                        listen={ updateDeploymentUnit }
+                        enableReinitialize={ true }
+                    />
+                ) : null }
+
             </Form>
             <Divider className="mt-1" hidden />
             { isCheckingTenantExistence ? (
                 <span className="display-flex">
-                    { `${regionQualifiedConsoleUrl ?? "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/` }
+                    { redirectingConsoleUrl() }
                     <Segment basic size="mini">
                         <ContentLoader
                             className="p-0"
@@ -366,7 +431,7 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                 </span>
             ) : (
                 <span>
-                    { `${regionQualifiedConsoleUrl ?? "https://console.asgardeo.io"}/${tenantPrefix ?? "t"}/` }
+                    { redirectingConsoleUrl() }
                     <span
                         className={ `${ newTenantName !==
                                 TenantManagementConstants.TENANT_URI_PLACEHOLDER

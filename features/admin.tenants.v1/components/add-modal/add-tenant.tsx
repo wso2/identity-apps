@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -25,10 +26,11 @@ import { AxiosError, AxiosResponse } from "axios";
 import delay from "lodash-es/delay";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { addNewTenant, checkDuplicateTenants } from "../../api";
+import { DeploymentUnit } from "../../models";
 import { handleTenantSwitch } from "../../utils";
 import { AddTenantWizardForm, AddTenantWizardFormValuesInterface } from "../forms";
 
@@ -38,6 +40,7 @@ import { AddTenantWizardForm, AddTenantWizardFormValuesInterface } from "../form
 interface AddTenantWizardPropsInterface extends TestableComponentInterface {
     openModal: boolean;
     onCloseHandler: () => void;
+    deploymentUnits: DeploymentUnit[];
 }
 
 /**
@@ -52,6 +55,7 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
 
     const {
         openModal,
+        deploymentUnits,
         onCloseHandler,
         [ "data-testid" ]: testId
     } = props;
@@ -71,6 +75,10 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.centralDeploymentEnabled;
+    });
 
     useEffect(() => {
         if (submissionValue && finishSubmit) {
@@ -99,7 +107,11 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
             .catch((error: AxiosError) => {
                 if (error.response.status == 404) {
                     // Proceed to tenant creation if tenant does not exist.
-                    addTenant(submissionValue.tenantName);
+                    addTenant(
+                        submissionValue.tenantName,
+                        isCentralDeploymentEnabled ? deploymentUnits?.find((unit: DeploymentUnit) =>
+                            unit.name === submissionValue.deploymentUnitName) : undefined
+                    );
                 } else {
                     setIsNewTenantLoading(false);
                     setAlert({
@@ -134,16 +146,17 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
                 setTenantDuplicate={ setIsTenantDuplicate }
                 isCheckingTenantExistence={ isCheckingTenantExistence }
                 setCheckingTenantExistence={ setCheckingTenantExistence }
+                deploymentUnits={ deploymentUnits }
             />
         ),
         icon: "", // TODO: Add icon
         title: t("extensions:manage.features.tenant.wizards.addTenant.heading")
     } ];
 
-    const addTenant = (tenantName: string): void => {
+    const addTenant = (tenantName: string, deploymentUnit?: DeploymentUnit): void => {
         setIsNewTenantLoading(true);
         setTenantLoaderText(t("extensions:manage.features.tenant.wizards.addTenant.forms.loaderMessages.tenantCreate"));
-        addNewTenant(tenantName)
+        addNewTenant(tenantName, deploymentUnit)
             .then((response: AxiosResponse) => {
                 if (response.status === 201) {
                     eventPublisher.publish("create-new-organization");
@@ -162,7 +175,10 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
                     delay(() => {
                         setIsNewTenantLoading(false);
                         onCloseHandler();
-                        handleTenantSwitch(tenantName);
+                        handleTenantSwitch(
+                            tenantName,
+                            isCentralDeploymentEnabled ? deploymentUnit?.consoleHostname : undefined
+                        );
                     }, 5000);
                 }
             })
