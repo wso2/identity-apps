@@ -34,7 +34,6 @@ import {
     TestConnection,
     UserStore,
     UserStoreAttributes,
-    UserStoreListItem,
     UserStorePostData
 } from "../models";
 
@@ -123,48 +122,6 @@ export const getUserStoreList = (): Promise<UserstoreListResponseInterface[] | a
                 error.response,
                 error.config);
         });
-};
-
-/**
- * Hook to get the Userstores from the API.
- * @deprecated - This hook will be removed in the future.
- * Use the hook from admin.userstores.v1/api/use-get-user-stores.ts
- *
- * @param params - sort, filter, limit, attributes, offset.
- * @returns user store list with SWR hook
- */
-export const useUserStores = <Data = UserStoreListItem[], Error = RequestErrorInterface>(
-    params: QueryParams,
-    shouldFetch: boolean = true
-): RequestResultInterface<Data, Error> => {
-
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        params,
-        url: store.getState().config.endpoints.userStores
-    };
-
-    const {
-        data,
-        error,
-        isValidating,
-        mutate,
-        response
-    } = useRequest<Data, Error>(shouldFetch ? requestConfig: null);
-
-    return {
-        data,
-        error,
-        isLoading: !error && !data,
-        isValidating,
-        mutate,
-        response
-    };
 };
 
 /**
