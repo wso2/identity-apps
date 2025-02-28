@@ -41,7 +41,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                node-version: [lts/*]
+                node-version: [20]
                 maven-version: [3.8.6]
                 java-version: [11]
                 pnpm-version: [8.7.4]
