@@ -40,10 +40,8 @@ import {
     PatchUserRemoveOpInterface,
     UserBasicInterface
 } from "@wso2is/admin.users.v1/models/user";
-import { getAUserStore, useUserStores } from "@wso2is/admin.userstores.v1/api";
-import {
-    UserStoreDropdownItem, UserStoreListItem, UserStorePostData, UserStoreProperty
-} from "@wso2is/admin.userstores.v1/models/user-stores";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertLevels, IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
@@ -104,47 +102,9 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ selectedAllUsers, setSelectedAllUsers ] = useState<Record<string, UserBasicInterface[] | undefined>>({});
 
     const {
-        data: userStores,
-        isLoading: isUserStoresLoading
-    } = useUserStores(null);
-
-    useEffect(() => {
-        if (userStores && !isUserStoresLoading) {
-            const storeOptions: UserStoreDropdownItem[] = [
-                {
-                    key: -1,
-                    text: userstoresConfig?.primaryUserstoreName,
-                    value: userstoresConfig?.primaryUserstoreName
-                }
-            ];
-
-            let storeOption: UserStoreDropdownItem = {
-                key: null,
-                text: "",
-                value: ""
-            };
-
-            userStores?.forEach((store: UserStoreListItem, index: number) => {
-                if (store?.name?.toUpperCase() !== userstoresConfig?.primaryUserstoreName) {
-                    getAUserStore(store.id).then((response: UserStorePostData) => {
-                        const isDisabled: boolean = response.properties.find(
-                            (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
-
-                        if (!isDisabled) {
-                            storeOption = {
-                                key: index,
-                                text: store.name,
-                                value: store.name
-                            };
-                            storeOptions.push(storeOption);
-                        }
-                    });
-                }
-            });
-
-            setAvailableUserStores(storeOptions);
-        }
-    }, [ userStores, isUserStoresLoading ]);
+        isLoading: isUserStoresLoading,
+        userStoresList
+    } = useUserStores();
 
     const {
         data: userResponse,
@@ -167,6 +127,36 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             StringUtils.isEqualCaseInsensitive(userStoreName, primaryUserStoreDomainName))
         || (userNameChunks.length === 2 && StringUtils.isEqualCaseInsensitive(userNameChunks[0], userStoreName));
     };
+
+    useEffect(() => {
+        if (userStoresList && !isUserStoresLoading) {
+            const storeOptions: UserStoreDropdownItem[] = [
+                {
+                    key: -1,
+                    text: userstoresConfig?.primaryUserstoreName,
+                    value: userstoresConfig?.primaryUserstoreName
+                }
+            ];
+
+            if (userStoresList?.length > 0) {
+                userStoresList.map((store: UserStoreListItem, index: number) => {
+                    const isEnabled: boolean = store.enabled;
+
+                    if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && isEnabled) {
+                        const storeOption: UserStoreDropdownItem = {
+                            key: index,
+                            text: store.name,
+                            value: store.name
+                        };
+
+                        storeOptions.push(storeOption);
+                    }
+                });
+            }
+
+            setAvailableUserStores(storeOptions);
+        }
+    }, [ userStoresList, isUserStoresLoading ]);
 
     useEffect(() => {
         if (activeUserStore) {
