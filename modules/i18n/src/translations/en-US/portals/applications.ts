@@ -1392,6 +1392,16 @@ export const applications: ApplicationsNS = {
                         "<1>{{ myAccount }}</1> portal.",
                     label: "Discoverable application"
                 },
+                discoverableGroups: {
+                    label: "Discoverable Groups",
+                    action: {
+                        assign: "Type group name/s to search and assign groups"
+                    },
+                    radioOptions: {
+                        everyone: "Everyone in the organization can discover this application",
+                        userGroups: "Only a selected group of users can discover this application"
+                    }
+                },
                 imageUrl: {
                     hint: "An image URL for the application. If this is not provided, we will display " +
                         "a generated thumbnail instead. Recommended size: 200x200 pixels.",
