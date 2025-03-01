@@ -1,5 +1,44 @@
 # @wso2is/admin.applications.v1
 
+## 2.32.0
+
+### Minor Changes
+
+- [#7399](https://github.com/wso2/identity-apps/pull/7399) [`6af3d7e6d134a33af3d3c78db354ad582b4e042b`](https://github.com/wso2/identity-apps/commit/6af3d7e6d134a33af3d3c78db354ad582b4e042b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Conditional View Access For Discoverable Applications in MyAccount.
+
+### Patch Changes
+
+- Updated dependencies [[`04fdeac1d019db974616a0845dfda84aa353d582`](https://github.com/wso2/identity-apps/commit/04fdeac1d019db974616a0845dfda84aa353d582), [`38613183948d20e9c77dfb157c6e8670cec9115a`](https://github.com/wso2/identity-apps/commit/38613183948d20e9c77dfb157c6e8670cec9115a), [`6af3d7e6d134a33af3d3c78db354ad582b4e042b`](https://github.com/wso2/identity-apps/commit/6af3d7e6d134a33af3d3c78db354ad582b4e042b), [`197e2f76c9ec89c5080c1e52f74aa34a93931125`](https://github.com/wso2/identity-apps/commit/197e2f76c9ec89c5080c1e52f74aa34a93931125)]:
+  - @wso2is/admin.core.v1@2.40.0
+  - @wso2is/core@2.7.0
+  - @wso2is/i18n@2.21.0
+  - @wso2is/admin.claims.v1@2.27.107
+  - @wso2is/admin.extensions.v1@2.36.122
+  - @wso2is/admin.organizations.v1@2.26.197
+  - @wso2is/admin.users.v1@2.30.107
+  - @wso2is/admin.api-resources.v2@2.25.197
+  - @wso2is/admin.application-templates.v1@1.4.197
+  - @wso2is/admin.authentication-flow-builder.v1@2.24.197
+  - @wso2is/admin.branding.v1@2.28.54
+  - @wso2is/admin.connections.v1@2.33.80
+  - @wso2is/admin.console-settings.v1@2.25.197
+  - @wso2is/admin.feature-gate.v1@1.4.197
+  - @wso2is/admin.identity-providers.v1@2.26.197
+  - @wso2is/admin.impersonation.v1@1.6.197
+  - @wso2is/admin.login-flow.ai.v1@2.27.92
+  - @wso2is/admin.oidc-scopes.v1@2.25.197
+  - @wso2is/admin.roles.v2@2.27.141
+  - @wso2is/admin.secrets.v1@2.25.197
+  - @wso2is/admin.server-configurations.v1@2.32.122
+  - @wso2is/admin.template-core.v1@1.5.151
+  - @wso2is/admin.userstores.v1@2.27.23
+  - @wso2is/admin.wsfed-configuration.v1@2.25.197
+  - @wso2is/admin.authorization.v1@2.25.86
+  - @wso2is/access-control@3.3.20
+  - @wso2is/form@2.6.35
+  - @wso2is/forms@2.3.22
+  - @wso2is/react-components@2.9.12
+
 ## 2.31.44
 
 ### Patch Changes
