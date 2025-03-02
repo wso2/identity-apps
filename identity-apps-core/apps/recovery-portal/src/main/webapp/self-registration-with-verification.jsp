@@ -370,7 +370,7 @@
                             <% } %>
 
                             <div class="">
-                                <% if (error) %>
+                                <% if (error) { %>
                                     <% if ( SelfRegistrationStatusCodes.ERROR_CODE_DUPLICATE_CLAIM_VALUE.equals(errorCodeFromRequest)) {
                                         String[] splitErrorMsg = errorMsg.split("for");
                                         String[] attributeList = splitErrorMsg[1].split("are|is")[0].trim().split(",");
