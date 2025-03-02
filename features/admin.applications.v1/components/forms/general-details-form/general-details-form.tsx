@@ -210,10 +210,7 @@ const DISCOVERABLE_GROUPS_RADIO_OPTIONS: RadioChild[] = [
  * @returns Functional component.
  */
 export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterface> = (
-    props: GeneralDetailsFormPopsInterface
-): ReactElement => {
-
-    const {
+    {
         appId,
         name,
         description,
@@ -228,9 +225,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         isManagementApp,
         application,
         isBrandingSectionHidden,
-        [ "data-testid" ]: testId,
-        [ "data-componentid" ]: componentId
-    } = props;
+        [ "data-testid" ]: testId = "application-general-settings-form",
+        [ "data-componentid" ]: componentId = "application-general-settings-form"
+    }: GeneralDetailsFormPopsInterface
+): ReactElement => {
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -768,7 +766,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                                 checked={ discoverableGroupOption === option.value }
                                                 listen={ () => setDiscoverableGroupOption(option.value) }
                                                 readOnly={ readOnly }
-                                                data-componentid={ `${ componentId }-discoverable-group-radio-option` }
+                                                data-componentid={ `${ componentId }-discoverable-group-radio-` +
+                                                    `option-${ option.value }` }
                                                 disabled={ !isDiscoverable }
                                             />
                                         ))
@@ -814,7 +813,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                                 loading={ isGroupsListLoading }
                                                 options={ groupsList ?? [] }
                                                 value={ selectedGroupsFromUserStore[selectedUserStoreDomain] ?? [] }
-                                                data-componentid={ `${ componentId }-group-search-text-input` }
+                                                data-componentid={ `${ componentId }-discoverable-group` +
+                                                    "-search-text-input" }
                                                 getOptionLabel={ (group: GroupMetadataInterface) => group?.name }
                                                 renderInput={ (params: AutocompleteRenderInputParams) => (
                                                     <TextField
@@ -875,6 +875,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                                         selected={ selected }
                                                         displayName={ option.name }
                                                         userStore={ selectedUserStoreDomain }
+                                                        data-componentid={ `${ componentId }-discoverable-group-` +
+                                                            `option-${ option.name }` }
                                                         renderOptionProps={ props }
                                                     />
                                                 ) }
@@ -980,8 +982,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 loading={ isSubmitting }
                 label={ t("common:update") }
                 hidden={
-                    (isSubOrganizationType && !isDiscoverable) ||
-                    !hasRequiredScope || (
+                    isSubOrganizationType || !hasRequiredScope || (
                         readOnly
                         && applicationConfig.generalSettings.getFieldReadOnlyStatus(
                             application, "ACCESS_URL"
@@ -991,11 +992,4 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             />
         </Form>
     );
-};
-
-/**
- * Default props for the applications general settings form.
- */
-GeneralDetailsForm.defaultProps = {
-    "data-testid": "application-general-settings-form"
 };
