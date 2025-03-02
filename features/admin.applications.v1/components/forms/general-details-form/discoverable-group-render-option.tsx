@@ -53,12 +53,13 @@ export const DiscoverableGroupRenderOption: FunctionComponent<DiscoverableGroupR
         selected,
         displayName,
         userStore,
-        renderOptionProps
+        renderOptionProps,
+        [ "data-componentid" ]: componentId
     }: DiscoverableGroupRenderOption
 ): ReactElement => {
 
     return (
-        <li { ...renderOptionProps }>
+        <li { ...renderOptionProps } data-componentid={ componentId }>
             <Grid container justifyContent="space-between" alignItems="center" xs={ 12 }>
                 <Grid container alignItems="center" xs={ 8 }>
                     <Checkbox checked={ selected } />
