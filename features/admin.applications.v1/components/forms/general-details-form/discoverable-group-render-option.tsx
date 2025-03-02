@@ -54,7 +54,7 @@ export const DiscoverableGroupRenderOption: FunctionComponent<DiscoverableGroupR
         displayName,
         userStore,
         renderOptionProps,
-        "data-componentid": componentId
+        [ "data-componentid" ]: componentId
     }: DiscoverableGroupRenderOption
 ): ReactElement => {
 
