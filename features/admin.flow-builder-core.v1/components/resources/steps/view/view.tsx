@@ -46,18 +46,18 @@ import "./view.scss";
 /**
  * Props interface of {@link View}
  */
-export interface StepPropsInterface extends Node, IdentifiableComponentInterface {}
+export interface ViewPropsInterface extends Node, IdentifiableComponentInterface {}
 
 /**
- * Node for representing an empty step in the flow builder.
+ * Node for representing an empty view as a step in the flow builder.
  *
  * @param props - Props injected to the component.
  * @returns Step Node component.
  */
-export const View: FunctionComponent<StepPropsInterface> = ({
+export const View: FunctionComponent<ViewPropsInterface> = ({
     data,
-    "data-componentid": componentId = "step"
-}: StepPropsInterface): ReactElement => {
+    "data-componentid": componentId = "view"
+}: ViewPropsInterface): ReactElement => {
     const nodeId: string = useNodeId();
     const node: Pick<Node, "data"> = useNodesData(nodeId);
     const { deleteElements, updateNodeData } = useReactFlow();

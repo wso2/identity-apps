@@ -19,14 +19,19 @@
 .flow-builder-step {
     .flow-builder-step-content {
         .adapter.form-adapter {
-            background: var(--oxygen-palette-grey-200);
+            width: 100%;
+            display: block;
             min-height: 80px;
             border-radius: var(--oxygen-shape-borderRadius);
             border: 1px dashed var(--oxygen-palette-grey-300);
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: var(--oxygen-spacing-3) 0;
+            
+            .MuiBadge-badge {
+                margin-left: 25px;
+                background-color: var(--wso2is-flow-builder-step-content-background-color);
+                color: var(--oxygen-palette-text-secondary);
+                font-weight: 500;
+            }
         }
     }
 }

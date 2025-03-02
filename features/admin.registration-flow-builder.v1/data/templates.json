@@ -40,21 +40,23 @@
                                     "category": "BLOCK",
                                     "type": "FORM",
                                     "config": {},
-                                    "id": "{{ID}}"
-                                },
-                                {
-                                    "category": "ACTION",
-                                    "type": "BUTTON",
                                     "id": "{{ID}}",
-                                    "variant": "PRIMARY",
-                                    "config": {
-                                        "type": "button",
-                                        "text": "Continue"
-                                    },
-                                    "action": {
-                                        "next": "done",
-                                        "type": "NEXT"
-                                    }
+                                    "components": [
+                                        {
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "id": "{{ID}}",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "button",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "next": "done",
+                                                "type": "NEXT"
+                                            }
+                                        }
+                                    ]
                                 }
                             ]
                         }

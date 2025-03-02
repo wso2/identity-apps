@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Badge from "@mui/material/Badge";
 import { DroppableContainer, GetDragItemProps } from "@oxygen-ui/react/dnd";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -24,7 +25,7 @@ import classNames from "classnames";
 import React, { DragEvent, FunctionComponent, ReactElement, useCallback } from "react";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import useGenerateStepElement from "../../../../hooks/use-generate-step-element";
-import { Element } from "../../../../models/elements";
+import { Element, ElementCategories } from "../../../../models/elements";
 import ReorderableElement from "../../steps/view/reorderable-element";
 import "./form-adapter.scss";
 
@@ -81,29 +82,38 @@ export const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
         }
     }, []);
 
-    return (
-        <div className="adapter form-adapter" onDrop={ handleDrop }>
-            { resource?.components?.length >= 1 ? (
-                <DroppableContainer nodes={ (resource?.components || []) as Element[] } onOrderChange={ null }>
-                    { ({ nodes, getDragItemProps }: { nodes: Element[]; getDragItemProps: GetDragItemProps }) =>
-                        nodes.map((element: Element, index: number) => {
-                            const { className: dragItemClassName, ...otherDragItemProps } = getDragItemProps(index);
+    const shouldShowFormFieldsPlaceholder: boolean = !resource?.components?.some((element: Element) => element.category === ElementCategories.Field);
 
-                            return (
-                                <ReorderableElement
-                                    key={ element.id }
-                                    element={ element }
-                                    className={ classNames("flow-builder-step-content-form-field", dragItemClassName) }
-                                    draggableProps={ otherDragItemProps }
-                                />
-                            );
-                        })
-                    }
-                </DroppableContainer>
-            ) : (
+    return (
+        <Badge
+            anchorOrigin={ {
+                horizontal: "left",
+                vertical: "top"
+            } }
+            badgeContent="Form"
+            className="adapter form-adapter"
+            onDrop={ handleDrop }
+        >
+            { shouldShowFormFieldsPlaceholder && (
                 <Typography variant="body2">DROP FORM FIELDS HERE</Typography>
             ) }
-        </div>
+            <DroppableContainer nodes={ (resource?.components || []) as Element[] } onOrderChange={ null }>
+                { ({ nodes, getDragItemProps }: { nodes: Element[]; getDragItemProps: GetDragItemProps }) =>
+                    nodes.map((element: Element, index: number) => {
+                        const { className: dragItemClassName, ...otherDragItemProps } = getDragItemProps(index);
+
+                        return (
+                            <ReorderableElement
+                                key={ element.id }
+                                element={ element }
+                                className={ classNames("flow-builder-step-content-form-field", dragItemClassName) }
+                                draggableProps={ otherDragItemProps }
+                            />
+                        );
+                    })
+                }
+            </DroppableContainer>
+        </Badge>
     );
 };
 

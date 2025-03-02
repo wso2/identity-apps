@@ -18,7 +18,7 @@
 
 import DecoratedVisualFlow from "@wso2is/admin.flow-builder-core.v1/components/visual-flow/decorated-visual-flow";
 import { Payload } from "@wso2is/admin.flow-builder-core.v1/models/api";
-import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
+import { BlockTypes, Element, ElementCategories, ElementTypes } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { StaticStepTypes, Step, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
 import AuthenticationFlowBuilderCoreProvider from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
@@ -108,14 +108,14 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
                 },
                 deletable: false,
                 id: INITIAL_FLOW_START_STEP_ID,
-                position: { x: 100, y: 100 },
+                position: { x: -50, y: 330 },
                 type: StaticStepTypes.Start
             },
             {
                 data: {
                     components: defaultTemplateComponents
                 },
-                deletable: false,
+                deletable: true,
                 id: INITIAL_FLOW_VIEW_STEP_ID,
                 position: { x: 300, y: 200 },
                 type: StepTypes.View
@@ -126,7 +126,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
                 },
                 deletable: false,
                 id: INITIAL_FLOW_DONE_STEP_ID,
-                position: { x: 850, y: 100 },
+                position: { x: 850, y: 408 },
                 type: StaticStepTypes.Done
             }
         ],
@@ -134,23 +134,31 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
     );
 
     const initialEdges: Edge[] = useMemo<Edge[]>(() => {
-        const defaultTemplateActionId: string = defaultTemplateComponents?.find(
-            (component: Element) => component.category === ElementCategories.Action
-        )?.id;
+        const defaultTemplateActionId: string = defaultTemplateComponents?.map(
+            (component: Element) => {
+                if (component.type === BlockTypes.Form) {
+                    return component.components.find((element: Element) => element.type === ElementTypes.Button)?.id;
+                }
+
+                return null;
+            }
+        ).filter(Boolean)[0];
 
         return [
             {
                 animated: false,
                 id: `${INITIAL_FLOW_START_STEP_ID}-${INITIAL_FLOW_VIEW_STEP_ID}`,
                 source: INITIAL_FLOW_START_STEP_ID,
-                target: INITIAL_FLOW_VIEW_STEP_ID
+                target: INITIAL_FLOW_VIEW_STEP_ID,
+                type: "base-edge"
             },
             {
                 animated: false,
                 id: defaultTemplateActionId,
                 source: INITIAL_FLOW_VIEW_STEP_ID,
                 sourceHandle: `${defaultTemplateActionId}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
-                target: INITIAL_FLOW_DONE_STEP_ID
+                target: INITIAL_FLOW_DONE_STEP_ID,
+                type: "base-edge"
             }
         ];
     }, []);

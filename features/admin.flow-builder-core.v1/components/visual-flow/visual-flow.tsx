@@ -138,7 +138,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                     label: `${node.type} node`,
                     ...node
                 },
-                deletable: false,
+                deletable: true,
                 id: generateComponentId(),
                 position,
                 type: node.type as string

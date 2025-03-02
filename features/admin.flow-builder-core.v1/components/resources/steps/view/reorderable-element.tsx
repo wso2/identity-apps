@@ -100,7 +100,7 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
             data-componentid={ `${componentId}-${element.type}` }
             { ...draggableProps }
             // TODO: Temporary disable draggable until the dragging animation issue is fixed.
-            draggable={ true }
+            draggable={ false }
         >
             <div className="flow-builder-step-content-form-field-drag-handle">
                 <GridDotsVerticalIcon height={ 20 } />

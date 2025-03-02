@@ -21,6 +21,7 @@
     --wso2is-flow-builder-step-action-panel-height: 44px;
     --wso2is-flow-builder-step-remove-button-color: var(--oxygen-palette-grey-500);
     --wso2is-flow-builder-step-remove-button-hover-color: var(--oxygen-palette-primary-contrastText);
+    --wso2is-flow-builder-step-content-background-color: var(--oxygen-palette-background-paper);
     --wso2is-flow-builder-step-content-box-width: 350px;
     --wso2is-flow-builder-step-content-form-field-drag-handle-width: 25px;
 }
@@ -38,6 +39,7 @@
         text-align: left;
 
         .flow-builder-step-content-box {
+            background-color: var(--wso2is-flow-builder-step-content-background-color);
             padding: 32px;
             width: var(--wso2is-flow-builder-step-content-box-width);
             cursor: auto;
