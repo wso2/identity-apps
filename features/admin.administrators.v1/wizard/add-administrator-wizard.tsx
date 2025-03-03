@@ -422,9 +422,9 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                     onInvitationSendSuccessful();
                 })
                 .catch((error: AxiosError) => {
-                // Axios throws a generic `Network Error` for 401 status.
-                // As a temporary solution, a check to see if a response
-                // is available has be used.
+                    // Axios throws a generic `Network Error` for 401 status.
+                    // As a temporary solution, a check to see if a response
+                    // is available has be used.
                     if (!error.response || error.response.status === 401) {
                         setIsSubmitting(false);
                         closeWizard();
@@ -438,7 +438,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                             )
                         }));
                     } else if (error.response.status === 403 &&
-                    error?.response?.data?.code === UserManagementConstants.ERROR_COLLABORATOR_USER_LIMIT_REACHED) {
+                        error?.response?.data?.code === UserManagementConstants.ERROR_COLLABORATOR_USER_LIMIT_REACHED) {
                         setIsSubmitting(false);
                         closeWizard();
                         dispatch(addAlert({
@@ -451,7 +451,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                             )
                         }));
                     } else if (error.response.status === 409) {
-                    // User already exists in the system.
+                        // User already exists in the system.
                         // We need to check if this user is having the Administrator role.
                         handleAlreadyExistingUser(invite);
                     } else if (error?.response?.data?.description) {
