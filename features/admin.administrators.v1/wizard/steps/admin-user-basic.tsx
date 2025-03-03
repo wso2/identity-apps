@@ -47,11 +47,24 @@ import { FormValidation } from "@wso2is/validation";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
-import React, { FormEvent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+    FormEvent,
+    ForwardRefExoticComponent,
+    ForwardedRef,
+    MutableRefObject,
+    ReactElement,
+    RefAttributes,
+    forwardRef,
+    useCallback,
+    useEffect,
+    useImperativeHandle,
+    useMemo,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Header } from "semantic-ui-react";
-import { AdministratorConstants } from "../../constants/users";
 import { InternalAdminFormDataInterface } from "../../models/invite";
 import { isAdminUser, isCollaboratorUser } from "../../utils/administrators";
 
@@ -59,7 +72,6 @@ import { isAdminUser, isCollaboratorUser } from "../../utils/administrators";
  * Proptypes for the add admin user basic component.
  */
 interface AddAdminUserBasicProps extends IdentifiableComponentInterface {
-    triggerSubmit: boolean;
     onSubmit: (values: any) => void;
     administratorType: string;
     setFinishButtonDisabled: (values: boolean) => void;
@@ -73,24 +85,29 @@ interface AddAdminUserBasicProps extends IdentifiableComponentInterface {
     isConsoleRolesListLoading: boolean;
 }
 
+export interface AddAdminUserBasicFormRef {
+    triggerSubmit: () => void;
+}
+
 /**
  * Add admin user basic component.
  *
  * @returns add admin modal component.
  */
-export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> = (
-    props: AddAdminUserBasicProps): ReactElement => {
+export const AddAdminUserBasic: ForwardRefExoticComponent<RefAttributes<AddAdminUserBasicFormRef> &
+AddAdminUserBasicProps> = forwardRef((
+    props: AddAdminUserBasicProps,
+    ref: ForwardedRef<AddAdminUserBasicFormRef>
+): ReactElement => {
 
     const {
         administratorType,
-        triggerSubmit,
         onSubmit,
         setFinishButtonDisabled,
         consoleRolesList,
         isConsoleRolesListLoading,
-        [ "data-componentid"]: componentId
+        [ "data-componentid"]: componentId = "add-admin-user-basic"
     } = props;
-
 
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<UserBasicInterface[]>([]);
@@ -101,6 +118,8 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+
+    const triggerFormSubmit: MutableRefObject<() => void> = useRef<(() => void) | null>(null);
 
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
@@ -143,6 +162,19 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
             }));
     }, [ consoleRolesList ]);
 
+    // Expose triggerFormSubmit to the parent via the ref.
+    useImperativeHandle(
+        ref,
+        () => ({
+            triggerSubmit: () => {
+                if (triggerFormSubmit.current) {
+                    triggerFormSubmit.current();
+                }
+            }
+        }),
+        []
+    );
+
     useEffect(() => {
         // Fetch users to select as internal admins.
         if (administratorType === AdminAccountTypes.INTERNAL) {
@@ -178,15 +210,6 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
             setFinishButtonDisabled(isEmpty(checkedAssignedListItems));
         }
     }, [ checkedAssignedListItems ]);
-
-    useEffect(() => {
-        document
-            ?.getElementById(
-                administratorType === AdminAccountTypes.INTERNAL
-                    ? AdministratorConstants.INVITE_INTERNAL_USER_FORM_ID
-                    : AdministratorConstants.INVITE_EXTERNAL_USER_FORM_ID
-            )?.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-    }, [ triggerSubmit ]);
 
     /**
      * The following method accepts a Map and returns the values as a string.
@@ -245,9 +268,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
             roles: values.roles.map((role: DropdownProps) => role.value as string)
         };
 
-        if (triggerSubmit) {
-            onSubmit(inviteUser);
-        }
+        onSubmit(inviteUser);
     };
 
     /**
@@ -296,9 +317,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
             selectedRoles: selectedRoles
         };
 
-        if (triggerSubmit) {
-            onSubmit(processedFormData);
-        }
+        onSubmit(processedFormData);
     };
 
     /**
@@ -314,6 +333,8 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                 data-componentid={ `${componentId}-external-form` }
                 onSubmit={ () => processInternalAdminFormData(administratorConfig.adminRoleName) }
                 render={ ({ handleSubmit }: FormRenderProps) => {
+                    triggerFormSubmit.current = handleSubmit;
+
                     return (<form id="inviteInternalUserForm" onSubmit={ handleSubmit }>
                         <TransferComponent
                             compact
@@ -414,6 +435,8 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                             onSubmit(getFormValues(values));
                         } }
                         render={ ({ handleSubmit }: FormRenderProps) => {
+                            triggerFormSubmit.current = handleSubmit;
+
                             return (
                                 <form id="inviteExternalUserForm" onSubmit={ handleSubmit }>
                                     <Grid>
@@ -506,11 +529,4 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
             ? inviteInternalUserForm()
             : inviteExternalUserForm()
     );
-};
-
-/**
- * Default props for the component.
- */
-AddAdminUserBasic.defaultProps = {
-    "data-componentid": "add-admin-user-basic"
-};
+});

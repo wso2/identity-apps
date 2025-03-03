@@ -16,18 +16,17 @@
  * under the License.
  */
 
-import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
-import {  UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
+import {  UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
-import { sendInvite, useUsersList } from "@wso2is/admin.users.v1/api";
+import { getUsersList, sendInvite } from "@wso2is/admin.users.v1/api";
 import { AdminAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
-import { UserInviteInterface } from "@wso2is/admin.users.v1/models/user";
+import { UserInviteInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -35,7 +34,6 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
 import {
     ConfirmationModal,
     LinkButton,
@@ -43,12 +41,12 @@ import {
     useWizardAlert
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
-import { AddAdminUserBasic } from "./steps/admin-user-basic";
+import { AddAdminUserBasic, AddAdminUserBasicFormRef } from "./steps/admin-user-basic";
 import { InternalAdminFormDataInterface } from "../models/invite";
 import { isAdminUser } from "../utils/administrators";
 
@@ -86,41 +84,19 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const administratorsFeatureConfig: FeatureAccessConfigInterface =
-        useSelector((state: AppState) => state?.config?.ui?.features?.administrators);
-    const consoleSettingsFeatureConfig: FeatureAccessConfigInterface =
-        useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
-    const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
+    const adminUserBasicFormRef: MutableRefObject<AddAdminUserBasicFormRef> = useRef<AddAdminUserBasicFormRef>(null);
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isFinishButtonDisabled, setFinishButtonDisabled ] = useState<boolean>(false);
-    const [ searchQuery, setSearchQuery ] = useState<string>(null);
-    const [ invite, setInvite ] = useState<UserInviteInterface>(null);
     const [ showAdminRoleAddConfirmationModal, setShowAdminRoleAddConfirmationModal ] = useState<boolean>(false);
     const [ confirmationModalLoading, setConfirmationModalLoading ] = useState<boolean>(false);
     const [ adminRoleId, setAdminRoleId ] = useState<string>(null);
     const [ selectedUser, setSelectedUser ] = useState<UserBasicInterface>(null);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
-
-    // Excluding groups and roles from getUserList API call to improve performance.
-    const excludedAttributes: string = UserManagementConstants.GROUPS_ATTRIBUTE;
-
-    const {
-        data: originalAdminUserList,
-        error: adminUserListFetchRequestError
-    } = useUsersList(
-        1,
-        0,
-        searchQuery,
-        null,
-        primaryUserStoreDomainName,
-        excludedAttributes,
-        !!searchQuery
-    );
 
     /**
      * Retrieve the application data for the console application, filtering by name.
@@ -161,103 +137,6 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
         null,
         !!roleSearchFilter
     );
-
-    /**
-     * This hook will check if the user is an admin user and prompt to add the admin role to the user.
-     */
-    useEffect(() => {
-        if (!originalAdminUserList || !invite?.email) {
-            return;
-        }
-
-        // If total results are 0, the user does not exists.
-        // This means there is a pending invitation for the user.
-        if (originalAdminUserList.totalResults <= 0) {
-            dispatch(addAlert({
-                description: t(
-                    "extensions:manage.invite.notifications.sendInvite.inviteAlreadyExistsError.description",
-                    { userName: invite.email }
-                ),
-                level: AlertLevels.ERROR,
-                message: t(
-                    "extensions:manage.invite.notifications.sendInvite.inviteAlreadyExistsError.message"
-                )
-            }));
-            setIsSubmitting(false);
-            closeWizard();
-
-            return;
-        }
-
-        // Check if the user in the first index is with Administrator role.
-        // If an admin, show an error message.
-        if (isAdminUser(originalAdminUserList.Resources[ 0 ])) {
-            dispatch(addAlert({
-                description: t(
-                    "extensions:manage.invite.notifications.sendInvite.userAlreadyExistsError.description",
-                    { userName: invite.email }
-                ),
-                level: AlertLevels.ERROR,
-                message: t(
-                    "extensions:manage.invite.notifications.sendInvite.userAlreadyExistsError.message"
-                )
-            }));
-            setIsSubmitting(false);
-            closeWizard();
-        } else {
-            // When the user is already in the PRIMARY userstore in managed deployment, administrators is hidden,
-            // and console settings is enabled, assign already selected roles to the user.
-            if (
-                !administratorsFeatureConfig?.enabled &&
-                consoleSettingsFeatureConfig?.enabled
-            ) {
-                const assignedRoles: RolesInterface[] = invite?.roles.map(
-                    (roleDisplayName: string) => consoleRolesList?.Resources?.find(
-                        (role: RolesInterface) => role?.displayName === roleDisplayName
-                    )
-                ).filter(Boolean);
-
-                assignUserRoles(originalAdminUserList.Resources, assignedRoles);
-
-                return;
-            // otherwise, prompt for assigning the admin role back
-            } else {
-                // If not, prompt to assign the admin role to the user.
-                setIsSubmitting(false);
-                setShowAdminRoleAddConfirmationModal(true);
-                setSelectedUser(originalAdminUserList.Resources[ 0 ]);
-            }
-        }
-    }, [ originalAdminUserList ]);
-
-    /**
-     * Dispatches error notifications for Admin user fetch request error.
-     */
-    useEffect(() => {
-        if (!adminUserListFetchRequestError) {
-            return;
-        }
-
-        if (adminUserListFetchRequestError?.response?.data?.description) {
-            dispatch(addAlert({
-                description: adminUserListFetchRequestError?.response?.data?.description
-                    ?? adminUserListFetchRequestError?.response?.data?.detail
-                        ?? t("users:notifications.fetchUsers.error.description"),
-                level: AlertLevels.ERROR,
-                message: adminUserListFetchRequestError?.response?.data?.message
-                    ?? t("users:notifications.fetchUsers.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("users:notifications.fetchUsers.genericError." +
-                "description"),
-            level: AlertLevels.ERROR,
-            message: t("users:notifications.fetchUsers.genericError.message")
-        }));
-    }, [ adminUserListFetchRequestError ]);
 
     /**
      * Dispatches error notifications for application list fetch request error.
@@ -618,16 +497,88 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
             return;
         }
 
-        if (!selectedUser || selectedUser?.userName !== invite.email) {
-            // If the user is not selected. Query the user.
-            setSearchQuery(`userName eq ${ invite.email }`);
-            setInvite(invite);
-        } else {
-            // If the user is already selected, prompt to assign the admin role.
-            // Handles cancelling and re-opening the modal.
-            setShowAdminRoleAddConfirmationModal(true);
-            setIsSubmitting(false);
-        }
+        getUsersList(
+            1,
+            0,
+            `userName eq ${invite.email}`,
+            null,
+            primaryUserStoreDomainName,
+            UserManagementConstants.GROUPS_ATTRIBUTE
+        )
+            .then((response: UserListInterface) => {
+                if (response.totalResults === 0) {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "extensions:manage.invite.notifications.sendInvite." +
+                                    "inviteAlreadyExistsError.description",
+                                { userName: invite.email }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "extensions:manage.invite.notifications.sendInvite.inviteAlreadyExistsError.message"
+                            )
+                        })
+                    );
+                    setIsSubmitting(false);
+                    closeWizard();
+
+                    return;
+                }
+
+                const existingUser: UserBasicInterface = response.Resources[0];
+
+                if (isAdminUser(existingUser)) {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "extensions:manage.invite.notifications.sendInvite.userAlreadyExistsError.description",
+                                { userName: invite.email }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "extensions:manage.invite.notifications.sendInvite.userAlreadyExistsError.message"
+                            )
+                        })
+                    );
+                    setIsSubmitting(false);
+                    closeWizard();
+
+                    return;
+                }
+
+                const userHasAConsoleRole: boolean = existingUser.roles?.some((role: UserRoleInterface) =>
+                    consoleRolesList?.Resources?.some((consoleRole: RolesInterface) => consoleRole.id === role.value)
+                );
+
+                if (userHasAConsoleRole) {
+                    const assignedRoles: RolesInterface[] = invite?.roles
+                        .map((roleDisplayName: string) =>
+                            consoleRolesList?.Resources?.find(
+                                (role: RolesInterface) => role?.displayName === roleDisplayName
+                            )
+                        )
+                        .filter(Boolean);
+
+                    assignUserRoles([ existingUser ], assignedRoles);
+
+                    return;
+                }
+
+                setIsSubmitting(false);
+                setSelectedUser(existingUser);
+                setShowAdminRoleAddConfirmationModal(true);
+            })
+            .catch(() => {
+                dispatch(
+                    addAlert({
+                        description: t("users:notifications.fetchUsers.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("users:notifications.fetchUsers.genericError.message")
+                    })
+                );
+                setIsSubmitting(false);
+            });
     };
 
     /**
@@ -659,8 +610,8 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                 <Modal.Content className={ "content-container" } scrolling>
                     { alert && alertComponent }
                     <AddAdminUserBasic
+                        ref={ adminUserBasicFormRef }
                         administratorType={ adminTypeSelection }
-                        triggerSubmit={ submitGeneralSettings }
                         onSubmit={ (values: InternalAdminFormDataInterface | UserInviteInterface) =>
                             (adminTypeSelection === AdminAccountTypes.INTERNAL)
                                 ? sendInternalInvitation(values as InternalAdminFormDataInterface)
@@ -694,7 +645,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                                     floated="right"
                                     loading={ isSubmitting }
                                     disabled={ isSubmitting || isFinishButtonDisabled }
-                                    onClick={ () => setSubmitGeneralSettings() }
+                                    onClick={ () => adminUserBasicFormRef?.current?.triggerSubmit() }
                                 >
                                     {
                                         adminTypeSelection === AdminAccountTypes.INTERNAL
@@ -713,7 +664,6 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                         primaryActionLoading={ confirmationModalLoading }
                         data-componentid={ `${ componentId }-confirmation-modal` }
                         onClose={ (): void => {
-                            setSubmitGeneralSettings();
                             setShowAdminRoleAddConfirmationModal(false);
                         } }
                         type="warning"
@@ -724,7 +674,6 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                         primaryAction="Confirm"
                         secondaryAction="Cancel"
                         onSecondaryActionClick={ (): void => {
-                            setSubmitGeneralSettings();
                             setShowAdminRoleAddConfirmationModal(false);
                             setAlert(null);
                         } }
