@@ -77,9 +77,17 @@ const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
                 </Trans>
             </Heading>
             { isHasRule ? (
-                <Rules disableLastRuleDelete={ false } readonly={ readonly } />
+                <Rules
+                    disableLastRuleDelete={ false }
+                    readonly={ readonly }
+                    data-componentid={ _componentId }
+                />
             ) : (
-                <Alert className="alert-nutral" icon={ false }>
+                <Alert
+                    className="alert-nutral"
+                    icon={ false }
+                    data-componentid={ `${ _componentId }-no-rule-info-box` }
+                >
                     <AlertTitle
                         className="alert-title"
                         data-componentid={ `${ _componentId }-rule-info-box-title` }

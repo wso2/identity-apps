@@ -21,7 +21,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Modal } from "semantic-ui-react";
 import updateAction from "../../api/update-action";
@@ -30,17 +30,13 @@ import { PreUpdatePasswordActionUpdateInterface } from "../../models/actions";
 import { useHandleError, useHandleSuccess } from "../../util/alert-util";
 
 /**
- * Interface for the Add action certificate wizard component props.
+ * Interface for the action certificate wizard component props.
  */
-interface AddActionCertificateWizardPropsInterface extends IdentifiableComponentInterface {
+interface ActionCertificateWizardPropsInterface extends IdentifiableComponentInterface {
     /**
      * Callback to close the wizard.
      */
     closeWizard: () => void;
-    /**
-     * The current step of the wizard.
-     */
-    currentStep?: number;
     /**
      * Callback to update the PEM value.
      */
@@ -68,22 +64,21 @@ interface AddActionCertificateWizardPropsInterface extends IdentifiableComponent
 }
 
 /**
- *  Add Action certificate wizard form component.
+ *  Action certificate wizard component.
  *
  * @param props - Props injected to the component.
- * @returns Add action certificate wizard form component.
+ * @returns Action certificate wizard component.
  */
-export const AddActionCertificateWizard: FunctionComponent<AddActionCertificateWizardPropsInterface> = ({
+export const ActionCertificateWizard: FunctionComponent<ActionCertificateWizardPropsInterface> = ({
     closeWizard,
-    currentStep: _currentStep = 0,
     updatePEMValue,
     updateSubmit,
     currentPEMValue,
     isCreateFormState,
     actionTypeApiPath,
     actionId,
-    ["data-componentid"]: _componentId = "add-action-certificate-wizard"
-}: AddActionCertificateWizardPropsInterface ): ReactElement => {
+    ["data-componentid"]: _componentId = "action-certificate-wizard"
+}: ActionCertificateWizardPropsInterface ): ReactElement => {
 
     const { t } = useTranslation();
 
@@ -93,42 +88,27 @@ export const AddActionCertificateWizard: FunctionComponent<AddActionCertificateW
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
     const [ triggerUpload, setTriggerUpload ] = useTrigger();
 
-    const [ partiallyCompletedStep ] = useState<number>(undefined);
-    const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(_currentStep);
     const [ showFinishButton, setShowFinishButton ] = useState<boolean>(false);
     const [ alert, , alertComponent ] = useWizardAlert();
 
     /**
-     * Sets the current wizard step to the previous on every `partiallyCompletedStep`
-     * value change , and resets the partially completed step value.
+     * Set triggers to finish certificate submission.
      */
-    useEffect(() => {
-        if (partiallyCompletedStep === undefined) {
-            return;
-        }
-
-        setCurrentWizardStep(currentWizardStep - 1);
-    }, [ partiallyCompletedStep ]);
-
     const finish = () => {
-        switch (currentWizardStep) {
-            case 0:
-                setTriggerUpload();
-                setFinishSubmit();
-        }
+        setTriggerUpload();
+        setFinishSubmit();
     };
 
     /**
      * Handles the final wizard submission.
      */
-    const handleWizardFormFinish = (values: any): void => {
-        updatePEMValue(values);
+    const handleWizardFormFinish = (value: string): void => {
 
         if(!isCreateFormState) {
 
             const updatingValues: PreUpdatePasswordActionUpdateInterface = {
                 passwordSharing: {
-                    certificate: values
+                    certificate: value
                 }
             };
 
@@ -152,7 +132,7 @@ export const AddActionCertificateWizard: FunctionComponent<AddActionCertificateW
                     updateSubmit(false);
                 });
         }
-
+        updatePEMValue(value);
         closeWizard();
     };
 
@@ -190,6 +170,7 @@ export const AddActionCertificateWizard: FunctionComponent<AddActionCertificateW
                     triggerSubmit={ finishSubmit }
                     onSubmit= { handleWizardFormFinish }
                     setShowFinishButton={ setShowFinishButton }
+                    data-componentid={ `${_componentId}-add-certificate-form` }
                 />
             </Modal.Content>
             <Modal.Actions>
@@ -221,4 +202,4 @@ export const AddActionCertificateWizard: FunctionComponent<AddActionCertificateW
     );
 };
 
-export default AddActionCertificateWizard;
+export default ActionCertificateWizard;
