@@ -68,7 +68,7 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
     element,
     className,
     "data-componentid": componentId = "reorderable-component",
-    draggableProps
+    draggableProps = {}
 }: ReorderableComponentPropsInterface): ReactElement => {
     const elementId: string = useNodeId();
     const { ElementFactory, setLastInteractedResource } = useAuthenticationFlowBuilderCore();

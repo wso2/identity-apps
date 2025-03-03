@@ -6,6 +6,8 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
+        "@dnd-kit/helpers": "^0.0.9",
+        "@dnd-kit/react": "^0.0.9",
         "@emotion/react": "^11.11.0",
         "@emotion/styled": "^11.11.0",
         "@lexical/react": "^0.21.0",

@@ -21,15 +21,7 @@ import { Step } from "./steps";
 import { Template } from "./templates";
 import { Widget } from "./widget";
 
-export interface ResourceDisplayOnlyMeta {
-    /**
-     * Type of the resource needed for visual editor operations.
-     * @remarks This is a display only meta field and not being published to the backend.
-     */
-    resourceType?: ResourceTypes;
-}
-
-export type Resource = (Element | Step | Widget) & ResourceDisplayOnlyMeta;
+export type Resource = Element | Step | Widget;
 
 export enum ResourceTypes {
     Step = "STEP",

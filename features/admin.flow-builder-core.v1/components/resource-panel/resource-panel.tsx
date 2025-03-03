@@ -203,9 +203,9 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                                 Choose one of these templates to start building registration experience
                             </Typography>
                             <Stack direction="column" spacing={ 1 }>
-                                { templates.map((template: Template) => (
+                                { templates.map((template: Template, index: number) => (
                                     <ResourcePanelDraggableNode
-                                        id={ template.type }
+                                        id={ `${template.resourceType}-${template.type}-${index}` }
                                         key={ template.type }
                                         resource={ template }
                                     />
@@ -230,9 +230,9 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                                 Use these widgets to build up the flow using per-created flow blocks
                             </Typography>
                             <Stack direction="column" spacing={ 1 }>
-                                { widgets.map((widget: Widget) => (
+                                { widgets.map((widget: Widget, index: number) => (
                                     <ResourcePanelDraggableNode
-                                        id={ widget.type }
+                                        id={ `${widget.resourceType}-${widget.type}-${index}` }
                                         key={ widget.type }
                                         resource={ widget }
                                     />
@@ -240,11 +240,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                             </Stack>
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion
-                        square
-                        disableGutters
-                        className={ classNames("flow-builder-element-panel-categories") }
-                    >
+                    <Accordion square disableGutters className={ classNames("flow-builder-element-panel-categories") }>
                         <AccordionSummary
                             className="flow-builder-element-panel-category-heading"
                             expandIcon={ <ChevronRightIcon size={ 14 } /> }
@@ -259,8 +255,12 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                         <AccordionDetails className="flow-builder-element-panel-category-details">
                             <Typography variant="body2">Use these as steps in your flow</Typography>
                             <Stack direction="column" spacing={ 1 }>
-                                { steps.map((step: Step) => (
-                                    <ResourcePanelDraggableNode id={ step.type } key={ step.type } resource={ step } />
+                                { steps.map((step: Step, index: number) => (
+                                    <ResourcePanelDraggableNode
+                                        id={ `${step.resourceType}-${step.type}-${index}` }
+                                        key={ step.type }
+                                        resource={ step }
+                                    />
                                 )) }
                             </Stack>
                         </AccordionDetails>
@@ -280,9 +280,9 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                         <AccordionDetails className="flow-builder-element-panel-category-details">
                             <Typography variant="body2">Use these components to build up your vies</Typography>
                             <Stack direction="column" spacing={ 1 }>
-                                { elements.map((element: Element) => (
+                                { elements.map((element: Element, index: number) => (
                                     <ResourcePanelDraggableNode
-                                        id={ element.type }
+                                        id={ `${element.resourceType}-${element.type}-${index}` }
                                         key={ element.type }
                                         resource={ element }
                                     />

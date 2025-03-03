@@ -18,33 +18,22 @@
 
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
-import { useDnD } from "@oxygen-ui/react/dnd";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     Controls,
     Edge,
-    MarkerType,
     Node,
     NodeTypes,
-    OnConnect,
-    OnNodesDelete,
     ReactFlow,
     ReactFlowProps,
-    XYPosition,
-    addEdge,
-    getConnectedEdges,
-    getIncomers,
-    getOutgoers,
-    useEdgesState,
-    useNodesState,
     useReactFlow
 } from "@xyflow/react";
-import React, { DragEvent, FC, FunctionComponent, ReactElement, useCallback, useMemo } from "react";
-import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
-import { ResourceTypes, Resources } from "../../models/resources";
+import React, { FC, FunctionComponent, ReactElement, useMemo } from "react";
+import VisualFlowConstants from "../../constants/visual-flow-constants";
+import { Resources } from "../../models/resources";
 import getKnownEdgeTypes from "../../utils/get-known-edge-types";
-import resolveKnownEdges from "../../utils/resolve-known-edges";
 import transformFlow from "../../utils/transform-flow";
+import Droppable from "../dnd/droppable";
 import BaseEdge from "../react-flow-overrides/base-edge";
 // IMPORTANT: `@xyflow/react/dist/style.css` should be at the top of the stylesheet import list.
 import "@xyflow/react/dist/style.css";
@@ -99,101 +88,17 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-flow",
     customEdgeTypes,
     onFlowSubmit,
-    onEdgeResolve,
     nodeTypes,
-    initialNodes = [],
-    initialEdges = [],
+    nodes,
+    onNodesChange,
+    edges,
+    onEdgesChange,
+    onConnect,
+    onNodesDelete,
     ...rest
 }: VisualFlowPropsInterface): ReactElement => {
-    const [ nodes, setNodes, onNodesChange ] = useNodesState(initialNodes);
-    const [ edges, setEdges, onEdgesChange ] = useEdgesState(initialEdges);
-    const { screenToFlowPosition, toObject } = useReactFlow();
-    const { node, generateComponentId } = useDnD();
-    const { onResourceDropOnCanvas } = useAuthenticationFlowBuilderCore();
+    const { toObject } = useReactFlow();
 
-    const onDragOver: (event: DragEvent) => void = useCallback((event: DragEvent) => {
-        event.preventDefault();
-        event.dataTransfer.dropEffect = "move";
-    }, []);
-
-    const onDrop: (e: DragEvent) => void = useCallback(
-        (event: DragEvent) => {
-            event.preventDefault();
-
-            // check if the dropped element is valid
-            if (!node?.type || node?.resourceType !== ResourceTypes.Step) {
-                return;
-            }
-
-            // project was renamed to screenToFlowPosition
-            // and you don't need to subtract the reactFlowBounds.left/top anymore
-            // details: https://reactflow.dev/whats-new/2023-11-10
-            const position: XYPosition = screenToFlowPosition({
-                x: event.clientX,
-                y: event.clientY
-            });
-
-            const newNode: Node = {
-                data: {
-                    label: `${node.type} node`,
-                    ...node
-                },
-                deletable: true,
-                id: generateComponentId(),
-                position,
-                type: node.type as string
-            };
-
-            setNodes((nodes: Node[]) => nodes.concat(newNode));
-
-            onResourceDropOnCanvas(node, null);
-        },
-        [ screenToFlowPosition, node?.type ]
-    );
-
-    const onConnect: OnConnect = useCallback(
-        (connection: any) => {
-            let edge: Edge = onEdgeResolve ? onEdgeResolve(connection, nodes) : resolveKnownEdges(connection, nodes);
-
-            if (!edge) {
-                edge = {
-                    ...connection,
-                    markerEnd: {
-                        type: MarkerType.Arrow
-                    },
-                    type: "base-edge"
-                };
-            }
-
-            setEdges((edges: Edge[]) => addEdge(edge, edges));
-        },
-        [ setEdges, nodes ]
-    );
-
-    const onNodesDelete: OnNodesDelete<Node> = useCallback(
-        (deleted: Node[]) => {
-            setEdges(
-                deleted.reduce((acc: Edge[], node: Node) => {
-                    const incomers: Node[] = getIncomers(node, nodes, edges);
-                    const outgoers: Node[] = getOutgoers(node, nodes, edges);
-                    const connectedEdges: Edge[] = getConnectedEdges([ node ], edges);
-
-                    const remainingEdges: Edge[] = acc.filter((edge: Edge) => !connectedEdges.includes(edge));
-
-                    const createdEdges: Edge[] = incomers.flatMap(({ id: source }: { id: string }) =>
-                        outgoers.map(({ id: target }: { id: string }) => ({
-                            id: `${source}->${target}`,
-                            source,
-                            target
-                        }))
-                    );
-
-                    return [ ...remainingEdges, ...createdEdges ];
-                }, edges)
-            );
-        },
-        [ nodes, edges ]
-    );
 
     const handlePublish = (): void => {
         const flow: any = toObject();
@@ -222,25 +127,25 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                     Publish
                 </Button>
             </Box>
-            <ReactFlow
-                fitView
-                nodes={ nodes }
-                edges={ edges }
-                nodeTypes={ useMemo(() => nodeTypes, []) }
-                edgeTypes={ edgeTypes as any }
-                onNodesChange={ onNodesChange }
-                onEdgesChange={ onEdgesChange }
-                onConnect={ onConnect }
-                onNodesDelete={ onNodesDelete }
-                onDrop={ onDrop }
-                onDragOver={ onDragOver }
-                proOptions={ { hideAttribution: true } }
-                data-componentid={ componentId }
-                colorMode="dark"
-                { ...rest }
-            >
-                <Controls position="top-right" />
-            </ReactFlow>
+            <Droppable id={ VisualFlowConstants.FLOW_BUILDER_CANVAS_ID }>
+                <ReactFlow
+                    fitView
+                    nodes={ nodes }
+                    edges={ edges }
+                    nodeTypes={ useMemo(() => nodeTypes, []) }
+                    edgeTypes={ edgeTypes as any }
+                    onNodesChange={ onNodesChange }
+                    onEdgesChange={ onEdgesChange }
+                    onConnect={ onConnect }
+                    onNodesDelete={ onNodesDelete }
+                    proOptions={ { hideAttribution: true } }
+                    data-componentid={ componentId }
+                    colorMode="dark"
+                    { ...rest }
+                >
+                    <Controls position="top-right" />
+                </ReactFlow>
+            </Droppable>
         </>
     );
 };

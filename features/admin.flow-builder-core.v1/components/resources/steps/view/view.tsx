@@ -17,7 +17,6 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
-import { DroppableContainer, GetDragItemProps } from "@oxygen-ui/react/dnd";
 import FormGroup from "@oxygen-ui/react/FormGroup";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
@@ -31,16 +30,15 @@ import React, {
     DragEvent,
     FunctionComponent,
     MouseEvent,
-    MutableRefObject,
     ReactElement,
     useCallback,
-    useEffect,
-    useRef
+    useEffect
 } from "react";
 import ReorderableElement from "./reorderable-element";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import useGenerateStepElement from "../../../../hooks/use-generate-step-element";
 import { Element } from "../../../../models/elements";
+import Droppable from "../../../dnd/droppable";
 import "./view.scss";
 
 /**
@@ -63,8 +61,6 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
     const { deleteElements, updateNodeData } = useReactFlow();
     const { onResourceDropOnCanvas } = useAuthenticationFlowBuilderCore();
     const { generateStepElement } = useGenerateStepElement();
-
-    const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if ((data?.components as Element[])?.length <= 0) {
@@ -114,11 +110,8 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
 
     return (
         <div
-            ref={ ref }
             className="flow-builder-step"
             data-componentid={ componentId }
-            onDrop={ handleDrop }
-            onDrag={ handleDragOver }
         >
             <Box display="flex" justifyContent="space-between" className="flow-builder-step-action-panel">
                 <Typography
@@ -145,7 +138,20 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                 <Paper className="flow-builder-step-content-box" elevation={ 0 } variant="outlined">
                     <Box className="flow-builder-step-content-form">
                         <FormGroup>
-                            <DroppableContainer
+                            <Droppable id="view">
+                                { (node?.data?.components as any).map((component: Element) => (
+                                    <ReorderableElement
+                                        key={ component.id }
+                                        element={ component }
+                                        className={ classNames(
+                                            "flow-builder-step-content-form-field"
+                                        // dragItemClassName
+                                        ) }
+                                    // draggableProps={ otherDragItemProps }
+                                    />
+                                )) }
+                            </Droppable>
+                            { /* <DroppableContainer
                                 nodes={ (node?.data?.components || []) as Element[] }
                                 onOrderChange={ handleOrderChange }
                             >
@@ -175,7 +181,7 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                                         );
                                     })
                                 }
-                            </DroppableContainer>
+                            </DroppableContainer> */ }
                         </FormGroup>
                     </Box>
                 </Paper>

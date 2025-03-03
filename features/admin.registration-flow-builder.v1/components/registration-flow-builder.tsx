@@ -16,9 +16,10 @@
  * under the License.
  */
 
-import DecoratedVisualFlow from "@wso2is/admin.flow-builder-core.v1/components/visual-flow/decorated-visual-flow";
+import FlowBuilder from "@wso2is/admin.flow-builder-core.v1/components/flow-builder";
+import ButtonAdapterConstants from "@wso2is/admin.flow-builder-core.v1/constants/button-adapter-constants";
 import { Payload } from "@wso2is/admin.flow-builder-core.v1/models/api";
-import { BlockTypes, Element, ElementCategories, ElementTypes } from "@wso2is/admin.flow-builder-core.v1/models/elements";
+import { BlockTypes, Element, ElementTypes } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { StaticStepTypes, Step, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
 import AuthenticationFlowBuilderCoreProvider from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
@@ -38,7 +39,6 @@ import StepFactory from "./resources/steps/step-factory";
 import configureRegistrationFlow from "../api/configure-registration-flow";
 import useGetRegistrationFlowBuilderResources from "../api/use-get-registration-flow-builder-resources";
 import RegistrationFlowBuilderProvider from "../providers/registration-flow-builder-provider";
-import ButtonAdapterConstants from "@wso2is/admin.flow-builder-core.v1/constants/button-adapter-constants";
 
 /**
  * Props interface of {@link RegistrationFlowBuilder}
@@ -98,7 +98,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
         return generateIdsForTemplates(defaultTemplate)?.config?.data?.steps[0]?.data?.components;
     };
 
-    const defaultTemplateComponents = useMemo(() => getDefaultTemplateComponents(), [resources]);
+    const defaultTemplateComponents = useMemo(() => getDefaultTemplateComponents(), [ resources ]);
 
     const initialNodes: Node[] = useMemo<Node[]>(
         () => [
@@ -134,15 +134,15 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
     );
 
     const initialEdges: Edge[] = useMemo<Edge[]>(() => {
-        const defaultTemplateActionId: string = defaultTemplateComponents?.map(
-            (component: Element) => {
+        const defaultTemplateActionId: string = defaultTemplateComponents
+            ?.map((component: Element) => {
                 if (component.type === BlockTypes.Form) {
                     return component.components.find((element: Element) => element.type === ElementTypes.Button)?.id;
                 }
 
                 return null;
-            }
-        ).filter(Boolean)[0];
+            })
+            .filter(Boolean)[0];
 
         return [
             {
@@ -192,7 +192,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
     return (
         <AuthenticationFlowBuilderCoreProvider ElementFactory={ ElementFactory } ResourceProperties={ ResourceProperties }>
             <RegistrationFlowBuilderProvider>
-                <DecoratedVisualFlow
+                <FlowBuilder
                     resources={ resources }
                     data-componentid={ componentId }
                     onFlowSubmit={ handleFlowSubmit }
