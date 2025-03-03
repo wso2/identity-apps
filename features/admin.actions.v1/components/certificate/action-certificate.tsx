@@ -273,7 +273,7 @@ export const ActionCertificateComponent: FunctionComponent<ActionCertificateProp
                 <Popup
                     trigger={ (
                         <Icon
-                            onClick={ () => handleViewCertificate() }
+                            onClick={ handleViewCertificate }
                             name={ "info circle" }
                             color={ "grey" }
                         />
@@ -324,7 +324,7 @@ export const ActionCertificateComponent: FunctionComponent<ActionCertificateProp
                                                     disabled: displayCertificate?.infoUnavailable,
                                                     hidden: displayCertificate?.infoUnavailable,
                                                     icon: "eye",
-                                                    onClick: () => handleViewCertificate(),
+                                                    onClick: handleViewCertificate,
                                                     popupText: t("actions:fields.passwordSharing.certificate"+
                                                             ".icon.viewcertificate"),
                                                     type: "button"

@@ -347,7 +347,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                     actionTypeApiPath={ actionTypeApiPath }
                     actionId={ initialValues?.id }
                     readOnly={ getFieldDisabledStatus() }
-                    data-componentid={ `${_componentId}-certificate` }
+                    data-componentid={ `${ _componentId }-certificate` }
                 />
                 { RuleExpressionsMetaData && showRuleComponent && (
                     <RuleConfigForm
@@ -357,7 +357,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                         setRule={ setRule }
                         isHasRule={ isHasRule }
                         setIsHasRule={ setIsHasRule }
-                        data-componentid={ `${_componentId}-rule` }
+                        data-componentid={ `${ _componentId }-rule` }
                     />
                 ) }
             </>
