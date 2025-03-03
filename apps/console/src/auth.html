@@ -170,7 +170,6 @@
             var proxyContextPathGlobal = startupConfig.proxyContextPathGlobal;
             var superTenantGlobal = startupConfig.superTenant;
             var tenantPrefixGlobal = startupConfig.tenantPrefix;
-            var isCentralDeploymentEnabled = startupConfig.centralDeploymentEnabled;
             var isAdaptiveAuthenticationAvailable = true;
             var isOrganizationManagementEnabled = true;
 
@@ -180,18 +179,13 @@
                 sessionStorage.setItem("auth_callback_url_console", authCallbackUrl);
             }
 
-            if (isCentralDeploymentEnabled) {
-                localStorage.setItem("user_requested_tenant", userTenant);
-            }
-
-            var serverOrigin = isCentralDeploymentEnabled ? startupConfig.centralServerUrl : startupConfig.serverUrl;
-            var deploymentUnitServerOrigin = startupConfig.serverUrl;
+            var serverOrigin = startupConfig.serverUrl;
             var authorizationCode = urlParams.get("code");
             var authSessionState = urlParams.get("session_state");
             var authIdPs = urlParams.get("AuthenticatedIdPs");
 
             function authenticateWithSDK() {
-                if (!authorizationCode || isCentralDeploymentEnabled) {
+                if(!authorizationCode) {
                     function getTenantName() {
                         var path = window.location.pathname;
                         var pathChunks = path.split("/");
@@ -228,27 +222,6 @@
                         }
 
                         return serverOrigin + getTenantPath(tenantDomain);
-                    }
-
-                    /**
-                     * Get the deployment unit API path.
-                     * 
-                     * @param {string} path - Path to be appended to the API path.
-                     * @param {string} tenantDomain - Tenant domain.
-                     * @returns {string} Constructed API path.
-                     */
-                    function getDeploymentUnitApiPath(path, tenantDomain) {
-                        if (!tenantDomain) {
-                            if (startupConfig.superTenantProxy) {
-                                tenantDomain = startupConfig.superTenantProxy;
-                            } else {
-                                tenantDomain = startupConfig.superTenant;
-                            }
-                        }
-                        if (path) {
-                            return deploymentUnitServerOrigin + getTenantPath(tenantDomain) + path;
-                        }
-                        return deploymentUnitServerOrigin + getTenantPath(tenantDomain);
                     }
 
                     /**
@@ -289,31 +262,12 @@
                         // When there's no proxy context path, the IS server returns "null".
                         var contextPath = (!proxyContextPathGlobal || proxyContextPathGlobal === "null") ? "" : "/" + proxyContextPathGlobal;
 
-                        if (isCentralDeploymentEnabled) {
-                            return applicationDomain 
-                        }
                         if (getTenantName() === startupConfig.superTenant) {
                             return applicationDomain.replace(/\/+$/, '') + contextPath
                                 + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                         }
 
                         return applicationDomain.replace(/\/+$/, '') + contextPath + getTenantPath()
-                    }
-
-                    /**
-                     * Construct the sign-in redirect URL for deployment unit.
-                     * 
-                     * @returns {string} Constructed URL
-                     */
-                    function deploymentUnitSignInRedirectURL(tenantDomain) {
-                        
-                        var contextPath = (!proxyContextPathGlobal || proxyContextPathGlobal === "null") ? "" : "/" + proxyContextPathGlobal;
-
-                        if (tenantDomain === startupConfig.superTenant) {
-                            return applicationDomain.replace(/\/+$/, '') + contextPath
-                                + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
-                        }
-                        return `${applicationDomain}/${tenantPrefixGlobal}/${tenantDomain}` 
                             + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                     }
 
@@ -379,22 +333,7 @@
                     }
 
                     var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
-                    if (isCentralDeploymentEnabled) {
-                        auth = AsgardeoAuth.AsgardeoSPAClient.getInstance("primary");
-                    }
 
-                    var endpoints = {
-                        authorizationEndpoint: getApiPath("/oauth2/authorize"),
-                        clockTolerance: 300,
-                        jwksEndpointURL: isCentralDeploymentEnabled ? getApiPath("/oauth2/jwks") : undefined,
-                        logoutEndpointURL: getApiPath("/oidc/logout"),
-                        oidcSessionIFrameEndpointURL: getApiPath("/oidc/checksession"),
-                        tokenEndpointURL: undefined,
-                        tokenRevocationEndpointURL: isCentralDeploymentEnabled ? getApiPath("/oauth2/revoke") : undefined
-                    };
-                    if (isCentralDeploymentEnabled) {
-                        endpoints.issuer = `${serverOrigin}/oauth2/token`;
-                    }
                     var authConfig = {
                         signInRedirectURL: signInRedirectURL(),
                         signOutRedirectURL: getSignOutRedirectURL(),
@@ -405,7 +344,15 @@
                         storage: "webWorker",
                         disableTrySignInSilently: true,
                         enableOIDCSessionManagement: false,
-                        endpoints: endpoints,
+                        endpoints: {
+                            authorizationEndpoint: getApiPath("/oauth2/authorize"),
+                            clockTolerance: 300,
+                            jwksEndpointURL: undefined,
+                            logoutEndpointURL: getApiPath("/oidc/logout"),
+                            oidcSessionIFrameEndpointURL: getApiPath("/oidc/checksession"),
+                            tokenEndpointURL: undefined,
+                            tokenRevocationEndpointURL: undefined
+                        },
                         enablePKCE: true
                     }
 
@@ -438,81 +385,13 @@
                             sessionStorage.setItem("auth_callback_url_console", authCallbackUrl);
                         }
 
-                        if (isCentralDeploymentEnabled) {
-                            if (authorizationCode) {
-                                auth.signIn({callOnlyOnRedirect: true})
-                                    .then((response) => {
-                                        auth.getDecodedIDToken().then((token) => {
-                                            let loginTenant = token["default_tenant"];
-                                            const associatedOrgJson = token["org_user_associations"]?.join(",");
-                                            const orgUserAssociations = associatedOrgJson ? JSON.parse(associatedOrgJson) : undefined;
-                                            const requestedTenant = localStorage.getItem("user_requested_tenant");
-
-                                            localStorage.removeItem("user_requested_tenant");
-
-                                            let loginTenantAssociation;
-
-                                            if (requestedTenant) {
-                                                loginTenantAssociation = orgUserAssociations?.find((org) => org.orgHandle === requestedTenant);
-                                                if (loginTenantAssociation) {
-                                                    loginTenant = requestedTenant;
-                                                }
-                                            } else {
-                                                loginTenantAssociation = orgUserAssociations?.find((org) => org.orgHandle === loginTenant);
-                                            }
-
-                                            if (!loginTenantAssociation && orgUserAssociations?.length) {
-                                                loginTenantAssociation = orgUserAssociations[0];
-                                            }
-
-                                            if (!loginTenantAssociation) {
-                                                loginTenant = superTenantGlobal;
-                                            }
-                                            
-                                            var regionalAuthConfig = {
-                                                signInRedirectURL: deploymentUnitSignInRedirectURL(loginTenant),
-                                                signOutRedirectURL: getSignOutRedirectURL(),
-                                                clientID: "<%= htmlWebpackPlugin.options.clientID %>",
-                                                baseUrl: getDeploymentUnitApiPath(loginTenant),
-                                                responseMode: "query",
-                                                scope: ["openid SYSTEM profile email"],
-                                                storage: "webWorker",
-                                                disableTrySignInSilently: false,
-                                                enableOIDCSessionManagement: false,
-                                                endpoints: {
-                                                    authorizationEndpoint: getDeploymentUnitApiPath("/oauth2/authorize", loginTenant),
-                                                    clockTolerance: 300,
-                                                    jwksEndpointURL: getDeploymentUnitApiPath("/oauth2/jwks", loginTenant),
-                                                    logoutEndpointURL: getDeploymentUnitApiPath("/oidc/logout", loginTenant),
-                                                    oidcSessionIFrameEndpointURL: getDeploymentUnitApiPath("/oidc/checksession", loginTenant),
-                                                    tokenEndpointURL: getDeploymentUnitApiPath("/oauth2/token", loginTenant),
-                                                    tokenRevocationEndpointURL: getDeploymentUnitApiPath("/oauth2/revoke", loginTenant),
-                                                    issuer: getDeploymentUnitApiPath("/oauth2/token", loginTenant)
-                                                },
-                                                enablePKCE: true
-                                            }
-                                            var authSecondary = AsgardeoAuth.AsgardeoSPAClient.getInstance("secondary");
-
-                                            authSecondary.initialize(regionalAuthConfig);
-                                            if (loginTenant !== superTenantGlobal) {
-                                                authSecondary.signIn({prompt: "login",fidp: "PlatformIDP"})
-                                            } else {
-                                                authSecondary.signIn(getAuthParams({}));
-                                            }
-                                        })
-                                    })
-                            } else {
-                                auth.signIn(getAuthParams({}))
-                            }
-                        } else {
-                            auth.signIn(getAuthParams({}));
-                        }
+                        auth.signIn(getAuthParams({}));
                     }
                 }
             }
         </script>
         <script>
-            if(!authorizationCode || isCentralDeploymentEnabled) {
+            if(!authorizationCode) {
                 var authSPAJS = document.createElement("script");
                 var authScriptSrc = "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename + '/auth-spa-3.1.2.min.js' : '/auth-spa-3.1.2.min.js'%>";
 
