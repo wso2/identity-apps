@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.42.2
+
+### Patch Changes
+
+- [#7769](https://github.com/wso2/identity-apps/pull/7769) [`4360cdb907da60f3541673fb33140d8d45d740c7`](https://github.com/wso2/identity-apps/commit/4360cdb907da60f3541673fb33140d8d45d740c7) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Revert changes related to pre auth app related to central deployment
+
 ## 2.42.1
 
 ### Patch Changes
