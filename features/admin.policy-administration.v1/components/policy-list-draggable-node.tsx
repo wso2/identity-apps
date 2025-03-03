@@ -139,7 +139,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                                 />
                             ) }
                             position="top center"
-                            content={ t("Deactivate Policy to Edit") }
+                            content={ t("policyAdministration:editPolicy.disabledBtnTooltip") }
                             inverted
                         />
                         <Popup
