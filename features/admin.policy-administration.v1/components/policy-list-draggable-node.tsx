@@ -20,8 +20,6 @@ import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
-import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
-import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
@@ -66,10 +64,6 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
 }: PolicyListDraggableNodePropsInterface): ReactElement => {
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-
-    const handleEdit = (policyId: string) => {
-        history.push(`${AppConstants.getPaths().get("EDIT_POLICY").replace(":id", btoa(policyId))}`);
-    };
 
     const handleDelete = async (): Promise<void> => {
         try {
@@ -135,17 +129,17 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                         <Popup
                             trigger={ (
                                 <Icon
-                                    link={ true }
-                                    onClick={ () => handleEdit(policy.policyId) }
+                                    link={ false }
                                     data-componentid={ `${componentId}-edit-button` }
                                     className="list-icon"
                                     size="small"
                                     color="grey"
                                     name="pencil alternate"
+                                    disabled={ true }
                                 />
                             ) }
                             position="top center"
-                            content={ t("common:edit") }
+                            content={ t("Deactivate Policy to Edit") }
                             inverted
                         />
                         <Popup
