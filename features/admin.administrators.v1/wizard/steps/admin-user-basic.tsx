@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,8 +17,6 @@
  */
 
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
-import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { getUsersList } from "@wso2is/admin.core.v1/api/users";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
@@ -27,7 +25,6 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
-import { getRolesList } from "@wso2is/admin.roles.v2/api";
 import { AdminAccountTypes } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserInviteInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
@@ -47,7 +44,6 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { AxiosResponse } from "axios";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
@@ -67,6 +63,14 @@ interface AddAdminUserBasicProps extends IdentifiableComponentInterface {
     onSubmit: (values: any) => void;
     administratorType: string;
     setFinishButtonDisabled: (values: boolean) => void;
+    /**
+     * Roles list for console application.
+     */
+    consoleRolesList: RolesInterface[];
+    /**
+     * Whether the console roles list is loading.
+     */
+    isConsoleRolesListLoading: boolean;
 }
 
 /**
@@ -82,16 +86,15 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
         triggerSubmit,
         onSubmit,
         setFinishButtonDisabled,
+        consoleRolesList,
+        isConsoleRolesListLoading,
         [ "data-componentid"]: componentId
     } = props;
 
-    const [ userRoleOptions, setUserRoleList ] = useState([]);
-    const [ rolesList, setRolesList ] = useState<RolesInterface[]>([]);
+
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<UserBasicInterface[]>([]);
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
-    const [ isUserRoleOptionsRequestLoading, setUserRoleOptionsRequestLoading ] = useState<boolean>(false);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listOffset ] = useState<number>(0);
@@ -105,41 +108,44 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
         "consoleSettings.invitedExternalAdmins"
     );
 
-    /**
-     * Retrieve the application data for the console application, filtering by name.
-     */
-    const { data: applicationListData } = useApplicationList(
-        null,
-        null,
-        null,
-        `name eq ${ApplicationManagementConstants.CONSOLE_APP_NAME}`
-    );
-
-    /**
-     * Build the roles filter to search for roles specific to the console application.
-     */
-    const roleSearchFilter: string = useMemo(() => {
-        if (applicationListData?.applications && applicationListData?.applications?.length > 0) {
-            return `audience.value eq ${applicationListData?.applications[0]?.id}`;
-        }
-
-        return null;
-    }, [ applicationListData ]);
-
     // Username input validation error messages.
     const USERNAME_REGEX_VIOLATION_ERROR_MESSAGE: string = t("users:guestUsers.fields." +
         "username.validations.regExViolation");
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    useEffect(() => {
-        if (!roleSearchFilter) {
-            return;
-        }
+    /**
+     * Constructs user role options from the console roles list.
+     */
+    const userRoleOptions: DropdownProps[] = useMemo(() => {
+        return consoleRolesList
+            ?.filter((role: RolesInterface) => {
+                if ([ "system", "everyone", "selfsignup" ].includes(role.displayName)) {
+                    return false;
+                }
 
+                const roleNameParts: string[] = role.displayName?.split("/") || [];
+
+                if (roleNameParts.length < 2 && roleNameParts[0] === "Application") {
+                    return false;
+                }
+
+                if (!isInvitedAdminInConsoleSettingsEnabled && !role.meta?.systemRole) {
+                    return false;
+                }
+
+                return true;
+            })
+            ?.map((role: RolesInterface, index: number) => ({
+                key: role?.id ?? index,
+                label: role?.displayName,
+                value: role?.displayName
+            }));
+    }, [ consoleRolesList ]);
+
+    useEffect(() => {
         // Fetch users to select as internal admins.
         if (administratorType === AdminAccountTypes.INTERNAL) {
-            setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
             setUserListMetaContent(new Map<string, string>([
                 [ "name", "name" ],
                 [ "emails", "emails" ],
@@ -151,48 +157,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                 [ "meta.created", "" ]
             ]));
         }
-
-        const roleOptions: DropdownProps[] = [];
-
-        if (userRoleOptions.length === 0) {
-            setUserRoleOptionsRequestLoading(true);
-            getRolesList(null, roleSearchFilter)
-                .then((response: AxiosResponse) => {
-                    setRolesList(response.data.Resources);
-                    response.data.Resources.map((role: RolesInterface, index: number) => {
-                        if(role.displayName === "system" ||
-                            role.displayName === "everyone" ||
-                            role.displayName === "selfsignup"
-                        ) {
-                            return;
-                        }
-
-                        if (
-                            role.displayName?.split("/")?.length < 2 &&
-                            role.displayName?.split("/")[0] === "Application"
-                        ) {
-                            return;
-                        }
-
-                        if (isInvitedAdminInConsoleSettingsEnabled ||
-                            (
-                                !isInvitedAdminInConsoleSettingsEnabled && role.meta?.systemRole
-                            )
-
-                        ){
-                            roleOptions?.push({
-                                key: index,
-                                label: role?.displayName,
-                                value: role?.displayName
-                            });
-                        }
-                    });
-                    setUserRoleList(roleOptions);
-                }).finally(() => {
-                    setUserRoleOptionsRequestLoading(false);
-                });
-        }
-    }, [ roleSearchFilter ]);
+    }, [ ]);
 
     useEffect(() => {
         if (userListMetaContent) {
@@ -204,9 +169,9 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                 return;
             }
 
-            getUserList(listItemLimit, listOffset, searchQuery, attributes, null);
+            getUserList(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT, listOffset, searchQuery, attributes, null);
         }
-    }, [ listOffset, listItemLimit, searchQuery ]);
+    }, [ listOffset, searchQuery ]);
 
     useEffect(() => {
         if (administratorType === AdminAccountTypes.INTERNAL) {
@@ -324,7 +289,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
     };
 
     const processInternalAdminFormData = (roleName: string): void => {
-        const selectedRoles: RolesInterface[] = rolesList?.filter(
+        const selectedRoles: RolesInterface[] = consoleRolesList?.filter(
             (role: RolesInterface) => role.displayName == roleName);
         const processedFormData: InternalAdminFormDataInterface = {
             checkedUsers: checkedAssignedListItems,
@@ -438,7 +403,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
         <>
 
             {
-                (isUserRoleOptionsRequestLoading ||
+                (isConsoleRolesListLoading ||
                 !userRoleOptions ||
                 userRoleOptions?.length <= 0
                 ) ?
