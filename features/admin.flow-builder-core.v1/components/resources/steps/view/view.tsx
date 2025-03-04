@@ -40,6 +40,7 @@ import useGenerateStepElement from "../../../../hooks/use-generate-step-element"
 import { Element } from "../../../../models/elements";
 import Droppable from "../../../dnd/droppable";
 import "./view.scss";
+import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 
 /**
  * Props interface of {@link View}
@@ -138,50 +139,19 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                 <Paper className="flow-builder-step-content-box" elevation={ 0 } variant="outlined">
                     <Box className="flow-builder-step-content-form">
                         <FormGroup>
-                            <Droppable id="view">
-                                { (node?.data?.components as any).map((component: Element) => (
+                            <Droppable id={ VisualFlowConstants.FLOW_BUILDER_VIEW_ID } data={ { nodeId } }>
+                                { (node?.data?.components as any).map((component: Element, index: number) => (
                                     <ReorderableElement
                                         key={ component.id }
+                                        id={  component.id }
+                                        index={ index }
                                         element={ component }
                                         className={ classNames(
                                             "flow-builder-step-content-form-field"
-                                        // dragItemClassName
                                         ) }
-                                    // draggableProps={ otherDragItemProps }
                                     />
                                 )) }
                             </Droppable>
-                            { /* <DroppableContainer
-                                nodes={ (node?.data?.components || []) as Element[] }
-                                onOrderChange={ handleOrderChange }
-                            >
-                                { ({
-                                    nodes,
-                                    getDragItemProps
-                                }: {
-                                    nodes: Element[];
-                                    getDragItemProps: GetDragItemProps;
-                                }) =>
-                                    nodes.length > 0 && nodes?.map((element: Element, index: number) => {
-                                        const {
-                                            className: dragItemClassName,
-                                            ...otherDragItemProps
-                                        } = getDragItemProps(index);
-
-                                        return (
-                                            <ReorderableElement
-                                                key={ element.id }
-                                                element={ element }
-                                                className={ classNames(
-                                                    "flow-builder-step-content-form-field",
-                                                    dragItemClassName
-                                                ) }
-                                                draggableProps={ otherDragItemProps }
-                                            />
-                                        );
-                                    })
-                                }
-                            </DroppableContainer> */ }
                         </FormGroup>
                     </Box>
                 </Paper>

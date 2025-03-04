@@ -30,7 +30,7 @@ import {
 } from "@xyflow/react";
 import React, { FC, FunctionComponent, ReactElement, useMemo } from "react";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
-import { Resources } from "../../models/resources";
+import { Resources, ResourceTypes } from "../../models/resources";
 import getKnownEdgeTypes from "../../utils/get-known-edge-types";
 import transformFlow from "../../utils/transform-flow";
 import Droppable from "../dnd/droppable";
@@ -127,7 +127,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                     Publish
                 </Button>
             </Box>
-            <Droppable id={ VisualFlowConstants.FLOW_BUILDER_CANVAS_ID }>
+            <Droppable id={ VisualFlowConstants.FLOW_BUILDER_CANVAS_ID } type={ VisualFlowConstants.FLOW_BUILDER_CANVAS_ID } accept={ [ ResourceTypes.Step ] }>
                 <ReactFlow
                     fitView
                     nodes={ nodes }

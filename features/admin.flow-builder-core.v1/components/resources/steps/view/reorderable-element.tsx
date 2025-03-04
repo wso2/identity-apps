@@ -21,18 +21,19 @@ import { GetDragItemProps } from "@oxygen-ui/react/dnd";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useNodeId } from "@xyflow/react";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, SVGProps } from "react";
+import React, { FunctionComponent, ReactElement, SVGProps, useRef } from "react";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import { Element } from "../../../../models/elements";
 import getWidgetElements from "../../../../utils/get-widget-elements";
 import isWidget from "../../../../utils/is-widget";
+import Sortable, { SortableProps } from "../../../dnd/sortable";
+import { Handle } from "../../../dnd/handle";
 
 /**
  * Props interface of {@link ReorderableElement}
  */
 export interface ReorderableComponentPropsInterface
-    extends IdentifiableComponentInterface,
-        Omit<BoxProps, "component"> {
+    extends IdentifiableComponentInterface, Omit<SortableProps, "element">, Omit<BoxProps, "children" | "id"> {
     /**
      * The element to be rendered.
      */
@@ -65,11 +66,13 @@ const GridDotsVerticalIcon = ({ ...rest }: SVGProps<SVGSVGElement>): ReactElemen
  * @returns ReorderableElement component.
  */
 export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInterface> = ({
+    id,
     element,
     className,
-    "data-componentid": componentId = "reorderable-component",
-    draggableProps = {}
+    "data-componentid": componentId = "sortable-component",
+    ...rest
 }: ReorderableComponentPropsInterface): ReactElement => {
+    const handleRef = useRef<HTMLButtonElement | null>(null);
     const elementId: string = useNodeId();
     const { ElementFactory, setLastInteractedResource } = useAuthenticationFlowBuilderCore();
 
@@ -81,9 +84,10 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
                 { getWidgetElements(element)?.map((element: Element) => (
                     <ReorderableElement
                         key={ element.id }
+                        id={ id }
                         element={ element }
                         className={ className }
-                        draggableProps={ draggableProps }
+                        { ...rest }
                     />
                 )
                 ) }
@@ -92,23 +96,20 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
     }
 
     return (
-        <Box
-            display="flex"
-            alignItems="center"
-            className={ classNames("reorderable-component", className) }
-            onClick={ () => setLastInteractedResource(element) }
-            data-componentid={ `${componentId}-${element.type}` }
-            { ...draggableProps }
-            // TODO: Temporary disable draggable until the dragging animation issue is fixed.
-            draggable={ false }
-        >
-            <div className="flow-builder-step-content-form-field-drag-handle">
-                <GridDotsVerticalIcon height={ 20 } />
-            </div>
-            <div className="flow-builder-step-content-form-field-content">
-                <ElementFactory resourceId={ elementId } resource={ element } />
-            </div>
-        </Box>
+        <Sortable id={ id } handleRef={ handleRef } { ...rest }>
+            <Box
+                display="flex"
+                alignItems="center"
+                className={ classNames("reorderable-component", className) }
+                onClick={ () => setLastInteractedResource(element) }
+                data-componentid={ `${componentId}-${element.type}` }
+            >
+                <Handle ref={ handleRef } />
+                <div className="flow-builder-step-content-form-field-content">
+                    <ElementFactory resourceId={ elementId } resource={ element } />
+                </div>
+            </Box>
+        </Sortable>
     );
 };
 

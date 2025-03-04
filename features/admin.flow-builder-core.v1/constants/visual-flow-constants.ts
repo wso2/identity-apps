@@ -24,6 +24,8 @@ class VisualFlowConstants {
     private constructor() { }
 
     public static readonly FLOW_BUILDER_CANVAS_ID: string = "flow-builder-canvas";
+    public static readonly FLOW_BUILDER_VIEW_ID: string = "flow-builder-view";
+    public static readonly FLOW_BUILDER_FORM_ID: string = "flow-builder-form";
 }
 
 export default VisualFlowConstants;

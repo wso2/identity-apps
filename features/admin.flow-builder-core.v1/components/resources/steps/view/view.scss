@@ -75,9 +75,16 @@
                         }
                     }
 
-                    &:hover {
+                    .dnd-action {
+                        visibility: hidden;
+                    }
+
+                    &:hover, &:focus, &:active {
                         border-color: var(--oxygen-palette-grey-200);
-                        cursor: move;
+
+                        >.dnd-action {
+                            visibility: visible;
+                        }
 
                         .flow-builder-step-content-form-field-drag-handle {
                             visibility: visible;
@@ -86,7 +93,17 @@
                     }
                 }
 
-
+                .dnd-sortable {
+                    &.is-dragging {
+                        .flow-builder-step-content-form-field {
+                            background-color: var(--oxygen-palette-background-paper);
+                            border-radius: var(--oxygen-shape-borderRadius);
+                            border: 1px solid var(--oxygen-palette-divider);
+                            box-shadow: var(--oxygen-shadows-8);
+                            padding: var(--oxygen-spacing-1) var(--oxygen-spacing-1) var(--oxygen-spacing-1) 0px;
+                        }
+                    }
+                }
             }
         }
     }

@@ -17,17 +17,17 @@
  */
 
 import Badge from "@mui/material/Badge";
-import { DroppableContainer, GetDragItemProps } from "@oxygen-ui/react/dnd";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { useNodeId, useReactFlow } from "@xyflow/react";
+import { useNodeId } from "@xyflow/react";
 import classNames from "classnames";
-import React, { DragEvent, FunctionComponent, ReactElement, useCallback } from "react";
-import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
-import useGenerateStepElement from "../../../../hooks/use-generate-step-element";
+import React, { FunctionComponent, ReactElement } from "react";
+import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import { Element, ElementCategories } from "../../../../models/elements";
 import ReorderableElement from "../../steps/view/reorderable-element";
 import "./form-adapter.scss";
+import Droppable from "../../../dnd/droppable";
+import Box from "@oxygen-ui/react/Box";
 
 /**
  * Props interface of {@link FormAdapter}
@@ -53,34 +53,6 @@ export const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
     resource
 }: FormAdapterPropsInterface): ReactElement => {
     const nodeId: string = useNodeId();
-    const { updateNodeData } = useReactFlow();
-    const { onResourceDropOnCanvas } = useAuthenticationFlowBuilderCore();
-    const { generateStepElement } = useGenerateStepElement();
-
-    const handleDrop: (e: DragEvent) => void = useCallback((event: DragEvent) => {
-        event.preventDefault();
-        // IMPORTANT: This ensures that the drop event is not propagated to the parent container.
-        // DO NOT REMOVE THIS LINE.
-        event.stopPropagation();
-
-        const droppedData: string = event.dataTransfer.getData("application/json");
-
-        if (droppedData) {
-            const generatedElement: Element = generateStepElement(JSON.parse(droppedData));
-
-            updateNodeData(nodeId, (node: any) => {
-                return {
-                    components: node?.data?.components?.map((component: Element) =>
-                        component.id === resource.id
-                            ? { ...component, components: [ ...(component.components || []), generatedElement ] }
-                            : component
-                    )
-                };
-            });
-
-            onResourceDropOnCanvas(generatedElement, nodeId);
-        }
-    }, []);
 
     const shouldShowFormFieldsPlaceholder: boolean = !resource?.components?.some((element: Element) => element.category === ElementCategories.Field);
 
@@ -92,27 +64,26 @@ export const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
             } }
             badgeContent="Form"
             className="adapter form-adapter"
-            onDrop={ handleDrop }
         >
             { shouldShowFormFieldsPlaceholder && (
-                <Typography variant="body2">DROP FORM FIELDS HERE</Typography>
+                <Box className="form-adapter-placeholder">
+                    <Typography variant="body2">DROP FORM FIELDS HERE</Typography>
+                </Box>
             ) }
-            <DroppableContainer nodes={ (resource?.components || []) as Element[] } onOrderChange={ null }>
-                { ({ nodes, getDragItemProps }: { nodes: Element[]; getDragItemProps: GetDragItemProps }) =>
-                    nodes.map((element: Element, index: number) => {
-                        const { className: dragItemClassName, ...otherDragItemProps } = getDragItemProps(index);
-
-                        return (
-                            <ReorderableElement
-                                key={ element.id }
-                                element={ element }
-                                className={ classNames("flow-builder-step-content-form-field", dragItemClassName) }
-                                draggableProps={ otherDragItemProps }
-                            />
-                        );
-                    })
-                }
-            </DroppableContainer>
+            <Droppable id={ VisualFlowConstants.FLOW_BUILDER_FORM_ID } data={ { nodeId, resource } }>
+                { (resource?.components as any).map((component: Element, index: number) => (
+                    <ReorderableElement
+                        key={ component.id }
+                        id={  component.id }
+                        index={ index }
+                        element={ component }
+                        className={ classNames(
+                            "flow-builder-step-content-form-field"
+                        ) }
+                        group={ resource.id }
+                    />
+                )) }
+            </Droppable>
         </Badge>
     );
 };
