@@ -121,7 +121,7 @@ export const AddCertificateFormComponent: React.FunctionComponent<AddCertificate
                             fileDecodedData={ fileDecoded }
                             fileData={ file }
                             forgeCertificateData={ certificate }
-                            data-testid={ `${_componentId}-upload` }
+                            data-testid={ `${ _componentId }-upload` }
                             hideAliasInput={ true }
                             setShowFinishButton={ setShowFinishButton }
                         />
