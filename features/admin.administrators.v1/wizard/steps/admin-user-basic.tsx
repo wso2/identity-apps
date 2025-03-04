@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,8 +17,6 @@
  */
 
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
-import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { getUsersList } from "@wso2is/admin.core.v1/api/users";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
@@ -27,7 +25,7 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
-import { getRolesList } from "@wso2is/admin.roles.v2/api";
+import { SystemRoleType } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { AdminAccountTypes } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserInviteInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
@@ -47,15 +45,27 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { AxiosResponse } from "axios";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
-import React, { FormEvent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+    FormEvent,
+    ForwardRefExoticComponent,
+    ForwardedRef,
+    MutableRefObject,
+    ReactElement,
+    RefAttributes,
+    forwardRef,
+    useCallback,
+    useEffect,
+    useImperativeHandle,
+    useMemo,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Header } from "semantic-ui-react";
-import { AdministratorConstants } from "../../constants/users";
 import { InternalAdminFormDataInterface } from "../../models/invite";
 import { isAdminUser, isCollaboratorUser } from "../../utils/administrators";
 
@@ -63,10 +73,27 @@ import { isAdminUser, isCollaboratorUser } from "../../utils/administrators";
  * Proptypes for the add admin user basic component.
  */
 interface AddAdminUserBasicProps extends IdentifiableComponentInterface {
-    triggerSubmit: boolean;
     onSubmit: (values: any) => void;
     administratorType: string;
     setFinishButtonDisabled: (values: boolean) => void;
+    /**
+     * Roles list for console application.
+     */
+    consoleRolesList: RolesInterface[];
+    /**
+     * Whether the console roles list is loading.
+     */
+    isConsoleRolesListLoading: boolean;
+}
+
+/**
+ * Add admin user basic form component ref interface.
+ */
+export interface AddAdminUserBasicFormRef {
+    /**
+     * Trigger the form submit.
+     */
+    triggerSubmit: () => void;
 }
 
 /**
@@ -74,24 +101,22 @@ interface AddAdminUserBasicProps extends IdentifiableComponentInterface {
  *
  * @returns add admin modal component.
  */
-export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> = (
-    props: AddAdminUserBasicProps): ReactElement => {
-
-    const {
+export const AddAdminUserBasic: ForwardRefExoticComponent<RefAttributes<AddAdminUserBasicFormRef> &
+AddAdminUserBasicProps> = forwardRef((
+    {
         administratorType,
-        triggerSubmit,
         onSubmit,
         setFinishButtonDisabled,
-        [ "data-componentid"]: componentId
-    } = props;
+        consoleRolesList,
+        isConsoleRolesListLoading,
+        [ "data-componentid"]: componentId = "add-admin-user-basic"
+    }: AddAdminUserBasicProps,
+    ref: ForwardedRef<AddAdminUserBasicFormRef>
+): ReactElement => {
 
-    const [ userRoleOptions, setUserRoleList ] = useState([]);
-    const [ rolesList, setRolesList ] = useState<RolesInterface[]>([]);
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<UserBasicInterface[]>([]);
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
-    const [ isUserRoleOptionsRequestLoading, setUserRoleOptionsRequestLoading ] = useState<boolean>(false);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listOffset ] = useState<number>(0);
@@ -99,32 +124,13 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
+    const triggerFormSubmit: MutableRefObject<() => void> = useRef<(() => void) | null>(null);
+
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
     const isInvitedAdminInConsoleSettingsEnabled: boolean = !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
         "consoleSettings.invitedExternalAdmins"
     );
-
-    /**
-     * Retrieve the application data for the console application, filtering by name.
-     */
-    const { data: applicationListData } = useApplicationList(
-        null,
-        null,
-        null,
-        `name eq ${ApplicationManagementConstants.CONSOLE_APP_NAME}`
-    );
-
-    /**
-     * Build the roles filter to search for roles specific to the console application.
-     */
-    const roleSearchFilter: string = useMemo(() => {
-        if (applicationListData?.applications && applicationListData?.applications?.length > 0) {
-            return `audience.value eq ${applicationListData?.applications[0]?.id}`;
-        }
-
-        return null;
-    }, [ applicationListData ]);
 
     // Username input validation error messages.
     const USERNAME_REGEX_VIOLATION_ERROR_MESSAGE: string = t("users:guestUsers.fields." +
@@ -132,14 +138,51 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    useEffect(() => {
-        if (!roleSearchFilter) {
-            return;
-        }
+    /**
+     * Constructs user role options from the console roles list.
+     */
+    const userRoleOptions: DropdownProps[] = useMemo(() => {
+        return consoleRolesList
+            ?.filter((role: RolesInterface) => {
+                if (Object.values(SystemRoleType).includes(role.displayName as SystemRoleType)) {
+                    return false;
+                }
 
+                const roleNameParts: string[] = role.displayName?.split("/") || [];
+
+                if (roleNameParts.length < 2 && roleNameParts[0] === "Application") {
+                    return false;
+                }
+
+                if (!isInvitedAdminInConsoleSettingsEnabled && !role.meta?.systemRole) {
+                    return false;
+                }
+
+                return true;
+            })
+            ?.map((role: RolesInterface, index: number) => ({
+                key: role?.id ?? index,
+                label: role?.displayName,
+                value: role?.displayName
+            }));
+    }, [ consoleRolesList ]);
+
+    // Expose triggerFormSubmit to the parent via the ref.
+    useImperativeHandle(
+        ref,
+        () => ({
+            triggerSubmit: () => {
+                if (triggerFormSubmit.current) {
+                    triggerFormSubmit.current();
+                }
+            }
+        }),
+        []
+    );
+
+    useEffect(() => {
         // Fetch users to select as internal admins.
         if (administratorType === AdminAccountTypes.INTERNAL) {
-            setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
             setUserListMetaContent(new Map<string, string>([
                 [ "name", "name" ],
                 [ "emails", "emails" ],
@@ -151,48 +194,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                 [ "meta.created", "" ]
             ]));
         }
-
-        const roleOptions: DropdownProps[] = [];
-
-        if (userRoleOptions.length === 0) {
-            setUserRoleOptionsRequestLoading(true);
-            getRolesList(null, roleSearchFilter)
-                .then((response: AxiosResponse) => {
-                    setRolesList(response.data.Resources);
-                    response.data.Resources.map((role: RolesInterface, index: number) => {
-                        if(role.displayName === "system" ||
-                            role.displayName === "everyone" ||
-                            role.displayName === "selfsignup"
-                        ) {
-                            return;
-                        }
-
-                        if (
-                            role.displayName?.split("/")?.length < 2 &&
-                            role.displayName?.split("/")[0] === "Application"
-                        ) {
-                            return;
-                        }
-
-                        if (isInvitedAdminInConsoleSettingsEnabled ||
-                            (
-                                !isInvitedAdminInConsoleSettingsEnabled && role.meta?.systemRole
-                            )
-
-                        ){
-                            roleOptions?.push({
-                                key: index,
-                                label: role?.displayName,
-                                value: role?.displayName
-                            });
-                        }
-                    });
-                    setUserRoleList(roleOptions);
-                }).finally(() => {
-                    setUserRoleOptionsRequestLoading(false);
-                });
-        }
-    }, [ roleSearchFilter ]);
+    }, [ ]);
 
     useEffect(() => {
         if (userListMetaContent) {
@@ -204,24 +206,15 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                 return;
             }
 
-            getUserList(listItemLimit, listOffset, searchQuery, attributes, null);
+            getUserList(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT, listOffset, searchQuery, attributes, null);
         }
-    }, [ listOffset, listItemLimit, searchQuery ]);
+    }, [ listOffset, searchQuery ]);
 
     useEffect(() => {
         if (administratorType === AdminAccountTypes.INTERNAL) {
             setFinishButtonDisabled(isEmpty(checkedAssignedListItems));
         }
     }, [ checkedAssignedListItems ]);
-
-    useEffect(() => {
-        document
-            ?.getElementById(
-                administratorType === AdminAccountTypes.INTERNAL
-                    ? AdministratorConstants.INVITE_INTERNAL_USER_FORM_ID
-                    : AdministratorConstants.INVITE_EXTERNAL_USER_FORM_ID
-            )?.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-    }, [ triggerSubmit ]);
 
     /**
      * The following method accepts a Map and returns the values as a string.
@@ -280,9 +273,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
             roles: values.roles.map((role: DropdownProps) => role.value as string)
         };
 
-        if (triggerSubmit) {
-            onSubmit(inviteUser);
-        }
+        onSubmit(inviteUser);
     };
 
     /**
@@ -324,16 +315,14 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
     };
 
     const processInternalAdminFormData = (roleName: string): void => {
-        const selectedRoles: RolesInterface[] = rolesList?.filter(
+        const selectedRoles: RolesInterface[] = consoleRolesList?.filter(
             (role: RolesInterface) => role.displayName == roleName);
         const processedFormData: InternalAdminFormDataInterface = {
             checkedUsers: checkedAssignedListItems,
             selectedRoles: selectedRoles
         };
 
-        if (triggerSubmit) {
-            onSubmit(processedFormData);
-        }
+        onSubmit(processedFormData);
     };
 
     /**
@@ -349,6 +338,8 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                 data-componentid={ `${componentId}-external-form` }
                 onSubmit={ () => processInternalAdminFormData(administratorConfig.adminRoleName) }
                 render={ ({ handleSubmit }: FormRenderProps) => {
+                    triggerFormSubmit.current = handleSubmit;
+
                     return (<form id="inviteInternalUserForm" onSubmit={ handleSubmit }>
                         <TransferComponent
                             compact
@@ -438,7 +429,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
         <>
 
             {
-                (isUserRoleOptionsRequestLoading ||
+                (isConsoleRolesListLoading ||
                 !userRoleOptions ||
                 userRoleOptions?.length <= 0
                 ) ?
@@ -449,6 +440,8 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                             onSubmit(getFormValues(values));
                         } }
                         render={ ({ handleSubmit }: FormRenderProps) => {
+                            triggerFormSubmit.current = handleSubmit;
+
                             return (
                                 <form id="inviteExternalUserForm" onSubmit={ handleSubmit }>
                                     <Grid>
@@ -541,11 +534,4 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
             ? inviteInternalUserForm()
             : inviteExternalUserForm()
     );
-};
-
-/**
- * Default props for the component.
- */
-AddAdminUserBasic.defaultProps = {
-    "data-componentid": "add-admin-user-basic"
-};
+});

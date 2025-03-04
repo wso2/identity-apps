@@ -42,7 +42,7 @@ import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { ActionCertificatesListComponent } from "./certificate/action-certificate-list";
+import { ActionCertificateComponent } from "./certificate/action-certificate";
 import CommonActionConfigForm from "./common-action-config-form";
 import RuleConfigForm from "./rule-config-form";
 import createAction from "../api/create-action";
@@ -335,7 +335,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                 <FormLabel className="certificate-label" >
                     { t("actions:fields.passwordSharing.certificate.label") }
                 </FormLabel>
-                <ActionCertificatesListComponent
+                <ActionCertificateComponent
                     updatePEMValue={ (val: string) => {
                         setPEMValue(val);
                     } }
@@ -347,6 +347,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                     actionTypeApiPath={ actionTypeApiPath }
                     actionId={ initialValues?.id }
                     readOnly={ getFieldDisabledStatus() }
+                    data-componentid={ `${ _componentId }-certificate` }
                 />
                 { RuleExpressionsMetaData && showRuleComponent && (
                     <RuleConfigForm
@@ -356,6 +357,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                         setRule={ setRule }
                         isHasRule={ isHasRule }
                         setIsHasRule={ setIsHasRule }
+                        data-componentid={ `${ _componentId }-rule` }
                     />
                 ) }
             </>

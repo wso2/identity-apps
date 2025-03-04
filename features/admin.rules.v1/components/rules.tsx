@@ -154,6 +154,7 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                                     top: 14
                                 } }
                                 onClick={ () => removeRule(rule.id) }
+                                data-componentid={ `${ componentId }-delete-rule-button` }
                             >
                                 <TrashIcon className="delete-button-icon" />
                             </Fab>
@@ -174,6 +175,7 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                                     top: 14
                                 } }
                                 onClick={ () => clearRule(rule.id) }
+                                data-componentid={ `${ componentId }-clear-rule-button` }
                             >
                                 { t("rules:buttons.clearRule") }
                             </Button>

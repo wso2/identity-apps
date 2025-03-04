@@ -1,5 +1,21 @@
 # @wso2is/admin.rules.v1
 
+## 0.4.16
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.40.3
+
+## 0.4.15
+
+### Patch Changes
+
+- [#7775](https://github.com/wso2/identity-apps/pull/7775) [`8f5a1aff4e9e2f833fbdfd26c267149980ab713c`](https://github.com/wso2/identity-apps/commit/8f5a1aff4e9e2f833fbdfd26c267149980ab713c) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add componentids and minor refactoring to action certificate component
+
+- Updated dependencies [[`8f5a1aff4e9e2f833fbdfd26c267149980ab713c`](https://github.com/wso2/identity-apps/commit/8f5a1aff4e9e2f833fbdfd26c267149980ab713c)]:
+  - @wso2is/admin.core.v1@2.40.2
+
 ## 0.4.14
 
 ### Patch Changes

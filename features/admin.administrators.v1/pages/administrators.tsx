@@ -1431,9 +1431,6 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                         closeWizard={ () => {
                             setShowExtenalAdminWizard(false);
                         } }
-                        updateList={ () => mutateGuestUserListFetchRequest() }
-                        rolesList={ [] }
-                        emailVerificationEnabled={ true }
                         onInvitationSendSuccessful={ () => {
                             mutateGuestUserListFetchRequest();
                             eventPublisher.publish("manage-users-finish-creating-collaborator-user");
