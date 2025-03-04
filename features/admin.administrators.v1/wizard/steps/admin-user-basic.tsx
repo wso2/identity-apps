@@ -25,6 +25,7 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { SystemRoleType } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { AdminAccountTypes } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserInviteInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
@@ -85,7 +86,13 @@ interface AddAdminUserBasicProps extends IdentifiableComponentInterface {
     isConsoleRolesListLoading: boolean;
 }
 
+/**
+ * Add admin user basic form component ref interface.
+ */
 export interface AddAdminUserBasicFormRef {
+    /**
+     * Trigger the form submit.
+     */
     triggerSubmit: () => void;
 }
 
@@ -96,18 +103,16 @@ export interface AddAdminUserBasicFormRef {
  */
 export const AddAdminUserBasic: ForwardRefExoticComponent<RefAttributes<AddAdminUserBasicFormRef> &
 AddAdminUserBasicProps> = forwardRef((
-    props: AddAdminUserBasicProps,
-    ref: ForwardedRef<AddAdminUserBasicFormRef>
-): ReactElement => {
-
-    const {
+    {
         administratorType,
         onSubmit,
         setFinishButtonDisabled,
         consoleRolesList,
         isConsoleRolesListLoading,
         [ "data-componentid"]: componentId = "add-admin-user-basic"
-    } = props;
+    }: AddAdminUserBasicProps,
+    ref: ForwardedRef<AddAdminUserBasicFormRef>
+): ReactElement => {
 
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<UserBasicInterface[]>([]);
@@ -139,7 +144,7 @@ AddAdminUserBasicProps> = forwardRef((
     const userRoleOptions: DropdownProps[] = useMemo(() => {
         return consoleRolesList
             ?.filter((role: RolesInterface) => {
-                if ([ "system", "everyone", "selfsignup" ].includes(role.displayName)) {
+                if (Object.values(SystemRoleType).includes(role.displayName as SystemRoleType)) {
                     return false;
                 }
 
