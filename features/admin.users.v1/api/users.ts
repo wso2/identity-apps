@@ -46,7 +46,6 @@ const httpClient: HttpClientInstance
 /**
  * Retrieve the list of users that are currently in the system.
  *
- * @deprecated Use `useUsersList` hook instead.
  * @returns `Promise<UserListInterface>` a promise containing the user list.
  */
 export const getUsersList = (
@@ -56,8 +55,7 @@ export const getUsersList = (
     attributes: string,
     domain: string,
     excludedAttributes?: string
-):
-    Promise<UserListInterface> => {
+): Promise<UserListInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,

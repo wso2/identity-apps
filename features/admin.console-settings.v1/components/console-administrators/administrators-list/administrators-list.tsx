@@ -590,9 +590,6 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                     closeWizard={ () => {
                         setShowAddExternalAdminWizard(false);
                     } }
-                    updateList={ () => mutateGuestUserListFetchRequest() }
-                    rolesList={ [] }
-                    emailVerificationEnabled={ true }
                     onInvitationSendSuccessful={ () => {
                         mutateGuestUserListFetchRequest();
                         eventPublisher.publish("manage-users-finish-creating-collaborator-user");
