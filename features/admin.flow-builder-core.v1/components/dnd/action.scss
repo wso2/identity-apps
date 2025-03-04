@@ -1,0 +1,41 @@
+.dnd-action {
+    display: flex;
+    width: 12px;
+    padding: 5px 10px;
+    margin: 0 3px;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    touch-action: none;
+    cursor: var(--cursor, pointer);
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    appearance: none;
+    background-color: transparent;
+    -webkit-tap-highlight-color: transparent;
+    --fill: #919eab;
+}
+
+.dnd-action:hover,
+.dnd-action:active {
+    background-color: var(--background, rgba(0, 0, 0, 0.05));
+}
+
+.dnd-action:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0), inset 0 0px 0px 2.5px #4c9ffe;
+}
+
+.dnd-action svg {
+    flex: 0 0 auto;
+    margin: auto;
+    height: 100%;
+    overflow: visible;
+    fill: var(--fill);
+}
+
+.dnd-action:active,
+.dnd-action:hover {
+    --fill: #6f7b88;
+}
