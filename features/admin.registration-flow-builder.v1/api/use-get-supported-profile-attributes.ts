@@ -55,6 +55,11 @@ const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErr
 
     const filterSupportedAttributes = (data: Attribute[]) => {
         return data?.filter((attribute: any) => {
+            // TODO: This is a temporary fix since `username` claim `supportedByDefault` is set to `false`.
+            if (attribute.claimURI === "http://wso2.org/claims/username") {
+                return true;
+            }
+
             return attribute.supportedByDefault;
         });
     };
