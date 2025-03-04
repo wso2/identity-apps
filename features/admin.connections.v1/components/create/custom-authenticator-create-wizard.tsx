@@ -115,7 +115,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
     subTitle,
     onIDPCreate,
     onWizardClose,
-    "data-componentid": _componentId = "custom-authenticator"
+    "data-componentid": componentId = "custom-authenticator"
 }: CustomAuthenticatorCreateWizardPropsInterface): ReactElement => {
     const wizardRef: MutableRefObject<any> = useRef(null);
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
@@ -225,7 +225,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                 size="small"
                 color="grey"
                 name={ !showSecret ? "eye" : "eye slash" }
-                data-componentid={ `${_componentId}-endpoint-authentication-property-secret-view-button` }
+                data-componentid={ `${componentId}-endpoint-authentication-property-secret-view-button` }
                 onClick={ onClick }
             />
         </InputAdornment>
@@ -289,7 +289,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
-                            data-componentid={ `${_componentId}-endpoint-authentication-property-username` }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-username` }
                             width={ 15 }
                         />
                         <Field.Input
@@ -314,7 +314,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
-                            data-componentid={ `${_componentId}-endpoint-authentication-property-password` }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-password` }
                             width={ 15 }
                         />
                     </>
@@ -344,7 +344,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
-                            data-componentid={ `${_componentId}-endpoint-authentication-property-accessToken` }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-accessToken` }
                             width={ 15 }
                         />
                     </>
@@ -369,7 +369,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
-                            data-componentid={ `${_componentId}-endpoint-authentication-property-header` }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-header` }
                             width={ 15 }
                         />
                         <Field.Input
@@ -394,7 +394,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
-                            data-componentid={ `${_componentId}-endpoint-authentication-property-value` }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-value` }
                             width={ 15 }
                         />
                     </>
@@ -611,7 +611,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
         createConnection(identityProvider)
             .then((response: AxiosResponse<ConnectionInterface>) => {
                 eventPublisher.publish("connections-finish-adding-connection", {
-                    type: _componentId + "-" + kebabCase(selectedAuthenticator)
+                    type: componentId + "-" + kebabCase(selectedAuthenticator)
                 });
                 dispatch(
                     addAlert({
@@ -650,7 +650,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
         createCustomAuthenticator(customAuthenticator)
             .then((response: AxiosResponse<CustomAuthConnectionInterface>) => {
                 eventPublisher.publish("connections-finish-adding-connection", {
-                    type: _componentId + "-" + kebabCase(selectedAuthenticator)
+                    type: componentId + "-" + kebabCase(selectedAuthenticator)
                 });
                 dispatch(
                     addAlert({
@@ -751,6 +751,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                     setNextShouldBeDisabled(false);
                 }
             } }
+            componentId={ `${componentId}-create-wizard-authentication-type` }
         >
             <div className="sub-template-selection">
                 <label>{ t("customAuthenticator:fields.createWizard.authenticationTypeStep.label") }</label>
@@ -793,8 +794,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                         showTooltips={ true }
                         overlay={ renderDimmerOverlay() }
                         overlayOpacity={ 0.6 }
-                        data-componentid={ `${_componentId}-create-wizard-external-custom-authenticator-
-                        selection-card` }
+                        data-componentid={ `${componentId}-create-wizard-external-custom-authenticator-selection-card` }
                     />
                     <SelectionCard
                         className="sub-template-selection-card"
@@ -834,8 +834,8 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                         contentTopBorder={ false }
                         overlay={ renderDimmerOverlay() }
                         overlayOpacity={ 0.6 }
-                        data-componentid={ `${_componentId}-create-wizard-internal-user-custom-authenticator-
-                        selection-card` }
+                        data-componentid={ `${componentId}-create-wizard-internal-user-custom-authenticator-` +
+                        "selection-card" }
                     />
                     <SelectionCard
                         className="sub-template-selection-card"
@@ -875,8 +875,8 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                         overlay={ renderDimmerOverlay() }
                         overlayOpacity={ 0.6 }
                         contentTopBorder={ false }
-                        data-componentid={ `${_componentId}-create-wizard-two-factor-custom-authenticator-
-                        selection-card` }
+                        data-componentid={ `${componentId}-create-wizard-two-factor-custom-authenticator-` +
+                        "selection-card" }
                     />
                 </div>
             </div>
@@ -905,7 +905,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                 required={ true }
                 maxLength={ 100 }
                 minLength={ 3 }
-                data-componentid={ `${_componentId}-create-wizard-identifier` }
+                data-componentid={ `${componentId}-create-wizard-identifier` }
                 width={ 15 }
                 iconPosition="left"
                 adornment={ customPrefix() }
@@ -922,7 +922,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                 required={ true }
                 maxLength={ 100 }
                 minLength={ 3 }
-                data-componentid={ `${_componentId}-create-wizard-display-name` }
+                data-componentid={ `${componentId}-create-wizard-display-name` }
                 width={ 15 }
             />
         </WizardPage>
@@ -941,7 +941,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                 required={ true }
                 maxLength={ 100 }
                 minLength={ 0 }
-                data-componentid={ `${_componentId}-create-wizard-endpoint-uri` }
+                data-componentid={ `${componentId}-create-wizard-endpoint-uri` }
                 width={ 15 }
             />
             <FormSpy
@@ -957,7 +957,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                 <Alert
                     severity="warning"
                     className="endpoint-uri-alert"
-                    data-componentid={ `${_componentId}-endpoint-uri-alert` }
+                    data-componentid={ `${componentId}-endpoint-uri-alert` }
                 >
                     <Trans
                         i18nKey={ t("actions:fields.endpoint.validations.notHttps") }
@@ -996,7 +996,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                     ] }
                     onChange={ handleDropdownChange }
                     enableReinitialize={ true }
-                    data-componentid={ `${_componentId}-create-wizard-endpoint-authentication-dropdown` }
+                    data-componentid={ `${componentId}-create-wizard-endpoint-authentication-dropdown` }
                     width={ 15 }
                 />
                 <div className="box-field">{ renderEndpointAuthPropertyFields() }</div>
@@ -1061,7 +1061,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
         return (
             <ModalWithSidePanel.SidePanel>
                 <ModalWithSidePanel.Header
-                    data-componentid={ `${_componentId}-modal-side-panel-header` }
+                    data-componentid={ `${componentId}-modal-side-panel-header` }
                     className="wizard-header help-panel-header muted"
                 ></ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
@@ -1082,19 +1082,19 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
             onClose={ onWizardClose }
             closeOnDimmerClick={ false }
             closeOnEscape
-            data-componentid={ `${_componentId}-modal` }
+            data-componentid={ `${componentId}-modal` }
         >
             <ModalWithSidePanel.MainPanel>
                 <ModalWithSidePanel.Header
                     className="wizard-header"
-                    data-componentid={ `${_componentId}-modal-header` }>
+                    data-componentid={ `${componentId}-modal-header` }>
                     <div className={ "display-flex" }>
                         <GenericIcon
                             icon={ AuthenticatorMeta.getCustomAuthenticatorIcon() }
                             size="x30"
                             transparent
                             spaced={ "right" }
-                            data-componentid={ `${_componentId}-image` }
+                            data-componentid={ `${componentId}-image` }
                         />
                         <div>
                             { title }
@@ -1105,7 +1105,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                 <React.Fragment>
                     <ModalWithSidePanel.Content
                         className="steps-container"
-                        data-componentid={ `${_componentId}-modal-content-1` }
+                        data-componentid={ `${componentId}-modal-steps` }
                     >
                         <Steps.Group current={ currentWizardStep }>
                             { wizardSteps.map((step: WizardStepInterface, index: number) => (
@@ -1115,7 +1115,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                     </ModalWithSidePanel.Content>
                     <ModalWithSidePanel.Content
                         className="content-container"
-                        data-componentid={ `${_componentId}-modal-content-2` }
+                        data-componentid={ `${componentId}-modal-content` }
                     >
                         { alert && alertComponent }
                         <div className="custom-authenticator-create-wizard">
@@ -1125,21 +1125,21 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                                 uncontrolledForm={ true }
                                 onSubmit={ handleFormSubmit }
                                 pageChanged={ (index: number) => setCurrentWizardStep(index) }
-                                data-componentid={ _componentId }
+                                data-componentid={ componentId }
                             >
                                 { resolveWizardPages() }
                             </Wizard2>
                         </div>
                     </ModalWithSidePanel.Content>
                 </React.Fragment>
-                <ModalWithSidePanel.Actions data-componentid={ `${_componentId}-modal-actions` }>
+                <ModalWithSidePanel.Actions data-componentid={ `${componentId}-modal-actions` }>
                     <SemanticGrid>
                         <SemanticGrid.Row column={ 1 }>
                             <SemanticGrid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                 <LinkButton
                                     floated="left"
                                     onClick={ onWizardClose }
-                                    data-testid="add-connection-modal-cancel-button"
+                                    data-componentid={ `${componentId}-cancel-button` }
                                 >
                                     { t("common:cancel") }
                                 </LinkButton>
@@ -1152,7 +1152,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                                         onClick={ () => {
                                             wizardRef.current.gotoNextPage();
                                         } }
-                                        data-testid="add-connection-modal-next-button"
+                                        data-componentid={ `${componentId}-next-button` }
                                     >
                                         { t("authenticationProvider:wizards.buttons.next") }
                                         <Icon name="arrow right" />
@@ -1166,7 +1166,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                                         onClick={ () => {
                                             wizardRef.current.gotoNextPage();
                                         } }
-                                        data-testid="add-connection-modal-finish-button"
+                                        data-componentid={ `${componentId}-submit-button` }
                                         loading={ isSubmitting }
                                     >
                                         { t("authenticationProvider:wizards.buttons.finish") }
@@ -1177,7 +1177,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                                         type="submit"
                                         floated="right"
                                         onClick={ () => wizardRef.current.gotoPreviousPage() }
-                                        data-testid="add-connection-modal-previous-button"
+                                        data-componentid={ `${componentId}-previous-button` }
                                     >
                                         <Icon name="arrow left" />
                                         { t("authenticationProvider:wizards.buttons.previous") }
