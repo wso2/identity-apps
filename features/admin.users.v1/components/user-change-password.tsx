@@ -164,7 +164,8 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             return;
         }
 
-        if (governanceConnectorProperties === undefined) {
+        if (governanceConnectorProperties === undefined
+            || governanceConnectorProperties?.length !== connectorProperties?.length) {
             setGovernanceConnectorProperties(connectorProperties);
         }
     }, [ connectorProperties ]);
