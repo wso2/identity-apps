@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,6 +30,7 @@ export const getApplicationsResourceEndpoints = (serverHost: string): Applicatio
     return {
         applications: `${ serverHost }/api/server/v1/applications`,
         dcrConfiguration: `${ serverHost }/api/server/v1/configs/dcr`,
+        groupMetadata: `${ serverHost }/api/server/v1/applications/meta/groups`,
         myAccountConfigMgt: `${ serverHostWithoutOPath }/api/identity/config-mgt/v1.0/resource/myaccount`,
         requestPathAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators?type=REQUEST_PATH`
     };

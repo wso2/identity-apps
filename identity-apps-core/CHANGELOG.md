@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.14.4
+
+### Patch Changes
+
+- [#7765](https://github.com/wso2/identity-apps/pull/7765) [`ca4456de6a8bd866bcb5e2056ed8b0c1635d7ed4`](https://github.com/wso2/identity-apps/commit/ca4456de6a8bd866bcb5e2056ed8b0c1635d7ed4) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix Syntax Error with self-registration-with-verification.jsp
+
 ## 2.14.3
 
 ### Patch Changes

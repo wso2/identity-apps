@@ -287,6 +287,10 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      */
     accountApp: ExternalAppConfigInterface;
     /**
+     * Central deployment enabled.
+     */
+    centralDeploymentEnabled: boolean;
+    /**
      * Configs of the developer app.
      */
     developerApp: ExternalAppConfigInterface;

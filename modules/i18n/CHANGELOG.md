@@ -1,5 +1,20 @@
 # @wso2is/i18n
 
+## 2.21.0
+
+### Minor Changes
+
+- [#7291](https://github.com/wso2/identity-apps/pull/7291) [`04fdeac1d019db974616a0845dfda84aa353d582`](https://github.com/wso2/identity-apps/commit/04fdeac1d019db974616a0845dfda84aa353d582) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Central Deployment Related Changes
+
+### Patch Changes
+
+- [#7399](https://github.com/wso2/identity-apps/pull/7399) [`6af3d7e6d134a33af3d3c78db354ad582b4e042b`](https://github.com/wso2/identity-apps/commit/6af3d7e6d134a33af3d3c78db354ad582b4e042b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Conditional View Access For Discoverable Applications in MyAccount.
+
+* [#7445](https://github.com/wso2/identity-apps/pull/7445) [`197e2f76c9ec89c5080c1e52f74aa34a93931125`](https://github.com/wso2/identity-apps/commit/197e2f76c9ec89c5080c1e52f74aa34a93931125) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve remote user stores feature
+
+* Updated dependencies [[`04fdeac1d019db974616a0845dfda84aa353d582`](https://github.com/wso2/identity-apps/commit/04fdeac1d019db974616a0845dfda84aa353d582)]:
+  - @wso2is/core@2.7.0
+
 ## 2.20.4
 
 ### Patch Changes
