@@ -284,6 +284,7 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
                             name="submit"
                             disabled={ isSubmitting }
                             loading={ isSubmitting }
+                            data-componentid={ `${componentId}-update-button` }
                         />
                     ) }
                 </Form>
