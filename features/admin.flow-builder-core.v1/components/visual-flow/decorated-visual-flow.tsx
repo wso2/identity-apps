@@ -36,7 +36,7 @@ import {
     useReactFlow
 } from "@xyflow/react";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, useCallback } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useState } from "react";
 import VisualFlow, { VisualFlowPropsInterface } from "./visual-flow";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
@@ -155,28 +155,6 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             onResourceDropOnCanvas(sourceResource, targetNodeId);
         }
     };
-
-    const handleDragEnd: (e) => void = useCallback(
-        (event) => {
-            const { active, over } = event;
-            const { source, target } = event.operation;
-            const { data: sourceData } = source;
-            const { data: targetData } = target;
-
-            if (event.canceled) {
-                return;
-            };
-
-            if (target?.id === VisualFlowConstants.FLOW_BUILDER_CANVAS_ID) {
-                addCanvasNode(event, sourceData, targetData);
-            } else if (target?.id === VisualFlowConstants.FLOW_BUILDER_VIEW_ID) {
-                addToView(event, sourceData, targetData);
-            } else if (target?.id === VisualFlowConstants.FLOW_BUILDER_FORM_ID) {
-                addToForm(event, sourceData, targetData);
-            }
-        },
-        []
-    );
 
     const handleDragEnd: (e) => void = useCallback(
         (event) => {

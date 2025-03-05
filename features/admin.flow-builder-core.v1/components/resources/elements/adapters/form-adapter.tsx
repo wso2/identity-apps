@@ -24,9 +24,9 @@ import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import { Element, ElementCategories } from "../../../../models/elements";
+import Droppable from "../../../dnd/droppable";
 import ReorderableElement from "../../steps/view/reorderable-element";
 import "./form-adapter.scss";
-import Droppable from "../../../dnd/droppable";
 import Box from "@oxygen-ui/react/Box";
 
 /**
@@ -57,20 +57,20 @@ export const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
     const shouldShowFormFieldsPlaceholder: boolean = !resource?.components?.some((element: Element) => element.category === ElementCategories.Field);
 
     return (
-        <Badge
-            anchorOrigin={ {
-                horizontal: "left",
-                vertical: "top"
-            } }
-            badgeContent="Form"
-            className="adapter form-adapter"
-        >
-            { shouldShowFormFieldsPlaceholder && (
-                <Box className="form-adapter-placeholder">
-                    <Typography variant="body2">DROP FORM FIELDS HERE</Typography>
-                </Box>
-            ) }
-            <Droppable id={ VisualFlowConstants.FLOW_BUILDER_FORM_ID } data={ { nodeId, resource } }>
+        <Droppable id={ VisualFlowConstants.FLOW_BUILDER_FORM_ID } data={ { nodeId, resource } }>
+            <Badge
+                anchorOrigin={ {
+                    horizontal: "left",
+                    vertical: "top"
+                } }
+                badgeContent="Form"
+                className="adapter form-adapter"
+            >
+                { shouldShowFormFieldsPlaceholder && (
+                    <Box className="form-adapter-placeholder">
+                        <Typography variant="body2">DROP FORM FIELDS HERE</Typography>
+                    </Box>
+                ) }
                 { (resource?.components as any).map((component: Element, index: number) => (
                     <ReorderableElement
                         key={ component.id }
@@ -81,10 +81,12 @@ export const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
                             "flow-builder-step-content-form-field"
                         ) }
                         group={ resource.id }
+                        type={ component.id }
+                        accept={ [component.id ]}
                     />
                 )) }
-            </Droppable>
-        </Badge>
+            </Badge>
+        </Droppable>
     );
 };
 

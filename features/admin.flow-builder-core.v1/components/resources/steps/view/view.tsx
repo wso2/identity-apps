@@ -135,7 +135,7 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                 </Tooltip>
             </Box>
             <Handle type="target" position={ Position.Left } />
-            <Box className="flow-builder-step-content nodrag" data-componentid={ `${componentId}-inner` }>
+            <Box className="flow-builder-step-content" data-componentid={ `${componentId}-inner` }>
                 <Paper className="flow-builder-step-content-box" elevation={ 0 } variant="outlined">
                     <Box className="flow-builder-step-content-form">
                         <FormGroup>
@@ -149,6 +149,9 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                                         className={ classNames(
                                             "flow-builder-step-content-form-field"
                                         ) }
+                                        type={ component.id }
+                                        accept={ [ component.id ] }
+                                        group={ nodeId }
                                     />
                                 )) }
                             </Droppable>
