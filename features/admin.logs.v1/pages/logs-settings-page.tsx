@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,19 +16,13 @@
  * under the License.
  */
 
-import Chip from "@oxygen-ui/react/Chip";
-import { GearIcon } from "@oxygen-ui/react-icons";
 import { useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
-import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
-    Button,
     DocumentationLink,
     PageLayout,
-    Popup,
     ResourceTab,
     ResourceTabPaneInterface,
     useDocumentation
@@ -37,24 +31,24 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { MenuItem, TabProps } from "semantic-ui-react";
-import AuditLogsPage from "./audit-logs-page";
-import DiagnosticLogsPage from "./diagnostic-logs-page";
+import RemoteLogPublishing from "../components/remote-log-publishing";
 import { TabIndex } from "../models/log-models";
 import "./logs.scss";
+import { LogType } from "../models/remote-log-publishing";
 
 /**
  * Proptypes for the logs page component.
  */
-type LogsPageInterface = IdentifiableComponentInterface;
+type LogsSettingsPageInterface = IdentifiableComponentInterface;
 
 /**
  * Logs monitoring page.
  *
- * @param props - {@link LogsPageInterface} Props injected to the component.
+ * @param props - {@link LogsSettingsPageInterface} Props injected to the component.
  *
  * @returns Logs Page {@link React.ReactElement}
  */
-const LogsPage: FunctionComponent<LogsPageInterface> = (props: LogsPageInterface): ReactElement => {
+const LogsSettingsPage: FunctionComponent<LogsSettingsPageInterface> = (props: LogsSettingsPageInterface): ReactElement => {
     const { ["data-componentid"]: componentId } = props;
 
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(TabIndex.DIAGNOSTIC_LOGS);
@@ -85,7 +79,7 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (props: LogsPageInterface
         const panes: ResourceTabPaneInterface[] = [];
 
         {
-            featureConfig.diagnosticLogs?.enabled &&
+            featureConfig.auditLogs?.enabled &&
                 panes.push({
                     componentId: "diagnostic-logs",
                     menuItem: (
@@ -105,7 +99,6 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (props: LogsPageInterface
                     menuItem: (
                         <MenuItem key="text" className="item-with-chip">
                             { t("extensions:develop.monitor.logs.tabs.audit") }
-                            <Chip size="small" label={ t("common:beta") } className="oxygen-chip-beta" />
                         </MenuItem>
                     ),
                     render: renderLogContentAuditNew
@@ -116,45 +109,25 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (props: LogsPageInterface
     };
 
     const renderLogContentDiagnosticNew = (): ReactElement => {
-        return <DiagnosticLogsPage data-componentid={ componentId } />;
+        return <RemoteLogPublishing logType={ LogType.DIAGNOSTICS }/>;
     };
 
     const renderLogContentAuditNew = (): ReactElement => {
-        return <AuditLogsPage />;
-    };
-
-    const handleSettingsButton = () => {
-        history.push(AppConstants.getPaths().get("LOGS_SETTINGS"));
+        return <RemoteLogPublishing logType={ LogType.AUDIT }/>;
     };
 
     return (
         <div className="diagnostic-logs">
             <PageLayout
-                title={ t("extensions:develop.monitor.pageHeader.title") }
-                pageTitle="Logs"
+                title={ t("console:manage.features.serverConfigs.remoteLogPublishing.title") }
+                pageTitle="Logs Settings"
                 description={
                     (<>
-                        { t("extensions:develop.monitor.pageHeader.description") }
+                        { t("console:manage.features.serverConfigs.remoteLogPublishing.description") }
                         <DocumentationLink link={ getLink("manage.logs.learnMore") }>
                             { t("common:learnMore") }
                         </DocumentationLink>
                     </>)
-                }
-                action={
-                    (<Popup
-                        trigger={
-                            (<Button
-                                data-componentid={ "applications-settings-button" }
-                                icon={ GearIcon }
-                                onClick={ handleSettingsButton }
-                            />)
-                        }
-                        content={ t("applications:forms.applicationsSettings.title") }
-                        position="top center"
-                        size="mini"
-                        hideOnScroll
-                        inverted
-                    />)
                 }
                 data-componentid={ `${componentId}-layout` }
             >
@@ -167,8 +140,8 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (props: LogsPageInterface
 /**
  * Default props for the component.
  */
-LogsPage.defaultProps = {
-    "data-componentid": "logs-page"
+LogsSettingsPage.defaultProps = {
+    "data-componentid": "logs-settings-page"
 };
 
-export default LogsPage;
+export default LogsSettingsPage;

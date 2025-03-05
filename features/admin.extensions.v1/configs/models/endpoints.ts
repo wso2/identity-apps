@@ -37,6 +37,10 @@ export interface ExtendedFeatureResourceEndpointsInterface {
      */
     remoteUserStoreAgentToken: string;
     /**
+     * Remote log publish endpoint.
+     */
+    remoteLogPublishEndpoint: string;
+    /**
      * Get the resource endpoints for the Invitation Management feature.
      */
     userEndpoint: string;

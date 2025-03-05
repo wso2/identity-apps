@@ -393,6 +393,7 @@ export class AppConstants {
                 `${AppConstants.getAdminViewBasePath()}/edit-alternative-login-identifier` ],
             [ "INSIGHTS", `${AppConstants.getAdminViewBasePath()}/insights` ],
             [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/server/logs` ],
+            [ "LOGS_SETTINGS", `${ AppConstants.getDeveloperViewBasePath() }/logs-settings` ],
             [ "SESSION_MANAGEMENT",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/session-management` ],
             [ "SAML2_CONFIGURATION",

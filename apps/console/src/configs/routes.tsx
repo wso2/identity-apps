@@ -1075,9 +1075,22 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:develop.sidePanel.categories.monitor",
+            children: [
+                {
+                    component: lazy(() => import("@wso2is/admin.logs.v1/pages/logs-settings-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "logsSettings",
+                    name: "Logs Settings",
+                    path: AppConstants.getPaths().get("LOGS_SETTINGS"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
             component: lazy(() => import("@wso2is/admin.logs.v1/pages/logs-page")),
             exact: true,
-            featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
             icon: {
                 icon: import("@wso2is/admin.extensions.v1/assets/images/icons/event-publishing.svg")
             },
