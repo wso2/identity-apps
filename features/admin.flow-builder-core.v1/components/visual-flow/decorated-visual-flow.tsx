@@ -51,7 +51,12 @@ import ElementPropertiesPanel from "../resource-property-panel/resource-property
 /**
  * Props interface of {@link DecoratedVisualFlow}
  */
-export type DecoratedVisualFlowPropsInterface = VisualFlowPropsInterface & IdentifiableComponentInterface;
+export interface DecoratedVisualFlowPropsInterface extends VisualFlowPropsInterface, IdentifiableComponentInterface {
+    /**
+     * Callback to be fired when node data is updated.
+     */
+    mutateComponents: (components: Element[]) => Element[];
+}
 
 /**
  * Component to decorate the visual flow editor with the necessary providers.
@@ -65,6 +70,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     initialNodes = [],
     initialEdges = [],
     onEdgeResolve,
+    mutateComponents,
     ...rest
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
     const { screenToFlowPosition, updateNodeData } = useReactFlow();
@@ -72,7 +78,11 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     const [ edges, setEdges, onEdgesChange ] = useEdgesState(initialEdges);
     const { generateStepElement } = useGenerateStepElement();
 
-    const { isResourcePanelOpen, isResourcePropertiesPanelOpen, onResourceDropOnCanvas } = useAuthenticationFlowBuilderCore();
+    const {
+        isResourcePanelOpen,
+        isResourcePropertiesPanelOpen,
+        onResourceDropOnCanvas
+    } = useAuthenticationFlowBuilderCore();
 
     const addCanvasNode = (event, sourceData, targetData): void => {
         const { resource } = sourceData;
@@ -115,13 +125,13 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             const generatedElement: Element = generateStepElement(resource);
 
             updateNodeData(nodeId, (node: any) => {
-                const updatedComponents = move(
-                    [...(node?.data?.components || [])], // Current components
-                    event // Drag-and-drop event
+                const updatedComponents: Element[] = move(
+                    [ ...(node?.data?.components || []) ],
+                    event
                 );
 
                 return {
-                    components: [...updatedComponents, generatedElement] // Update state with the moved components and new element
+                    components: mutateComponents([ ...updatedComponents, generatedElement ])
                 };
             });
 
@@ -137,18 +147,17 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             const generatedElement: Element = generateStepElement(sourceResource);
 
             updateNodeData(targetNodeId, (node: any) => {
+                const updatedComponents: Element[] = node?.data?.components?.map((component: Element) =>
+                    component.id === targetResource.id
+                        ? {
+                            ...component,
+                            components: move([ ...(component.components || []) ], event).concat(generatedElement)
+                        }
+                        : component
+                );
+
                 return {
-                    components: node?.data?.components?.map((component: Element) =>
-                        component.id === targetResource.id
-                            ? {
-                                  ...component,
-                                  components: move(
-                                      [...(component.components || [])], // Current nested components
-                                      event // Drag-and-drop event
-                                  ).concat(generatedElement) // Append the new element
-                              }
-                            : component
-                    )
+                    components: mutateComponents(updatedComponents)
                 };
             });
 
@@ -156,27 +165,24 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         }
     };
 
-    const handleDragEnd: (e) => void = useCallback(
-        (event) => {
-            const { active, over } = event;
-            const { source, target } = event.operation;
-            const { data: sourceData } = source;
-            const { data: targetData } = target;
+    const handleDragEnd: (e) => void = useCallback(event => {
+        const { source, target } = event.operation;
 
-            if (event.canceled) {
-                return;
-            };
+        if (event.canceled || !source || !target) {
+            return;
+        }
 
-            if (target?.id === VisualFlowConstants.FLOW_BUILDER_CANVAS_ID) {
-                addCanvasNode(event, sourceData, targetData);
-            } else if (target?.id === VisualFlowConstants.FLOW_BUILDER_VIEW_ID) {
-                addToView(event, sourceData, targetData);
-            } else if (target?.id === VisualFlowConstants.FLOW_BUILDER_FORM_ID) {
-                addToForm(event, sourceData, targetData);
-            }
-        },
-        []
-    );
+        const { data: sourceData } = source;
+        const { data: targetData } = target;
+
+        if (target?.id === VisualFlowConstants.FLOW_BUILDER_CANVAS_ID) {
+            addCanvasNode(event, sourceData, targetData);
+        } else if (target?.id === VisualFlowConstants.FLOW_BUILDER_VIEW_ID) {
+            addToView(event, sourceData, targetData);
+        } else if (target?.id === VisualFlowConstants.FLOW_BUILDER_FORM_ID) {
+            addToForm(event, sourceData, targetData);
+        }
+    }, []);
 
     const onConnect: OnConnect = useCallback(
         (connection: any) => {
@@ -230,7 +236,18 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             <DragDropProvider onDragEnd={ handleDragEnd }>
                 <ResourcePanel resources={ resources } open={ isResourcePanelOpen }>
                     <ElementPropertiesPanel open={ isResourcePropertiesPanelOpen }>
-                        <VisualFlow resources={ resources } initialNodes={ initialNodes } initialEdges={ initialEdges } nodes={ nodes } onNodesChange={ onNodesChange } edges={ edges } onEdgesChange={ onEdgesChange } onConnect={ onConnect } onNodesDelete={ onNodesDelete } { ...rest } />
+                        <VisualFlow
+                            resources={ resources }
+                            initialNodes={ initialNodes }
+                            initialEdges={ initialEdges }
+                            nodes={ nodes }
+                            onNodesChange={ onNodesChange }
+                            edges={ edges }
+                            onEdgesChange={ onEdgesChange }
+                            onConnect={ onConnect }
+                            onNodesDelete={ onNodesDelete }
+                            { ...rest }
+                        />
                     </ElementPropertiesPanel>
                 </ResourcePanel>
             </DragDropProvider>

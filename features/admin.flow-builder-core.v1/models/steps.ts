@@ -41,6 +41,6 @@ export interface StepData {
 }
 
 export enum StaticStepTypes {
-    Done = "DONE",
+    UserOnboard = "USER_ONBOARD",
     Start = "START",
 }

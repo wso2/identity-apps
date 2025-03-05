@@ -19,7 +19,13 @@
 import FlowBuilder from "@wso2is/admin.flow-builder-core.v1/components/flow-builder";
 import ButtonAdapterConstants from "@wso2is/admin.flow-builder-core.v1/constants/button-adapter-constants";
 import { Payload } from "@wso2is/admin.flow-builder-core.v1/models/api";
-import { BlockTypes, Element, ElementTypes } from "@wso2is/admin.flow-builder-core.v1/models/elements";
+import {
+    BlockTypes,
+    ButtonTypes,
+    Element,
+    ElementTypes,
+    InputVariants
+} from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { StaticStepTypes, Step, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
 import AuthenticationFlowBuilderCoreProvider from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
@@ -84,7 +90,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
 
     const INITIAL_FLOW_START_STEP_ID: string = StaticStepTypes.Start.toLowerCase();
     const INITIAL_FLOW_VIEW_STEP_ID: string = generateResourceId(StepTypes.View.toLowerCase());
-    const INITIAL_FLOW_DONE_STEP_ID: string = StaticStepTypes.Done.toLowerCase();
+    const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = generateResourceId(StaticStepTypes.UserOnboard.toLowerCase());
 
     const getDefaultTemplateComponents = (): Element[] => {
         const defaultTemplate: Template = cloneDeep(
@@ -121,13 +127,11 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
                 type: StepTypes.View
             },
             {
-                data: {
-                    displayOnly: true
-                },
+                data: {},
                 deletable: false,
-                id: INITIAL_FLOW_DONE_STEP_ID,
+                id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
                 position: { x: 850, y: 408 },
-                type: StaticStepTypes.Done
+                type: StaticStepTypes.UserOnboard
             }
         ],
         []
@@ -157,7 +161,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
                 id: defaultTemplateActionId,
                 source: INITIAL_FLOW_VIEW_STEP_ID,
                 sourceHandle: `${defaultTemplateActionId}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
-                target: INITIAL_FLOW_DONE_STEP_ID,
+                target: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
                 type: "base-edge"
             }
         ];
@@ -189,6 +193,53 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
         };
     };
 
+    const handleMutateComponents = (components: Element[]): Element[] => {
+        let modifiedComponents: Element[] = cloneDeep(components);
+
+        // Check inside `forms`, if there is a form with a password field and there's only one submit button,
+        // Set the `"action": { "type": "EXECUTOR", "executor": { "name": "PasswordOnboardExecutor"}, "next": "" }`
+        modifiedComponents = modifiedComponents.map((component: Element) => {
+            if (component.type === BlockTypes.Form) {
+                const hasPasswordField: boolean = component.components.some(
+                    (formComponent: Element) =>
+                        formComponent.type === ElementTypes.Input && formComponent.variant === InputVariants.Password
+                );
+
+                const submitButtons = component.components.filter(
+                    (formComponent: Element) =>
+                        formComponent.type === ElementTypes.Button && formComponent.config?.type === ButtonTypes.Submit
+                );
+
+                if (submitButtons.length === 1) {
+                    component.components = component.components.map((formComponent: Element) => {
+                        if (hasPasswordField) {
+                            if (formComponent.type === ElementTypes.Button) {
+                                return {
+                                    ...formComponent,
+                                    action: {
+                                        type: "EXECUTOR",
+                                        executor: {
+                                            name: "PasswordOnboardExecutor"
+                                        },
+                                        next: ""
+                                    }
+                                };
+                            }
+                        }
+
+                        return formComponent;
+                    });
+                }
+
+                return component;
+            }
+
+            return component;
+        });
+
+        return modifiedComponents;
+    };
+
     return (
         <AuthenticationFlowBuilderCoreProvider ElementFactory={ ElementFactory } ResourceProperties={ ResourceProperties }>
             <RegistrationFlowBuilderProvider>
@@ -199,6 +250,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
                     initialNodes={ initialNodes }
                     initialEdges={ initialEdges }
                     nodeTypes={ generateNodeTypes() }
+                    mutateComponents={ handleMutateComponents }
                     { ...rest }
                 />
             </RegistrationFlowBuilderProvider>

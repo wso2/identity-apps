@@ -48,7 +48,7 @@ export const CommonStaticStepFactory: FunctionComponent<CommonStaticStepFactoryP
         return <Start data-componentid={ componentId } { ...rest } />;
     }
 
-    if (type === StaticStepTypes.Done) {
+    if (type === StaticStepTypes.UserOnboard) {
         return <Done data-componentid={ componentId } { ...rest } />;
     }
 

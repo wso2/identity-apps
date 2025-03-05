@@ -19,7 +19,7 @@
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { useReactFlow } from "@xyflow/react";
+import { Node, useReactFlow } from "@xyflow/react";
 import merge from "lodash-es/merge";
 import set from "lodash-es/set";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -73,22 +73,30 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         let selectedVariant: Element = lastInteractedResource?.variants?.find(
             (resource: Element) => resource.variant === selected
         );
-
+    
         if (element) {
             selectedVariant = merge(selectedVariant, element);
         }
-
-        updateNodeData(lastInteractedResourceId, (node: any) => {
-            const components: Element[] = node?.data?.components?.map((component: Element) => {
+    
+        const updateComponent = (components: Element[]): Element[] => {
+            return components.map((component: Element) => {
                 if (component.id === lastInteractedResource.id) {
                     return merge(component, selectedVariant);
                 }
-
+    
+                if (component.components) {
+                    component.components = updateComponent(component.components);
+                }
+    
                 return component;
             });
-
+        };
+    
+        updateNodeData(lastInteractedResourceId, (node: any) => {
+            const components: Element[] = updateComponent(node?.data?.components || []);
+    
             setLastInteractedResource(merge(lastInteractedResource, selectedVariant));
-
+    
             return {
                 components
             };
@@ -96,14 +104,22 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
     };
 
     const handlePropertyChange = (propertyKey: string, newValue: any, element: Element) => {
-        updateNodeData(lastInteractedResourceId, (node: any) => {
-            const components: Element[] = node?.data?.components?.map((component: any) => {
+        const updateComponent = (components: Element[]): Element[] => {
+            return components.map((component: Element) => {
                 if (component.id === element.id) {
                     set(component, propertyKey, newValue);
                 }
 
+                if (component.components) {
+                    component.components = updateComponent(component.components);
+                }
+
                 return component;
             });
+        };
+
+        updateNodeData(lastInteractedResourceId, (node: any) => {
+            const components: Element[] = updateComponent(node?.data?.components || []);
 
             return {
                 components

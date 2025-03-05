@@ -9,9 +9,7 @@
             "label": "View",
             "image": "https://www.svgrepo.com/show/448632/step.svg"
         },
-        "config": {
-            "field": {}
-        }
+        "config": {}
     },
     {
         "resourceType": "STEP",
@@ -23,9 +21,7 @@
             "label": "Rule",
             "image": "https://www.svgrepo.com/show/413199/decide.svg"
         },
-        "config": {
-            "field": {}
-        }
+        "config": {}
     },
     {
         "resourceType": "STEP",
@@ -37,8 +33,6 @@
             "label": "Trigger",
             "image": "https://www.svgrepo.com/show/431022/git-pull-request.svg"
         },
-        "config": {
-            "field": {}
-        }
+        "config": {}
     }
 ]

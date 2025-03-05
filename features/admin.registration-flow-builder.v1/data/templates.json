@@ -48,7 +48,7 @@
                                             "id": "{{ID}}",
                                             "variant": "PRIMARY",
                                             "config": {
-                                                "type": "button",
+                                                "type": "submit",
                                                 "text": "Continue"
                                             },
                                             "action": {

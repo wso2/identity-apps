@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,10 +17,11 @@
  */
 
 import { Node } from "@xyflow/react";
+import cloneDeep from "lodash-es/cloneDeep";
+import omit from "lodash-es/omit";
 import ButtonAdapterConstants from "../constants/button-adapter-constants";
 import { ActionTypes } from "../models/actions";
 import { Element, ElementCategories } from "../models/elements";
-import omit from "lodash-es/omit";
 
 const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [ "display", "version", "variants", "deprecated", "meta", "resourceType" ];
 
@@ -30,16 +31,10 @@ const processActions = (component, navigations) => {
             ...(navigations[component.id] && { next: navigations[component.id], type: ActionTypes.Next })
         };
 
-        if (component?.meta?.type === ActionTypes.Next) {
+       if (component?.action?.type === ActionTypes.Executor) {
             action = {
-                ...action,
-                type: ActionTypes.Next
-            };
-        } else if (component?.meta?.type === ActionTypes.Executor) {
-            action = {
-                ...action,
-                type: ActionTypes.Executor,
-                executor: component.meta?.executor
+                ...component?.action,
+                next: navigations[component.id]
             };
         }
 
@@ -53,7 +48,7 @@ const processActions = (component, navigations) => {
 };
 
 const transformFlow = (flowState: any) => {
-    const { nodes: flowNodes, edges: flowEdges } = flowState;
+    const { nodes: flowNodes, edges: flowEdges } = cloneDeep(flowState);
 
     const payload = {
         steps: []
@@ -75,7 +70,7 @@ const transformFlow = (flowState: any) => {
         const { data, id, position, measured, type } = node;
 
         const processElements = (elements: Element[]) => {
-            const _elements: Element[] = elements.map((element: any) => {
+            const _elements: Element[] = elements?.map((element: any) => {
                 if (element.components) {
                     element.components = processElements(element.components);
                 }

@@ -101,7 +101,10 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
                 display="flex"
                 alignItems="center"
                 className={ classNames("reorderable-component", className) }
-                onClick={ () => setLastInteractedResource(element) }
+                onClick={ (event) => {
+                    event.stopPropagation();
+                    setLastInteractedResource(element)
+                 } }
                 data-componentid={ `${componentId}-${element.type}` }
             >
                 <Handle ref={ handleRef } />

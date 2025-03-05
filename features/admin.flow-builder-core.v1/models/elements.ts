@@ -67,6 +67,11 @@ export enum ButtonVariants {
     Text = "TEXT"
 }
 
+export enum ButtonTypes {
+    Submit = "submit",
+    Button = "button"
+}
+
 export enum TypographyVariants {
     H1 = "H1",
     H2 = "H2",
