@@ -42,7 +42,7 @@ import {
     useServerConfigs
 } from "@wso2is/admin.server-configurations.v1";
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
-import useUserStoresContext from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import {
     UserStoreItem,
     UserStoreListItem
@@ -145,7 +145,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         mutateUserStoreList,
         readOnlyUserStoreNamesList,
         userStoresList
-    } = useUserStoresContext();
+    } = useUserStores();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 

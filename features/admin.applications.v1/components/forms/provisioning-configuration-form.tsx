@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,15 +16,20 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import {
     InboundProvisioningFormValuesInterface,
     ProvisioningConfigurationInterface,
-    ProvisioningFormDataInterface,
-    SimpleUserStoreListItemInterface
+    ProvisioningFormDataInterface
 } from "../../models/application";
 
 /**
@@ -33,7 +38,6 @@ import {
 interface ProvisioningConfigurationFormPropsInterface extends TestableComponentInterface {
     config: ProvisioningConfigurationInterface;
     onSubmit: (values: any) => void;
-    useStoreList: SimpleUserStoreListItemInterface[];
     readOnly?: boolean;
     /**
      * Specifies if the form is submitting.
@@ -57,14 +61,61 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
         config,
         onSubmit,
         readOnly,
-        useStoreList,
         isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName ?? userstoresConfig.primaryUserstoreName);
+
     const { t } = useTranslation();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
+
+    const {
+        isLoading: isUserStoreListFetchRequestLoading,
+        isUserStoreReadOnly,
+        userStoresList
+    } = useUserStores();
 
     const [ isProxyModeOn, setIsProxyModeOn ] = useState<boolean>(false);
+    const [ userStoreOptions, setUserStoreOptions ] = useState<UserStoreItem[]>([]);
+
+    useEffect(() => {
+        if (readOnly) return;
+
+        const storeOptions: UserStoreItem[] = [
+            {
+                key: -1,
+                text: primaryUserStoreDomainName,
+                value: primaryUserStoreDomainName
+            }
+        ];
+
+        if (isSuperOrganization() && !isUserStoreListFetchRequestLoading && userStoresList?.length > 0) {
+            userStoresList.map((store: UserStoreListItem, index: number) => {
+                const isReadOnly: boolean = isUserStoreReadOnly(store.name);
+                const isEnabled: boolean = store.enabled;
+
+                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && !isReadOnly && isEnabled) {
+                    const storeOption: UserStoreItem = {
+                        key: index,
+                        text: store.name,
+                        value: store.name
+                    };
+
+                    storeOptions.push(storeOption);
+                }
+            });
+        }
+
+        setUserStoreOptions(storeOptions);
+    }, [ isUserStoreListFetchRequestLoading, userStoresList ]);
+
+    useEffect(() => {
+        if (config?.inboundProvisioning?.proxyMode) {
+            setIsProxyModeOn(config?.inboundProvisioning?.proxyMode);
+        }
+    }, [ config ]);
 
     /**
      * Prepare form values for submitting.
@@ -84,32 +135,6 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
 
         onSubmit(formData);
     };
-
-    /**
-     * Create user store options.
-     *
-     */
-    const getUserStoreOption = () => {
-        const allowedOptions: any[] = [];
-
-        if (useStoreList) {
-            useStoreList?.map((userStore: SimpleUserStoreListItemInterface) => {
-                allowedOptions.push({
-                    key: useStoreList.indexOf(userStore),
-                    text: userStore?.name,
-                    value: userStore?.name
-                });
-            });
-        }
-
-        return allowedOptions;
-    };
-
-    useEffect(() => {
-        if (config?.inboundProvisioning?.proxyMode) {
-            setIsProxyModeOn(config?.inboundProvisioning?.proxyMode);
-        }
-    }, [ config ]);
 
     return (
         <Form
@@ -143,7 +168,8 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                                 ".userstoreDomain.label")
                         }
                         required={ false }
-                        value={ config?.inboundProvisioning?.provisioningUserstoreDomain }
+                        default={ userStoreOptions?.length > 0 && userStoreOptions[0]?.value }
+                        value={ config?.inboundProvisioning?.provisioningUserstoreDomain ?? userStoreOptions[0]?.value }
                         disabled={ isProxyModeOn }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-provisioning-userstore-domain-input` }
@@ -159,9 +185,9 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                                 ".userstoreDomain.label")
                         }
                         required={ false }
-                        default={ useStoreList && useStoreList.length > 0 && useStoreList[0].name }
-                        value={ config?.inboundProvisioning?.provisioningUserstoreDomain }
-                        children={ getUserStoreOption() }
+                        default={ userStoreOptions?.length > 0 && userStoreOptions[0]?.value }
+                        value={ config?.inboundProvisioning?.provisioningUserstoreDomain ?? userStoreOptions[0]?.value }
+                        options={ userStoreOptions }
                         disabled={ isProxyModeOn }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-provisioning-userstore-domain-dropdown` }

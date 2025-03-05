@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,16 +17,15 @@
  */
 
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
-import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreBasicData } from "@wso2is/admin.userstores.v1/models";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AnimatedAvatar, ResourceTab, ResourceTabPaneInterface, TabPageLayout } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -68,6 +67,15 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
+    const dispatch: Dispatch = useDispatch();
+
+    const { t } = useTranslation();
+    const {
+        isLoading: isUserStoreListFetchRequestLoading,
+        mutateUserStoreList,
+        userStoresList
+    } = useUserStores();
+
     const claimID: string = match.params.id;
     const hiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
@@ -75,12 +83,34 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
 
     const [ claim, setClaim ] = useState<Claim>(null);
     const [ isLocalClaimDetailsRequestLoading, setIsLocalClaimDetailsRequestLoading ] = useState<boolean>(false);
-    const [ userStores, setUserStores ] = useState<UserStoreBasicData[]>([]);
     const defaultActiveIndex: string = ClaimTabIDs.GENERAL;
 
-    const dispatch: Dispatch = useDispatch();
+    useEffect(() => {
+        getClaim();
+        mutateUserStoreList();
+    }, []);
 
-    const { t } = useTranslation();
+    const userStores: UserStoreBasicData[] = useMemo(() => {
+        const userStores: UserStoreBasicData[] = [];
+
+        if (userstoresConfig?.primaryUserstoreName === primaryUserStoreDomainName) {
+            userStores.push({
+                id: primaryUserStoreDomainName,
+                name: primaryUserStoreDomainName
+            });
+        }
+
+        if (!isUserStoreListFetchRequestLoading && userStoresList?.length > 0) {
+            const filteredUserStores: UserStoreBasicData[] = hiddenUserStores?.length > 0
+                ? userStoresList.filter((store: UserStoreBasicData) =>
+                    !hiddenUserStores?.includes(store?.name))
+                : userStoresList;
+
+            userStores.push(...filteredUserStores);
+        }
+
+        return userStores;
+    }, [ isUserStoreListFetchRequestLoading, userStoresList ]);
 
     /**
      * Fetches the local claim.
@@ -106,37 +136,6 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                 setIsLocalClaimDetailsRequestLoading(false);
             });
     };
-
-    useEffect(() => {
-        getClaim();
-    }, []);
-
-    useEffect(() => {
-        const userStores: UserStoreBasicData[] = [];
-
-        if (userstoresConfig?.primaryUserstoreName === primaryUserStoreDomainName) {
-            userStores.push({
-                id: primaryUserStoreDomainName,
-                name: primaryUserStoreDomainName
-            });
-        }
-
-        getUserStoreList()
-            .then((response: AxiosResponse) => {
-                const userStoresData: UserStoreBasicData[] = response?.data || [];
-
-                const filteredUserStores: UserStoreBasicData[] = hiddenUserStores?.length > 0
-                    ? userStoresData.filter((store: UserStoreBasicData) =>
-                        !hiddenUserStores?.includes(store?.name))
-                    : userStoresData;
-
-                userStores.push(...filteredUserStores);
-                setUserStores(userStores);
-            })
-            .catch(() => {
-                setUserStores(userStores);
-            });
-    }, []);
 
     /**
      * Contains the data of the panes.

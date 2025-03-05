@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,16 +17,17 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { SimpleUserStoreListItemInterface } from "@wso2is/admin.applications.v1/models/application";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
-import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { identityProviderConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Code, DocumentationLink, Hint, Message, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { Fragment, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, DropdownItemProps, Grid } from "semantic-ui-react";
@@ -43,7 +44,6 @@ interface JITProvisioningConfigurationFormPropsInterface extends TestableCompone
     idpId: string;
     onSubmit: (values: ConnectionInterface) => void;
     initialValues: JITProvisioningResponseInterface;
-    useStoreList: SimpleUserStoreListItemInterface[];
     isReadOnly?: boolean;
     /**
      * Specifies if the form is submitting.
@@ -72,7 +72,6 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     const {
         initialValues,
         onSubmit,
-        useStoreList,
         isReadOnly,
         isSubmitting,
         [ "data-testid" ]: testId
@@ -81,9 +80,57 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const { isSubOrganization } = useGetCurrentOrganizationType();
+    const {
+        isLoading: isUserStoreListFetchRequestLoading,
+        isUserStoreReadOnly,
+        mutateUserStoreList,
+        userStoresList
+    } = useUserStores();
+
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName ?? userstoresConfig.primaryUserstoreName);
 
     const [ isJITProvisioningEnabled, setIsJITProvisioningEnabled ] = useState<boolean>(false);
+
+    const userStoreOptions: DropdownItemProps[] = useMemo(() => {
+        const storeOptions: DropdownItemProps[] = [
+            {
+                key: -1,
+                text: primaryUserStoreDomainName,
+                value: primaryUserStoreDomainName
+            }
+        ];
+
+        if (!isUserStoreListFetchRequestLoading && userStoresList?.length > 0) {
+            userStoresList.map((store: UserStoreListItem, index: number) => {
+                const isReadOnly: boolean = isUserStoreReadOnly(store.name);
+                const isEnabled: boolean = store.enabled;
+
+                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && !isReadOnly && isEnabled) {
+                    const storeOption: DropdownItemProps = {
+                        key: index,
+                        text: store.name,
+                        value: store.name
+                    };
+
+                    storeOptions.push(storeOption);
+                }
+            });
+        }
+
+        return storeOptions;
+    }, [ isUserStoreListFetchRequestLoading, userStoresList ]);
+
+    useEffect(() => {
+        mutateUserStoreList();
+    }, []);
+
+    useEffect(() => {
+        if (initialValues?.isEnabled) {
+            setIsJITProvisioningEnabled(initialValues?.isEnabled);
+        }
+    }, [ initialValues ]);
 
     /**
      * Prepare form values for submitting.
@@ -109,31 +156,6 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             ) ?? initialValues.userstore
         } as JITProvisioningResponseInterface;
     };
-
-    /**
-     * Create user store options.
-     */
-    const getUserStoreOption = () => {
-        const allowedOptions: DropdownItemProps[] = [];
-
-        if (useStoreList) {
-            useStoreList?.map((userStore: SimpleUserStoreListItemInterface) => {
-                allowedOptions.push({
-                    key: useStoreList.indexOf(userStore),
-                    text: userStore?.name,
-                    value: userStore?.name
-                });
-            });
-        }
-
-        return allowedOptions;
-    };
-
-    useEffect(() => {
-        if (initialValues?.isEnabled) {
-            setIsJITProvisioningEnabled(initialValues?.isEnabled);
-        }
-    }, [ initialValues ]);
 
     const supportedProvisioningSchemes: {
         label: string;
@@ -281,9 +303,9 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                         required={ false }
                                         requiredErrorMessage=""
                                         type="dropdown"
-                                        default={ useStoreList && useStoreList.length > 0 && useStoreList[ 0 ].name }
+                                        default={ userStoreOptions[0]?.name }
                                         value={ initialValues?.userstore }
-                                        children={ getUserStoreOption() }
+                                        children={ userStoreOptions }
                                         disabled={ !isJITProvisioningEnabled }
                                         data-testid={ `${ testId }-user-store-domain` }
                                         readOnly={ isReadOnly }

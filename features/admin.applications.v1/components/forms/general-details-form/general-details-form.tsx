@@ -36,7 +36,7 @@ import { ApplicationTabIDs, applicationConfig, userstoresConfig } from "@wso2is/
 import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
-import { useUserStores } from "@wso2is/admin.userstores.v1/api";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import {
     AlertLevels,
@@ -264,10 +264,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         isLoading: isMyAccountStatusLoading
     } = useMyAccountStatus(!isSubOrg && applicationConfig?.advancedConfigurations?.showMyAccountStatus);
     const {
-        data: userStores,
-        isLoading: isUserStoresLoading,
-        error: userStoreListFetchError
-    } = useUserStores(null);
+        userStoresList: userStores,
+        isLoading: isUserStoresLoading
+    } = useUserStores();
+
     const {
         data: groupsList,
         isLoading: isGroupsListLoading,
@@ -299,19 +299,17 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             value: userstoresConfig?.primaryUserstoreName
         } ];
 
-        if (!userStores) {
-            return storeOptions;
+        if (userStores?.length > 0) {
+            userStores.forEach((store: UserStoreListItem, index: number) => {
+                if (store?.name?.toUpperCase() !== userstoresConfig?.primaryUserstoreName && store?.enabled) {
+                    storeOptions.push({
+                        key: index,
+                        text: store.name,
+                        value: store.name
+                    });
+                }
+            });
         }
-
-        userStores.forEach((store: UserStoreListItem, index: number) => {
-            if (store?.name?.toUpperCase() !== userstoresConfig?.primaryUserstoreName && store?.enabled) {
-                storeOptions.push({
-                    key: index,
-                    text: store.name,
-                    value: store.name
-                });
-            }
-        });
 
         return storeOptions;
     }, [ userStores ]);
@@ -331,21 +329,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         );
         setSelectedGroupsFromUserStore(allSelectedGroupsList);
     }, [ application ]);
-
-    /**
-     * Handle the error scenario of fetching user stores.
-     */
-    useEffect(() => {
-        if (!userStoreListFetchError) {
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("userstores:notifications.fetchUserstores.genericError.description"),
-            level: AlertLevels.ERROR,
-            message: t("userstores:notifications.fetchUserstores.genericError.message")
-        }));
-    }, [ userStoreListFetchError ]);
 
     /**
      * Handle the error scenario of fetching groups.

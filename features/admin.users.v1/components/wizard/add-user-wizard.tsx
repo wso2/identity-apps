@@ -24,7 +24,7 @@ import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores
 import { updateGroupDetails, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import useUserStoresContext from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
@@ -123,7 +123,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const dispatch: Dispatch = useDispatch();
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
     const { isSubOrganization } = useGetCurrentOrganizationType();
-    const { isUserStoreReadOnly, userStoresList } = useUserStoresContext();
+    const { isUserStoreReadOnly, userStoresList } = useUserStores();
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitGroupList, setSubmitGroupList ] = useTrigger();

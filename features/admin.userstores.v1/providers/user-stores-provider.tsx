@@ -52,7 +52,9 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
 
     const requiredUserStoreAttributes: string[] = [
         UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY,
-        UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED
+        UserStoreManagementConstants.USER_STORE_PROPERTY_DISABLED,
+        UserStoreManagementConstants.USER_STORE_PROPERTY_BULK_IMPORT_SUPPORTED,
+        UserStoreManagementConstants.USER_STORE_PROPERTY_IS_BULK_IMPORT_SUPPORTED
     ];
 
     const userStoreFeatureConfig: FeatureAccessConfigInterface = useSelector(
