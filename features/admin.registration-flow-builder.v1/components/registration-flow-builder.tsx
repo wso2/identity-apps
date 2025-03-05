@@ -200,17 +200,17 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
         // Set the `"action": { "type": "EXECUTOR", "executor": { "name": "PasswordOnboardExecutor"}, "next": "" }`
         modifiedComponents = modifiedComponents.map((component: Element) => {
             if (component.type === BlockTypes.Form) {
-                const hasPasswordField: boolean = component.components.some(
+                const hasPasswordField: boolean = component.components?.some(
                     (formComponent: Element) =>
                         formComponent.type === ElementTypes.Input && formComponent.variant === InputVariants.Password
                 );
 
-                const submitButtons = component.components.filter(
+                const submitButtons = component.components?.filter(
                     (formComponent: Element) =>
                         formComponent.type === ElementTypes.Button && formComponent.config?.type === ButtonTypes.Submit
                 );
 
-                if (submitButtons.length === 1) {
+                if (submitButtons?.length === 1) {
                     component.components = component.components.map((formComponent: Element) => {
                         if (hasPasswordField) {
                             if (formComponent.type === ElementTypes.Button) {

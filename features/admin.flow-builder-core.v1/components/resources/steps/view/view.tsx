@@ -136,10 +136,10 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
             </Box>
             <Handle type="target" position={ Position.Left } />
             <Box className="flow-builder-step-content" data-componentid={ `${componentId}-inner` }>
-                <Paper className="flow-builder-step-content-box" elevation={ 0 } variant="outlined">
-                    <Box className="flow-builder-step-content-form">
-                        <FormGroup>
-                            <Droppable id={ VisualFlowConstants.FLOW_BUILDER_VIEW_ID } data={ { nodeId } }>
+                <Droppable id={ VisualFlowConstants.FLOW_BUILDER_VIEW_ID } data={ { nodeId } }>
+                    <Paper className="flow-builder-step-content-box" elevation={ 0 } variant="outlined">
+                        <Box className="flow-builder-step-content-form">
+                            <FormGroup>
                                 { (node?.data?.components as any).map((component: Element, index: number) => (
                                     <ReorderableElement
                                         key={ component.id }
@@ -154,10 +154,10 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                                         group={ nodeId }
                                     />
                                 )) }
-                            </Droppable>
-                        </FormGroup>
-                    </Box>
-                </Paper>
+                            </FormGroup>
+                        </Box>
+                    </Paper>
+                </Droppable>
             </Box>
         </div>
     );

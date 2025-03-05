@@ -71,7 +71,7 @@ export const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
                         <Typography variant="body2">DROP FORM FIELDS HERE</Typography>
                     </Box>
                 ) }
-                { (resource?.components as any).map((component: Element, index: number) => (
+                { (resource?.components as any)?.map((component: Element, index: number) => (
                     <ReorderableElement
                         key={ component.id }
                         id={  component.id }
