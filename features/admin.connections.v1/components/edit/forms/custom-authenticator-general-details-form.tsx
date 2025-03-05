@@ -102,7 +102,7 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
     editingIDP,
     isReadOnly,
     isSubmitting,
-    "data-componentid": _componentId = "idp-edit-custom-auth-general-settings-form"
+    "data-componentid": componentId = "idp-edit-custom-authenticator-general-settings"
 }: CustomAuthenticatorGeneralDetailsFormPopsInterface): ReactElement => {
 
     const { t } = useTranslation();
@@ -206,7 +206,7 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
                     onSubmit={ (values: CustomAuthGeneralDetailsFormValuesInterface): void => {
                         updateConfigurations(values);
                     } }
-                    data-componentid={ _componentId }
+                    data-componentid={ componentId }
                     validate={ validateGeneralSettingsField }
                     initialValues={ {
                         description: editingIDP?.description,
@@ -226,7 +226,7 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
                         ) }
                         maxLength={ 100 }
                         minLength={ 3 }
-                        data-componentid={ `${_componentId}-form-wizard-identifier` }
+                        data-componentid={ `${componentId}-identifier` }
                         hint={ t(
                             "customAuthenticator:fields.createWizard.generalSettingsStep.helpPanel." +
                                 "identifier.description"
@@ -244,7 +244,7 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
                         required={ true }
                         maxLength={ 100 }
                         minLength={ 3 }
-                        data-componentid={ `${_componentId}-form-wizard-display-name` }
+                        data-componentid={ `${componentId}-display-name` }
                         readOnly={ isReadOnly }
                     />
                     <Field.Input
@@ -255,7 +255,7 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
                         required={ false }
                         placeholder={ t("authenticationProvider:forms.generalDetails.image.placeholder") }
                         value={ editingIDP.image }
-                        data-componentid={ `${_componentId}-idp-image` }
+                        data-componentid={ `${componentId}-image` }
                         maxLength={ ConnectionUIConstants.GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MAX_LENGTH as number }
                         minLength={ ConnectionUIConstants.GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MIN_LENGTH as number }
                         hint={ t("customAuthenticator:fields.editPage.generalTab.iconUrl.hint") }
@@ -268,7 +268,7 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
                         required={ false }
                         placeholder={ t("authenticationProvider:forms.generalDetails.description.placeholder") }
                         value={ editingIDP.description }
-                        data-componentid={ `${_componentId}-idp-description` }
+                        data-componentid={ `${componentId}-description` }
                         maxLength={ ConnectionUIConstants.IDP_NAME_LENGTH.max }
                         minLength={ ConnectionUIConstants.IDP_NAME_LENGTH.min }
                         hint="A text description of the authenticator."
@@ -284,6 +284,7 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
                             name="submit"
                             disabled={ isSubmitting }
                             loading={ isSubmitting }
+                            data-componentid={ `${componentId}-update-button` }
                         />
                     ) }
                 </Form>

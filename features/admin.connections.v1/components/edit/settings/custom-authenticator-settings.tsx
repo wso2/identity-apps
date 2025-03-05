@@ -331,7 +331,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                                         variant="contained"
                                         onClick={ handleSubmit }
                                         className={ "button-container" }
-                                        data-componentid={ `${componentId}-primary-button` }
+                                        data-componentid={ `${componentId}-update-button` }
                                     >
                                         { t("actions:buttons.update") }
                                     </Button>
