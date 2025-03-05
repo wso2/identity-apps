@@ -25,8 +25,8 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
-import { getUserStores } from "@wso2is/admin.userstores.v1/api/user-stores";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -244,6 +244,11 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const { t } = useTranslation();
 
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
+    const {
+        isLoading: isUserStoresLoading,
+        userStoresList
+    } = useUserStores();
+
     const OIDC: string = "oidc";
 
     list?.forEach((_element: Claim | ExternalClaim | ClaimDialect | AddExternalClaim, index: number) => {
@@ -252,25 +257,10 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     });
 
     useEffect(() => {
-        if (isLocalClaim(list)) {
-            getUserStores(null)
-                .then((response: UserStoreListItem[]) => {
-                    setUserStores(response);
-                })
-                //TODO: [Type Fix] Throw proper generic error from API function.
-                .catch((error: any) => {
-                    dispatch(addAlert({
-                        description: error?.description
-                            ?? t("userstores:notifications.fetchUserstores.genericError" +
-                                ".description"),
-                        level: AlertLevels.ERROR,
-                        message: error?.message
-                            ?? t("userstores:notifications." +
-                            "fetchUserstores.genericError.message")
-                    }));
-                });
+        if (isLocalClaim(list) && !isUserStoresLoading && userStoresList?.length > 0) {
+            setUserStores(userStoresList);
         }
-    }, [ JSON.stringify(list) ]);
+    }, [ JSON.stringify(list), isUserStoresLoading, userStoresList ]);
 
     /**
      * This check if the input claim is mapped to attribute from every userstore.

@@ -249,3 +249,23 @@ export enum RemoteUserStoreManagerType {
 export const ON_PREM_READ_ONLY_USER_STORE_TYPE_NAMES: string[] = [
     "UniqueIDReadOnlyLDAPUserStoreManager"
 ];
+
+/**
+ * Enum containing the icons a test connection button can have
+ */
+export enum TestButtonIcon {
+    TESTING = "spinner",
+    FAILED = "remove",
+    SUCCESSFUL = "check",
+    INITIAL = "bolt"
+}
+
+/**
+ * Enum containing the colors the test button can have
+ */
+export enum TestButtonColor {
+    TESTING,
+    INITIAL,
+    SUCCESSFUL,
+    FAILED
+}
