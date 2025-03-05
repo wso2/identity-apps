@@ -25,7 +25,7 @@ import {
     AlertInterface,
     AlertLevels,
     RoleListInterface,
-    RolesInterface,
+    RolesInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";

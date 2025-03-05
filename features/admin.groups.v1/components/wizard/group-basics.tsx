@@ -112,7 +112,6 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
     }, [ userStoresList, isUserStoresLoading ]);
 
     useEffect(() => {
-        // To-do: Replace this with userstore provider logic.
         mutateUserStoreList();
     }, []);
 
