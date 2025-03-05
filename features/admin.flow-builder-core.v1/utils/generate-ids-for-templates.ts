@@ -27,12 +27,15 @@ const replaceIds = (obj: any): any => {
             Object.entries(obj).map(([key, value]) => {
                 if (key === "id" && value === "{{ID}}") {
                     const type = obj.type?.toLowerCase() || "component";
+
                     return [key, generateResourceId(type)];
                 }
+
                 return [key, replaceIds(value)];
             })
         );
     }
+
     return obj;
 };
 

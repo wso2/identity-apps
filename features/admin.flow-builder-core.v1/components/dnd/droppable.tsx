@@ -44,7 +44,7 @@ const Droppable: FC<PropsWithChildren<DroppableProps>> = ({
         <Box
             ref={ ref }
             data-componentid={ componentId }
-            sx={ { height: "100%", width: "100%", display: 'inline-flex', flexDirection: 'column', gap: '10px' } }
+            sx={ { height: "100%", width: "100%", display: 'inline-flex', flexDirection: 'column', gap: '20px' } }
         >
             { children }
         </Box>

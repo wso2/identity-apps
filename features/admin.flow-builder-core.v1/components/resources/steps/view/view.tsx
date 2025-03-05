@@ -41,6 +41,7 @@ import { Element } from "../../../../models/elements";
 import Droppable from "../../../dnd/droppable";
 import "./view.scss";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
+import { CollisionPriority } from "@dnd-kit/abstract";
 
 /**
  * Props interface of {@link View}
@@ -136,10 +137,10 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
             </Box>
             <Handle type="target" position={ Position.Left } />
             <Box className="flow-builder-step-content" data-componentid={ `${componentId}-inner` }>
-                <Droppable id={ VisualFlowConstants.FLOW_BUILDER_VIEW_ID } data={ { nodeId } }>
-                    <Paper className="flow-builder-step-content-box" elevation={ 0 } variant="outlined">
-                        <Box className="flow-builder-step-content-form">
-                            <FormGroup>
+                <Paper className="flow-builder-step-content-box" elevation={ 0 } variant="outlined">
+                    <Box className="flow-builder-step-content-form">
+                        <FormGroup>
+                            <Droppable id={ VisualFlowConstants.FLOW_BUILDER_VIEW_ID } data={ { nodeId } } collisionPriority={ CollisionPriority.Low }>
                                 { (node?.data?.components as any).map((component: Element, index: number) => (
                                     <ReorderableElement
                                         key={ component.id }
@@ -154,10 +155,10 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                                         group={ nodeId }
                                     />
                                 )) }
-                            </FormGroup>
-                        </Box>
-                    </Paper>
-                </Droppable>
+                            </Droppable>
+                        </FormGroup>
+                    </Box>
+                </Paper>
             </Box>
         </div>
     );

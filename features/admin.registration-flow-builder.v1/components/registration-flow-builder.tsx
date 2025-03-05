@@ -30,6 +30,7 @@ import { StaticStepTypes, Step, StepTypes } from "@wso2is/admin.flow-builder-cor
 import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
 import AuthenticationFlowBuilderCoreProvider from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import generateIdsForTemplates from "@wso2is/admin.flow-builder-core.v1/utils/generate-ids-for-templates";
+import generateComponentsForTemplates from "@wso2is/admin.flow-builder-core.v1/utils/generate-components-for-templates";
 import generateResourceId from "@wso2is/admin.flow-builder-core.v1/utils/generate-resource-id";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -101,7 +102,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
             defaultTemplate.config.data.steps[0].id = INITIAL_FLOW_START_STEP_ID;
         }
 
-        return generateIdsForTemplates(defaultTemplate)?.config?.data?.steps[0]?.data?.components;
+        return generateComponentsForTemplates(resources, generateIdsForTemplates(defaultTemplate)?.config?.data?.steps[0]?.data?.components);
     };
 
     const defaultTemplateComponents = useMemo(() => getDefaultTemplateComponents(), [ resources ]);

@@ -16,7 +16,9 @@
  * under the License.
  */
 
+import { CollisionPriority } from "@dnd-kit/abstract";
 import Badge from "@mui/material/Badge";
+import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useNodeId } from "@xyflow/react";
@@ -27,7 +29,6 @@ import { Element, ElementCategories } from "../../../../models/elements";
 import Droppable from "../../../dnd/droppable";
 import ReorderableElement from "../../steps/view/reorderable-element";
 import "./form-adapter.scss";
-import Box from "@oxygen-ui/react/Box";
 
 /**
  * Props interface of {@link FormAdapter}
@@ -57,7 +58,7 @@ export const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
     const shouldShowFormFieldsPlaceholder: boolean = !resource?.components?.some((element: Element) => element.category === ElementCategories.Field);
 
     return (
-        <Droppable id={ VisualFlowConstants.FLOW_BUILDER_FORM_ID } data={ { nodeId, resource } }>
+        <Droppable id={ VisualFlowConstants.FLOW_BUILDER_FORM_ID } data={ { nodeId, resource } } collisionPriority={ CollisionPriority.High }>
             <Badge
                 anchorOrigin={ {
                     horizontal: "left",
@@ -82,7 +83,7 @@ export const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
                         ) }
                         group={ resource.id }
                         type={ component.id }
-                        accept={ [component.id ]}
+                        accept={ [ component.id ] }
                     />
                 )) }
             </Badge>
