@@ -245,9 +245,11 @@
                                 tenantDomain = startupConfig.superTenant;
                             }
                         }
+
                         if (path) {
                             return deploymentUnitServerOrigin + getTenantPath(tenantDomain) + path;
                         }
+
                         return deploymentUnitServerOrigin + getTenantPath(tenantDomain);
                     }
 
@@ -290,8 +292,9 @@
                         var contextPath = (!proxyContextPathGlobal || proxyContextPathGlobal === "null") ? "" : "/" + proxyContextPathGlobal;
 
                         if (isCentralDeploymentEnabled && getTenantName() === startupConfig.superTenant) {
-                            return applicationDomain 
+                            return applicationDomain;
                         }
+
                         if (getTenantName() === startupConfig.superTenant) {
                             return applicationDomain.replace(/\/+$/, '') + contextPath
                                 + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
@@ -314,6 +317,7 @@
                             return applicationDomain.replace(/\/+$/, '') + contextPath
                                 + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                         }
+
                         return `${applicationDomain}/${tenantPrefixGlobal}/${tenantDomain}` 
                             + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                     }
@@ -396,6 +400,7 @@
                     if (isCentralDeploymentEnabled) {
                         endpoints.issuer = `${serverOrigin}/oauth2/token`;
                     }
+
                     var authConfig = {
                         signInRedirectURL: signInRedirectURL(),
                         signOutRedirectURL: getSignOutRedirectURL(),
