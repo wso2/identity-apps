@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.21.1
+
+### Patch Changes
+
+- [#7771](https://github.com/wso2/identity-apps/pull/7771) [`152e91a6dd4848fe0fb0a0728a1e78fa97a88e12`](https://github.com/wso2/identity-apps/commit/152e91a6dd4848fe0fb0a0728a1e78fa97a88e12) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the confimation message for sms provider deletion.
+
 ## 2.21.0
 
 ### Minor Changes
