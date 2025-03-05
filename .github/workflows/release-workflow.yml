@@ -30,6 +30,7 @@ on:
 permissions:
     pull-requests: write
     contents: write
+    packages: write
 
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
@@ -177,8 +178,8 @@ jobs:
               uses: changesets/action@v1.4.9
               with:
                   title: "[Release] [GitHub Action] Update package versions"
-                  publish: pnpm publish:packages
-                  version: pnpm version:packages
+                  publish: pnpm run publish:packages
+                  version: pnpm run version:packages
                   commit: "[WSO2 Release] [GitHub Action] [Release] [skip ci] update package versions"
               env:
                   GITHUB_TOKEN: ${{ env.GH_TOKEN }}
