@@ -38,11 +38,6 @@ import {
 } from "../models";
 
 /**
- * The error code that is returned when there is no item in the list.
- */
-const RESOURCE_NOT_FOUND_ERROR_MESSAGE: string = "Resource not found.";
-
-/**
  * Initialize an axios Http client.
  *
  */
