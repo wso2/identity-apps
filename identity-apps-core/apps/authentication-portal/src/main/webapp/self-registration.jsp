@@ -143,32 +143,6 @@
                 const translations = <%= translationsJson %>;
                 const code = "<%= code != null ? code : null %>";
 
-                const handleFlowStatus = (flowData) => {
-                    if (!flowData) return false;
-
-                    switch (flowData.flowStatus) {
-                        case "INCOMPLETE":
-                            return false;
-                            
-                        case "COMPLETE":
-                            localStorage.clear();
-                            window.location.href = flowData.data.url;
-                            return true;
-
-                        case "REDIRECTION":
-                            window.location.href = flowData.data.url;
-                            return true;
-
-                        case "WEBHOOK_TRIGGER":
-                            console.log("Flow indicates a webhook trigger. Implement if needed.");
-                            return false;
-
-                        default:
-                            console.log(`Flow status: ${flowData.flowStatus}. No special action.`);
-                            return false;
-                    }
-                };
-
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
 
@@ -215,8 +189,9 @@
                             return;
                         }
 
+                        handleStepType(data)
+
                         setFlowData(data);
-                        setComponents(data.data?.components || []);
                     })
                     .catch((err) => {
                         console.error("Error fetching flow data:", err);
@@ -224,6 +199,47 @@
                     })
                     .finally(() => setLoading(false));
                 }, [ postBody ]);
+
+                const handleFlowStatus = (flowData) => {
+                    if (!flowData) return false;
+
+                    switch (flowData.flowStatus) {
+                        case "INCOMPLETE":
+                            return false;
+                            
+                        case "COMPLETE":
+                            localStorage.clear();
+                            window.location.href = flowData.data.url;
+                            return true;
+
+                        case "REDIRECTION":
+                            window.location.href = flowData.data.url;
+                            return true;
+
+                        case "WEBHOOK_TRIGGER":
+                            console.log("Flow indicates a webhook trigger. Implement if needed.");
+                            return false;
+
+                        default:
+                            console.log(`Flow status: ${flowData.flowStatus}. No special action.`);
+                            return false;
+                    }
+                };
+
+                const handleStepType = (flowData) => {
+                    if (!flowData) return false;
+
+                    switch (flowData.stepType) {
+                        case "VIEW":
+                            setComponents(data.data?.components || []);
+
+                        case "REDIRECTION":
+                            window.location.href = flowData.data.url;
+
+                        default:
+                            console.log(`Flow step type: ${flowData.stepType}. No special action.`);
+                    }
+                };
 
                 if (error) {
                     return createElement("div", null, `Error: ${error.message}`);
