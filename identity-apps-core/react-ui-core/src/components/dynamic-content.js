@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,35 +18,19 @@
 
 import PropTypes from "prop-types";
 import React from "react";
-import ButtonFieldAdapter from "./adapters/button-field-adapter";
 import Field from "./field";
 import Form from "./form";
 
-const DynamicContent = ({ content, handleRequestBody }) => {
-    const renderedElementIds = new Set();
+const DynamicContent = ({ elements, handleRequestBody }) => {
 
-    const renderBlock = (block) => {
-        if (!block) return null;
+    const renderForm = (form) => {
+        if (!form) return null;
 
-        const blockElements = block.nodes
-            .map((nodeId) => {
-                const element = content.elements.find((el) => el.id === nodeId);
-
-                if (element && !renderedElementIds.has(element.id)) {
-                    renderedElementIds.add(element.id);
-
-                    return element;
-                }
-
-                return null;
-            })
-            .filter(Boolean);
-
-        if (blockElements.length > 0) {
+        if (form.components && form.components.length > 0) {
             return (
                 <Form
-                    key={ block.id }
-                    formSchema={ blockElements }
+                    key={ form.id }
+                    formSchema={ form.components }
                     onSubmit={ (action, formValues) => handleRequestBody(action, formValues) }
                 />
             );
@@ -55,44 +39,17 @@ const DynamicContent = ({ content, handleRequestBody }) => {
         return null;
     };
 
-    // Render all elements
+    const renderElement = (element) => {
+        return <Field key={ element.id } component={ element } />;
+    };
+
     const renderElements = () => {
-        return content.elements.map((element, index) => {
-            // Render DISPLAY elements
-            if (element.category === "DISPLAY" && !renderedElementIds.has(element.id)) {
-                renderedElementIds.add(element.id);
-
-                return <Field key={ element.id } component={ element } />;
+        return elements.map((element) => {
+            if (element.type === "FORM" && Array.isArray(element.components)) {
+                return renderForm(element);
             }
 
-            // Render BLOCK elements
-            const block = content.blocks.find((blk) => blk.nodes.includes(element.id));
-
-            if (block && !renderedElementIds.has(element.id)) {
-                return renderBlock(block);
-            }
-
-            // Render ACTION elements that are not bound to any block
-            if (
-                element.category === "ACTION" &&
-                !renderedElementIds.has(element.id)
-            ) {
-                renderedElementIds.add(element.id);
-
-                if (!element) {
-                    return null;
-                }
-
-                return (
-                    <ButtonFieldAdapter
-                        key={ index }
-                        component={ element }
-                        handleButtonAction={ handleRequestBody }
-                    />
-                );
-            }
-
-            return null;
+            return renderElement(element);
         });
     };
 
@@ -100,10 +57,7 @@ const DynamicContent = ({ content, handleRequestBody }) => {
 };
 
 DynamicContent.propTypes = {
-    content: PropTypes.shape({
-        blocks: PropTypes.array.isRequired,
-        elements: PropTypes.array.isRequired
-    }).isRequired,
+    elements: PropTypes.array.isRequired,
     handleRequestBody: PropTypes.func.isRequired
 };
 

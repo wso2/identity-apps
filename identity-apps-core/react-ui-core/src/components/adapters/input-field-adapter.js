@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,34 +18,80 @@
 
 import PropTypes from "prop-types";
 import React from "react";
+import CheckboxFieldAdapter from "./checkbox-field-adapter";
 import CountryFieldAdapter from "./country-field-adapter";
+import DateFieldAdapter from "./date-field-adapter";
 import OTPFieldAdapter from "./otp-field-adapter";
 import PasswordFieldAdapter from "./password-field-adapter";
+import PhoneNumberFieldAdapter from "./phone-number-field-adapter";
 import TextFieldAdapter from "./text-field-adapter";
 
-const InputFieldAdapter = ({ component, formStateHandler, formErrorHandler }) => {
-
+const InputFieldAdapter = ({ component, formState, formStateHandler, formFieldError }) => {
     switch (component.variant) {
         case "TEXT":
             return (
                 <TextFieldAdapter
                     component={ component }
+                    formState={ formState }
                     formStateHandler={ formStateHandler }
-                    formErrorHandler={ formErrorHandler }
+                    fieldErrorHandler={ formFieldError }
+                />
+            );
+        case "EMAIL":
+            return (
+                <TextFieldAdapter
+                    component={ component }
+                    formState={ formState }
+                    formStateHandler={ formStateHandler }
+                    fieldErrorHandler={ formFieldError }
                 />
             );
         case "DATE":
-            return <CountryFieldAdapter component={ component } formStateHandler={ formStateHandler } />;
+            return (
+                <DateFieldAdapter
+                    component={ component }
+                    formState={ formState }
+                    formStateHandler={ formStateHandler }
+                    fieldErrorHandler={ formFieldError }
+                />
+            );
+        case "COUNTRY":
+            return (
+                <CountryFieldAdapter
+                    component={ component }
+                    formState={ formState }
+                    formStateHandler={ formStateHandler }
+                    fieldErrorHandler={ formFieldError }
+                />
+            );
         case "PASSWORD":
             return (
                 <PasswordFieldAdapter
                     component={ component }
+                    formState={ formState }
                     formStateHandler={ formStateHandler }
+                    formErrorHandler={ formFieldError }
+                />
+            );
+        case "PHONE_NUMBER":
+            return (
+                <PhoneNumberFieldAdapter
+                    component={ component }
+                    formState={ formState }
+                    formStateHandler={ formStateHandler }
+                    fieldErrorHandler={ formFieldError }
                 />
             );
         case "OTP":
             return (
                 <OTPFieldAdapter
+                    component={ component }
+                    formStateHandler={ formStateHandler }
+                />
+            );
+        case "CHECKBOX":
+            return (
+                <CheckboxFieldAdapter
                     component={ component }
                     formStateHandler={ formStateHandler }
                 />
@@ -57,7 +103,8 @@ const InputFieldAdapter = ({ component, formStateHandler, formErrorHandler }) =>
 
 InputFieldAdapter.propTypes = {
     component: PropTypes.object.isRequired,
-    formState: PropTypes.object.isRequired,
+    formFieldError: PropTypes.func.isRequired,
+    formState: PropTypes.isRequired,
     formStateHandler: PropTypes.func.isRequired
 };
 

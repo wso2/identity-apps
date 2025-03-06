@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 const useDynamicForm = (fields) => {
 
     const [ formState, setFormState ] = useState({
         dirtyFields: {},
         disabled: false,
-        errors: {},
+        errors: [],
         isDirty: false,
         isLoading: false,
         isValidating: false,
@@ -34,26 +34,30 @@ const useDynamicForm = (fields) => {
         touchedFields: {},
         values: {}
     });
-    const [ formErrors, setFormErrors ] = useState({});
 
-    useEffect(() => {
-        if (!formErrors) {
-            return;
-        }
+    const handleFieldError = useCallback((identifier, error) => {
+        setFormState((prev) => {
+            const updatedErrors = { ...prev.errors };
 
-        setFormState((prev) => ({
-            ...prev,
-            errors: formErrors,
-            isValid: !formErrors || Object.keys(formErrors).length === 0
-        }));
-    }, [ formErrors ]);
+            if (error) {
+                updatedErrors[identifier] = error[0] && error[0].error || "Unknown error.";
+            } else {
+                delete updatedErrors[identifier];
+            }
 
-    // Handle changes in form fields
-    const handleChange = useCallback((name, value) => {
+            return {
+                ...prev,
+                errors: updatedErrors,
+                isValid: Object.keys(updatedErrors).length === 0
+            };
+        });
+    }, []);
+
+    const handleChange = useCallback((identifier, value) => {
         setFormState((prev) => {
             const updatedValues = {
                 ...prev.values,
-                [name]: value
+                [identifier]: value
             };
 
             return {
@@ -61,47 +65,62 @@ const useDynamicForm = (fields) => {
                 values: updatedValues,
                 touched: {
                     ...prev.touched,
-                    [name]: true
+                    [identifier]: true
                 },
-                isDirty: true
+                isDirty: value !== ""
             };
         });
     }, [ fields ]);
 
-    const handleSubmit = useCallback((onSubmit) => (event) => {
-
+    const handleSubmit = (onSubmit) => (event) => {        
         event.preventDefault();
 
-        setFormState((prev) => ({ ...prev, isSubmitting: true }));
+        let errors = [];
 
-        let hasErrors = false;
-        const newErrors = {};
+        fields.forEach(field => {
+            const fieldValue = formState.values[field.config.identifier];
 
-        fields.forEach((field) => {
+            if (field.config.required && !fieldValue) {
+                errors.push({
+                    label: field.config.identifier,
+                    error: "This field is required."
+                });
+            }
 
-            const fieldErrors = formState.errors[field.properties.name];
-
-            if (fieldErrors && fieldErrors.length > 0) {
-                hasErrors = true;
-                newErrors[field.properties.name] = fieldErrors;
+            if (field.config.validation) {
+                field.config.validation.forEach(rule => {
+                    if (rule.type === "MIN_LENGTH" && fieldValue.length < rule.value) {
+                        errors.push({
+                            label: field.config.identifier,
+                            error: `Must be at least ${rule.value} characters.`
+                        });
+                    }
+                });
             }
         });
 
+        if (Object.keys(errors).length > 0) {
+            setFormState((prev) => ({
+                ...prev,
+                errors: errors,
+                isValid: false
+            }));
+
+            return;
+        }
+
         setFormState((prev) => ({
             ...prev,
-            errors: newErrors,
-            isSubmitting: false
+            isValid: true
         }));
 
-        if (!hasErrors) {
-            onSubmit(event.nativeEvent.submitter.name, formState.values);
-        }
-    }, [ fields, formState.values ]);
+        onSubmit(event.nativeEvent.submitter.name, formState.values);
+    };
 
     return {
         formState,
         handleChange,
-        handleFormErrors: setFormErrors,
+        handleFieldError,
         handleSubmit
     };
 };

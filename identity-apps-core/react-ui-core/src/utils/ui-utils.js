@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,10 +25,20 @@ export const getInputIconClass = (fieldName) => {
     const iconMapping = {
         address: "home",
         email: "envelope outline",
+        "http://wso2.org/claims/username": "user outline",
         password: "lock",
-        phone: "phone",
-        username: "user outline"
+        phone: "phone"
     };
 
     return iconMapping[fieldName] || null;
+};
+
+export const getConnectionLogo = (connectionName) => {
+    const logoMapping = {
+        GoogleOIDCAuthenticator: "libs/themes/default/assets/images/identity-providers/google-idp-illustration.svg",
+        FacebookAuthenticator: "libs/themes/default/assets/images/identity-providers/facebook-idp-illustration.svg",
+        Default: "libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg"
+    };
+
+    return logoMapping[connectionName] || logoMapping.Default;
 };

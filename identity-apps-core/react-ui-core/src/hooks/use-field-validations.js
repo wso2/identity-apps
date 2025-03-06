@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -98,36 +98,40 @@ const useFieldValidation = (validationConfig) => {
         return null;
     }, []);
 
-    const validate = useCallback((value) => {
+    const validate = useCallback((config, value) => {
         let validationErrors = [];
 
         if (validationConfig) {
-            for (const validation of validationConfig) {
-                if (validation.type === "CRITERIA" && validation.criteria) {
-                    for (const criterion of validation.criteria) {
+            if (validationConfig.type === "CRITERIA" && validationConfig.criteria) {
+                for (const criterion of validationConfig.criteria) {
+                    for (const validation of criterion.validation) {
+                        const error = validateCriterion(validation, value);
 
-                        for (const validation of criterion.validation) {
-                            const error = validateCriterion(validation, value);
-
-                            if (error) {
-                                validationErrors.push({
-                                    label: criterion.label,
-                                    error
-                                });
-                            }
+                        if (error) {
+                            validationErrors.push({
+                                label: criterion.label,
+                                error
+                            });
                         }
                     }
-                } else {
-                    const error = validateCriterion(validation, value);
+                }
+            } else {
+                const error = validateCriterion(validationConfig, value);
 
-                    if (error) {
-                        validationErrors.push({
-                            label: validation.label,
-                            error
-                        });
-                    }
+                if (error) {
+                    validationErrors.push({
+                        label: validationConfig.label,
+                        error
+                    });
                 }
             }
+        }
+
+        if (config.required && !value) {
+            validationErrors.push({
+                label: config.name,
+                error: "This field is required."
+            });
         }
 
         setFieldErrors(validationErrors);

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,98 +27,138 @@ import ValidationError from "../validation-error";
 
 const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErrorHandler }) => {
 
-    const { required, name, label, placeholder, rest, validation } = component.properties;
-
+    const { identifier, required, label, placeholder, validation } = component.config;
     const { translations } = useTranslations();
-    const { fieldErrors, validate } = useFieldValidation(validation);
-
-    const fieldError = formState && formState.errors && formState.errors.length > 0 &&
-        formState.errors.filter(error => error.label === component.properties.name);
-    const error = fieldError ? fieldError[0] && fieldError[0].error :
-        fieldErrors && fieldErrors.length >= 0 && fieldErrors[0] && fieldErrors[0].error;
+    const { fieldErrors: passwordErrors, validate } = useFieldValidation(validation);
 
     const [ password, setPassword ] = useState("");
+    const [ confirmPassword, setConfirmPassword ] = useState("");
     const [ showPassword, setShowPassword ] = useState(false);
+    const [ confirmPasswordError, setConfirmPasswordError ] = useState([]);
+
+    const isPasswordField = identifier === "password";
+    const isConfirmPasswordField = identifier === "confirmPassword";
+
+    const fieldError = formState && formState.errors && formState.errors.length > 0 &&
+        formState.errors.filter(error => error.label === component.config.name);
+    const error = fieldError ? fieldError[0] && fieldError[0].error :
+        passwordErrors && passwordErrors.length >= 0 && passwordErrors[0] && passwordErrors[0].error;
+
+    const confirmPasswordCriteria = {
+        "criteria": [ {
+            "error": "Passwords do not match",
+            "label": "sign.up.form.fields.password.policies.passwordsMustMatch"
+        } ],
+        "showValidationCriteria": true,
+        "type": "CRITERIA"
+    };
 
     useEffect(() => {
-        formStateHandler(name, password);
+        if (isPasswordField) {
+            formStateHandler(identifier, password);
+            validateConfirmPassword();
+        }
     }, [ password ]);
+
+    useEffect(() => {
+        if (validation) {
+            validate({ identifier, required }, password);
+            formErrorHandler(identifier, passwordErrors);
+        }
+    }, [ password ]);
+
+    useEffect(() => {
+        if (isConfirmPasswordField) {
+            formStateHandler(identifier, confirmPassword);
+            validateConfirmPassword();
+        }
+    }, [ confirmPassword ]);
 
     const handlePasswordChange = (value) => {
         setPassword(value);
+    };
 
-        if (validation) {
-            validate(value);
-            formErrorHandler(component.properties.name, fieldErrors);
+    const handleConfirmPasswordChange = (value) => {
+        setConfirmPassword(value);
+    };
+
+    const validateConfirmPassword = () => {
+        if (confirmPassword !== formState.values.password || formState.values.password === "") {
+            setConfirmPasswordError([ {
+                "error": "Passwords do not match",
+                "label": "sign.up.form.fields.password.policies.passwordsMustMatch"
+            } ]);
         }
     };
 
+    const resolveFieldCriteria = () => {
+        if (isConfirmPasswordField) {
+            return (
+                <ValidationCriteria
+                    validationConfig={ confirmPasswordCriteria }
+                    errors={ confirmPasswordError }
+                    value={ confirmPassword }
+                />
+            );
+        } else {
+            return validation && validation.type === "CRITERIA" && validation.showValidationCriteria ? (
+                <ValidationCriteria validationConfig={ validation } errors={ passwordErrors } value={ password } />
+            ) : (passwordErrors.length > 0 || formState.errors.length > 0) &&  (
+                <ValidationError
+                    name={ identifier }
+                    errors={ { formStateErrors: formState.errors, fieldErrors: passwordErrors } }
+                />
+            );
+        }
+    };
+
+    const renderPasswordInput = (fieldValue, onChange) => (
+        <>
+            <label>{ resolveElementText(translations, label) }</label>
+            <div className="ui fluid left icon input addon-wrapper">
+                <input
+                    className="form-control"
+                    name={ identifier }
+                    type={ showPassword ? "text" : "password" }
+                    value={ fieldValue }
+                    placeholder={ resolveElementText(translations, placeholder) }
+                    onChange={ (e) => onChange(e.target.value) }
+                />
+                <i aria-hidden="true" className="lock icon"></i>
+                <i
+                    className={ classNames("eye icon right-align password-toggle", { slash: !showPassword }) }
+                    onClick={ () => setShowPassword(!showPassword) }
+                />
+            </div>
+            { resolveFieldCriteria() }
+        </>
+    );
+
     return (
         <>
-            <div
-                id="passwordField"
-                className={ classNames("field", required ? "required" : null) }
-            >
-                <label>{ resolveElementText(translations, label) }</label>
-                <div className="ui fluid left icon input addon-wrapper">
-                    <input
-                        className="form-control"
-                        name={ name }
-                        type={ showPassword ? "text" : "password" }
-                        id="password"
-                        value={ password }
-                        placeholder={ resolveElementText(translations, placeholder) }
-                        onChange={ (e) => handlePasswordChange(e.target.value) }
-                        { ...rest }
-                    />
-                    <i aria-hidden="true" className="lock icon"></i>
-                    <i
-                        id="password-eye"
-                        className={ classNames("eye icon right-align password-toggle", { "slash": !showPassword } ) }
-                        onClick={ () => setShowPassword(!showPassword) }
-                    />
-                </div>
-                {
-                    validation && validation.type === "CRITERIA" && validation.showValidationCriteria (
-                        <ValidationCriteria validationConfig={ validation } errors={ fieldErrors } value={ password } />
-                    )
-                }
-                {
-                    (fieldErrors.length > 0 || formState.errors.length > 0) &&  (
-                        <ValidationError error={ error } />
-                    )
-                }
-                <div className="ui divider hidden"></div>
-            </div>
+            { isPasswordField &&
+                renderPasswordInput(password, handlePasswordChange)
+            }
+            { isConfirmPasswordField &&
+                renderPasswordInput(confirmPassword, handleConfirmPasswordChange)
+            }
         </>
     );
 };
 
 PasswordFieldAdapter.propTypes = {
     component: PropTypes.shape({
-        properties: PropTypes.shape({
+        config: PropTypes.shape({
+            identifier: PropTypes.string.isRequired,
             label: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
             placeholder: PropTypes.string.isRequired,
-            value: PropTypes.string,
-            policies: PropTypes.arrayOf(
-                PropTypes.shape({
-                    description: PropTypes.string.isRequired,
-                    key: PropTypes.string.isRequired,
-                    policy: PropTypes.string.isRequired,
-                    value: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]).isRequired
-                })
-            ).isRequired,
-            policyCriteria: PropTypes.arrayOf(
-                PropTypes.shape({
-                    appliesTo: PropTypes.arrayOf(PropTypes.string).isRequired,
-                    criteria: PropTypes.string.isRequired,
-                    description: PropTypes.string.isRequired
-                })
-            ).isRequired,
-            showValidationCriteria: PropTypes.bool
+            required: PropTypes.boolean,
+            validation: PropTypes.object
         }).isRequired
     }).isRequired,
+    formErrorHandler: PropTypes.func.isRequired,
+    formState: PropTypes.object.isRequired,
     formStateHandler: PropTypes.func.isRequired
 };
 

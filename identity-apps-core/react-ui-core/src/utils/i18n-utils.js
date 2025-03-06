@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -51,4 +51,18 @@ export const getLocaleTranslationMap = async (basePath, locale = "en-US") => {
     const translationObject = await getLocaleTranslations(basePath, locale);
 
     return new Map(Object.entries(translationObject));
+};
+
+export const resolveElementText = (translations, text) => {
+    if (!text) {
+        return "";
+    }
+
+    const i18nKeyMatch = text.match(/^\{(.+)\}$/);
+
+    if (i18nKeyMatch) {
+        return getTranslationByKey(translations, i18nKeyMatch[1]);
+    }
+
+    return text;
 };

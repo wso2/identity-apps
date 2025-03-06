@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,101 +16,97 @@
  * under the License.
  */
 
-import classNames from "classnames";
 import PropTypes from "prop-types";
 import React from "react";
+import { Button } from "semantic-ui-react";
 import { useTranslations } from "../../hooks/use-translations";
-import { getTranslationByKey } from "../../utils/i18n-utils";
+import { resolveElementText } from "../../utils/i18n-utils";
+import { getConnectionLogo } from "../../utils/ui-utils";
 
 const ButtonAdapter = ({ component, handleButtonAction }) => {
 
     const { translations } = useTranslations();
+    const actionId = (component.action && component.action.id) ? component.action.id : "";
 
     switch (component.variant) {
         case "PRIMARY":
             return (
-                <div className="button mt-4">
-                    <button
-                        className={ classNames("ui primary fluid large button", component.properties.className) }
-                        type={ component.properties.type }
-                        name={ component.action.name }
-                        onClick={ !component.properties.type === "submit" ? handleButtonAction : null }
-                    >
-                        { getTranslationByKey(translations, component.properties.text) }
-                    </button>
-                </div>
+                <Button
+                    className="ui primary fluid large button mt-4"
+                    type={ component.config.type }
+                    name={ actionId }
+                    onClick={ !component.config.type === "submit" ? handleButtonAction : null }
+                >
+                    { resolveElementText(translations, component.config.text) }
+                </Button>
             );
         case "SECONDARY":
             return (
-                <div className="button mt-4">
-                    <button
-                        type={ component.properties.type }
-                        className={
-                            classNames("ui secondary fluid large button",
-                                `${ component.properties.className } secondary`)
-                        }
-                        name={ component.action.name }
-                        onClick={ !component.properties.type === "submit" ? handleButtonAction : null }
-                        style={ component.properties.styles }
-                    >
-                        { getTranslationByKey(translations, component.properties.text) }
-                    </button>
-                </div>
+                <Button
+                    type={ component.config.type }
+                    className="ui secondary fluid large button mt-4"
+                    name={ actionId }
+                    onClick={ !component.config.type === "submit" ? handleButtonAction : null }
+                    style={ component.config.styles }
+                >
+                    { resolveElementText(translations, component.config.text) }
+                </Button>
             );
         case "LINK":
             return (
-                <div className="button mt-4">
-                    <button
-                        type={ component.type }
-                        className={ `${component.properties.className} link` }
-                        style={ component.properties.styles }
-                    >
-                        { getTranslationByKey(translations, component.properties.text) }
-                    </button>
-                </div>
+                <Button
+                    type={ component.type }
+                    className="link mt-4"
+                    style={ component.config.styles }
+                    onClick={ () => handleButtonAction(actionId, {}) }
+                >
+                    { resolveElementText(translations, component.config.text) }
+                </Button>
             );
-        case "SOCIAL_BUTTON":
+        case "SOCIAL":
             return (
-                <div className="button mt-4">
-                    <button
-                        type={ component.properties.type }
-                        className={ classNames("ui button", `${ component.properties.className } social`) }
-                        name={ component.action.name }
-                        style={ component.properties.styles }
-                        onClick={ !component.properties.type === "submit" ? handleButtonAction : null }
+                <div className="social-login mt-4">
+                    <Button
+                        type={ component.config.type }
+                        className="ui button social"
+                        name={ actionId }
+                        style={ component.config.styles }
+                        onClick={ () => handleButtonAction(actionId, {}) }
                     >
-                        { getTranslationByKey(translations, component.properties.text) }
-                    </button>
+                        <img
+                            className="ui image"
+                            src={ getConnectionLogo(component.config.action.executor.name) }
+                            alt="Connection Login icon"
+                            role="presentation"></img>
+                        <span>{ resolveElementText(translations, component.config.text) }</span>
+                    </Button>
                 </div>
             );
         default:
             return (
-                <div className="button mt-4">
-                    <button
-                        type={ component.type }
-                        name={ component.action.name }
-                        className={ classNames("ui button", component.properties.className) }
-                        style={ component.properties.styles }
-                        onClick={ !component.properties.type === "submit" ? handleButtonAction : null }
-                    >
-                        { getTranslationByKey(translations, component.properties.text) }
-                    </button>
-                </div>
+                <Button
+                    type={ component.type }
+                    name={ actionId }
+                    className="ui button mt-4"
+                    style={ component.config.styles }
+                    onClick={ !component.config.type === "submit" ? handleButtonAction : null }
+                >
+                    { resolveElementText(translations, component.config.text) }
+                </Button>
             );
     }
 };
 
 ButtonAdapter.propTypes = {
-    actionHandler: PropTypes.func.isRequired,
     component: PropTypes.shape({
-        properties: PropTypes.shape({
-            className: PropTypes.string,
-            styles: PropTypes.object,
+        config: PropTypes.shape({
             text: PropTypes.string.isRequired
         }).isRequired,
+        id: PropTypes.string,
         type: PropTypes.string,
         variant: PropTypes.string
-    }).isRequired
+    }).isRequired,
+    handleButtonAction: PropTypes.func.isRequired
 };
 
 export default ButtonAdapter;

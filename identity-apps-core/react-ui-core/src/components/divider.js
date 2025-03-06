@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,28 +17,13 @@
  */
 
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
-
+import React from "react";
+import { Divider } from "semantic-ui-react";
 
 const DividerAdapter = ({ component }) => {
-
-    const [ element, setElement ] = useState({});
-
-    useEffect(() => {
-
-        if (!component) {
-
-            return;
-        }
-
-        setElement(component);
-    }, [ component ]);
-
-    if (element.variant === "HORIZONTAL") {
+    if (component.variant === "HORIZONTAL") {
         return (
-            <div className="ui horizontal divider"  style={ element.properties.styles }>
-                { element.properties.text && <span>{ element.properties.text }</span> }
-            </div>
+            <Divider horizontal>{ component.config.text }</Divider>
         );
     }
 
