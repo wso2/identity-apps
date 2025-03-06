@@ -63,7 +63,7 @@ const RegistrationFlowBuilderBanner: FC<RegistrationFlowBuilderBannerProps> = ({
                     <Typography variant="h5">
                         Construct you ideal self registration experience with our new{ " " }
                         <span className="text-gradient primary">Registration Flow Builder</span>
-                        <Chip size="small" label={ t(FeatureStatusLabel.BETA) } className="oxygen-chip-beta" />
+                        <Chip size="small" label={ t(FeatureStatusLabel.EXPERIMENTAL) } className="oxygen-chip-experimental" />
                     </Typography>
                     <Typography variant="body1">
                         Achieve a seamless user onboarding experience by customizing the registration flow to suit your

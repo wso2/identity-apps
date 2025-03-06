@@ -121,7 +121,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
             <Droppable
                 id={ VisualFlowConstants.FLOW_BUILDER_CANVAS_ID }
                 type={ VisualFlowConstants.FLOW_BUILDER_DROPPABLE_CANVAS_ID }
-                accept={ [ VisualFlowConstants.FLOW_BUILDER_DROPPABLE_VIEW_ID ] }
+                accept={ [ ...VisualFlowConstants.FLOW_BUILDER_CANVAS_ALLOWED_RESOURCE_TYPES ] }
             >
                 <ReactFlow
                     fitView

@@ -6,10 +6,10 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "Default",
-            "description": "Default starter template for a blank flow",
-            "image": "https://www.svgrepo.com/show/509936/flow-line.svg",
-            "showOnResourcePanel": false
+            "label": "Blank",
+            "description": "Start a new flow from scratch",
+            "image": "https://www.svgrepo.com/show/533698/refresh-ccw-alt-3.svg",
+            "showOnResourcePanel": true
         },
         "config": {
             "data": {
@@ -28,15 +28,6 @@
                         "data": {
                             "components": [
                                 {
-                                    "category": "DISPLAY",
-                                    "type": "TYPOGRAPHY",
-                                    "id": "{{ID}}",
-                                    "variant": "H3",
-                                    "config": {
-                                        "text": "Register Account"
-                                    }
-                                },
-                                {
                                     "category": "BLOCK",
                                     "type": "FORM",
                                     "config": {},
@@ -52,7 +43,7 @@
                                                 "text": "Continue"
                                             },
                                             "action": {
-                                                "next": "done",
+                                                "next": "USER_ONBOARD",
                                                 "type": "NEXT"
                                             }
                                         }
@@ -64,9 +55,9 @@
                 ]
             }
         }
-    },  
+    },
     {
-        "resourceType": "TEMPLATES",
+        "resourceType": "TEMPLATE",
         "category": "STARTER",
         "type": "BASIC",
         "version": "0.1.0",
@@ -77,10 +68,93 @@
             "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg",
             "showOnResourcePanel": true
         },
-        "config": {}
+        "config": {
+            "data": {
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 300,
+                            "y": 200
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Register Account"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "TEXT",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "label": "Username",
+                                                "required": true,
+                                                "placeholder": "Enter your username",
+                                                "identifier": "http://wso2.org/claims/username"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "PASSWORD",
+                                            "config": {
+                                                "identifier": "password",
+                                                "type": "password",
+                                                "hint": "",
+                                                "label": "Password",
+                                                "required": true,
+                                                "placeholder": "Enter your password"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "PasswordOnboardExecutor"
+                                                },
+                                                "next": "USER_ONBOARD"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
     },
     {
-        "resourceType": "TEMPLATES",
+        "resourceType": "TEMPLATE",
         "category": "STARTER",
         "type": "BASIC_FEDERATED",
         "version": "0.1.0",

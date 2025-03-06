@@ -42,7 +42,8 @@ import VisualFlowConstants from "../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import useGenerateStepElement from "../../hooks/use-generate-step-element";
 import { Element } from "../../models/elements";
-import { ResourceTypes } from "../../models/resources";
+import { Resource, ResourceTypes } from "../../models/resources";
+import { Template } from "../../models/template";
 import generateResourceId from "../../utils/generate-resource-id";
 import resolveKnownEdges from "../../utils/resolve-known-edges";
 import ResourcePanel from "../resource-panel/resource-panel";
@@ -56,6 +57,7 @@ export interface DecoratedVisualFlowPropsInterface extends VisualFlowPropsInterf
      * Callback to be fired when node data is updated.
      */
     mutateComponents: (components: Element[]) => Element[];
+    onTemplateLoad: (template: Template) => [ Node[], Edge[] ];
 }
 
 /**
@@ -71,6 +73,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     initialEdges = [],
     onEdgeResolve,
     mutateComponents,
+    onTemplateLoad,
     ...rest
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
     const { screenToFlowPosition, updateNodeData } = useReactFlow();
@@ -88,31 +91,27 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         const { resource } = sourceData;
         const { clientX, clientY } = event?.nativeEvent;
 
-        // TODO: Handle this with the `type` -> `accepts` feature in @dnd-kit/react.
-        // check if the dropped element is valid
-        if (!resource?.type || resource?.resourceType !== ResourceTypes.Step) {
-            return;
+        if (resource?.resourceType === ResourceTypes.Step) {
+            const position: XYPosition = screenToFlowPosition({
+                x: clientX,
+                y: clientY
+            });
+
+            setNodes((nodes: Node[]) => [ ...nodes, {
+                data: {
+                    components: []
+                },
+                deletable: true,
+                id: generateResourceId(resource.type.toLowerCase()),
+                position,
+                type: resource.type as string
+            } ]);
+        } else if (resource?.resourceType === ResourceTypes.Template) {
+            const [ nodes, edges ] = onTemplateLoad(resource);
+
+            setNodes((existingNodes: Node[]) => [ ...existingNodes, ...nodes ]);
+            setEdges((existingEdges: Edge[]) => [ ...existingEdges, ...edges ]);
         }
-
-        // project was renamed to screenToFlowPosition
-        // and you don't need to subtract the reactFlowBounds.left/top anymore
-        // details: https://reactflow.dev/whats-new/2023-11-10
-        const position: XYPosition = screenToFlowPosition({
-            x: clientX,
-            y: clientY
-        });
-
-        const newNode: Node = {
-            data: {
-                components: []
-            },
-            deletable: true,
-            id: generateResourceId(resource.type.toLowerCase()),
-            position,
-            type: resource.type as string
-        };
-
-        setNodes((nodes: Node[]) => nodes.concat(newNode));
 
         onResourceDropOnCanvas(resource, null);
     };

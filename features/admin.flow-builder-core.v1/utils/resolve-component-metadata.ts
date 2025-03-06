@@ -51,7 +51,7 @@ const resolveComponentMetadata = (resources: Resources, components: Element[]): 
         return updatedComponent;
     };
 
-    return components.map(updateComponentResourceType);
+    return components?.map(updateComponentResourceType);
 };
 
 export default resolveComponentMetadata;
