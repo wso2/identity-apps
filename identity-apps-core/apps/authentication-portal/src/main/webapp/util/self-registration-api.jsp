@@ -29,19 +29,13 @@
             requestBody.append(line);
         }
 
-        System.out.println("Request: " + requestBody.toString());
-
         if (requestBody.length() > 0) {
             JSONObject requestJson = new JSONObject(requestBody.toString());
             if (requestJson.has("applicationId")) {
-                endpoint = "/data/init-response.json"; 
-            } else if (requestJson.has("action") && "PasswordOnboarder".equalsIgnoreCase(requestJson.getString("action"))) {
-                endpoint = "/data/password-submit-response.json";
-            } else if (requestJson.has("action") && "EmailOTPVerifier1".equalsIgnoreCase(requestJson.getString("action"))) {
-                endpoint = "/data/emailotp-submit-1-response.json";
-            } else if (requestJson.has("action") && "EmailOTPVerifier2".equalsIgnoreCase(requestJson.getString("action"))) {
-                endpoint = "/data/emailotp-submit-2-response.json";
-            }
+                endpoint = "/api/server/v1/registration/initiate"; 
+            } else {
+                endpoint = "/api/server/v1/registration/submit";
+            } 
         }
     } catch (Exception e) {
         out.print("{\"error\": \"Error reading request: " + e.getMessage() + "\"}");
@@ -52,29 +46,29 @@
     String serverName = request.getServerName();
     int serverPort = request.getServerPort();
     String contextPath = request.getContextPath();
-
-    String apiURL = scheme + "://" + serverName + ":" + serverPort + contextPath + endpoint;
-
     StringBuilder apiResponse = new StringBuilder();
     HttpURLConnection connection = null;
+    
+    String apiURL = scheme + "://" + serverName + ":" + serverPort + endpoint;
 
     try {
         URL url = new URL(apiURL);
         connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
+        connection.setRequestMethod("POST");
         connection.setRequestProperty("Accept", "application/json");
+        connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
         connection.setDoOutput(true);
 
-        // if (requestBody.length() > 0) {
-        //     try (OutputStream os = connection.getOutputStream()) {
-        //         byte[] input = requestBody.toString().getBytes("utf-8");
-        //         os.write(input, 0, input.length);
-        //     }
-        // }
+        if (requestBody.length() > 0) {
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = requestBody.toString().getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+        }
 
         int responseCode = connection.getResponseCode();
-        if (responseCode == HttpURLConnection.HTTP_OK) {
+        if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_CREATED) {
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String inputLine;
 
@@ -83,12 +77,7 @@
             }
             in.close();
 
-            // Parse the API response JSON
-            JSONObject responseObject = new JSONObject(apiResponse.toString()); 
-
-            System.out.println("Response: " + responseObject.toString(2));           
-
-            // Send the selected object as the response
+            JSONObject responseObject = new JSONObject(apiResponse.toString());
             out.print(responseObject.toString(2));
         } else {
             out.print("{\"error\": \"Failed to fetch data. Response Code: " + responseCode + "\"}");
