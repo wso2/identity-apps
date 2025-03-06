@@ -30,6 +30,7 @@ on:
 permissions:
     pull-requests: write
     contents: write
+    packages: write
 
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
@@ -166,14 +167,19 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-maven-
 
+            - name: 🔍 Check GitHub API Rate Limit
+              id: check-rate-limit
+              run: |
+                curl -s -H "Authorization: token ${{ env.GH_TOKEN }}" https://api.github.com/rate_limit | jq .
+
             - name: 📣 Create Release Pull Request or Publish to npm
               if: ${{ env.SHOULD_GENERATE_CHANGESET == 'true' }}
               id: changesets
               uses: changesets/action@v1.4.9
               with:
                   title: "[Release] [GitHub Action] Update package versions"
-                  publish: pnpm publish:packages
-                  version: pnpm version:packages
+                  publish: pnpm run publish:packages
+                  version: pnpm run version:packages
                   commit: "[WSO2 Release] [GitHub Action] [Release] [skip ci] update package versions"
               env:
                   GITHUB_TOKEN: ${{ env.GH_TOKEN }}
