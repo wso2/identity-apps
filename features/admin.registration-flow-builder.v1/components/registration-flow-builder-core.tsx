@@ -78,7 +78,10 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             defaultTemplate.config.data.steps[0].id = INITIAL_FLOW_START_STEP_ID;
         }
 
-        return generateComponentsForTemplates(resources, generateIdsForTemplates(defaultTemplate)?.config?.data?.steps[0]?.data?.components);
+        return generateComponentsForTemplates(
+            resources,
+            generateIdsForTemplates(defaultTemplate)?.config?.data?.steps[0]?.data?.components
+        );
     };
 
     const defaultTemplateComponents = useMemo(() => getDefaultTemplateComponents(), [ resources ]);
@@ -138,6 +141,15 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         if (registrationFlow?.steps && registrationFlow.steps.length > 0) {
             const edges: Edge[] = [];
 
+            // Get all step IDs for validation
+            const stepIds = registrationFlow.steps.map(step => step.id);
+
+            // Find the user onboard step
+            const userOnboardStep = registrationFlow.steps.find(step => step.type === StaticStepTypes.UserOnboard);
+
+            // Get the ID of the user onboard step or use the default one
+            const userOnboardStepId = userOnboardStep?.id || INITIAL_FLOW_USER_ONBOARD_STEP_ID;
+
             // Check if we need to connect start to the first step
             if (registrationFlow.steps.length > 0) {
                 const firstStep = registrationFlow.steps[0];
@@ -151,31 +163,121 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 });
             }
 
+            // Flag to track if we've already created an edge to the user onboard step
+            let userOnboardEdgeCreated = false;
+
             // Create edges based on the action configuration in each step
             registrationFlow.steps.forEach((step: Step) => {
+                // Skip processing for the user onboard step itself
+                if (step.type === StaticStepTypes.UserOnboard) {
+                    return;
+                }
+
                 // Check if the step has components with actions
                 if (step.data?.components) {
                     // Look for forms and their buttons
                     step.data.components.forEach((component: Element) => {
                         if (component.type === BlockTypes.Form) {
-                            component.components?.forEach((formElement: Element) => {
-                                // Check if it's a button with a "next" action
-                                if (formElement.type === ElementTypes.Button &&
-                                    (formElement as any).action?.next) {
+                            const buttons = component.components?.filter(
+                                (elem: Element) => elem.type === ElementTypes.Button
+                            );
+
+                            buttons?.forEach((button: Element) => {
+                                if (button.action?.next) {
+                                    // If next points to a valid step, create that edge
+                                    if (stepIds.includes(button.action.next)) {
+                                        edges.push({
+                                            animated: false,
+                                            id: button.id,
+                                            source: step.id,
+                                            sourceHandle: `${button.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
+                                            target: button.action.next,
+                                            type: "base-edge"
+                                        });
+
+                                        // Check if this is pointing to the user onboard step
+                                        if (button.action.next === userOnboardStepId) {
+                                            userOnboardEdgeCreated = true;
+                                        }
+                                    } else if (
+                                        button.action.next === "user_onboard_ghgx" ||
+                                        button.action.next.includes("user_onboard")
+                                    ) {
+                                        // If next references a user onboard ID that's not in the steps
+                                        // but follows the naming pattern, connect to our actual user onboard step
+                                        edges.push({
+                                            animated: false,
+                                            id: button.id,
+                                            source: step.id,
+                                            sourceHandle: `${button.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
+                                            target: userOnboardStepId,
+                                            type: "base-edge"
+                                        });
+                                        userOnboardEdgeCreated = true;
+                                    }
+                                } else if (button.action?.executor?.name === "PasswordOnboardExecutor") {
+                                    // For PasswordOnboardExecutor buttons without explicit next,
+                                    // create an edge to the user onboard step
                                     edges.push({
                                         animated: false,
-                                        id: formElement.id,
+                                        id: button.id,
                                         source: step.id,
-                                        sourceHandle: `${formElement.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
-                                        target: (formElement as any).action.next,
+                                        sourceHandle: `${button.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
+                                        target: userOnboardStepId,
                                         type: "base-edge"
                                     });
+                                    userOnboardEdgeCreated = true;
                                 }
                             });
                         }
                     });
                 }
             });
+
+            // If no edge to user onboard was created and we have view steps,
+            // connect the last view step to the user onboard step
+            if (!userOnboardEdgeCreated && registrationFlow.steps.length > 0) {
+                // Find view steps
+                const viewSteps = registrationFlow.steps.filter(step => step.type === StepTypes.View);
+
+                if (viewSteps.length > 0) {
+                    // Get the last view step
+                    const lastViewStep = viewSteps[viewSteps.length - 1];
+
+                    // Find a button in this step to use for the connection
+                    let buttonId = null;
+
+                    if (lastViewStep.data?.components) {
+                        for (const component of lastViewStep.data.components) {
+                            if (component.type === BlockTypes.Form) {
+                                const button = component.components?.find(
+                                    (elem: Element) => elem.type === ElementTypes.Button
+                                );
+
+                                if (button) {
+                                    buttonId = button.id;
+
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    // If we found a button, use it; otherwise generate a fallback ID
+                    const edgeId = buttonId || `${lastViewStep.id}-to-${userOnboardStepId}`;
+
+                    edges.push({
+                        animated: false,
+                        id: edgeId,
+                        source: lastViewStep.id,
+                        ...(buttonId
+                            ? { sourceHandle: `${buttonId}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}` }
+                            : {}),
+                        target: userOnboardStepId,
+                        type: "base-edge"
+                    });
+                }
+            }
 
             console.log("Generated edges:", edges);
 
