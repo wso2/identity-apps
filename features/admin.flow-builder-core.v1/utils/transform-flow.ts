@@ -22,8 +22,16 @@ import omit from "lodash-es/omit";
 import ButtonAdapterConstants from "../constants/button-adapter-constants";
 import { ActionTypes } from "../models/actions";
 import { Element, ElementCategories } from "../models/elements";
+import { StaticStepTypes, Step } from "../models/steps";
 
-const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [ "display", "version", "variants", "deprecated", "meta", "resourceType" ];
+const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [
+    "display",
+    "version",
+    "variants",
+    "deprecated",
+    "meta",
+    "resourceType"
+];
 
 const processActions = (component, navigations) => {
     if (component.category === ElementCategories.Action) {
@@ -31,7 +39,7 @@ const processActions = (component, navigations) => {
             ...(navigations[component.id] && { next: navigations[component.id], type: ActionTypes.Next })
         };
 
-       if (component?.action?.type === ActionTypes.Executor) {
+        if (component?.action?.type === ActionTypes.Executor) {
             action = {
                 ...component?.action,
                 next: navigations[component.id]
@@ -93,6 +101,14 @@ const transformFlow = (flowState: any) => {
         });
         /* eslint-disable sort-keys */
     });
+
+    // TODO: Temp move the `UserOnboard` step to the last of the steps array.
+    const userOnboardStep: Step = payload.steps.find((step: Step) => step.type === StaticStepTypes.UserOnboard);
+
+    if (userOnboardStep) {
+        payload.steps = payload.steps.filter((step: Step) => step.type !== StaticStepTypes.UserOnboard);
+        payload.steps.push(userOnboardStep);
+    }
 
     return payload;
 };

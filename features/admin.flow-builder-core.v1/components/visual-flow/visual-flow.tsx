@@ -142,10 +142,6 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                     data-componentid={ componentId }
                     colorMode="dark"
                     { ...rest }
-                    nodesDraggable={ false }
-                    panOnDrag={ false }
-                    panOnScroll={ false }
-                    zoomOnScroll={ false }
                 >
                     <Controls position="top-right" />
                 </ReactFlow>

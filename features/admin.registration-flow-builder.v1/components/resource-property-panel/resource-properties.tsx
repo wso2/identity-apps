@@ -91,7 +91,7 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                         } }
                     />
                 ) }
-                { Object.entries(properties)?.map(([ key, value ]: [FieldKey, FieldValue]) => (
+                { properties && Object.entries(properties)?.map(([ key, value ]: [FieldKey, FieldValue]) => (
                     <ResourcePropertyFactory
                         key={ `${resource.id}-${key}` }
                         resource={ resource }
