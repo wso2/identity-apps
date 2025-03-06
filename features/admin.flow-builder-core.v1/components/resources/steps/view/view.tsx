@@ -108,7 +108,7 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                                 { (node?.data?.components as any).map((component: Element, index: number) => (
                                     <ReorderableElement
                                         key={ component.id }
-                                        id={  component.id }
+                                        id={ component.id }
                                         index={ index }
                                         element={ component }
                                         className={ classNames(
