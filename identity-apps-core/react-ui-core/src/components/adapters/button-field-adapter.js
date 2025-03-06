@@ -47,7 +47,6 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
                     className="ui secondary fluid large button mt-4"
                     name={ actionId }
                     onClick={ !component.config.type === "submit" ? handleButtonAction : null }
-                    style={ component.config.styles }
                 >
                     { resolveElementText(translations, component.config.text) }
                 </Button>
@@ -57,7 +56,6 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
                 <Button
                     type={ component.type }
                     className="link mt-4"
-                    style={ component.config.styles }
                     onClick={ () => handleButtonAction(actionId, {}) }
                 >
                     { resolveElementText(translations, component.config.text) }
@@ -70,7 +68,6 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
                         type={ component.config.type }
                         className="ui button social"
                         name={ actionId }
-                        style={ component.config.styles }
                         onClick={ () => handleButtonAction(actionId, {}) }
                     >
                         <img
@@ -88,7 +85,6 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
                     type={ component.type }
                     name={ actionId }
                     className="ui button mt-4"
-                    style={ component.config.styles }
                     onClick={ !component.config.type === "submit" ? handleButtonAction : null }
                 >
                     { resolveElementText(translations, component.config.text) }
@@ -99,8 +95,10 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
 
 ButtonAdapter.propTypes = {
     component: PropTypes.shape({
+        action: PropTypes.object.isRequired,
         config: PropTypes.shape({
-            text: PropTypes.string.isRequired
+            text: PropTypes.string.isRequired,
+            type: PropTypes.string.isRequired
         }).isRequired,
         id: PropTypes.string,
         type: PropTypes.string,

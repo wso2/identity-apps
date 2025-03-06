@@ -109,8 +109,8 @@ const useFieldValidation = (validationConfig) => {
 
                         if (error) {
                             validationErrors.push({
-                                label: criterion.label,
-                                error
+                                error,
+                                label: criterion.label
                             });
                         }
                     }
@@ -120,8 +120,8 @@ const useFieldValidation = (validationConfig) => {
 
                 if (error) {
                     validationErrors.push({
-                        label: validationConfig.label,
-                        error
+                        error,
+                        label: validationConfig.label
                     });
                 }
             }
@@ -129,8 +129,8 @@ const useFieldValidation = (validationConfig) => {
 
         if (config.required && !value) {
             validationErrors.push({
-                label: config.name,
-                error: "This field is required."
+                error: "This field is required.",
+                label: config.name
             });
         }
 

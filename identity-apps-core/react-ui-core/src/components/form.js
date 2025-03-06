@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import PropTypes from "prop-types";
 import React from "react";
 import { FormField, Form as SemanticForm } from "semantic-ui-react";
 import Field from "./field";
@@ -47,6 +48,11 @@ const Form = ({ formSchema, onSubmit }) => {
             </SemanticForm>
         </div>
     );
+};
+
+Form.propTypes = {
+    formSchema: PropTypes.array.isRequired,
+    onSubmit: PropTypes.func.isRequired
 };
 
 export default Form;

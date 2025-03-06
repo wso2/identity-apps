@@ -39,11 +39,6 @@ const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErro
     const isPasswordField = identifier === "password";
     const isConfirmPasswordField = identifier === "confirmPassword";
 
-    const fieldError = formState && formState.errors && formState.errors.length > 0 &&
-        formState.errors.filter(error => error.label === component.config.name);
-    const error = fieldError ? fieldError[0] && fieldError[0].error :
-        passwordErrors && passwordErrors.length >= 0 && passwordErrors[0] && passwordErrors[0].error;
-
     const confirmPasswordCriteria = {
         "criteria": [ {
             "error": "Passwords do not match",
@@ -106,7 +101,7 @@ const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErro
             ) : (passwordErrors.length > 0 || formState.errors.length > 0) &&  (
                 <ValidationError
                     name={ identifier }
-                    errors={ { formStateErrors: formState.errors, fieldErrors: passwordErrors } }
+                    errors={ { fieldErrors: passwordErrors, formStateErrors: formState.errors } }
                 />
             );
         }

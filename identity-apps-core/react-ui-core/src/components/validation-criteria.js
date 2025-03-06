@@ -90,6 +90,7 @@ const ValidationCriteria = ({ validationConfig, errors, value }) => {
 };
 
 ValidationCriteria.propTypes = {
+    errors: PropTypes.array,
     validationConfig: PropTypes.object.isRequired,
     value: PropTypes.string.isRequired
 };

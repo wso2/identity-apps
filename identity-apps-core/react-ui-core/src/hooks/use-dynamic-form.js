@@ -26,11 +26,11 @@ const useDynamicForm = (fields) => {
         errors: [],
         isDirty: false,
         isLoading: false,
-        isValidating: false,
+        isSubmitSuccessful: false,
         isSubmitted: false,
         isSubmitting: false,
-        isSubmitSuccessful: false,
         isValid: false,
+        isValidating: false,
         touchedFields: {},
         values: {}
     });
@@ -62,17 +62,17 @@ const useDynamicForm = (fields) => {
 
             return {
                 ...prev,
-                values: updatedValues,
+                isDirty: value !== "",
                 touched: {
                     ...prev.touched,
                     [identifier]: true
                 },
-                isDirty: value !== ""
+                values: updatedValues
             };
         });
     }, [ fields ]);
 
-    const handleSubmit = (onSubmit) => (event) => {        
+    const handleSubmit = (onSubmit) => (event) => {
         event.preventDefault();
 
         let errors = [];
@@ -82,8 +82,8 @@ const useDynamicForm = (fields) => {
 
             if (field.config.required && !fieldValue) {
                 errors.push({
-                    label: field.config.identifier,
-                    error: "This field is required."
+                    error: "This field is required.",
+                    label: field.config.identifier
                 });
             }
 
@@ -91,8 +91,8 @@ const useDynamicForm = (fields) => {
                 field.config.validation.forEach(rule => {
                     if (rule.type === "MIN_LENGTH" && fieldValue.length < rule.value) {
                         errors.push({
-                            label: field.config.identifier,
-                            error: `Must be at least ${rule.value} characters.`
+                            error: `Must be at least ${rule.value} characters.`,
+                            label: field.config.identifier
                         });
                     }
                 });

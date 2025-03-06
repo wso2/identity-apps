@@ -67,7 +67,7 @@ const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
             {
                 <ValidationError
                     name={ identifier }
-                    errors={ { formStateErrors: formState.errors, fieldErrors: fieldErrors } }
+                    errors={ { fieldErrors: fieldErrors, formStateErrors: formState.errors  } }
                 />
             }
         </div>

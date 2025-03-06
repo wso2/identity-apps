@@ -55,7 +55,7 @@ const Field = ({ component, formState, formStateHandler, formFieldError }) => {
 
 Field.propTypes = {
     component: PropTypes.object.isRequired,
-    fieldErrorHandler: PropTypes.func.isRequired,
+    formFieldError: PropTypes.func.isRequired,
     formState: PropTypes.isRequired,
     formStateHandler: PropTypes.func.isRequired
 };

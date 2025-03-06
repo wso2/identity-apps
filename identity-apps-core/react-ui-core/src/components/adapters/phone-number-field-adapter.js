@@ -48,18 +48,18 @@ const PhoneNumberFieldAdapter = ({ component, formState, formStateHandler, field
     const [ searchQuery, setSearchQuery ] = useState("");
 
     const countryOptions = countryData.map(country => ({
-        key: country.code,
-        value: country.code,
-        flag: country.code,
-        text: country.name,
-        dialCode: country.dialCode,
         content: (
             <div className="country-option">
                 <Flag name={ country.code } />
                 <span className="country-name">{ country.name }</span>
                 <span className="country-dial-code">{ country.dialCode }</span>
             </div>
-        )
+        ),
+        dialCode: country.dialCode,
+        flag: country.code,
+        key: country.code,
+        text: country.name,
+        value: country.code
     }));
 
     useEffect(() => {
