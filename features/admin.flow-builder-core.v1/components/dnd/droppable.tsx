@@ -47,8 +47,8 @@ const Droppable: FC<PropsWithChildren<DroppableProps>> = ({
         <Box
             ref={ ref }
             data-componentid={ componentId }
-            className={classNames("dnd-droppable", { "is-dropping": isDropTarget }, className)}
-            sx={ { height: "100%", width: "100%", display: 'inline-flex', flexDirection: 'column', gap: '10px', ...sx } }
+            className={ classNames("dnd-droppable", { "is-dropping": isDropTarget }, className) }
+            sx={ { height: "100%", width: "100%", display: "inline-flex", flexDirection: "column", gap: "10px", ...sx } }
         >
             { children }
         </Box>

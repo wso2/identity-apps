@@ -19,15 +19,7 @@
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import {
-    Controls,
-    Edge,
-    Node,
-    NodeTypes,
-    ReactFlow,
-    ReactFlowProps,
-    useReactFlow
-} from "@xyflow/react";
+import { Controls, Edge, Node, NodeTypes, ReactFlow, ReactFlowProps, useReactFlow } from "@xyflow/react";
 import React, { FC, FunctionComponent, ReactElement, useMemo } from "react";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
 import { ResourceTypes, Resources } from "../../models/resources";
@@ -99,7 +91,6 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
 }: VisualFlowPropsInterface): ReactElement => {
     const { toObject } = useReactFlow();
 
-
     const handlePublish = (): void => {
         const flow: any = toObject();
 
@@ -127,7 +118,11 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                     Publish
                 </Button>
             </Box>
-            <Droppable id={ VisualFlowConstants.FLOW_BUILDER_CANVAS_ID } type={ VisualFlowConstants.FLOW_BUILDER_CANVAS_ID } accept={ [ ResourceTypes.Step ] }>
+            <Droppable
+                id={ VisualFlowConstants.FLOW_BUILDER_CANVAS_ID }
+                type={ VisualFlowConstants.FLOW_BUILDER_DROPPABLE_CANVAS_ID }
+                accept={ [ VisualFlowConstants.FLOW_BUILDER_DROPPABLE_VIEW_ID ] }
+            >
                 <ReactFlow
                     fitView
                     nodes={ nodes }

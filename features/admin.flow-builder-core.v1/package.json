@@ -30,6 +30,7 @@
         "i18next": "^21.9.1",
         "lexical": "^0.21.0",
         "lodash-es": "^4.17.21",
+        "plugins": "link:@dnd-kit/dom/plugins",
         "react-i18next": "^11.18.5",
         "react-redux": "^7.2.9",
         "redux": "^4.0.4",

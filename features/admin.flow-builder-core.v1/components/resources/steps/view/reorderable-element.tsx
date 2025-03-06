@@ -22,6 +22,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useNodeId } from "@xyflow/react";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useRef } from "react";
+import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import { Element } from "../../../../models/elements";
 import getWidgetElements from "../../../../utils/get-widget-elements";
@@ -33,7 +34,9 @@ import Sortable, { SortableProps } from "../../../dnd/sortable";
  * Props interface of {@link ReorderableElement}
  */
 export interface ReorderableComponentPropsInterface
-    extends IdentifiableComponentInterface, Omit<SortableProps, "element">, Omit<BoxProps, "children" | "id"> {
+    extends IdentifiableComponentInterface,
+        Omit<SortableProps, "element">,
+        Omit<BoxProps, "children" | "id"> {
     /**
      * The element to be rendered.
      */
@@ -67,26 +70,26 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
         return (
             <>
                 { getWidgetElements(element)?.map((element: Element) => (
-                    <ReorderableElement
-                        key={ element.id }
-                        id={ id }
-                        element={ element }
-                        className={ className }
-                        { ...rest }
-                    />
-                )
-                ) }
+                    <ReorderableElement key={ element.id } id={ id } element={ element } className={ className } { ...rest } />
+                )) }
             </>
         );
     }
 
     return (
-        <Sortable id={ id } handleRef={ handleRef } data={ { stepId, resource: element } } type={ element.resourceType } { ...rest }>
+        <Sortable
+            id={ id }
+            handleRef={ handleRef }
+            data={ { isReordering: true, resource: element, stepId } }
+            type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
+            accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
+            { ...rest }
+        >
             <Box
                 display="flex"
                 alignItems="center"
                 className={ classNames("reorderable-component", className) }
-                onClick={ (event) => {
+                onClick={ event => {
                     event.stopPropagation();
                     setLastInteractedStepId(stepId);
                     setLastInteractedResource(element);

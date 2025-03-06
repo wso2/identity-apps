@@ -17,12 +17,11 @@
  */
 
 import { RestrictToVerticalAxis } from "@dnd-kit/abstract/modifiers";
-import { closestCorners } from "@dnd-kit/collision";
 import { UseSortableInput, useSortable } from "@dnd-kit/react/sortable";
 import Box from "@oxygen-ui/react/Box";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FC, PropsWithChildren, ReactElement, RefObject, useRef } from "react";
+import React, { FC, PropsWithChildren, ReactElement, RefObject } from "react";
 
 /**
  * Props interface of {@link Sortable}
@@ -46,16 +45,16 @@ const Sortable: FC<PropsWithChildren<SortableProps>> = ({
     index,
     children,
     handleRef,
-    collisionDetector = closestCorners,
+    collisionDetector,
     ...rest
 }: PropsWithChildren<SortableProps>): ReactElement => {
     const { ref, isDragging } = useSortable({
+        collisionDetector,
+        feedback: "default",
+        handle: handleRef,
         id,
         index,
         modifiers: [ RestrictToVerticalAxis ],
-        handle: handleRef,
-        collisionDetector,
-        feedback: "default",
         ...rest
     });
 

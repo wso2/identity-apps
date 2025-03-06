@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { CollisionPriority } from "@dnd-kit/abstract";
 import Box from "@oxygen-ui/react/Box";
 import FormGroup from "@oxygen-ui/react/FormGroup";
 import IconButton from "@oxygen-ui/react/IconButton";
@@ -27,16 +26,9 @@ import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Node, Position, useNodeId, useNodesData, useReactFlow } from "@xyflow/react";
 import classNames from "classnames";
-import React, {
-    FunctionComponent,
-    MouseEvent,
-    ReactElement,
-    useEffect
-} from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect } from "react";
 import ReorderableElement from "./reorderable-element";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
-import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
-import useGenerateStepElement from "../../../../hooks/use-generate-step-element";
 import { Element } from "../../../../models/elements";
 import Droppable from "../../../dnd/droppable";
 import "./view.scss";
@@ -56,18 +48,16 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
     data,
     "data-componentid": componentId = "view"
 }: ViewPropsInterface): ReactElement => {
-    const nodeId: string = useNodeId();
-    const node: Pick<Node, "data"> = useNodesData(nodeId);
+    const stepId: string = useNodeId();
+    const node: Pick<Node, "data"> = useNodesData(stepId);
     const { deleteElements, updateNodeData } = useReactFlow();
-    const { onResourceDropOnCanvas } = useAuthenticationFlowBuilderCore();
-    const { generateStepElement } = useGenerateStepElement();
 
     useEffect(() => {
         if ((data?.components as Element[])?.length <= 0) {
             return;
         }
 
-        updateNodeData(nodeId, () => {
+        updateNodeData(stepId, () => {
             return {
                 components: data?.components
             };
@@ -75,10 +65,7 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
     }, []);
 
     return (
-        <div
-            className="flow-builder-step"
-            data-componentid={ componentId }
-        >
+        <div className="flow-builder-step" data-componentid={ componentId }>
             <Box display="flex" justifyContent="space-between" className="flow-builder-step-action-panel">
                 <Typography
                     variant="body2"
@@ -91,7 +78,7 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                     <IconButton
                         size="small"
                         onClick={ (_: MouseEvent<HTMLButtonElement>) => {
-                            deleteElements({ nodes: [ { id: nodeId } ] });
+                            deleteElements({ nodes: [ { id: stepId } ] });
                         } }
                         className="flow-builder-step-remove-button"
                     >
@@ -104,19 +91,23 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                 <Paper className="flow-builder-step-content-box" elevation={ 0 } variant="outlined">
                     <Box className="flow-builder-step-content-form">
                         <FormGroup>
-                            <Droppable id={ VisualFlowConstants.FLOW_BUILDER_VIEW_ID } data={ { nodeId } } collisionPriority={ CollisionPriority.Low } type={ nodeId } sx={{padding: '40px 32px'}}>
+                            <Droppable
+                                id={ VisualFlowConstants.FLOW_BUILDER_VIEW_ID }
+                                data={ { stepId } }
+                                sx={ { padding: "40px 32px" } }
+                                type={ VisualFlowConstants.FLOW_BUILDER_DROPPABLE_VIEW_ID }
+                                accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
+                            >
                                 { (node?.data?.components as any).map((component: Element, index: number) => (
                                     <ReorderableElement
                                         key={ component.id }
                                         id={ component.id }
                                         index={ index }
                                         element={ component }
-                                        className={ classNames(
-                                            "flow-builder-step-content-form-field"
-                                        ) }
-                                        type={ component.id }
-                                        accept={ [ component.id ] }
-                                        group={ nodeId }
+                                        className={ classNames("flow-builder-step-content-form-field") }
+                                        type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
+                                        accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
+                                        group={ stepId }
                                     />
                                 )) }
                             </Droppable>

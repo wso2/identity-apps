@@ -23,6 +23,7 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
+import VisualFlowConstants from "../../constants/visual-flow-constants";
 import { SupportedCanvasResources } from "../../models/visual-flow";
 import Draggable from "../dnd/draggable";
 import "./resource-panel-draggable-node.scss";
@@ -51,7 +52,14 @@ const ResourcePanelDraggableNode: FunctionComponent<ResourcePanelDraggableNodePr
     resource,
     ...rest
 }: ResourcePanelDraggableNodePropsInterface): ReactElement => (
-    <Draggable id={ id } data-componentid={ componentId } data={ { resource } } type={ resource.resourceType } { ...rest }>
+    <Draggable
+        id={ id }
+        data-componentid={ componentId }
+        data={ { resource } }
+        type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
+        accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
+        { ...rest }
+    >
         <Card className="flow-builder-element-panel-draggable-node" variant="elevation">
             <CardContent>
                 <Stack direction="row" spacing={ 1 }>

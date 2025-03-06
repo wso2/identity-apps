@@ -26,6 +26,10 @@ class VisualFlowConstants {
     public static readonly FLOW_BUILDER_CANVAS_ID: string = "flow-builder-canvas";
     public static readonly FLOW_BUILDER_VIEW_ID: string = "flow-builder-view";
     public static readonly FLOW_BUILDER_FORM_ID: string = "flow-builder-form";
+    public static readonly FLOW_BUILDER_DRAGGABLE_ID: string = "flow-builder-draggable";
+    public static readonly FLOW_BUILDER_DROPPABLE_CANVAS_ID: string = "flow-builder-droppable-canvas";
+    public static readonly FLOW_BUILDER_DROPPABLE_VIEW_ID: string = "flow-builder-droppable-view";
+    public static readonly FLOW_BUILDER_DROPPABLE_FORM_ID: string = "flow-builder-droppable-form";
 }
 
 export default VisualFlowConstants;

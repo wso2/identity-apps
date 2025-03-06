@@ -119,23 +119,20 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
     const addToView = (event, sourceData, targetData): void => {
         const { resource } = sourceData;
-        const { nodeId } = targetData;
+        const { stepId } = targetData;
 
         if (resource) {
             const generatedElement: Element = generateStepElement(resource);
 
-            updateNodeData(nodeId, (node: any) => {
-                const updatedComponents: Element[] = move(
-                    [ ...(cloneDeep(node?.data?.components) || []) ],
-                    event
-                );
+            updateNodeData(stepId, (node: any) => {
+                const updatedComponents: Element[] = move([ ...(cloneDeep(node?.data?.components) || []) ], event);
 
                 return {
                     components: mutateComponents([ ...updatedComponents, generatedElement ])
                 };
             });
 
-            onResourceDropOnCanvas(resource, nodeId);
+            onResourceDropOnCanvas(resource, stepId);
         }
     };
 
@@ -175,12 +172,20 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         const { data: sourceData } = source;
         const { data: targetData } = target;
 
-        if (target?.id === VisualFlowConstants.FLOW_BUILDER_CANVAS_ID) {
-            addCanvasNode(event, sourceData, targetData);
-        } else if (target?.id === VisualFlowConstants.FLOW_BUILDER_VIEW_ID) {
-            addToView(event, sourceData, targetData);
-        } else if (target?.id === VisualFlowConstants.FLOW_BUILDER_FORM_ID) {
-            addToForm(event, sourceData, targetData);
+        if (sourceData.isReordering) {
+            updateNodeData(sourceData?.stepId, (node: any) => {
+                return {
+                    components: move(node?.data?.components, event)
+                };
+            });
+        } else {
+            if (target?.id === VisualFlowConstants.FLOW_BUILDER_CANVAS_ID) {
+                addCanvasNode(event, sourceData, targetData);
+            } else if (target?.id === VisualFlowConstants.FLOW_BUILDER_VIEW_ID) {
+                addToView(event, sourceData, targetData);
+            } else if (target?.id === VisualFlowConstants.FLOW_BUILDER_FORM_ID) {
+                addToForm(event, sourceData, targetData);
+            }
         }
     }, []);
 
@@ -240,6 +245,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                 }
 
                 acc.push(_component);
+
                 return acc;
             }, []);
         };
@@ -260,7 +266,10 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         >
             <DragDropProvider onDragEnd={ handleDragEnd }>
                 <ResourcePanel resources={ resources } open={ isResourcePanelOpen }>
-                    <ElementPropertiesPanel open={ isResourcePropertiesPanelOpen } onComponentDelete={ handleComponentDelete }>
+                    <ElementPropertiesPanel
+                        open={ isResourcePropertiesPanelOpen }
+                        onComponentDelete={ handleComponentDelete }
+                    >
                         <VisualFlow
                             resources={ resources }
                             initialNodes={ initialNodes }

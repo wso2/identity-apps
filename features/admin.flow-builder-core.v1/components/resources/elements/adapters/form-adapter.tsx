@@ -45,7 +45,9 @@ const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
     resource,
     stepId
 }: FormAdapterPropsInterface): ReactElement => {
-    const shouldShowFormFieldsPlaceholder: boolean = !resource?.components?.some((element: Element) => element.category === ElementCategories.Field);
+    const shouldShowFormFieldsPlaceholder: boolean = !resource?.components?.some(
+        (element: Element) => element.category === ElementCategories.Field
+    );
 
     return (
         <Badge
@@ -56,7 +58,13 @@ const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
             badgeContent="Form"
             className="adapter form-adapter"
         >
-            <Droppable id={ VisualFlowConstants.FLOW_BUILDER_FORM_ID } data={ { stepId, resource } } collisionPriority={ CollisionPriority.High }>
+            <Droppable
+                id={ VisualFlowConstants.FLOW_BUILDER_FORM_ID }
+                data={ { resource, stepId } }
+                collisionPriority={ CollisionPriority.High }
+                type={ VisualFlowConstants.FLOW_BUILDER_DROPPABLE_FORM_ID }
+                accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
+            >
                 { shouldShowFormFieldsPlaceholder && (
                     <Box className="form-adapter-placeholder">
                         <Typography variant="body2">DROP FORM FIELDS HERE</Typography>
@@ -65,15 +73,13 @@ const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
                 { (resource?.components as any)?.map((component: Element, index: number) => (
                     <ReorderableElement
                         key={ component.id }
-                        id={  component.id }
+                        id={ component.id }
                         index={ index }
                         element={ component }
-                        className={ classNames(
-                            "flow-builder-step-content-form-field"
-                        ) }
+                        className={ classNames("flow-builder-step-content-form-field") }
                         group={ resource.id }
-                        type={ component.id }
-                        accept={ [ component.id ] }
+                        type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
+                        accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
                     />
                 )) }
             </Droppable>
