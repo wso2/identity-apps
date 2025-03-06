@@ -24,7 +24,12 @@
             min-height: 80px;
             border-radius: var(--oxygen-shape-borderRadius);
             border: 1px dashed var(--oxygen-palette-grey-300);
-            padding: var(--oxygen-spacing-3) 0;
+            background-color: var(--oxygen-palette-background-paper);
+
+            
+            .dnd-droppable {
+                padding: var(--oxygen-spacing-3) 0;
+            }
 
             .MuiBadge-badge {
                 margin-left: 25px;

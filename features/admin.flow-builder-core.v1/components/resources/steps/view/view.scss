@@ -24,6 +24,7 @@
     --wso2is-flow-builder-step-content-background-color: var(--oxygen-palette-background-paper);
     --wso2is-flow-builder-step-content-box-width: 350px;
     --wso2is-flow-builder-step-content-form-field-drag-handle-width: 25px;
+    --wso2is-flow-builder-droppable-area-highlight: #e0ffe1;
 }
 
 .flow-builder-step {
@@ -37,10 +38,19 @@
         justify-content: center;
         align-items: center;
         text-align: left;
+        
+        .dnd-droppable {
+            &.is-dropping {
+                background-color: var(--wso2is-flow-builder-droppable-area-highlight);
+                
+                .MuiBadge-badge {
+                    border: 1px solid var(--oxygen-palette-divider);
+                }
+            }
+        }
 
         .flow-builder-step-content-box {
             background-color: var(--wso2is-flow-builder-step-content-background-color);
-            padding: 32px;
             width: var(--wso2is-flow-builder-step-content-box-width);
             cursor: auto;
         }

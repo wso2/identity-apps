@@ -30,7 +30,7 @@ import {
 } from "@xyflow/react";
 import React, { FC, FunctionComponent, ReactElement, useMemo } from "react";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
-import { Resources, ResourceTypes } from "../../models/resources";
+import { ResourceTypes, Resources } from "../../models/resources";
 import getKnownEdgeTypes from "../../utils/get-known-edge-types";
 import transformFlow from "../../utils/transform-flow";
 import Droppable from "../dnd/droppable";
@@ -142,6 +142,10 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                     data-componentid={ componentId }
                     colorMode="dark"
                     { ...rest }
+                    nodesDraggable={ false }
+                    panOnDrag={ false }
+                    panOnScroll={ false }
+                    zoomOnScroll={ false }
                 >
                     <Controls position="top-right" />
                 </ReactFlow>

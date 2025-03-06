@@ -17,14 +17,15 @@
  */
 
 import { UseDroppableInput, useDroppable } from "@dnd-kit/react";
-import Box from "@oxygen-ui/react/Box";
+import Box, { BoxProps } from "@oxygen-ui/react/Box";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import classNames from "classnames";
 import React, { FC, PropsWithChildren, ReactElement } from "react";
 
 /**
  * Props interface of {@link Droppable}
  */
-export type DroppableProps = IdentifiableComponentInterface & UseDroppableInput;
+export type DroppableProps = IdentifiableComponentInterface & UseDroppableInput & BoxProps;
 
 /**
  * Droppable component.
@@ -36,15 +37,18 @@ const Droppable: FC<PropsWithChildren<DroppableProps>> = ({
     "data-componentid": componentId = "droppable",
     id,
     children,
+    sx = {},
+    className,
     ...rest
 }: PropsWithChildren<DroppableProps>): ReactElement => {
-    const { ref } = useDroppable({ id, ...rest });
+    const { ref, isDropTarget } = useDroppable({ id, ...rest });
 
     return (
         <Box
             ref={ ref }
             data-componentid={ componentId }
-            sx={ { height: "100%", width: "100%", display: 'inline-flex', flexDirection: 'column', gap: '20px' } }
+            className={classNames("dnd-droppable", { "is-dropping": isDropTarget }, className)}
+            sx={ { height: "100%", width: "100%", display: 'inline-flex', flexDirection: 'column', gap: '10px', ...sx } }
         >
             { children }
         </Box>

@@ -8,6 +8,7 @@
     "dependencies": {
         "@dnd-kit/abstract": "^0.0.9",
         "@dnd-kit/collision": "^0.0.9",
+        "@dnd-kit/dom": "^0.0.9",
         "@dnd-kit/helpers": "^0.0.9",
         "@dnd-kit/react": "^0.0.9",
         "@emotion/react": "^11.11.0",

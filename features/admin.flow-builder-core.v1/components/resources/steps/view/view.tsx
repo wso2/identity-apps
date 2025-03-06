@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { CollisionPriority } from "@dnd-kit/abstract";
 import Box from "@oxygen-ui/react/Box";
 import FormGroup from "@oxygen-ui/react/FormGroup";
 import IconButton from "@oxygen-ui/react/IconButton";
@@ -27,21 +28,18 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Node, Position, useNodeId, useNodesData, useReactFlow } from "@xyflow/react";
 import classNames from "classnames";
 import React, {
-    DragEvent,
     FunctionComponent,
     MouseEvent,
     ReactElement,
-    useCallback,
     useEffect
 } from "react";
 import ReorderableElement from "./reorderable-element";
+import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import useGenerateStepElement from "../../../../hooks/use-generate-step-element";
 import { Element } from "../../../../models/elements";
 import Droppable from "../../../dnd/droppable";
 import "./view.scss";
-import VisualFlowConstants from "../../../../constants/visual-flow-constants";
-import { CollisionPriority } from "@dnd-kit/abstract";
 
 /**
  * Props interface of {@link View}
@@ -76,40 +74,6 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
         });
     }, []);
 
-    const handleDragOver: (event: DragEvent) => void = useCallback((event: DragEvent) => {
-        event.preventDefault();
-        event.dataTransfer.dropEffect = "move";
-    }, []);
-
-    const handleDrop: (e: DragEvent) => void = useCallback(
-        (event: DragEvent) => {
-            event.preventDefault();
-
-            const droppedData: string = event.dataTransfer.getData("application/json");
-
-            if (droppedData) {
-                const generatedElement: Element = generateStepElement(JSON.parse(droppedData));
-
-                updateNodeData(nodeId, (node: any) => {
-                    return {
-                        components: [ ...(node?.data?.components || []), generatedElement ]
-                    };
-                });
-
-                onResourceDropOnCanvas(generatedElement, nodeId);
-            }
-        },
-        [ data?.type ]
-    );
-
-    const handleOrderChange = (orderedElements: Element[]) => {
-        updateNodeData(nodeId, () => {
-            return {
-                components: orderedElements
-            };
-        });
-    };
-
     return (
         <div
             className="flow-builder-step"
@@ -140,7 +104,7 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                 <Paper className="flow-builder-step-content-box" elevation={ 0 } variant="outlined">
                     <Box className="flow-builder-step-content-form">
                         <FormGroup>
-                            <Droppable id={ VisualFlowConstants.FLOW_BUILDER_VIEW_ID } data={ { nodeId } } collisionPriority={ CollisionPriority.Low }>
+                            <Droppable id={ VisualFlowConstants.FLOW_BUILDER_VIEW_ID } data={ { nodeId } } collisionPriority={ CollisionPriority.Low } type={ nodeId } sx={{padding: '40px 32px'}}>
                                 { (node?.data?.components as any).map((component: Element, index: number) => (
                                     <ReorderableElement
                                         key={ component.id }
