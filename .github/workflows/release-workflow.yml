@@ -53,7 +53,7 @@ jobs:
         steps:
             - name: ⬇️ Checkout
               id: checkout
-              uses: actions/checkout@v2.3.3
+              uses: actions/checkout@v4.2.2
               with:
                   token: ${{ env.GH_TOKEN }}
                   persist-credentials: false
