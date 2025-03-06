@@ -794,19 +794,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             });
     };
 
-    const getPendingVerificationAttributeValue = (attributeName: string): string | null => {
-        let pendingAttributeKey: string;
-
-        if (attributeName === EMAIL_ATTRIBUTE || attributeName === EMAIL_ADDRESSES_ATTRIBUTE) {
-            pendingAttributeKey = "pendingEmails";
-        } else if (attributeName === MOBILE_ATTRIBUTE || attributeName === MOBILE_NUMBERS_ATTRIBUTE) {
-            pendingAttributeKey = "pendingMobileNumbers";
-        } else {
-            return null;
-        }
+    const getVerificationPendingEmail = (): string | null => {
 
         const pendingAttributes: Array<{value: string}> | undefined =
-            user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[pendingAttributeKey];
+            user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingEmails"];
 
         return Array.isArray(pendingAttributes) && pendingAttributes.length > 0
             ? pendingAttributes[0]?.value
@@ -1796,7 +1787,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         let verificationEnabled: boolean = false;
         let primaryAttributeSchema: ProfileSchemaInterface;
         let maxAllowedLimit: number = 0;
-        let pendingVerificationValue: string = "";
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             attributeValueList = multiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] ?? [];
@@ -1807,7 +1797,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
                 schema.name === EMAIL_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
-            pendingVerificationValue = getPendingVerificationAttributeValue(EMAIL_ADDRESSES_ATTRIBUTE);
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             attributeValueList = multiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] ?? [];
@@ -1837,7 +1826,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         const showPendingVerificationPopup = (value: string): boolean => {
-            return verificationEnabled && pendingVerificationValue === value;
+            return schema.name === EMAIL_ADDRESSES_ATTRIBUTE
+                && verificationEnabled
+                && getVerificationPendingEmail() === value;
         };
 
         const showMakePrimaryButton = (value: string): boolean => {
@@ -2036,7 +2027,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                     }
                                                                 >
                                                                     <Popup
-                                                                        name="verified-popup"
+                                                                        name="pending-verification-popup"
                                                                         size="tiny"
                                                                         trigger={
                                                                             (
@@ -2046,7 +2037,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                                 />
                                                                             )
                                                                         }
-                                                                        header= { t("common:verified") }
+                                                                        header= { t("user:profile.tooltips." +
+                                                                            "confirmationPending") }
                                                                         inverted
                                                                     />
                                                                 </div>
