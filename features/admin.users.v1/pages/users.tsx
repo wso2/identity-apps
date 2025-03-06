@@ -252,7 +252,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         ];
 
         if (userStoresList?.length > 0) {
-            userStoresList.map((store: UserStoreListItem, index: number) => {
+            userStoresList.forEach((store: UserStoreListItem, index: number) => {
                 if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && store.enabled) {
                     const storeOption: UserStoreItem = {
                         disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,

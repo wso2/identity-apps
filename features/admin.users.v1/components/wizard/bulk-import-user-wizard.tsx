@@ -253,7 +253,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         ];
 
         if (userStoresList?.length > 0) {
-            userStoresList.map((item: UserStoreListItem, index: number) => {
+            userStoresList.forEach((item: UserStoreListItem, index: number) => {
                 const isReadOnly: boolean = !isUserStoreReadOnly(item.name);
                 const isEnabled: boolean = item.enabled;
 

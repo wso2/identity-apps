@@ -90,7 +90,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
         if (userStoresList && !isUserStoresLoading) {
             if (userStoresList?.length > 0) {
-                userStoresList.map((store: UserStoreListItem, index: number) => {
+                userStoresList.forEach((store: UserStoreListItem, index: number) => {
                     const isEnabled: boolean = store.enabled;
                     const isReadOnly: boolean = isUserStoreReadOnly(store?.name);
 

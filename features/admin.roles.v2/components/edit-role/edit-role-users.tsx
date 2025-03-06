@@ -131,7 +131,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
         if (userStoresList && !isUserStoresLoading) {
             if (userStoresList?.length > 0) {
-                userStoresList.map((store: UserStoreListItem, index: number) => {
+                userStoresList.forEach((store: UserStoreListItem, index: number) => {
                     const isEnabled: boolean = store.enabled;
 
                     if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && isEnabled) {

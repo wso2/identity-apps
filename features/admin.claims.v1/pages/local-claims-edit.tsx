@@ -85,11 +85,6 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
     const [ isLocalClaimDetailsRequestLoading, setIsLocalClaimDetailsRequestLoading ] = useState<boolean>(false);
     const defaultActiveIndex: string = ClaimTabIDs.GENERAL;
 
-    useEffect(() => {
-        getClaim();
-        mutateUserStoreList();
-    }, []);
-
     const userStores: UserStoreBasicData[] = useMemo(() => {
         const userStores: UserStoreBasicData[] = [];
 
@@ -111,6 +106,11 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
 
         return userStores;
     }, [ isUserStoreListFetchRequestLoading, userStoresList ]);
+
+    useEffect(() => {
+        getClaim();
+        mutateUserStoreList();
+    }, []);
 
     /**
      * Fetches the local claim.

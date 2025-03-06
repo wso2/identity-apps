@@ -23,7 +23,7 @@ import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
@@ -78,11 +78,8 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
     } = useUserStores();
 
     const [ isProxyModeOn, setIsProxyModeOn ] = useState<boolean>(false);
-    const [ userStoreOptions, setUserStoreOptions ] = useState<UserStoreItem[]>([]);
 
-    useEffect(() => {
-        if (readOnly) return;
-
+    const userStoreOptions: UserStoreItem[] = useMemo(() => {
         const storeOptions: UserStoreItem[] = [
             {
                 key: -1,
@@ -91,8 +88,10 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
             }
         ];
 
+        if (readOnly) return storeOptions;
+
         if (isSuperOrganization() && !isUserStoreListFetchRequestLoading && userStoresList?.length > 0) {
-            userStoresList.map((store: UserStoreListItem, index: number) => {
+            userStoresList.forEach((store: UserStoreListItem, index: number) => {
                 const isReadOnly: boolean = isUserStoreReadOnly(store.name);
                 const isEnabled: boolean = store.enabled;
 
@@ -108,7 +107,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
             });
         }
 
-        setUserStoreOptions(storeOptions);
+        return storeOptions;
     }, [ isUserStoreListFetchRequestLoading, userStoresList ]);
 
     useEffect(() => {

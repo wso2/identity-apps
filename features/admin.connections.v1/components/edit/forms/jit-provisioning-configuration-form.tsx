@@ -103,7 +103,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         ];
 
         if (!isUserStoreListFetchRequestLoading && userStoresList?.length > 0) {
-            userStoresList.map((store: UserStoreListItem, index: number) => {
+            userStoresList.forEach((store: UserStoreListItem, index: number) => {
                 const isReadOnly: boolean = isUserStoreReadOnly(store.name);
                 const isEnabled: boolean = store.enabled;
 

@@ -88,7 +88,7 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
         }
 
         if (!isUserStoreListFetchRequestLoading && userStoresList?.length > 0) {
-            userStoresList.map((store: UserStoreListItem) => {
+            userStoresList.forEach((store: UserStoreListItem) => {
                 if (store.enabled && !hiddenUserStores.includes(store.name)) {
                     userstore.push(store);
                 }
