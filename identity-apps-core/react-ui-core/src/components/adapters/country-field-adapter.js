@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,73 +16,98 @@
  * under the License.
  */
 
-import classNames from "classnames";
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
+import { Dropdown } from "semantic-ui-react";
+import countryData from "../../data/country-data.js";
+import useFieldValidation from "../../hooks/use-field-validations";
+import { useTranslations } from "../../hooks/use-translations";
+import { resolveElementText } from "../../utils/i18n-utils";
+import ValidationCriteria from "../validation-criteria";
+import ValidationError from "../validation-error";
 
-const CountryFieldAdapter = ({ component, formStateHandler }) => {
+const CountryFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
 
-    const { required, name, rest } = component.properties;
+    const { required, identifier, placeholder, label, validation } = component.config;
+
+    const { translations } = useTranslations();
+    const { fieldErrors, validate } = useFieldValidation(validation, selectedCountry);
 
     const [ countryList, setCountryList ] = useState([]);
+    const [ selectedCountry, setSelectedCountry ] = useState("");
 
     useEffect(() => {
-        const countryList = getCountryList();
-
-        setCountryList(countryList);
+        setCountryList(getCountryList());
     }, []);
 
+    useEffect(() => {
+        formStateHandler(identifier, selectedCountry);
+    }, [ selectedCountry ]);
+
+    const handleFieldValidation = () => {
+        const isValid = validate({ identifier, required }, selectedCountry);
+
+        fieldErrorHandler(identifier, isValid ? null : fieldErrors);
+    };
+
     const getCountryList = () => {
-        const countryCodes = Intl.supportedValuesOf("region");
-        const countryMap = {};
-
-        countryCodes.forEach((countryCode) => {
-            const locale = new Intl.DisplayNames([ "en" ], { type: "region" });
-            const countryDisplayName = locale.of(countryCode);
-
-            countryMap[countryCode] = countryDisplayName;
-        });
-
-        return countryMap;
+        return countryData.map((country) => ({
+            flag: country.code,
+            key: country.code,
+            text: country.name,
+            value: country.name
+        }));
     };
 
     return (
-        <div className={ classNames("field", required ? "required" : null) }>
-            <div
-                className="ui fluid search selection dropdown"
-                id="country-dropdown"
-                data-testid="country-dropdown">
-                <input
-                    type="hidden"
-                    required={ required }
-                    name={ name }
-                    { ...rest }
+        <>
+            <label htmlFor={ identifier }>{ resolveElementText(translations, label) }</label>
+            <Dropdown
+                name={ identifier }
+                options={ countryList }
+                placeholder={ placeholder }
+                required= { required }
+                onBlur={ handleFieldValidation }
+                onChange={ (e, data) => setSelectedCountry(data.value) }
+                fluid
+                search
+                selection
+            />
+            {
+                validation && validation.type === "CRITERIA" && validation.showValidationCriteria (
+                    <ValidationCriteria
+                        validationConfig={ validation }
+                        errors={ fieldErrors }
+                        value={ selectedCountry }
+                    />
+                )
+            }
+            {
+                <ValidationError
+                    name={ identifier }
+                    errors={ { formStateErrors: formState.errors, fieldErrors: fieldErrors } }
                 />
-                <i className="dropdown icon"></i>
-                <div className="default text">Enter Country</div>
-                <div className="menu">
-                    {
-                        countryList && Object.keys(countryList).map((countryCode, index) => {
-                            return (
-                                <div
-                                    className="item"
-                                    key={ index }
-                                    data-value={ countryCode }
-                                    onClick={ (e) => {
-                                        formStateHandler(
-                                            name, e.target.getAttribute("data-value")
-                                        );
-                                    } }
-                                >
-                                    <i className="${country.key.toLowerCase()} flag"></i>
-                                    { countryList[ countryCode ] }
-                                </div>
-                            );
-                        })
-                    }
-                </div>
-            </div>
-        </div>
+            }
+        </>
     );
+};
+
+CountryFieldAdapter.propTypes = {
+    component: PropTypes.shape({
+        config: PropTypes.shape({
+            identifier: PropTypes.string.isRequired,
+            label: PropTypes.string.isRequired,
+            placeholder: PropTypes.string.isRequired,
+            required: PropTypes.boolean.isRequired,
+            validation: PropTypes.array
+        }).isRequired,
+        id: PropTypes.string,
+        type: PropTypes.string,
+        variant: PropTypes.string
+    }).isRequired,
+    fieldErrorHandler: PropTypes.func.isRequired,
+    formState: PropTypes.isRequired,
+    formStateHandler: PropTypes.func.isRequired
 };
 
 export default CountryFieldAdapter;
