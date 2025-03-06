@@ -56,7 +56,7 @@ jobs:
               uses: actions/checkout@v4.2.2
               with:
                   token: ${{ env.GH_TOKEN }}
-                  persist-credentials: false
+                  persist-credentials: true
                   fetch-depth: 0
 
             - name: Set up Git user
