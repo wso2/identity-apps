@@ -34,14 +34,8 @@ import {
     TestConnection,
     UserStore,
     UserStoreAttributes,
-    UserStoreListItem,
     UserStorePostData
 } from "../models";
-
-/**
- * The error code that is returned when there is no item in the list.
- */
-const RESOURCE_NOT_FOUND_ERROR_MESSAGE: string = "Resource not found.";
 
 /**
  * Initialize an axios Http client.
@@ -49,39 +43,6 @@ const RESOURCE_NOT_FOUND_ERROR_MESSAGE: string = "Resource not found.";
  */
 const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
-
-/**
- * Fetches all userstores.
- *
- * @param params - sort, filter, limit, attributes, offset.
- * @returns user stores
- */
-export const getUserStores = (params: QueryParams | any): Promise<any> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        params,
-        url: store.getState().config.endpoints.userStores
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
-                return Promise.reject(`An error occurred. The server returned ${response.status}`);
-            }
-
-            return Promise.resolve(response.data);
-        })
-        .catch((error: AxiosError) => {
-            if (error?.response?.data?.message !== RESOURCE_NOT_FOUND_ERROR_MESSAGE) {
-                return Promise.reject(error?.response?.data);
-            }
-        });
-};
 
 /**
  * Retrieve the list of user stores that are currently in the system.
@@ -123,48 +84,6 @@ export const getUserStoreList = (): Promise<UserstoreListResponseInterface[] | a
                 error.response,
                 error.config);
         });
-};
-
-/**
- * Hook to get the Userstores from the API.
- * @deprecated - This hook will be removed in the future.
- * Use the hook from admin.userstores.v1/api/use-get-user-stores.ts
- *
- * @param params - sort, filter, limit, attributes, offset.
- * @returns user store list with SWR hook
- */
-export const useUserStores = <Data = UserStoreListItem[], Error = RequestErrorInterface>(
-    params: QueryParams,
-    shouldFetch: boolean = true
-): RequestResultInterface<Data, Error> => {
-
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        params,
-        url: store.getState().config.endpoints.userStores
-    };
-
-    const {
-        data,
-        error,
-        isValidating,
-        mutate,
-        response
-    } = useRequest<Data, Error>(shouldFetch ? requestConfig: null);
-
-    return {
-        data,
-        error,
-        isLoading: !error && !data,
-        isValidating,
-        mutate,
-        response
-    };
 };
 
 /**

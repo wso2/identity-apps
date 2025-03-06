@@ -29,7 +29,6 @@ import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
-import { UserStoreDetails } from "@wso2is/admin.core.v1/models/user-store";
 import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
@@ -57,11 +56,11 @@ import {
     UserListInterface
 } from "@wso2is/admin.users.v1/models/user";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
-import { getUserStores } from "@wso2is/admin.userstores.v1/api";
 import {
-    CONSUMER_USERSTORE,
-    UserStoreManagementConstants
+    CONSUMER_USERSTORE
 } from "@wso2is/admin.userstores.v1/constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -149,6 +148,11 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
 
     const useOrgConfig: UseOrganizationConfigType = useOrganizationConfigV2;
 
+    const {
+        isLoading: isUserStoresListFetchRequestLoading,
+        userStoresList
+    } = useUserStores();
+
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const tenantedConsoleUrl: string = useSelector((state: AppState) => state?.config?.deployment?.clientHost);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
@@ -187,14 +191,12 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
     const [ remoteUserStoreId, setRemoteUserStoreId ] = useState<string>(null);
     const [ remoteUserStoreConnectionStatus, setRemoteUserStoreConnectionStatus ] = useState<boolean>(false);
     const [ isEnterpriseLoginEnabled, setIsEnterpriseLoginEnabled ] = useState<boolean>(false);
-    const [ isUserStoreListLoading, setUserStoreListLoading ] = useState<boolean>(false);
     const [ isUserStoreDropdownDisabled, setUserStoreDropdownDisabled ] = useState<boolean>(false);
     const [ isSelectedUserStoreReadOnly, setSelectedUserStoreReadOnly ] = useState<boolean>(false);
     const [ isUserStoreChanged, setUserStoreChanged ] = useState<boolean>(false);
     const [ isInternalAdminUserListFetchRequestLoading, setInternalAdminUserListFetchRequestLoading ] =
         useState<boolean>(false);
     const [ isInternalAdminsNextPageAvailable, setInternalAdminsNextPageAvailable ] = useState<boolean>(false);
-    const [ userStoreError, setUserStoreError ] = useState(false);
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(TabIndex.EXTERNAL_ADMINS);
     const [ userStoreList, setUserStoreList ] = useState<DropdownItemProps[]>([]);
     const [ adminRoleId, setAdminRoleId ] = useState<string>("");
@@ -273,12 +275,35 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         error: serverConfigsFetchRequestError
     } = useServerConfigs();
 
+    useEffect(() => {
+        const readOnlyUserStoreArray: string[] = [];
+        const userStoreArray: DropdownItemProps[] = userStoresList?.filter(
+            (item: UserStoreListItem) => item.enabled).map(
+            (item: UserStoreListItem, index: number) => {
+                // Set readOnly userstores based on the type.
+                if (item.typeName === AdministratorConstants.READONLY_USERSTORE_TYPE_NAME) {
+                    readOnlyUserStoreArray.push(item.name.toUpperCase());
+                    setRemoteUserStoreId(item.id);
+                }
+
+                return {
+                    key: index,
+                    text: item.name.toUpperCase(),
+                    value: item.name.toUpperCase()
+                };
+            }
+        );
+
+        setUserStoreList(userStoreArray);
+        setReadOnlyUserStoresList(readOnlyUserStoreArray);
+        setUserStoreDropdownDisabled(userStoreArray.length <= 1);
+    }, [ isUserStoresListFetchRequestLoading, userStoresList ]);
+
     /**
      * Handles the invitation status option changes.
      */
     useEffect(() => {
         checkAdvancedUserManagementStatus();
-        getUserStoreList();
         getAdminRoleId();
         setAssociationType(getAssociationType(authUserTenants, currentOrganization));
 
@@ -694,66 +719,6 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         }
 
         return moderatedUsersList;
-    };
-
-    const getUserStoreList = (): void => {
-        setUserStoreListLoading(true);
-
-        getUserStores({
-            "requiredAttributes": UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY
-        })
-            .then((response: UserStoreDetails[]) => {
-                const readOnlyUserStoreArray: string[] = [];
-                const userStoreArray: DropdownItemProps[] = response?.filter(
-                    (item: UserStoreDetails) => item.enabled).map(
-                    (item: UserStoreDetails, index: number) => {
-                        // Set readOnly userstores based on the type.
-                        if (item.typeName === AdministratorConstants.READONLY_USERSTORE_TYPE_NAME) {
-                            readOnlyUserStoreArray.push(item.name.toUpperCase());
-                            setRemoteUserStoreId(item.id);
-                        }
-
-                        return {
-                            key: index,
-                            text: item.name.toUpperCase(),
-                            value: item.name.toUpperCase()
-                        };
-                    }
-                );
-
-                setUserStoreError(false);
-                setUserStoreList(userStoreArray);
-                setReadOnlyUserStoresList(readOnlyUserStoreArray);
-                setUserStoreDropdownDisabled(userStoreArray.length <= 1);
-            }).catch((error: IdentityAppsApiException) => {
-                if (error?.response?.data?.description) {
-                    dispatch(addAlert({
-                        description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("userstores:notifications.fetchUserstores.genericError." +
-                                "description"),
-                        level: AlertLevels.ERROR,
-                        message: error?.response?.data?.message
-                            ?? t("userstores:notifications.fetchUserstores.genericError." +
-                                "message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("userstores:notifications.fetchUserstores.genericError." +
-                        "description"),
-                    level: AlertLevels.ERROR,
-                    message: t("userstores:notifications.fetchUserstores.genericError.message")
-                }));
-
-                setUserStoreError(true);
-
-                return;
-            })
-            .finally(() => {
-                setUserStoreListLoading(false);
-            });
     };
 
     /**
@@ -1394,8 +1359,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                                 options={ userStoreList }
                                 onChange={ handleUserStoreChange }
                                 text={ selectedUserStore }
-                                loading={ isUserStoreListLoading }
-                                disabled={ userStoreError }
+                                loading={ isUserStoresListFetchRequestLoading }
                             />
                         ) : null
                 }

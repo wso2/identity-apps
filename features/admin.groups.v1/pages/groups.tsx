@@ -86,7 +86,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ userStoreOptions, setUserStoresList ] = useState<DropdownItemProps[]>([]);
     const [ userStore, setUserStore ] = useState(userstoresConfig.primaryUserstoreName);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
@@ -113,8 +112,35 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         return isUserStoreReadOnly(userStore);
     }, [ userStore, readOnlyUserStoreNamesList ]);
 
+    const userStoreOptions: DropdownItemProps[] = useMemo(() => {
+        const storeOptions: DropdownItemProps[] = [
+            {
+                key: -1,
+                text: userstoresConfig.primaryUserstoreName,
+                value: userstoresConfig.primaryUserstoreName
+            }
+        ];
+
+        if (userStoresList?.length > 0) {
+            userStoresList.forEach((store: UserStoreListItem, index: number) => {
+                if (store.enabled && store.name !== userstoresConfig.primaryUserstoreName) {
+                    const storeOption: DropdownItemProps = {
+                        disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
+                        key: index,
+                        text: store.name,
+                        value: store.name
+                    };
+
+                    storeOptions.push(storeOption);
+                }
+            });
+        }
+
+        return storeOptions;
+    }, [ userStoresList ]);
+
     useEffect(() => {
-        getUserStores();
+        mutateUserStoreList();
     }, []);
 
     useEffect(() => {
@@ -139,36 +165,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         }
     },[ groupsError ]);
 
-    /**
-     * The following function fetches the user store list and sets it to the state.
-     */
-    const getUserStores = () => {
-        mutateUserStoreList();
-        const storeOptions: DropdownItemProps[] = [
-            {
-                key: -1,
-                text: userstoresConfig.primaryUserstoreName,
-                value: userstoresConfig.primaryUserstoreName
-            }
-        ];
-
-        if (userStoresList?.length > 0) {
-            userStoresList.map((store: UserStoreListItem, index: number) => {
-                if (store.enabled && store.name !== userstoresConfig.primaryUserstoreName) {
-                    const storeOption: DropdownItemProps = {
-                        disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
-                        key: index,
-                        text: store.name,
-                        value: store.name
-                    };
-
-                    storeOptions.push(storeOption);
-                }
-            });
-        }
-
-        setUserStoresList(storeOptions);
-    };
 
     /**
      * Sets the list sorting strategy.
@@ -329,7 +325,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     <Dropdown
                         data-testid="group-mgt-groups-list-stores-dropdown"
                         selection
-                        options={ userStoreOptions && userStoreOptions }
+                        options={ userStoreOptions }
                         placeholder={ t("console:manage.features.groups.list.storeOptions") }
                         onChange={ handleDomainChange }
                         defaultValue={ userstoresConfig.primaryUserstoreName }
