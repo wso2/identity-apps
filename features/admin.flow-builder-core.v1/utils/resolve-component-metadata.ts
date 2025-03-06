@@ -26,7 +26,21 @@ const resolveComponentMetadata = (resources: Resources, components: Element[]): 
 
         resources.elements.forEach((componentWithMeta: Element) => {
             if (component.category === componentWithMeta.category && component.type === componentWithMeta.type) {
-                updatedComponent = merge({}, componentWithMeta, updatedComponent);
+                if (component.variant) {
+                    // If the component metadata has a variants array, merge.
+                    if (componentWithMeta.variants) {
+                        updatedComponent = merge({}, componentWithMeta, updatedComponent);
+
+                        return;
+                    }
+
+                    // If the component metadata has a high level variant, merge.
+                    if (componentWithMeta.variant && (component.variant === componentWithMeta.variant)) {
+                        updatedComponent = merge({}, componentWithMeta, updatedComponent);
+                    }
+                } else {
+                    updatedComponent = merge({}, componentWithMeta, updatedComponent);
+                }
             }
         });
 
