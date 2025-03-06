@@ -794,6 +794,25 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             });
     };
 
+    const getPendingVerificationAttributeValue = (attributeName: string): string | null => {
+        let pendingAttributeKey: string;
+
+        if (attributeName === EMAIL_ATTRIBUTE || attributeName === EMAIL_ADDRESSES_ATTRIBUTE) {
+            pendingAttributeKey = "pendingEmails";
+        } else if (attributeName === MOBILE_ATTRIBUTE || attributeName === MOBILE_NUMBERS_ATTRIBUTE) {
+            pendingAttributeKey = "pendingMobileNumbers";
+        } else {
+            return null;
+        }
+
+        const pendingAttributes: Array<{value: string}> | undefined =
+            user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[pendingAttributeKey];
+
+        return Array.isArray(pendingAttributes) && pendingAttributes.length > 0
+            ? pendingAttributes[0]?.value
+            : null;
+    };
+
     /**
      * This function handles deletion of the user.
      *
@@ -1777,6 +1796,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         let verificationEnabled: boolean = false;
         let primaryAttributeSchema: ProfileSchemaInterface;
         let maxAllowedLimit: number = 0;
+        let pendingVerificationValue: string = "";
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             attributeValueList = multiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] ?? [];
@@ -1787,6 +1807,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
                 schema.name === EMAIL_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
+            pendingVerificationValue = getPendingVerificationAttributeValue(EMAIL_ADDRESSES_ATTRIBUTE);
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             attributeValueList = multiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] ?? [];
@@ -1813,6 +1834,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             }
 
             return value === primaryAttributeValue;
+        };
+
+        const showPendingVerificationPopup = (value: string): boolean => {
+            return verificationEnabled && pendingVerificationValue === value;
         };
 
         const showMakePrimaryButton = (value: string): boolean => {
@@ -1999,6 +2024,33 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                         />
                                                                     </div>
                                                                 )
+                                                    }
+                                                    {
+                                                        showPendingVerificationPopup(value)
+                                                            && (
+                                                                <div
+                                                                    className="verified-icon"
+                                                                    data-componentid={
+                                                                        `${testId}-profile-form-${schema.name}` +
+                                                                        `-pending-verification-icon-${index}`
+                                                                    }
+                                                                >
+                                                                    <Popup
+                                                                        name="verified-popup"
+                                                                        size="tiny"
+                                                                        trigger={
+                                                                            (
+                                                                                <Icon
+                                                                                    name="info circle"
+                                                                                    color="yellow"
+                                                                                />
+                                                                            )
+                                                                        }
+                                                                        header= { t("common:verified") }
+                                                                        inverted
+                                                                    />
+                                                                </div>
+                                                            )
                                                     }
                                                 </div>
                                             </TableCell>
