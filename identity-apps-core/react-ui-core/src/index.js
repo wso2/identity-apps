@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ export { default as TypographyFieldAdapter } from "./components/adapters/typogra
 export { default as InputFieldAdapter } from "./components/adapters/input-field-adapter";
 export { default as Divider } from "./components/divider";
 export { default as Form } from "./components/form";
-export { default as ValidationCriteria } from "./components/field-validation";
+export { default as ValidationCriteria } from "./components/validation-criteria";
 export { default as Field } from "./components/field";
 export { default as DynamicContent } from "./components/dynamic-content";
 

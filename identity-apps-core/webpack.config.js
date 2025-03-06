@@ -29,7 +29,6 @@ module.exports = {
         react: "React",
         "react-dom": "ReactDOM"
     },
-    mode: "development",
     module: {
         rules: [
             {
@@ -38,6 +37,10 @@ module.exports = {
                 use: {
                     loader: "babel-loader"
                 }
+            },
+            {
+                test: /\.css$/i,
+                use: [ "style-loader", "css-loader" ]
             }
         ]
     },

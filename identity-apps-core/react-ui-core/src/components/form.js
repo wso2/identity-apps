@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,33 +16,43 @@
  * under the License.
  */
 
+import PropTypes from "prop-types";
 import React from "react";
+import { FormField, Form as SemanticForm } from "semantic-ui-react";
 import Field from "./field";
 import useDynamicForm from "../hooks/use-dynamic-form";
 
 const Form = ({ formSchema, onSubmit }) => {
     const {
+        formState,
         handleChange,
-        handleSubmit,
-        handleFormErrors
+        handleFieldError,
+        handleSubmit
     } = useDynamicForm(formSchema);
 
     return (
         <div className="segment-form">
-            <form onSubmit={ handleSubmit(onSubmit) } className="ui large form">
+            <SemanticForm noValidate onSubmit={ (event) => handleSubmit(onSubmit)(event) } size="large">
                 {
                     formSchema.map((field, index) => (
-                        <Field
-                            key={ index }
-                            component={ field }
-                            formStateHandler={ handleChange }
-                            formErrorHandler={ handleFormErrors }
-                        />
+                        <FormField key={ index } required={ field.config.required }>
+                            <Field
+                                component={ field }
+                                formState={ formState }
+                                formStateHandler={ handleChange }
+                                formFieldError={ handleFieldError }
+                            />
+                        </FormField>
                     ))
                 }
-            </form>
+            </SemanticForm>
         </div>
     );
+};
+
+Form.propTypes = {
+    formSchema: PropTypes.array.isRequired,
+    onSubmit: PropTypes.func.isRequired
 };
 
 export default Form;

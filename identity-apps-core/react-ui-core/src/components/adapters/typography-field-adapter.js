@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,41 +18,52 @@
 
 import PropTypes from "prop-types";
 import React from "react";
+import { Header } from "semantic-ui-react";
 import { useTranslations } from "../../hooks/use-translations";
-import { getTranslationByKey } from "../../utils/i18n-utils";
+import { resolveElementText } from "../../utils/i18n-utils";
 
 const TypographyAdapter = ({ component }) => {
-    const { variant, properties } = component;
-    const { className, styles, text } = properties;
+    const { variant, config } = component;
 
     const { translations } = useTranslations ();
 
     switch (variant) {
         case "H3":
             return (
-                <h3 className={ "ui header mb-1" + className } style={ styles }>
-                    { getTranslationByKey(translations, text) }
-                </h3>
+                <Header as="h3" className="mb-1">
+                    { resolveElementText(translations, config.text) }
+                </Header>
             );
         case "H1":
-            return <h1 className={ "ui header mb-1" + className } style={ styles }>{ text }</h1>;
+            return (
+                <Header as="h1" className="mb-1">
+                    { resolveElementText(translations, config.text) }
+                </Header>
+            );
         case "H2":
-            return <h2 className={ "ui header mb-1" + className } style={ styles }>{ text }</h2>;
+            return (
+                <Header as="h2" className="mb-1">
+                    { resolveElementText(translations, config.text) }
+                </Header>
+            );
         default:
-            return <p className={ "ui header mb-1" + className } style={ styles }>{ text }</p>;
+            return (
+                <Header as="h3" className="mb-1">
+                    { resolveElementText(translations, config.text) }
+                </Header>
+            );
     }
 };
 
 TypographyAdapter.propTypes = {
-    id: PropTypes.string,
-    category: PropTypes.string,
-    type: PropTypes.string,
-    properties: PropTypes.shape({
-        text: PropTypes.string.isRequired,
-        className: PropTypes.string,
-        styles: PropTypes.object
-    }).isRequired,
-    variant: PropTypes.string.isRequired
+    component: PropTypes.shape({
+        config: PropTypes.shape({
+            text: PropTypes.string.isRequired
+        }).isRequired,
+        id: PropTypes.string,
+        type: PropTypes.string,
+        variant: PropTypes.string
+    }).isRequired
 };
 
 export default TypographyAdapter;

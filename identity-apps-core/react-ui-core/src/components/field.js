@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import PropTypes from "prop-types";
 import React from "react";
 
 import ButtonFieldAdapter from "./adapters/button-field-adapter";
@@ -23,8 +24,7 @@ import InputFieldAdapter from "./adapters/input-field-adapter";
 import TypographyAdapter from "./adapters/typography-field-adapter";
 import DividerAdapter from "./divider";
 
-const Field = ({ component, formStateHandler, formErrorHandler }) => {
-
+const Field = ({ component, formState, formStateHandler, formFieldError }) => {
     switch (component.type) {
         case "TYPOGRAPHY":
             return <TypographyAdapter component={ component } />;
@@ -32,8 +32,9 @@ const Field = ({ component, formStateHandler, formErrorHandler }) => {
             return (
                 <InputFieldAdapter
                     component={ component }
+                    formState={ formState }
                     formStateHandler={ formStateHandler }
-                    formErrorHandler={ formErrorHandler }
+                    formFieldError={ formFieldError }
                 />
             );
         case "BUTTON":
@@ -41,8 +42,22 @@ const Field = ({ component, formStateHandler, formErrorHandler }) => {
         case "DIVIDER":
             return <DividerAdapter component={ component } />;
         default:
-            return null;
+            return (
+                <InputFieldAdapter
+                    component={ component }
+                    formState={ formState }
+                    formStateHandler={ formStateHandler }
+                    formFieldError={ formFieldError }
+                />
+            );
     }
+};
+
+Field.propTypes = {
+    component: PropTypes.object.isRequired,
+    formFieldError: PropTypes.func.isRequired,
+    formState: PropTypes.isRequired,
+    formStateHandler: PropTypes.func.isRequired
 };
 
 export default Field;

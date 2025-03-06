@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -59,42 +59,38 @@ const ValidationCriteria = ({ validationConfig, errors, value }) => {
     };
 
     return (
-        <div className="validation-criteria">
+        <div className="validation-criteria mt-1">
             {
-                validationConfig &&
-                validationConfig.map((validation, index) => {
-                    if (validation.type === "CRITERIA" && validation.showValidationCriteria) {
-                        return validation.criteria.map((criterion, criteriaIndex) => {
-                            const hasError = errors.some(
-                                (error) => error.label === criterion.label
-                            );
+                (validationConfig && validationConfig.type === "CRITERIA" &&
+                    validationConfig.showValidationCriteria) && (
+                    <>
+                        {
+                            validationConfig.criteria.map((criterion, criteriaIndex) => {
+                                const hasError = errors.some(
+                                    (error) => error.label === criterion.label
+                                );
 
-                            return (
-                                <div key={ criteriaIndex } className="mt-1">
-                                    <div className="password-policy-description mb-2">
-                                        <PolicyValidationStatus isValid={ !hasError } />
-                                        <p className="pl-4">
-                                            { getTranslationByKey(translations, criterion.label) }
-                                        </p>
+                                return (
+                                    <div key={ criteriaIndex } className="mt-1">
+                                        <div className="password-policy-description mb-2">
+                                            <PolicyValidationStatus isValid={ !hasError } />
+                                            <p className="pl-4">
+                                                { getTranslationByKey(translations, criterion.label) }
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            );
-                        });
-                    } else {
-                        return (
-                            <div className="field form-group error" key={ index }>
-                                <i className="pr-2 red exclamation circle fitted icon"></i>
-                                <span className="validation-error-message">{ errors[ errors.length - 1 ].error }</span>
-                            </div>
-                        );
-                    }
-                })
+                                );
+                            })
+                        }
+                    </>
+                )
             }
         </div>
     );
 };
 
 ValidationCriteria.propTypes = {
+    errors: PropTypes.array,
     validationConfig: PropTypes.object.isRequired,
     value: PropTypes.string.isRequired
 };

@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -35,11 +35,12 @@
     layoutData.put("containerSize", "medium");
 %>
 
-
 <%
     String local = "en-US";
     String jsonFilePath = application.getRealPath("/i18n/translations/" + local + ".json");
     String translationsJson = "{}";
+    String state = request.getParameter("state");
+    String code = request.getParameter("code");
     
     try {
         byte[] jsonData = Files.readAllBytes(Paths.get(jsonFilePath));
@@ -81,7 +82,7 @@
       </layout:component>
       <layout:component componentName="MainSection">
           <div class="ui segment left aligned">
-              <div id="react-root">
+              <div id="react-root" class="react-ui-container"/>
           </div>
       </layout:component>
       <layout:component componentName="ProductFooter">
@@ -115,124 +116,172 @@
     <script src="${pageContext.request.contextPath}/js/react-ui-core.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            if (typeof React === 'undefined') {
+        document.addEventListener("DOMContentLoaded", function () {
+            if (typeof React === "undefined") {
                 console.error("React library is required for React components build.");
-            } else if (typeof ReactDOM === 'undefined') {
+                return;
+            }
+
+            if (typeof ReactDOM === "undefined") {
                 console.error("ReactDOM library is required for rendering components.");
-            } else {
-                const { createElement, Fragment, useEffect, useState } = React;
-                const { DynamicContent, I18nProvider } = ReactUICore;
+                return;
+            }
+
+            const { createElement, useEffect, useState } = React;
+            const { DynamicContent, I18nProvider } = ReactUICore;
+
+            const Content = () => {
+                const [ flowData, setFlowData ] = useState(null);
+                const [ components, setComponents ] = useState([]);
+                const [ loading, setLoading ] = useState(true);
+                const [ error, setError ] = useState(null);
+                const [ postBody, setPostBody ] = useState(null);
 
                 const apiUrl = "${pageContext.request.contextPath}/util/self-registration-api.jsp";
                 const locale = "en-US";
-                const translations = <%= translationsJson %>;
-
-                // Content component definition
-                const Content = () => {
-                    const [data, setData] = useState(null);
-                    const [blocks, setBlocks] = useState([]);
-                    const [elements, setElements] = useState([]);
-                    const [loading, setLoading] = useState(true);
-                    const [error, setError] = useState(null);
-                    const [postBody, setPostBody] = useState(null);
-                    const [formState, setFormState] = useState({});
-
-                    // Define the action handler
-                    const actionHandler = (action, formData) => {
-                        setPostBody({
-                            "flowId": data.flowId,
-                            "action": action,
-                            "userData": [
-                                {
-                                    "inputs": formData
-                                }
-                            ]
-                        });
-                    };
-
-                    const formStateHandler = (name, value) => {
-                        setFormState(prevState => ({
-                            ...prevState,
-                            [name]: value
-                        }));
-                    };
-
-                    useEffect(() => {
-                        if (!postBody) {
-                            setPostBody({
-                                "applicationId": ""
-                            });
-                        }
-
-                        fetch(apiUrl, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(postBody)
-                        })
-                            .then((response) => {
-                                if (!response.ok) {
-                                    throw new Error('Network response was not ok');
-                                }
-                                return response.json();
-                            })
-                            .then((data) => {
-                                setData(data);
-                                setLoading(false);
-                            })
-                            .catch((error) => {
-                                setError(error);
-                                setLoading(false);
-                            });
-                    }, [postBody]);
-
-                    useEffect(() => {
-                        if (data) {
-                            setBlocks(data.blocks || []);
-                            setElements(data.elements || []);
-                        }
-                    }, [data]);
-
-                    if (loading) {
-                        return createElement('div', null, 'Loading...');
-                    }
-
-                    if (error) {
-                        return createElement('div', null, `Error: ${error.message}`);
-                    }
-
-                    if (!elements || elements.length === 0) {
-                        return createElement('div', null, 'No elements to render.');
-                    }
-        
-                    return createElement(
-                        Fragment,
-                        null,
-                        createElement(
-                            DynamicContent,
-                            {
-                                content: {
-                                    elements: elements,
-                                    blocks: blocks,
-                                },
-                                handleRequestBody: actionHandler,
-                            }
-                        )
-                    ); 
-                };
                 
-                // Rendering the Content component into the DOM
-                ReactDOM.render(
+                const translations = <%= translationsJson %>;
+                const code = "<%= code != null ? code : null %>";
+
+                useEffect(() => {
+                    const savedFlowId = localStorage.getItem("flowId");
+
+                    if (code) {
+                        setPostBody({
+                            flowId: savedFlowId,
+                            action: "GoogleOIDCAuthenticator",
+                            inputs: { code }
+                        });
+                    }
+                }, [ code ]);
+
+                useEffect(() => {
+                    if (!postBody && code === "null") {
+                        setPostBody({ applicationId: "new-application" });
+                    }
+                }, [ postBody, code ]);
+
+                useEffect(() => {
+                    if (!postBody) return;
+
+                    setLoading(true);
+
+                    fetch(apiUrl, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(postBody)
+                    })
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+
+                        return response.json();
+                    })
+                    .then((data) => {
+                        if (data.flowId) {
+                            localStorage.setItem("flowId", data.flowId);
+                        }
+
+                        const isFlowEnded = handleFlowStatus(data);
+                        
+                        if (isFlowEnded) {
+                            return;
+                        }
+
+                        handleStepType(data)
+
+                        setFlowData(data);
+                    })
+                    .catch((err) => {
+                        console.error("Error fetching flow data:", err);
+                        setError(err);
+                    })
+                    .finally(() => setLoading(false));
+                }, [ postBody ]);
+
+                const handleFlowStatus = (flowData) => {
+                    if (!flowData) return false;
+
+                    switch (flowData.flowStatus) {
+                        case "INCOMPLETE":
+                            return false;
+                            
+                        case "COMPLETE":
+                            localStorage.clear();
+                            window.location.href = flowData.data.url;
+                            return true;
+
+                        case "REDIRECTION":
+                            window.location.href = flowData.data.url;
+                            return true;
+
+                        case "WEBHOOK_TRIGGER":
+                            console.log("Flow indicates a webhook trigger. Implement if needed.");
+                            return false;
+
+                        default:
+                            console.log(`Flow status: ${flowData.flowStatus}. No special action.`);
+                            return false;
+                    }
+                };
+
+                const handleStepType = (flowData) => {
+                    if (!flowData) return false;
+
+                    switch (flowData.stepType) {
+                        case "VIEW":
+                            setComponents(data.data?.components || []);
+
+                        case "REDIRECTION":
+                            window.location.href = flowData.data.url;
+
+                        default:
+                            console.log(`Flow step type: ${flowData.stepType}. No special action.`);
+                    }
+                };
+
+                if (error) {
+                    return createElement("div", null, `Error: ${error.message}`);
+                }
+
+                if (loading || (!components || components.length === 0)) {
+                    return createElement(
+                        "div",
+                        { className: `content-container loading ${!loading ? "hidden" : ""}` },
+                        createElement(
+                            "div",
+                            { className: "spinner" }
+                        )
+                    );
+                } 
+
+                return createElement(
+                    "div",
+                    { className: "content-container loaded" },
                     createElement(
-                        I18nProvider,
-                        { locale: locale, translationsObject: translations },
-                        createElement(Content)
-                    ),
-                    document.getElementById('react-root')
+                        DynamicContent, {
+                            elements: components,
+                            handleRequestBody: (action, formValues) => {
+                                setPostBody({
+                                    flowId: flowData.flowId,
+                                    action,
+                                    inputs: formValues
+                                });
+                            }
+                        }
+                    )
                 );
             }
+
+            ReactDOM.render(
+            createElement(
+                I18nProvider,
+                { locale: "en-US", translationsObject: <%= translationsJson %> },
+                createElement(Content)
+            ),
+                document.getElementById("react-root")
+            );
         });
     </script>
 </body>

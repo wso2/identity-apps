@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import PropTypes from "prop-types";
 import React, { createContext, useEffect, useState } from "react";
 
 export const I18nContext = createContext();
@@ -27,7 +28,6 @@ export const I18nProvider = ({ locale, translationsObject, children }) => {
     useEffect(() => {
         const loadTranslations = async () => {
             try {
-
                 setTranslations(translationsObject);
             } catch (err) {
                 console.error("Error loading translations:", err);
@@ -44,3 +44,8 @@ export const I18nProvider = ({ locale, translationsObject, children }) => {
     );
 };
 
+I18nProvider.propTypes = {
+    children: PropTypes.any.isRequired,
+    locale: PropTypes.string.isRequired,
+    translationsObject: PropTypes.object.isRequired
+};

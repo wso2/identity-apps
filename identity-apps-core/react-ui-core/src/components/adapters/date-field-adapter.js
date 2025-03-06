@@ -18,20 +18,19 @@
 
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { Input } from "semantic-ui-react";
+import { DateInput } from "semantic-ui-calendar-react";
 import useFieldValidation from "../../hooks/use-field-validations";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
-import { getInputIconClass } from "../../utils/ui-utils";
 import ValidationCriteria from "../validation-criteria";
 import ValidationError from "../validation-error";
 
-const TextFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
+const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
 
     const { identifier, required, label, placeholder, validation } = component.config;
 
     const { translations } = useTranslations();
-    const { fieldErrors, validate } = useFieldValidation(validation, value);
+    const { fieldErrors, validate } = useFieldValidation(validation);
 
     const [ value, setValue ] = useState("");
 
@@ -39,25 +38,26 @@ const TextFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
         formStateHandler(component.config.identifier, value);
     }, [ value ]);
 
-    const handleFieldValidation = (value) => {
+    const handleFieldValidation = () => {
         const isValid = validate({ identifier, required }, value);
 
         fieldErrorHandler(identifier, isValid ? null : fieldErrors);
     };
 
-    const inputIconClass = getInputIconClass(identifier);
-
     return (
-        <>
+        <div style={ { width: "100% !important" } }>
             <label htmlFor={ identifier }>{ resolveElementText(translations, label) }</label>
-            <Input
-                fluid
-                className={ inputIconClass ? "left icon" : null }
-                placeholder={ resolveElementText(translations, placeholder) }
-                onChange={ (e) => setValue(e.target.value) }
-                onBlur={ (e) => handleFieldValidation(e.target.value) }
+            <DateInput
                 name={ identifier }
-                icon={ getInputIconClass(identifier) }
+                placeholder={ placeholder }
+                iconPosition="left"
+                onChange={ (event, { value }) => setValue(value) }
+                onBlur={ handleFieldValidation }
+                value={ value }
+                required={ required }
+                clearable
+                closeOnMouseLeave
+                closable
             />
             {
                 validation && validation.type === "CRITERIA" && validation.showValidationCriteria (
@@ -67,18 +67,18 @@ const TextFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
             {
                 <ValidationError
                     name={ identifier }
-                    errors={ { fieldErrors: fieldErrors, formStateErrors: formState.errors } }
+                    errors={ { fieldErrors: fieldErrors, formStateErrors: formState.errors  } }
                 />
             }
-        </>
+        </div>
     );
 };
 
-TextFieldAdapter.propTypes = {
+DateFieldAdapter.propTypes = {
     component: PropTypes.object.isRequired,
-    fieldErrorHandler: PropTypes.func,
-    formState: PropTypes.object,
-    formStateHandler: PropTypes.func
+    fieldErrorHandler: PropTypes.func.isRequired,
+    formState: PropTypes.isRequired,
+    formStateHandler: PropTypes.func.isRequired
 };
 
-export default TextFieldAdapter;
+export default DateFieldAdapter;

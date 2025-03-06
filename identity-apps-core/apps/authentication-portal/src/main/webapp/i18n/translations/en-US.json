@@ -17,6 +17,7 @@
     "sign.up.form.fields.password.policies.minimumOneSpecialCharacter": "At least one special character",
     "sign.up.form.fields.password.policies.minimumOneUniqueCharacter": "At least one unique character",
     "sign.up.form.fields.password.policies.noRepeatedCharacters": "No more than one repeated character",
+    "sign.up.form.fields.password.policies.passwordsMustMatch": "Must match with the password",
     "sign.up.form.fields.firstName.label": "First Name",
     "sign.up.form.fields.firstName.placeholder": "Enter your first name",
     "sign.up.form.fields.lastName.label": "Last Name",
