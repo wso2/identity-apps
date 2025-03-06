@@ -116,7 +116,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     },
                     deletable: true,
                     id: step.id,
-                    position: { x: 300, y: 200 },
+                    position: step.position,
                     type: step.type
                 };
             });
