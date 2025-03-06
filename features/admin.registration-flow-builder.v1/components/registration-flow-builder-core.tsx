@@ -28,9 +28,9 @@ import {
 } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { StaticStepTypes, Step, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
-import generateComponentsForTemplates from "@wso2is/admin.flow-builder-core.v1/utils/generate-components-for-templates";
 import generateIdsForTemplates from "@wso2is/admin.flow-builder-core.v1/utils/generate-ids-for-templates";
 import generateResourceId from "@wso2is/admin.flow-builder-core.v1/utils/generate-resource-id";
+import resolveComponentMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-component-metadata";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Edge, Node, NodeTypes } from "@xyflow/react";
@@ -78,7 +78,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             defaultTemplate.config.data.steps[0].id = INITIAL_FLOW_START_STEP_ID;
         }
 
-        return generateComponentsForTemplates(
+        return resolveComponentMetadata(
             resources,
             generateIdsForTemplates(defaultTemplate)?.config?.data?.steps[0]?.data?.components
         );
@@ -112,7 +112,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             intermediateSteps = registrationFlow.steps.map((step: Step) => {
                 return {
                     data: {
-                        components: step.data.components
+                        components: resolveComponentMetadata(resources, step.data.components)
                     },
                     deletable: true,
                     id: step.id,
@@ -278,8 +278,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     });
                 }
             }
-
-            console.log("Generated edges:", edges);
 
             return edges;
         }

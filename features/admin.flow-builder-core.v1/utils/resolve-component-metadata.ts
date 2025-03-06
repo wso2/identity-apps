@@ -20,7 +20,7 @@ import merge from "lodash-es/merge";
 import { Element } from "../models/elements";
 import { Resources } from "../models/resources";
 
-const generateComponentsForTemplates = (resources: Resources, components: Element[]): Element[] => {
+const resolveComponentMetadata = (resources: Resources, components: Element[]): Element[] => {
     const updateComponentResourceType = (component: Element): Element => {
         let updatedComponent = { ...component };
 
@@ -40,4 +40,4 @@ const generateComponentsForTemplates = (resources: Resources, components: Elemen
     return components.map(updateComponentResourceType);
 };
 
-export default generateComponentsForTemplates;
+export default resolveComponentMetadata;

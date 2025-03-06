@@ -19,10 +19,20 @@
 import { Base } from "./base";
 import { Resource } from "./resources";
 
+export interface StepPosition {
+    x: number;
+    y: number;
+}
+
+export interface StepSize {
+    width: number;
+    height: number;
+}
+
 /**
  * Interface for a Step.
  */
-export type Step = Base;
+export type Step = Base & StepSize & StepSize;
 
 export enum StepCategories {
     Decision = "DECISION",

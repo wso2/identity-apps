@@ -26,12 +26,12 @@
     {
         "resourceType": "STEP",
         "category": "WORKFLOW",
-        "type": "TRIGGER",
+        "type": "FEDERATED_LOGIN",
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "Trigger",
-            "image": "https://www.svgrepo.com/show/431022/git-pull-request.svg"
+            "label": "Federated Login",
+            "image": "https://www.svgrepo.com/show/448375/connection-gateway.svg"
         },
         "config": {}
     }
