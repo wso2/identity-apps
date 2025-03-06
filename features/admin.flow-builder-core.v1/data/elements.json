@@ -171,7 +171,8 @@
         "deprecated": false,
         "display": {
             "label": "Choice",
-            "image": "https://www.svgrepo.com/show/339836/boolean.svg"
+            "image": "https://www.svgrepo.com/show/339836/boolean.svg",
+            "showOnResourcePanel": false
         },
         "config": {
             "hint": "",
@@ -417,7 +418,8 @@
         "deprecated": false,
         "display": {
             "label": "Rich Text",
-            "image": "https://www.svgrepo.com/show/374852/display-rich-text.svg"
+            "image": "https://www.svgrepo.com/show/374852/display-rich-text.svg",
+            "showOnResourcePanel": false
         },
         "config": {
             "text": "<h3 class=\"ui header\">Rich Text</h3>"

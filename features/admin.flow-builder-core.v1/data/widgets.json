@@ -114,7 +114,8 @@
         "display": {
             "label": "Continue with SMS OTP",
             "description": "Registration experience with SMS OTP",
-            "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg"
+            "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg",
+            "showOnResourcePanel": false
         },
         "config": {
             "field": {}
@@ -129,7 +130,8 @@
         "display": {
             "label": "reCAPTCHA",
             "description": "Add reCAPTCHA to your registration experience",
-            "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png"
+            "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png",
+            "showOnResourcePanel": false
         },
         "config": {
             "version": 2,
