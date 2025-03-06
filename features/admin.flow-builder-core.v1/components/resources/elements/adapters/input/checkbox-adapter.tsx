@@ -20,21 +20,12 @@ import Checkbox from "@oxygen-ui/react/Checkbox";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Element } from "../../../../../models/elements";
+import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
 
 /**
  * Props interface of {@link CheckboxAdapter}
  */
-export interface CheckboxAdapterPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * The flow id of the resource.
-     */
-    resourceId: string;
-    /**
-     * The resource properties.
-     */
-    resource: Element;
-}
+export type CheckboxAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Checkbox component.

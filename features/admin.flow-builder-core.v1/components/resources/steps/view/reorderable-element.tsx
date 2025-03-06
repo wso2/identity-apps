@@ -26,8 +26,8 @@ import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authenticati
 import { Element } from "../../../../models/elements";
 import getWidgetElements from "../../../../utils/get-widget-elements";
 import isWidget from "../../../../utils/is-widget";
-import Sortable, { SortableProps } from "../../../dnd/sortable";
 import { Handle } from "../../../dnd/handle";
+import Sortable, { SortableProps } from "../../../dnd/sortable";
 
 /**
  * Props interface of {@link ReorderableElement}
@@ -73,8 +73,8 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
     ...rest
 }: ReorderableComponentPropsInterface): ReactElement => {
     const handleRef = useRef<HTMLButtonElement | null>(null);
-    const elementId: string = useNodeId();
-    const { ElementFactory, setLastInteractedResource } = useAuthenticationFlowBuilderCore();
+    const stepId: string = useNodeId();
+    const { ElementFactory, setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
 
     // Widgets have a flow property which contains the elements of the sub flow.
     // If the component is a widget, render the elements of the flow.
@@ -103,13 +103,14 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
                 className={ classNames("reorderable-component", className) }
                 onClick={ (event) => {
                     event.stopPropagation();
-                    setLastInteractedResource(element)
-                 } }
+                    setLastInteractedStepId(stepId);
+                    setLastInteractedResource(element);
+                } }
                 data-componentid={ `${componentId}-${element.type}` }
             >
                 <Handle ref={ handleRef } />
                 <div className="flow-builder-step-content-form-field-content">
-                    <ElementFactory resourceId={ elementId } resource={ element } />
+                    <ElementFactory stepId={ stepId } resource={ element } />
                 </div>
             </Box>
         </Sortable>

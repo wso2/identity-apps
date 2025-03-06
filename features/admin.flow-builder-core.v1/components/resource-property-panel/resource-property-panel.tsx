@@ -17,21 +17,24 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
 import Drawer, { DrawerProps } from "@oxygen-ui/react/Drawer";
 import IconButton from "@oxygen-ui/react/IconButton";
+import { TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import ResourceProperties from "./resource-properties";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
+import { Element } from "../../models/elements";
 import "./resource-property-panel.scss";
 
 /**
  * Props interface of {@link ResourcePropertyPanel}
  */
-export type ResourcePropertyPanelPropsInterface = DrawerProps &
-    IdentifiableComponentInterface &
-    HTMLAttributes<HTMLDivElement>;
+export interface ResourcePropertyPanelPropsInterface extends DrawerProps, IdentifiableComponentInterface, HTMLAttributes<HTMLDivElement> {
+    onComponentDelete: (stepId: string, component: Element) => void;
+}
 
 // TODO: Move this to Oxygen UI.
 const ChevronsRight = ({ width = 16, height = 16 }: { width: number; height: number }): ReactElement => (
@@ -55,9 +58,10 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
     children,
     open,
     anchor = "right",
+    onComponentDelete,
     ...rest
 }: ResourcePropertyPanelPropsInterface): ReactElement => {
-    const { resourcePropertiesPanelHeading, setIsOpenResourcePropertiesPanel } = useAuthenticationFlowBuilderCore();
+    const { resourcePropertiesPanelHeading, setIsOpenResourcePropertiesPanel, lastInteractedStepId, lastInteractedResource } = useAuthenticationFlowBuilderCore();
 
     return (
         <Box
@@ -112,6 +116,16 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
                 >
                     <ResourceProperties />
                 </div>
+                <Box
+                    display="flex"
+                    justifyContent="flex-end"
+                    alignItems="right"
+                    className="flow-builder-element-property-panel-footer"
+                >
+                    <Button variant="contained" onClick={ () => onComponentDelete(lastInteractedStepId, lastInteractedResource) } startIcon={ <TrashIcon size={ 14 } /> } color="error">
+                        Delete
+                    </Button>
+                </Box>
             </Drawer>
         </Box>
     );

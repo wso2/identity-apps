@@ -31,12 +31,12 @@ import {
     getIncomers,
     getOutgoers,
     useEdgesState,
-    useNodeId,
     useNodesState,
     useReactFlow
 } from "@xyflow/react";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, useCallback, useState } from "react";
+import cloneDeep from "lodash-es/cloneDeep";
+import React, { FunctionComponent, ReactElement, useCallback } from "react";
 import VisualFlow, { VisualFlowPropsInterface } from "./visual-flow";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
@@ -126,7 +126,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
             updateNodeData(nodeId, (node: any) => {
                 const updatedComponents: Element[] = move(
-                    [ ...(node?.data?.components || []) ],
+                    [ ...(cloneDeep(node?.data?.components) || []) ],
                     event
                 );
 
@@ -141,13 +141,13 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
     const addToForm = (event, sourceData, targetData): void => {
         const { resource: sourceResource } = sourceData;
-        const { nodeId: targetNodeId, resource: targetResource } = targetData;
+        const { stepId: targetStepId, resource: targetResource } = targetData;
 
         if (sourceResource) {
             const generatedElement: Element = generateStepElement(sourceResource);
 
-            updateNodeData(targetNodeId, (node: any) => {
-                const updatedComponents: Element[] = node?.data?.components?.map((component: Element) =>
+            updateNodeData(targetStepId, (node: any) => {
+                const updatedComponents: Element[] = cloneDeep(node?.data?.components)?.map((component: Element) =>
                     component.id === targetResource.id
                         ? {
                             ...component,
@@ -161,7 +161,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                 };
             });
 
-            onResourceDropOnCanvas(sourceResource, targetNodeId);
+            onResourceDropOnCanvas(sourceResource, targetStepId);
         }
     };
 
@@ -228,6 +228,31 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         [ nodes, edges ]
     );
 
+    const handleComponentDelete = (stepId: string, component: Element): void => {
+        const updateComponent = (components: Element[]): Element[] => {
+            return components.reduce((acc: Element[], _component: Element) => {
+                if (_component.id === component.id) {
+                    return acc;
+                }
+
+                if (_component.components) {
+                    _component.components = updateComponent(_component.components);
+                }
+
+                acc.push(_component);
+                return acc;
+            }, []);
+        };
+
+        updateNodeData(stepId, (node: any) => {
+            const components: Element[] = updateComponent(cloneDeep(node?.data?.components));
+
+            return {
+                components
+            };
+        });
+    };
+
     return (
         <div
             className={ classNames("decorated-visual-flow", "react-flow-container", "visual-editor") }
@@ -235,7 +260,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         >
             <DragDropProvider onDragEnd={ handleDragEnd }>
                 <ResourcePanel resources={ resources } open={ isResourcePanelOpen }>
-                    <ElementPropertiesPanel open={ isResourcePropertiesPanelOpen }>
+                    <ElementPropertiesPanel open={ isResourcePropertiesPanelOpen } onComponentDelete={ handleComponentDelete }>
                         <VisualFlow
                             resources={ resources }
                             initialNodes={ initialNodes }

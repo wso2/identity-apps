@@ -22,20 +22,12 @@ import { Encode } from "@wso2is/core/utils";
 import parse, { domToReact } from "html-react-parser";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Element } from "../../../../models/elements";
+import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 
 /**
  * Props interface of {@link RichTextAdapter}
  */
-export interface RichTextAdapterPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * The flow id of the resource.
-     */
-    resourceId: string;
-    /**
-     * The resource properties.
-     */
-    resource: Element;
-}
+export type RichTextAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Rich Text component.
@@ -43,7 +35,7 @@ export interface RichTextAdapterPropsInterface extends IdentifiableComponentInte
  * @param props - Props injected to the component.
  * @returns The RichTextAdapter component.
  */
-export const RichTextAdapter: FunctionComponent<RichTextAdapterPropsInterface> = ({
+const RichTextAdapter: FunctionComponent<RichTextAdapterPropsInterface> = ({
     resource
 }: RichTextAdapterPropsInterface): ReactElement => (
     <>

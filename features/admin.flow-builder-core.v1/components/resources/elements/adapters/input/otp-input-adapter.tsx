@@ -22,21 +22,12 @@ import InputLabel from "@oxygen-ui/react/InputLabel";
 import OutlinedInput from "@oxygen-ui/react/OutlinedInput";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Element } from "../../../../../models/elements";
+import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
 
 /**
  * Props interface of {@link OTPInputAdapter}
  */
-export interface OTPInputAdapterPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * The flow id of the resource.
-     */
-    resourceId: string;
-    /**
-     * The resource properties.
-     */
-    resource: Element;
-}
+export type OTPInputAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the OTP inputs.

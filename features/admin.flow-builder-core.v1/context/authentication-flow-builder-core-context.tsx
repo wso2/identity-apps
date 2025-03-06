@@ -32,7 +32,7 @@ export interface AuthenticationFlowBuilderCoreContextProps {
     /**
      * The ID of the last user interacted resource node.
      */
-    lastInteractedResourceId: string;
+    lastInteractedStepId: string;
     /**
      * The wrapper for the resource properties factory.
      */
@@ -72,7 +72,7 @@ export interface AuthenticationFlowBuilderCoreContextProps {
     /**
      * Sets the active element node ID.
      */
-    setLastInteractedResourceId: Dispatch<SetStateAction<string>>;
+    setLastInteractedStepId: Dispatch<SetStateAction<string>>;
     /**
      * Sets the heading for the element properties panel.
      *
@@ -109,14 +109,14 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         isResourcePanelOpen: true,
         isResourcePropertiesPanelOpen: false,
         lastInteractedResource: null,
-        lastInteractedResourceId: "",
+        lastInteractedStepId: "",
         onResourceDropOnCanvas: () => {},
         resourcePropertiesPanelHeading: null,
         selectedAttributes: {},
         setIsOpenResourcePropertiesPanel: () => {},
         setIsResourcePanelOpen: () => {},
         setLastInteractedResource: () => {},
-        setLastInteractedResourceId: () => {},
+        setLastInteractedStepId: () => {},
         setResourcePropertiesPanelHeading: () => {},
         setSelectedAttributes: () => {}
     }

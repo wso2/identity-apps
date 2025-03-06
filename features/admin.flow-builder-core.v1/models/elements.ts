@@ -27,6 +27,7 @@ export interface Element<T = any> extends Base<T> {
      * @remarks Some elements like `Form` can have nested elements.
      */
     components?: Element[];
+    action?: any;
 };
 
 export enum ElementCategories {

@@ -21,22 +21,14 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Position } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
 import ButtonAdapterConstants from "../../../../constants/button-adapter-constants";
-import { ButtonVariants, Element } from "../../../../models/elements";
+import { ButtonVariants } from "../../../../models/elements";
+import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 import "./button-adapter.scss";
 
 /**
  * Props interface of {@link ButtonAdapter}
  */
-export interface ButtonAdapterPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * The flow id of the resource.
-     */
-    resourceId: string;
-    /**
-     * The resource properties.
-     */
-    resource: Element;
-}
+export type ButtonAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Button component.
@@ -44,7 +36,7 @@ export interface ButtonAdapterPropsInterface extends IdentifiableComponentInterf
  * @param props - Props injected to the component.
  * @returns The ButtonAdapter component.
  */
-export const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
+const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
     resource
 }: ButtonAdapterPropsInterface): ReactElement => {
     let config: ButtonProps = {};

@@ -20,20 +20,12 @@ import Typography, { TypographyProps } from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Element, TypographyVariants } from "../../../../models/elements";
+import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 
 /**
  * Props interface of {@link TypographyAdapter}
  */
-export interface TypographyAdapterPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * The flow id of the resource.
-     */
-    resourceId: string;
-    /**
-     * The resource properties.
-     */
-    resource: Element;
-}
+export type TypographyAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Typography component.
@@ -41,7 +33,7 @@ export interface TypographyAdapterPropsInterface extends IdentifiableComponentIn
  * @param props - Props injected to the component.
  * @returns The TypographyAdapter component.
  */
-export const TypographyAdapter: FunctionComponent<TypographyAdapterPropsInterface> = ({
+const TypographyAdapter: FunctionComponent<TypographyAdapterPropsInterface> = ({
     resource
 }: TypographyAdapterPropsInterface): ReactElement => {
     let config: TypographyProps = {};

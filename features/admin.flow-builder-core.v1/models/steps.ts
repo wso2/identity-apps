@@ -29,10 +29,10 @@ export interface StepSize {
     height: number;
 }
 
-/**
- * Interface for a Step.
- */
-export type Step = Base & StepSize & StepSize;
+export interface Step extends Base {
+    size: StepSize;
+    position: StepPosition;
+}
 
 export enum StepCategories {
     Decision = "DECISION",

@@ -22,6 +22,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import ButtonAdapter from "./adapters/button-adapter";
 import ChoiceAdapter from "./adapters/choice-adapter";
 import DividerAdapter from "./adapters/divider-adapter";
+import FormAdapter from "./adapters/form-adapter";
 import ImageAdapter from "./adapters/image-adapter";
 import CheckboxAdapter from "./adapters/input/checkbox-adapter";
 import DefaultInputAdapter from "./adapters/input/default-input-adapter";
@@ -30,16 +31,15 @@ import PhoneNumberInputAdapter from "./adapters/input/phone-number-input-adapter
 import RichTextAdapter from "./adapters/rich-text-adapter";
 import TypographyAdapter from "./adapters/typography-adapter";
 import { BlockTypes, Element, ElementTypes, InputVariants } from "../../../models/elements";
-import FormAdapter from "./adapters/form-adapter";
 
 /**
  * Props interface of {@link CommonElementFactory}
  */
 export interface CommonElementFactoryPropsInterface extends IdentifiableComponentInterface {
     /**
-     * The flow id of the resource.
+     * The step id the resource resides on.
      */
-    resourceId: string;
+    stepId: string;
     /**
      * The element properties.
      */
@@ -53,37 +53,37 @@ export interface CommonElementFactoryPropsInterface extends IdentifiableComponen
  * @returns The CommonComponentFactory component.
  */
 export const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsInterface> = ({
-    resourceId,
+    stepId,
     resource
 }: CommonElementFactoryPropsInterface & Node): ReactElement => {
     if (resource.type === BlockTypes.Form) {
-        return <FormAdapter resourceId={ resourceId } resource={ resource } />;
+        return <FormAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Input) {
         if (resource.variant === InputVariants.Checkbox) {
-            return <CheckboxAdapter resourceId={ resourceId } resource={ resource } />;
+            return <CheckboxAdapter stepId={ stepId } resource={ resource } />;
         }
 
         if (resource.variant === InputVariants.Telephone) {
-            return <PhoneNumberInputAdapter resourceId={ resourceId } resource={ resource } />;
+            return <PhoneNumberInputAdapter stepId={ stepId } resource={ resource } />;
         }
 
         if (resource.variant === InputVariants.OTP) {
-            return <OTPInputAdapter resourceId={ resourceId } resource={ resource } />;
+            return <OTPInputAdapter stepId={ stepId } resource={ resource } />;
         }
 
-        return <DefaultInputAdapter resourceId={ resourceId } resource={ resource } />;
+        return <DefaultInputAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Choice) {
-        return <ChoiceAdapter resourceId={ resourceId } resource={ resource } />;
+        return <ChoiceAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Button) {
-        return <ButtonAdapter resourceId={ resourceId } resource={ resource } />;
+        return <ButtonAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Typography) {
-        return <TypographyAdapter resourceId={ resourceId } resource={ resource } />;
+        return <TypographyAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.RichText) {
-        return <RichTextAdapter resourceId={ resourceId } resource={ resource } />;
+        return <RichTextAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Divider) {
-        return <DividerAdapter resourceId={ resourceId } resource={ resource } />;
+        return <DividerAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Image) {
-        return <ImageAdapter resourceId={ resourceId } resource={ resource } />;
+        return <ImageAdapter stepId={ stepId } resource={ resource } />;
     }
 
     return null;

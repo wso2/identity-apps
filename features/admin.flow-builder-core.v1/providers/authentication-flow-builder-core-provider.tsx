@@ -55,12 +55,12 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const [ isResourcePropertiesPanelOpen, setIsOpenResourcePropertiesPanel ] = useState<boolean>(false);
     const [ resourcePropertiesPanelHeading, setResourcePropertiesPanelHeading ] = useState<ReactNode>(null);
     const [ lastInteractedElementInternal, setLastInteractedElementInternal ] = useState<Resource>(null);
-    const [ lastInteractedResourceId, setLastInteractedResourceId ] = useState<string>("");
+    const [ lastInteractedStepId, setLastInteractedStepId ] = useState<string>("");
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Claim[] }>({});
 
     const onResourceDropOnCanvas = (resource: Resource, resourceId: string): void => {
         setLastInteractedResource(resource);
-        setLastInteractedResourceId(resourceId);
+        setLastInteractedStepId(resourceId);
     };
 
     const setLastInteractedResource = (resource: Resource): void => {
@@ -94,14 +94,14 @@ const AuthenticationFlowBuilderCoreProvider = ({
                 isResourcePanelOpen,
                 isResourcePropertiesPanelOpen,
                 lastInteractedResource: lastInteractedElementInternal,
-                lastInteractedResourceId,
+                lastInteractedStepId,
                 onResourceDropOnCanvas,
                 resourcePropertiesPanelHeading,
                 selectedAttributes,
                 setIsOpenResourcePropertiesPanel,
                 setIsResourcePanelOpen,
                 setLastInteractedResource,
-                setLastInteractedResourceId,
+                setLastInteractedStepId,
                 setResourcePropertiesPanelHeading,
                 setSelectedAttributes
             } }

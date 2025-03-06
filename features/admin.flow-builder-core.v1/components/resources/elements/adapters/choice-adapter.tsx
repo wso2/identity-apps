@@ -24,21 +24,12 @@ import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { FieldOption } from "../../../../models/base";
-import { Element } from "../../../../models/elements";
+import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 
 /**
  * Props interface of {@link ChoiceAdapter}
  */
-export interface ChoiceAdapterPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * The flow id of the resource.
-     */
-    resourceId: string;
-    /**
-     * The resource properties.
-     */
-    resource: Element;
-}
+export type ChoiceAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Choice component that renders a radio group.
@@ -46,7 +37,7 @@ export interface ChoiceAdapterPropsInterface extends IdentifiableComponentInterf
  * @param props - Props injected to the component.
  * @returns The ChoiceAdapter component.
  */
-export const ChoiceAdapter: FunctionComponent<ChoiceAdapterPropsInterface> = ({
+const ChoiceAdapter: FunctionComponent<ChoiceAdapterPropsInterface> = ({
     resource
 }: ChoiceAdapterPropsInterface): ReactElement => (
     <FormControl sx={ { my: 2 } }>

@@ -16,33 +16,24 @@
  * under the License.
  */
 
+import { CollisionPriority } from "@dnd-kit/abstract";
 import Badge from "@mui/material/Badge";
+import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { useNodeId } from "@xyflow/react";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import { Element, ElementCategories } from "../../../../models/elements";
 import Droppable from "../../../dnd/droppable";
 import ReorderableElement from "../../steps/view/reorderable-element";
-import Box from "@oxygen-ui/react/Box";
-import { CollisionPriority } from "@dnd-kit/abstract";
+import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 import "./form-adapter.scss";
 
 /**
  * Props interface of {@link FormAdapter}
  */
-export interface FormAdapterPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * The flow id of the resource.
-     */
-    resourceId: string;
-    /**
-     * The resource properties.
-     */
-    resource: Element;
-}
+export type FormAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Form component.
@@ -50,23 +41,22 @@ export interface FormAdapterPropsInterface extends IdentifiableComponentInterfac
  * @param props - Props injected to the component.
  * @returns The FormAdapter component.
  */
-export const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
-    resource
+const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
+    resource,
+    stepId
 }: FormAdapterPropsInterface): ReactElement => {
-    const nodeId: string = useNodeId();
-
     const shouldShowFormFieldsPlaceholder: boolean = !resource?.components?.some((element: Element) => element.category === ElementCategories.Field);
 
     return (
-            <Badge
-                anchorOrigin={ {
-                    horizontal: "left",
-                    vertical: "top"
-                } }
-                badgeContent="Form"
-                className="adapter form-adapter"
-            >
-                        <Droppable id={ VisualFlowConstants.FLOW_BUILDER_FORM_ID } data={ { nodeId, resource } } collisionPriority={ CollisionPriority.High }>
+        <Badge
+            anchorOrigin={ {
+                horizontal: "left",
+                vertical: "top"
+            } }
+            badgeContent="Form"
+            className="adapter form-adapter"
+        >
+            <Droppable id={ VisualFlowConstants.FLOW_BUILDER_FORM_ID } data={ { stepId, resource } } collisionPriority={ CollisionPriority.High }>
                 { shouldShowFormFieldsPlaceholder && (
                     <Box className="form-adapter-placeholder">
                         <Typography variant="body2">DROP FORM FIELDS HERE</Typography>
@@ -83,11 +73,11 @@ export const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
                         ) }
                         group={ resource.id }
                         type={ component.id }
-                        accept={ [component.id ]}
+                        accept={ [ component.id ] }
                     />
                 )) }
-        </Droppable>
-            </Badge>
+            </Droppable>
+        </Badge>
     );
 };
 

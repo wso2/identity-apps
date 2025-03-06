@@ -19,7 +19,8 @@
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Node, useReactFlow } from "@xyflow/react";
+import { useReactFlow } from "@xyflow/react";
+import cloneDeep from "lodash-es/cloneDeep";
 import merge from "lodash-es/merge";
 import set from "lodash-es/set";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -66,37 +67,37 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         lastInteractedResource,
         setLastInteractedResource,
         ResourceProperties,
-        lastInteractedResourceId
+        lastInteractedStepId
     } = useAuthenticationFlowBuilderCore();
 
     const changeSelectedVariant = (selected: string, element?: Partial<Element>) => {
         let selectedVariant: Element = lastInteractedResource?.variants?.find(
             (resource: Element) => resource.variant === selected
         );
-    
+
         if (element) {
             selectedVariant = merge(selectedVariant, element);
         }
-    
+
         const updateComponent = (components: Element[]): Element[] => {
             return components.map((component: Element) => {
                 if (component.id === lastInteractedResource.id) {
                     return merge(component, selectedVariant);
                 }
-    
+
                 if (component.components) {
                     component.components = updateComponent(component.components);
                 }
-    
+
                 return component;
             });
         };
-    
-        updateNodeData(lastInteractedResourceId, (node: any) => {
-            const components: Element[] = updateComponent(node?.data?.components || []);
-    
+
+        updateNodeData(lastInteractedStepId, (node: any) => {
+            const components: Element[] = updateComponent(cloneDeep(node?.data?.components) || []);
+
             setLastInteractedResource(merge(lastInteractedResource, selectedVariant));
-    
+
             return {
                 components
             };
@@ -118,8 +119,8 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
             });
         };
 
-        updateNodeData(lastInteractedResourceId, (node: any) => {
-            const components: Element[] = updateComponent(node?.data?.components || []);
+        updateNodeData(lastInteractedStepId, (node: any) => {
+            const components: Element[] = updateComponent(cloneDeep(node?.data?.components) || []);
 
             return {
                 components
@@ -133,8 +134,8 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
                 <Stack gap={ 1 }>
                     { lastInteractedResource && (
                         <ResourceProperties
-                            resource={ lastInteractedResource }
-                            properties={ lastInteractedResource?.config }
+                            resource={ cloneDeep(lastInteractedResource) }
+                            properties={ cloneDeep(lastInteractedResource?.config) }
                             onChange={ handlePropertyChange }
                             onVariantChange={ changeSelectedVariant }
                         />

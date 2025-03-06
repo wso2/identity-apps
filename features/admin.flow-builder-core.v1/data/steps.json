@@ -26,11 +26,11 @@
     {
         "resourceType": "STEP",
         "category": "WORKFLOW",
-        "type": "FEDERATED_LOGIN",
+        "type": "SOCIAL_LOGIN",
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "Federated Login",
+            "label": "Social Login",
             "image": "https://www.svgrepo.com/show/448375/connection-gateway.svg"
         },
         "config": {}
