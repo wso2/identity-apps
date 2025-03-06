@@ -695,7 +695,7 @@
                     <% if(StringUtils.isNotBlank(selfSignUpOverrideURL)) { %>
                     href="<%=i18nLink(userLocale, selfSignUpOverrideURL)%>"
                     <% } else { %>
-                    href="<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>"
+                    href="<%=StringEscapeUtils.escapeHtml4(getRegistrationPortalUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>"
                     <% } %>
                     target="_self"
                     class="clickable-link"
@@ -749,17 +749,6 @@
             return identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_RECOVER + "?" + urlParameters
                     + "&isUsernameRecovery=" + isUsernameRecovery + "&callback=" + Encode
                     .forHtmlAttribute(urlEncodedURL);
-        }
-
-        private String getRegistrationUrl(String accountRegistrationEndpointURL, String urlEncodedURL,
-                String urlParameters) {
-
-            String registrationUrl = accountRegistrationEndpointURL + "?"  + urlParameters;
-            if (!StringUtils.isEmpty(urlEncodedURL)) {
-                registrationUrl += "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
-            }
-
-            return registrationUrl;
         }
     %>
 

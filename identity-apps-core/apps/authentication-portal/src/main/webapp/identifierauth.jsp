@@ -371,7 +371,7 @@ if (!StringUtils.equals("CONSOLE",clientId)
                 <% if(StringUtils.isNotBlank(selfSignUpOverrideURL)) { %>
                 href="<%=i18nLink(userLocale, selfSignUpOverrideURL)%>"
                 <% } else { %>
-                href="<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>"
+                href="<%=StringEscapeUtils.escapeHtml4(getRegistrationPortalUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>"
                 <% } %>
                 target="_self"
                 class="clickable-link"

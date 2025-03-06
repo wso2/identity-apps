@@ -52,6 +52,9 @@
 <%-- Include tenant context --%>
 <jsp:directive.include file="includes/init-url.jsp"/>
 
+<%-- Include registration portal URL resolver --%>
+<jsp:directive.include file="util/registration-portal-url-resolver.jsp"/>
+
 <%
     // Add the login screen to the list to retrieve text branding customizations.
     screenNames.add("login");
@@ -1197,7 +1200,7 @@
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.an.account")%>
                                     <a
                                         onclick="handleSignupClick()"
-                                        href="<%=getRegistrationUrl(accountRegistrationEndpointContextURL, urlEncodedURL, urlParameters)%>"
+                                        href="<%=getRegistrationPortalUrl(accountRegistrationEndpointContextURL, urlEncodedURL, urlParameters)%>"
                                         target="_self"
                                         class="clickable-link"
                                         rel="noopener noreferrer"
@@ -1226,7 +1229,7 @@
                                         <% if(StringUtils.isNotBlank(selfSignUpOverrideURL)) { %>
                                         onclick="window.location.href='<%=i18nLink(userLocale, selfSignUpOverrideURL)%>';"
                                         <% } else { %>
-                                        onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>';"
+                                        onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationPortalUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>';"
                                         <% } %>
                                         class="ui large fluid button secondary"
                                         id="registerLink"

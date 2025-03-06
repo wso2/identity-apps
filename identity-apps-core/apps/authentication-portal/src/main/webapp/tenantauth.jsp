@@ -149,7 +149,7 @@
             <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) { %>
             <button
                 type="submit"
-                onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters))%>';"
+                onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationPortalUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters))%>';"
                 class="ui large button secondary"
                 id="registerLink"
                 role="button">
