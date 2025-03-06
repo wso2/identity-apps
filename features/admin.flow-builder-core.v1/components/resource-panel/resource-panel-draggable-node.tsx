@@ -56,8 +56,8 @@ const ResourcePanelDraggableNode: FunctionComponent<ResourcePanelDraggableNodePr
         id={ id }
         data-componentid={ componentId }
         data={ { resource } }
-        type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
-        accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
+        type={ resource.resourceType }
+        accept={ [ resource.resourceType ] }
         { ...rest }
     >
         <Card className="flow-builder-element-panel-draggable-node" variant="elevation">

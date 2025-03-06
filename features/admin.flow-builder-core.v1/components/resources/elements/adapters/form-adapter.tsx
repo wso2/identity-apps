@@ -63,7 +63,10 @@ const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
                 data={ { resource, stepId } }
                 collisionPriority={ CollisionPriority.High }
                 type={ VisualFlowConstants.FLOW_BUILDER_DROPPABLE_FORM_ID }
-                accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
+                accept={ [
+                    VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID,
+                    ...VisualFlowConstants.FLOW_BUILDER_FORM_ALLOWED_RESOURCE_TYPES
+                ] }
             >
                 { shouldShowFormFieldsPlaceholder && (
                     <Box className="form-adapter-placeholder">

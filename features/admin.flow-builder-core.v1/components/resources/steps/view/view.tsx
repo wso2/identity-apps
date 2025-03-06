@@ -32,6 +32,7 @@ import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import { Element } from "../../../../models/elements";
 import Droppable from "../../../dnd/droppable";
 import "./view.scss";
+import { CollisionPriority } from "@dnd-kit/abstract";
 
 /**
  * Props interface of {@link View}
@@ -96,7 +97,11 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                                 data={ { stepId } }
                                 sx={ { padding: "40px 32px" } }
                                 type={ VisualFlowConstants.FLOW_BUILDER_DROPPABLE_VIEW_ID }
-                                accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
+                                accept={ [
+                                    VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID,
+                                    ...VisualFlowConstants.FLOW_BUILDER_VIEW_ALLOWED_RESOURCE_TYPES
+                                ] }
+                                collisionPriority={ CollisionPriority.Low }
                             >
                                 { (node?.data?.components as any).map((component: Element, index: number) => (
                                     <ReorderableElement

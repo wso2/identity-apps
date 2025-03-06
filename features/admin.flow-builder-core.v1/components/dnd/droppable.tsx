@@ -21,6 +21,11 @@ import Box, { BoxProps } from "@oxygen-ui/react/Box";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FC, PropsWithChildren, ReactElement } from "react";
+import {
+    closestCenter,
+    pointerIntersection,
+    directionBiased
+  } from '@dnd-kit/collision';
 
 /**
  * Props interface of {@link Droppable}
@@ -39,9 +44,10 @@ const Droppable: FC<PropsWithChildren<DroppableProps>> = ({
     children,
     sx = {},
     className,
+    collisionDetector = pointerIntersection,
     ...rest
 }: PropsWithChildren<DroppableProps>): ReactElement => {
-    const { ref, isDropTarget } = useDroppable({ id, ...rest });
+    const { ref, isDropTarget } = useDroppable({ id, collisionDetector, ...rest });
 
     return (
         <Box

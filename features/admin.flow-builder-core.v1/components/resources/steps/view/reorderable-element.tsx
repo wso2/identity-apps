@@ -82,7 +82,9 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
             handleRef={ handleRef }
             data={ { isReordering: true, resource: element, stepId } }
             type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
-            accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
+            accept={ [
+                VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID
+            ] }
             { ...rest }
         >
             <Box
