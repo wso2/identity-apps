@@ -16,35 +16,12 @@
  * under the License.
  */
 
-import FlowBuilder from "@wso2is/admin.flow-builder-core.v1/components/flow-builder";
-import ButtonAdapterConstants from "@wso2is/admin.flow-builder-core.v1/constants/button-adapter-constants";
-import { Payload } from "@wso2is/admin.flow-builder-core.v1/models/api";
-import {
-    BlockTypes,
-    ButtonTypes,
-    Element,
-    ElementTypes,
-    InputVariants
-} from "@wso2is/admin.flow-builder-core.v1/models/elements";
-import { StaticStepTypes, Step, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
-import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
 import AuthenticationFlowBuilderCoreProvider from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
-import generateIdsForTemplates from "@wso2is/admin.flow-builder-core.v1/utils/generate-ids-for-templates";
-import generateComponentsForTemplates from "@wso2is/admin.flow-builder-core.v1/utils/generate-components-for-templates";
-import generateResourceId from "@wso2is/admin.flow-builder-core.v1/utils/generate-resource-id";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import { Edge, Node, NodeTypes } from "@xyflow/react";
-import cloneDeep from "lodash-es/cloneDeep";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement } from "react";
+import RegistrationFlowBuilderCore from "./registration-flow-builder-core";
 import ResourceProperties from "./resource-property-panel/resource-properties";
 import ElementFactory from "./resources/elements/element-factory";
-import StaticNodeFactory from "./resources/steps/static-step-factory";
-import StepFactory from "./resources/steps/step-factory";
-import configureRegistrationFlow from "../api/configure-registration-flow";
-import useGetRegistrationFlowBuilderResources from "../api/use-get-registration-flow-builder-resources";
 import RegistrationFlowBuilderProvider from "../providers/registration-flow-builder-provider";
 
 /**
@@ -53,210 +30,20 @@ import RegistrationFlowBuilderProvider from "../providers/registration-flow-buil
 export type RegistrationFlowBuilderPropsInterface = IdentifiableComponentInterface;
 
 /**
- * Entry point for the registration flow builder.
+ * Entry point for the registration flow builder decorated with the necessary providers.
  *
  * @param props - Props injected to the component.
- * @returns Entry point component for the registration flow builder.
+ * @returns RegistrationFlowBuilder component.
  */
 const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInterface> = ({
     "data-componentid": componentId = "registration-flow-builder",
     ...rest
-}: RegistrationFlowBuilderPropsInterface): ReactElement => {
-    const { data: resources } = useGetRegistrationFlowBuilderResources();
-    const { steps, templates } = resources;
-
-    const dispatch: Dispatch = useDispatch();
-
-    const handleFlowSubmit = (payload: Payload) => {
-        configureRegistrationFlow(payload)
-            .then(() => {
-                dispatch(
-                    addAlert({
-                        description: "Registration flow updated successfully.",
-                        level: AlertLevels.SUCCESS,
-                        message: "Flow Updated Successfully"
-                    })
-                );
-            })
-            .catch(() => {
-                dispatch(
-                    addAlert({
-                        description: "Failed to update the registration flow.",
-                        level: AlertLevels.ERROR,
-                        message: "Flow Updated Failure"
-                    })
-                );
-            });
-    };
-
-    const INITIAL_FLOW_START_STEP_ID: string = StaticStepTypes.Start.toLowerCase();
-    const INITIAL_FLOW_VIEW_STEP_ID: string = generateResourceId(StepTypes.View.toLowerCase());
-    const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = generateResourceId(StaticStepTypes.UserOnboard.toLowerCase());
-
-    const getDefaultTemplateComponents = (): Element[] => {
-        const defaultTemplate: Template = cloneDeep(
-            templates.find((template: Template) => template.type === TemplateTypes.Default)
-        );
-
-        if (defaultTemplate?.config?.data?.steps?.length > 0) {
-            defaultTemplate.config.data.steps[0].id = INITIAL_FLOW_START_STEP_ID;
-        }
-
-        return generateComponentsForTemplates(resources, generateIdsForTemplates(defaultTemplate)?.config?.data?.steps[0]?.data?.components);
-    };
-
-    const defaultTemplateComponents = useMemo(() => getDefaultTemplateComponents(), [ resources ]);
-
-    const initialNodes: Node[] = useMemo<Node[]>(
-        () => [
-            {
-                data: {
-                    displayOnly: true
-                },
-                deletable: false,
-                id: INITIAL_FLOW_START_STEP_ID,
-                position: { x: -50, y: 330 },
-                type: StaticStepTypes.Start
-            },
-            {
-                data: {
-                    components: defaultTemplateComponents
-                },
-                deletable: true,
-                id: INITIAL_FLOW_VIEW_STEP_ID,
-                position: { x: 300, y: 200 },
-                type: StepTypes.View
-            },
-            {
-                data: {},
-                deletable: false,
-                id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
-                position: { x: 850, y: 408 },
-                type: StaticStepTypes.UserOnboard
-            }
-        ],
-        []
-    );
-
-    const initialEdges: Edge[] = useMemo<Edge[]>(() => {
-        const defaultTemplateActionId: string = defaultTemplateComponents
-            ?.map((component: Element) => {
-                if (component.type === BlockTypes.Form) {
-                    return component.components.find((element: Element) => element.type === ElementTypes.Button)?.id;
-                }
-
-                return null;
-            })
-            .filter(Boolean)[0];
-
-        return [
-            {
-                animated: false,
-                id: `${INITIAL_FLOW_START_STEP_ID}-${INITIAL_FLOW_VIEW_STEP_ID}`,
-                source: INITIAL_FLOW_START_STEP_ID,
-                target: INITIAL_FLOW_VIEW_STEP_ID,
-                type: "base-edge"
-            },
-            {
-                animated: false,
-                id: defaultTemplateActionId,
-                source: INITIAL_FLOW_VIEW_STEP_ID,
-                sourceHandle: `${defaultTemplateActionId}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
-                target: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
-                type: "base-edge"
-            }
-        ];
-    }, []);
-
-    const generateNodeTypes = (): NodeTypes => {
-        if (!steps) {
-            return {};
-        }
-
-        const stepNodes: NodeTypes = steps.reduce((acc: NodeTypes, resource: Step) => {
-            acc[resource.type] = (props: any) => <StepFactory resource={ resource } { ...props } />;
-
-            return acc;
-        }, {});
-
-        const staticStepNodes: NodeTypes = Object.values(StaticStepTypes).reduce(
-            (acc: NodeTypes, type: StaticStepTypes) => {
-                acc[type] = (props: any) => <StaticNodeFactory type={ type } { ...props } />;
-
-                return acc;
-            },
-            {}
-        );
-
-        return {
-            ...staticStepNodes,
-            ...stepNodes
-        };
-    };
-
-    const handleMutateComponents = (components: Element[]): Element[] => {
-        let modifiedComponents: Element[] = cloneDeep(components);
-
-        // Check inside `forms`, if there is a form with a password field and there's only one submit button,
-        // Set the `"action": { "type": "EXECUTOR", "executor": { "name": "PasswordOnboardExecutor"}, "next": "" }`
-        modifiedComponents = modifiedComponents.map((component: Element) => {
-            if (component.type === BlockTypes.Form) {
-                const hasPasswordField: boolean = component.components?.some(
-                    (formComponent: Element) =>
-                        formComponent.type === ElementTypes.Input && formComponent.variant === InputVariants.Password
-                );
-
-                const submitButtons = component.components?.filter(
-                    (formComponent: Element) =>
-                        formComponent.type === ElementTypes.Button && formComponent.config?.type === ButtonTypes.Submit
-                );
-
-                if (submitButtons?.length === 1) {
-                    component.components = component.components.map((formComponent: Element) => {
-                        if (hasPasswordField) {
-                            if (formComponent.type === ElementTypes.Button) {
-                                return {
-                                    ...formComponent,
-                                    action: {
-                                        type: "EXECUTOR",
-                                        executor: {
-                                            name: "PasswordOnboardExecutor"
-                                        },
-                                        next: ""
-                                    }
-                                };
-                            }
-                        }
-
-                        return formComponent;
-                    });
-                }
-
-                return component;
-            }
-
-            return component;
-        });
-
-        return modifiedComponents;
-    };
-
-    return (
-        <AuthenticationFlowBuilderCoreProvider ElementFactory={ ElementFactory } ResourceProperties={ ResourceProperties }>
-            <RegistrationFlowBuilderProvider>
-                <FlowBuilder
-                    resources={ resources }
-                    data-componentid={ componentId }
-                    onFlowSubmit={ handleFlowSubmit }
-                    initialNodes={ initialNodes }
-                    initialEdges={ initialEdges }
-                    nodeTypes={ generateNodeTypes() }
-                    mutateComponents={ handleMutateComponents }
-                    { ...rest }
-                />
-            </RegistrationFlowBuilderProvider>
-        </AuthenticationFlowBuilderCoreProvider>
-    );
-};
+}: RegistrationFlowBuilderPropsInterface): ReactElement => (
+    <AuthenticationFlowBuilderCoreProvider ElementFactory={ ElementFactory } ResourceProperties={ ResourceProperties }>
+        <RegistrationFlowBuilderProvider>
+            <RegistrationFlowBuilderCore { ...rest } />
+        </RegistrationFlowBuilderProvider>
+    </AuthenticationFlowBuilderCoreProvider>
+);
 
 export default RegistrationFlowBuilder;
