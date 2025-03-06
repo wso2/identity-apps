@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { EdgeLabelRenderer, EdgeProps, BaseEdge as _BaseEdge, getSmoothStepPath } from "@xyflow/react";
+import { EdgeLabelRenderer, EdgeProps, BaseEdge as _BaseEdge, getBezierPath } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
 
 /**
@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 export interface BaseEdgePropsInterface extends EdgeProps, IdentifiableComponentInterface {}
 
 /**
- * A customized version of the BaseEdge component using smooth edges.
+ * A customized version of the BaseEdge component.
  *
  * @param props - Props injected to the component.
  * @returns BaseEdge component.
@@ -42,7 +42,7 @@ const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
     label,
     ...rest
 }: BaseEdgePropsInterface): ReactElement => {
-    const [ edgePath, labelX, labelY ] = getSmoothStepPath({
+    const [ edgePath, labelX, labelY ] = getBezierPath({
         sourcePosition,
         sourceX,
         sourceY,
@@ -54,25 +54,18 @@ const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
     return (
         <>
             <_BaseEdge id={ id } path={ edgePath } { ...rest } />
-            { label && (
-                <EdgeLabelRenderer>
-                    <div
-                        style={ {
-                            background: "#fff",
-                            borderRadius: "4px",
-                            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-                            fontSize: "12px",
-                            padding: "2px 6px",
-                            pointerEvents: "all",
-                            position: "absolute",
-                            transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`
-                        } }
-                        className="edge-label-renderer__social-connection-edge nodrag nopan"
-                    >
-                        { label }
-                    </div>
-                </EdgeLabelRenderer>
-            ) }
+            <EdgeLabelRenderer>
+                <div
+                    style={ {
+                        pointerEvents: "all",
+                        position: "absolute",
+                        transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`
+                    } }
+                    className="edge-label-renderer__social-connection-edge nodrag nopan nodrag nopan"
+                >
+                    { label }
+                </div>
+            </EdgeLabelRenderer>
         </>
     );
 };
