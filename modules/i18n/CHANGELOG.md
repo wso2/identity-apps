@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.21.2
+
+### Patch Changes
+
+- [#7788](https://github.com/wso2/identity-apps/pull/7788) [`725295582b41eab8705a4e821d169499ced1c647`](https://github.com/wso2/identity-apps/commit/725295582b41eab8705a4e821d169499ced1c647) Thanks [@savindi7](https://github.com/savindi7)! - Update attribute resolution config labels and hints.
+
 ## 2.21.1
 
 ### Patch Changes

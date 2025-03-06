@@ -1,5 +1,13 @@
 # @wso2is/admin.remote-repository-configuration.v1
 
+## 2.25.202
+
+### Patch Changes
+
+- Updated dependencies [[`725295582b41eab8705a4e821d169499ced1c647`](https://github.com/wso2/identity-apps/commit/725295582b41eab8705a4e821d169499ced1c647)]:
+  - @wso2is/i18n@2.21.2
+  - @wso2is/admin.core.v1@2.40.5
+
 ## 2.25.201
 
 ### Patch Changes
