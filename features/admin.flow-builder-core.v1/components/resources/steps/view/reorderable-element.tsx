@@ -25,8 +25,6 @@ import React, { FunctionComponent, ReactElement, useRef } from "react";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import { Element } from "../../../../models/elements";
-import getWidgetElements from "../../../../utils/get-widget-elements";
-import isWidget from "../../../../utils/is-widget";
 import { Handle } from "../../../dnd/handle";
 import Sortable, { SortableProps } from "../../../dnd/sortable";
 
@@ -64,17 +62,6 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
     const stepId: string = useNodeId();
     const { ElementFactory, setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
 
-    // Widgets have a flow property which contains the elements of the sub flow.
-    // If the component is a widget, render the elements of the flow.
-    if (isWidget(element)) {
-        return (
-            <>
-                { getWidgetElements(element)?.map((element: Element) => (
-                    <ReorderableElement key={ element.id } id={ id } element={ element } className={ className } { ...rest } />
-                )) }
-            </>
-        );
-    }
 
     return (
         <Sortable
