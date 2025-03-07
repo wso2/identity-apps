@@ -43,7 +43,7 @@ export const RedirectionFactory: FunctionComponent<RedirectionFactoryPropsInterf
         return (
             <Box display="flex" gap={ 1 } data-componentid={ componentId }>
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" height="20" />
-                <Typography variant="body1">Google Federation</Typography>
+                <Typography variant="body1">Google</Typography>
             </Box>
         );
     }

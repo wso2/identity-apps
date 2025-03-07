@@ -34,7 +34,7 @@
         "display": {
             "label": "Redirection",
             "image": "https://www.svgrepo.com/show/510970/external-link.svg",
-            "showOnResourcePanel": true
+            "showOnResourcePanel": false
         },
         "config": {}
     }

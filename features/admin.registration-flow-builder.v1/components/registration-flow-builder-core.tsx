@@ -405,6 +405,41 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         return [ templateSteps, templateEdges ];
     };
 
+    const generateUnconnectedEdges = (currentEdges: Edge[], currentNodes: Node[]): Edge[] => {
+        console.log("currentEdges", JSON.stringify(currentEdges));
+        console.log("currentNodes", JSON.stringify(currentNodes));
+
+        // Create a set of node IDs for easy lookup
+        const nodeIds = new Set(currentNodes.map(node => node.id));
+
+        // Filter out the edges where either the source or target is not in the list of current nodes
+        const unconnectedEdges = currentEdges.filter(edge => {
+            return !nodeIds.has(edge.source) || !nodeIds.has(edge.target);
+        });
+
+        // Optionally, create new edges based on updated node connections
+        // For simplicity, let's assume you want to link some unconnected nodes based on some condition:
+        // This can be extended to create more complex edge generation rules
+        currentNodes.forEach((node, index) => {
+            // Just an example logic to create new edges if necessary (e.g., based on some node property or rule)
+            if (index < currentNodes.length - 1) {
+                const nextNode = currentNodes[index + 1];
+                const newEdge: Edge = {
+                    id: `${node.id}_${nextNode.id}`, // Unique edge ID
+                    source: node.id,
+                    target: nextNode.id,
+                    type: "base-edge", // Default type; this can be adjusted as needed
+                    animated: false // Set to true if you need animated edges
+                };
+
+                unconnectedEdges.push(newEdge);
+            }
+        });
+
+        // Return the updated list of unconnected edges
+        return unconnectedEdges;
+    };
+
     const handleWidgetLoad = (
         widget: Widget,
         targetResource: Resource,
@@ -418,7 +453,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         }
 
         let newNodes: Node[] = cloneDeep(currentNodes);
-        const newEdges: Edge[] = cloneDeep(currentEdges);
+        let newEdges: Edge[] = cloneDeep(currentEdges);
 
         // Custom merge function to handle components specifically
         const customMerge = (objValue: any, srcValue: any, key: string) => {
@@ -454,6 +489,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         const replacers = widgetFlow.__generationMeta__.replacers;
 
         newNodes = updateTemplatePlaceholderReferences(generateIdsForResources(newNodes), replacers);
+        newEdges = generateUnconnectedEdges(newEdges, newNodes);
 
         return [ newNodes, newEdges ];
     };
