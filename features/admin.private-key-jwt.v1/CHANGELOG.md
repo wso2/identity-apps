@@ -1,5 +1,13 @@
 # @wso2is/admin.private-key-jwt.v1
 
+## 2.25.203
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.40.6
+  - @wso2is/admin.server-configurations.v1@2.32.128
+
 ## 2.25.202
 
 ### Patch Changes
