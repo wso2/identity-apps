@@ -135,7 +135,12 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         // Check if we need to connect start to the first step
         if (steps.length > 0) {
-            const firstStep = steps[0];
+            let firstStep = steps[0];
+
+            // TODO: Handle this better. Templates have a `Start` node, but the black starter doesn't.
+            if (firstStep.id === INITIAL_FLOW_START_STEP_ID) {
+                firstStep = steps[1];
+            }
 
             edges.push({
                 animated: false,
@@ -399,16 +404,17 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     };
 
     const handleTemplateLoad = (template: Template): [Node[], Edge[]] => {
+        if (!template?.config?.data?.steps) {
+            return [ [], [] ];
+        }
+
         const templateSteps = generateSteps(template.config.data.steps as any);
-        const templateEdges = generateEdges(template.config.data.steps as any);
+        const templateEdges = generateEdges(templateSteps as any);
 
         return [ templateSteps, templateEdges ];
     };
 
     const generateUnconnectedEdges = (currentEdges: Edge[], currentNodes: Node[]): Edge[] => {
-        console.log("currentEdges", JSON.stringify(currentEdges));
-        console.log("currentNodes", JSON.stringify(currentNodes));
-
         // Create a set of node IDs for easy lookup
         const nodeIds = new Set(currentNodes.map(node => node.id));
 

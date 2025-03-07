@@ -112,8 +112,8 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         } else if (resource?.resourceType === ResourceTypes.Template) {
             const [ newNodes, newEdges ] = onTemplateLoad(resource);
 
-            setNodes((existingNodes: Node[]) => [ ...existingNodes, ...newNodes ]);
-            setEdges((existingEdges: Edge[]) => [ ...existingEdges, ...newEdges ]);
+            setNodes(() => newNodes);
+            setEdges(() => newEdges);
         }
 
         onResourceDropOnCanvas(resource, null);

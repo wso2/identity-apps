@@ -26,7 +26,7 @@ import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 /**
  * Props interface of {@link CommonStepFactory}
  */
-export type RedirectionFactoryPropsInterface = IdentifiableComponentInterface & CommonStepFactoryPropsInterface;
+export type RedirectionFactoryPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Factory for creating redirection types.
@@ -35,7 +35,6 @@ export type RedirectionFactoryPropsInterface = IdentifiableComponentInterface & 
  * @returns The RedirectionFactory component.
  */
 export const RedirectionFactory: FunctionComponent<RedirectionFactoryPropsInterface> = ({
-    resource,
     data,
     "data-componentid": componentId = "redirection-factory"
 }: RedirectionFactoryPropsInterface): ReactElement => {
