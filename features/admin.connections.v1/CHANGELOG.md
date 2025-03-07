@@ -1,5 +1,28 @@
 # @wso2is/admin.connections.v1
 
+## 2.33.86
+
+### Patch Changes
+
+- [#7778](https://github.com/wso2/identity-apps/pull/7778) [`286b68fae8630f7e4649e6f7a8884585bfb6c2cf`](https://github.com/wso2/identity-apps/commit/286b68fae8630f7e4649e6f7a8884585bfb6c2cf) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Update component IDs of the custom authenticator create wizard
+
+- Updated dependencies [[`286b68fae8630f7e4649e6f7a8884585bfb6c2cf`](https://github.com/wso2/identity-apps/commit/286b68fae8630f7e4649e6f7a8884585bfb6c2cf), [`c78a6b3b4b54342fed9f06fceaef9aab27c53803`](https://github.com/wso2/identity-apps/commit/c78a6b3b4b54342fed9f06fceaef9aab27c53803)]:
+  - @wso2is/admin.connections.v1@2.33.86
+  - @wso2is/admin.applications.v1@2.32.6
+  - @wso2is/admin.extensions.v1@2.36.128
+  - @wso2is/admin.core.v1@2.40.6
+  - @wso2is/admin.identity-providers.v1@2.26.203
+  - @wso2is/admin.identity-verification-providers.v1@2.27.203
+  - @wso2is/admin.organizations.v1@2.26.203
+  - @wso2is/admin.roles.v2@2.27.147
+  - @wso2is/admin.application-templates.v1@1.4.203
+  - @wso2is/admin.console-settings.v1@2.25.203
+  - @wso2is/admin.actions.v1@1.11.68
+  - @wso2is/admin.claims.v1@2.27.113
+  - @wso2is/admin.userstores.v1@2.27.29
+  - @wso2is/admin.feature-gate.v1@1.4.203
+  - @wso2is/admin.template-core.v1@1.5.157
+
 ## 2.33.85
 
 ### Patch Changes
