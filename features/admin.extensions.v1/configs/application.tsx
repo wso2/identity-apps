@@ -171,10 +171,14 @@ export const applicationConfig: ApplicationConfig = {
 
                 return allowedTemplates.includes(templateId);
             },
+            isMandateLinkedLocalAccountEnabled: (templateId: string): boolean => {
+                const allowedTemplates: string[] = [];
+
+                return allowedTemplates.includes(templateId);
+            },
             showIncludeTenantDomain: true,
             showIncludeUserstoreDomainRole: true,
             showIncludeUserstoreDomainSubject: true,
-            showMandateLinkedLocalAccount: false,
             showRoleAttribute: true,
             showRoleMapping: true,
             showSubjectAttribute: true,

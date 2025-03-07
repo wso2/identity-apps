@@ -18,8 +18,8 @@
 
 import { ApplicationTabComponentsFilter } from
     "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
@@ -265,7 +265,6 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             showIncludeTenantDomain: boolean;
             showIncludeUserstoreDomainRole: boolean;
             showIncludeUserstoreDomainSubject: boolean;
-            showMandateLinkedLocalAccount: boolean;
             showRoleAttribute: boolean;
             showRoleMapping: boolean;
             showValidateLinkedLocalAccount: boolean;
@@ -275,7 +274,6 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         !config.showIncludeUserstoreDomainSubject && delete settingValues.subject.includeUserDomain;
         !config.showIncludeTenantDomain && delete settingValues.subject.includeTenantDomain;
         !config.showValidateLinkedLocalAccount && delete settingValues.subject.useMappedLocalSubject;
-        !config.showMandateLinkedLocalAccount && delete settingValues.subject.mappedLocalSubjectMandatory;
 
         !config.showRoleMapping && delete settingValues.role.mappings;
         !config.showIncludeUserstoreDomainRole && settingValues.role.includeUserDomain;
@@ -708,32 +706,35 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             { applicationConfig?.attributeSettings?.advancedAttributeSettings
                                 ?.isLinkedAccountsEnabled(applicationTemplateId) &&
                                 applicationConfig?.attributeSettings?.advancedAttributeSettings
-                                    ?.showMandateLinkedLocalAccount ? (<div className="ml-3">
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                            <Field.CheckboxLegacy
-                                                listen={ mandateLinkedAccountCheckboxHandler }
-                                                disabled= { !validateLinkedLocalAccount }
-                                                ariaLabel="Mandate linked local account"
-                                                name="mandateLinkedLocalAccount"
-                                                label={
-                                                    t("applications:forms.advancedAttributeSettings." +
-                                                    "sections.linkedAccounts.fields.mandateLocalAccount.label")
-                                                }
-                                                required={ false }
-                                                value={
-                                                    mandateLinkedLocalAccount
-                                                        ? [ "mappedLocalSubjectMandatory" ]
-                                                        : []
-                                                }
-                                                readOnly={ readOnly }
-                                                data-testid={ `${ componentId }-mandate-linked-local-account-checkbox` }
-                                                hint={ t("applications:forms.advancedAttributeSettings." +
-                                                "sections.linkedAccounts.fields.mandateLocalAccount.hint") }
-                                            />
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </div>)
+                                    ?.isMandateLinkedLocalAccountEnabled(applicationTemplateId) ? (
+                                    <div className="ml-3">
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                <Field.CheckboxLegacy
+                                                    listen={ mandateLinkedAccountCheckboxHandler }
+                                                    disabled= { !validateLinkedLocalAccount }
+                                                    ariaLabel="Mandate linked local account"
+                                                    name="mandateLinkedLocalAccount"
+                                                    label={
+                                                        t("applications:forms.advancedAttributeSettings." +
+                                                        "sections.linkedAccounts.fields.mandateLocalAccount.label")
+                                                    }
+                                                    required={ false }
+                                                    value={
+                                                        mandateLinkedLocalAccount
+                                                            ? [ "mappedLocalSubjectMandatory" ]
+                                                            : []
+                                                    }
+                                                    readOnly={ readOnly }
+                                                    data-testid={
+                                                        `${ componentId }-mandate-linked-local-account-checkbox`
+                                                    }
+                                                    hint={ t("applications:forms.advancedAttributeSettings." +
+                                                    "sections.linkedAccounts.fields.mandateLocalAccount.hint") }
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </div>)
                                 : null
                             }
                             {
