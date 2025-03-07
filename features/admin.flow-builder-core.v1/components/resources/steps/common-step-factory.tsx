@@ -19,6 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
+import Redirection from "./redirection/redirection";
 import Rule from "./rule/rule";
 import View from "./view/view";
 import { Step, StepTypes } from "../../../models/steps";
@@ -49,11 +50,15 @@ export const CommonStepFactory: FunctionComponent<CommonStepFactoryPropsInterfac
     ...rest
 }: CommonStepFactoryPropsInterface): ReactElement => {
     if (resource.type === StepTypes.View) {
-        return <View data-componentid={ componentId } { ...rest } />;
+        return <View data-componentid={ componentId } resource={ resource } { ...rest } />;
     }
 
     if (resource.type === StepTypes.Rule) {
-        return <Rule data-componentid={ componentId } { ...rest } />;
+        return <Rule data-componentid={ componentId } resource={ resource } { ...rest } />;
+    }
+
+    if (resource.type === StepTypes.Redirection) {
+        return <Redirection data-componentid={ componentId } resource={ resource } { ...rest } />;
     }
 
     return null;

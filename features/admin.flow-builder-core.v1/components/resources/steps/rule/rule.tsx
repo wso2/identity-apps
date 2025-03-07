@@ -34,12 +34,13 @@ import React, {
 } from "react";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import { Base } from "../../../../models/base";
+import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 import "./rule.scss";
 
 /**
  * Props interface of {@link Rule}
  */
-export interface RulePropsInterface extends Node, IdentifiableComponentInterface {}
+export type RulePropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Representation of an empty step in the flow builder.

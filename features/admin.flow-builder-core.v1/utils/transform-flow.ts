@@ -35,9 +35,7 @@ const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [
 
 const processActions = (component, navigations) => {
     if (component.category === ElementCategories.Action) {
-        let action: any = {
-            ...(navigations[component.id] && { next: navigations[component.id], type: ActionTypes.Next })
-        };
+        let action: any = { ...component.action };
 
         if (component?.action?.type === ActionTypes.Executor) {
             action = {
@@ -77,10 +75,10 @@ const transformFlow = (flowState: any) => {
     filteredFlowNodes.forEach((node: any) => {
         const { data, id, position, measured, type } = node;
 
-        const processElements = (elements: Element[]) => {
+        const processComponents = (elements: Element[]) => {
             const _elements: Element[] = elements?.map((element: any) => {
                 if (element.components) {
-                    element.components = processElements(element.components);
+                    element.components = processComponents(element.components);
                 }
 
                 return processActions(omit(element, DISPLAY_ONLY_ELEMENT_PROPERTIES), stepNavigationMap);
@@ -90,16 +88,23 @@ const transformFlow = (flowState: any) => {
         };
 
         /* eslint-disable sort-keys */
-        payload.steps.push({
+        const step = {
             id,
             type,
             size: measured,
             position,
-            data: {
-                components: processElements(data.components)
-            }
-        });
+            data
+        };
         /* eslint-disable sort-keys */
+
+        if (data.components) {
+            step.data = {
+                ...step.data,
+                components: processComponents(data.components)
+            };
+        }
+
+        payload.steps.push(step);
     });
 
     // TODO: Temp move the `UserOnboard` step to the last of the steps array.

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { CollisionPriority } from "@dnd-kit/abstract";
 import Box from "@oxygen-ui/react/Box";
 import FormGroup from "@oxygen-ui/react/FormGroup";
 import IconButton from "@oxygen-ui/react/IconButton";
@@ -31,13 +32,13 @@ import ReorderableElement from "./reorderable-element";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import { Element } from "../../../../models/elements";
 import Droppable from "../../../dnd/droppable";
+import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 import "./view.scss";
-import { CollisionPriority } from "@dnd-kit/abstract";
 
 /**
  * Props interface of {@link View}
  */
-export interface ViewPropsInterface extends Node, IdentifiableComponentInterface {}
+export type ViewPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Node for representing an empty view as a step in the flow builder.
@@ -94,7 +95,7 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                         <FormGroup>
                             <Droppable
                                 id={ VisualFlowConstants.FLOW_BUILDER_VIEW_ID }
-                                data={ { stepId } }
+                                data={ { stepId, resource: node } }
                                 sx={ { padding: "40px 32px" } }
                                 type={ VisualFlowConstants.FLOW_BUILDER_DROPPABLE_VIEW_ID }
                                 accept={ [

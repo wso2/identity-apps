@@ -16,44 +16,47 @@
  * under the License.
  */
 
-import Fab from "@oxygen-ui/react/Fab";
+import { Theme, useTheme } from "@mui/material/styles";
+import Card from "@oxygen-ui/react/Card";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Node, Position } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
+import RedirectionFactory from "./redirection-factory";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
-import "./start.scss";
+import "./redirection.scss";
 
 /**
- * Props interface of {@link Start}
+ * Props interface of {@link Redirection}
  */
-export type StartPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
+export type RedirectionPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
- * Start Node component.
+ * Redirection Node component.
  * This is a custom node supported by react flow renderer library.
  * See {@link https://reactflow.dev/docs/api/node-types/} for its documentation
  * and {@link https://reactflow.dev/examples/custom-node/} for an example
  *
  * @param props - Props injected to the component.
- * @returns Start node component.
+ * @returns Redirection node component.
  */
-const Start: FunctionComponent = ({
-    ["data-componentid"]: componentId = "start"
-}: StartPropsInterface & Node): ReactElement => {
+const Redirection: FunctionComponent = ({
+    ["data-componentid"]: componentId = "done",
+    ...rest
+}: RedirectionPropsInterface & Node): ReactElement => {
+    const theme: Theme = useTheme();
+
     return (
-        <div data-componentid={ componentId }>
-            <Fab
-                aria-label="start"
-                className="start"
-                variant="extended"
-                size="small"
-                data-componentid={ `${componentId}-start-node` }
-            >
-                Start
-            </Fab>
-            <Handle className="hidden-handle" id="targetLeft" type="source" position={ Position.Right } />
-        </div>
+        <Card
+            data-componentid={ componentId }
+            sx={ {
+                backgroundColor: (theme as any).colorSchemes.dark.palette.background.default,
+                color: (theme as any).colorSchemes.dark.palette.text.primary
+            } }>
+            <Handle type="target" position={ Position.Left } />
+            <RedirectionFactory { ...rest } />
+            <Handle type="source" position={ Position.Right } />
+        </Card>
     );
 };
 
-export default Start;
+export default Redirection;

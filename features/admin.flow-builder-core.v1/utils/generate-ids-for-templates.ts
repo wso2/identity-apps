@@ -17,21 +17,20 @@
  */
 
 import generateResourceId from "./generate-resource-id";
-import { Resource } from "../models/resources";
 
-const replaceIds = (obj: any): any => {
+const replaceIds = (obj: any, matcher: string): any => {
     if (Array.isArray(obj)) {
-        return obj.map(replaceIds);
+        return obj.map(item => replaceIds(item, matcher));
     } else if (typeof obj === "object" && obj !== null) {
         return Object.fromEntries(
             Object.entries(obj).map(([ key, value ]) => {
-                if (key === "id" && value === "{{ID}}") {
+                if (key === "id" && value === `{{${matcher}}}`) {
                     const type = obj.type?.toLowerCase() || "component";
 
                     return [ key, generateResourceId(type) ];
                 }
 
-                return [ key, replaceIds(value) ];
+                return [ key, replaceIds(value, matcher) ];
             })
         );
     }
@@ -39,8 +38,8 @@ const replaceIds = (obj: any): any => {
     return obj;
 };
 
-const generateIdsForResources = <T = unknown>(resources: any): T => {
-    return replaceIds(resources);
+const generateIdsForResources = <T = unknown>(resources: any, matcher: string = "ID"): T => {
+    return replaceIds(resources, matcher);
 };
 
 export default generateIdsForResources;

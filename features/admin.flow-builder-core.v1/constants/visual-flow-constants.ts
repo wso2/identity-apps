@@ -39,7 +39,8 @@ class VisualFlowConstants {
     ];
 
     public static readonly FLOW_BUILDER_VIEW_ALLOWED_RESOURCE_TYPES: string[] = [
-        ResourceTypes.Element
+        ResourceTypes.Element,
+        ResourceTypes.Widget
     ];
 
     public static readonly FLOW_BUILDER_FORM_ALLOWED_RESOURCE_TYPES: string[] = [

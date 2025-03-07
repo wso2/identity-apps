@@ -17,7 +17,6 @@
  */
 
 import { Edge, Node } from "@xyflow/react";
-import { SocialConnectionEdgeKey } from "../components/react-flow-overrides/social-connection-edge";
 import ButtonAdapterConstants from "../constants/button-adapter-constants";
 import { ActionVariants } from "../models/actions";
 import { Element, ElementCategories } from "../models/elements";
@@ -36,19 +35,6 @@ const resolveKnownEdges = (connection: Edge, nodes: Node[]): Edge => {
     const sourceElement: Element | undefined = nodes
         ?.flatMap((node: Node) => node?.data?.components as Element[])
         ?.find((element: Element) => element?.id === sourceElementId);
-
-    if (sourceElement?.category === ElementCategories.Action) {
-        if (sourceElement.variant === ActionVariants.SOCIAL) {
-            return {
-                ...connection,
-                data: {
-                    img: "https://www.svgrepo.com/show/475656/google-color.svg",
-                    label: "Sign in with Google"
-                },
-                type: SocialConnectionEdgeKey
-            };
-        }
-    }
 
     return null;
 };

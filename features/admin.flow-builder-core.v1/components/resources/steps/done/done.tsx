@@ -19,14 +19,15 @@
 import Fab from "@oxygen-ui/react/Fab";
 import { CheckIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Handle, Node, NodeProps, Position } from "@xyflow/react";
+import { Handle, Node, Position } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
+import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 import "./done.scss";
 
 /**
  * Props interface of {@link Done}
  */
-export type DonePropsInterface = NodeProps & IdentifiableComponentInterface;
+export type DonePropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Done Node component.

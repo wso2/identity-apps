@@ -32,6 +32,7 @@ export interface StepSize {
 export interface Step extends Base {
     size: StepSize;
     position: StepPosition;
+    __generationMeta__: any;
 }
 
 export enum StepCategories {
@@ -42,7 +43,8 @@ export enum StepCategories {
 
 export enum StepTypes {
     View = "VIEW",
-    Rule = "RULE"
+    Rule = "RULE",
+    Redirection = "REDIRECTION"
 }
 
 export interface StepData {
@@ -53,4 +55,8 @@ export interface StepData {
 export enum StaticStepTypes {
     UserOnboard = "USER_ONBOARD",
     Start = "START",
+}
+
+export enum RedirectionTypes {
+    Google = "GoogleOIDCAuthenticator"
 }

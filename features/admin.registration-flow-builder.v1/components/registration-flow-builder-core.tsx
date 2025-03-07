@@ -26,15 +26,21 @@ import {
     ElementTypes,
     InputVariants
 } from "@wso2is/admin.flow-builder-core.v1/models/elements";
+import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
 import { StaticStepTypes, Step, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
+import { Widget } from "@wso2is/admin.flow-builder-core.v1/models/widget";
 import generateIdsForResources from "@wso2is/admin.flow-builder-core.v1/utils/generate-ids-for-templates";
 import generateResourceId from "@wso2is/admin.flow-builder-core.v1/utils/generate-resource-id";
 import resolveComponentMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-component-metadata";
+import updateTemplatePlaceholderReferences from "@wso2is/admin.flow-builder-core.v1/utils/update-template-placeholder-references";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Edge, Node, NodeTypes } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";
+import isEqual from "lodash-es/isEqual";
+import mergeWith from "lodash-es/mergeWith";
+import unionWith from "lodash-es/unionWith";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -43,7 +49,6 @@ import StepFactory from "./resources/steps/step-factory";
 import configureRegistrationFlow from "../api/configure-registration-flow";
 import useGetRegistrationFlowBuilderResources from "../api/use-get-registration-flow-builder-resources";
 import useRegistrationFlowBuilder from "../hooks/use-registration-flow-builder-core-context";
-import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderCore}
@@ -400,6 +405,59 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         return [ templateSteps, templateEdges ];
     };
 
+    const handleWidgetLoad = (
+        widget: Widget,
+        targetResource: Resource,
+        currentNodes: Node[],
+        currentEdges: Edge[]
+    ): [Node[], Edge[]] => {
+        const widgetFlow = widget.config.data;
+
+        if (!widgetFlow || !widgetFlow.steps) {
+            return [ currentNodes, currentEdges ];
+        }
+
+        let newNodes: Node[] = cloneDeep(currentNodes);
+        const newEdges: Edge[] = cloneDeep(currentEdges);
+
+        // Custom merge function to handle components specifically
+        const customMerge = (objValue: any, srcValue: any, key: string) => {
+            // Check if the key is 'components' and both are arrays
+            if (key === "components" && Array.isArray(objValue) && Array.isArray(srcValue)) {
+                // Merge the arrays while preserving the unique elements
+                return unionWith(objValue, srcValue, isEqual); // or _.concat() depending on the logic
+            }
+        };
+
+        widgetFlow.steps.filter((step: Step) => {
+            if (step.__generationMeta__) {
+                const strategy = step.__generationMeta__.strategy;
+
+                if (strategy === "MERGE_WITH_DROP_POINT") {
+                    newNodes = newNodes.map((node: Node) => {
+                        if (node.id === targetResource.id) {
+                            console.log("Node", JSON.stringify(node));
+                            console.log("Step", JSON.stringify(step));
+
+                            // Use mergeWith with the custom merge function
+                            return mergeWith(node, step, customMerge);
+                        }
+
+                        return node;
+                    });
+                }
+            } else {
+                newNodes = [ ...newNodes, step ] as Node[];
+            }
+        });
+
+        const replacers = widgetFlow.__generationMeta__.replacers;
+
+        newNodes = updateTemplatePlaceholderReferences(generateIdsForResources(newNodes), replacers);
+
+        return [ newNodes, newEdges ];
+    };
+
     const handleFlowSubmit = (payload: Payload) => {
         configureRegistrationFlow(payload)
             .then(() => {
@@ -432,6 +490,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             nodeTypes={ generateNodeTypes() }
             mutateComponents={ handleMutateComponents }
             onTemplateLoad={ handleTemplateLoad }
+            onWidgetLoad={ handleWidgetLoad }
             { ...rest }
         />
     );
