@@ -135,7 +135,7 @@
                 const [ components, setComponents ] = useState([]);
                 const [ loading, setLoading ] = useState(true);
                 const [ error, setError ] = useState(null);
-                const [ postBody, setPostBody ] = useState(null);
+                const [ postBody, setPostBody ] = useState(undefined);
 
                 const apiUrl = "${pageContext.request.contextPath}/util/self-registration-api.jsp";
                 const locale = "en-US";
@@ -146,7 +146,7 @@
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
 
-                    if (code) {
+                    if (code !== "null") {
                         setPostBody({
                             flowId: savedFlowId,
                             action: "GoogleOIDCAuthenticator",
@@ -189,8 +189,11 @@
                             return;
                         }
 
-                        handleStepType(data)
-
+                        if (data.type == "VIEW") {
+                            setComponents(data.data.components || []);
+                        } else {
+                            handleStepType(data);
+                        }
                         setFlowData(data);
                     })
                     .catch((err) => {
@@ -200,44 +203,33 @@
                     .finally(() => setLoading(false));
                 }, [ postBody ]);
 
-                const handleFlowStatus = (flowData) => {
-                    if (!flowData) return false;
+                const handleFlowStatus = (flow) => {
+                    if (!flow) return false;
 
-                    switch (flowData.flowStatus) {
+                    switch (flow.flowStatus) {
                         case "INCOMPLETE":
                             return false;
                             
                         case "COMPLETE":
                             localStorage.clear();
-                            window.location.href = flowData.data.url;
+                            window.location.href = flow.data.url;
                             return true;
-
-                        case "REDIRECTION":
-                            window.location.href = flowData.data.url;
-                            return true;
-
-                        case "WEBHOOK_TRIGGER":
-                            console.log("Flow indicates a webhook trigger. Implement if needed.");
-                            return false;
 
                         default:
-                            console.log(`Flow status: ${flowData.flowStatus}. No special action.`);
+                            console.log(`Flow status: ${flow.flowStatus}. No special action.`);
                             return false;
                     }
                 };
 
-                const handleStepType = (flowData) => {
-                    if (!flowData) return false;
+                const handleStepType = (flow) => {
+                    if (!flow) return false;
 
-                    switch (flowData.stepType) {
-                        case "VIEW":
-                            setComponents(data.data?.components || []);
-
+                    switch (flow.type) {
                         case "REDIRECTION":
-                            window.location.href = flowData.data.url;
+                            window.location.href = flow.data.url;
 
                         default:
-                            console.log(`Flow step type: ${flowData.stepType}. No special action.`);
+                            console.log(`Flow step type: ${flow.type}. No special action.`);
                     }
                 };
 
