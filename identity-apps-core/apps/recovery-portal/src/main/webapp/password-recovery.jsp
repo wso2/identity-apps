@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -172,11 +172,11 @@
 
     String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
     Boolean isEmailUsernameEnabled = false;
-    String usernameLabel = "Username";
+    String usernameLabel = i18n(recoveryResourceBundle, customText, "Username");
     String usernamePlaceHolder = "Enter.your.username.here";
 
     if (StringUtils.isNotBlank(emailUsernameEnable) && Boolean.parseBoolean(emailUsernameEnable)) {
-        usernameLabel = "email.username";
+        usernameLabel = i18n(recoveryResourceBundle, customText, "email.username");
         usernamePlaceHolder = "enter.your.email";
     } else if (isMultiAttributeLoginEnabledInTenant) {
         if (allowedAttributes != null) {
@@ -262,7 +262,7 @@
                         </div>
                         <div class="field">
                             <label for="username">
-                                <%=i18n(recoveryResourceBundle, customText, usernameLabel) %>
+                                <%=usernameLabel %>
                             </label>
                             <div class="ui fluid left icon input">
                                 <input
@@ -296,7 +296,7 @@
                         </div>
                         <div class="field">
                             <label for="username">
-                                <%=i18n(recoveryResourceBundle, customText, usernameLabel) %>
+                                <%=usernameLabel %>
                             </label>
                             <div class="ui fluid left icon input">
                                 <% String identifierPlaceholder=i18n(recoveryResourceBundle, customText,
