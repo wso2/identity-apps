@@ -28,7 +28,7 @@ import {
 } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { StaticStepTypes, Step, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
-import generateIdsForTemplates from "@wso2is/admin.flow-builder-core.v1/utils/generate-ids-for-templates";
+import generateIdsForResources from "@wso2is/admin.flow-builder-core.v1/utils/generate-ids-for-templates";
 import generateResourceId from "@wso2is/admin.flow-builder-core.v1/utils/generate-resource-id";
 import resolveComponentMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-component-metadata";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -43,6 +43,7 @@ import StepFactory from "./resources/steps/step-factory";
 import configureRegistrationFlow from "../api/configure-registration-flow";
 import useGetRegistrationFlowBuilderResources from "../api/use-get-registration-flow-builder-resources";
 import useRegistrationFlowBuilder from "../hooks/use-registration-flow-builder-core-context";
+import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderCore}
@@ -69,22 +70,22 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     const INITIAL_FLOW_VIEW_STEP_ID: string = generateResourceId(StepTypes.View.toLowerCase());
     const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = StaticStepTypes.UserOnboard;
 
-    const getDefaultTemplateComponents = (): Element[] => {
-        const defaultTemplate: Template = cloneDeep(
-            templates.find((template: Template) => template.type === TemplateTypes.Default)
+    const getBlankTemplateComponents = (): Element[] => {
+        const blankTemplate: Template = cloneDeep(
+            templates.find((template: Template) => template.type === TemplateTypes.Blank)
         );
 
-        if (defaultTemplate?.config?.data?.steps?.length > 0) {
-            defaultTemplate.config.data.steps[0].id = INITIAL_FLOW_START_STEP_ID;
+        if (blankTemplate?.config?.data?.steps?.length > 0) {
+            blankTemplate.config.data.steps[0].id = INITIAL_FLOW_START_STEP_ID;
         }
 
         return resolveComponentMetadata(
             resources,
-            generateIdsForTemplates(defaultTemplate)?.config?.data?.steps[0]?.data?.components
+            generateIdsForResources<Template>(blankTemplate)?.config?.data?.steps[0]?.data?.components
         );
     };
 
-    const defaultTemplateComponents = useMemo(() => getDefaultTemplateComponents(), [ resources ]);
+    const defaultTemplateComponents = useMemo(() => getBlankTemplateComponents(), [ resources ]);
 
     const generateSteps = (steps: Node[]): Node[] => {
         const START_STEP: Node = {
@@ -97,7 +98,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             type: StaticStepTypes.Start
         };
 
-        return [
+        return generateIdsForResources<Node[]>([
             START_STEP,
             ...steps.map((step: Node) => {
                 return {
@@ -112,7 +113,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     type: step.type
                 };
             })
-        ];
+        ]);
     };
 
     const generateEdges = (steps: Step[]): Edge[] => {

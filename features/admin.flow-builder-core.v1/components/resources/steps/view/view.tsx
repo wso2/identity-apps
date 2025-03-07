@@ -103,7 +103,7 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                                 ] }
                                 collisionPriority={ CollisionPriority.Low }
                             >
-                                { (node?.data?.components as any).map((component: Element, index: number) => (
+                                { (node?.data?.components as any)?.map((component: Element, index: number) => (
                                     <ReorderableElement
                                         key={ component.id }
                                         id={ component.id }

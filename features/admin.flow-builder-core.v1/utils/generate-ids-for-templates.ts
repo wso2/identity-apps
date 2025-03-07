@@ -16,22 +16,22 @@
  * under the License.
  */
 
-import { Template } from "../models/templates";
 import generateResourceId from "./generate-resource-id";
+import { Resource } from "../models/resources";
 
 const replaceIds = (obj: any): any => {
     if (Array.isArray(obj)) {
         return obj.map(replaceIds);
     } else if (typeof obj === "object" && obj !== null) {
         return Object.fromEntries(
-            Object.entries(obj).map(([key, value]) => {
+            Object.entries(obj).map(([ key, value ]) => {
                 if (key === "id" && value === "{{ID}}") {
                     const type = obj.type?.toLowerCase() || "component";
 
-                    return [key, generateResourceId(type)];
+                    return [ key, generateResourceId(type) ];
                 }
 
-                return [key, replaceIds(value)];
+                return [ key, replaceIds(value) ];
             })
         );
     }
@@ -39,8 +39,8 @@ const replaceIds = (obj: any): any => {
     return obj;
 };
 
-const generateIdsForTemplates = (template: Template): Template => {
-    return replaceIds(template);
+const generateIdsForResources = <T = unknown>(resources: any): T => {
+    return replaceIds(resources);
 };
 
-export default generateIdsForTemplates;
+export default generateIdsForResources;

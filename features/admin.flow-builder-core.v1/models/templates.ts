@@ -25,7 +25,7 @@ export enum TemplateCategories {
 }
 
 export enum TemplateTypes {
-    Default = "DEFAULT",
+    Blank = "BLANK",
     Basic = "BASIC",
     BasicFederated = "BASIC_FEDERATED",
 }

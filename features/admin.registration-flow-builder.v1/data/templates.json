@@ -51,6 +51,19 @@
                                 }
                             ]
                         }
+                    },
+                    {
+                        "id": "USER_ONBOARD",
+                        "type": "USER_ONBOARD",
+                        "size": {
+                            "width": 56,
+                            "height": 56
+                        },
+                        "position": {
+                            "x": 850,
+                            "y": 408
+                        },
+                        "data": {}
                     }
                 ]
             }
@@ -94,10 +107,10 @@
                                     }
                                 },
                                 {
-                                    "id": "{{ID}}",
                                     "category": "BLOCK",
                                     "type": "FORM",
                                     "config": {},
+                                    "id": "{{ID}}",
                                     "components": [
                                         {
                                             "id": "{{ID}}",
@@ -111,6 +124,48 @@
                                                 "required": true,
                                                 "placeholder": "Enter your username",
                                                 "identifier": "http://wso2.org/claims/username"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "EMAIL",
+                                            "config": {
+                                                "type": "email",
+                                                "hint": "",
+                                                "label": "Email",
+                                                "required": true,
+                                                "placeholder": "Enter your email",
+                                                "identifier": "http://wso2.org/claims/emailaddress"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "TEXT",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "label": "First Name",
+                                                "required": false,
+                                                "placeholder": "Enter your first name",
+                                                "identifier": "http://wso2.org/claims/givenname"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "TEXT",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "label": "Last Name",
+                                                "required": false,
+                                                "placeholder": "Enter your last name",
+                                                "identifier": "http://wso2.org/claims/familyname"
                                             }
                                         },
                                         {
@@ -148,6 +203,19 @@
                                 }
                             ]
                         }
+                    },
+                    {
+                        "id": "USER_ONBOARD",
+                        "type": "USER_ONBOARD",
+                        "size": {
+                            "width": 56,
+                            "height": 56
+                        },
+                        "position": {
+                            "x": 880,
+                            "y": 408
+                        },
+                        "data": {}
                     }
                 ]
             }
