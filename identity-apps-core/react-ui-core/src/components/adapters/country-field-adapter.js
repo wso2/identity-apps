@@ -98,7 +98,7 @@ CountryFieldAdapter.propTypes = {
             identifier: PropTypes.string.isRequired,
             label: PropTypes.string.isRequired,
             placeholder: PropTypes.string.isRequired,
-            required: PropTypes.boolean.isRequired,
+            required: PropTypes.boolean,
             validation: PropTypes.array
         }).isRequired,
         id: PropTypes.string,
