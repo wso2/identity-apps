@@ -58,7 +58,7 @@ export const CommonStepFactory: FunctionComponent<CommonStepFactoryPropsInterfac
     }
 
     if (resource.type === StepTypes.Redirection) {
-        return <Redirection data-componentid={ componentId } resource={ resource } { ...rest } />;
+        return <Redirection data-componentid={ componentId } resource={ resource as any } { ...rest } />;
     }
 
     return null;
