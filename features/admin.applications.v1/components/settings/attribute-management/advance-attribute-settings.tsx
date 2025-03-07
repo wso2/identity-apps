@@ -712,7 +712,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                 <Field.CheckboxLegacy
                                                     listen={ mandateLinkedAccountCheckboxHandler }
-                                                    disabled= { !validateLinkedLocalAccount }
+                                                    disabled={ !validateLinkedLocalAccount }
                                                     ariaLabel="Mandate linked local account"
                                                     name="mandateLinkedLocalAccount"
                                                     label={
