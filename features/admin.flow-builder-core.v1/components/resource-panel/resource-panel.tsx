@@ -188,7 +188,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                         square
                         disableGutters
                         defaultExpanded
-                        className={ classNames("flow-builder-element-panel-categories") }
+                        className={ classNames("flow-builder-element-panel-categories", "starter-templates") }
                     >
                         <AccordionSummary
                             className="flow-builder-element-panel-category-heading"
