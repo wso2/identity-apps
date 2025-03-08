@@ -56,24 +56,4 @@
         width: 100%;
         border-radius: 0;
     }
-    
-    .revert-to-default-button {
-        right: 0;
-        box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.08);
-        position: absolute;
-        z-index: 5;
-        margin: 15px;
-        border: none;
-        background: #fefefe;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 30px;
-        cursor: pointer;
-        user-select: none;
-        padding: 8px 15px;
-        gap: 10px;
-        border-radius: var(--oxygen-shape-borderRadius);
-        transition: margin-top 0.2s ease-in-out;
-    }
 }
