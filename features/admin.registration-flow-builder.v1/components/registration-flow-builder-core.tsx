@@ -41,12 +41,13 @@ import cloneDeep from "lodash-es/cloneDeep";
 import isEqual from "lodash-es/isEqual";
 import mergeWith from "lodash-es/mergeWith";
 import unionWith from "lodash-es/unionWith";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import StaticNodeFactory from "./resources/steps/static-step-factory";
 import StepFactory from "./resources/steps/step-factory";
 import configureRegistrationFlow from "../api/configure-registration-flow";
+import useGetRegistrationFlow from "../api/use-get-registration-flow";
 import useGetRegistrationFlowBuilderResources from "../api/use-get-registration-flow-builder-resources";
 import useRegistrationFlowBuilder from "../hooks/use-registration-flow-builder-core-context";
 
@@ -65,7 +66,12 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     "data-componentid": componentId = "registration-flow-builder-core",
     ...rest
 }: RegistrationFlowBuilderCorePropsInterface): ReactElement => {
-    const { flow: registrationFlow } = useRegistrationFlowBuilder();
+    const {
+        data: registrationFlow,
+        error: registrationFlowFetchRequestError,
+        isLoading: isRegistrationFlowFetchRequestLoading,
+        isValidating: isRegistrationFlowFetchRequestValidating
+    } = useGetRegistrationFlow();
     const { data: resources } = useGetRegistrationFlowBuilderResources();
     const { steps, templates } = resources;
 
@@ -74,6 +80,21 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     const INITIAL_FLOW_START_STEP_ID: string = StaticStepTypes.Start.toLowerCase();
     const INITIAL_FLOW_VIEW_STEP_ID: string = generateResourceId(StepTypes.View.toLowerCase());
     const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = StaticStepTypes.UserOnboard;
+
+    /**
+     * Dispatches an error alert if the flow fetch fails.
+     */
+    useEffect(() => {
+        if (registrationFlowFetchRequestError) {
+            dispatch(
+                addAlert({
+                    description: "An error occurred while fetching the registration flow.",
+                    level: AlertLevels.ERROR,
+                    message: "Couldn't retrieve the registration flow."
+                })
+            );
+        }
+    }, [ registrationFlowFetchRequestError ]);
 
     const getBlankTemplateComponents = (): Element[] => {
         const blankTemplate: Template = cloneDeep(
@@ -521,6 +542,10 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 );
             });
     };
+
+    if (isRegistrationFlowFetchRequestLoading || isRegistrationFlowFetchRequestValidating) {
+        return null;
+    }
 
     return (
         <FlowBuilder

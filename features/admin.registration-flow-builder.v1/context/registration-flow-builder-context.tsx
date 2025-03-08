@@ -25,10 +25,6 @@ import { RegistrationFlow } from "../models/flow";
  */
 export interface RegistrationFlowBuilderContextProps {
     /**
-     * The registration flow object.
-     */
-    flow: RegistrationFlow;
-    /**
      * The set of attributes that are selected for the flow that are maintained per node.
      */
     selectedAttributes: {
@@ -47,7 +43,6 @@ const RegistrationFlowBuilderContext: Context<
     RegistrationFlowBuilderContextProps
 > = createContext<null | RegistrationFlowBuilderContextProps>(
     {
-        flow: null,
         selectedAttributes: {},
         setSelectedAttributes: () => {}
     }
