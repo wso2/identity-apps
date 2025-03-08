@@ -20,12 +20,15 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useReactFlow } from "@xyflow/react";
+import cloneDeep from "lodash-es/cloneDeep";
 import merge from "lodash-es/merge";
 import set from "lodash-es/set";
 import React, { FunctionComponent, ReactElement } from "react";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Properties } from "../../models/base";
+import { Element } from "../../models/elements";
 import { Resource } from "../../models/resources";
+import isEmpty from "lodash-es/isEmpty";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -65,26 +68,34 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         lastInteractedResource,
         setLastInteractedResource,
         ResourceProperties,
-        lastInteractedResourceId
+        lastInteractedStepId
     } = useAuthenticationFlowBuilderCore();
 
     const changeSelectedVariant = (selected: string, element?: Partial<Element>) => {
-        let selectedVariant: Resource = lastInteractedResource?.variants?.find(
-            (resource: Resource) => resource.variant === selected
+        let selectedVariant: Element = lastInteractedResource?.variants?.find(
+            (resource: Element) => resource.variant === selected
         );
 
         if (element) {
             selectedVariant = merge(selectedVariant, element);
         }
 
-        updateNodeData(lastInteractedResourceId, (node: any) => {
-            const components: Resource = node?.data?.components?.map((component: any) => {
+        const updateComponent = (components: Element[]): Element[] => {
+            return components.map((component: Element) => {
                 if (component.id === lastInteractedResource.id) {
                     return merge(component, selectedVariant);
                 }
 
+                if (component.components) {
+                    component.components = updateComponent(component.components);
+                }
+
                 return component;
             });
+        };
+
+        updateNodeData(lastInteractedStepId, (node: any) => {
+            const components: Element[] = updateComponent(cloneDeep(node?.data?.components) || []);
 
             setLastInteractedResource(merge(lastInteractedResource, selectedVariant));
 
@@ -94,19 +105,31 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         });
     };
 
-    const handlePropertyChange = (propertyKey: string, newValue: any, resource: Resource) => {
-        updateNodeData(lastInteractedResourceId, (node: any) => {
-            const components: Resource[] = node?.data?.components?.map((component: any) => {
-                if (component.id === resource.id) {
+    const handlePropertyChange = (propertyKey: string, newValue: any, element: Element) => {
+        const updateComponent = (components: Element[]): Element[] => {
+            return components.map((component: Element) => {
+                if (component.id === element.id) {
                     set(component, propertyKey, newValue);
+                }
+
+                if (component.components) {
+                    component.components = updateComponent(component.components);
                 }
 
                 return component;
             });
+        };
 
-            return {
-                components
-            };
+        updateNodeData(lastInteractedStepId, (node: any) => {
+            const data = node?.data || {};
+
+            if (!isEmpty(node?.data?.components)) {
+                data.components = updateComponent(cloneDeep(node?.data?.components) || []);
+            } else {
+                set(data, propertyKey, newValue);
+            }
+
+            return { ...data };
         });
     };
 
@@ -116,8 +139,8 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
                 <Stack gap={ 1 }>
                     { lastInteractedResource && (
                         <ResourceProperties
-                            resource={ lastInteractedResource }
-                            properties={ lastInteractedResource?.config?.field }
+                            resource={ cloneDeep(lastInteractedResource) }
+                            properties={ cloneDeep(lastInteractedResource?.config) }
                             onChange={ handlePropertyChange }
                             onVariantChange={ changeSelectedVariant }
                         />

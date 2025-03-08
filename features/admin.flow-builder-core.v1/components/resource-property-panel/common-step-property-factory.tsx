@@ -50,6 +50,10 @@ export interface CommonStepPropertyFactoryPropsInterface extends IdentifiableCom
      * @param resource - The resource associated with the property.
      */
     onChange: (propertyKey: string, previousValue: any, newValue: any, resource: Resource) => void;
+    /**
+     * Additional props.
+     */
+    [ key: string ]: any;
 }
 
 /**
@@ -63,11 +67,12 @@ const CommonStepPropertyFactory: FunctionComponent<CommonStepPropertyFactoryProp
     resource,
     propertyKey,
     propertyValue,
-    onChange
+    onChange,
+    ...rest
 }: CommonStepPropertyFactoryPropsInterface): ReactElement | null => {
     if (propertyKey === "text") {
         if (resource.type === ElementTypes.RichText) {
-            return <RichText ToolbarProps={ { history: false, strikeThrough: false } } />;
+            return <RichText ToolbarProps={ { history: false, strikeThrough: false } } { ...rest } />;
         }
     }
 
@@ -80,6 +85,7 @@ const CommonStepPropertyFactory: FunctionComponent<CommonStepPropertyFactoryProp
                     onChange(propertyKey, propertyValue, e.target.checked, resource)
                 }
                 data-componentid={ `${componentId}-${propertyKey}` }
+                { ...rest }
             />
         );
     }
@@ -95,6 +101,7 @@ const CommonStepPropertyFactory: FunctionComponent<CommonStepPropertyFactoryProp
                 }
                 placeholder={ `Enter ${startCase(propertyKey)}` }
                 data-componentid={ `${componentId}-${propertyKey}` }
+                { ...rest }
             />
         );
     }

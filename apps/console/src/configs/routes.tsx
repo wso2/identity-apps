@@ -809,14 +809,17 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
-                        import("@wso2is/admin.server-configurations.v1/pages/self-registration-flow-builder-page")
+                        import(
+                            // eslint-disable-next-line max-len
+                            "@wso2is/admin.server-configurations.v1/pages/registration-flow-builder/registration-flow-builder-page"
+                        )
                     ),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
                     },
-                    id: "self-registration-builder",
-                    path: AppConstants.getPaths().get("SELF_REGISTRATION_FLOW_BUILDER"),
+                    id: "registrationFlowBuilder",
+                    path: AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"),
                     protected: true,
                     showOnSidePanel: false
                 }

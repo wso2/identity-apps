@@ -323,7 +323,7 @@ export class AppConstants {
                     AppConstants.EMAIL_TEMPLATE_ADD_URL_PARAM }`
             ],
             [ "EXTERNAL_DIALECT_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attribute-mappings/:id` ],
-            [ "SELF_REGISTRATION_FLOW_BUILDER", `${ AppConstants.getMainViewBasePath() }/edit-self-registration-flow` ],
+            [ "REGISTRATION_FLOW_BUILDER", `${ AppConstants.getMainViewBasePath() }/edit-self-registration-flow` ],
             [ "GROUPS", `${ AppConstants.getAdminViewBasePath() }/groups` ],
             [ "GROUP_EDIT", `${ AppConstants.getAdminViewBasePath() }/groups/:id` ],
             [ "IDP", `${ AppConstants.getDeveloperViewBasePath() }/connections` ],

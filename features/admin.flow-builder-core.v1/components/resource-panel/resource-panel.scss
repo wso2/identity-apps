@@ -18,6 +18,7 @@
 
 :root {
     --wso2is-flow-builder-element-panel-background: #f4f4f4;
+    --wso2is-flow-builder--starter-templates-background: linear-gradient(92deg, #FFF3E6 1.5%, #FAF9F8 59.25%);
     --wso2is-flow-builder-element-panel-width: 350px;
     --wso2is-flow-builder-element-panel-mini-width: 350px;
 }
@@ -55,6 +56,17 @@
             background-color: transparent;
             overflow: hidden;
             transition: height 0.3s ease-in-out;
+            
+            &.starter-templates {
+                border-radius: var(--oxygen-shape-borderRadius);
+                background: var(--wso2is-flow-builder--starter-templates-background);
+                margin-bottom: var(--oxygen-spacing-2);
+                border: 1px solid var(--oxygen-palette-common-white);
+                
+                .flow-builder-element-panel-category-details {
+                    background: var(--wso2is-flow-builder--starter-templates-background);
+                }
+            }
 
             .flow-builder-element-panel-category-heading {
                 .MuiAccordionSummary-content {

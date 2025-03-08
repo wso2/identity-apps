@@ -7,11 +7,10 @@
         "deprecated": false,
         "display": {
             "label": "View",
-            "image": "https://www.svgrepo.com/show/448632/step.svg"
+            "image": "https://www.svgrepo.com/show/448632/step.svg",
+            "showOnResourcePanel": true
         },
-        "config": {
-            "field": {}
-        }
+        "config": {}
     },
     {
         "resourceType": "STEP",
@@ -21,24 +20,22 @@
         "deprecated": false,
         "display": {
             "label": "Rule",
-            "image": "https://www.svgrepo.com/show/413199/decide.svg"
+            "image": "https://www.svgrepo.com/show/413199/decide.svg",
+            "showOnResourcePanel": false
         },
-        "config": {
-            "field": {}
-        }
+        "config": {}
     },
     {
         "resourceType": "STEP",
         "category": "WORKFLOW",
-        "type": "TRIGGER",
+        "type": "REDIRECTION",
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "Trigger",
-            "image": "https://www.svgrepo.com/show/431022/git-pull-request.svg"
+            "label": "Redirection",
+            "image": "https://www.svgrepo.com/show/510970/external-link.svg",
+            "showOnResourcePanel": false
         },
-        "config": {
-            "field": {}
-        }
+        "config": {}
     }
 ]

@@ -36,9 +36,9 @@ export type ElementFactoryPropsInterface = CommonElementFactoryPropsInterface & 
  */
 export const ElementFactory: FunctionComponent<ElementFactoryPropsInterface> = ({
     resource,
-    resourceId
+    stepId
 }: ElementFactoryPropsInterface & Node): ReactElement => {
-    return <CommonElementFactory resource={ resource } resourceId={ resourceId } />;
+    return <CommonElementFactory resource={ resource } stepId={ stepId } />;
 };
 
 export default ElementFactory;

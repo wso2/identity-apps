@@ -16,10 +16,7 @@
  * under the License.
  */
 
-import { ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
-import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
-import { StepCategories } from "@wso2is/admin.flow-builder-core.v1/models/steps";
-import { WidgetCategories } from "@wso2is/admin.flow-builder-core.v1/models/widget";
+import { Resource, ResourceTypes } from "@wso2is/admin.flow-builder-core.v1/models/resources";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import ElementPropertyFactory from "./element-property-factory";
@@ -49,6 +46,10 @@ export interface ResourcePropertyFactoryPropsInterface extends IdentifiableCompo
      * @param resource - The resource associated with the property.
      */
     onChange: (propertyKey: string, newValue: any, resource: Resource) => void;
+    /**
+     * Additional props.
+     */
+    [ key: string ]: any;
 }
 
 /**
@@ -62,12 +63,11 @@ const ResourcePropertyFactory: FunctionComponent<ResourcePropertyFactoryPropsInt
     resource,
     propertyKey,
     propertyValue,
-    onChange
+    onChange,
+    ...rest
 }: ResourcePropertyFactoryPropsInterface): ReactElement | null => {
-    switch (resource.category) {
-        case ElementCategories.Field:
-        case ElementCategories.Action:
-        case ElementCategories.Display:
+    switch (resource.resourceType) {
+        case ResourceTypes.Element:
             return (
                 <ElementPropertyFactory
                     resource={ resource }
@@ -75,11 +75,10 @@ const ResourcePropertyFactory: FunctionComponent<ResourcePropertyFactoryPropsInt
                     propertyValue={ propertyValue }
                     data-componentid={ componentId }
                     onChange={ onChange }
+                    { ...rest }
                 />
             );
-        case StepCategories.Interface:
-        case StepCategories.Decision:
-        case StepCategories.Workflow:
+        case ResourceTypes.Step:
             return (
                 <StepPropertyFactory
                     resource={ resource }
@@ -87,11 +86,10 @@ const ResourcePropertyFactory: FunctionComponent<ResourcePropertyFactoryPropsInt
                     propertyValue={ propertyValue }
                     data-componentid={ componentId }
                     onChange={ onChange }
+                    { ...rest }
                 />
             );
-        case WidgetCategories.Composite:
-        case WidgetCategories.Flow:
-        case WidgetCategories.Security:
+        case ResourceTypes.Widget:
             return (
                 <WidgetPropertyFactory
                     resource={ resource }
@@ -99,6 +97,7 @@ const ResourcePropertyFactory: FunctionComponent<ResourcePropertyFactoryPropsInt
                     propertyValue={ propertyValue }
                     data-componentid={ componentId }
                     onChange={ onChange }
+                    { ...rest }
                 />
             );
         default:

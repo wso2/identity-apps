@@ -100,5 +100,10 @@
                 }
             }
         }
+
+        .flow-builder-element-property-panel-footer {
+            border-top: 1px solid var(--oxygen-palette-divider);
+            padding: var(--oxygen-spacing-2);
+        }
     }
 }

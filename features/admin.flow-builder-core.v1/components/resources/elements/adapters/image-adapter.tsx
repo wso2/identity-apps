@@ -20,20 +20,12 @@ import Box from "@oxygen-ui/react/Box";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Element } from "../../../../models/elements";
+import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 
 /**
  * Props interface of {@link ImageAdapter}
  */
-export interface ImageAdapterPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * The flow id of the resource.
-     */
-    resourceId: string;
-    /**
-     * The resource properties.
-     */
-    resource: Element;
-}
+export type ImageAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for displaying images.
@@ -41,13 +33,13 @@ export interface ImageAdapterPropsInterface extends IdentifiableComponentInterfa
  * @param props - Props injected to the component.
  * @returns The ImageAdapter component.
  */
-export const ImageAdapter: FunctionComponent<ImageAdapterPropsInterface> = ({
+const ImageAdapter: FunctionComponent<ImageAdapterPropsInterface> = ({
     resource
 }: ImageAdapterPropsInterface): ReactElement => (
     <Box display="flex" alignItems="center" justifyContent="center">
         <img
-            src={ resource?.config?.field?.src }
-            alt={ resource?.config?.field?.alt }
+            src={ resource?.config?.src }
+            alt={ resource?.config?.alt }
             width="100%"
             style={ resource?.config?.styles }
         />

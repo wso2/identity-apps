@@ -26,7 +26,8 @@ export type Resource = Element | Step | Widget;
 export enum ResourceTypes {
     Step = "STEP",
     Element = "ELEMENT",
-    Widget = "WIDGET"
+    Widget = "WIDGET",
+    Template = "TEMPLATE",
 }
 
 /**

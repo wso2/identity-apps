@@ -20,20 +20,12 @@ import Divider, { DividerProps } from "@oxygen-ui/react/Divider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { DividerVariants, Element } from "../../../../models/elements";
+import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 
 /**
  * Props interface of {@link DividerAdapter}
  */
-export interface DividerAdapterPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * The flow id of the resource.
-     */
-    resourceId: string;
-    /**
-     * The resource properties.
-     */
-    resource: Element;
-}
+export type DividerAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Divider component.
@@ -41,7 +33,7 @@ export interface DividerAdapterPropsInterface extends IdentifiableComponentInter
  * @param props - Props injected to the component.
  * @returns The DividerAdapter component.
  */
-export const DividerAdapter: FunctionComponent<DividerAdapterPropsInterface> = ({
+const DividerAdapter: FunctionComponent<DividerAdapterPropsInterface> = ({
     resource
 }: DividerAdapterPropsInterface): ReactElement => {
     let config: DividerProps = {};
@@ -58,7 +50,7 @@ export const DividerAdapter: FunctionComponent<DividerAdapterPropsInterface> = (
         };
     }
 
-    return <Divider { ...config }>{ resource?.config?.field?.text }</Divider>;
+    return <Divider { ...config }>{ resource?.config?.text }</Divider>;
 };
 
 export default DividerAdapter;

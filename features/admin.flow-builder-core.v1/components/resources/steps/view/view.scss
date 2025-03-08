@@ -21,8 +21,10 @@
     --wso2is-flow-builder-step-action-panel-height: 44px;
     --wso2is-flow-builder-step-remove-button-color: var(--oxygen-palette-grey-500);
     --wso2is-flow-builder-step-remove-button-hover-color: var(--oxygen-palette-primary-contrastText);
+    --wso2is-flow-builder-step-content-background-color: var(--oxygen-palette-background-paper);
     --wso2is-flow-builder-step-content-box-width: 350px;
     --wso2is-flow-builder-step-content-form-field-drag-handle-width: 25px;
+    --wso2is-flow-builder-droppable-area-highlight: #e0ffe1;
 }
 
 .flow-builder-step {
@@ -36,9 +38,19 @@
         justify-content: center;
         align-items: center;
         text-align: left;
+        
+        .dnd-droppable {
+            &.is-dropping {
+                background-color: var(--wso2is-flow-builder-droppable-area-highlight);
+                
+                .MuiBadge-badge {
+                    border: 1px solid var(--oxygen-palette-divider);
+                }
+            }
+        }
 
         .flow-builder-step-content-box {
-            padding: 32px;
+            background-color: var(--wso2is-flow-builder-step-content-background-color);
             width: var(--wso2is-flow-builder-step-content-box-width);
             cursor: auto;
         }
@@ -73,9 +85,16 @@
                         }
                     }
 
-                    &:hover {
+                    .dnd-action {
+                        visibility: hidden;
+                    }
+
+                    &:hover, &:focus, &:active {
                         border-color: var(--oxygen-palette-grey-200);
-                        cursor: move;
+
+                        >.dnd-action {
+                            visibility: visible;
+                        }
 
                         .flow-builder-step-content-form-field-drag-handle {
                             visibility: visible;
@@ -84,7 +103,17 @@
                     }
                 }
 
-
+                .dnd-sortable {
+                    &.is-dragging {
+                        .flow-builder-step-content-form-field {
+                            background-color: var(--oxygen-palette-background-paper);
+                            border-radius: var(--oxygen-shape-borderRadius);
+                            border: 1px solid var(--oxygen-palette-divider);
+                            box-shadow: var(--oxygen-shadows-8);
+                            padding: var(--oxygen-spacing-1) var(--oxygen-spacing-1) var(--oxygen-spacing-1) 0px;
+                        }
+                    }
+                }
             }
         }
     }

@@ -36,7 +36,8 @@ const WidgetPropertyFactory: FunctionComponent<WidgetPropertyFactoryPropsInterfa
     resource,
     propertyKey,
     propertyValue,
-    onChange
+    onChange,
+    ...rest
 }: WidgetPropertyFactoryPropsInterface): ReactElement | null => {
     switch (resource.type) {
         default:
@@ -46,6 +47,7 @@ const WidgetPropertyFactory: FunctionComponent<WidgetPropertyFactoryPropsInterfa
                     propertyKey={ propertyKey }
                     propertyValue={ propertyValue }
                     onChange={ onChange }
+                    { ...rest }
                 />
             );
     }

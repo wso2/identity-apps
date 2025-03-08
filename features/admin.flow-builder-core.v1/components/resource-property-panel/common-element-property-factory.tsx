@@ -49,6 +49,10 @@ export interface CommonElementPropertyFactoryPropsInterface extends Identifiable
      * @param resource - The resource associated with the property.
      */
     onChange: (propertyKey: string, newValue: any, resource: Resource) => void;
+    /**
+     * Additional props.
+     */
+    [ key: string ]: any;
 }
 
 /**
@@ -62,11 +66,12 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
     resource,
     propertyKey,
     propertyValue,
-    onChange
+    onChange,
+    ...rest
 }: CommonElementPropertyFactoryPropsInterface): ReactElement | null => {
     if (propertyKey === "text") {
         if (resource.type === ElementTypes.RichText) {
-            return <RichText ToolbarProps={ { history: false, strikeThrough: false } } />;
+            return <RichText ToolbarProps={ { history: false, strikeThrough: false } } { ...rest } />;
         }
     }
 
@@ -76,9 +81,10 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
                 control={ <Checkbox defaultChecked={ propertyValue } /> }
                 label={ startCase(propertyKey) }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                    onChange(`config.field.${propertyKey}`, e.target.checked, resource)
+                    onChange(`config.${propertyKey}`, e.target.checked, resource)
                 }
                 data-componentid={ `${componentId}-${propertyKey}` }
+                { ...rest }
             />
         );
     }
@@ -90,10 +96,11 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
                 label={ startCase(propertyKey) }
                 defaultValue={ propertyValue }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                    onChange(`config.field.${propertyKey}`, e.target.value, resource)
+                    onChange(`config.${propertyKey}`, e.target.value, resource)
                 }
                 placeholder={ `Enter ${startCase(propertyKey)}` }
                 data-componentid={ `${componentId}-${propertyKey}` }
+                { ...rest }
             />
         );
     }

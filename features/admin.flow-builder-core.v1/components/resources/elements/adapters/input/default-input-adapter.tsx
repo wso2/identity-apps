@@ -19,21 +19,12 @@
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Element } from "../../../../../models/elements";
+import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
 
 /**
  * Props interface of {@link DefaultInputAdapter}
  */
-export interface DefaultInputAdapterPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * The flow id of the resource.
-     */
-    resourceId: string;
-    /**
-     * The resource properties.
-     */
-    resource: Element;
-}
+export type DefaultInputAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Fallback adapter for the inputs.
@@ -46,21 +37,21 @@ export const DefaultInputAdapter: FunctionComponent<DefaultInputAdapterPropsInte
 }: DefaultInputAdapterPropsInterface): ReactElement => (
     <TextField
         fullWidth
-        className={ resource.config?.field?.className }
-        defaultValue={ resource.config?.field?.defaultValue }
-        helperText={ resource.config?.field?.hint }
+        className={ resource.config?.className }
+        defaultValue={ resource.config?.defaultValue }
+        helperText={ resource.config?.hint }
         inputProps={ {
-            maxLength: resource.config?.field?.maxLength,
-            minLength: resource.config?.field?.minLength
+            maxLength: resource.config?.maxLength,
+            minLength: resource.config?.minLength
         } }
-        label={ resource.config?.field?.label }
-        multiline={ resource.config?.field?.multiline }
-        placeholder={ resource.config?.field?.placeholder || "" }
-        required={ resource.config?.field?.required }
+        label={ resource.config?.label }
+        multiline={ resource.config?.multiline }
+        placeholder={ resource.config?.placeholder || "" }
+        required={ resource.config?.required }
         InputLabelProps={ {
-            required: resource.config?.field?.required
+            required: resource.config?.required
         } }
-        type={ resource.config?.field?.type }
+        type={ resource.config?.type }
         style={ resource.config?.styles }
     />
 );

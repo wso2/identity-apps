@@ -47,8 +47,8 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
     const { data: attributes } = useGetSupportedProfileAttributes();
 
     const selectedValue: Attribute = useMemo(() => {
-        return attributes?.find((attribute: Attribute) => attribute?.claimURI === resource.config.field.name);
-    }, [ resource.config.field.name, attributes ]);
+        return attributes?.find((attribute: Attribute) => attribute?.claimURI === resource.config.identifier);
+    }, [ resource.config.identifier, attributes ]);
 
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
@@ -63,7 +63,7 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
                 ) }
                 value={ selectedValue }
                 onChange={ (_: ChangeEvent<HTMLInputElement>, attribute: Attribute) => {
-                    onChange("config.field.name", attribute?.claimURI, resource);
+                    onChange("config.identifier", attribute?.claimURI, resource);
                 } }
             />
         </Stack>

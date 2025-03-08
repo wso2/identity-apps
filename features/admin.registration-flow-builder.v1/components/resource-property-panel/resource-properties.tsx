@@ -31,6 +31,8 @@ import ButtonExtendedProperties from "./extended-properties/button-extended-prop
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
 import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
+import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
+import FederationProperties from "./steps/redirection/federation-properties";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -53,6 +55,23 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
         return resource?.variants?.find((_element: Element) => _element.variant === resource.variant);
     }, [ resource.variants, resource.variant ]);
 
+    const renderElementId = (): ReactElement => {
+        return (
+            <ResourcePropertyFactory
+                // TODO: Fix the flow issue with the `id` property change and remove this.
+                InputProps={ { readOnly: true } }
+                key={ `${resource.id}-$id` }
+                resource={ resource }
+                propertyKey="id"
+                propertyValue={ resource.id }
+                data-componentid={ `${resource.id}-id` }
+                onChange={ (_: string, newValue: any, resource: Resource) => {
+                    onChange("id", newValue, resource);
+                } }
+            />
+        );
+    };
+
     const renderElementPropertyFactory = () => {
         const hasVariants: boolean = !isEmpty(resource?.variants);
 
@@ -73,7 +92,7 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                         } }
                     />
                 ) }
-                { Object.entries(properties).map(([ key, value ]: [FieldKey, FieldValue]) => (
+                { properties && Object.entries(properties)?.map(([ key, value ]: [FieldKey, FieldValue]) => (
                     <ResourcePropertyFactory
                         key={ `${resource.id}-${key}` }
                         resource={ resource }
@@ -90,11 +109,17 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
     switch (resource.category) {
         case ElementCategories.Field:
             if (resource.variant === InputVariants.Password) {
-                return renderElementPropertyFactory();
+                return (
+                    <>
+                        { renderElementId() }
+                        { renderElementPropertyFactory() }
+                    </>
+                );
             }
 
             return (
                 <>
+                    { renderElementId() }
                     <FieldExtendedProperties
                         resource={ resource }
                         data-componentid="field-extended-properties"
@@ -106,6 +131,7 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
         case ElementCategories.Action:
             return (
                 <>
+                    { renderElementId() }
                     <ButtonExtendedProperties
                         resource={ resource }
                         data-componentid="button-extended-properties"
@@ -117,12 +143,30 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
             );
         case StepCategories.Decision:
             if (resource.type === StepTypes.Rule) {
-                return <RulesProperties />;
+                return (
+                    <>
+                        { renderElementId() }
+                        <RulesProperties />
+                    </>
+                );
             }
 
             break;
+        case StepCategories.Workflow:
+            return (
+                <FederationProperties
+                    resource={ resource }
+                    data-componentid="federation-properties"
+                    onChange={ onChange }
+                />
+            );
         default:
-            return <>{ renderElementPropertyFactory() }</>;
+            return (
+                <>
+                    { renderElementId() }
+                    { renderElementPropertyFactory() }
+                </>
+            );
     }
 };
 

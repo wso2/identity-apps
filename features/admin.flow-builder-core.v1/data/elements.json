@@ -1,6 +1,18 @@
 [
     {
         "resourceType": "ELEMENT",
+        "category": "BLOCK",
+        "type": "FORM",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Form",
+            "image": "https://www.svgrepo.com/show/381655/form.svg"
+        },
+        "config": {}
+    },
+    {
+        "resourceType": "ELEMENT",
         "category": "FIELD",
         "type": "INPUT",
         "version": "0.1.0",
@@ -11,13 +23,11 @@
             "image": "https://www.svgrepo.com/show/437311/textbox.svg"
         },
         "config": {
-            "field": {
-                "type": "text",
-                "hint": "",
-                "label": "Text",
-                "required": false,
-                "placeholder": "Enter your text"
-            }
+            "type": "text",
+            "hint": "",
+            "label": "Text",
+            "required": false,
+            "placeholder": "Enter your text"
         }
     },
     {
@@ -32,14 +42,12 @@
             "image": "https://www.svgrepo.com/show/529125/password.svg"
         },
         "config": {
-            "field": {
-                "name": "password",
-                "type": "password",
-                "hint": "",
-                "label": "Password",
-                "required": false,
-                "placeholder": "Enter your password"
-            }
+            "identifier": "password",
+            "type": "password",
+            "hint": "",
+            "label": "Password",
+            "required": false,
+            "placeholder": "Enter your password"
         }
     },
     {
@@ -54,13 +62,11 @@
             "image": "https://www.svgrepo.com/show/488920/email.svg"
         },
         "config": {
-            "field": {
-                "type": "email",
-                "hint": "",
-                "label": "Email",
-                "required": false,
-                "placeholder": "Enter your email"
-            }
+            "type": "email",
+            "hint": "",
+            "label": "Email",
+            "required": false,
+            "placeholder": "Enter your email"
         }
     },
     {
@@ -75,13 +81,11 @@
             "image": "https://www.svgrepo.com/show/533285/phone.svg"
         },
         "config": {
-            "field": {
-                "type": "tel",
-                "hint": "",
-                "label": "Phone",
-                "required": false,
-                "placeholder": "Enter your phone number"
-            }
+            "type": "tel",
+            "hint": "",
+            "label": "Phone",
+            "required": false,
+            "placeholder": "Enter your phone number"
         }
     },
     {
@@ -96,13 +100,11 @@
             "image": "https://www.svgrepo.com/show/374740/number-input.svg"
         },
         "config": {
-            "field": {
-                "type": "number",
-                "hint": "",
-                "label": "Number",
-                "required": false,
-                "placeholder": "Enter a number"
-            }
+            "type": "number",
+            "hint": "",
+            "label": "Number",
+            "required": false,
+            "placeholder": "Enter a number"
         }
     },
     {
@@ -117,13 +119,11 @@
             "image": "https://www.svgrepo.com/show/488144/date.svg"
         },
         "config": {
-            "field": {
-                "type": "date",
-                "hint": "",
-                "label": "Date",
-                "required": false,
-                "placeholder": "yyyy-mm-dd"
-            }
+            "type": "date",
+            "hint": "",
+            "label": "Date",
+            "required": false,
+            "placeholder": "yyyy-mm-dd"
         }
     },
     {
@@ -138,14 +138,12 @@
             "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg"
         },
         "config": {
-            "field": {
-                "type": "text",
-                "hint": "",
-                "name": "otp",
-                "label": "OTP",
-                "required": false,
-                "placeholder": ""
-            }
+            "type": "text",
+            "hint": "",
+            "identifier": "otp",
+            "label": "OTP",
+            "required": false,
+            "placeholder": ""
         }
     },
     {
@@ -160,11 +158,9 @@
             "image": "https://www.svgrepo.com/show/510900/checkbox-check.svg"
         },
         "config": {
-            "field": {
-                "hint": "",
-                "label": "Checkbox",
-                "required": false
-            }
+            "hint": "",
+            "label": "Checkbox",
+            "required": false
         }
     },
     {
@@ -175,32 +171,31 @@
         "deprecated": false,
         "display": {
             "label": "Choice",
-            "image": "https://www.svgrepo.com/show/339836/boolean.svg"
+            "image": "https://www.svgrepo.com/show/339836/boolean.svg",
+            "showOnResourcePanel": false
         },
         "config": {
-            "field": {
-                "hint": "",
-                "label": "Choice",
-                "required": false,
-                "defaultValue": "option1",
-                "options": [
-                    {
-                        "label": "Option 1",
-                        "key": "option1",
-                        "value": "option1"
-                    },
-                    {
-                        "label": "Option 2",
-                        "key": "option2",
-                        "value": "option2"
-                    },
-                    {
-                        "label": "Option 3",
-                        "key": "option3",
-                        "value": "option3"
-                    }
-                ]
-            }
+            "hint": "",
+            "label": "Choice",
+            "required": false,
+            "defaultValue": "option1",
+            "options": [
+                {
+                    "label": "Option 1",
+                    "key": "option1",
+                    "value": "option1"
+                },
+                {
+                    "label": "Option 2",
+                    "key": "option2",
+                    "value": "option2"
+                },
+                {
+                    "label": "Option 3",
+                    "key": "option3",
+                    "value": "option3"
+                }
+            ]
         }
     },
     {
@@ -227,10 +222,8 @@
                     "image": null
                 },
                 "config": {
-                    "field": {
-                        "type": "submit",
-                        "text": "Button"
-                    }
+                    "type": "button",
+                    "text": "Button"
                 }
             },
             {
@@ -245,10 +238,8 @@
                     "image": null
                 },
                 "config": {
-                    "field": {
-                        "type": "button",
-                        "text": "Secondary Button"
-                    }
+                    "type": "button",
+                    "text": "Secondary Button"
                 }
             },
             {
@@ -263,10 +254,8 @@
                     "image": null
                 },
                 "config": {
-                    "field": {
-                        "type": "button",
-                        "text": "Text Button"
-                    }
+                    "type": "button",
+                    "text": "Text Button"
                 }
             },
             {
@@ -281,10 +270,8 @@
                     "image": null
                 },
                 "config": {
-                    "field": {
-                        "type": "button",
-                        "text": "Social Button"
-                    }
+                    "type": "button",
+                    "text": "Social Button"
                 }
             }
         ]
@@ -313,9 +300,7 @@
                     "image": null
                 },
                 "config": {
-                    "field": {
-                        "text": "Heading - H1"
-                    }
+                    "text": "Heading - H1"
                 }
             },
             {
@@ -330,9 +315,7 @@
                     "image": null
                 },
                 "config": {
-                    "field": {
-                        "text": "Heading - H2"
-                    }
+                    "text": "Heading - H2"
                 }
             },
             {
@@ -347,9 +330,7 @@
                     "image": null
                 },
                 "config": {
-                    "field": {
-                        "text": "Heading - H3"
-                    }
+                    "text": "Heading - H3"
                 }
             },
             {
@@ -364,9 +345,7 @@
                     "image": null
                 },
                 "config": {
-                    "field": {
-                        "text": "Heading - H4"
-                    }
+                    "text": "Heading - H4"
                 }
             },
             {
@@ -381,9 +360,7 @@
                     "image": null
                 },
                 "config": {
-                    "field": {
-                        "text": "Heading - H5"
-                    }
+                    "text": "Heading - H5"
                 }
             },
             {
@@ -398,9 +375,7 @@
                     "image": null
                 },
                 "config": {
-                    "field": {
-                        "text": "Heading - H6"
-                    }
+                    "text": "Heading - H6"
                 }
             },
             {
@@ -415,9 +390,7 @@
                     "image": null
                 },
                 "config": {
-                    "field": {
-                        "text": "Body Text"
-                    }
+                    "text": "Body Text"
                 }
             },
             {
@@ -432,9 +405,7 @@
                     "image": null
                 },
                 "config": {
-                    "field": {
-                        "text": "Body Text - Muted"
-                    }
+                    "text": "Body Text - Muted"
                 }
             }
         ]
@@ -447,12 +418,11 @@
         "deprecated": false,
         "display": {
             "label": "Rich Text",
-            "image": "https://www.svgrepo.com/show/374852/display-rich-text.svg"
+            "image": "https://www.svgrepo.com/show/374852/display-rich-text.svg",
+            "showOnResourcePanel": false
         },
         "config": {
-            "field": {
-                "text": "<h3 class=\"ui header\">Rich Text</h3>"
-            }
+            "text": "<h3 class=\"ui header\">Rich Text</h3>"
         }
     },
     {
@@ -479,9 +449,7 @@
                     "image": null
                 },
                 "config": {
-                    "field": {
-                        "text": "Or"
-                    }
+                    "text": "Or"
                 }
             },
             {
@@ -496,9 +464,7 @@
                     "image": null
                 },
                 "config": {
-                    "field": {
-                        "text": "Or"
-                    }
+                    "text": "Or"
                 }
             }
         ]
@@ -527,9 +493,7 @@
                     "image": null
                 },
                 "config": {
-                    "field": {
-                        "src": "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
-                    }
+                    "src": "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
                 }
             }
         ]

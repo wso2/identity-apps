@@ -19,21 +19,12 @@
 import PhoneNumberInput from "@oxygen-ui/react/PhoneNumberInput";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Element } from "../../../../../models/elements";
+import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
 
 /**
  * Props interface of {@link PhoneNumberInputAdapter}
  */
-export interface PhoneNumberInputAdapterPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * The flow id of the resource.
-     */
-    resourceId: string;
-    /**
-     * The resource properties.
-     */
-    resource: Element;
-}
+export type PhoneNumberInputAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Phone Number input component.
@@ -45,11 +36,11 @@ export const PhoneNumberInputAdapter: FunctionComponent<PhoneNumberInputAdapterP
     resource
 }: PhoneNumberInputAdapterPropsInterface): ReactElement => (
     <PhoneNumberInput
-        className={ resource.config?.field?.className }
-        label={ resource.config?.field?.label }
-        placeholder={ resource.config?.field?.placeholder || "" }
+        className={ resource.config?.className }
+        label={ resource.config?.label }
+        placeholder={ resource.config?.placeholder || "" }
         InputLabelProps={ {
-            required: resource.config?.field?.required
+            required: resource.config?.required
         } }
     />
 );

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -81,6 +82,13 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const registrationFlowBuilderFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features.registrationFlowBuilder
+    );
+
+    const hasRegistrationFlowBuilderViewPermissions: boolean = useRequiredScopes(
+        registrationFlowBuilderFeatureConfig?.scopes?.read
+    );
 
     const [ isConnectorRequestLoading, setConnectorRequestLoading ] = useState<boolean>(false);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
@@ -670,6 +678,10 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
      */
     const renderFeatureEnhancementBanner = (): ReactElement => {
         if (connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID) {
+            if (!registrationFlowBuilderFeatureConfig?.enabled || !hasRegistrationFlowBuilderViewPermissions) {
+                return null;
+            }
+
             return <RegistrationFlowBuilderBanner />;
         }
 

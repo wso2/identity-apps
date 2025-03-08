@@ -22,7 +22,7 @@ export * from "./models/base";
 export * from "./models/elements";
 export * from "./models/resources";
 export * from "./models/steps";
-export * from "./models/visual-editor";
+export * from "./models/visual-flow";
 export * from "./models/widget";
 
 export {
@@ -38,4 +38,4 @@ export {
 export {
     default as CommonWidgetPropertyFactory
 } from "./components/resource-property-panel/common-widget-property-factory";
-export { default as DecoratedVisualFlow } from "./components/decorated-visual-flow";
+export { default as DecoratedVisualFlow } from "./components/visual-flow/decorated-visual-flow";

@@ -21,8 +21,6 @@ import { Base } from "./base";
 
 export type Widget = Base<WidgetExtendedConfig>;
 
-export type SubFlow = Partial<Payload>;
-
 /**
  * Interface for the properties of a widget.
  */
@@ -31,10 +29,7 @@ export interface WidgetExtendedConfig {
      * Version of the widget.
      */
     version?: string;
-    /**
-     * Sub flow to render for the widget.
-     */
-    flow?: SubFlow;
+    data: any;
 }
 
 export enum WidgetCategories {
@@ -44,5 +39,5 @@ export enum WidgetCategories {
 }
 
 export enum WidgetTypes {
-    IdentifierPassword = "IDENTIFIER_PASSWORD",
+    IdentifierPassword = "IDENTIFIER_PASSWORD"
 }

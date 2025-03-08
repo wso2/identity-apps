@@ -8,86 +8,77 @@
         "display": {
             "label": "Username + Password",
             "description": "Basic registration experience with simple username & password",
-            "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg"
+            "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg",
+            "showOnResourcePanel": true
         },
         "config": {
-            "field": {
-                "className": "wso2is-widget username-password"
-            },
-            "flow": {
-                "blocks": [
+            "data": {
+                "__generationMeta__": {},
+                "steps": [
                     {
-                        "elements": [
-                            "dnd-element_d6707724-df80-4f69-bbbd-6303217b660e",
-                            "dnd-element_4f84cb89-62de-488d-aeb4-163dcb948148",
-                            "dnd-element_b5c04863-dc63-4fe6-831b-df8a2a946a9f"
-                        ],
-                        "id": "flow-block-c2a56cea-abf8-4608-a617-92fb1f61e136"
-                    }
-                ],
-                "elements": [
-                    {
-                        "resourceType": "ELEMENT",
-                        "category": "FIELD",
-                        "type": "INPUT",
-                        "variant": "TEXT",
-                        "display": {
-                            "label": "Text",
-                            "image": "https://www.svgrepo.com/show/532231/text-size.svg"
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
                         },
-                        "config": {
-                            "field": {
-                                "type": "text",
-                                "hint": "",
-                                "label": "Username",
-                                "required": true,
-                                "placeholder": "Enter your username",
-                                "name": "http://wso2.org/claims/username"
-                            }
-                        },
-                        "id": "dnd-element_d6707724-df80-4f69-bbbd-6303217b660e"
-                    },
-                    {
-                        "resourceType": "ELEMENT",
-                        "category": "FIELD",
-                        "type": "INPUT",
-                        "variant": "PASSWORD",
-                        "display": {
-                            "label": "Password Input",
-                            "image": "https://www.svgrepo.com/show/529125/password.svg"
-                        },
-                        "config": {
-                            "field": {
-                                "name": "password",
-                                "type": "password",
-                                "hint": "",
-                                "label": "Password",
-                                "required": true,
-                                "placeholder": "Enter your password"
-                            }
-                        },
-                        "id": "dnd-element_4f84cb89-62de-488d-aeb4-163dcb948148"
-                    },
-                    {
-                        "resourceType": "ELEMENT",
-                        "category": "ACTION",
-                        "type": "BUTTON",
-                        "id": "dnd-element_b5c04863-dc63-4fe6-831b-df8a2a946a9f",
-                        "variant": "PRIMARY",
-                        "display": {
-                            "label": "Button",
-                            "image": "https://www.svgrepo.com/show/450681/button.svg"
-                        },
-                        "config": {
-                            "field": {
-                                "type": "submit",
-                                "text": "Continue"
-                            }
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "id": "{{ID}}",
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "TEXT",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "label": "Username",
+                                                "required": true,
+                                                "placeholder": "Enter your username",
+                                                "identifier": "http://wso2.org/claims/username"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "PASSWORD",
+                                            "config": {
+                                                "identifier": "password",
+                                                "type": "password",
+                                                "hint": "",
+                                                "label": "Password",
+                                                "required": true,
+                                                "placeholder": "Enter your password"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "PasswordOnboardExecutor"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     }
                 ]
-            },
-            "styles": {}
+            }
         }
     },
     {
@@ -99,10 +90,177 @@
         "display": {
             "label": "Continue with Email OTP",
             "description": "Registration experience with Email",
-            "image": "https://www.svgrepo.com/show/368868/otp.svg"
+            "image": "https://www.svgrepo.com/show/368868/otp.svg",
+            "showOnResourcePanel": true
         },
         "config": {
-            "field": {}
+            "data": {
+                "__generationMeta__": {},
+                "steps": [
+                    {
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
+                        },
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "variant": "PRIMARY",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Continue with Email OTP"
+                                    },
+                                    "action": {
+                                        "next": "{{EMAIL_OTP_VERIFICATION_STEP_ID}}",
+                                        "type": "NEXT"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{EMAIL_OTP_VERIFICATION_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 343
+                        },
+                        "position": {
+                            "x": 690,
+                            "y": 20
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Verify OTP"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "OTP",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "identifier": "otp",
+                                                "label": "Enter the OTP code",
+                                                "required": true,
+                                                "placeholder": ""
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Verify"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "EmailOTPVerifier"
+                                                },
+                                                "next": "USER_ONBOARD"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "WIDGET",
+        "category": "FLOW",
+        "type": "GOOGLE_FEDERATION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Continue with Google",
+            "description": "Registration experience with Google",
+            "image": "https://www.svgrepo.com/show/461597/google.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "replacers": [
+                        {
+                            "key": "GOOGLE_REDIRECTION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
+                        },
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "variant": "SOCIAL",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Continue with Google"
+                                    },
+                                    "action": {
+                                        "type": "NEXT",
+                                        "next": "{{GOOGLE_REDIRECTION_STEP_ID}}"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{GOOGLE_REDIRECTION_STEP_ID}}",
+                        "type": "REDIRECTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 690,
+                            "y": 500
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "GoogleOIDCAuthenticator",
+                                    "meta": {
+                                        "idp": "{{IDP_NAME}}"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
         }
     },
     {
@@ -114,11 +272,10 @@
         "display": {
             "label": "Continue with SMS OTP",
             "description": "Registration experience with SMS OTP",
-            "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg"
+            "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg",
+            "showOnResourcePanel": false
         },
-        "config": {
-            "field": {}
-        }
+        "config": {}
     },
     {
         "resourceType": "WIDGET",
@@ -129,11 +286,11 @@
         "display": {
             "label": "reCAPTCHA",
             "description": "Add reCAPTCHA to your registration experience",
-            "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png"
+            "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png",
+            "showOnResourcePanel": false
         },
         "config": {
-            "version": 2,
-            "field": {}
+            "version": 2
         }
     }
 ]

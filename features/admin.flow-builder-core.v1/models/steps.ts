@@ -19,10 +19,21 @@
 import { Base } from "./base";
 import { Resource } from "./resources";
 
-/**
- * Interface for a Step.
- */
-export type Step = Base;
+export interface StepPosition {
+    x: number;
+    y: number;
+}
+
+export interface StepSize {
+    width: number;
+    height: number;
+}
+
+export interface Step extends Base {
+    size: StepSize;
+    position: StepPosition;
+    __generationMeta__: any;
+}
 
 export enum StepCategories {
     Decision = "DECISION",
@@ -32,10 +43,20 @@ export enum StepCategories {
 
 export enum StepTypes {
     View = "VIEW",
-    Rule = "RULE"
+    Rule = "RULE",
+    Redirection = "REDIRECTION"
 }
 
 export interface StepData {
     components: Resource[];
     [key: string]: any;
+}
+
+export enum StaticStepTypes {
+    UserOnboard = "USER_ONBOARD",
+    Start = "START",
+}
+
+export enum RedirectionTypes {
+    GoogleFederation = "GoogleOIDCAuthenticator"
 }

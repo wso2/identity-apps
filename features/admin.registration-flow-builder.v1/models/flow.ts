@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,22 +16,24 @@
  * under the License.
  */
 
-import { Resource } from "../models/resources";
+import { Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 
 /**
- * Checks if the given resource is a widget.
- *
- * A widget is identified by the presence of a `flow` property in its configuration.
- *
- * @param resource - The resource to check.
- * @returns True if the resource is a widget, otherwise false.
- *
- * @example
- * const result = isWidget(resource);
- * console.log(result); // true
+ * Interface for a registration flow API schema.
  */
-const isWidget = (resource: Resource): boolean => {
-    return resource?.config?.flow;
-};
+export interface RegistrationFlow {
+    /**
+     * Steps of the registration flow.
+     */
+    steps: (Step & StepSize & StepPosition)[];
+}
 
-export default isWidget;
+export interface StepSize {
+    height: number;
+    width: number;
+}
+
+export interface StepPosition {
+    x: number;
+    y: number;
+}

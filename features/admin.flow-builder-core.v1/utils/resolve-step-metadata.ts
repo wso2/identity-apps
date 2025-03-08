@@ -16,23 +16,24 @@
  * under the License.
  */
 
-import { Element, ElementTypes } from "../models/elements";
+import merge from "lodash-es/merge";
+import { Resources } from "../models/resources";
+import { Step } from "../models/steps";
 
-/**
- * Returns a mapping of known properties for a given element.
- *
- * @param element - The element for which to get the known properties.
- * @returns An object with known element properties.
- */
-const getKnownElementProperties = (element: Element): Record<string, string[]> => {
-    if (element.type === ElementTypes.Button) {
-        return {
-            color: [ "primary", "secondary", "success", "error", "info", "warning" ],
-            variant: [ "contained", "outlined", "text" ]
-        };
-    }
+const resolveStepMetadata = (resources: Resources, steps: Step[]): Step[] => {
+    const updateStepResourceType = (step: Step): Step => {
+        let updatedStep: Step = { ...step };
 
-    return {};
+        resources.steps.forEach((stepWithMeta: Step) => {
+            if (step.type === stepWithMeta.type) {
+                updatedStep = merge({}, stepWithMeta, updatedStep);
+            }
+        });
+
+        return updatedStep;
+    };
+
+    return steps?.map(updateStepResourceType);
 };
 
-export default getKnownElementProperties;
+export default resolveStepMetadata;

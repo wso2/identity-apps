@@ -14,35 +14,6 @@
                     "image": "https://www.svgrepo.com/show/305382/arrowhead-right-outline.svg",
                     "defaultVariant": "PRIMARY"
                 }
-            },
-            {
-                "type": "PREVIOUS",
-                "display": {
-                    "label": "Previous",
-                    "image": "https://www.svgrepo.com/show/305384/arrowhead-left-outline.svg",
-                    "defaultVariant": "SECONDARY"
-                }
-            }
-        ]
-    },
-    {
-        "resourceType": "ELEMENT",
-        "category": "VERIFICATION",
-        "display": {
-            "label": "Verification",
-            "image": ""
-        },
-        "types": [
-            {
-                "type": "NEXT",
-                "meta": {
-                    "actionType": "VERIFICATION"
-                },
-                "display": {
-                    "label": "Verify OTP",
-                    "image": "https://www.svgrepo.com/show/497630/verify.svg",
-                    "defaultVariant": "PRIMARY"
-                }
             }
         ]
     },
@@ -55,55 +26,29 @@
         },
         "types": [
             {
-                "type": "EXECUTOR",
-                "executors": [
-                    {
-                        "name": "PasswordOnboarder"
+                "action": {
+                    "type": "EXECUTOR",
+                    "executor": {
+                        "name": "PasswordOnboardExecutor"
                     }
-                ],
+                },
                 "display": {
-                    "label": "Continue with Password",
+                    "label": "Onboard Password",
                     "image": "https://www.svgrepo.com/show/526627/password.svg",
                     "defaultVariant": "PRIMARY"
                 }
             },
             {
-                "type": "EXECUTOR",
-                "executors": [
-                    {
+                "action": {
+                    "type": "EXECUTOR",
+                    "executor": {
                         "name": "EmailOTPVerifier"
                     }
-                ],
+                },
                 "display": {
-                    "label": "Continue with Email OTP",
+                    "label": "Verify OTP Code",
                     "image": "https://www.svgrepo.com/show/479622/email-18.svg",
                     "defaultVariant": "PRIMARY"
-                }
-            }
-        ]
-    },
-    {
-        "resourceType": "ELEMENT",
-        "category": "SOCIAL",
-        "display": {
-            "label": "Social",
-            "image": ""
-        },
-        "types": [
-            {
-                "type": "EXECUTOR",
-                "executors": [
-                    {
-                        "name": "GoogleOIDCAuthenticator",
-                        "meta": {
-                            "idp": "Google"
-                        }
-                    }
-                ],
-                "display": {
-                    "label": "Continue with Google",
-                    "image": "https://www.svgrepo.com/show/475656/google-color.svg",
-                    "defaultVariant": "SOCIAL"
                 }
             }
         ]

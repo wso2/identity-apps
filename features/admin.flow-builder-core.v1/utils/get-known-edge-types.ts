@@ -18,9 +18,6 @@
 
 import { Edge } from "@xyflow/react";
 import { FC } from "react";
-import SocialConnectionEdge, {
-    SocialConnectionEdgeKey
-} from "../components/react-flow-overrides/social-connection-edge";
 
 /**
  * Returns a mapping of known edge types.
@@ -30,9 +27,7 @@ import SocialConnectionEdge, {
 const getKnownEdgeTypes = (): {
     [key: string]: FC<Edge>;
 } => {
-    return {
-        [SocialConnectionEdgeKey]: SocialConnectionEdge
-    };
+    return {};
 };
 
 export default getKnownEdgeTypes;

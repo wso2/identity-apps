@@ -19,3 +19,13 @@
 import { Base } from "./base";
 
 export type Template = Base;
+
+export enum TemplateCategories {
+    Starter = "STARTER"
+}
+
+export enum TemplateTypes {
+    Blank = "BLANK",
+    Basic = "BASIC",
+    BasicFederated = "BASIC_FEDERATED",
+}

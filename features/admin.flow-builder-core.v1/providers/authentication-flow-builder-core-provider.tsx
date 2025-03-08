@@ -20,7 +20,8 @@ import Avatar from "@oxygen-ui/react/Avatar";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { Claim } from "@wso2is/core/models";
-import capitalize from "lodash-es/capitalize";
+import { ReactFlowProvider } from "@xyflow/react";
+import startCase from "lodash-es/startCase";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode, useState } from "react";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
 import { Resource, ResourceTypes } from "../models/resources";
@@ -55,23 +56,29 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const [ isResourcePropertiesPanelOpen, setIsOpenResourcePropertiesPanel ] = useState<boolean>(false);
     const [ resourcePropertiesPanelHeading, setResourcePropertiesPanelHeading ] = useState<ReactNode>(null);
     const [ lastInteractedElementInternal, setLastInteractedElementInternal ] = useState<Resource>(null);
-    const [ lastInteractedResourceId, setLastInteractedResourceId ] = useState<string>("");
+    const [ lastInteractedStepId, setLastInteractedStepId ] = useState<string>("");
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Claim[] }>({});
 
     const onResourceDropOnCanvas = (resource: Resource, resourceId: string): void => {
         setLastInteractedResource(resource);
-        setLastInteractedResourceId(resourceId);
+        setLastInteractedStepId(resourceId);
+
+        // Currently we don't show the properties panel for Templates.
+        if (
+            (resource.category === ResourceTypes.Step && resource.type === StepTypes.View) ||
+            resource.resourceType === ResourceTypes.Template ||
+            resource.resourceType === ResourceTypes.Widget
+        ) {
+            setIsOpenResourcePropertiesPanel(false);
+        }
     };
 
     const setLastInteractedResource = (resource: Resource): void => {
         // TODO: Internationalize this string and get from a mapping.
         setResourcePropertiesPanelHeading(
-            <Stack>
-                <Typography variant="h6">{ capitalize(resource.category) } Properties</Typography>
-                <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
-                    <Avatar src={ resource?.display?.image } variant="square" />
-                    <Typography variant="body2">{ capitalize(resource.variant ?? resource.type) }</Typography>
-                </Stack>
+            <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
+                <Avatar src={ resource?.display?.image } variant="square" />
+                <Typography variant="h6">{ startCase(resource?.display?.label ?? resource.type) } Properties</Typography>
             </Stack>
         );
         setLastInteractedElementInternal(resource);
@@ -88,27 +95,29 @@ const AuthenticationFlowBuilderCoreProvider = ({
     };
 
     return (
-        <AuthenticationFlowBuilderCoreContext.Provider
-            value={ {
-                ElementFactory,
-                ResourceProperties,
-                isResourcePanelOpen,
-                isResourcePropertiesPanelOpen,
-                lastInteractedResource: lastInteractedElementInternal,
-                lastInteractedResourceId,
-                onResourceDropOnCanvas,
-                resourcePropertiesPanelHeading,
-                selectedAttributes,
-                setIsOpenResourcePropertiesPanel,
-                setIsResourcePanelOpen,
-                setLastInteractedResource,
-                setLastInteractedResourceId,
-                setResourcePropertiesPanelHeading,
-                setSelectedAttributes
-            } }
-        >
-            { children }
-        </AuthenticationFlowBuilderCoreContext.Provider>
+        <ReactFlowProvider>
+            <AuthenticationFlowBuilderCoreContext.Provider
+                value={ {
+                    ElementFactory,
+                    ResourceProperties,
+                    isResourcePanelOpen,
+                    isResourcePropertiesPanelOpen,
+                    lastInteractedResource: lastInteractedElementInternal,
+                    lastInteractedStepId,
+                    onResourceDropOnCanvas,
+                    resourcePropertiesPanelHeading,
+                    selectedAttributes,
+                    setIsOpenResourcePropertiesPanel,
+                    setIsResourcePanelOpen,
+                    setLastInteractedResource,
+                    setLastInteractedStepId,
+                    setResourcePropertiesPanelHeading,
+                    setSelectedAttributes
+                } }
+            >
+                { children }
+            </AuthenticationFlowBuilderCoreContext.Provider>
+        </ReactFlowProvider>
     );
 };
 

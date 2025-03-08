@@ -27,6 +27,6 @@ export const getRegistrationFlowBuilderResourceEndpoints = (
     serverOrigin: string
 ): RegistrationFlowBuilderResourceEndpointsInterface => {
     return {
-        configure: `${ serverOrigin }/api/asgardeo/v1/tenant/me`
+        registrationFlow: `${ serverOrigin }/api/server/v1/registration-flow`
     };
 };

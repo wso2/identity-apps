@@ -37,7 +37,8 @@ const ElementPropertyFactory: FunctionComponent<ComponentPropertyFactoryPropsInt
     resource,
     propertyKey,
     propertyValue,
-    onChange
+    onChange,
+    ...rest
 }: ComponentPropertyFactoryPropsInterface): ReactElement | null => {
     return (
         <CommonElementPropertyFactory
@@ -45,6 +46,7 @@ const ElementPropertyFactory: FunctionComponent<ComponentPropertyFactoryPropsInt
             propertyKey={ propertyKey }
             propertyValue={ propertyValue }
             onChange={ onChange }
+            { ...rest }
         />
     );
 };

@@ -21,22 +21,14 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Position } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
 import ButtonAdapterConstants from "../../../../constants/button-adapter-constants";
-import { ButtonVariants, Element } from "../../../../models/elements";
+import { ButtonVariants } from "../../../../models/elements";
+import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 import "./button-adapter.scss";
 
 /**
  * Props interface of {@link ButtonAdapter}
  */
-export interface ButtonAdapterPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * The flow id of the resource.
-     */
-    resourceId: string;
-    /**
-     * The resource properties.
-     */
-    resource: Element;
-}
+export type ButtonAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Button component.
@@ -44,10 +36,11 @@ export interface ButtonAdapterPropsInterface extends IdentifiableComponentInterf
  * @param props - Props injected to the component.
  * @returns The ButtonAdapter component.
  */
-export const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
+const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
     resource
 }: ButtonAdapterPropsInterface): ReactElement => {
     let config: ButtonProps = {};
+    let image: string = "";
 
     if (resource.variant === ButtonVariants.Primary) {
         config = {
@@ -70,6 +63,9 @@ export const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
             variant: "text"
         };
     } else if (resource.variant === ButtonVariants.Social) {
+        // TODO: Figure out a way to identify the social connection from the next step.
+        image = "https://www.svgrepo.com/show/475656/google-color.svg";
+
         config = {
             ...config,
             className: "social-button",
@@ -80,13 +76,8 @@ export const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
 
     return (
         <div className="adapter button-adapter">
-            <Handle
-                id={ `${resource?.id}${ButtonAdapterConstants.PREVIOUS_BUTTON_HANDLE_SUFFIX}` }
-                type="source"
-                position={ Position.Left }
-            />
-            <Button sx={ resource?.config.styles } { ...config }>
-                { resource?.config?.field?.text }
+            <Button sx={ resource?.config.styles } startIcon={ image && <img src={ image } height={ 20 } /> } { ...config }>
+                { resource?.config?.text }
             </Button>
             <Handle
                 id={ `${resource?.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}` }

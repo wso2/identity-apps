@@ -33,6 +33,8 @@ class RegistrationFlowBuilderConstants {
      */
     private constructor() {}
 
+    public static readonly FLOW_BUILDER_STATUS_CONFIG_KEY: string = "SelfRegistration.EnableDynamicPortal";
+
     public static readonly FLOW_CONFIG_INVALID_STATUS_ERROR: string =
         "An invalid status code was received while configuring the registration flow.";
 

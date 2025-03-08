@@ -19,12 +19,13 @@
 import Avatar from "@oxygen-ui/react/Avatar";
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
-import { DraggableNode } from "@oxygen-ui/react/dnd";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
-import { SupportedCanvasResources } from "../../models/visual-editor";
+import VisualFlowConstants from "../../constants/visual-flow-constants";
+import { SupportedCanvasResources } from "../../models/visual-flow";
+import Draggable from "../dnd/draggable";
 import "./resource-panel-draggable-node.scss";
 
 /**
@@ -50,28 +51,33 @@ const ResourcePanelDraggableNode: FunctionComponent<ResourcePanelDraggableNodePr
     id,
     resource,
     ...rest
-}: ResourcePanelDraggableNodePropsInterface): ReactElement => {
-    return (
-        <DraggableNode key={ id } node={ resource } data-componentid={ componentId } { ...rest }>
-            <Card className="flow-builder-element-panel-draggable-node" variant="elevation">
-                <CardContent>
-                    <Stack direction="row" spacing={ 1 }>
-                        <Avatar
-                            src={ resource?.display?.image }
-                            variant="square"
-                            className="flow-builder-element-panel-draggable-node-avatar"
-                        />
-                        <Stack direction="column" spacing={ 0.5 }>
-                            <Typography>{ resource?.display?.label }</Typography>
-                            { resource?.display?.description && (
-                                <Typography variant="body2">{ resource?.display?.description }</Typography>
-                            ) }
-                        </Stack>
+}: ResourcePanelDraggableNodePropsInterface): ReactElement => (
+    <Draggable
+        id={ id }
+        data-componentid={ componentId }
+        data={ { resource } }
+        type={ resource.resourceType }
+        accept={ [ resource.resourceType ] }
+        { ...rest }
+    >
+        <Card className="flow-builder-element-panel-draggable-node" variant="elevation">
+            <CardContent>
+                <Stack direction="row" spacing={ 1 }>
+                    <Avatar
+                        src={ resource?.display?.image }
+                        variant="square"
+                        className="flow-builder-element-panel-draggable-node-avatar"
+                    />
+                    <Stack direction="column" spacing={ 0.5 }>
+                        <Typography>{ resource?.display?.label }</Typography>
+                        { resource?.display?.description && (
+                            <Typography variant="body2">{ resource?.display?.description }</Typography>
+                        ) }
                     </Stack>
-                </CardContent>
-            </Card>
-        </DraggableNode>
-    );
-};
+                </Stack>
+            </CardContent>
+        </Card>
+    </Draggable>
+);
 
 export default ResourcePanelDraggableNode;

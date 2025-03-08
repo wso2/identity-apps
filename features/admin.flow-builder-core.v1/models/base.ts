@@ -66,6 +66,11 @@ export interface StrictBase<T = any> {
  */
 export interface Base<T = any> extends StrictBase<T> {
     /**
+     * Type of the resource needed for visual editor operations.
+     * @remarks This is a display only meta field and not being published to the backend.
+     */
+    resourceType: string;
+    /**
      * Data added to the component by the flow builder.
      */
     data?: any;
@@ -92,6 +97,10 @@ export interface BaseDisplay {
      * Description of the component or the primitive.
      */
     description?: string;
+    /**
+     * Should the component be shown on the resource panel.
+     */
+    showOnResourcePanel: boolean;
 }
 
 /**

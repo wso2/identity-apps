@@ -6008,6 +6008,9 @@ importers:
       '@wso2is/admin.private-key-jwt.v1':
         specifier: ^2.25.21
         version: link:../admin.private-key-jwt.v1
+      '@wso2is/admin.registration-flow-builder.v1':
+        specifier: workspace:^
+        version: link:../admin.registration-flow-builder.v1
       '@wso2is/admin.remote-repository-configuration.v1':
         specifier: ^2.25.21
         version: link:../admin.remote-repository-configuration.v1
@@ -8427,6 +8430,21 @@ importers:
 
   features/admin.flow-builder-core.v1:
     dependencies:
+      '@dnd-kit/abstract':
+        specifier: ^0.0.9
+        version: 0.0.9
+      '@dnd-kit/collision':
+        specifier: ^0.0.9
+        version: 0.0.9
+      '@dnd-kit/dom':
+        specifier: ^0.0.9
+        version: 0.0.9
+      '@dnd-kit/helpers':
+        specifier: ^0.0.9
+        version: 0.0.9
+      '@dnd-kit/react':
+        specifier: ^0.0.9
+        version: 0.0.9(react-dom@18.3.1)(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -8484,6 +8502,9 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
+      plugins:
+        specifier: link:@dnd-kit/dom/plugins
+        version: link:@dnd-kit/dom/plugins
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -13166,11 +13187,17 @@ importers:
       '@oxygen-ui/react-icons':
         specifier: ^2.3.2
         version: 2.3.2(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+      '@wso2is/access-control':
+        specifier: workspace:^
+        version: link:../../modules/access-control
+      '@wso2is/admin.connections.v1':
+        specifier: workspace:^
+        version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
         specifier: workspace:^
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
-        specifier: workspace:^1.4.21
+        specifier: workspace:^
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
         specifier: workspace:^
@@ -13178,6 +13205,9 @@ importers:
       '@wso2is/admin.rules.v1':
         specifier: workspace:^
         version: link:../admin.rules.v1
+      '@wso2is/admin.server-configurations.v1':
+        specifier: workspace:^
+        version: link:../admin.server-configurations.v1
       '@wso2is/core':
         specifier: workspace:^
         version: link:../../modules/core
@@ -23284,6 +23314,67 @@ packages:
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
     engines: {node: '>=10.0.0'}
 
+  /@dnd-kit/abstract@0.0.9:
+    resolution: {integrity: sha512-4FjHPOREfJJfRu0clCAnYqYc8JNHQl6CL31FjLKR+1wER+YOGkb3s3JntsqvZost5Xm/G/Z4sQ3ouLdyYQ9KdQ==}
+    dependencies:
+      '@dnd-kit/geometry': 0.0.9
+      '@dnd-kit/state': 0.0.9
+      tslib: 2.8.1
+    dev: false
+
+  /@dnd-kit/collision@0.0.9:
+    resolution: {integrity: sha512-8Brbcd0dM/y2yzg/6EI9O/SvsVAglx0fUDvqPSsXACewR+//OGno1GVKndh35GAVKqDxOgG3Q/fw+CVnMnFv6g==}
+    dependencies:
+      '@dnd-kit/abstract': 0.0.9
+      '@dnd-kit/geometry': 0.0.9
+      tslib: 2.8.1
+    dev: false
+
+  /@dnd-kit/dom@0.0.9:
+    resolution: {integrity: sha512-nsDcL6MMdNfGOg0xp24c1xy/eNW7fO1uLU0AM2b1SFYJYsbXUMw6sQXq+2eHCQol/FixCoSbjMgjx9D8jQXb+w==}
+    dependencies:
+      '@dnd-kit/abstract': 0.0.9
+      '@dnd-kit/collision': 0.0.9
+      '@dnd-kit/geometry': 0.0.9
+      '@dnd-kit/state': 0.0.9
+      tslib: 2.8.1
+    dev: false
+
+  /@dnd-kit/geometry@0.0.9:
+    resolution: {integrity: sha512-zqSY7vva+LGs9Y/c37GhD67q+boS27nCmyYYAohlZ29MGz66KwjpbSH5HNHa261kuq90KaaIVQQVHiZGjNfmOw==}
+    dependencies:
+      '@dnd-kit/state': 0.0.9
+      tslib: 2.8.1
+    dev: false
+
+  /@dnd-kit/helpers@0.0.9:
+    resolution: {integrity: sha512-Dxy5aN5rcRPD1mC8vYKrsyw5hMF7AFngC6PE0Pgba+miNR72oHI3PV2fT3rlBSdo6vUiBVFBZwDNYynFkWJX/A==}
+    dependencies:
+      '@dnd-kit/abstract': 0.0.9
+      tslib: 2.8.1
+    dev: false
+
+  /@dnd-kit/react@0.0.9(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-a2ZUbVVyJwSf5gf0l6I10VqEj8EEe+O1W/q+rSR0fpjbxjwhLT0Gt+udwKZsg3yIKxmxJC4W6eHSS6feNca9aw==}
+    peerDependencies:
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+    dependencies:
+      '@dnd-kit/abstract': 0.0.9
+      '@dnd-kit/dom': 0.0.9
+      '@dnd-kit/state': 0.0.9
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      tslib: 2.8.1
+    dev: false
+
+  /@dnd-kit/state@0.0.9:
+    resolution: {integrity: sha512-F43bOum8k/Rh1tfO3DiAUs/zw6KSv5IMm4PGKSPoU2tz+LW+37Kp37NlgwtLLDzx+z6R+6gILnJzE6Q5eVx7OQ==}
+    dependencies:
+      '@preact/signals-core': 1.8.0
+      tslib: 2.8.1
+    dev: false
+
   /@emotion/babel-plugin@11.13.5:
     resolution: {integrity: sha512-pxHCpT2ex+0q+HH91/zsdHkw/lXd468DIN2zvfvLtPKLLMo6gQj7oLObq8PhkrxOZb/gGCq03S3Z7PDhS8pduQ==}
     dependencies:
@@ -27341,6 +27432,10 @@ packages:
 
   /@popperjs/core@2.11.8:
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
+    dev: false
+
+  /@preact/signals-core@1.8.0:
+    resolution: {integrity: sha512-OBvUsRZqNmjzCZXWLxkZfhcgT+Fk8DDcT/8vD6a1xhDemodyy87UJRJfASMuSD8FaAIeGgGm85ydXhm7lr4fyA==}
     dev: false
 
   /@reactflow/background@11.3.14(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
