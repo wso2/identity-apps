@@ -41,7 +41,6 @@ import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/consta
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils/organization";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Handle, Node, Position } from "@xyflow/react";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -55,6 +54,7 @@ import React, {
     useRef
 } from "react";
 import { useTranslation } from "react-i18next";
+import { Handle, Node, Position } from "reactflow";
 import ActiveSessionsLimitFragment from "./fragments/active-sessions-limit-fragment";
 import BasicAuthFragment from "./fragments/basic-auth-fragment";
 import EmailOTPFragment from "./fragments/email-otp-fragment";

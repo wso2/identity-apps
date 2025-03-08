@@ -40,13 +40,13 @@ import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organ
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
-import { ReactFlowProvider } from "@xyflow/react";
 import { AxiosError } from "axios";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { ReactFlowProvider } from "reactflow";
 import { Dispatch } from "redux";
 import AuthenticationFlowModeSwitchDisclaimerModal from "./authentication-flow-mode-switch-disclaimer-modal";
 import AuthenticationFlowVisualEditor from "./authentication-flow-visual-editor";

@@ -17,10 +17,12 @@
  */
 
 import { render, screen } from "@wso2is/unit-testing/utils";
-import { Background, BackgroundVariant, Controls, ReactFlow, ReactFlowProvider } from "@xyflow/react";
+import { Position, ReactFlowProvider } from "@xyflow/react";
 import React from "react";
+import "@testing-library/jest-dom";
+import { Position, ReactFlowProvider } from "reactflow";
 import { fullPermissions } from "./__mocks__/permissions";
-import StepAdditionEdge from "../step-addition-edge";
+import StepAdditionEdge, { StepAdditionEdgePropsInterface } from "../step-addition-edge";
 import "@testing-library/jest-dom";
 
 describe.skip("StepAdditionEdge", () => {

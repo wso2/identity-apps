@@ -18,8 +18,8 @@
 
 import Fab from "@oxygen-ui/react/Fab";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Handle, Node, Position } from "@xyflow/react";
 import React, { FunctionComponent, MutableRefObject, ReactElement, SVGAttributes, useEffect, useRef } from "react";
+import { Handle, Node, Position } from "reactflow";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import "./done-node.scss";
 

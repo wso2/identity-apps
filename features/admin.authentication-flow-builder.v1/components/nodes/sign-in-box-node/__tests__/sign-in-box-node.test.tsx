@@ -18,12 +18,12 @@
 
 import UserPreferenceProvider from "@wso2is/admin.core.v1/providers/user-preferences-provider";
 import { render, screen } from "@wso2is/unit-testing/utils";
-import { ReactFlowProvider } from "@xyflow/react";
 import React from "react";
+import "@testing-library/jest-dom";
+import { ReactFlowProvider } from "reactflow";
 import { fullPermissions } from "./__mocks__/permissions";
 import AuthenticationFlowProvider from "../../../../providers/authentication-flow-provider";
 import SignInBoxNode, { SignInBoxNodePropsInterface } from "../sign-in-box-node";
-import "@testing-library/jest-dom";
 
 /**
  * Running this spec throws error `Unable to find an element by:[data-componentid="sign-in-box-node-step-0"]`

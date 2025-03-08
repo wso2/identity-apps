@@ -19,14 +19,14 @@
 import Fab from "@mui/material/Fab";
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { BaseEdge, Edge, EdgeLabelRenderer, EdgeProps, getBezierPath } from "@xyflow/react";
 import React, { ReactElement, SyntheticEvent } from "react";
+import { BaseEdge, Edge, EdgeLabelRenderer, EdgeProps, getBezierPath } from "reactflow";
 import "./step-addition-edge.scss";
 
 /**
  * Prop types for the step addition edge component.
  */
-export type StepAdditionEdgePropsInterface = EdgeProps<Edge<{
+export type StepAdditionEdgePropsInterface = Partial<Edge> & Partial<EdgeProps<{
     /**
      * Callback to be fired when a new step is added.
      */
