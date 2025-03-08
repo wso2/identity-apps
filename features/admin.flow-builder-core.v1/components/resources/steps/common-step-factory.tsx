@@ -58,7 +58,8 @@ export const CommonStepFactory: FunctionComponent<CommonStepFactoryPropsInterfac
     }
 
     if (resource.type === StepTypes.Redirection) {
-        return <Redirection data-componentid={ componentId } resource={ resource as any } { ...rest } />;
+        // TODO: `TS2322` appears here if we pass in `resource`. Add it back after fixing.
+        return <Redirection data-componentid={ componentId } { ...rest } />;
     }
 
     return null;
