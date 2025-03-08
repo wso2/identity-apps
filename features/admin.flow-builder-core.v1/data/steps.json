@@ -21,7 +21,7 @@
         "display": {
             "label": "Rule",
             "image": "https://www.svgrepo.com/show/413199/decide.svg",
-            "showOnResourcePanel": true
+            "showOnResourcePanel": false
         },
         "config": {}
     },
