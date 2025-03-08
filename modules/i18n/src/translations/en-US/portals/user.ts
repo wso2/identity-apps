@@ -636,6 +636,9 @@ export const user: userNS = {
                     title: "No profile information"
                 }
             }
+        },
+        tooltips: {
+            confirmationPending: "Confirmation pending!"
         }
     },
     revokeAdmin: {
