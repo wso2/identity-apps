@@ -19,11 +19,12 @@
 import { Theme, useTheme } from "@mui/material/styles";
 import Card from "@oxygen-ui/react/Card";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Handle, Node, Position, useNodeId, useNodesData } from "@xyflow/react";
-import React, { FunctionComponent, ReactElement } from "react";
+import { Handle, Position, useNodeId, useReactFlow } from "@xyflow/react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import RedirectionFactory from "./redirection-factory";
+import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
-import "./redirection.scss";
+import { Step } from "../../../../models/steps";
 
 /**
  * Props interface of {@link Redirection}
@@ -41,11 +42,16 @@ export type RedirectionPropsInterface = CommonStepFactoryPropsInterface & Identi
  */
 const Redirection: FunctionComponent = ({
     ["data-componentid"]: componentId = "done",
+    resource,
+    id,
     ...rest
-}: RedirectionPropsInterface & Node): ReactElement => {
+}: RedirectionPropsInterface): ReactElement => {
     const stepId: string = useNodeId();
-    const node: Pick<Node, "data"> = useNodesData(stepId);
+    const { getNode } = useReactFlow();
+    const { setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
     const theme: Theme = useTheme();
+
+    const redirection = useMemo(() => getNode(id), [id, getNode]);
 
     return (
         <Card
@@ -53,9 +59,14 @@ const Redirection: FunctionComponent = ({
             sx={ {
                 backgroundColor: (theme as any).colorSchemes.dark.palette.background.default,
                 color: (theme as any).colorSchemes.dark.palette.text.primary
-            } }>
+            } }
+            onClick={ () => {
+                setLastInteractedStepId(stepId);
+                setLastInteractedResource(redirection as Step);
+            } }
+        >
             <Handle type="target" position={ Position.Left } />
-            <RedirectionFactory data={ node?.data } { ...rest } />
+            <RedirectionFactory id={ id } resource={ redirection as Step } { ...rest } />
             <Handle type="source" position={ Position.Right } />
         </Card>
     );

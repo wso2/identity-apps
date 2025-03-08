@@ -39,7 +39,7 @@ export type StartPropsInterface = CommonStepFactoryPropsInterface & Identifiable
  */
 const Start: FunctionComponent = ({
     ["data-componentid"]: componentId = "start"
-}: StartPropsInterface & Node): ReactElement => {
+}: StartPropsInterface): ReactElement => {
     return (
         <div data-componentid={ componentId }>
             <Fab

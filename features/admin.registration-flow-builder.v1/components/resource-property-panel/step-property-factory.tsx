@@ -18,7 +18,7 @@
 
 import CommonStepPropertyFactory, {
     CommonStepPropertyFactoryPropsInterface
-// eslint-disable-next-line max-len
+    // eslint-disable-next-line max-len
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/common-step-property-factory";
 import { StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import React, { FunctionComponent, ReactElement } from "react";

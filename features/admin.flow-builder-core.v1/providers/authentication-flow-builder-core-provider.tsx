@@ -20,7 +20,7 @@ import Avatar from "@oxygen-ui/react/Avatar";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { Claim } from "@wso2is/core/models";
-import capitalize from "lodash-es/capitalize";
+import startCase from "lodash-es/startCase";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode, useState } from "react";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
 import { Resource, ResourceTypes } from "../models/resources";
@@ -65,7 +65,8 @@ const AuthenticationFlowBuilderCoreProvider = ({
         // Currently we don't show the properties panel for Templates.
         if (
             (resource.category === ResourceTypes.Step && resource.type === StepTypes.View) ||
-            resource.resourceType === ResourceTypes.Template
+            resource.resourceType === ResourceTypes.Template ||
+            resource.resourceType === ResourceTypes.Widget
         ) {
             setIsOpenResourcePropertiesPanel(false);
         }
@@ -76,7 +77,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
         setResourcePropertiesPanelHeading(
             <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
                 <Avatar src={ resource?.display?.image } variant="square" />
-                <Typography variant="h6">{ capitalize(resource.variant ?? resource.type) } Properties</Typography>
+                <Typography variant="h6">{ startCase(resource?.display?.label ?? resource.type) } Properties</Typography>
             </Stack>
         );
         setLastInteractedElementInternal(resource);

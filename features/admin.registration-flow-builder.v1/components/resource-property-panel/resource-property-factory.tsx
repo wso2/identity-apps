@@ -16,10 +16,7 @@
  * under the License.
  */
 
-import { ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { Resource, ResourceTypes } from "@wso2is/admin.flow-builder-core.v1/models/resources";
-import { StepCategories } from "@wso2is/admin.flow-builder-core.v1/models/steps";
-import { WidgetCategories } from "@wso2is/admin.flow-builder-core.v1/models/widget";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import ElementPropertyFactory from "./element-property-factory";

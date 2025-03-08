@@ -32,6 +32,7 @@ import FieldExtendedProperties from "./extended-properties/field-extended-proper
 import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
 import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
+import FederationProperties from "./steps/redirection/federation-properties";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -151,6 +152,14 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
             }
 
             break;
+        case StepCategories.Workflow:
+            return (
+                <FederationProperties
+                    resource={ resource }
+                    data-componentid="federation-properties"
+                    onChange={ onChange }
+                />
+            );
         default:
             return (
                 <>

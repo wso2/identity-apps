@@ -28,6 +28,7 @@ import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flo
 import { Properties } from "../../models/base";
 import { Element } from "../../models/elements";
 import { Resource } from "../../models/resources";
+import isEmpty from "lodash-es/isEmpty";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -120,11 +121,15 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         };
 
         updateNodeData(lastInteractedStepId, (node: any) => {
-            const components: Element[] = updateComponent(cloneDeep(node?.data?.components) || []);
+            const data = node?.data || {};
 
-            return {
-                components
-            };
+            if (!isEmpty(node?.data?.components)) {
+                data.components = updateComponent(cloneDeep(node?.data?.components) || []);
+            } else {
+                set(data, propertyKey, newValue);
+            }
+
+            return { ...data };
         });
     };
 

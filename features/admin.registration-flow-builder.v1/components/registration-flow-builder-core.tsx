@@ -33,6 +33,7 @@ import { Widget } from "@wso2is/admin.flow-builder-core.v1/models/widget";
 import generateIdsForResources from "@wso2is/admin.flow-builder-core.v1/utils/generate-ids-for-templates";
 import generateResourceId from "@wso2is/admin.flow-builder-core.v1/utils/generate-resource-id";
 import resolveComponentMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-component-metadata";
+import resolveStepMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-step-metadata";
 import updateTemplatePlaceholderReferences from "@wso2is/admin.flow-builder-core.v1/utils/update-template-placeholder-references";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -49,7 +50,6 @@ import StepFactory from "./resources/steps/step-factory";
 import configureRegistrationFlow from "../api/configure-registration-flow";
 import useGetRegistrationFlow from "../api/use-get-registration-flow";
 import useGetRegistrationFlowBuilderResources from "../api/use-get-registration-flow-builder-resources";
-import useRegistrationFlowBuilder from "../hooks/use-registration-flow-builder-core-context";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderCore}
@@ -124,9 +124,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             type: StaticStepTypes.Start
         };
 
-        return generateIdsForResources<Node[]>([
+        return resolveStepMetadata(resources, generateIdsForResources<Node[]>([
             START_STEP,
-            ...steps.map((step: Node) => {                
+            ...steps.map((step: Node) => {
                 return {
                     data:
                         (step.data?.components && {
@@ -140,7 +140,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     type: step.type
                 };
             })
-        ]);
+        ]) as Step[]) as Node[];
     };
 
     const generateEdges = (steps: Step[]): Edge[] => {
@@ -584,7 +584,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         const replacers = widgetFlow.__generationMeta__.replacers;
 
-        newNodes = updateTemplatePlaceholderReferences(generateIdsForResources(newNodes), replacers);
+        newNodes = resolveStepMetadata(resources, updateTemplatePlaceholderReferences(generateIdsForResources(newNodes), replacers)) as Node[];
         newEdges = [ ...newEdges, ...generateUnconnectedEdges(newEdges, newNodes) ];
 
         return [ newNodes, newEdges ];

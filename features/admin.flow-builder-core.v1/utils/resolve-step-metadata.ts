@@ -16,28 +16,24 @@
  * under the License.
  */
 
-import { Payload } from "./api";
-import { Base } from "./base";
+import merge from "lodash-es/merge";
+import { Resources } from "../models/resources";
+import { Step } from "../models/steps";
 
-export type Widget = Base<WidgetExtendedConfig>;
+const resolveStepMetadata = (resources: Resources, steps: Step[]): Step[] => {
+    const updateStepResourceType = (step: Step): Step => {
+        let updatedStep: Step = { ...step };
 
-/**
- * Interface for the properties of a widget.
- */
-export interface WidgetExtendedConfig {
-    /**
-     * Version of the widget.
-     */
-    version?: string;
-    data: any;
-}
+        resources.steps.forEach((stepWithMeta: Step) => {
+            if (step.type === stepWithMeta.type) {
+                updatedStep = merge({}, stepWithMeta, updatedStep);
+            }
+        });
 
-export enum WidgetCategories {
-    Composite = "COMPOSITE",
-    Flow = "FLOW",
-    Security = "SECURITY",
-}
+        return updatedStep;
+    };
 
-export enum WidgetTypes {
-    IdentifierPassword = "IDENTIFIER_PASSWORD"
-}
+    return steps?.map(updateStepResourceType);
+};
+
+export default resolveStepMetadata;

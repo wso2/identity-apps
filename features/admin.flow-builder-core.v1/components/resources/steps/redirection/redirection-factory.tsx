@@ -38,7 +38,7 @@ export const RedirectionFactory: FunctionComponent<RedirectionFactoryPropsInterf
     data,
     "data-componentid": componentId = "redirection-factory"
 }: RedirectionFactoryPropsInterface): ReactElement => {
-    if ((data?.action as any)?.executor?.name === RedirectionTypes.Google) {
+    if ((data?.action as any)?.executor?.name === RedirectionTypes.GoogleFederation) {
         return (
             <Box display="flex" gap={ 1 } data-componentid={ componentId }>
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" height="20" />

@@ -129,6 +129,8 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             setNodes(() => newNodes);
             setEdges(() => newEdges);
 
+            onResourceDropOnCanvas(sourceResource, targetStepId);
+
             return;
         }
 
