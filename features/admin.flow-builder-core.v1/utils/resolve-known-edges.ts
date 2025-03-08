@@ -18,8 +18,7 @@
 
 import { Edge, Node } from "@xyflow/react";
 import ButtonAdapterConstants from "../constants/button-adapter-constants";
-import { ActionVariants } from "../models/actions";
-import { Element, ElementCategories } from "../models/elements";
+import { Element } from "../models/elements";
 
 /**
  * Resolves known edges based on the connection and nodes provided.

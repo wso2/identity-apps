@@ -24,18 +24,18 @@ import Divider from "@oxygen-ui/react/Divider";
 import Grid from "@oxygen-ui/react/Grid";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
-import {
-    CommonResourcePropertiesPropsInterface
-} from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
+import { CommonResourcePropertiesPropsInterface } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 // eslint-disable-next-line max-len
 import useAuthenticationFlowBuilderCore from "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
-import { Action, ActionType } from "@wso2is/admin.flow-builder-core.v1/models/actions";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, ReactElement } from "react";
 import useGetRegistrationFlowCoreActions from "../../../api/use-get-registration-flow-builder-actions";
 import "./button-extended-properties.scss";
+import omit from "lodash-es/omit";
+import { Element } from "@wso2is/admin.flow-builder-core.v1/models/elements";
+import { ActionTypes } from "@wso2is/admin.flow-builder-core.v1/models/actions";
 
 /**
  * Props interface of {@link ButtonExtendedProperties}
@@ -62,55 +62,34 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
         <Stack className="button-extended-properties" gap={ 2 } data-componentid={ componentId }>
             <div>
                 <Typography className="button-extended-properties-heading">Type</Typography>
-                { actions?.map((action: Action, index: number) => (
+                { actions?.map((action: Element & { types: Element[] }, index: number) => (
                     <Box key={ index }>
                         <Typography className="button-extended-properties-sub-heading" variant="body1">
                             { action?.display?.label }
                         </Typography>
                         <Grid container spacing={ 1 }>
-                            { action.types?.map((actionType: ActionType, typeIndex: number) => (
+                            { action.types?.map((actionType: Element, typeIndex: number) => (
                                 <Grid
                                     key={ typeIndex }
                                     xs={ 6 }
                                     onClick={ () => {
                                         onVariantChange(actionType?.display?.defaultVariant);
 
-                                        onChange(
-                                            "meta",
-                                            {
-                                                executors: actionType?.executors,
-                                                meta: actionType?.meta,
-                                                name: actionType?.name,
-                                                type: actionType?.type
-                                            },
-                                            resource
-                                        );
+                                        onChange("action", actionType, resource);
 
                                         setLastInteractedResource({
                                             ...lastInteractedResource,
-                                            meta: {
-                                                executors: actionType?.executors,
-                                                meta: actionType?.meta,
-                                                name: actionType?.name,
-                                                type: actionType?.type
-                                            },
+                                            action: actionType,
                                             variant: actionType?.display?.defaultVariant
                                         });
                                     } }
                                 >
                                     <Card
                                         className={ classNames("extended-property action-type", {
-                                            selected: isEqual({
-                                                executors: resource?.meta?.executors,
-                                                meta: resource?.meta?.meta,
-                                                name: resource?.meta?.name,
-                                                type: resource?.meta?.type
-                                            }, {
-                                                executors: actionType?.executors,
-                                                meta: actionType?.meta,
-                                                name: actionType?.name,
-                                                type: actionType?.type
-                                            })
+                                            selected:
+                                                (actionType.type === ActionTypes.Next &&
+                                                    actionType.type === (resource as Element)?.action?.type) ||
+                                                isEqual(omit((resource as Element)?.action, "next"), actionType.action)
                                         }) }
                                         variant="outlined"
                                     >

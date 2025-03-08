@@ -40,6 +40,7 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
     resource
 }: ButtonAdapterPropsInterface): ReactElement => {
     let config: ButtonProps = {};
+    let image: string = "";
 
     if (resource.variant === ButtonVariants.Primary) {
         config = {
@@ -62,6 +63,9 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
             variant: "text"
         };
     } else if (resource.variant === ButtonVariants.Social) {
+        // TODO: Figure out a way to identify the social connection from the next step.
+        image = "https://www.svgrepo.com/show/475656/google-color.svg";
+
         config = {
             ...config,
             className: "social-button",
@@ -72,7 +76,7 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
 
     return (
         <div className="adapter button-adapter">
-            <Button sx={ resource?.config.styles } { ...config }>
+            <Button sx={ resource?.config.styles } startIcon={ image && <img src={ image } height={ 20 } /> } { ...config }>
                 { resource?.config?.text }
             </Button>
             <Handle
