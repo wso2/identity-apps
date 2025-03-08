@@ -20,11 +20,11 @@ import { Theme, useTheme } from "@mui/material/styles";
 import Card from "@oxygen-ui/react/Card";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Position, useNodeId, useReactFlow } from "@xyflow/react";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import React, { FC, ReactElement, useMemo } from "react";
 import RedirectionFactory from "./redirection-factory";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
-import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 import { Step } from "../../../../models/steps";
+import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 
 /**
  * Props interface of {@link Redirection}
@@ -40,9 +40,8 @@ export type RedirectionPropsInterface = CommonStepFactoryPropsInterface & Identi
  * @param props - Props injected to the component.
  * @returns Redirection node component.
  */
-const Redirection: FunctionComponent = ({
+const Redirection: FC<RedirectionPropsInterface> = ({
     ["data-componentid"]: componentId = "done",
-    resource,
     id,
     ...rest
 }: RedirectionPropsInterface): ReactElement => {
@@ -51,7 +50,7 @@ const Redirection: FunctionComponent = ({
     const { setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
     const theme: Theme = useTheme();
 
-    const redirection = useMemo(() => getNode(id), [id, getNode]);
+    const redirection = useMemo(() => getNode(id), [ id, getNode ]);
 
     return (
         <Card

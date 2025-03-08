@@ -17,8 +17,6 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import {
-    ReactFlowProvider} from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
 import DecoratedVisualFlow, { DecoratedVisualFlowPropsInterface } from "./visual-flow/decorated-visual-flow";
 
@@ -36,9 +34,7 @@ export type FlowBuilderPropsInterface = DecoratedVisualFlowPropsInterface & Iden
 const FlowBuilder: FunctionComponent<FlowBuilderPropsInterface> = ({
     ...rest
 }: FlowBuilderPropsInterface): ReactElement => (
-    <ReactFlowProvider>
-        <DecoratedVisualFlow { ...rest } />
-    </ReactFlowProvider>
+    <DecoratedVisualFlow { ...rest } />
 );
 
 export default FlowBuilder;

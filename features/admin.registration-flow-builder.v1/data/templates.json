@@ -2,7 +2,7 @@
     {
         "resourceType": "TEMPLATE",
         "category": "STARTER",
-        "type": "DEFAULT",
+        "type": "BLANK",
         "version": "0.1.0",
         "deprecated": false,
         "display": {

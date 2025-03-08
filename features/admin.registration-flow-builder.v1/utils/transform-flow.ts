@@ -19,10 +19,10 @@
 import { Node } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";
 import omit from "lodash-es/omit";
-import ButtonAdapterConstants from "../constants/button-adapter-constants";
-import { ActionTypes } from "../models/actions";
-import { Element, ElementCategories } from "../models/elements";
-import { StaticStepTypes, Step } from "../models/steps";
+import ButtonAdapterConstants from "@wso2is/admin.flow-builder-core.v1/constants/button-adapter-constants";
+import { ActionTypes } from "@wso2is/admin.flow-builder-core.v1/models/actions";
+import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
+import { StaticStepTypes, Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 
 const DISPLAY_ONLY_COMPONENT_PROPERTIES: string[] = [
     "display",

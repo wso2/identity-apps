@@ -18,12 +18,19 @@
 
 import { Context, Dispatch, SetStateAction, createContext } from "react";
 import { Attribute } from "../models/attributes";
-import { RegistrationFlow } from "../models/flow";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderContext}
  */
 export interface RegistrationFlowBuilderContextProps {
+    /**
+     * Flag denoting whether the registration flow builder is enabled or not.
+     */
+    isNewRegistrationPortalEnabled: boolean;
+    /**
+     * Callback to publish the flow.
+     */
+    onPublish: () => void;
     /**
      * The set of attributes that are selected for the flow that are maintained per node.
      */
@@ -43,6 +50,8 @@ const RegistrationFlowBuilderContext: Context<
     RegistrationFlowBuilderContextProps
 > = createContext<null | RegistrationFlowBuilderContextProps>(
     {
+        onPublish: () => {},
+        isNewRegistrationPortalEnabled: false,
         selectedAttributes: {},
         setSelectedAttributes: () => {}
     }

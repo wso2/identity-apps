@@ -16,13 +16,9 @@
  * under the License.
  */
 
-import AuthenticationFlowBuilderCoreProvider from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import RegistrationFlowBuilderCore from "./registration-flow-builder-core";
-import ResourceProperties from "./resource-property-panel/resource-properties";
-import ElementFactory from "./resources/elements/element-factory";
-import RegistrationFlowBuilderProvider from "../providers/registration-flow-builder-provider";
 
 /**
  * Props interface of {@link RegistrationFlowBuilder}
@@ -39,11 +35,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
     "data-componentid": componentId = "registration-flow-builder",
     ...rest
 }: RegistrationFlowBuilderPropsInterface): ReactElement => (
-    <AuthenticationFlowBuilderCoreProvider ElementFactory={ ElementFactory } ResourceProperties={ ResourceProperties }>
-        <RegistrationFlowBuilderProvider>
-            <RegistrationFlowBuilderCore { ...rest } />
-        </RegistrationFlowBuilderProvider>
-    </AuthenticationFlowBuilderCoreProvider>
+    <RegistrationFlowBuilderCore { ...rest } />
 );
 
 export default RegistrationFlowBuilder;

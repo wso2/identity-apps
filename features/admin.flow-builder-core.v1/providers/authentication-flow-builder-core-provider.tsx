@@ -20,6 +20,7 @@ import Avatar from "@oxygen-ui/react/Avatar";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { Claim } from "@wso2is/core/models";
+import { ReactFlowProvider } from "@xyflow/react";
 import startCase from "lodash-es/startCase";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode, useState } from "react";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
@@ -94,27 +95,29 @@ const AuthenticationFlowBuilderCoreProvider = ({
     };
 
     return (
-        <AuthenticationFlowBuilderCoreContext.Provider
-            value={ {
-                ElementFactory,
-                ResourceProperties,
-                isResourcePanelOpen,
-                isResourcePropertiesPanelOpen,
-                lastInteractedResource: lastInteractedElementInternal,
-                lastInteractedStepId,
-                onResourceDropOnCanvas,
-                resourcePropertiesPanelHeading,
-                selectedAttributes,
-                setIsOpenResourcePropertiesPanel,
-                setIsResourcePanelOpen,
-                setLastInteractedResource,
-                setLastInteractedStepId,
-                setResourcePropertiesPanelHeading,
-                setSelectedAttributes
-            } }
-        >
-            { children }
-        </AuthenticationFlowBuilderCoreContext.Provider>
+        <ReactFlowProvider>
+            <AuthenticationFlowBuilderCoreContext.Provider
+                value={ {
+                    ElementFactory,
+                    ResourceProperties,
+                    isResourcePanelOpen,
+                    isResourcePropertiesPanelOpen,
+                    lastInteractedResource: lastInteractedElementInternal,
+                    lastInteractedStepId,
+                    onResourceDropOnCanvas,
+                    resourcePropertiesPanelHeading,
+                    selectedAttributes,
+                    setIsOpenResourcePropertiesPanel,
+                    setIsResourcePanelOpen,
+                    setLastInteractedResource,
+                    setLastInteractedStepId,
+                    setResourcePropertiesPanelHeading,
+                    setSelectedAttributes
+                } }
+            >
+                { children }
+            </AuthenticationFlowBuilderCoreContext.Provider>
+        </ReactFlowProvider>
     );
 };
 

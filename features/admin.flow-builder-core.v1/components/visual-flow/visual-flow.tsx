@@ -22,9 +22,9 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Controls, Edge, Node, NodeTypes, ReactFlow, ReactFlowProps, useReactFlow } from "@xyflow/react";
 import React, { FC, FunctionComponent, ReactElement, useMemo } from "react";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
-import { ResourceTypes, Resources } from "../../models/resources";
+import { Resources } from "../../models/resources";
 import getKnownEdgeTypes from "../../utils/get-known-edge-types";
-import transformFlow from "../../utils/transform-flow";
+import transformFlow from "../../../admin.registration-flow-builder.v1/utils/transform-flow";
 import Droppable from "../dnd/droppable";
 import BaseEdge from "../react-flow-overrides/base-edge";
 // IMPORTANT: `@xyflow/react/dist/style.css` should be at the top of the stylesheet import list.
@@ -39,11 +39,6 @@ export interface VisualFlowPropsInterface extends IdentifiableComponentInterface
      * Flow resources.
      */
     resources: Resources;
-    /**
-     * Callback to be fired when the flow is submitted.
-     * @param payload - Payload of the flow.
-     */
-    onFlowSubmit: (payload: any) => void;
     /**
      * Custom edges to be rendered.
      */
@@ -79,7 +74,6 @@ export interface VisualFlowPropsInterface extends IdentifiableComponentInterface
 const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-flow",
     customEdgeTypes,
-    onFlowSubmit,
     nodeTypes,
     nodes,
     onNodesChange,
@@ -89,14 +83,6 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     onNodesDelete,
     ...rest
 }: VisualFlowPropsInterface): ReactElement => {
-    const { toObject } = useReactFlow();
-
-    const handlePublish = (): void => {
-        const flow: any = toObject();
-
-        onFlowSubmit(transformFlow(flow));
-    };
-
     const edgeTypes: { [key: string]: FC<Edge> } = useMemo(() => {
         return {
             "base-edge": BaseEdge,
@@ -107,17 +93,6 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
 
     return (
         <>
-            <Box
-                display="flex"
-                justifyContent="flex-end"
-                alignItems="center"
-                // TODO: Fix the styling once the design is finalized
-                sx={ { marginTop: "-50px", position: "absolute", right: "24px" } }
-            >
-                <Button variant="contained" onClick={ () => handlePublish() }>
-                    Publish
-                </Button>
-            </Box>
             <Droppable
                 id={ VisualFlowConstants.FLOW_BUILDER_CANVAS_ID }
                 type={ VisualFlowConstants.FLOW_BUILDER_DROPPABLE_CANVAS_ID }

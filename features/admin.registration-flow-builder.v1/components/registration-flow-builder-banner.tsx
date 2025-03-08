@@ -71,7 +71,7 @@ const RegistrationFlowBuilderBanner: FC<RegistrationFlowBuilderBannerProps> = ({
                     </Typography>
                 </Box>
                 <Button
-                    onClick={ () => history.push(AppConstants.getPaths().get("SELF_REGISTRATION_FLOW_BUILDER")) }
+                    onClick={ () => history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER")) }
                     color="primary"
                     variant="contained"
                 >

@@ -20,11 +20,13 @@ import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Au
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import { CommonResourcePropertiesPropsInterface } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
+import { useGetAuthenticators } from "@wso2is/admin.connections.v1/api/authenticators";
+import { AuthenticatorInterface, AuthenticatorLabels } from "@wso2is/admin.connections.v1/models/authenticators";
+import {
+    CommonResourcePropertiesPropsInterface
+} from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
-import { useGetAuthenticators } from "../../../../../admin.connections.v1/api/authenticators";
-import { AuthenticatorInterface, AuthenticatorLabels } from "../../../../../admin.connections.v1/models/authenticators";
 
 /**
  * Props interface of {@link FederationProperties}

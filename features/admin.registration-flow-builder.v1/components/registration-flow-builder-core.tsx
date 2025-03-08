@@ -18,7 +18,6 @@
 
 import FlowBuilder from "@wso2is/admin.flow-builder-core.v1/components/flow-builder";
 import ButtonAdapterConstants from "@wso2is/admin.flow-builder-core.v1/constants/button-adapter-constants";
-import { Payload } from "@wso2is/admin.flow-builder-core.v1/models/api";
 import {
     BlockTypes,
     ButtonTypes,
@@ -39,6 +38,7 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { Edge, Node, NodeTypes } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";
+import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
 import mergeWith from "lodash-es/mergeWith";
 import unionWith from "lodash-es/unionWith";
@@ -47,7 +47,6 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import StaticNodeFactory from "./resources/steps/static-step-factory";
 import StepFactory from "./resources/steps/step-factory";
-import configureRegistrationFlow from "../api/configure-registration-flow";
 import useGetRegistrationFlow from "../api/use-get-registration-flow";
 import useGetRegistrationFlowBuilderResources from "../api/use-get-registration-flow-builder-resources";
 
@@ -332,7 +331,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     };
 
     const initialNodes: Node[] = useMemo<Node[]>(() => {
-        if (registrationFlow) {
+        if (!isEmpty(registrationFlow?.steps)) {
             return generateSteps(registrationFlow.steps as any);
         }
 
@@ -347,9 +346,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 type: StepTypes.View
             },
             {
-                data: {
-                    displayOnly: true
-                },
+                data: {},
                 deletable: false,
                 id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
                 position: { x: 850, y: 408 },
@@ -590,28 +587,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         return [ newNodes, newEdges ];
     };
 
-    const handleFlowSubmit = (payload: Payload) => {
-        configureRegistrationFlow(payload)
-            .then(() => {
-                dispatch(
-                    addAlert({
-                        description: "Registration flow updated successfully.",
-                        level: AlertLevels.SUCCESS,
-                        message: "Flow Updated Successfully"
-                    })
-                );
-            })
-            .catch(() => {
-                dispatch(
-                    addAlert({
-                        description: "Failed to update the registration flow.",
-                        level: AlertLevels.ERROR,
-                        message: "Flow Updated Failure"
-                    })
-                );
-            });
-    };
-
     if (isRegistrationFlowFetchRequestLoading || isRegistrationFlowFetchRequestValidating) {
         return null;
     }
@@ -620,7 +595,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         <FlowBuilder
             resources={ resources }
             data-componentid={ componentId }
-            onFlowSubmit={ handleFlowSubmit }
             initialNodes={ initialNodes }
             initialEdges={ initialEdges }
             nodeTypes={ generateNodeTypes() }

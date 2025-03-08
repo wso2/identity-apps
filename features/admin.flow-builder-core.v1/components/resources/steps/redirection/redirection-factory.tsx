@@ -19,7 +19,7 @@
 import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FC, ReactElement } from "react";
 import { RedirectionTypes } from "../../../../models/steps";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 
@@ -34,7 +34,7 @@ export type RedirectionFactoryPropsInterface = CommonStepFactoryPropsInterface &
  * @param props - Props injected to the component.
  * @returns The RedirectionFactory component.
  */
-export const RedirectionFactory: FunctionComponent<RedirectionFactoryPropsInterface> = ({
+export const RedirectionFactory: FC<RedirectionFactoryPropsInterface> = ({
     data,
     "data-componentid": componentId = "redirection-factory"
 }: RedirectionFactoryPropsInterface): ReactElement => {
