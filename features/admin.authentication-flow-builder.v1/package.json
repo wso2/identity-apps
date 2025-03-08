@@ -35,7 +35,7 @@
         "react-helmet": "^5.2.1",
         "react-i18next": "^11.18.5",
         "react-redux": "^7.2.9",
-        "reactflow": "^11.7.2",
+        "reactflow": "11.7.2",
         "redux": "^4.0.4",
         "semantic-ui-react": "^2.1.3"
     },
