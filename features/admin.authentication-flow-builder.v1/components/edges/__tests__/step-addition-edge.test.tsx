@@ -17,29 +17,33 @@
  */
 
 import { render, screen } from "@wso2is/unit-testing/utils";
-import { Position, ReactFlowProvider } from "@xyflow/react";
 import React from "react";
 import "@testing-library/jest-dom";
 import { Position, ReactFlowProvider } from "reactflow";
 import { fullPermissions } from "./__mocks__/permissions";
 import StepAdditionEdge, { StepAdditionEdgePropsInterface } from "../step-addition-edge";
-import "@testing-library/jest-dom";
 
 describe.skip("StepAdditionEdge", () => {
+    const mockOnNewStepAddition: () => void = jest.fn();
+
+    const defaultProps: StepAdditionEdgePropsInterface = {
+        data: {
+            onNewStepAddition: mockOnNewStepAddition
+        },
+        "data-componentid": "step-addition-edge",
+        id: "edgeId",
+        sourcePosition: Position.Right,
+        sourceX: 100,
+        sourceY: 100,
+        targetPosition: Position.Left,
+        targetX: 200,
+        targetY: 200
+    };
+
     it("renders the base edge", () => {
         render(
             <ReactFlowProvider>
-                <ReactFlow
-                    fitView
-                    nodeTypes={ {} }
-                    edgeTypes={ { stepAdditionEdge: StepAdditionEdge } }
-                    nodes={ [] }
-                    edges={ [] }
-                    proOptions={ { hideAttribution: true } }
-                >
-                    <Background color="#e1e1e1" gap={ 16 } variant={ BackgroundVariant.Dots } size={ 2 } />
-                    <Controls />
-                </ReactFlow>
+                <StepAdditionEdge { ...defaultProps }/>
             </ReactFlowProvider>
             , { allowedScopes: fullPermissions });
 

@@ -33,17 +33,6 @@ import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, Link, useDocumentation } from "@wso2is/react-components";
-import {
-    ReactFlow,
-    Background,
-    BackgroundVariant,
-    Controls,
-    Edge,
-    EdgeTypes,
-    MarkerType,
-    Node,
-    NodeTypes
-} from "@xyflow/react";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, {
