@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.14.5
+
+### Patch Changes
+
+- [#7794](https://github.com/wso2/identity-apps/pull/7794) [`3a44fb52813b12752dca8b62e33065162958750d`](https://github.com/wso2/identity-apps/commit/3a44fb52813b12752dca8b62e33065162958750d) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix encoding issue in username recovery page
+
+* [#7796](https://github.com/wso2/identity-apps/pull/7796) [`3b4382651de8341dcae536795bcda5188dc1f06f`](https://github.com/wso2/identity-apps/commit/3b4382651de8341dcae536795bcda5188dc1f06f) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix French translations
+
 ## 2.14.4
 
 ### Patch Changes
