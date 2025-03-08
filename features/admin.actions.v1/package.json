@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.actions.v1",
-    "version": "1.11.68",
+    "version": "1.11.69",
     "description": "UI components and utility methods for WSO2 Identity Server Actions",
     "author": "WSO2",
     "license": "Apache-2.0",
