@@ -175,7 +175,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         // Flag to track if we've already created an edge to the user onboard step
         let userOnboardEdgeCreated = false;
-        
+
         const createEdgesForButtons = (step, button) => {
             const edges = [];
 
@@ -221,9 +221,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 });
                 userOnboardEdgeCreated = true;
             }
-            
+
             return edges;
-        }
+        };
 
         // Create edges based on the action configuration in each step
         steps.forEach((step: Step) => {
@@ -245,13 +245,13 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                             edges = [ ...edges, ...createEdgesForButtons(step, button) ];
                         });
                     }
-                    
+
                     if (component.type === ElementTypes.Button) {
                         edges = [ ...edges, ...createEdgesForButtons(step, component) ];
                     }
                 });
             }
-            
+
             // Check if the step has an action with a next step
             if (step.data?.action) {
                 // If next points to a valid step, create that edge
@@ -432,7 +432,12 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         formComponent.type === ElementTypes.Input && formComponent.variant === InputVariants.Password
                 );
 
-                const submitButtons = component.components?.filter(
+                const hasOtpField: boolean = component.components?.some(
+                    (formComponent: Element) =>
+                        formComponent.type === ElementTypes.Input && formComponent.variant === InputVariants.OTP
+                );
+
+                const submitButtons: Element[] = component.components?.filter(
                     (formComponent: Element) =>
                         formComponent.type === ElementTypes.Button && formComponent.config?.type === ButtonTypes.Submit
                 );
@@ -447,6 +452,19 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                                         type: "EXECUTOR",
                                         executor: {
                                             name: "PasswordOnboardExecutor"
+                                        },
+                                        next: ""
+                                    }
+                                };
+                            }
+                        } else if (hasOtpField) {
+                            if (formComponent.type === ElementTypes.Button) {
+                                return {
+                                    ...formComponent,
+                                    action: {
+                                        type: "EXECUTOR",
+                                        executor: {
+                                            name: "OTPOnboardExecutor"
                                         },
                                         next: ""
                                     }

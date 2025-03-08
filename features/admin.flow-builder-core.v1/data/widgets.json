@@ -173,8 +173,11 @@
                                                 "text": "Verify"
                                             },
                                             "action": {
-                                                "next": "USER_ONBOARD",
-                                                "type": "NEXT"
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "EmailOTPVerifier"
+                                                },
+                                                "next": "USER_ONBOARD"
                                             }
                                         }
                                     ]
