@@ -56,7 +56,7 @@ const RulesProperties: FunctionComponent<RulesPropertiesPropsInterface> = ({
     // TODO: Use this function to get the rule value.
     /* eslint-disable @typescript-eslint/no-unused-vars */
     const handleGetRuleValue = () => {
-        const ruleValue: RuleExecuteCollectionInterface = getRuleInstanceValue();
+        const ruleValue: any = getRuleInstanceValue();
 
         // eslint-disable-next-line no-console
         console.log(ruleValue);
