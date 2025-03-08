@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -56,13 +56,13 @@
             background-color: transparent;
             overflow: hidden;
             transition: height 0.3s ease-in-out;
-            
+
             &.starter-templates {
                 border-radius: var(--oxygen-shape-borderRadius);
                 background: var(--wso2is-flow-builder--starter-templates-background);
                 margin-bottom: var(--oxygen-spacing-2);
                 border: 1px solid var(--oxygen-palette-common-white);
-                
+
                 .flow-builder-element-panel-category-details {
                     background: var(--wso2is-flow-builder--starter-templates-background);
                 }
