@@ -37,7 +37,7 @@ const updateTemplatePlaceholderReferences = (obj: any, replacers: any[]): any =>
                         }
 
                         // Find the matching replacer
-                        const replacer = replacers.find(r => r.key === placeholderKey);
+                        const replacer = replacers?.find(r => r.key === placeholderKey);
 
                         if (replacer) {
                             let replacementValue: string;
