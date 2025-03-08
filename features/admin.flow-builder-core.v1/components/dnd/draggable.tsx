@@ -24,7 +24,7 @@ import React, { FC, PropsWithChildren, ReactElement } from "react";
 /**
  * Props interface of {@link Draggable}
  */
-export type DraggableProps = UseDraggableInput & IdentifiableComponentInterface & any;
+export type DraggableProps = UseDraggableInput & IdentifiableComponentInterface;
 
 /**
  * Draggable component.

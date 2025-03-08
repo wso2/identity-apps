@@ -16,16 +16,12 @@
  * under the License.
  */
 
+import { pointerIntersection } from "@dnd-kit/collision";
 import { UseDroppableInput, useDroppable } from "@dnd-kit/react";
 import Box, { BoxProps } from "@oxygen-ui/react/Box";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FC, PropsWithChildren, ReactElement } from "react";
-import {
-    closestCenter,
-    pointerIntersection,
-    directionBiased
-  } from '@dnd-kit/collision';
 
 /**
  * Props interface of {@link Droppable}
@@ -47,14 +43,21 @@ const Droppable: FC<PropsWithChildren<DroppableProps>> = ({
     collisionDetector = pointerIntersection,
     ...rest
 }: PropsWithChildren<DroppableProps>): ReactElement => {
-    const { ref, isDropTarget } = useDroppable({ id, collisionDetector, ...rest });
+    const { ref, isDropTarget } = useDroppable({ collisionDetector, id, ...rest });
 
     return (
         <Box
             ref={ ref }
             data-componentid={ componentId }
             className={ classNames("dnd-droppable", { "is-dropping": isDropTarget }, className) }
-            sx={ { height: "100%", width: "100%", display: "inline-flex", flexDirection: "column", gap: "10px", ...sx } }
+            sx={ {
+                display: "inline-flex",
+                flexDirection: "column",
+                gap: "10px",
+                height: "100%",
+                width: "100%",
+                ...sx
+            } }
         >
             { children }
         </Box>

@@ -16,29 +16,63 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { CSSProperties, Ref, forwardRef } from "react";
+import React, {
+    CSSProperties,
+    ForwardRefExoticComponent,
+    HTMLAttributes,
+    ReactElement,
+    Ref,
+    forwardRef
+} from "react";
 import "./action.scss";
 
-export interface Props extends React.HTMLAttributes<HTMLButtonElement> {
-  variant?: "light" | "dark" | "destructive";
-  cursor?: CSSProperties["cursor"];
+/**
+ * Props interface for the Action component.
+ */
+export interface ActionProps extends HTMLAttributes<HTMLButtonElement>, IdentifiableComponentInterface {
+    /**
+     * Variant of the action button.
+     */
+    variant?: "light" | "dark" | "destructive";
+    /**
+     * Cursor style for the action button.
+     */
+    cursor?: CSSProperties["cursor"];
 }
 
-export const Action = forwardRef<HTMLButtonElement, Props>(
-    ({ className, cursor, style, variant = "light", ...props }, ref) => {
-        return (
-            <button
-                ref={ ref }
-                { ...props }
-                className={ classNames("dnd-action", className) }
-                style={
-          {
-              ...style,
-              cursor
-          } as CSSProperties
-                }
-            />
-        );
-    }
+/**
+ * Action component.
+ *
+ * @param props - Props injected to the component.
+ * @param ref - Reference to the button element.
+ * @returns The Action component.
+ */
+const Action = forwardRef<HTMLButtonElement, ActionProps>(
+    (
+        {
+            className,
+            cursor,
+            "data-componentid": componentId = "draggable",
+            style,
+            ...rest
+        }: ActionProps,
+        ref: Ref<HTMLButtonElement>
+    ): ReactElement => (
+        <button
+            ref={ ref }
+            className={ classNames("flow-builder-dnd-action", className) }
+            style={
+                    {
+                        ...style,
+                        cursor
+                    } as CSSProperties
+            }
+            data-componentid={ componentId }
+            { ...rest }
+        />
+    )
 );
+
+export default Action;
