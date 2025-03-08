@@ -297,6 +297,11 @@
         <jsp-file>/device-success.jsp</jsp-file>
     </servlet>
 
+     <servlet>
+        <servlet-name>ciba_success.do</servlet-name>
+        <jsp-file>/ciba-success.jsp</jsp-file>
+    </servlet>
+
     <servlet>
         <servlet-name>totp_enroll.do</servlet-name>
         <jsp-file>/enableTOTP.jsp</jsp-file>
@@ -460,6 +465,11 @@
     <servlet-mapping>
         <servlet-name>device_success.do</servlet-name>
         <url-pattern>/device_success.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ciba_success.do</servlet-name>
+        <url-pattern>/ciba_success.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
