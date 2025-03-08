@@ -19,7 +19,7 @@
 import { Theme, useTheme } from "@mui/material/styles";
 import Card from "@oxygen-ui/react/Card";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Handle, Node, Position } from "@xyflow/react";
+import { Handle, Node, Position, useNodeId, useNodesData } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
 import RedirectionFactory from "./redirection-factory";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
@@ -43,6 +43,8 @@ const Redirection: FunctionComponent = ({
     ["data-componentid"]: componentId = "done",
     ...rest
 }: RedirectionPropsInterface & Node): ReactElement => {
+    const stepId: string = useNodeId();
+    const node: Pick<Node, "data"> = useNodesData(stepId);
     const theme: Theme = useTheme();
 
     return (
@@ -53,7 +55,7 @@ const Redirection: FunctionComponent = ({
                 color: (theme as any).colorSchemes.dark.palette.text.primary
             } }>
             <Handle type="target" position={ Position.Left } />
-            <RedirectionFactory { ...rest } />
+            <RedirectionFactory data={ node?.data } { ...rest } />
             <Handle type="source" position={ Position.Right } />
         </Card>
     );

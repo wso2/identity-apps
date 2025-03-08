@@ -82,7 +82,7 @@
                             "height": 291
                         },
                         "position": {
-                            "x": 300,
+                            "x": 650,
                             "y": 200
                         },
                         "data": {
@@ -93,8 +93,7 @@
                                     "meta": {
                                         "idp": "{{IDP_NAME}}"
                                     }
-                                },
-                                "next": "{{NEXT_STEP_ID}}"
+                                }
                             }
                         }
                     }

@@ -19,29 +19,51 @@
 import generateResourceId from "./generate-resource-id";
 
 const updateTemplatePlaceholderReferences = (obj: any, replacers: any[]): any => {
-    if (Array.isArray(obj)) {
-        return obj.map(value => updateTemplatePlaceholderReferences(value, replacers));
-    } else if (typeof obj === "object" && obj !== null) {
-        return Object.fromEntries(
-            Object.entries(obj).map(([ key, value ]) => {
-                if (typeof value === "string") {
-                    // Check if this ID is a placeholder (e.g. {{GOOGLE_REDIRECTION_STEP_ID}})
-                    const replacer = replacers.find(r => r.key === value.replace(/[{}]/g, ""));
+    const placeholderCache = new Map<string, string>();
 
-                    if (replacer) {
-                        if (replacer.type === "ID") {
-                            // If replacer type is "ID", generate a new ID
-                            return [ key, generateResourceId(replacer.type) ];
+    const replacePlaceholders = (input: any): any => {
+        if (Array.isArray(input)) {
+            return input.map(value => replacePlaceholders(value));
+        } else if (typeof input === "object" && input !== null) {
+            return Object.fromEntries(
+                Object.entries(input).map(([ key, value ]) => {
+                    if (typeof value === "string") {
+                        // Extract placeholder key (remove {{ }})
+                        const placeholderKey = value.replace(/[{}]/g, "");
+
+                        // Check if we already replaced this placeholder
+                        if (placeholderCache.has(placeholderKey)) {
+                            return [ key, placeholderCache.get(placeholderKey) ];
+                        }
+
+                        // Find the matching replacer
+                        const replacer = replacers.find(r => r.key === placeholderKey);
+
+                        if (replacer) {
+                            let replacementValue: string;
+
+                            if (replacer.type === "ID") {
+                                replacementValue = generateResourceId(replacer.type);
+                            } else {
+                                replacementValue = replacer.value || value; // Default to original if no value
+                            }
+
+                            // Store the replacement in the cache
+                            placeholderCache.set(placeholderKey, replacementValue);
+
+                            return [ key, replacementValue ];
                         }
                     }
-                }
 
-                return [ key, updateTemplatePlaceholderReferences(value, replacers) ];
-            })
-        );
-    }
+                    return [ key, replacePlaceholders(value) ];
+                })
+            );
+        }
 
-    return obj;
+        return input;
+    };
+
+    return replacePlaceholders(obj);
 };
 
 export default updateTemplatePlaceholderReferences;

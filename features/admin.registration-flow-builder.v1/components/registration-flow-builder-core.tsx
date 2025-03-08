@@ -130,9 +130,10 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 return {
                     data:
                         (step.data?.components && {
+                            ...step.data,
                             components: resolveComponentMetadata(resources, (step.data as any).components)
                         }) ||
-                        {},
+                        step.data,
                     deletable: true,
                     id: step.id,
                     position: step.position,
@@ -143,7 +144,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     };
 
     const generateEdges = (steps: Step[]): Edge[] => {
-        const edges: Edge[] = [];
+        let edges: Edge[] = [];
 
         // Get all step IDs for validation
         const stepIds = steps.map(step => step.id);
@@ -174,6 +175,55 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         // Flag to track if we've already created an edge to the user onboard step
         let userOnboardEdgeCreated = false;
+        
+        const createEdgesForButtons = (step, button) => {
+            const edges = [];
+
+            if (button.action?.next) {
+                // If next points to a valid step, create that edge
+                if (stepIds.includes(button.action.next)) {
+                    edges.push({
+                        animated: false,
+                        id: button.id,
+                        source: step.id,
+                        sourceHandle: `${button.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
+                        target: button.action.next,
+                        type: "base-edge"
+                    });
+
+                    // Check if this is pointing to the user onboard step
+                    if (button.action.next === userOnboardStepId) {
+                        userOnboardEdgeCreated = true;
+                    }
+                } else if (button.action.next === StaticStepTypes.UserOnboard) {
+                    // If next references a user onboard ID that's not in the steps
+                    // but follows the naming pattern, connect to our actual user onboard step
+                    edges.push({
+                        animated: false,
+                        id: button.id,
+                        source: step.id,
+                        sourceHandle: `${button.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
+                        target: userOnboardStepId,
+                        type: "base-edge"
+                    });
+                    userOnboardEdgeCreated = true;
+                }
+            } else if (button.action?.executor?.name === "PasswordOnboardExecutor") {
+                // For PasswordOnboardExecutor buttons without explicit next,
+                // create an edge to the user onboard step
+                edges.push({
+                    animated: false,
+                    id: button.id,
+                    source: step.id,
+                    sourceHandle: `${button.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
+                    target: userOnboardStepId,
+                    type: "base-edge"
+                });
+                userOnboardEdgeCreated = true;
+            }
+            
+            return edges;
+        }
 
         // Create edges based on the action configuration in each step
         steps.forEach((step: Step) => {
@@ -192,51 +242,44 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         );
 
                         buttons?.forEach((button: Element) => {
-                            if (button.action?.next) {
-                                // If next points to a valid step, create that edge
-                                if (stepIds.includes(button.action.next)) {
-                                    edges.push({
-                                        animated: false,
-                                        id: button.id,
-                                        source: step.id,
-                                        sourceHandle: `${button.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
-                                        target: button.action.next,
-                                        type: "base-edge"
-                                    });
-
-                                    // Check if this is pointing to the user onboard step
-                                    if (button.action.next === userOnboardStepId) {
-                                        userOnboardEdgeCreated = true;
-                                    }
-                                } else if (button.action.next === StaticStepTypes.UserOnboard) {
-                                    // If next references a user onboard ID that's not in the steps
-                                    // but follows the naming pattern, connect to our actual user onboard step
-                                    edges.push({
-                                        animated: false,
-                                        id: button.id,
-                                        source: step.id,
-                                        sourceHandle: `${button.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
-                                        target: userOnboardStepId,
-                                        type: "base-edge"
-                                    });
-                                    userOnboardEdgeCreated = true;
-                                }
-                            } else if (button.action?.executor?.name === "PasswordOnboardExecutor") {
-                                // For PasswordOnboardExecutor buttons without explicit next,
-                                // create an edge to the user onboard step
-                                edges.push({
-                                    animated: false,
-                                    id: button.id,
-                                    source: step.id,
-                                    sourceHandle: `${button.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
-                                    target: userOnboardStepId,
-                                    type: "base-edge"
-                                });
-                                userOnboardEdgeCreated = true;
-                            }
+                            edges = [ ...edges, ...createEdgesForButtons(step, button) ];
                         });
                     }
+                    
+                    if (component.type === ElementTypes.Button) {
+                        edges = [ ...edges, ...createEdgesForButtons(step, component) ];
+                    }
                 });
+            }
+            
+            // Check if the step has an action with a next step
+            if (step.data?.action) {
+                // If next points to a valid step, create that edge
+                if (stepIds.includes(step.data.action.next)) {
+                    edges.push({
+                        animated: false,
+                        id: `${step.id}-to-${step.data.action.next}`,
+                        source: step.id,
+                        target: step.data.action.next,
+                        type: "base-edge"
+                    });
+
+                    // Check if this is pointing to the user onboard step
+                    if (step.data.action.next === userOnboardStepId) {
+                        userOnboardEdgeCreated = true;
+                    }
+                } else if (step.data.action.next === StaticStepTypes.UserOnboard) {
+                    // If next references a user onboard ID that's not in the steps
+                    // but follows the naming pattern, connect to our actual user onboard step
+                    edges.push({
+                        animated: false,
+                        id: `${step.id}-to-${userOnboardStepId}`,
+                        source: step.id,
+                        target: userOnboardStepId,
+                        type: "base-edge"
+                    });
+                    userOnboardEdgeCreated = true;
+                }
             }
         });
 
@@ -436,35 +479,44 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     };
 
     const generateUnconnectedEdges = (currentEdges: Edge[], currentNodes: Node[]): Edge[] => {
-        // Create a set of node IDs for easy lookup
         const nodeIds = new Set(currentNodes.map(node => node.id));
+        const missingEdges: Edge[] = [];
 
-        // Filter out the edges where either the source or target is not in the list of current nodes
-        const unconnectedEdges = currentEdges.filter(edge => {
-            return !nodeIds.has(edge.source) || !nodeIds.has(edge.target);
+        currentNodes.forEach(node => {
+            if (!node.data || !node.data.components) return;
+
+            (node.data.components as any).forEach(component => {
+                if (component.type === "BUTTON" && component.action && component.action.next) {
+                    const buttonId = component.id;
+                    const expectedTarget = component.action.next;
+
+                    // Ensure expected target exists in nodes
+                    if (!nodeIds.has(expectedTarget)) {
+                        console.warn(`Expected target node '${expectedTarget}' not found in currentNodes.`);
+
+                        return;
+                    }
+
+                    const existingEdge = currentEdges.find(
+                        edge => edge.source === node.id && edge.sourceHandle === `${buttonId}_NEXT`
+                    );
+
+                    // If no edge exists or it's pointing to the wrong node, add a missing edge
+                    if (!existingEdge || existingEdge.target !== expectedTarget) {
+                        missingEdges.push({
+                            id: `${buttonId}_MISSING_EDGE`,
+                            source: node.id,
+                            sourceHandle: `${buttonId}_NEXT`,
+                            target: expectedTarget,
+                            type: "base-edge",
+                            animated: false
+                        });
+                    }
+                }
+            });
         });
 
-        // Optionally, create new edges based on updated node connections
-        // For simplicity, let's assume you want to link some unconnected nodes based on some condition:
-        // This can be extended to create more complex edge generation rules
-        currentNodes.forEach((node, index) => {
-            // Just an example logic to create new edges if necessary (e.g., based on some node property or rule)
-            if (index < currentNodes.length - 1) {
-                const nextNode = currentNodes[index + 1];
-                const newEdge: Edge = {
-                    id: `${node.id}_${nextNode.id}`, // Unique edge ID
-                    source: node.id,
-                    target: nextNode.id,
-                    type: "base-edge", // Default type; this can be adjusted as needed
-                    animated: false // Set to true if you need animated edges
-                };
-
-                unconnectedEdges.push(newEdge);
-            }
-        });
-
-        // Return the updated list of unconnected edges
-        return unconnectedEdges;
+        return missingEdges;
     };
 
     const handleWidgetLoad = (
@@ -498,9 +550,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 if (strategy === "MERGE_WITH_DROP_POINT") {
                     newNodes = newNodes.map((node: Node) => {
                         if (node.id === targetResource.id) {
-                            console.log("Node", JSON.stringify(node));
-                            console.log("Step", JSON.stringify(step));
-
                             // Use mergeWith with the custom merge function
                             return mergeWith(node, step, customMerge);
                         }
@@ -516,7 +565,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         const replacers = widgetFlow.__generationMeta__.replacers;
 
         newNodes = updateTemplatePlaceholderReferences(generateIdsForResources(newNodes), replacers);
-        newEdges = generateUnconnectedEdges(newEdges, newNodes);
+        newEdges = [ ...newEdges, ...generateUnconnectedEdges(newEdges, newNodes) ];
 
         return [ newNodes, newEdges ];
     };

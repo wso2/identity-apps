@@ -24,7 +24,7 @@ import { ActionTypes } from "../models/actions";
 import { Element, ElementCategories } from "../models/elements";
 import { StaticStepTypes, Step } from "../models/steps";
 
-const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [
+const DISPLAY_ONLY_COMPONENT_PROPERTIES: string[] = [
     "display",
     "version",
     "variants",
@@ -33,24 +33,24 @@ const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [
     "resourceType"
 ];
 
-const processActions = (component, navigations) => {
-    if (component.category === ElementCategories.Action) {
-        let action: any = { ...component.action };
+const processNavigation = (resource, navigations) => {
+    if (resource?.action) {
+        let action: any = { ...resource.action };
 
-        if (component?.action?.type === ActionTypes.Executor) {
+        if (resource?.action?.type === ActionTypes.Executor) {
             action = {
-                ...component?.action,
-                next: navigations[component.id]
+                ...resource?.action,
+                next: navigations[resource.id]
             };
         }
 
         return {
-            ...component,
+            ...resource,
             action
         };
     }
 
-    return component;
+    return resource;
 };
 
 const transformFlow = (flowState: any) => {
@@ -75,16 +75,16 @@ const transformFlow = (flowState: any) => {
     filteredFlowNodes.forEach((node: any) => {
         const { data, id, position, measured, type } = node;
 
-        const processComponents = (elements: Element[]) => {
-            const _elements: Element[] = elements?.map((element: any) => {
-                if (element.components) {
-                    element.components = processComponents(element.components);
+        const processComponents = (components: Element[]) => {
+            const _components: Element[] = components?.map((component: any) => {
+                if (component.components) {
+                    component.components = processComponents(component.components);
                 }
 
-                return processActions(omit(element, DISPLAY_ONLY_ELEMENT_PROPERTIES), stepNavigationMap);
+                return processNavigation(omit(component, DISPLAY_ONLY_COMPONENT_PROPERTIES), stepNavigationMap);
             });
 
-            return _elements;
+            return _components;
         };
 
         /* eslint-disable sort-keys */
@@ -102,6 +102,10 @@ const transformFlow = (flowState: any) => {
                 ...step.data,
                 components: processComponents(data.components)
             };
+        }
+
+        if (step?.data?.action) {
+            step.data = processNavigation(step.data, stepNavigationMap);
         }
 
         payload.steps.push(step);
