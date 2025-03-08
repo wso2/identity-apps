@@ -87,9 +87,12 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
                                     <Card
                                         className={ classNames("extended-property action-type", {
                                             selected:
+                                                isEqual(
+                                                    omit((resource as Element)?.action, "next"),
+                                                    actionType.action
+                                                ) ||
                                                 (actionType.type === ActionTypes.Next &&
-                                                    actionType.type === (resource as Element)?.action?.type) ||
-                                                isEqual(omit((resource as Element)?.action, "next"), actionType.action)
+                                                    actionType.type === (resource as Element)?.action?.type)
                                         }) }
                                         variant="outlined"
                                     >

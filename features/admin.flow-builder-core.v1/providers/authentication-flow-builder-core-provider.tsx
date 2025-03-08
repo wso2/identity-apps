@@ -63,7 +63,10 @@ const AuthenticationFlowBuilderCoreProvider = ({
         setLastInteractedStepId(resourceId);
 
         // Currently we don't show the properties panel for Templates.
-        if (resource.resourceType === ResourceTypes.Template) {
+        if (
+            (resource.category === ResourceTypes.Step && resource.type === StepTypes.View) ||
+            resource.resourceType === ResourceTypes.Template
+        ) {
             setIsOpenResourcePropertiesPanel(false);
         }
     };
@@ -73,9 +76,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
         setResourcePropertiesPanelHeading(
             <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
                 <Avatar src={ resource?.display?.image } variant="square" />
-                <Typography variant="h6">
-                    { capitalize(resource.variant ?? resource.type) } Properties
-                </Typography>
+                <Typography variant="h6">{ capitalize(resource.variant ?? resource.type) } Properties</Typography>
             </Stack>
         );
         setLastInteractedElementInternal(resource);
