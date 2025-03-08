@@ -16,26 +16,17 @@
  * under the License.
  */
 
-import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Box from "@oxygen-ui/react/Box";
-import IconButton from "@oxygen-ui/react/IconButton";
-import Link from "@oxygen-ui/react/Link";
-import Typography from "@oxygen-ui/react/Typography";
-import { ArrowLeftIcon } from "@oxygen-ui/react-icons";
-import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
-import { history } from "@wso2is/admin.core.v1/helpers/history";
 import RegistrationFlowBuilder from "@wso2is/admin.registration-flow-builder.v1/components/registration-flow-builder";
 import RegistrationFlowBuilderProvider from "@wso2is/admin.registration-flow-builder.v1/providers/registration-flow-builder-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 import "./registration-flow-builder-page.scss";
 import RegistrationFlowBuilderPageHeader from "./registration-flow-builder-page-header";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderPage}
  */
-type RegistrationFlowBuilderPageProps = IdentifiableComponentInterface;
+export type RegistrationFlowBuilderPageProps = IdentifiableComponentInterface;
 
 /**
  * Landing page for the Registration Flow Builder.

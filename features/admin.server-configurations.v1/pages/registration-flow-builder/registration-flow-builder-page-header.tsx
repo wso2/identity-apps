@@ -25,15 +25,15 @@ import Typography from "@oxygen-ui/react/Typography";
 import { ArrowLeftIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import useRegistrationFlowBuilder from "@wso2is/admin.registration-flow-builder.v1/hooks/use-registration-flow-builder";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
-import useRegistrationFlowBuilder from "@wso2is/admin.registration-flow-builder.v1/hooks/use-registration-flow-builder";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderPageHeader}
  */
-type RegistrationFlowBuilderPageHeaderProps = IdentifiableComponentInterface;
+export type RegistrationFlowBuilderPageHeaderProps = IdentifiableComponentInterface;
 
 /**
  * Header for the Registration flow builder page.
