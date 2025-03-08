@@ -109,6 +109,23 @@ export const authenticationFlow: AuthenticationFlowNS = {
             },
             header: "Sign in"
         },
+        push: {
+            controls: {
+                optionRemoveTooltipContent: "Remove"
+            },
+            form: {
+                actions: {
+                    primary: "01:00"
+                },
+                fields: {
+                    code: {
+                        label: "A push notification has been sent to your device. Please respond to the request to continue.",
+                        placeholder: ""
+                    }
+                }
+            },
+            header: "Verify Your Request"
+        },
         signIn: {
             controls: {
                 optionRemoveTooltipContent: "Remove",

@@ -127,7 +127,8 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         data: originalBrandingPreference,
         isLoading: isBrandingPreferenceFetchRequestLoading,
         error: brandingPreferenceFetchRequestError,
-        mutate: mutateBrandingPreferenceFetchRequest
+        mutate: mutateBrandingPreferenceFetchRequest,
+        error: brandingPreferenceErrors
     } = useGetBrandingPreferenceResolve(
         resolvedName,
         resolvedType
@@ -204,6 +205,10 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                 isBrandingPreferenceFetchRequestLoading === true,
         [ tenantDomain, isBrandingPreferenceFetchRequestLoading ]
     );
+
+    const isBrandingConfiguredFromAPI: boolean =
+        brandingPreferenceErrors?.response?.data?.code !==
+        BrandingPreferencesConstants.BRANDING_NOT_CONFIGURED_ERROR_CODE;
 
     /**
      * Publish page visit insights.
@@ -690,19 +695,19 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                     </Alert>
                 )
             }
-            {
-                !isBrandingPageLoading && !brandingPreference.configs?.isBrandingEnabled && (
-                    (brandingMode === BrandingModes.APPLICATION && selectedApplication) ||
+            { !isBrandingPageLoading &&
+                isBrandingConfiguredFromAPI &&
+                !brandingPreference.configs?.isBrandingEnabled &&
+                ((brandingMode === BrandingModes.APPLICATION && selectedApplication) ||
                     brandingMode === BrandingModes.ORGANIZATION) && (
-                    <Alert
-                        className="branding-alert"
-                        severity="info"
-                        data-componentid="branding-preference-preview-disclaimer"
-                    >
-                        { t("extensions:develop.branding.publishToggle.hint") }
-                    </Alert>
-                )
-            }
+                <Alert
+                    className="branding-alert"
+                    severity="info"
+                    data-componentid="branding-preference-preview-disclaimer"
+                >
+                    { t("extensions:develop.branding.publishToggle.hint") }
+                </Alert>
+            ) }
             {
                 showSubOrgBrandingUpdateAlert
                     && (

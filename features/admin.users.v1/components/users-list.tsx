@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,7 +26,9 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -53,10 +55,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
 import {
+    ReactComponent as RemoveCircleSolidIcon
+} from "../../themes/default/assets/images/icons/solid-icons/remove-circle.svg";
+import {
     ReactComponent as RoundedLockSolidIcon
 } from "../../themes/default/assets/images/icons/solid-icons/rounded-lock.svg";
 import { deleteUser } from "../api";
-import { ACCOUNT_LOCK_REASON_MAP, UserManagementConstants } from "../constants";
+import { ACCOUNT_LOCK_REASON_MAP, UserManagementConstants, UserSharedType } from "../constants";
 import { UserBasicInterface, UserListInterface } from "../models/user";
 import { UserManagementUtils } from "../utils/user-management-utils";
 
@@ -126,10 +131,6 @@ interface UsersListProps extends SBACInterface<FeatureConfigInterface>, Loadable
      */
     usersList: UserListInterface;
     /**
-     * List of readOnly user stores.
-     */
-    readOnlyUserStores?: string[];
-    /**
      * Indicates whether the currently selected user store is read-only or not.
      */
     isReadOnlyUserStore?: boolean;
@@ -147,7 +148,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         defaultListItemLimit,
         onUserDelete,
         isLoading,
-        readOnlyUserStores,
         featureConfig,
         onColumnSelectionChange,
         onListItemClick,
@@ -164,6 +164,9 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
+    const { readOnlyUserStoreNamesList: readOnlyUserStores } = useUserStores();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
@@ -257,17 +260,37 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
     /**
      * Returns a locked icon if the account is locked.
+     * Returns a cross icon if the account is disabled.
      *
      * @param user - each admin user belonging to a row of the table.
      * @returns the locked icon.
      */
-    const resolveAccountLockStatus = (user: UserBasicInterface): ReactNode => {
+    const resolveAccountStatus = (user: UserBasicInterface): ReactNode => {
         const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
             user[userConfig.userProfileSchema]?.accountLocked === true;
+        const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true" ||
+            user[userConfig.userProfileSchema]?.accountDisabled === true;
         const accountLockedReason: string = user[userConfig.userProfileSchema]?.lockedReason;
 
         const accountLockedReasonContent: string = ACCOUNT_LOCK_REASON_MAP[accountLockedReason]
             ?? ACCOUNT_LOCK_REASON_MAP["DEFAULT"];
+
+        if (accountDisabled) {
+            return (
+                <Popup
+                    trigger={ (
+                        <Icon
+                            className="disabled-icon"
+                            size="small"
+                        >
+                            <RemoveCircleSolidIcon/>
+                        </Icon>
+                    ) }
+                    content={ t("user:profile.accountDisabled") }
+                    inverted
+                />
+            );
+        }
 
         if (accountLocked) {
             return (
@@ -322,7 +345,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 spaced="right"
                                 data-suppress=""
                             />
-                            { resolveAccountLockStatus(user) }
+                            { resolveAccountStatus(user) }
                             <Header.Content className="pl-0">
                                 <div>
                                     { header as ReactNode }
@@ -494,6 +517,13 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     ? user?.userName?.split("/")[0]
                     : userstoresConfig.primaryUserstoreName;
 
+                if (isSubOrganization()
+                        && user[SCIMConfigs?.scim?.systemSchema]?.sharedType
+                        && user[SCIMConfigs?.scim?.systemSchema]?.sharedType!=UserSharedType.INVITED
+                ) {
+                    return true;
+                }
+
                 return !isFeatureEnabled(featureConfig?.users,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                     || !hasUsersDeletePermissions
@@ -539,7 +569,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             );
         }
 
-        if (usersList.totalResults === 0) {
+        if (usersList?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
                     data-testid={ `${testId}-empty-placeholder` }
@@ -580,7 +610,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 } }
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
-                data={ usersList.Resources }
+                data={ usersList?.Resources }
                 onColumnSelectionChange={ onColumnSelectionChange }
                 onRowClick={ (e: SyntheticEvent, user: UserBasicInterface): void => {
                     handleUserEdit(user?.id);

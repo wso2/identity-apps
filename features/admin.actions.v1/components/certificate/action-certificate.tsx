@@ -36,17 +36,17 @@ import moment, { Moment } from "moment";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid, Icon, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
-import { AddActionCertificateWizard } from "./action-add-certificate-wizard";
+import { ActionCertificateWizard } from "./action-certificate-wizard";
 import updateAction from "../../api/update-action";
 import { ActionsConstants } from "../../constants/actions-constants";
 import { PreUpdatePasswordActionUpdateInterface } from "../../models/actions";
 import { useHandleError, useHandleSuccess } from "../../util/alert-util";
-import "./action-certificate-list.scss";
+import "./action-certificate.scss";
 
 /**
- * Proptypes for the Action certificate list component.
+ * Prop types for the Action certificate component.
  */
-interface ActionCertificatesPropsListInterface extends IdentifiableComponentInterface {
+interface ActionCertificatePropsInterface extends IdentifiableComponentInterface {
     /**
      * The PEM value of the certificate.
      */
@@ -71,75 +71,63 @@ interface ActionCertificatesPropsListInterface extends IdentifiableComponentInte
      * The ID of the action.
      */
     actionId: string;
+    /**
+     * Indicates if the form is in read only mode.
+     */
+    readOnly?: boolean;
 }
 
 /**
- * Action certificates list component.
+ * Action certificate component.
  *
  * @param props - Props injected to the component.
- *
- * @returns
+ * @returns - Action certificate component.
  */
-export const ActionCertificatesListComponent: FunctionComponent<ActionCertificatesPropsListInterface> = ({
+export const ActionCertificateComponent: FunctionComponent<ActionCertificatePropsInterface> = ({
     certificate,
     updatePEMValue,
     updateSubmit,
     isCreateFormState,
     actionTypeApiPath,
     actionId,
-    [ "data-componentid" ]: _componentId = "action-certificate-list"
-}: ActionCertificatesPropsListInterface ): ReactElement => {
+    readOnly,
+    [ "data-componentid" ]: _componentId = "action-certificate"
+}: ActionCertificatePropsInterface ): ReactElement => {
 
     const { t } = useTranslation();
 
     const handleSuccess: (operation: string) => void = useHandleSuccess();
     const handleError: (error: AxiosError, operation: string) => void = useHandleError();
 
-    const [ certificates, setCertificates ] = useState<DisplayCertificate[]>(null);
-    const [ certificateModal, setCertificateModal ] = useState<boolean>(false);
-    const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
+    const [ viewDisplayCertificate, setViewDisplayCertificate ] = useState<boolean>(false);
+    const [ displayCertificate, setDisplayCertificate ] = useState<DisplayCertificate>(undefined);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ showCertificateDeleteConfirmation, setShowCertificateDeleteConfirmation ] = useState<boolean>(false);
 
     useEffect(() => {
         if (certificate) {
-            const certificatesList: DisplayCertificate[] = [];
-
             if (CertificateManagementUtils.canSafelyParseCertificate(certificate)) {
-                certificatesList?.push(CertificateManagementUtils.displayCertificate(null, certificate));
+                setDisplayCertificate(CertificateManagementUtils.displayCertificate(null, certificate));
             } else {
-                certificatesList?.push(CertificateManagementConstants.DUMMY_DISPLAY_CERTIFICATE);
+                setDisplayCertificate(CertificateManagementConstants.DUMMY_DISPLAY_CERTIFICATE);
             }
-            setCertificates(certificatesList);
         }
     }, [ certificate ]);
-
-    useEffect(() => {
-        if (!certificateDisplay) {
-            return;
-        }
-        setCertificateModal(true);
-    }, [ certificateDisplay ]);
-
-    useEffect(() => {
-        if (!certificateModal) {
-            setCertificateDisplay(null);
-        }
-    }, [ certificateModal ]);
 
     /**
      * Show the certificate details.
      * @param certificate - Certificate to be displayed.
      */
-    const handleViewCertificate = (certificate: DisplayCertificate) => {
-        setCertificateDisplay(certificate);
+    const handleViewCertificate = () => {
+        setViewDisplayCertificate(true);
     };
 
     const handleDeleteCertificate = () => {
 
         if (isCreateFormState) {
-            deleteCertificate();
+            setDisplayCertificate(undefined);
+            updatePEMValue("");
         } else {
             setShowCertificateDeleteConfirmation(true);
         }
@@ -148,44 +136,41 @@ export const ActionCertificatesListComponent: FunctionComponent<ActionCertificat
     const deleteCertificate = async (): Promise<void> => {
 
         const EMPTY_STRING: string = "";
+        const updatingValues: PreUpdatePasswordActionUpdateInterface = {
+            passwordSharing: {
+                certificate: EMPTY_STRING
+            }
+        };
 
-        updatePEMValue(EMPTY_STRING);
-        if (!isCreateFormState) {
-            const updatingValues: PreUpdatePasswordActionUpdateInterface = {
-                passwordSharing: {
-                    certificate: EMPTY_STRING
-                }
-            };
-
-            updateSubmit(true);
-            updateAction(actionTypeApiPath, actionId, updatingValues)
-                .then(() => {
-                    handleSuccess(ActionsConstants.DELETE_CERTIFICATE);
-                    setCertificates(null);
-                    setShowCertificateDeleteConfirmation(false);
-                })
-                .catch((error: AxiosError) => {
-                    handleError(error, ActionsConstants.DELETE_CERTIFICATE);
-                })
-                .finally(() => {
-                    updateSubmit(false);
-                });
-        } else{
-            setCertificates(null);
-        }
+        setIsSubmitting(true);
+        updateAction(actionTypeApiPath, actionId, updatingValues)
+            .then(() => {
+                handleSuccess(ActionsConstants.DELETE_CERTIFICATE);
+                setDisplayCertificate(undefined);
+                setShowCertificateDeleteConfirmation(false);
+            })
+            .catch((error: AxiosError) => {
+                handleError(error, ActionsConstants.DELETE_CERTIFICATE);
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+                updatePEMValue(EMPTY_STRING);
+            });
     };
 
     const DeleteCertConfirmationModal: ReactElement = (
         <ConfirmationModal
             onClose={ (): void => setShowCertificateDeleteConfirmation(false) }
             onSecondaryActionClick={ (): void => setShowCertificateDeleteConfirmation(false) }
-            onPrimaryActionClick={ () => {deleteCertificate();} }
+            onPrimaryActionClick={ deleteCertificate }
             open={ showCertificateDeleteConfirmation }
             type="negative"
             primaryAction={ t("actions:certificateDeleteConfirmationModal.primaryAction") }
             secondaryAction={ t("actions:certificateDeleteConfirmationModal.secondaryAction") }
             data-componentid={ `${ _componentId }-delete-confirmation-modal` }
-            closeOnDimmerClick={ false }>
+            closeOnDimmerClick={ false }
+            primaryActionLoading={ isSubmitting }
+        >
             <ConfirmationModal.Header
                 data-componentid={ `${ _componentId }-delete-confirmation-modal-header` }>
                 { t("actions:certificateDeleteConfirmationModal.header") }
@@ -281,14 +266,14 @@ export const ActionCertificatesListComponent: FunctionComponent<ActionCertificat
      * this certificate.
      * @param certificate - Certificate.
      */
-    const createDummyValidityLabel = (certificate: DisplayCertificate): ReactNode => {
+    const createDummyValidityLabel = (): ReactNode => {
         return (
             <span className="with-muted-list-item-header">
                 Unable to visualize the certificate details&nbsp;
                 <Popup
                     trigger={ (
                         <Icon
-                            onClick={ () => handleViewCertificate(certificate) }
+                            onClick={ handleViewCertificate }
                             name={ "info circle" }
                             color={ "grey" }
                         />
@@ -303,9 +288,9 @@ export const ActionCertificatesListComponent: FunctionComponent<ActionCertificat
     };
 
     return (
-        <div className="certificate-list" >
+        <div className="action-certificate" >
             {
-                certificates ? (
+                displayCertificate ? (
                     <Grid>
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
@@ -317,75 +302,76 @@ export const ActionCertificatesListComponent: FunctionComponent<ActionCertificat
                                         count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                                         imageType: "circular"
                                     } }
+                                    data-componentid={ _componentId }
                                 >
                                     {
-                                        certificates?.map(( certificate: DisplayCertificate, index: number) => (
-                                            <ResourceListItem
-                                                key={ index }
-                                                actionsColumnWidth={ 3 }
-                                                descriptionColumnWidth={ 9 }
-                                                actions={ [
-                                                    {
-                                                        "data-componentid": `${ _componentId }-edit-cert-${ index }
-                                                        -button`,
-                                                        icon: "pencil",
-                                                        onClick: () => setShowWizard(true),
-                                                        popupText: t("actions:fields.passwordSharing.certificate"+
+                                        <ResourceListItem
+                                            key={ 0 }
+                                            actionsColumnWidth={ 3 }
+                                            descriptionColumnWidth={ 9 }
+                                            actions={ [
+                                                {
+                                                    "data-componentid": `${ _componentId }-edit-cert-button`,
+                                                    disabled: readOnly,
+                                                    icon: "pencil",
+                                                    onClick: () => setShowWizard(true),
+                                                    popupText: t("actions:fields.passwordSharing.certificate"+
                                                             ".icon.changecertificate"),
-                                                        type: "button"
-                                                    },
-                                                    {
-                                                        "data-componentid": `${ _componentId }-edit-cert-${ index }
-                                                        -button`,
-                                                        disabled: certificate?.infoUnavailable,
-                                                        hidden: certificate?.infoUnavailable,
-                                                        icon: "eye",
-                                                        onClick: () => handleViewCertificate(certificate),
-                                                        popupText: t("actions:fields.passwordSharing.certificate"+
+                                                    type: "button"
+                                                },
+                                                {
+                                                    "data-componentid": `${ _componentId }-view-cert-button`,
+                                                    disabled: displayCertificate?.infoUnavailable,
+                                                    hidden: displayCertificate?.infoUnavailable,
+                                                    icon: "eye",
+                                                    onClick: handleViewCertificate,
+                                                    popupText: t("actions:fields.passwordSharing.certificate"+
                                                             ".icon.viewcertificate"),
-                                                        type: "button"
-                                                    },
-                                                    {
-                                                        "data-componentid": `${ _componentId }-delete-cert-${ index }
-                                                        -button`,
-                                                        icon: "trash alternate",
-                                                        onClick: handleDeleteCertificate,
-                                                        popupText: t("actions:fields.passwordSharing.certificate"+
+                                                    type: "button"
+                                                },
+                                                {
+                                                    "data-componentid": `${ _componentId }-delete-cert-button`,
+                                                    disabled: readOnly,
+                                                    icon: "trash alternate",
+                                                    onClick: handleDeleteCertificate,
+                                                    popupText: t("actions:fields.passwordSharing.certificate"+
                                                             ".icon.deletecertificate"),
-                                                        type: "button"
-                                                    }
-                                                ] }
-                                                actionsFloated="right"
-                                                avatar={ createCertificateResourceAvatar(certificate) }
-                                                itemHeader={
-                                                    certificate?.infoUnavailable
-                                                        ? createDummyValidityLabel(certificate)
-                                                        : createValidityLabel(
-                                                            certificate.validFrom,
-                                                            certificate.validTill,
-                                                            CertificateManagementUtils.searchIssuerDNAlias(
-                                                                certificate?.issuerDN
-                                                            ))
+                                                    type: "button"
+                                                }
+                                            ] }
+                                            actionsFloated="right"
+                                            avatar={ createCertificateResourceAvatar(displayCertificate) }
+                                            itemHeader={
+                                                displayCertificate?.infoUnavailable
+                                                    ? createDummyValidityLabel()
+                                                    : createValidityLabel(
+                                                        displayCertificate.validFrom,
+                                                        displayCertificate.validTill,
+                                                        CertificateManagementUtils.searchIssuerDNAlias(
+                                                            displayCertificate?.issuerDN
+                                                        ))
 
-                                                }
-                                                itemDescription={
-                                                    certificate?.infoUnavailable
-                                                        ? null
-                                                        : CertificateManagementUtils
-                                                            .getValidityPeriodInHumanReadableFormat(
-                                                                certificate.validFrom,
-                                                                certificate.validTill
-                                                            )
-                                                }
-                                            />
-                                        ))
+                                            }
+                                            itemDescription={
+                                                displayCertificate?.infoUnavailable
+                                                    ? null
+                                                    : CertificateManagementUtils
+                                                        .getValidityPeriodInHumanReadableFormat(
+                                                            displayCertificate.validFrom,
+                                                            displayCertificate.validTill
+                                                        )
+                                            }
+                                        />
                                     }
                                 </ResourceList>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
                 ) : (
-                    <Alert severity="warning">
+                    <Alert
+                        severity="warning"
+                        data-componentid={ `${ _componentId }-no-certificate-alert` }
+                    >
                         <AlertTitle
                             className="alert-title"
                         >
@@ -402,6 +388,8 @@ export const ActionCertificatesListComponent: FunctionComponent<ActionCertificat
                                 variant="outlined"
                                 size="small"
                                 className={ "secondary-button" }
+                                disabled={ readOnly }
+                                data-componentid={ `${ _componentId }-add-certificate-button` }
                             >
                                 { t("actions:buttons.addCertificate") }
                             </Button>
@@ -410,7 +398,7 @@ export const ActionCertificatesListComponent: FunctionComponent<ActionCertificat
                 )
             }
             { showWizard && (
-                <AddActionCertificateWizard
+                <ActionCertificateWizard
                     closeWizard={ () => setShowWizard(false) }
                     updatePEMValue={ updatePEMValue }
                     updateSubmit={ updateSubmit }
@@ -422,15 +410,15 @@ export const ActionCertificatesListComponent: FunctionComponent<ActionCertificat
                 />
             ) }
             { DeleteCertConfirmationModal }
-            { certificateModal && (
+            { viewDisplayCertificate && (
                 <CertificateViewModal
-                    open={ certificateModal }
-                    certificate={ certificateDisplay }
-                    onClose={ () => setCertificateModal(false) }
+                    open={ viewDisplayCertificate }
+                    certificate={ displayCertificate }
+                    onClose={ () => setViewDisplayCertificate(false) }
                 />
             ) }
         </div>
     );
 };
 
-export default ActionCertificatesListComponent;
+export default ActionCertificateComponent;

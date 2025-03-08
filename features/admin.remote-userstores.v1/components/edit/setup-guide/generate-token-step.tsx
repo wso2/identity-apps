@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,7 @@
 import Button from "@oxygen-ui/react/Button";
 import Typography from "@oxygen-ui/react/Typography";
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CopyInputField, Message } from "@wso2is/react-components";
@@ -27,6 +28,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { generateToken } from "../../../api/remote-user-stores";
+import { RemoteUserStoreAPIExceptionCodes } from "../../../constants/remote-user-stores-constants";
 import { GenerateTokenResponseInterface } from "../../../models/remote-user-stores";
 
 interface GenerateTokenStepPropsInterface extends IdentifiableComponentInterface {
@@ -73,12 +75,24 @@ const GenerateTokenStep: FunctionComponent<GenerateTokenStepPropsInterface> = ({
             .then((response: GenerateTokenResponseInterface) => {
                 setGeneratedToken(response.token);
             })
-            .catch(() => {
+            .catch((error: IdentityAppsApiException) => {
+                if (error?.code === RemoteUserStoreAPIExceptionCodes.TokenLimitExceeded) {
+                    dispatch(addAlert(
+                        {
+                            description: t("remoteUserStores:notifications.tokenCountExceededError.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("remoteUserStores:notifications.tokenCountExceededError.message")
+                        }
+                    ));
+
+                    return;
+                }
+
                 dispatch(addAlert(
                     {
                         description: t("remoteUserStores:notifications.tokenGenerateError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("userstores:notifications.tokenGenerateError.message")
+                        message: t("remoteUserStores:notifications.tokenGenerateError.message")
                     }
                 ));
             })

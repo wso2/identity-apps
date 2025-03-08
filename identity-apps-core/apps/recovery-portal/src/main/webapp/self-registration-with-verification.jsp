@@ -371,9 +371,43 @@
 
                             <div class="">
                                 <% if (error) { %>
-                                <div class="ui negative message" id="server-error-msg">
-                                    <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
-                                </div>
+                                    <% if ( SelfRegistrationStatusCodes.ERROR_CODE_DUPLICATE_CLAIM_VALUE.equals(errorCodeFromRequest)) {
+                                        String[] splitErrorMsg = errorMsg.split("for");
+                                        String[] attributeList = splitErrorMsg[1].split("are|is")[0].trim().split(",");
+                                        String attributeString = " ";
+                                        String finalMessage = "";
+                                        for (int i = 0; i < attributeList.length; i++) {
+                                            attributeString = attributeString + IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, attributeList[i].trim());
+
+                                            if (i < attributeList.length - 1) {
+                                                attributeString = attributeString + (", ");
+                                            } else {
+                                                attributeString = attributeString + (" ");
+                                            }
+                                        }
+
+                                        if (errorMsg.contains("is")) {
+                                            finalMessage = new StringBuilder()
+                                                .append(i18n(recoveryResourceBundle, customText, "values.defined.for"))
+                                                .append(attributeString)
+                                                .append(i18n(recoveryResourceBundle, customText, "are.already.used.by.different.users"))
+                                                .toString();
+                                        }   else {
+                                            finalMessage = new StringBuilder()
+                                                .append(i18n(recoveryResourceBundle, customText, "values.defined.for"))
+                                                .append(attributeString)
+                                                .append(i18n(recoveryResourceBundle, customText, "are.already.used.by.different.users"))
+                                                .toString();
+                                        }
+                                    %>
+                                        <div class="ui negative message" id="server-error-msg">
+                                            <%=finalMessage%>
+                                        </div>
+                                    <% } else { %>
+                                        <div class="ui negative message" id="server-error-msg">
+                                            <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
+                                        </div>
+                                    <% } %>
                                 <% } %>
 
                                 <div class="ui negative message" id="error-msg" hidden="hidden">
@@ -397,11 +431,12 @@
                                     if (firstNamePII != null) {
                                         String firstNameValue = request.getParameter(IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM);
                                 %>
-                                    <div class="two fields">
-                                        <div id="firstNameField" class="field">
+                                    <div <% if (lastNamePII != null) { %> class="two fields mb-0" <%} %> >
+                                        <div id="firstNameField"
+                                        <% if (firstNamePII.getRequired()) { %> class="field form-group required" <%}
+                                                else {%> class="field"<%}%>>
                                             <label class="control-label">
                                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "First.name")%>
-                                                <% if (firstNamePII.getRequired() || !piisConfigured) { %>*<% } %>
                                             </label>
                                             <input id="firstNameUserInput" type="text" name="http://wso2.org/claims/givenname" class="form-control"
                                                 <% if (firstNamePII.getRequired() || !piisConfigured) {%> required <%}%>
@@ -423,10 +458,11 @@
                                                 String lastNameValue =
                                                         request.getParameter(IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM);
                                         %>
-                                        <div id="lastNameField" class="field">
+                                        <div id="lastNameField"
+                                        <% if (lastNamePII.getRequired()) { %> class="field form-group required" <% }
+                                                else { %> class="field form-group"<% } %>>
                                             <label class="control-label">
                                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Last.name")%>
-                                                <% if (lastNamePII.getRequired() || !piisConfigured) { %>*<% } %>
                                             </label>
                                             <input id="lastNameUserInput" type="text" name="http://wso2.org/claims/lastname" class="form-control"
                                                 <% if (lastNamePII.getRequired() || !piisConfigured) {%> required <%}%>
@@ -781,6 +817,9 @@
                                 <div class="ui divider hidden"></div>
                                 <div class="field">
                                     <div class="g-recaptcha"
+                                        data-size="invisible"
+                                        data-bind="registrationSubmit"
+                                        data-callback="onCompleted"
                                         data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
                                         data-theme="light"
                                     >
@@ -921,7 +960,7 @@
     </div>
 
     <script type="text/javascript" src="libs/handlebars.min-v4.7.7.js"></script>
-    <script type="text/javascript" src="libs/jstree/dist/jstree.min.js"></script>
+    <script type="text/javascript" src="libs/jstree/src/jstree.js"></script>
     <script type="text/javascript" src="libs/jstree/src/jstree-actions.js"></script>
     <script type="text/javascript" src="js/consent_template_1.js"></script>
     <script type="text/javascript" src="js/consent_template_2.js"></script>
@@ -1040,6 +1079,10 @@
 
         function goBack() {
             window.history.back();
+        }
+
+        function onCompleted() {
+            $('#register').submit();
         }
 
         $(document).ready(function () {
@@ -1246,11 +1289,11 @@
                 }
                 %>
 
-                $('<input />').attr('type', 'hidden')
-                    .attr('name', "consent")
-                    .attr('value', JSON.stringify(receipt))
-                    .appendTo('#register');
                 if (canSubmit) {
+                    $('<input />').attr('type', 'hidden')
+                        .attr('name', "consent")
+                        .attr('value', JSON.stringify(receipt))
+                        .appendTo('#register');
                     self.submit();
                 }
 
@@ -1296,15 +1339,15 @@
             if (hasPurposes) {
                 if(consentDisplayType == "template") {
                     %>
-            renderReceiptDetailsFromTemplate(<%= Encode.forJava(purposes) %>);
+            renderReceiptDetailsFromTemplate(JSON.parse("<%= Encode.forJava(purposes) %>"));
             <%
                 } else if (consentDisplayType == "tree") {
             %>
-            renderReceiptDetails(<%= Encode.forJava(purposes)%>);
+            renderReceiptDetails(JSON.parse("<%= Encode.forJava(purposes) %>"));
             <%
                 } else if (consentDisplayType == "row"){
             %>
-            renderReceiptDetailsFromRows(<%= Encode.forJava(purposes)%>);
+            renderReceiptDetailsFromRows(JSON.parse("<%= Encode.forJava(purposes) %>"));
             <%
                 }
             }
@@ -1604,7 +1647,7 @@
                 var rowTemplate =
                     '{{#purposes}}' +
                     '<div class="ui bulleted list">' +
-                    '<div class="item"><span>{{purpose}} {{#if description}}<i id="description" class="info circle icon" data-variation="inverted" data-content="{{description}}" data-placement="right"/>{{/if}}</span></div></div>' +
+                    '<div class="item"><span>{{purpose}} {{#if description}}<span id="description-{{purposeId}}" data-tooltip="{{description}}"" data-inverted=""><i class="info circle icon"></i></span>{{/if}}</span></div></div>' +
                     '<div class="ui form">' +
                     '{{#grouped_each 2 piiCategories}}' +
                     '{{#each this }}' +

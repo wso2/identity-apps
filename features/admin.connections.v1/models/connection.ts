@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 import { IdentifiableComponentInterface, LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIconProps } from "@wso2is/react-components";
 import { ComponentType, LazyExoticComponent, ReactElement } from "react";
@@ -300,7 +299,7 @@ export interface ExternalEndpoint {
  */
 export interface ExternalEndpointAuthentication {
     type?: EndpointAuthenticationType;
-    properties?: string[]
+    properties?: Partial<AuthenticationPropertiesInterface>
 }
 
 /**
@@ -753,7 +752,7 @@ export interface CustomAuthGeneralDetailsFormValuesInterface {
     /**
      * Display name of the connection
      */
-    displayName?: string
+    displayName?: string;
     /**
      * Description of the connection
      */
@@ -834,7 +833,7 @@ export interface EnterpriseConnectionCreateWizardGeneralFormValuesInterface {
 /**
  * Interface for the general form values in the custom authentication wizard.
  */
-export interface CustomAuthenticationCreateWizardGeneralFormValuesInterface {
+export interface CustomAuthenticatorCreateWizardGeneralFormValuesInterface {
     /**
      * Identifier of the custom authentication.
      */
@@ -850,45 +849,9 @@ export interface CustomAuthenticationCreateWizardGeneralFormValuesInterface {
  */
 export interface EndpointAuthenticationUpdateInterface extends CustomAuthGeneralDetailsFormValuesInterface {
     /**
-     * Name of the Action.
-     */
-    name?: string;
-    /**
-     * Description of the Action.
-     */
-    description?: string;
-    /**
      * Endpoint configuration of the Action.
      */
-    endpoint?: Partial<EndpointInterface>;
-}
-
-/**
- *  Endpoint configuration.
- */
-export interface EndpointInterface {
-    /**
-     * External endpoint.
-     */
-    uri: string;
-    /**
-     * Authentication configurations of the Action.
-     */
-    authentication: AuthenticationInterface;
-}
-
-/**
- *  Endpoint authentication configuration.
- */
-interface AuthenticationInterface {
-    /**
-     * Authentication Type.
-     */
-    type: EndpointAuthenticationType;
-    /**
-     * Authentication properties.
-     */
-    properties: Partial<EndpointConfigFormPropertyInterface>;
+    endpoint?: Partial<ExternalEndpoint>;
 }
 
 /**
@@ -944,7 +907,7 @@ export enum EndpointAuthenticationType {
     BEARER = "BEARER",
 }
 
-export interface CustomAuthenticationCreateWizardProps extends GenericConnectionCreateWizardPropsInterface,
+export interface CustomAuthenticatorCreateWizardProps extends GenericConnectionCreateWizardPropsInterface,
     IdentifiableComponentInterface {}
 
 /**
@@ -962,7 +925,7 @@ export interface WizardStepInterface {
     name: WizardStepsCustomAuth;
 }
 
-export type AvailableCustomAuthentications = "external" | "internal" | "two-factor";
+export type AvailableCustomAuthenticators = "external" | "internal" | "two-factor";
 export type FormErrors = { [key: string]: string };
 
 /**

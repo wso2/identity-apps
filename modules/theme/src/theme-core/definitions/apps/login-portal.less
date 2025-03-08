@@ -84,6 +84,12 @@
                     max-width: 700px !important;
                 }
 
+                @media only screen and (max-width: @tabletBreakpoint) {
+                    .ui.segment.segment-layout {
+                        min-width: 350px;
+                    }
+                }
+
                 > .ui.segment {
                     background: @loginPortalLoginCardBackground;
                     padding: @loginPortalLoginCardPadding;

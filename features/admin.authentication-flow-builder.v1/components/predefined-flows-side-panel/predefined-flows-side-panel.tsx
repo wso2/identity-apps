@@ -73,7 +73,11 @@ import AdaptiveAuthTemplateChangeConfirmationModal from "./adaptive-auth-templat
 import AdaptiveAuthTemplateInfoModal from "./adaptive-auth-template-info-modal";
 import BasicLoginFlowTemplateChangeConfirmationModal from "./basic-login-flow-template-change-confimation-modal";
 import PredefinedSocialFlowHandlerModalFactory from "./predefined-social-flow-handler-modal-factory";
-import { APPLE_LOGIN_SEQUENCE, ELK_RISK_BASED_TEMPLATE_NAME } from "../../constants/template-constants";
+import {
+    APPLE_LOGIN_SEQUENCE,
+    ELK_RISK_BASED_TEMPLATE_NAME,
+    PUSH_AUTH_FIRST_FACTOR_SEQUENCE,
+    PUSH_AUTH_SECOND_FACTOR_SEQUENCE } from "../../constants/template-constants";
 import * as FlowSequences from "../../data/flow-sequences";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import { PredefinedFlowCategories, SocialIdPPlaceholders } from "../../models/predefined-flows";
@@ -311,6 +315,9 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                 })?.displayName;
             };
 
+            const isPushProviderFeatureEnabled: boolean =
+                window["AppUtils"]?.getConfig()?.ui?.features?.pushProviders?.enabled;
+
             return (
                 <Box key={ sequenceCategoryId } className="predefined-flow-category">
                     <Typography variant="body1">{ title }</Typography>
@@ -320,6 +327,13 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                                 && new URL(deploymentConfig?.serverOrigin)?.hostname
                                     === CommonAuthenticatorConstants.LOCAL_SERVER_URL) {
                                 return null;
+                            }
+
+                            if (sequenceId === PUSH_AUTH_FIRST_FACTOR_SEQUENCE ||
+                                sequenceId === PUSH_AUTH_SECOND_FACTOR_SEQUENCE) {
+                                if (!isPushProviderFeatureEnabled) {
+                                    return null;
+                                }
                             }
 
                             return (

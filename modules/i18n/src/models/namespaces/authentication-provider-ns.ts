@@ -2052,4 +2052,13 @@ export interface AuthenticationProviderNS {
             previous: string;
         };
     };
+    overrides: {
+        authenticators: {
+            customAuthenticators: {
+                pluginBased: {
+                    name: string;
+                }
+            }
+        }
+    }
 }

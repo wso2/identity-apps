@@ -82,6 +82,7 @@ export interface TenantsNS {
                     label: string;
                     placeholder: string;
                     validations: {
+                        invalid: string;
                         required: string;
                     };
                 };
@@ -164,6 +165,13 @@ export interface TenantsNS {
             secondaryAction: string;
         };
     },
+    deploymentUnits: {
+        label: string;
+        placeholder: string;
+        validations: {
+            empty: string;
+        };
+    };
     edit: {
         backButton: string;
         consoleURL: {
@@ -232,6 +240,10 @@ export interface TenantsNS {
                 };
             };
         };
+    };
+    listDeploymentUnits: {
+        description: string;
+        message: string;
     };
     listing: {
         advancedSearch: {

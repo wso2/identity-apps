@@ -76,6 +76,10 @@ interface ExternalDialectEditPageInterface extends TestableComponentInterface {
      * Update mapped claims on delete or edit
      */
     updateMappedClaims?: ReactDispatch<SetStateAction<boolean>>;
+    /**
+     * Update dialects on add
+     */
+    updateDialects?: ReactDispatch<SetStateAction<boolean>>;
 }
 
 /**
@@ -94,6 +98,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
         isAttributeButtonEnabled,
         attributeButtonText,
         updateMappedClaims,
+        updateDialects,
         [ "data-testid" ]: testId,
         id: dialectId
     } = props;
@@ -183,10 +188,6 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             });
     };
 
-    useEffect(() => {
-        dialectId && getDialect();
-    }, [ dialectId ]);
-
     /**
      * Fetch external claims.
      *
@@ -240,6 +241,13 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
     };
 
     useEffect(() => {
+        if (!dialectId) {
+            setDialect(null);
+            setClaims(undefined);
+
+            return;
+        }
+        getDialect();
         getExternalClaims();
     }, [ dialectId ]);
 
@@ -347,6 +355,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 attributeUri={ attributeUri }
                 mappedLocalClaims={ mappedLocalClaims }
                 updateMappedClaims={ updateMappedClaims }
+                updateDialects={ updateDialects }
                 isAttributeButtonEnabled={ isAttributeButtonEnabled }
                 attributeButtonText={ attributeButtonText }
             />
@@ -355,6 +364,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
             {
                 attributeConfig.attributeMappings.showDangerZone
+                && dialect?.id
                 && !ClaimManagementConstants.SYSTEM_DIALECTS.includes(dialect?.id)
                 && (
                     <Grid>

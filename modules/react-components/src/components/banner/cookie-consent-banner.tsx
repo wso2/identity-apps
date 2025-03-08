@@ -165,7 +165,7 @@ export const CookieConsentBanner: FunctionComponent<PropsWithChildren<CookieCons
         if (storageStrategy === "cookie") {
             const _domain: string = domainCookie ? domain ?? URLUtils.getDomain(window.location.href) : undefined;
 
-            CookieStorageUtils.setCookie(COOKIE_CONSENT_COOKIE_NAME, "true", { days: 365 }, _domain);
+            CookieStorageUtils.setCookie(COOKIE_CONSENT_COOKIE_NAME, "true", { days: 365 }, _domain, { secure: true });
 
             return;
         }

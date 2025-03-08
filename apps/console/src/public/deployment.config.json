@@ -110,6 +110,16 @@
             {
                 "displayName": "Account Disabled",
                 "id": "QWNjb3VudERpc2FibGU"
+            },
+            {
+                "description": "This email informs the user that the email address is updated",
+                "displayName": "Email update without verification",
+                "id": "bm90aWZ5T25FeGlzdGluZ0VtYWlsVXBkYXRlV2l0aG91dFZlcmlmaWNhdGlvbg"
+            },
+            {
+                "description": "This email informs the user that the email address is updated",
+                "displayName": "Email Update Notification",
+                "id": "bm90aWZ5T25FeGlzdGluZ0VtYWlsVXBkYXRl"
             }
         ],
         "outboundProvisioningConnectors": [],
@@ -172,6 +182,7 @@
     },
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
+    "proxyContextPath": "",
     "routePaths": {
         "home": "/getting-started",
         "login": "",
@@ -322,7 +333,16 @@
             "ai": {
                 "disabledFeatures": [],
                 "enabled": false,
-                "featureFlags": [],
+                "featureFlags": [
+                    {
+                        "feature": "ai.application.loginFlow.banner",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "ai.branding.banner",
+                        "flag": ""
+                    }
+                ],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -468,6 +488,22 @@
                     ]
                 }
             },
+            "attributeVerification": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [
+                        "internal_governance_view"
+                    ],
+                    "update": [
+                        "internal_governance_update"
+                    ]
+                }
+            },
             "auditLogs": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -480,7 +516,8 @@
             },
             "branding": {
                 "disabledFeatures": [
-                    "branding.hostnameUrlBranding"
+                    "branding.hostnameUrlBranding",
+                    "branding.stylesAndText.application.text"
                 ],
                 "enabled": true,
                 "featureFlags": [
@@ -838,6 +875,10 @@
                 "featureFlags": [
                     {
                         "feature": "loginAndRegistration",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "loginAndRegistration.loginSecurity.fraudDetection",
                         "flag": ""
                     },
                     {

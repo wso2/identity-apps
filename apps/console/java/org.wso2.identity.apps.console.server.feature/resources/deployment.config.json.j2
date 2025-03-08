@@ -82,6 +82,9 @@
     "i18nResourcePath": "{{ console.i18n_resource_path }}",
     "loginCallbackPath": "{{ console.login_callback_path }}",
     "logoutCallbackPath": "{{ console.logout_callback_path }}",
+    {% if console.proxy_context_path is defined %}
+    "proxyContextPath": "{{ console.proxy_context_path }}",
+    {% endif %}
     {% if console.server_origin is defined %}
     "serverOrigin": "{{ console.server_origin }}",
     {% endif %}
@@ -459,6 +462,39 @@
                 }
             },
             {% endif %}
+            {% if console.ai is defined  %}
+            "ai": {
+                "disabledFeatures": [
+                    {% if console.ai.disabled_features is defined %}
+                    {% for feature in console.ai.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.ai.enabled is defined %} {{ console.ai.enabled }},
+                    {% else %}
+                        {% if ai_services.key is defined and ai_services.key|length > 0 %} true,
+                        {% else %} false,                     
+                        {% endif %}
+                {% endif %}
+                "scopes": {
+                    {% if console.ai.scopes is defined %}
+                    {% for operation, scopes in console.ai.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.analytics.enabled is defined %}
             "analytics": {
                 "disabledFeatures": [
@@ -635,6 +671,37 @@
                         "read": [],
                         "update": [],
                         "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.attribute_verification is defined %}
+            "attributeVerification": {
+                "disabledFeatures": [
+                    {% if console.attribute_verification.disabled_features is defined %}
+                    {% for feature in console.attribute_verification.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.attribute_verification.enabled is defined %} {{ console.attribute_verification.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.attribute_verification.scopes is defined %}
+                    {% for operation, scopes in console.attribute_verification.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": [],
+                        "feature": []
                     {% endif %}
                 }
             },

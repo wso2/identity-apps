@@ -405,6 +405,8 @@ export class AppConstants {
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/wsfed-configuration` ],
             [ "INTERNAL_NOTIFICATION_SENDING",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/internal-notification-sending` ],
+            [ "ACCOUNT_DISABLE",
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/account-disable` ],
             [ "OUTBOUND_PROVISIONING_SETTINGS",
                 `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ],
             [ "IMPERSONATION", `${AppConstants.getAdminViewBasePath()}/login-and-registration/impersonation` ],

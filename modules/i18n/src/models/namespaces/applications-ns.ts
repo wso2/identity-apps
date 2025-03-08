@@ -1171,6 +1171,16 @@ export interface ApplicationsNS {
                     hint: string;
                     label: string;
                 };
+                discoverableGroups: {
+                    label: string;
+                    action: {
+                        assign: string;
+                    };
+                    radioOptions: {
+                        everyone: string;
+                        userGroups: string;
+                    };
+                };
                 accessUrl: {
                     hint: string;
                     label: string;
@@ -1772,6 +1782,10 @@ export interface ApplicationsNS {
                 attributeProfile: {
                     heading: string;
                     fields: {
+                        attributeNameFormat: {
+                            hint: string;
+                            label: string;
+                        };
                         enable: {
                             hint: string;
                             label: string;

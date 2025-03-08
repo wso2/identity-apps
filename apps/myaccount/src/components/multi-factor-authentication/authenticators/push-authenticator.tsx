@@ -252,7 +252,6 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
         </ConfirmationModal>
     );
 
-
     return (
         <div className="push-authenticator">
             { renderPushAuthenticatorWizard() }
@@ -333,13 +332,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                                                 name="mobile alternate"
                                                 size="large"
                                                 className="device-icon"
-                                                data-componentId={ `${ componentId }-remove-device` }
-                                                onClick={
-                                                    () => deleteRegisteredDevice(registeredDevice.deviceId)
-                                                }
                                             />
-
-
                                             <ListItemText
                                                 primary={ registeredDevice?.name }
                                                 secondary={ registeredDevice?.model }

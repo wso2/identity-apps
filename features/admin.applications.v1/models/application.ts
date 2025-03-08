@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -269,6 +269,7 @@ export interface ApplicationAdvancedConfigurationsViewInterface {
 export interface AdvancedConfigurationsInterface {
     saas?: boolean;
     discoverableByEndUsers?: boolean;
+    discoverableGroups?: DiscoverableGroupInterface[];
     certificate?: CertificateInterface;
     skipLoginConsent?: boolean;
     skipLogoutConsent?: boolean;
@@ -773,6 +774,34 @@ export interface FederatedConflictWithSMSOTPReturnValueInterface {
     idpList: GenericAuthenticatorInterface[];
 }
 
+/**
+ * Interface representing the response for the application groups metadata endpoint.
+ */
+export interface GroupMetadataInterface {
+    /**
+     * Unique identifier for the group.
+     */
+    id: string;
+    /**
+     * Display name of the group.
+     */
+    name?: string;
+}
+
+/**
+ * Interface for the discoverable group in the application advanced configurations.
+ */
+export interface DiscoverableGroupInterface {
+    /**
+     * Domain name of the user store.
+     */
+    userStore: string;
+    /**
+     * List of groups.
+     */
+    groups: GroupMetadataInterface[];
+}
+
 export const emptyOIDCAppConfiguration = (): OIDCApplicationConfigurationInterface => ({
     authorizeEndpoint: "",
     endSessionEndpoint: "",
@@ -888,6 +917,7 @@ export enum ApplicationTabTypes {
  */
 export interface idpInfoTypeInterface {
     id: string;
+    isLocalAuthenticator?: boolean;
     name: string;
     redirectTo?: string;
 }

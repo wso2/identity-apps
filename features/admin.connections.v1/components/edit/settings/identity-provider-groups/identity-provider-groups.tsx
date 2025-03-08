@@ -17,9 +17,9 @@
  */
 
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -43,6 +43,7 @@ import {
     ConnectionClaimMappingInterface,
     ConnectionInterface
 } from "../../../../models/connection";
+import { ConnectionsManagementUtils } from "../../../../utils/connection-utils";
 
 const FORM_ID: string = "idp-group-attributes-form";
 
@@ -228,6 +229,11 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                 info
             />
         );
+
+        // Hide the info message if the connection is a custom federated authenticator.
+        if(ConnectionsManagementUtils.IsCustomAuthenticator(editingIDP.federatedAuthenticators?.authenticators[0])) {
+            return;
+        }
 
         /**
          * If the claim mappings are empty,

@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { customAuthenticationNS } from "../../../models";
+import { customAuthenticatorNS } from "../../../models";
 
-export const customAuthentication: customAuthenticationNS = {
+export const customAuthenticator: customAuthenticatorNS = {
     fields: {
         createWizard: {
             authenticationTypeStep: {
@@ -126,7 +126,7 @@ export const customAuthentication: customAuthenticationNS = {
                     hint: "Must be a string containing only letters (a-z, A-Z) numbers (0-9), " +
                     "underscore (_) and hyphen (-). ",
                     label: "Identifier",
-                    placeholder: "Authenticator Identifier",
+                    placeholder: "authenticator-identifier",
                     validations: {
                         empty: "",
                         invalid: "Invalid Identifier"
@@ -136,6 +136,54 @@ export const customAuthentication: customAuthenticationNS = {
             },
             subTitle: "Register externally implemented authentication service.",
             title: "Custom Authentication"
+        },
+        editPage: {
+            generalTab: {
+                iconUrl: {
+                    hint: "A URL for the image of the connection for display purposes. If not provided a generated thumbnail" +
+                    "will be displayed. Recommended size is 200x200 pixels."
+                }
+            }
+        }
+    },
+    notifications: {
+        addCustomAuthenticator: {
+            error: {
+                description: "{{ description }}",
+                message: "Create error"
+            },
+            genericError: {
+                description: "An error occurred while creating the custom authenticator.",
+                message: "Create error"
+            },
+            success: {
+                description: "Successfully created the custom authenticator.",
+                message: "Create successful"
+            }
+        },
+        getCustomAuthenticator: {
+            error: {
+                description: "{{ description }}",
+                message: "Retrieval error"
+            },
+            genericError: {
+                description: "An error occurred while retrieving the custom authenticator.",
+                message: "Retrieval error"
+            }
+        },
+        updateCustomAuthenticator: {
+            error: {
+                description: "{{ description }}",
+                message: "Update error"
+            },
+            genericError: {
+                description: "An error occurred while updating the custom authenticator.",
+                message: "Update error"
+            },
+            success: {
+                description: "Successfully updated the custom authenticator.",
+                message: "Update successful"
+            }
         }
     }
 };

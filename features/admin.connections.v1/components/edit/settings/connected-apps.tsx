@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -74,12 +74,13 @@ import {
     Label,
     SemanticICONS
 } from "semantic-ui-react";
-import { getConnectedApps } from "../../../api/connections";
+import { getConnectedApps, getConnectedAppsOfAuthenticator } from "../../../api/connections";
 import {
     ConnectedAppInterface,
     ConnectedAppsInterface,
     ConnectionInterface
 } from "../../../models/connection";
+import { ConnectionsManagementUtils, resolveCustomAuthenticatorDisplayName } from "../../../utils/connection-utils";
 
 /**
  * Proptypes for the advance settings component.
@@ -152,31 +153,99 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
 
     const dispatch: Dispatch = useDispatch();
     const { organizationType } = useGetCurrentOrganizationType();
+    const { t } = useTranslation();
 
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
     const [ connectedApps, setConnectedApps ] = useState<ConnectedAppInterface[]>();
     const [ filterSelectedApps, setFilterSelectedApps ] = useState<ConnectedAppInterface[]>([]);
     const [ connectedAppsCount, setconnectedAppsCount ] = useState<number>(0);
-    const [ isAppsLoading, setIsAppsLoading ] = useState<boolean>(true);
+    const [ isCustomLocalAuthenticator, setIsCustomLocalAuthenticator ] = useState<boolean>(undefined);
+    const [ isAppsLoading, setIsAppsLoading ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
     const groupedApplicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state?.application?.groupedTemplates);
+
     const [
         isApplicationTemplateRequestLoading,
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
-
-    const { t } = useTranslation();
     const {
         templates: extensionApplicationTemplates,
         isExtensionTemplatesRequestLoading: isExtensionApplicationTemplatesRequestLoading
     } = useExtensionTemplates();
 
+    /**
+     * This useEffect checks whether the authenticator is a custom local authenticator.
+     * If yes, it enables fetching the connected apps of the local authenticator.
+     */
     useEffect(() => {
+        if (ConnectionsManagementUtils.IsCustomLocalAuthenticator(editingIDP)) {
+            setIsCustomLocalAuthenticator(true);
+        } else {
+            setIsCustomLocalAuthenticator(false);
+        }
+    }, [ editingIDP ]);
+
+    /**
+     * This useEffect sets the fetched connected apps of the local authenticator to the state.
+     */
+    useEffect(() => {
+        if (isCustomLocalAuthenticator === undefined || !isCustomLocalAuthenticator) {
+            return;
+        }
+
+        setIsAppsLoading(true);
+        getConnectedAppsOfAuthenticator(editingIDP.id)
+            .then(async (response: ConnectedAppsInterface) => {
+                setconnectedAppsCount(response.count);
+
+                if (response.count > 0) {
+
+                    const appRequests: Promise<any>[] = response.connectedApps.map((app: ConnectedAppInterface) => {
+                        return getApplicationDetails(app.appId);
+                    });
+
+                    const results: ApplicationBasicInterface[] = await Promise.all(
+                        appRequests.map((response: Promise<any>) => response.catch((error: IdentityAppsError) => {
+                            dispatch(addAlert({
+                                description: error?.description
+                                    || t("idp:connectedApps.genericError.description"),
+                                level: AlertLevels.ERROR,
+                                message: error?.message
+                                    || t("idp:connectedApps.genericError.message")
+                            }));
+                        }))
+                    );
+
+                    setConnectedApps(results);
+                    setFilterSelectedApps(results);
+                }
+            })
+            .catch((error: IdentityAppsError) => {
+                dispatch(addAlert({
+                    description: error?.description
+                        || t("idp:connectedApps.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.message || t("idp:connectedApps.genericError.message")
+                }));
+            })
+            .finally(() => {
+                setIsAppsLoading(false);
+            });
+    }, [ isCustomLocalAuthenticator ]);
+
+    /**
+     * This useEffect fetches the connected apps of the IDP and sets them to the state.
+     */
+    useEffect(() => {
+        if (isCustomLocalAuthenticator === undefined || isCustomLocalAuthenticator) {
+            return;
+        }
+
         setIsAppsLoading(true);
         getConnectedApps(editingIDP.id)
             .then(async (response: ConnectedAppsInterface) => {
@@ -215,7 +284,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
             .finally(() => {
                 setIsAppsLoading(false);
             });
-    }, []);
+    }, [ isCustomLocalAuthenticator ]);
 
     /**
      * Fetch the application templates if list is not available in redux.
@@ -416,7 +485,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }` +
                     `=${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`,
 
-                state: { id: editingIDP.id, name: editingIDP.name }
+                state: { id: editingIDP.id, isLocalAuthenticator: isCustomLocalAuthenticator,
+                    name: editingIDP.name }
             });
         } else {
             if (!UIConfig?.legacyMode?.applicationListSystemApps) {
@@ -449,8 +519,26 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
                     : "",
 
-                state: { id: editingIDP.id, name: editingIDP.name }
+                state: { id: editingIDP.id, isLocalAuthenticator: isCustomLocalAuthenticator, name: editingIDP.name }
             });
+        }
+    };
+
+    /**
+     * Resolves the display name of the authenticator.
+     *
+     * Display name of custom local authenticators and custom federated authenticators are returned from
+     * two distinct properties from the API response.
+     *
+     * @returns - Display name of the authenticator.
+     */
+    const resolveDisplayName = (): string[] => {
+        if (ConnectionsManagementUtils.IsCustomAuthenticator(editingIDP)) {
+            const displayName: string = resolveCustomAuthenticatorDisplayName(editingIDP, isCustomLocalAuthenticator);
+
+            return [ t("idp:connectedApps.placeholders.emptyList", { idpName: displayName }) ];
+        } else {
+            return [ t("idp:connectedApps.placeholders.emptyList", { idpName: editingIDP.name }) ];
         }
     };
 
@@ -482,10 +570,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    subtitle={ [
-                        t("idp:connectedApps.placeholders.emptyList",
-                            { idpName: editingIDP.name })
-                    ] }
+                    subtitle={ resolveDisplayName() }
                     data-componentid={ `${ componentId }-empty-placeholder` }
                 />
             );
@@ -559,6 +644,14 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         setFilterSelectedApps(appNameFilter);
     };
 
+    const resolveConnectorName = (): string => {
+        if (isCustomLocalAuthenticator) {
+            return resolveCustomAuthenticatorDisplayName(editingIDP, isCustomLocalAuthenticator);
+        } else {
+            return editingIDP.name;
+        }
+    };
+
     if (isAppsLoading) {
         return <Loader />;
     }
@@ -566,7 +659,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     return (
         <EmphasizedSegment padded="very">
             <Heading as="h4">{ t("idp:connectedApps.header",
-                { idpName: editingIDP.name }) }</Heading>
+                { idpName: resolveConnectorName() }) }</Heading>
             <Divider hidden />
             { connectedApps && (
                 <Input
@@ -628,4 +721,3 @@ ConnectedApps.defaultProps = {
     selection: true,
     showListItemActions: true
 };
-

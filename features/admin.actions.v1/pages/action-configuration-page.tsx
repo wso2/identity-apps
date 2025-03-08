@@ -31,6 +31,7 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -82,6 +83,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const handleError: (error: AxiosError, operation: string) => void = useHandleError();
 
     const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
+    const hasActionCreatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.create);
 
     const actionTypeApiPath: string = useMemo(() => {
         const path: string[] = history.location.pathname.split("/");
@@ -107,6 +109,15 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
         isLoading: isActionsLoading,
         mutate: mutateActions
     } = useGetActionsByType(actionTypeApiPath);
+
+    useEffect(() => {
+        if (actions?.length >= 1) {
+            setShowCreateForm(false);
+            setIsActive(actions[0]?.status.toString() === ActionsConstants.ACTIVE_STATUS);
+        } else {
+            setShowCreateForm(true);
+        }
+    }, [ actions ]);
 
     const actionId: string = useMemo(() => actions?.[0]?.id || null, [ actions ]);
 
@@ -148,15 +159,6 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 return null;
             }
         }, [ action ]);
-
-    useEffect(() => {
-        if (actions?.length >= 1) {
-            setShowCreateForm(false);
-            setIsActive(actions[0]?.status.toString() === ActionsConstants.ACTIVE_STATUS);
-        } else {
-            setShowCreateForm(true);
-        }
-    }, [ actions ]);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching Actions by Type.
@@ -213,6 +215,17 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
             );
         }
     }, [ isActionLoading, actionFetchRequestError ]);
+
+    /**
+     * This function resolves whether the form is read-only or not.
+     */
+    const isReadOnly = (): boolean => {
+        if (showCreateForm) {
+            return !hasActionCreatePermissions;
+        } else {
+            return !hasActionUpdatePermissions;
+        }
+    };
 
     /**
      * Handles the back button click event.
@@ -310,7 +323,6 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
         const handleToggle = (e: SyntheticEvent, data: CheckboxProps) => {
             const toggleOperation: string = data.checked ? ActionsConstants.ACTIVATE : ActionsConstants.DEACTIVATE;
 
-            setIsActive(data.checked);
             setIsSubmitting(true);
             changeActionStatus(
                 actionTypeApiPath,
@@ -323,12 +335,13 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                     handleError(error, toggleOperation);
                 })
                 .finally(() => {
+                    setIsActive(data.checked);
                     mutateAction();
                     setIsSubmitting(false);
                 });
         };
 
-        return !isLoading && !showCreateForm && (
+        return !isLoading && !showCreateForm && !isEmpty(actions) && (
             <Checkbox
                 label={
                     isActive
@@ -385,6 +398,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                                 <PreIssueAccessTokenActionConfigForm
                                     initialValues={ actionCommonInitialValues }
                                     isLoading={ isLoading }
+                                    isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }
                                     isCreateFormState={ showCreateForm }
                                 />
@@ -394,6 +408,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                                 <PreUpdatePasswordActionConfigForm
                                     initialValues={ preUpdatePasswordActionInitialValues }
                                     isLoading={ isLoading }
+                                    isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }
                                     isCreateFormState={ showCreateForm }
                                 />
@@ -403,7 +418,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                     </Grid.Row>
                 </Grid>
             }
-            { !isLoading && !showCreateForm && (
+            { !isLoading && !showCreateForm && !isEmpty(actions) && (
                 <Show
                     when={ actionsFeatureConfig?.scopes?.delete }
                 >

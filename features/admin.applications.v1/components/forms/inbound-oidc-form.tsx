@@ -32,6 +32,7 @@ import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature
 import { ImpersonationConfigConstants } from "@wso2is/admin.impersonation.v1/constants/impersonation-configuration";
 import { getSharedOrganizations } from "@wso2is/admin.organizations.v1/api";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { OrganizationInterface, OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -342,6 +343,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             };
         }
     };
+
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     resolveInitialIDTokenEncryptionValues();
 
@@ -1187,8 +1190,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 if (template
                     && template.id
                     && get(applicationConfig.allowedGrantTypes, template.id)
-                    && !applicationConfig.allowedGrantTypes[ template.id ]
-                        .includes(name)
+                    && !applicationConfig.allowedGrantTypes[ isSubOrganization() ? "sub-organization-application" :
+                        template.id ].includes(name)
                     && ApplicationManagementConstants.AVAILABLE_GRANT_TYPES.includes(name)) {
 
                     return;
@@ -1995,7 +1998,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             return false;
                                         }
                                         if (URLUtils.isURLValid(value)) {
-                                            if (URLUtils.isHttpUrl(value) || URLUtils.isHttpsUrl(value)) {
+                                            if (URLUtils.isHttpUrl(value, false) || URLUtils.isHttpsUrl(value, false)) {
                                                 setCallbackURLsErrorLabel(null);
 
                                                 return true;
@@ -2514,6 +2517,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             { /* Pushed Authorization Requests*/ }
             { (ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
                 || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId)
+                && !isSubOrganization()
                 && !isSystemApplication
                 && !isDefaultApplication
                 && !disabledFeatures?.includes("applications.protocol.pushedAuthorization")
@@ -2557,6 +2561,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             { /* Request Object*/ }
             { (ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
                 || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId)
+                && !isSubOrganization()
                 && !isSystemApplication
                 && !isDefaultApplication
                 && applicationConfig?.inboundOIDCForm?.showRequestObjectConfigurations
@@ -2725,7 +2730,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 readOnly={ readOnly }
                                 data-testid={ `${ testId }-access-token-type-radio-group` }
                             />
-                            { isJWTAccessTokenTypeSelected &&
+                            { isJWTAccessTokenTypeSelected && !isM2MApplication &&
                                 isFeatureEnabled(applicationFeatureConfig, "applications.accessTokenAttributes") ? (
                                     <Grid.Row>
                                         <Grid.Column width={ 8 }>
@@ -2818,6 +2823,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
             {
                 !isM2MApplication
+                && !isSubOrganization()
                 && !isSystemApplication
                 && !isDefaultApplication
                 && (
@@ -3475,6 +3481,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             {
                 applicationConfig.inboundOIDCForm.showIdTokenEncryption
                 && ApplicationTemplateIdTypes.SPA !== template?.templateId
+                && !isSubOrganization()
                 && !isMobileApplication
                 && !isM2MApplication
                 && !isSystemApplication
@@ -3658,11 +3665,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Trans
                                     i18nKey={
                                         "applications:forms.inboundOIDC.sections.idToken" +
-                                        ".fields.algorithm.hint"
+                                        ".fields.signing.hint"
                                     }
                                 >
                                     The dropdown contains the supported <Code withBackground>id_token</Code>
-                                    encryption algorithms.
+                                    signing algorithms.
                                 </Trans>
                             </Hint>
                         </Grid.Column>
@@ -3728,6 +3735,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             { /* Logout */ }
             {
                 !isSPAApplication
+                && !isSubOrganization()
                 && applicationConfig.inboundOIDCForm.showBackChannelLogout
                 && !isSystemApplication
                 && !isDefaultApplication
@@ -3916,6 +3924,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             { /* Certificate Section */ }
             {
                 !isSystemApplication
+                && !isSubOrganization()
                 && !isDefaultApplication
                 && (
                     <Grid.Row columns={ 1 }>

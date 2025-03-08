@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,17 +21,14 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
-import { useUserStores } from "@wso2is/admin.userstores.v1/api";
 import { UserStoresList } from "@wso2is/admin.userstores.v1/components";
-import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { DocumentationLink, ListLayout, PageLayout, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
+import { useSelector } from "react-redux";
 import { PaginationProps } from "semantic-ui-react";
 import { RemoteUserStoreConstants } from "../constants/remote-user-stores-constants";
 
@@ -91,14 +88,15 @@ const RemoteUserStoresPage: FunctionComponent<RemoteUserStoresPagePropsInterface
     const [ searchQuery, setSearchQuery ] = useState("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
-    const dispatch: Dispatch = useDispatch();
-
     const {
-        data: originalUserStoreList,
         isLoading: isUserStoreListFetchRequestLoading,
-        error: userStoreListFetchRequestError,
-        mutate: mutateUserStoreListFetchRequest
-    } = useUserStores({ filter: null, limit: null, offset: null, sort: null });
+        userStoresList: originalUserStoreList,
+        mutateUserStoreList: mutateUserStoreListFetchRequest
+    } = useUserStores();
+
+    useEffect(() => {
+        mutateUserStoreListFetchRequest();
+    }, []);
 
     /**
      * Moderate Userstores list fetch response from the API.
@@ -115,30 +113,6 @@ const RemoteUserStoresPage: FunctionComponent<RemoteUserStoresPagePropsInterface
         setUserStores(userStores);
         setFilteredUserStores(userStores);
     }, [ originalUserStoreList ]);
-
-    /**
-     * Handles Userstore fetch request error.
-     */
-    useEffect(() => {
-        if (!userStoreListFetchRequestError) {
-            return;
-        }
-
-        // Ignore resource not found errors.
-        if (userStoreListFetchRequestError?.response?.data?.message
-            === UserStoreManagementConstants.RESOURCE_NOT_FOUND_ERROR_MESSAGE) {
-            return;
-        }
-
-        dispatch(addAlert({
-            description: userStoreListFetchRequestError?.response?.data?.description
-                || t("userstores:notifications.fetchUserstores.genericError" +
-                    ".description"),
-            level: AlertLevels.ERROR,
-            message: userStoreListFetchRequestError?.response?.data?.message
-                || t("userstores:notifications.fetchUserstores.genericError.message")
-        }));
-    }, [ userStoreListFetchRequestError ]);
 
     useEffect(() => {
         setFilteredUserStores((sortList(filteredUserStores, sortBy.value, sortOrder)));

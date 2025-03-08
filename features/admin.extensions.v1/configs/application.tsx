@@ -31,8 +31,8 @@ import {
 import { SupportedAuthProtocolTypes } from "@wso2is/admin.applications.v1/models/application-inbound";
 import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { ApplicationRoles } from "@wso2is/admin.roles.v2/components/application-roles";
 import { I18n } from "@wso2is/i18n";
 import {
@@ -149,6 +149,11 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.DEVICE_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
             ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
+        ],
+        [ "sub-organization-application" ]: [
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.PASSWORD,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
         ]
     },
     attributeSettings: {
@@ -166,10 +171,14 @@ export const applicationConfig: ApplicationConfig = {
 
                 return allowedTemplates.includes(templateId);
             },
+            isMandateLinkedLocalAccountEnabled: (templateId: string): boolean => {
+                const allowedTemplates: string[] = [];
+
+                return allowedTemplates.includes(templateId);
+            },
             showIncludeTenantDomain: true,
             showIncludeUserstoreDomainRole: true,
             showIncludeUserstoreDomainSubject: true,
-            showMandateLinkedLocalAccount: false,
             showRoleAttribute: true,
             showRoleMapping: true,
             showSubjectAttribute: true,
@@ -272,8 +281,6 @@ export const applicationConfig: ApplicationConfig = {
 
             // Enable the roles tab for supported templates when the api resources config is enabled.
             if (apiResourceFeatureEnabled
-                && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
-                    applicationRoles?.enabled)
                 && (
                     application?.advancedConfigurations?.fragment ||
                     (application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
@@ -297,7 +304,7 @@ export const applicationConfig: ApplicationConfig = {
                             <ResourceTab.Pane controlledSegmentation>
                                 <ApplicationRoles
                                     onUpdate={ onApplicationUpdate }
-                                    readOnly={ isReadOnly }
+                                    readOnly={ isReadOnly || application?.advancedConfigurations?.fragment }
                                 />
                             </ResourceTab.Pane>
                         )

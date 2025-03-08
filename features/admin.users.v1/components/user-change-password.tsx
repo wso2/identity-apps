@@ -164,7 +164,8 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             return;
         }
 
-        if (governanceConnectorProperties === undefined) {
+        if (governanceConnectorProperties === undefined
+            || governanceConnectorProperties?.length !== connectorProperties?.length) {
             setGovernanceConnectorProperties(connectorProperties);
         }
     }, [ connectorProperties ]);
@@ -601,9 +602,10 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             handleUserUpdate(user.id);
         })
             .catch((error: any) => {
-                if (error.response && error.response.data && error.response.data.description) {
+                if (error.response && error.response.data && error.response.data.detail) {
                     onAlertFired({
-                        description: error.response.data.description,
+                        description: t("user:profile.notifications.changeUserPassword.error.description",
+                            { description: error.response.data.detail }),
                         level: AlertLevels.ERROR,
                         message: t("user:profile.notifications.changeUserPassword.error." +
                         "message")

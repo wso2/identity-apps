@@ -63,6 +63,7 @@ export interface userNS {
                 actionTitle: string;
                 header: string;
                 subheader: string;
+                disabledHint: string;
             };
             passwordResetZone: {
                 actionTitle: string;
@@ -118,9 +119,14 @@ export interface userNS {
                     };
                 };
                 username: {
+                    hint: {
+                        defaultRegex: string;
+                    }
                     label: string;
                     placeholder: string;
                     validations: {
+                        customRegex: string;
+                        defaultRegex: string;
                         empty: string;
                         invalid: string;
                         invalidCharacters: string;
@@ -347,6 +353,7 @@ export interface userNS {
                 heading: string;
             }
         },
+        accountDisabled: string;
         accountLockReason: {
             adminInitiated: string;
             default: string;

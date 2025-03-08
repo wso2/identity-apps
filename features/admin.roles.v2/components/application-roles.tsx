@@ -29,11 +29,9 @@ import { useRequiredScopes } from "@wso2is/access-control";
 import { updateApplicationDetails } from "@wso2is/admin.applications.v1/api/application";
 import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
 import { ApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
-import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -101,7 +99,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const { t } = useTranslation();
     const dispatch: Dispatch<any> = useDispatch();
     const { getLink } = useDocumentation();
-    const { organizationType } = useGetCurrentOrganizationType();
     const { data: application } = useGetApplication(appId, !!appId);
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
@@ -120,7 +117,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
         useState<BasicRoleInterface[]>(application?.associatedRoles?.roles ?? []);
     const [ activeOption, setActiveOption ] = useState<BasicRoleInterface>(undefined);
 
-    const isReadOnly: boolean = readOnly || organizationType === OrganizationType.SUBORGANIZATION;
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
@@ -334,10 +330,12 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                     "rolesV2.application")
                                                 }
                                                 data-componentid={ `${ componentId }-application-audience-checkbox` }
+                                                disabled={ readOnly }
                                             />
                                         </Grid.Column>
                                         <Grid.Column width={ 6 }>
                                             {
+                                                !readOnly &&
                                                 roleAudience === RoleAudienceTypes.APPLICATION &&
                                                 hasRoleCreatePermissions
                                                     && (
@@ -368,6 +366,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                     "rolesV2.organization")
                                                 }
                                                 data-componentid={ `${ componentId }-organization-audience-checkbox` }
+                                                disabled={ readOnly }
                                             />
                                         </Grid.Column>
                                     </Grid.Row>
@@ -400,6 +399,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                 <Autocomplete
                                     multiple
                                     disableCloseOnSelect
+                                    readOnly={ readOnly }
                                     loading={ isLoading }
                                     options={ roleList }
                                     value={ selectedRoles ?? [] }
@@ -410,7 +410,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     renderInput={ (params: AutocompleteRenderInputParams) => (
                                         <TextField
                                             { ...params }
-                                            placeholder={ !isReadOnly && t("extensions:develop.applications.edit." +
+                                            placeholder={ !readOnly && t("extensions:develop.applications.edit." +
                                             "sections.rolesV2.searchPlaceholder") }
                                         />
                                     ) }
@@ -462,7 +462,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                         </Grid.Row>
                     ) : null }
                     {
-                        (
+                        !readOnly && (
                             <Grid.Row className="mt-4">
                                 <Grid.Column width={ 16 }>
                                     <PrimaryButton

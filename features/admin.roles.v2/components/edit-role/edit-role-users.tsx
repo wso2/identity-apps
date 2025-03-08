@@ -40,10 +40,8 @@ import {
     PatchUserRemoveOpInterface,
     UserBasicInterface
 } from "@wso2is/admin.users.v1/models/user";
-import { getAUserStore, useUserStores } from "@wso2is/admin.userstores.v1/api";
-import {
-    UserStoreDropdownItem, UserStoreListItem, UserStorePostData, UserStoreProperty
-} from "@wso2is/admin.userstores.v1/models/user-stores";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertLevels, IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
@@ -58,6 +56,7 @@ import React, {
     SyntheticEvent,
     useCallback,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -97,54 +96,15 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ users, setUsers ] = useState<UserBasicInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ activeOption, setActiveOption ] = useState<GroupsInterface|UserBasicInterface>(undefined);
-    const [ availableUserStores, setAvailableUserStores ] = useState<UserStoreDropdownItem[]>([]);
     const [ selectedUserStoreDomainName, setSelectedUserStoreDomainName ] = useState<string>();
     const [ isPlaceholderVisible, setIsPlaceholderVisible ] = useState<boolean>(true);
     const [ selectedUsersFromUserStore, setSelectedUsersFromUserStore ] = useState<UserBasicInterface[]>([]);
     const [ selectedAllUsers, setSelectedAllUsers ] = useState<Record<string, UserBasicInterface[] | undefined>>({});
 
     const {
-        data: userStores,
-        isLoading: isUserStoresLoading
-    } = useUserStores(null);
-
-    useEffect(() => {
-        if (userStores && !isUserStoresLoading) {
-            const storeOptions: UserStoreDropdownItem[] = [
-                {
-                    key: -1,
-                    text: userstoresConfig?.primaryUserstoreName,
-                    value: userstoresConfig?.primaryUserstoreName
-                }
-            ];
-
-            let storeOption: UserStoreDropdownItem = {
-                key: null,
-                text: "",
-                value: ""
-            };
-
-            userStores?.forEach((store: UserStoreListItem, index: number) => {
-                if (store?.name?.toUpperCase() !== userstoresConfig?.primaryUserstoreName) {
-                    getAUserStore(store.id).then((response: UserStorePostData) => {
-                        const isDisabled: boolean = response.properties.find(
-                            (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
-
-                        if (!isDisabled) {
-                            storeOption = {
-                                key: index,
-                                text: store.name,
-                                value: store.name
-                            };
-                            storeOptions.push(storeOption);
-                        }
-                    });
-                }
-            });
-
-            setAvailableUserStores(storeOptions);
-        }
-    }, [ userStores, isUserStoresLoading ]);
+        isLoading: isUserStoresLoading,
+        userStoresList
+    } = useUserStores();
 
     const {
         data: userResponse,
@@ -160,13 +120,35 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         !!selectedUserStoreDomainName || !!userSearchValue
     );
 
-    const isUserBelongToSelectedUserStore = (user: UserBasicInterface, userStoreName: string) => {
-        const userNameChunks: string[] = user.userName.split("/");
+    const availableUserStores: UserStoreDropdownItem[] = useMemo(() => {
+        const storeOptions: UserStoreDropdownItem[] = [
+            {
+                key: -1,
+                text: userstoresConfig?.primaryUserstoreName,
+                value: userstoresConfig?.primaryUserstoreName
+            }
+        ];
 
-        return (userNameChunks.length === 1 &&
-            StringUtils.isEqualCaseInsensitive(userStoreName, primaryUserStoreDomainName))
-        || (userNameChunks.length === 2 && StringUtils.isEqualCaseInsensitive(userNameChunks[0], userStoreName));
-    };
+        if (userStoresList && !isUserStoresLoading) {
+            if (userStoresList?.length > 0) {
+                userStoresList.forEach((store: UserStoreListItem, index: number) => {
+                    const isEnabled: boolean = store.enabled;
+
+                    if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && isEnabled) {
+                        const storeOption: UserStoreDropdownItem = {
+                            key: index,
+                            text: store.name,
+                            value: store.name
+                        };
+
+                        storeOptions.push(storeOption);
+                    }
+                });
+            }
+        }
+
+        return storeOptions;
+    }, [ userStoresList, isUserStoresLoading ]);
 
     useEffect(() => {
         if (activeUserStore) {
@@ -238,6 +220,14 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             );
         }
     }, [ userListFetchRequestError ]);
+
+    const isUserBelongToSelectedUserStore = (user: UserBasicInterface, userStoreName: string) => {
+        const userNameChunks: string[] = user.userName.split("/");
+
+        return (userNameChunks.length === 1 &&
+            StringUtils.isEqualCaseInsensitive(userStoreName, primaryUserStoreDomainName))
+        || (userNameChunks.length === 2 && StringUtils.isEqualCaseInsensitive(userNameChunks[0], userStoreName));
+    };
 
     /**
      * Get the place holder components.
@@ -455,8 +445,6 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                         <Grid xs={ 12 } sm={ 4 } md={ 8 }>
                                             <Autocomplete
                                                 multiple
-                                                style={ { padding: 0 } }
-                                                size="small"
                                                 disableCloseOnSelect
                                                 loading={ isUserListFetchRequestLoading || isUserSearchLoading }
                                                 options={ users }

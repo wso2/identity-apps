@@ -67,5 +67,5 @@ export * from "./sms-templates-ns";
 export * from "./policy-administration-ns";
 export * from "./remote-user-stores-ns";
 export * from "./rules-ns";
-export * from "./custom-authentication-ns";
+export * from "./custom-authenticator-ns";
 export * from "./push-providers-ns";

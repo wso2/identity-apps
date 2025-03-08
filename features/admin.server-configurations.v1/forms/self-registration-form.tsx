@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -238,7 +238,6 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             if (property.name === ACCOUNT_CONFIRMATION) {
                 if (property.value === "false") {
                     setEnableAccountConfirmation(false);
-                    setAutoLoginOptionAvailable(true);
                     resolvedInitialFormValues = {
                         ...resolvedInitialFormValues,
                         signUpConfirmation: false
@@ -266,6 +265,11 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 };
             }
         });
+
+        if ((get(resolvedInitialFormValues, ACCOUNT_CONFIRMATION) === "false") &&
+        (get(resolvedInitialFormValues, LOCK_ON_CREATION) === "false")) {
+            setAutoLoginOptionAvailable(true);
+        }
 
         if ((get(resolvedInitialFormValues, "SelfRegistration.SendConfirmationOnCreation") === "true") ||
         (get(resolvedInitialFormValues, "SelfRegistration.LockOnCreation") === "true")) {
@@ -336,6 +340,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 "accountActivateImmediately",
                 "verificationLinkExpiryTime",
                 "showUsernameUnavailability",
+                "SelfRegistration.ShowUsernameUnavailability",
                 "signUpConfirmation",
                 "notifyAccountConfirmation",
                 "SelfRegistration.LockOnCreation",

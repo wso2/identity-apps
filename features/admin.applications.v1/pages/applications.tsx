@@ -589,7 +589,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 </PrimaryButton>
                             </Show>
                         </>
-                    ) : (
+                    ) : ( organizationType !== OrganizationType.SUBORGANIZATION ? (
                         <Show when={ featureConfig?.applications?.scopes?.create }>
                             {
                                 !applicationDisabledFeatures?.includes(
@@ -613,7 +613,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 )
                             }
                         </Show>
-
+                    ) : null
                     ) }
                 title={ t("console:develop.pages.applications.title") }
                 description={ organizationType !== OrganizationType.SUBORGANIZATION

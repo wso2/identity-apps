@@ -152,4 +152,10 @@ export interface groupsNS {
             subtitles: string[];
         };
     };
+    groupCreateWizard: {
+        groupNameRegexHint: string;
+        groupNameRegexAlternativeHint: string;
+        groupNameRegexCustomHint: string;
+        subHeading: string;
+    };
 }

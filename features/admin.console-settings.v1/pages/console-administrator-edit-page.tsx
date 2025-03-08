@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,6 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
@@ -78,10 +77,8 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
 
     const [ user, setUserProfile ] = useState<ProfileInfoInterface>(emptyProfileInfo);
     const [ isUserDetailsRequestLoading, setIsUserDetailsRequestLoading ] = useState<boolean>(false);
-    const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
     const [ connectorProperties, setConnectorProperties ] = useState<ConnectorPropertyInterface[]>(undefined);
-    const [ isReadOnlyUserStoresLoading, setReadOnlyUserStoresLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
@@ -126,21 +123,6 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
 
         getUser(id);
     }, []);
-
-    useEffect(() => {
-        if (!isSuperOrganization) {
-            return;
-        }
-
-        setReadOnlyUserStoresLoading(true);
-        SharedUserStoreUtils.getReadOnlyUserStores()
-            .then((response: string[]) => {
-                setReadOnlyUserStoresList(response);
-            })
-            .finally(() => {
-                setReadOnlyUserStoresLoading(false);
-            });
-    }, [ user ]);
 
     const getUser = (id: string) => {
         setIsUserDetailsRequestLoading(true);
@@ -345,10 +327,8 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
                     featureConfig={ featureConfig }
                     user={ user }
                     handleUserUpdate={ handleUserUpdate }
-                    readOnlyUserStores={ readOnlyUserStoresList }
                     connectorProperties={ connectorProperties }
                     isLoading={ isUserDetailsRequestLoading }
-                    isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
                 />
                 {
                     showEditAvatarModal && (

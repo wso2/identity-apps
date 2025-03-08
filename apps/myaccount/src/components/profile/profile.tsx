@@ -370,12 +370,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     useEffect(() => {
 
         const getDisplayOrder = (schema: ProfileSchema): number => {
+            if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")) return 0;
             if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
                 && (!schema.displayOrder || schema.displayOrder == "0")) return 6;
             if (schema.name === MOBILE_NUMBERS_ATTRIBUTE
                 && (!schema.displayOrder || schema.displayOrder == "0")) return 7;
+            if (!schema.displayOrder || schema.displayOrder == "0") return Number.MAX_SAFE_INTEGER;
 
-            return schema.displayOrder ? parseInt(schema.displayOrder, 10) : -1;
+            return schema.displayOrder ? parseInt(schema.displayOrder, 10) : Number.MAX_SAFE_INTEGER;;
         };
 
         const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas(
@@ -383,16 +385,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         ).filter((item: ProfileSchemaInterface) =>
             item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION")
         ).sort((a: ProfileSchema, b: ProfileSchema) => {
-            const orderA: number = getDisplayOrder(a);
-            const orderB: number = getDisplayOrder(b);
-
-            if (orderA === -1) {
-                return -1;
-            } else if (orderB === -1) {
-                return 1;
-            } else {
-                return orderA - orderB;
-            }
+            return getDisplayOrder(a) - getDisplayOrder(b);
         });
 
         setProfileSchema(sortedSchemas);
@@ -640,25 +633,41 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
                 const currentValues: string[] = resolveProfileInfoSchemaValue(schema)?.split(",") || [];
                 let primaryValue: string | null;
+                let isVerificationEnabled: boolean = false;
+                let verifiedAttributeName: string = "";
+                let verifiedValues: string[] = [];
 
                 if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-                    primaryValue = profileDetails.profileInfo?.emails?.find(
-                        (subAttribute: string) => typeof subAttribute === "string");
+                    primaryValue = getExistingPrimaryEmail();
+                    isVerificationEnabled = isEmailVerificationEnabled;
+                    verifiedAttributeName = VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE;
+                    verifiedValues = profileInfo.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
                 } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
                     primaryValue = profileInfo.get(MOBILE_ATTRIBUTE);
+                    isVerificationEnabled = isMobileVerificationEnabled;
+                    verifiedAttributeName = VERIFIED_MOBILE_NUMBERS_ATTRIBUTE;
+                    verifiedValues = profileInfo.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
                 }
+
+                // If the verification is enabled and existing primary value is not in the verified list, add it.
+                if (isVerificationEnabled && primaryValue && !verifiedValues.includes(primaryValue)) {
+                    value[schema.schemaId] = {
+                        [verifiedAttributeName]: [ ...verifiedValues, primaryValue ]
+                    };
+                }
+
+                // If the primary value is not in the current values, add it.
                 if (primaryValue && !currentValues.includes(primaryValue)) {
                     currentValues.push(primaryValue);
                 }
 
                 currentValues.push(values.get(formName) as string);
                 values.set(formName, currentValues);
-
-                value = {
-                    [schema.schemaId]: {
-                        [schemaNames[0]]: currentValues
-                    }
+                value[schema.schemaId] = {
+                    ...value[schema.schemaId],
+                    [schemaNames[0]]: currentValues
                 };
+
                 // If no primary value is set, set the first value as the primary value.
                 if (isEmpty(primaryValue) && !isEmpty(currentValues)) {
                     if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
@@ -692,8 +701,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             } else if (schemaNames.length === 1) {
                 // List of sub attributes.
                 const subValue: string[] = profileDetails.profileInfo[schemaNames[0]]
-                    && profileDetails.profileInfo[schemaNames[0]]
-                        .filter((subAttribute: string) => typeof subAttribute === "object");
+                    && profileDetails.profileInfo[schemaNames[0]]?.filter(
+                        (subAttribute: string) => typeof subAttribute === "object");
 
                 if (subValue && subValue.length > 0) {
                     subValue.map((value: string) => {
@@ -723,10 +732,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
                 // The primary value of the email attribute.
                 if (schemaNames[0] === "emails" && profileDetails?.profileInfo[schemaNames[0]]) {
-                    primaryValue = profileDetails.profileInfo[schemaNames[0]]
-                        && profileDetails.profileInfo[schemaNames[0]]
-                            .find((subAttribute: string) => typeof subAttribute === "string");
-                    attributeValues.push(primaryValue);
+                    primaryValue = getExistingPrimaryEmail();
+                    if (primaryValue) {
+                        attributeValues.push(primaryValue);
+                    }
                 }
 
                 // List of sub attributes.
@@ -997,8 +1006,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 ]
             };
 
-            const existingPrimaryEmail: string = profileDetails.profileInfo?.emails?.find(
-                (subAttribute: string) => typeof subAttribute === "string");
+            const existingPrimaryEmail: string = getExistingPrimaryEmail();
             const existingEmailList: string[] = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
 
             if (existingPrimaryEmail && !existingEmailList.includes(existingPrimaryEmail)) {
@@ -1011,6 +1019,23 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         }
                     }
                 });
+            }
+
+            if (isEmailVerificationEnabled) {
+                const existingVerifiedEmails: string[] =
+                    profileInfo.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
+
+                if (existingPrimaryEmail && !existingVerifiedEmails.includes(existingPrimaryEmail)) {
+                    existingVerifiedEmails.push(existingPrimaryEmail);
+                    data.Operations.push({
+                        op: "replace",
+                        value: {
+                            [schema.schemaId]: {
+                                [VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE]: existingVerifiedEmails
+                            }
+                        }
+                    });
+                }
             }
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
 
@@ -1041,6 +1066,23 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         }
                     }
                 });
+            }
+
+            if (isMobileVerificationEnabled) {
+                const existingVerifiedMobiles: string[] =
+                    profileInfo.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
+
+                if (existingPrimaryMobile && !existingVerifiedMobiles.includes(existingPrimaryMobile)) {
+                    existingVerifiedMobiles.push(existingPrimaryMobile);
+                    data.Operations.push({
+                        op: "replace",
+                        value: {
+                            [schema.schemaId]: {
+                                [VERIFIED_MOBILE_NUMBERS_ATTRIBUTE]: existingVerifiedMobiles
+                            }
+                        }
+                    });
+                }
             }
         }
         updateProfileInfo(data as unknown as Record<string, unknown>).then((response: AxiosResponse) => {
@@ -1095,8 +1137,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             const emailList: string[] = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
             const updatedEmailList: string[] = emailList.filter((email: string) => email !== attributeValue);
-            const primaryEmail: string = profileDetails?.profileInfo?.emails?.find(
-                (subAttribute: string) => typeof subAttribute === "string");
+            const primaryEmail: string = getExistingPrimaryEmail();
 
             data.Operations[0].value = {
                 [schema.schemaId] : {
@@ -1117,10 +1158,32 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     }
                 });
             }
+
+            if (isEmailVerificationEnabled) {
+                const verifiedEmailList: string[]
+                    = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
+                const updatedVerifiedEmailList: string[] =
+                    verifiedEmailList.filter((email: string) => email !== attributeValue);
+
+                data.Operations.push({
+                    op: "replace",
+                    value: {
+                        [schema.schemaId] : {
+                            [VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE]: updatedVerifiedEmailList
+                        }
+                    }
+                });
+            }
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             const mobileList: string[] = profileInfo?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
             const updatedMobileList: string[] = mobileList.filter((mobile: string) => mobile !== attributeValue);
             const primaryMobile: string = profileInfo.get(MOBILE_ATTRIBUTE);
+
+            data.Operations[0].value = {
+                [schema.schemaId]: {
+                    [MOBILE_NUMBERS_ATTRIBUTE]: updatedMobileList
+                }
+            };
 
             if (attributeValue === primaryMobile) {
                 const filteredSubAttributes: MultiValue[] = extractSubAttributes(
@@ -1141,11 +1204,21 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 });
             }
 
-            data.Operations[0].value = {
-                [schema.schemaId]: {
-                    [MOBILE_NUMBERS_ATTRIBUTE]: updatedMobileList
-                }
-            };
+            if (isMobileVerificationEnabled) {
+                const verifiedMobileList: string[] =
+                    profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
+                const updatedVerifiedMobileList: string[] =
+                    verifiedMobileList.filter((mobile: string) => mobile !== attributeValue);
+
+                data.Operations.push({
+                    op: "replace",
+                    value: {
+                        [schema.schemaId] : {
+                            [VERIFIED_MOBILE_NUMBERS_ATTRIBUTE]: updatedVerifiedMobileList
+                        }
+                    }
+                });
+            }
         }
         updateProfileInfo(data as unknown as Record<string, unknown>).then((response: AxiosResponse) => {
             if (response.status === 200) {
@@ -1519,6 +1592,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         }
     };
 
+    const getExistingPrimaryEmail = (): string => {
+        return profileDetails.profileInfo[EMAIL_ATTRIBUTE]
+            && Array.isArray(profileDetails.profileInfo[EMAIL_ATTRIBUTE])
+            && profileDetails.profileInfo[EMAIL_ATTRIBUTE]
+                .find((subAttribute: string) => typeof subAttribute === "string");
+    };
+
     const generateMultiValuedField = (schema: ProfileSchema, fieldName: string): JSX.Element => {
 
         let primaryAttributeSchema: ProfileSchema;
@@ -1537,7 +1617,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             pendingEmailAddress = profileDetails?.profileInfo?.pendingEmails?.length > 0
                 ? profileDetails?.profileInfo?.pendingEmails[0]?.value
                 : null;
-            primaryAttributeValue = profileInfo.get(EMAIL_ATTRIBUTE);
+            primaryAttributeValue = getExistingPrimaryEmail();
             verificationEnabled = isEmailVerificationEnabled;
             primaryAttributeSchema = getSchemaFromName(EMAIL_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
@@ -2035,7 +2115,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             pendingEmailAddress = profileDetails?.profileInfo?.pendingEmails?.length > 0
                 ? profileDetails?.profileInfo?.pendingEmails[0]?.value
                 : null;
-            primaryAttributeValue = profileInfo.get(EMAIL_ATTRIBUTE);
+            primaryAttributeValue = getExistingPrimaryEmail();
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             verificationEnabled = isMobileVerificationEnabled;
@@ -2391,7 +2471,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     const getSchemaFromName = (schemaName: string): ProfileSchema => {
 
-        return profileSchema.find((schema: ProfileSchema) => schema.name === schemaName);
+        return profileSchema?.find((schema: ProfileSchema) => schema.name === schemaName);
     };
 
     /**
@@ -2641,6 +2721,22 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 : schema.name === MOBILE_ATTRIBUTE
         );
 
+    /**
+     * Check whether the value is empty or not.
+     * @param schema - Profile schema
+     * @returns boolean - Whether value is empty or not.
+     */
+    const isValueEmpty = (schema: ProfileSchema): boolean => {
+
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+            return isEmpty(profileInfo.get(schema.name)) && isEmpty(getExistingPrimaryEmail());
+        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+            return isEmpty(profileInfo.get(schema.name)) && isEmpty(profileInfo.get(MOBILE_ATTRIBUTE));
+        }
+
+        return isEmpty(profileInfo.get(schema.name));
+    };
+
     return (
         <>
             <SettingsSection
@@ -2722,11 +2818,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                             : null
                                                     }
                                                     {
-                                                        !isEmpty(profileInfo.get(schema.name)) ||
-                                        (!CommonUtils.isProfileReadOnly(isReadOnlyUser)
-                                            && (resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA)
-                                            && hasRequiredScopes(featureConfig?.personalInfo,
-                                                featureConfig?.personalInfo?.scopes?.update, allowedScopes))
+                                                        !isValueEmpty(schema)
+                                                            || (!CommonUtils.isProfileReadOnly(isReadOnlyUser)
+                                                            && (resolvedMutabilityValue
+                                                                !== ProfileConstants.READONLY_SCHEMA)
+                                                                && hasRequiredScopes(featureConfig?.personalInfo,
+                                                                    featureConfig?.personalInfo?.scopes?.update,
+                                                                    allowedScopes))
                                                             ? generateSchemaForm(schema, index)
                                                             : null
                                                     }

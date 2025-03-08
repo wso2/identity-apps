@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,20 +19,23 @@
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import { Collapse } from "@mui/material";
 import Box from "@oxygen-ui/react/Box";
-import Chip from "@oxygen-ui/react/Chip";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import IconButton from "@oxygen-ui/react/IconButton";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import AIBanner from "@wso2is/common.ai.v1/components/ai-banner";
 import AIBannerTall from "@wso2is/common.ai.v1/components/ai-banner-tall";
+import { FeatureAccessConfigInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
     useDocumentation
 } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
 import useGenerateAIBrandingPreference, { GenerateAIBrandingPreferenceFunc }
     from "../hooks/use-generate-ai-branding-preference";
@@ -54,6 +57,10 @@ const BrandingAIBanner: FunctionComponent<PropsWithChildren<BrandingAIBannerProp
     const { t } = useTranslation();
 
     const { getLink } = useDocumentation();
+
+    const aiFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.ai);
+    const isAIFeautureEnabled: boolean = aiFeatureConfig?.enabled;
 
     const {
         bannerState,
@@ -93,18 +100,23 @@ const BrandingAIBanner: FunctionComponent<PropsWithChildren<BrandingAIBannerProp
             <Collapse in={ bannerState === BannerState.FULL }>
                 <AIBanner
                     title={ t("branding:ai.banner.full.heading") }
-                    description={ t("branding:ai.banner.full.subHeading") }
+                    description={
+                        isAIFeautureEnabled
+                            ? t("branding:ai.banner.full.subHeading")
+                            : t("ai:subscribeToAI")
+                    }
                     aiText={ t("branding:ai.title") }
                     actionButtonText={ t("branding:ai.banner.full.button") }
                     onActionButtonClick={ handleExpandClick }
                     titleLabel={ (
-                        <Chip
-                            size="small"
-                            label={ t(FeatureStatusLabel.BETA) }
-                            className="oxygen-chip-beta mb-1 ml-2"
+                        <FeatureFlagLabel
+                            featureFlags={ aiFeatureConfig?.featureFlags }
+                            featureKey={ FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.AI_BRANDING_BANNER }
+                            type="chip"
                         />
                     ) }
                     readonly={ readonly }
+                    hideAction={ !isAIFeautureEnabled }
                 />
             </Collapse>
             <Collapse in={ bannerState === BannerState.INPUT || bannerState === BannerState.COLLAPSED }>
@@ -124,10 +136,10 @@ const BrandingAIBanner: FunctionComponent<PropsWithChildren<BrandingAIBannerProp
                     ) }
                     aiText={ t("branding:ai.title") }
                     titleLabel={ (
-                        <Chip
-                            size="small"
-                            label={ t(FeatureStatusLabel.BETA) }
-                            className="oxygen-chip-beta mb-1 ml-2"
+                        <FeatureFlagLabel
+                            featureFlags={ aiFeatureConfig?.featureFlags }
+                            featureKey={ FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.AI_BRANDING_BANNER }
+                            type="chip"
                         />
                     ) }
                 >

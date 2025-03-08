@@ -24,6 +24,7 @@ declare global {
 
     const contextPathGlobal: string;
     const serverOriginGlobal: string;
+    const proxyContextPathGlobal: string;
     const superTenantGlobal: string;
     const tenantPrefixGlobal: string;
     const isAdaptiveAuthenticationAvailable: boolean;

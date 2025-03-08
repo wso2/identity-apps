@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@ import { UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { store } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { OperationValueInterface, ScimOperationsInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import {
     ValidationConfInterface,
@@ -29,7 +30,10 @@ import {
 } from "@wso2is/admin.validation.v1/models";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
-import { ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
+import { ProfileInfoInterface, ProfileSchemaInterface, SharedProfileValueResolvingMethod } from "@wso2is/core/models";
+import { ProfileUtils } from "@wso2is/core/utils";
+import { DropdownChild } from "@wso2is/forms";
+import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import { UserManagementConstants } from "../constants/user-management-constants";
 import { MultipleInviteMode, MultipleInvitesDisplayNames, UserBasicInterface } from "../models/user";
@@ -304,33 +308,154 @@ export const extractSubAttributes = (user: ProfileInfoInterface, schemaKey: stri
 };
 
 /**
- * Process multi valued simple attribute patch operation value.
+ * Determines whether the specified schema should be treated as read-only.
  *
- * @param attributeSchemaName - Attribute schema name.
- * @param primaryAttributeSchemaName - Primary schema attribute.
- * @param profileInfo - Profile information.
- * @param multiValuedAttributeInputValues - Multi valued attribute input values.
- * @returns Patch operation value.
+ * @param schema - The profile schema object to evaluate.
+ * @param isUserManagedByParentOrg - Indicates whether the user is managed by a parent organization.
+ * @returns True if the schema is read-only; otherwise, false.
+ */
+export const isSchemaReadOnly = (
+    schema: ProfileSchemaInterface,
+    isUserManagedByParentOrg: boolean
+): boolean => {
+    const resolvedMutability: string = schema?.profiles?.console?.mutability ?? schema?.mutability;
+
+    return resolvedMutability === ProfileConstants.READONLY_SCHEMA ||
+        (isUserManagedByParentOrg &&
+         schema.sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN);
+};
+
+/**
+ * Constructs the patch operation value for a multi-valued attribute.
+ *
+ * @param attributeSchemaName - The schema name of the attribute.
+ * @param currentValues - The existing values for the attribute.
+ * @param inputValue - Input values for the multi-valued attribute.
+ * @returns An object representing the patch operation value.
  */
 export const constructPatchOpValueForMultiValuedAttribute = (
     attributeSchemaName: string,
-    primaryAttributeSchemaName: string,
-    profileInfo: Map<string, string>,
-    multiValuedAttributeInputValues: Record<string, string>
+    currentValues: string[],
+    inputValue: string
 ) => {
-    const currentValues: string[] = profileInfo?.get(attributeSchemaName)?.split(",") || [];
-
-    if (!isEmpty(multiValuedAttributeInputValues[attributeSchemaName])) {
-        currentValues.push(multiValuedAttributeInputValues[attributeSchemaName]);
+    if (isEmpty(currentValues)) {
+        currentValues = [];
     }
 
-    if (!isEmpty(primaryAttributeSchemaName)) {
-        const existingPrimary: string = profileInfo?.get(primaryAttributeSchemaName);
+    if (!isEmpty(inputValue) && !currentValues.includes(inputValue)) {
+        currentValues.push(inputValue);
+    }
 
-        if (existingPrimary && !currentValues.includes(existingPrimary)) {
-            currentValues.push(existingPrimary);
+    return { [attributeSchemaName]: currentValues };
+};
+
+/**
+ * Constructs a SCIM patch operation to update a multi-valued verified attribute.
+ *
+ * @param params - An object containing the following properties:
+ *   - `verifiedAttributeSchema`: The schema definition for the verified attribute.
+ *   - `valueList`: An array of values from the multi-valued attribute.
+ *   - `verifiedValueList`: An array of current verified values.
+ *   - `primaryValue`: The primary value to potentially add to the verified list.
+ * @returns A SCIM patch operation object with the updated verified attribute values.
+ */
+export const constructPatchOperationForMultiValuedVerifiedAttribute = ({
+    verifiedAttributeSchema,
+    valueList,
+    verifiedValueList,
+    primaryValue
+}: {
+        verifiedAttributeSchema: ProfileSchemaInterface,
+        valueList: string[],
+        verifiedValueList: string[],
+        primaryValue: string,
+    }): ScimOperationsInterface => {
+    if (
+        isEmpty(primaryValue) ||
+        verifiedValueList.includes(primaryValue) ||
+        !valueList?.includes(primaryValue) ||
+        !verifiedAttributeSchema
+    ) {
+        return;
+    }
+
+    const modifiedVerifiedList: string[] = cloneDeep(verifiedValueList);
+
+    modifiedVerifiedList.push(primaryValue);
+
+    const opValue: OperationValueInterface = {
+        [verifiedAttributeSchema.schemaId]: {
+            [verifiedAttributeSchema.name]: modifiedVerifiedList
         }
+    };
+
+    return {
+        op: "replace",
+        value: opValue
+    };
+};
+
+/**
+ * Resolves the display order of the given schema.
+ *
+ * @param schema - SCIM profile schema.
+ * @returns the display order of the schema.
+ */
+export const getDisplayOrder = (schema: ProfileSchemaInterface): number => {
+    if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")) return 0;
+    if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")
+        && (!schema.displayOrder || schema.displayOrder == "0")) return 6;
+    if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")
+        && (!schema.displayOrder || schema.displayOrder == "0")) return 7;
+    if (!schema.displayOrder || schema.displayOrder == "0") return Number.MAX_SAFE_INTEGER;
+
+    return schema.displayOrder ? parseInt(schema.displayOrder, 10) : Number.MAX_SAFE_INTEGER;
+};
+
+/**
+ * Resolves the attributes by which users can be searched.
+ *
+ * @param profileSchemas  - SCIM profile schemas.
+ * @returns Header of the user list item.
+ */
+export const resolveUserSearchAttributes = (
+    profileSchemas: ProfileSchemaInterface[]
+): DropdownChild[] => {
+    const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
+        .filter((schema: ProfileSchemaInterface) => {
+            // The global supportedByDefault value is a string. Hence, it needs to be converted to a boolean.
+            let resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+
+            if (schema?.profiles?.console?.supportedByDefault !== undefined) {
+                resolveSupportedByDefaultValue = schema?.profiles?.console?.supportedByDefault;
+            }
+
+            // If the schema is not supported by default and the value is empty, the field should not be displayed.
+            if (!resolveSupportedByDefaultValue) {
+                return false;
+            }
+
+            return true;
+        })
+        .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
+            return getDisplayOrder(a) - getDisplayOrder(b);
+        });
+
+    let searchAttributes:DropdownChild[] = [];
+
+    if (sortedSchemas) {
+        searchAttributes = sortedSchemas.map((schema: ProfileSchemaInterface, index: number) => {
+            const extendedSchemaSupportedName:string = schema?.schemaId
+                ? schema.schemaId + ":" + schema.name
+                : schema.name;
+
+            return {
+                key: index,
+                text: schema.displayName,
+                value: extendedSchemaSupportedName
+            };
+        });
     }
 
-    return { [attributeSchemaName]: currentValues } ;
+    return searchAttributes;
 };

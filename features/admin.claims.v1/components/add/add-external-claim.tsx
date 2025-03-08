@@ -423,7 +423,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                             listen={ (values: Map<string, FormValue>) => {
                                                 setClaim(values.get("claimURI").toString());
                                             } }
-                                            maxLength={ 30 }
+                                            maxLength={ 50 }
                                             data-testid={ `${ testId }-form-claim-uri-input` }
                                             validation={ (value: string, validation: Validation) => {
                                                 for (const claim of externalClaims) {
@@ -435,16 +435,6 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                             { type: resolveType(attributeType) }));
 
                                                         break;
-                                                    }
-                                                }
-
-                                                if (attributeType === ClaimManagementConstants.OIDC) {
-                                                    if (!value.toString().match(/^[A-za-z0-9#_]+$/)) {
-                                                        validation.isValid = false;
-                                                        validation.errorMessages.push(t(
-                                                            "claims:external.forms.attributeURI." +
-                                                            "validationErrorMessages.invalidName",
-                                                            { type: resolveType(attributeType) }));
                                                     }
                                                 }
                                             } }

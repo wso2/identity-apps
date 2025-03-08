@@ -20,8 +20,9 @@ import { smsProvidersNS } from "../../../models";
 export const smsProviders: smsProvidersNS = {
     confirmationModal: {
         assertionHint: "Please confirm your action.",
-        content: "If you delete this configuration, you will not receive SMS." +
-            "Please proceed with caution.",
+        content: "Deleting this SMS provider configuration may disrupt SMS OTP authentication for " +
+            "applications currently using it. You may no longer receive SMS-based OTPs, which could " +
+            "affect user logins. Please proceed with caution.",
         header: "Are you sure?",
         message: "This action is irreversible and will permanently delete the SMS provider configurations."
     },

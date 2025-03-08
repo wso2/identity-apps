@@ -27,6 +27,11 @@ on:
             - "LICENSE"
         workflow_dispatch:
 
+permissions:
+    pull-requests: write
+    contents: write
+    packages: write
+
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
     SHOULD_GENERATE_CHANGESET: 'true'
@@ -41,22 +46,23 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                node-version: [lts/*]
+                node-version: [20]
                 maven-version: [3.8.6]
                 java-version: [11]
                 pnpm-version: [8.7.4]
         steps:
             - name: ⬇️ Checkout
               id: checkout
-              uses: actions/checkout@v2.3.3
+              uses: actions/checkout@v4.2.2
               with:
                   token: ${{ env.GH_TOKEN }}
+                  persist-credentials: true
                   fetch-depth: 0
 
             - name: Set up Git user
               run: |
-                git config user.name ${{ env.BOT_USERNAME }}}
-                git config user.email ${{ env.BOT_EMAIL }}}
+                git config user.name ${{ env.BOT_USERNAME }}
+                git config user.email ${{ env.BOT_EMAIL }}
 
             - name: 🟢 Setup node
               id: setup-node
@@ -154,21 +160,26 @@ jobs:
 
             - name: 💾 Cache local Maven repository
               id: cache-maven-m2
-              uses: actions/cache@v2
+              uses: actions/cache@v3
               with:
                   path: ~/.m2/repository
                   key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
                   restore-keys: |
                       ${{ runner.os }}-maven-
 
+            - name: 🔍 Check GitHub API Rate Limit
+              id: check-rate-limit
+              run: |
+                curl -s -H "Authorization: token ${{ env.GH_TOKEN }}" https://api.github.com/rate_limit | jq .
+
             - name: 📣 Create Release Pull Request or Publish to npm
               if: ${{ env.SHOULD_GENERATE_CHANGESET == 'true' }}
               id: changesets
-              uses: changesets/action@v1
+              uses: changesets/action@v1.4.9
               with:
                   title: "[Release] [GitHub Action] Update package versions"
-                  publish: pnpm publish:packages
-                  version: pnpm version:packages
+                  publish: pnpm run publish:packages
+                  version: pnpm run version:packages
                   commit: "[WSO2 Release] [GitHub Action] [Release] [skip ci] update package versions"
               env:
                   GITHUB_TOKEN: ${{ env.GH_TOKEN }}

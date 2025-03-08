@@ -4569,7 +4569,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             userClaimUpdate: {
-                                friendlyName: "User Attribute Change Verification",
+                                friendlyName: "User Attribute Verification",
                                 properties: {
                                     userClaimUpdateEmailEnableVerification: {
                                         hint: "Trigger a verification notification when user's email address is updated.",
@@ -6796,40 +6796,6 @@ export const console: ConsoleNS = {
                     }
                 },
                 editUser: {
-                    dangerZoneGroup: {
-                        deleteUserZone: {
-                            actionTitle: "Delete User",
-                            buttonDisableHint: "Delete option is disabled because this user is managed in a remote " +
-                                "user store.",
-                            header: "Delete user",
-                            subheader: "This action will permanently delete the user from the organization. Please " +
-                                "be certain before you proceed."
-                        },
-                        disableUserZone: {
-                            actionTitle: "Disable User",
-                            header: "Disable user",
-                            subheader: "Once you disable an account, the user cannot access the system."
-                        },
-                        header: "Danger Zone",
-                        lockUserZone: {
-                            actionTitle: "Lock User",
-                            header: "Lock user",
-                            subheader: "Once you lock the account, the user can no longer log in to the system."
-                        },
-                        passwordResetZone: {
-                            actionTitle: "Reset Password",
-                            buttonHint: "This user account should be unlocked to reset the password.",
-                            header: "Reset password",
-                            subheader: "Once you change the password, the user will no longer be able to log in to " +
-                                "any application using the current password."
-                        },
-                        deleteAdminPriviledgeZone: {
-                            actionTitle: "Revoke Privileges",
-                            header: "Revoke admin privileges",
-                            subheader: "This action will remove the user's admin privileges, " +
-                                "but the user will continue to be in the organization."
-                        }
-                    },
                     dateOfBirth: {
                         placeholder: {
                             part1:"Enter the",
@@ -8327,8 +8293,9 @@ export const console: ConsoleNS = {
                 goBack: "Go back to Notification Providers",
                 confirmationModal: {
                     assertionHint: "Please confirm your action.",
-                    content: "If you delete this configuration, you will not receive SMS." +
-                        "Please proceed with caution.",
+                    content: "Deleting this SMS provider configuration may disrupt SMS OTP authentication for " +
+                        "applications currently using it. You may no longer receive SMS-based OTPs, which could " +
+                        "affect user logins. Please proceed with caution.",
                     header: "Are you sure?",
                     message: "This action is irreversible and will permanently delete the SMS provider configurations."
                 },
@@ -8555,10 +8522,6 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: "Templates - {{displayName}}"
             },
-            groups: {
-                subTitle: "Create and manage user groups, assign permissions for groups.",
-                title: "Groups"
-            },
             invite: {
                 subTitle: "Invite and manage admins and developers.",
                 title: "Admins & Developers"
@@ -8580,11 +8543,6 @@ export const console: ConsoleNS = {
                 subTitle: "Configure and  manage users, roles, attribute dialects, server configurations etc." +
                     "etc.",
                 title: "Welcome, {{firstName}}"
-            },
-            roles: {
-                alternateSubTitle: "View and manage roles.",
-                subTitle: "Create and manage roles, assign permissions for roles.",
-                title: "Roles"
             },
             rolesEdit: {
                 backButton: "Go back to {{type}}",

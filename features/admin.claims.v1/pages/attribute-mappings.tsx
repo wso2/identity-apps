@@ -83,10 +83,12 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
         const [ dialects, setDialects ] = useState<ClaimDialect[]>(null);
         const [ mappedLocalclaims, setMappedLocalClaims ] = useState<string[]>([]);
         const [ triggerFetchMappedClaims, setTriggerFetchMappedClaims ] = useState<boolean>(true);
+        const [ triigerFetchDialects, setTriggerFetchDialects ] = useState<boolean>(true);
 
         useEffect(() => {
             getDialect();
-        }, []);
+            setTriggerFetchDialects(false);
+        }, [ triigerFetchDialects ]);
 
         useEffect(() => {
             if ( dialects && dialects.length > 0 && triggerFetchMappedClaims ) {
@@ -424,6 +426,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                                             attributeType={ type }
                                             mappedLocalClaims={ mappedLocalclaims }
                                             updateMappedClaims={ setTriggerFetchMappedClaims }
+                                            updateDialects={ setTriggerFetchDialects }
                                             isAttributeButtonEnabled={ tab.isAttributeButtonEnabled }
                                             attributeButtonText= { t(tab.attributeButtonText) }
                                         />
@@ -438,25 +441,24 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                         dialect.dialectURI === userSchemaURI
                     );
 
-                    if (dialect) {
-                        panes.push({
-                            menuItem: "Custom Schema",
-                            render: () => (
-                                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                                    <ExternalDialectEditPage
-                                        id={ dialect.id }
-                                        attributeType={ type }
-                                        attributeUri={ dialect.dialectURI }
-                                        mappedLocalClaims={ mappedLocalclaims }
-                                        updateMappedClaims={ setTriggerFetchMappedClaims }
-                                        isAttributeButtonEnabled={ true }
-                                        attributeButtonText=
-                                            { t("claims:external.pageLayout.edit.attributePrimaryAction") }
-                                    />
-                                </ResourceTab.Pane>
-                            )
-                        });
-                    }
+                    panes.push({
+                        menuItem: "Custom Schema",
+                        render: () => (
+                            <ResourceTab.Pane controlledSegmentation attached={ false }>
+                                <ExternalDialectEditPage
+                                    id={ dialect?.id }
+                                    attributeType={ type }
+                                    attributeUri={ userSchemaURI }
+                                    mappedLocalClaims={ mappedLocalclaims }
+                                    updateMappedClaims={ setTriggerFetchMappedClaims }
+                                    updateDialects={ setTriggerFetchDialects }
+                                    isAttributeButtonEnabled={ true }
+                                    attributeButtonText=
+                                        { t("claims:external.pageLayout.edit.attributePrimaryAction") }
+                                />
+                            </ResourceTab.Pane>
+                        )
+                    });
                 }
 
                 return panes;
@@ -486,6 +488,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                                         attributeType={ type }
                                         mappedLocalClaims={ mappedLocalclaims }
                                         updateMappedClaims={ setTriggerFetchMappedClaims }
+                                        updateDialects={ setTriggerFetchDialects }
                                         isAttributeButtonEnabled={ tab.isAttributeButtonEnabled }
                                         attributeButtonText= { tab.attributeButtonText }
                                     />
@@ -509,6 +512,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                                 attributeUri={ dialect.dialectURI }
                                 mappedLocalClaims={ mappedLocalclaims }
                                 updateMappedClaims={ setTriggerFetchMappedClaims }
+                                updateDialects={ setTriggerFetchDialects }
                                 isAttributeButtonEnabled={ true }
                                 attributeButtonText= { t("claims:external.pageLayout.edit.attributePrimaryAction") }
                             />
@@ -542,6 +546,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                         attributeUri={ dialects &&  dialects[ 0 ]?.dialectURI }
                         mappedLocalClaims={ mappedLocalclaims }
                         updateMappedClaims={ setTriggerFetchMappedClaims }
+                        updateDialects={ setTriggerFetchDialects }
                         isAttributeButtonEnabled={ true }
                         attributeButtonText= { t("claims:external.pageLayout.edit.attributePrimaryAction") }
                     />

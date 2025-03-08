@@ -317,6 +317,16 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.server-configurations.v1/pages/account-disable-page")
+                    ),
+                    exact: true,
+                    id: "accountDisable",
+                    path: AppConstants.getPaths().get("ACCOUNT_DISABLE"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() =>
@@ -510,7 +520,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ),
             exact: true,
             icon: { icon: getSidePanelIcons().identityVerificationProviders },
-            id: "identityVerificationProvidersEdit",
+            id: "identityVerificationProviders",
             name: "Identity Verification Providers Edit",
             order: 4,
             path: AppConstants.getPaths().get("IDVP_EDIT"),
@@ -584,6 +594,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ],
             component: lazy(() => import("@wso2is/admin.claims.v1/pages/claim-dialects")),
             exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ATTRIBUTE_DIALECTS,
             icon: {
                 icon: getSidePanelIcons().claims
             },
@@ -1147,7 +1158,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             },
             id: "dynamicConnector",
             name: "Dynamic Connector",
-            order: 24,
+            order: 998,
             path: AppConstants.getPaths()
                 .get("GOVERNANCE_CONNECTOR_EDIT"),
             protected: true,

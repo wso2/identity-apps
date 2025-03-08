@@ -72,8 +72,14 @@ import {
     SemanticICONS
 } from "semantic-ui-react";
 import { getAssociatedTenants, makeTenantDefault } from "../../api";
+import useGetDeploymentUnits from "../../api/use-get-deployment-units";
 import TenantConstants from "../../constants/tenant-constants";
-import { TenantInfo, TenantRequestResponse, TriggerPropTypesInterface } from "../../models";
+import {
+    DeploymentUnit,
+    TenantInfo,
+    TenantRequestResponse,
+    TriggerPropTypesInterface
+} from "../../models";
 import { handleTenantSwitch } from "../../utils";
 import { AddTenantWizard } from "../add-modal";
 import "./tenant-dropdown.scss";
@@ -128,6 +134,11 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     const organizationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state?.config?.ui?.features?.organizations
     );
+
+    const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.centralDeploymentEnabled;
+    });
+
     const hasOrganizationReadPermissions: boolean = useRequiredScopes(organizationsFeatureConfig?.scopes?.read);
 
     const isMakingTenantsDefaultEnabled: boolean = useSelector((state: AppState) => {
@@ -152,14 +163,16 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     });
 
     const [ tenantAssociations, setTenantAssociations ] = useState<TenantAssociationsInterface>(undefined);
-    const [ tempTenantAssociationsList, setTempTenantAssociationsList ] = useState<string[]>(undefined);
+    const [ tempTenantAssociationsList, setTempTenantAssociationsList ] = useState<TenantInfo[]>(undefined);
     const [ showTenantAddModal, setShowTenantAddModal ] = useState<boolean>(false);
     const [ isSwitchTenantsSelected, setIsSwitchTenantsSelected ] = useState<boolean>(false);
+    const [ deploymentUnits, setDeploymentUnits ] = useState<DeploymentUnit[]>([]);
     const [ isSetDefaultTenantInProgress, setIsSetDefaultTenantInProgress ] = useState<boolean>(false);
-    const [ associatedTenants, setAssociatedTenants ] = useState<string[]>([]);
+    const [ associatedTenants, setAssociatedTenants ] = useState<TenantInfo[]>([]);
     const [ associatedTenantsOffset, setAssociatedTenantsOffset ] = useState<number>(0);
     const [ hasMoreAssociatedTenants, setHasMoreAssociatedTenants ] = useState<boolean>(true);
-    const [ defaultTenant, setDefaultTenant ] = useState<string>("");
+    const [ defaultTenant, setDefaultTenant ] = useState<TenantInfo>(undefined);
+    const [ currentTenant, setCurrentTenant ] = useState<TenantInfo>(undefined);
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const [ organizationId, setOrganizationId ] = useState<string>("");
     const [ organizationName, setOrganizationName ] = useState<string>("");
@@ -178,20 +191,24 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         if (!isPrivilegedUser && saasFeatureStatus !== FeatureStatus.DISABLED) {
             getAssociatedTenants(null, associatedTenantsLimit, associatedTenantsOffset)
                 .then((response: TenantRequestResponse) => {
-                    let defaultDomain: string = "";
-                    const tenants: string[] = [];
+                    let defaultTenant: TenantInfo;
+                    let currentTenant: TenantInfo;
+                    const tenants: TenantInfo[] = [];
 
                     response.associatedTenants.forEach((tenant: TenantInfo) => {
                         if (tenant.default) {
-                            defaultDomain = tenant.domain;
+                            defaultTenant = tenant;
                         }
-
-                        tenants.push(tenant.domain);
+                        if (tenant.domain === tenantDomain) {
+                            currentTenant = tenant;
+                        }
+                        tenants.push(tenant);
                     });
 
                     dispatch(setTenants<TenantInfo>(response.associatedTenants));
                     setAssociatedTenants(tenants);
-                    setDefaultTenant(defaultDomain);
+                    setDefaultTenant(defaultTenant);
+                    setCurrentTenant(currentTenant);
                     setHasMoreAssociatedTenants(response.totalResults > response.associatedTenants.length);
                 })
                 .catch((error: any) => {
@@ -215,7 +232,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
         const association: TenantAssociationsInterface = {
             associatedTenants: associatedTenants,
-            currentTenant: tenantDomain,
+            currentTenant: currentTenant,
             defaultTenant: defaultTenant,
             username: email ?? username
         };
@@ -230,7 +247,46 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             setTempTenantAssociationsList(association.associatedTenants);
         }
         setTenantAssociations(association);
-    }, [ associatedTenants, defaultTenant, tenantDomain ]);
+    }, [ associatedTenants, defaultTenant, currentTenant ]);
+
+    const {
+        data: deploymentUnitResponse,
+        isLoading: isDeploymentUnitsLoading,
+        error: deploymentUnitFetchRequestError
+    } = useGetDeploymentUnits(isCentralDeploymentEnabled);
+
+    useEffect(() => {
+        setDeploymentUnits(deploymentUnitResponse?.deploymentUnits);
+    }, [ isDeploymentUnitsLoading ]);
+
+    /**
+     * Dispatches error notifications if deployment unit fetch request fails.
+     */
+    useEffect(() => {
+        if (!deploymentUnitFetchRequestError) {
+            return;
+        }
+
+        if (deploymentUnitFetchRequestError?.response?.data?.description) {
+            dispatch(addAlert({
+                description: deploymentUnitFetchRequestError?.response?.data?.description
+                    ?? deploymentUnitFetchRequestError?.response?.data?.detail
+                        ?? t("tenants:listDeploymentUnits.description"),
+                level: AlertLevels.ERROR,
+                message: deploymentUnitFetchRequestError?.response?.data?.message
+                    ?? t("tenants:listDeploymentUnits.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("tenants:listDeploymentUnits.description"),
+            level: AlertLevels.ERROR,
+            message: t("tenants:listDeploymentUnits.message")
+        }));
+    }, [ deploymentUnitFetchRequestError ]);
+
 
     /**
      * Stops the dropdown from closing on click.
@@ -279,20 +335,25 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         if (!isPrivilegedUser && saasFeatureStatus !== FeatureStatus.DISABLED) {
             getAssociatedTenants(null, associatedTenantsLimit, associatedTenantsOffset + associatedTenantsLimit)
                 .then((response: TenantRequestResponse) => {
-                    let defaultDomain: string = defaultTenant;
-                    const tenants: string[] = [];
+                    let updatedDefaultTenant: TenantInfo = defaultTenant;
+                    let updatedCurrentTenant: TenantInfo = currentTenant;
+                    const tenants: TenantInfo[] = [];
 
                     response.associatedTenants.forEach((tenant: TenantInfo) => {
                         if (isEmpty(defaultTenant) && tenant.default) {
-                            defaultDomain = tenant.domain;
+                            updatedDefaultTenant = tenant;
+                        }
+                        if (isEmpty(currentTenant) && tenant.domain === tenantDomain) {
+                            updatedCurrentTenant = tenant;
                         }
 
-                        tenants.push(tenant.domain);
+                        tenants.push(tenant);
                     });
                     // Add tenants to the associatedTenants state
                     setAssociatedTenants([ ...associatedTenants, ...tenants ]);
                     setAssociatedTenantsOffset(associatedTenantsOffset + associatedTenantsLimit);
-                    setDefaultTenant(defaultDomain);
+                    setDefaultTenant(updatedDefaultTenant);
+                    setCurrentTenant(updatedCurrentTenant);
                     setHasMoreAssociatedTenants(associatedTenantsLimit === response.associatedTenants.length);
                 })
                 .catch((error: any) => {
@@ -317,13 +378,14 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
      * @param tempTenantAssociation - Tenant name.
      * @param index - Index.
      */
-    const resolveAssociatedTenantRecord = (tempTenantAssociation: string, index: number): ReactElement => {
+    const resolveAssociatedTenantRecord = (tempTenantAssociation: TenantInfo, index: number): ReactElement => {
         if (tenantAssociations.currentTenant !== tempTenantAssociation) {
             return (
                 <Item
                     className="tenant-account"
                     key={ index }
-                    onClick={ () => handleTenantSwitch(tempTenantAssociation) }
+                    onClick={ () => handleTenantSwitch(tempTenantAssociation.domain,
+                        isCentralDeploymentEnabled ? tempTenantAssociation.consoleHostname: undefined) }
                 >
                     <GenericIcon
                         icon={ getMiscellaneousIcons().tenantIcon }
@@ -335,9 +397,10 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                     <Item.Content className="tenant-list-item-content">
                         <div
                             className="name"
-                            data-testid={ `${ tempTenantAssociation }-tenant-la-name` }
+                            data-testid={ `${ tempTenantAssociation?.domain }-tenant-la-name` }
                         >
-                            { tempTenantAssociation }
+                            { tempTenantAssociation?.domain + (isCentralDeploymentEnabled ?
+                                " (" + tempTenantAssociation?.deploymentUnitName + ")" : "") }
                         </div>
                     </Item.Content>
                 </Item>
@@ -383,7 +446,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                 scrollableTarget="associated-tenants-container"
                             >
                                 {
-                                    tempTenantAssociationsList.map((tenant: string, index: number) =>
+                                    tempTenantAssociationsList.map((tenant: TenantInfo, index: number) =>
                                         resolveAssociatedTenantRecord(tenant, index))
                                 }
                             </InfiniteScroll>
@@ -415,19 +478,19 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         }
     ];
 
-    const setDefaultTenantInDropdown = (tenantName: string): void => {
+    const setDefaultTenantInDropdown = (tenant: TenantInfo): void => {
         setIsSetDefaultTenantInProgress(true);
-        makeTenantDefault(tenantName)
+        makeTenantDefault(tenant.domain)
             .then((response: AxiosResponse) => {
                 if (response.status === 200) {
                     dispatch(addAlert<AlertInterface>({
                         description: t("extensions:manage.features.tenant.notifications.defaultTenant.success." +
-                            "description", { tenantName: tenantName }),
+                            "description", { tenantName: tenant.domain }),
                         level: AlertLevels.SUCCESS,
                         message: t("extensions:manage.features.tenant.notifications.defaultTenant.success.message")
                     }));
 
-                    setDefaultTenant(tenantName);
+                    setDefaultTenant(tenant);
                 }
             })
             .catch(() => {
@@ -453,7 +516,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         const changeValue: string = event.target.value;
 
         if (tenantAssociations && Array.isArray(tenantAssociations.associatedTenants)) {
-            let result: string | string[];
+            let result: TenantInfo | TenantInfo[];
 
             if (changeValue.length > 0) {
                 result = tenantAssociations.associatedTenants.filter((item: string) =>
@@ -495,7 +558,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             organizationType !== OrganizationType.SUBORGANIZATION &&
             tenantAssociations
         ) {
-            if (tenantAssociations.currentTenant === tenantAssociations.defaultTenant) {
+            if (tenantAssociations.currentTenant?.domain === tenantAssociations.defaultTenant?.domain) {
                 options.push(
                     <Dropdown.Item className="action-panel" data-testid={ "default-button" } disabled={ true }>
                         <BuildingCircleCheckIcon fill="black" />
@@ -590,6 +653,31 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         return options;
     };
 
+    /**
+     * Display the current tenant.
+     */
+    const displayCurrentTenant = (): string | ReactElement => {
+
+        if (organizationType === OrganizationType.SUPER_ORGANIZATION) {
+            return organizationName;
+        }
+
+        if (tenantAssociations) {
+            const { currentTenant } = tenantAssociations;
+            const deploymentUnitName: string = isCentralDeploymentEnabled
+                ? ` (${currentTenant?.deploymentUnitName})`
+                : "";
+
+            return currentTenant?.domain + deploymentUnitName;
+        }
+
+        return (
+            <Placeholder>
+                <Placeholder.Line />
+            </Placeholder>
+        );
+    };
+
     const tenantDropdownMenu: ReactElement = (
         <Menu.Item
             compact
@@ -635,15 +723,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                     }
                                                 >
                                                     {
-                                                        organizationType === OrganizationType.SUBORGANIZATION
-                                                            ? organizationName
-                                                            : tenantAssociations
-                                                                ? tenantAssociations.currentTenant
-                                                                : (
-                                                                    <Placeholder>
-                                                                        <Placeholder.Line />
-                                                                    </Placeholder>
-                                                                )
+                                                        displayCurrentTenant()
                                                     }
                                                     { isSuperOrganization() && (
                                                         <Chip
@@ -749,6 +829,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                     ? (
                         <AddTenantWizard
                             openModal={ showTenantAddModal }
+                            deploymentUnits={ deploymentUnits }
                             onCloseHandler={ () => setShowTenantAddModal(false) } />
                     )
                     : null

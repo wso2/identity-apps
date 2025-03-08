@@ -1,5 +1,35 @@
 # @wso2is/core
 
+## 2.7.0
+
+### Minor Changes
+
+- [#7291](https://github.com/wso2/identity-apps/pull/7291) [`04fdeac1d019db974616a0845dfda84aa353d582`](https://github.com/wso2/identity-apps/commit/04fdeac1d019db974616a0845dfda84aa353d582) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Central Deployment Related Changes
+
+## 2.6.5
+
+### Patch Changes
+
+- [#7701](https://github.com/wso2/identity-apps/pull/7701) [`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger patch release to all packages to prepare for RC
+
+## 2.6.4
+
+### Patch Changes
+
+- [#7626](https://github.com/wso2/identity-apps/pull/7626) [`ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578`](https://github.com/wso2/identity-apps/commit/ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add support to configure feature flags for sub-organizations.
+
+## 2.6.3
+
+### Patch Changes
+
+- [#7541](https://github.com/wso2/identity-apps/pull/7541) [`8cebca0336f5769f65fda60960b78d8404049301`](https://github.com/wso2/identity-apps/commit/8cebca0336f5769f65fda60960b78d8404049301) Thanks [@brionmario](https://github.com/brionmario)! - Make the `ui_lang` & `accepts-cookies` preference cookies `Secure`
+
+## 2.6.2
+
+### Patch Changes
+
+- [#7123](https://github.com/wso2/identity-apps/pull/7123) [`0aca53b8d7f18b9d8488911500b86c7178eb9be6`](https://github.com/wso2/identity-apps/commit/0aca53b8d7f18b9d8488911500b86c7178eb9be6) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Ingore regex pattern matching for inbound OAuth apps
+
 ## 2.6.1
 
 ### Patch Changes

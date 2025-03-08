@@ -58,8 +58,7 @@ export const user: userNS = {
             },
             deleteUserZone: {
                 actionTitle: "Delete User",
-                buttonDisableHint: "Delete option is disabled because this user is managed in a remote " +
-                    "user store.",
+                buttonDisableHint: "Delete option is disabled because this user is managed in a Read Only user store.",
                 header: "Delete user",
                 subheader: "This action will permanently delete the user from the organization. Please " +
                     "be certain before you proceed."
@@ -72,6 +71,7 @@ export const user: userNS = {
             header: "Danger Zone",
             lockUserZone: {
                 actionTitle: "Lock User",
+                disabledHint: "To lock/unlock the user account, please enable the account first.",
                 header: "Lock user",
                 subheader: "Once you lock the account, the user can no longer log in to the system."
             },
@@ -151,9 +151,14 @@ export const user: userNS = {
                     }
                 },
                 username: {
+                    hint: {
+                        defaultRegex: "Must be a 3-50 character string without spaces, '*', '?', or '%', and can include letters, numbers, and other symbols."
+                    },
                     label: "Username",
                     placeholder: "Enter the username",
                     validations: {
+                        customRegex: "The username must match the following regular expression: {{regex}}",
+                        defaultRegex: "The username must be 3-50 characters long and cannot contain spaces, '*', '?', or '%'.",
                         empty: "Username is a required field",
                         invalid: "A user already exists with this username.",
                         invalidCharacters: "Username seems to contain invalid characters.",
@@ -366,6 +371,7 @@ export const user: userNS = {
         }
     },
     profile: {
+        accountDisabled: "The account has been disabled by an administrator.",
         accountLockReason: {
             adminInitiated: "The account has been manually locked by an administrator.",
             default: "The account is locked.",
@@ -472,7 +478,7 @@ export const user: userNS = {
             changeUserPassword: {
                 error: {
                     description: "{{description}}",
-                    message: "Error occurred while changing the user password."
+                    message: "Error while changing user password."
                 },
                 genericError: {
                     description: "Error occurred while changing the user password.",

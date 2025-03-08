@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -95,6 +95,19 @@ export class AuthenticatorMeta {
      */
     public static getAuthenticatorLabels(authenticator: FederatedAuthenticatorInterface): string[] {
 
+        /**
+         * Currently authenticator id is being used to fetch authenticator labels from the meta content.
+         * The existing approach cannot be used for custom authenticators since the id of the
+         * custom authenticators are not pre defined.
+         */
+        if (this.isCustomAuthenticator(authenticator)) {
+            if (this.isCustomSecondFactorAuthenticator(authenticator)) {
+                return [ AuthenticatorLabels.CUSTOM, AuthenticatorLabels.SECOND_FACTOR ];
+            }
+
+            return [ AuthenticatorLabels.CUSTOM ];
+        }
+
         const authenticatorId: string = authenticator?.authenticatorId;
 
         const authenticatorLabels: string[] = get({
@@ -155,6 +168,33 @@ export class AuthenticatorMeta {
     }
 
     /**
+     * Check whether the authenticator is a custom authenticator.
+     *
+     * Since there is no any identifier in the API to distinguish the authenticator as a custom authenticator,
+     * the tags have to be used to identify the custom authenticators.
+     *
+     * @param authenticator - Authenticator to be evaluated.
+     * @returns whether the authenticator is a custom authenticator.
+     */
+    private static isCustomAuthenticator = (authenticator: FederatedAuthenticatorInterface): boolean => {
+        return authenticator?.tags?.includes("Custom");
+    };
+
+    /**
+     * Check whether the authenticator is a custom second factor authenticator.
+     *
+     * Since there is no any identifier in the API to distinguish the authenticator as a custom
+     * second factor authenticator,
+     * the tags have to be used to identify the custom authenticators.
+     *
+     * @param authenticator - Authenticator to be evaluated.
+     * @returns whether the authenticator is a custom second factor authenticator.
+     */
+    private static isCustomSecondFactorAuthenticator = (authenticator: FederatedAuthenticatorInterface): boolean => {
+        return authenticator?.tags?.includes("2FA");
+    };
+
+    /**
      * Get Authenticator Type display name.
      *
      * @param type - Type.
@@ -178,7 +218,16 @@ export class AuthenticatorMeta {
                 "addAuthenticatorModal.content.authenticatorGroups.social.heading",
             [ AuthenticatorCategories.RECOVERY ]: "applications:edit.sections.signOnMethod.sections."+
             "authenticationFlow.sections.stepBased." +
-                "addAuthenticatorModal.content.authenticatorGroups.backupCodes.heading"
+                "addAuthenticatorModal.content.authenticatorGroups.backupCodes.heading",
+            [ AuthenticatorCategories.EXTERNAL ]: "applications:edit.sections.signOnMethod.sections."+
+            "authenticationFlow.sections.stepBased." +
+                "addAuthenticatorModal.content.authenticatorGroups.external.heading",
+            [ AuthenticatorCategories.INTERNAL ]: "applications:edit.sections.signOnMethod.sections."+
+            "authenticationFlow.sections.stepBased." +
+                "addAuthenticatorModal.content.authenticatorGroups.internal.heading",
+            [ AuthenticatorCategories.TWO_FACTOR_CUSTOM ]: "applications:edit.sections.signOnMethod.sections."+
+            "authenticationFlow.sections.stepBased." +
+                "addAuthenticatorModal.content.authenticatorGroups.twoFactorCustom.heading"
         }, type);
     }
 
@@ -221,6 +270,19 @@ export class AuthenticatorMeta {
     }
 
     /**
+     * Get Custom Authenticator Icon.
+     *
+     * Currently authenticator id is being used to fetch the respective authenticator icon.
+     * Existing function could not be used since the id and the name of
+     * custom authenticators are not pre defined.
+     *
+     * @returns Custom Authenticator Icon.
+     */
+    public static getCustomAuthenticatorIcon(): string {
+        return getConnectionIcons()?.customAuthenticator;
+    }
+
+    /**
      * Get Authenticator Type display name.
      *
      * @param authenticatorId - Authenticator ID.
@@ -259,7 +321,8 @@ export class AuthenticatorMeta {
             AuthenticatorLabels.SOCIAL,
             AuthenticatorLabels.SAML,
             AuthenticatorLabels.PASSKEY,
-            AuthenticatorLabels.API_AUTHENTICATION
+            AuthenticatorLabels.API_AUTHENTICATION,
+            AuthenticatorLabels.CUSTOM
         ];
     }
 

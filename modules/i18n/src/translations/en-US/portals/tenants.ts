@@ -86,6 +86,9 @@ export const tenants: TenantsNS = {
                     label: "Email",
                     placeholder: "Enter the admin’s email address.",
                     validations: {
+                        invalid: "Please enter a valid email address. You can use alphanumeric " +
+                            "characters, unicode characters, underscores (_), dashes (-), periods (.), " +
+                            "and an at sign (@).",
                         required: "Email is required."
                     }
                 },
@@ -168,6 +171,13 @@ export const tenants: TenantsNS = {
             secondaryAction: "Cancel"
         }
     },
+    deploymentUnits: {
+        label: "Region",
+        placeholder: "Select a region (e.g., US).",
+        validations: {
+            empty: "This is a required field."
+        }
+    },
     edit: {
         backButton: "Go back to Root Organizations",
         consoleURL: {
@@ -237,6 +247,10 @@ export const tenants: TenantsNS = {
             }
         }
     },
+    listDeploymentUnits: {
+        description: "An error occurred while fetching regions.",
+        message: "Unable to fetch regions"
+    },
     listing: {
         advancedSearch: {
             form: {
@@ -272,7 +286,7 @@ export const tenants: TenantsNS = {
             },
             subtitles: {
                 0: "There are no root organizations available at the moment.",
-                1: "Start with creating your first root organization. or configure system settings that applies to all the root organizations."
+                1: "Create your first root organization, or configure system settings that applies to all the root organizations."
             },
             title: "No groups assigned to the role."
         },
@@ -316,7 +330,7 @@ export const tenants: TenantsNS = {
         deActivate: "Disable",
         deActivated: "Disabled"
     },
-    subtitle: "Configure and extend you server by creating new root level organizations in your workspace.",
+    subtitle: "Configure and manage your server by creating new root level organizations in your workspace.",
     systemSettings: {
         actions: {
             newTenant: {

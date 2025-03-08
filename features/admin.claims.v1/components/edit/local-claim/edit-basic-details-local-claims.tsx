@@ -222,6 +222,19 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     }, [ fetchDialectsRequestError ]);
 
     /**
+     * Update attribute profile states from claims
+     */
+    useEffect(() => {
+        setIsConsoleRequired(claim?.profiles?.console?.required ?? claim?.required);
+        setIsEndUserRequired(claim?.profiles?.endUser?.required ?? claim?.required);
+        setIsSelfRegistrationRequired(claim?.profiles?.selfRegistration?.required ?? claim?.required);
+
+        setIsConsoleReadOnly(claim?.profiles?.console?.readOnly ?? claim?.readOnly);
+        setIsEndUserReadOnly(claim?.profiles?.endUser?.readOnly ?? claim?.readOnly);
+        setIsSelfRegistrationReadOnly(claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly);
+    }, [ claim ]);
+
+    /**
      * Get username configuration.
      */
     useEffect(() => {
@@ -519,27 +532,45 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             data = {
                 attributeMapping: claim.attributeMapping,
                 claimURI: claim.claimURI,
-                description: values?.description !== undefined ? values.description?.toString() : claim?.description,
-                displayName: values?.name !== undefined ? values.name?.toString() : claim?.displayName,
+                description: values?.description !== undefined
+                    ? values.description?.toString()
+                    : claim?.description,
+                displayName: values?.name !== undefined
+                    ? values.name?.toString()
+                    : claim?.displayName,
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
                 properties: claim?.properties,
-                readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
-                regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
-                required: values?.required !== undefined && !values?.readOnly ? !!values.required : false,
-                sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod as
-                    SharedProfileValueResolvingMethod || SharedProfileValueResolvingMethod.FROM_ORIGIN,
+                readOnly: values?.readOnly !== undefined
+                    ? !!values.readOnly
+                    : claim?.readOnly,
+                regEx:  values?.regularExpression !== undefined
+                    ? values.regularExpression?.toString()
+                    : claim?.regEx,
+                required: values?.required !== undefined && !values?.readOnly
+                    ? !!values.required
+                    : false,
+                sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod !== undefined
+                    ? values?.sharedProfileValueResolvingMethod as SharedProfileValueResolvingMethod
+                    : claim?.sharedProfileValueResolvingMethod,
                 supportedByDefault: values?.supportedByDefault !== undefined
-                    ? !!values.supportedByDefault : claim?.supportedByDefault,
-                uniquenessScope: values?.uniquenessScope as UniquenessScope || UniquenessScope.NONE
+                    ? !!values.supportedByDefault
+                    : claim?.supportedByDefault,
+                uniquenessScope: values?.uniquenessScope !== undefined
+                    ? values?.uniquenessScope as UniquenessScope
+                    : claim?.uniquenessScope
             };
         } else {
             // Use the new configuration.
             data = {
                 attributeMapping: claim.attributeMapping,
                 claimURI: claim.claimURI,
-                description: values?.description !== undefined ? values.description?.toString() : claim?.description,
-                displayName: values?.name !== undefined ? values.name?.toString() : claim?.displayName,
+                description: values?.description !== undefined
+                    ? values.description?.toString()
+                    : claim?.description,
+                displayName: values?.name !== undefined
+                    ? values.name?.toString()
+                    : claim?.displayName,
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
                 profiles: {
@@ -548,10 +579,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             !!values.consoleReadOnly
                             : claim?.profiles?.console?.readOnly,
                         required: values?.consoleRequired !== undefined ?
-                            !!values.consoleRequired
+                            (!isConsoleReadOnly && !!values.consoleRequired)
                             : claim?.profiles?.console?.required,
                         supportedByDefault: values?.consoleSupportedByDefault !== undefined ?
-                            !!values.consoleSupportedByDefault
+                            (isConsoleRequired || !!values.consoleSupportedByDefault)
                             : claim?.profiles?.console?.supportedByDefault
                     },
                     endUser: {
@@ -559,10 +590,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             !!values.endUserReadOnly
                             : claim?.profiles?.endUser?.readOnly,
                         required: values?.endUserRequired !== undefined ?
-                            !!values.endUserRequired
+                            (!isEndUserReadOnly && !!values.endUserRequired)
                             : claim?.profiles?.endUser?.required,
                         supportedByDefault: values?.endUserSupportedByDefault !== undefined ?
-                            !!values.endUserSupportedByDefault
+                            (isEndUserRequired || !!values.endUserSupportedByDefault)
                             : claim?.profiles?.endUser?.supportedByDefault
                     },
                     selfRegistration: {
@@ -573,7 +604,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             !!values.selfRegistrationRequired
                             : claim?.profiles?.selfRegistration?.required,
                         supportedByDefault: values?.selfRegistrationSupportedByDefault !== undefined ?
-                            !!values.selfRegistrationSupportedByDefault
+                            (isSelfRegistrationRequired || !!values.selfRegistrationSupportedByDefault)
                             : claim?.profiles?.selfRegistration?.supportedByDefault
                     }
                 },
@@ -581,11 +612,14 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
                 regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
                 required: values?.required !== undefined && !values?.readOnly ? !!values.required : false,
-                sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod as
-                    SharedProfileValueResolvingMethod || SharedProfileValueResolvingMethod.FROM_ORIGIN,
+                sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod !== undefined
+                    ? values?.sharedProfileValueResolvingMethod as SharedProfileValueResolvingMethod
+                    : claim?.sharedProfileValueResolvingMethod,
                 supportedByDefault: values?.supportedByDefault !== undefined
                     ? !!values.supportedByDefault : claim?.supportedByDefault,
-                uniquenessScope: values?.uniquenessScope as UniquenessScope || UniquenessScope.NONE
+                uniquenessScope: values?.uniquenessScope !== undefined
+                    ? values?.uniquenessScope as UniquenessScope
+                    : claim?.uniquenessScope
             };
         }
 
@@ -626,7 +660,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     };
 
     const resolveAttributeSupportedByDefaultRow = (): ReactElement => {
-        const isSupportedByDefaultCheckboxDisabled: boolean = !hasMapping
+        const isSupportedByDefaultCheckboxDisabled: boolean = isReadOnly || isSubOrganization() || !hasMapping
             || (
                 accountVerificationEnabled
                 && selfRegistrationEnabled
@@ -653,16 +687,14 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     <Field.Checkbox
                         ariaLabel="Display by default in console"
                         name="consoleSupportedByDefault"
-                        required={ false }
                         defaultValue={ claim?.profiles?.console?.supportedByDefault ?? claim?.supportedByDefault }
                         data-componentid={
                             `${ testId }-form-console-supported-by-default-checkbox` }
-                        readOnly={ isSubOrganization() || isReadOnly }
-                        disabled={ isSupportedByDefaultCheckboxDisabled }
+                        readOnly={ isSupportedByDefaultCheckboxDisabled }
                         {
-                            ...( isConsoleRequired && !isConsoleReadOnly
+                            ...( isConsoleRequired
                                 ? { checked: true }
-                                : { defaultValue : claim?.profiles?.console?.supportedByDefault
+                                : { defaultValue: claim?.profiles?.console?.supportedByDefault
                                     ?? claim?.supportedByDefault }
                             )
                         }
@@ -672,15 +704,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     <Field.Checkbox
                         ariaLabel="Display by default in My Account"
                         name="endUserSupportedByDefault"
-                        required={ false }
                         defaultValue={ claim?.profiles?.endUser?.supportedByDefault ?? claim?.supportedByDefault }
                         data-componentid={ `${ testId }-form-end-user-supported-by-default-checkbox` }
-                        readOnly={ isSubOrganization() || isReadOnly }
-                        disabled={ isSupportedByDefaultCheckboxDisabled }
+                        readOnly={ isSupportedByDefaultCheckboxDisabled }
                         {
-                            ...( isEndUserRequired && !isEndUserReadOnly
+                            ...( isEndUserRequired
                                 ? { checked: true }
-                                : { defaultValue : claim?.profiles?.endUser?.supportedByDefault
+                                : { defaultValue: claim?.profiles?.endUser?.supportedByDefault
                                     ?? claim?.supportedByDefault }
                             )
                         }
@@ -690,17 +720,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     <Field.Checkbox
                         ariaLabel="Display by default in self-registration"
                         name="selfRegistrationSupportedByDefault"
-                        required={ false }
                         defaultValue={ claim?.profiles?.selfRegistration?.supportedByDefault ??
                             claim?.supportedByDefault }
                         data-componentid={
                             `${ testId }-form-self-registration-supported-by-default-checkbox` }
-                        readOnly={ isSubOrganization() || isReadOnly }
-                        disabled={ isSupportedByDefaultCheckboxDisabled }
+                        readOnly={ isSupportedByDefaultCheckboxDisabled }
                         {
-                            ...( isSelfRegistrationRequired && !isSelfRegistrationReadOnly
+                            ...( isSelfRegistrationRequired
                                 ? { checked: true }
-                                : { defaultValue : claim?.profiles?.selfRegistration?.supportedByDefault ??
+                                : { defaultValue: claim?.profiles?.selfRegistration?.supportedByDefault ??
                                     claim?.supportedByDefault }
                             )
                         }
@@ -711,7 +739,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     };
 
     const resolveAttributeRequiredRow = (): ReactElement => {
-        const isRequiredCheckboxDisabled: boolean = !hasMapping
+        const isRequiredCheckboxDisabled: boolean = isReadOnly || isSubOrganization() || !hasMapping
             || (
                 accountVerificationEnabled
                 && selfRegistrationEnabled
@@ -737,18 +765,16 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     <Field.Checkbox
                         ariaLabel="Required in console"
                         name="consoleRequired"
-                        required={ false }
                         defaultValue={ claim?.profiles?.console?.required ?? claim?.required }
                         data-componentid={ `${ testId }-form-console-required-checkbox` }
-                        readOnly={ isSubOrganization() || isReadOnly }
-                        disabled={ isRequiredCheckboxDisabled || isConsoleReadOnly }
+                        readOnly={ isRequiredCheckboxDisabled || isConsoleReadOnly }
                         listen ={ (value: boolean) => {
                             setIsConsoleRequired(value);
                         } }
                         {
                             ...( isConsoleReadOnly
                                 ? { value: false }
-                                : { defaultValue : claim?.profiles?.console?.required ?? claim?.required }
+                                : { defaultValue: claim?.profiles?.console?.required ?? claim?.required }
                             )
                         }
                     />
@@ -757,18 +783,16 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     <Field.Checkbox
                         ariaLabel="Required in My Account"
                         name="endUserRequired"
-                        required={ false }
                         defaultValue={ claim?.profiles?.endUser?.required ?? claim?.required }
                         data-componentid={ `${ testId }-form-end-user-required-checkbox` }
-                        readOnly={ isSubOrganization() || isReadOnly }
-                        disabled={ isRequiredCheckboxDisabled || isEndUserReadOnly }
+                        readOnly={ isRequiredCheckboxDisabled || isEndUserReadOnly }
                         listen ={ (value: boolean) => {
                             setIsEndUserRequired(value);
                         } }
                         {
                             ...( isEndUserReadOnly
                                 ? { value: false }
-                                : { defaultValue : claim?.profiles?.endUser?.required ?? claim?.required }
+                                : { defaultValue: claim?.profiles?.endUser?.required ?? claim?.required }
                             )
                         }
                     />
@@ -777,18 +801,16 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     <Field.Checkbox
                         ariaLabel="Required in self-registration"
                         name="selfRegistrationRequired"
-                        required={ false }
                         defaultValue={ claim?.profiles?.selfRegistration?.required ?? claim?.required }
                         data-componentid={ `${ testId }-form-self-registration-required-checkbox` }
-                        readOnly={ isSubOrganization() || isReadOnly }
-                        disabled={ isRequiredCheckboxDisabled || isSelfRegistrationReadOnly }
+                        readOnly={ isRequiredCheckboxDisabled || isSelfRegistrationReadOnly }
                         listen ={ (value: boolean) => {
                             setIsSelfRegistrationRequired(value);
                         } }
                         {
                             ...( isSelfRegistrationReadOnly
                                 ? { value: false }
-                                : { defaultValue : claim?.profiles?.selfRegistration?.required ?? claim?.required }
+                                : { defaultValue: claim?.profiles?.selfRegistration?.required ?? claim?.required }
                             )
                         }
                     />
@@ -798,7 +820,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     };
 
     const resolveAttributeReadOnlyRow = (): ReactElement => {
-        const isReadOnlyCheckboxDisabled: boolean = !hasMapping;
+        const isReadOnlyCheckboxDisabled: boolean = isReadOnly || isSubOrganization() || !hasMapping;
 
         return (
             <TableRow hideBorder>
@@ -818,12 +840,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     <Field.Checkbox
                         ariaLabel="Read-only in console"
                         name="consoleReadOnly"
-                        required={ false }
-                        requiredErrorMessage=""
                         defaultValue={ claim?.profiles?.console?.readOnly ?? claim?.readOnly }
                         data-componentid={ `${ testId }-form-console-readOnly-checkbox` }
-                        readOnly={ isSubOrganization() || isReadOnly }
-                        disabled={ isReadOnlyCheckboxDisabled }
+                        readOnly={ isReadOnlyCheckboxDisabled }
                         listen ={ (value: boolean) => {
                             setIsConsoleReadOnly(value);
                         } }
@@ -833,30 +852,32 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     <Field.Checkbox
                         ariaLabel="Read-only in My Account"
                         name="endUserReadOnly"
-                        required={ false }
-                        requiredErrorMessage=""
                         defaultValue={ claim?.profiles?.endUser?.readOnly ?? claim?.readOnly }
                         data-componentid={ `${ testId }-form-end-user-readOnly-checkbox` }
-                        readOnly={ isSubOrganization() || isReadOnly }
-                        disabled={ isReadOnlyCheckboxDisabled }
+                        readOnly={ isReadOnlyCheckboxDisabled }
                         listen ={ (value: boolean) => {
                             setIsEndUserReadOnly(value);
                         } }
                     />
                 </TableCell>
                 <TableCell align="center">
-                    <Field.Checkbox
-                        ariaLabel="Read-only in self-registration"
-                        name="selfRegistrationReadOnly"
-                        required={ false }
-                        requiredErrorMessage=""
-                        defaultValue={ claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
-                        data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
-                        readOnly={ isSubOrganization() || isReadOnly }
-                        disabled={ isReadOnlyCheckboxDisabled }
-                        listen ={ (value: boolean) => {
-                            setIsSelfRegistrationReadOnly(value);
-                        } }
+                    <Tooltip
+                        trigger={ (
+                            <Field.Checkbox
+                                ariaLabel="Read-only in self-registration"
+                                name="selfRegistrationReadOnly"
+                                defaultValue={ claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
+                                data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
+                                listen ={ (value: boolean) => {
+                                    setIsSelfRegistrationReadOnly(value);
+                                } }
+                                readOnly
+                            />
+                        ) }
+                        content={
+                            t("claims:local.forms.profiles.selfRegistrationReadOnlyHint")
+                        }
+                        compact
                     />
                 </TableCell>
             </TableRow>
@@ -932,7 +953,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         hint={ t("claims:local.forms.descriptionHint") }
                         readOnly={ isSubOrganization() || isReadOnly }
                     />
-
                     { !attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims
                         && (
                             <Field.Input

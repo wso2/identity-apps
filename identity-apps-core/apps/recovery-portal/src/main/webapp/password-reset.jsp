@@ -49,7 +49,7 @@
     String callback = (String) request.getAttribute(IdentityManagementEndpointConstants.CALLBACK);
     String username = request.getParameter("username");
     String userStoreDomain = request.getParameter("userstoredomain");
-    String type = request.getParameter("type");
+    String type = Encode.forJava(request.getParameter("type"));
     String orgId = request.getParameter("orgid");
     String spId = request.getParameter("spId");
     if (StringUtils.isBlank(spId)) {

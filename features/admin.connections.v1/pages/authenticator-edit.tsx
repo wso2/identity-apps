@@ -20,7 +20,6 @@ import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-
 import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
@@ -47,11 +46,9 @@ import { getLocalAuthenticator } from "../api/authenticators";
 import { useGetConnectionTemplate } from "../api/connections";
 import { EditConnection } from "../components/edit/connection-edit";
 import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
-import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import { AuthenticatorLabels } from "../models/authenticators";
 import { CustomAuthConnectionInterface } from "../models/connection";
-import { ConnectionsManagementUtils } from "../utils/connection-utils";
 
 /**
  * Proptypes for the Custom Local Authenticator edit page component.
@@ -96,10 +93,6 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
     const hasApplicationTemplateViewPermissions: boolean = useRequiredScopes(applicationsFeatureConfig?.scopes?.read);
 
     const { data: template } = useGetConnectionTemplate(templateId, shouldFetchConnectionTemplate);
-
-    const { UIConfig } = useUIConfig();
-
-    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     useEffect(() => {
         if (!connector) {
@@ -162,8 +155,8 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
         const has2FA: boolean = tags.some((tag: string) => tag.toUpperCase() === AuthenticatorLabels.SECOND_FACTOR);
 
         return has2FA
-            ? ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATION
-            : ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATION;
+            ? ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATOR
+            : ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATOR;
     };
 
     /**
@@ -186,7 +179,7 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
                                 description: error.response.data.description
                             }),
                             level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:" + "notifications.getIDP.error.message")
+                            message: t("authenticationProvider:notifications.getIDP.error.message")
                         })
                     );
 
@@ -195,9 +188,9 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
 
                 dispatch(
                     addAlert({
-                        description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
+                        description: t("authenticationProvider:notifications.getIDP.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
+                        message: t("authenticationProvider:notifications.getIDP.genericError.message")
                     })
                 );
             })
@@ -215,10 +208,7 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
             <AppAvatar
                 hoverable={ false }
                 name={ connector?.displayName }
-                image={ ConnectionsManagementUtils.resolveConnectionResourcePath(
-                    connectionResourcesUrl,
-                    ConnectionUIConstants.CUSTOM_LOCAL_AUTHENTICATOR_IMAGE_URI
-                ) }
+                image={ connector?.image || AuthenticatorMeta.getCustomAuthenticatorIcon() }
                 size="tiny"
             />
         );
@@ -264,15 +254,15 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
             return (
                 <LabelWithPopup
                     popupHeader={ t("authenticationProvider:popups.appStatus.enabled.header") }
-                    popupSubHeader={ t("authenticationProvider:popups.appStatus." + "enabled.content") }
+                    popupSubHeader={ t("authenticationProvider:popups.appStatus.enabled.content") }
                     labelColor="green"
                 />
             );
         } else {
             return (
                 <LabelWithPopup
-                    popupHeader={ t("authenticationProvider:popups.appStatus." + "disabled.header") }
-                    popupSubHeader={ t("authenticationProvider:popups.appStatus." + "disabled.content") }
+                    popupHeader={ t("authenticationProvider:popups.appStatus.disabled.header") }
+                    popupSubHeader={ t("authenticationProvider:popups.appStatus.disabled.content") }
                     labelColor="grey"
                 />
             );
@@ -309,12 +299,12 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
         return (
             <Label size="small">
                 { getCustomLocalAuthTemplateId(connector)
-                    === ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATION ?
+                    === ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATOR ?
                     t(
-                        "customAuthentication:fields.createWizard.authenticationTypeStep." +
+                        "customAuthenticator:fields.createWizard.authenticationTypeStep." +
                     "twoFactorAuthenticationCard.header"
                     ) : t(
-                        "customAuthentication:fields.createWizard.authenticationTypeStep." +
+                        "customAuthenticator:fields.createWizard.authenticationTypeStep." +
                     "internalUserAuthenticationCard.header"
                     ) }
             </Label>

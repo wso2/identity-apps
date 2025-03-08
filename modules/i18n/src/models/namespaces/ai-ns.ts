@@ -85,4 +85,5 @@ export interface aiNS{
         termsAndConditions: string;
         title: string;
     };
+    subscribeToAI: string;
 }

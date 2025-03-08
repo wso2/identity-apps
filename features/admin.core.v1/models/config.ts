@@ -101,6 +101,10 @@ export interface FeatureConfigInterface {
      */
     attributeDialects?: FeatureAccessConfigInterface;
     /**
+     * Attribute verification feature.
+     */
+    attributeVerification?: FeatureAccessConfigInterface;
+    /**
      * Branding configurations feature.
      */
     branding?: FeatureAccessConfigInterface;
@@ -282,6 +286,10 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * Configs of the myaccount app.
      */
     accountApp: ExternalAppConfigInterface;
+    /**
+     * Central deployment enabled.
+     */
+    centralDeploymentEnabled: boolean;
     /**
      * Configs of the developer app.
      */

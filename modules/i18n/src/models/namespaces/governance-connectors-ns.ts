@@ -359,6 +359,7 @@ export interface governanceConnectorsNS {
                 };
                 accountDisableHandler: {
                     friendlyName: string;
+                    description: string;
                     properties: {
                         accountDisableHandlerEnable: {
                             hint: string;
@@ -367,6 +368,12 @@ export interface governanceConnectorsNS {
                         accountDisableHandlerNotificationManageInternally: {
                             hint: string;
                             label: string;
+                        };
+                    };
+                    notifications: {
+                        configurationUpdate: {
+                            success: NotificationItem;
+                            error: NotificationItem;
                         };
                     };
                 };
@@ -624,6 +631,25 @@ export interface governanceConnectorsNS {
                 };
                 userClaimUpdate: {
                     friendlyName: string;
+                    subTitle: string;
+                    update: {
+                        error: {
+                            description: string;
+                            message: string;
+                        },
+                        genericError: {
+                            description: string;
+                            message: string;
+                        },
+                        success: {
+                            description: string;
+                            message: string;
+                        }
+                    },
+                    subHeadings: {
+                        emailConfiguration: string;
+                        mobileConfiguration: string;
+                    },
                     properties: {
                         userClaimUpdateEmailEnableVerification: {
                             hint: string;

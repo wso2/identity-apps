@@ -8,6 +8,8 @@
 -->
 
 <%= htmlWebpackPlugin.options.contentType %>
+<%= htmlWebpackPlugin.options.serverConfiguration %>
+<%= htmlWebpackPlugin.options.proxyContextPathConstant %>
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importOwaspEncode %>
 
@@ -165,15 +167,6 @@
         <script>
             // Handles myaccount tenanted signout before auth sdk get loaded
             var applicationDomain = window.location.origin;
-            var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
-
-            if(isSignOutSuccess && userTenant) {
-                if (startupConfig.subdomainApplication) {
-                    window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant;
-                } else {
-                    window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant + "/myaccount";
-                }
-            }
 
             var serverOrigin = "<%= htmlWebpackPlugin.options.serverUrl %>";
             var authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>" != "null"
@@ -196,6 +189,8 @@
         <!-- End of custom scripts added to the head -->
     </head>
     <script>
+        var proxyContextPathGlobal = "<%= htmlWebpackPlugin.options.proxyContextPath %>";
+
         function authenticateWithSDK() {
 
             if(!authorizationCode) {
@@ -241,13 +236,16 @@
                  * @returns {string} Contructed URL.
                  */
                  function signInRedirectURL() {
+                    // When there's no proxy context path, the IS server returns "null".
+                    var contextPath = (!proxyContextPathGlobal || proxyContextPathGlobal === "null") ? "" : "/" + proxyContextPathGlobal;
+
                     if (getTenantName() === startupConfig.superTenant) {
-                        return applicationDomain.replace(/\/+$/, '')
-                            + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
+                        return applicationDomain.replace(/\/+$/, '') + contextPath
+                             + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                     }
 
-                    return applicationDomain.replace(/\/+$/, '') + getTenantPath()
-                        + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
+                    return applicationDomain.replace(/\/+$/, '') + contextPath + getTenantPath()
+                         + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                 }
 
                 /**

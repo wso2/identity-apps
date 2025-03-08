@@ -64,10 +64,6 @@ export class AdministratorConstants {
     // Timeout for the debounce function.
     public static readonly DEBOUNCE_TIMEOUT: number = 1000;
 
-    public static readonly INVITE_INTERNAL_USER_FORM_ID: string = "inviteInternalUserForm";
-
-    public static readonly INVITE_EXTERNAL_USER_FORM_ID: string = "inviteExternalUserForm";
-
     /**
      * Get the consumer users paths as a map.
      *

@@ -16,17 +16,11 @@
  * under the License.
  */
 
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
-import { getLocalAuthenticator } from "../../../api/authenticators";
-import { getFederatedAuthenticatorDetails } from "../../../api/connections";
 import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import {
@@ -34,15 +28,16 @@ import {
     ConnectionListResponseInterface,
     CustomAuthConnectionInterface,
     CustomAuthGeneralDetailsFormValuesInterface,
-    CustomAuthenticationCreateWizardGeneralFormValuesInterface,
-    ExternalEndpoint,
-    FederatedAuthenticatorListItemInterface
+    CustomAuthenticatorCreateWizardGeneralFormValuesInterface
 } from "../../../models/connection";
+import {
+    resolveCustomAuthenticatorDisplayName
+} from "../../../utils/connection-utils";
 
 /**
  * Proptypes for the custom authenticator general details form component.
  */
-interface CustomAuthGeneralDetailsFormPopsInterface extends IdentifiableComponentInterface {
+interface CustomAuthenticatorGeneralDetailsFormPopsInterface extends IdentifiableComponentInterface {
     /**
      * Currently editing IDP.
      */
@@ -100,21 +95,19 @@ const FORM_ID: string = "idp-custom-auth-general-details-form";
  * @param props - Props injected to the component.
  * @returns Functional component.
  */
-export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDetailsFormPopsInterface> = ({
+export const CustomAuthenticatorGeneralDetailsForm:FunctionComponent<
+CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
     templateType,
     onSubmit,
     editingIDP,
     isReadOnly,
     isSubmitting,
-    "data-componentid": _componentId = "idp-edit-custom-auth-general-settings-form"
-}: CustomAuthGeneralDetailsFormPopsInterface): ReactElement => {
-
-    const dispatch: Dispatch = useDispatch();
-
-    const [ isCustomLocalAuth, setIsCustomLocalAuth ] = useState<boolean>(undefined);
-    const [ authenticatorEndpoint, setAuthenticatorEndpoint ] = useState<ExternalEndpoint>(null);
+    "data-componentid": componentId = "idp-edit-custom-authenticator-general-settings"
+}: CustomAuthenticatorGeneralDetailsFormPopsInterface): ReactElement => {
 
     const { t } = useTranslation();
+
+    const [ isCustomLocalAuth, setIsCustomLocalAuth ] = useState<boolean>(undefined);
 
     const { CONNECTION_TEMPLATE_IDS: ConnectionTemplateIds } = CommonAuthenticatorConstants;
 
@@ -123,81 +116,12 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
             return;
         }
 
-        if (templateType == ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATION ||
-            templateType == ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATION) {
+        if (templateType == ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATOR ||
+            templateType == ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATOR) {
 
             setIsCustomLocalAuth(true);
         }
     }, [ templateType ]);
-
-    useEffect(() => {
-        if (isCustomLocalAuth === undefined) {
-            return;
-        }
-
-        let localAuthenticatorId: string;
-
-        if (isCustomLocalAuth) {
-
-            localAuthenticatorId = (editingIDP as CustomAuthConnectionInterface)?.id;
-            getLocalAuthenticator(localAuthenticatorId)
-                .then((data: CustomAuthConnectionInterface) => {
-                    setAuthenticatorEndpoint(data?.endpoint);
-                })
-                .catch((error: IdentityAppsApiException) => {
-                    if (error.response && error.response.data && error.response.data.description) {
-                        dispatch(
-                            addAlert({
-                                description: t("authenticationProvider:notifications.getIDP.error.description", {
-                                    description: error.response.data.description
-                                }),
-                                level: AlertLevels.ERROR,
-                                message: t("authenticationProvider:" + "notifications.getIDP.error.message")
-                            })
-                        );
-
-                        return;
-                    }
-
-                    dispatch(
-                        addAlert({
-                            description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
-                            level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
-                        })
-                    );
-                });
-        } else {
-            localAuthenticatorId = editingIDP?.federatedAuthenticators?.authenticators[0].authenticatorId;
-            getFederatedAuthenticatorDetails(editingIDP.id, localAuthenticatorId)
-                .then((data: FederatedAuthenticatorListItemInterface) => {
-                    setAuthenticatorEndpoint(data?.endpoint);
-                })
-                .catch((error: IdentityAppsApiException) => {
-                    if (error.response && error.response.data && error.response.data.description) {
-                        dispatch(
-                            addAlert({
-                                description: t("authenticationProvider:notifications.getIDP.error.description", {
-                                    description: error.response.data.description
-                                }),
-                                level: AlertLevels.ERROR,
-                                message: t("authenticationProvider:" + "notifications.getIDP.error.message")
-                            })
-                        );
-
-                        return;
-                    }
-
-                    dispatch(
-                        addAlert({
-                            description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
-                            level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
-                        })
-                    );
-                });
-        }
-    }, [ isCustomLocalAuth ]);
 
     /**
      * Prepare form values for submitting.
@@ -211,7 +135,7 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
             onSubmit({
                 description: values.description?.toString(),
                 displayName: values.displayName?.toString(),
-                endpoint: authenticatorEndpoint,
+                endpoint: (editingIDP as CustomAuthConnectionInterface)?.endpoint,
                 image: values.image?.toString(),
                 isEnabled: values?.isEnabled
             });
@@ -247,34 +171,26 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
         }
     };
 
-    const resolveDisplayName = (): string => {
-        if (isCustomLocalAuth) {
-            return (editingIDP as CustomAuthConnectionInterface)?.displayName;
-        } else {
-            return (editingIDP as ConnectionInterface)?.name;
-        }
-    };
-
     /**
-         * This method validates the general settings fields.
-         *
-         * @param values - values to be validated.
-         * @returns - errors object.
-         */
+     * This method validates the general settings fields.
+     *
+     * @param values - values to be validated.
+     * @returns - errors object.
+     */
     const validateGeneralSettingsField = (
-        values: CustomAuthenticationCreateWizardGeneralFormValuesInterface
-    ): Partial<CustomAuthenticationCreateWizardGeneralFormValuesInterface> => {
-        const errors: Partial<CustomAuthenticationCreateWizardGeneralFormValuesInterface> = {};
+        values: CustomAuthenticatorCreateWizardGeneralFormValuesInterface
+    ): Partial<CustomAuthenticatorCreateWizardGeneralFormValuesInterface> => {
+        const errors: Partial<CustomAuthenticatorCreateWizardGeneralFormValuesInterface> = {};
 
         if (!CommonAuthenticatorConstants.IDENTIFIER_REGEX.test(values?.identifier)) {
             errors.identifier = t(
-                "customAuthentication:fields.createWizard.generalSettingsStep." + "identifier.validations.invalid"
+                "customAuthenticator:fields.createWizard.generalSettingsStep.identifier.validations.invalid"
             );
         }
 
         if (!CommonAuthenticatorConstants.DISPLAY_NAME_REGEX.test(values?.displayName)) {
             errors.displayName = t(
-                "customAuthentication:fields.createWizard.generalSettingsStep." + "displayName.validations.invalid"
+                "customAuthenticator:fields.createWizard.generalSettingsStep.displayName.validations.invalid"
             );
         }
 
@@ -290,11 +206,11 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                     onSubmit={ (values: CustomAuthGeneralDetailsFormValuesInterface): void => {
                         updateConfigurations(values);
                     } }
-                    data-componentid={ _componentId }
+                    data-componentid={ componentId }
                     validate={ validateGeneralSettingsField }
                     initialValues={ {
                         description: editingIDP?.description,
-                        displayName: resolveDisplayName(),
+                        displayName: resolveCustomAuthenticatorDisplayName(editingIDP, isCustomLocalAuth),
                         identifier: resolveIdentifier(),
                         image: editingIDP?.image,
                         isEnabled: editingIDP?.isEnabled
@@ -304,15 +220,15 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                         ariaLabel="identifier"
                         inputType="text"
                         name="identifier"
-                        label={ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.label") }
-                        placeholder={ t("customAuthentication:fields.createWizard.generalSettingsStep." +
-                            "identifier.placeholder") }
+                        label={ t("customAuthenticator:fields.createWizard.generalSettingsStep.identifier.label") }
+                        placeholder={ t(
+                            "customAuthenticator:fields.createWizard.generalSettingsStep.identifier.placeholder"
+                        ) }
                         maxLength={ 100 }
                         minLength={ 3 }
-                        data-componentid={ `${_componentId}-form-wizard-identifier` }
-                        width={ 15 }
+                        data-componentid={ `${componentId}-identifier` }
                         hint={ t(
-                            "customAuthentication:fields.createWizard.generalSettingsStep.helpPanel." +
+                            "customAuthenticator:fields.createWizard.generalSettingsStep.helpPanel." +
                                 "identifier.description"
                         ) }
                         readOnly={ true }
@@ -321,15 +237,15 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                         ariaLabel="displayName"
                         inputType="text"
                         name="displayName"
-                        label={ t("customAuthentication:fields.createWizard.generalSettingsStep.displayName.label") }
+                        label={ t("customAuthenticator:fields.createWizard.generalSettingsStep.displayName.label") }
                         placeholder={ t(
-                            "customAuthentication:fields.createWizard.generalSettingsStep.displayName.placeholder"
+                            "customAuthenticator:fields.createWizard.generalSettingsStep.displayName.placeholder"
                         ) }
                         required={ true }
                         maxLength={ 100 }
                         minLength={ 3 }
-                        data-componentid={ `${_componentId}-form-wizard-display-name` }
-                        width={ 15 }
+                        data-componentid={ `${componentId}-display-name` }
+                        readOnly={ isReadOnly }
                     />
                     <Field.Input
                         name="image"
@@ -337,32 +253,22 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                         inputType="url"
                         label={ "Icon URL" }
                         required={ false }
-                        placeholder={ t("authenticationProvider:" +
-                                "forms.generalDetails.image." +
-                                "placeholder") }
+                        placeholder={ t("authenticationProvider:forms.generalDetails.image.placeholder") }
                         value={ editingIDP.image }
-                        data-componentid={ `${ _componentId }-idp-image` }
-                        maxLength={
-                                ConnectionUIConstants
-                                    .GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MAX_LENGTH as number
-                        }
-                        minLength={
-                                ConnectionUIConstants
-                                    .GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MIN_LENGTH as number
-                        }
-                        hint="Logo to display in login pages."
+                        data-componentid={ `${componentId}-image` }
+                        maxLength={ ConnectionUIConstants.GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MAX_LENGTH as number }
+                        minLength={ ConnectionUIConstants.GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MIN_LENGTH as number }
+                        hint={ t("customAuthenticator:fields.editPage.generalTab.iconUrl.hint") }
                         readOnly={ isReadOnly }
                     />
                     <Field.Textarea
                         name="description"
                         ariaLabel="description"
-                        label={ t("authenticationProvider:forms." +
-                            "generalDetails.description.label") }
+                        label={ t("authenticationProvider:forms.generalDetails.description.label") }
                         required={ false }
-                        placeholder={ t("authenticationProvider:forms." +
-                            "generalDetails.description.placeholder") }
+                        placeholder={ t("authenticationProvider:forms.generalDetails.description.placeholder") }
                         value={ editingIDP.description }
-                        data-componentid={ `${ _componentId }-idp-description` }
+                        data-componentid={ `${componentId}-description` }
                         maxLength={ ConnectionUIConstants.IDP_NAME_LENGTH.max }
                         minLength={ ConnectionUIConstants.IDP_NAME_LENGTH.min }
                         hint="A text description of the authenticator."
@@ -378,6 +284,7 @@ export const CustomAuthGeneralDetailsForm: FunctionComponent<CustomAuthGeneralDe
                             name="submit"
                             disabled={ isSubmitting }
                             loading={ isSubmitting }
+                            data-componentid={ `${componentId}-update-button` }
                         />
                     ) }
                 </Form>

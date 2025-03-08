@@ -20,7 +20,7 @@ import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import {
     AuthenticationTypeDropdownOption,
-    AvailableCustomAuthentications,
+    AvailableCustomAuthenticators,
     EndpointAuthenticationType
 } from "../models/connection";
 
@@ -348,10 +348,10 @@ export class ConnectionUIConstants {
      * Set of connection template group Ids.
      */
     public static readonly CONNECTION_TEMPLATE_GROUPS: {
-        CUSTOM_AUTHENTICATION: string;
+        CUSTOM_AUTHENTICATOR: string;
         ENTERPRISE_PROTOCOLS: string;
     } = {
-            CUSTOM_AUTHENTICATION: "custom-authentication",
+            CUSTOM_AUTHENTICATOR: "custom-authenticator",
             ENTERPRISE_PROTOCOLS: "enterprise-protocols"
         };
 
@@ -376,24 +376,24 @@ export class ConnectionUIConstants {
     /**
      * Custom authentication constants.
      */
-    public static readonly CUSTOM_AUTHENTICATION_CONSTANTS: {
+    public static readonly CUSTOM_AUTHENTICATOR_CONSTANTS: {
         PREFIX: string;
         EMPTY_STRING: string;
-        EXTERNAL_AUTHENTICATOR: AvailableCustomAuthentications;
-        INTERNAL_AUTHENTICATOR: AvailableCustomAuthentications;
-        TWO_FACTOR_AUTHENTICATOR: AvailableCustomAuthentications;
+        EXTERNAL_AUTHENTICATOR: AvailableCustomAuthenticators;
+        INTERNAL_AUTHENTICATOR: AvailableCustomAuthenticators;
+        TWO_FACTOR_AUTHENTICATOR: AvailableCustomAuthenticators;
         EXTERNAL_CUSTOM_AUTHENTICATOR_ID: string;
         INTERNAL_CUSTOM_AUTHENTICATOR_ID: string;
         TWO_FACTOR_CUSTOM_AUTHENTICATOR_ID: string;
     } = {
             EMPTY_STRING: "",
             EXTERNAL_AUTHENTICATOR: "external",
-            EXTERNAL_CUSTOM_AUTHENTICATOR_ID: "external-custom-authentication",
+            EXTERNAL_CUSTOM_AUTHENTICATOR_ID: "external-custom-authenticator",
             INTERNAL_AUTHENTICATOR: "internal",
-            INTERNAL_CUSTOM_AUTHENTICATOR_ID: "internal-user-custom-authentication",
+            INTERNAL_CUSTOM_AUTHENTICATOR_ID: "internal-user-custom-authenticator",
             PREFIX: "custom-",
             TWO_FACTOR_AUTHENTICATOR: "two-factor",
-            TWO_FACTOR_CUSTOM_AUTHENTICATOR_ID: "two-factor-custom-authentication"
+            TWO_FACTOR_CUSTOM_AUTHENTICATOR_ID: "two-factor-custom-authenticator"
         };
 
     public static readonly AUTH_TYPES: AuthenticationTypeDropdownOption[] = [
@@ -419,6 +419,13 @@ export class ConnectionUIConstants {
         }
     ];
 
-    public static readonly CUSTOM_LOCAL_AUTHENTICATOR_IMAGE_URI: string =
-        "assets/images/logos/custom-authentication.svg";
+    /**
+     * Number of seconds to wait before clearing the wizard error.
+     */
+    public static readonly WIZARD_ERROR_CLEAR_TIMEOUT: number = 4000;
+
+    /**
+     * Custom authenticator identifier prefix.
+     */
+    public static readonly CUSTOM_AUTHENTICATOR_IDENTIFIER_PREFIX: string = "custom-";
 }

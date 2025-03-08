@@ -147,6 +147,7 @@ export class CookieStorageUtils {
      *                   Supports minutes, hours, and days.
      *                   Defaults to 30 days if not provided.
      * @param domain - (Optional) The domain for which the cookie is set. If not provided, sets a non-domain cookie.
+     * @param options - (Optional) Additional options for the cookie such as HttpOnly and Secure.
      *
      * @example
      * // Set a cookie for 1 day, 2 hours, and 30 minutes
@@ -159,7 +160,8 @@ export class CookieStorageUtils {
         name: string,
         value: string,
         duration: { minutes?: number; hours?: number; days?: number } = { days: 30 },
-        domain?: string
+        domain?: string,
+        options?: { httpOnly?: boolean; secure?: boolean }
     ): void {
         const date: Date = new Date();
 
@@ -179,8 +181,11 @@ export class CookieStorageUtils {
 
         const expires: string = `; expires=${date.toUTCString()}`;
         const domainString: string = domain ? `; domain=${domain}` : "";
+        const httpOnlyString: string = options?.httpOnly ? "; HttpOnly" : "";
+        const secureString: string = options?.secure ? "; Secure" : "";
 
-        const cookie: string = `${name}=${value || ""}${expires}${domainString}; path=/`;
+        const cookie: string = `${name}=${value ||
+            ""}${expires}${domainString}${httpOnlyString}${secureString}; path=/`;
 
         document.cookie = cookie;
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -55,6 +55,7 @@ import AuthenticationFlowContext from "../context/authentication-flow-context";
 import DefaultFlowConfigurationSequenceTemplate from "../data/flow-sequences/basic/default-sequence.json";
 import { AuthenticationFlowBuilderModes } from "../models/flow-builder";
 import { VisualEditorFlowNodeMetaInterface } from "../models/visual-editor";
+import { isCustomAuthenticator, isSecondFactorAuthenticator } from "../utils/authentication-flow-builder-utils";
 
 /**
  * Props interface for the Authentication flow provider.
@@ -140,12 +141,18 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         recovery: GenericAuthenticatorInterface[];
         secondFactor: GenericAuthenticatorInterface[];
         social: GenericAuthenticatorInterface[];
+        external: GenericAuthenticatorInterface[];
+        internal: GenericAuthenticatorInterface[];
+        twoFactorCustom: GenericAuthenticatorInterface[];
     }>({
         enterprise: [],
+        external: [],
+        internal: [],
         local: [],
         recovery: [],
         secondFactor: [],
-        social: []
+        social: [],
+        twoFactorCustom: []
     });
     const [ visualEditorFlowNodeMeta, setVisualEditorFlowNodeMeta ] = useState<VisualEditorFlowNodeMetaInterface>({
         height: 0,
@@ -189,6 +196,11 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         const secondFactorAuthenticators: GenericAuthenticatorInterface[] = [];
         const recoveryAuthenticators: GenericAuthenticatorInterface[] = [];
 
+        // custom authenticators
+        const customExternalUserAuthentication: GenericAuthenticatorInterface[] = [];
+        const customInternalUserAuthentication: GenericAuthenticatorInterface[] = [];
+        const customTwoFactorAuthentication: GenericAuthenticatorInterface[] = [];
+
         const moderatedLocalAuthenticators: GenericAuthenticatorInterface[] = [];
 
         localAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
@@ -196,6 +208,12 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                 recoveryAuthenticators.push(authenticator);
             } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.id)) {
                 secondFactorAuthenticators.push(authenticator);
+            } else if (isCustomAuthenticator(authenticator)) {
+                if (isSecondFactorAuthenticator(authenticator)) {
+                    customTwoFactorAuthentication.push(authenticator);
+                } else {
+                    customInternalUserAuthentication.push(authenticator);
+                }
             } else {
                 moderatedLocalAuthenticators.push(authenticator);
             }
@@ -210,6 +228,12 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                             ?? authenticator.defaultAuthenticator?.authenticatorId)
                 : ConnectionsManagementUtils
                     .resolveConnectionResourcePath(connectionResourcesUrl, authenticator.image);
+
+            if (isCustomAuthenticator(authenticator)) {
+                customExternalUserAuthentication.push(authenticator);
+
+                return;
+            }
 
             // Restrict the second factor authenticators being added in the first step.
             if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS?.includes(
@@ -233,12 +257,19 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
 
         setFilteredAuthenticators({
             enterprise: enterpriseAuthenticators,
+            external: customExternalUserAuthentication,
+            internal: customInternalUserAuthentication,
             local: moderatedLocalAuthenticators,
             recovery: recoveryAuthenticators,
             secondFactor: secondFactorAuthenticators,
-            social: socialAuthenticators
+            social: socialAuthenticators,
+            twoFactorCustom: customTwoFactorAuthentication
         });
     }, [ authenticators ]);
+
+    const isCustomLocalSecondFactorAuthenticator = (authenticator: GenericAuthenticatorInterface): boolean => {
+        return isCustomAuthenticator(authenticator) && isSecondFactorAuthenticator(authenticator);
+    };
 
     const isAdaptiveAuthAvailable: boolean = useMemo(() => {
         if (orgType === OrganizationType.SUBORGANIZATION) {
@@ -372,7 +403,8 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         const isFirstFactorAuth: boolean =
             ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS.includes(authenticatorId);
         const isSecondFactorAuth: boolean =
-            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId);
+            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId) ||
+            isCustomLocalSecondFactorAuthenticator(authenticator);
         const isValidSecondFactorAddition: boolean = SignInMethodUtils.isSecondFactorAdditionValid(
             authenticator.defaultAuthenticator.authenticatorId,
             stepIndex,

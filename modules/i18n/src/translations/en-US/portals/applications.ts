@@ -750,6 +750,15 @@ export const applications: ApplicationsNS = {
                                             backupCodes: {
                                                 description: "Two-factor authentication recovery option.",
                                                 heading: "MFA Recovery"
+                                            },
+                                            external: {
+                                                heading: "External user authentication"
+                                            },
+                                            internal: {
+                                                heading: "Internal user authentication"
+                                            },
+                                            twoFactorCustom: {
+                                                heading: "2FA authentication"
                                             }
                                         },
                                         goBackButton: "Go back to selection",
@@ -1018,17 +1027,16 @@ export const applications: ApplicationsNS = {
                         message: "Invalid configuration",
                         description: "Linked local account validation should be enabled to mandate a linked local account"
                     },
-                    heading: "Linked Accounts",
-                    descriptionFederated: "Enable to retrieve user attributes of the linked local account during federated authentication.",
+                    heading: "Attribute Resolution for Linked Accounts",
+                    descriptionFederated: "Manage how user attributes are resolved when a local account is linked to a federated identity.",
                     fields: {
                         validateLocalAccount: {
-                            label: "Prioritize local account attributes",
-                            hint: "If a linked local account exists, its attributes are returned. Otherwise, " +
-                                "attributes of the federated identity are returned."
+                            label: "Use linked local account attributes",
+                            hint: "If a linked local account exists, its attributes will be used. If no linked account is found,attributes of the federated user account will be used instead."
                         },
                         mandateLocalAccount: {
-                            label: "Mandate linked local account",
-                            hint: "Authentication will fail in token exchange grant if there is no linked local account with the federated identity."
+                            label: "Require linked local account",
+                            hint: "Authentication will fail if no linked local account is found during token exchange."
                         }
                     }
                 },
@@ -1382,6 +1390,16 @@ export const applications: ApplicationsNS = {
                     hint: "If enabled, customers can access this application from the " +
                         "<1>{{ myAccount }}</1> portal.",
                     label: "Discoverable application"
+                },
+                discoverableGroups: {
+                    label: "Discoverable Groups",
+                    action: {
+                        assign: "Type group name/s to search and assign groups"
+                    },
+                    radioOptions: {
+                        everyone: "Everyone in the organization can discover this application",
+                        userGroups: "Only a selected group of users can discover this application"
+                    }
                 },
                 imageUrl: {
                     hint: "An image URL for the application. If this is not provided, we will display " +
@@ -2078,6 +2096,11 @@ export const applications: ApplicationsNS = {
                 },
                 attributeProfile: {
                     fields: {
+                        attributeNameFormat: {
+                            hint: "This specifies the format for attribute names in the attribute statement of the " +
+                                "SAML assertion.",
+                            label: "Attribute name format"
+                        },
                         enable: {
                             hint: "This specifies whether to include the user’s attributes in the " +
                                 "SAML assertions as part of the attribute statement.",

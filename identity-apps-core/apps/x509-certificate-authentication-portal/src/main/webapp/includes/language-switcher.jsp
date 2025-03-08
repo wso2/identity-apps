@@ -23,6 +23,7 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.io.BufferedReader" %>
 <%@ page import="java.io.FileReader" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%-- Localization --%>
 <jsp:directive.include file="localize.jsp" />
@@ -43,7 +44,7 @@
         const localeFromCookie = getCookie("ui_lang");
         var localeFromUrlParams = null;
         if (urlParams.has('ui_locales')) {
-            localeFromUrlParams = encodeURIComponent(urlParams.get('ui_locales'));
+            localeFromUrlParams ="<%= Encode.forHtmlAttribute(request.getParameter("ui_locales")) %>";
         }
         const browserLocale = "<%= userLocale %>"
         const computedLocale = computeLocale(localeFromCookie, localeFromUrlParams, browserLocale);
@@ -78,18 +79,22 @@
      * @param name - Name of the cookie
      * @param value - Value to be stored
      * @param days - Expiry days
+     * @param options - Additional options for the cookie such as `httpOnly` and `secure`.
      */
-    function setCookie(name, value, days) {
+    function setCookie(name, value, days, options) {
         var expires = "";
         var domain = ";domain=" + URLUtils.getDomain(window.location.href);
 
         if (days) {
-            const date = new Date();
-            date.setTime(date.getTime() + (days*24*60*60*1000));
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
             expires = "; expires=" + date.toUTCString();
         }
 
-        document.cookie = name + "=" + (value || "")  + expires + domain + "; path=/";
+        var httpOnlyString = (options && options.httpOnly) ? "; HttpOnly" : "";
+        var secureString = (options && options.secure) ? "; Secure" : "";
+
+        document.cookie = name + "=" + (value || "") + expires + domain + "; path=/" + httpOnlyString + secureString;
     }
 
     /**
@@ -97,7 +102,7 @@
      */
      function setUILocaleCookie(language) {
         var EXPIRY_DAYS = 30;
-        setCookie('ui_lang', language, EXPIRY_DAYS);
+        setCookie('ui_lang', language, EXPIRY_DAYS, { secure: true });
     }
 
     /**
@@ -115,8 +120,8 @@
         if (localeFromCookie) {
             return localeFromCookie;
         } else if (localeFromUrlParams) {
-            const firstLangFromUrlParams = decodeURIComponent(localeFromUrlParams).split(" ")[0];
-            return encodeURIComponent(firstLangFromUrlParams);
+            const firstLangFromUrlParams = localeFromUrlParams.split(" ")[0];
+            return firstLangFromUrlParams;
         } else if (browserLocale) {
             return browserLocale;
         } else {
