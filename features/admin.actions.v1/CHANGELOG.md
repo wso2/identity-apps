@@ -1,5 +1,11 @@
 # @wso2is/admin.actions.v1
 
+## 1.11.69
+
+### Patch Changes
+
+- [#7801](https://github.com/wso2/identity-apps/pull/7801) [`5c763bacee477d58cd3d1105696a3522eae92765`](https://github.com/wso2/identity-apps/commit/5c763bacee477d58cd3d1105696a3522eae92765) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Refactor action forms
+
 ## 1.11.68
 
 ### Patch Changes
