@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
@@ -26,8 +27,7 @@ import { UserRolesList } from "@wso2is/admin.users.v1/components/user-roles-list
 import { UserSessions } from "@wso2is/admin.users.v1/components/user-sessions";
 import { AdminAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
-import { UserstoreConstants } from "@wso2is/core/constants";
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, Message, ResourceTab } from "@wso2is/react-components";
@@ -86,8 +86,6 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ allowDeleteOnly, setAllowDeleteOnly ] = useState<boolean>(false);
     const [ isProfileTabsLoading, setIsProfileTabsLoading ] = useState<boolean>(true);
@@ -95,6 +93,11 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
     const [ adminUserType, setAdminUserType ] = useState<string>(AdminAccountTypes.EXTERNAL);
 
     const authenticatedUserTenanted: string = useSelector((state: AppState) => state?.auth?.username);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
+
+    const hasUserUpdatePermission: boolean = useRequiredScopes(featureConfig?.users?.scopes?.update);
+    const hasUserDeletePermission: boolean = useRequiredScopes(featureConfig?.users?.scopes?.delete);
 
     const authenticatedUser: string = useMemo(() => {
         const authenticatedUserComponents: string[] = authenticatedUserTenanted.split("@");
@@ -120,25 +123,25 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
 
         const userStore: string = user?.userName?.split("/").length > 1
             ? user?.userName?.split("/")[ 0 ]
-            : UserstoreConstants.PRIMARY_USER_STORE;
+            : primaryUserStoreDomainName;
 
         setReadOnlyUserStore(readOnlyUserStores?.includes(userStore?.toString()));
 
         if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
             || readOnlyUserStores?.includes(userStore?.toString())
-            || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
-            || user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
+            || !hasUserUpdatePermission
+            || user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
         ) {
             setReadOnly(true);
         }
 
         if (isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE")) &&
             !(user.userName == realmConfigs?.adminUser) &&
-            hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)) {
+            hasUserDeletePermission) {
             setAllowDeleteOnly(true);
         }
 
-        if (user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType === "Asgardeo") {
+        if (user[ SCIMConfigs.scim.systemSchema ]?.idpType === "Asgardeo") {
             setAdminUserType(AdminAccountTypes.EXTERNAL);
         } else {
             setAdminUserType(AdminAccountTypes.INTERNAL);

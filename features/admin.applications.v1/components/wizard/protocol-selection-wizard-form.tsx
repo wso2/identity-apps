@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AppState, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
 import { AnimatedAvatar, AppAvatar, EmptyPlaceholder, GenericIcon } from "@wso2is/react-components";
 import React, {
@@ -31,12 +32,10 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Card } from "semantic-ui-react";
 import { getInboundProtocolLogos } from "../../configs/ui";
-import {
-    ApplicationTemplateListItemInterface,
-    AuthProtocolMetaListItemInterface
-} from "../../models";
+import { ApplicationTemplateListItemInterface } from "../../models/application";
+import { AuthProtocolMetaListItemInterface } from "../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
-import { InboundProtocolsMeta } from "../meta";
+import { InboundProtocolsMeta } from "../meta/inbound-protocols.meta";
 
 /**
  * Proptypes for the protocol selection wizard form component.

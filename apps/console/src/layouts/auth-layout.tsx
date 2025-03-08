@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { PreLoader } from "@wso2is/admin.core.v1";
-import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
+import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { RouteInterface } from "@wso2is/core/models";
 import { AuthLayout as AuthLayoutSkeleton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";

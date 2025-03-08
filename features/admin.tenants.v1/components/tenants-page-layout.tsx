@@ -17,10 +17,12 @@
  */
 
 import Button from "@oxygen-ui/react/Button";
+import Grid from "@oxygen-ui/react/Grid";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import { GearIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { Show } from "@wso2is/access-control";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -50,11 +52,7 @@ const TenantsPageLayout: FunctionComponent<TenantsPageLayoutProps> = ({
 }: TenantsPageLayoutProps): ReactElement => {
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-    const { tenantList, mutateTenantList } = useTenants();
-
-    useEffect(() => {
-        mutateTenantList();
-    }, []);
+    const { tenantList, mutateTenantList, searchQueryClearTrigger, setSearchQuery } = useTenants();
 
     const tenantFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config?.ui?.features?.tenants
@@ -67,6 +65,22 @@ const TenantsPageLayout: FunctionComponent<TenantsPageLayoutProps> = ({
     );
 
     const [ addTenantModalOpen, setAddTenantModalOpen ] = useState<boolean>(false);
+
+    /**
+     * Effect hook that triggers the mutation of the tenant list.
+     */
+    useEffect(() => {
+        mutateTenantList();
+    }, []);
+
+    /**
+     * Handles the list filter by setting the search query.
+     *
+     * @param query - The search query string.
+     */
+    const handleListFilter = (query: string): void => {
+        setSearchQuery(query);
+    };
 
     return (
         <PageLayout
@@ -85,7 +99,7 @@ const TenantsPageLayout: FunctionComponent<TenantsPageLayoutProps> = ({
                 (<div className="tenants-page-actions">
                     { /* Sometimes, `tenants` array is undefined but `totalResults` is available. */ }
                     { /* TODO: Tracker: https://github.com/wso2/product-is/issues/21459 */ }
-                    { tenantList?.tenants && tenantList?.totalResults > 1 && (
+                    { tenantList?.tenants && tenantList?.totalResults >= 1 && (
                         <>
                             <Show when={ adminAdvisory?.scopes?.read || remoteLogPublishing?.scopes?.read }>
                                 <Tooltip title={ t("tenants:actions.systemSettings.tooltip") }>
@@ -118,6 +132,40 @@ const TenantsPageLayout: FunctionComponent<TenantsPageLayoutProps> = ({
             }
             className="tenants-page"
         >
+            { /* Sometimes, `tenants` array is undefined but `totalResults` is available. */ }
+            { /* TODO: Tracker: https://github.com/wso2/product-is/issues/21459 */ }
+            { tenantList?.tenants && tenantList?.totalResults >= 1 && (
+                <Grid container>
+                    <Grid xs={ 12 } sm={ 12 } md={ 6 } lg={ 6 } xl={ 4 }>
+                        <AdvancedSearchWithBasicFilters
+                            fill="white"
+                            onFilter={ handleListFilter }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: t(
+                                        "tenants:listing.advancedSearch.form.dropdown.filterAttributeOptions.domain"
+                                    ),
+                                    value: "domainName"
+                                }
+                            ] }
+                            filterAttributePlaceholder={ t(
+                                "tenants:listing.advancedSearch.form.inputs.filterAttribute.placeholder"
+                            ) }
+                            filterConditionsPlaceholder={ t(
+                                "tenants:listing.advancedSearch.form.inputs.filterCondition.placeholder"
+                            ) }
+                            filterValuePlaceholder={ t(
+                                "tenants:listing.advancedSearch.form.inputs.filterValue.placeholder"
+                            ) }
+                            placeholder={ t("tenants:listing.advancedSearch.placeholder") }
+                            defaultSearchAttribute={ "domainName" }
+                            defaultSearchOperator="co"
+                            triggerClearQuery={ searchQueryClearTrigger }
+                        />
+                    </Grid>
+                </Grid>
+            ) }
             <TenantGrid onAddTenantModalTrigger={ () => setAddTenantModalOpen(true) } />
             <AddTenantModal open={ addTenantModalOpen } onClose={ () => setAddTenantModalOpen(false) } />
         </PageLayout>

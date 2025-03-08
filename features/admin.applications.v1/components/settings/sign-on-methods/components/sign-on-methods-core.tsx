@@ -30,8 +30,11 @@ import {
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { ConnectionsManagementUtils }
     from "@wso2is/admin.connections.v1/utils/connection-utils";
-import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import MicrosoftIDPTemplate
     from
     "@wso2is/admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
@@ -55,7 +58,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../../../constants";
+import { ApplicationManagementConstants } from "../../../../constants/application-management";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface,
@@ -63,7 +66,7 @@ import {
     AuthenticatorInterface,
     LoginFlowTypes,
     additionalSpProperty
-} from "../../../../models";
+} from "../../../../models/application";
 import { AdaptiveScriptUtils } from "../../../../utils/adaptive-script-utils";
 import { SignInMethodCustomization } from "../sign-in-method-customization";
 import { SignInMethodLanding } from "../sign-in-method-landing";

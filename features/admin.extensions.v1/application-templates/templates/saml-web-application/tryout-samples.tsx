@@ -16,21 +16,23 @@
  * under the License.
  */
 
-import { updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api";
+import { updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api/application";
 import {
     ApplicationInterface,
     ApplicationTemplateInterface,
+    SAMLApplicationConfigurationInterface
+} from "@wso2is/admin.applications.v1/models/application";
+import {
     SAML2ConfigurationInterface,
-    SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolTypes
-} from "@wso2is/admin.applications.v1/models";
+} from "@wso2is/admin.applications.v1/models/application-inbound";
 import {
     VerticalStepper,
     VerticalStepperStepInterface
 } from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
-import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
+import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { EventPublisher } from "@wso2is/admin.core.v1/utils";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CodeEditor, DocumentationLink, GenericIcon, Message, Text, useDocumentation } from "@wso2is/react-components";

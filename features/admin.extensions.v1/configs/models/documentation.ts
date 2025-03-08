@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,6 +26,13 @@ interface AccountRecoveryDocumentationLinksInterface {
 }
 
 /**
+ * Interface for the administrators documentation structure.
+ */
+interface AdministratorsDocumentationLinksInterface {
+    learnMore: string;
+}
+
+/**
  * Interface for the login security section documentation structure.
  */
 interface LoginSecurityDocumentationLinksInterface {
@@ -34,7 +41,10 @@ interface LoginSecurityDocumentationLinksInterface {
     },
     loginAttempts: {
         learnMore: string;
-    }
+    },
+    siftConnector: {
+        learnMore: string;
+    },
 }
 
 /**
@@ -144,6 +154,11 @@ interface ApplicationsDocumentationLinksInterface {
                         documentationLink: string;
                     },
                     useClientIdAsSubClaimOfAppTokens: {
+                        documentationLink: string;
+                    }
+                },
+                version200: {
+                    addAllRequestedClaimsInJWTAccessToken: {
                         documentationLink: string;
                     }
                 }
@@ -611,6 +626,10 @@ export interface DocumentationLinksExtensionInterface {
          * Documentation links for account recovery elements.
          */
         accountRecovery: AccountRecoveryDocumentationLinksInterface;
+        /**
+         * Documentation links for console administrator section elements.
+         */
+        administrators: AdministratorsDocumentationLinksInterface;
         /**
          * Documentation links for login security elements.
          */

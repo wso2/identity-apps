@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import {
@@ -81,7 +81,7 @@ export const AuthorizationAPIResource: FunctionComponent<AuthorizationAPIResourc
                                                 link={ getLink("develop.apiResources.addAPIResource." +
                                                     "requiredAuthorization.learnMore") }
                                             >
-                                                { t("extensions:common.learnMore") }
+                                                { t("common:learnMore") }
                                             </DocumentationLink>
                                         </>)
                                     }

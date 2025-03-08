@@ -17,7 +17,9 @@
  */
 
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
-import { AppConstants, AppState, history, store } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
@@ -29,7 +31,7 @@ import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Icon, Message } from "semantic-ui-react";
 import { updateOrganizationConfigV2 } from "../api/updateOrganizationConfigV2";
 import { useOrganizationConfigV2 } from "../api/useOrganizationConfigV2";
-import { AdministratorConstants } from "../constants";
+import { AdministratorConstants } from "../constants/users";
 import { OrganizationInterface, UseOrganizationConfigType } from "../models/organization";
 
 /**
@@ -203,7 +205,7 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
                     <DocumentationLink
                         link={ getLink("manage.users.collaboratorAccounts.adminSettingsLearnMore") }
                     >
-                        { t("extensions:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </>
             ) }

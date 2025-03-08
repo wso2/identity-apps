@@ -16,9 +16,11 @@
  * under the License.
  */
 
-import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { ImageUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment, Heading } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -284,6 +286,19 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     uncontrolledForm={ false }
                     onSubmit={ (values: GeneralDetailsFormValuesInterface): void => {
                         updateConfigurations(values);
+                    } }
+                    validate={ (values: GeneralDetailsFormValuesInterface) => {
+                        const errors: Partial<Record<keyof GeneralDetailsFormValuesInterface, string>> = {
+                            image: undefined
+                        };
+
+                        if (values?.image && !ImageUtils.isValidImageExtension(values?.image)) {
+                            errors.image = t(
+                                "authenticationProvider:forms.generalDetails.image.validations.invalid"
+                            );
+                        }
+
+                        return errors;
                     } }
                     data-testid={ testId }
                 >

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,9 @@
  */
 
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
-import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { ServerConfigurationsConstants } from
+    "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import { ProfileConstants } from "@wso2is/core/constants";
 
 /**
  * Class containing app constants which can be used across several applications.
@@ -64,7 +66,9 @@ export class UserManagementConstants {
         .set("USER_UPDATE", "users.update")
         .set("USER_DELETE", "users.delete")
         .set("USER_READ", "users.read")
-        .set("USER_ROLES", "users.edit.roles");
+        .set("USER_GROUPS", "users.edit.groups")
+        .set("USER_ROLES", "users.edit.roles")
+        .set("USER_SHARED_PROFILES", "users.updateSharedProfiles");
 
     // API errors
     public static readonly USER_INFO_UPDATE_ERROR: string = "Could not update the user information.";
@@ -92,7 +96,12 @@ export class UserManagementConstants {
 
     // Schema related constants.
     public static readonly ENTERPRISESCHEMA: string = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
+    public static readonly SYSTEMSCHEMA: string = "urn:scim:wso2:schema";
+    /**
+     * @deprecated This variable is deprecated. Use `SCIM2_CUSTOM_SCHEMA` instead.
+     */
     public static readonly CUSTOMSCHEMA: string = "urn:scim:wso2:schema";
+    public static readonly SCIM2_CUSTOM_SCHEMA: string = "urn:scim:schemas:extension:custom:User";
 
     /**
      * Set of SCIM2 schema names.apps/myaccount/src/store/actions/authenticate.ts
@@ -113,12 +122,13 @@ export class UserManagementConstants {
      * @defaultValue
      */
     public static readonly SCIM2_ATTRIBUTES_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("ACCOUNT_LOCKED", SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked)
-        .set("ACCOUNT_DISABLED", SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled)
-        .set("ONETIME_PASSWORD", SCIMConfigs.scimEnterpriseUserClaimUri.oneTimePassword);
+        .set("ACCOUNT_LOCKED", "urn:scim:wso2:schema:accountLocked")
+        .set("ACCOUNT_DISABLED", "urn:scim:wso2:schema:accountDisabled")
+        .set("ONETIME_PASSWORD", "urn:scim:wso2:schema:oneTimePassword");
 
     public static readonly ROLES: string = "roles";
     public static readonly GROUPS: string = "groups";
+    public static readonly MOBILE: string = "mobile";
     public static readonly SCIM_USER_PATH: string = "/Users";
     public static readonly SCIM_GROUP_PATH: string = "/Groups";
     public static readonly SCIM_V2_ROLE_PATH: string = "/v2/Roles";
@@ -156,6 +166,13 @@ export class UserManagementConstants {
     public static readonly GLOBE: string = "globe";
 
     public static readonly USERNAME_JAVA_REGEX: string = "UsernameJavaRegEx";
+
+    public static readonly MULTI_VALUED_ATTRIBUTES: string[] = [
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES")
+    ];
 }
 
 /**
@@ -329,4 +346,19 @@ export const ACCOUNT_LOCK_REASON_MAP: Record<string, string> = {
     PENDING_EMAIL_VERIFICATION: "user:profile.accountLockReason.pendingEmailVerification",
     PENDING_SELF_REGISTRATION: "user:profile.accountLockReason.pendingSelfRegistration"
 };
+
+export const CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP: Record<string, string> = {
+    [ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE]: "accountDisable",
+    [ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION]: "accountLock",
+    [ServerConfigurationsConstants.ENABLE_EMAIL_VERIFICATION]: "isEmailVerificationEnabled",
+    [ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION]: "isMobileVerificationEnabled",
+    [ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER]:
+        "isMobileVerificationByPrivilegeUserEnabled"
+};
+
+export const PASSWORD_RESET_PROPERTIES: string[] = [
+    ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET,
+    ServerConfigurationsConstants.OTP_PASSWORD_RESET,
+    ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET
+];
 

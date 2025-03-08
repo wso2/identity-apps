@@ -16,15 +16,16 @@
  * under the License.
  */
 
-import { Config } from "@wso2is/admin.core.v1/configs";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { HttpMethods } from "@wso2is/core/models";
-import { PredefinedLayouts } from "../meta";
+import { BrandingModes } from "../constants/branding-preferences-constants";
+import { PredefinedLayouts } from "../meta/layouts";
 
 /**
  * Hook to get the layout.
@@ -37,7 +38,9 @@ import { PredefinedLayouts } from "../meta";
 export const useLayout = <Data = Blob, Error = RequestErrorInterface>(
     layout: PredefinedLayouts,
     tenantDomain: string,
-    shouldFetch: boolean = true
+    shouldFetch: boolean = true,
+    brandingMode?: BrandingModes,
+    appName?: string
 ): RequestResultInterface<Data, Error> => {
     const basename: string = AppConstants.getAppBasename()
         ? `/${AppConstants.getAppBasename()}`
@@ -52,12 +55,21 @@ export const useLayout = <Data = Blob, Error = RequestErrorInterface>(
         responseType: "blob",
         url:
             layout === PredefinedLayouts.CUSTOM
-                ? `${
-                    Config.getDeploymentConfig().extensions?.layoutStoreURL
-                        ? (Config.getDeploymentConfig().extensions.layoutStoreURL as string)
-                            .replace("${tenantDomain}", tenantDomain)
-                        : `https://${window.location.host}${basename}/libs/login-portal-layouts`}/body.html`
-                : `https://${window.location.host}${basename}/libs/login-portal-layouts/${layout}/body.html`
+                ? (
+                    brandingMode === BrandingModes.APPLICATION
+                        ? (
+                            `${Config.getDeploymentConfig().extensions?.layoutStoreURL
+                                ? (Config.getDeploymentConfig().extensions.layoutStoreURL as string)
+                                    .replace("${tenantDomain}", tenantDomain)
+                                : `https://${window.location.host}
+                                    ${basename}/libs/login-portal-layouts`}/apps/${appName}/body.html`
+                        ) : (
+                            `${Config.getDeploymentConfig().extensions?.layoutStoreURL
+                                ? (Config.getDeploymentConfig().extensions.layoutStoreURL as string)
+                                    .replace("${tenantDomain}", tenantDomain)
+                                : `https://${window.location.host}${basename}/libs/login-portal-layouts`}/body.html`
+                        )
+                ) : (`https://${window.location.host}${basename}/libs/login-portal-layouts/${layout}/body.html`)
     };
 
     const {

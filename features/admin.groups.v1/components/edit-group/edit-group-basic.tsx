@@ -15,14 +15,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import {
-    AppConstants,
-    SharedUserStoreConstants,
-    SharedUserStoreUtils,
-    UserStoreDetails,
-    UserStoreProperty,
-    history
-} from "@wso2is/admin.core.v1";
+
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { SharedUserStoreConstants } from "@wso2is/admin.core.v1/constants/user-store-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { UserStoreDetails, UserStoreProperty } from "@wso2is/admin.core.v1/models/user-store";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
 import {
     AlertInterface,
@@ -38,8 +36,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid } from "semantic-ui-react";
-import { deleteGroupById, searchGroupList, updateGroupDetails } from "../../api";
-import { GroupsInterface, PatchGroupDataInterface, SearchGroupInterface } from "../../models";
+import { deleteGroupById, searchGroupList, updateGroupDetails } from "../../api/groups";
+import { GroupsInterface, PatchGroupDataInterface, SearchGroupInterface } from "../../models/groups";
 
 /**
  * Interface to contain props needed for component

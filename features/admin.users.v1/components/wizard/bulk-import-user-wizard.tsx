@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,20 +31,18 @@ import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "@wso2is/admin.claims.v1/api";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
-import {
-    AppConstants,
-    AppState,
-    ModalWithSidePanel,
-    UserStoreDetails,
-    UserStoreProperty,
-    getCertificateIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
+import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
+import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { UserStoreDetails, UserStoreProperty } from "@wso2is/admin.core.v1/models/user-store";
+import { AppState } from "@wso2is/admin.core.v1/store";
+
 import { userConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
-import { getGroupList, useGroupList } from "@wso2is/admin.groups.v1/api";
-import { GroupsInterface } from "@wso2is/admin.groups.v1/models";
+import { getGroupList, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
+import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { getAUserStore, getUserStores } from "@wso2is/admin.userstores.v1/api";
 import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
@@ -97,14 +95,16 @@ import {
     UserManagementConstants
 } from "../../constants";
 import {
+    SCIMBulkEndpointInterface,
+    SCIMBulkOperation,
+    SCIMBulkResponseOperation
+} from "../../models/endpoints";
+import {
     BulkResponseSummary,
     BulkUserImportOperationResponse,
     MultipleInviteMode,
-    SCIMBulkEndpointInterface,
-    SCIMBulkOperation,
-    SCIMBulkResponseOperation,
     UserDetailsInterface
-} from "../../models";
+} from "../../models/user";
 import { UserManagementUtils, getUsernameConfiguration } from "../../utils";
 import { BulkImportResponseList } from "../bulk-import-response-list";
 
@@ -1083,10 +1083,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                         ? `${selectedUserStore}/${email}`
                         : email,
-                [ userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
-                    ? UserManagementConstants.CUSTOMSCHEMA
-                    : UserManagementConstants.ENTERPRISESCHEMA
-                ]: {
+                [ UserManagementConstants.SYSTEMSCHEMA ]: {
                     askPassword: "true"
                 }
             };

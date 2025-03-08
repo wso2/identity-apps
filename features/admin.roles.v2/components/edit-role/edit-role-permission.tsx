@@ -27,13 +27,13 @@ import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
 import { useGetAuthorizedAPIList } from "@wso2is/admin.api-resources.v2/api/useGetAuthorizedAPIList";
 import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
 import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     AlertInterface,
     AlertLevels,
     IdentifiableComponentInterface,
     LinkInterface,
     RolePermissionInterface,
+    RolePropertyInterface,
     RolesInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -44,6 +44,7 @@ import React, {
     ReactNode,
     SyntheticEvent,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -53,9 +54,9 @@ import { DropdownItemProps, DropdownProps } from "semantic-ui-react";
 import { RenderChip } from "./edit-role-common/render-chip";
 import { RoleAPIResourcesListItem } from "./edit-role-common/role-api-resources-list-item";
 import { getAPIResourceDetailsBulk, updateRoleDetails, useAPIResourceDetails } from "../../api";
-import { RoleAudienceTypes } from "../../constants/role-constants";
-import { PatchRoleDataInterface, PermissionUpdateInterface, SelectedPermissionsInterface } from "../../models";
+import { RoleAudienceTypes, RoleConstants } from "../../constants/role-constants";
 import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../models/apiResources";
+import { PatchRoleDataInterface, PermissionUpdateInterface, SelectedPermissionsInterface } from "../../models/roles";
 
 /**
  * Interface to capture permission edit props.
@@ -95,7 +96,6 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ selectedAPIResourceId, setSelectedAPIResourceId ] = useState<string>(undefined);
@@ -108,8 +108,11 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     const [ allAPIResourcesListData, setAllAPIResourcesListData ] = useState<APIResourceInterface[]>([]);
     const [ apiCallNextAfterValue, setAPICallNextAfterValue ] = useState<string>(null);
 
+    const isSharedRole: boolean = useMemo(() => role?.properties?.some(
+        (property: RolePropertyInterface) =>
+            property?.name === RoleConstants.IS_SHARED_ROLE && property?.value === "true"), [ role ]);
     const shouldFetchAPIResources: boolean = role?.audience?.type?.
-        toUpperCase() === RoleAudienceTypes.ORGANIZATION && !isSubOrganization();
+        toUpperCase() === RoleAudienceTypes.ORGANIZATION && !isSharedRole;
 
     const {
         data: currentAPIResourcesListData,

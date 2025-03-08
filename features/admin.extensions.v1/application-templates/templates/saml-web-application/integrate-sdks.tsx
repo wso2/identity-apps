@@ -20,13 +20,13 @@ import {
     ApplicationInterface,
     ApplicationTemplateInterface,
     SAMLApplicationConfigurationInterface
-} from "@wso2is/admin.applications.v1/models";
-import { AppState } from "@wso2is/admin.core.v1";
+} from "@wso2is/admin.applications.v1/models/application";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     VerticalStepper,
     VerticalStepperStepInterface
 } from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
-import { Config } from "@wso2is/admin.core.v1/configs";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     CodeEditor,

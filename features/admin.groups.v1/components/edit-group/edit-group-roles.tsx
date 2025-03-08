@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { ReadOnlyRoleList } from "@wso2is/admin.roles.v2/components/readonly-role-list";
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import { EmphasizedSegment, EmptyPlaceholder, Heading } from "@wso2is/react-components";
@@ -28,7 +28,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
-import { GroupsInterface } from "../../models";
+import { GroupsInterface } from "../../models/groups";
 import "./edit-group-roles.scss";
 
 interface EditGroupRolesPropsInterface extends IdentifiableComponentInterface {

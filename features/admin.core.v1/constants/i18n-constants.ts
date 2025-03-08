@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,13 +22,12 @@ import { I18nModuleConstants } from "@wso2is/i18n";
  * Class containing portal specific i18n constants.
  */
 export class I18nConstants {
-
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
      */
     /* eslint-disable @typescript-eslint/no-empty-function */
-    private constructor() { }
+    private constructor() {}
 
     /**
      * Common namespace.
@@ -73,8 +72,7 @@ export class I18nConstants {
     /**
      * JWT private key configuration namespace.
      */
-    public static readonly IMPERSONATION_CONFIGURATION_NAMESPACE: string =
-        I18nModuleConstants.IMPERSONATION_NAMESPACE;
+    public static readonly IMPERSONATION_CONFIGURATION_NAMESPACE: string = I18nModuleConstants.IMPERSONATION_NAMESPACE;
 
     /**
      * transferList namespace.
@@ -160,6 +158,11 @@ export class I18nConstants {
     public static readonly ROLES_NAMESPACE: string = I18nModuleConstants.ROLES_NAMESPACE;
 
     /**
+     * Application Roles namespace.
+     */
+    public static readonly APPLICATION_ROLES_NAMESPACE: string = I18nModuleConstants.APPLICATION_ROLES_NAMESPACE;
+
+    /**
      * Server configurations namespace.
      */
     public static readonly SERVER_CONFIGS_NAMESPACE: string = I18nModuleConstants.SERVER_CONFIGS_NAMESPACE;
@@ -188,6 +191,11 @@ export class I18nConstants {
      * SMS Providers namespace.
      */
     public static readonly SMS_PROVIDERS_NAMESPACE: string = I18nModuleConstants.SMS_PROVIDERS_NAMESPACE;
+
+    /**
+     * Push Providers namespace.
+     */
+    public static readonly PUSH_PROVIDERS_NAMESPACE: string = I18nModuleConstants.PUSH_PROVIDERS_NAMESPACE;
 
     /**
      * SMS Templates namespace.
@@ -246,8 +254,8 @@ export class I18nConstants {
         I18nModuleConstants.AUTHENTICATION_PROVIDER_NAMESPACE;
 
     /**
-    * AI namespace.
-    */
+     * AI namespace.
+     */
     public static readonly AI_NAMESPACE: string = I18nModuleConstants.AI_NAMESPACE;
 
     /**
@@ -272,6 +280,28 @@ export class I18nConstants {
     public static readonly TENANTS_NAMESPACE: string = I18nModuleConstants.TENANTS_NAMESPACE;
 
     /**
+     * Remote User Stores namespace.
+     */
+    public static readonly REMOTE_USER_STORES_NAMESPACE: string = I18nModuleConstants.REMOTE_USER_STORES_NAMESPACE;
+
+    /**
+     * Policy Administration namespace.
+     */
+    public static readonly POLICY_ADMINISTRATION_NAMESPACE: string =
+        I18nModuleConstants.POLICY_ADMINISTRATION_NAMESPACE;
+
+    /**
+     * Rules namespace.
+     */
+    public static readonly RULES_NAMESPACE: string = I18nModuleConstants.RULES_NAMESPACE;
+
+    /**
+     * Custom Authentication namespace.
+     */
+    public static readonly CUSTOM_AUTHENTICATION_NAMESPACE: string =
+        I18nModuleConstants.CUSTOM_AUTHENTICATION_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
@@ -294,6 +324,7 @@ export class I18nConstants {
         [ I18nConstants.AUTHENTICATION_FLOW_NAMESPACE, "portals" ],
         [ I18nConstants.REMOTE_FETCH_NAMESPACE, "portals" ],
         [ I18nConstants.ROLES_NAMESPACE, "portals" ],
+        [ I18nConstants.APPLICATION_ROLES_NAMESPACE, "portals" ],
         [ I18nConstants.SERVER_CONFIGS_NAMESPACE, "portals" ],
         [ I18nConstants.SAML2_CONFIG_NAMESPACE, "portals" ],
         [ I18nConstants.SESSION_MANAGEMENT_NAMESPACE, "portals" ],
@@ -321,7 +352,12 @@ export class I18nConstants {
         [ I18nConstants.TEMPLATE_CORE_NAMESPACE, "portals" ],
         [ I18nConstants.IMPERSONATION_CONFIGURATION_NAMESPACE, "portals" ],
         [ I18nConstants.ACTIONS_NAMESPACE, "portals" ],
-        [ I18nConstants.TENANTS_NAMESPACE, "portals" ]
+        [ I18nConstants.TENANTS_NAMESPACE, "portals" ],
+        [ I18nConstants.CUSTOM_AUTHENTICATION_NAMESPACE, "portals" ],
+        [ I18nConstants.POLICY_ADMINISTRATION_NAMESPACE, "portals" ],
+        [ I18nConstants.REMOTE_USER_STORES_NAMESPACE, "portals" ],
+        [ I18nConstants.RULES_NAMESPACE, "portals" ],
+        [ I18nConstants.PUSH_PROVIDERS_NAMESPACE, "portals" ]
     ]);
 
     /**

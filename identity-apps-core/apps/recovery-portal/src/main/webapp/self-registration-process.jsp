@@ -22,7 +22,6 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.core.SameSiteCookie" %>
-<%@ page import="org.wso2.carbon.core.util.SignatureUtil" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 <%@ page import="org.wso2.carbon.identity.mgt.constants.SelfRegistrationStatusCodes" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
@@ -49,6 +48,10 @@
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="javax.servlet.http.Cookie" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
+<%@ page import="com.google.gson.Gson" %>
+<%@ page import="com.google.gson.JsonObject" %>
+<%@ page import="org.apache.commons.logging.Log" %>
+<%@ page import="org.apache.commons.logging.LogFactory" %>
 
 <%-- Localization --%>
 <jsp:directive.include file="includes/localize.jsp"/>
@@ -60,6 +63,7 @@
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
+    Log log = LogFactory.getLog(this.getClass());
     String ERROR_MESSAGE = "errorMsg";
     String ERROR_CODE = "errorCode";
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -96,6 +100,7 @@
     boolean skipSignUpEnableCheck = Boolean.parseBoolean(request.getParameter("skipsignupenablecheck"));
     String policyURL = privacyPolicyURL;
     String tenantAwareUsername = "";
+    boolean isDetailedResponseEnabled = Boolean.parseBoolean(application.getInitParameter("isSelfRegistrationDetailedApiResponseEnabled"));
 
     if (error) {
         request.setAttribute("error", true);
@@ -274,7 +279,7 @@
     List<Claim> claimsList;
     UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
     try {
-        claimsList = usernameRecoveryApi.claimsGet(user.getTenantDomain());
+        claimsList = usernameRecoveryApi.claimsGet(user.getTenantDomain(), true, "selfRegistration");
         if (claimsList != null) {
             claims = claimsList.toArray(new Claim[claimsList.size()]);
         }
@@ -354,7 +359,22 @@
         }
 
         SelfRegisterApi selfRegisterApi = new SelfRegisterApi();
-        selfRegisterApi.mePostCall(selfUserRegistrationRequest, requestHeaders);
+        String responseContent = selfRegisterApi.mePostCall(selfUserRegistrationRequest, requestHeaders);
+
+        // Extract userId from response if available
+        String userId = "";
+        if (isDetailedResponseEnabled && StringUtils.isNotBlank(responseContent)) {
+            try {
+                Gson gson = new Gson();
+                JsonObject jsonResponse = gson.fromJson(responseContent, JsonObject.class);
+                if (jsonResponse.has("userId")) {
+                    userId = jsonResponse.get("userId").getAsString();
+                }
+            } catch (Exception e) {
+                log.error("Error extracting userId from successful user registration response", e);
+            }
+        }
+
         // Add auto login cookie.
         if (isAutoLoginEnable && !isSelfRegistrationLockOnCreationEnabled) {
             if (StringUtils.isNotEmpty(user.getRealm())) {
@@ -376,7 +396,7 @@
 
             JSONObject cookieValueInJson = new JSONObject();
             cookieValueInJson.put("content", content);
-            String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(content));
+            String signature = Base64.getEncoder().encodeToString(IdentityUtil.signWithTenantKey(content, user.getTenantDomain()));
             cookieValueInJson.put("signature", signature);
             String cookieValue = Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes());
 
@@ -387,6 +407,9 @@
         request.setAttribute("callback", callback);
         if (StringUtils.isNotBlank(srtenantDomain)) {
             request.setAttribute("srtenantDomain", srtenantDomain);
+        }
+        if (isDetailedResponseEnabled && StringUtils.isNotBlank(userId)) {
+            request.setAttribute("userId", userId);
         }
         request.setAttribute("sessionDataKey", sessionDataKey);
         request.getRequestDispatcher("self-registration-complete.jsp").forward(request, response);

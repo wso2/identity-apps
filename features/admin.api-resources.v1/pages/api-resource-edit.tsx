@@ -17,7 +17,9 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import { AppState, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -27,9 +29,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
-import { useAPIResourceDetails } from "../api";
-import { EditAPIResource } from "../components";
-import { APIResourcesConstants } from "../constants";
+import { useAPIResourceDetails } from "../api/api-resources";
+import { EditAPIResource } from "../components/edit-api-resource";
+import { APIResourcesConstants } from "../constants/api-resources-constants";
 import { APIResourceUtils } from "../utils/api-resource-utils";
 
 /**

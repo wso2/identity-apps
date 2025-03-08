@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,9 +22,12 @@ import ListItemText from "@mui/material/ListItemText";
 import Alert from "@oxygen-ui/react/Alert";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
-import { ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models";
-import { history, store } from "@wso2is/admin.core.v1";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models/application";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { store } from "@wso2is/admin.core.v1/store";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Link } from "@wso2is/react-components";
@@ -32,19 +35,17 @@ import { FormValidation } from "@wso2is/validation";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import React, {
     FunctionComponent,
-    MutableRefObject,
     ReactElement,
     SyntheticEvent,
     useCallback,
     useEffect,
-    useRef,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { DropdownProps } from "semantic-ui-react";
-import { useRolesList } from "../../api/roles";
+import useGetRolesList from "../../api/use-get-roles-list";
 import { RoleAudienceTypes, RoleConstants } from "../../constants";
-import { CreateRoleFormData } from "../../models";
+import { CreateRoleFormData } from "../../models/roles";
 
 const FORM_ID: string = "add-role-basics-form";
 
@@ -96,20 +97,23 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const [ applicationListOptions, setApplicationListOptions ] = useState<DropdownProps[]>([]);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
 
-    const noApplicationsAvailable: MutableRefObject<boolean> = useRef<boolean>(false);
-
     const {
         data: applicationList,
         isLoading: isApplicationListFetchRequestLoading,
+        isValidating: isApplicationListFetchRequestValidating,
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
-    } = useApplicationList("clientId,associatedRoles.allowedAudience", null, null, applicationSearchQuery);
+    } = useApplicationList("clientId,associatedRoles.allowedAudience,advancedConfigurations", null, null,
+        applicationSearchQuery);
 
     const {
         data: rolesList,
         isLoading: isRolesListLoading,
         isValidating: isRolesListValidating
-    } = useRolesList(undefined, undefined, roleNameSearchQuery, "users,groups,permissions,associatedApplications");
+    } = useGetRolesList(undefined, undefined, roleNameSearchQuery, "users,groups,permissions,associatedApplications");
+
+    const { organizationType } = useGetCurrentOrganizationType();
+    const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
 
     useEffect(() => {
         if (applicationListFetchRequestError) {
@@ -120,7 +124,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         }
 
         if (roleAudience === RoleAudienceTypes.APPLICATION) {
-            if (noApplicationsAvailable.current && !applicationSearchQuery) {
+            if (applicationListOptions?.length === 0 && !applicationSearchQuery) {
                 setIsDisplayNoAppScopeApplicatioError(true);
                 setIsDisplayApplicationList(false);
             } else {
@@ -131,7 +135,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             setIsDisplayNoAppScopeApplicatioError(false);
             setIsDisplayApplicationList(false);
         }
-    }, [ applicationListFetchRequestError, roleAudience ]);
+    }, [ applicationListFetchRequestError, roleAudience, applicationListOptions, applicationSearchQuery ]);
 
     useEffect(() => {
         if (isApplicationListFetchRequestLoading) {
@@ -142,43 +146,43 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
         applicationList?.applications?.map((application: ApplicationListItemInterface) => {
             if (!RoleConstants.READONLY_APPLICATIONS_CLIENT_IDS.includes(application?.clientId)) {
-                options.push({
-                    content: (
-                        <ListItemText
-                            primary={ application.name }
-                            secondary={
-                                application?.associatedRoles?.allowedAudience === RoleAudienceTypes.ORGANIZATION
-                                    ? (
-                                        <>
-                                            { t("roles:addRoleWizard.forms.roleBasicDetails." +
-                                                "assignedApplication.applicationSubTitle.organization") }
-                                            <Link
-                                                data-componentid={ `${componentId}-link-navigate-roles` }
-                                                onClick={ () => navigateToApplicationEdit(application?.id) }
-                                                external={ false }
-                                            >
-                                                { t("roles:addRoleWizard.forms." +
-                                                    "roleBasicDetails.assignedApplication.applicationSubTitle." +
-                                                    "changeAudience") }
-                                            </Link>
-                                        </>
-                                    ) : t("roles:addRoleWizard.forms.roleBasicDetails." +
-                                        "assignedApplication.applicationSubTitle.application")
-                            }
-                        />
-                    ),
-                    disabled: application?.associatedRoles?.allowedAudience === RoleAudienceTypes.ORGANIZATION,
-                    key: application.id,
-                    text: application.name,
-                    value: application.id
-                });
+                if (application?.advancedConfigurations?.fragment === false) {
+                    options.push({
+                        content: (
+                            <ListItemText
+                                primary={ application.name }
+                                secondary={
+                                    application?.associatedRoles?.allowedAudience === RoleAudienceTypes.ORGANIZATION
+                                        ? (
+                                            <>
+                                                { t("roles:addRoleWizard.forms.roleBasicDetails." +
+                                                    "assignedApplication.applicationSubTitle.organization") }
+                                                <Link
+                                                    data-componentid={ `${componentId}-link-navigate-roles` }
+                                                    onClick={ () => navigateToApplicationEdit(application?.id) }
+                                                    external={ false }
+                                                >
+                                                    { t("roles:addRoleWizard.forms." +
+                                                        "roleBasicDetails.assignedApplication.applicationSubTitle." +
+                                                        "changeAudience") }
+                                                </Link>
+                                            </>
+                                        ) : t("roles:addRoleWizard.forms.roleBasicDetails." +
+                                            "assignedApplication.applicationSubTitle.application")
+                                }
+                            />
+                        ),
+                        disabled: application?.associatedRoles?.allowedAudience === RoleAudienceTypes.ORGANIZATION,
+                        key: application.id,
+                        text: application.name,
+                        value: application.id
+                    });
+                }
             }
         });
 
-        noApplicationsAvailable.current = (options.length === 0);
-
         setApplicationListOptions(options);
-    }, [ isApplicationListFetchRequestLoading ]);
+    }, [ isApplicationListFetchRequestValidating ]);
 
     useEffect(() => {
         if (isFormError || isDisplayNoAppScopeApplicatioError) {
@@ -367,12 +371,20 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                     ? (
                         <Alert severity="info">
                             {
-                                roleAudience === RoleAudienceTypes.ORGANIZATION
-                                    ? t("roles:addRoleWizard.forms.roleBasicDetails.notes" +
-                                        ".orgNote")
-                                    : t("roles:addRoleWizard.forms.roleBasicDetails.notes" +
-                                        ".appNote")
+                                !isSubOrg ? (
+                                    roleAudience === RoleAudienceTypes.ORGANIZATION
+                                        ? t("roles:addRoleWizard.forms.roleBasicDetails.notes" +
+                                            ".orgNote")
+                                        : t("roles:addRoleWizard.forms.roleBasicDetails.notes" +
+                                            ".appNote")
                                 // TODO: need to add a learn more for this.
+                                ) : (
+                                    roleAudience === RoleAudienceTypes.ORGANIZATION
+                                        ? t("roles:addRoleWizard.forms.roleBasicDetails.notes.subOrganization" +
+                                            ".orgNote")
+                                        : t("roles:addRoleWizard.forms.roleBasicDetails.notes.subOrganization" +
+                                            ".appNote")
+                                )
                             }
                         </Alert>
                     ) : (

@@ -27,7 +27,8 @@ import {
 import useMultiFactorAuthenticatorDetails
     from "@wso2is/admin.connections.v1/api/use-multi-factor-authentication-details";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
-import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

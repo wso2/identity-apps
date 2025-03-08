@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
 import {
@@ -57,12 +57,14 @@ import { Dispatch } from "redux";
 import { Divider, DropdownItemProps, Grid, Menu, Placeholder, Segment } from "semantic-ui-react";
 import { IllustrationsPreview } from "./illustrations-preview";
 import * as LayoutDesignExtensions from "./layout-design-extensions";
-import { LayoutSwatchAdapter } from "./layout-swatch";
-import { ThemeSwatchAdapter, ThemeSwatchUIConfigsInterface } from "./theme-swatch";
-import { useLayout } from "../../api";
-import { BrandingModes, BrandingPreferencesConstants } from "../../constants";
+import { LayoutSwatchAdapter } from "./layout-swatch/layout-swatch-adapter";
+import { ThemeSwatchUIConfigsInterface } from "./theme-swatch/theme-swatch";
+import { ThemeSwatchAdapter } from "./theme-swatch/theme-swatch-adapter";
+import { useLayout } from "../../api/layout";
+import { BrandingModes, BrandingPreferencesConstants } from "../../constants/branding-preferences-constants";
 import useBrandingPreference from "../../hooks/use-branding-preference";
-import { BrandingPreferenceMeta, PredefinedLayouts } from "../../meta";
+import { BrandingPreferenceMeta } from "../../meta/branding-preference-meta";
+import { PredefinedLayouts } from "../../meta/layouts";
 
 /**
  * Interface for Branding Preference Design Form props.
@@ -91,6 +93,10 @@ interface DesignFormPropsInterface extends IdentifiableComponentInterface {
      * Is readonly.
      */
     readOnly?: boolean;
+    /**
+     * Application name.
+     */
+    appName?: string;
     /**
      * Ref for the form.
      */
@@ -149,6 +155,7 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
         isLoading,
         onSubmit,
         readOnly,
+        appName,
         ["data-componentid"]: componentId
     } = props;
 
@@ -191,13 +198,19 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
     const [ layoutDesignExtensionsName, setLayoutDesignExtensionsName ] = useState<string>(null);
 
     const {
-        data: customLayoutBlob,
-        isLoading: customLayoutLoading
-    } = useLayout(PredefinedLayouts.CUSTOM, tenantDomain, commonConfig?.checkCustomLayoutExistanceBeforeEnabling);
-
-    const {
         brandingMode
     } = useBrandingPreference();
+
+    const {
+        data: customLayoutBlob,
+        isLoading: customLayoutLoading
+    } = useLayout(
+        PredefinedLayouts.CUSTOM,
+        tenantDomain,
+        commonConfig?.checkCustomLayoutExistanceBeforeEnabling,
+        brandingMode as BrandingModes,
+        appName
+    );
 
     /**
      * Set the internal initial theme state.
@@ -351,8 +364,12 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
             } else {
                 dispatch(addAlert<AlertInterface>({
                     description:
-                        t("extensions:develop.branding.notifications.fetch.customLayoutNotFound.description",
-                            { tenant: tenantDomain }),
+                        brandingMode === BrandingModes.APPLICATION
+                            ? t("extensions:develop.branding.notifications.fetch.customLayoutNotFound."
+                                + "appBrandingDescription")
+                            : t("extensions:develop.branding.notifications.fetch.customLayoutNotFound.description",
+                                { tenant: tenantDomain })
+                    ,
                     level: AlertLevels.ERROR,
                     message: t("extensions:develop.branding.notifications.fetch.customLayoutNotFound.message")
                 }));

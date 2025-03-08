@@ -18,25 +18,29 @@
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
-import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
-import { EventPublisher, PreLoader } from "@wso2is/admin.core.v1";
-import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
-import { Config, DocumentationLinks } from "@wso2is/admin.core.v1/configs";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
-import { history } from "@wso2is/admin.core.v1/helpers";
+import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
+import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
+import { DocumentationLinks } from "@wso2is/admin.core.v1/configs/documentation";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
 import {
-    ConfigReducerStateInterface,
-    DocumentationLinksInterface,
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface
-} from "@wso2is/admin.core.v1/models";
+} from "@wso2is/admin.core.v1/models/config";
+
+import {
+    DocumentationLinksInterface
+}  from "@wso2is/admin.core.v1/models/documentation";
+import {
+    ConfigReducerStateInterface
+} from "@wso2is/admin.core.v1/models/reducer-state";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { featureGateConfig } from "@wso2is/admin.extensions.v1/configs/feature-gate";
 import useGetAllFeatures from "@wso2is/admin.feature-gate.v1/api/use-get-all-features";
-import { ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
-import ExtensionTemplatesProvider from "@wso2is/admin.template-core.v1/provider/extension-templates-provider";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
@@ -470,51 +474,46 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 </Trans>)
                                             }
                                         />
-                                        <ExtensionTemplatesProvider
-                                            resourceType={ ResourceTypes.APPLICATIONS }
-                                            categories={ ApplicationTemplateConstants.SUPPORTED_CATEGORIES_INFO }
-                                        >
-                                            <Switch>
-                                                <Redirect
-                                                    exact
-                                                    from="/"
-                                                    to={ AppConstants.getAppHomePath() }
-                                                />
-                                                {
-                                                    baseRoutes.map((route: RouteInterface, index: number) => {
-                                                        return (
-                                                            route.protected ?
-                                                                (
-                                                                    <ProtectedRoute
-                                                                        component={ route.component }
-                                                                        path={ route.path }
-                                                                        key={ index }
-                                                                        exact={ route.exact }
-                                                                    />
-                                                                )
-                                                                :
-                                                                (
-                                                                    <Route
-                                                                        path={ route.path }
-                                                                        render={
-                                                                            (props:  RouteComponentProps<
-                                                                                { [p: string]: string },
-                                                                                StaticContext, unknown
-                                                                            >) => {
-                                                                                return (<route.component
-                                                                                    { ...props }
-                                                                                />);
-                                                                            }
+                                        <Switch>
+                                            <Redirect
+                                                exact
+                                                from="/"
+                                                to={ AppConstants.getAppHomePath() }
+                                            />
+                                            {
+                                                baseRoutes.map((route: RouteInterface, index: number) => {
+                                                    return (
+                                                        route.protected ?
+                                                            (
+                                                                <ProtectedRoute
+                                                                    component={ route.component }
+                                                                    path={ route.path }
+                                                                    key={ index }
+                                                                    exact={ route.exact }
+                                                                />
+                                                            )
+                                                            :
+                                                            (
+                                                                <Route
+                                                                    path={ route.path }
+                                                                    render={
+                                                                        (props:  RouteComponentProps<
+                                                                            { [p: string]: string },
+                                                                            StaticContext, unknown
+                                                                        >) => {
+                                                                            return (<route.component
+                                                                                { ...props }
+                                                                            />);
                                                                         }
-                                                                        key={ index }
-                                                                        exact={ route.exact }
-                                                                    />
-                                                                )
-                                                        );
-                                                    })
-                                                }
-                                            </Switch>
-                                        </ExtensionTemplatesProvider>
+                                                                    }
+                                                                    key={ index }
+                                                                    exact={ route.exact }
+                                                                />
+                                                            )
+                                                    );
+                                                })
+                                            }
+                                        </Switch>
                                     </>
                                 </SessionManagementProvider>
                             </AccessControlProvider>

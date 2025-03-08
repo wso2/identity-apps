@@ -17,10 +17,12 @@
  */
 
 import Typography from "@oxygen-ui/react/Typography";
-import { InboundProtocolsMeta } from "@wso2is/admin.applications.v1/components/meta";
-import { AuthProtocolMetaListItemInterface } from "@wso2is/admin.applications.v1/models";
+import { InboundProtocolsMeta } from "@wso2is/admin.applications.v1/components/meta/inbound-protocols.meta";
+import { AuthProtocolMetaListItemInterface } from "@wso2is/admin.applications.v1/models/application-inbound";
 import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
-import { AppState, EventPublisher, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import useExtensionTemplates from "@wso2is/admin.template-core.v1/hooks/use-extension-templates";
 import {
     CategorizedExtensionTemplatesInterface,

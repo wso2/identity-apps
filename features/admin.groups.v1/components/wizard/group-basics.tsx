@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,24 +16,27 @@
  * under the License.
  */
 
-import { SharedUserStoreConstants, SharedUserStoreUtils, UserStoreDetails } from "@wso2is/admin.core.v1";
+import { SharedUserStoreConstants  } from "@wso2is/admin.core.v1/constants/user-store-constants";
+import { UserStoreDetails } from "@wso2is/admin.core.v1/models/user-store";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
-import { RootOnlyComponent } from "@wso2is/admin.organizations.v1/components/root-only-component";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getAUserStore, getUserStoreList } from "@wso2is/admin.userstores.v1/api/user-stores";
 import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
 import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 import { AlertLevels, IdentifiableComponentInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { StringUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Code, Hint } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
-import { CreateGroupFormData, SearchGroupInterface, searchGroupList } from "../..";
+import { searchGroupList } from "../../api/groups";
+import { CreateGroupFormData, SearchGroupInterface } from "../../models/groups";
 
 /**
  * Interface to capture group basics props.
@@ -64,11 +67,12 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
+
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
     const [ basicDetails, setBasicDetails ] = useState<any>(null);
-
-    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     const groupName: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
 
@@ -100,7 +104,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
         let userStoreRegEx: string = "";
 
-        if (userStore && userStore !== SharedUserStoreConstants.PRIMARY_USER_STORE.toLocaleLowerCase()) {
+        if (userStore && !StringUtils.isEqualCaseInsensitive(userStore, primaryUserStoreDomainName)) {
             await SharedUserStoreUtils.getUserStoreRegEx(userStore,
                 SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
                 .then((response: string) => {
@@ -167,38 +171,34 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
             }
         ];
 
-        if (isSuperOrganization() || isFirstLevelOrganization()) {
-            try {
-                const response: AxiosResponse<UserstoreListResponseInterface[]> = await getUserStoreList();
+        try {
+            const response: AxiosResponse<UserstoreListResponseInterface[]> = await getUserStoreList();
 
-                const readWriteStores: UserstoreListResponseInterface[] = await Promise.all(response.data?.map(
-                    async (store: UserstoreListResponseInterface) => {
-                        const isReadWrite: boolean = await isUserStoreReadWrite(store.id);
+            const readWriteStores: UserstoreListResponseInterface[] = await Promise.all(response.data?.map(
+                async (store: UserstoreListResponseInterface) => {
+                    const isReadWrite: boolean = await isUserStoreReadWrite(store?.id);
 
-                        return isReadWrite ? store : null;
-                    }));
-
-                readWriteStores.filter(Boolean).forEach((store: UserstoreListResponseInterface, index: number) => {
-                    if (store) {
-                        storeOptions.push({
-                            key: index,
-                            text: store.name,
-                            value: store.name
-                        });
-                    }
-                });
-
-                setUserStoresList(storeOptions);
-            } catch (error) {
-                dispatch(addAlert({
-                    description: t(
-                        "userstores:notifications.fetchUserstores.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("userstores:notifications.fetchUserstores.genericError.message")
+                    return isReadWrite ? store : null;
                 }));
-            }
-        } else {
+
+            readWriteStores.filter(Boolean).forEach((store: UserstoreListResponseInterface, index: number) => {
+                if (store) {
+                    storeOptions.push({
+                        key: index,
+                        text: store.name,
+                        value: store.name
+                    });
+                }
+            });
+
             setUserStoresList(storeOptions);
+        } catch (error) {
+            dispatch(addAlert({
+                description: t(
+                    "userstores:notifications.fetchUserstores.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("userstores:notifications.fetchUserstores.genericError.message")
+            }));
         }
     };
 
@@ -226,26 +226,24 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                 {
                     groupConfig?.allowGroupAddForRemoteUserstores && (
                         <GridRow>
-                            <RootOnlyComponent>
-                                <GridColumn mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                    <Field
-                                        data-componentid={ `${ componentId }-domain-dropdown` }
-                                        type="dropdown"
-                                        label={ t("roles:addRoleWizard.forms.roleBasicDetails." +
-                                            "domain.label.group") }
-                                        name="domain"
-                                        children={ userStoreOptions }
-                                        placeholder={ t("roles:addRoleWizard." +
-                                            "forms.roleBasicDetails.domain.placeholder") }
-                                        requiredErrorMessage={ t("roles:addRoleWizard.forms." +
-                                            "roleBasicDetails.domain.validation.empty.group") }
-                                        required={ true }
-                                        element={ <div></div> }
-                                        listen={ handleDomainChange }
-                                        value={ initialValues?.basicDetails?.domain ?? userStoreOptions[ 0 ]?.value }
-                                    />
-                                </GridColumn>
-                            </RootOnlyComponent>
+                            <GridColumn mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Field
+                                    data-componentid={ `${ componentId }-domain-dropdown` }
+                                    type="dropdown"
+                                    label={ t("roles:addRoleWizard.forms.roleBasicDetails." +
+                                        "domain.label.group") }
+                                    name="domain"
+                                    children={ userStoreOptions }
+                                    placeholder={ t("roles:addRoleWizard." +
+                                        "forms.roleBasicDetails.domain.placeholder") }
+                                    requiredErrorMessage={ t("roles:addRoleWizard.forms." +
+                                        "roleBasicDetails.domain.validation.empty.group") }
+                                    required={ true }
+                                    element={ <div></div> }
+                                    listen={ handleDomainChange }
+                                    value={ initialValues?.basicDetails?.domain ?? userStoreOptions[ 0 ]?.value }
+                                />
+                            </GridColumn>
                         </GridRow>
                     )
                 }

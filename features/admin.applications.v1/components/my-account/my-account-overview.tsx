@@ -17,7 +17,9 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     CopyInputField,
@@ -62,7 +64,7 @@ const MyAccountOverview: FunctionComponent<MyAccountOverviewPropsInterface> = ({
                         link={ getLink("develop.applications.myaccount.overview.learnMore") }
                     >
                         <Trans
-                            i18nKey={ "extensions:common.learnMore" }
+                            i18nKey={ "common:learnMore" }
                         >
                             Learn More
                         </Trans>

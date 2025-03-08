@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms } from "@wso2is/forms";
@@ -28,19 +29,21 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { getAuthProtocolMetadata } from "../../api";
-import { ApplicationManagementConstants } from "../../constants";
+import { getAuthProtocolMetadata } from "../../api/application";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
     ApplicationTemplateIdTypes,
     ApplicationTemplateListItemInterface,
+    MainApplicationInterface
+} from "../../models/application";
+import {
     DefaultProtocolTemplate,
     GrantTypeInterface,
     GrantTypeMetaDataInterface,
-    MainApplicationInterface,
     OIDCMetadataInterface
-} from "../../models";
+} from "../../models/application-inbound";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.

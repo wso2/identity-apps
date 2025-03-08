@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Config } from "@wso2is/admin.core.v1";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { MarketingConsentEndpointsInterface } from "../models";
 
 /**

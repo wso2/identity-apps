@@ -21,7 +21,9 @@ import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
-import { AppState, EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import {
     FederatedAuthenticatorInterface,
@@ -39,13 +41,13 @@ import { Dispatch } from "redux";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
 import { getSignInFlowIcons } from "../../../../configs/ui";
-import { ApplicationManagementConstants } from "../../../../constants";
+import { ApplicationManagementConstants } from "../../../../constants/application-management";
 import {
     AuthenticationSequenceInterface,
     AuthenticationSequenceType,
     AuthenticationStepInterface,
     AuthenticatorInterface
-} from "../../../../models";
+} from "../../../../models/application";
 import { SignInMethodUtils } from "../../../../utils/sign-in-method-utils";
 
 /**

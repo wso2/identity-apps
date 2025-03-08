@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -41,7 +41,6 @@ export interface ConditionExpressionInterface {
     field: string;
     operator: string;
     value: string;
-    order: number;
 }
 
 /**
@@ -55,7 +54,6 @@ export type ConditionExpressionsInterface = ConditionExpressionInterface[];
 export interface RuleConditionInterface {
     id: string;
     condition: string;
-    order: number;
     expressions: ConditionExpressionsInterface;
 }
 
@@ -72,6 +70,7 @@ export interface RuleInterface {
     id: string;
     rules: RuleConditionsInterface;
     execution?: string;
+    isRuleInstanceTouched?: boolean;
 }
 
 /**
@@ -85,4 +84,36 @@ export type RulesInterface = RuleInterface[];
 export interface RuleExecuteCollectionInterface {
     fallbackExecution?: string;
     rules: RulesInterface;
+}
+
+/**
+ * Interface to represent the condition expressions data without `id`.
+ */
+export type ConditionExpressionWithoutIdInterface = Omit<ConditionExpressionInterface, "id">;
+
+/**
+ * Interface to represent the rule condition data without `id`.
+ */
+export type RuleConditionWithoutIdInterface = Omit<RuleConditionInterface, "id"> & {
+    expressions: ConditionExpressionWithoutIdInterface[];
+};
+
+/**
+ * Interface to represent the rule data without `id`.
+ */
+export type RuleWithoutIdInterface = Omit<RuleInterface, "id"> & {
+    rules: RuleConditionWithoutIdInterface[];
+};
+
+/**
+ * Interface to represent the rules data without `id`.
+ */
+export type RulesWithoutIdInterface = RuleWithoutIdInterface[];
+
+/**
+ * Interface to represent the rules execution data without `id`.
+ */
+export interface RuleExecuteCollectionWithoutIdInterface {
+    fallbackExecution?: string;
+    rules: RulesWithoutIdInterface;
 }

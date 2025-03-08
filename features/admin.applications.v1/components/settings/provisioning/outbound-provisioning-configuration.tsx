@@ -16,7 +16,8 @@
  * under the License.
  */
 import { getConnections } from "@wso2is/admin.connections.v1/api/connections";
-import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authenticator-accordion";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import {
     IdentityProviderInterface,
     IdentityProviderListResponseInterface
@@ -36,13 +37,14 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
-import { updateApplicationConfigurations } from "../../../api";
+import { updateApplicationConfigurations } from "../../../api/application";
 import {
     ApplicationInterface,
     OutboundProvisioningConfigurationInterface,
     ProvisioningConfigurationInterface
-} from "../../../models";
-import { OutboundProvisioningIdpCreateWizard, OutboundProvisioningWizardIdpForm } from "../../wizard";
+} from "../../../models/application";
+import { OutboundProvisioningWizardIdpForm } from "../../wizard/outbound-provisioining-idp-wizard-form";
+import { OutboundProvisioningIdpCreateWizard } from "../../wizard/outbound-provisioning-idp-creation-wizard";
 
 /**
  *  Provisioning Configurations for the Application.

@@ -18,15 +18,13 @@
 
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
-import {
-    AppState,
-    SharedUserStoreUtils,
-    UIConstants,
-    UserBasicInterface,
-    getUsersList
-} from "@wso2is/admin.core.v1";
-import { EventPublisher } from "@wso2is/admin.core.v1/utils";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
+import { getUsersList } from "@wso2is/admin.core.v1/api/users";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { getRolesList } from "@wso2is/admin.roles.v2/api";
@@ -57,8 +55,8 @@ import React, { FormEvent, ReactElement, useCallback, useEffect, useMemo, useSta
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Header } from "semantic-ui-react";
-import { AdministratorConstants } from "../../constants";
-import { InternalAdminFormDataInterface } from "../../models";
+import { AdministratorConstants } from "../../constants/users";
+import { InternalAdminFormDataInterface } from "../../models/invite";
 import { isAdminUser, isCollaboratorUser } from "../../utils/administrators";
 
 /**
@@ -253,7 +251,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                 // Exclude JIT users, internal admin users and collaborators.
                 const responseUsers: UserBasicInterface[] = response?.Resources?.filter(
                     (user: UserBasicInterface) =>
-                        !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId &&
+                        !user[ SCIMConfigs.scim.systemSchema ]?.userSourceId &&
                     !isAdminUser(user) &&
                     !isCollaboratorUser(user));
 
@@ -519,7 +517,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                                                     <DocumentationLink
                                                         link={ getLink("manage.users.newCollaboratorUser.learnMore") }
                                                     >
-                                                        { t("extensions:common.learnMore") }
+                                                        { t("common:learnMore") }
                                                     </DocumentationLink>
                                                 </Hint>
                                             </Grid.Column>

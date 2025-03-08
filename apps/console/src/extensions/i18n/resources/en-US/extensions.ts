@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,453 +26,11 @@ import { Extensions } from "../../models";
 /* eslint-disable max-len */
 /* eslint-disable sort-keys */
 export const extensions: Extensions = {
-    common: {
-        community: "Community",
-        help: {
-            communityLinks: {
-                discord: "Ask on Discord",
-                stackOverflow: "Ask on Stack Overflow"
-            },
-            docSiteLink: "Documentation",
-            helpCenterLink: {
-                title: "Contact Support",
-                subtitle: "Talk to the {{productName}} team to obtain personalized assistance."
-            },
-            helpDropdownLink: "Get Help"
-        },
-        learnMore: "Learn More",
-        quickStart: {
-            greeting: {
-                alternativeHeading: "Welcome back, {{username}}!",
-                heading: "Welcome, {{username}}!",
-                subHeading: "Here’s how you can get started"
-            },
-            sections: {
-                addSocialLogin: {
-                    actions: {
-                        setup: "Set Up Social Connections",
-                        view: "View Social Connections"
-                    },
-                    description:
-                        "Let your users log in to your applications with an Identity Provider of " + "their choice",
-                    heading: "Add social login"
-                },
-                integrateApps: {
-                    actions: {
-                        create: "Register Application",
-                        manage: "Explore Applications",
-                        view: "View Applications"
-                    },
-                    capabilities: {
-                        sso: "SSO",
-                        mfa: "MFA",
-                        social: "Social Login"
-                    },
-                    description:
-                        "Register your app and design the user login experience you want by configuring " +
-                        "SSO, MFA, social login, and various flexible authentication rules.",
-                    heading: "Add login to your apps"
-                },
-                learn: {
-                    actions: {
-                        view: "View Docs"
-                    },
-                    description:
-                        "Get started using Asgardeo. Implement authentication for any kind of application " +
-                        "in minutes.",
-                    heading: "Learn"
-                },
-                manageUsers: {
-                    actions: {
-                        create: "Add Users",
-                        manage: "Manage Users",
-                        view: "View Users"
-                    },
-                    capabilities: {
-                        collaborators: "Administrators",
-                        customers: "Users",
-                        groups: "User Groups"
-                    },
-                    description:
-                        "Create user accounts for users and invite administrators to your organization. " +
-                        "Allow your users to securely self-manage their profiles.",
-                    heading: "Manage users and groups"
-                },
-                asgardeoTryIt: {
-                    errorMessages: {
-                        appCreateGeneric: {
-                            message: "Something went wrong!",
-                            description: "Failed to initialize the Try It app."
-                        },
-                        appCreateDuplicate: {
-                            message: "Application already exists!",
-                            description: "Please delete the existing {{productName}} Try It application."
-                        }
-                    }
-                }
-            }
-        },
-        upgrade: "Upgrade",
-        dropdown: {
-            footer: {
-                privacyPolicy: "Privacy",
-                cookiePolicy: "Cookies",
-                termsOfService: "Terms"
-            }
-        }
-    },
-    console: {
-        application: {
-            quickStart: {
-                addUserOption: {
-                    description: "You need a <1>user account</1> to log in to the application.",
-                    hint:
-                        "If you don’t already have a user account, click the below button to create one. " +
-                        "Alternatively, go to <1>User Management > Users</1><3></3> and create users.",
-                    message:
-                        "If you do not already have a user account, contact your organization " +
-                        "administrator."
-                },
-                spa: {
-                    customConfig: {
-                        heading: "You can implement login using <1>Authorization Code flow with PKCE</1> " +
-                            "with Asgardeo for any SPA technology.",
-                        anySPATechnology: "or any SPA Technology",
-                        configurations: "Configurations",
-                        protocolConfig: "Use the following configurations to integrate your application with Asgardeo. " +
-                            "For more details on configurations, go to the <1>Protocol</1> tab.",
-                        clientId: "Client ID",
-                        baseUrl: "Base URL",
-                        redirectUrl: "Redirect URL",
-                        scope: "Scope",
-                        serverEndpoints: "Details on the server endpoints are available in the <1>Info</1> tab."
-                    },
-                    techSelection: {
-                        heading: "Use the SDKs curated by Asgardeo and 3rd party integrations."
-                    }
-                },
-                technologySelectionWrapper: {
-                    subHeading:
-                        "Use the <1>server endpoint " +
-                        "details</1> and start integrating your own app or read through our <3>documentation</3> " +
-                        "to learn  more.",
-                    otherTechnology: "or any mobile technology"
-                },
-                twa: {
-                    common: {
-                        orAnyTechnology: "or any technology"
-                    },
-                    oidc: {
-                        customConfig: {
-                            clientSecret: "Client Secret",
-                            heading: "You can implement login using <1>Authorization Code flow</1> " +
-                                "with Asgardeo for any traditional web application."
-                        }
-                    },
-                    saml: {
-                        customConfig: {
-                            heading: "Discover <1>SAML configurations</1> to integrate Asgardeo with" +
-                                " any traditional web application.",
-                            issuer: "Issuer",
-                            acsUrl: "Assertion Consumer Service URL",
-                            idpEntityId: "IdP Entity ID",
-                            idpUrl: "IdP URL"
-                        }
-                    }
-                },
-                m2m: {
-                    customConfig: {
-                        tokenEndpoint: "Token Endpoint",
-                        tokenRequest: "Token Request",
-                        configurations: "Configurations"
-                    }
-                }
-            }
-        },
-        applicationRoles: {
-            assign: "Assign",
-            assignGroupWizard: {
-                heading: "Assign Groups",
-                subHeading: "Assign groups to the application role."
-            },
-            authenticatorGroups: {
-                goToConnections: "Go to Connections",
-                groupsList: {
-                    assignGroups: "Assign Groups",
-                    notifications: {
-                        fetchAssignedGroups: {
-                            error: {
-                                description: "{{description}}",
-                                message: "Error occurred while fetching assigned groups"
-                            },
-                            genericError: {
-                                description: "An error occurred while fetching assigned groups.",
-                                message: "Something went wrong"
-                            }
-                        },
-                        updateAssignedGroups: {
-                            error: {
-                                description: "{{description}}",
-                                message: "Error occurred while updating assigned groups"
-                            },
-                            genericError: {
-                                description: "An error occurred while updating assigned groups.",
-                                message: "Something went wrong"
-                            },
-                            success: {
-                                description: "Successfully updated assigned groups.",
-                                message: "Update successful"
-                            }
-                        }
-                    }
-                },
-                hint: "When assigning external groups to a role, make sure that the connection is enabled in " +
-                    "<1>External Grooup Role Resolution Control</1> in the Roles tab of the <3>Application</3>.",
-                placeholder: {
-                    title: "No External Groups",
-                    subTitle: {
-                        0: "There are no external groups available at the moment.",
-                        1: "You can add a new external group by visiting the " +
-                            "Groups tab in a connection."
-                    }
-                }
-            },
-            connectorGroups: {
-                placeholder: {
-                    title: "No External Groups",
-                    subTitle: {
-                        0: "There are no external groups available at the moment.",
-                        1: "Define the groups that you receive from your connections by adding a new group."
-                    }
-                }
-            },
-            heading: "Application Roles",
-            searchApplication: "Search Application",
-            subHeading: "View and assign groups to your application roles.",
-            roleGroups: {
-                assignGroup: "Assign Group",
-                searchGroup: "Search groups",
-                placeholder: {
-                    title: "No groups assigned",
-                    subTitle: {
-                        0: "There are no groups assigned to this role.",
-                        1: "To assign a group, click on the Assign Group button."
-                    }
-                },
-                notifications: {
-                    addGroups: {
-                        error: {
-                            message: "An error occurred",
-                            description: "An error occurred while adding the group."
-                        },
-                        success: {
-                            message: "Group added successfully",
-                            description: "The group has been successfully added to the role."
-                        }
-                    },
-                    fetchGroups: {
-                        error: {
-                            message: "An error occurred",
-                            description: "An error occurred while fetching the groups."
-                        }
-                    }
-                },
-                confirmation: {
-                    deleteRole: {
-                        message: "This action is irreversible and will remove " +
-                            "the group from the application role.",
-                        content: "If you remove this group from the application role, the permissions " +
-                            "associated with this role will be removed from the group. Please proceed " +
-                            "with caution."
-                    }
-                }
-            },
-            roleList: {
-                placeholder: {
-                    title: "No Application Roles",
-                    subTitle: {
-                        0: "There are no application roles available at the moment.",
-                        1: "You can add a new application role by visiting the " +
-                            "Roles tab in an Application."
-                    }
-                }
-            },
-            roleMapping: {
-                heading: "External groups Role Resolution Control",
-                subHeading: "Enable or disable application role resolving from external groups " +
-                    "during authentication flow",
-                notifications: {
-                    sharedApplication: {
-                        error: {
-                            description: "An error occurred while retrieving the shared applications.",
-                            message: "An error occurred"
-                        }
-                    },
-                    updateRole: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error updating role"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the role.",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "Successfully updated the role.",
-                            message: "Updated successfully"
-                        }
-                    }
-                }
-            },
-            roles: {
-                heading: "Roles",
-                subHeading: "Manage roles and permissions.",
-                goBackToRoles: "Go back to Roles",
-                orgRoles: {
-                    heading: "Organization Roles",
-                    subHeading: "Manage organization roles here."
-                }
-            }
-        },
-        identityProviderGroups: {
-            claimConfigs: {
-                groupAttributeLabel: "Group attribute",
-                groupAttributeHint: "The attribute from the connection that will be mapped to the organization's group attribute.",
-                groupAttributePlaceholder: "Enter mapped attribute",
-                groupAttributeMessage1: "Please be aware that the attribute selected in the <1>Attributes tab</1> as the group attribute is used to identify groups at the Connection.",
-                groupAttributeMessage2: "For modifications to the group attribute, please visit the <1>Attributes tab</1>.",
-                groupAttributeMessageOIDC: "Please note that OpenID Connect attribute named <1>{{attribute}}</1> will be considered as the default " +
-                    "<1>Group Attribute</1> as you have not added a custom attribute.",
-                groupAttributeMessageSAML: "Please note that <1>{{attribute}}</1> attribute will be considered as the default " +
-                    "<1>Group Attribute</1> as you have not added a custom attribute.",
-                notifications: {
-                    fetchConfigs: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error occurred while fetching claim configurations"
-                        },
-                        genericError: {
-                            description: "An error occurred while fetching claim configurations.",
-                            message: "An error occurred"
-                        }
-                    }
-                }
-            },
-            createGroupWizard: {
-                groupNameLabel: "Group Name",
-                groupNamePlaceHolder: "Enter a group name",
-                groupNameHint: "This should correspond to the name of the groups that will be returned " +
-                    "from your connection.",
-                subHeading: "Create a new connection group.",
-                notifications: {
-                    createIdentityProviderGroup: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error occurred while creating the connection group"
-                        },
-                        genericError: {
-                            description: "An error occurred while creating the connection group.",
-                            message: "An error occurred"
-                        },
-                        success: {
-                            description: "The connection group has been created successfully.",
-                            message: "Successfully created"
-                        }
-                    },
-                    duplicateGroupError: {
-                        error: {
-                            description: "A group with the same name already exists.",
-                            message: "Error occurred"
-                        }
-                    }
-                }
-            },
-            groupsList: {
-                confirmation: {
-                    deleteGroup: {
-                        message: "This action is irreversible.",
-                        content: "This action will permanently delete the {{groupName}} identity provider group. " +
-                            "Please proceed with caution"
-                    }
-                },
-                newGroup: "New Group",
-                noGroupsAvailable: "No groups available",
-                notifications: {
-                    fetchGroups: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error occurred while fetching identity provider groups"
-                        },
-                        genericError: {
-                            description: "An error occurred while retrieving identity provider groups.",
-                            message: "An error occurred"
-                        }
-                    },
-                    deleteGroup: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error occurred while deleting the identity provider group"
-                        },
-                        genericError: {
-                            description: "An error occurred while deleting the identity provider group.",
-                            message: "An error occurred"
-                        },
-                        success: {
-                            description: "The identity provider group has been deleted successfully.",
-                            message: "Successfully deleted"
-                        }
-                    }
-                },
-                searchByName: "Search by name"
-            }
-        },
-        marketingConsent: {
-            heading: "Let's stay in touch!",
-            description: "Subscribe to get the latest news and product updates straight to your inbox.",
-            actions: {
-                subscribe: "Subscribe",
-                decline: "Don't show this again"
-            },
-            notifications: {
-                errors: {
-                    fetch: {
-                        message: "Something went wrong",
-                        description: "Something went wrong when getting user consent data"
-                    },
-                    update: {
-                        message: "Something went wrong",
-                        description: "Something went wrong when updating user consent"
-                    }
-                }
-            }
-        },
-        organizationInfo: {
-            heading: "Organization Info",
-            subHeading: "View information related to your organization.",
-            orgId: {
-                label: "Organization ID",
-                heading: "Organization ID",
-                subHeading: "The following organization ID will be useful for you to implement and configure the Asgardeo manangement REST APIs of " +
-                    "organizations."
-            },
-            notifications: {
-                getConfiguration: {
-                    error: {
-                        description: "Error occurred while retrieving organization information",
-                        message: "An error occurred"
-                    },
-                    genericError: {
-                        description: "An error occurred while retrieving organization information.",
-                        message: "An error occurred"
-                    }
-                }
-            }
-        }
-    },
     develop: {
         apiResource: {
             pageHeader: {
                 description: "Create and manage the APIs used to define the API scopes/permissions that can be consumed by your applications.",
+                subOrgDescription: "View the APIs that define scopes and permissions for your applications.",
                 title: "API Resources"
             },
             empty: "There are no API resources available at the moment.",
@@ -1937,6 +1495,7 @@ export const extensions: Extensions = {
                 fetch: {
                     customLayoutNotFound: {
                         description: "There is no deployed custom layout for {{ tenant }}.",
+                        appBrandingDescription: "There is no deployed custom layout for this application.",
                         message: "Couldn't activate the custom layout"
                     },
                     genericError: {
@@ -2085,7 +1644,7 @@ export const extensions: Extensions = {
             info: "You can customize the email content using <1>Email Templates</1>.",
             updateButton: "Update",
             sendTestMailButton: "Send Test Email",
-            goBack: "Go back to Email & SMS",
+            goBack: "Go back to Notification Providers",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
                 content: "If you delete this configuration, the emails will be sent from the Asgardeo Email Address. " +
@@ -2178,10 +1737,16 @@ export const extensions: Extensions = {
                 }
             }
         },
-        notificationChannel: {
+        emailAndSms: {
             heading: "SMS / Email Providers",
             title: "SMS / Email Providers",
-            description: "Configure the SMS and Email providers for your organization."
+            description: "Configure the SMS and Email providers for your organization.",
+            goBack: "Go back to Email & SMS"
+        },
+        notificationChannel: {
+            heading: "Notification Channels",
+            title: "Notification Channels",
+            description: "Configure the notifiction channels for your organization."
         },
         identityProviders: {
             apple: {
@@ -2305,6 +1870,31 @@ export const extensions: Extensions = {
                         selectSMSOTP: {
                             content: "Go to <1>Login Flow</1> tab and click on the <3>Username & Password + SMS OTP</3> option from the Multi-factor login section to configure a basic SMS OTP flow.",
                             heading: "Select <1>SMS OTP</1> option"
+                        }
+                    }
+                }
+            },
+            pushAuth: {
+                quickStart: {
+                    addLoginModal: {
+                        heading: "Add Push Authenticator",
+                        subHeading: "Select an application to set up push  authentication."
+                    },
+                    connectApp: {
+                        description:
+                            "Add <1>Push Notification</1> to <3>Step 2</3> on the <5>Login Flow" +
+                            "</5> section of your <7>application</7>."
+                    },
+                    heading: "Push Authenticator Set Up Guide",
+                    subHeading: "Follow the instructions to set up Push Authentication in your login flow.",
+                    steps: {
+                        selectApplication: {
+                            content: "Choose the <1>application</1> for which you want to set up Push Authentication.",
+                            heading: "Select Application"
+                        },
+                        selectPushAuth: {
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Username & Password + Push</3> option from the Multi-factor login section to configure a basic Push Authentication flow.",
+                            heading: "Select <1>Push Authenticator</1> option"
                         }
                     }
                 }
@@ -2966,6 +2556,11 @@ export const extensions: Extensions = {
                 replicateContent: {
                     header: "Replicate content?",
                     message: "Seems like you don't have any content for this locale. Do you need to populate the previous locale's content here as a quick start?"
+                },
+                updateFromRootOrg: {
+                    header: "Template not available",
+                    message: "Template is not available for selected locale.",
+                    content: "The selected locale is not available for the selected template currently. Please contact admins for more infomation."
                 }
             },
             dangerZone: {
@@ -3037,7 +2632,20 @@ export const extensions: Extensions = {
                     error: {
                         description: "Error updating the attribute as an unique attribute. Please try again.",
                         message: "Error updating claim"
+                    },
+                    success: {
+                        description: "Successfully updated the {{claimName}} uniqueness validation scope.",
+                        message: "Update successful"
                     }
+                },
+                claimUpdateConfirmation: {
+                    header: "Before you proceed",
+                    message: "Uniqueness validation for the selected attribute(s) will be applied across user stores.",
+                    content: "This setting ensures values of selected attribute(s) remain unique across the " +
+                    "organization for new users, which is required for alternate login identifiers to work. " +
+                    "However, it does not guarantee uniqueness for attribute(s) of existing users that remain " +
+                    "unchanged.",
+                    assertionHint: "I understand and wish to proceed"
                 }
             },
             pageTitle: "Account Login",
@@ -3723,6 +3331,21 @@ export const extensions: Extensions = {
                     subHeading:
                     "Enable self-service password recovery for users on the login page."
                 },
+                usernameRecovery: {
+                    form: {
+                        fields: {
+                            enableEmailBasedRecovery: {
+                                label: "Enable email based recovery"
+                            },
+                            enableSMSBasedRecovery: {
+                                label: "Enable SMS based recovery"
+                            }
+                        },
+                        smsProviderWarning: "Ensure that an <1>SMS Provider</1> is configured for the SMS feature to work properly.",
+                        recoveryOptionHeading: "Select Recovery Option"
+                    },
+                    heading: "Enable self-service username recovery for users on the login page."
+                },
                 subHeading: "Account Recovery related settings."
             },
             accountSecurity: {
@@ -3812,6 +3435,12 @@ export const extensions: Extensions = {
                                     "Notify user when the account lock duration is increased due to " +
                                     "continuous failed login attempts.",
                                 label: "Notify user when lock time is increased"
+                            },
+                            lockAccountForSpecifiedTime: {
+                                label: "Lock account for a specified duration"
+                            },
+                            lockAccountIndefiniteTime: {
+                                label: "Lock account until admin unlocks"
                             }
                         }
                     },
@@ -3821,6 +3450,7 @@ export const extensions: Extensions = {
                     connectorDescription:
                         "Protect accounts from password brute-force attacks by locking the " +
                         "account on consecutive failed login attempts.",
+                    accountLockDurationHeading: "Choose account lock option",
                     heading: "Login Attempts",
                     notification: {
                         error: {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,7 +22,7 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography/Typography";
 import { GlobeIcon } from "@oxygen-ui/react-icons";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { generatePassword, getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
 import getUsertoreUsernameValidationPattern from "@wso2is/admin.users.v1/utils/get-usertore-usernam-validation-pattern";
@@ -45,6 +45,7 @@ import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { Icon } from "semantic-ui-react";
 import getTenantDomainAvailability from "../../api/get-tenant-domain-availability";
 import TenantConstants from "../../constants/tenant-constants";
 import { AddTenantRequestPayload, Tenant, TenantOwner, TenantStatus } from "../../models/tenants";
@@ -81,8 +82,18 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
     const { data: validationData } = useValidationConfigData();
 
     const enableEmailDomain: boolean = useSelector((state: AppState) => state.config?.ui?.enableEmailDomain);
+    const tenantDomainRegex: string = useSelector(
+        (state: AppState) => state.config?.ui?.multiTenancy?.tenantDomainRegex
+    );
+    const tenantDomainIllegalCharactersRegex: string = useSelector(
+        (state: AppState) => state.config?.ui?.multiTenancy?.tenantDomainIllegalCharactersRegex
+    );
+    const isTenantDomainDotExtensionMandatory: boolean = useSelector(
+        (state: AppState) => state.config?.ui?.multiTenancy?.isTenantDomainDotExtensionMandatory
+    );
 
     const [ isPasswordValid, setIsPasswordValid ] = useState<boolean>(false);
+    const [ isPasswordVisible, setIsPasswordVisible ] = useState(false);
 
     const userNameValidationConfig: ValidationFormInterface = useMemo((): ValidationFormInterface => {
         return getUsernameConfiguration(validationData);
@@ -146,10 +157,14 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
 
     /**
      * Form validator to validate the tenant domain availability.
+     *
+     * @remarks
+     * Implements the same validation logic that's set in the backend.
+     * @see `https://github.com/wso2/carbon-multitenancy -> TenantMgtUtil.java -> validateDomain`
      * @param value - Input value.
      * @returns An error if the value is not valid else undefined.
      */
-    const validateTenantDomainAvailability = async (value: string): Promise<string | undefined> => {
+    const validateDomain = async (value: string): Promise<string | undefined> => {
         if (!value) {
             return undefined;
         }
@@ -164,6 +179,36 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
 
         if (!isAvailable) {
             return t("tenants:common.form.fields.domain.validations.domainUnavailable");
+        }
+
+        if (isTenantDomainDotExtensionMandatory) {
+            const lastIndexOfDot: number = value.lastIndexOf(".");
+
+            if (lastIndexOfDot <= 0) {
+                return t("tenants:common.form.fields.domain.validations.domainMandatoryExtension");
+            }
+        }
+
+        if (tenantDomainRegex) {
+            const regex: RegExp = new RegExp(tenantDomainRegex);
+
+            if (!regex.test(value)) {
+                return t("tenants:common.form.fields.domain.validations.domainInvalidPattern");
+            }
+        }
+
+        const indexOfDot: number = value.indexOf(".");
+
+        if (indexOfDot == 0) {
+            return t("tenants:common.form.fields.domain.validations.domainStartingWithDot");
+        }
+
+        if (tenantDomainIllegalCharactersRegex) {
+            const regex: RegExp = new RegExp(tenantDomainIllegalCharactersRegex);
+
+            if (regex.test(value)) {
+                return t("tenants:common.form.fields.domain.validations.domainInvalidCharPattern");
+            }
         }
     };
 
@@ -373,6 +418,20 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
         </FormSpy>
     );
 
+    const renderInputAdornmentOfSecret = (showSecret: boolean, onClick: () => void): ReactElement => (
+        <InputAdornment position="end">
+            <Icon
+                link={ true }
+                className="list-icon reset-field-to-default-adornment"
+                size="small"
+                color="grey"
+                name={ !showSecret ? "eye" : "eye slash" }
+                data-componentid={ `${ componentId }-password-view-button` }
+                onClick={ onClick }
+            />
+        </InputAdornment>
+    );
+
     return (
         <FinalForm
             initialValues={ {} }
@@ -441,7 +500,7 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                                     <GlobeIcon />
                                 </InputAdornment>)
                             }
-                            validate={ validateTenantDomainAvailability }
+                            validate={ validateDomain }
                         />
                         <Typography variant="h5" className="add-tenant-form-sub-title">
                             { t("tenants:addTenant.form.adminDetails.title") }
@@ -504,9 +563,9 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                             <Stack
                                 spacing={ { sm: 2, xs: 1 } }
                                 direction={ { sm: "row", xs: "column" } }
-                                alignItems="flex-end"
+                                alignItems="center"
                             >
-                                <div className="inline-flex-field">
+                                <div className="inline-flex-field password-input-btn">
                                     <FinalFormField
                                         key="password"
                                         width={ 16 }
@@ -515,7 +574,12 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                                         required={ true }
                                         data-componentid={ `${componentId}-password` }
                                         name="password"
-                                        type="password"
+                                        type={ isPasswordVisible ? "text" : "password" }
+                                        InputProps={ {
+                                            endAdornment: renderInputAdornmentOfSecret(
+                                                isPasswordVisible,
+                                                () => setIsPasswordVisible(!isPasswordVisible))
+                                        } }
                                         label={ t("tenants:common.form.fields.password.label") }
                                         placeholder={ t("tenants:common.form.fields.password.placeholder") }
                                         component={ TextFieldAdapter }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,21 +15,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import {
     ConnectorPropertyInterface,
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1";
-import {
-    PRIMARY_USERSTORE,
-    USERSTORE_REGEX_PROPERTIES
-} from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
-import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
@@ -121,6 +122,8 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const hasLoginAndRegistrationFeaturePermissions: boolean = useRequiredScopes(
         featureConfig?.loginAndRegistration?.scopes?.feature
@@ -145,7 +148,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     useEffect(() => {
         setPasswordRegExLoading(true);
         const userNameComponents: string[] = user?.userName?.split("/");
-        const userStore: string = userNameComponents?.length > 1 ? userNameComponents[0] : PRIMARY_USERSTORE;
+        const userStore: string = userNameComponents?.length > 1 ? userNameComponents[0] : primaryUserStoreDomainName;
 
         SharedUserStoreUtils.getUserStoreRegEx(userStore, USERSTORE_REGEX_PROPERTIES.PasswordRegEx)
             .then((response: string) => {
@@ -218,15 +221,14 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             return;
         }
 
+        const schemaURI: string = SCIMConfigs.scim.systemSchema;
+
         const data: PatchRoleDataInterface = {
             "Operations": [
                 {
                     "op": "add",
                     "value": {
-                        [ SCIMConfigs?.scimEnterpriseUserClaimUri?.forcePasswordReset?.
-                            startsWith(ProfileConstants.SCIM2_ENT_USER_SCHEMA)
-                            ? ProfileConstants.SCIM2_ENT_USER_SCHEMA
-                            : ProfileConstants.SCIM2_WSO2_USER_SCHEMA ]: {
+                        [ schemaURI ]: {
                             "forcePasswordReset": true
                         }
                     }

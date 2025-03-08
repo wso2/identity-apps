@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { SelectChangeEvent } from "@mui/material";
+import { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import React, { ReactNode, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import RulesContext from "../contexts/rules-context";
@@ -28,11 +28,19 @@ import {
     ExpressionFieldTypes,
     RuleConditionInterface,
     RuleExecuteCollectionInterface,
-    RuleInterface
+    RuleExecuteCollectionWithoutIdInterface,
+    RuleInterface,
+    RuleWithoutIdInterface
 } from "../models/rules";
+import addIds from "../utils/add-ids";
+import cleanInstance from "../utils/clean-instance";
+
+interface RuleContextRefInterface extends RuleExecuteCollectionInterface {
+    isMultipleRules: boolean;
+}
 
 // Refference to hold the latest context value
-const RuleContextRef: { ruleInstance: RuleExecuteCollectionInterface | undefined } = {
+const RuleContextRef: { ruleInstance: RuleContextRefInterface | undefined } = {
     ruleInstance: undefined
 };
 
@@ -41,35 +49,56 @@ const RuleContextRef: { ruleInstance: RuleExecuteCollectionInterface | undefined
  *
  * @returns RuleInstanceData
  */
-export const getRuleInstanceValue = () => Object.freeze(RuleContextRef.ruleInstance);
+export const getRuleInstanceValue = (): RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface => {
+    if (!RuleContextRef.ruleInstance) {
+        return null;
+    }
+
+    // Check if the ruleInstance has multiple rules
+    if (RuleContextRef.ruleInstance.isMultipleRules) {
+        // Return RuleExecuteCollectionWithoutIdInterface if there are multiple rules
+        return cleanInstance(
+            Object.freeze(RuleContextRef.ruleInstance) as RuleExecuteCollectionInterface, true
+        );
+    }
+
+    if (RuleContextRef.ruleInstance?.rules?.length > 0) {
+        // Return RuleWithoutIdInterface when there is only a single rule
+        return cleanInstance(Object.freeze(RuleContextRef.ruleInstance)?.rules[0]) as RuleInterface;
+    }
+
+    return null;
+};
 
 /**
  * Provider for the RulesContext
  *
  * @param children - ReactNode
  * @param conditionExpressionsMetaData - ConditionExpressionsMetaDataInterface
- * @param initialData - RuleExecutionInterface
+ * @param initialData - RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface
  * @param ruleExecutionsMetaData - RuleExecutionMetaDataInterface
  * @returns RulesProvider
  */
 export const RulesProvider = ({
     children,
     initialData,
+    isMultipleRules = false,
     conditionExpressionsMetaData,
     ruleExecutionMetaData
 }: {
     children: ReactNode;
+    isMultipleRules?: boolean;
     conditionExpressionsMetaData: ConditionExpressionsMetaDataInterface;
-    initialData: RuleExecuteCollectionInterface | RuleInterface;
-    ruleExecutionMetaData: RuleExecutionMetaDataInterface;
+    initialData: RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface;
+    ruleExecutionMetaData?: RuleExecutionMetaDataInterface;
 }) => {
-    let RuleExecutionData: any = initialData;
+    let RuleExecutionData: any = addIds(initialData);
 
     // Check if initialData is a single rule object and if it doesn't have fallbackExecution
     // transform it to a collection
     if (RuleExecutionData && !RuleExecutionData?.fallbackExecution) {
         RuleExecutionData = {
-            fallbackExecution: "",
+            ...(isMultipleRules && { fallbackExecution: "" }),
             rules: [ RuleExecutionData ]
         };
     }
@@ -83,7 +112,42 @@ export const RulesProvider = ({
         ruleExecutionMetaData ?? undefined;
 
     // Update the ref whenever the context value changes
-    RuleContextRef.ruleInstance = ruleComponentInstance;
+    RuleContextRef.ruleInstance = {
+        ...ruleComponentInstance,
+        isMultipleRules
+    };
+
+    useEffect(() => {
+        // If the initial data is not provided, add a new rule execution.
+        if (!initialData && ruleComponentInstanceConditionExpressionsMeta) {
+            setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
+                return {
+                    ...prev,
+                    ...(isMultipleRules && { fallbackExecution: ruleExecutionMetaData?.fallbackExecutions?.[0]?.name }),
+                    rules: [ getNewRuleInstance() ]
+                };
+            });
+        }
+    }, [ ruleComponentInstanceConditionExpressionsMeta ]);
+
+    /**
+     * Method to get the rule instance.
+     *
+     * @returns RuleInstanceData
+     */
+    const getRuleInstance = (): RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface => {
+        if (ruleComponentInstance) {
+            if (isMultipleRules) {
+                return cleanInstance(ruleComponentInstance, true);
+            }
+
+            if (ruleComponentInstance.rules?.length > 0) {
+                return cleanInstance(ruleComponentInstance.rules[0], isMultipleRules);
+            }
+        }
+
+        return null;
+    };
 
     /**
      * Method to get a new rule expression.
@@ -95,7 +159,6 @@ export const RulesProvider = ({
             field: conditionExpressionsMetaData?.[0]?.field?.name,
             id: uuidv4(),
             operator: conditionExpressionsMetaData?.[0]?.operators?.[0]?.name,
-            order: 0,
             value: ""
         };
     };
@@ -107,14 +170,12 @@ export const RulesProvider = ({
      * @returns Rule
      */
     const getNewRuleConditionInstance = (
-        condition: AdjoiningOperatorTypes,
-        orderIndex: number = 0
+        condition: AdjoiningOperatorTypes
     ): RuleConditionInterface => {
         return {
             condition: condition,
             expressions: [ getNewConditionExpressionInstance() ],
-            id: uuidv4(),
-            order: orderIndex
+            id: uuidv4()
         };
     };
 
@@ -127,31 +188,20 @@ export const RulesProvider = ({
         return {
             condition: AdjoiningOperatorTypes.Or,
             id: uuidv4(),
+            isRuleInstanceTouched: false,
             rules: [ getNewRuleConditionInstance(AdjoiningOperatorTypes.And) ]
         };
     };
-
-    useEffect(() => {
-        // If the initial data is not provided, add a new rule execution.
-        if (!initialData) {
-            setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
-                return {
-                    ...prev,
-                    fallbackExecution: ruleExecutionMetaData?.fallbackExecutions?.[0]?.name,
-                    rules: [ getNewRuleInstance() ]
-                };
-            });
-        }
-    }, []);
 
     /**
      * Method to add a new rule.
      */
     const handleAddNewRule = () => {
-        const newRuleInstance: RuleInterface = getNewRuleInstance();
-
         setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
-            return { ...prev, rules: [ ...prev.rules, newRuleInstance ] };
+            return {
+                ...prev,
+                rules: [ ...prev?.rules, getNewRuleInstance() ]
+            };
         });
     };
 
@@ -164,8 +214,24 @@ export const RulesProvider = ({
         setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
             return {
                 ...prev,
-                rules: prev.rules?.filter(
+                rules: prev?.rules?.filter(
                     (ruleExecution: RuleInterface) => ruleExecution?.id !== id)
+            };
+        });
+    };
+
+    /**
+     * Method to clear a rule.
+     *
+     * @param id - string
+     */
+    const handleClearRule = (id: string) => {
+        setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
+            return {
+                ...prev,
+                rules: prev?.rules?.map((rule: RuleInterface) =>
+                    rule.id === id ? getNewRuleInstance() : rule
+                )
             };
         });
     };
@@ -182,9 +248,13 @@ export const RulesProvider = ({
         setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
             return {
                 ...prev,
-                rules: prev.rules?.map((ruleExecution: RuleInterface) => {
+                rules: prev?.rules?.map((ruleExecution: RuleInterface) => {
                     if (ruleExecution.id === id) {
-                        return { ...ruleExecution, execution: changedValue };
+                        return {
+                            ...ruleExecution,
+                            execution: changedValue,
+                            isRuleInstanceTouched: true
+                        };
                     }
 
                     return ruleExecution;
@@ -220,12 +290,13 @@ export const RulesProvider = ({
         ruleId: string,
         conditionId: string,
         expressionId: string,
-        fieldName: ExpressionFieldTypes
+        fieldName: ExpressionFieldTypes,
+        isOnChange: boolean
     ) => {
         setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
             return {
                 ...prev,
-                rules: prev.rules?.map((rule: RuleInterface) => {
+                rules: prev?.rules?.map((rule: RuleInterface) => {
                     if (rule.id === ruleId) {
                         return {
                             ...rule,
@@ -253,7 +324,8 @@ export const RulesProvider = ({
                                 }
 
                                 return condition;
-                            })
+                            }),
+                            ...(isOnChange && { isRuleInstanceTouched: true })
                         };
                     }
 
@@ -281,10 +353,11 @@ export const RulesProvider = ({
         setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
             return {
                 ...prev,
-                rules: prev.rules?.map((rule: RuleInterface) => {
+                rules: prev?.rules?.map((rule: RuleInterface) => {
                     if (rule.id === ruleId) {
                         return {
                             ...rule,
+                            isRuleInstanceTouched: true,
                             rules: rule.rules?.flatMap((condition: RuleConditionInterface) => {
                                 if (expressionType === AdjoiningOperatorTypes.Or) {
                                     if (condition.id === conditionId) {
@@ -334,10 +407,11 @@ export const RulesProvider = ({
         setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
             return {
                 ...prev,
-                rules: prev.rules?.map((rule: RuleInterface) => {
+                rules: prev?.rules?.map((rule: RuleInterface) => {
                     if (rule.id === ruleId) {
                         return {
                             ...rule,
+                            isRuleInstanceTouched: true,
                             rules: rule.rules?.flatMap((condition: RuleConditionInterface) => {
                                 // Remove the expression if it matches
                                 const updatedExpressions: ConditionExpressionsInterface = condition.expressions.filter(
@@ -370,11 +444,14 @@ export const RulesProvider = ({
             value={ {
                 addNewRule: handleAddNewRule,
                 addNewRuleConditionExpression: handleAddConditionExpression,
+                clearRule: handleClearRule,
                 conditionExpressionsMeta: ruleComponentInstanceConditionExpressionsMeta,
+                isMultipleRules: isMultipleRules,
                 removeRule: handleRemoveRule,
                 removeRuleConditionExpression: handleRemoveConditionExpression,
                 ruleExecuteCollection: ruleComponentInstance,
                 ruleExecutionsMeta: ruleComponentInstanceExecutionsMeta,
+                ruleInstance: getRuleInstance(),
                 updateConditionExpression: handleConditionExpressionValueChange,
                 updateRuleExecution: handleRuleExecutionTypeChange,
                 updateRulesFallbackExecution: handleRulesFallbackExecutionTypeChange

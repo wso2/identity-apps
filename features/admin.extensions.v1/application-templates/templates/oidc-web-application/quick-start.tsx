@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import { getApplicationList } from "@wso2is/admin.applications.v1/api";
+import { getApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import {
     ApplicationInterface,
     ApplicationListInterface,
     ApplicationTemplateInterface,
     URLFragmentTypes
-} from "@wso2is/admin.applications.v1/models";
-import { history } from "@wso2is/admin.core.v1";
-import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
+} from "@wso2is/admin.applications.v1/models/application";
+import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, useDocumentation } from "@wso2is/react-components";

@@ -16,12 +16,17 @@
  * under the License.
  */
 
-import { AppState, FeatureConfigInterface, OrganizationType } from "@wso2is/admin.core.v1";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { FeatureAccessConfigInterface, RolesInterface, SBACInterface } from "@wso2is/core/models";
+import {
+    FeatureAccessConfigInterface,
+    RolePropertyInterface,
+    RolesInterface,
+    SBACInterface
+} from "@wso2is/core/models";
 import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -69,7 +74,6 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     } = props;
 
     const { t } = useTranslation();
-    const { organizationType } = useGetCurrentOrganizationType();
 
     const featureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles);
@@ -81,6 +85,9 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
         return state.config.ui.features?.userRoles?.disabledFeatures;
     });
+    const isSharedRole: boolean = useMemo(() => roleObject?.properties?.some(
+        (property: RolePropertyInterface) =>
+            property?.name === LocalRoleConstants.IS_SHARED_ROLE && property?.value === "true"), [ roleObject ]);
 
     const isReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(featureConfig,
@@ -99,8 +106,6 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
     const [ isEveryoneRole, setIsEveryoneRole ] = useState<boolean>(false);
-
-    const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
 
     /**
      * Set the if the role is `Internal/admin`.
@@ -122,7 +127,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <BasicRoleDetails
-                            isReadOnly={ isSubOrg || isAdminRole || isEveryoneRole || isReadOnly }
+                            isReadOnly={ isAdminRole || isEveryoneRole || isReadOnly || isSharedRole }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 0 }
@@ -135,7 +140,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <UpdatedRolePermissionDetails
-                            isReadOnly={ isSubOrg || isAdminRole || isReadOnly }
+                            isReadOnly={ isAdminRole || isReadOnly || isSharedRole }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 1 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,15 +16,12 @@
  * under the License.
  */
 
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    UserListInterface
-} from "@wso2is/admin.core.v1";
-import { InvitationStatus, UserInviteInterface } from "@wso2is/admin.users.v1/models";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { UserListInterface } from "@wso2is/admin.core.v1/models/users";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { InvitationStatus, UserInviteInterface } from "@wso2is/admin.users.v1/models/user";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { DocumentationLink, ListLayout, Message, Text, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -33,7 +30,7 @@ import { useSelector } from "react-redux";
 import { Dropdown, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { GuestUsersList } from "./guest-users-list";
 import { OnboardedGuestUsersList } from "./onboarded-guest-user-list";
-import { AdministratorConstants } from "../../constants";
+import { AdministratorConstants } from "../../constants/users";
 
 /**
  * Props for the Guest users page.
@@ -97,6 +94,8 @@ const GuestUsersPage: FunctionComponent<GuestUsersPageInterface> = (
     const [ isInvitationStatusOptionChanged, setIsInvitationStatusOptionChanged ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     /**
      * Show the description message for the first time.
@@ -191,9 +190,9 @@ const GuestUsersPage: FunctionComponent<GuestUsersPageInterface> = (
     useEffect(() => {
         if (invitationStatusOption === InvitationStatus.ACCEPTED) {
             if (searchQuery == undefined || searchQuery == "") {
-                getUsersList(listItemLimit, listOffset + 1, null, null, PRIMARY_USERSTORE);
+                getUsersList(listItemLimit, listOffset + 1, null, null, primaryUserStoreDomainName);
             } else  {
-                getUsersList(listItemLimit, listOffset + 1, searchQuery, null, PRIMARY_USERSTORE);
+                getUsersList(listItemLimit, listOffset + 1, searchQuery, null, primaryUserStoreDomainName);
             }
         }
     }, [ listOffset, listItemLimit ]);
@@ -271,11 +270,11 @@ const GuestUsersPage: FunctionComponent<GuestUsersPageInterface> = (
         setSearchQuery(query);
         if (invitationStatusOption === InvitationStatus.ACCEPTED) {
             if (query === "userName sw ") {
-                getUsersList(listItemLimit, listOffset, null, null, PRIMARY_USERSTORE);
+                getUsersList(listItemLimit, listOffset, null, null, primaryUserStoreDomainName);
 
                 return;
             }
-            getUsersList(listItemLimit, listOffset, query, null, PRIMARY_USERSTORE);
+            getUsersList(listItemLimit, listOffset, query, null, primaryUserStoreDomainName);
         }
     };
 
@@ -306,7 +305,7 @@ const GuestUsersPage: FunctionComponent<GuestUsersPageInterface> = (
                             <DocumentationLink
                                 link={ getLink("manage.users.collaboratorAccounts.learnMore") }
                             >
-                                { t("extensions:common.learnMore") }
+                                { t("common:learnMore") }
                             </DocumentationLink>
                         </>
                     </Text>
@@ -457,7 +456,7 @@ const GuestUsersPage: FunctionComponent<GuestUsersPageInterface> = (
                             readOnlyUserStores={ null }
                             featureConfig={ featureConfig }
                             onUserDelete={ () =>
-                                getUsersList(listItemLimit, listOffset, null, null, PRIMARY_USERSTORE)
+                                getUsersList(listItemLimit, listOffset, null, null, primaryUserStoreDomainName)
                             }
                         />)
                 }

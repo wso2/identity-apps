@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { UIConstants, UserBasicInterface, UserListInterface, getUsersList } from "@wso2is/admin.core.v1";
+import { getUsersList } from "@wso2is/admin.core.v1/api/users";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { UserBasicInterface, UserListInterface } from "@wso2is/admin.core.v1/models/users";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -47,7 +49,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch as ReduxDispatch } from "redux";
 import { Header, Segment } from "semantic-ui-react";
 import { GroupBasics } from "./group-basics";
-import { GroupsMemberInterface } from "../../models";
+import { GroupsMemberInterface } from "../../models/groups";
 
 /**
  * Proptypes for the application consents list component.
@@ -132,7 +134,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
             .then((response: UserListInterface) => {
                 // Exclude JIT users.
                 const responseUsers: UserBasicInterface[] = response?.Resources?.filter(
-                    (user: UserBasicInterface) => !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId);
+                    (user: UserBasicInterface) => !user[ SCIMConfigs.scim.systemSchema ]?.userSourceId);
 
                 if (responseUsers) {
                     responseUsers.sort((userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>

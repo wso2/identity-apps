@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,8 +21,8 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
-import Accordion from "@oxygen-ui/react/Accordion";
-import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
+import Button from "@oxygen-ui/react/Button";
+import Chip from "@oxygen-ui/react/Chip";
 import IconButton from "@oxygen-ui/react/IconButton";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Paper from "@oxygen-ui/react/Paper";
@@ -30,6 +30,7 @@ import Select from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+
 /**
  * `useRequiredScopes` is not supported for myaccount.
  */
@@ -88,6 +89,7 @@ import {
     AlertLevels,
     AuthStateInterface, BasicProfileInterface, ConfigReducerStateInterface,
     FeatureConfigInterface,
+    MultiValue,
     PreferenceConnectorResponse,
     PreferenceProperty,
     PreferenceRequest,
@@ -147,6 +149,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         state.authenticationInformation.profileInfo.isReadOnly);
     const hasLocalAccount: boolean = useSelector((state: AppState) => state.authenticationInformation.hasLocalAccount);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
@@ -165,13 +168,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isMultipleEmailsAndMobileConfigEnabled: boolean = config?.ui?.isMultipleEmailsAndMobileNumbersEnabled;
+    const primaryUserStoreDomainName: string = config?.ui?.primaryUserStoreDomainName;
 
     const [ isMobileVerificationEnabled, setIsMobileVerificationEnabled ] = useState<boolean>(false);
     const [ isEmailVerificationEnabled, setIsEmailVerificationEnabled ] = useState<boolean>(false);
-    const [ expandMultiAttributeAccordion, setExpandMultiAttributeAccordion ] = useState<Record<string, boolean>>({
-        [EMAIL_ADDRESSES_ATTRIBUTE]: false,
-        [MOBILE_NUMBERS_ATTRIBUTE]: false
-    });
     const [ isMultipleEmailAndMobileNumberEnabled, setIsMultipleEmailAndMobileNumberEnabled ] =
         useState<boolean>(false);
 
@@ -180,6 +180,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         useState<{ value: string; schema?: ProfileSchema }>({ value: "" });
     const [ showMultiValuedFieldDeleteConfirmationModal, setShowMultiValuedFieldDeleteConfirmationModal ]
         = useState<boolean>(false);
+
+    const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.personalInfo?.disabledFeatures?.includes(
+        MyAccountProfileConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
+    );
+
     const handleMultiValuedFieldDeleteModalClose: () => void = useCallback(() => {
         setShowMultiValuedFieldDeleteConfirmationModal(false);
         setSelectedAttributeInfo({ value: "" });
@@ -328,7 +333,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const username: string = profileDetails?.profileInfo["userName"];
 
         if (!username) return;
-        const userStoreDomain: string = resolveUserstore(username)?.toUpperCase();
+        const userStoreDomain: string = resolveUserstore(username, primaryUserStoreDomainName)?.toUpperCase();
         // Check each required attribute exists and domain is not excluded in the excluded user store list.
         const attributeCheck: boolean = multipleEmailsAndMobileFeatureRelatedAttributes.every(
             (attribute: string) => {
@@ -340,7 +345,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 }
 
                 const excludedUserStores: string[] =
-                    schema?.excludedUserStores?.split(",")?.map((store: string) => store.trim().toUpperCase()) || [];
+                    schema?.excludedUserStores?.split(",")?.map((store: string) => store?.trim().toUpperCase()) || [];
 
                 return !excludedUserStores.includes(userStoreDomain);
             });
@@ -365,8 +370,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     useEffect(() => {
 
         const getDisplayOrder = (schema: ProfileSchema): number => {
-            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE && !schema.displayOrder) return 6;
-            if (schema.name === MOBILE_NUMBERS_ATTRIBUTE && !schema.displayOrder) return 7;
+            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
+                && (!schema.displayOrder || schema.displayOrder == "0")) return 6;
+            if (schema.name === MOBILE_NUMBERS_ATTRIBUTE
+                && (!schema.displayOrder || schema.displayOrder == "0")) return 7;
 
             return schema.displayOrder ? parseInt(schema.displayOrder, 10) : -1;
         };
@@ -428,58 +435,46 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             tempProfileInfo.set(schema.name, primaryEmail);
                         }
                     } else {
-                        if (schema.extended
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
-                            tempProfileInfo.set(
-                                schema.name,
-                                profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                                    ? profileDetails?.profileInfo[
-                                        ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]
-                                    ]
-                                    : ""
-                            );
-
-                            return;
-                        }
-
-                        if (schema.extended
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]) {
-
-                            const multiValuedAttributes: string[] = [
-                                EMAIL_ADDRESSES_ATTRIBUTE,
-                                MOBILE_NUMBERS_ATTRIBUTE,
-                                VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
-                                VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
+                        if (schema.extended) {
+                            const schemaURIs: string[] = [
+                                ProfileConstants.SCIM2_ENT_USER_SCHEMA,
+                                ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA,
+                                userSchemaURI
                             ];
 
-                            if (multiValuedAttributes.includes(schemaNames[0])) {
+                            for (const schemaURI of schemaURIs) {
+                                if (profileDetails?.profileInfo[schemaURI]?.[schemaNames[0]]) {
 
-                                const attributeValue: string | string[] =
-                                    profileDetails?.profileInfo[
-                                        ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]?.[schemaNames[0]];
+                                    const multiValuedAttributes: string[] = [
+                                        EMAIL_ADDRESSES_ATTRIBUTE,
+                                        MOBILE_NUMBERS_ATTRIBUTE,
+                                        VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
+                                        VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
+                                    ];
 
-                                const formattedValue: string = Array.isArray(attributeValue)
-                                    ? attributeValue.join(",")
-                                    : "";
+                                    if (schemaURI === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA
+                                        && multiValuedAttributes.includes(schemaNames[0])) {
+                                        const attributeValue: string | string[] =
+                                            profileDetails?.profileInfo[schemaURI]?.[schemaNames[0]];
 
-                                tempProfileInfo.set(schema.name, formattedValue);
+                                        const formattedValue: string = Array.isArray(attributeValue)
+                                            ? attributeValue.join(",")
+                                            : "";
 
-                                return;
+                                        tempProfileInfo.set(schema.name, formattedValue);
+
+                                        return;
+                                    }
+
+                                    tempProfileInfo.set(
+                                        schema.name,
+                                        profileDetails?.profileInfo[schemaURI]?.[schemaNames[0]] ?? ""
+                                    );
+
+                                    return;
+                                }
                             }
-                            tempProfileInfo.set(
-                                schema.name,
-                                profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                                    ? profileDetails?.profileInfo[
-                                        ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA
-                                    ][schemaNames[0]]
-                                    : ""
-                            );
-
-                            return;
                         }
-
                         tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]]);
                     }
                 } else {
@@ -509,14 +504,20 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             }
                         }
                     } else {
-                        if (schema.extended) {
-                            tempProfileInfo.set(schema.name,
-                                profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]
-                                    ? profileDetails
-                                        ?.profileInfo[
-                                            ProfileConstants.SCIM2_ENT_USER_SCHEMA
-                                        ][schemaNames[0]][schemaNames[1]]
-                                    : "");
+                        if (schema.extended
+                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]) {
+                            tempProfileInfo.set(
+                                schema.name,
+                                profileDetails.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][
+                                    schemaNames[1]]
+                                ?? "");
+                        } else if (schema.extended &&
+                            profileDetails?.profileInfo[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[schemaNames[0]]) {
+                            tempProfileInfo.set(
+                                schema.name,
+                                profileDetails.profileInfo[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][schemaNames[0]][
+                                    schemaNames[1]]
+                                ?? "");
                         } else {
                             const subValue: BasicProfileInterface = profileDetails.profileInfo[schemaNames[0]]
                                 && profileDetails.profileInfo[schemaNames[0]].find(
@@ -641,9 +642,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 let primaryValue: string | null;
 
                 if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-                    primaryValue = profileDetails?.profileInfo?.emails?.length > 0
-                        ? profileDetails?.profileInfo?.emails[0]
-                        : null;
+                    primaryValue = profileDetails.profileInfo?.emails?.find(
+                        (subAttribute: string) => typeof subAttribute === "string");
                 } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
                     primaryValue = profileInfo.get(MOBILE_ATTRIBUTE);
                 }
@@ -662,16 +662,27 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 // If no primary value is set, set the first value as the primary value.
                 if (isEmpty(primaryValue) && !isEmpty(currentValues)) {
                     if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+                        const subAttributes: MultiValue[] = extractSubAttributes(EMAIL_ATTRIBUTE);
+
                         value = {
                             ...value,
-                            [EMAIL_ATTRIBUTE]: [ currentValues[0] ]
+                            [EMAIL_ATTRIBUTE]: [
+                                ...subAttributes,
+                                currentValues[0]
+                            ]
                         };
                     } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+
+                        const filteredSubAttributes: MultiValue[] = extractSubAttributes(
+                            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))
+                            .filter((attr: MultiValue) => attr?.type !== MyAccountProfileConstants.MOBILE);
+
                         value = {
                             ...value,
                             [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                                ...filteredSubAttributes,
                                 {
-                                    type: "mobile",
+                                    type: MyAccountProfileConstants.MOBILE,
                                     value: currentValues[0]
                                 }
                             ]
@@ -702,7 +713,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 if (values.get(formName)) {
                     value = {
                         ...value,
-                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                        [ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]: {
                             "verifyEmail": true
                         }
                     };
@@ -715,6 +726,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     primaryValue = profileDetails.profileInfo[schemaNames[0]]
                         && profileDetails.profileInfo[schemaNames[0]]
                             .find((subAttribute: string) => typeof subAttribute === "string");
+                    attributeValues.push(primaryValue);
                 }
 
                 // List of sub attributes.
@@ -733,7 +745,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 value = {
                     [schemaNames[0]]: [
                         ...attributeValues,
-                        primaryValue,
                         {
                             type: schemaNames[1],
                             value: values.get(formName)
@@ -744,7 +755,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 if (primaryValue) {
                     value = {
                         ...value,
-                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                        [ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]: {
                             "verifyEmail": true
                         }
                     };
@@ -942,6 +953,21 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     /**
+     * Extracts sub-attributes (objects) from the profile details.
+     *
+     * @param schemaKey - The attribute key to extract sub-attributes from.
+     * @returns Array of sub-attributes (objects).
+     */
+    const extractSubAttributes = (schemaKey: string): MultiValue[] => {
+
+        const attributes: MultiValue[] = profileDetails?.profileInfo?.[schemaKey];
+
+        return Array.isArray(attributes)
+            ? attributes.filter((subAttribute: unknown) => typeof subAttribute === "object")
+            : [];
+    };
+
+    /**
      * Assign primary email address or mobile number the multi-valued attribute.
      *
      * @param schema - Schema of the attribute
@@ -962,13 +988,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
 
+            const subAttributes: MultiValue[] = extractSubAttributes(EMAIL_ATTRIBUTE);
+
             data.Operations[0].value = {
-                [EMAIL_ATTRIBUTE]: [ attributeValue ]
+                [EMAIL_ATTRIBUTE]: [
+                    ...subAttributes,
+                    attributeValue
+                ]
             };
 
-            const existingPrimaryEmail: string = profileDetails?.profileInfo?.emails?.length > 0
-                ? profileDetails?.profileInfo?.emails[0]
-                : null;
+            const existingPrimaryEmail: string = profileDetails.profileInfo?.emails?.find(
+                (subAttribute: string) => typeof subAttribute === "string");
             const existingEmailList: string[] = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
 
             if (existingPrimaryEmail && !existingEmailList.includes(existingPrimaryEmail)) {
@@ -984,10 +1014,15 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             }
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
 
+            const filteredSubAttributes: MultiValue[] = extractSubAttributes(
+                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))
+                .filter((attr: MultiValue) => attr?.type !== MyAccountProfileConstants.MOBILE);
+
             data.Operations[0].value = {
                 [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                    ...filteredSubAttributes,
                     {
-                        type: "mobile",
+                        type: MyAccountProfileConstants.MOBILE,
                         value: attributeValue
                     }
                 ]
@@ -1060,9 +1095,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             const emailList: string[] = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
             const updatedEmailList: string[] = emailList.filter((email: string) => email !== attributeValue);
-            const primaryEmail: string = profileDetails?.profileInfo?.emails?.length > 0
-                ? profileDetails?.profileInfo?.emails[0]
-                : null;
+            const primaryEmail: string = profileDetails?.profileInfo?.emails?.find(
+                (subAttribute: string) => typeof subAttribute === "string");
 
             data.Operations[0].value = {
                 [schema.schemaId] : {
@@ -1071,10 +1105,15 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             };
 
             if (attributeValue === primaryEmail) {
+                const subAttributes: MultiValue[] = extractSubAttributes(EMAIL_ATTRIBUTE);
+
                 data.Operations.push({
                     op: "replace",
                     value: {
-                        [EMAIL_ATTRIBUTE]: []
+                        [EMAIL_ATTRIBUTE]: [
+                            ...subAttributes,
+                            ""
+                        ]
                     }
                 });
             }
@@ -1084,13 +1123,20 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             const primaryMobile: string = profileInfo.get(MOBILE_ATTRIBUTE);
 
             if (attributeValue === primaryMobile) {
+                const filteredSubAttributes: MultiValue[] = extractSubAttributes(
+                    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))
+                    .filter((attr: MultiValue) => attr?.type !== MyAccountProfileConstants.MOBILE);
+
                 data.Operations.push({
                     op: "replace",
                     value: {
-                        [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [ {
-                            type: "mobile",
-                            value: ""
-                        } ]
+                        [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                            ...filteredSubAttributes,
+                            {
+                                type: MyAccountProfileConstants.MOBILE,
+                                value: ""
+                            }
+                        ]
                     }
                 });
             }
@@ -1213,6 +1259,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * @returns Schema form.
      */
     const generateSchemaForm = (schema: ProfileSchema, index: number): JSX.Element => {
+        const { displayName, name } = schema;
 
         // Define schemas to hide.
         const attributesToHide: string[] = isMultipleEmailAndMobileNumberEnabled === true
@@ -1228,6 +1275,21 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         if (!showEmail && schema?.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             return;
+        }
+
+        // If the feature is enabled, check the supportedByDefault flag.
+        // Hide the field if the schema is not supported by default.
+        // This does not apply to the username field. It is always shown.
+        if (!isDistinctAttributeProfilesDisabled && name !== MyAccountProfileConstants.USERNAME_CLAIM_NAME) {
+            let resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+
+            if (schema?.profiles?.endUser?.supportedByDefault !== undefined) {
+                resolveSupportedByDefaultValue = schema?.profiles?.endUser?.supportedByDefault;
+            }
+
+            if (!resolveSupportedByDefaultValue) {
+                return;
+            }
         }
 
         /*
@@ -1249,7 +1311,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
          * the value matches.
          */
         const isProfileUsernameReadonly: boolean = config?.ui?.isProfileUsernameReadonly;
-        const { displayName, name } = schema;
 
         if (isProfileUsernameReadonly) {
             const usernameClaim: string = "username";
@@ -1465,30 +1526,26 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         let verifiedAttributeValueList: string[] = [];
         let primaryAttributeValue: string = "";
         let verificationEnabled: boolean = false;
-        let verifyPopupHeader: string = "";
         let pendingEmailAddress: string = "";
         let maxAllowedLimit: number = 0;
 
+        const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
+
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            verifyPopupHeader = t("myAccount:components.profile.actions.verifyEmail");
             attributeValueList = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
             verifiedAttributeValueList = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
             pendingEmailAddress = profileDetails?.profileInfo?.pendingEmails?.length > 0
                 ? profileDetails?.profileInfo?.pendingEmails[0]?.value
                 : null;
-            primaryAttributeValue = profileDetails?.profileInfo?.emails?.length > 0
-                ? profileDetails?.profileInfo?.emails[0]
-                : null;
-            primaryAttributeValue = profileDetails?.profileInfo?.emails[0];
+            primaryAttributeValue = profileInfo.get(EMAIL_ATTRIBUTE);
             verificationEnabled = isEmailVerificationEnabled;
             primaryAttributeSchema = getSchemaFromName(EMAIL_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            verifyPopupHeader = t("myAccount:components.profile.actions.verifyMobile");
             attributeValueList = profileInfo?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
             verifiedAttributeValueList = profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
-            primaryAttributeValue = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"));
+            primaryAttributeValue = profileInfo?.get(MOBILE_ATTRIBUTE);
             verificationEnabled = isMobileVerificationEnabled;
             primaryAttributeSchema = getSchemaFromName(MOBILE_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;
@@ -1515,7 +1572,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 (verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
         };
 
-        const showPrimaryPopup = (value: string): boolean => {
+        const showPrimaryChip = (value: string): boolean => {
             return value === primaryAttributeValue;
         };
 
@@ -1544,7 +1601,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     label=""
                     name={ schema.name }
                     placeholder={ getPlaceholderText(schema, fieldName) }
-                    required={ schema.required }
+                    required={ resolvedRequiredValue }
                     requiredErrorMessage={
                         t("myAccount:components.profile.forms.generic.inputs.validations.empty",
                             { fieldName }) }
@@ -1564,176 +1621,151 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     }
                 />
                 <div hidden={ !showAccordion }>
-                    <Accordion
+                    <TableContainer
+                        component={ Paper }
                         elevation={ 0 }
-                        className="oxygen-accordion"
-                        expanded={ expandMultiAttributeAccordion[schema.name] }
-                        onChange={ () => setExpandMultiAttributeAccordion(
-                            {
-                                ...expandMultiAttributeAccordion,
-                                [schema.name]: !expandMultiAttributeAccordion[schema.name]
-                            }
-                        ) }
-                        data-componentid={ `${testId}-editing-section-${schema.name.replace(".", "-")}-accordion` }
-                        defaultExpanded
+                        data-componentid={
+                            `${testId}-editing-section-${schema.name.replace(".", "-")}-accordion`
+                        }
                     >
-                        <AccordionDetails className="accordion-details">
-                            <TableContainer component={ Paper } elevation={ 0 }>
-                                <Table
-                                    className="multi-value-table"
-                                    size="small"
-                                    aria-label="multi-attribute value table"
-                                >
-                                    <TableBody>
-                                        { attributeValueList?.map(
-                                            (value: string, index: number) => (
-                                                <TableRow key={ index } className="multi-value-table-data-row">
-                                                    <TableCell align="left">
-                                                        <div className="table-c1">
-                                                            <Typography
-                                                                className={ `c1-value ${
-                                                                    schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                                                                        ? "mobile-label"
-                                                                        : null}`
-                                                                }
-                                                                data-componentid={
-                                                                    `${testId}-editing-section-${
-                                                                        schema.name.replace(".", "-")
-                                                                    }-value-${index}`
-                                                                }
-                                                            >
-                                                                { value }
-                                                            </Typography>
-                                                            {
-                                                                showPendingEmailPopup(value)
-                                                                && (
-                                                                    <div
-                                                                        className="verified-icon"
-                                                                        data-componentid={
-                                                                            `${testId}-editing-section-${
-                                                                                schema.name.replace(".", "-")
-                                                                            }-pending-email-${index}`
-                                                                        }
-                                                                    >
-                                                                        { generatePendingEmailPopup() }
-                                                                    </div>
+                        <Table
+                            className="multi-value-table"
+                            size="small"
+                            aria-label="multi-attribute value table"
+                        >
+                            <TableBody>
+                                { attributeValueList?.map(
+                                    (value: string, index: number) => (
+                                        <TableRow key={ index } className="multi-value-table-data-row">
+                                            <TableCell align="left">
+                                                <div className="table-c1">
+                                                    <Typography
+                                                        className="c1-value"
+                                                        data-componentid={
+                                                            `${testId}-editing-section-${
+                                                                schema.name.replace(".", "-")
+                                                            }-value-${index}`
+                                                        }
+                                                    >
+                                                        { value }
+                                                    </Typography>
+                                                    {
+                                                        showPendingEmailPopup(value)
+                                                            && (
+                                                                <div
+                                                                    className="verified-icon"
+                                                                    data-componentid={
+                                                                        `${testId}-editing-section-${
+                                                                            schema.name.replace(".", "-")
+                                                                        }-pending-email-${index}`
+                                                                    }
+                                                                >
+                                                                    { generatePendingEmailPopup() }
+                                                                </div>
+                                                            )
+                                                    }
+                                                    {
+                                                        showVerifiedPopup(value)
+                                                            && (
+                                                                <div
+                                                                    className="verified-icon"
+                                                                    data-componentid={
+                                                                        `${testId}-editing-section-${
+                                                                            schema.name.replace(".", "-")
+                                                                        }-verified-icon-${index}`
+                                                                    }
+                                                                >
+                                                                    { generateVerifiedPopup() }
+                                                                </div>
+                                                            )
+                                                    }
+                                                    {
+                                                        showPrimaryChip(value)
+                                                            && (
+                                                                <div
+                                                                    className="verified-icon"
+                                                                    data-componentid={
+                                                                        `${testId}-editing-section-${
+                                                                            schema.name.replace(".", "-")
+                                                                        }-primary-icon-${index}`
+                                                                    }
+                                                                >
+                                                                    <Chip
+                                                                        label={ t("common:primary") }
+                                                                        size="small"
+                                                                    />
+                                                                </div>
+                                                            )
+                                                    }
+                                                </div>
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <div className="table-c2">
+                                                    <Button
+                                                        size="small"
+                                                        variant="text"
+                                                        className="text-btn"
+                                                        hidden={ !showVerifyButton(value) }
+                                                        onClick={ () => handleVerify(schema, value) }
+                                                        disabled={ isSubmitting }
+                                                        data-componentid={
+                                                            `${testId}-editing-section-${
+                                                                schema.name.replace(".", "-")
+                                                            }-verify-button-${index}`
+                                                        }
+                                                    >
+                                                        { t("common:verify") }
+                                                    </Button>
+                                                    <Button
+                                                        size="small"
+                                                        variant="text"
+                                                        className="text-btn"
+                                                        hidden={ !showMakePrimaryButton(value) }
+                                                        onClick={ () => handleMakePrimary(schema, value) }
+                                                        disabled={ isSubmitting }
+                                                        data-componentid={
+                                                            `${testId}-editing-section-${
+                                                                schema.name.replace(".", "-")
+                                                            }-make-primary-button-${index}`
+                                                        }
+                                                    >
+                                                        { t("common:makePrimary") }
+                                                    </Button>
+                                                    <IconButton
+                                                        size="small"
+                                                        hidden={ !showDeleteButton(value) }
+                                                        onClick={ () => {
+                                                            setSelectedAttributeInfo({ schema, value });
+                                                            setShowMultiValuedFieldDeleteConfirmationModal(
+                                                                true
+                                                            );
+                                                        } }
+                                                        disabled={ isSubmitting }
+                                                        data-componentid={
+                                                            `${testId}-editing-section-${
+                                                                schema.name.replace(".", "-")
+                                                            }-delete-button-${index}`
+                                                        }
+                                                    >
+                                                        <Popup
+                                                            size="tiny"
+                                                            trigger={
+                                                                (
+                                                                    <Icon name="trash alternate" />
                                                                 )
                                                             }
-                                                            {
-                                                                showVerifiedPopup(value)
-                                                                && (
-                                                                    <div
-                                                                        className="verified-icon"
-                                                                        data-componentid={
-                                                                            `${testId}-editing-section-${
-                                                                                schema.name.replace(".", "-")
-                                                                            }-verified-icon-${index}`
-                                                                        }
-                                                                    >
-                                                                        { generateVerifiedPopup() }
-                                                                    </div>
-                                                                )
-                                                            }
-                                                            {
-                                                                showPrimaryPopup(value)
-                                                                && (
-                                                                    <div
-                                                                        className="verified-icon"
-                                                                        data-componentid={
-                                                                            `${testId}-editing-section-${
-                                                                                schema.name.replace(".", "-")
-                                                                            }-primary-icon-${index}`
-                                                                        }
-                                                                    >
-                                                                        { generatePrimaryPopup() }
-                                                                    </div>
-                                                                )
-                                                            }
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        <div className="table-c2">
-                                                            <IconButton
-                                                                size="small"
-                                                                hidden={ !showVerifyButton(value) }
-                                                                onClick={ () => handleVerify(schema, value) }
-                                                                disabled={ isSubmitting }
-                                                                data-componentid={
-                                                                    `${testId}-editing-section-${
-                                                                        schema.name.replace(".", "-")
-                                                                    }-verify-button-${index}`
-                                                                }
-                                                            >
-                                                                <Popup
-                                                                    size="tiny"
-                                                                    trigger={
-                                                                        (
-                                                                            <Icon name="check circle" />
-                                                                        )
-                                                                    }
-                                                                    header={ verifyPopupHeader }
-                                                                    inverted
-                                                                />
-                                                            </IconButton>
-                                                            <IconButton
-                                                                size="small"
-                                                                hidden={ !showMakePrimaryButton(value) }
-                                                                onClick={ () => handleMakePrimary(schema, value) }
-                                                                disabled={ isSubmitting }
-                                                                data-componentid={
-                                                                    `${testId}-editing-section-${
-                                                                        schema.name.replace(".", "-")
-                                                                    }-make-primary-button-${index}`
-                                                                }
-                                                            >
-                                                                <Popup
-                                                                    size="tiny"
-                                                                    trigger={
-                                                                        (
-                                                                            <Icon name="star" />
-                                                                        )
-                                                                    }
-                                                                    header={ t("common:makePrimary") }
-                                                                    inverted
-                                                                />
-                                                            </IconButton>
-                                                            <IconButton
-                                                                size="small"
-                                                                hidden={ !showDeleteButton(value) }
-                                                                onClick={ () => {
-                                                                    setSelectedAttributeInfo({ schema, value });
-                                                                    setShowMultiValuedFieldDeleteConfirmationModal(
-                                                                        true
-                                                                    );
-                                                                } }
-                                                                disabled={ isSubmitting }
-                                                                data-componentid={
-                                                                    `${testId}-editing-section-${
-                                                                        schema.name.replace(".", "-")
-                                                                    }-delete-button-${index}`
-                                                                }
-                                                            >
-                                                                <Popup
-                                                                    size="tiny"
-                                                                    trigger={
-                                                                        (
-                                                                            <Icon name="trash alternate" />
-                                                                        )
-                                                                    }
-                                                                    header={ t("common:delete") }
-                                                                    inverted
-                                                                />
-                                                            </IconButton>
-                                                        </div>
-                                                    </TableCell>
-                                                </TableRow>
-                                            )
-                                        ) }
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </AccordionDetails>
-                    </Accordion>
+                                                            header={ t("common:delete") }
+                                                            inverted
+                                                        />
+                                                    </IconButton>
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    )
+                                ) }
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                 </div>
                 <Field
                     className="link-button mv-cancel-btn"
@@ -1754,6 +1786,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     const generateCountryDropdown = (schema: ProfileSchema, fieldName: string): JSX.Element => {
+        const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
 
         return (
             <>
@@ -1762,7 +1795,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     label=""
                     name={ schema.name }
                     placeholder={ getPlaceholderText(schema, fieldName) }
-                    required={ schema.required }
+                    required={ resolvedRequiredValue }
                     requiredErrorMessage={
                         t("myAccount:components.profile.forms.generic.inputs.validations.empty", { fieldName }) }
                     type="dropdown"
@@ -1775,7 +1808,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     })) : [] }
                     value={ resolveProfileInfoSchemaValue(schema) }
                     disabled={ false }
-                    clearable={ !schema.required }
+                    clearable={ !resolvedRequiredValue }
                     search
                     selection
                     fluid
@@ -1812,6 +1845,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     const generateEditableLocaleField = (schema: ProfileSchema, fieldName: string): JSX.Element => {
+        const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
 
         return (
             <>
@@ -1819,7 +1853,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     autofocus={ true }
                     name={ schema.name }
                     placeholder={ getPlaceholderText(schema, fieldName) }
-                    required={ schema.required }
+                    required={ resolvedRequiredValue }
                     requiredErrorMessage={
                         t("myAccount:components.profile.forms.generic." +
                             "inputs.validations.empty", { fieldName })
@@ -1843,7 +1877,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             }) : []
                     }
                     disabled={ false }
-                    clearable={ !schema?.required }
+                    clearable={ !resolvedRequiredValue }
                     search
                     selection
                     fluid
@@ -1880,6 +1914,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     const generateTextField = (schema: ProfileSchema, fieldName: string): JSX.Element => {
+        const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
 
         return (
             <>
@@ -1890,7 +1925,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     data-testid= { `${testId}-${schema.name.replace(".", "-")}-text-field` }
                     data-componentid= { `${testId}-${schema.name.replace(".", "-")}-text-field` }
                     placeholder={ getPlaceholderText(schema, fieldName) }
-                    required={ schema.required }
+                    required={ resolvedRequiredValue }
                     requiredErrorMessage={
                         t("myAccount:components.profile.forms.generic.inputs.validations.empty", { fieldName }) }
                     type="text"
@@ -2000,9 +2035,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             pendingEmailAddress = profileDetails?.profileInfo?.pendingEmails?.length > 0
                 ? profileDetails?.profileInfo?.pendingEmails[0]?.value
                 : null;
-            primaryAttributeValue = profileDetails?.profileInfo?.emails?.length > 0
-                ? profileDetails?.profileInfo?.emails[0]
-                : null;
+            primaryAttributeValue = profileInfo.get(EMAIL_ATTRIBUTE);
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             verificationEnabled = isMobileVerificationEnabled;
@@ -2032,91 +2065,95 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 (verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
         };
 
-        const showPrimaryPopup = (value: string): boolean => {
+        const showPrimaryChip = (value: string): boolean => {
             return value === primaryAttributeValue;
         };
 
-        return (
-            <>
-                {
-                    attributeValueList.length < 1
-                        ? generatePlaceholderLink(schema, fieldName)
-                        : (
-                            <Select
-                                className="multi-attribute-dropdown"
-                                value={ attributeValueList[0] }
-                                disableUnderline
-                                data-componentid={ `${testId}-${schema.name.replace(".", "-")}-readonly-dropdown` }
+        const renderSingleMenuItem = (value: string, index: number): JSX.Element => {
+            return (
+                <div className="dropdown-row">
+                    <Typography
+                        className="dropdown-label"
+                        data-componentid={ `${testId}-readonly-section-${schema.name.replace(".", "-")}-value-${index}`
+                        }
+                    >
+                        { value }
+                    </Typography>
+                    {
+                        showPendingEmailPopup(value)
+                        && (
+                            <div
+                                className="verified-icon"
+                                data-componentid={ `${testId}-readonly-section-${schema.name.replace(".", "-")}` +
+                                    `-pending-email-icon-${index}` }
                             >
-                                { attributeValueList?.map(
-                                    (value: string, index: number) => (
-                                        <MenuItem key={ index } value={ value } className="read-only-menu-item">
-                                            <div className="dropdown-row">
-                                                <Typography
-                                                    className={ `dropdown-label ${
-                                                        schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                                                            ? "mobile-label"
-                                                            : null}`
-                                                    }
-                                                    data-componentid={ `${testId}-readonly-section-
-                                                        ${schema.name.replace(".", "-")}-value-${index}`
-                                                    }
-                                                >
-                                                    { value }
-                                                </Typography>
-                                                {
-                                                    showPendingEmailPopup(value)
-                                                    && (
-                                                        <div
-                                                            className="verified-icon"
-                                                            data-componentid={ `${testId}-readonly-section-
-                                                                ${schema.name.replace(".", "-")}-pending-email-icon
-                                                                -${index}` }
-                                                        >
-                                                            { generatePendingEmailPopup() }
-                                                        </div>
-                                                    )
-                                                }
-                                                {
-                                                    showVerifiedPopup(value)
-                                                    && (
-                                                        <div
-                                                            className="verified-icon"
-                                                            data-componentid={ `${testId}-readonly-section-
-                                                                ${schema.name.replace(".", "-")}-verified-icon
-                                                                -${index}` }
-                                                        >
-                                                            { generateVerifiedPopup() }
-                                                        </div>
-                                                    )
-                                                }
-                                                {
-                                                    showPrimaryPopup(value)
-                                                    && (
-                                                        <div
-                                                            className="verified-icon"
-                                                            data-componentid={ `${testId}-readonly-section-
-                                                                ${schema.name.replace(".", "-")}-primary-icon
-                                                                -${index}` }
-                                                        >
-                                                            { generatePrimaryPopup() }
-                                                        </div>
-                                                    )
-                                                }
-                                            </div>
-                                        </MenuItem>
-                                    )
-                                ) }
-                            </Select>
+                                { generatePendingEmailPopup() }
+                            </div>
                         )
-                }
-            </>
-        );
+                    }
+                    {
+                        showVerifiedPopup(value)
+                        && (
+                            <div
+                                className="verified-icon"
+                                data-componentid={ `${testId}-readonly-section-${schema.name.replace(".", "-")}` +
+                                    `-verified-icon-${index}` }
+                            >
+                                { generateVerifiedPopup() }
+                            </div>
+                        )
+                    }
+                    {
+                        showPrimaryChip(value)
+                        && (
+                            <div
+                                className="verified-icon"
+                                data-componentid={ `${testId}-readonly-section-${schema.name.replace(".", "-")}` +
+                                    `-primary-icon-${index}` }
+                            >
+                                <Chip
+                                    label={ t("common:primary") }
+                                    size="small"
+                                />
+                            </div>
+                        )
+                    }
+                </div>
+            );
+        };
+
+        if (attributeValueList.length < 1) {
+            return generatePlaceholderLink(schema, fieldName);
+        }
+
+        if (attributeValueList.length > 1) {
+            return (
+                <Select
+                    className="multi-attribute-dropdown"
+                    value={ attributeValueList[0] }
+                    disableUnderline
+                    variant="standard"
+                    data-componentid={ `${testId}-${schema.name.replace(".", "-")}-readonly-dropdown` }
+                >
+                    { attributeValueList?.map(
+                        (value: string, index: number) => (
+                            <MenuItem key={ index } value={ value } className="read-only-menu-item">
+                                { renderSingleMenuItem(value, index) }
+                            </MenuItem>
+                        )
+                    ) }
+                </Select>
+            );
+        }
+
+        return renderSingleMenuItem(attributeValueList[0], 0);
     };
 
     const generatePlaceholderLink = (schema: ProfileSchema, fieldName: string): JSX.Element => {
+        const resolvedMutabilityValue: string = schema?.profiles?.endUser?.mutability ?? schema.mutability;
 
-        if (!CommonUtils.isProfileReadOnly(isReadOnlyUser) && schema.mutability !== ProfileConstants.READONLY_SCHEMA) {
+        if (!CommonUtils.isProfileReadOnly(isReadOnlyUser) &&
+            resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA) {
             return (
                 <a
                     className="placeholder-text"
@@ -2146,6 +2183,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         let attributeValueList: string[] = [];
         let primaryAttributeValue: string = "";
+        const resolvedMutabilityValue: string = schema?.profiles?.endUser?.mutability ?? schema.mutability;
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             attributeValueList = profileInfo.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
@@ -2167,7 +2205,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         };
 
         if (!CommonUtils.isProfileReadOnly(isReadOnlyUser)
-            && schema.mutability !== ProfileConstants.READONLY_SCHEMA
+            && resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA
             && schema.name !== ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")
             && !isFieldEmpty()
             && hasRequiredScopes(
@@ -2300,32 +2338,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 trigger={
                     (
                         <Icon
-                            name="check circle"
-                            color="blue"
-                        />
-                    )
-                }
-                header= { t("common:verified") }
-                inverted
-            />
-        );
-    };
-
-    const generatePrimaryPopup= (): JSX.Element => {
-
-        return (
-            <Popup
-                name="primary-popup"
-                size="tiny"
-                trigger={
-                    (
-                        <Icon
-                            name="star"
+                            name="check"
                             color="green"
                         />
                     )
                 }
-                header= { t("common:primary") }
+                header= { t("common:verified") }
                 inverted
             />
         );
@@ -2589,8 +2607,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         return !(!CommonUtils.isProfileReadOnly(isReadOnlyUser)
             && hasRequiredScopes(featureConfig?.personalInfo,featureConfig?.personalInfo?.scopes?.update, allowedScopes)
             && profileSchema?.some((schema: ProfileSchema) => {
+                const resolvedMutabilityValue: string = schema?.profiles?.endUser?.mutability ?? schema.mutability;
+
                 return schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
-                    && schema.mutability !== ProfileConstants.READONLY_SCHEMA;
+                    && resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA;
             }));
     };
 
@@ -2646,6 +2666,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             >
                                 {
                                     profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
+                                        const resolvedMutabilityValue: string = schema?.profiles?.endUser?.mutability
+                                            ?? schema.mutability;
+                                        const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required
+                                            ?? schema.required;
+
                                         if (!(schema.name ===
                                             ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
                                     || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
@@ -2686,7 +2711,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                                 : null
                                                                             : profileInfo.get(schema.name)
                                                                     }
-                                                                    isMobileRequired={ schema.required }
+                                                                    isMobileRequired={ resolvedRequiredValue }
                                                                     isMultipleEmailAndMobileNumberEnabled =
                                                                         {
                                                                             isMultipleEmailAndMobileNumberEnabled
@@ -2699,7 +2724,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                     {
                                                         !isEmpty(profileInfo.get(schema.name)) ||
                                         (!CommonUtils.isProfileReadOnly(isReadOnlyUser)
-                                            && (schema.mutability !== ProfileConstants.READONLY_SCHEMA)
+                                            && (resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA)
                                             && hasRequiredScopes(featureConfig?.personalInfo,
                                                 featureConfig?.personalInfo?.scopes?.update, allowedScopes))
                                                             ? generateSchemaForm(schema, index)

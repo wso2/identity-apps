@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@
 export class ServerConfigurationsConstants {
 
     /**
-	 * Private constructor to avoid object instantiation from outside the class.
-	 *
-	 */
+     * Private constructor to avoid object instantiation from outside the class.
+     *
+     */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
@@ -191,6 +191,8 @@ export class ServerConfigurationsConstants {
      * User email verification API Keyword constants.
      */
     public static readonly EMAIL_VERIFICATION_ENABLED: string = "EmailVerification.Enable";
+    public static readonly EMAIL_VERIFICATION_NOTIFICATIONS_INTERNALLY_MANAGED: string =
+        "EmailVerification.Notification.InternallyManage";
 
     /**
 	 * Self registration API Keyword constants.
@@ -210,6 +212,8 @@ export class ServerConfigurationsConstants {
 	 * Account recovery API Keyword constants.
 	 */
     public static readonly USERNAME_RECOVERY_ENABLE: string = "Recovery.Notification.Username.Enable";
+    public static readonly USERNAME_RECOVERY_EMAIL_ENABLE: string = "Recovery.Notification.Username.Email.Enable";
+    public static readonly USERNAME_RECOVERY_SMS_ENABLE : string = "Recovery.Notification.Username.SMS.Enable";
     public static readonly USERNAME_RECOVERY_RE_CAPTCHA: string = "Recovery.ReCaptcha.Username.Enable";
     public static readonly PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE: string =
         "Recovery.Notification.Password.Enable";
@@ -277,6 +281,7 @@ export class ServerConfigurationsConstants {
     public static readonly ACCOUNT_LOCK_INTERNAL_NOTIFICATION_MANAGEMENT: string =
         "account.lock.handler.notification.manageInternally";
 
+    public static readonly ACCOUNT_LOCK_TIME_DEFAULT: string = "5";
     public static readonly NOTIFY_USER_ON_ACCOUNT_LOCK_INCREMENT: string =
         "account.lock.handler.notification.notifyOnLockIncrement";
 
@@ -315,6 +320,17 @@ export class ServerConfigurationsConstants {
     public static readonly PASSWORD_POLICY_ERROR_MESSAGE: string = "passwordPolicy.errorMsg";
 
     /**
+     * User claim update - API Keyword constants.
+     */
+    public static readonly ENABLE_MOBILE_VERIFICATION: string = "UserClaimUpdate.MobileNumber.EnableVerification";
+    public static readonly ENABLE_EMAIL_VERIFICATION: string = "UserClaimUpdate.Email.EnableVerification";
+    public static readonly ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER: string
+        = "UserClaimUpdate.MobileNumber.EnableVerificationByPrivilegedUser";
+
+    public static readonly ENABLE_MULTIPLE_EMAILS_AND_MOBILE_NUMBERS: string =
+        "UserClaimUpdate.EnableMultipleEmailsAndMobileNumbers";
+
+    /**
 	 * Real Configurations constants.
 	 */
     public static readonly HOME_REALM_IDENTIFIER: string = "homeRealmIdentifiers";
@@ -335,7 +351,7 @@ export class ServerConfigurationsConstants {
 		"configurations.";
 
     public static readonly ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred " +
-		"while updating the admin advisory banner configurations.";
+        "while updating the admin advisory banner configurations.";
 
     public static readonly ADMIN_ADVISORY_BANNER_CONFIGS_INVALID_INPUT_ERROR: string = "An invalid input value " +
 		"in the request.";
@@ -393,6 +409,8 @@ export class ServerConfigurationsConstants {
     public static readonly LOGIN_SECURITY_SETTINGS_CATEGORY_ID: string = "login-security";
     public static readonly PROVISIONING_SETTINGS_CATEGORY_ID: string = "provider-settings";
     public static readonly OUTBOUND_PROVISIONING_SETTINGS_CONNECTOR_ID: string = "outbound-provisioning-settings";
+    public static readonly NOTIFICATION_SETTINGS_CATEGORY_ID: string = "notification-settings";
+    public static readonly NOTIFICATION_SETTINGS_CONNECTOR_ID: string = "internal-notification-settings";
 
     /**
 	 * Multi Attribute Login Constants.
@@ -418,12 +436,17 @@ export class ServerConfigurationsConstants {
     public static readonly ADMIN_FORCED_PASSWORD_RESET: string = "YWRtaW4tZm9yY2VkLXBhc3N3b3JkLXJlc2V0";
     public static readonly PRIVATE_KEY_JWT_CLIENT_AUTH: string = "private-key-jwt-configuration";
 
-    public static readonly LOGIN_ATTEMPT_SECURITY: string = "login-attempt-security";
-
     /**
 	 * Organization Settings Category Constants.
 	 */
     public static readonly ORGANIZATION_SETTINGS_CATEGORY_ID: string = "organization-settings";
     public static readonly EMAIL_DOMAIN_DISCOVERY: string = "ZW1haWwtZG9tYWluLWRpc2NvdmVyeQ==";
     public static readonly IMPERSONATION: string = "impersonation";
+
+    /**
+     * Login Security Category Constants.
+    */
+    public static readonly SIFT_CONNECTOR_ID: string = "c2lmdC1jb25maWd1cmF0aW9u";
+    public static readonly LOGIN_ATTEMPT_SECURITY: string = "login-attempt-security";
+    public static readonly SIFT_CONNECTOR_API_KEY_PROPERTY: string = "__secret__.sift.api.key";
 }

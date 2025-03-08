@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { AppState, EventPublisher } from "@wso2is/admin.core.v1";
 import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { getUserDetails } from "@wso2is/admin.users.v1/api/users";
 import { AddConsumerUserWizard } from "@wso2is/admin.users.v1/components/wizard/add-consumer-user-wizard";
 import { AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -339,10 +340,10 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
                     ApplicationManagementConstants.ERROR_CODE_APPLICATION_ALREADY_EXISTS) {
                     closeWizard();
                     dispatch(addAlert({
-                        description: t("extensions:common.quickStart.sections.asgardeoTryIt.errorMessages." +
+                        description: t("console:common.quickStart.sections.asgardeoTryIt.errorMessages." +
                             "appCreateDuplicate.description", { productName }),
                         level: AlertLevels.ERROR,
-                        message: t("extensions:common.quickStart.sections.asgardeoTryIt.errorMessages." +
+                        message: t("console:common.quickStart.sections.asgardeoTryIt.errorMessages." +
                             "appCreateDuplicate.message")
                     }));
 
@@ -350,10 +351,10 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
                 } else {
                     closeWizard();
                     dispatch(addAlert({
-                        description: t("extensions:common.quickStart.sections.asgardeoTryIt.errorMessages." +
+                        description: t("console:common.quickStart.sections.asgardeoTryIt.errorMessages." +
                             "appCreateGeneric.description"),
                         level: AlertLevels.ERROR,
-                        message: t("extensions:common.quickStart.sections.asgardeoTryIt.errorMessages." +
+                        message: t("console:common.quickStart.sections.asgardeoTryIt.errorMessages." +
                             "appCreateGeneric.message")
                     }));
 

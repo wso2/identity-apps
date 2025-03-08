@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import { getCertificateIllustrations } from "@wso2is/admin.core.v1";
+import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { ContentLoader, FilePicker, Hint, XMLFileStrategy } from "@wso2is/react-components";
+import { ContentLoader, FilePicker, Hint, PickerResult, XMLFileStrategy } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Icon } from "semantic-ui-react";
-import { SAMLConfigModes } from "../../models";
+import { SAMLConfigModes } from "../../models/application-inbound";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -45,9 +45,9 @@ interface SAMLProtocolCreationWizardFormPropsInterface extends TestableComponent
 /**
  * SAML protocol settings wizard form component.
  *
- * @param {SAMLProtocolCreationWizardFormPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns SAML protocol settings wizard form component
  */
 export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWizardFormPropsInterface> = (
     props: SAMLProtocolCreationWizardFormPropsInterface
@@ -106,11 +106,11 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
      * Sanitizes and prepares the form values for submission.
      *
      * @param values - Form values.
-     * @return {object} Prepared values.
+     * @returns Prepared values.
      */
     const getFormValues = (values: Map<string, FormValue>): any => {
 
-        let result = {};
+        let result: any = {};
 
         if (configureMode === SAMLConfigModes.META_URL) {
             result = {
@@ -206,7 +206,7 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
                                             fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
                                             file={ selectedMetadataFile }
                                             pastedContent={ pastedMetadataContent }
-                                            onChange={ (result) => {
+                                            onChange={ (result: PickerResult<any>) => {
                                                 setSelectedMetadataFile(result.file);
                                                 setPastedMetadataContent(result.pastedContent);
                                                 setXmlBase64String(result.serialized as string);
@@ -254,4 +254,4 @@ InboundSAMLCreationForm.defaultProps = {
     "data-testid": "saml-protocol-all-settings-wizard-form"
 };
 
-const XML_FILE_PROCESSING_STRATEGY = new XMLFileStrategy();
+const XML_FILE_PROCESSING_STRATEGY: XMLFileStrategy = new XMLFileStrategy();

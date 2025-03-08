@@ -19,20 +19,17 @@
 import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import { Show } from "@wso2is/access-control";
-import {
-    AppConstants,
-    AppState,
-    CORSOriginsListInterface,
-    EventPublisher,
-    FeatureConfigInterface,
-    ModalWithSidePanel,
-    getCORSOrigins,
-    getTechnologyLogos,
-    history,
-    store
-} from "@wso2is/admin.core.v1";
+import { getCORSOrigins } from "@wso2is/admin.core.v1/api/cors-configurations";
+import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
 import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { CORSOriginsListInterface } from "@wso2is/admin.core.v1/models/cors-configurations";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
@@ -78,9 +75,9 @@ import { Card, Checkbox, CheckboxProps, Dimmer, Divider, Grid } from "semantic-u
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
-import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api";
+import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api/application";
 import { getInboundProtocolLogos } from "../../configs/ui";
-import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import MobileApplicationTemplate
@@ -94,10 +91,12 @@ import {
     ApplicationTemplateLoadingStrategies,
     ApplicationTemplateNames,
     MainApplicationInterface,
-    SAMLConfigModes,
-    SupportedAuthProtocolTypes,
     URLFragmentTypes
-} from "../../models";
+} from "../../models/application";
+import {
+    SAMLConfigModes,
+    SupportedAuthProtocolTypes
+} from "../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { ApplicationShareModal } from "../modals/application-share-modal";
 import "./minimal-application-create-wizard.scss";

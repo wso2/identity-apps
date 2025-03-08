@@ -17,7 +17,12 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -102,6 +107,9 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         featureConfig?.identityVerificationProviders?.scopes?.update);
     const hasIdVPDeletePermissions: boolean = useRequiredScopes(
         featureConfig?.identityVerificationProviders?.scopes?.delete);
+
+    const { UIConfig } = useUIConfig();
+    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     /**
      * Handles the IdVP fetch error.
@@ -224,7 +232,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
                 <AppAvatar
                     hoverable={ false }
                     name={ name }
-                    image={ image }
+                    image={ ConnectionsManagementUtils.resolveConnectionResourcePath(connectionResourcesUrl, image) }
                     size="tiny"
                 />
             );
@@ -314,7 +322,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         >
             {
                 <EditIdentityVerificationProvider
-                    identityVerificationProvider={ fetchedIdVP }
+                    identityVerificationProvider={ { ...fetchedIdVP } }
                     isLoading={
                         isIdVPFetchRequestLoading
                         || isMetadataFetchRequestLoading

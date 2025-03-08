@@ -17,7 +17,7 @@
  */
 
 import { AuthenticatedUserInfo } from "@asgardeo/auth-react";
-import { applicationReducer } from "@wso2is/admin.applications.v1/store";
+import { applicationReducer } from "@wso2is/admin.applications.v1/store/reducers/application";
 import { commonAuthenticateReducerInitialState } from "@wso2is/admin.authentication.v1/store";
 import { identityProviderReducer } from "@wso2is/admin.identity-providers.v1/store";
 import {
@@ -37,22 +37,20 @@ import { I18nModuleOptionsInterface, SupportedLanguagesMeta } from "@wso2is/i18n
 import { System } from "react-notification-system";
 import { Reducer, combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
-import {
-    accessControlReducer,
-    commonConfigReducerInitialState,
-    commonGlobalReducerInitialState,
-    commonProfileReducerInitialState,
-    commonRequestLoadersInitialState,
-    organizationReducer
-} from "./reducers";
+import { accessControlReducer } from "./reducers/access-control";
+import { commonConfigReducerInitialState } from "./reducers/config";
+import { commonGlobalReducerInitialState } from "./reducers/global";
+import { commonRequestLoadersInitialState } from "./reducers/loaders";
+import { organizationReducer } from "./reducers/organization";
+import { commonProfileReducerInitialState } from "./reducers/profile";
 import { routeReducer } from "./reducers/routes";
 import {
-    AuthReducerStateInterface,
     DeploymentConfigInterface,
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface,
     UIConfigInterface
-} from "../models";
+} from "../models/config";
+import { AuthReducerStateInterface } from "../models/reducer-state";
 
 /**
  * Combines all the reducers.

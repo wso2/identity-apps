@@ -29,6 +29,7 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.wso2.carbon.CarbonConstants;
 import org.wso2.carbon.core.ServerStartupObserver;
+import org.wso2.carbon.identity.api.resource.collection.mgt.APIResourceCollectionManager;
 import org.wso2.carbon.identity.api.resource.mgt.APIResourceManager;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
@@ -48,6 +49,7 @@ import org.wso2.identity.apps.common.listner.AppPortalApplicationMgtListener;
 import org.wso2.identity.apps.common.listner.AppPortalOAuthAppMgtListener;
 import org.wso2.identity.apps.common.listner.AppPortalRoleManagementListener;
 import org.wso2.identity.apps.common.listner.AppPortalTenantMgtListener;
+import org.wso2.identity.apps.common.listner.ConsoleRoleListener;
 import org.wso2.identity.apps.common.util.AppPortalUtils;
 
 import java.util.HashSet;
@@ -109,6 +111,10 @@ public class AppsCommonServiceComponent {
                 RoleManagementListener roleManagementListener = new AppPortalRoleManagementListener(true);
                 bundleContext.registerService(RoleManagementListener.class.getName(), roleManagementListener, null);
                 log.debug("AppPortalRoleManagementListener registered successfully.");
+
+                RoleManagementListener consoleRoleListener = new ConsoleRoleListener();
+                bundleContext.registerService(RoleManagementListener.class.getName(), consoleRoleListener, null);
+                log.debug("ConsoleRoleListener registered successfully.");
             }
 
             if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
@@ -264,6 +270,22 @@ public class AppsCommonServiceComponent {
     protected void unsetAPIResourceManager(APIResourceManager apiResourceManager) {
 
         AppsCommonDataHolder.getInstance().setAPIResourceManager(null);
+    }
+
+    @Reference(
+        name = "api.resource.collection.mgt.service",
+        service = APIResourceCollectionManager.class,
+        cardinality = ReferenceCardinality.MANDATORY,
+        policy = ReferencePolicy.DYNAMIC,
+        unbind = "unsetAPIResourceCollectionManager")
+    protected void setAPIResourceManager(APIResourceCollectionManager apiResourceCollectionManager) {
+
+        AppsCommonDataHolder.getInstance().setAPIResourceCollectionManager(apiResourceCollectionManager);
+    }
+
+    protected void unsetAPIResourceCollectionManager(APIResourceCollectionManager apiResourceCollectionManager) {
+
+        AppsCommonDataHolder.getInstance().setAPIResourceCollectionManager(null);
     }
 
     private boolean skipPortalInitialization() {

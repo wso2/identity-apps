@@ -16,14 +16,12 @@
  * under the License.
  */
 
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface
-} from "@wso2is/admin.core.v1";
-import { history } from "@wso2is/admin.core.v1/helpers";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
@@ -45,7 +43,6 @@ import React, {
     MutableRefObject,
     ReactElement,
     useEffect,
-    useMemo,
     useRef ,
     useState
 } from "react";
@@ -82,16 +79,14 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes : string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const isPushProviderFeatureEnabled: boolean = featureConfig?.pushProviders?.enabled;
 
     const pageContextRef : MutableRefObject<HTMLElement> = useRef(null);
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
 
-    const isReadOnly : boolean = useMemo(() => !hasRequiredScopes(
-        featureConfig?.emailProviders,
-        featureConfig?.emailProviders?.scopes?.update,
-        allowedScopes
-    ), [ featureConfig, allowedScopes ]);
+    const hasEmailTemplatesReadPermissions: boolean =  useRequiredScopes(featureConfig?.emailTemplates?.scopes?.read);
+    const hasEmailProviderUpdatePermissions: boolean = useRequiredScopes(featureConfig?.emailProviders?.scopes?.update);
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
@@ -397,7 +392,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                     <DocumentationLink
                         link={ getLink("develop.emailProviders.learnMore") }
                     >
-                        { t("extensions:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </div>
             </div>
@@ -428,7 +423,9 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
     };
 
     const handleBackButtonClick = () => {
-        history.push(`${AppConstants.getPaths().get("EMAIL_AND_SMS")}`);
+        history.push(isPushProviderFeatureEnabled
+            ? `${AppConstants.getPaths().get("NOTIFICATION_CHANNELS")}`
+            : `${AppConstants.getPaths().get("EMAIL_AND_SMS")}`);
     };
 
     const goToEmailTemplates = () => {
@@ -445,12 +442,13 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             pageHeaderMaxWidth={ true }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: t("extensions:develop.emailProviders.goBack")
+                text: isPushProviderFeatureEnabled
+                    ? t("extensions:develop.emailProviders.goBack")
+                    : t("extensions:develop.emailAndSms.goBack")
             } }
             action={
                 featureConfig.emailProviders?.enabled &&
-                hasRequiredScopes(featureConfig?.emailTemplates, featureConfig?.emailTemplates?.scopes?.read,
-                    allowedScopes) &&
+                hasEmailTemplatesReadPermissions &&
                 (
                     <SecondaryButton
                         onClick={ goToEmailTemplates }
@@ -538,7 +536,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                 ) }
                                                                 required={ true }
                                                                 value={ emailProviderConfig?.smtpServerHost }
-                                                                readOnly={ isReadOnly }
+                                                                readOnly={ !hasEmailProviderUpdatePermissions }
                                                                 maxLength={ EmailProviderConstants
                                                                     .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                                                 minLength={ EmailProviderConstants
@@ -572,7 +570,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                 ) }
                                                                 required={ true }
                                                                 value={ emailProviderConfig?.smtpPort }
-                                                                readOnly={ isReadOnly }
+                                                                readOnly={ !hasEmailProviderUpdatePermissions }
                                                                 maxLength={ EmailProviderConstants
                                                                     .EMAIL_PROVIDER_SERVER_PORT_MAX_LENGTH }
                                                                 minLength={ EmailProviderConstants
@@ -599,7 +597,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                     ".fromAddress.hint") }
                                                                 required={ true }
                                                                 value={ emailProviderConfig?.fromAddress }
-                                                                readOnly={ isReadOnly }
+                                                                readOnly={ !hasEmailProviderUpdatePermissions }
                                                                 maxLength={ EmailProviderConstants
                                                                     .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                                                 minLength={ EmailProviderConstants
@@ -624,7 +622,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                 ".replyToAddress.hint") }
                                                                 required={ true }
                                                                 value={ emailProviderConfig?.replyToAddress }
-                                                                readOnly={ isReadOnly }
+                                                                readOnly={ !hasEmailProviderUpdatePermissions }
                                                                 maxLength={ EmailProviderConstants
                                                                     .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                                                 minLength={ EmailProviderConstants
@@ -653,7 +651,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                     ".userName.hint") }
                                                                 required={ true }
                                                                 value={ emailProviderConfig?.userName }
-                                                                readOnly={ isReadOnly }
+                                                                readOnly={ !hasEmailProviderUpdatePermissions }
                                                                 maxLength={ EmailProviderConstants
                                                                     .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                                                 minLength={ EmailProviderConstants
@@ -679,7 +677,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                     ".password.hint") }
                                                                 required={ true }
                                                                 value={ emailProviderConfig?.password }
-                                                                readOnly={ isReadOnly }
+                                                                readOnly={ !hasEmailProviderUpdatePermissions }
                                                                 maxLength={ EmailProviderConstants
                                                                     .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                                                 minLength={ EmailProviderConstants
@@ -706,7 +704,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                 ".displayName.hint") }
                                                                 required={ true }
                                                                 value={ emailProviderConfig?.displayName }
-                                                                readOnly={ isReadOnly }
+                                                                readOnly={ !hasEmailProviderUpdatePermissions }
                                                                 maxLength={ EmailProviderConstants
                                                                     .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                                                 minLength={ EmailProviderConstants
@@ -720,7 +718,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                 </Grid>
                                             </Form>
                                             {
-                                                !isReadOnly && (
+                                                hasEmailProviderUpdatePermissions && (
                                                     <>
                                                         <Divider hidden />
                                                         <Grid.Row columns={ 1 } className="mt-6">
@@ -749,7 +747,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                 }
                             </EmphasizedSegment>
                             {
-                                !isReadOnly && !isEmailProviderConfigFetchRequestLoading && (
+                                hasEmailProviderUpdatePermissions && !isEmailProviderConfigFetchRequestLoading && (
                                     <>
                                         <Divider hidden />
                                         <DangerZoneGroup

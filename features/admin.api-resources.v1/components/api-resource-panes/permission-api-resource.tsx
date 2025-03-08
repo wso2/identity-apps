@@ -18,7 +18,7 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import Grid from "@oxygen-ui/react/Grid";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { useTrigger } from "@wso2is/forms";
@@ -34,8 +34,8 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Input } from "semantic-ui-react";
 import { PermissionListAPIResource } from "./permission-list-api-resource";
-import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models";
-import { AddAPIResourcePermission } from "../wizard";
+import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models/api-resources";
+import { AddAPIResourcePermission } from "../wizard/add-api-resource-permission";
 
 /**
  * Prop-types for the API resources page component.

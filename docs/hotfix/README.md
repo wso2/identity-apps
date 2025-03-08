@@ -65,4 +65,6 @@ git checkout -b hotfix_feature hotfix-<app_name>@<app_version>
 
 - Type in the same hotfix release tag you specified in the `Choose a tag` dropdown, in the `Release title` field as well.
 
-- Untick `Set as latest release` checkbox and click `Publish release`.
+- **UNTICK** the `Set as latest release` checkbox and click `Publish release`.
+
+**Note: It is crucial to ensure that the `Set as latest release` checkbox is UNCHECKED, as failing to do so may disrupt internal workflows.**

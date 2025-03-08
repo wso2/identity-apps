@@ -17,7 +17,7 @@
  */
 
 import { AsgardeoSPAClient, OIDCEndpoints } from "@asgardeo/auth-react";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -28,11 +28,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Form, Grid } from "semantic-ui-react";
 import { getHelpPanelIcons } from "../../configs/ui";
-import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import {
-    OIDCApplicationConfigurationInterface,
-    OIDCEndpointsInterface
-} from "../../models";
+    OIDCApplicationConfigurationInterface
+} from "../../models/application";
+import { OIDCEndpointsInterface } from "../../models/application-inbound";
 
 /**
  * Get an identity client instance.

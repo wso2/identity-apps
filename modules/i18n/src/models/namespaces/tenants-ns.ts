@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -70,6 +70,10 @@ export interface TenantsNS {
                     label: string;
                     placeholder: string;
                     validations: {
+                        domainInvalidCharPattern: string;
+                        domainInvalidPattern: string;
+                        domainMandatoryExtension: string;
+                        domainStartingWithDot: string;
                         domainUnavailable: string;
                         required: string;
                     };
@@ -162,6 +166,10 @@ export interface TenantsNS {
     },
     edit: {
         backButton: string;
+        consoleURL: {
+            label: string;
+            hint: string;
+        };
         subtitle: string;
     };
     editTenant: {
@@ -226,6 +234,27 @@ export interface TenantsNS {
         };
     };
     listing: {
+        advancedSearch: {
+            form: {
+                dropdown: {
+                    filterAttributeOptions: {
+                        domain: string;
+                    };
+                };
+                inputs: {
+                    filterAttribute: {
+                        placeholder: string;
+                    };
+                    filterCondition: {
+                        placeholder: string;
+                    };
+                    filterValue: {
+                        placeholder: string;
+                    };
+                };
+            };
+            placeholder: "Search by domain"
+        },
         count: string;
         emptyPlaceholder: {
             actions: {
@@ -243,15 +272,24 @@ export interface TenantsNS {
             };
             title: string;
         };
+        emptySearchResult: {
+            actions: {
+                clearSearchQuery: {
+                    label: string;
+                };
+            };
+            subtitles: {
+                0: string;
+                1: string;
+            };
+            title: string;
+        };
         item: {
             actions: {
                 delete: {
                     label: string;
                 };
                 edit: {
-                    label: string;
-                };
-                goToConsole: {
                     label: string;
                 };
                 more: {

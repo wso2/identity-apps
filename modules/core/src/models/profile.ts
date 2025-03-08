@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -206,6 +206,53 @@ export interface ProfileSchemaInterface {
      * Maximum length limit.
      */
     maxLength?: number;
+    /**
+     * Excluded user stores.
+     */
+    excludedUserStores?: string;
+    /**
+     * Shared profile attribute value resolving method.
+     */
+    sharedProfileValueResolvingMethod?: string;
+    /**
+    * Supported by default. Used to display in the attribute in the UI.
+    */
+    supportedByDefault?: string;
+    /**
+     * Schema attribute profiles
+     */
+    profiles?: {
+        /**
+         * Attribute profile for console user profile
+         */
+        console?: ProfileAttributeInterface;
+        /**
+         * Attribute profile for end user profile (My Account)
+         */
+        endUser?: ProfileAttributeInterface;
+        /**
+         * Attribute profile for self registration
+         */
+        selfRegistration?: ProfileAttributeInterface;
+    }
+}
+
+/**
+ *  Profile attribute interface.
+ */
+export interface ProfileAttributeInterface {
+    /**
+     * Flag to set mutability.
+     */
+    mutability?: string;
+    /**
+     * Flag to set if the attribute is required.
+     */
+    required?: boolean;
+    /**
+     * Flag to set if the attribute is shown.
+     */
+    supportedByDefault?: boolean;
 }
 
 /**

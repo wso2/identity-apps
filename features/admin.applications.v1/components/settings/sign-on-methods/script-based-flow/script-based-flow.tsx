@@ -28,12 +28,22 @@ import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Typography from "@oxygen-ui/react/Typography";
 import { DiamondIcon, GearIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
-import { FeatureStatus, FeatureTags, useCheckFeatureStatus, useCheckFeatureTags } from "@wso2is/access-control";
+import {
+    FeatureStatus,
+    FeatureTags,
+    useCheckFeatureStatus,
+    useCheckFeatureTags,
+    useRequiredScopes
+} from "@wso2is/access-control";
 import {
     ELK_RISK_BASED_TEMPLATE_NAME
 } from "@wso2is/admin.authentication-flow-builder.v1/constants/template-constants";
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { AppState, AppUtils, EventPublisher, FeatureConfigInterface, getOperationIcons } from "@wso2is/admin.core.v1";
+import { getOperationIcons } from "@wso2is/admin.core.v1/configs/ui";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
@@ -43,7 +53,6 @@ import { ADAPTIVE_SCRIPT_SECRETS } from "@wso2is/admin.secrets.v1/constants/secr
 import { GetSecretListResponse, SecretModel } from "@wso2is/admin.secrets.v1/models/secret";
 import { UIConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
@@ -86,13 +95,13 @@ import { Dispatch } from "redux";
 import { Checkbox, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel, ScriptTemplatesSidePanelRefInterface } from "./script-templates-side-panel";
-import { getAdaptiveAuthTemplates } from "../../../../api";
-import { ApplicationManagementConstants } from "../../../../constants";
+import { getAdaptiveAuthTemplates } from "../../../../api/application";
+import { ApplicationManagementConstants } from "../../../../constants/application-management";
 import {
     AdaptiveAuthTemplateInterface,
     AdaptiveAuthTemplatesListInterface,
     AuthenticationSequenceInterface
-} from "../../../../models";
+} from "../../../../models/application";
 import { AdaptiveScriptUtils } from "../../../../utils/adaptive-script-utils";
 import "./script-based-flow.scss";
 
@@ -209,15 +218,16 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+
+    const hasSecretMgtCreatePermissions: boolean = useRequiredScopes(featureConfig?.secretsManagement?.scopes?.create);
+    const hasSecretMgtReadPermissions: boolean = useRequiredScopes(featureConfig?.secretsManagement?.scopes?.read);
 
     /**
      * Calls method to load secrets to secret list.
      */
     useEffect(() => {
-        hasRequiredScopes(featureConfig?.secretsManagement,
-            featureConfig?.secretsManagement?.scopes?.read, allowedScopes) && loadSecretListForSecretType();
+        hasSecretMgtReadPermissions && loadSecretListForSecretType();
     }, []);
 
     /**
@@ -947,8 +957,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     >
                         { resolveSecretListContent() }
                         { featureConfig?.secretsManagement?.enabled &&
-                            hasRequiredScopes(featureConfig?.secretsManagement,
-                                featureConfig?.secretsManagement?.scopes?.create, allowedScopes) &&
+                            hasSecretMgtCreatePermissions &&
                                 !isSecretListLoading &&
                             (OrganizationUtils.getOrganizationType() === OrganizationType.SUPER_ORGANIZATION ||
                             OrganizationUtils.getOrganizationType() === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
@@ -1352,8 +1361,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         <Menu.Menu position="right">
                                             { resolveApiDocumentationLink() }
                                             { featureConfig?.secretsManagement?.enabled &&
-                                                hasRequiredScopes(featureConfig?.secretsManagement,
-                                                    featureConfig?.secretsManagement?.scopes?.read, allowedScopes) && (
+                                              hasSecretMgtReadPermissions && (
                                                 <Menu.Item
                                                     className={ `action ${ isDropdownOpen
                                                         ? "selected-secret"

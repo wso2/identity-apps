@@ -100,3 +100,9 @@ export interface GovernanceConnectorForOrgsInterface {
 	properties: string[]
 }
 
+export type ConnectorOverrideConfig = {
+    matchBy?: "id" | "name" | "friendlyName";
+    id?: string;
+    name?: string;
+    friendlyName?: string;
+} & Partial<Omit<GovernanceConnectorInterface, "id" | "name" | "friendlyName">>;

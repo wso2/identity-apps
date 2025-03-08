@@ -21,7 +21,10 @@ import Link from "@oxygen-ui/react/Link";
 import { PaletteIcon } from "@oxygen-ui/react-icons";
 import { ApplicationTabComponentsFilter } from
     "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
-import { AppConstants, AppState, UIConfigInterface, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState  } from "@wso2is/admin.core.v1/store";
 import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
@@ -42,9 +45,9 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { useMyAccountStatus } from "../../api";
-import { ApplicationManagementConstants } from "../../constants";
-import { ApplicationInterface } from "../../models";
+import { useMyAccountStatus } from "../../api/application";
+import { ApplicationManagementConstants } from "../../constants/application-management";
+import { ApplicationInterface } from "../../models/application";
 
 /**
  * Proptypes for the applications general details form component.

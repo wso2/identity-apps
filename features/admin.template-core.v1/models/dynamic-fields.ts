@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { SupportedFileTypes } from "@wso2is/form";
+import { DropDownItemInterface, SupportedFileTypes } from "@wso2is/form";
 
 /**
  * Interface to define a dynamic form.
@@ -118,6 +118,28 @@ export interface DynamicFilePickerFieldInterface extends DynamicFieldInterface {
      * Hide selection tabs & paste section.
      */
     hidePasteOption?: boolean;
+    /**
+     * Show the file list if any are uploaded.
+     */
+    showFileAsList?: boolean;
+    /**
+     * Display name of the file.
+     */
+    fileDisplayName?: string
+    /**
+     * Callback function to be invoked on file delete.
+     */
+    onDelete?: () => void;
+}
+
+/**
+ * Data types required to render the dynamic dropdown field.
+ */
+export interface DynamicDropdownFieldInterface extends DynamicFieldInterface {
+    /**
+     * File type to be used in the FilePicker component.
+     */
+    options: DropDownItemInterface[];
 }
 
 /**
@@ -157,7 +179,11 @@ export enum DynamicInputFieldTypes {
     /**
      * File picker field.
      */
-    FILE = "file"
+    FILE = "file",
+    /**
+     * Dropdown field.
+     */
+    SELECT = "select"
 }
 
 /**

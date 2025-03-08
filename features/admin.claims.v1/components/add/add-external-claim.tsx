@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,8 +17,10 @@
  */
 
 import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
-import { SCIMConfigs, attributeConfig } from "@wso2is/admin.extensions.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -123,6 +125,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
 
     const enableIdentityClaims: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.enableIdentityClaims);
+    const userSchemaURI: string = useSelector(
+        (state: AppState) => state?.config?.ui?.userSchemaURI);
 
     const { t } = useTranslation();
 
@@ -131,7 +135,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
      */
     useEffect(() => {
         if (attributeType !== "oidc"
-            && claimDialectUri !== attributeConfig.localAttributes.customDialectURI) {
+            && claimDialectUri !== userSchemaURI) {
             if (!serverSupportedClaims  || !filteredLocalClaims || serverSupportedClaims.length === 0
                 || filteredLocalClaims.length === 0) {
                 setEmptyClaims(true);
@@ -153,7 +157,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             setEmptyServerSupportedClaims(false);
         }
         if (attributeType !== "oidc"
-            && claimDialectUri !== attributeConfig.localAttributes.customDialectURI) {
+            && claimDialectUri !== userSchemaURI) {
             if (!serverSupportedClaims || serverSupportedClaims.length === 0) {
                 setEmptyClaims(false);
             } else {
@@ -164,7 +168,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                 }
             }
         } else if (attributeType !== "oidc" &&
-            claimDialectUri === attributeConfig.localAttributes.customDialectURI
+            claimDialectUri === userSchemaURI
             && (!filteredLocalClaims || filteredLocalClaims.length === 0)) {
             setEmptyClaims(true);
         } else {

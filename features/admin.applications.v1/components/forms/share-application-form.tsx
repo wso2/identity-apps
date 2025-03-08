@@ -17,7 +17,7 @@
  */
 
 import Collapse from "@mui/material/Collapse";
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import {
     shareApplication,
@@ -66,7 +66,7 @@ import {
     Grid,
     Radio
 } from "semantic-ui-react";
-import { ApplicationInterface, additionalSpProperty } from "../../models";
+import { ApplicationInterface, additionalSpProperty } from "../../models/application";
 
 enum ShareType {
     SHARE_ALL,

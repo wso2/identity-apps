@@ -16,19 +16,19 @@
  * under the License.
  */
 
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { updateApplicationConfigurations } from "../../api";
-import { AdvancedConfigurationsInterface, ApplicationTemplateListItemInterface } from "../../models";
-import { AdvancedConfigurationsForm } from "../forms";
+import { updateApplicationConfigurations } from "../../api/application";
+import { AdvancedConfigurationsInterface, ApplicationTemplateListItemInterface } from "../../models/application";
+import { AdvancedConfigurationsForm } from "../forms/advanced-configurations-form";
 
 /**
  * Proptypes for the advance settings component.
@@ -80,8 +80,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
     const { t } = useTranslation();
 
     const dispatch: Dispatch  = useDispatch();
-
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
 
     const [ isSubmitting, setIsSubmitting ] = useState(false);
 
@@ -145,9 +144,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
                 onSubmit={ handleAdvancedConfigFormSubmit }
                 readOnly={
                     readOnly
-                    || !hasRequiredScopes(featureConfig?.applications,
-                        featureConfig?.applications?.scopes?.update,
-                        allowedScopes)
+                    || !hasApplicationUpdatePermissions
                 }
                 template={ template }
                 onAlertFired={ handleAlerts }

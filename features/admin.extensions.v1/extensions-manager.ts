@@ -16,13 +16,15 @@
  * under the License.
  */
 
-import { TemplateConfigInterface, TemplateContentInterface }
-    from "@wso2is/admin.applications.v1/data/application-templates";
+import {
+    TemplateConfigInterface,
+    TemplateContentInterface
+} from "@wso2is/admin.applications.v1/data/application-templates/application-templates-config";
 import {
     ApplicationTemplateCategoryInterface,
     ApplicationTemplateGroupInterface,
     ApplicationTemplateInterface
-} from "@wso2is/admin.applications.v1/models";
+} from "@wso2is/admin.applications.v1/models/application";
 import {
     ConnectionTemplateCategoryInterface,
     ConnectionTemplateGroupInterface

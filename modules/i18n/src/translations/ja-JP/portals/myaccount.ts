@@ -638,7 +638,7 @@ export const myAccount: MyAccountNS = {
                 "deleteHint": "取り除く",
                 "description": "Authenticatorアプリを使用して、2要素認証のために確認コードを取得できます。",
                 "enableHint": "TOTP Authenticatorを有効/無効にします",
-                "heading": "Authenticatorアプリ",
+                "heading": "TOTP認証器",
                 "hint": "ビュー",
                 "modals": {
                     "delete": {
@@ -861,6 +861,7 @@ export const myAccount: MyAccountNS = {
                         "tryWithOlderDevice": "古いパスキーを使用して再試行することもできます。"
                     }
                 },
+                "noPassKeyMessage": "まだパスキーが登録されていません。",
                 "notifications": {
                     "removeDevice": {
                         "error": {
@@ -906,6 +907,61 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 "tryButton": "古いパスキーで試してください"
+            },
+            "pushAuthenticatorApp": {
+                "addHint": "設定する",
+                "configuredDescription": "設定済みのプッシュ認証アプリから生成されたログインプロンプトを使用して、二要素認証を行うことができます。アプリにアクセスできない場合は、ここから新しい認証アプリを設定できます。",
+                "deleteHint": "削除",
+                "description": "プッシュ認証アプリを使用して、二要素認証のためのログインプロンプトをプッシュ通知として受け取ることができます。",
+                "heading": "プッシュ認証アプリ",
+                "hint": "表示",
+                "modals": {
+                    "deviceDeleteConfirmation": {
+                        "assertionHint": "アクションを確認してください。",
+                        "content": "この操作は元に戻せず、デバイスが完全に削除されます。",
+                        "description": "このデバイスを削除すると、再度アカウントにサインインできなくなる可能性があります。慎重に操作してください。",
+                        "heading": "本当に削除しますか？"
+                    },
+                    "scan": {
+                        "additionNote": "QRコードがプロフィールに正常に追加されました！",
+                        "done": "成功しました！これで、プッシュ認証アプリを使用して二要素認証を行うことができます。",
+                        "heading": "プッシュ認証アプリを設定する",
+                        "messageBody": "利用可能な認証アプリのリストはこちらで確認できます。",
+                        "subHeading": "プッシュ認証アプリを使用して、以下のQRコードをスキャンしてください"
+                    }
+                },
+                "notifications": {
+                    "delete": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "問題が発生しました"
+                        },
+                        "genericError": {
+                            "description": "登録されたデバイスの削除中にエラーが発生しました",
+                            "message": "問題が発生しました"
+                        },
+                        "success": {
+                            "description": "登録されたデバイスが正常に削除されました",
+                            "message": "デバイスが正常に削除されました"
+                        }
+                    },
+                    "deviceListFetchError": {
+                        "error": {
+                            "description": "プッシュ認証用の登録されたデバイスを取得中にエラーが発生しました",
+                            "message": "問題が発生しました"
+                        }
+                    },
+                    "initError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "問題が発生しました"
+                        },
+                        "genericError": {
+                            "description": "QRコードの取得中にエラーが発生しました",
+                            "message": "問題が発生しました"
+                        }
+                    }
+                }
             },
             "smsOtp": {
                 "descriptions": {

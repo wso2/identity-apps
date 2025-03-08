@@ -394,6 +394,11 @@ export const claims: ClaimsNS = {
     local: {
         additionalProperties: {
             hint: "Use when writing an extension using current attributes",
+            isUniqueDeprecationMessage: {
+                uniquenessDisabled: "The 'isUnique' property is deprecated.",
+                uniquenessEnabled: "The 'isUnique' property is deprecated. Please use " +
+                    "<1>Uniqueness Validation</1> option to configure attribute uniqueness."
+            },
             key: "Name",
             keyRequiredErrorMessage: "Enter a name",
             value: "Value",
@@ -475,6 +480,21 @@ export const claims: ClaimsNS = {
                 }
             },
             nameHint: "The display name of the attribute in the user profile.",
+            profiles: {
+                administratorConsole: "Administrator Console",
+                attributeConfigurations: {
+                    description: "Configure attribute profiles for different flows.",
+                    title: "Attribute Configurations"
+                },
+                displayByDefault: "Display",
+                displayByDefaultHint: "If selected, this attribute will be displayed by default in the profile.",
+                endUserProfile: "End-User Profile",
+                readonly: "Read-only",
+                readonlyHint: "If this is selected, the value of this attribute is read-only in the profile. Be sure to select this option if the attribute value is system-defined.",
+                required: "Required",
+                requiredHint: "If selected, the user must specify a value for this attribute in the profile.",
+                selfRegistration: "Self-Registration"
+            },
             readOnly: {
                 label: "Make this attribute read-only on the user's profile"
             },
@@ -492,12 +512,32 @@ export const claims: ClaimsNS = {
             "attribute on the profile.",
             requiredWarning: "To make the email attribute not display and not required on the user's profile, " +
                 "you need to disable account verification for your organization.",
+            sharedProfileValueResolvingMethod: {
+                hint: "When a user's profile is shared across multiple organizations, the value of this attribute will be taken from the selected source.",
+                label: "Select Source for Attribute Value of Shared Users",
+                options: {
+                    fromFirstFoundInHierarchy: "From First Found in Hierarchy",
+                    fromOrigin: "From Origin",
+                    fromSharedProfile: "From Shared Profile"
+                }
+            },
             supportedByDefault: {
                 label: "Display this attribute on the user's profile"
-            }
+            },
+            uniquenessScope: {
+                label: "Uniqueness Validation",
+                options: {
+                    acrossUserstores: "Across User Stores",
+                    none: "None",
+                    withinUserstore: "Within User Store"
+                }
+            },
+            uniquenessScopeHint: "Select the scope to validate the uniqueness of the attribute value."
         },
         mappedAttributes: {
-            hint: "Enter the attribute from each user store that you want to map to this attribute."
+            enableForUserStore: "Enable for this user store",
+            hint: "Enter the attribute from the respective user stores that will be mapped to this attribute.",
+            mappedAttributeName: "Mapped Attribute Name"
         },
         notifications: {
             addLocalClaim: {
@@ -571,7 +611,7 @@ export const claims: ClaimsNS = {
                 tabs: {
                     additionalProperties: "Additional Properties",
                     general: "General",
-                    mappedAttributes: "Mapped Attributes"
+                    mappedAttributes: "Attribute Mappings"
                 }
             },
             local: {

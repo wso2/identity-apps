@@ -66,6 +66,12 @@
             <param-value>{{ downtime_banner.enabled }}</param-value>
         </context-param>
     {% endif %}
+    {% if identity_mgt.user_self_registration.enable_detailed_api_response is defined %}
+        <context-param>
+            <param-name>isSelfRegistrationDetailedApiResponseEnabled</param-name>
+            <param-value>{{ identity_mgt.user_self_registration.enable_detailed_api_response }}</param-value>
+        </context-param>
+    {% endif %}
     <!-- *************** End of Global configurations ********************** -->
     <!--  End of Custom Page configurations -->
     <context-param>
@@ -193,6 +199,7 @@
         {"name": "confirmregistration.do", "jsp": "/self-registration-with-verification-confirm.jsp", "url": "/confirmregistration.do"},
         {"name": "completeregistration.do", "jsp": "/self-registration-complete.jsp", "url": "/completeregistration.do"},
         {"name": "verify.do", "jsp": "/recovery.jsp", "url": "/verify.do"},
+        {"name": "channelselection.do", "jsp": "/username-recovery-channel.jsp", "url": "/channelselection.do"},
         {"name": "confirmliteuserregistration.do", "jsp": "/lite-user-confirm.jsp", "url": "/confirmliteuserregistration.do"},
         {"name": "acceptinvitation.do", "jsp": "/accept-invitation.jsp", "url": "/acceptinvitation.do"}
     ] %}

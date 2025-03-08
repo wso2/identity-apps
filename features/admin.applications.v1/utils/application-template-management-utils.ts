@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
+import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import { store } from "@wso2is/admin.core.v1/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -28,8 +28,11 @@ import isObject from "lodash-es/isObject";
 import startCase  from "lodash-es/startCase";
 import {
     getApplicationTemplateList
-} from "../api";
-import { TemplateConfigInterface, getApplicationTemplatesConfig } from "../data/application-templates";
+} from "../api/application";
+import {
+    TemplateConfigInterface,
+    getApplicationTemplatesConfig
+} from "../data/application-templates/application-templates-config";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
@@ -37,8 +40,8 @@ import {
     ApplicationTemplateGroupInterface,
     ApplicationTemplateInterface,
     ApplicationTemplateListInterface
-} from "../models";
-import { setApplicationTemplates } from "../store";
+} from "../models/application";
+import { setApplicationTemplates } from "../store/actions/application";
 
 /**
  * Utility class for Application Templates related operations.

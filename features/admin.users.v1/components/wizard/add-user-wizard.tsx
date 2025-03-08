@@ -21,8 +21,8 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
-import { updateGroupDetails, useGroupList } from "@wso2is/admin.groups.v1/api";
-import { GroupsInterface } from "@wso2is/admin.groups.v1/models";
+import { updateGroupDetails, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
+import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getAUserStore, useUserStores } from "@wso2is/admin.userstores.v1/api";
 import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
@@ -67,7 +67,7 @@ import {
     PayloadInterface,
     UserDetailsInterface,
     WizardStepInterface,
-    createEmptyUserDetails } from "../../models";
+    createEmptyUserDetails } from "../../models/user";
 import { generatePassword, getConfiguration, getUsernameConfiguration } from "../../utils";
 
 interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
@@ -144,7 +144,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ isAlphanumericUsername, setIsAlphanumericUsername ] = useState<boolean>(false);
     const [ isBasicDetailsLoading, setBasicDetailsLoading ] = useState<boolean>(false);
     const [ isStepsUpdated, setIsStepsUpdated ] = useState<boolean>(false);
-    const [ isUserstoreRequired, setUserstoreRequired ] = useState<boolean>(false);
     const [ isFirstNameRequired, setFirstNameRequired ] = useState<boolean>(true);
     const [ isLastNameRequired, setLastNameRequired ] = useState<boolean>(true);
     const [ isEmailRequired, setEmailRequired ] = useState<boolean>(false);
@@ -184,10 +183,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         isLoading: isUserStoreListFetchRequestLoading,
         isValidating: isUserStoreListFetchRequestValidating,
         error: userStoreListFetchRequestError
-    } = useUserStores(
-        null,
-        !isSubOrganization()
-    );
+    } = useUserStores(null);
 
     /**
      * Set read-write userstores list.
@@ -427,11 +423,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         if (emailSchema) {
             hiddenAttributes.push(HiddenFieldNames.EMAIL);
             setEmailRequired(emailSchema.required);
-        }
-
-        if (isSubOrganization()) {
-            hiddenAttributes.push(HiddenFieldNames.USERSTORE);
-            setUserstoreRequired(false);
         }
 
         if (nameSchema?.subAttributes?.length > 0) {
@@ -692,7 +683,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     givenName: userInfo.firstName
                 },
                 profileUrl: userInfo.profileUrl,
-                [ SCIMConfigs.scim.enterpriseSchema ]: {
+                [ SCIMConfigs.scim.systemSchema ]: {
                     askPassword: "true"
                 },
                 userName: username
@@ -932,7 +923,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     hiddenFields={ hiddenFields }
                     requestedPasswordOption={ wizardState &&
                     wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.passwordOption }
-                    isUserstoreRequired={ isUserstoreRequired }
+                    isUserstoreRequired={ false }
                     isFirstNameRequired={ isFirstNameRequired }
                     isLastNameRequired={ isLastNameRequired }
                     isEmailRequired={ isEmailRequired }
@@ -1090,6 +1081,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                     floated="right"
                                     onClick={ navigateToNext }
                                     loading={ isBasicDetailsLoading }
+                                    disabled = { isBasicDetailsLoading }
                                 >
                                     { currentWizardStep === wizardSteps.length - 2
                                         ? t("user:modals.addUserWizard.buttons.saveAndContinue")

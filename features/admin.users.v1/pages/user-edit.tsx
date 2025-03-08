@@ -19,15 +19,12 @@
 import Button from "@oxygen-ui/react/Button";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    SharedUserStoreUtils,
-    getEmptyPlaceholderIllustrations,
-    getSidePanelIcons,
-    history
-} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations, getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import { useGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api";
@@ -112,6 +109,11 @@ const UserEditPage = (): ReactElement => {
         data: originalUserOnboardingConnectorData
     } = useGovernanceConnectors(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID);
 
+    // Get other settings governance connector data.
+    const {
+        data: otherSettingsConnectorData
+    } = useGovernanceConnectors(ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID);
+
     const user: ProfileInfoInterface = useMemo(() =>
         originalUserDetails || emptyProfileInfo(), [ originalUserDetails ]);
 
@@ -147,8 +149,23 @@ const UserEditPage = (): ReactElement => {
             });
         }
 
+        if (otherSettingsConnectorData) {
+            otherSettingsConnectorData.map((connector: GovernanceConnectorInterface) => {
+                if (connector.id === ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID) {
+                    connector.properties.map((property: ConnectorPropertyInterface) => {
+                        if (property.name === ServerConfigurationsConstants.ENABLE_EMAIL_VERIFICATION
+                            || property.name === ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION
+                            || property.name ===
+                                ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER
+                        ) {
+                            properties.push(property);
+                        }
+                    });
+                }
+            });
+        }
         setConnectorProperties(properties);
-    }, [ originalAccountManagementConnectorData, originalUserOnboardingConnectorData ]);
+    }, [ originalAccountManagementConnectorData, originalUserOnboardingConnectorData, otherSettingsConnectorData ]);
 
     useEffect(() => {
         setReadOnlyUserStoresLoading(true);
@@ -401,7 +418,7 @@ const UserEditPage = (): ReactElement => {
                     <div>
                         { resolveDescription() }
                         {
-                            user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId && (
+                            user[ SCIMConfigs.scim.systemSchema ]?.userSourceId && (
                                 <Label className="profile-user-source-label">
                                     <GenericIcon
                                         className="mt-1 mb-0"
@@ -409,17 +426,17 @@ const UserEditPage = (): ReactElement => {
                                         inline
                                         size="default"
                                         transparent
-                                        icon={ resolveIdpIcon(user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType) }
+                                        icon={ resolveIdpIcon(user[ SCIMConfigs.scim.systemSchema ]?.idpType) }
                                         verticalAlign="middle"
                                     />
                                     <Label.Detail className="mt-1 ml-0 mb-1">
-                                        { user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId }
+                                        { user[ SCIMConfigs.scim.systemSchema ]?.userSourceId }
                                     </Label.Detail>
                                 </Label>
                             )
                         }
                         {
-                            user[ SCIMConfigs.scim.enterpriseSchema ]?.userSource && (
+                            user[ SCIMConfigs.scim.systemSchema ]?.userSource && (
                                 <Label
                                     className={ !resolveDescription()
                                         ? "profile-user-source-label ml-0"
@@ -435,7 +452,7 @@ const UserEditPage = (): ReactElement => {
                                         verticalAlign="middle"
                                     />
                                     <Label.Detail className="mt-1 ml-0 mb-1">
-                                        { user[ SCIMConfigs.scim.enterpriseSchema ]?.userSource }
+                                        { user[ SCIMConfigs.scim.systemSchema ]?.userSource }
                                     </Label.Detail>
                                 </Label>
                             )

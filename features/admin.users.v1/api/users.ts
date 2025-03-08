@@ -23,13 +23,18 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
-import { PatchGroupDataInterface } from "@wso2is/admin.groups.v1";
-import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models";
+import { PatchGroupDataInterface } from "@wso2is/admin.groups.v1/models/groups";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods, ProfileInfoInterface } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { UserManagementConstants } from "../constants";
-import { SCIMBulkEndpointInterface, UserDetailsInterface, UserListInterface, UserSessionsInterface } from "../models";
+import { SCIMBulkEndpointInterface } from "../models/endpoints";
+import {
+    UserDetailsInterface,
+    UserListInterface,
+    UserSessionsInterface
+} from "../models/user";
 
 /**
  * Initialize an axios Http client.

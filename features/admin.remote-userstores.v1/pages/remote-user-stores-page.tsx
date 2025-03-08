@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,11 @@
  * under the License.
  */
 
-import {
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    history,
-    sortList
-} from "@wso2is/admin.core.v1";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
 import { useUserStores } from "@wso2is/admin.userstores.v1/api";
 import { UserStoresList } from "@wso2is/admin.userstores.v1/components";
 import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
@@ -35,7 +33,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { PaginationProps } from "semantic-ui-react";
-import { RemoteUserStoreConstants } from "../constants";
+import { RemoteUserStoreConstants } from "../constants/remote-user-stores-constants";
 
 /**
  * Props for the Userstore page.
@@ -188,7 +186,7 @@ const RemoteUserStoresPage: FunctionComponent<RemoteUserStoresPagePropsInterface
                     <DocumentationLink
                         link={ getLink("manage.userStores.userStoresList.learnMore") }
                     >
-                        { t("extensions:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </>
             ) }

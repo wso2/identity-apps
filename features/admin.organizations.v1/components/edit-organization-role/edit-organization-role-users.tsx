@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AppState } from "@wso2is/admin.core.v1";
+
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AddRoleUsers } from "@wso2is/admin.roles.v2/components/wizard/role-user-assign";
 import { ScimOperationsInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
@@ -26,7 +27,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { patchOrganizationRoleDetails } from "../../api";
-import { PRIMARY_DOMAIN } from "../../constants";
 import {
     OrganizationResponseInterface
 } from "../../models";
@@ -50,6 +50,9 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         isReadOnly
     } = props;
 
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
+
     const [ currentUserStore, setCurrentUserStore ] = useState<string>(undefined);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const currentOrganization: OrganizationResponseInterface = useSelector(
@@ -62,7 +65,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         if (roleName?.indexOf("/") !== -1) {
             setCurrentUserStore(roleName?.split("/")[0]);
         } else {
-            setCurrentUserStore(PRIMARY_DOMAIN);
+            setCurrentUserStore(primaryUserStoreDomainName);
         }
     }, [ currentUserStore, roleObject ]);
 

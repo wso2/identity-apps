@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/forms",
-    "version": "2.3.1",
+    "version": "2.3.16",
     "description": "Forms module for WSO2 Identity Server web-apps.",
     "keywords": [
         "WSO2",
@@ -30,7 +30,7 @@
         "typecheck": "pnpm compile"
     },
     "dependencies": {
-        "@wso2is/core": "^2.4.1",
+        "@wso2is/core": "^2.6.1",
         "classnames": "^2.2.6",
         "lodash-es": "^4.17.21",
         "semantic-ui-react": "^2.1.3"

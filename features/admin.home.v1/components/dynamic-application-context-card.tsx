@@ -21,11 +21,14 @@ import CustomApplicationTemplate from
     "@wso2is/admin.applications.v1/data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationTemplateListItemInterface
-} from "@wso2is/admin.applications.v1/models";
+} from "@wso2is/admin.applications.v1/models/application";
 import {
     ApplicationTemplateManagementUtils
 } from "@wso2is/admin.applications.v1/utils/application-template-management-utils";
-import { AppConstants, AppState, EventPublisher, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading, Text } from "@wso2is/react-components";
 import classNames from "classnames";

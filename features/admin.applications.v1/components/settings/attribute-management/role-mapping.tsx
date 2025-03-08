@@ -28,7 +28,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
-import { RoleMappingInterface } from "../../../models";
+import { RoleMappingInterface } from "../../../models/application";
 
 interface RoleMappingPropsInterface extends TestableComponentInterface {
     /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,20 +16,17 @@
  * under the License.
  */
 
-import {
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations, history
-} from "@wso2is/admin.core.v1";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
 import { UserAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
-import { UserBasicInterface, UserListInterface } from "@wso2is/admin.users.v1/models";
+import { UserBasicInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
-import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled, resolveUserstore } from "@wso2is/core/helpers";
+import { getUserNameWithoutDomain, isFeatureEnabled, resolveUserstore } from "@wso2is/core/helpers";
 import {
     LoadableComponentInterface,
     SBACInterface,
@@ -46,11 +43,14 @@ import {
     UserAvatar,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
+import { getEmptyPlaceholderIllustrations } from "@wso2is.admin.core.v1/configs/ui";
+import { UIConstants } from "@wso2is.admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is.admin.core.v1/helpers/history";
 import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import { AdministratorConstants } from "../constants";
+import { AdministratorConstants } from "../constants/users";
 
 /**
  * Prop types for the all users list component.
@@ -170,6 +170,11 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
     const [ loading, setLoading ] = useState(false);
 
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
+
+    const hasUserUpdatePermission: boolean = useRequiredScopes(featureConfig?.users?.scopes?.update);
+    const hasUserDeteletPermission: boolean = useRequiredScopes(featureConfig?.users?.scopes?.delete);
 
     /**
      * Set tenant admin.
@@ -193,10 +198,8 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
         setUsersList(allUsersList);
     }, [ allUsersList ]);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-
     const handleUserEdit = (user: UserBasicInterface) => {
-        if (resolveUserstore(user.userName) === userstoresConfig.primaryUserstoreName) {
+        if (resolveUserstore(user.userName, primaryUserStoreDomainName) === userstoresConfig.primaryUserstoreName) {
             history.push(AdministratorConstants.getPaths().get("CUSTOMER_USER_EDIT_PATH").replace(":id", user.id));
         } else {
             history.push(AdministratorConstants.getPaths().get("COLLABORATOR_USER_EDIT_PATH").replace(":id", user.id));
@@ -289,7 +292,8 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                     if (user.userName === tenantAdmin) {
                         return "Owner";
                     }
-                    if (resolveUserstore(user.userName) === userstoresConfig.primaryUserstoreName) {
+                    if (resolveUserstore(user.userName, primaryUserStoreDomainName)
+                        === userstoresConfig.primaryUserstoreName) {
                         return UserAccountTypes.USER;
                     } else {
                         return administratorConfig.adminRoleName;
@@ -323,8 +327,8 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                 id: "idpType",
                 key: "idpType",
                 render: (user: UserBasicInterface): ReactNode => {
-                    if (user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType) {
-                        return user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType;
+                    if (user[ SCIMConfigs.scim.systemSchema ]?.idpType) {
+                        return user[ SCIMConfigs.scim.systemSchema ]?.idpType;
                     } else {
                         return "N/A";
                     }
@@ -357,8 +361,8 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                 id: "userStore",
                 key: "userStore",
                 render: (user: UserBasicInterface): ReactNode => {
-                    if (user[ SCIMConfigs.scim.enterpriseSchema ]?.userSource) {
-                        return user[ SCIMConfigs.scim.enterpriseSchema ]?.userSource;
+                    if (user[ SCIMConfigs.scim.systemSchema ]?.userSource) {
+                        return user[ SCIMConfigs.scim.systemSchema ]?.userSource;
                     } else {
                         return "N/A";
                     }
@@ -453,7 +457,7 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                         ? user?.userName?.split("/")[0]
                         : AdministratorConstants.ASGARDEO_USERSTORE;
 
-                    return !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+                    return !hasUserUpdatePermission
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
@@ -467,7 +471,7 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                         ? user?.userName?.split("/")[0]
                         : AdministratorConstants.ASGARDEO_USERSTORE;
 
-                    return !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+                    return !hasUserUpdatePermission
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
@@ -487,7 +491,7 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
 
                 return !isFeatureEnabled(featureConfig?.users,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
-                    || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)
+                    || !hasUserDeteletPermission
                     || readOnlyUserStores?.includes(userStore.toString())
                     || user.userName === realmConfigs?.adminUser || authenticatedUser.includes(user.userName);
             },
@@ -599,16 +603,18 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                             attached
                             negative
                         >
-                            { resolveUserstore(deletingUser.userName) === userstoresConfig.primaryUserstoreName
+                            { resolveUserstore(deletingUser.userName, primaryUserStoreDomainName)
+                                === userstoresConfig.primaryUserstoreName
                                 ? t("user:deleteUser.confirmationModal.message")
                                 : t("extensions:manage.guest.deleteUser.confirmationModal.message")
                             }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${ testId }-confirmation-modal-content` }>
                             <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                            { resolveUserstore(deletingUser.userName) === userstoresConfig.primaryUserstoreName
+                            { resolveUserstore(deletingUser.userName, primaryUserStoreDomainName)
+                                === userstoresConfig.primaryUserstoreName
                                 ? (
-                                    deletingUser[SCIMConfigs.scim.enterpriseSchema]?.userSourceId
+                                    deletingUser[SCIMConfigs.scim.systemSchema]?.userSourceId
                                         ? t("user:deleteJITUser.confirmationModal.content")
                                         : t("user:deleteUser.confirmationModal.content")
                                 )

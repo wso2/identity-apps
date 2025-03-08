@@ -20,3 +20,25 @@
     margin-top: 0 !important;
     margin-right: 1rem !important;
 }
+
+.access-token-attributes-feature-banner {
+    padding-top: 1rem !important;
+}
+
+.access-token-attributes-dropdown {
+    padding-top: 1rem !important;
+}
+
+.access-token-attributes-dropdown-input {
+    input {
+        border: none !important;
+        width: auto !important;
+    }
+    .MuiInputBase-root {
+        margin-top: .5em !important;
+    }
+
+    .MuiFormLabel-root {
+        font-size: .92857143em !important;
+    }
+}

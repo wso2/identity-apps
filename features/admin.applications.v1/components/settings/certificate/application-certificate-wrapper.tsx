@@ -33,9 +33,9 @@ import {
     ApplicationInterface,
     ApplicationTemplateIdTypes,
     CertificateInterface,
-    CertificateTypeInterface,
-    SupportedAuthProtocolTypes
-} from "../../../models";
+    CertificateTypeInterface
+} from "../../../models/application";
+import { SupportedAuthProtocolTypes } from "../../../models/application-inbound";
 
 /**
  * Proptypes for the application wrapper certificate component.
@@ -160,7 +160,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
     }, [ certificate ]);
 
     /**
-     * Change related to cert type changne.
+     * Change related to cert type change.
      */
     useEffect(() => {
         handleCertificateTypeChange(selectedCertType);

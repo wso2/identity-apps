@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -229,6 +229,12 @@ export const organizations: organizationsNS = {
                 message: "Organization fetched successfully"
             }
         },
+        getConfiguration: {
+            error: {
+                description: "Error occurred while retrieving organization information",
+                message: "An error occurred"
+            }
+        },
         getMetaAttributesList: {
             error: {
                 description: "{{description}}",
@@ -311,7 +317,8 @@ export const organizations: organizationsNS = {
         },
         subOrganizations: "Organizations",
         switchButton: "Switch to Organization",
-        switchLabel: "Root Organization"
+        switchLabel: "Root Organization",
+        switchLabelAlt: "Organizations"
     },
     title: "Organizations",
     unshareApplicationInfo: "This will allow you to prevent sharing this application with any of the " +

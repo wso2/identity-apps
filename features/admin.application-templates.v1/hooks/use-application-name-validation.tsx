@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { getApplicationList } from "@wso2is/admin.applications.v1/api";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
-import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models";
-import { AppState } from "@wso2is/admin.core.v1";
+import { getApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
+import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models/application";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AxiosError } from "axios";

@@ -16,9 +16,14 @@
  * under the License.
  */
 
-import { getApplicationList } from "@wso2is/admin.applications.v1/api";
-import { ApplicationListInterface, ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models";
-import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { getApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import {
+    ApplicationListInterface, ApplicationListItemInterface
+} from "@wso2is/admin.applications.v1/models/application";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -190,7 +195,7 @@ const ApplicationRolesPage = (props: ApplicationRolesPageInterface): ReactElemen
             iconPosition="left"
             onChange={ (e: ChangeEvent<HTMLInputElement>) => searchApplications(e.target.value) }
             value={ searchQuery }
-            placeholder={ t("extensions:console.applicationRoles.searchApplication") }
+            placeholder={ t("applicationRoles:searchApplication") }
             floated="left"
             style={ { width: 300 } }
             transparent
@@ -211,13 +216,13 @@ const ApplicationRolesPage = (props: ApplicationRolesPageInterface): ReactElemen
 
     return (
         <PageLayout
-            title={ t("extensions:console.applicationRoles.heading") }
-            description={ t("extensions:console.applicationRoles.subHeading") }
-            pageTitle={ t("extensions:console.applicationRoles.heading") }
+            title={ t("applicationRoles:heading") }
+            description={ t("applicationRoles:subHeading") }
+            pageTitle={ t("applicationRoles:heading") }
             backButton={ isSubOrg
                 ? {
                     onClick: handleBackButtonClick,
-                    text: t("extensions:console.applicationRoles.roles.goBackToRoles")
+                    text: t("applicationRoles:roles.goBackToRoles")
                 }: null
             }
         >

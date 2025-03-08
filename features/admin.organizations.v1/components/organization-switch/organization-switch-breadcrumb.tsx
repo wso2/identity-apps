@@ -19,8 +19,10 @@
 import { BasicUserInfo } from "@asgardeo/auth-react";
 import { CloneIcon } from "@oxygen-ui/react-icons";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
-import { AppConstants, AppState, OrganizationType } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import TenantDropdown from "@wso2is/admin.tenants.v1/components/dropdown/tenant-dropdown";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -467,7 +469,11 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                 onClick={ () => setIsDropDownOpen(!isDropDownOpen) }
                             >
                                 <p className="organization-breadcrumb-label">
-                                    { t("organizations:switching.switchLabel") }
+                                    { organizationType === OrganizationType.SUPER_ORGANIZATION ||
+                                    organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION
+                                        ? t("organizations:switching.switchLabel")
+                                        : t("organizations:switching.switchLabelAlt")
+                                    }
                                 </p>
                                 <Breadcrumb className="organization-breadcrumb-main">
                                     <CloneIcon size={ 14 } />

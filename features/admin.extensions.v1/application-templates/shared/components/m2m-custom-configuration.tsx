@@ -17,12 +17,13 @@
  */
 
 import useSubscribedAPIResources  from "@wso2is/admin.applications.v1/api/use-subscribed-api-resources";
-import { OIDCApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models";
 import {
     AuthorizedAPIListItemInterface,
     AuthorizedPermissionListItemInterface
 } from "@wso2is/admin.applications.v1/models/api-authorization";
-import { AppState, history } from "@wso2is/admin.core.v1";
+import { OIDCApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import {
@@ -175,7 +176,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                     <Heading as="h6" compact>
                         <Trans
                             i18nKey={
-                                "extensions:console.application.quickStart" +
+                                "applications:quickStart" +
                                 ".spa.customConfig.protocolConfig"
                             }
                         >
@@ -215,7 +216,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                             ".twa.oidc.customConfig.clientSecret")
                                         }
                                         <Hint className="mt-0 mb-0" popup>
@@ -234,7 +235,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                                 ".m2m.customConfig.tokenEndpoint")
                                         }
                                         <Hint className="mt-0 mb-0" popup>
@@ -285,7 +286,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                               ".m2m.customConfig.tokenRequest")
                                         }
                                         <Hint className="mt-0 mb-0" popup>
@@ -355,7 +356,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                         className="spa-config-accordion-title"
                     >
                         <Heading as="h5">
-                            { t("extensions:console.application.quickStart.m2m.customConfig.configurations") }
+                            { t("applications:quickStart.m2m.customConfig.configurations") }
                         </Heading>
                     </SegmentedAccordion.Title>
                     <SegmentedAccordion.Content

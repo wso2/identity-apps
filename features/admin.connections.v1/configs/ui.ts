@@ -21,6 +21,7 @@ import FIDOIcon from "../../themes/default/assets/images/authenticators/fido-pas
 import SalesforceLogo from "../../themes/default/assets/images/connectors/salesforce.png";
 import SCIMLogo from "../../themes/default/assets/images/connectors/scim.png";
 import SPMLLogo from "../../themes/default/assets/images/connectors/spml.png";
+import ExpertIcon from "../../themes/default/assets/images/identity-providers/expert.svg";
 import FacebookLogo from "../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
 import GithubIdPIcon from "../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
 import GoogleLogo from "../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
@@ -33,6 +34,8 @@ import YahooLogo from "../../themes/default/assets/images/identity-providers/yah
 import JWTLogo from "../../themes/default/assets/images/technologies/jwt-logo.svg";
 import AppleLogo from "../../themes/default/assets/images/third-party/apple-logo.svg";
 import MicrosoftLogo from "../../themes/default/assets/images/third-party/microsoft-logo.svg";
+import { ReactComponent as SelectCheckBoxIcon } from
+    "../../themes/wso2is/assets/images/icons/outline-icons/select-check-box-outline.svg";
 import { SupportedServices } from "../models/connection";
 import ConnectionIcon from "../resources/assets/images/icons/connection.svg";
 import { ReactComponent as DefaultConnectionIcon
@@ -48,6 +51,7 @@ import OrganizationSSOIcon from "../resources/assets/images/icons/organization-s
 import {
     ReactComponent as ProvisionIcon
 } from "../resources/assets/images/icons/provision.svg";
+import PushAuthenticationIcon from "../resources/assets/images/icons/push.svg";
 import { ReactComponent as ReportIcon } from "../resources/assets/images/icons/report-icon.svg";
 import SAMLConnectionIcon from "../resources/assets/images/icons/saml-connection-icon.png";
 import SMSOTPIcon from "../resources/assets/images/icons/sms-otp.svg";
@@ -60,6 +64,7 @@ export const getConnectionWizardStepIcons = (): any => {
         authenticatorSettings: GearsIcon,
         general: DocumentIcon,
         outboundProvisioningSettings: GearsIcon,
+        selectAuthentication: SelectCheckBoxIcon,
         summary: ReportIcon
     };
 };
@@ -85,6 +90,7 @@ export const getConnectionIcons = (): any => {
         "email-otp-authenticator": EmailOTPIcon,
         emailOTP: EmailOTPIcon,
         enterprise: EnterpriseConnectionIcon,
+        expert: ExpertIcon,
         facebook: FacebookLogo,
         fido: FIDOIcon,
         githubAuthenticator: GithubIdPIcon,
@@ -97,6 +103,7 @@ export const getConnectionIcons = (): any => {
         office365: Office365Logo,
         oidc: OIDCConnectionIcon,
         organizationSSO: OrganizationSSOIcon,
+        push: PushAuthenticationIcon,
         saml: SAMLConnectionIcon,
         smsOTP: SMSOTPIcon,
         totp: TOTPIcon,

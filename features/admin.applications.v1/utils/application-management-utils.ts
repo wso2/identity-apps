@@ -17,7 +17,8 @@
  */
 
 /* eslint-disable @typescript-eslint/typedef */
-import { DocPanelUICardInterface, store } from "@wso2is/admin.core.v1";
+import { DocPanelUICardInterface } from "@wso2is/admin.core.v1/models/help-panel";
+import { store } from "@wso2is/admin.core.v1/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -29,30 +30,32 @@ import {
     getAvailableInboundProtocols,
     getOIDCApplicationConfigurations,
     getSAMLApplicationConfigurations
-} from "../api";
+} from "../api/application";
 import {
     SAMLConfigurationDisplayNames,
     SupportedAuthProtocolTypeDescriptions,
     SupportedAuthProtocolTypeDisplayNames
-} from "../components/meta";
-import { ApplicationManagementConstants } from "../constants";
+} from "../components/meta/inbound-protocols.meta";
+import { ApplicationManagementConstants } from "../constants/application-management";
 import {
     ApplicationListItemInterface,
-    AuthProtocolMetaListItemInterface,
     SAMLApplicationConfigurationInterface,
-    SAMLConfigModes,
-    SupportedAuthProtocolTypes,
-    SupportedCustomAuthProtocolTypes,
     additionalSpProperty,
     emptySAMLAppConfiguration
-} from "../models";
+} from "../models/application";
+import {
+    AuthProtocolMetaListItemInterface,
+    SAMLConfigModes,
+    SupportedAuthProtocolTypes,
+    SupportedCustomAuthProtocolTypes
+} from "../models/application-inbound";
 import {
     checkAvailableCustomInboundAuthProtocolMeta,
     setAvailableCustomInboundAuthProtocolMeta,
     setAvailableInboundAuthProtocolMeta,
     setOIDCApplicationConfigs,
     setSAMLApplicationConfigs
-} from "../store";
+} from "../store/actions/application";
 
 /**
  * Utility class for application(service provider) operations.
@@ -104,30 +107,70 @@ export class ApplicationManagementUtils {
             });
     }
 
-    public static isApplicationOutdated(applicationVersion: string, grantTypes?: string[]): boolean {
+    /**
+     * Compared the current app version with the give app version and return if app is lower or not.
+     *
+     * @param currentApplicationVersion - Application current version.
+     * @param isOIDCApp - Whether the app is OIDC or not.
+     * @returns True if app version is lower or not.
+     */
+    public static isApplicationOutdated(currentApplicationVersion: string, isOIDCApp?: boolean): boolean {
 
-        if (applicationVersion && grantTypes
-            && grantTypes?.includes(ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT)) {
+        if (currentApplicationVersion && isOIDCApp) {
 
-            const appVersionArray: number[] = applicationVersion?.match(/\d+/g).map(Number);
-            const latestAppVersionArray: number[] = ApplicationManagementConstants
+            const appVersion: number[] = currentApplicationVersion?.match(/\d+/g).map(Number);
+            const latestAppVersion: number[] = ApplicationManagementConstants
                 .LATEST_VERSION.match(/\d+/g).map(Number);
 
-            // App version and latest version arrays should have at least 3 parts.
+            // App version or latest version arrays should have at least 3 parts.
             // Major, Minor and Patch versions.
-            if (appVersionArray?.length < 3 && latestAppVersionArray?.length < 3) {
+            if (appVersion?.length < 3 || latestAppVersion?.length < 3) {
                 return false;
             }
 
-            if (appVersionArray[0] < latestAppVersionArray[0]) {
+            if (appVersion[0] < latestAppVersion[0]) {
                 return true;
-            } else if (appVersionArray[1] < latestAppVersionArray[1]) {
+            } else if (appVersion[1] < latestAppVersion[1]) {
                 return true;
-            } else if (appVersionArray[2] < latestAppVersionArray[2]) {
+            } else if (appVersion[2] < latestAppVersion[2]) {
                 return true;
             } else {
                 return false;
             }
+        }
+
+        return false;
+    }
+
+    /**
+     * Compared the current app version with the give app version and return if app is allowed to use the feature.
+     *
+     * @param applicationVersion - Application current version.
+     * @param allowedApplicationVersion - Allowed Application version.
+     * @returns True if app is allowed to use the feature.
+     */
+    public static isAppVersionAllowed(applicationVersion: string, allowedApplicationVersion: string): boolean {
+
+        if (applicationVersion && allowedApplicationVersion) {
+
+            const appVersionArray: number[] = applicationVersion?.match(/\d+/g).map(Number);
+            const allowedAppVersionArray: number[] = allowedApplicationVersion?.match(/\d+/g).map(Number);
+
+            // App version or latest version arrays should have at least 3 parts.
+            // Major, Minor and Patch versions.
+            if (appVersionArray?.length < 3 || allowedAppVersionArray?.length < 3) {
+                return false;
+            }
+
+            for (let i = 0; i < appVersionArray.length; i++) {
+                if (appVersionArray[i] > allowedAppVersionArray[i]) {
+                    return true;
+                } else if (appVersionArray[i] < allowedAppVersionArray[i]) {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         return false;

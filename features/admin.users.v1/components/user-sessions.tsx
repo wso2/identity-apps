@@ -17,12 +17,10 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import {
-    AppState,
-    FeatureConfigInterface,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { UserAgentParser } from "@wso2is/core/helpers";
 import {
@@ -58,7 +56,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
 import { getUserSessions, terminateAllUserSessions, terminateUserSession } from "../api";
-import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models";
+import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models/user";
 
 /**
  * Proptypes for the user sessions component.

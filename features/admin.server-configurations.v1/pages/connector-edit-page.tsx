@@ -16,10 +16,13 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import {  AppState  } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -36,7 +39,6 @@ import React, {
     ReactElement,
     SyntheticEvent,
     useEffect,
-    useMemo,
     useRef,
     useState
 } from "react";
@@ -80,8 +82,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const applicationFeatureConfig: FeatureConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.applications);
     const registrationFlowBuilderFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.registrationFlowBuilder
     );
@@ -98,28 +100,13 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ enableBackButton, setEnableBackButton ] = useState<boolean>(true);
 
-    const isReadOnly: boolean = useMemo(
-        () =>
-            !hasRequiredScopes(
-                featureConfig?.governanceConnectors,
-                featureConfig?.governanceConnectors?.scopes?.update,
-                allowedScopes
-            ),
-        [ featureConfig, allowedScopes ]
-    );
-
+    const isReadOnly: boolean = !useRequiredScopes(applicationFeatureConfig?.governanceConnectors?.scopes?.update);
     const path: string[] = history.location.pathname.split("/");
     const type: string = path[ path.length - 3 ];
 
     useEffect(() => {
         // If Governance Connector read permission is not available, prevent from trying to load the connectors.
-        if (
-            !hasRequiredScopes(
-                featureConfig?.governanceConnectors,
-                featureConfig?.governanceConnectors?.scopes?.read,
-                allowedScopes
-            )
-        ) {
+        if (isReadOnly) {
             return;
         }
 
@@ -407,6 +394,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return "Multi Attribute Login";
             case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
                 return "Invite User to Set Password";
+            case ServerConfigurationsConstants.SIFT_CONNECTOR_ID:
+                return "Fraud Detection";
             default:
                 return connector?.friendlyName;
         }
@@ -418,18 +407,17 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return (<>
                     { t("extensions:manage.serverConfigurations.accountSecurity.loginAttemptSecurity.subHeading") }
                     <DocumentationLink link={ getLink("manage.loginSecurity.loginAttempts.learnMore") }>
-                        { t("extensions:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </>);
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
                 return type === "username"
-                    ? "Enable self-service username recovery for users on the login page." +
-                        " The user will receive a username reset link via email upon request."
+                    ? t("extensions:manage.serverConfigurations.accountRecovery.usernameRecovery.heading")
                     : (
                         <div style={ { whiteSpace: "pre-line" } }>
                             { t("extensions:manage.serverConfigurations.accountRecovery.passwordRecovery.subHeading") }
                             <DocumentationLink link={ getLink("manage.accountRecovery.passwordRecovery.learnMore") }>
-                                { t("extensions:common.learnMore") }
+                                { t("common:learnMore") }
                             </DocumentationLink>
                         </div>
                     );
@@ -437,7 +425,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return (<>
                     { t("extensions:manage.serverConfigurations.accountSecurity.botDetection.subHeading") }
                     <DocumentationLink link={ getLink("manage.loginSecurity.botDetection.learnMore") }>
-                        { t("extensions:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </>);
             case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
@@ -455,7 +443,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                             <strong>user</strong> account in the organization.
                         </Trans>
                         <DocumentationLink link={ getLink("manage.selfRegistration.learnMore") }>
-                            { t("extensions:common.learnMore") }
+                            { t("common:learnMore") }
                         </DocumentationLink>
                     </>
                 );
@@ -468,6 +456,13 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
                 return "Allow users to set their own passwords during admin-initiated onboarding" +
                     " and configure related settings.";
+            case ServerConfigurationsConstants.SIFT_CONNECTOR_ID:
+                return (<>
+                    Configure Sift to detect and prevent fraudulent account activities.
+                    <DocumentationLink link={ getLink("manage.loginSecurity.siftConnector.learnMore") }>
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>);
             default:
                 return connector?.description
                     ? connector.description
@@ -512,6 +507,11 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     "extensions:manage.serverConfigurations.userOnboarding.inviteUserToSetPassword." +
                     "notification.success.description"
                 );
+            case ServerConfigurationsConstants.SIFT_CONNECTOR_ID:
+                return t(
+                    "governanceConnectors:connectorCategories.loginAttemptsSecurity.connectors.siftConnector" +
+                    ".notifications.configurationUpdate.success.description"
+                );
             default:
                 return t(
                     "governanceConnectors:notifications.updateConnector.success.description",
@@ -548,6 +548,11 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return t(
                     "extensions:manage.serverConfigurations.analytics.form." +
                     "notification.error.description"
+                );
+            case ServerConfigurationsConstants.SIFT_CONNECTOR_ID:
+                return t(
+                    "governanceConnectors:connectorCategories.loginAttemptsSecurity.connectors.siftConnector" +
+                    ".notifications.configurationUpdate.error.description"
                 );
             default:
                 return t(

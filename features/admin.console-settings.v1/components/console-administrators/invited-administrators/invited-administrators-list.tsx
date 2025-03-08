@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,18 +17,15 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations
-} from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { deleteParentOrgInvite } from "@wso2is/admin.users.v1/components/guests/api/invite";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
-import { UserInviteInterface } from "@wso2is/admin.users.v1/models";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { UserInviteInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
 import {
     AlertLevels,
@@ -98,6 +95,8 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
 
     const dispatch: Dispatch = useDispatch();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -105,7 +104,7 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ showInviteNewAdministratorModal, setShowInviteNewAdministratorModal ] = useState<boolean>(false);
     const [ loading, setLoading ] = useState(false);
-    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(PRIMARY_USERSTORE.toLocaleLowerCase());
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(primaryUserStoreDomainName);
 
     const {
         invitedAdministrators,
@@ -248,7 +247,7 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
                         selection
                         options={ availableUserStores }
                         onChange={ handleSelectedUserStoreChange }
-                        defaultValue={ PRIMARY_USERSTORE.toLocaleLowerCase() }
+                        defaultValue={ primaryUserStoreDomainName }
                     />) : null
             }
             topActionPanelExtension={ (

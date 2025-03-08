@@ -84,7 +84,7 @@ import {
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
 import { getGeneralIcons } from "../../../../configs/ui";
-import { AuthenticationStepInterface } from "../../../../models";
+import { AuthenticationStepInterface } from "../../../../models/application";
 
 /**
  * Prop-types for the Add authenticator modal component.

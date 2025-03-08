@@ -16,19 +16,23 @@
  * under the License.
  */
 
-import { UserRoleInterface } from "@wso2is/admin.core.v1/models";
+import { UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { store } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import {
     ValidationConfInterface,
     ValidationDataInterface,
     ValidationFormInterface,
     ValidationPropertyInterface
 } from "@wso2is/admin.validation.v1/models";
+import { ProfileConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
+import isEmpty from "lodash-es/isEmpty";
 import { UserManagementConstants } from "../constants/user-management-constants";
-import { MultipleInviteMode, MultipleInvitesDisplayNames, UserBasicInterface } from "../models";
+import { MultipleInviteMode, MultipleInvitesDisplayNames, UserBasicInterface } from "../models/user";
 
 /**
  * Utility class for user management operations.
@@ -215,6 +219,54 @@ export const getUsernameConfiguration = (configs: ValidationDataInterface[]): Va
 };
 
 /**
+     * Check if multiple emails and mobile numbers feature is enabled.
+     */
+export const isMultipleEmailsAndMobileNumbersEnabled = (
+    profileInfo: Map<string, string>,
+    profileSchema: ProfileSchemaInterface[]
+): boolean => {
+    const UIConfig: UIConfigInterface = store.getState().config?.ui;
+
+    if (isEmpty(profileInfo) || isEmpty(profileSchema)) return;
+
+    if (!UIConfig?.isMultipleEmailsAndMobileNumbersEnabled) {
+        return false;
+    }
+
+    const multipleEmailsAndMobileFeatureRelatedAttributes: string[] = [
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS")
+    ];
+
+    const domainName: string[] = profileInfo?.get("userName")?.toString().split("/");
+    const userStoreDomain: string = (domainName.length > 1
+        ? domainName[0]
+        : PRIMARY_USERSTORE)?.toUpperCase();
+
+    // Check each required attribute exists and domain is not excluded in the excluded user store list.
+    const attributeCheck: boolean = multipleEmailsAndMobileFeatureRelatedAttributes.every(
+        (attribute: string) => {
+            const schema: ProfileSchemaInterface = profileSchema?.find(
+                (schema: ProfileSchemaInterface) => schema?.name === attribute);
+
+            if (!schema) {
+                return false;
+            }
+
+            const excludedUserStores: string[] =
+                schema?.excludedUserStores?.split(",")?.map((store: string) => store?.trim().toUpperCase()) || [];
+
+            return !excludedUserStores.includes(userStoreDomain);
+        });
+
+    return attributeCheck;
+};
+
+/**
  * Retrieve values of each validator.
  */
 const getValidationConfig = (
@@ -237,4 +289,48 @@ const getValidationConfig = (
     }
 
     return null;
+};
+
+/**
+ * Extracts sub-attributes (objects) from the profile details.
+ *
+ * @param user - The user object to extract sub-attributes from.
+ * @param schemaKey - The attribute key to extract sub-attributes from.
+ * @returns Array of sub-attributes (objects).
+ */
+export const extractSubAttributes = (user: ProfileInfoInterface, schemaKey: string): Record<string, string>[] => {
+    return user && user[schemaKey]?.filter(
+        (subAttribute: unknown) => typeof subAttribute === "object") || [];
+};
+
+/**
+ * Process multi valued simple attribute patch operation value.
+ *
+ * @param attributeSchemaName - Attribute schema name.
+ * @param primaryAttributeSchemaName - Primary schema attribute.
+ * @param profileInfo - Profile information.
+ * @param multiValuedAttributeInputValues - Multi valued attribute input values.
+ * @returns Patch operation value.
+ */
+export const constructPatchOpValueForMultiValuedAttribute = (
+    attributeSchemaName: string,
+    primaryAttributeSchemaName: string,
+    profileInfo: Map<string, string>,
+    multiValuedAttributeInputValues: Record<string, string>
+) => {
+    const currentValues: string[] = profileInfo?.get(attributeSchemaName)?.split(",") || [];
+
+    if (!isEmpty(multiValuedAttributeInputValues[attributeSchemaName])) {
+        currentValues.push(multiValuedAttributeInputValues[attributeSchemaName]);
+    }
+
+    if (!isEmpty(primaryAttributeSchemaName)) {
+        const existingPrimary: string = profileInfo?.get(primaryAttributeSchemaName);
+
+        if (existingPrimary && !currentValues.includes(existingPrimary)) {
+            currentValues.push(existingPrimary);
+        }
+    }
+
+    return { [attributeSchemaName]: currentValues } ;
 };

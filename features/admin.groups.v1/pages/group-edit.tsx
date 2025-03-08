@@ -16,15 +16,16 @@
  * under the License.
  */
 
-import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { TabPageLayout } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getGroupById } from "../api";
-import { EditGroup } from "../components";
-import { GroupsInterface } from "../models";
+import { getGroupById } from "../api/groups";
+import { EditGroup } from "../components/edit-group/edit-group";
+import { GroupsInterface } from "../models/groups";
 import GroupManagementProvider from "../providers/group-management-provider";
 
 const GroupEditPage: FunctionComponent<any> = (): ReactElement => {

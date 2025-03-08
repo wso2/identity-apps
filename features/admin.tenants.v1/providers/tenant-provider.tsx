@@ -58,7 +58,7 @@ export interface TenantProviderProps {
      * Callback to be fired on un-successful tenant enable.
      */
     onTenantEnableError?: () => void;
-};
+}
 
 /**
  * This component provides tenant-related context to its children.
@@ -86,8 +86,11 @@ const TenantProvider = ({
     const [ disablingTenant, setDisablingTenant ] = useState<Tenant>(null);
     const [ isTenantDeleteRequestLoading, setIsTenantDeleteRequestLoading ] = useState<boolean>(false);
     const [ isTenantStatusUpdateRequestLoading, setIsTenantStatusUpdateRequestLoading ] = useState<boolean>(false);
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const [ searchQueryClearTrigger, setSearchQueryClearTrigger ] = useState<boolean>(false);
 
     const { data: tenantList, isLoading: isTenantListLoading, mutate: mutateTenantList } = useGetTenants({
+        filter: searchQuery,
         limit: tenantListLimit,
         offset: 0,
         sortBy: "domainName",
@@ -218,6 +221,10 @@ const TenantProvider = ({
                 isInitialRenderingComplete,
                 isTenantListLoading,
                 mutateTenantList,
+                searchQuery,
+                searchQueryClearTrigger,
+                setSearchQuery,
+                setSearchQueryClearTrigger,
                 setTenantListLimit,
                 tenantList,
                 tenantListLimit
@@ -266,7 +273,7 @@ const TenantProvider = ({
                     primaryAction={ t("tenants:confirmationModals.disableTenant.primaryAction") }
                     secondaryAction={ t("tenants:confirmationModals.disableTenant.secondaryAction") }
                     onSecondaryActionClick={ (): void => setShowDisableConfirmationModal(false) }
-                    onPrimaryActionClick={ (): void => handleTenantStatusUpdateConfirmation(disablingTenant) }
+                    onPrimaryActionClick={ async () => await handleTenantStatusUpdateConfirmation(disablingTenant) }
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header data-componentid="tenant-disable-confirmation-modal-header">

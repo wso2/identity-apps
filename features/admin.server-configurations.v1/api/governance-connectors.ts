@@ -17,7 +17,7 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1";
+import { store } from "@wso2is/admin.core.v1/store";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -95,6 +95,42 @@ export const useGovernanceConnectors = <
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.governanceConnectorCategories + "/"
             + categoryId + "/connectors/"
+    };
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig: null);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate: mutate
+    };
+};
+
+/**
+ * Get details of a governance connector.
+ *
+ * @param categoryId - ID of the connector category
+ * @param connectorId - ID of the connector
+ * @returns the governance connector.
+ */
+export const useGetGovernanceConnectorById = <
+    Data = GovernanceConnectorInterface,
+    Error = RequestErrorInterface
+    >(
+        categoryId: string,
+        connectorId: string,
+        shouldFetch: boolean = true
+    ): RequestResultInterface<Data, Error> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.governanceConnectorCategories + "/"
+            + categoryId + "/connectors/" + connectorId
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig: null);

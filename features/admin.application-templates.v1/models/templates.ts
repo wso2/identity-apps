@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { MainApplicationInterface } from "@wso2is/admin.applications.v1/models";
+import { MainApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
 import { DynamicFormInterface } from "@wso2is/admin.template-core.v1/models/dynamic-fields";
 import { ExtensionTemplateCommonInterface } from "@wso2is/admin.template-core.v1/models/templates";
 

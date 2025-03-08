@@ -17,16 +17,14 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { useApplicationList } from "@wso2is/admin.applications.v1/api";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    OrganizationType,
-    UIConstants
-} from "@wso2is/admin.core.v1";
-import { history } from "@wso2is/admin.core.v1/helpers";
+import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -38,7 +36,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { deleteRoleById, useRolesList } from "../api";
+import { deleteRoleById } from "../api";
+import useGetRolesList from "../api/use-get-roles-list";
 import { RoleList } from "../components/role-list";
 import { RoleConstants } from "../constants";
 
@@ -90,7 +89,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
         isLoading: isRolesListLoading,
         error: rolesListError,
         mutate: mutateRolesList
-    } = useRolesList(
+    } = useGetRolesList(
         listItemLimit,
         listOffset,
         useRolesListFilterBy(filterBy),
@@ -220,33 +219,34 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     return (
         <PageLayout
             action={
-                !isSubOrg && !isRolesListLoading && (rolesList?.totalResults > 0)
-                    ? (
-                        <Show when={ featureConfig?.userRoles?.scopes?.create }>
-                            <PrimaryButton
-                                data-componentid={ `${componentId}-add-button` }
-                                onClick={ () => handleCreateRole() }
-                            >
-                                <Icon
-                                    data-componentid={ `${componentId}-add-button-icon` }
-                                    name="add"
-                                />
-                                { t("roles:list.buttons.addButton", { type: "Role" }) }
-                            </PrimaryButton>
-                        </Show>
-                    ) : null
+                (
+                    !isRolesListLoading && (rolesList?.totalResults > 0)
+                        ? (
+                            <Show when={ featureConfig?.userRoles?.scopes?.create }>
+                                <PrimaryButton
+                                    data-componentid={ `${componentId}-add-button` }
+                                    onClick={ () => handleCreateRole() }
+                                >
+                                    <Icon
+                                        data-componentid={ `${componentId}-add-button-icon` }
+                                        name="add"
+                                    />
+                                    { t("roles:list.buttons.addButton", { type: "Role" }) }
+                                </PrimaryButton>
+                            </Show>
+                        ): null
+                )
             }
             title={ t("pages:roles.title") }
             pageTitle={ t("pages:roles.title") }
-            description={ isSubOrg
-                ? t("pages:roles.alternateSubTitle")
-                : (
+            description={
+                (
                     <>
                         { t("pages:roles.subTitle") }
                         <DocumentationLink
                             link={ getLink("develop.applications.roles.learnMore") }
                         >
-                            { t("extensions:common.learnMore") }
+                            { t("common:learnMore") }
                         </DocumentationLink>
                     </>
                 )
@@ -303,7 +303,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                         />
                     )
                 }
-                showPagination={ rolesList?.totalResults > 0 }
+                showPagination={ true }
                 totalPages={ Math.ceil(rolesList?.totalResults / listItemLimit) }
                 totalListSize={ rolesList?.totalResults }
                 isLoading={ isRolesListLoading }

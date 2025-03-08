@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import {
@@ -31,7 +33,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import SinglePageApplication
@@ -40,8 +42,10 @@ import {
     InboundProtocolListItemInterface,
     OIDCApplicationConfigurationInterface,
     SAMLApplicationConfigurationInterface
-} from "../../models";
-import { MTLSOIDCConfigurations, OIDCConfigurations, SAMLConfigurations } from "../help-panel";
+} from "../../models/application";
+import { MTLSOIDCConfigurations } from "../help-panel/mtls-oidc-configurations";
+import { OIDCConfigurations } from "../help-panel/oidc-configurations";
+import { SAMLConfigurations } from "../help-panel/saml-configurations";
 import { WSFederationConfigurations } from "../help-panel/ws-fed-configurations";
 
 /**

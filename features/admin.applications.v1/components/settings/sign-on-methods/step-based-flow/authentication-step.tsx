@@ -23,7 +23,7 @@ import {
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AuthenticatorCategories } from "@wso2is/admin.connections.v1/models/authenticators";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
-import { getGeneralIcons } from "@wso2is/admin.core.v1";
+import { getGeneralIcons } from "@wso2is/admin.core.v1/configs/ui";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import {
     FederatedAuthenticatorInterface,
@@ -36,7 +36,7 @@ import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Checkbox, Form, Icon, Label, Radio } from "semantic-ui-react";
-import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../../models";
+import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../../models/application";
 
 /**
  * Proptypes for the authentication step component.

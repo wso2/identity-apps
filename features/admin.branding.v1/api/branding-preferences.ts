@@ -17,7 +17,7 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { I18nConstants } from "@wso2is/admin.core.v1/constants";
+import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { store } from "@wso2is/admin.core.v1/store";
 import {
     BrandingPreferenceAPIResponseInterface,
@@ -27,7 +27,7 @@ import {
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { BrandingPreferencesConstants } from "../constants";
+import { BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 
 /**
  * Get an axios instance.

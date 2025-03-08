@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { CreateGroupMemberInterface, GroupsInterface, getGroupList } from "@wso2is/admin.groups.v1";
+import { getGroupList } from "@wso2is/admin.groups.v1/api/groups";
+import { CreateGroupMemberInterface, GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { AssignGroupsUsers } from "@wso2is/admin.roles.v2/components/wizard/assign-groups-users";
 import { getRolesWizardStepIcons } from "@wso2is/admin.roles.v2/configs/ui";
 import { TreeNode } from "@wso2is/admin.roles.v2/models/permission";

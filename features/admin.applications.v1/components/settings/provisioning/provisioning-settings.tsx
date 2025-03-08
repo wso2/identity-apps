@@ -16,16 +16,15 @@
  * under the License.
  */
 
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
-import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { InboundProvisioningConfigurations } from "./inbound-provisioning-configuration";
 import { OutboundProvisioningConfiguration } from "./outbound-provisioning-configuration";
-import { ApplicationInterface, ProvisioningConfigurationInterface } from "../../../models";
+import { ApplicationInterface, ProvisioningConfigurationInterface } from "../../../models/application";
 
 /**
  * Proptypes for the provision settings component.
@@ -71,11 +70,11 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
         [ "data-componentid" ]: componentId
     } = props;
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-
     const shouldShowOutboundProvisioningConfigurations: boolean = useMemo(() => {
         return application?.provisioningConfigurations?.outboundProvisioningIdps?.length > 0;
     }, [ application ]);
+
+    const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
 
     return (
         <EmphasizedSegment padded="very">
@@ -88,9 +87,7 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
                             onUpdate={ onUpdate }
                             readOnly={
                                 readOnly
-                                || !hasRequiredScopes(featureConfig?.applications,
-                                    featureConfig?.applications?.scopes?.update,
-                                    allowedScopes)
+                                || !hasApplicationUpdatePermissions
                             }
                             data-testid={ `${ componentId }-inbound-configuration` }
                         />
@@ -105,9 +102,7 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
                                 onUpdate={ onUpdate }
                                 readOnly={
                                     readOnly
-                                    || !hasRequiredScopes(featureConfig?.applications,
-                                        featureConfig?.applications?.scopes?.update,
-                                        allowedScopes)
+                                    || !hasApplicationUpdatePermissions
                                 }
                                 data-testid={ `${ componentId }-outbound-configuration` }
                             />

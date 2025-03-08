@@ -17,7 +17,8 @@
  */
 
 import { ConnectionTemplateInterface } from "@wso2is/admin.connections.v1/models/connection";
-import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { ResourceCreateWizard } from "@wso2is/admin.template-core.v1/components/resource-create-wizard";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -104,7 +105,6 @@ const IdVPCreationModal: FunctionComponent<IdVPCreationModalPropsInterface> = ({
             claims: fetchedTemplateData.payload.claims,
             configProperties: configPropertiesInitialValues,
             description: fetchedTemplateData.payload.description,
-            image: fetchedTemplateData.payload.image,
             isEnabled: true,
             templateId: selectedTemplate?.id,
             templateVersion: selectedTemplate?.version
@@ -132,7 +132,6 @@ const IdVPCreationModal: FunctionComponent<IdVPCreationModalPropsInterface> = ({
             claims: values.claims as IdVPClaimsInterface[],
             configProperties,
             description: values.description as string,
-            image: values.image as string,
             isEnabled: true,
             name: values.name as string,
             type: values.templateId as string

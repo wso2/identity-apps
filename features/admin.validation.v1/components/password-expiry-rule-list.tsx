@@ -31,7 +31,7 @@ import Select from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
 import { ChevronDownIcon, ChevronUpIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
-import { GroupsInterface } from "@wso2is/admin.groups.v1";
+import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
 import {
     GovernanceConnectorConstants
@@ -316,7 +316,6 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
         if (!selected || selected?.length === 0) {
             return null;
         }
-        // console.log("testing:selected:", selected, "\n", rule);
         const isRoleAttribute: boolean = rule?.attribute === PasswordExpiryRuleAttribute.ROLES;
         const resourceList: Resource[] = isRoleAttribute ? rolesList : groupsList;
         const firstItem: Resource | undefined =

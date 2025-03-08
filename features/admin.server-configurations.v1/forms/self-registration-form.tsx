@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
@@ -161,7 +161,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             .find((schema: ProfileSchemaInterface) => (schema.name === "emails"));
 
         if (emailSchema) {
-            setEmailRequired(emailSchema.required);
+            setEmailRequired(emailSchema.profiles?.selfRegistration?.required ?? emailSchema.required);
         }
     }, []);
 

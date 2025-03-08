@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,17 +25,15 @@ import {
     ApplicationEditTabContentType,
     ApplicationEditTabMetadataInterface
 } from "@wso2is/admin.application-templates.v1/models/templates";
-import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants";
-import {
-    AppConstants,
-    AppState,
-    CORSOriginsListInterface,
-    EventPublisher,
-    FeatureConfigInterface,
-    getCORSOrigins,
-    history
-} from "@wso2is/admin.core.v1";
+import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants/branding-preferences-constants";
+import { getCORSOrigins } from "@wso2is/admin.core.v1/api/cors-configurations";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { CORSOriginsListInterface } from "@wso2is/admin.core.v1/models/cors-configurations";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
 import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-login-flow-provider";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
@@ -62,20 +60,18 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Form, Grid, Menu, TabProps } from "semantic-ui-react";
-import { InboundProtocolsMeta } from "./meta";
+import { InboundProtocolsMeta } from "./meta/inbound-protocols.meta";
 import MyAccountOverview from "./my-account/my-account-overview";
-import {
-    AccessConfiguration,
-    AdvancedSettings,
-    AttributeSettings,
-    GeneralApplicationSettings,
-    ProvisioningSettings,
-    SharedAccess,
-    SignOnMethods
-} from "./settings";
+import { AccessConfiguration } from "./settings/access-configuration";
+import { AdvancedSettings } from "./settings/advanced-settings";
+import { AttributeSettings } from "./settings/attribute-management/attribute-settings";
+import { GeneralApplicationSettings } from "./settings/general-application-settings";
 import { Info } from "./settings/info";
-import { disableApplication, getInboundProtocolConfig } from "../api";
-import { ApplicationManagementConstants } from "../constants";
+import { ProvisioningSettings } from "./settings/provisioning/provisioning-settings";
+import { SharedAccess } from "./settings/shared-access";
+import { SignOnMethods } from "./settings/sign-on-methods/sign-on-methods";
+import { disableApplication, getInboundProtocolConfig } from "../api/application";
+import { ApplicationManagementConstants } from "../constants/application-management";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
@@ -83,13 +79,15 @@ import {
     ApplicationTabTypes,
     ApplicationTemplateIdTypes,
     ApplicationTemplateInterface,
-    AuthProtocolMetaListItemInterface,
     InboundProtocolListItemInterface,
     OIDCApplicationConfigurationInterface,
+    SAMLApplicationConfigurationInterface
+} from "../models/application";
+import {
+    AuthProtocolMetaListItemInterface,
     OIDCDataInterface,
-    SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolTypes
-} from "../models";
+} from "../models/application-inbound";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 
 /**
@@ -590,6 +588,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         <ResourceTab.Pane controlledSegmentation>
             <AttributeSettings
                 appId={ application.id }
+                appVersion={ application?.applicationVersion }
                 technology={ application.inboundProtocols }
                 claimConfigurations={ application.claimConfiguration }
                 featureConfig={ featureConfig }
@@ -840,7 +839,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))
-                && !isM2MApplication) {
+                && !isM2MApplication
+                && (isSuperOrganization() || (isSubOrganization() && isFragmentApp) || isFirstLevelOrg)) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
@@ -858,7 +858,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (applicationConfig.editApplication.showProvisioningSettings
                 && isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))
-                && !isFragmentApp
+                && !isSubOrganization()
                 && !isM2MApplication
                 && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
                     application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
@@ -874,7 +874,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))
-                && !isFragmentApp
+                && !isSubOrganization()
                 && !isM2MApplication
                 && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
                     application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
@@ -927,7 +927,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
-                 && !isFragmentApp
+                 && !isSubOrganization()
                  && !isMyAccount) {
 
                 applicationConfig.editApplication.
@@ -941,7 +941,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                      "data-tabid": ApplicationTabIDs.INFO,
                      menuItem: {
                          content: t("applications:edit.sections.info.tabName"),
-                         icon: "info circle grey"
+                         icon: "info circle"
                      },
                      render: InfoTabPane
                  });

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,45 +16,27 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import Alert from "@oxygen-ui/react/Alert";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import {
+    UsernameRecoveryFormConstants
+} from "@wso2is/admin.server-configurations.v1/constants/username-recovery-constants";
+import {
+    UsernamePasswordRecoveryFormUpdatableConfigsInterface,
+    UsernameRecoveryConfigurationFormPropsInterface,
+    UsernameRecoveryFormValuesInterface
+} from "@wso2is/admin.server-configurations.v1/models/username-recovery";
+import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
+import { Heading, Link } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
-    ConnectorPropertyInterface,
-    GovernanceConnectorInterface
+    ConnectorPropertyInterface
 } from "../models/governance-connectors";
-import { GovernanceConnectorUtils } from "../utils/governance-connector-utils";
-
-/**
- * Interface for Username Recovery Configuration Form props.
- */
-interface UsernameRecoveryConfigurationFormPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * Connector's initial values.
-     */
-    initialValues: GovernanceConnectorInterface;
-    /**
-     * Callback for form submit.
-     * @param values - Resolved Form Values.
-     */
-    onSubmit: (values) => void;
-    /**
-     * Is readonly.
-     */
-    readOnly?: boolean;
-}
-
-/**
- * Proptypes for the Username Recovery Form error messages.
- */
-export interface UsernameRecoveryFormErrorValidationsInterface {
-    /**
-     * Recovery link expiry time field.
-     */
-    expiryTime: string;
-}
 
 const FORM_ID: string = "governance-connectors-username-recovery-form";
 
@@ -68,15 +50,18 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
     props: UsernameRecoveryConfigurationFormPropsInterface
 ): ReactElement => {
 
+    const { t } = useTranslation();
+
     const {
         initialValues,
         onSubmit,
         readOnly,
+        isSubmitting,
         ["data-componentid"]: testId
     } = props;
 
-    const [ initialValue, setInitialValue ]
-        = useState<string>("");
+    const [ initialConnectorValues, setInitialConnectorValues ]
+        = useState<UsernameRecoveryFormValuesInterface>(undefined);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -87,11 +72,34 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
             return;
         }
 
+        let resolvedInitialValues: UsernameRecoveryFormValuesInterface = null;
+
         initialValues.properties.map((property: ConnectorPropertyInterface) => {
-            if (property.name === ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE) {
-                setInitialValue(property.value);
+            if (UsernameRecoveryFormConstants.allowedConnectorFields.includes(property?.name)) {
+                switch(property.name) {
+                    case ServerConfigurationsConstants.USERNAME_RECOVERY_EMAIL_ENABLE:
+                        resolvedInitialValues = {
+                            ...resolvedInitialValues,
+                            enableEmailBasedRecovery: CommonUtils.parseBoolean(property.value)
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.USERNAME_RECOVERY_SMS_ENABLE:
+                        resolvedInitialValues = {
+                            ...resolvedInitialValues,
+                            enableSMSBasedRecovery: CommonUtils.parseBoolean(property.value)
+                        };
+
+                        break;
+                    default:
+                        // Invalid type is not handled since the form is generated based on the allowed fields.
+                        break;
+                }
             }
+
         });
+
+        setInitialConnectorValues(resolvedInitialValues);
     }, [ initialValues ]);
 
     /**
@@ -100,34 +108,92 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
      * @param values - Form values.
      * @returns Sanitized form values.
      */
-    const getUpdatedConfigurations = (value: boolean) => {
-        const data: { [ key: string ]: unknown } = {
-            [ GovernanceConnectorUtils.decodeConnectorPropertyName(
-                ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE) ]: value.toString()
+    const getUpdatedConfigurations = (values: Record<string, boolean>) => {
+
+        const data: UsernamePasswordRecoveryFormUpdatableConfigsInterface = {
+            "Recovery.Notification.Username.Email.Enable":
+                values.enableEmailBasedRecovery ?? initialConnectorValues?.enableEmailBasedRecovery,
+
+            "Recovery.Notification.Username.SMS.Enable":
+                values.enableSMSBasedRecovery ?? initialConnectorValues?.enableSMSBasedRecovery
         };
 
         return data;
     };
 
+    if (!initialConnectorValues) {
+        return null;
+    }
+
     return (
         <div className={ "connector-form" }>
             <Form
                 id={ FORM_ID }
-                onSubmit={ null }
+                onSubmit={ (values: Record<string, boolean>) => onSubmit(getUpdatedConfigurations(values)) }
                 uncontrolledForm={ false }
+                initialValues={ initialConnectorValues }
             >
+                <Heading as="h4" className="mb-5">
+                    { t("extensions:manage.serverConfigurations.accountRecovery." +
+                            "passwordRecovery.recoveryOptionHeading") }
+                </Heading>
+
                 <Field.Checkbox
-                    className="mb-3"
-                    ariaLabel="notifyRecoverySuccess"
-                    name={ ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE }
-                    label="Enable username recovery"
+                    className="mb-5"
+                    ariaLabel="enableEmailBasedRecovery"
+                    name="enableEmailBasedRecovery"
+                    label={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                        "usernameRecovery.form.fields.enableEmailBasedRecovery.label") }
                     required={ false }
                     readOnly={ readOnly }
                     width={ 10 }
-                    data-testid={ `${testId}-notify-success` }
-                    toggle
-                    listen={ (value: boolean) => onSubmit(getUpdatedConfigurations(value)) }
-                    checked={ initialValue === "true" }
+                    data-componentid={ `${ testId }-email-based-recovery` }
+                />
+
+                {
+                    <Alert severity="info">
+                        <Trans
+                            i18nKey={
+                                "extensions:manage.serverConfigurations.accountRecovery." +
+                                "usernameRecovery.form.smsProviderWarning"
+                            }>
+                          Ensure that an
+                            <Link
+                                external={ false }
+                                onClick={ () => {
+                                    history.push(
+                                        AppConstants.getPaths().get("SMS_PROVIDER")
+                                    );
+                                } }
+                            >SMS Provider
+                            </Link>
+                                &nbsp;is configured for the SMS feature to work properly.
+                        </Trans>
+                    </Alert>
+                }
+
+                <Field.Checkbox
+                    className="mt-3 mb-5"
+                    ariaLabel="enableSMSBasedRecovery"
+                    name="enableSMSBasedRecovery"
+                    label={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                        "usernameRecovery.form.fields.enableSMSBasedRecovery.label") }
+                    required={ false }
+                    readOnly={ readOnly }
+                    width={ 10 }
+                    data-componentid={ `${ testId }-sms-based-recovery` }
+                />
+
+                <Field.Button
+                    form={ FORM_ID }
+                    size="small"
+                    buttonType="primary_btn"
+                    ariaLabel="Username Recovery update button"
+                    name="update-button"
+                    data-componentid={ `${ testId }-submit-button` }
+                    disabled={ isSubmitting }
+                    loading={ isSubmitting }
+                    label={ t("common:update") }
                 />
             </Form>
         </div>

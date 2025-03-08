@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,7 +23,7 @@ import {
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface,
     UIConfigInterface
-} from "../../models";
+} from "../../models/config";
 
 /**
  * Initial state for the common config reducer.
@@ -86,8 +86,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             accountRecovery: "",
             actions: "",
             adminAdvisoryBanner: "",
-            apiResourceCollection: "",
-            apiResourceCollections: "",
+            apiRoot: "",
             applicationTemplate: "",
             applicationTemplateMetadata: "",
             applications: "",
@@ -105,9 +104,13 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             clientCertificates: "",
             createSecret: "",
             createSecretType: "",
-            dcrConfiguration:"",
+            customAuthenticators: "",
+            dcrConfiguration: "",
             deleteSecret: "",
             deleteSecretType: "",
+            entitlementPoliciesApi: "",
+            entitlementPolicyCombiningAlgorithmApi: "",
+            entitlementPolicyPublishApi: "",
             extensionTemplates: "",
             extensions: "",
             externalClaims: "",
@@ -253,6 +256,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                     enabled: false
                 }
             },
+            isClaimUniquenessValidationEnabled: undefined,
             isClientSecretHashEnabled: undefined,
             isCookieConsentBannerEnabled: undefined,
             isCustomClaimMappingEnabled: undefined,
@@ -270,9 +274,19 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isSignatureValidationCertificateAliasEnabled: undefined,
             isTrustedAppConsentRequired: undefined,
             listAllAttributeDialects: undefined,
+            multiTenancy: {
+                isTenantDomainDotExtensionMandatory: true,
+                tenantDomainIllegalCharactersRegex: "",
+                tenantDomainRegex: ""
+            },
+            passwordPolicyConfigs: null,
+            primaryUserStoreDomainName: "",
             privacyPolicyConfigs: null,
             productName: "",
             productVersionConfig: null,
+            routes: {
+                organizationEnabledRoutes: []
+            },
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
             showSmsOtpPwdRecoveryFeatureStatusChip: undefined,

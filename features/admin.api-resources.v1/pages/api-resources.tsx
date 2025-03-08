@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AppState, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
@@ -34,11 +35,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon, PaginationProps } from "semantic-ui-react";
-import { useAPIResources } from "../api";
-import { APIResourcesList } from "../components";
-import { AddAPIResource } from "../components/wizard";
-import { APIResourcesConstants } from "../constants";
-import { APIResourceInterface } from "../models";
+import { useAPIResources } from "../api/api-resources";
+import { APIResourcesList } from "../components/api-resources-list";
+import { AddAPIResource } from "../components/wizard/add-api-resource";
+import { APIResourcesConstants } from "../constants/api-resources-constants";
+import { APIResourceInterface } from "../models/api-resources";
 
 /**
  * Prop-types for the API resources page component.
@@ -235,7 +236,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                     <DocumentationLink
                         link={ getLink("develop.apiResources.learnMore") }
                     >
-                        { t("extensions:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </>
             ) }

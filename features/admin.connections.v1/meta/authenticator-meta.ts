@@ -79,7 +79,10 @@ export class AuthenticatorMeta {
                 "recovery option.",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .X509_CERTIFICATE_AUTHENTICATOR_ID ]: "Authenticate clients using " +
-                "client certificates."
+                "client certificates.",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .PUSH_AUTHENTICATOR_ID ]: "Two-factor authentication via " +
+                "mobile push notifications."
         }, authenticatorId);
     }
 
@@ -203,10 +206,13 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .EMAIL_OTP_AUTHENTICATOR_ID ]: getConnectionIcons()?.emailOTP,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: getConnectionIcons()?.smsOTP,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: getConnectionIcons()?.push,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .MAGIC_LINK_AUTHENTICATOR_ID ]: getConnectionIcons()?.magicLink,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .BACKUP_CODE_AUTHENTICATOR_ID ]: getConnectionIcons()?.backupCode,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .PUSH_AUTHENTICATOR_ID ]: getConnectionIcons()?.push,
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
                 .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID ]: getConnectionIcons()?.organizationSSO
         }, authenticatorId);
@@ -231,7 +237,8 @@ export class AuthenticatorMeta {
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: "OIDC",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ]: "SAML",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined",
-            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined"
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: "Predefined"
         }, authenticatorId);
     }
 
@@ -272,6 +279,7 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: "sms-otp",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID ]: "email-otp",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "identifier-first",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: "push",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: "enterprise-oidc",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ]: "enterprise-saml"
         }, authenticatorId);
@@ -328,6 +336,16 @@ export class AuthenticatorMeta {
                 isComingSoon: false,
                 isEnabled: true,
                 useAuthenticatorsAPI: true
+            },
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: {
+                content: {
+                    quickStart: lazy(() => import(
+                        "../components/authenticators/push/quick-start"
+                    ))
+                },
+                isComingSoon: false,
+                isEnabled: true,
+                useAuthenticatorsAPI: false
             }
         };
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,22 +17,19 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    UserBasicInterface,
-    UserRoleInterface,
-    getEmptyPlaceholderIllustrations
-} from "@wso2is/admin.core.v1";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
-import { UserListInterface } from "@wso2is/admin.users.v1/models";
+import { UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
-import { UserstoreConstants } from "@wso2is/core/constants";
-import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
@@ -171,8 +168,12 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
         return state?.config?.ui?.features?.users;
     });
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
+
+    const hasUserUpdatePermission: boolean = useRequiredScopes(featureConfig?.scopes?.update);
+    const hasUserDeletePermission: boolean = useRequiredScopes(featureConfig?.scopes?.delete);
 
     /**
      * Resolves data table columns.
@@ -338,10 +339,10 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                 icon: (user: UserBasicInterface): SemanticICONS => {
                     const userStore: string = user?.userName?.split("/").length > 1
                         ? user?.userName?.split("/")[0]
-                        : "PRIMARY";
+                        : primaryUserStoreDomainName;
 
                     return (
-                        !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
+                        !hasUserUpdatePermission
                     || !isFeatureEnabled(featureConfig,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString()))
@@ -355,10 +356,10 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                 popupText: (user: UserBasicInterface): string => {
                     const userStore: string = user?.userName?.split("/").length > 1
                         ? user?.userName?.split("/")[0]
-                        : "PRIMARY";
+                        : primaryUserStoreDomainName;
 
                     return (
-                        !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
+                        !hasUserUpdatePermission
                     || !isFeatureEnabled(featureConfig,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString()))
@@ -374,12 +375,12 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
             hidden: (user: UserBasicInterface): boolean => {
                 const userStore: string = user?.userName?.split("/").length > 1
                     ? user?.userName?.split("/")[0]
-                    : UserstoreConstants.PRIMARY_USER_STORE;
+                    : primaryUserStoreDomainName;
 
                 return !isFeatureEnabled(featureConfig,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                     || isPrivilegedUser
-                    || !hasRequiredScopes(featureConfig, featureConfig?.scopes?.delete, allowedScopes)
+                    || !hasUserDeletePermission
                     || readOnlyUserStores?.includes(userStore.toString())
                     || (getUserNameWithoutDomain(user?.userName) === serverConfigs?.realmConfig?.adminUser &&
                             !isSubOrganization())

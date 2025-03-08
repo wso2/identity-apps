@@ -18,19 +18,17 @@
 
 import Chip from "@oxygen-ui/react/Chip";
 import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    SharedUserStoreUtils,
-    UIConstants,
-    UserBasicInterface,
-    getAUserStore,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
+import { getAUserStore } from "@wso2is/admin.core.v1/api/user-store";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
@@ -46,6 +44,7 @@ import {
     useServerConfigs
 } from "@wso2is/admin.server-configurations.v1";
 import { useUserStores } from "@wso2is/admin.userstores.v1/api";
+import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
 import {
     UserStoreItem,
     UserStoreListItem,
@@ -100,7 +99,7 @@ import {
     UserAddOptionTypes,
     UserManagementConstants
 } from "../constants";
-import { InvitationStatus, UserListInterface } from "../models";
+import { InvitationStatus, UserListInterface } from "../models/user";
 import "./users.scss";
 
 /**
@@ -140,7 +139,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(
         FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
-    const { isSubOrganization, isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -235,10 +234,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         isLoading: isUserStoreListFetchRequestLoading,
         isValidating: isUserStoreListFetchRequestValidating,
         error: userStoreListFetchRequestError
-    } = useUserStores(
-        null,
-        !isSubOrganization()
-    );
+    } = useUserStores(null);
 
     const realmConfigs: RealmConfigInterface = useMemo(() => originalServerConfigs?.realmConfig,
         [ originalServerConfigs ]);
@@ -264,6 +260,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
                         if (!isDisabled) {
                             const storeOption: UserStoreItem = {
+                                disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
                                 key: index,
                                 text: store.name,
                                 value: store.name
@@ -693,16 +690,15 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 data-testid="user-mgt-user-list-layout"
                 onPageChange={ handlePaginationChange }
                 rightActionPanel={
-                    isFirstLevelOrganization() || isSuperOrganization()
-                        ? (<Dropdown
-                            data-testid="user-mgt-user-list-userstore-dropdown"
-                            selection
-                            options={ userStoreOptions }
-                            onChange={ handleDomainChange }
-                            defaultValue={ userstoresConfig.primaryUserstoreName }
-                            loading={ isUserStoreListFetchRequestLoading }
-                            readonly={ userStoreOptions.length <= 1 }
-                        />) : null
+                    (<Dropdown
+                        data-testid="user-mgt-user-list-userstore-dropdown"
+                        selection
+                        options={ userStoreOptions }
+                        onChange={ handleDomainChange }
+                        defaultValue={ userstoresConfig.primaryUserstoreName }
+                        loading={ isUserStoreListFetchRequestLoading }
+                        readonly={ userStoreOptions.length <= 1 }
+                    />)
                 }
                 showPagination={ true }
                 totalPages={ resolveTotalPages() }
@@ -1020,7 +1016,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     <DocumentationLink
                         link={ getLink("manage.users.learnMore") }
                     >
-                        { t("extensions:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </>
             ) }

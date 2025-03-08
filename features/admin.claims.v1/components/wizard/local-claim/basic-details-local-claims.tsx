@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,15 @@
  * under the License.
  */
 
-import { getTechnologyLogos } from "@wso2is/admin.core.v1";
+import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { GenericIcon, Hint, InlineEditInput, Message, Popup } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Card, Grid, Icon, Label } from "semantic-ui-react";
 import { ClaimManagementConstants } from "../../../constants";
 
@@ -90,6 +92,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     const [ oidcMapping, setOidcMapping ] = useState<string>(values?.get("oidc")?.toString());
     const [ scimMapping, setScimMapping ] = useState<string>(values?.get("scim")?.toString());
     const [ isScimMappingRemoved, setIsScimMappingRemoved ] = useState<boolean>(false);
+
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
 
     const nameField: React.MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
     const claimField: React.MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
@@ -397,7 +401,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                                 <Grid.Column width={ 11 }>
                                                                     <InlineEditInput
                                                                         maxLength={ 30 }
-                                                                        textPrefix="urn:scim:wso2:schema:"
+                                                                        textPrefix={ `${userSchemaURI}:` }
                                                                         validation="^[a-zA-Z0-9_.-]*$"
                                                                         errorHandler={ (status: boolean) => {
                                                                             setShowScimMappingError(status);

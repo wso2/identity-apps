@@ -30,7 +30,9 @@ import Checkbox from "@oxygen-ui/react/Checkbox";
 import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon } from "@oxygen-ui/react-icons";
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { CreateRolePermissionInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -166,7 +168,11 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                 clonedTenantAPIResourceCollections?.apiResourceCollections?.filter(
                     (item: APIResourceCollectionInterface) =>
                         !filteringAPIResourceCollectionNames.includes(item?.name) &&
-                        featureConfig?.[item?.name]?.enabled
+                        (
+                            featureConfig?.[item?.name]?.enabled
+                            || featureConfig?.[UIConstants.CONSOLE_FEATURE_MAP[item?.name]]?.enabled
+                        )
+
                 );
 
         return clonedTenantAPIResourceCollections;
@@ -414,7 +420,8 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                             )
                                                         }
                                                         inputProps={ {
-                                                            "aria-label": `Select ${collection.displayName} permission`
+                                                            "aria-label":
+                                                                    `Select ${collection.displayName} permission`
                                                         } }
                                                     />
                                                 </TableCell>
@@ -428,7 +435,10 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                             Object.keys(selectedPermissions.tenant).includes(
                                                                 collection.id
                                                             )
-                                                                ? get(selectedPermissions.tenant, collection.id)?.write
+                                                                ? get(
+                                                                    selectedPermissions.tenant,
+                                                                    collection.id
+                                                                )?.write
                                                                     ? "write"
                                                                     : "read"
                                                                 : null

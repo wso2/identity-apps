@@ -26,12 +26,12 @@ import FormGroup from "@oxygen-ui/react/FormGroup";
 import Radio from "@oxygen-ui/react/Radio";
 import TextField from "@oxygen-ui/react/TextField";
 import { useRequiredScopes } from "@wso2is/access-control";
-import { updateApplicationDetails } from "@wso2is/admin.applications.v1/api";
+import { updateApplicationDetails } from "@wso2is/admin.applications.v1/api/application";
 import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
-import { ApplicationInterface } from "@wso2is/admin.applications.v1/models";
-import { OrganizationType } from "@wso2is/admin.core.v1";
+import { ApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
+import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -307,7 +307,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                 <DocumentationLink
                                     link={ getLink("develop.applications.roles.learnMore") }
                                 >
-                                    { t("extensions:common.learnMore") }
+                                    { t("common:learnMore") }
                                 </DocumentationLink>
                             </Heading>
                         </Grid.Column>
@@ -334,7 +334,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                     "rolesV2.application")
                                                 }
                                                 data-componentid={ `${ componentId }-application-audience-checkbox` }
-                                                disabled={ isReadOnly }
                                             />
                                         </Grid.Column>
                                         <Grid.Column width={ 6 }>
@@ -346,7 +345,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                             fluid
                                                             data-componentid="create-application-role-button"
                                                             onClick={ handleAddNewRoleWizardClick }
-                                                            disabled={ isReadOnly }
                                                         >
                                                             <Icon name="plus"/>
                                                             {
@@ -370,7 +368,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                     "rolesV2.organization")
                                                 }
                                                 data-componentid={ `${ componentId }-organization-audience-checkbox` }
-                                                disabled={ isReadOnly }
                                             />
                                         </Grid.Column>
                                     </Grid.Row>
@@ -406,7 +403,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     loading={ isLoading }
                                     options={ roleList }
                                     value={ selectedRoles ?? [] }
-                                    disabled = { isReadOnly }
                                     data-componentid={ `${ componentId }-assigned-roles-list` }
                                     getOptionLabel={
                                         (role: BasicRoleInterface) => role.name
@@ -466,7 +462,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                         </Grid.Row>
                     ) : null }
                     {
-                        !isReadOnly && (
+                        (
                             <Grid.Row className="mt-4">
                                 <Grid.Column width={ 16 }>
                                     <PrimaryButton
@@ -486,7 +482,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             </EmphasizedSegment>
             <ConfirmationModal
                 onClose={ (): void => {
-                    setTempRoleAudience(undefined);
+                    setTempRoleAudience(roleAudience);
                     setShowSwitchAudienceWarning(false);
                 } }
                 type="negative"
@@ -497,7 +493,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ (): void => {
-                    setTempRoleAudience(undefined);
+                    setTempRoleAudience(roleAudience);
                     setShowSwitchAudienceWarning(false);
                 } }
                 onPrimaryActionClick={ (): void => {

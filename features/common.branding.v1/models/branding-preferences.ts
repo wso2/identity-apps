@@ -574,7 +574,10 @@ export enum PreviewScreenType {
     TOTP = "totp",
     PASSWORD_RECOVERY = "password-recovery",
     PASSWORD_RESET = "password-reset",
-    PASSWORD_RESET_SUCCESS = "password-reset-success"
+    PASSWORD_RESET_SUCCESS = "password-reset-success",
+    USERNAME_RECOVERY_CLAIM = "username-recovery-claim",
+    USERNAME_RECOVERY_CHANNEL_SELECTION = "username-recovery-channel-selection",
+    USERNAME_RECOVERY_SUCCESS = "username-recovery-success",
 }
 
 /**
@@ -584,7 +587,9 @@ export enum PreviewScreenVariationType {
     BASE = "base",
     SMS_OTP = "sms-otp",
     EMAIL_LINK = "email-link",
-    MULTI = "multi"
+    MULTI = "multi",
+    EMAIL = "email",
+    SMS = "sms"
 }
 
 /**

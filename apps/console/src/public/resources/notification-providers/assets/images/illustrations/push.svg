@@ -1,0 +1,29 @@
+<!--
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ -->
+ 
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.95161 13.3688H5.05005C4.35969 13.3688 3.80005 12.8091 3.80005 12.1188V2.875C3.80005 2.18465 4.35969 1.625 5.05005 1.625H8.8188C9.50915 1.625 10.0688 2.18464 10.0688 2.875V6.97524" stroke="black" stroke-linecap="round"/>
+<path d="M6.27039 2.98926L7.62507 2.98926" stroke="black" stroke-linecap="round"/>
+<mask id="path-3-inside-1_133_3" fill="white">
+<path d="M7.94373 10.9991C7.94373 9.81818 8.90107 8.86084 10.082 8.86084V8.86084C11.2629 8.86084 12.2203 9.81818 12.2203 10.9991V13.5018C12.2203 13.6571 12.0944 13.7831 11.939 13.7831H8.22498C8.06965 13.7831 7.94373 13.6571 7.94373 13.5018V10.9991Z"/>
+</mask>
+<path d="M7.94373 10.9991C7.94373 9.81818 8.90107 8.86084 10.082 8.86084V8.86084C11.2629 8.86084 12.2203 9.81818 12.2203 10.9991V13.5018C12.2203 13.6571 12.0944 13.7831 11.939 13.7831H8.22498C8.06965 13.7831 7.94373 13.6571 7.94373 13.5018V10.9991Z" stroke="black" stroke-width="2" mask="url(#path-3-inside-1_133_3)"/>
+<line x1="7.83289" y1="13.2832" x2="12.3313" y2="13.2832" stroke="black" stroke-linecap="round"/>
+<path d="M10.6532 8.87417C10.6532 9.19182 10.3975 9.44932 10.0821 9.44932C9.76667 9.44932 9.51099 9.19182 9.51099 8.87417C9.51099 8.55652 9.76667 8.28564 10.0821 8.28564C10.3975 8.28564 10.6532 8.55652 10.6532 8.87417Z" fill="black"/>
+<path d="M10.4141 13.7833C10.4141 13.9754 10.2595 14.305 10.0688 14.305C9.87811 14.305 9.72351 13.9754 9.72351 13.7833C9.72351 13.5912 9.87811 13.4355 10.0688 13.4355C10.2595 13.4355 10.4141 13.5912 10.4141 13.7833Z" fill="black" stroke="black"/>
+</svg>

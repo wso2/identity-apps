@@ -43,6 +43,11 @@
 <%-- Include tenant context --%>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
+<%
+    // Add the user-recovery-claim screen to the list to retrieve text branding customizations.
+    screenNames.add("username-recovery-claim");
+%>
+
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
@@ -84,6 +89,8 @@
     boolean isFirstNameInClaims = false;
     boolean isLastNameInClaims = false;
     boolean isEmailInClaims = false;
+    boolean isMobileInClaims = false;
+    boolean isFirstNameRequired = false;
     List<Claim> claims;
     UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
     try {
@@ -106,10 +113,13 @@
         return;
     }
 
+    String mobileClaimRegex = null;
+    String emailClaimRegex = null;
     for (Claim claim : claims) {
         if (StringUtils.equals(claim.getUri(),
                 IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM)) {
             isFirstNameInClaims = true;
+            isFirstNameRequired = claim.getRequired();
         }
         if (StringUtils.equals(claim.getUri(), IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM)) {
             isLastNameInClaims = true;
@@ -117,6 +127,12 @@
         if (StringUtils.equals(claim.getUri(),
                 IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM)) {
             isEmailInClaims = true;
+            emailClaimRegex = Encode.forJava(claim.getValidationRegex());
+        }
+        if (StringUtils.equals(claim.getUri(),
+                IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM)) {
+            isMobileInClaims = true;
+            mobileClaimRegex = Encode.forJava(claim.getValidationRegex());
         }
     }
 
@@ -171,7 +187,7 @@
         </layout:component>
         <layout:component componentName="MainSection" >
             <div class="ui segment">
-                <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.username")%></h2>
+                <h2><%=i18n(recoveryResourceBundle, customText, "username.recovery.heading")%></h2>
                 <% if (error) { %>
                     <div class="ui visible negative message" id="server-error-msg">
                         <%= IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg) %>
@@ -179,31 +195,34 @@
                 <% } %>
                 <div class="ui negative message" id="error-msg" hidden="hidden"></div>
 
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.detail.to.recover.uname")%>
+                <%=i18n(recoveryResourceBundle, customText, "username.recovery.body")%>
 
                 <div class="ui divider hidden"></div>
 
                 <div class="segment-form">
                     <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
                         <% if (isFirstNameInClaims || isLastNameInClaims) { %>
-                        <div class="field">
-                            <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "name")%></label>
-                            <div class="two fields">
-                                <% if (isFirstNameInClaims) { %>
-                                <div class="required field">
-                                    <input id="first-name" type="text" required name="http://wso2.org/claims/givenname"
-                                        placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                            "First.name")%>*" />
-                                </div>
-                                <% } %>
-                                <% if (isLastNameInClaims) { %>
-                                <div class="field">
-                                    <input id="last-name" type="text" name="http://wso2.org/claims/lastname"
-                                        placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                            "Last.name")%>" />
-                                </div>
-                                <% } %>
+                        <div class="two fields">
+                            <% if (isFirstNameInClaims) { %>
+                            <div class="<%= isFirstNameRequired ? "required field" : "field" %>">
+                                <label>
+                                    <%=i18n(recoveryResourceBundle, customText, "First.name")%>
+                                </label>
+                                <input id="first-name" type="text" 
+                                    <%= isFirstNameRequired ? "required" : "" %> 
+                                    name="http://wso2.org/claims/givenname"
+                                    placeholder="<%=i18n(recoveryResourceBundle, customText, "First.name")%>" />
                             </div>
+                            <% } %>
+                            <% if (isLastNameInClaims) { %>
+                            <div class="field">
+                                <label>
+                                    <%=i18n(recoveryResourceBundle, customText, "Last.name")%>
+                                </label>
+                                <input id="last-name" type="text" name="http://wso2.org/claims/lastname"
+                                    placeholder="<%=i18n(recoveryResourceBundle, customText, "Last.name")%>" />
+                            </div>
+                            <% } %>
                         </div>
                         <% } %>
 
@@ -226,13 +245,13 @@
                         <%
                             }
 
-                            if (isEmailInClaims) { %>
-                        <div class="field">
-                            <label for="email" class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                    "Email")%></label>
-                            <input id="email" type="email" name="http://wso2.org/claims/emailaddress"
-                                    class="form-control"
-                                    data-validate="email">
+                            if (isEmailInClaims || isMobileInClaims) { %>
+                        <div class="required field">
+                            <label for="contact" class="control-label"><%=i18n(recoveryResourceBundle, customText,
+                                    "contact")%></label>
+                            <input id="contact" type="text" name="contact" 
+                                placeholder="<%=i18n(recoveryResourceBundle, customText, "contact")%>" 
+                                    required class="form-control" />
                         </div>
                         <% } %>
 
@@ -249,7 +268,8 @@
                         </div>
                         <% } %>
 
-                        <input type="hidden" id="isUsernameRecovery" name="isUsernameRecovery" value="true">
+                        <input type="hidden" id="isUsernameRecovery" name="isUsernameRecovery" value="true"/>
+                        <input type="hidden" id="recoveryStage" name="recoveryStage" value="INITIATE"/>
 
                         <% for (Claim claim : claims) {
                             if (claim.getRequired() &&
@@ -258,7 +278,9 @@
                                     !StringUtils.equals(claim.getUri(),
                                             IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM) &&
                                     !StringUtils.equals(claim.getUri(),
-                                            IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM)) {
+                                            IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM) && 
+                                    !StringUtils.equals(claim.getUri(),
+                                            IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM)) {
                         %>
 
                         <div class="field">
@@ -291,15 +313,16 @@
 
                         <div class="ui divider hidden"></div>
 
-                        <div class="align-right buttons">
-                            <a href="javascript:goBack()" class="ui button secondary">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
-                            </a>
-                            <button id="recoverySubmit"
-                                    class="ui primary button"
-                                    type="submit">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
+                         <div class="mt-0">
+                            <button id="recoverySubmit" class="ui primary button large fluid" type="submit">
+                                <%=i18n(recoveryResourceBundle, customText, "username.recovery.next.button")%>
                             </button>
+    
+                        </div>
+                        <div class="mt-1 align-center">
+                            <a href="javascript:goBack()" class="ui button secondary large fluid">
+                                <%=i18n(recoveryResourceBundle, customText, "username.recovery.cancel.button")%>
+                            </a>
                         </div>
                     </form>
                 </div>
@@ -341,7 +364,6 @@
         }
 
         $(document).ready(function () {
-
             $("#recoverDetailsForm").submit(function (e) {
                 <%
                     if (reCaptchaEnabled) {
@@ -349,7 +371,6 @@
                 if (!grecaptcha.getResponse()) {
                     e.preventDefault();
                     grecaptcha.execute();
-
                     return true;
                 }
                 <%
@@ -364,11 +385,11 @@
                 const errorMessage = $("#error-msg");
                 errorMessage.hide();
 
-                <% if (isFirstNameInClaims){ %>
+                <% if (isFirstNameInClaims && isFirstNameRequired) { %>
                     const firstName = $("#first-name").val();
 
                     if (firstName === "") {
-                        errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "fill.the.first.name")%>");
+                        errorMessage.text("<%=i18n(recoveryResourceBundle, customText, "fill.the.first.name")%>");
                         errorMessage.show();
                         $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
                         submitButton.removeClass("loading").attr("disabled", false);
@@ -376,6 +397,24 @@
                     }
                 <% } %>
 
+                // Contact input validation.
+                const contact = $("#contact").val();
+                const mobileClaimRegex = new RegExp("<%=mobileClaimRegex%>");
+                const emailClaimRegex = new RegExp("<%=emailClaimRegex%>");
+
+                if (contact === "") {
+                    errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Contact.cannot.be.empty")%>");
+                    errorMessage.show();
+                    $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
+                    submitButton.removeClass("loading").attr("disabled", false);
+                    return false;
+                } else if (!contact.match(mobileClaimRegex) && !contact.match(emailClaimRegex)) {
+                    errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Invalid.contact")%>");
+                    errorMessage.show();
+                    $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
+                    submitButton.removeClass("loading").attr("disabled", false);
+                    return false;
+                }
                 return true;
             });
         });

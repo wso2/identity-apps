@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -79,9 +79,9 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
             .then((response: AxiosResponse) => {
                 if (response?.status !== 200) {
                     dispatch(addAlert<AlertInterface>({
-                        description: t("extensions:console.marketingConsent.notifications.errors.update.description"),
+                        description: t("console:common.marketingConsent.notifications.errors.update.description"),
                         level: AlertLevels.ERROR,
-                        message: t("extensions:console.marketingConsent.notifications.errors.update.message")
+                        message: t("console:common.marketingConsent.notifications.errors.update.message")
                     }));
                 }
 
@@ -90,9 +90,9 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
             })
             .catch((_: IdentityAppsApiException) => {
                 dispatch(addAlert<AlertInterface>({
-                    description: t("extensions:console.marketingConsent.notifications.errors.update.description"),
+                    description: t("console:common.marketingConsent.notifications.errors.update.description"),
                     level: AlertLevels.ERROR,
-                    message: t("extensions:console.marketingConsent.notifications.errors.update.message")
+                    message: t("console:common.marketingConsent.notifications.errors.update.message")
                 }));
             })
             .finally(() => {
@@ -145,7 +145,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
                                         data-componentid={ `${componentId}-heading` }
                                         className="ui header"
                                     >
-                                        { t("extensions:console.marketingConsent.heading") }
+                                        { t("console:common.marketingConsent.heading") }
                                     </h4>
                                     <Icon
                                         link={ true }
@@ -158,7 +158,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
                                     />
                                 </div>
                                 <Card.Description className="mb-2">
-                                    { t("extensions:console.marketingConsent.description") }
+                                    { t("console:common.marketingConsent.description") }
                                 </Card.Description>
                                 <Card.Content>
                                     <Button
@@ -167,7 +167,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
                                         disabled={ isLoading }
                                         data-componentid={ `${componentId}-subscribe-btn` }
                                     >
-                                        { t("extensions:console.marketingConsent.actions.subscribe") }
+                                        { t("console:common.marketingConsent.actions.subscribe") }
                                     </Button>
                                     <Button
                                         basic
@@ -177,7 +177,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
                                         disabled={ isLoading }
                                         data-componentid={ `${componentId}-decline-btn` }
                                     >
-                                        { t("extensions:console.marketingConsent.actions.decline") }
+                                        { t("console:common.marketingConsent.actions.decline") }
                                     </Button>
                                 </Card.Content>
                             </Card.Content>

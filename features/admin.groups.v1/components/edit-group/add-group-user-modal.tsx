@@ -17,7 +17,7 @@
  */
 
 import Button from "@oxygen-ui/react/Button";
-import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1";
+import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { useUsersList } from "@wso2is/admin.users.v1/api";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
@@ -39,7 +39,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
-import { GroupsInterface } from "../../models";
+import { GroupsInterface } from "../../models/groups";
 
 /**
  * Proptypes for the group users list component.

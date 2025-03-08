@@ -18,7 +18,7 @@
 
 import { ApplicationTabComponentsFilter } from
     "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -32,18 +32,18 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Checkbox, CheckboxProps, Divider, Grid, Icon } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
-import { ApplicationManagementConstants } from "../../../constants";
+import { ApplicationManagementConstants } from "../../../constants/application-management";
 import {
     AdvanceAttributeSettingsErrorValidationInterface,
     ClaimConfigurationInterface,
     InboundProtocolListItemInterface,
-    OIDCDataInterface,
     RoleConfigInterface,
     RoleInterface,
     SubjectConfigInterface,
     SubjectInterface,
     SubjectTypes
-} from "../../../models";
+} from "../../../models/application";
+import {     OIDCDataInterface } from "../../../models/application-inbound";
 
 interface AdvanceAttributeSettingsPropsInterface extends IdentifiableComponentInterface {
     claimConfigurations: ClaimConfigurationInterface;

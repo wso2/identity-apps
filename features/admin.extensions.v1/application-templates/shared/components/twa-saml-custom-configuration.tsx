@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { SAMLApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models";
-import { AppState, EventPublisher } from "@wso2is/admin.core.v1";
+import { SAMLApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     CopyInputField,
@@ -121,7 +122,7 @@ export const TraditionalSAMLWebApplicationCustomConfiguration: FC<TWASAMLCustomC
                     <Heading as="h6" compact>
                         <Trans
                             i18nKey={
-                                "extensions:console.application.quickStart" +
+                                "applications:quickStart" +
                                 ".spa.customConfig.protocolConfig"
                             }
                         >
@@ -143,7 +144,7 @@ export const TraditionalSAMLWebApplicationCustomConfiguration: FC<TWASAMLCustomC
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                             ".twa.saml.customConfig.issuer")
                                         }
                                     </label>
@@ -155,7 +156,7 @@ export const TraditionalSAMLWebApplicationCustomConfiguration: FC<TWASAMLCustomC
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                             ".twa.saml.customConfig.acsUrl")
                                         }
                                     </label>
@@ -167,7 +168,7 @@ export const TraditionalSAMLWebApplicationCustomConfiguration: FC<TWASAMLCustomC
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                             ".twa.saml.customConfig.idpEntityId")
                                         }
                                     </label>
@@ -179,7 +180,7 @@ export const TraditionalSAMLWebApplicationCustomConfiguration: FC<TWASAMLCustomC
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                             ".twa.saml.customConfig.idpUrl")
                                         }
                                     </label>
@@ -196,7 +197,7 @@ export const TraditionalSAMLWebApplicationCustomConfiguration: FC<TWASAMLCustomC
                     <Heading as="h6" compact>
                         <Trans
                             i18nKey={
-                                "extensions:console.application.quickStart" +
+                                "applications:quickStart" +
                                 ".spa.customConfig.serverEndpoints"
                             }
                         >
@@ -223,7 +224,7 @@ export const TraditionalSAMLWebApplicationCustomConfiguration: FC<TWASAMLCustomC
                 <Text muted>
                     <Trans
                         i18nKey={
-                            "extensions:console.application.quickStart" +
+                            "applications:quickStart" +
                             ".twa.saml.customConfig.heading"
                         }
                     >
@@ -260,7 +261,7 @@ export const TraditionalSAMLWebApplicationCustomConfiguration: FC<TWASAMLCustomC
                     )) }
                 </div>
                 <div>
-                    { t("extensions:console.application.quickStart.twa.common.orAnyTechnology") }
+                    { t("applications:quickStart.twa.common.orAnyTechnology") }
                 </div>
             </Card.Content>
             <Card.Content>
@@ -275,7 +276,7 @@ export const TraditionalSAMLWebApplicationCustomConfiguration: FC<TWASAMLCustomC
                         className="spa-config-accordion-title"
                     >
                         <Heading as="h5">
-                            { t("extensions:console.application.quickStart.spa.customConfig.configurations") }
+                            { t("applications:quickStart.spa.customConfig.configurations") }
                         </Heading>
                     </SegmentedAccordion.Title>
                     <SegmentedAccordion.Content

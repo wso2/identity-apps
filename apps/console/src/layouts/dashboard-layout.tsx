@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,30 +22,32 @@ import Navbar, { NavbarItems } from "@oxygen-ui/react/Navbar";
 import Snackbar from "@oxygen-ui/react/Snackbar";
 import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
-import {
-    AppConstants,
-    AppState,
-    AppUtils,
-    ConfigReducerStateInterface,
-    Header,
-    ProtectedRoute,
-    RouteUtils,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
-import { CommonUtils as ConsoleCommonUtils } from "@wso2is/admin.core.v1/utils";
+import Header from "@wso2is/admin.core.v1/components/header";
+import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
+import { CommonUtils as ConsoleCommonUtils } from "@wso2is/admin.core.v1/utils/common-utils";
+import { RouteUtils } from "@wso2is/admin.core.v1/utils/route-utils";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
     AlertInterface,
     AnnouncementBannerInterface,
+    CategorizedRouteInterface,
     ChildRouteInterface,
+    FeatureAccessConfigInterface,
+    FeatureFlagsInterface,
     NavRouteInterface,
     ProfileInfoInterface,
     RouteInterface
 } from "@wso2is/core/models";
-import { CategorizedRouteInterface } from "@wso2is/core/src/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
 import {
@@ -138,6 +140,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
     const organizationLoading: boolean = useSelector(
         (state: AppState) => state?.organization?.getOrganizationLoading
     );
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const initLoad: MutableRefObject<boolean> = useRef(true);
 
@@ -296,6 +299,27 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
         setAnnouncement(validAnnouncement);
     };
 
+    /**
+     * Resolves the feature flag status of a given feature.
+     *
+     * @param featureName - Name of the feature.
+     * @param featureKey - Key of the feature.
+     *
+     * @returns Feature status label.
+     */
+    const resolveFeatureFlag = (featureName: string, featureKey: string): FeatureStatusLabel=> {
+        const config: FeatureAccessConfigInterface = featureConfig?.[featureName];
+
+        if (!config) {
+            return null;
+        }
+
+        const featureFlag: FeatureFlagsInterface = config?.featureFlags?.find(
+            (featureFlag: FeatureFlagsInterface) => featureFlag.feature === featureKey);
+
+        return FeatureStatusLabel[featureFlag?.flag];
+    };
+
     const generateNavbarItems = (): NavbarItems[] => {
         const categorizedRoutes: CategorizedRouteInterface = {};
 
@@ -320,34 +344,42 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
 
         return Object.entries(categorizedRoutes).map(
             ([ _navCategory, routes ]: [ navCategory: string, routes: NavRouteInterface[] ]) => {
-
                 return {
-                    items: routes.map((route: NavRouteInterface) => ({
-                        "data-componentid": `side-panel-items-${ kebabCase(route.id) }`,
-                        "data-testid":  `side-panel-items-${ kebabCase(route.id) }`,
-                        icon: <GenericIcon
-                            transparent
-                            className="route-icon"
-                            { ...route.icon }
-                        />,
-                        items: route.items?.map((subRoute: NavRouteInterface) => ({
-                            "data-componentid": `side-panel-items-${ kebabCase(subRoute.id) }`,
-                            "data-testid":  `side-panel-items-${ kebabCase(subRoute.id) }`,
+                    items: routes.map((route: NavRouteInterface) => {
+                        const routeFlag: string = resolveFeatureFlag(route.id, route.featureFlagKey);
+
+                        return {
+                            "data-componentid": `side-panel-items-${ kebabCase(route.id) }`,
+                            "data-testid":  `side-panel-items-${ kebabCase(route.id) }`,
                             icon: <GenericIcon
                                 transparent
-                                className="route-sub-icon"
-                                { ...subRoute.icon }
+                                className="route-icon"
+                                { ...route.icon }
                             />,
-                            label: t(subRoute.name),
-                            onClick: () => history.push(subRoute.path),
-                            selected: subRoute.selected ?? selectedRoute?.path === subRoute.path,
-                            tag: t(subRoute.featureStatusLabel)
-                        })),
-                        label: t(route.name),
-                        onClick: () => history.push(route.path),
-                        selected: route.selected ?? isRouteActive(route.path),
-                        tag: t(route.featureStatusLabel)
-                    }))
+                            items: route.items?.map((subRoute: NavRouteInterface) => {
+
+                                const subRouteFlag: string = resolveFeatureFlag(subRoute.id, subRoute.featureFlagKey);
+
+                                return {
+                                    "data-componentid": `side-panel-items-${ kebabCase(subRoute.id) }`,
+                                    "data-testid":  `side-panel-items-${ kebabCase(subRoute.id) }`,
+                                    icon: <GenericIcon
+                                        transparent
+                                        className="route-sub-icon"
+                                        { ...subRoute.icon }
+                                    />,
+                                    label: t(subRoute.name),
+                                    onClick: () => history.push(subRoute.path),
+                                    selected: subRoute.selected ?? selectedRoute?.path === subRoute.path,
+                                    tag: t(subRouteFlag)
+                                };
+                            }),
+                            label: t(route.name),
+                            onClick: () => history.push(route.path),
+                            selected: route.selected ?? isRouteActive(route.path),
+                            tag: t(routeFlag)
+                        };
+                    })
                 };
             }
         );
@@ -389,7 +421,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
             <AppShell
                 header={
                     (<Header
-                        handleSidePanelToggleClick={ handleSidePanelToggleClick }
+                        onCollapsibleHamburgerClick={ handleSidePanelToggleClick }
                     />)
                 }
                 navigation={

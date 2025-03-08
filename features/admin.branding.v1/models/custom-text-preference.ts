@@ -126,5 +126,8 @@ export const BASE_DISPLAY_VARIATION :Record<PreviewScreenType, PreviewScreenVari
     [PreviewScreenType.SIGN_UP]: PreviewScreenVariationType.BASE,
     [PreviewScreenType.SMS_OTP]: PreviewScreenVariationType.BASE,
     [PreviewScreenType.TOTP]: PreviewScreenVariationType.BASE,
-    [PreviewScreenType.EMAIL_LINK_EXPIRY]: PreviewScreenVariationType.BASE
+    [PreviewScreenType.EMAIL_LINK_EXPIRY]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.USERNAME_RECOVERY_CLAIM]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.USERNAME_RECOVERY_CHANNEL_SELECTION]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.USERNAME_RECOVERY_SUCCESS]: PreviewScreenVariationType.EMAIL
 };

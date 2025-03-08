@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import { createApplication } from "@wso2is/admin.applications.v1/api";
+import { createApplication } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationShareModal } from "@wso2is/admin.applications.v1/components/modals/application-share-modal";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import useApplicationSharingEligibility from "@wso2is/admin.applications.v1/hooks/use-application-sharing-eligibility";
-import { MainApplicationInterface, URLFragmentTypes } from "@wso2is/admin.applications.v1/models";
-import { AppState, TierLimitReachErrorModal } from "@wso2is/admin.core.v1";
+import { MainApplicationInterface, URLFragmentTypes } from "@wso2is/admin.applications.v1/models/application";
+import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { ResourceCreateWizard } from "@wso2is/admin.template-core.v1/components/resource-create-wizard";
 import { DynamicFieldInterface, DynamicFormInterface } from "@wso2is/admin.template-core.v1/models/dynamic-fields";

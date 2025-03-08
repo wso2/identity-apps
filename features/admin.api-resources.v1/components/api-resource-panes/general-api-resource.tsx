@@ -18,7 +18,9 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import { Show } from "@wso2is/access-control";
-import { AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
@@ -43,7 +45,7 @@ import {
     APIResourcePanesCommonPropsInterface,
     GeneralErrorAPIResourceInterface,
     GeneralUpdateAPIResourceInterface
-} from "../../models";
+} from "../../models/api-resources";
 
 /**
  * Prop-types for the API resources page component.

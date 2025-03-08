@@ -29,7 +29,7 @@ import {
     SetOrganizationTypeInterface,
     SetSuperAdminTypeInterface,
     SetUserOrganizationIdInterface
-} from "./types";
+} from "./types/organization";
 
 /**
  * This action sets an organization in the redux store.

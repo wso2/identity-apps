@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,9 +20,8 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import RuleExecutionComponent from "./rules";
 import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "../models/meta";
-import { RuleExecuteCollectionInterface, RuleInterface } from "../models/rules";
+import { RuleExecuteCollectionWithoutIdInterface, RuleWithoutIdInterface } from "../models/rules";
 import { RulesProvider } from "../providers/rules-provider";
-import "./rules-component.scss";
 
 /**
  * Props interface of {@link RulesComponent}
@@ -31,7 +30,7 @@ interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
     /**
      * Initial data to be passed to the rules component.
      */
-    initialData?: RuleExecuteCollectionInterface | RuleInterface;
+    initialData?: RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface;
 
     /**
      * Rule expressions meta data.
@@ -72,12 +71,12 @@ const RulesComponent: FunctionComponent<RulesComponentPropsWithValidation> = ({
 }: RulesComponentPropsWithValidation): ReactElement => (
     <RulesProvider
         initialData={ initialData }
+        isMultipleRules={ isMultipleRules }
         conditionExpressionsMetaData={ conditionExpressionsMetaData }
         ruleExecutionMetaData={ ruleExecutionMetaData }
     >
         <RuleExecutionComponent
             data-componentid={ componentId }
-            isMultipleRules={ isMultipleRules }
         />
     </RulesProvider>
 );

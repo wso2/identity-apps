@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import { AppState, SharedUserStoreConstants, SharedUserStoreUtils } from "@wso2is/admin.core.v1";
+import { SharedUserStoreConstants } from "@wso2is/admin.core.v1/constants/user-store-constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { CreateRoleFormData } from "@wso2is/admin.roles.v2/models/roles";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { StringUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { getOrganizationRoles } from "../../api";
-import {
-    PRIMARY_DOMAIN
-} from "../../constants";
 import { OrganizationResponseInterface, OrganizationRoleListResponseInterface } from "../../models";
 
 /**
@@ -57,10 +57,13 @@ export const OrganizationRoleBasics: FunctionComponent<OrganizationRoleBasicProp
         [ "data-testid" ]: testId
     } = props;
 
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
+
     const { t } = useTranslation();
 
     const [ isRoleNamePatternValid, setIsRoleNamePatternValid ] = useState<boolean>(true);
-    const [ userStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
+    const [ userStore ] = useState<string>(primaryUserStoreDomainName);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
 
     const currentOrganization: OrganizationResponseInterface = useSelector(
@@ -75,7 +78,7 @@ export const OrganizationRoleBasics: FunctionComponent<OrganizationRoleBasicProp
     const validateRoleNamePattern = async (roleName: string): Promise<void> => {
         let userStoreRegEx: string = "";
 
-        if (userStore !== PRIMARY_DOMAIN) {
+        if (!StringUtils.isEqualCaseInsensitive(userStore, primaryUserStoreDomainName)) {
             await SharedUserStoreUtils.getUserStoreRegEx(userStore,
                 SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
                 .then((response: string) => {

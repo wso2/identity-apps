@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,8 +17,12 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { AdvancedSearchWithBasicFilters, AppState, FeatureConfigInterface, UIConstants } from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import {
     AlertInterface,
     AlertLevels,
@@ -27,6 +31,7 @@ import {
     UserstoreListResponseInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { StringUtils } from "@wso2is/core/utils";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import find from "lodash-es/find";
@@ -86,6 +91,8 @@ const RolesPage = (): ReactElement => {
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -155,8 +162,10 @@ const RolesPage = (): ReactElement => {
             },
             {
                 key: -1,
-                text: "Primary",
-                value: "primary"
+                text: StringUtils.isEqualCaseInsensitive(primaryUserStoreDomainName, PRIMARY_USERSTORE)
+                    ? t("console:manage.features.users.userstores.userstoreOptions.primary")
+                    : primaryUserStoreDomainName,
+                value: primaryUserStoreDomainName
             }
         ];
         let storeOption: DropdownItemProps = {

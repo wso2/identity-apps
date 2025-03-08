@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { OIDCApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models";
-import { AppState, EventPublisher } from "@wso2is/admin.core.v1";
+import { OIDCApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import {
@@ -143,7 +144,7 @@ export const MobileCustomConfiguration: FC<MobileCustomConfigurationPropsInterfa
                     <Heading as="h6" compact>
                         <Trans
                             i18nKey={
-                                "extensions:console.application.quickStart" +
+                                "applications:quickStart" +
                                 ".spa.customConfig.protocolConfig"
                             }
                         >
@@ -301,7 +302,7 @@ export const MobileCustomConfiguration: FC<MobileCustomConfigurationPropsInterfa
                     <Heading as="h6" compact>
                         <Trans
                             i18nKey={
-                                "extensions:console.application.quickStart" +
+                                "applications:quickStart" +
                                 ".spa.customConfig.serverEndpoints"
                             }
                         >
@@ -382,7 +383,7 @@ export const MobileCustomConfiguration: FC<MobileCustomConfigurationPropsInterfa
                         className="spa-config-accordion-title"
                     >
                         <Heading as="h5">
-                            { t("extensions:console.application.quickStart.spa.customConfig.configurations") }
+                            { t("applications:quickStart.spa.customConfig.configurations") }
                         </Heading>
                     </SegmentedAccordion.Title>
                     <SegmentedAccordion.Content

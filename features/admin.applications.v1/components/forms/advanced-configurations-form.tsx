@@ -17,8 +17,10 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
-import { AppState, FeatureConfigInterface, getTechnologyLogos } from "@wso2is/admin.core.v1";
+import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -43,13 +45,13 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import SAMLWebApplicationTemplate from
     "../../data/application-templates/templates/saml-web-application/saml-web-application.json";
 import {
     AdvancedConfigurationsInterface,
     ApplicationTemplateListItemInterface
-} from "../../models";
+} from "../../models/application";
 import "./advanced-configurations-form.scss";
 
 /**
@@ -610,7 +612,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                         link={ getLink("develop.applications.editApplication." +
                                                     "common.advanced.trustedApps.learnMore") }
                                                     >
-                                                        { t("extensions:common.learnMore") }
+                                                        { t("common:learnMore") }
                                                     </DocumentationLink>
                                                 </>
                                             </Alert>

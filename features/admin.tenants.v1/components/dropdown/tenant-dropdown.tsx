@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,9 +27,14 @@ import {
     HierarchyIcon,
     PlusIcon
 } from "@oxygen-ui/react-icons";
-import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
-import { getMiscellaneousIcons } from "@wso2is/admin.core.v1/configs";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import {
+    FeatureAccessConfigInterface,
+    FeatureStatus,
+    useCheckFeatureStatus,
+    useRequiredScopes
+} from "@wso2is/access-control";
+import { getMiscellaneousIcons } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
@@ -76,7 +81,9 @@ import "./tenant-dropdown.scss";
 /**
  * Dashboard layout Prop types.
  */
-interface TenantDropdownLinkInterface extends Omit<ReusableHeaderPropsInterface, "basicProfileInfo" | "profileInfo"> {
+interface TenantDropdownLinkInterface extends Omit<
+    ReusableHeaderPropsInterface, "basicProfileInfo" | "profileInfo" | "primaryUserStoreDomainName"
+> {
     /**
      * Content of dropdown item.
      */
@@ -117,6 +124,12 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     const email: string = useSelector((state: AppState) => state.auth.email);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+
+    const organizationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.organizations
+    );
+    const hasOrganizationReadPermissions: boolean = useRequiredScopes(organizationsFeatureConfig?.scopes?.read);
+
     const isMakingTenantsDefaultEnabled: boolean = useSelector((state: AppState) => {
         return !state?.config?.ui?.features?.tenants?.disabledFeatures?.includes(
             TenantConstants.FEATURE_DICTIONARY.MAKING_TENANTS_DEFAULT
@@ -250,11 +263,9 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             }).catch(() => {
                 dispatch(
                     addAlert({
-                        description: t("extensions:console.organizationInfo." +
-                        "notifications.getConfiguration.error.description"),
+                        description: t("organizations:notifications.getConfiguration.error.description"),
                         level: AlertLevels.ERROR,
-                        message: t("extensions:console.organizationInfo." +
-                        "notifications.getConfiguration.error.message")
+                        message: t("organizations:notifications.getConfiguration.error.message")
                     })
                 );
             });
@@ -562,7 +573,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             );
         }
 
-        if (isOrganizationsQuickNavFromDropdownEnabled && !isSubOrg) {
+        if (isOrganizationsQuickNavFromDropdownEnabled && !isSubOrg && hasOrganizationReadPermissions) {
             options.push(<Divider />);
             options.push(
                 <Dropdown.Item

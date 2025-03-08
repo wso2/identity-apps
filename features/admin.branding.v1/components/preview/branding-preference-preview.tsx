@@ -49,9 +49,10 @@ import { ReactComponent as CustomLayoutSuccessImg } from
     "../../../themes/wso2is/assets/images/branding/custom-layout-success.svg";
 import { ReactComponent as CustomLayoutWarningImg } from
     "../../../themes/wso2is/assets/images/branding/custom-layout-warning.svg";
-import { useLayout, useLayoutStyle } from "../../api";
+import { useLayout, useLayoutStyle } from "../../api/layout";
 import { usePreviewContent, usePreviewStyle } from "../../api/preview-skeletons";
-import { BrandingPreferenceMeta, LAYOUT_DATA, PredefinedLayouts } from "../../meta";
+import { BrandingPreferenceMeta } from "../../meta/branding-preference-meta";
+import { LAYOUT_DATA, PredefinedLayouts } from "../../meta/layouts";
 
 /**
  * Proptypes for the Branding preference preview component.
@@ -270,7 +271,10 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         PreviewScreenType.TOTP,
         PreviewScreenType.PASSWORD_RECOVERY,
         PreviewScreenType.PASSWORD_RESET,
-        PreviewScreenType.PASSWORD_RESET_SUCCESS
+        PreviewScreenType.PASSWORD_RESET_SUCCESS,
+        PreviewScreenType.USERNAME_RECOVERY_CLAIM,
+        PreviewScreenType.USERNAME_RECOVERY_CHANNEL_SELECTION,
+        PreviewScreenType.USERNAME_RECOVERY_SUCCESS
     ];
 
     const resolvePreviewScreen = (): ReactElement => {

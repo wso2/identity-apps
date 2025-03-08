@@ -15,20 +15,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api";
+import { updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api/application";
 import {
     ApplicationInterface,
-    ApplicationTemplateInterface,
+    ApplicationTemplateInterface
+} from "@wso2is/admin.applications.v1/models/application";
+import {
     OIDCDataInterface,
     SupportedAuthProtocolTypes
-} from "@wso2is/admin.applications.v1/models";
+} from "@wso2is/admin.applications.v1/models/application-inbound";
 import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
 import {
     VerticalStepper,
     VerticalStepperStepInterface
 } from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
-import { Config, getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
-import { EventPublisher } from "@wso2is/admin.core.v1/utils";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
+import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";

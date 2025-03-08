@@ -15,7 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -49,28 +50,29 @@ import {
     getApplicationTemplateData,
     getAuthProtocolMetadata,
     updateAuthProtocolConfig
-} from "../../api";
+} from "../../api/application";
 import { getApplicationWizardStepIcons } from "../../configs/ui";
-import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationTemplateInterface,
     ApplicationTemplateListItemInterface,
-    CustomInboundProtocolMetaDataInterface,
-    DefaultProtocolTemplate,
     MainApplicationInterface,
-    OIDCDataInterface,
-    SAML2ConfigurationInterface,
-    SupportedAuthProtocolTypes,
     URLFragmentTypes,
     emptyApplication
-} from "../../models";
+} from "../../models/application";
 import {
-    OAuthProtocolTemplate,
-    PassiveStsProtocolTemplate,
-    SAMLProtocolTemplate
-} from "../meta";
+    CustomInboundProtocolMetaDataInterface,
+    DefaultProtocolTemplate,
+    OIDCDataInterface,
+    SAML2ConfigurationInterface,
+    SupportedAuthProtocolTypes
+
+} from "../../models/application-inbound";
+import { OAuthProtocolTemplate } from "../meta/oauth-protocol-template.meta";
+import { PassiveStsProtocolTemplate } from "../meta/passive-sts-protocol-template.meta";
+import { SAMLProtocolTemplate } from "../meta/saml-protocol-template.meta";
 
 /**
  * Proptypes for the application creation wizard component.

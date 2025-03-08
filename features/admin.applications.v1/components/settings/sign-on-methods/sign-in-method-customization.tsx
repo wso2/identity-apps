@@ -19,14 +19,12 @@
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import { getMultiFactorAuthenticatorDetails } from "@wso2is/admin.connections.v1/api/authenticators";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
-import {
-    AppConstants,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    history
-} from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
@@ -54,17 +52,17 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Icon  } from "semantic-ui-react";
-import { ScriptBasedFlow } from "./script-based-flow";
-import { StepBasedFlow } from "./step-based-flow";
+import { ScriptBasedFlow } from "./script-based-flow/script-based-flow";
+import { StepBasedFlow } from "./step-based-flow/step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
-import { updateAuthenticationSequence } from "../../../api";
+import { updateAuthenticationSequence } from "../../../api/application";
 import {
     AdaptiveAuthTemplateInterface,
     AuthenticationSequenceInterface,
     AuthenticationStepInterface,
     AuthenticatorInterface,
     FederatedConflictWithSMSOTPReturnValueInterface
-} from "../../../models";
+} from "../../../models/application";
 import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
 import { ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from "../../../utils/sign-in-method-utils";
 

@@ -49,6 +49,7 @@
         const computedLocale = computeLocale(localeFromCookie, localeFromUrlParams, browserLocale);
 
         languageSelectionInput.val(computedLocale);
+        setUILocaleCookie(computeLocale);
 
         const dataOption = $( "div[data-value='" + computedLocale + "']" );
         dataOption.addClass("active selected")
@@ -60,44 +61,30 @@
     });
 
     /**
-     * Extracts the domain from the hostname.
-     * If parsing fails, undefined will be returned.
-     */
-    function extractDomainFromHost() {
-        let domain = undefined;
-        /**
-         * Extract the domain from the hostname.
-         * Ex: If sub.sample.domain.com is parsed, `domain.com` will be set as the domain.
-         */
-        try {
-            var hostnameTokens = window.location.hostname.split('.');
-
-            if (hostnameTokens.length > 1) {
-                domain = hostnameTokens.slice((hostnameTokens.length -2), hostnameTokens.length).join(".");
-            } else if (hostnameTokens.length == 1) {
-                domain = hostnameTokens[0];
-            }
-        } catch(e) {
-            // Couldn't parse the hostname.
-        }
-        return domain;
-    }
-
-    /**
      * Creates a cookie with the given parameters, which lives within the given domain
      * @param name - Name of the cookie
      * @param value - Value to be stored
      * @param days - Expiry days
      */
     function setCookie(name, value, days) {
-        let expires = "";
-        const domain = ";domain=" + extractDomainFromHost();
+        var expires = "";
+        var domain = ";domain=" + URLUtils.getDomain(window.location.href);
+
         if (days) {
             const date = new Date();
             date.setTime(date.getTime() + (days*24*60*60*1000));
             expires = "; expires=" + date.toUTCString();
         }
+
         document.cookie = name + "=" + (value || "")  + expires + domain + "; path=/";
+    }
+
+    /**
+     * Handles language change by setting the `ui_locale` cookie.
+     */
+    function setUILocaleCookie(language) {
+        var EXPIRY_DAYS = 30;
+        setCookie('ui_lang', language, EXPIRY_DAYS);
     }
 
     /**
@@ -106,9 +93,8 @@
     function onLangChange() {
         const langSwitchForm = document.getElementById("language-selector-input");
         const language = langSwitchForm.value;
-        const EXPIRY_DAYS = 30;
+        setUILocaleCookie(language);
 
-        setCookie('ui_lang', language, EXPIRY_DAYS);
         window.location.reload();
     }
 
@@ -116,8 +102,8 @@
         if (localeFromCookie) {
             return localeFromCookie;
         } else if (localeFromUrlParams) {
-            const firstLangFromUrlParams = localeFromUrlParams.split(" ")[0];
-            return firstLangFromUrlParams;
+            const firstLangFromUrlParams = decodeURIComponent(localeFromUrlParams).split(" ")[0];
+            return encodeURIComponent(firstLangFromUrlParams);
         } else if (browserLocale) {
             return browserLocale;
         } else {

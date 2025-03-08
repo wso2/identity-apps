@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,9 @@
  */
 
 import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -44,11 +46,17 @@ import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid } from "semantic-ui-react";
 import changeActionStatus from "../api/change-action-status";
 import deleteAction from "../api/delete-action";
+import useGetActionById from "../api/use-get-action-by-id";
 import useGetActionsByType from "../api/use-get-actions-by-type";
-import ActionConfigForm from "../components/action-config-form";
+import PreIssueAccessTokenActionConfigForm from "../components/pre-issue-access-token-action-config-form";
+import PreUpdatePasswordActionConfigForm from "../components/pre-update-password-action-config-form";
 import { ActionsConstants } from "../constants/actions-constants";
-import { ActionConfigFormPropertyInterface } from "../models/actions";
+import {
+    ActionConfigFormPropertyInterface, PreUpdatePasswordActionConfigFormPropertyInterface,
+    PreUpdatePasswordActionResponseInterface
+} from "../models/actions";
 import "./action-configuration-page.scss";
+import { useHandleError, useHandleSuccess } from "../util/alert-util";
 
 /**
  * Props for the Action Configuration page.
@@ -69,6 +77,9 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+
+    const handleSuccess: (operation: string) => void = useHandleSuccess();
+    const handleError: (error: AxiosError, operation: string) => void = useHandleError();
 
     const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
 
@@ -97,20 +108,46 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
         mutate: mutateActions
     } = useGetActionsByType(actionTypeApiPath);
 
-    const isLoading: boolean = isActionsLoading || !actions || !Array.isArray(actions);
+    const actionId: string = useMemo(() => actions?.[0]?.id || null, [ actions ]);
 
-    const actionInitialValues: ActionConfigFormPropertyInterface = useMemo(() => {
-        if (actions) {
-            return {
-                authenticationType: actions[0]?.endpoint?.authentication?.type.toString(),
-                endpointUri: actions[0]?.endpoint?.uri,
-                id: actions[0]?.id,
-                name: actions[0]?.name
-            };
-        } else {
-            return null;
-        }
-    }, [ actions ]);
+    const {
+        data: action,
+        error: actionFetchRequestError,
+        isLoading: isActionLoading,
+        mutate: mutateAction
+    } = useGetActionById(actionTypeApiPath, actionId);
+
+    const isLoading: boolean = isActionsLoading || !actions || !Array.isArray(actions) || isActionLoading;
+
+    const actionCommonInitialValues: ActionConfigFormPropertyInterface =
+        useMemo(() => {
+            if (action) {
+                return {
+                    authenticationType: action?.endpoint?.authentication?.type?.toString(),
+                    endpointUri: action?.endpoint?.uri,
+                    id: action?.id,
+                    name: action?.name,
+                    rule: action?.rule
+                };
+
+            } else {
+                return null;
+            }
+        }, [ action ]);
+
+    const preUpdatePasswordActionInitialValues: PreUpdatePasswordActionConfigFormPropertyInterface =
+        useMemo(() => {
+            if (action && actionTypeApiPath === ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH ) {
+                return {
+                    ...actionCommonInitialValues,
+                    certificate: (action as PreUpdatePasswordActionResponseInterface)?.passwordSharing.certificate
+                        || "",
+                    passwordSharing: (action as PreUpdatePasswordActionResponseInterface)?.passwordSharing.format
+                };
+            } else {
+                return null;
+            }
+        }, [ action ]);
 
     useEffect(() => {
         if (actions?.length >= 1) {
@@ -122,7 +159,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     }, [ actions ]);
 
     /**
-     * The following useEffect is used to handle if any error occurs while fetching the Action.
+     * The following useEffect is used to handle if any error occurs while fetching Actions by Type.
      */
     useEffect(() => {
         if (isActionsLoading || !actionsFetchRequestError) {
@@ -132,22 +169,50 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
         if (actionsFetchRequestError.response?.data?.description) {
             dispatch(
                 addAlert<AlertInterface>({
-                    description: t("actions:notification.error.fetch.description",
+                    description: t("actions:notification.error.fetchByType.description",
                         { description: actionsFetchRequestError.response.data.description }),
                     level: AlertLevels.ERROR,
-                    message: t("actions:notification.error.fetch.message")
+                    message: t("actions:notification.error.fetchByType.message")
                 })
             );
         } else {
             dispatch(
                 addAlert<AlertInterface>({
-                    description: t("actions:notification.genericError.fetch.description"),
+                    description: t("actions:notification.genericError.fetchByType.description"),
                     level: AlertLevels.ERROR,
-                    message: t("actions:notification.genericError.fetch.message")
+                    message: t("actions:notification.genericError.fetchByType.message")
                 })
             );
         }
     }, [ isActionsLoading, actionsFetchRequestError ]);
+
+    /**
+     * The following useEffect is used to handle if any error occurs while fetching the Action by Id.
+     */
+    useEffect(() => {
+        if (isActionLoading || !actionFetchRequestError) {
+            return;
+        }
+
+        if (actionFetchRequestError.response?.data?.description) {
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("actions:notification.error.fetchById.description",
+                        { description: actionFetchRequestError.response.data.description }),
+                    level: AlertLevels.ERROR,
+                    message: t("actions:notification.error.fetchById.message")
+                })
+            );
+        } else {
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("actions:notification.genericError.fetchById.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("actions:notification.genericError.fetchById.message")
+                })
+            );
+        }
+    }, [ isActionLoading, actionFetchRequestError ]);
 
     /**
      * Handles the back button click event.
@@ -249,7 +314,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
             setIsSubmitting(true);
             changeActionStatus(
                 actionTypeApiPath,
-                actionInitialValues.id,
+                actionCommonInitialValues.id,
                 toggleOperation)
                 .then(() => {
                     handleSuccess(toggleOperation);
@@ -258,7 +323,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                     handleError(error, toggleOperation);
                 })
                 .finally(() => {
-                    mutateActions();
+                    mutateAction();
                     setIsSubmitting(false);
                 });
         };
@@ -282,7 +347,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
 
     const handleDelete = (): void => {
         setIsSubmitting(true);
-        deleteAction(actionTypeApiPath, actionInitialValues.id)
+        deleteAction(actionTypeApiPath, actionCommonInitialValues.id)
             .then(() => {
                 handleSuccess(ActionsConstants.DELETE);
                 mutateActions();
@@ -295,37 +360,6 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 setOpenRevertConfigModal(false);
                 setIsSubmitting(false);
             });
-    };
-
-    const handleSuccess = (operation: string): void => {
-        dispatch(
-            addAlert({
-                description: t("actions:notification.success." + operation + ".description"),
-                level: AlertLevels.SUCCESS,
-                message: t("actions:notification.success." + operation + ".message")
-            })
-        );
-    };
-
-    const handleError = (error: AxiosError, operation: string): void => {
-        if (error.response?.data?.description) {
-            dispatch(
-                addAlert({
-                    description: t("actions:notification.error." + operation + ".description",
-                        { description: error.response.data.description }),
-                    level: AlertLevels.ERROR,
-                    message: t("actions:notification.error." + operation + ".message")
-                })
-            );
-        } else {
-            dispatch(
-                addAlert({
-                    description: t("actions:notification.genericError." + operation + ".description"),
-                    level: AlertLevels.ERROR,
-                    message: t("actions:notification.genericError." + operation + ".message")
-                })
-            );
-        }
     };
 
     return (
@@ -347,12 +381,24 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 <Grid className="grid-form">
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 16 }>
-                            <ActionConfigForm
-                                initialValues={ actionInitialValues }
-                                isLoading={ isLoading }
-                                actionTypeApiPath={ actionTypeApiPath }
-                                isCreateFormState={ showCreateForm }
-                            />
+                            { actionTypeApiPath === ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH && (
+                                <PreIssueAccessTokenActionConfigForm
+                                    initialValues={ actionCommonInitialValues }
+                                    isLoading={ isLoading }
+                                    actionTypeApiPath={ actionTypeApiPath }
+                                    isCreateFormState={ showCreateForm }
+                                />
+                            )
+                            }
+                            { actionTypeApiPath === ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH && (
+                                <PreUpdatePasswordActionConfigForm
+                                    initialValues={ preUpdatePasswordActionInitialValues }
+                                    isLoading={ isLoading }
+                                    actionTypeApiPath={ actionTypeApiPath }
+                                    isCreateFormState={ showCreateForm }
+                                />
+                            )
+                            }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

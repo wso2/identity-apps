@@ -22,7 +22,7 @@ import {
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { SupportedAuthenticators } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models";
+import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models/application";
 
 /**
  * Class containing application management constants.
@@ -44,7 +44,9 @@ export class ApplicationManagementConstants {
     /**
      * When a new Application version is released, this variable should to be updated.
      */
-    public static readonly LATEST_VERSION: string = "v1.0.0";
+    public static readonly APP_VERSION_1: string = "v1.0.0";
+    public static readonly APP_VERSION_2: string = "v2.0.0";
+    public static readonly LATEST_VERSION: string = ApplicationManagementConstants.APP_VERSION_2;
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -81,7 +83,9 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_MYACCOUNT_SAAS_SETTINGS", "applications.myaccount.saasMyaccountSettings")
         .set("APPLICATION_ADD_MANAGEMENT_APPLICATIONS", "applications.add.managementApplications")
         .set("APPLICATIONS_SETTINGS", "applications.settings")
-        .set("TRUSTED_APPS", "applications.trustedApps");
+        .set("TRUSTED_APPS", "applications.trustedApps")
+        .set("APPLICATION_ACCESSTOKEN_ATTRIBUTES", "applications.accessTokenAttributes")
+        .set("APPLICATION_OUTDATED_APP_BANNER", "applications.outdatedAppBanner");
 
     /**
      * Key for the URL search param for application state.
@@ -354,7 +358,9 @@ export class ApplicationManagementConstants {
         FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.IPROOV_AUTHENTICATOR_NAME,
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.IPROOV_AUTHENTICATOR_ID,
         FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.DUO_AUTHENTICATOR_NAME,
-        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.DUO_AUTHENTICATOR_ID
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.DUO_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.PASSWORD_RESET_ENFORCER_AUTHENTICATOR_ID
     ];
 
     // Known social authenticators.

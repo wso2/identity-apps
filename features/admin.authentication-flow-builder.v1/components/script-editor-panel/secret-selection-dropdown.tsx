@@ -27,7 +27,7 @@ import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetSecrets } from "@wso2is/admin.secrets.v1/api/secret";
 import AddSecretWizard from "@wso2is/admin.secrets.v1/components/add-secret-wizard";

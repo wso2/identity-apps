@@ -16,15 +16,13 @@
  * under the License.
  */
 
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { applicationListConfig } from "@wso2is/admin.extensions.v1/configs/application-list";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, RoleConnectedApplicationInterface, RolesInterface } from "@wso2is/core/models";

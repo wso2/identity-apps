@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,8 @@ import {
     useAuthContext
 } from "@asgardeo/auth-react";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
-import { AppConstants, CommonConstants } from "@wso2is/admin.core.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { CommonConstants } from "@wso2is/admin.core.v1/constants/common-constants";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
 import { DeploymentConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -41,7 +42,6 @@ import {
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import useOrganizationSwitch from "@wso2is/admin.organizations.v1/hooks/use-organization-switch";
 import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
-import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore
@@ -255,7 +255,7 @@ const useSignIn = (): UseSignInInterface => {
         } = window["AppUtils"].getConfig()?.__experimental__platformIdP;
 
         if (__experimental__platformIdP?.enabled) {
-            isPrivilegedUser = idToken?.sub?.startsWith(`${ CONSUMER_USERSTORE }/`);
+            isPrivilegedUser = /^.+\//.test(idToken?.sub);
 
             if (idToken?.default_tenant && idToken.default_tenant !== "carbon.super") {
                 const redirectUrl: URL = new URL(

@@ -178,6 +178,9 @@
                 {% endfor %}
                 {% endif %}
         },
+        {% if user_store.properties.DomainName is defined %}
+        "primaryUserStoreDomainName": "{{ user_store.properties.DomainName }}",
+        {% endif %}
         {% if identity_mgt.user_claim_update.enable_multiple_emails_and_mobile_numbers is defined %}
         "isMultipleEmailsAndMobileNumbersEnabled": {{ identity_mgt.user_claim_update.enable_multiple_emails_and_mobile_numbers }},
         {% endif %}
@@ -374,6 +377,9 @@
             {% endfor %}
             {% endif %}
         },
+        {% if scim2.custom_user_schema_uri is defined %}
+        "customUserSchemaURI": "{{ scim2.custom_user_schema_uri }}",
+        {% endif %}
         "privacyPolicyConfigs": {
             {% if myaccount.privacy_policy_configs.items() is defined %}
             {% for key, value in myaccount.privacy_policy_configs.items() %}

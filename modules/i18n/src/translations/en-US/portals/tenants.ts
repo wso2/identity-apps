@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -70,10 +70,14 @@ export const tenants: TenantsNS = {
                     }
                 },
                 domain: {
-                    helperText: "Enter a unique domain name for your organization. The domain name should be in the format of <1>abc.com</1>.",
+                    helperText: "Enter a unique domain name for your organization. The domain name should be in the format of <1>abc.com</1>. The valid characters are lowercase letters, numbers, '.', '-', and '_'.",
                     label: "Domain",
                     placeholder: "Enter a Domain name",
                     validations: {
+                        domainInvalidCharPattern: "The domain contains one or more illegal characters.",
+                        domainInvalidPattern: "The domain doesn't match the valid pattern.",
+                        domainMandatoryExtension: "The domain should have a dot extension. E.g,: abc.com",
+                        domainStartingWithDot: "The domain name cannot start with a dot.",
                         domainUnavailable: "A domain with the same name already exists.",
                         required: "A domain name is required."
                     }
@@ -166,6 +170,10 @@ export const tenants: TenantsNS = {
     },
     edit: {
         backButton: "Go back to Root Organizations",
+        consoleURL: {
+            hint: "If you try to login to <1>{{domain}}</1> organization's Console using the same browser, you will have to logout from this active session first.",
+            label: "Console URL"
+        },
         subtitle: "Crated on {{date}}"
     },
     editTenant: {
@@ -230,6 +238,27 @@ export const tenants: TenantsNS = {
         }
     },
     listing: {
+        advancedSearch: {
+            form: {
+                dropdown: {
+                    filterAttributeOptions: {
+                        domain: "Domain"
+                    }
+                },
+                inputs: {
+                    filterAttribute: {
+                        placeholder: "E.g. Domain."
+                    },
+                    filterCondition: {
+                        placeholder: "E.g. Starts with etc."
+                    },
+                    filterValue: {
+                        placeholder: "Enter value to search"
+                    }
+                }
+            },
+            placeholder: "Search by domain"
+        },
         count: "Showing {{results}} out of {{totalResults}}",
         emptyPlaceholder: {
             actions: {
@@ -247,6 +276,18 @@ export const tenants: TenantsNS = {
             },
             title: "No groups assigned to the role."
         },
+        emptySearchResult: {
+            actions: {
+                clearSearchQuery: {
+                    label: "Clear search query"
+                }
+            },
+            subtitles: {
+                0: "We couldn't find any results for '{{ searchQuery }}'",
+                1: "Please try a different search term."
+            },
+            title: "No results found"
+        },
         item: {
             actions: {
                 delete: {
@@ -254,9 +295,6 @@ export const tenants: TenantsNS = {
                 },
                 edit: {
                     label: "Edit"
-                },
-                goToConsole: {
-                    label: "Go to Console"
                 },
                 more: {
                     label: "More"

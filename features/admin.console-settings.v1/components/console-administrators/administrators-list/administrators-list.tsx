@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,19 +28,15 @@ import { GuestUsersList } from "@wso2is/admin.administrators.v1/components/guest
 import { AdministratorConstants } from "@wso2is/admin.administrators.v1/constants/users";
 import { UseOrganizationConfigType } from "@wso2is/admin.administrators.v1/models/organization";
 import { AddAdministratorWizard } from "@wso2is/admin.administrators.v1/wizard/add-administrator-wizard";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConstants,
-    UserBasicInterface,
-    UserRoleInterface,
-    getEmptyPlaceholderIllustrations,
-    history,
-    store
-} from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
@@ -48,7 +44,6 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { useInvitedUsersList } from "@wso2is/admin.users.v1/api/invite";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { AdminAccountTypes, InvitationStatus, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
 import {
     AlertInterface,
@@ -151,6 +146,8 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.consoleSettings
     );
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const isPrivilegedUsersInConsoleSettingsEnabled: boolean =
         !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
@@ -178,7 +175,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
     useEffect(() => {
         setSelectedUserStore(
             isPrivilegedUsersInConsoleSettingsEnabled && selectedAdministratorGroup === "administrators"
-                ? PRIMARY_USERSTORE
+                ? primaryUserStoreDomainName
                 : userstoresConfig?.primaryUserstoreName
         );
     },[ isPrivilegedUsersInConsoleSettingsEnabled, selectedAdministratorGroup ]);
@@ -334,7 +331,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
             });
         }
 
-        if (isSubOrganization()) {
+        if (isCurrentOrgSubOrganization) {
             addAdminOptions.push({
                 "data-componentid": `${componentId}-invite-new-user-dropdown-item`,
                 key: 2,
@@ -390,6 +387,16 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                     { t("consoleSettings:administrators.add.action") }
                 </PrimaryButton>
             );
+        } else {
+            return (
+                <PrimaryButton
+                    data-componentid={ `${componentId}-add-button` }
+                    onClick={ () => setShowAddExistingUserWizard(true) }
+                >
+                    <Icon data-componentid={ `${componentId}-add-button-icon` } name="add" />
+                    { t("consoleSettings:administrators.add.action") }
+                </PrimaryButton>
+            );
         }
     };
 
@@ -428,7 +435,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                     options={ availableUserStores }
                     onChange={ handleSelectedUserStoreChange }
                     value={ selectedUserStore }
-                    defaultValue={ PRIMARY_USERSTORE }
+                    defaultValue={ primaryUserStoreDomainName }
                 />
             );
         }

@@ -17,11 +17,12 @@
  */
 
 import Typography from "@oxygen-ui/react/Typography";
-import { AppState, FeatureConfigInterface, store  } from "@wso2is/admin.core.v1";
+import { useRequiredScopes } from "@wso2is/access-control";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface  } from "@wso2is/admin.core.v1/models/config";
+import { AppState, store  } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -36,6 +37,7 @@ import { getConnectorCategories, getConnectorCategory } from "../api";
 import GovernanceConnectorCategoriesGrid from "../components/governance-connector-grid";
 import { ServerConfigurationsConstants } from "../constants";
 import {
+    ConnectorOverrideConfig,
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorInterface
 } from "../models";
@@ -60,7 +62,7 @@ type GovernanceConnectorWithRef = GovernanceConnectorInterface & ReferableCompon
 export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterface> = (
     props: ConnectorListingPageInterface
 ): ReactElement => {
-    const { [ "data-testid" ]: testId } = props;
+    const { [ "data-testid" ]: testId = "governance-connectors-listing-page" } = props;
 
     const dispatch: Dispatch = useDispatch();
     const pageContextRef: MutableRefObject<any> = useRef(null);
@@ -73,23 +75,35 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const isPasswordInputValidationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isPasswordInputValidationEnabled);
 
+    const hasGovernanceConnectorReadPermission: boolean = useRequiredScopes(
+        featureConfig?.governanceConnectors?.scopes?.read
+    );
+    const hasOrganizationDiscoveryReadPermission: boolean = useRequiredScopes(
+        featureConfig?.organizationDiscovery?.scopes?.read
+    );
+    const hasResidentOutboundProvisioningFeaturePermission: boolean = useRequiredScopes(
+        featureConfig?.residentOutboundProvisioning?.scopes?.feature
+    );
+    const hasInternalNotificationSendingReadPermission: boolean = useRequiredScopes(
+        [
+            ...featureConfig?.internalNotificationSending?.scopes?.feature ?? [],
+            ...featureConfig?.internalNotificationSending?.scopes?.read ?? []
+        ]
+    );
+
     const predefinedCategories: any = useMemo(() => {
-        const originalConnectors: Array<any> = GovernanceConnectorUtils.getPredefinedConnectorCategories();
+        const originalConnectors: Array<any> = GovernanceConnectorUtils.getCombinedPredefinedConnectorCategories();
         const refinedConnectorCategories: Array<any> = [];
 
         const isOrganizationDiscoveryEnabled: boolean = featureConfig?.organizationDiscovery?.enabled
-            && hasRequiredScopes(
-                featureConfig?.organizationDiscovery,
-                featureConfig?.organizationDiscovery?.scopes?.read,
-                allowedScopes
-            );
+            && hasOrganizationDiscoveryReadPermission;
 
         const isResidentOutboundProvisioningEnabled: boolean = featureConfig?.residentOutboundProvisioning?.enabled
-            && hasRequiredScopes(
-                featureConfig?.residentOutboundProvisioning,
-                featureConfig?.residentOutboundProvisioning?.scopes?.feature,
-                allowedScopes
-            );
+            && hasResidentOutboundProvisioningFeaturePermission;
+
+        const isConfiguringInternalNotificationSendingEnabled: boolean = featureConfig?.
+            internalNotificationSending?.enabled
+            && hasInternalNotificationSendingReadPermission;
 
         for (const category of originalConnectors) {
             if (!isOrganizationDiscoveryEnabled
@@ -99,6 +113,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
             if (!isResidentOutboundProvisioningEnabled
                     && category.id === ServerConfigurationsConstants.PROVISIONING_SETTINGS_CATEGORY_ID) {
+                continue;
+            }
+
+            if (!isConfiguringInternalNotificationSendingEnabled
+                    && category.id === ServerConfigurationsConstants.NOTIFICATION_SETTINGS_CATEGORY_ID) {
                 continue;
             }
 
@@ -122,9 +141,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     useEffect(() => {
 
         // If Governance Connector read permission is not available, prevent from trying to load the connectors.
-        if (!hasRequiredScopes(featureConfig?.governanceConnectors,
-            featureConfig?.governanceConnectors?.scopes?.read,
-            allowedScopes)) {
+        if (!hasGovernanceConnectorReadPermission) {
 
             return;
         }
@@ -211,9 +228,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const loadCategoryConnectors = (categoryId: string): Promise<GovernanceConnectorCategoryInterface | null> => {
         return getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
-                const connectorList: GovernanceConnectorInterface[] = response?.connectors?.filter(
+                let connectorList: GovernanceConnectorInterface[] = response?.connectors?.filter(
                     (connector: GovernanceConnectorInterface) =>
                         !serverConfigurationConfig.connectorsToHide.includes(connector.id));
+                const connectorOverrides: ConnectorOverrideConfig[] = GovernanceConnectorUtils
+                    .getConnectorPropertyOverrides();
 
                 // If there are no connectors, skip the rest of the logic.
                 if (!connectorList || connectorList.length < 1) {
@@ -229,6 +248,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                     connector.isCustom =  true;
                     connector.testId = `${ connector.name }-card`;
                 });
+
+                connectorList = GovernanceConnectorUtils.overrideConnectorProperties(connectorList, connectorOverrides);
 
                 // Group the connectors by category.
                 const connectorCategory: GovernanceConnectorCategoryInterface = {
@@ -355,13 +376,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
             </Ref>
         </PageLayout>
     );
-};
-
-/**
- * Default props for the component.
- */
-ConnectorListingPage.defaultProps = {
-    "data-testid": "governance-connectors-listing-page"
 };
 
 /**

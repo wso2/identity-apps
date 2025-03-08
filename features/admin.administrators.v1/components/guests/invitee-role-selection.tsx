@@ -17,7 +17,7 @@
  */
 
 import { getRolesList } from "@wso2is/admin.roles.v2/api";
-import { UserInviteInterface } from "@wso2is/admin.users.v1/models";
+import { UserInviteInterface } from "@wso2is/admin.users.v1/models/user";
 import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
@@ -147,7 +147,7 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
                     <DocumentationLink
                         link={ getLink("manage.users.collaboratorAccounts.roles.learnMore") }
                     >
-                        { t("extensions:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </Heading>
             </Modal.Header>

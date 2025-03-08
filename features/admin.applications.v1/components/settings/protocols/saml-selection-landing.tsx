@@ -15,8 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
-import { ProtocolCard } from "@wso2is/admin.core.v1/components";
+import { ProtocolCard } from "@wso2is/admin.core.v1/components/protocol-card";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { EmphasizedSegment, Heading, Text } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
@@ -24,7 +24,7 @@ import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Card, Divider, Grid } from "semantic-ui-react";
 import { getSAMLModeIcons } from "../../../configs/ui";
-import { SAMLConfigModes } from "../../../models";
+import { SAMLConfigModes } from "../../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../../utils/application-management-utils";
 
 /**
