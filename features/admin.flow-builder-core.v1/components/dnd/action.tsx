@@ -21,9 +21,9 @@ import classNames from "classnames";
 import React, {
     CSSProperties,
     ForwardRefExoticComponent,
+    ForwardedRef,
     HTMLAttributes,
     ReactElement,
-    Ref,
     forwardRef
 } from "react";
 import "./action.scss";
@@ -49,7 +49,7 @@ export interface ActionProps extends HTMLAttributes<HTMLButtonElement>, Identifi
  * @param ref - Reference to the button element.
  * @returns The Action component.
  */
-const Action = forwardRef<HTMLButtonElement, ActionProps>(
+const Action: ForwardRefExoticComponent<ActionProps> = forwardRef<HTMLButtonElement, ActionProps>(
     (
         {
             className,
@@ -58,7 +58,7 @@ const Action = forwardRef<HTMLButtonElement, ActionProps>(
             style,
             ...rest
         }: ActionProps,
-        ref: Ref<HTMLButtonElement>
+        ref: ForwardedRef<HTMLButtonElement>
     ): ReactElement => (
         <button
             ref={ ref }

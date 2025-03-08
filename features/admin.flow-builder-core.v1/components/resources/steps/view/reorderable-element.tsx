@@ -25,7 +25,7 @@ import React, { FunctionComponent, ReactElement, useRef } from "react";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import { Element } from "../../../../models/elements";
-import { Handle } from "../../../dnd/handle";
+import Handle from "../../../dnd/handle";
 import Sortable, { SortableProps } from "../../../dnd/sortable";
 
 /**
