@@ -126,7 +126,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         return generateIdsForResources<Node[]>([
             START_STEP,
-            ...steps.map((step: Node) => {
+            ...steps.map((step: Node) => {                
                 return {
                     data:
                         (step.data?.components && {
@@ -464,7 +464,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                                     action: {
                                         type: "EXECUTOR",
                                         executor: {
-                                            name: "EmailOTPVerifier"
+                                            name: "OTPOnboardExecutor"
                                         },
                                         next: ""
                                     }
@@ -490,7 +490,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             return [ [], [] ];
         }
 
-        const templateSteps = generateSteps(template.config.data.steps as any);
+        const replacers = template?.config?.data?.__generationMeta__?.replacers;
+
+        const templateSteps = updateTemplatePlaceholderReferences(generateSteps(template.config.data.steps as any), replacers);
         const templateEdges = generateEdges(templateSteps as any);
 
         return [ templateSteps, templateEdges ];

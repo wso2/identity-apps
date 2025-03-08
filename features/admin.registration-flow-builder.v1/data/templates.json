@@ -233,6 +233,148 @@
             "image": "https://www.svgrepo.com/show/461597/google.svg",
             "showOnResourcePanel": true
         },
-        "config": {}
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "replacers": [
+                        {
+                            "key": "GOOGLE_REDIRECTION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 300,
+                            "y": 200
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Register Account"
+                                    }
+                                },
+                                {
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "id": "{{ID}}",
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "TEXT",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "label": "Username",
+                                                "required": true,
+                                                "placeholder": "Enter your username",
+                                                "identifier": "http://wso2.org/claims/username"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "PASSWORD",
+                                            "config": {
+                                                "identifier": "password",
+                                                "type": "password",
+                                                "hint": "",
+                                                "label": "Password",
+                                                "required": true,
+                                                "placeholder": "Enter your password"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "PasswordOnboardExecutor"
+                                                },
+                                                "next": "USER_ONBOARD"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "variant": "SOCIAL",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Continue with Google"
+                                    },
+                                    "action": {
+                                        "type": "NEXT",
+                                        "next": "{{GOOGLE_REDIRECTION_STEP_ID}}"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{GOOGLE_REDIRECTION_STEP_ID}}",
+                        "type": "REDIRECTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 690,
+                            "y": 500
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "GoogleOIDCAuthenticator",
+                                    "meta": {
+                                        "idp": "{{IDP_NAME}}"
+                                    }
+                                },
+                                "next": "USER_ONBOARD"
+                            }
+                        }
+                    },
+                    {
+                        "id": "USER_ONBOARD",
+                        "type": "USER_ONBOARD",
+                        "size": {
+                            "width": 56,
+                            "height": 56
+                        },
+                        "position": {
+                            "x": 880,
+                            "y": 408
+                        },
+                        "data": {}
+                    }
+                ]
+            }
+        }
     }
 ]

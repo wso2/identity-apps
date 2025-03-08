@@ -225,7 +225,7 @@
                                     "type": "BUTTON",
                                     "variant": "SOCIAL",
                                     "config": {
-                                        "type": "submit",
+                                        "type": "button",
                                         "text": "Continue with Google"
                                     },
                                     "action": {
