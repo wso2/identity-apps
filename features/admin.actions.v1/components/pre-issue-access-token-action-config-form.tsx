@@ -19,7 +19,7 @@
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Skeleton from "@oxygen-ui/react/Skeleton";
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import { RuleExecuteCollectionWithoutIdInterface, RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
@@ -63,6 +63,10 @@ interface PreIssueAccessTokenActionConfigFormInterface extends IdentifiableCompo
      */
     isLoading?: boolean;
     /**
+     * Specifies whether the form is read-only.
+     */
+    isReadOnly: boolean;
+    /**
      * Action Type of the Action.
      */
     actionTypeApiPath: string;
@@ -75,6 +79,7 @@ interface PreIssueAccessTokenActionConfigFormInterface extends IdentifiableCompo
 const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessTokenActionConfigFormInterface> = ({
     initialValues,
     isLoading,
+    isReadOnly,
     actionTypeApiPath,
     isCreateFormState,
     [ "data-componentid" ]: _componentId = "action-config-form"
@@ -92,9 +97,6 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
 
     const handleSuccess: (operation: string) => void = useHandleSuccess();
     const handleError: (error: AxiosError, operation: string) => void = useHandleError();
-
-    const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
-    const hasActionCreatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.create);
 
     const {
         mutate: mutateActions
@@ -141,14 +143,6 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
             <Skeleton variant="rectangular" height={ 7 } />
         </Box>
     );
-
-    const getFieldDisabledStatus = (): boolean => {
-        if (isCreateFormState) {
-            return !hasActionCreatePermissions;
-        } else {
-            return !hasActionUpdatePermissions;
-        }
-    };
 
     const validateForm = (values: ActionConfigFormPropertyInterface):
         Partial<ActionConfigFormPropertyInterface> => {
@@ -266,13 +260,14 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                 <CommonActionConfigForm
                     initialValues={ initialValues }
                     isCreateFormState={ isCreateFormState }
+                    isReadOnly={ isReadOnly }
                     onAuthenticationTypeChange={ (updatedValue: AuthenticationType, change: boolean) => {
                         setAuthenticationType(updatedValue);
                         setIsAuthenticationUpdateFormState(change);
                     } }/>
                 { (RuleExpressionsMetaData && showRuleComponent) && (
                     <RuleConfigForm
-                        readonly={ getFieldDisabledStatus() }
+                        readonly={ isReadOnly }
                         rule={ rule }
                         ruleActionType={ actionTypeApiPath }
                         setRule={ setRule }
@@ -314,7 +309,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                                             className={ "button-container" }
                                             data-componentid={ `${ _componentId }-primary-button` }
                                             loading={ isSubmitting }
-                                            disabled={ getFieldDisabledStatus() }
+                                            disabled={ isReadOnly }
                                         >
                                             {
                                                 isCreateFormState
