@@ -23,17 +23,20 @@ const updateTemplatePlaceholderReferences = (obj: any, replacers: any[]): any =>
         return obj.map(value => updateTemplatePlaceholderReferences(value, replacers));
     } else if (typeof obj === "object" && obj !== null) {
         return Object.fromEntries(
-            Object.entries(obj).map(([key, value]) => {
-                if (key === "id" && typeof value === "string") {
+            Object.entries(obj).map(([ key, value ]) => {
+                if (typeof value === "string") {
                     // Check if this ID is a placeholder (e.g. {{GOOGLE_REDIRECTION_STEP_ID}})
                     const replacer = replacers.find(r => r.key === value.replace(/[{}]/g, ""));
 
-                    if (replacer && replacer.type === "ID") {
-                        // If replacer type is "ID", generate a new ID
-                        return [key, generateResourceId(replacer.type)];
+                    if (replacer) {
+                        if (replacer.type === "ID") {
+                            // If replacer type is "ID", generate a new ID
+                            return [ key, generateResourceId(replacer.type) ];
+                        }
                     }
                 }
-                return [key, updateTemplatePlaceholderReferences(value, replacers)];
+
+                return [ key, updateTemplatePlaceholderReferences(value, replacers) ];
             })
         );
     }
@@ -42,4 +45,3 @@ const updateTemplatePlaceholderReferences = (obj: any, replacers: any[]): any =>
 };
 
 export default updateTemplatePlaceholderReferences;
-
