@@ -478,15 +478,6 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 minLength={ 0 }
                 disabled={ getFieldDisabledStatus() }
             />
-            <FormSpy
-                onChange={ ({ values }: { values: EndpointConfigFormPropertyInterface }) => {
-                    if (values?.endpointUri?.startsWith("http://")) {
-                        setIsHttpEndpointUri(true);
-                    } else {
-                        setIsHttpEndpointUri(false);
-                    }
-                } }
-            />
             { isHttpEndpointUri && (
                 <Alert
                     severity="warning"
@@ -505,6 +496,58 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 { t("actions:fields.authentication.label") }
             </Typography>
             { renderAuthenticationSection() }
+            <FormSpy
+                onChange={ ({ values }: { values: EndpointConfigFormPropertyInterface }) => {
+                    if (values?.endpointUri?.startsWith("http://")) {
+                        setIsHttpEndpointUri(true);
+                    } else {
+                        setIsHttpEndpointUri(false);
+                    }
+
+                    if (isAuthenticationUpdateFormState) {
+                        // Clear inputs of property field values of other authentication types.
+                        switch (authenticationType) {
+                            case AuthenticationType.BASIC:
+                                delete values.accessTokenAuthProperty;
+                                delete values.headerAuthProperty;
+                                delete values.valueAuthProperty;
+
+                                break;
+                            case AuthenticationType.BEARER:
+                                delete values.usernameAuthProperty;
+                                delete values.passwordAuthProperty;
+                                delete values.headerAuthProperty;
+                                delete values.valueAuthProperty;
+
+                                break;
+                            case AuthenticationType.API_KEY:
+                                delete values.usernameAuthProperty;
+                                delete values.passwordAuthProperty;
+                                delete values.accessTokenAuthProperty;
+
+                                break;
+                            case AuthenticationType.NONE:
+                                delete values.usernameAuthProperty;
+                                delete values.passwordAuthProperty;
+                                delete values.headerAuthProperty;
+                                delete values.valueAuthProperty;
+                                delete values.accessTokenAuthProperty;
+
+                                break;
+                            default:
+                                break;
+                        }
+                    } else {
+                        // Clear inputs of all property field values.
+                        values.authenticationType = initialValues?.authenticationType;
+                        delete values.usernameAuthProperty;
+                        delete values.passwordAuthProperty;
+                        delete values.headerAuthProperty;
+                        delete values.valueAuthProperty;
+                        delete values.accessTokenAuthProperty;
+                    }
+                } }
+            />
         </>
     );
 };
