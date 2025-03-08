@@ -61,6 +61,11 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const onResourceDropOnCanvas = (resource: Resource, resourceId: string): void => {
         setLastInteractedResource(resource);
         setLastInteractedStepId(resourceId);
+
+        // Currently we don't show the properties panel for Templates.
+        if (resource.resourceType === ResourceTypes.Template) {
+            setIsOpenResourcePropertiesPanel(false);
+        }
     };
 
     const setLastInteractedResource = (resource: Resource): void => {

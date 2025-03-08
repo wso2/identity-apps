@@ -48,6 +48,14 @@ const processNavigation = (resource, navigations) => {
             ...resource,
             action
         };
+    } else if (navigations[resource.id] && resource?.category === ElementCategories.Action) {
+        return {
+            ...resource,
+            action: {
+                next: navigations[resource.id],
+                type: ActionTypes.Next
+            }
+        };
     }
 
     return resource;
