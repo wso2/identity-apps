@@ -464,7 +464,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                                     action: {
                                         type: "EXECUTOR",
                                         executor: {
-                                            name: "OTPOnboardExecutor"
+                                            name: "EmailOTPVerifier"
                                         },
                                         next: ""
                                     }
