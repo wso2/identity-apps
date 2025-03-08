@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
