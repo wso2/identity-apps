@@ -83,6 +83,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const handleError: (error: AxiosError, operation: string) => void = useHandleError();
 
     const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
+    const hasActionCreatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.create);
 
     const actionTypeApiPath: string = useMemo(() => {
         const path: string[] = history.location.pathname.split("/");
@@ -214,6 +215,17 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
             );
         }
     }, [ isActionLoading, actionFetchRequestError ]);
+
+    /**
+     * This function resolves whether the form is read-only or not.
+     */
+    const isReadOnly = (): boolean => {
+        if (showCreateForm) {
+            return !hasActionCreatePermissions;
+        } else {
+            return !hasActionUpdatePermissions;
+        }
+    };
 
     /**
      * Handles the back button click event.
@@ -386,6 +398,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                                 <PreIssueAccessTokenActionConfigForm
                                     initialValues={ actionCommonInitialValues }
                                     isLoading={ isLoading }
+                                    isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }
                                     isCreateFormState={ showCreateForm }
                                 />
@@ -395,6 +408,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                                 <PreUpdatePasswordActionConfigForm
                                     initialValues={ preUpdatePasswordActionInitialValues }
                                     isLoading={ isLoading }
+                                    isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }
                                     isCreateFormState={ showCreateForm }
                                 />
