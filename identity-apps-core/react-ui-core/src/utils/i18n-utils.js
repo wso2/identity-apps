@@ -53,6 +53,12 @@ export const getLocaleTranslationMap = async (basePath, locale = "en-US") => {
     return new Map(Object.entries(translationObject));
 };
 
+/**
+ * Resolves the text of an element.
+ * @param {Object} translations - The translations object.
+ * @param {string} text - The text to resolve.
+ * @returns {string} - The resolved text.
+ */
 export const resolveElementText = (translations, text) => {
     if (!text) {
         return "";
