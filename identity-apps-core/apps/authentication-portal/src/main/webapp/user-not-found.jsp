@@ -1,6 +1,6 @@
 <%--
  ~
- ~ Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ ~ Copyright (c) 2021-2025, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
  ~
  ~ This software is the property of WSO2 Inc. and its suppliers, if any.
  ~ Dissemination of any information or reproduction of any material contained
@@ -105,6 +105,7 @@
     String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
     String prmstr = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
     String urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
+    Boolean isDynamicPortalEnabled = false;
 
     urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
     urlParameters = prmstr;
@@ -123,17 +124,29 @@
         }
     }
 
-    accountRegistrationEndpointURL = application.getInitParameter("AccountRegisterEndpointURL");
-    if (StringUtils.isBlank(accountRegistrationEndpointURL)) {
-        accountRegistrationEndpointURL = identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
+    try {
+        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+        isDynamicPortalEnabled = preferenceRetrievalClient.checkSelfRegistrationEnableDynamicPortal(tenantDomain);
+    } catch (PreferenceRetrievalClientException e) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", AuthenticationEndpointUtil
+                .i18n(resourceBundle, "something.went.wrong.contact.admin"));
+        IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+
+        return;
     }
-%>
 
-<%!
-    private String getRegistrationUrl(String accountRegistrationEndpointURL, String urlEncodedURL,
-            String urlParameters) {
+    if (isDynamicPortalEnabled) {
+        System.out.println("identityMgtEndpointContext");
+        System.out.println(identityMgtEndpointContext);
 
-        return accountRegistrationEndpointURL + "?" + urlParameters + "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
+        accountRegistrationEndpointURL = identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
+    } else {
+        accountRegistrationEndpointURL = application.getInitParameter("AccountRegisterEndpointURL");
+        if (StringUtils.isBlank(accountRegistrationEndpointURL)) {
+            accountRegistrationEndpointURL = identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
+        }
     }
 %>
 
@@ -192,7 +205,7 @@
                             class="ui primary fluid large button"
                             type="button"
                             value="submit"
-                            onclick="window.location.href='<%=getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters)%>';"
+                            onclick="window.location.href='<%=getRegistrationPortalUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters)%>';"
                         >
                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "go.to.sign.up")%>
                         </button>

@@ -54,7 +54,6 @@
         "react-joyride": "^2.3.0",
         "react-notification-system": "^0.4.0",
         "react-redux": "^7.2.9",
-        "reactflow": "^11.7.2",
         "recharts": "^2.6.2",
         "reduce-reducers": "^1.0.4",
         "redux": "^4.0.4",

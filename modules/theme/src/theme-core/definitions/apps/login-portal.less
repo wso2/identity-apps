@@ -271,6 +271,50 @@
         footer {
             padding: 2rem 0;
         }
+
+        .content-container {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+            min-height: 200px;
+        }
+
+        .content-container.loaded {
+            position: relative;
+            z-index: 1000;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .content-container.loading {
+            opacity: 0.7;
+            transition: height 0.7s ease, opacity 0.7s ease;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #f47c3c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .content-container.loading.hidden {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 30%;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     }
 }
 

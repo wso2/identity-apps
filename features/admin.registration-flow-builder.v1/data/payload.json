@@ -1,0 +1,695 @@
+{
+    "flow": {
+        "pages": [
+            {
+                "id": "flow-page-1",
+                "nodes": [
+                    "flow-node-1"
+                ]
+            },
+            {
+                "id": "flow-page-2",
+                "nodes": [
+                    "flow-node-2",
+                    "flow-node-3",
+                    "flow-node-4"
+                ]
+            },
+            {
+                "id": "flow-page-3",
+                "nodes": [
+                    "flow-node-5"
+                ]
+            }
+        ]
+    },
+    "nodes": [
+        {
+            "id": "flow-node-1",
+            "elements": [
+                "flow-display-header-8uJ6t4D3",
+                "flow-block-attributes-g55dfGuK",
+                "flow-display-horizontal-divider-G6d3t8uJ",
+                "flow-action-google-sign-up-Rt8uJ6D3"
+            ],
+            "actions": [
+                {
+                    "id": "flow-action-password-onboarder-p563u9Yn",
+                    "action": {
+                        "type": "EXECUTOR",
+                        "executors": [
+                            {
+                                "name": "PasswordOnboarder"
+                            }
+                        ]
+                    },
+                    "next": [
+                        "flow-node-2"
+                    ]
+                },
+                {
+                    "id": "flow-action-email-otp-verifier-5t8uJ6D3",
+                    "action": {
+                        "type": "EXECUTOR",
+                        "executors": [
+                            {
+                                "name": "EmailOTPVerifier"
+                            }
+                        ]
+                    },
+                    "next": [
+                        "flow-node-3"
+                    ]
+                },
+                {
+                    "id": "flow-action-google-sign-up-Rt8uJ6D3",
+                    "action": {
+                        "type": "EXECUTOR",
+                        "executors": [
+                            {
+                                "name": "GoogleOIDCAuthenticator",
+                                "meta": {
+                                    "idp": "Google"
+                                }
+                            }
+                        ]
+                    },
+                    "next": [
+                        "flow-node-5"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "flow-node-2",
+            "elements": [
+                "flow-display-header-hj6t4D3",
+                "flow-block-attributes-osld3343",
+                "flow-action-go-back-rtessdf3"
+            ],
+            "actions": [
+                {
+                    "id": "flow-action-next-ggh688op",
+                    "action": {
+                        "type": "NEXT",
+                        "meta": {
+                            "actionType": "CREDENTIAL_ONBOARDING"
+                        }
+                    },
+                    "next": [
+                        "flow-node-5"
+                    ]
+                },
+                {
+                    "id": "flow-action-go-back-rtessdf3",
+                    "action": {
+                        "type": "PREVIOUS"
+                    },
+                    "previous": [
+                        "flow-node-1"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "flow-node-3",
+            "elements": [
+                "flow-display-header-rg6pwt0",
+                "flow-block-attributes-53fdsfsp",
+                "flow-action-go-back-er212kfl"
+            ],
+            "actions": [
+                {
+                    "id": "flow-action-next-tyG3hp31",
+                    "action": {
+                        "type": "NEXT",
+                        "meta": {
+                            "actionType": "ATTRIBUTE_COLLECTION"
+                        }
+                    },
+                    "next": [
+                        "flow-node-4"
+                    ]
+                },
+                {
+                    "id": "flow-action-go-back-er212kfl",
+                    "action": {
+                        "type": "PREVIOUS"
+                    },
+                    "previous": [
+                        "flow-node-1"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "flow-node-4",
+            "elements": [
+                "flow-display-header-GG456y7",
+                "flow-block-attributes-45owsew2",
+                "flow-action-go-back-yt5g5t"
+            ],
+            "actions": [
+                {
+                    "id": "flow-action-verify-otp-ssd5g6h",
+                    "action": {
+                        "type": "NEXT",
+                        "meta": {
+                            "actionType": "VERIFICATION"
+                        }
+                    },
+                    "next": [
+                        "flow-node-5"
+                    ]
+                },
+                {
+                    "id": "flow-action-go-back-yt5g5t",
+                    "action": {
+                        "type": "PREVIOUS"
+                    },
+                    "previous": [
+                        "flow-node-3"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "flow-node-5",
+            "elements": [
+                "flow-display-header-45wTrU",
+                "flow-block-attributes-er203owe"
+            ],
+            "actions": [
+                {
+                    "id": "flow-action-done-5t8uJ6D3",
+                    "action": {
+                        "type": "NEXT"
+                    },
+                    "next": [
+                        "COMPLETE"
+                    ]
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "id": "flow-block-attributes-g55dfGuK",
+            "elements": [
+                "flow-field-username-F6D3t8uJ",
+                "flow-field-first-name-r7u4F1GG",
+                "flow-field-last-name-r7u4F1GG",
+                "flow-field-dob-G6D3t8uJ",
+                "flow-action-password-onboarder-p563u9Yn",
+                "flow-display-horizontal-divider-67f8uJ6D3",
+                "flow-action-email-otp-verifier-5t8uJ6D3"
+            ]
+        },
+        {
+            "id": "flow-block-attributes-53fdsfsp",
+            "elements": [
+                "flow-field-email-Rt8uJ6D3",
+                "flow-action-next-tyG3hp31"
+            ]
+        },
+        {
+            "id": "flow-block-attributes-45owsew2",
+            "elements": [
+                "flow-field-otp-mn44gh0j",
+                "flow-action-verify-otp-ssd5g6h"
+            ]
+        },
+        {
+            "id": "flow-block-attributes-osld3343",
+            "elements": [
+                "flow-field-password-HK8uJ903",
+                "flow-field-confirm-password-GH63t78g",
+                "flow-action-next-ggh688op"
+            ]
+        },
+        {
+            "id": "flow-block-attributes-er203owe",
+            "elements": [
+                "flow-field-nic-RR342gr",
+                "flow-action-done-5t8uJ6D3"
+            ]
+        }
+    ],
+    "elements": [
+        {
+            "id": "flow-display-header-8uJ6t4D3",
+            "category": "DISPLAY",
+            "type": "TYPOGRAPHY",
+            "version": "0.1.0",
+            "variant": "H3",
+            "config": {
+                "field": {
+                    "text": "Register Account"
+                }
+            }
+        },
+        {
+            "id": "flow-field-username-F6D3t8uJ",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "TEXT",
+            "config": {
+                "field": {
+                    "type": "text",
+                    "name": "http://wso2.org/claims/username",
+                    "hint": "",
+                    "label": "Username",
+                    "required": true,
+                    "placeholder": "Enter your username"
+                }
+            }
+        },
+        {
+            "id": "flow-field-first-name-r7u4F1GG",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "TEXT",
+            "config": {
+                "field": {
+                    "type": "text",
+                    "name": "http://wso2.org/claims/givenname",
+                    "hint": "",
+                    "label": "First Name",
+                    "required": true,
+                    "placeholder": "Enter your first name"
+                }
+            }
+        },
+        {
+            "id": "flow-field-last-name-r7u4F1GG",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "TEXT",
+            "config": {
+                "field": {
+                    "type": "text",
+                    "name": "http://wso2.org/claims/lastname",
+                    "hint": "",
+                    "label": "Last Name",
+                    "required": true,
+                    "placeholder": "Enter your last name"
+                }
+            }
+        },
+        {
+            "id": "flow-field-dob-G6D3t8uJ",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "DATE",
+            "config": {
+                "field": {
+                    "type": "date",
+                    "name": "http://wso2.org/claims/dob",
+                    "hint": "",
+                    "label": "Date of Birth",
+                    "required": false,
+                    "placeholder": "Enter your date of birth"
+                }
+            }
+        },
+        {
+            "id": "flow-action-password-onboarder-p563u9Yn",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "variant": "PRIMARY",
+            "config": {
+                "field": {
+                    "type": "submit",
+                    "text": "Continue with Password"
+                }
+            }
+        },
+        {
+            "id": "flow-display-horizontal-divider-67f8uJ6D3",
+            "category": "DISPLAY",
+            "type": "DIVIDER",
+            "version": "0.1.0",
+            "variant": "HORIZONTAL",
+            "config": {
+                "field": {
+                    "text": "Or"
+                }
+            }
+        },
+        {
+            "id": "flow-action-email-otp-verifier-5t8uJ6D3",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "deprecated": false,
+            "variant": "PRIMARY",
+            "config": {
+                "field": {
+                    "type": "submit",
+                    "text": "Continue with Email OTP"
+                }
+            }
+        },
+        {
+            "id": "flow-display-horizontal-divider-G6d3t8uJ",
+            "category": "DISPLAY",
+            "type": "DIVIDER",
+            "version": "0.1.0",
+            "variant": "HORIZONTAL",
+            "config": {
+                "field": {
+                    "text": "Or"
+                }
+            }
+        },
+        {
+            "id": "flow-action-google-sign-up-Rt8uJ6D3",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "deprecated": false,
+            "variant": "SOCIAL",
+            "config": {
+                "field": {
+                    "type": "button",
+                    "text": "Continue with Google Sign Up"
+                }
+            }
+        },
+        {
+            "id": "flow-display-header-hj6t4D3",
+            "category": "DISPLAY",
+            "type": "TYPOGRAPHY",
+            "version": "0.1.0",
+            "variant": "H3",
+            "config": {
+                "field": {
+                    "text": "Enter Password"
+                }
+            }
+        },
+        {
+            "id": "flow-field-password-HK8uJ903",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "PASSWORD",
+            "config": {
+                "field": {
+                    "type": "password",
+                    "name": "password",
+                    "hint": "",
+                    "label": "Password",
+                    "required": true,
+                    "multiline": false,
+                    "placeholder": "Enter your password",
+                    "defaultValue": "",
+                    "validation": [
+                        {
+                            "type": "CRITERIA",
+                            "showValidationCriteria": true,
+                            "criteria": [
+                                {
+                                    "label": "sign.up.form.fields.password.policies.length",
+                                    "error": "This field must be between 5 and 10 characters.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_LENGTH",
+                                            "value": 5,
+                                            "error": "This field must be at least 5 characters."
+                                        },
+                                        {
+                                            "type": "MAX_LENGTH",
+                                            "value": 10,
+                                            "error": "This field must be at most 10 characters."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.lowercaseAndUppercaseLetter",
+                                    "error": "This field must have at least one uppercase and lowercase letter.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_LOWERCASE_LETTERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one lowercase letter."
+                                        },
+                                        {
+                                            "type": "MIN_UPPERCASE_LETTERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one uppercase letter."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.minimumOneNumber",
+                                    "error": "This field must have at least one number.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_NUMBERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one number."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.minimumOneSpecialCharacter",
+                                    "error": "This field must have at least one special character.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_SPECIAL_CHARACTERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one special character."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.minimumOneSpecialCharacter",
+                                    "error": "This field must have at least one special character.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_SPECIAL_CHARACTERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one special character."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.minimumOneUniqueCharacter",
+                                    "error": "This field must have at least one unique character.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_UNIQUE_CHARACTERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one unique character."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.noRepeatedCharacters",
+                                    "error": "This field must not have repeated characters.",
+                                    "validation": [
+                                        {
+                                            "type": "MAX_REPEATED_CHARACTERS",
+                                            "value": 0,
+                                            "error": "Password must not contain repeated characters."
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "styles": {}
+            }
+        },
+        {
+            "id": "flow-field-confirm-password-GH63t78g",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "PASSWORD",
+            "config": {
+                "field": {
+                    "type": "password",
+                    "name": "confirmPassword",
+                    "hint": "",
+                    "label": "Confirm Password",
+                    "required": true,
+                    "placeholder": "Re-enter your password"
+                }
+            }
+        },
+        {
+            "id": "flow-action-next-ggh688op",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "variant": "PRIMARY",
+            "config": {
+                "field": {
+                    "type": "submit",
+                    "text": "Next"
+                }
+            }
+        },
+        {
+            "id": "flow-display-header-rg6pwt0",
+            "category": "DISPLAY",
+            "type": "TYPOGRAPHY",
+            "version": "0.1.0",
+            "variant": "H3",
+            "config": {
+                "field": {
+                    "text": "Enter Email"
+                }
+            }
+        },
+        {
+            "id": "flow-field-email-Rt8uJ6D3",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "EMAIL",
+            "config": {
+                "field": {
+                    "type": "email",
+                    "name": "http://wso2.org/claims/emailaddress",
+                    "hint": "",
+                    "label": "Email",
+                    "required": true,
+                    "placeholder": "Enter your email address"
+                }
+            }
+        },
+        {
+            "id": "flow-action-next-tyG3hp31",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "variant": "PRIMARY",
+            "config": {
+                "field": {
+                    "type": "submit",
+                    "text": "Continue"
+                }
+            }
+        },
+        {
+            "id": "flow-action-go-back-er212kfl",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "variant": "SECONDARY",
+            "config": {
+                "field": {
+                    "type": "submit",
+                    "text": "Go back"
+                }
+            }
+        },
+        {
+            "id": "flow-display-header-GG456y7",
+            "category": "DISPLAY",
+            "type": "TYPOGRAPHY",
+            "version": "0.1.0",
+            "variant": "H3",
+            "config": {
+                "field": {
+                    "text": "OTP Verification"
+                }
+            }
+        },
+        {
+            "id": "flow-field-otp-mn44gh0j",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "OTP",
+            "config": {
+                "field": {
+                    "type": "text",
+                    "name": "email-otp",
+                    "hint": "",
+                    "label": "OTP",
+                    "required": true,
+                    "placeholder": "Enter the OTP"
+                }
+            }
+        },
+        {
+            "id": "flow-action-verify-otp-ssd5g6h",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "variant": "PRIMARY",
+            "config": {
+                "field": {
+                    "type": "submit",
+                    "text": "Continue"
+                }
+            }
+        },
+        {
+            "id": "flow-action-go-back-yt5g5t",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "variant": "SECONDARY",
+            "config": {
+                "field": {
+                    "type": "submit",
+                    "text": "Go back"
+                }
+            }
+        },
+        {
+            "id": "flow-display-header-45wTrU",
+            "category": "DISPLAY",
+            "type": "TYPOGRAPHY",
+            "version": "0.1.0",
+            "variant": "H3",
+            "config": {
+                "field": {
+                    "text": "Enter Personal Details"
+                }
+            }
+        },
+        {
+            "id": "flow-field-nic-RR342gr",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "TEXT",
+            "config": {
+                "field": {
+                    "type": "text",
+                    "name": "http://wso2.org/claims/im",
+                    "hint": "",
+                    "label": "NIC",
+                    "required": true,
+                    "placeholder": "Enter your national identity card number"
+                }
+            }
+        },
+        {
+            "id": "flow-action-done-5t8uJ6D3",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "deprecated": false,
+            "variant": "PRIMARY",
+            "config": {
+                "field": {
+                    "type": "submit",
+                    "text": "Done"
+                }
+            }
+        }
+    ]
+}
