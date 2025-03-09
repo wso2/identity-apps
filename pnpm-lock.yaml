@@ -647,6 +647,9 @@ importers:
       '@wso2is/admin.wsfed-configuration.v1':
         specifier: ^2.25.203
         version: link:../../features/admin.wsfed-configuration.v1
+      '@wso2is/common.ui.v1':
+        specifier: ^0.0.0
+        version: link:../../features/common.ui.v1
       '@wso2is/core':
         specifier: ^2.7.0
         version: link:../../modules/core
@@ -963,6 +966,9 @@ importers:
       '@wso2is/common.branding.v1':
         specifier: ^2.26.60
         version: link:../../features/common.branding.v1
+      '@wso2is/common.ui.v1':
+        specifier: ^0.0.0
+        version: link:../../features/common.ui.v1
       '@wso2is/core':
         specifier: ^2.7.0
         version: link:../../modules/core
@@ -2866,6 +2872,9 @@ importers:
       '@wso2is/admin.server-configurations.v1':
         specifier: ^2.32.128
         version: link:../admin.server-configurations.v1
+      '@wso2is/common.ui.v1':
+        specifier: ^0.0.0
+        version: link:../common.ui.v1
       '@wso2is/core':
         specifier: ^2.7.0
         version: link:../../modules/core
@@ -20707,6 +20716,100 @@ importers:
         specifier: ^4.6.4
         version: 4.9.5
 
+  features/common.ui.v1:
+    dependencies:
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-redux:
+        specifier: ^7.2.9
+        version: 7.2.9(react-dom@18.3.1)(react@18.3.1)
+      redux:
+        specifier: ^4.0.4
+        version: 4.2.1
+    devDependencies:
+      '@rollup/plugin-commonjs':
+        specifier: ^25.0.7
+        version: 25.0.8(rollup@4.31.0)
+      '@rollup/plugin-dynamic-import-vars':
+        specifier: ^2.1.2
+        version: 2.1.5(rollup@4.31.0)
+      '@rollup/plugin-image':
+        specifier: ^3.0.3
+        version: 3.0.3(rollup@4.31.0)
+      '@rollup/plugin-json':
+        specifier: ^6.1.0
+        version: 6.1.0(rollup@4.31.0)
+      '@rollup/plugin-node-resolve':
+        specifier: ^15.2.3
+        version: 15.3.1(rollup@4.31.0)
+      '@rollup/plugin-typescript':
+        specifier: ^11.1.6
+        version: 11.1.6(rollup@4.31.0)(tslib@2.8.1)(typescript@4.9.5)
+      '@svgr/rollup':
+        specifier: ^6.2.1
+        version: 6.5.1
+      '@testing-library/dom':
+        specifier: ^7.24.3
+        version: 7.31.2
+      '@testing-library/jest-dom':
+        specifier: ^5.11.9
+        version: 5.17.0
+      '@testing-library/user-event':
+        specifier: ^12.7.3
+        version: 12.8.3(@testing-library/dom@7.31.2)
+      '@types/jest':
+        specifier: ^26.0.14
+        version: 26.0.24
+      '@types/react':
+        specifier: 18.0.18
+        version: 18.0.18
+      '@types/react-redux':
+        specifier: ^7.1.25
+        version: 7.1.34
+      '@types/testing-library__jest-dom':
+        specifier: ^5.14.3
+        version: 5.14.9
+      jest:
+        specifier: ^26.4.2
+        version: 26.6.3
+      jest-environment-jsdom:
+        specifier: ^26.3.0
+        version: 26.6.2
+      jest-environment-jsdom-global:
+        specifier: ^2.0.4
+        version: 2.0.4(jest-environment-jsdom@26.6.2)
+      rollup:
+        specifier: ^4.17.2
+        version: 4.31.0
+      rollup-plugin-dts:
+        specifier: ^6.1.1
+        version: 6.1.1(rollup@4.31.0)(typescript@4.9.5)
+      rollup-plugin-generate-package-json:
+        specifier: ^3.2.0
+        version: 3.2.0(rollup@4.31.0)
+      rollup-plugin-polyfill-node:
+        specifier: ^0.13.0
+        version: 0.13.0(rollup@4.31.0)
+      rollup-plugin-scss:
+        specifier: ^4.0.0
+        version: 4.0.1
+      rollup-plugin-styles:
+        specifier: ^4.0.0
+        version: 4.0.0(rollup@4.31.0)
+      rollup-plugin-svg:
+        specifier: ^2.0.0
+        version: 2.0.0
+      ts-jest:
+        specifier: ^26.4.0
+        version: 26.5.6(jest@26.6.3)(typescript@4.9.5)
+      typescript:
+        specifier: ^4.6.4
+        version: 4.9.5
+
   identity-apps-core:
     dependencies:
       '@wso2is/theme':
@@ -25597,7 +25700,6 @@ packages:
   /@mui/base@5.0.0-alpha.108(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-KjzRUts2i/ODlMfywhFTqTzQl+Cr9nlDSZxJcnYjrbOV/iRyQNBTDoiFJt+XEdRi0fZBHnk74AFbnP56ehybsA==}
     engines: {node: '>=12.0.0'}
-    deprecated: This package has been replaced by @base-ui-components/react
     peerDependencies:
       '@types/react': 18.0.18
       react: ^17.0.0 || ^18.0.0
@@ -41820,7 +41922,7 @@ packages:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
     engines: {node: '>=10'}
     dependencies:
-      chalk: 4.1.1
+      chalk: 4.1.2
       is-unicode-supported: 0.1.0
     dev: true
 
@@ -43649,7 +43751,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       bl: 4.1.0
-      chalk: 4.1.1
+      chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-spinners: 2.9.2
       is-interactive: 1.0.0

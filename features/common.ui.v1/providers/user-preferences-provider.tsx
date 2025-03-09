@@ -19,14 +19,12 @@
 import get from "lodash-es/get";
 import merge from "lodash-es/merge";
 import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import UserPreferencesContext from "../context/user-preferences-context";
-import { AppState } from "../store";
+import UserPreferencesContext from "../contexts/user-preferences-context";
 
 /**
- * Props interface of {@link UserPreferenceProvider}
+ * Props interface of {@link UserPreferencesProvider}
  */
-export interface UserPreferenceProviderProps<T> {
+export interface UserPreferencesProviderProps<T> {
     /**
      * Initial preferences.
      */
@@ -35,6 +33,10 @@ export interface UserPreferenceProviderProps<T> {
      * Storage strategy. Default is "localstorage".
      */
     storageStrategy?: "localstorage" | "sessionstorage";
+    /**
+     * UUI of the user.
+     */
+    userId: string;
 }
 
 const USER_PREFERENCES_STORAGE_KEY: string = "user-preferences";
@@ -45,18 +47,16 @@ const USER_PREFERENCES_STORAGE_KEY: string = "user-preferences";
  * The type of the preferences should be passed as a generic type.
  *
  * @example
- * `<UserPreferenceProvider<Preference> initialPreferences={ { "orgId": { "key": "value" } } }>`
+ * `<UserPreferencesProvider<Preference> initialPreferences={ { "orgId": { "key": "value" } } }>`
  *
  * @param props - Props for the client.
  * @returns App settings provider.
  */
-const UserPreferenceProvider = <T, >(props: PropsWithChildren<UserPreferenceProviderProps<T>>): ReactElement => {
-    const { children, storageStrategy } = props;
-
-    const userIdentifier: string = useSelector((state: AppState) => {
-        return state?.auth?.username;
-    });
-
+const UserPreferencesProvider = <T,>({
+    children,
+    storageStrategy = "localstorage",
+    userId: _userId
+}: PropsWithChildren<UserPreferencesProviderProps<T>>): ReactElement => {
     const [ preferencesInContext, setPreferencesInContext ] = useState<T>(null);
 
     /**
@@ -91,11 +91,9 @@ const UserPreferenceProvider = <T, >(props: PropsWithChildren<UserPreferenceProv
      * @param preferencesToUpdate - The new preferences to update.
      * @param userId - Optional user Id. If provided, the preferences for the passed in user-id will be updated.
      */
-    const setPreferences = (preferencesToUpdate: T, userId?: string) => {
-        const _userId: string = userId ?? userIdentifier;
-
+    const setPreferences = (preferencesToUpdate: T, userId?: string): void => {
         const updatedPreferences: T = merge({}, preferencesInContext, {
-            [_userId]: {
+            [userId ?? _userId]: {
                 ...preferencesToUpdate
             }
         });
@@ -125,11 +123,8 @@ const UserPreferenceProvider = <T, >(props: PropsWithChildren<UserPreferenceProv
      * @param key - The key of the preference to retrieve.
      * @param userId - Optional user Id. If provided, the preferences for the passed in user-id will be updated.
      */
-    const getPreferences = (key: string, userId?: string) => {
-        const _userId: string = userId ?? userIdentifier;
-
-        return get(preferencesInContext, `${_userId}.${key}`, null);
-    };
+    const getPreferences = (key: string, userId?: string): T =>
+        get(preferencesInContext, `${userId ?? _userId}.${key}`, null);
 
     /**
      * Get all flat-level preferences for the specified organization.
@@ -139,11 +134,7 @@ const UserPreferenceProvider = <T, >(props: PropsWithChildren<UserPreferenceProv
      *
      * @param userId - Optional user Id. If provided, the preferences for the passed in user-id will be updated.
      */
-    const getFlatPreferences = (userId?: string) => {
-        const _userId: string = userId ?? userIdentifier;
-
-        return get(preferencesInContext, _userId, {});
-    };
+    const getFlatPreferences = (userId?: string): T => get(preferencesInContext, userId ?? _userId, {}) as T;
 
     return (
         <UserPreferencesContext.Provider
@@ -158,8 +149,4 @@ const UserPreferenceProvider = <T, >(props: PropsWithChildren<UserPreferenceProv
     );
 };
 
-UserPreferenceProvider.defaultProps = {
-    storageStrategy: "localstorage"
-};
-
-export default UserPreferenceProvider;
+export default UserPreferencesProvider;
