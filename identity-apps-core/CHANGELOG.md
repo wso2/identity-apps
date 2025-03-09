@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.16.0
+
+### Minor Changes
+
+- [#7813](https://github.com/wso2/identity-apps/pull/7813) [`290ebf412bd269ac1b5ea1edd6d2a5c457f5dc8d`](https://github.com/wso2/identity-apps/commit/290ebf412bd269ac1b5ea1edd6d2a5c457f5dc8d) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce new dynamic registration portal
+
 ## 2.15.0
 
 ### Minor Changes
