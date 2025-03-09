@@ -1077,6 +1077,34 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             category: "extensions:develop.sidePanel.categories.monitor",
             children: [
                 {
+                    children: [
+                        {
+                            component: lazy(() =>
+                                import("@wso2is/admin.logs.v1/pages/logs-settings-configuration-page")),
+                            exact: true,
+                            icon: {
+                                icon: getSidePanelIcons().childIcon
+                            },
+                            id: "auditLogsSettings",
+                            name: "Audit Logs Settings",
+                            path: AppConstants.getPaths().get("LOGS_SETTINGS_AUDIT"),
+                            protected: true,
+                            showOnSidePanel: false
+                        },
+                        {
+                            component: lazy(() =>
+                                import("@wso2is/admin.logs.v1/pages/logs-settings-configuration-page")),
+                            exact: true,
+                            icon: {
+                                icon: getSidePanelIcons().childIcon
+                            },
+                            id: "auditLogsSettings",
+                            name: "Audit Logs Settings",
+                            path: AppConstants.getPaths().get("LOGS_SETTINGS_DIAGNOSTICS"),
+                            protected: true,
+                            showOnSidePanel: false
+                        }
+                    ],
                     component: lazy(() => import("@wso2is/admin.logs.v1/pages/logs-settings-page")),
                     exact: true,
                     icon: {

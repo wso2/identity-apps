@@ -105,6 +105,17 @@ export const serverConfigs: serverConfigsNS = {
         title: "Remote Log Publishing",
         pageTitle: "Remote Log Publishing",
         description: "Configure remote logging settings for audit logs in the organization.",
+        backButtonText: "Go back",
+        logTypes: {
+            audit: {
+                name: "Audit Logs",
+                description: "Configure Audit Log publishing"
+            },
+            diagnostics: {
+                name: "Diagnostic Logs",
+                description: "Configure Diagnostics Log publishing"
+            }
+        },
         fields: {
             logTypes: {
                 label: "Log types to be published",
@@ -115,7 +126,16 @@ export const serverConfigs: serverConfigsNS = {
                 }
             },
             remoteURL: {
-                label: "Destination URL"
+                label: "Destination URL",
+                error: {
+                    required: "Remote logging destination endpoint URL is missing"
+                }
+            },
+            publishInterval: {
+                label: "Log publish interval",
+                error: {
+                    required: "Log publish interval is required"
+                }
             },
             advanced: {
                 title: "Advanced Settings",

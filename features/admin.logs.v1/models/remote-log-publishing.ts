@@ -35,7 +35,7 @@ export interface RemoteLogPublishingConfigurationInterface {
 	/**
 	 * Connection timeout in milliseconds.
 	 */
-	connectTimeoutMillis: string,
+	connectTimeoutMillis: number,
     /**
      * Publish interval for logs.
      */

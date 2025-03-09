@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,7 @@
 import Chip from "@oxygen-ui/react/Chip";
 import { GearIcon } from "@oxygen-ui/react-icons";
 import { useRequiredScopes } from "@wso2is/access-control";
+import { getMiscellaneousIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -26,7 +27,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     Button,
-    DocumentationLink,
+    DocumentationLink, EmphasizedSegment, GenericIcon,
     PageLayout,
     Popup,
     ResourceTab,
@@ -36,7 +37,7 @@ import {
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { MenuItem, TabProps } from "semantic-ui-react";
+import { Grid, List, MenuItem, TabProps } from "semantic-ui-react";
 import AuditLogsPage from "./audit-logs-page";
 import DiagnosticLogsPage from "./diagnostic-logs-page";
 import { TabIndex } from "../models/log-models";
@@ -127,6 +128,76 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (props: LogsPageInterface
         history.push(AppConstants.getPaths().get("LOGS_SETTINGS"));
     };
 
+    const renderLogPublishSettings = (): ReactElement => {
+        return (
+            <EmphasizedSegment
+                className="mt-0 mb-5"
+                data-componentid="log-publish-configuration"
+            >
+                <List>
+                    <List.Item>
+                        <Grid verticalAlign="middle">
+                            <Grid.Column
+                                floated="left"
+                                mobile={ 16 }
+                                computer={ 8 }
+                                verticalAlign="middle"
+                            >
+                                <List.Content verticalAlign="middle">
+                                    <GenericIcon
+                                        icon={ getMiscellaneousIcons().tenantIcon }
+                                        floated="left"
+                                        size="mini"
+                                        spaced="right"
+                                        verticalAlign="middle"
+                                        inline
+                                        square
+                                        transparent
+                                    />
+                                    <List.Header
+                                        data-componentid="application-consumer-account-link-title"
+                                        className="logs-title"
+                                    >
+                                        { t("console:manage.features.serverConfigs.remoteLogPublishing.title") }
+                                    </List.Header>
+                                    <List.Description
+                                        data-componentid="application-consumer-account-link-description"
+                                    >
+                                        { t("console:manage.features.serverConfigs.remoteLogPublishing.description") }
+                                    </List.Description>
+                                </List.Content>
+                            </Grid.Column>
+                            <Grid.Column
+                                mobile={ 16 }
+                                computer={ 4 }
+                                textAlign={ "right" }
+                            >
+                                { (
+                                    <Popup
+                                        trigger={ (
+                                            <Button
+                                                className="log-publish-settings-button"
+                                                data-componentid="navigate-to-log-publish-settings-button"
+                                                onClick={ handleSettingsButton }
+                                            >
+                                                <GearIcon /> Configure
+                                            </Button>
+                                        ) }
+                                        content={ "Remote Log Publish Settings" }
+                                        position="top right"
+                                        size="mini"
+                                        hideOnScroll
+                                        inverted
+                                    />
+                                ) }
+                            </Grid.Column>
+                        </Grid>
+                    </List.Item>
+                </List>
+            </EmphasizedSegment>
+        );
+    };
+
     return (
         <div className="diagnostic-logs">
             <PageLayout
@@ -158,6 +229,7 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (props: LogsPageInterface
                 }
                 data-componentid={ `${componentId}-layout` }
             >
+                { renderLogPublishSettings() }
                 { renderLogView() }
             </PageLayout>
         </div>

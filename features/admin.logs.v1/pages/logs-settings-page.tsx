@@ -16,25 +16,25 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
-import { AppState } from "@wso2is/admin.core.v1/store";
+import Avatar from "@oxygen-ui/react/Avatar";
+import Card from "@oxygen-ui/react/Card";
+import CardContent from "@oxygen-ui/react/CardContent";
+import Typography from "@oxygen-ui/react/Typography";
+import { KeyFlowIcon, PadlockAsteriskFlowIcon } from "@oxygen-ui/react-icons";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
-    DocumentationLink,
-    PageLayout,
-    ResourceTab,
-    ResourceTabPaneInterface,
-    useDocumentation
+    GenericIcon,
+    PageLayout
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
+import classNames from "classnames";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { MenuItem, TabProps } from "semantic-ui-react";
-import RemoteLogPublishing from "../components/remote-log-publishing";
-import { TabIndex } from "../models/log-models";
 import "./logs.scss";
+import { LogTypeCardInterface } from "../models/log-settings-models";
 import { LogType } from "../models/remote-log-publishing";
+import "./logs-settings-page.scss";
 
 /**
  * Proptypes for the logs page component.
@@ -48,90 +48,96 @@ type LogsSettingsPageInterface = IdentifiableComponentInterface;
  *
  * @returns Logs Page {@link React.ReactElement}
  */
-const LogsSettingsPage: FunctionComponent<LogsSettingsPageInterface> = (props: LogsSettingsPageInterface): ReactElement => {
+const LogsSettingsPage: FunctionComponent<LogsSettingsPageInterface> = (props: LogsSettingsPageInterface):
+    ReactElement => {
+
     const { ["data-componentid"]: componentId } = props;
-
-    const [ activeTabIndex, setActiveTabIndex ] = useState<number>(TabIndex.DIAGNOSTIC_LOGS);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
     const { t } = useTranslation();
-    const { getLink } = useDocumentation();
-
-    const hasAuditLogAccessPermissions: boolean = useRequiredScopes(featureConfig?.auditLogs?.scopes?.feature);
-
-    const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
-        setActiveTabIndex(data.activeIndex as number);
+    const logTypesCardsInfo = (): LogTypeCardInterface[] => {
+        return [
+            {
+                description: t("console:manage.features.serverConfigs.remoteLogPublishing.logTypes.audit.description"),
+                disabled: false,
+                featureStatusKey: "",
+                heading: t("console:manage.features.serverConfigs.remoteLogPublishing.logTypes.audit.name"),
+                icon: <KeyFlowIcon size="small" className="icon"/>,
+                identifier: LogType.AUDIT,
+                route: AppConstants.getPaths().get("LOGS_SETTINGS_AUDIT")
+            },
+            {
+                description:
+                    t("console:manage.features.serverConfigs.remoteLogPublishing.logTypes.diagnostics.description"),
+                disabled: false,
+                featureStatusKey: "",
+                heading: t("console:manage.features.serverConfigs.remoteLogPublishing.logTypes.diagnostics.name"),
+                icon: <PadlockAsteriskFlowIcon size="small" className="icon"/>,
+                identifier: LogType.DIAGNOSTICS,
+                route: AppConstants.getPaths().get("LOGS_SETTINGS_DIAGNOSTICS")
+            } ];
     };
 
-    const renderLogView = (): ReactElement => {
-        return (
-            <ResourceTab
-                activeIndex={ activeTabIndex }
-                data-testid={ `${componentId}-log-tabs` }
-                defaultActiveIndex={ 0 }
-                onTabChange={ handleTabChange }
-                panes={ resolveLogTabPanes() }
-            />
-        );
-    };
-
-    const resolveLogTabPanes = (): ResourceTabPaneInterface[] => {
-        const panes: ResourceTabPaneInterface[] = [];
-
-        {
-            featureConfig.auditLogs?.enabled &&
-                panes.push({
-                    componentId: "diagnostic-logs",
-                    menuItem: (
-                        <MenuItem key="text" className="item-with-chip">
-                            { t("extensions:develop.monitor.logs.tabs.diagnostic") }
-                        </MenuItem>
-                    ),
-                    render: renderLogContentDiagnosticNew
-                });
-        }
-
-        {
-            featureConfig.auditLogs?.enabled &&
-                hasAuditLogAccessPermissions &&
-                panes.push({
-                    componentId: "audit-logs",
-                    menuItem: (
-                        <MenuItem key="text" className="item-with-chip">
-                            { t("extensions:develop.monitor.logs.tabs.audit") }
-                        </MenuItem>
-                    ),
-                    render: renderLogContentAuditNew
-                });
-        }
-
-        return panes;
-    };
-
-    const renderLogContentDiagnosticNew = (): ReactElement => {
-        return <RemoteLogPublishing logType={ LogType.DIAGNOSTICS }/>;
-    };
-
-    const renderLogContentAuditNew = (): ReactElement => {
-        return <RemoteLogPublishing logType={ LogType.AUDIT }/>;
+    const handleBackButtonClick = (): void => {
+        history.push(AppConstants.getPaths().get("LOGS"));
     };
 
     return (
         <div className="diagnostic-logs">
             <PageLayout
                 title={ t("console:manage.features.serverConfigs.remoteLogPublishing.title") }
-                pageTitle="Logs Settings"
-                description={
-                    (<>
-                        { t("console:manage.features.serverConfigs.remoteLogPublishing.description") }
-                        <DocumentationLink link={ getLink("manage.logs.learnMore") }>
-                            { t("common:learnMore") }
-                        </DocumentationLink>
-                    </>)
-                }
+                pageTitle={ t("console:manage.features.serverConfigs.remoteLogPublishing.pageTitle") }
+                description={ t("console:manage.features.serverConfigs.remoteLogPublishing.description") }
+                backButton={ {
+                    "data-componentid": `${ componentId }-page-back-button`,
+                    onClick: () => handleBackButtonClick(),
+                    text: t("console:manage.features.serverConfigs.remoteLogPublishing.backButtonText")
+                } }
                 data-componentid={ `${componentId}-layout` }
             >
-                { renderLogView() }
+                <div className="log-types-grid-wrapper" data-componentid={ `${ componentId }-grid` }>
+                    <div className="log-types-grid">
+                        { logTypesCardsInfo().map((cardProps: LogTypeCardInterface) => {
+                            return (
+                                <Card
+                                    key={ cardProps.identifier }
+                                    className={ classNames("log-type", { "disabled": cardProps.disabled }) }
+                                    data-componentid={ `${ cardProps.identifier }-log-type-card` }
+                                    onClick={ () => history.push(cardProps.route) }
+                                >
+                                    <CardContent className="log-type-header">
+                                        <div>
+                                            <GenericIcon
+                                                size="micro"
+                                                icon={ (
+                                                    <Avatar
+                                                        variant="square"
+                                                        randomBackgroundColor
+                                                        backgroundColorRandomizer={ cardProps.identifier }
+                                                        className="log-type-icon-container"
+                                                    >
+                                                        { cardProps.icon }
+                                                    </Avatar>
+                                                ) }
+                                                inline
+                                                transparent
+                                                shape="square"
+                                            />
+                                        </div>
+                                        <div>
+                                            <Typography variant="h6">
+                                                { cardProps.heading }
+                                            </Typography>
+                                        </div>
+                                    </CardContent>
+                                    <CardContent>
+                                        <Typography variant="body2" color="text.secondary">
+                                            {  cardProps.description }
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            );
+                        }) }
+                    </div>
+                </div>
             </PageLayout>
         </div>
     );
