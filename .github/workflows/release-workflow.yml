@@ -31,6 +31,8 @@ permissions:
     pull-requests: write
     contents: write
     packages: write
+    id-token: write
+    issues: read
 
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
