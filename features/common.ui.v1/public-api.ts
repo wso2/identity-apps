@@ -16,7 +16,13 @@
  * under the License.
  */
 
-export { default as useGetTenantTier } from "./api/use-get-tenant-tier";
-export { default as useSubscription } from "./hooks/use-subscription";
-export { default as SubscriptionProvider } from "./providers/subscription-provider";
-export * from "./models/tenant-tier";
+export { default as UserPreferencesContext } from "./contexts/user-preferences-context";
+export * from "./contexts/user-preferences-context";
+
+export { default as useUserPreferences } from "./hooks/use-user-preferences";
+export * from "./hooks/use-user-preferences";
+
+export { default as UserPreferencesProvider } from "./providers/user-preferences-provider";
+export * from "./providers/user-preferences-provider";
+
+export * from "./models/user-preferences";
