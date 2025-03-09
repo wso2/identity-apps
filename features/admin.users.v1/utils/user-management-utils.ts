@@ -261,6 +261,14 @@ export const isMultipleEmailsAndMobileNumbersEnabled = (
                 return false;
             }
 
+            // The global supportedByDefault value is a string. Hence, it needs to be converted to a boolean.
+            const resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+
+            // Currently BE check if global supported by default is enabled for these attributes to enable the feature.
+            if (!resolveSupportedByDefaultValue) {
+                return false;
+            }
+
             const excludedUserStores: string[] =
                 schema?.excludedUserStores?.split(",")?.map((store: string) => store?.trim().toUpperCase()) || [];
 

@@ -260,7 +260,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ isMultiValuedItemInvalid, setIsMultiValuedItemInvalid ] =  useState<Record<string, boolean>>({});
 
     const isMultipleEmailAndMobileNumberEnabled: boolean = useMemo(() => {
-        return isMultipleEmailsAndMobileNumbersEnabled(profileInfo,profileSchema);
+        return isMultipleEmailsAndMobileNumbersEnabled(profileInfo, profileSchema);
     }, [ profileSchema, profileInfo ]);
 
     useEffect(() => {
