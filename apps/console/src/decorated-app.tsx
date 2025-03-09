@@ -16,15 +16,30 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { UserPreferencesInterface } from "@wso2is/common.ui.v1/models/user-preferences";
 import UserPreferencesProvider from "@wso2is/common.ui.v1/providers/user-preferences-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, PropsWithChildren, ReactElement } from "react";
+import { useSelector } from "react-redux";
 
+/**
+ * Props interface of {@link DecoratedApp}
+ */
 export type DecoratedAppProps = PropsWithChildren<Record<string, unknown>> & IdentifiableComponentInterface;
 
+/**
+ * `DecoratedApp` is a higher-order component that wraps children with `UserPreferencesProvider`.
+ *
+ * @param props - Component props.
+ * @returns Wrapped component with user preferences context.
+ */
 const DecoratedApp: FC<DecoratedAppProps> = ({ children }: DecoratedAppProps): ReactElement => {
-    return <UserPreferencesProvider<UserPreferencesInterface>>{ children }</UserPreferencesProvider>;
+    const userId: string = useSelector((state: AppState) => {
+        return state?.auth?.username;
+    });
+
+    return <UserPreferencesProvider<UserPreferencesInterface> userId={ userId }>{ children }</UserPreferencesProvider>;
 };
 
 export default DecoratedApp;
