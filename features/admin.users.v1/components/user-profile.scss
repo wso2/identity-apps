@@ -57,4 +57,12 @@
             }
         }
     }
+
+    .verification-pending-icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+        padding: 8px;
+        flex-direction: row;
+    }
 }

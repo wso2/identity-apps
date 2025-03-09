@@ -263,6 +263,6 @@ export const createEmptyProfile = (): BasicProfileInterface => ({
  * Interface for the profile patch operation value.
  */
 export type ProfilePatchOperationValue = Record<string, string
-    | Record<string, string | string[]>
+    | Record<string, string | string[] | boolean>
     | Array<string | MultiValue>
     | Array<Record<string, string>>>;
