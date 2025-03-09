@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.43.1
+
+### Patch Changes
+
+- [#7815](https://github.com/wso2/identity-apps/pull/7815) [`9ff854d15cec203f02dd6e50228d86bae906145a`](https://github.com/wso2/identity-apps/commit/9ff854d15cec203f02dd6e50228d86bae906145a) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Bump portal versions
+
 ## 2.43.0
 
 ### Minor Changes
