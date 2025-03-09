@@ -22,7 +22,7 @@
         "@oxygen-ui/react-icons": "^2.3.4",
         "@wso2is/access-control": "^3.3.20",
         "@wso2is/admin.applications.v1": "^2.32.6",
-        "@wso2is/admin.connections.v1": "^2.33.86",
+        "@wso2is/admin.connections.v1": "^2.33.87",
         "@wso2is/admin.core.v1": "^2.40.6",
         "@wso2is/admin.identity-providers.v1": "^2.26.203",
         "@wso2is/core": "^2.7.0",
