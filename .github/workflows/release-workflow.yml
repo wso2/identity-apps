@@ -28,11 +28,10 @@ on:
         workflow_dispatch:
 
 permissions:
-    pull-requests: write
     contents: write
+    issues: write
+    pull-requests: write
     packages: write
-    id-token: write
-    issues: read
 
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
@@ -46,12 +45,6 @@ jobs:
     release:
         name: 🚀 Release
         runs-on: ubuntu-latest
-        permissions:
-          pull-requests: write
-          contents: write
-          packages: write
-          id-token: write
-          issues: read
         strategy:
             matrix:
                 node-version: [20]
@@ -183,7 +176,7 @@ jobs:
             - name: 📣 Create Release Pull Request or Publish to npm
               if: ${{ env.SHOULD_GENERATE_CHANGESET == 'true' }}
               id: changesets
-              uses: changesets/action@v1.4.9
+              uses: changesets/action@v1.4.0
               with:
                   title: "[Release] [GitHub Action] Update package versions"
                   publish: pnpm run publish:packages
