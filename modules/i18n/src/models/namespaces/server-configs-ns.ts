@@ -105,17 +105,6 @@ export interface serverConfigsNS {
         title: string;
         pageTitle: string;
         description: string;
-        backButtonText: string;
-        logTypes: {
-            audit: {
-                name: string;
-                description: string;
-            };
-            diagnostics: {
-                name: string;
-                description: string;
-            }
-        };
         fields: {
             logTypes: {
                 label: string;
@@ -127,15 +116,6 @@ export interface serverConfigsNS {
             };
             remoteURL: {
                 label: string;
-                error: {
-                    required: string;
-                }
-            };
-            publishInterval: {
-                label: string;
-                error: {
-                    required: string;
-                }
             };
             advanced: {
                 title: string;
