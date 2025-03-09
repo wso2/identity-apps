@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------------
 #
-# Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+# Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
 #
 # WSO2 LLC. licenses this file to you under the Apache License,
 # Version 2.0 (the "License"); you may not use this file except
@@ -53,7 +53,7 @@ jobs:
         steps:
             - name: ⬇️ Checkout
               id: checkout
-              uses: actions/checkout@v4.2.2
+              uses: actions/checkout@v4
               with:
                   token: ${{ env.GH_TOKEN }}
                   persist-credentials: true
@@ -66,7 +66,7 @@ jobs:
 
             - name: 🟢 Setup node
               id: setup-node
-              uses: actions/setup-node@v2
+              uses: actions/setup-node@v4
               with:
                   node-version: ${{ matrix.node-version }}
 
@@ -85,7 +85,7 @@ jobs:
                   maven-version: ${{ matrix.maven-version }}
 
             - name: 🥡 Setup pnpm
-              uses: pnpm/action-setup@v2.1.0
+              uses: pnpm/action-setup@v4
               with:
                   version: ${{ matrix.pnpm-version }}
                   run_install: false
@@ -96,7 +96,7 @@ jobs:
                   echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
 
             - name: 🔆 Cache pnpm modules
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               id: pnpm-cache
               with:
                   path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
@@ -160,7 +160,7 @@ jobs:
 
             - name: 💾 Cache local Maven repository
               id: cache-maven-m2
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
                   path: ~/.m2/repository
                   key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
