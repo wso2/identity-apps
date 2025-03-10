@@ -255,7 +255,8 @@
                                     "meta": {
                                         "idp": "{{IDP_NAME}}"
                                     }
-                                }
+                                },
+                                "next": "USER_ONBOARD"
                             }
                         }
                     }
