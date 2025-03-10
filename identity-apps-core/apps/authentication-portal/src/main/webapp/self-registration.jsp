@@ -135,7 +135,7 @@
                 const apiUrl = baseUrl + "${pageContext.request.contextPath}/util/self-registration-api.jsp";
                 const code = "<%= code != null ? code : null %>";
                 
-                const locale = "en-US";  
+                const locale = "en-US";
                 const translations = <%= translationsJson %>;
                 
                 const [ flowData, setFlowData ] = useState(null);
