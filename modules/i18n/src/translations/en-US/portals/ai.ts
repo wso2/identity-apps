@@ -30,8 +30,7 @@ export const ai: aiNS = {
             full: {
                 button: "Try Login Flow AI",
                 heading: "Create Login Flows with ",
-                subheading: "Describe your login flow requirements including authentication sequence," +
-                    " authenticators and conditional authentication and Login Flow AI will configure it for you."
+                subheading: "Describe your login flow requirements including authentication sequence, authenticators and conditional authentication and Login Flow AI will configure it for you."
             },
             input: {
                 button: "Generate Login Flow",
