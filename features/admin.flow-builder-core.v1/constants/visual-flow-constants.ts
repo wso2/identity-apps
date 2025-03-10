@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ActionTypes } from "../models/actions";
 import { ResourceTypes } from "../models/resources";
 
 class VisualFlowConstants {
@@ -32,6 +33,8 @@ class VisualFlowConstants {
     public static readonly FLOW_BUILDER_DROPPABLE_CANVAS_ID: string = "flow-builder-droppable-canvas";
     public static readonly FLOW_BUILDER_DROPPABLE_VIEW_ID: string = "flow-builder-droppable-view";
     public static readonly FLOW_BUILDER_DROPPABLE_FORM_ID: string = "flow-builder-droppable-form";
+    public static readonly FLOW_BUILDER_NEXT_HANDLE_SUFFIX: string = `_${ ActionTypes.Next }`;
+    public static readonly FLOW_BUILDER_PREVIOUS_HANDLE_SUFFIX: string = `_${ ActionTypes.Previous }`;
 
     public static readonly FLOW_BUILDER_CANVAS_ALLOWED_RESOURCE_TYPES: string[] = [
         ResourceTypes.Step,

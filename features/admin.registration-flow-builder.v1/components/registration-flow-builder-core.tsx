@@ -17,7 +17,7 @@
  */
 
 import FlowBuilder from "@wso2is/admin.flow-builder-core.v1/components/flow-builder";
-import ButtonAdapterConstants from "@wso2is/admin.flow-builder-core.v1/constants/button-adapter-constants";
+import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import {
     BlockTypes,
     ButtonTypes,
@@ -185,7 +185,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         animated: false,
                         id: button.id,
                         source: step.id,
-                        sourceHandle: `${button.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
+                        sourceHandle: `${button.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                         target: button.action.next,
                         type: "base-edge"
                     });
@@ -201,7 +201,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         animated: false,
                         id: button.id,
                         source: step.id,
-                        sourceHandle: `${button.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
+                        sourceHandle: `${button.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                         target: userOnboardStepId,
                         type: "base-edge"
                     });
@@ -214,7 +214,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     animated: false,
                     id: button.id,
                     source: step.id,
-                    sourceHandle: `${button.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
+                    sourceHandle: `${button.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                     target: userOnboardStepId,
                     type: "base-edge"
                 });
@@ -319,7 +319,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     id: edgeId,
                     source: lastViewStep.id,
                     ...(buttonId
-                        ? { sourceHandle: `${buttonId}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}` }
+                        ? { sourceHandle: `${buttonId}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
                         : {}),
                     target: userOnboardStepId,
                     type: "base-edge"
@@ -384,7 +384,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 animated: false,
                 id: defaultTemplateActionId,
                 source: INITIAL_FLOW_VIEW_STEP_ID,
-                sourceHandle: `${defaultTemplateActionId}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
+                sourceHandle: `${defaultTemplateActionId}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                 target: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
                 type: "base-edge"
             }
@@ -446,11 +446,11 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                                 return {
                                     ...formComponent,
                                     action: {
+                                        ...(formComponent?.action ?? {}),
                                         type: "EXECUTOR",
                                         executor: {
                                             name: "PasswordOnboardExecutor"
-                                        },
-                                        next: ""
+                                        }
                                     }
                                 };
                             }
@@ -459,11 +459,11 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                                 return {
                                     ...formComponent,
                                     action: {
+                                        ...(formComponent?.action ?? {}),
                                         type: "EXECUTOR",
                                         executor: {
                                             name: "OTPOnboardExecutor"
-                                        },
-                                        next: ""
+                                        }
                                     }
                                 };
                             }
@@ -499,38 +499,48 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         const nodeIds = new Set(currentNodes.map(node => node.id));
         const missingEdges: Edge[] = [];
 
-        currentNodes.forEach(node => {
-            if (!node.data || !node.data.components) return;
+        const processAction = (stepId, resourceId, action) => {
+            if (action?.next) {
+                const buttonId = resourceId;
+                const expectedTarget = action.next;
 
-            (node.data.components as any).forEach(component => {
-                if (component.type === "BUTTON" && component.action && component.action.next) {
-                    const buttonId = component.id;
-                    const expectedTarget = component.action.next;
+                // Ensure expected target exists in nodes
+                if (!nodeIds.has(expectedTarget)) {
+                    console.warn(`Expected target node '${expectedTarget}' not found in currentNodes.`);
 
-                    // Ensure expected target exists in nodes
-                    if (!nodeIds.has(expectedTarget)) {
-                        console.warn(`Expected target node '${expectedTarget}' not found in currentNodes.`);
-
-                        return;
-                    }
-
-                    const existingEdge = currentEdges.find(
-                        edge => edge.source === node.id && edge.sourceHandle === `${buttonId}_NEXT`
-                    );
-
-                    // If no edge exists or it's pointing to the wrong node, add a missing edge
-                    if (!existingEdge || existingEdge.target !== expectedTarget) {
-                        missingEdges.push({
-                            id: `${buttonId}_MISSING_EDGE`,
-                            source: node.id,
-                            sourceHandle: `${buttonId}_NEXT`,
-                            target: expectedTarget,
-                            type: "base-edge",
-                            animated: false
-                        });
-                    }
+                    return;
                 }
-            });
+
+                const existingEdge = currentEdges.find(
+                    edge => edge.source === stepId && edge.sourceHandle === `${buttonId}_NEXT`
+                );
+
+                // If no edge exists or it's pointing to the wrong node, add a missing edge
+                if (!existingEdge || existingEdge.target !== expectedTarget) {
+                    missingEdges.push({
+                        id: `${buttonId}_MISSING_EDGE`,
+                        source: stepId,
+                        sourceHandle: `${buttonId}_NEXT`,
+                        target: expectedTarget,
+                        type: "base-edge",
+                        animated: false
+                    });
+                }
+            }
+        }
+
+        currentNodes.forEach(node => {
+            if (!node.data) {
+                return
+            };
+
+            if (node.data?.components) {
+                (node.data?.components as any).forEach(component => processAction(node.id, component.id, component.action));
+            }
+
+            if (node.data?.action) {
+                processAction(node.id, node.id, node.data.action);
+            }
         });
 
         return missingEdges;
@@ -583,6 +593,8 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         newNodes = resolveStepMetadata(resources, updateTemplatePlaceholderReferences(generateIdsForResources(newNodes), replacers)) as Node[];
         newEdges = [ ...newEdges, ...generateUnconnectedEdges(newEdges, newNodes) ];
+
+        debugger
 
         return [ newNodes, newEdges ];
     };
