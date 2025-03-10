@@ -39,7 +39,7 @@ describe.skip("PredefinedFlowsSidePanel", () => {
         render(
             <ResourceEndpointsProvider>
                 <DeploymentConfigProvider>
-                    <UserPreferencesProvider>
+                    <UserPreferencesProvider userId="">
                         <AuthenticationFlowProvider
                             application={ {
                                 name: "Sample App"
