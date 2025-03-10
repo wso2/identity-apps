@@ -51,6 +51,7 @@ import useGetActionById from "../api/use-get-action-by-id";
 import useGetActionsByType from "../api/use-get-actions-by-type";
 import PreIssueAccessTokenActionConfigForm from "../components/pre-issue-access-token-action-config-form";
 import PreUpdatePasswordActionConfigForm from "../components/pre-update-password-action-config-form";
+import PreUpdateProfileActionConfigForm from "../components/pre-update-profile-action-config-form";
 import { ActionsConstants } from "../constants/actions-constants";
 import {
     ActionConfigFormPropertyInterface, PreUpdatePasswordActionConfigFormPropertyInterface,
@@ -84,6 +85,8 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
 
     const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
     const hasActionCreatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.create);
+
+    debugger;
 
     const actionTypeApiPath: string = useMemo(() => {
         const path: string[] = history.location.pathname.split("/");
@@ -406,6 +409,16 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                             }
                             { actionTypeApiPath === ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH && (
                                 <PreUpdatePasswordActionConfigForm
+                                    initialValues={ preUpdatePasswordActionInitialValues }
+                                    isLoading={ isLoading }
+                                    isReadOnly={ isReadOnly() }
+                                    actionTypeApiPath={ actionTypeApiPath }
+                                    isCreateFormState={ showCreateForm }
+                                />
+                            )
+                            }
+                            { actionTypeApiPath === ActionsConstants.PRE_UPDATE_PROFILE_API_PATH && (
+                                <PreUpdateProfileActionConfigForm
                                     initialValues={ preUpdatePasswordActionInitialValues }
                                     isLoading={ isLoading }
                                     isReadOnly={ isReadOnly() }
