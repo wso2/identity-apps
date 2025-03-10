@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.18.3
+
+### Patch Changes
+
+- [#7829](https://github.com/wso2/identity-apps/pull/7829) [`2380f0b11ffad4ef56dbcdd82e4035d377591b08`](https://github.com/wso2/identity-apps/commit/2380f0b11ffad4ef56dbcdd82e4035d377591b08) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix minor issue in dynamic portal
+
 ## 2.18.2
 
 ### Patch Changes
