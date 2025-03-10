@@ -1,5 +1,15 @@
 # @wso2is/admin.connections.v1
 
+## 2.33.88
+
+### Patch Changes
+
+- [#7817](https://github.com/wso2/identity-apps/pull/7817) [`7844c2db96d56c30c352e9287b2f4d5ad75212ce`](https://github.com/wso2/identity-apps/commit/7844c2db96d56c30c352e9287b2f4d5ad75212ce) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add resources for LinkedIn connection
+
+- Updated dependencies [[`7844c2db96d56c30c352e9287b2f4d5ad75212ce`](https://github.com/wso2/identity-apps/commit/7844c2db96d56c30c352e9287b2f4d5ad75212ce)]:
+  - @wso2is/admin.connections.v1@2.33.88
+  - @wso2is/theme@2.6.12
+
 ## 2.33.87
 
 ### Patch Changes
