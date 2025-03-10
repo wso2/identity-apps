@@ -76,7 +76,6 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
 
     if (data) {
         const hiddenConnectionTemplateIds: string[] = [
-            CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.LINKEDIN,
             CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS
                 .ORGANIZATION_ENTERPRISE_IDP,
             CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.ENTERPRISE,
