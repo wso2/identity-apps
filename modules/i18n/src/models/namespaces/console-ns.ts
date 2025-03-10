@@ -6502,6 +6502,17 @@ export interface ConsoleNS {
                     title: string;
                     pageTitle: string;
                     description: string;
+                    backButtonText: string;
+                    logTypes: {
+                        audit: {
+                            name: string;
+                            description: string;
+                        };
+                        diagnostics: {
+                            name: string;
+                            description: string;
+                        }
+                    };
                     fields: {
                         logTypes: {
                             label: string;
