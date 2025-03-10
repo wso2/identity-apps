@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.18.2
+
+### Patch Changes
+
+- [#7826](https://github.com/wso2/identity-apps/pull/7826) [`94524fd1fc1e0140f6b1349df39a8e5ca0f17fea`](https://github.com/wso2/identity-apps/commit/94524fd1fc1e0140f6b1349df39a8e5ca0f17fea) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Set `inputmode` to `numeric` for TOTP fields
+
 ## 2.18.1
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @wso2is/admin.users.v1
 
+## 2.30.114
+
+### Patch Changes
+
+- [#7804](https://github.com/wso2/identity-apps/pull/7804) [`084f8f96a8370514a418ea59362f0d2a72cddb7a`](https://github.com/wso2/identity-apps/commit/084f8f96a8370514a418ea59362f0d2a72cddb7a) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Show verification pending email/mobile in console user profile
+
+- Updated dependencies [[`084f8f96a8370514a418ea59362f0d2a72cddb7a`](https://github.com/wso2/identity-apps/commit/084f8f96a8370514a418ea59362f0d2a72cddb7a)]:
+  - @wso2is/admin.users.v1@2.30.114
+  - @wso2is/forms@2.3.23
+  - @wso2is/i18n@2.21.3
+
 ## 2.30.113
 
 ### Patch Changes
