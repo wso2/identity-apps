@@ -46,7 +46,6 @@ import { Resource, ResourceTypes } from "../../models/resources";
 import { Template } from "../../models/templates";
 import { Widget } from "../../models/widget";
 import generateResourceId from "../../utils/generate-resource-id";
-import resolveKnownEdges from "../../utils/resolve-known-edges";
 import ResourcePanel from "../resource-panel/resource-panel";
 import ElementPropertiesPanel from "../resource-property-panel/resource-property-panel";
 
