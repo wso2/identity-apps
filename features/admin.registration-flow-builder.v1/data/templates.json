@@ -2,6 +2,20 @@
     {
         "resourceType": "TEMPLATE",
         "category": "STARTER",
+        "type": "GENERATE_WITH_AI",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Generate with AI",
+            "description": "Start a new flow from scratch",
+            "image": "https://www.svgrepo.com/show/521818/robot.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {}
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
         "type": "BLANK",
         "version": "0.1.0",
         "deprecated": false,

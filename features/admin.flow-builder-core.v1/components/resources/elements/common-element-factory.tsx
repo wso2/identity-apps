@@ -21,6 +21,7 @@ import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
 import ButtonAdapter from "./adapters/button-adapter";
 import ChoiceAdapter from "./adapters/choice-adapter";
+import DialogAdapter from "./adapters/dialog-adapter";
 import DividerAdapter from "./adapters/divider-adapter";
 import FormAdapter from "./adapters/form-adapter";
 import ImageAdapter from "./adapters/image-adapter";
@@ -84,6 +85,8 @@ export const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsIn
         return <DividerAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Image) {
         return <ImageAdapter stepId={ stepId } resource={ resource } />;
+    } else if (resource.type === "MODAL") {
+        return <DialogAdapter stepId={ stepId } resource={ resource } />;
     }
 
     return null;

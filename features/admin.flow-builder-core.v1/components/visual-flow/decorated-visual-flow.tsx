@@ -36,7 +36,7 @@ import {
 import { UpdateNodeInternals } from "@xyflow/system";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
-import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useCallback } from "react";
+import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useState, useCallback } from "react";
 import VisualFlow, { VisualFlowPropsInterface } from "./visual-flow";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
@@ -49,6 +49,7 @@ import { Widget } from "../../models/widget";
 import generateResourceId from "../../utils/generate-resource-id";
 import ResourcePanel from "../resource-panel/resource-panel";
 import ElementPropertiesPanel from "../resource-property-panel/resource-property-panel";
+import AIGenerationModal from "../resources/ai-generation-modal";
 
 /**
  * Props interface of {@link DecoratedVisualFlow}
@@ -94,6 +95,9 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     onStepLoad,
     ...rest
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
+
+    const [ showAIGenerationModal, setShowAIGenerationModal ] = useState(false);
+
     const { screenToFlowPosition, updateNodeData } = useReactFlow();
     const { generateStepElement } = useGenerateStepElement();
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
@@ -369,6 +373,14 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                     </ElementPropertiesPanel>
                 </ResourcePanel>
             </DragDropProvider>
+            {
+                showAIGenerationModal && (
+                    <AIGenerationModal
+                        open={ showAIGenerationModal }
+                        handleModalClose={ () => setShowAIGenerationModal(false) }
+                    />
+                )
+            }
         </div>
     );
 };
