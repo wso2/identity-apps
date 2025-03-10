@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.19.1
+
+### Patch Changes
+
+- [#7834](https://github.com/wso2/identity-apps/pull/7834) [`9701ee37f38fc9e25d4fbefb7e8c9d047912e6fc`](https://github.com/wso2/identity-apps/commit/9701ee37f38fc9e25d4fbefb7e8c9d047912e6fc) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix action id issue in dynamic portal
+
 ## 2.19.0
 
 ### Minor Changes
