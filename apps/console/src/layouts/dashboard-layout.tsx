@@ -58,8 +58,7 @@ import {
     EmptyPlaceholder,
     ErrorBoundary,
     GenericIcon,
-    LinkButton,
-    useMediaContext
+    LinkButton
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
@@ -136,8 +135,6 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
         RouteInterface | ChildRouteInterface
     >(getAppViewRoutes()[ 0 ]);
 
-    const { isMobileViewport } = useMediaContext();
-
     const organizationLoading: boolean = useSelector(
         (state: AppState) => state?.organization?.getOrganizationLoading
     );
@@ -159,15 +156,6 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
     }, [ developFilteredRoutes ]);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
-
-    /**
-     * Collapse Navbar for Mobile screens if there's no user preference set.
-     */
-    useEffect(() => {
-        if (isMobileViewport && leftNavbarCollapsed === undefined) {
-            setPreferences({ leftNavbarCollapsed: true });
-        }
-    }, [ isMobileViewport ]);
 
     useEffect(() => {
         if (!location?.pathname) {
