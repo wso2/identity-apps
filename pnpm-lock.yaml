@@ -531,7 +531,7 @@ importers:
         specifier: ^2.27.113
         version: link:../../features/admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.33.87
+        specifier: ^2.33.88
         version: link:../../features/admin.connections.v1
       '@wso2is/admin.console-settings.v1':
         specifier: ^2.25.203
@@ -666,7 +666,7 @@ importers:
         specifier: ^2.9.12
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.6.11
+        specifier: ^2.6.12
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.4.1
@@ -5134,7 +5134,7 @@ importers:
         specifier: ^2.27.113
         version: link:../admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.33.87
+        specifier: ^2.33.88
         version: 'link:'
       '@wso2is/admin.console-settings.v1':
         specifier: ^2.25.203
@@ -5185,7 +5185,7 @@ importers:
         specifier: ^2.9.12
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.6.11
+        specifier: ^2.6.12
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.4.1
