@@ -353,7 +353,7 @@
                                 "executor": {
                                     "name": "GoogleOIDCAuthenticator",
                                     "meta": {
-                                        "idp": "{{IDP_NAME}}"
+                                        "idpName": "{{IDP_NAME}}"
                                     }
                                 },
                                 "next": "USER_ONBOARD"
