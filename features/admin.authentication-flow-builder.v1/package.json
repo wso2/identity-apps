@@ -27,6 +27,7 @@
         "@wso2is/admin.organizations.v1": "^2.26.203",
         "@wso2is/admin.secrets.v1": "^2.25.203",
         "@wso2is/admin.server-configurations.v1": "^2.32.128",
+        "@wso2is/common.ui.v1": "^0.0.0",
         "classnames": "^2.2.6",
         "axios": "^0.19.2",
         "i18next": "^21.9.1",

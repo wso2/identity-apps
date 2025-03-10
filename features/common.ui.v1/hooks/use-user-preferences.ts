@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,13 +17,13 @@
  */
 
 import { useContext } from "react";
-import UserPreferenceContext, { UserPreferencesContextProps } from "../context/user-preferences-context";
+import UserPreferenceContext, { UserPreferencesContextProps } from "../contexts/user-preferences-context";
 
 /**
  * Hook that provides access to the user's preference context.
  * @returns An object containing the context values of {@link UserPreferenceContext}.
  */
-const useUserPreferences = <T, >(): UserPreferencesContextProps<T> => {
+const useUserPreferences = <T = Record<string, unknown>, >(): UserPreferencesContextProps<T> => {
     const context: UserPreferencesContextProps<T> = useContext(UserPreferenceContext);
 
     if (context === undefined) {

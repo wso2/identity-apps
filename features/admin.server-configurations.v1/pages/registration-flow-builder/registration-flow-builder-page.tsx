@@ -17,11 +17,13 @@
  */
 
 import RegistrationFlowBuilder from "@wso2is/admin.registration-flow-builder.v1/components/registration-flow-builder";
-import RegistrationFlowBuilderProvider from "@wso2is/admin.registration-flow-builder.v1/providers/registration-flow-builder-provider";
+import RegistrationFlowBuilderProvider from
+    "@wso2is/admin.registration-flow-builder.v1/providers/registration-flow-builder-provider";
+import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
-import "./registration-flow-builder-page.scss";
+import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import RegistrationFlowBuilderPageHeader from "./registration-flow-builder-page-header";
+import "./registration-flow-builder-page.scss";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderPage}
@@ -37,6 +39,18 @@ export type RegistrationFlowBuilderPageProps = IdentifiableComponentInterface;
 const RegistrationFlowBuilderPage: FunctionComponent<RegistrationFlowBuilderPageProps> = ({
     ["data-componentid"]: componentId = "registration-flow-builder-page"
 }: RegistrationFlowBuilderPageProps): ReactElement => {
+    const { setPreferences, leftNavbarCollapsed } = useUserPreferences();
+
+    /**
+     * If the user doesn't have a `leftNavbarCollapsed` preference saved, collapse the navbar for better UX.
+     * @remarks Since the builder needs more real estate, it's better to have the navbar collapsed.
+     */
+    useEffect(() => {
+        if (leftNavbarCollapsed === undefined) {
+            setPreferences({ leftNavbarCollapsed: true });
+        }
+    }, [ leftNavbarCollapsed, setPreferences ]);
+
     return (
         <RegistrationFlowBuilderProvider>
             <div className="registration-flow-builder-page" data-componentid={ componentId }>

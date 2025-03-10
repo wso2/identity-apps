@@ -1,0 +1,63 @@
+{
+    "private": true,
+    "name": "@wso2is/common.ui.v1",
+    "version": "0.0.0",
+    "description": "Common UI related tools, components, and utilities for Admin & Self-care apps of WSO2 Identity Server.",
+    "author": "WSO2",
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/wso2/identity-apps/tree/master/features/common.ui.v1#readme",
+    "bugs": {
+        "url": "https://github.com/wso2/identity-apps/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/wso2/identity-apps",
+        "directory": "features/common.ui.v1"
+    },
+    "keywords": [
+        "wso2",
+        "identity-server",
+        "features",
+        "common.ui",
+        "v1"
+    ],
+    "dependencies": {
+        "lodash-es": "^4.17.21",
+        "react-redux": "^7.2.9",
+        "redux": "^4.0.4"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^25.0.7",
+        "@rollup/plugin-dynamic-import-vars": "^2.1.2",
+        "@rollup/plugin-image": "^3.0.3",
+        "@rollup/plugin-json": "^6.1.0",
+        "@rollup/plugin-node-resolve": "^15.2.3",
+        "@rollup/plugin-typescript": "^11.1.6",
+        "@svgr/rollup": "^6.2.1",
+        "@testing-library/dom": "^7.24.3",
+        "@testing-library/jest-dom": "^5.11.9",
+        "@testing-library/user-event": "^12.7.3",
+        "@types/jest": "^26.0.14",
+        "@types/react": "^18.0.18",
+        "@types/react-redux": "^7.1.25",
+        "@types/testing-library__jest-dom": "^5.14.3",
+        "jest": "^26.4.2",
+        "jest-environment-jsdom": "^26.3.0",
+        "jest-environment-jsdom-global": "^2.0.4",
+        "rollup": "^4.17.2",
+        "rollup-plugin-dts": "^6.1.1",
+        "rollup-plugin-generate-package-json": "^3.2.0",
+        "rollup-plugin-polyfill-node": "^0.13.0",
+        "rollup-plugin-scss": "^4.0.0",
+        "rollup-plugin-styles": "^4.0.0",
+        "rollup-plugin-svg": "^2.0.0",
+        "ts-jest": "^26.4.0",
+        "typescript": "^4.6.4"
+    },
+    "peerDependencies": {
+        "react": "^18.2.0"
+    },
+    "browserslist": [
+        "> 0.2%"
+    ]
+}

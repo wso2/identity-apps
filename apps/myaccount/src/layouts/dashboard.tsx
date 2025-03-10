@@ -21,6 +21,7 @@ import AppShell from "@oxygen-ui/react/AppShell";
 import Container from "@oxygen-ui/react/Container";
 import Navbar from "@oxygen-ui/react/Navbar";
 import Snackbar from "@oxygen-ui/react/Snackbar";
+import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
 import { AlertInterface, AnnouncementBannerInterface, ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import {
@@ -30,7 +31,13 @@ import {
     URLUtils
 } from "@wso2is/core/utils";
 import { I18n, I18nModuleConstants, LanguageChangeException } from "@wso2is/i18n";
-import { Alert, ContentLoader, EmptyPlaceholder, ErrorBoundary, LinkButton } from "@wso2is/react-components";
+import {
+    Alert,
+    ContentLoader,
+    EmptyPlaceholder,
+    ErrorBoundary,
+    LinkButton
+} from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
 import moment from "moment";
@@ -73,7 +80,10 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
     const { location } = props;
 
     const { t } = useTranslation();
+
     const dispatch: Dispatch = useDispatch();
+
+    const { setPreferences, leftNavbarCollapsed } = useUserPreferences();
 
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
@@ -83,18 +93,9 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
     const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(
         getDashboardLayoutRoutes()[ 0 ]
     );
-    const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(true);
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>();
-
     const [ showAnnouncement, setShowAnnouncement ] = useState<boolean>(true);
     const [ dashboardLayoutRoutes, setDashboardLayoutRoutes ] = useState<RouteInterface[]>(getDashboardLayoutRoutes());
-
-    /**
-     * Callback for side panel hamburger click.
-     */
-    const handleSidePanelToggleClick = (): void => {
-        setMobileSidePanelVisibility(!mobileSidePanelVisibility);
-    };
 
     useEffect(() => {
         const localeCookie: string = CookieStorageUtils.getItem("ui_lang");
@@ -212,6 +213,13 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
         setShowAnnouncement(false);
     };
 
+    /**
+     * Callback for side panel hamburger click.
+     */
+    const handleSidePanelToggleClick = (): void => {
+        setPreferences({ leftNavbarCollapsed: !leftNavbarCollapsed });
+    };
+
     return (
         <>
             <Alert
@@ -259,7 +267,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                             }
                         ] }
                         fill={ "solid" }
-                        open={ mobileSidePanelVisibility }
+                        open={ !leftNavbarCollapsed as boolean }
                         collapsible={ false }
                     />
                 ) }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,7 +34,7 @@ export type UserPreferencesContextProps<T> = {
      * @param preferencesToUpdate - The new preferences to update.
      * @param userId - Optional user Id. If provided, the preferences for the passed in user-id will be updated.
      */
-    setPreferences: (preferencesToUpdate: T, userId?: string) => void;
+    setPreferences: (preferencesToUpdate: Partial<T>, userId?: string) => void;
 } & T;
 
 /**
