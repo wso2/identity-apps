@@ -85,14 +85,14 @@
                         }
                     }
 
-                    .dnd-action {
+                    .flow-builder-dnd-action  {
                         visibility: hidden;
                     }
 
                     &:hover, &:focus, &:active {
                         border-color: var(--oxygen-palette-grey-200);
 
-                        >.dnd-action {
+                        >.flow-builder-dnd-action  {
                             visibility: visible;
                         }
 
