@@ -142,7 +142,7 @@ describe("AuthenticationFlowOptionAddModal", () => {
 
     it("renders the AuthenticationFlowOptionAddModal component", () => {
         render(
-            <UserPreferenceProvider>
+            <UserPreferenceProvider userId="">
                 <DeploymentConfigProvider>
                     <ResourceEndpointsProvider>
                         <AuthenticationFlowOptionAddModal { ...defaultProps } />

@@ -31,7 +31,7 @@ describe.skip("ScriptBasedFlowSwitch", () => {
     it("renders the ScriptBasedFlowSwitch component", () => {
         render(
             <ResourceEndpointsProvider>
-                <UserPreferenceProvider>
+                <UserPreferenceProvider userId="">
                     <AuthenticationFlowProvider
                         application={ {
                             name: "Sample App"

@@ -44,7 +44,7 @@ describe.skip("AuthenticationFlowBuilder", () => {
     it("renders the AuthenticationFlowBuilder component", () => {
         render(
             <UIConfigProvider>
-                <UserPreferenceProvider>
+                <UserPreferenceProvider userId="">
                     <AuthenticationFlowProvider
                         application={ {
                             name: "Sample App"

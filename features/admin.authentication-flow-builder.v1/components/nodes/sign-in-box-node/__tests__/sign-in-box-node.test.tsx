@@ -53,7 +53,7 @@ describe.skip("SignInBoxNode", () => {
 
     it("renders the SignInBoxNode component", () => {
         render(
-            <UserPreferenceProvider>
+            <UserPreferenceProvider userId="">
                 <AuthenticationFlowProvider
                     application={ {
                         name: "Sample App"

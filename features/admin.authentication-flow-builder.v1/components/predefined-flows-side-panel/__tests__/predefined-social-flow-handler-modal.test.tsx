@@ -48,7 +48,7 @@ describe.skip("PredefinedSocialFlowHandlerModalFactory", () => {
 
     it("renders the PredefinedSocialFlowHandlerModalFactory component", () => {
         render(
-            <UserPreferenceProvider>
+            <UserPreferenceProvider userId="">
                 <PredefinedSocialFlowHandlerModalFactory { ...defaultProps } />
             </UserPreferenceProvider>
             , { allowedScopes: fullPermissions });

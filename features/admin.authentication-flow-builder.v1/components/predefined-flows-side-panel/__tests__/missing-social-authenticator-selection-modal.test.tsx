@@ -36,7 +36,7 @@ describe("MissingSocialAuthenticatorSelectionModal", () => {
 
     it("renders the MissingSocialAuthenticatorSelectionModal component", () => {
         render(
-            <UserPreferenceProvider>
+            <UserPreferenceProvider userId="">
                 <MissingSocialAuthenticatorSelectionModal { ...defaultProps } />
             </UserPreferenceProvider>
             , { allowedScopes: fullPermissions });

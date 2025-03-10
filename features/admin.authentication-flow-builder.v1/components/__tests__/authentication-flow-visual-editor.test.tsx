@@ -34,7 +34,7 @@ describe("AuthenticationFlowVisualEditor", () => {
 
     it("renders the AuthenticationFlowVisualEditor component", () => {
         render(
-            <UserPreferenceProvider>
+            <UserPreferenceProvider userId="">
                 <AuthenticationFlowVisualEditor { ...defaultProps } />
             </UserPreferenceProvider>
             , { allowedScopes: fullPermissions });
@@ -47,7 +47,7 @@ describe("AuthenticationFlowVisualEditor", () => {
     it.skip("adds an authenticator in the second step without exploding the " +
        "AuthenticationFlowVisualEditor component", () => {
         render(
-            <UserPreferenceProvider>
+            <UserPreferenceProvider userId="">
                 <AuthenticationFlowProvider
                     application={ {
                         name: "Sample App"

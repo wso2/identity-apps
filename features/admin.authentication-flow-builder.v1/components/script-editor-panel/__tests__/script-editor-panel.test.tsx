@@ -37,7 +37,7 @@ describe.skip("ScriptEditorPanel", () => {
     it("renders the ScriptEditorPanel component", () => {
         render(
             <ResourceEndpointsProvider>
-                <UserPreferenceProvider>
+                <UserPreferenceProvider userId="">
                     <AuthenticationFlowProvider
                         application={ {
                             name: "Sample App"

@@ -32,7 +32,7 @@ describe("DoneNode", () => {
     it("renders the DoneNode component", () => {
         render(
             <UIConfigProvider>
-                <UserPreferenceProvider>
+                <UserPreferenceProvider userId="">
                     <AuthenticationFlowProvider
                         application={ {
                             name: "Sample App"
@@ -62,7 +62,7 @@ describe("DoneNode", () => {
     it.skip("renders the circular Fab button", () => {
         render(
             <UIConfigProvider>
-                <UserPreferenceProvider>
+                <UserPreferenceProvider userId="">
                     <AuthenticationFlowProvider
                         application={ {
                             name: "Sample App"
@@ -94,7 +94,7 @@ describe("DoneNode", () => {
     it.skip("renders the CheckIcon inside the Fab button", () => {
         render(
             <UIConfigProvider>
-                <UserPreferenceProvider>
+                <UserPreferenceProvider userId="">
                     <AuthenticationFlowProvider
                         application={ {
                             name: "Sample App"

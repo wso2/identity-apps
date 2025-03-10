@@ -32,7 +32,7 @@ describe("AdaptiveScriptResetConfirmationModal", () => {
 
     it("renders the AdaptiveScriptResetConfirmationModal component", () => {
         render(
-            <UserPreferenceProvider>
+            <UserPreferenceProvider userId="">
                 <AdaptiveScriptResetConfirmationModal { ...defaultProps } />
             </UserPreferenceProvider>
             , { allowedScopes: fullPermissions });
