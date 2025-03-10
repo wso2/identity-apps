@@ -86,8 +86,6 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
     const hasActionCreatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.create);
 
-    debugger;
-
     const actionTypeApiPath: string = useMemo(() => {
         const path: string[] = history.location.pathname.split("/");
         const actionType: string = path[path.length - 1];

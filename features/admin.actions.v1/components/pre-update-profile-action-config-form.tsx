@@ -125,8 +125,6 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
     const showRuleComponent: boolean = isFeatureEnabled(
         actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_UPDATE_PROFILE_RULE"));
 
-    debugger;
-
     /**
      * The following useEffect is used to set the current Action Authentication Type.
      */
