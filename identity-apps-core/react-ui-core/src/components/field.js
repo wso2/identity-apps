@@ -24,7 +24,7 @@ import InputFieldAdapter from "./adapters/input-field-adapter";
 import TypographyAdapter from "./adapters/typography-field-adapter";
 import DividerAdapter from "./divider";
 
-const Field = ({ component, formState, formStateHandler, formFieldError }) => {
+const Field = ({ component, formState, formStateHandler, formFieldError, flowActionHandler }) => {
     switch (component.type) {
         case "TYPOGRAPHY":
             return <TypographyAdapter component={ component } />;
@@ -38,7 +38,7 @@ const Field = ({ component, formState, formStateHandler, formFieldError }) => {
                 />
             );
         case "BUTTON":
-            return <ButtonFieldAdapter component={ component } />;
+            return <ButtonFieldAdapter component={ component } handleButtonAction={ flowActionHandler }/>;
         case "DIVIDER":
             return <DividerAdapter component={ component } />;
         default:
@@ -55,6 +55,7 @@ const Field = ({ component, formState, formStateHandler, formFieldError }) => {
 
 Field.propTypes = {
     component: PropTypes.object.isRequired,
+    flowActionHandler: PropTypes.func,
     formFieldError: PropTypes.func.isRequired,
     formState: PropTypes.isRequired,
     formStateHandler: PropTypes.func.isRequired

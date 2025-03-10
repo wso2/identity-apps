@@ -28,27 +28,45 @@ const TypographyAdapter = ({ component }) => {
     const { translations } = useTranslations ();
 
     switch (variant) {
-        case "H3":
+        case "H6":
             return (
-                <Header as="h3" className="mb-1">
+                <Header as="h6" className="mb-4">
                     { resolveElementText(translations, config.text) }
                 </Header>
             );
-        case "H1":
+        case "H5":
             return (
-                <Header as="h1" className="mb-1">
+                <Header as="h5" className="mb-4">
+                    { resolveElementText(translations, config.text) }
+                </Header>
+            );
+        case "H4":
+            return (
+                <Header as="h4" className="mb-4">
+                    { resolveElementText(translations, config.text) }
+                </Header>
+            );
+        case "H3":
+            return (
+                <Header as="h3" className="mb-4">
                     { resolveElementText(translations, config.text) }
                 </Header>
             );
         case "H2":
             return (
-                <Header as="h2" className="mb-1">
+                <Header as="h2" className="mb-4">
+                    { resolveElementText(translations, config.text) }
+                </Header>
+            );
+        case "H1":
+            return (
+                <Header as="h1" className="mb-4">
                     { resolveElementText(translations, config.text) }
                 </Header>
             );
         default:
             return (
-                <Header as="h3" className="mb-1">
+                <Header as="h3" className="mb-4">
                     { resolveElementText(translations, config.text) }
                 </Header>
             );

@@ -256,7 +256,7 @@
                     createElement(
                         DynamicContent, {
                             elements: components,
-                            handleRequestBody: (action, formValues) => {
+                            handleFlowRequest: (action, formValues) => {
                                 setPostBody({
                                     flowId: flowData.flowId,
                                     action,
