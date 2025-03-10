@@ -17,7 +17,6 @@
  */
 
 import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
-import { UserPreferencesInterface } from "@wso2is/common.ui.v1/models/user-preferences";
 import { useContext } from "react";
 import AuthenticationFlowContext, { AuthenticationFlowContextProps } from "./../context/authentication-flow-context";
 import { AuthenticationFlowBuilderModes } from "../models/flow-builder";
@@ -44,7 +43,7 @@ export interface UseAuthenticationFlowInterface extends AuthenticationFlowContex
 const useAuthenticationFlow = (): UseAuthenticationFlowInterface => {
     const context: AuthenticationFlowContextProps = useContext(AuthenticationFlowContext);
 
-    const { setPreferences, preferredAuthenticationFlowBuilderMode } = useUserPreferences<UserPreferencesInterface>();
+    const { setPreferences, preferredAuthenticationFlowBuilderMode } = useUserPreferences();
 
     if (context === undefined) {
         throw new Error("UseAuthenticationFlow must be used within a AuthenticationFlowProvider");

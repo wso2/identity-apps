@@ -38,6 +38,7 @@ import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
 import {
     AlertInterface,
     AnnouncementBannerInterface,
@@ -95,7 +96,10 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
     const { location } = props;
 
     const dispatch: ThunkDispatch<AppState, void, Action> = useDispatch();
+
     const { t } = useTranslation();
+
+    const { setPreferences, leftNavbarCollapsed } = useUserPreferences();
 
     const isMarketingConsentBannerEnabled: boolean = useSelector((state: AppState) => {
         return state?.config?.ui?.isMarketingConsentBannerEnabled;
@@ -134,10 +138,6 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
 
     const { isMobileViewport } = useMediaContext();
 
-    const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<
-        boolean
-    >(false);
-
     const organizationLoading: boolean = useSelector(
         (state: AppState) => state?.organization?.getOrganizationLoading
     );
@@ -161,10 +161,12 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
     /**
-     * Collapse Navbar for Mobile screens.
+     * Collapse Navbar for Mobile screens if there's no user preference set.
      */
     useEffect(() => {
-        isMobileViewport ? setMobileSidePanelVisibility(false) : setMobileSidePanelVisibility(true);
+        if (isMobileViewport && leftNavbarCollapsed === undefined) {
+            setPreferences({ leftNavbarCollapsed: true });
+        }
     }, [ isMobileViewport ]);
 
     useEffect(() => {
@@ -201,7 +203,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
      * Callback for side panel hamburger click.
      */
     const handleSidePanelToggleClick = (): void => {
-        setMobileSidePanelVisibility(!mobileSidePanelVisibility);
+        setPreferences({ leftNavbarCollapsed: !leftNavbarCollapsed });
     };
 
     /**
@@ -437,7 +439,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                             !organizationLoading ? generateNavbarItems() : []
                         }
                         fill={ "solid" }
-                        open={ mobileSidePanelVisibility }
+                        open={ !leftNavbarCollapsed as boolean }
                         collapsible={ false }
                     />)
                 }

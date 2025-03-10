@@ -17,11 +17,11 @@
  */
 
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { UserPreferencesInterface } from "@wso2is/common.ui.v1/models/user-preferences";
 import UserPreferencesProvider from "@wso2is/common.ui.v1/providers/user-preferences-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, PropsWithChildren, ReactElement } from "react";
 import { useSelector } from "react-redux";
+import { UserPreferencesInterface } from "./models/user-preferences";
 
 /**
  * Props interface of {@link DecoratedApp}
