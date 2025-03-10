@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.18.1
+
+### Patch Changes
+
+- [#7821](https://github.com/wso2/identity-apps/pull/7821) [`56446a2a6fa89cf404c9bb2022a55ccc2f8d3dc8`](https://github.com/wso2/identity-apps/commit/56446a2a6fa89cf404c9bb2022a55ccc2f8d3dc8) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add minor fix to login portal
+
 ## 2.18.0
 
 ### Minor Changes
