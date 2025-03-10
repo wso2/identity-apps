@@ -204,7 +204,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
     const onConnect: OnConnect = useCallback(
         (connection: any) => {
-            let edge: Edge = onEdgeResolve ? onEdgeResolve(connection, nodes) : resolveKnownEdges(connection, nodes);
+            let edge: Edge = onEdgeResolve ? onEdgeResolve(connection, nodes) : null;
 
             if (!edge) {
                 edge = {
