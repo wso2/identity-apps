@@ -191,8 +191,8 @@ export const branding: BrandingNS = {
     ai: {
         banner: {
             full: {
-                heading: "Elevate Your Brand Identity with ",
-                subHeading: "Get a professional brand identity in seconds, just enter your website URL.",
+                heading: "Configure Branding with ",
+                subHeading: "Enter your website URL and Branding AI will adjust the branding settings to match your theme.",
                 button: "Try Branding AI"
             },
             input: {

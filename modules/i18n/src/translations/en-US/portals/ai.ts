@@ -29,10 +29,9 @@ export const ai: aiNS = {
             },
             full: {
                 button: "Try Login Flow AI",
-                heading: "Simplify Authentication Flow Setup with ",
-                subheading: "Configure your application's login flow effortlessly with Login AI, " +
-                    "by describing your desired authentication sequence, including authenticators and " +
-                    "conditional authentication."
+                heading: "Create Login Flows with ",
+                subheading: "Describe your login flow requirements including authentication sequence," +
+                    " authenticators and conditional authentication and Login Flow AI will configure it for you."
             },
             input: {
                 button: "Generate Login Flow",
