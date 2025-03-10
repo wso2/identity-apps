@@ -48,6 +48,7 @@ import { Checkbox, CheckboxProps, Grid, Icon, Message, Ref } from "semantic-ui-r
 import RegistrationFlowBuilderBanner
     from "../../admin.registration-flow-builder.v1/components/registration-flow-builder-banner";
 import { getConnectorDetails, updateGovernanceConnector } from "../api/governance-connectors";
+import useGetSelfRegistrationEnabledStatus from "../api/use-get-self-registration-enabled-status";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { ConnectorFormFactory } from "../forms";
 import {
@@ -76,10 +77,17 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const { [ "data-testid" ]: testId } = props;
 
     const dispatch: Dispatch = useDispatch();
+
     const pageContextRef: MutableRefObject<HTMLElement> = useRef(null);
 
     const { t } = useTranslation();
+
     const { getLink } = useDocumentation();
+
+    const {
+        data: isSelfRegistrationEnabled,
+        mutate: mutateSelfRegistrationEnabledRequest
+    } = useGetSelfRegistrationEnabledStatus();
 
     const applicationFeatureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.applications);
@@ -198,6 +206,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             .then(() => {
                 loadConnectorDetails();
                 handleUpdateSuccess();
+                mutateSelfRegistrationEnabledRequest();
             })
             .catch((error: AxiosError) => {
                 handleUpdateError(error);
@@ -682,7 +691,11 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
      */
     const renderFeatureEnhancementBanner = (): ReactElement => {
         if (connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID) {
-            if (!registrationFlowBuilderFeatureConfig?.enabled || !hasRegistrationFlowBuilderViewPermissions) {
+            if (
+                !isSelfRegistrationEnabled ||
+                !registrationFlowBuilderFeatureConfig?.enabled ||
+                !hasRegistrationFlowBuilderViewPermissions
+            ) {
                 return null;
             }
 
