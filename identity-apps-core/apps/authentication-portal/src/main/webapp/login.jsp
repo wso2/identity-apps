@@ -1370,7 +1370,7 @@
 
         <% if (Boolean.parseBoolean(request.getParameter("isSelfRegistration"))) { %>
                 $(".ui.segment").hide();
-                window.location = "<%=getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING))%>";
+                window.location = "<%=getRegistrationPortalUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING))%>";
         <% } %>
 
         function onMoment(notification) {
