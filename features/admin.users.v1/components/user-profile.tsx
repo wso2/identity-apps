@@ -260,7 +260,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ isMultiValuedItemInvalid, setIsMultiValuedItemInvalid ] =  useState<Record<string, boolean>>({});
 
     const isMultipleEmailAndMobileNumberEnabled: boolean = useMemo(() => {
-        return isMultipleEmailsAndMobileNumbersEnabled(profileInfo,profileSchema);
+        return isMultipleEmailsAndMobileNumbersEnabled(profileInfo, profileSchema);
     }, [ profileSchema, profileInfo ]);
 
     useEffect(() => {
@@ -795,6 +795,30 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
+     * This function returns the verification pending attribute value for email and mobile attributes.
+     * @param schemaName - Schema name.
+     * @returns Verification pending attribute value.
+     */
+    const getVerificationPendingAttributeValue = (schemaName: string): string | null => {
+        if (schemaName === EMAIL_ATTRIBUTE || schemaName === EMAIL_ADDRESSES_ATTRIBUTE) {
+            const pendingAttributes: Array<{value: string}> | undefined =
+            user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingEmails"];
+
+            return Array.isArray(pendingAttributes)
+                && pendingAttributes.length > 0
+                && pendingAttributes[0]?.value !== undefined
+                ? pendingAttributes[0].value
+                : null;
+        } else if (schemaName === MOBILE_ATTRIBUTE || schemaName === MOBILE_NUMBERS_ATTRIBUTE) {
+            return !isEmpty(user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingMobileNumber"])
+                ? user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingMobileNumber"]
+                : null;
+        }
+
+        return null;
+    };
+
+    /**
      * This function handles deletion of the user.
      *
      * @param deletingUser - user object to be revoked their admin permissions.
@@ -932,6 +956,34 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
+     * Removes the email address from the form values if it is pending verification.
+     * This prevents unnecessary retriggering of the verification process.
+     * @param values - Form values.
+     */
+    const handleVerificationPendingEmail = (values: Map<string, string | string[]>): void => {
+        if (isMultipleEmailAndMobileNumberEnabled
+            || configSettings?.isEmailVerificationEnabled !== "true"
+            || isEmpty(getVerificationPendingAttributeValue(EMAIL_ATTRIBUTE))
+            || values.get(EMAIL_ATTRIBUTE) !== getVerificationPendingAttributeValue(EMAIL_ATTRIBUTE)) return;
+
+        values.delete(EMAIL_ATTRIBUTE);
+    };
+
+    /**
+     * Removes the mobile number from the form values if it is pending verification.
+     * This prevents unnecessary retriggering of the verification process.
+     * @param values - Form values.
+     */
+    const handleVerificationPendingMobile = (values: Map<string, string | string[]>): void => {
+        if (isMultipleEmailAndMobileNumberEnabled
+            || configSettings?.isMobileVerificationEnabled !== "true"
+            || isEmpty(getVerificationPendingAttributeValue(MOBILE_ATTRIBUTE))
+            || values.get(MOBILE_ATTRIBUTE) !== getVerificationPendingAttributeValue(MOBILE_ATTRIBUTE)) return;
+
+        values.delete(MOBILE_ATTRIBUTE);
+    };
+
+    /**
      * The following method handles the `onSubmit` event of forms.
      *
      * @param values - submit values.
@@ -952,6 +1004,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             handlePrimaryEmailAndMobile(values);
             handleVerifiedEmailAddresses(data);
             handleVerifiedMobileNumbers(data);
+        } else {
+            handleVerificationPendingEmail(values);
+            handleVerificationPendingMobile(values);
         }
 
         if (adminUserType === AdminAccountTypes.INTERNAL) {
@@ -1777,6 +1832,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         let verificationEnabled: boolean = false;
         let primaryAttributeSchema: ProfileSchemaInterface;
         let maxAllowedLimit: number = 0;
+        let verificationPendingValue: string = "";
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             attributeValueList = multiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] ?? [];
@@ -1787,17 +1843,18 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
                 schema.name === EMAIL_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
+            verificationPendingValue = getVerificationPendingAttributeValue(EMAIL_ADDRESSES_ATTRIBUTE);
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             attributeValueList = multiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] ?? [];
             verifiedAttributeValueList = profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
             primaryAttributeValue = primaryValues[MOBILE_ATTRIBUTE];
             fetchedPrimaryAttributeValue = profileInfo?.get(MOBILE_ATTRIBUTE);
-            verificationEnabled = configSettings?.isMobileVerificationEnabled === "true"
-                || configSettings?.isMobileVerificationByPrivilegeUserEnabled === "true";
+            verificationEnabled = configSettings?.isMobileVerificationEnabled === "true";
             primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
                 schema.name === MOBILE_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;
+            verificationPendingValue = getVerificationPendingAttributeValue(MOBILE_NUMBERS_ATTRIBUTE);
         }
 
         const showAccordion: boolean = attributeValueList.length >= 1;
@@ -1813,6 +1870,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             }
 
             return value === primaryAttributeValue;
+        };
+
+        const showPendingVerificationPopup = (value: string): boolean => {
+            return verificationEnabled
+                && !isEmpty(verificationPendingValue)
+                && !verifiedAttributeValueList.includes(value)
+                && verificationPendingValue === value;
         };
 
         const showMakePrimaryButton = (value: string): boolean => {
@@ -1999,6 +2063,34 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                         />
                                                                     </div>
                                                                 )
+                                                    }
+                                                    {
+                                                        showPendingVerificationPopup(value)
+                                                            && (
+                                                                <div
+                                                                    className="verified-icon"
+                                                                    data-componentid={
+                                                                        `${testId}-profile-form-${schema.name}` +
+                                                                        `-pending-verification-icon-${index}`
+                                                                    }
+                                                                >
+                                                                    <Popup
+                                                                        name="pending-verification-popup"
+                                                                        size="tiny"
+                                                                        trigger={
+                                                                            (
+                                                                                <Icon
+                                                                                    name="info circle"
+                                                                                    color="yellow"
+                                                                                />
+                                                                            )
+                                                                        }
+                                                                        header= { t("user:profile.tooltips." +
+                                                                            "confirmationPending") }
+                                                                        inverted
+                                                                    />
+                                                                </div>
+                                                            )
                                                     }
                                                 </div>
                                             </TableCell>
@@ -2255,6 +2347,58 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     }
                 />
             );
+        } else if (schema?.name === EMAIL_ATTRIBUTE || schema?.name === MOBILE_ATTRIBUTE) {
+            let isVerificationPending: boolean = false;
+            let initialValue: string = profileInfo.get(schema?.name);
+
+            if (schema?.name === EMAIL_ATTRIBUTE) {
+                isVerificationPending = configSettings?.isEmailVerificationEnabled === "true"
+                    && !isEmpty(getVerificationPendingAttributeValue(EMAIL_ATTRIBUTE));
+            } else {
+                isVerificationPending = configSettings?.isMobileVerificationEnabled === "true"
+                    && !isEmpty(getVerificationPendingAttributeValue(MOBILE_ATTRIBUTE));
+            }
+
+            if (isVerificationPending) {
+                initialValue = getVerificationPendingAttributeValue(schema?.name);
+            }
+
+            return (
+                <Field
+                    data-testid={ `${testId}-profile-form-${schema.name}-input` }
+                    name={ schema.name }
+                    label={ fieldName }
+                    icon={ isVerificationPending
+                        ? generatePendingVerificationTooltip()
+                        : null }
+                    required={ resolvedRequiredValue }
+                    requiredErrorMessage={ fieldName + " is required" }
+                    placeholder={ "Enter your " + fieldName }
+                    type="text"
+                    value={ initialValue }
+                    key={ key }
+                    disabled={ schema.name === "userName" }
+                    readOnly={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                    }
+                    validation={ (value: string, validation: Validation) => {
+                        if (!RegExp(schema.regEx).test(value)) {
+                            validation.isValid = false;
+                            validation.errorMessages
+                                .push(t("users:forms.validation.formatError", {
+                                    field: fieldName
+                                }));
+                        }
+                    } }
+                    maxLength={
+                        schema.maxLength
+                            ? schema.maxLength
+                            : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                    }
+                />
+            );
         } else {
             return (
                 <Field
@@ -2448,6 +2592,31 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     }
                 </Grid.Column>
             </Grid.Row>
+        );
+    };
+
+    const generatePendingVerificationTooltip = (): JSX.Element => {
+
+        return (
+            <div
+                className="verification-pending-icon"
+                data-componentid={ `${testId}-profile-form-email-pending-verification-icon` }
+            >
+                <Popup
+                    name="pending-verification-popup"
+                    size="tiny"
+                    trigger={
+                        (
+                            <Icon
+                                name="info circle"
+                                color="yellow"
+                            />
+                        )
+                    }
+                    header= { t("user:profile.tooltips.confirmationPending") }
+                    inverted
+                />
+            </div>
         );
     };
 
