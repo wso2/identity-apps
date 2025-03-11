@@ -22,7 +22,7 @@ import Box, { BoxProps } from "@oxygen-ui/react/Box";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FC, PropsWithChildren, ReactElement, useState } from "react";
-import { Resource } from "../../models/resource";
+import { Resource } from "../../models/resources";
 
 /**
  * Props interface of {@link Droppable}
