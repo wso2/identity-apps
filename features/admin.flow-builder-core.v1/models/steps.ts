@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Node } from "@xyflow/react";
 import { Base } from "./base";
 import { Resource } from "./resources";
 
@@ -29,11 +30,21 @@ export interface StepSize {
     height: number;
 }
 
-export interface Step extends Base {
+export interface StrictStep extends Base {
     size: StepSize;
     position: StepPosition;
+}
+
+export interface StepWithCodeGenerationMetadata extends StrictStep {
     __generationMeta__: any;
 }
+
+export interface StepData {
+    components: Resource[];
+    [key: string]: any;
+}
+
+export type Step = StepWithCodeGenerationMetadata & Node<StepData>;
 
 export enum StepCategories {
     Decision = "DECISION",
@@ -45,11 +56,6 @@ export enum StepTypes {
     View = "VIEW",
     Rule = "RULE",
     Redirection = "REDIRECTION"
-}
-
-export interface StepData {
-    components: Resource[];
-    [key: string]: any;
 }
 
 export enum StaticStepTypes {
