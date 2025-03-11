@@ -339,12 +339,25 @@
                                 <script>maskEmail('<%= emailValue %>');</script>
                                 </br></br>
                         <%
-                                if (showBackButton && StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) {
+                            if (showBackButton && StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) {
                         %>
-                                    <i class="caret left icon primary"></i>
-                                    <a href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding)%>">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
-                                    </a>
+                            <%
+                                if (sp.equals("My Account")) {
+                            %>
+                                <i class="caret left icon primary"></i>
+                                <a href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(tenantedMyaccountURL)%>">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Go.to.MyAccount")%>
+                                </a>
+                            <%
+                                } else {
+                            %>
+                                <i class="caret left icon primary"></i>
+                                <a href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding)%>">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
+                                </a>
+                            <%
+                                }
+                            %>
                         <%
                             } else {
                                 if (sp.equals("My Account")) {
