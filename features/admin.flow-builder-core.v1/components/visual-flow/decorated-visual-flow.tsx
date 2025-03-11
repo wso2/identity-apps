@@ -91,7 +91,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     } = useAuthenticationFlowBuilderCore();
 
     const addCanvasNode = (event, sourceData, targetData): void => {
-        const { resource: sourceResource } = sourceData;
+        const { dragged: sourceResource } = sourceData;
         const { clientX, clientY } = event?.nativeEvent;
 
         if (sourceResource?.resourceType === ResourceTypes.Template) {
@@ -124,8 +124,8 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     };
 
     const addToView = (event, sourceData, targetData): void => {
-        const { resource: sourceResource } = sourceData;
-        const { stepId: targetStepId, resource: targetResource } = targetData;
+        const { dragged: sourceResource } = sourceData;
+        const { stepId: targetStepId, droppedOn: targetResource } = targetData;
 
         if (sourceResource?.resourceType === ResourceTypes.Widget) {
             const [ newNodes, newEdges ] = onWidgetLoad(sourceResource, targetResource, nodes, edges);
@@ -154,8 +154,8 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     };
 
     const addToForm = (event, sourceData, targetData): void => {
-        const { resource: sourceResource } = sourceData;
-        const { stepId: targetStepId, resource: targetResource } = targetData;
+        const { dragged: sourceResource } = sourceData;
+        const { stepId: targetStepId, droppedOn: targetResource } = targetData;
 
         if (sourceResource) {
             const generatedElement: Element = generateStepElement(sourceResource);

@@ -61,7 +61,7 @@ const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
         >
             <Droppable
                 id={ generateResourceId(`${ VisualFlowConstants.FLOW_BUILDER_FORM_ID }_${ stepId }`) }
-                data={ { resource, stepId } }
+                data={ { droppedOn: resource, stepId } }
                 collisionPriority={ CollisionPriority.High }
                 type={ VisualFlowConstants.FLOW_BUILDER_DROPPABLE_FORM_ID }
                 accept={ [

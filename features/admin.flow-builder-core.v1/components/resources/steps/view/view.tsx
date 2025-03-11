@@ -96,7 +96,7 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                         <FormGroup>
                             <Droppable
                                 id={ generateResourceId(`${ VisualFlowConstants.FLOW_BUILDER_VIEW_ID }_${ stepId }`) }
-                                data={ { stepId, resource: node } }
+                                data={ { droppedOn: node, stepId } }
                                 sx={ { padding: "40px 32px" } }
                                 type={ VisualFlowConstants.FLOW_BUILDER_DROPPABLE_VIEW_ID }
                                 accept={ [
