@@ -111,13 +111,11 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         });
 
         const generatedStep: Node = {
-            data: {
-                components: []
-            },
+            ...sourceResource,
+            data: sourceResource?.data || {},
             deletable: true,
             id: generateResourceId(sourceResource.type.toLowerCase()),
-            position,
-            type: sourceResource.type as string
+            position
         };
 
         setNodes((nodes: Node[]) => [ ...nodes, generatedStep ]);

@@ -25,15 +25,5 @@ export interface RegistrationFlow {
     /**
      * Steps of the registration flow.
      */
-    steps: (Step & StepSize & StepPosition)[];
-}
-
-export interface StepSize {
-    height: number;
-    width: number;
-}
-
-export interface StepPosition {
-    x: number;
-    y: number;
+    steps: step[];
 }

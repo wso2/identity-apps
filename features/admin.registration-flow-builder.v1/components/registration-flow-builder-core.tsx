@@ -594,8 +594,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         newNodes = resolveStepMetadata(resources, updateTemplatePlaceholderReferences(generateIdsForResources(newNodes), replacers)) as Node[];
         newEdges = [ ...newEdges, ...generateUnconnectedEdges(newEdges, newNodes) ];
 
-        debugger
-
         return [ newNodes, newEdges ];
     };
 
