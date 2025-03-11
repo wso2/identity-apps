@@ -24,7 +24,7 @@ import AuthenticationFlowBuilderCoreContext, {
 /**
  * Props interface of {@link useAuthenticationFlowBuilderCore}
  */
-export type useAuthenticationFlowBuilderCoreInterface = AuthenticationFlowBuilderCoreContextProps;
+export type UseAuthenticationFlowBuilderCoreInterface = AuthenticationFlowBuilderCoreContextProps;
 
 /**
  * Hook that provides access to the Authentication Flow Builder Core context.
@@ -42,7 +42,7 @@ export type useAuthenticationFlowBuilderCoreInterface = AuthenticationFlowBuilde
  * const { openElementPanel } = useAuthenticationFlowBuilderCoreContext();
  * ```
  */
-const useAuthenticationFlowBuilderCore = (): useAuthenticationFlowBuilderCoreInterface => {
+const useAuthenticationFlowBuilderCore = (): UseAuthenticationFlowBuilderCoreInterface => {
     const context: AuthenticationFlowBuilderCoreContextProps = useContext(AuthenticationFlowBuilderCoreContext);
 
     if (context === undefined) {
