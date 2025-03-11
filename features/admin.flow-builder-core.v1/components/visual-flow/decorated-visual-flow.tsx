@@ -43,6 +43,7 @@ import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flo
 import useGenerateStepElement from "../../hooks/use-generate-step-element";
 import { Element } from "../../models/elements";
 import { Resource, ResourceTypes } from "../../models/resources";
+import { Step } from "../../models/steps";
 import { Template } from "../../models/templates";
 import { Widget } from "../../models/widget";
 import generateResourceId from "../../utils/generate-resource-id";
@@ -90,32 +91,38 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     } = useAuthenticationFlowBuilderCore();
 
     const addCanvasNode = (event, sourceData, targetData): void => {
-        const { resource } = sourceData;
+        const { resource: sourceResource } = sourceData;
         const { clientX, clientY } = event?.nativeEvent;
 
-        if (resource?.resourceType === ResourceTypes.Step) {
-            const position: XYPosition = screenToFlowPosition({
-                x: clientX,
-                y: clientY
-            });
-
-            setNodes((nodes: Node[]) => [ ...nodes, {
-                data: {
-                    components: []
-                },
-                deletable: true,
-                id: generateResourceId(resource.type.toLowerCase()),
-                position,
-                type: resource.type as string
-            } ]);
-        } else if (resource?.resourceType === ResourceTypes.Template) {
-            const [ newNodes, newEdges ] = onTemplateLoad(resource);
+        if (sourceResource?.resourceType === ResourceTypes.Template) {
+            const [ newNodes, newEdges ] = onTemplateLoad(sourceResource);
 
             setNodes(() => newNodes);
             setEdges(() => newEdges);
+
+            onResourceDropOnCanvas(sourceResource, null);
+
+            return;
         }
 
-        onResourceDropOnCanvas(resource, null);
+        const position: XYPosition = screenToFlowPosition({
+            x: clientX,
+            y: clientY
+        });
+
+        const generatedStep: Node = {
+            data: {
+                components: []
+            },
+            deletable: true,
+            id: generateResourceId(sourceResource.type.toLowerCase()),
+            position,
+            type: sourceResource.type as string
+        };
+
+        setNodes((nodes: Node[]) => [ ...nodes, generatedStep ]);
+
+        onResourceDropOnCanvas(generatedStep as Step, null);
     };
 
     const addToView = (event, sourceData, targetData): void => {
@@ -144,7 +151,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                 };
             });
 
-            onResourceDropOnCanvas(sourceResource, targetStepId);
+            onResourceDropOnCanvas(generatedElement, targetStepId);
         }
     };
 
@@ -170,7 +177,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                 };
             });
 
-            onResourceDropOnCanvas(sourceResource, targetStepId);
+            onResourceDropOnCanvas(generatedElement, targetStepId);
         }
     };
 
