@@ -16,12 +16,11 @@
  * under the License.
  */
 
+import { Typography } from "@mui/material";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Divider from "@oxygen-ui/react/Divider";
-import FormLabel from "@oxygen-ui/react/FormLabel";
 import Skeleton from "@oxygen-ui/react/Skeleton";
-import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
@@ -31,17 +30,12 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     FinalForm,
-    FinalFormField,
-    FormRenderProps,
-    SelectFieldAdapter
-} from "@wso2is/form";
-import { DropdownChild } from "@wso2is/forms";
+    FormRenderProps } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { ActionCertificateComponent } from "./certificate/action-certificate";
 import CommonActionConfigForm from "./common-action-config-form";
 import RuleConfigForm from "./rule-config-form";
 import createAction from "../api/create-action";
@@ -51,14 +45,15 @@ import useGetActionsByType from "../api/use-get-actions-by-type";
 import { ActionsConstants } from "../constants/actions-constants";
 import {
     ActionConfigFormPropertyInterface,
+    ActionInterface,
+    ActionUpdateInterface,
     AuthenticationPropertiesInterface,
-    AuthenticationType, PasswordFormat,
-    PreUpdatePasswordActionConfigFormPropertyInterface,
-    PreUpdatePasswordActionInterface, PreUpdatePasswordActionUpdateInterface
+    AuthenticationType
 } from "../models/actions";
 import "./pre-update-password-action-config-form.scss";
 import { useHandleError, useHandleSuccess } from "../util/alert-util";
 import { validateActionCommonFields } from "../util/form-field-util";
+import AttributeSearchList from "./attributesSection/attribute-search-list";
 
 /**
  * Prop types for the action configuration form component.
@@ -67,7 +62,7 @@ interface PreUpdateProfileActionConfigFormInterface extends IdentifiableComponen
     /**
      * Action's initial values.
      */
-    initialValues: PreUpdatePasswordActionConfigFormPropertyInterface;
+    initialValues: ActionConfigFormPropertyInterface;
     /**
      * Flag for loading state.
      */
@@ -100,7 +95,6 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ PEMValue, setPEMValue ] = useState<string>(undefined);
     const [ isHasRule, setIsHasRule ] = useState<boolean>(false);
     const [ rule, setRule ] = useState<RuleWithoutIdInterface>(null);
 
@@ -121,7 +115,6 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
         data: RuleExpressionsMetaData
     } = useGetRulesMeta(actionTypeApiPath);
 
-    // TODO: Temporary flag to show/hide the rule component.
     const showRuleComponent: boolean = isFeatureEnabled(
         actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_UPDATE_PROFILE_RULE"));
 
@@ -141,14 +134,6 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
         }
     }, [ initialValues ]);
 
-    useEffect(() => {
-        if (initialValues?.certificate) {
-            setPEMValue(initialValues.certificate);
-        } else {
-            setPEMValue(null);
-        }
-    }, [ initialValues ]);
-
     const renderLoadingPlaceholders = (): ReactElement => (
         <Box className="placeholder-box">
             <Skeleton variant="rectangular" height={ 7 } width="30%" />
@@ -158,10 +143,10 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
         </Box>
     );
 
-    const validateForm = (values: PreUpdatePasswordActionConfigFormPropertyInterface):
-        Partial<PreUpdatePasswordActionConfigFormPropertyInterface> => {
+    const validateForm = (values: ActionConfigFormPropertyInterface):
+        Partial<ActionConfigFormPropertyInterface> => {
 
-        const customError: Partial<PreUpdatePasswordActionConfigFormPropertyInterface> = {};
+        const customError: Partial<ActionConfigFormPropertyInterface> = {};
 
         // Call the utility validate function
         const commonFieldError: Partial<ActionConfigFormPropertyInterface> = validateActionCommonFields(values, {
@@ -170,17 +155,13 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
             isCreateFormState: isCreateFormState
         });
 
-        if (!values?.passwordSharing) {
-            customError.passwordSharing = t("actions:fields.passwordSharing.format.validations") as PasswordFormat;
-        }
-
         return { ...commonFieldError, ...customError };
 
     };
 
     const handleSubmit = (
-        values: PreUpdatePasswordActionConfigFormPropertyInterface,
-        changedFields: PreUpdatePasswordActionConfigFormPropertyInterface) => {
+        values: ActionConfigFormPropertyInterface,
+        changedFields: ActionConfigFormPropertyInterface) => {
 
         let rulePayload: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
 
@@ -216,7 +197,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
         }
 
         if (isCreateFormState) {
-            const actionValues: PreUpdatePasswordActionInterface = {
+            const actionValues: ActionInterface = {
                 endpoint: {
                     authentication: {
                         properties: authProperties,
@@ -225,10 +206,6 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     uri: values.endpointUri
                 },
                 name: values.name,
-                passwordSharing: {
-                    ...(PEMValue ? { certificate: PEMValue } : {}),
-                    format: values.passwordSharing
-                },
                 rule: rulePayload ?? undefined
             };
 
@@ -246,7 +223,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                 });
         } else {
             // Updating the action
-            const updatingValues: PreUpdatePasswordActionUpdateInterface = {
+            const updatingValues: ActionUpdateInterface = {
                 endpoint: isAuthenticationUpdateFormState || changedFields?.endpointUri ? {
                     authentication: isAuthenticationUpdateFormState ? {
                         properties: authProperties,
@@ -255,9 +232,6 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     uri: changedFields?.endpointUri ? values.endpointUri : undefined
                 } : undefined,
                 name: changedFields?.name ? values.name : undefined,
-                passwordSharing: changedFields?.passwordSharing ? {
-                    format: values.passwordSharing
-                } : undefined,
                 rule: rulePayload ?? undefined
             };
 
@@ -294,6 +268,14 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                         setIsAuthenticationUpdateFormState(change);
                     } } />
                 <Divider className="divider-container" />
+                <Typography variant="h6" className="heading-container" >
+                    { t("actions:attributes.heading") }
+                </Typography>
+                <AttributeSearchList
+                    data-componentid={ "selectedTemplate?.templateId " }
+                />
+
+                { /* This is currently disabled */ }
                 { RuleExpressionsMetaData && showRuleComponent && (
                     <RuleConfigForm
                         readonly={ isReadOnly }
@@ -317,7 +299,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     initialData={ initialValues?.rule }
                 >
                     <FinalForm
-                        onSubmit={ (values: PreUpdatePasswordActionConfigFormPropertyInterface, form: any) => {
+                        onSubmit={ (values: ActionConfigFormPropertyInterface, form: any) => {
                             handleSubmit(values, form.getState().dirtyFields);
                         } }
                         validate={ validateForm }

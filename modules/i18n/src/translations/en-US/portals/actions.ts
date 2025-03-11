@@ -19,6 +19,13 @@
 import { actionsNS } from "../../../models";
 
 export const actions: actionsNS = {
+    attributes: {
+        heading: "Attributes",
+        hint: "Select user attributes that need to be shared with the external service.",
+        search: {
+            placeholder: "Search user attribute"
+        }
+    },
     buttons: {
         addCertificate: "Add Certificate",
         cancel: "Cancel",
@@ -362,8 +369,7 @@ export const actions: actionsNS = {
         },
         preUpdateProfile: {
             description: {
-                expanded: "This action is executed before updating the profile of a user. " +
-                "Refer the documentation for the API definition to implement.",
+                expanded: "This action is executed before updating the profile of a user.",
                 shortened: "This action is executed before updating the profile of a user."
             },
             heading: "Pre Update Profile"

@@ -70,6 +70,8 @@ export class ActionsConstants {
 
     public static readonly ACTION_COMING_SOON_LABEL: string = "COMING_SOON";
 
+    public static readonly EMPTY_STRING: string = "";
+
     public static readonly ERROR_MESSAGES: {
         CREATE_ACTION_INVALID_STATUS_CODE_ERROR: IdentityAppsError;
         DELETE_ACTION_INVALID_STATUS_CODE_ERROR: IdentityAppsError;

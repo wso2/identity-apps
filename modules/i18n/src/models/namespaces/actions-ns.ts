@@ -42,6 +42,13 @@ export interface actionsNS {
             subHeading: string;
         }
     },
+    attributes: {
+        heading: string;
+        hint: string;
+        search: {
+            placeholder: string
+        }
+    };
     confirmationModal: {
         header: string;
         message: string;
