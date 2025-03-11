@@ -544,6 +544,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     <ApplicationRoleWizard
                         setUserListRequestLoading={ null }
                         data-testid="user-mgt-add-user-wizard-modal"
+                        data-componentid="user-mgt-add-user-wizard-modal"
                         closeWizard={ () => {
                             setShowWizard(false);
                         } }
