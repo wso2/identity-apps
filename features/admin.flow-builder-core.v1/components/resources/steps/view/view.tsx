@@ -31,6 +31,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect } from "r
 import ReorderableElement from "./reorderable-element";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import { Element } from "../../../../models/elements";
+import generateResourceId from "../../../../utils/generate-resource-id";
 import Droppable from "../../../dnd/droppable";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 import "./view.scss";
@@ -94,7 +95,7 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                     <Box className="flow-builder-step-content-form">
                         <FormGroup>
                             <Droppable
-                                id={ VisualFlowConstants.FLOW_BUILDER_VIEW_ID }
+                                id={ generateResourceId(`${ VisualFlowConstants.FLOW_BUILDER_VIEW_ID }_${ stepId }`) }
                                 data={ { stepId, resource: node } }
                                 sx={ { padding: "40px 32px" } }
                                 type={ VisualFlowConstants.FLOW_BUILDER_DROPPABLE_VIEW_ID }

@@ -196,11 +196,11 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                 };
             });
         } else {
-            if (target?.id === VisualFlowConstants.FLOW_BUILDER_CANVAS_ID) {
+            if (target?.id?.startsWith(VisualFlowConstants.FLOW_BUILDER_CANVAS_ID)) {
                 addCanvasNode(event, sourceData, targetData);
-            } else if (target?.id === VisualFlowConstants.FLOW_BUILDER_VIEW_ID) {
+            } else if (target?.id?.startsWith(VisualFlowConstants.FLOW_BUILDER_VIEW_ID)) {
                 addToView(event, sourceData, targetData);
-            } else if (target?.id === VisualFlowConstants.FLOW_BUILDER_FORM_ID) {
+            } else if (target?.id?.startsWith(VisualFlowConstants.FLOW_BUILDER_FORM_ID)) {
                 addToForm(event, sourceData, targetData);
             }
         }

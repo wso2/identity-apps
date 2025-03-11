@@ -25,6 +25,7 @@ import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import { Element, ElementCategories } from "../../../../models/elements";
+import generateResourceId from "../../../../utils/generate-resource-id";
 import Droppable from "../../../dnd/droppable";
 import ReorderableElement from "../../steps/view/reorderable-element";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
@@ -59,7 +60,7 @@ const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
             className="adapter form-adapter"
         >
             <Droppable
-                id={ VisualFlowConstants.FLOW_BUILDER_FORM_ID }
+                id={ generateResourceId(`${ VisualFlowConstants.FLOW_BUILDER_FORM_ID }_${ stepId }`) }
                 data={ { resource, stepId } }
                 collisionPriority={ CollisionPriority.High }
                 type={ VisualFlowConstants.FLOW_BUILDER_DROPPABLE_FORM_ID }

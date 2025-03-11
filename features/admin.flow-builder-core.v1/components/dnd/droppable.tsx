@@ -41,15 +41,20 @@ const Droppable: FC<PropsWithChildren<DroppableProps>> = ({
     sx = {},
     className,
     collisionDetector = pointerIntersection,
+    data,
     ...rest
 }: PropsWithChildren<DroppableProps>): ReactElement => {
-    const { ref, isDropTarget } = useDroppable({ collisionDetector, id, ...rest });
+    const { ref, isDropTarget } = useDroppable({ collisionDetector, data, id, ...rest });
 
     return (
         <Box
             ref={ ref }
             data-componentid={ componentId }
-            className={ classNames("dnd-droppable", { "is-dropping": isDropTarget }, className) }
+            className={ classNames(
+                "dnd-droppable",
+                { "is-dropping": isDropTarget && id.includes(data?.stepId) },
+                className
+            ) }
             sx={ {
                 display: "inline-flex",
                 flexDirection: "column",
