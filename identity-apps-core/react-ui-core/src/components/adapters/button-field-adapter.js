@@ -26,7 +26,6 @@ import { getConnectionLogo } from "../../utils/ui-utils";
 const ButtonAdapter = ({ component, handleButtonAction }) => {
 
     const { translations } = useTranslations();
-    const actionId = (component.action && component.action.id) ? component.action.id : "";
 
     switch (component.variant) {
         case "PRIMARY":
@@ -34,7 +33,7 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
                 <Button
                     className="ui primary fluid large button mt-4"
                     type={ component.config.type }
-                    name={ actionId }
+                    name={ component.id }
                     onClick={ !component.config.type === "submit" ? handleButtonAction : null }
                 >
                     { resolveElementText(translations, component.config.text) }
@@ -45,7 +44,7 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
                 <Button
                     type={ component.config.type }
                     className="ui secondary fluid large button mt-4"
-                    name={ actionId }
+                    name={ component.id }
                     onClick={ !component.config.type === "submit" ? handleButtonAction : null }
                 >
                     { resolveElementText(translations, component.config.text) }
@@ -55,8 +54,9 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
             return (
                 <Button
                     type={ component.type }
+                    name={ component.id }
                     className="link mt-4"
-                    onClick={ () => handleButtonAction(actionId, {}) }
+                    onClick={ () => handleButtonAction(component.id, {}) }
                 >
                     { resolveElementText(translations, component.config.text) }
                 </Button>
@@ -67,12 +67,12 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
                     <Button
                         type={ component.config.type }
                         className="ui button social"
-                        name={ actionId }
-                        onClick={ () => handleButtonAction(actionId, {}) }
+                        name={ component.id }
+                        onClick={ () => handleButtonAction(component.id, {}) }
                     >
                         <img
                             className="ui image"
-                            src={ getConnectionLogo(component.config.action.executor.name) }
+                            src={ getConnectionLogo(component.config.text) }
                             alt="Connection Login icon"
                             role="presentation"></img>
                         <span>{ resolveElementText(translations, component.config.text) }</span>
@@ -83,7 +83,7 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
             return (
                 <Button
                     type={ component.type }
-                    name={ actionId }
+                    name={ component.id }
                     className="ui button mt-4"
                     onClick={ !component.config.type === "submit" ? handleButtonAction : null }
                 >

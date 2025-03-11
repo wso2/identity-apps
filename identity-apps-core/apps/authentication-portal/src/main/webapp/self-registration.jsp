@@ -131,17 +131,19 @@
             const { DynamicContent, I18nProvider } = ReactUICore;
 
             const Content = () => {
+                const baseUrl = "<%= identityServerEndpointContextParam %>";
+                const apiUrl = baseUrl + "${pageContext.request.contextPath}/util/self-registration-api.jsp";
+                const code = "<%= code != null ? code : null %>";
+                
+                const locale = "en-US";
+                const translations = <%= translationsJson %>;
+                
                 const [ flowData, setFlowData ] = useState(null);
                 const [ components, setComponents ] = useState([]);
                 const [ loading, setLoading ] = useState(true);
                 const [ error, setError ] = useState(null);
                 const [ postBody, setPostBody ] = useState(undefined);
 
-                const apiUrl = "${pageContext.request.contextPath}/util/self-registration-api.jsp";
-                const locale = "en-US";
-                
-                const translations = <%= translationsJson %>;
-                const code = "<%= code != null ? code : null %>";
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
@@ -254,7 +256,7 @@
                     createElement(
                         DynamicContent, {
                             elements: components,
-                            handleRequestBody: (action, formValues) => {
+                            handleFlowRequest: (action, formValues) => {
                                 setPostBody({
                                     flowId: flowData.flowId,
                                     action,

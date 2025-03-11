@@ -344,6 +344,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     return false;
                 }
 
+                // The global supportedByDefault value is a string. Hence, it needs to be converted to a boolean.
+                const resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+
+                if (!resolveSupportedByDefaultValue) {
+                    return false;
+                }
+
                 const excludedUserStores: string[] =
                     schema?.excludedUserStores?.split(",")?.map((store: string) => store?.trim().toUpperCase()) || [];
 
@@ -2813,6 +2820,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                             isMultipleEmailAndMobileNumberEnabled
                                                                         === true
                                                                         }
+                                                                    subAttributes={
+                                                                        extractSubAttributes(
+                                                                            ProfileConstants.SCIM2_SCHEMA_DICTIONARY
+                                                                                .get("PHONE_NUMBERS"))
+                                                                    }
                                                                 />
                                                             )
                                                             : null

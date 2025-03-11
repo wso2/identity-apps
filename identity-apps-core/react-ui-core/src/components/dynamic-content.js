@@ -21,7 +21,7 @@ import React from "react";
 import Field from "./field";
 import Form from "./form";
 
-const DynamicContent = ({ elements, handleRequestBody }) => {
+const DynamicContent = ({ elements, handleFlowRequest }) => {
 
     const renderForm = (form) => {
         if (!form) return null;
@@ -31,7 +31,7 @@ const DynamicContent = ({ elements, handleRequestBody }) => {
                 <Form
                     key={ form.id }
                     formSchema={ form.components }
-                    onSubmit={ (action, formValues) => handleRequestBody(action, formValues) }
+                    onSubmit={ (action, formValues) => handleFlowRequest(action, formValues) }
                 />
             );
         }
@@ -40,7 +40,13 @@ const DynamicContent = ({ elements, handleRequestBody }) => {
     };
 
     const renderElement = (element) => {
-        return <Field key={ element.id } component={ element } />;
+        return (
+            <Field
+                key={ element.id }
+                component={ element }
+                flowActionHandler={ handleFlowRequest }
+            />
+        );
     };
 
     const renderElements = () => {
@@ -58,7 +64,7 @@ const DynamicContent = ({ elements, handleRequestBody }) => {
 
 DynamicContent.propTypes = {
     elements: PropTypes.array.isRequired,
-    handleRequestBody: PropTypes.func.isRequired
+    handleFlowRequest: PropTypes.func.isRequired
 };
 
 export default DynamicContent;

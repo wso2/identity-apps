@@ -1,6 +1,6 @@
 <%--
  ~
- ~ Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ ~ Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  ~
  ~ This software is the property of WSO2 LLC. and its suppliers, if any.
  ~ Dissemination of any information or reproduction of any material contained
@@ -219,6 +219,8 @@
                                             maxlength="1"
                                             onkeyup="movetoNext(this, 'pincode-2', null)"
                                             autocomplete="off"
+                                            type="text"
+                                            inputmode="numeric"
                                             autofocus>
                                     </div>
                                     <div class="field mt-5">
@@ -230,7 +232,9 @@
                                             placeholder="·"
                                             maxlength="1"
                                             onkeyup="movetoNext(this, 'pincode-3', 'pincode-1')"
-                                            autocomplete="off">
+                                            autocomplete="off"
+                                            type="text"
+                                            inputmode="numeric">
                                     </div>
                                     <div class="field mt-5">
                                         <input
@@ -241,7 +245,9 @@
                                             placeholder="·"
                                             maxlength="1"
                                             onkeyup="movetoNext(this, 'pincode-4', 'pincode-2')"
-                                            autocomplete="off">
+                                            autocomplete="off"
+                                            type="text"
+                                            inputmode="numeric">
                                     </div>
                                     <div class="field mt-5">
                                         <input
@@ -252,7 +258,9 @@
                                             placeholder="·"
                                             maxlength="1"
                                             onkeyup="movetoNext(this, 'pincode-5', 'pincode-3')"
-                                            autocomplete="off">
+                                            autocomplete="off"
+                                            type="text"
+                                            inputmode="numeric">
                                     </div>
                                     <div class="field mt-5">
                                         <input
@@ -263,7 +271,9 @@
                                             placeholder="·"
                                             maxlength="1"
                                             onkeyup="movetoNext(this, 'pincode-6', 'pincode-4')"
-                                            autocomplete="off">
+                                            autocomplete="off"
+                                            type="text"
+                                            inputmode="numeric">
                                     </div>
                                     <div class="field mt-5">
                                         <input
@@ -274,7 +284,9 @@
                                             placeholder="·"
                                             maxlength="1"
                                             onkeyup="movetoNext(this, null, 'pincode-5')"
-                                            autocomplete="off">
+                                            autocomplete="off"
+                                            type="text"
+                                            inputmode="numeric">
                                     </div>
                                 </div>
 

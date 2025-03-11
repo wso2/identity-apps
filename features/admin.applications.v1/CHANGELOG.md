@@ -1,5 +1,11 @@
 # @wso2is/admin.applications.v1
 
+## 2.32.7
+
+### Patch Changes
+
+- [#7820](https://github.com/wso2/identity-apps/pull/7820) [`7f4e4e1315b87cdaefba76b0d345d52b8bd27138`](https://github.com/wso2/identity-apps/commit/7f4e4e1315b87cdaefba76b0d345d52b8bd27138) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - enable general details for sub org owned apps
+
 ## 2.32.6
 
 ### Patch Changes

@@ -18,6 +18,8 @@
 
 <%@ page contentType="application/json;charset=UTF-8" language="java" %>
 <%@ page import="java.net.*, java.io.*, org.json.*" %>
+<%@include file="../includes/init-url.jsp" %>
+
 <%
     StringBuilder requestBody = new StringBuilder();
     String line;
@@ -42,15 +44,10 @@
         return;
     }
 
-    String scheme = request.getScheme();
-    String serverName = request.getServerName();
-    int serverPort = request.getServerPort();
-    String contextPath = request.getContextPath();
     StringBuilder apiResponse = new StringBuilder();
-    HttpURLConnection connection = null;
+    HttpURLConnection connection = null;    
+    String apiURL = identityServerEndpointContextParam + endpoint;
     
-    String apiURL = scheme + "://" + serverName + ":" + serverPort + endpoint;
-
     try {
         URL url = new URL(apiURL);
         connection = (HttpURLConnection) url.openConnection();
