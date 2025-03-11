@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.19.2
+
+### Patch Changes
+
+- [#7838](https://github.com/wso2/identity-apps/pull/7838) [`009772bf2f5e0b8382ff31c1392f2e5ed4d2954c`](https://github.com/wso2/identity-apps/commit/009772bf2f5e0b8382ff31c1392f2e5ed4d2954c) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add redirect to tenanted My Account url
+
 ## 2.19.1
 
 ### Patch Changes
