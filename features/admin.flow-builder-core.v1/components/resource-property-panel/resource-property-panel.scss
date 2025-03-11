@@ -17,7 +17,7 @@
  */
 
 :root {
-    --wso2is-flow-builder-element-property-panel-background: #f4f4f4;
+    --wso2is-flow-builder-element-property-panel-background: var(--oxygen-palette-common-white);
     --wso2is-flow-builder-element-property-panel-width: 350px;
     --wso2is-flow-builder-element-property-panel-mini-width: 350px;
 }
