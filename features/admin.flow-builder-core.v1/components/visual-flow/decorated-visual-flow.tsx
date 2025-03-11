@@ -278,7 +278,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
     return (
         <div
-            className={ classNames("decorated-visual-flow", "react-flow-container", "visual-editor") }
+            className={ classNames("decorated-visual-flow", "react-flow-container") }
             data-componentid={ componentId }
         >
             <DragDropProvider onDragEnd={ handleDragEnd }>

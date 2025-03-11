@@ -91,7 +91,7 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
             </Box>
             <Handle type="target" position={ Position.Left } />
             <Box className="flow-builder-step-content" data-componentid={ `${componentId}-inner` }>
-                <Paper className="flow-builder-step-content-box" elevation={ 0 } variant="outlined">
+                <Paper className="flow-builder-step-content-box" elevation={ 0 }>
                     <Box className="flow-builder-step-content-form">
                         <FormGroup>
                             <Droppable

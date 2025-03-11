@@ -108,7 +108,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                     onNodesDelete={ onNodesDelete }
                     proOptions={ { hideAttribution: true } }
                     data-componentid={ componentId }
-                    colorMode="dark"
+                    colorMode="light"
                     { ...rest }
                 >
                     <Controls position="top-right" />
