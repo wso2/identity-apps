@@ -490,7 +490,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         const replacers = template?.config?.data?.__generationMeta__?.replacers;
 
-        const [templateSteps] = updateTemplatePlaceholderReferences(
+        const [ templateSteps ] = updateTemplatePlaceholderReferences(
             generateSteps(template.config.data.steps as any),
             replacers
         );
@@ -598,7 +598,26 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         let defaultPropertySectorStepId: string = null;
         let defaultPropertySelector: Resource = null;
 
-        newNodes = resolveStepMetadata(resources, generateIdsForResources(newNodes)) as Node[];
+        // Resolve step & component metadata.
+        newNodes = resolveStepMetadata(
+            resources,
+            generateIdsForResources<Node[]>(
+                newNodes.map((step: Node) => {
+                    return {
+                        data:
+                            (step.data?.components && {
+                                ...step.data,
+                                components: resolveComponentMetadata(resources, (step.data as any).components)
+                            }) ||
+                            step.data,
+                        deletable: true,
+                        id: step.id,
+                        position: step.position,
+                        type: step.type
+                    };
+                })
+            ) as Step[]
+        ) as Node[];
 
         // TODO: Improve this block perf.
         newNodes.forEach((node: Node) => {
