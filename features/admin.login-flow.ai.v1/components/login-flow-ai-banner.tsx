@@ -184,7 +184,6 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                         ? t("ai:aiLoginFlow.banner.full.subheading")
                         : t("ai:subscribeToAI")
                     }
-                    aiText={ t("ai:aiLoginFlow.title") }
                     actionButtonText={ t("ai:aiLoginFlow.banner.full.button") }
                     onActionButtonClick={ handleExpandClick }
                     titleLabel={ (
@@ -213,7 +212,6 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                             </DocumentationLink>
                         </>
                     ) }
-                    aiText={ t("ai:aiLoginFlow.title") }
                     titleLabel={ (
                         <FeatureFlagLabel
                             featureFlags={ aiFeatureConfig?.featureFlags }
