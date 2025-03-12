@@ -5949,7 +5949,7 @@ importers:
         specifier: ^2.3.4
         version: 2.3.4(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/access-control':
-        specifier: ^3.3.20
+        specifier: ^3.4.0
         version: link:../../modules/access-control
       '@wso2is/admin.actions.v1':
         specifier: ^1.11.69
@@ -6003,10 +6003,10 @@ importers:
         specifier: ^2.25.203
         version: link:../admin.email-templates.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.36.128
+        specifier: ^2.37.0
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
-        specifier: ^1.4.203
+        specifier: ^1.5.0
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.groups.v1':
         specifier: ^2.27.113
@@ -7946,7 +7946,7 @@ importers:
         specifier: ^2.3.4
         version: 2.3.4(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/access-control':
-        specifier: ^3.3.20
+        specifier: ^3.4.0
         version: link:../../modules/access-control
       '@wso2is/admin.api-resources.v1':
         specifier: ^2.25.203
@@ -7967,10 +7967,10 @@ importers:
         specifier: ^2.33.87
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.40.6
+        specifier: ^2.42.0
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
-        specifier: ^1.4.203
+        specifier: ^1.5.0
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.groups.v1':
         specifier: ^2.27.113
@@ -8027,7 +8027,7 @@ importers:
         specifier: ^2.9.12
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.6.11
+        specifier: ^2.7.0
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.4.1
@@ -8364,10 +8364,10 @@ importers:
         specifier: ^2.3.4
         version: 2.3.4(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/access-control':
-        specifier: ^3.3.20
+        specifier: ^3.4.0
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.40.6
+        specifier: ^2.42.0
         version: link:../admin.core.v1
       '@wso2is/admin.organizations.v1':
         specifier: ^2.26.203

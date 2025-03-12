@@ -1,5 +1,18 @@
 # @wso2is/admin.core.v1
 
+## 2.42.0
+
+### Minor Changes
+
+- [#7851](https://github.com/wso2/identity-apps/pull/7851) [`3f254e98d447c8b2c275e6566b801c7404125a24`](https://github.com/wso2/identity-apps/commit/3f254e98d447c8b2c275e6566b801c7404125a24) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Add preview features enable/disable option to the console
+
+### Patch Changes
+
+- Updated dependencies [[`3f254e98d447c8b2c275e6566b801c7404125a24`](https://github.com/wso2/identity-apps/commit/3f254e98d447c8b2c275e6566b801c7404125a24)]:
+  - @wso2is/admin.extensions.v1@2.37.0
+  - @wso2is/admin.feature-gate.v1@1.5.0
+  - @wso2is/access-control@3.4.0
+
 ## 2.41.0
 
 ### Minor Changes
