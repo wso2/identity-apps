@@ -25,6 +25,10 @@
     // Remove this once it is handled.
     // Tracker: https://github.com/wso2/oxygen-ui/issues/300
     padding: 0;
+    
+    &.draggable {
+        cursor: grab;
+    }
 
     .oxygen-card-content:last-child {
         padding-bottom: var(--oxygen-spacing-2);

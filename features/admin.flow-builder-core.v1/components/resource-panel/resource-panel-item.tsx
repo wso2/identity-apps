@@ -25,6 +25,7 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import { Resource } from "../../models/resources";
 import "./resource-panel-item.scss";
@@ -63,7 +64,12 @@ const ResourcePanelItem: FunctionComponent<ResourcePanelItemProps> = ({
     onAdd,
     ...rest
 }: ResourcePanelItemProps): ReactElement => (
-    <Card className="flow-builder-element-panel-item" variant="elevation" data-componentid={ componentId } { ...rest }>
+    <Card
+        className={ classNames("flow-builder-element-panel-item", { [ type ]: type }) }
+        variant="elevation"
+        data-componentid={ componentId }
+        { ...rest }
+    >
         <CardContent>
             <Box display="flex" justifyContent="space-between" alignItems="center" gap={ 1 }>
                 <Stack direction="row" spacing={ 1 }>
