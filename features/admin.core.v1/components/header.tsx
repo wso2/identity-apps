@@ -111,6 +111,13 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
 
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
+    const loginAndRegistrationFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.loginAndRegistration
+    );
+    const hasLoginAndRegistrationUpdatePermissions: boolean = useRequiredScopes(
+        loginAndRegistrationFeatureConfig?.scopes?.update
+    );
+
     const [ anchorHelpMenu, setAnchorHelpMenu ] = useState<null | HTMLElement>(null);
     const [ featurePreviewModalShow, setFeaturePreviewModalShow ] = useState<boolean>(false);
 
@@ -489,10 +496,14 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 } }
                 { ...rest }
             />
-            <FeaturePreviewModal
-                open={ featurePreviewModalShow }
-                onClose={ handleFeaturePreviewDialogClose }
-            />
+            {
+                hasLoginAndRegistrationUpdatePermissions && (
+                    <FeaturePreviewModal
+                        open={ featurePreviewModalShow }
+                        onClose={ handleFeaturePreviewDialogClose }
+                    />
+                )
+            }
         </>
     );
 };
