@@ -342,7 +342,7 @@
                             if (showBackButton && StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) {
                         %>
                             <%
-                                if (sp.equals("My Account")) {
+                                if (!StringUtils.isBlank(sp) && sp.equals("My Account")) {
                             %>
                                 <i class="caret left icon primary"></i>
                                 <a href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(tenantedMyaccountURL)%>">
