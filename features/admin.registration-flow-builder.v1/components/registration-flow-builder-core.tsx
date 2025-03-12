@@ -639,13 +639,13 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         // Check if `defaultPropertySector.id` is in the `replacedPlaceholders`.
         // If so, update them with the replaced value.
-        if (replacedPlaceholders.has(defaultPropertySector.id.replace(/[{}]/g, ""))) {
+        if (replacedPlaceholders.has(defaultPropertySector?.id?.replace(/[{}]/g, ""))) {
             defaultPropertySector.id = replacedPlaceholders.get(defaultPropertySector.id.replace(/[{}]/g, ""));
         }
 
         // Check if `defaultPropertySectorStepId` is in the `replacedPlaceholders`.
         // If so, update them with the replaced value.
-        if (replacedPlaceholders.has(defaultPropertySectorStepId.replace(/[{}]/g, ""))) {
+        if (replacedPlaceholders.has(defaultPropertySectorStepId?.replace(/[{}]/g, ""))) {
             defaultPropertySectorStepId = replacedPlaceholders.get(defaultPropertySectorStepId.replace(/[{}]/g, ""));
         }
 
