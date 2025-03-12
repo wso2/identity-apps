@@ -29,6 +29,7 @@ import {
     GearIcon,
     HexagonTwoIcon,
     PadlockAsteriskIcon,
+    ProgressFlowIcon,
     ShareNodesIcon,
     ShieldCheckIcon,
     ShieldUserPencilIcon,
@@ -211,6 +212,10 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
             case ServerConfigurationsConstants.NOTIFICATION_SETTINGS_CONNECTOR_ID:
                 return (
                     <ArrowLoopRightUserIcon className="icon" />
+                );
+            case ServerConfigurationsConstants.REGISTRATION_FLOW_BUILDER_CONNECTOR_ID:
+                return (
+                    <ProgressFlowIcon className="icon" />
                 );
             default:
                 return <GearIcon className="icon" />;

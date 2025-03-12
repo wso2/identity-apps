@@ -888,6 +888,10 @@
                     {
                         "feature": "loginAndRegistration.organizationSettings.impersonation",
                         "flag": ""
+                    },
+                    {
+                        "feature": "loginAndRegistration.userOnboarding.registrationFlowBuilder",
+                        "flag": ""
                     }
                 ],
                 "scopes": {

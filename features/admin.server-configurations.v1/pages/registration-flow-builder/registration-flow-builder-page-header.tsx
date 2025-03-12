@@ -28,7 +28,6 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useRegistrationFlowBuilder from "@wso2is/admin.registration-flow-builder.v1/hooks/use-registration-flow-builder";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderPageHeader}
@@ -47,24 +46,15 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
     const { onPublish } = useRegistrationFlowBuilder();
 
     return (
-        <Box display="flex" className="page-header" justifyContent="space-between" alignItems="center" data-componentid={ componentId }>
+        <Box
+            display="flex"
+            className="page-header"
+            justifyContent="space-between"
+            alignItems="center"
+            data-componentid={ componentId }
+        >
             <Box display="flex" gap={ 3 } alignItems="center">
-                <IconButton
-                    onClick={ () =>
-                        history.push(
-                            AppConstants.getPaths()
-                                .get("GOVERNANCE_CONNECTOR_EDIT")
-                                .replace(
-                                    ":categoryId",
-                                    ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID
-                                )
-                                .replace(
-                                    ":connectorId",
-                                    ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
-                                )
-                        )
-                    }
-                >
+                <IconButton onClick={ () => history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION")) }>
                     <ArrowLeftIcon />
                 </IconButton>
                 <Breadcrumbs aria-label="breadcrumb">
@@ -74,26 +64,6 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
                         onClick={ () => history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION")) }
                     >
                                     Login & Registration
-                    </Link>
-                    <Link
-                        underline="hover"
-                        color="inherit"
-                        onClick={ () =>
-                            history.push(
-                                AppConstants.getPaths()
-                                    .get("GOVERNANCE_CONNECTOR_EDIT")
-                                    .replace(
-                                        ":categoryId",
-                                        ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID
-                                    )
-                                    .replace(
-                                        ":connectorId",
-                                        ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
-                                    )
-                            )
-                        }
-                    >
-                                    Self-registration
                     </Link>
                     <Typography sx={ { color: "text.primary" } }>Edit Registration Flow</Typography>
                 </Breadcrumbs>

@@ -21,7 +21,7 @@ import useGovernanceConnector from "../api/user-governance-connector";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 
 /**
- * Hook to check if the self Registration is enabled or disabled.
+ * Hook to check if the registration flow builder is enabled or disabled.
  *
  * This function calls the GET method of the following endpoint.
  * - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/identity-governance/{categoryId}/connectors/{connectorId}`
@@ -31,7 +31,7 @@ import { ServerConfigurationsConstants } from "../constants/server-configuration
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetSelfRegistrationEnabledStatus = <Data = boolean, Error = RequestErrorInterface>(
+const useGetRegistrationFlowBuilderEnabledStatus = <Data = boolean, Error = RequestErrorInterface>(
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     const { data, error, isLoading, isValidating, mutate } = useGovernanceConnector(
@@ -42,8 +42,8 @@ const useGetSelfRegistrationEnabledStatus = <Data = boolean, Error = RequestErro
 
     const status: boolean =
         data?.properties?.find(
-            (prop: { name: string }) => prop.name === ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE
-        )?.value === "true";
+            (prop: { name: string }) => prop.name === ServerConfigurationsConstants
+                .SELF_REGISTRATION_FLOW_BUILDER_ENABLED)?.value === "true";
 
     return {
         data: status as Data,
@@ -54,4 +54,4 @@ const useGetSelfRegistrationEnabledStatus = <Data = boolean, Error = RequestErro
     };
 };
 
-export default useGetSelfRegistrationEnabledStatus;
+export default useGetRegistrationFlowBuilderEnabledStatus;
