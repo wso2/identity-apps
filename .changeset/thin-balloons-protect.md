@@ -4,4 +4,5 @@
 "@wso2is/console": patch
 ---
 
-Auto open property panel based on template config
+- Auto open property panel based on template config
+- Improve the black view
