@@ -109,12 +109,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
     useEffect(() => {
         if (aiGeneratedFlow) {
-            const [ newNodes, newEdges ] = onTemplateLoad(aiGeneratedFlow);
-
-            setNodes(() => newNodes);
-            setEdges(() => newEdges);
-
-            onResourceDropOnCanvas(aiGeneratedFlow, null);
+            handleOnAdd(aiGeneratedFlow);
         }
     }, [ aiGeneratedFlow ]);
 

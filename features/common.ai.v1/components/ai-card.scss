@@ -1,0 +1,37 @@
+:root {
+    --wso2is-flow-builder-resource-panel-static-item-add-button-size: 35px;
+}
+
+.ai-card {
+    // TODO: `@oxygen-ui/react/Card` declares a default padding which is a bug.
+    // Remove this once it is handled.
+    // Tracker: https://github.com/wso2/oxygen-ui/issues/300
+    padding: 0;
+    box-shadow: 0 1px 3px 0 #e8b4a1, 0 0 0 1px #d4d4d5;
+
+    .oxygen-card-content:last-child {
+        padding-bottom: var(--oxygen-spacing-2);
+    }
+
+    .ai-card-avatar {
+        width: 20px;
+        height: 20px;
+        margin-top: 3px;
+    }
+    
+    .ai-card-add-button {
+        height: var(--wso2is-flow-builder-resource-panel-static-item-add-button-size);
+        width: var(--wso2is-flow-builder-resource-panel-static-item-add-button-size);
+        border: 1px solid var(--oxygen-palette-divider);
+        border-radius: var(--oxygen-shape-borderRadius);
+        background: var(--oxygen-palette-grey-100);
+        margin-left: 28px;
+        margin-top: 7px;
+        
+        .MuiTouchRipple-root {
+            * {
+                border-radius: var(--oxygen-shape-borderRadius);
+            }
+        }
+    }
+}
