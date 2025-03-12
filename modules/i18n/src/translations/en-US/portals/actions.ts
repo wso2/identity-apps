@@ -23,6 +23,7 @@ export const actions: actionsNS = {
         heading: "Attributes",
         hint: "Select user attributes that need to be shared with the external service.",
         search: {
+            clearButton: "Clear all",
             placeholder: "Search user attribute"
         }
     },

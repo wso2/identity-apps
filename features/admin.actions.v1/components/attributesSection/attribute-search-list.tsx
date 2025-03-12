@@ -20,6 +20,7 @@ import Autocomplete, {
     AutocompleteInputChangeReason,
     AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
+import Button from "@oxygen-ui/react/Button";
 import TextField from "@oxygen-ui/react/TextField";
 import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -39,12 +40,20 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import React, { FunctionComponent, HTMLAttributes, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, {
+    FunctionComponent,
+    HTMLAttributes,
+    ReactElement,
+    SyntheticEvent,
+    useEffect,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, DropdownProps, Header, SemanticICONS } from "semantic-ui-react";
 import { ActionsConstants } from "../../constants/actions-constants";
+import "./attribute-search-list.scss";
 
 export interface AttributeSearchListPropsInterface extends IdentifiableComponentInterface {
 }
@@ -208,7 +217,6 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
 
     return (
         <>
-            <Hint>{ t("actions:attributes.hint") }</Hint>
             <Autocomplete
                 fullWidth
                 aria-label="Attribute selection"
@@ -280,20 +288,37 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
                 data-testid={ `${componentId}-select-attributes` }
                 data-componentid={ `${componentId}-select-attributes` }
             />
-            <Divider hidden />
+            <Hint>{ t("actions:attributes.hint") }</Hint>
+            <Divider hidden/>
             {
                 selectedAttributesList?.length > 0 && (
-                    <DataTable<Claim[]>
-                        className="external-dialects-list"
-                        actions={ resolveTableActions() }
-                        columns={ resolveTableColumns() }
-                        data={ selectedAttributesList }
-                        onRowClick={ () => null }
-                        showHeader={ false }
-                        data-testid={ `${componentId}-selected-attributes-list` }
-                        data-componentid={ `${componentId}-selected-attributes-list` }
 
-                    />
+                    <div className="attribute-search-list">
+                        <div className="clear-all-button-container">
+                            <Button
+                                onClick={ () => setSelectedAttributesList([]) }
+                                variant="outlined"
+                                size="small"
+                                className={ "secondary-button clear-all-button" }
+                                data-componentid={ `${ componentId }-clear-all-button` }
+                                disabled={ false }
+                            >
+                                { t("actions:attributes.search.clearButton") }
+                            </Button>
+                        </div>
+                        <div className="selected-attributes-list">
+                            <DataTable<Claim[]>
+                                className="selected-attributes-list-data-table"
+                                actions={ resolveTableActions() }
+                                columns={ resolveTableColumns() }
+                                data={ selectedAttributesList }
+                                onRowClick={ () => null }
+                                showHeader={ false }
+                                data-testid={ `${componentId}-selected-attributes-list` }
+                                data-componentid={ `${componentId}-selected-attributes-list` }
+                            />
+                        </div>
+                    </div>
                 )
             }
         </>

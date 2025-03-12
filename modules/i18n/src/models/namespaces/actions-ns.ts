@@ -47,6 +47,7 @@ export interface actionsNS {
         hint: string;
         search: {
             placeholder: string
+            clearButton: string
         }
     };
     confirmationModal: {
