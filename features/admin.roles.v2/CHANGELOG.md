@@ -1,5 +1,11 @@
 # @wso2is/admin.roles.v2
 
+## 2.27.148
+
+### Patch Changes
+
+- [#7846](https://github.com/wso2/identity-apps/pull/7846) [`53628c2f827d28b06b170fe43b7e0423bbeea7e8`](https://github.com/wso2/identity-apps/commit/53628c2f827d28b06b170fe43b7e0423bbeea7e8) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Pass the data-componentid to Application Role Wizard
+
 ## 2.27.147
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.2.4
+
+### Patch Changes
+
+- [#7852](https://github.com/wso2/identity-apps/pull/7852) [`4908d061593ba0a0a25c67719b86877b0a66853d`](https://github.com/wso2/identity-apps/commit/4908d061593ba0a0a25c67719b86877b0a66853d) Thanks [@brionmario](https://github.com/brionmario)! - Add support to add `Templates` on click
+
 ## 0.2.3
 
 ### Patch Changes

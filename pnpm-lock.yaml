@@ -600,7 +600,7 @@ importers:
         specifier: ^2.25.203
         version: link:../../features/admin.roles.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.147
+        specifier: ^2.27.148
         version: link:../../features/admin.roles.v2
       '@wso2is/admin.saml2-configuration.v1':
         specifier: ^2.25.203
