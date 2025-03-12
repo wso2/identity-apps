@@ -62,15 +62,6 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const onResourceDropOnCanvas = (resource: Resource, resourceId: string): void => {
         setLastInteractedResource(resource);
         setLastInteractedStepId(resourceId);
-
-        // Currently we don't show the properties panel for Templates.
-        if (
-            (resource.category === ResourceTypes.Step && resource.type === StepTypes.View) ||
-            resource.resourceType === ResourceTypes.Template ||
-            resource.resourceType === ResourceTypes.Widget
-        ) {
-            setIsOpenResourcePropertiesPanel(false);
-        }
     };
 
     const setLastInteractedResource = (resource: Resource): void => {
@@ -85,7 +76,11 @@ const AuthenticationFlowBuilderCoreProvider = ({
 
         // If the element is a step node, do not open the properties panel for now.
         // TODO: Figure out if there are properties for a step.
-        if (resource.category === ResourceTypes.Step && resource.type === StepTypes.View) {
+        if (
+            (resource.category === ResourceTypes.Step && resource.type === StepTypes.View) ||
+            resource.resourceType === ResourceTypes.Template ||
+            resource.resourceType === ResourceTypes.Widget
+        ) {
             setIsOpenResourcePropertiesPanel(false);
 
             return;

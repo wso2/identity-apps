@@ -24,7 +24,7 @@ const resolveComponentMetadata = (resources: Resources, components: Element[]): 
     const updateComponentResourceType = (component: Element): Element => {
         let updatedComponent = { ...component };
 
-        resources.elements.forEach((componentWithMeta: Element) => {
+        resources?.elements?.forEach((componentWithMeta: Element) => {
             if (component.category === componentWithMeta.category && component.type === componentWithMeta.type) {
                 if (component.variant) {
                     // If the component metadata has a variants array, merge.
@@ -44,7 +44,7 @@ const resolveComponentMetadata = (resources: Resources, components: Element[]): 
             }
         });
 
-        if (updatedComponent.components) {
+        if (updatedComponent?.components) {
             updatedComponent.components = updatedComponent.components.map(updateComponentResourceType);
         }
 

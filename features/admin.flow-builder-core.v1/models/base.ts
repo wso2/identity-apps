@@ -54,11 +54,15 @@ export interface StrictBase<T = any> {
     /**
      * Base variant of the component or the primitive
      */
-    variant: any;
+    variant?: any;
     /**
      * Variants of the component or the primitive.
      */
-    variants: Base<T>[];
+    variants?: Base<T>[];
+    /**
+     * Data added to the component by the flow builder.
+     */
+    data?: any;
 }
 
 /**
@@ -70,14 +74,6 @@ export interface Base<T = any> extends StrictBase<T> {
      * @remarks This is a display only meta field and not being published to the backend.
      */
     resourceType: string;
-    /**
-     * Data added to the component by the flow builder.
-     */
-    data?: any;
-    /**
-     * Addtional meta data of the component or the primitive
-     */
-    meta?: any;
 }
 
 export interface BaseDisplay {

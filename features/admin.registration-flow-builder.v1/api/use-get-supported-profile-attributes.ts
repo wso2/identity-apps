@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -56,7 +57,7 @@ const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErr
     const filterSupportedAttributes = (data: Attribute[]) => {
         return data?.filter((attribute: any) => {
             // TODO: This is a temporary fix since `username` claim `supportedByDefault` is set to `false`.
-            if (attribute.claimURI === "http://wso2.org/claims/username") {
+            if (attribute.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI) {
                 return true;
             }
 
