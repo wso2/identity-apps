@@ -25,10 +25,7 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
-import { SupportedCanvasResources } from "../../models/visual-flow";
-import Draggable from "../dnd/draggable";
 import { Resource } from "../../models/resources";
 import "./resource-panel-item.scss";
 
