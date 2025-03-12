@@ -26,6 +26,7 @@ import useGetRegistrationFlowBuilderEnabledStatus from "../api/use-get-self-regi
 
 /**
  * Custom hook to retrieve the registration flow builder connector details.
+ * This is a dummy connector for the registration flow builder to be displayed in the login and registration page.
  *
  * @returns Registration flow builder connector properties.
  */

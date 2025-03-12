@@ -188,10 +188,10 @@ export class ServerConfigurationsConstants {
     public static readonly WSO2_ANALYTICS_ENGINE_CONNECTOR_CATEGORY_ID: string = "YW5hbHl0aWNzLWVuZ2luZQ";
 
     /**
-	 * UUID of the identity governance registration flow builder connector.
-	 *
+	 * This is a dummy connector ID to be used to display a new card in login and registration section
+     * for registration flow builder.
 	 */
-    public static readonly REGISTRATION_FLOW_BUILDER_CONNECTOR_ID: string = "cmVnaXN0cmF0aW9uLWZsb3ctYnVpbGRlcg==";
+    public static readonly REGISTRATION_FLOW_BUILDER_CONNECTOR_ID: string = "REGISTRATION_FLOW_BUILDER";
 
     /**
      * User email verification API Keyword constants.
