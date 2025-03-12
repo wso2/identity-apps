@@ -32,8 +32,10 @@ import {
     getOutgoers,
     useEdgesState,
     useNodesState,
-    useReactFlow
+    useReactFlow,
+    useUpdateNodeInternals
 } from "@xyflow/react";
+import { UpdateNodeInternals } from "@xyflow/system";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, useCallback } from "react";
@@ -90,6 +92,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     const [ nodes, setNodes, onNodesChange ] = useNodesState(initialNodes);
     const [ edges, setEdges, onEdgesChange ] = useEdgesState(initialEdges);
     const { generateStepElement } = useGenerateStepElement();
+    const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
 
     const {
         isResourcePanelOpen,
@@ -302,13 +305,33 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         });
     };
 
+    const handleOnAdd = (resource: Resource): void => {
+        // Currently we only let templates to be added to the canvas via a click.
+        if (resource.resourceType !== ResourceTypes.Template) {
+            return;
+        }
+
+        const [ newNodes, newEdges ] = onTemplateLoad(resource);
+
+        // Letting React Flow know of the programmatic updates to node for re-drawing edges.
+        setNodes(() => {
+            newNodes.forEach((node: Node) => updateNodeInternals(node.id));
+
+            return newNodes;
+        });
+
+        setEdges(() => [ ...newEdges ]);
+
+        onResourceDropOnCanvas(resource, null);
+    };
+
     return (
         <div
             className={ classNames("decorated-visual-flow", "react-flow-container") }
             data-componentid={ componentId }
         >
             <DragDropProvider onDragEnd={ handleDragEnd }>
-                <ResourcePanel resources={ resources } open={ isResourcePanelOpen }>
+                <ResourcePanel resources={ resources } open={ isResourcePanelOpen } onAdd={ handleOnAdd }>
                     <ElementPropertiesPanel
                         open={ isResourcePropertiesPanelOpen }
                         onComponentDelete={ handleComponentDelete }

@@ -8520,6 +8520,9 @@ importers:
       '@xyflow/react':
         specifier: ^12.3.2
         version: 12.4.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
+      '@xyflow/system':
+        specifier: ^0.0.52
+        version: 0.0.52
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
@@ -13714,6 +13717,9 @@ importers:
       '@xyflow/react':
         specifier: ^12.3.2
         version: 12.4.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
+      '@xyflow/system':
+        specifier: ^0.0.52
+        version: 0.0.52
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
@@ -32314,6 +32320,18 @@ packages:
 
   /@xyflow/system@0.0.50:
     resolution: {integrity: sha512-HVUZd4LlY88XAaldFh2nwVxDOcdIBxGpQ5txzwfJPf+CAjj2BfYug1fHs2p4yS7YO8H6A3EFJQovBE8YuHkAdg==}
+    dependencies:
+      '@types/d3-drag': 3.0.7
+      '@types/d3-selection': 3.0.11
+      '@types/d3-transition': 3.0.9
+      '@types/d3-zoom': 3.0.8
+      d3-drag: 3.0.0
+      d3-selection: 3.0.0
+      d3-zoom: 3.0.0
+    dev: false
+
+  /@xyflow/system@0.0.52:
+    resolution: {integrity: sha512-pJBMaoh/GEebIABWEIxAai0yf57dm+kH7J/Br+LnLFPuJL87Fhcmm4KFWd/bCUy/kCWUg+2/yFAGY0AUHRPOnQ==}
     dependencies:
       '@types/d3-drag': 3.0.7
       '@types/d3-selection': 3.0.11
