@@ -17,55 +17,60 @@
  */
 
 import Avatar from "@oxygen-ui/react/Avatar";
+import Box from "@oxygen-ui/react/Box";
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
+import IconButton from "@oxygen-ui/react/IconButton";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
+import { PlusIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
-import { SupportedCanvasResources } from "../../models/visual-flow";
-import Draggable from "../dnd/draggable";
-import "./resource-panel-draggable-node.scss";
+import { Resource } from "../../models/resources";
+import "./resource-panel-item.scss";
 
 /**
- * Props interface of {@link ResourcePanelDraggableNode}
+ * Props interface of {@link ResourcePanelItem}
  */
-export interface ResourcePanelDraggableNodePropsInterface
+export interface ResourcePanelItemProps
     extends IdentifiableComponentInterface,
         Omit<HTMLAttributes<HTMLDivElement>, "resource"> {
     /**
-     * The resource node that is being dragged.
+     * The resource item.
      */
-    resource: SupportedCanvasResources;
+    resource: Resource;
+    /**
+     * The type of the resource item.
+     */
+    type?: "draggable" | "static";
+    /**
+     * Callback to be triggered when a resource add button is clicked.
+     * @param resource - Added resource.
+     */
+    onAdd?: (resource: Resource) => void;
 }
 
 /**
- * Draggable node for the resource panel.
+ * Resource panel item component.
  *
  * @param props - Props injected to the component.
- * @returns The ResourcePanelDraggableNode component.
+ * @returns The ResourcePanelItem component.
  */
-const ResourcePanelDraggableNode: FunctionComponent<ResourcePanelDraggableNodePropsInterface> = ({
-    "data-componentid": componentId = "resource-panel-draggable-node",
-    id,
+const ResourcePanelItem: FunctionComponent<ResourcePanelItemProps> = ({
+    "data-componentid": componentId = "resource-panel-item",
     resource,
+    type = "static",
+    onAdd,
     ...rest
-}: ResourcePanelDraggableNodePropsInterface): ReactElement => (
-    <Draggable
-        id={ id }
-        data-componentid={ componentId }
-        data={ { dragged: resource } }
-        type={ resource.type }
-        accept={ [ resource.type ] }
-        { ...rest }
-    >
-        <Card className="flow-builder-element-panel-draggable-node" variant="elevation">
-            <CardContent>
+}: ResourcePanelItemProps): ReactElement => (
+    <Card className="flow-builder-element-panel-item" variant="elevation" data-componentid={ componentId } { ...rest }>
+        <CardContent>
+            <Box display="flex" justifyContent="space-between" alignItems="center" gap={ 1 }>
                 <Stack direction="row" spacing={ 1 }>
                     <Avatar
                         src={ resource?.display?.image }
                         variant="square"
-                        className="flow-builder-element-panel-draggable-node-avatar"
+                        className="flow-builder-element-panel-item-avatar"
                     />
                     <Stack direction="column" spacing={ 0.5 }>
                         <Typography>{ resource?.display?.label }</Typography>
@@ -74,9 +79,17 @@ const ResourcePanelDraggableNode: FunctionComponent<ResourcePanelDraggableNodePr
                         ) }
                     </Stack>
                 </Stack>
-            </CardContent>
-        </Card>
-    </Draggable>
+                { type === "static" && onAdd && (
+                    <IconButton
+                        className="flow-builder-element-panel-item-add-button"
+                        onClick={ () => onAdd(resource) }
+                    >
+                        <PlusIcon size={ 14 } />
+                    </IconButton>
+                ) }
+            </Box>
+        </CardContent>
+    </Card>
 );
 
-export default ResourcePanelDraggableNode;
+export default ResourcePanelItem;
