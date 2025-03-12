@@ -214,13 +214,13 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                             </Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { AITemplates.map((aiTemplate: Template, index: number) => (
-                                    <ResourcePanelDraggableNode
+                                    <ResourcePanelStatic
                                         id={ `${aiTemplate.resourceType}-${aiTemplate.type}-${index}` }
                                         key={ aiTemplate.type }
                                         resource={ aiTemplate }
                                     >
-                                        <AICard resource={ aiTemplate } />
-                                    </ResourcePanelDraggableNode>
+                                        <AICard resource={ aiTemplate } onAdd={ onAdd }/>
+                                    </ResourcePanelStatic>
                                 )) }
                                 { templates.map((template: Template, index: number) => (
                                     <ResourcePanelStatic

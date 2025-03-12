@@ -16,38 +16,59 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import { PlusIcon } from "@oxygen-ui/react-icons";
+import IconButton from "@oxygen-ui/react/IconButton";
 import Stack from "@mui/material/Stack";
+import Avatar from "@oxygen-ui/react/Avatar";
 import Typography from "@oxygen-ui/react/Typography";
 import React, { ReactElement } from "react";
 import "./ai-generation-modal.scss";
 import { Card, CardContent } from "semantic-ui-react";
 import AIText from "./ai-text";
 import AIBannerBackground from "../../themes/wso2is/assets/images/illustrations/ai-banner-background-white.svg";
+import "./ai-card.scss";
 
-const AICard = ({ resource }): ReactElement => {
+const AICard = ({ resource, onAdd }): ReactElement => {
     return (
         <Card
             style={ {
                 backgroundImage: `url(${ AIBannerBackground })`,
                 backgroundPostion: "right",
-                padding: "6px"
+                marginBottom: "0"
             } }
-            className="flow-builder-element-panel-draggable-node"
+            className="ai-card"
             variant="elevation"
         >
             <CardContent>
-                <Stack direction="row" spacing={ 1 }>
-                    <Stack direction="column" spacing={ 0.5 }>
-                        <Typography sx={ { fontWeight: "bold" } }>
-                            <AIText>
-                                { resource?.display?.label }
-                            </AIText>
-                        </Typography>
-                        { resource?.display?.description && (
-                            <Typography variant="body2">{ resource?.display?.description }</Typography>
+                <Box display="flex" justifyContent="space-between" alignItems="center" gap={ 1 }>
+                    <Stack direction="row" spacing={ 1 }>
+                        <Avatar
+                            className="ai-card-avatar"
+                            src={ resource?.display?.image }
+                            variant="square"
+                            sx={ { width: "20px", height: "20px", marginTop: "3px" } }
+                        />
+                        <Stack direction="column" spacing={ 0.5 }>
+                            <Typography sx={ { fontWeight: "bold" } }>
+                                <AIText>
+                                    { resource?.display?.label }
+                                </AIText>
+                            </Typography>
+                            { resource?.display?.description && (
+                                <Typography variant="body2">{ resource?.display?.description }</Typography>
+                            ) }
+                        </Stack>
+                        { onAdd && (
+                            <IconButton
+                                className="ai-card-add-button"
+                                onClick={ () => onAdd(resource) }
+                            >
+                                <PlusIcon size={ 14 } />
+                            </IconButton>
                         ) }
                     </Stack>
-                </Stack>
+                </Box>
             </CardContent>
         </Card>
     );

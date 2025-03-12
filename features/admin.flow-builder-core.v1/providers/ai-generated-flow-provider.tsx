@@ -37,8 +37,6 @@ const AIGeneratedFlowProvider = (props: PropsWithChildren<AIGeneratedFlowProvide
     const [ flowGenerationCompleted, setFlowGenerationCompleted ] = useState<boolean>(false);
     const [ promptHistory, setPromptHistory ] = useState<string[]>([]);
     const [ userPrompt, setUserPrompt ] = useState<string>("");
-    const [ nodes, setNodes ] = useState<any>([]);
-    const [ edges, setEdges ] = useState<any>([]);
 
     /**
      * Function to process the API response and generate the flow.
@@ -75,10 +73,6 @@ const AIGeneratedFlowProvider = (props: PropsWithChildren<AIGeneratedFlowProvide
                 setIsFlowGenerating,
                 setOperationId,
                 setUserPrompt,
-                setNodes,
-                setEdges,
-                nodes,
-                edges,
                 updatePromptHistory,
                 userPrompt
             } }

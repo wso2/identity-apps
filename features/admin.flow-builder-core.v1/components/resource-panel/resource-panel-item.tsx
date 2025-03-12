@@ -29,7 +29,6 @@ import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import { SupportedCanvasResources } from "../../models/visual-flow";
 import Draggable from "../dnd/draggable";
-import "./resource-panel-draggable-node.scss";
 import { Resource } from "../../models/resources";
 import "./resource-panel-item.scss";
 
@@ -71,21 +70,36 @@ const ResourcePanelItem: FunctionComponent<ResourcePanelItemProps> = ({
     <>
         {
             children || (
-                <Card className="flow-builder-element-panel-draggable-node" variant="elevation">
+                <Card
+                    className="flow-builder-element-panel-item"
+                    variant="elevation"
+                    data-componentid={ componentId }
+                    { ...rest }
+                >
                     <CardContent>
-                        <Stack direction="row" spacing={ 1 }>
-                            <Avatar
-                                src={ resource?.display?.image }
-                                variant="square"
-                                className="flow-builder-element-panel-draggable-node-avatar"
-                            />
-                            <Stack direction="column" spacing={ 0.5 }>
-                                <Typography>{ resource?.display?.label }</Typography>
-                                { resource?.display?.description && (
-                                    <Typography variant="body2">{ resource?.display?.description }</Typography>
-                                ) }
+                        <Box display="flex" justifyContent="space-between" alignItems="center" gap={ 1 }>
+                            <Stack direction="row" spacing={ 1 }>
+                                <Avatar
+                                    src={ resource?.display?.image }
+                                    variant="square"
+                                    className="flow-builder-element-panel-item-avatar"
+                                />
+                                <Stack direction="column" spacing={ 0.5 }>
+                                    <Typography>{ resource?.display?.label }</Typography>
+                                    { resource?.display?.description && (
+                                        <Typography variant="body2">{ resource?.display?.description }</Typography>
+                                    ) }
+                                </Stack>
                             </Stack>
-                        </Stack>
+                            { type === "static" && onAdd && (
+                                <IconButton
+                                    className="flow-builder-element-panel-item-add-button"
+                                    onClick={ () => onAdd(resource) }
+                                >
+                                    <PlusIcon size={ 14 } />
+                                </IconButton>
+                            ) }
+                        </Box>
                     </CardContent>
                 </Card>
             )
