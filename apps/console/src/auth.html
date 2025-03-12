@@ -291,8 +291,8 @@
                         // When there's no proxy context path, the IS server returns "null".
                         var contextPath = (!proxyContextPathGlobal || proxyContextPathGlobal === "null") ? "" : "/" + proxyContextPathGlobal;
 
-                        if (isCentralDeploymentEnabled && getTenantName() === startupConfig.superTenant) {
-                            return applicationDomain;
+                        if (isCentralDeploymentEnabled && (!getTenantName() || getTenantName() === startupConfig.superTenant)) {
+                            return applicationDomain.replace(/\/+$/, '');
                         }
 
                         if (getTenantName() === startupConfig.superTenant) {
