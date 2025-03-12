@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.44.1
+
+### Patch Changes
+
+- [#7841](https://github.com/wso2/identity-apps/pull/7841) [`50f8ade7fc4931517fd8f9263f471316b6b7c543`](https://github.com/wso2/identity-apps/commit/50f8ade7fc4931517fd8f9263f471316b6b7c543) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix central server redirection url issue
+
+* [#7831](https://github.com/wso2/identity-apps/pull/7831) [`57c8937653626be3a8f1e6b19ead521e1e7a5528`](https://github.com/wso2/identity-apps/commit/57c8937653626be3a8f1e6b19ead521e1e7a5528) Thanks [@brionmario](https://github.com/brionmario)! - Improve the Sign Up Composer
+
+* Updated dependencies [[`57c8937653626be3a8f1e6b19ead521e1e7a5528`](https://github.com/wso2/identity-apps/commit/57c8937653626be3a8f1e6b19ead521e1e7a5528)]:
+  - @wso2is/admin.server-configurations.v1@2.33.1
+
 ## 2.44.0
 
 ### Minor Changes

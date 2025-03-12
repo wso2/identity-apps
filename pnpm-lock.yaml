@@ -609,7 +609,7 @@ importers:
         specifier: ^2.25.203
         version: link:../../features/admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.33.0
+        specifier: ^2.33.1
         version: link:../../features/admin.server-configurations.v1
       '@wso2is/admin.session-management.v1':
         specifier: ^2.25.203
@@ -2870,7 +2870,7 @@ importers:
         specifier: ^2.25.203
         version: link:../admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.33.0
+        specifier: ^2.33.1
         version: link:../admin.server-configurations.v1
       '@wso2is/common.ui.v1':
         specifier: ^0.1.0
@@ -13700,13 +13700,13 @@ importers:
         specifier: ^1.4.203
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
-        specifier: ^0.2.0
+        specifier: ^0.2.1
         version: link:../admin.flow-builder-core.v1
       '@wso2is/admin.rules.v1':
         specifier: ^0.4.19
         version: link:../admin.rules.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.33.0
+        specifier: ^2.33.1
         version: link:../admin.server-configurations.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -16060,7 +16060,7 @@ importers:
         specifier: ^2.26.203
         version: link:../admin.organizations.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.33.0
+        specifier: ^2.33.1
         version: 'link:'
       '@wso2is/admin.users.v1':
         specifier: ^2.30.113
@@ -16304,7 +16304,7 @@ importers:
         specifier: ^6.5.0
         version: 6.5.0(eslint@8.46.0)(typescript@4.9.5)
       '@wso2is/admin.registration-flow-builder.v1':
-        specifier: ^0.2.0
+        specifier: ^0.2.1
         version: link:../admin.registration-flow-builder.v1
       connect-history-api-fallback:
         specifier: ^2.0.0
@@ -25706,6 +25706,7 @@ packages:
   /@mui/base@5.0.0-alpha.108(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-KjzRUts2i/ODlMfywhFTqTzQl+Cr9nlDSZxJcnYjrbOV/iRyQNBTDoiFJt+XEdRi0fZBHnk74AFbnP56ehybsA==}
     engines: {node: '>=12.0.0'}
+    deprecated: This package has been replaced by @base-ui-components/react
     peerDependencies:
       '@types/react': 18.0.18
       react: ^17.0.0 || ^18.0.0

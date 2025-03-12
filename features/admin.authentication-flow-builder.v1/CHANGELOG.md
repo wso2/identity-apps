@@ -1,5 +1,14 @@
 # @wso2is/admin.authentication-flow-builder.v1
 
+## 2.25.1
+
+### Patch Changes
+
+- [#7831](https://github.com/wso2/identity-apps/pull/7831) [`57c8937653626be3a8f1e6b19ead521e1e7a5528`](https://github.com/wso2/identity-apps/commit/57c8937653626be3a8f1e6b19ead521e1e7a5528) Thanks [@brionmario](https://github.com/brionmario)! - Improve the Sign Up Composer
+
+- Updated dependencies [[`57c8937653626be3a8f1e6b19ead521e1e7a5528`](https://github.com/wso2/identity-apps/commit/57c8937653626be3a8f1e6b19ead521e1e7a5528)]:
+  - @wso2is/admin.server-configurations.v1@2.33.1
+
 ## 2.25.0
 
 ### Minor Changes
