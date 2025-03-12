@@ -253,7 +253,7 @@
                                 "executor": {
                                     "name": "GoogleSignupExecutor",
                                     "meta": {
-                                        "idp": "{{IDP_NAME}}"
+                                        "idpName": "{{IDP_NAME}}"
                                     }
                                 },
                                 "next": "USER_ONBOARD"
