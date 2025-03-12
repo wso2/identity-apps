@@ -65,6 +65,7 @@ export interface DecoratedVisualFlowPropsInterface extends VisualFlowPropsInterf
         currentNodes: Node[],
         edges: Edge[]
     ) => [Node[], Edge[], Resource, string];
+    onStepLoad: (step: Step) => Step;
 }
 
 /**
@@ -82,6 +83,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     mutateComponents,
     onTemplateLoad,
     onWidgetLoad,
+    onStepLoad,
     ...rest
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
     const { screenToFlowPosition, updateNodeData } = useReactFlow();
@@ -115,13 +117,16 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             y: clientY
         });
 
-        const generatedStep: Node = {
+        let generatedStep: Step = {
             ...sourceResource,
             data: sourceResource?.data || {},
             deletable: true,
             id: generateResourceId(sourceResource.type.toLowerCase()),
             position
         };
+
+        // Decorate the step with any additional information
+        generatedStep = onStepLoad(generatedStep);
 
         setNodes((nodes: Node[]) => [ ...nodes, generatedStep ]);
 

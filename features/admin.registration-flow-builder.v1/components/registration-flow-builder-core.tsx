@@ -652,6 +652,23 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         return [ updatedNodes, newEdges, defaultPropertySector, defaultPropertySectorStepId ];
     };
 
+    const handleStepLoad = (step: Step): Step => {
+        // If the step is of type `VIEW` and has no components, set the default components.
+        if (step.type === StepTypes.View) {
+            if (isEmpty(step?.data?.components)) {
+                return {
+                    ...step,
+                    data: {
+                        ...step.data,
+                        components: defaultTemplateComponents
+                    }
+                };
+            }
+        }
+
+        return step;
+    };
+
     if (isRegistrationFlowFetchRequestLoading || isRegistrationFlowFetchRequestValidating) {
         return null;
     }
@@ -666,6 +683,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             mutateComponents={ handleMutateComponents }
             onTemplateLoad={ handleTemplateLoad }
             onWidgetLoad={ handleWidgetLoad }
+            onStepLoad={ handleStepLoad }
             { ...rest }
         />
     );
