@@ -58,8 +58,13 @@ export interface DecoratedVisualFlowPropsInterface extends VisualFlowPropsInterf
      * Callback to be fired when node data is updated.
      */
     mutateComponents: (components: Element[]) => Element[];
-    onTemplateLoad: (template: Template) => [ Node[], Edge[] ];
-    onWidgetLoad: (widget: Widget, targetResource: Resource, currentNodes: Node[], edges: Edge[]) => [Node[], Edge[]];
+    onTemplateLoad: (template: Template) => [Node[], Edge[]];
+    onWidgetLoad: (
+        widget: Widget,
+        targetResource: Resource,
+        currentNodes: Node[],
+        edges: Edge[]
+    ) => [Node[], Edge[], Resource, string];
 }
 
 /**
@@ -128,12 +133,20 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         const { stepId: targetStepId, droppedOn: targetResource } = targetData;
 
         if (sourceResource?.resourceType === ResourceTypes.Widget) {
-            const [ newNodes, newEdges ] = onWidgetLoad(sourceResource, targetResource, nodes, edges);
+            const [newNodes, newEdges, defaultPropertySector, defaultPropertySectorStepId] = onWidgetLoad(
+                sourceResource,
+                targetResource,
+                nodes,
+                edges
+            );
 
             setNodes(() => newNodes);
             setEdges(() => newEdges);
 
-            onResourceDropOnCanvas(sourceResource, targetStepId);
+            onResourceDropOnCanvas(
+                defaultPropertySector ?? sourceResource,
+                defaultPropertySectorStepId ?? targetStepId
+            );
 
             return;
         }

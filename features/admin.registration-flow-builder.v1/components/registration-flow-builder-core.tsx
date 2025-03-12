@@ -490,7 +490,10 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         const replacers = template?.config?.data?.__generationMeta__?.replacers;
 
-        const templateSteps = updateTemplatePlaceholderReferences(generateSteps(template.config.data.steps as any), replacers);
+        const [templateSteps] = updateTemplatePlaceholderReferences(
+            generateSteps(template.config.data.steps as any),
+            replacers
+        );
         const templateEdges = generateEdges(templateSteps as any);
 
         return [ templateSteps, templateEdges ];
@@ -528,11 +531,11 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     });
                 }
             }
-        }
+        };
 
         currentNodes.forEach(node => {
             if (!node.data) {
-                return
+                return;
             };
 
             if (node.data?.components) {
@@ -552,11 +555,11 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         targetResource: Resource,
         currentNodes: Node[],
         currentEdges: Edge[]
-    ): [Node[], Edge[]] => {
+    ): [Node[], Edge[], Resource, string] => {
         const widgetFlow = widget.config.data;
 
         if (!widgetFlow || !widgetFlow.steps) {
-            return [ currentNodes, currentEdges ];
+            return [ currentNodes, currentEdges, null, null ];
         }
 
         let newNodes: Node[] = cloneDeep(currentNodes);
@@ -591,11 +594,62 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         });
 
         const replacers = widgetFlow.__generationMeta__.replacers;
+        const defaultPropertySectorId: string = widgetFlow.__generationMeta__.defaultPropertySectorId;
+        let defaultPropertySectorStepId: string = null;
+        let defaultPropertySector: Resource = null;
 
-        newNodes = resolveStepMetadata(resources, updateTemplatePlaceholderReferences(generateIdsForResources(newNodes), replacers)) as Node[];
-        newEdges = [ ...newEdges, ...generateUnconnectedEdges(newEdges, newNodes) ];
+        newNodes = resolveStepMetadata(resources, generateIdsForResources(newNodes)) as Node[];
 
-        return [ newNodes, newEdges ];
+        // TODO: Improve this block perf.
+        newNodes.forEach((node: Node) => {
+            if (node.id === defaultPropertySectorId) {
+                defaultPropertySectorStepId = node.id;
+                defaultPropertySector = node as Resource;
+
+                return;
+            }
+
+            if (!isEmpty(node?.data?.components)) {
+                (node.data.components as Element[]).forEach((component: Element) => {
+                    if (component.id === defaultPropertySectorId) {
+                        defaultPropertySectorStepId = node.id;
+                        defaultPropertySector = component as Resource;
+
+                        return;
+                    }
+
+                    if (!isEmpty(component?.components)) {
+                        if (component.id === defaultPropertySectorId) {
+                            defaultPropertySectorStepId = node.id;
+                            defaultPropertySector = component as Resource;
+
+                            return;
+                        }
+                    }
+                });
+            }
+        });
+
+        const [ updatedNodes, replacedPlaceholders ] = updateTemplatePlaceholderReferences(
+            generateIdsForResources(newNodes),
+            replacers
+        );
+
+        newEdges = [ ...newEdges, ...generateUnconnectedEdges(newEdges, updatedNodes) ];
+
+        // Check if `defaultPropertySector.id` is in the `replacedPlaceholders`.
+        // If so, update them with the replaced value.
+        if (replacedPlaceholders.has(defaultPropertySector.id.replace(/[{}]/g, ""))) {
+            defaultPropertySector.id = replacedPlaceholders.get(defaultPropertySector.id.replace(/[{}]/g, ""));
+        }
+
+        // Check if `defaultPropertySectorStepId` is in the `replacedPlaceholders`.
+        // If so, update them with the replaced value.
+        if (replacedPlaceholders.has(defaultPropertySectorStepId.replace(/[{}]/g, ""))) {
+            defaultPropertySectorStepId = replacedPlaceholders.get(defaultPropertySectorStepId.replace(/[{}]/g, ""));
+        }
+
+        return [ updatedNodes, newEdges, defaultPropertySector, defaultPropertySectorStepId ];
     };
 
     if (isRegistrationFlowFetchRequestLoading || isRegistrationFlowFetchRequestValidating) {
