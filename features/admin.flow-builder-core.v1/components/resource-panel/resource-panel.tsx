@@ -28,9 +28,10 @@ import { ChevronRightIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps } from "react";
-import ResourcePanelDraggableNode from "./resource-panel-draggable-node";
+import ResourcePanelDraggable from "./resource-panel-draggable";
+import ResourcePanelStatic from "./resource-panel-static";
 import { Element } from "../../models/elements";
-import { Resources } from "../../models/resources";
+import { Resource, Resources } from "../../models/resources";
 import { Step } from "../../models/steps";
 import { Template } from "../../models/templates";
 import { Widget } from "../../models/widget";
@@ -47,6 +48,11 @@ export interface ResourcePanelPropsInterface
      * Flow resources.
      */
     resources: Resources;
+    /**
+     * Callback to be triggered when a resource add button is clicked.
+     * @param resource - Added resource.
+     */
+    onAdd: (resource: Resource) => void;
 }
 
 // TODO: Move this to Oxygen UI.
@@ -125,6 +131,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
     children,
     open,
     resources,
+    onAdd,
     ...rest
 }: ResourcePanelPropsInterface): ReactElement => {
     const {
@@ -204,10 +211,11 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                             </Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { templates.map((template: Template, index: number) => (
-                                    <ResourcePanelDraggableNode
+                                    <ResourcePanelStatic
                                         id={ `${template.resourceType}-${template.type}-${index}` }
                                         key={ template.type }
                                         resource={ template }
+                                        onAdd={ onAdd }
                                     />
                                 )) }
                             </Stack>
@@ -231,7 +239,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                             </Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { widgets.map((widget: Widget, index: number) => (
-                                    <ResourcePanelDraggableNode
+                                    <ResourcePanelDraggable
                                         id={ `${widget.resourceType}-${widget.type}-${index}` }
                                         key={ widget.type }
                                         resource={ widget }
@@ -256,7 +264,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                             <Typography variant="body2">Use these as steps in your flow</Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { steps.map((step: Step, index: number) => (
-                                    <ResourcePanelDraggableNode
+                                    <ResourcePanelDraggable
                                         id={ `${step.resourceType}-${step.type}-${index}` }
                                         key={ step.type }
                                         resource={ step }
@@ -281,7 +289,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                             <Typography variant="body2">Use these components to build up your vies</Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { elements.map((element: Element, index: number) => (
-                                    <ResourcePanelDraggableNode
+                                    <ResourcePanelDraggable
                                         id={ `${element.resourceType}-${element.type}-${index}` }
                                         key={ element.type }
                                         resource={ element }

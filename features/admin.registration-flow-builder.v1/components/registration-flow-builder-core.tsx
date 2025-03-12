@@ -168,6 +168,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 animated: false,
                 id: `${INITIAL_FLOW_START_STEP_ID}-${firstStep.id}`,
                 source: INITIAL_FLOW_START_STEP_ID,
+                sourceHandle: `${ INITIAL_FLOW_START_STEP_ID }${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                 target: firstStep.id,
                 type: "base-edge"
             });
@@ -260,6 +261,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         animated: false,
                         id: `${step.id}-to-${step.data.action.next}`,
                         source: step.id,
+                        sourceHandle: `${step.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                         target: step.data.action.next,
                         type: "base-edge"
                     });
@@ -275,6 +277,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         animated: false,
                         id: `${step.id}-to-${userOnboardStepId}`,
                         source: step.id,
+                        sourceHandle: `${step.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                         target: userOnboardStepId,
                         type: "base-edge"
                     });
@@ -378,6 +381,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 animated: false,
                 id: `${INITIAL_FLOW_START_STEP_ID}-${INITIAL_FLOW_VIEW_STEP_ID}`,
                 source: INITIAL_FLOW_START_STEP_ID,
+                sourceHandle: `${ INITIAL_FLOW_START_STEP_ID }${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                 target: INITIAL_FLOW_VIEW_STEP_ID,
                 type: "base-edge"
             },
@@ -490,7 +494,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         const replacers = template?.config?.data?.__generationMeta__?.replacers;
 
-        const [templateSteps] = updateTemplatePlaceholderReferences(
+        const [ templateSteps ] = updateTemplatePlaceholderReferences(
             generateSteps(template.config.data.steps as any),
             replacers
         );
@@ -598,7 +602,26 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         let defaultPropertySectorStepId: string = null;
         let defaultPropertySelector: Resource = null;
 
-        newNodes = resolveStepMetadata(resources, generateIdsForResources(newNodes)) as Node[];
+        // Resolve step & component metadata.
+        newNodes = resolveStepMetadata(
+            resources,
+            generateIdsForResources<Node[]>(
+                newNodes.map((step: Node) => {
+                    return {
+                        data:
+                            (step.data?.components && {
+                                ...step.data,
+                                components: resolveComponentMetadata(resources, (step.data as any).components)
+                            }) ||
+                            step.data,
+                        deletable: true,
+                        id: step.id,
+                        position: step.position,
+                        type: step.type
+                    };
+                })
+            ) as Step[]
+        ) as Node[];
 
         // TODO: Improve this block perf.
         newNodes.forEach((node: Node) => {

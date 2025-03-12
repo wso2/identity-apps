@@ -15,19 +15,41 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+ 
+:root {
+    --wso2is-flow-builder-resource-panel-static-item-add-button-size: 35px;
+}
 
-.flow-builder-element-panel-draggable-node {
+.flow-builder-element-panel-item {
     // TODO: `@oxygen-ui/react/Card` declares a default padding which is a bug.
     // Remove this once it is handled.
     // Tracker: https://github.com/wso2/oxygen-ui/issues/300
     padding: 0;
+    
+    &.draggable {
+        cursor: grab;
+    }
 
     .oxygen-card-content:last-child {
         padding-bottom: var(--oxygen-spacing-2);
     }
 
-    .flow-builder-element-panel-draggable-node-avatar {
+    .flow-builder-element-panel-item-avatar {
         width: 20px;
         height: 20px;
+    }
+    
+    .flow-builder-element-panel-item-add-button {
+        height: var(--wso2is-flow-builder-resource-panel-static-item-add-button-size);
+        width: var(--wso2is-flow-builder-resource-panel-static-item-add-button-size);
+        border: 1px solid var(--oxygen-palette-divider);
+        border-radius: var(--oxygen-shape-borderRadius);
+        background: var(--oxygen-palette-grey-100);
+        
+        .MuiTouchRipple-root {
+            * {
+                border-radius: var(--oxygen-shape-borderRadius);
+            }
+        }
     }
 }

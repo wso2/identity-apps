@@ -18,8 +18,10 @@
 
 import Fab from "@oxygen-ui/react/Fab";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Handle, Node, Position } from "@xyflow/react";
+import { Handle, Position } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
+import VisualFlowConstants from "../../../../constants/visual-flow-constants";
+import { StaticStepTypes } from "../../../../models/steps";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 import "./start.scss";
 
@@ -51,7 +53,12 @@ const Start: FunctionComponent = ({
             >
                 Start
             </Fab>
-            <Handle className="hidden-handle" id="targetLeft" type="source" position={ Position.Right } />
+            <Handle
+                className="hidden-handle"
+                id={ `${StaticStepTypes.Start.toLowerCase()}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
+                type="source"
+                position={ Position.Right }
+            />
         </div>
     );
 };

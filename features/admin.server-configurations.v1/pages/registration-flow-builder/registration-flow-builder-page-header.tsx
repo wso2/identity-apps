@@ -57,7 +57,7 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
                 <IconButton onClick={ () => history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION")) }>
                     <ArrowLeftIcon />
                 </IconButton>
-                <Breadcrumbs aria-label="breadcrumb">
+                <Breadcrumbs aria-label="breadcrumb" className="registration-flow-builder-page-header-breadcrumbs">
                     <Link
                         underline="hover"
                         color="inherit"
