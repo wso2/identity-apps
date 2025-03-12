@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.feature-gate.v1",
-    "version": "1.4.203",
+    "version": "1.4.204",
     "description": "Access control management for admin level features.",
     "author": "WSO2",
     "license": "Apache-2.0",
