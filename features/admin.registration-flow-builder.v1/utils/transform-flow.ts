@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { Node } from "@xyflow/react";
-import cloneDeep from "lodash-es/cloneDeep";
-import omit from "lodash-es/omit";
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import { ActionTypes } from "@wso2is/admin.flow-builder-core.v1/models/actions";
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { StaticStepTypes, Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { Node } from "@xyflow/react";
+import cloneDeep from "lodash-es/cloneDeep";
+import omit from "lodash-es/omit";
 
 const DISPLAY_ONLY_COMPONENT_PROPERTIES: string[] = [
     "display",
