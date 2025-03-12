@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.45.0
+
+### Minor Changes
+
+- [#7860](https://github.com/wso2/identity-apps/pull/7860) [`e5b7cc7cf729ffadc7685c04cdd3adee03e069a4`](https://github.com/wso2/identity-apps/commit/e5b7cc7cf729ffadc7685c04cdd3adee03e069a4) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add preview feature enable/disable option to console.
+
 ## 2.44.4
 
 ### Patch Changes
