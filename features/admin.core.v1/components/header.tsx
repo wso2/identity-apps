@@ -457,8 +457,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                         ),
                         <Show featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                             <Show
-                              when={ loginAndRegistrationFeatureConfig?.scopes?.update }
-                              featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
+                                when={ loginAndRegistrationFeatureConfig?.scopes?.update }
+                                featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
                             >
                                 <MenuItem onClick={ handleFeaturePreviewMenuClick }>
                                     <ListItemIcon>
