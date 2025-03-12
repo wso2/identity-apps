@@ -36,7 +36,7 @@ import {
 import { UpdateNodeInternals } from "@xyflow/system";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
-import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useState, useCallback } from "react";
+import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useCallback, useEffect } from "react";
 import VisualFlow, { VisualFlowPropsInterface } from "./visual-flow";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
@@ -49,7 +49,6 @@ import { Widget } from "../../models/widget";
 import generateResourceId from "../../utils/generate-resource-id";
 import ResourcePanel from "../resource-panel/resource-panel";
 import ElementPropertiesPanel from "../resource-property-panel/resource-property-panel";
-import AIGenerationModal from "../resources/ai-generation-modal";
 
 /**
  * Props interface of {@link DecoratedVisualFlow}
@@ -69,6 +68,7 @@ export interface DecoratedVisualFlowPropsInterface extends VisualFlowPropsInterf
     onStepLoad: (step: Step) => Step;
     setNodes: Dispatch<SetStateAction<Node[]>>;
     setEdges: Dispatch<SetStateAction<Edge[]>>;
+    aiGeneratedFlow: any;
 }
 
 /**
@@ -79,6 +79,7 @@ export interface DecoratedVisualFlowPropsInterface extends VisualFlowPropsInterf
  */
 const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-editor",
+    aiGeneratedFlow,
     resources,
     initialNodes = [],
     initialEdges = [],
@@ -96,8 +97,6 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     ...rest
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
 
-    const [ showAIGenerationModal, setShowAIGenerationModal ] = useState(false);
-
     const { screenToFlowPosition, updateNodeData } = useReactFlow();
     const { generateStepElement } = useGenerateStepElement();
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
@@ -107,6 +106,17 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         isResourcePropertiesPanelOpen,
         onResourceDropOnCanvas
     } = useAuthenticationFlowBuilderCore();
+
+    useEffect(() => {
+        if (aiGeneratedFlow) {
+            const [ newNodes, newEdges ] = onTemplateLoad(aiGeneratedFlow);
+
+            setNodes(() => newNodes);
+            setEdges(() => newEdges);
+
+            onResourceDropOnCanvas(aiGeneratedFlow, null);
+        }
+    }, [ aiGeneratedFlow ]);
 
     const addCanvasNode = (event, sourceData, targetData): void => {
         const { dragged: sourceResource } = sourceData;
@@ -373,14 +383,6 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                     </ElementPropertiesPanel>
                 </ResourcePanel>
             </DragDropProvider>
-            {
-                showAIGenerationModal && (
-                    <AIGenerationModal
-                        open={ showAIGenerationModal }
-                        handleModalClose={ () => setShowAIGenerationModal(false) }
-                    />
-                )
-            }
         </div>
     );
 };
