@@ -204,7 +204,7 @@
         "config": {
             "data": {
                 "__generationMeta__": {
-                    "defaultPropertySectorId": "{{GOOGLE_REDIRECTION_STEP_ID}}",
+                    "defaultPropertySelectorId": "{{GOOGLE_REDIRECTION_STEP_ID}}",
                     "replacers": [
                         {
                             "key": "GOOGLE_REDIRECTION_STEP_ID",

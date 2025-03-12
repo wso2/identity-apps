@@ -594,34 +594,34 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         });
 
         const replacers = widgetFlow.__generationMeta__.replacers;
-        const defaultPropertySectorId: string = widgetFlow.__generationMeta__.defaultPropertySectorId;
+        const defaultPropertySelectorId: string = widgetFlow.__generationMeta__.defaultPropertySelectorId;
         let defaultPropertySectorStepId: string = null;
-        let defaultPropertySector: Resource = null;
+        let defaultPropertySelector: Resource = null;
 
         newNodes = resolveStepMetadata(resources, generateIdsForResources(newNodes)) as Node[];
 
         // TODO: Improve this block perf.
         newNodes.forEach((node: Node) => {
-            if (node.id === defaultPropertySectorId) {
+            if (node.id === defaultPropertySelectorId) {
                 defaultPropertySectorStepId = node.id;
-                defaultPropertySector = node as Resource;
+                defaultPropertySelector = node as Resource;
 
                 return;
             }
 
             if (!isEmpty(node?.data?.components)) {
                 (node.data.components as Element[]).forEach((component: Element) => {
-                    if (component.id === defaultPropertySectorId) {
+                    if (component.id === defaultPropertySelectorId) {
                         defaultPropertySectorStepId = node.id;
-                        defaultPropertySector = component as Resource;
+                        defaultPropertySelector = component as Resource;
 
                         return;
                     }
 
                     if (!isEmpty(component?.components)) {
-                        if (component.id === defaultPropertySectorId) {
+                        if (component.id === defaultPropertySelectorId) {
                             defaultPropertySectorStepId = node.id;
-                            defaultPropertySector = component as Resource;
+                            defaultPropertySelector = component as Resource;
 
                             return;
                         }
@@ -637,10 +637,10 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         newEdges = [ ...newEdges, ...generateUnconnectedEdges(newEdges, updatedNodes) ];
 
-        // Check if `defaultPropertySector.id` is in the `replacedPlaceholders`.
+        // Check if `defaultPropertySelector.id` is in the `replacedPlaceholders`.
         // If so, update them with the replaced value.
-        if (replacedPlaceholders.has(defaultPropertySector?.id?.replace(/[{}]/g, ""))) {
-            defaultPropertySector.id = replacedPlaceholders.get(defaultPropertySector.id.replace(/[{}]/g, ""));
+        if (replacedPlaceholders.has(defaultPropertySelector?.id?.replace(/[{}]/g, ""))) {
+            defaultPropertySelector.id = replacedPlaceholders.get(defaultPropertySelector.id.replace(/[{}]/g, ""));
         }
 
         // Check if `defaultPropertySectorStepId` is in the `replacedPlaceholders`.
@@ -649,7 +649,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             defaultPropertySectorStepId = replacedPlaceholders.get(defaultPropertySectorStepId.replace(/[{}]/g, ""));
         }
 
-        return [ updatedNodes, newEdges, defaultPropertySector, defaultPropertySectorStepId ];
+        return [ updatedNodes, newEdges, defaultPropertySelector, defaultPropertySectorStepId ];
     };
 
     const handleStepLoad = (step: Step): Step => {

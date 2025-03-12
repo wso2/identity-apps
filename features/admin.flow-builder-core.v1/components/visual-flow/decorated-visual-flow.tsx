@@ -138,7 +138,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         const { stepId: targetStepId, droppedOn: targetResource } = targetData;
 
         if (sourceResource?.resourceType === ResourceTypes.Widget) {
-            const [newNodes, newEdges, defaultPropertySector, defaultPropertySectorStepId] = onWidgetLoad(
+            const [ newNodes, newEdges, defaultPropertySelector, defaultPropertySectorStepId ] = onWidgetLoad(
                 sourceResource,
                 targetResource,
                 nodes,
@@ -149,7 +149,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             setEdges(() => newEdges);
 
             onResourceDropOnCanvas(
-                defaultPropertySector ?? sourceResource,
+                defaultPropertySelector ?? sourceResource,
                 defaultPropertySectorStepId ?? targetStepId
             );
 
