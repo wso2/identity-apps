@@ -19,7 +19,7 @@
 import { Node } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";
 import omit from "lodash-es/omit";
-import ButtonAdapterConstants from "@wso2is/admin.flow-builder-core.v1/constants/button-adapter-constants";
+import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import { ActionTypes } from "@wso2is/admin.flow-builder-core.v1/models/actions";
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { StaticStepTypes, Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
@@ -73,8 +73,8 @@ const transformFlow = (flowState: any) => {
     flowEdges.forEach((edge: any) => {
         stepNavigationMap[
             edge.sourceHandle
-                ?.replace(ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX, "")
-                ?.replace(ButtonAdapterConstants.PREVIOUS_BUTTON_HANDLE_SUFFIX, "")
+                ?.replace(VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX, "")
+                ?.replace(VisualFlowConstants.FLOW_BUILDER_PREVIOUS_HANDLE_SUFFIX, "")
         ] = edge.target;
     });
 

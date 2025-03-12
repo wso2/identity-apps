@@ -18,7 +18,7 @@
 
 :root {
     --wso2is-flow-builder-element-panel-background: #f4f4f4;
-    --wso2is-flow-builder--starter-templates-background: linear-gradient(92deg, #FFF3E6 1.5%, #FAF9F8 59.25%);
+    --wso2is-flow-builder--starter-templates-background: var(--oxygen-palette-grey-200);
     --wso2is-flow-builder-element-panel-width: 350px;
     --wso2is-flow-builder-element-panel-mini-width: 350px;
 }
@@ -28,7 +28,6 @@
         position: absolute;
         width: var(--wso2is-flow-builder-element-panel-width);
         background: var(--wso2is-flow-builder-element-panel-background);
-        box-shadow: 8px 0 18px 0 rgba(0, 0, 0, 0.06);
         border-right: 1px solid #E8E8E8;
         border-left: 1px solid #E8E8E8;
     }

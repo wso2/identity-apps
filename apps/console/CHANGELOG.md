@@ -1,5 +1,43 @@
 # @wso2is/console
 
+## 2.44.1
+
+### Patch Changes
+
+- [#7841](https://github.com/wso2/identity-apps/pull/7841) [`50f8ade7fc4931517fd8f9263f471316b6b7c543`](https://github.com/wso2/identity-apps/commit/50f8ade7fc4931517fd8f9263f471316b6b7c543) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix central server redirection url issue
+
+* [#7831](https://github.com/wso2/identity-apps/pull/7831) [`57c8937653626be3a8f1e6b19ead521e1e7a5528`](https://github.com/wso2/identity-apps/commit/57c8937653626be3a8f1e6b19ead521e1e7a5528) Thanks [@brionmario](https://github.com/brionmario)! - Improve the Sign Up Composer
+
+* Updated dependencies [[`57c8937653626be3a8f1e6b19ead521e1e7a5528`](https://github.com/wso2/identity-apps/commit/57c8937653626be3a8f1e6b19ead521e1e7a5528)]:
+  - @wso2is/admin.server-configurations.v1@2.33.1
+
+## 2.44.0
+
+### Minor Changes
+
+- [#7653](https://github.com/wso2/identity-apps/pull/7653) [`a8ab43d1fb107db42ebcb9b4c894a6caa3368fe9`](https://github.com/wso2/identity-apps/commit/a8ab43d1fb107db42ebcb9b4c894a6caa3368fe9) Thanks [@brionmario](https://github.com/brionmario)! - - Refactor `UserPreferencesProvider` and move it to a new `common.ui.v1` package.
+  - Refactor the existing usages.
+  - Persist the side panel state in the local storage.
+  - https://github.com/wso2/product-is/issues/19315
+  - Close the Navbar when a fresh user tries out the new Self Sign Up composer.
+
+### Patch Changes
+
+- Updated dependencies [[`a8ab43d1fb107db42ebcb9b4c894a6caa3368fe9`](https://github.com/wso2/identity-apps/commit/a8ab43d1fb107db42ebcb9b4c894a6caa3368fe9)]:
+  - @wso2is/admin.server-configurations.v1@2.33.0
+  - @wso2is/admin.core.v1@2.41.0
+  - @wso2is/common.ui.v1@0.1.0
+
+## 2.43.2
+
+### Patch Changes
+
+- [#7817](https://github.com/wso2/identity-apps/pull/7817) [`7844c2db96d56c30c352e9287b2f4d5ad75212ce`](https://github.com/wso2/identity-apps/commit/7844c2db96d56c30c352e9287b2f4d5ad75212ce) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add resources for LinkedIn connection
+
+- Updated dependencies [[`7844c2db96d56c30c352e9287b2f4d5ad75212ce`](https://github.com/wso2/identity-apps/commit/7844c2db96d56c30c352e9287b2f4d5ad75212ce)]:
+  - @wso2is/admin.connections.v1@2.33.88
+  - @wso2is/theme@2.6.12
+
 ## 2.43.1
 
 ### Patch Changes

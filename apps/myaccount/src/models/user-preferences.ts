@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import {
+    UserPreferencesInterface as CommonUserPreferencesInterface
+} from "@wso2is/common.ui.v1/models/user-preferences";
+
 /**
- * Interface for user preferences.
+ * Interface for user preferences for the My Account.
+ * @remarks This extends the common user preferences interface from the common package.
  */
-export interface UserPreferencesInterface {
-    /**
-     * The preferred strategy for login flow configuration
-     */
-    preferredAuthenticationFlowBuilderMode: string;
-}
+export type UserPreferencesInterface = CommonUserPreferencesInterface;

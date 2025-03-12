@@ -16,17 +16,25 @@
  * under the License.
  */
 
-import { ActionTypes } from "../models/actions";
+declare module "*.json" {
+    const value: any;
 
-class ButtonAdapterConstants {
-    /**
-     * Private constructor to avoid object instantiation from outside
-     * the class.
-     */
-    private constructor() { }
-
-    public static readonly NEXT_BUTTON_HANDLE_SUFFIX: string = `_${ ActionTypes.Next }`;
-    public static readonly PREVIOUS_BUTTON_HANDLE_SUFFIX: string = `_${ ActionTypes.Previous }`;
+    export default value;
 }
 
-export default ButtonAdapterConstants;
+declare module "*.svg" {
+    import React = require("react");
+
+    export const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    const src: string;
+
+    export default src;
+}
+
+declare module "*.png" {
+    const content: string;
+
+    export default content;
+}
+
+declare module "*.md";

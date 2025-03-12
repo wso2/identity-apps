@@ -42,7 +42,7 @@
                 "action": {
                     "type": "EXECUTOR",
                     "executor": {
-                        "name": "EmailOTPVerifier"
+                        "name": "EmailOTPExecutor"
                     }
                 },
                 "display": {

@@ -18,7 +18,7 @@
 
 import DeploymentConfigProvider from "@wso2is/admin.core.v1/providers/deployment-config-provider";
 import ResourceEndpointsProvider from "@wso2is/admin.core.v1/providers/resource-enpoints-provider";
-import UserPreferencesProvider from "@wso2is/admin.core.v1/providers/user-preferences-provider";
+import UserPreferencesProvider from "@wso2is/common.ui.v1/providers/user-preferences-provider";
 import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
@@ -39,7 +39,7 @@ describe.skip("PredefinedFlowsSidePanel", () => {
         render(
             <ResourceEndpointsProvider>
                 <DeploymentConfigProvider>
-                    <UserPreferencesProvider>
+                    <UserPreferencesProvider userId="">
                         <AuthenticationFlowProvider
                             application={ {
                                 name: "Sample App"

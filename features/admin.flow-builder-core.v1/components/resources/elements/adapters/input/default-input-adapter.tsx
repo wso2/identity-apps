@@ -53,6 +53,7 @@ export const DefaultInputAdapter: FunctionComponent<DefaultInputAdapterPropsInte
         } }
         type={ resource.config?.type }
         style={ resource.config?.styles }
+        autoComplete={ resource.config?.type === "password" ? "new-password" : "off" }
     />
 );
 

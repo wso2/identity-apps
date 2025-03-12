@@ -38,6 +38,7 @@ import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
 import {
     AlertInterface,
     AnnouncementBannerInterface,
@@ -57,8 +58,7 @@ import {
     EmptyPlaceholder,
     ErrorBoundary,
     GenericIcon,
-    LinkButton,
-    useMediaContext
+    LinkButton
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
@@ -95,7 +95,10 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
     const { location } = props;
 
     const dispatch: ThunkDispatch<AppState, void, Action> = useDispatch();
+
     const { t } = useTranslation();
+
+    const { setPreferences, leftNavbarCollapsed } = useUserPreferences();
 
     const isMarketingConsentBannerEnabled: boolean = useSelector((state: AppState) => {
         return state?.config?.ui?.isMarketingConsentBannerEnabled;
@@ -132,12 +135,6 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
         RouteInterface | ChildRouteInterface
     >(getAppViewRoutes()[ 0 ]);
 
-    const { isMobileViewport } = useMediaContext();
-
-    const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<
-        boolean
-    >(false);
-
     const organizationLoading: boolean = useSelector(
         (state: AppState) => state?.organization?.getOrganizationLoading
     );
@@ -159,13 +156,6 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
     }, [ developFilteredRoutes ]);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
-
-    /**
-     * Collapse Navbar for Mobile screens.
-     */
-    useEffect(() => {
-        isMobileViewport ? setMobileSidePanelVisibility(false) : setMobileSidePanelVisibility(true);
-    }, [ isMobileViewport ]);
 
     useEffect(() => {
         if (!location?.pathname) {
@@ -201,7 +191,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
      * Callback for side panel hamburger click.
      */
     const handleSidePanelToggleClick = (): void => {
-        setMobileSidePanelVisibility(!mobileSidePanelVisibility);
+        setPreferences({ leftNavbarCollapsed: !leftNavbarCollapsed });
     };
 
     /**
@@ -437,7 +427,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                             !organizationLoading ? generateNavbarItems() : []
                         }
                         fill={ "solid" }
-                        open={ mobileSidePanelVisibility }
+                        open={ !leftNavbarCollapsed as boolean }
                         collapsible={ false }
                     />)
                 }

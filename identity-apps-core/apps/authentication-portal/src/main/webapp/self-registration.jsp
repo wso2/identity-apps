@@ -21,6 +21,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.nio.file.Files, java.nio.file.Paths, java.io.IOException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.SelfRegistrationMgtClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
@@ -33,6 +34,16 @@
 <%-- Data for the layout from the page --%>
 <%
     layoutData.put("containerSize", "medium");
+%>
+
+<%
+    String myaccountUrl = application.getInitParameter("MyAccountURL");
+    if (StringUtils.isNotEmpty(myaccountUrl)) {
+        myaccountUrl = myaccountUrl + "/t/" + tenantDomain;
+    } else {
+        myaccountUrl = IdentityManagementEndpointUtil.getUserPortalUrl(
+            application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
+    }
 %>
 
 <%
@@ -131,17 +142,20 @@
             const { DynamicContent, I18nProvider } = ReactUICore;
 
             const Content = () => {
+                const baseUrl = "<%= identityServerEndpointContextParam %>";
+                const defaultMyAccountUrl = "<%= myaccountUrl %>";
+                const apiUrl = baseUrl + "${pageContext.request.contextPath}/util/self-registration-api.jsp";
+                const code = "<%= code != null ? code : null %>";
+                
+                const locale = "en-US";
+                const translations = <%= translationsJson %>;
+                
                 const [ flowData, setFlowData ] = useState(null);
                 const [ components, setComponents ] = useState([]);
                 const [ loading, setLoading ] = useState(true);
                 const [ error, setError ] = useState(null);
                 const [ postBody, setPostBody ] = useState(undefined);
 
-                const apiUrl = "${pageContext.request.contextPath}/util/self-registration-api.jsp";
-                const locale = "en-US";
-                
-                const translations = <%= translationsJson %>;
-                const code = "<%= code != null ? code : null %>";
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
@@ -149,7 +163,7 @@
                     if (code !== "null") {
                         setPostBody({
                             flowId: savedFlowId,
-                            action: "GoogleOIDCAuthenticator",
+                            actionId: "GoogleOIDCAuthenticator",
                             inputs: { code }
                         });
                     }
@@ -179,6 +193,12 @@
                         return response.json();
                     })
                     .then((data) => {
+                        if (data.error) {
+                            setError(data.error);
+
+                            return;
+                        }
+
                         if (data.flowId) {
                             localStorage.setItem("flowId", data.flowId);
                         }
@@ -212,7 +232,12 @@
                             
                         case "COMPLETE":
                             localStorage.clear();
-                            window.location.href = flow.data.url;
+
+                            if (flow.data.url !== null) {
+                                window.location.href = flow.data.url;
+                            }
+
+                            window.location.href = defaultMyAccountUrl;
                             return true;
 
                         default:
@@ -234,7 +259,11 @@
                 };
 
                 if (error) {
-                    return createElement("div", null, `Error: ${error.message}`);
+                    return createElement(
+                        "div",
+                        { className: "ui visible negative message" },
+                        "An Error occurred while processing the registration flow. Please try again later."
+                    );
                 }
 
                 if (loading || (!components || components.length === 0)) {
@@ -254,10 +283,10 @@
                     createElement(
                         DynamicContent, {
                             elements: components,
-                            handleRequestBody: (action, formValues) => {
+                            handleFlowRequest: (actionId, formValues) => {
                                 setPostBody({
                                     flowId: flowData.flowId,
-                                    action,
+                                    actionId,
                                     inputs: formValues
                                 });
                             }

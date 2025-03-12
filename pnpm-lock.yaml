@@ -531,13 +531,13 @@ importers:
         specifier: ^2.27.113
         version: link:../../features/admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.33.87
+        specifier: ^2.33.88
         version: link:../../features/admin.connections.v1
       '@wso2is/admin.console-settings.v1':
         specifier: ^2.25.203
         version: link:../../features/admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.40.7
+        specifier: ^2.41.0
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.203
@@ -609,7 +609,7 @@ importers:
         specifier: ^2.25.203
         version: link:../../features/admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.32.128
+        specifier: ^2.33.1
         version: link:../../features/admin.server-configurations.v1
       '@wso2is/admin.session-management.v1':
         specifier: ^2.25.203
@@ -647,6 +647,9 @@ importers:
       '@wso2is/admin.wsfed-configuration.v1':
         specifier: ^2.25.203
         version: link:../../features/admin.wsfed-configuration.v1
+      '@wso2is/common.ui.v1':
+        specifier: ^0.1.0
+        version: link:../../features/common.ui.v1
       '@wso2is/core':
         specifier: ^2.7.0
         version: link:../../modules/core
@@ -666,7 +669,7 @@ importers:
         specifier: ^2.9.12
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.6.11
+        specifier: ^2.6.12
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.4.1
@@ -963,6 +966,9 @@ importers:
       '@wso2is/common.branding.v1':
         specifier: ^2.26.60
         version: link:../../features/common.branding.v1
+      '@wso2is/common.ui.v1':
+        specifier: ^0.1.0
+        version: link:../../features/common.ui.v1
       '@wso2is/core':
         specifier: ^2.7.0
         version: link:../../modules/core
@@ -2846,7 +2852,7 @@ importers:
         specifier: ^2.33.87
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.40.6
+        specifier: ^2.41.0
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.36.128
@@ -2864,8 +2870,11 @@ importers:
         specifier: ^2.25.203
         version: link:../admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.32.128
+        specifier: ^2.33.1
         version: link:../admin.server-configurations.v1
+      '@wso2is/common.ui.v1':
+        specifier: ^0.1.0
+        version: link:../common.ui.v1
       '@wso2is/core':
         specifier: ^2.7.0
         version: link:../../modules/core
@@ -5134,7 +5143,7 @@ importers:
         specifier: ^2.27.113
         version: link:../admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.33.87
+        specifier: ^2.33.88
         version: 'link:'
       '@wso2is/admin.console-settings.v1':
         specifier: ^2.25.203
@@ -5185,7 +5194,7 @@ importers:
         specifier: ^2.9.12
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.6.11
+        specifier: ^2.6.12
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.4.1
@@ -6033,7 +6042,7 @@ importers:
         specifier: ^1.0.92
         version: link:../admin.push-providers.v1
       '@wso2is/admin.registration-flow-builder.v1':
-        specifier: ^0.1.0
+        specifier: ^0.2.0
         version: link:../admin.registration-flow-builder.v1
       '@wso2is/admin.remote-repository-configuration.v1':
         specifier: ^2.25.203
@@ -6054,7 +6063,7 @@ importers:
         specifier: ^2.25.203
         version: link:../admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.32.128
+        specifier: ^2.33.0
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.session-management.v1':
         specifier: ^2.25.203
@@ -8452,20 +8461,20 @@ importers:
   features/admin.flow-builder-core.v1:
     dependencies:
       '@dnd-kit/abstract':
-        specifier: ^0.0.9
-        version: 0.0.9
+        specifier: ^0.0.10-beta-20250219015925
+        version: 0.0.10-beta-20250219015925
       '@dnd-kit/collision':
-        specifier: ^0.0.9
-        version: 0.0.9
+        specifier: ^0.0.10-beta-20250219015925
+        version: 0.0.10-beta-20250219015925
       '@dnd-kit/dom':
-        specifier: ^0.0.9
-        version: 0.0.9
+        specifier: ^0.0.10-beta-20250219015925
+        version: 0.0.10-beta-20250219015925
       '@dnd-kit/helpers':
-        specifier: ^0.0.9
-        version: 0.0.9
+        specifier: ^0.0.10-beta-20250219015925
+        version: 0.0.10-beta-20250219015925
       '@dnd-kit/react':
-        specifier: ^0.0.9
-        version: 0.0.9(react-dom@18.3.1)(react@18.3.1)
+        specifier: ^0.0.10-beta-20250219015925
+        version: 0.0.10-beta-20250219015925(react-dom@18.3.1)(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -8503,7 +8512,7 @@ importers:
         specifier: ^2.3.2
         version: 2.3.2(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/admin.core.v1':
-        specifier: ^2.40.7
+        specifier: ^2.41.0
         version: link:../admin.core.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -13678,23 +13687,26 @@ importers:
       '@wso2is/access-control':
         specifier: ^3.3.20
         version: link:../../modules/access-control
+      '@wso2is/admin.claims.v1':
+        specifier: ^2.27.113
+        version: link:../admin.claims.v1
       '@wso2is/admin.connections.v1':
         specifier: ^2.33.87
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.40.7
+        specifier: ^2.41.0
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.4.203
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
-        specifier: ^0.1.0
+        specifier: ^0.2.1
         version: link:../admin.flow-builder-core.v1
       '@wso2is/admin.rules.v1':
         specifier: ^0.4.19
         version: link:../admin.rules.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.32.128
+        specifier: ^2.33.1
         version: link:../admin.server-configurations.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -16033,7 +16045,7 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.40.7
+        specifier: ^2.41.0
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.36.128
@@ -16048,7 +16060,7 @@ importers:
         specifier: ^2.26.203
         version: link:../admin.organizations.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.32.128
+        specifier: ^2.33.1
         version: 'link:'
       '@wso2is/admin.users.v1':
         specifier: ^2.30.113
@@ -16056,6 +16068,9 @@ importers:
       '@wso2is/admin.validation.v1':
         specifier: ^2.27.141
         version: link:../admin.validation.v1
+      '@wso2is/common.ui.v1':
+        specifier: ^0.1.0
+        version: link:../common.ui.v1
       '@wso2is/core':
         specifier: ^2.7.0
         version: link:../../modules/core
@@ -16289,7 +16304,7 @@ importers:
         specifier: ^6.5.0
         version: 6.5.0(eslint@8.46.0)(typescript@4.9.5)
       '@wso2is/admin.registration-flow-builder.v1':
-        specifier: ^0.1.0
+        specifier: ^0.2.1
         version: link:../admin.registration-flow-builder.v1
       connect-history-api-fallback:
         specifier: ^2.0.0
@@ -20707,6 +20722,100 @@ importers:
         specifier: ^4.6.4
         version: 4.9.5
 
+  features/common.ui.v1:
+    dependencies:
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-redux:
+        specifier: ^7.2.9
+        version: 7.2.9(react-dom@18.3.1)(react@18.3.1)
+      redux:
+        specifier: ^4.0.4
+        version: 4.2.1
+    devDependencies:
+      '@rollup/plugin-commonjs':
+        specifier: ^25.0.7
+        version: 25.0.8(rollup@4.34.4)
+      '@rollup/plugin-dynamic-import-vars':
+        specifier: ^2.1.2
+        version: 2.1.5(rollup@4.34.4)
+      '@rollup/plugin-image':
+        specifier: ^3.0.3
+        version: 3.0.3(rollup@4.34.4)
+      '@rollup/plugin-json':
+        specifier: ^6.1.0
+        version: 6.1.0(rollup@4.34.4)
+      '@rollup/plugin-node-resolve':
+        specifier: ^15.2.3
+        version: 15.3.1(rollup@4.34.4)
+      '@rollup/plugin-typescript':
+        specifier: ^11.1.6
+        version: 11.1.6(rollup@4.34.4)(tslib@2.8.1)(typescript@4.9.5)
+      '@svgr/rollup':
+        specifier: ^6.2.1
+        version: 6.5.1
+      '@testing-library/dom':
+        specifier: ^7.24.3
+        version: 7.31.2
+      '@testing-library/jest-dom':
+        specifier: ^5.11.9
+        version: 5.17.0
+      '@testing-library/user-event':
+        specifier: ^12.7.3
+        version: 12.8.3(@testing-library/dom@7.31.2)
+      '@types/jest':
+        specifier: ^26.0.14
+        version: 26.0.24
+      '@types/react':
+        specifier: 18.0.18
+        version: 18.0.18
+      '@types/react-redux':
+        specifier: ^7.1.25
+        version: 7.1.34
+      '@types/testing-library__jest-dom':
+        specifier: ^5.14.3
+        version: 5.14.9
+      jest:
+        specifier: ^26.4.2
+        version: 26.6.3
+      jest-environment-jsdom:
+        specifier: ^26.3.0
+        version: 26.6.2
+      jest-environment-jsdom-global:
+        specifier: ^2.0.4
+        version: 2.0.4(jest-environment-jsdom@26.6.2)
+      rollup:
+        specifier: ^4.17.2
+        version: 4.34.4
+      rollup-plugin-dts:
+        specifier: ^6.1.1
+        version: 6.1.1(rollup@4.34.4)(typescript@4.9.5)
+      rollup-plugin-generate-package-json:
+        specifier: ^3.2.0
+        version: 3.2.0(rollup@4.34.4)
+      rollup-plugin-polyfill-node:
+        specifier: ^0.13.0
+        version: 0.13.0(rollup@4.34.4)
+      rollup-plugin-scss:
+        specifier: ^4.0.0
+        version: 4.0.1
+      rollup-plugin-styles:
+        specifier: ^4.0.0
+        version: 4.0.0(rollup@4.34.4)
+      rollup-plugin-svg:
+        specifier: ^2.0.0
+        version: 2.0.0
+      ts-jest:
+        specifier: ^26.4.0
+        version: 26.5.6(jest@26.6.3)(typescript@4.9.5)
+      typescript:
+        specifier: ^4.6.4
+        version: 4.9.5
+
   identity-apps-core:
     dependencies:
       '@wso2is/theme':
@@ -23413,62 +23522,62 @@ packages:
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
     engines: {node: '>=10.0.0'}
 
-  /@dnd-kit/abstract@0.0.9:
-    resolution: {integrity: sha512-4FjHPOREfJJfRu0clCAnYqYc8JNHQl6CL31FjLKR+1wER+YOGkb3s3JntsqvZost5Xm/G/Z4sQ3ouLdyYQ9KdQ==}
+  /@dnd-kit/abstract@0.0.10-beta-20250219015925:
+    resolution: {integrity: sha512-zPAH+2ThNb0Wat+roSSaROwq75hPSUlueHqUaEzoIvgGHprObM8d3DktwRhQ+xbH10+lPkqi0ExW0ULu7P/zvw==}
     dependencies:
-      '@dnd-kit/geometry': 0.0.9
-      '@dnd-kit/state': 0.0.9
+      '@dnd-kit/geometry': 0.0.10-beta-20250219015925
+      '@dnd-kit/state': 0.0.10-beta-20250219015925
       tslib: 2.8.1
     dev: false
 
-  /@dnd-kit/collision@0.0.9:
-    resolution: {integrity: sha512-8Brbcd0dM/y2yzg/6EI9O/SvsVAglx0fUDvqPSsXACewR+//OGno1GVKndh35GAVKqDxOgG3Q/fw+CVnMnFv6g==}
+  /@dnd-kit/collision@0.0.10-beta-20250219015925:
+    resolution: {integrity: sha512-JM333E38njsoYgRIcUF9QZBJ5hLMDeLRTpX4pJz1RU9oMhexfgN+wbjKqYmQTF0XWPwMzX3JH/iwqzvdJ1gcww==}
     dependencies:
-      '@dnd-kit/abstract': 0.0.9
-      '@dnd-kit/geometry': 0.0.9
+      '@dnd-kit/abstract': 0.0.10-beta-20250219015925
+      '@dnd-kit/geometry': 0.0.10-beta-20250219015925
       tslib: 2.8.1
     dev: false
 
-  /@dnd-kit/dom@0.0.9:
-    resolution: {integrity: sha512-nsDcL6MMdNfGOg0xp24c1xy/eNW7fO1uLU0AM2b1SFYJYsbXUMw6sQXq+2eHCQol/FixCoSbjMgjx9D8jQXb+w==}
+  /@dnd-kit/dom@0.0.10-beta-20250219015925:
+    resolution: {integrity: sha512-dY2wB+kDK5sCKSrz5g697tYReI6SUcAErQZAZwN+p7gDNQVLGYHboRaOL5jgH7JeT0aPK/AGOti+dc75eDgzsQ==}
     dependencies:
-      '@dnd-kit/abstract': 0.0.9
-      '@dnd-kit/collision': 0.0.9
-      '@dnd-kit/geometry': 0.0.9
-      '@dnd-kit/state': 0.0.9
+      '@dnd-kit/abstract': 0.0.10-beta-20250219015925
+      '@dnd-kit/collision': 0.0.10-beta-20250219015925
+      '@dnd-kit/geometry': 0.0.10-beta-20250219015925
+      '@dnd-kit/state': 0.0.10-beta-20250219015925
       tslib: 2.8.1
     dev: false
 
-  /@dnd-kit/geometry@0.0.9:
-    resolution: {integrity: sha512-zqSY7vva+LGs9Y/c37GhD67q+boS27nCmyYYAohlZ29MGz66KwjpbSH5HNHa261kuq90KaaIVQQVHiZGjNfmOw==}
+  /@dnd-kit/geometry@0.0.10-beta-20250219015925:
+    resolution: {integrity: sha512-2Ea6E+nXrS3efppLakEPblnb6Yuxrff/G/pv13TqQKvjXot1x+7SwUT3Gqd9qs6gSckyQK4y0z/RPbNM3SvAcg==}
     dependencies:
-      '@dnd-kit/state': 0.0.9
+      '@dnd-kit/state': 0.0.10-beta-20250219015925
       tslib: 2.8.1
     dev: false
 
-  /@dnd-kit/helpers@0.0.9:
-    resolution: {integrity: sha512-Dxy5aN5rcRPD1mC8vYKrsyw5hMF7AFngC6PE0Pgba+miNR72oHI3PV2fT3rlBSdo6vUiBVFBZwDNYynFkWJX/A==}
+  /@dnd-kit/helpers@0.0.10-beta-20250219015925:
+    resolution: {integrity: sha512-MGmouSo0Gl4JrJrTc5DqU6jO3RHrzA+jUHWOYYD8jsnIfmI6Rg2GBmMbP6lHn+ZI1QL+GOJigDmed1GSdFxohQ==}
     dependencies:
-      '@dnd-kit/abstract': 0.0.9
+      '@dnd-kit/abstract': 0.0.10-beta-20250219015925
       tslib: 2.8.1
     dev: false
 
-  /@dnd-kit/react@0.0.9(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-a2ZUbVVyJwSf5gf0l6I10VqEj8EEe+O1W/q+rSR0fpjbxjwhLT0Gt+udwKZsg3yIKxmxJC4W6eHSS6feNca9aw==}
+  /@dnd-kit/react@0.0.10-beta-20250219015925(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-N28ipIFSj+NQT5mbcvoSCP2lzr5226gdbrYMeQAt5NNXepZ2HpWetZvbPLeZj5XYAu3LTDwvDHpDeCS0+Oargg==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
     dependencies:
-      '@dnd-kit/abstract': 0.0.9
-      '@dnd-kit/dom': 0.0.9
-      '@dnd-kit/state': 0.0.9
+      '@dnd-kit/abstract': 0.0.10-beta-20250219015925
+      '@dnd-kit/dom': 0.0.10-beta-20250219015925
+      '@dnd-kit/state': 0.0.10-beta-20250219015925
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       tslib: 2.8.1
     dev: false
 
-  /@dnd-kit/state@0.0.9:
-    resolution: {integrity: sha512-F43bOum8k/Rh1tfO3DiAUs/zw6KSv5IMm4PGKSPoU2tz+LW+37Kp37NlgwtLLDzx+z6R+6gILnJzE6Q5eVx7OQ==}
+  /@dnd-kit/state@0.0.10-beta-20250219015925:
+    resolution: {integrity: sha512-P61eXe1xGZHrqnxfx/sKn1oe+bD4H9wB3LpxCQHmCeDJndqZhI+YC7gMER5rxflu6gHkDw+oeLAlCgPmpZLEEw==}
     dependencies:
       '@preact/signals-core': 1.8.0
       tslib: 2.8.1
@@ -41820,7 +41929,7 @@ packages:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
     engines: {node: '>=10'}
     dependencies:
-      chalk: 4.1.1
+      chalk: 4.1.2
       is-unicode-supported: 0.1.0
     dev: true
 
@@ -43649,7 +43758,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       bl: 4.1.0
-      chalk: 4.1.1
+      chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-spinners: 2.9.2
       is-interactive: 1.0.0

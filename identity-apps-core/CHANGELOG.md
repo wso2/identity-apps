@@ -1,5 +1,37 @@
 # @wso2is/identity-apps-core
 
+## 2.19.2
+
+### Patch Changes
+
+- [#7838](https://github.com/wso2/identity-apps/pull/7838) [`009772bf2f5e0b8382ff31c1392f2e5ed4d2954c`](https://github.com/wso2/identity-apps/commit/009772bf2f5e0b8382ff31c1392f2e5ed4d2954c) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add redirect to tenanted My Account url
+
+## 2.19.1
+
+### Patch Changes
+
+- [#7834](https://github.com/wso2/identity-apps/pull/7834) [`9701ee37f38fc9e25d4fbefb7e8c9d047912e6fc`](https://github.com/wso2/identity-apps/commit/9701ee37f38fc9e25d4fbefb7e8c9d047912e6fc) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix action id issue in dynamic portal
+
+## 2.19.0
+
+### Minor Changes
+
+- [#7653](https://github.com/wso2/identity-apps/pull/7653) [`a8ab43d1fb107db42ebcb9b4c894a6caa3368fe9`](https://github.com/wso2/identity-apps/commit/a8ab43d1fb107db42ebcb9b4c894a6caa3368fe9) Thanks [@brionmario](https://github.com/brionmario)! - - Refactor `UserPreferencesProvider` and move it to a new `common.ui.v1` package.
+  - Refactor the existing usages.
+  - Persist the side panel state in the local storage.
+  - https://github.com/wso2/product-is/issues/19315
+  - Close the Navbar when a fresh user tries out the new Self Sign Up composer.
+
+### Patch Changes
+
+- [#7833](https://github.com/wso2/identity-apps/pull/7833) [`32fdac320a167325b69c7214f83d393ab294d6c2`](https://github.com/wso2/identity-apps/commit/32fdac320a167325b69c7214f83d393ab294d6c2) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in OTP pages
+
+## 2.18.3
+
+### Patch Changes
+
+- [#7829](https://github.com/wso2/identity-apps/pull/7829) [`2380f0b11ffad4ef56dbcdd82e4035d377591b08`](https://github.com/wso2/identity-apps/commit/2380f0b11ffad4ef56dbcdd82e4035d377591b08) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix minor issue in dynamic portal
+
 ## 2.18.2
 
 ### Patch Changes
