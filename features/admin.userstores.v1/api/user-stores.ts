@@ -90,7 +90,7 @@ export const getUserStoreList = (): Promise<UserstoreListResponseInterface[] | a
  *
  * @returns metadata of a userstore type
  */
-export const getAType = (id: string, params: QueryParams): Promise<any> => {
+export const getUserStoreMetaDataType = (id: string, params: QueryParams): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
