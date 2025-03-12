@@ -16,10 +16,12 @@
  * under the License.
  */
 
-import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import Autocomplete, {
+    AutocompleteInputChangeReason,
+    AutocompleteRenderInputParams
+} from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
 import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertLevels,
@@ -37,9 +39,9 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, DropdownProps, Header, SemanticICONS } from "semantic-ui-react";
 import { ActionsConstants } from "../../constants/actions-constants";
@@ -54,14 +56,11 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
     const [ selectedAttributesList, setSelectedAttributesList ] = useState<Claim[]>([]);
     const [ allAttributesList, setAllAttributesList ] = useState<Claim[]>();
     const [ isAttributeListLoading, setIsAttributeListLoading ] = useState<boolean>(false);
+    const [ inputValue, setInputValue ] = useState("");
 
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
-
-    const enableIdentityClaims: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
-
 
     /**
      * Retrieves all the local claims.
@@ -69,7 +68,7 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
     useEffect(() => {
 
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": !enableIdentityClaims,
+            "exclude-identity-claims": true,
             filter: null,
             limit: null,
             offset: null,
@@ -122,6 +121,8 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
                 ? userAttributes
                 : [ ...userAttributes, data as Claim ]
         );
+
+        setInputValue(ActionsConstants.EMPTY_STRING);
     };
 
     /**
@@ -209,10 +210,10 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
         <>
             <Hint>{ t("actions:attributes.hint") }</Hint>
             <Autocomplete
-                disablePortal
                 fullWidth
                 aria-label="Attribute selection"
                 className="pt-2"
+                defaultValue={ null }
                 componentsProps={ {
                     paper: {
                         elevation: 2
@@ -230,6 +231,19 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
                         ]
                     }
                 } }
+                inputValue={ inputValue }
+                value={ null }
+                onInputChange={ (event: React.SyntheticEvent, newInputValue: string,
+                    reason: AutocompleteInputChangeReason) => {
+
+                    if (reason === "reset") {
+                        setInputValue(null);
+
+                        return;
+                    } else {
+                        setInputValue(newInputValue);
+                    }
+                } }
                 onChange={ (
                     event: SyntheticEvent<HTMLElement>,
                     data: DropdownProps
@@ -238,8 +252,12 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
                 getOptionLabel={ (claim: DropdownProps) =>
                     claim?.displayName
                 }
-                renderOption={ (props, option: Claim) => (
-                    <li { ...props }>
+                isOptionEqualToValue={
+                    (option: Claim, value: Claim) =>
+                        option.id === value.id
+                }
+                renderOption={ (props: HTMLAttributes<HTMLLIElement>, option: Claim) => (
+                    <li { ...props } key={ option.id }>
                         <div className="multiline">
                             <div>{ option?.displayName }</div>
                             <div>
