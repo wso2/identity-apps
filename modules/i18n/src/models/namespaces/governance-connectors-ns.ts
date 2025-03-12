@@ -266,6 +266,10 @@ export interface governanceConnectorsNS {
                         };
                     };
                 };
+                registrationFlowBuilder: {
+                    friendlyName: string;
+                    description: string;
+                }
             };
         };
         loginAttemptsSecurity: {
