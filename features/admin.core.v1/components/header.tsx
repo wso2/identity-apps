@@ -456,7 +456,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                         <ListItemIcon>
                                             <PreviewFeaturesIcon />
                                         </ListItemIcon>
-                                        <ListItemText>Feature Preview</ListItemText>
+                                        <ListItemText>{ t("Feature Preview") }</ListItemText>
                                     </MenuItem>
                                 </Show>
                             </Show>

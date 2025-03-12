@@ -45,7 +45,14 @@ import NewSelfRegistrationImage from "../../assets/illustrations/preview-feature
  * Feature preview modal component props interface. {@link FeaturePreviewModal}
  */
 interface FeaturePreviewModalPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Modal open state.
+     */
     open: boolean;
+
+    /**
+     * Modal close callback
+     */
     onClose: () => void;
 }
 
@@ -53,9 +60,24 @@ interface FeaturePreviewModalPropsInterface extends IdentifiableComponentInterfa
  * Preview features list interface.
  */
 interface PreviewFeaturesListInterface {
+    /**
+     * Feature name.
+     */
     name: string;
+
+    /**
+     * Feature description.
+     */
     description: string;
+
+    /**
+     * Feature image.
+     */
     image?: string;
+
+    /**
+     * Feature value.
+     */
     value: string;
 }
 
@@ -133,7 +155,7 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
             maxWidth={ (previewFeaturesList?.length) > 1 ? "lg" : "md" }
             className="preview-features-modal"
         >
-            { (previewFeaturesList?.length > 1) && <DialogTitle>Feature Preview</DialogTitle> }
+            { (previewFeaturesList?.length > 1) && <DialogTitle>{ t("Feature Preview") }</DialogTitle> }
             <Container sx={ { mt: 4 } }>
                 <Grid container spacing={ 2 }>
                     { (previewFeaturesList?.length > 1) && (
