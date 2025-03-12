@@ -455,7 +455,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 </MenuItem>
                                 <Show
                                     when={ loginAndRegistrationFeatureConfig?.scopes?.update }
-                                    //featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
+                                    featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
                                 >
                                     <MenuItem onClick={ handleFeaturePreviewMenuClick }>
                                         <ListItemIcon>
