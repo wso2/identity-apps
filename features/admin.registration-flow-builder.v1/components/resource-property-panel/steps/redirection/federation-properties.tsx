@@ -25,7 +25,7 @@ import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
 import useGetSocialAuthenticators from "../../../../api/use-get-social-authenticators";
 
 /**
@@ -47,6 +47,13 @@ const FederationProperties: FunctionComponent<FederationPropertiesPropsInterface
 }: FederationPropertiesPropsInterface): ReactElement => {
     const { data: socialAuthenticators } = useGetSocialAuthenticators();
 
+    const selectedValue: AuthenticatorInterface = useMemo(() => {
+        return socialAuthenticators?.find(
+            (authenticator: AuthenticatorInterface) =>
+                authenticator?.name === resource?.data?.action?.executor?.meta?.idpName
+        );
+    }, [ resource?.data?.action?.executor?.meta?.idpName, socialAuthenticators ]);
+
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
             <Typography variant="body2">
@@ -63,6 +70,7 @@ const FederationProperties: FunctionComponent<FederationPropertiesPropsInterface
                 renderInput={ (params: AutocompleteRenderInputParams) => (
                     <TextField { ...params } label="Connection" placeholder="Select a connection" />
                 ) }
+                value={ selectedValue }
                 onChange={ (_: ChangeEvent<HTMLInputElement>, authenticator: AuthenticatorInterface) => {
                     onChange("action.executor.meta.idpName", authenticator?.name, resource);
                 } }

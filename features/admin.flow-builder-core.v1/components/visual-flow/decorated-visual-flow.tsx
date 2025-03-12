@@ -191,8 +191,16 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
         if (sourceData.isReordering) {
             updateNodeData(sourceData?.stepId, (node: any) => {
+                const unorderedComponents: Element[] = cloneDeep(node?.data?.components);
+
+                unorderedComponents.map((component: Element) => {
+                    if (component?.components) {
+                        component.components = move(component.components, event);
+                    }
+                });
+
                 return {
-                    components: move(node?.data?.components, event)
+                    components: move(unorderedComponents, event)
                 };
             });
         } else {
