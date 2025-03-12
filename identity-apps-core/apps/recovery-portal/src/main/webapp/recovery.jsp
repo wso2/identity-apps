@@ -397,8 +397,16 @@
         } else {
             request.setAttribute("username", username);
             session.setAttribute("username", username);
+            
 
             if (IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL.equals(recoveryOption)) {
+                Boolean isEmailOtpBasedPasswordRecoveryEnabledByTenant = Boolean.parseBoolean(
+                    request.getParameter("isEmailOtpBasedPasswordRecoveryEnabledByTenant"));
+                if (isEmailOtpBasedPasswordRecoveryEnabledByTenant) {
+                    request.setAttribute("channel", IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL);
+                    request.getRequestDispatcher("password-recovery-otp.jsp").forward(request, response);
+                    return;
+                }
                 request.setAttribute("callback", callback);
                 request.getRequestDispatcher("password-recovery-notify.jsp").forward(request, response);
             } else if(IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP.equals(recoveryOption)) {

@@ -85,6 +85,8 @@
     if (screenValue == null) {
         screenValue = (String) request.getAttribute("screenValue");
     }
+    String channel = (String) request.getAttribute("channel");
+    boolean isEmailOtp = IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL.equals(channel);
     String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error");
     boolean authenticationFailed = Boolean.parseBoolean((String)request.getAttribute("isAuthFailure"));
     boolean resendFailed = Boolean.parseBoolean((String)request.getAttribute("isResendFailure"));
@@ -165,6 +167,8 @@
                     <% } %>
                     <%
                         if ("true".equals(String.valueOf((Object)request.getAttribute("resendSuccess")))) {
+                            String resendSuccessMessage = isEmailOtp ? "resend.code.success.emailotp"
+                                                                     : "resend.code.success";
                     %>
                     <div id="resend-msg" class="ui positive message">
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "resend.code.success")%>
@@ -190,17 +194,19 @@
                             } %>
 
                             <div class="field">
-                                <% if (screenValue != null) { %>
+                                <% String otpHeader = isEmailOtp ? "enter.code.sent.emailotp" : "enter.code.sent.smsotp";
+
+                                if (screenValue != null) { %>
                                     <input type='hidden' name='screenValue' id='screenValue'
                                         value='<%=Encode.forHtmlContent(screenValue)%>'/>
                                     <label for="password">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                            "enter.code.sent.smsotp")%> (<%=Encode.forHtmlContent(screenValue)%>)
+                                            otpHeader)%> (<%=Encode.forHtmlContent(screenValue)%>)
                                     </label>
                                 <% } else { %>
                                     <label for="password">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                            "enter.code.sent.smsotp")%>:
+                                           otpHeader)%>:
                                     </label>
                                 <% } %>
 

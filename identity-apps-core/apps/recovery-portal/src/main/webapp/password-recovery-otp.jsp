@@ -46,6 +46,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%-- Include tenant context --%>
@@ -114,6 +115,32 @@
         }
         return sb.toString();
     }
+    /**
+     * Generates a masked email using the username.
+     * If the username is shorter than or equal to 2 characters, only the first character is shown. 
+     * 
+     * If no "@" is present, "@gmail.com" is appended to treat it as an email.
+     *
+     * @param username The username or email to be masked.
+     * @return A masked email in the format: "ab*****@gmail.com".
+     */
+    public static String generateRandomMaskedEmail(String username) {
+
+        username = UserCoreUtil.removeDistinguishedName(username);
+        
+        if (!username.contains("@")) {
+            username = username + "@gmail.com";
+        } 
+
+        // Todo: check how we are masking the current email addresses.
+        int atIndex = username.indexOf('@');
+
+        String maskedUsername = username.charAt(0) + "**************";
+        String maskedDomain = username.substring(atIndex, atIndex + 2) + "***" + 
+                              username.substring(username.length() - 4, username.length());
+        return maskedUsername + maskedDomain;
+
+    }
 %>
 <%!
     /**
@@ -152,9 +179,11 @@
     if (RecoveryStage.INITIATE.equalsValue(recoveryStage)) {
         // if otp is supported by a new channel (eg: email) update this value assignment. null means unsupported.
         final String targetChannel = IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP
-            .equals((String)request.getAttribute("channel"))
-                ? "SMS"
-                : null;
+            .equals((String) request.getAttribute("channel")) ? "SMS"  
+            : IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL
+            .equals((String) request.getAttribute("channel")) ? "EMAIL"
+            : null;
+
         // Manage unsupported channel
         if (StringUtils.isBlank(targetChannel)) {
             redirectToErrorPageWithMessage(request, response, "Unknown.channel");
@@ -186,7 +215,13 @@
             if (resp == null) {
                 /** Handle invalid username scenario. proceeds to next level without warning to 
                 avoid an attacker bruteforcing to learn the usernames. */
-                request.setAttribute("screenValue", "******" + getRandomNumberString(4, username));
+                String randomScreenValue;
+                if (IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL.equals(targetChannel)) {
+                    randomScreenValue = generateRandomMaskedEmail(username);
+                } else {
+                    randomScreenValue = "******" + getRandomNumberString(4, username);
+                }
+                request.setAttribute("screenValue", randomScreenValue);
                 request.setAttribute("resendCode", UUID.randomUUID().toString());
                 request.setAttribute("flowConfirmationCode", UUID.randomUUID().toString());
                 request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
