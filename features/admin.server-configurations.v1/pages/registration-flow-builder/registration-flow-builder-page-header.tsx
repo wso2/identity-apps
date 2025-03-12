@@ -28,7 +28,6 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useRegistrationFlowBuilder from "@wso2is/admin.registration-flow-builder.v1/hooks/use-registration-flow-builder";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderPageHeader}
