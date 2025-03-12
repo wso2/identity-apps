@@ -168,6 +168,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 animated: false,
                 id: `${INITIAL_FLOW_START_STEP_ID}-${firstStep.id}`,
                 source: INITIAL_FLOW_START_STEP_ID,
+                sourceHandle: `${ INITIAL_FLOW_START_STEP_ID }${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                 target: firstStep.id,
                 type: "base-edge"
             });
@@ -260,6 +261,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         animated: false,
                         id: `${step.id}-to-${step.data.action.next}`,
                         source: step.id,
+                        sourceHandle: `${step.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                         target: step.data.action.next,
                         type: "base-edge"
                     });
@@ -275,6 +277,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         animated: false,
                         id: `${step.id}-to-${userOnboardStepId}`,
                         source: step.id,
+                        sourceHandle: `${step.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                         target: userOnboardStepId,
                         type: "base-edge"
                     });
@@ -378,6 +381,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 animated: false,
                 id: `${INITIAL_FLOW_START_STEP_ID}-${INITIAL_FLOW_VIEW_STEP_ID}`,
                 source: INITIAL_FLOW_START_STEP_ID,
+                sourceHandle: `${ INITIAL_FLOW_START_STEP_ID }${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                 target: INITIAL_FLOW_VIEW_STEP_ID,
                 type: "base-edge"
             },

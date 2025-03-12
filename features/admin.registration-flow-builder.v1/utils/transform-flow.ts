@@ -33,14 +33,14 @@ const DISPLAY_ONLY_COMPONENT_PROPERTIES: string[] = [
     "resourceType"
 ];
 
-const processNavigation = (resource, navigations) => {
+const processNavigation = (resource, resourceId, navigations) => {
     if (resource?.action) {
         let action: any = { ...resource.action };
 
         if (resource?.action?.type === ActionTypes.Executor) {
             action = {
                 ...resource?.action,
-                next: navigations[resource.id]
+                next: navigations[resourceId]
             };
         }
 
@@ -48,11 +48,11 @@ const processNavigation = (resource, navigations) => {
             ...resource,
             action
         };
-    } else if (navigations[resource.id] && resource?.category === ElementCategories.Action) {
+    } else if (navigations[resourceId] && resource?.category === ElementCategories.Action) {
         return {
             ...resource,
             action: {
-                next: navigations[resource.id],
+                next: navigations[resourceId],
                 type: ActionTypes.Next
             }
         };
@@ -89,7 +89,11 @@ const transformFlow = (flowState: any) => {
                     component.components = processComponents(component.components);
                 }
 
-                return processNavigation(omit(component, DISPLAY_ONLY_COMPONENT_PROPERTIES), stepNavigationMap);
+                return processNavigation(
+                    omit(component, DISPLAY_ONLY_COMPONENT_PROPERTIES),
+                    component.id,
+                    stepNavigationMap
+                );
             });
 
             return _components;
@@ -113,7 +117,7 @@ const transformFlow = (flowState: any) => {
         }
 
         if (step?.data?.action) {
-            step.data = processNavigation(step.data, stepNavigationMap);
+            step.data = processNavigation(step.data, step.id, stepNavigationMap);
         }
 
         payload.steps.push(step);
