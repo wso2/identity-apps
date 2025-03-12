@@ -99,6 +99,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         useSelector((state: AppState) => state.config.ui.features.gettingStarted);
     const scopes: string = useSelector((state: AppState) => state.auth.allowedScopes);
     const userOrganizationID: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
+    const loginAndRegistrationFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state?.config?.ui?.features?.loginAndRegistration);
 
     const hasGettingStartedViewPermission: boolean = useRequiredScopes(
         gettingStartedFeatureConfig?.scopes?.feature
@@ -451,7 +453,10 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                         { t("extensions:manage.features.header.links.billingPortalNav") }
                                     </ListItemText>
                                 </MenuItem>
-                                <Show featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }>
+                                <Show
+                                    when={ loginAndRegistrationFeatureConfig?.scopes?.update }
+                                    featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
+                                >
                                     <MenuItem onClick={ handleFeaturePreviewMenuClick }>
                                         <ListItemIcon>
                                             <PreviewFeaturesIcon />
