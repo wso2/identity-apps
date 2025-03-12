@@ -75,6 +75,9 @@ const FeatureFlagLabel: FunctionComponent<FeatureFlagLabelPropsInterface> = (
                 return "oxygen-chip-coming-soon";
             case FeatureStatusLabel.EXPERIMENTAL:
                 return "oxygen-chip-experimental";
+            case FeatureStatusLabel.PREVIEW:
+                // TODO: Update this style to a unique design once the Oxygen preview design is finalized.
+                return "oxygen-chip-experimental";
             default:
                 return "";
         }
