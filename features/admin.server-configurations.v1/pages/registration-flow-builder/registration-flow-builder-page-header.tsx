@@ -67,7 +67,7 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
                 >
                     <ArrowLeftIcon />
                 </IconButton>
-                <Breadcrumbs aria-label="breadcrumb">
+                <Breadcrumbs aria-label="breadcrumb" className="registration-flow-builder-page-header-breadcrumbs">
                     <Link
                         underline="hover"
                         color="inherit"
