@@ -64,5 +64,5 @@ export enum StaticStepTypes {
 }
 
 export enum RedirectionTypes {
-    GoogleFederation = "GoogleOIDCAuthenticator"
+    GoogleFederation = "GoogleSignupExecutor"
 }

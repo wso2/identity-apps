@@ -351,7 +351,7 @@
                             "action": {
                                 "type": "EXECUTOR",
                                 "executor": {
-                                    "name": "GoogleOIDCAuthenticator",
+                                    "name": "GoogleSignupExecutor",
                                     "meta": {
                                         "idpName": "{{IDP_NAME}}"
                                     }

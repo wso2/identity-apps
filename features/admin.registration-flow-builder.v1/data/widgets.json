@@ -175,7 +175,7 @@
                                             "action": {
                                                 "type": "EXECUTOR",
                                                 "executor": {
-                                                    "name": "EmailOTPVerifier"
+                                                    "name": "EmailOTPExecutor"
                                                 },
                                                 "next": "USER_ONBOARD"
                                             }
@@ -251,7 +251,7 @@
                             "action": {
                                 "type": "EXECUTOR",
                                 "executor": {
-                                    "name": "GoogleOIDCAuthenticator",
+                                    "name": "GoogleSignupExecutor",
                                     "meta": {
                                         "idp": "{{IDP_NAME}}"
                                     }

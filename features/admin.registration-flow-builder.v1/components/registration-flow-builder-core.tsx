@@ -49,6 +49,7 @@ import StaticNodeFactory from "./resources/steps/static-step-factory";
 import StepFactory from "./resources/steps/step-factory";
 import useGetRegistrationFlow from "../api/use-get-registration-flow";
 import useGetRegistrationFlowBuilderResources from "../api/use-get-registration-flow-builder-resources";
+import RegistrationFlowExecutorConstants from ".../constants/registration-flow-executor-constants;
 
 /**
  * Props interface of {@link RegistrationFlowBuilderCore}
@@ -207,7 +208,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     });
                     userOnboardEdgeCreated = true;
                 }
-            } else if (button.action?.executor?.name === "PasswordOnboardExecutor") {
+            } else if (button.action?.executor?.name === RegistrationFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR) {
                 // For PasswordOnboardExecutor buttons without explicit next,
                 // create an edge to the user onboard step
                 edges.push({
@@ -449,7 +450,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                                         ...(formComponent?.action ?? {}),
                                         type: "EXECUTOR",
                                         executor: {
-                                            name: "PasswordOnboardExecutor"
+                                            name: RegistrationFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR
                                         }
                                     }
                                 };
@@ -462,7 +463,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                                         ...(formComponent?.action ?? {}),
                                         type: "EXECUTOR",
                                         executor: {
-                                            name: "OTPOnboardExecutor"
+                                            name: RegistrationFlowExecutorConstants.EMAIL_OTP_EXECUTOR
                                         }
                                     }
                                 };
