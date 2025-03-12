@@ -59,9 +59,9 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const [ lastInteractedStepId, setLastInteractedStepId ] = useState<string>("");
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Claim[] }>({});
 
-    const onResourceDropOnCanvas = (resource: Resource, resourceId: string): void => {
+    const onResourceDropOnCanvas = (resource: Resource, stepId: string): void => {
         setLastInteractedResource(resource);
-        setLastInteractedStepId(resourceId);
+        setLastInteractedStepId(stepId);
     };
 
     const setLastInteractedResource = (resource: Resource): void => {

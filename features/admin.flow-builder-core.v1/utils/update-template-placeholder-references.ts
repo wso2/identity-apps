@@ -63,7 +63,7 @@ const updateTemplatePlaceholderReferences = (obj: any, replacers: any[]): any =>
         return input;
     };
 
-    return replacePlaceholders(obj);
+    return [ replacePlaceholders(obj), placeholderCache ];
 };
 
 export default updateTemplatePlaceholderReferences;
