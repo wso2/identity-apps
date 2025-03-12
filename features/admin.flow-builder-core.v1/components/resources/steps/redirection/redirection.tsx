@@ -22,6 +22,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Position, useNodeId, useReactFlow } from "@xyflow/react";
 import React, { FC, ReactElement, useMemo } from "react";
 import RedirectionFactory from "./redirection-factory";
+import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import { Step } from "../../../../models/steps";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
@@ -64,9 +65,17 @@ const Redirection: FC<RedirectionPropsInterface> = ({
                 setLastInteractedResource(redirection as Step);
             } }
         >
-            <Handle type="target" position={ Position.Left } />
+            <Handle
+                type="target"
+                id={ `${id}${VisualFlowConstants.FLOW_BUILDER_PREVIOUS_HANDLE_SUFFIX}` }
+                position={ Position.Left }
+            />
             <RedirectionFactory id={ id } resource={ redirection as Step } { ...rest } />
-            <Handle type="source" position={ Position.Right } />
+            <Handle
+                type="source"
+                id={ `${id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
+                position={ Position.Right }
+            />
         </Card>
     );
 };

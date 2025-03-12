@@ -16,15 +16,13 @@
  * under the License.
  */
 
-import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Controls, Edge, Node, NodeTypes, ReactFlow, ReactFlowProps, useReactFlow } from "@xyflow/react";
 import React, { FC, FunctionComponent, ReactElement, useMemo } from "react";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
 import { Resources } from "../../models/resources";
+import generateResourceId from "../../utils/generate-resource-id";
 import getKnownEdgeTypes from "../../utils/get-known-edge-types";
-import transformFlow from "../../../admin.registration-flow-builder.v1/utils/transform-flow";
 import Droppable from "../dnd/droppable";
 import BaseEdge from "../react-flow-overrides/base-edge";
 // IMPORTANT: `@xyflow/react/dist/style.css` should be at the top of the stylesheet import list.
@@ -94,7 +92,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     return (
         <>
             <Droppable
-                id={ VisualFlowConstants.FLOW_BUILDER_CANVAS_ID }
+                id={ generateResourceId(VisualFlowConstants.FLOW_BUILDER_CANVAS_ID) }
                 type={ VisualFlowConstants.FLOW_BUILDER_DROPPABLE_CANVAS_ID }
                 accept={ [ ...VisualFlowConstants.FLOW_BUILDER_CANVAS_ALLOWED_RESOURCE_TYPES ] }
             >
@@ -110,7 +108,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                     onNodesDelete={ onNodesDelete }
                     proOptions={ { hideAttribution: true } }
                     data-componentid={ componentId }
-                    colorMode="dark"
+                    colorMode="light"
                     { ...rest }
                 >
                     <Controls position="top-right" />

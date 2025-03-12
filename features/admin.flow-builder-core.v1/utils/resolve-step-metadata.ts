@@ -24,7 +24,7 @@ const resolveStepMetadata = (resources: Resources, steps: Step[]): Step[] => {
     const updateStepResourceType = (step: Step): Step => {
         let updatedStep: Step = { ...step };
 
-        resources.steps.forEach((stepWithMeta: Step) => {
+        resources?.steps?.forEach((stepWithMeta: Step) => {
             if (step.type === stepWithMeta.type) {
                 updatedStep = merge({}, stepWithMeta, updatedStep);
             }

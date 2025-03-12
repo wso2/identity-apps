@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import { ResourceTypes } from "../models/resources";
+import { ActionTypes } from "../models/actions";
+import { BlockTypes, ElementTypes } from "../models/elements";
+import { StepTypes } from "../models/steps";
+import { TemplateTypes } from "../models/templates";
+import { WidgetTypes } from "../models/widget";
 
 class VisualFlowConstants {
     /**
@@ -32,19 +36,38 @@ class VisualFlowConstants {
     public static readonly FLOW_BUILDER_DROPPABLE_CANVAS_ID: string = "flow-builder-droppable-canvas";
     public static readonly FLOW_BUILDER_DROPPABLE_VIEW_ID: string = "flow-builder-droppable-view";
     public static readonly FLOW_BUILDER_DROPPABLE_FORM_ID: string = "flow-builder-droppable-form";
+    public static readonly FLOW_BUILDER_NEXT_HANDLE_SUFFIX: string = `_${ ActionTypes.Next }`;
+    public static readonly FLOW_BUILDER_PREVIOUS_HANDLE_SUFFIX: string = `_${ ActionTypes.Previous }`;
 
     public static readonly FLOW_BUILDER_CANVAS_ALLOWED_RESOURCE_TYPES: string[] = [
-        ResourceTypes.Step,
-        ResourceTypes.Template
+        StepTypes.View,
+        StepTypes.Rule,
+        StepTypes.Redirection,
+        TemplateTypes.Basic,
+        TemplateTypes.BasicFederated,
+        TemplateTypes.Blank
     ];
 
     public static readonly FLOW_BUILDER_VIEW_ALLOWED_RESOURCE_TYPES: string[] = [
-        ResourceTypes.Element,
-        ResourceTypes.Widget
+        BlockTypes.Form,
+        ElementTypes.Button,
+        ElementTypes.Typography,
+        ElementTypes.RichText,
+        ElementTypes.Divider,
+        ElementTypes.Image,
+        WidgetTypes.EmailOTP,
+        WidgetTypes.GoogleFederation,
+        WidgetTypes.IdentifierPassword,
+        WidgetTypes.SMSOTP
     ];
 
     public static readonly FLOW_BUILDER_FORM_ALLOWED_RESOURCE_TYPES: string[] = [
-        ResourceTypes.Element
+        ElementTypes.Input,
+        ElementTypes.Button,
+        ElementTypes.Typography,
+        ElementTypes.RichText,
+        ElementTypes.Divider,
+        ElementTypes.Image
     ];
 }
 

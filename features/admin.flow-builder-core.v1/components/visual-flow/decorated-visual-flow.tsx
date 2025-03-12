@@ -43,10 +43,10 @@ import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flo
 import useGenerateStepElement from "../../hooks/use-generate-step-element";
 import { Element } from "../../models/elements";
 import { Resource, ResourceTypes } from "../../models/resources";
+import { Step } from "../../models/steps";
 import { Template } from "../../models/templates";
 import { Widget } from "../../models/widget";
 import generateResourceId from "../../utils/generate-resource-id";
-import resolveKnownEdges from "../../utils/resolve-known-edges";
 import ResourcePanel from "../resource-panel/resource-panel";
 import ElementPropertiesPanel from "../resource-property-panel/resource-property-panel";
 
@@ -91,37 +91,41 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     } = useAuthenticationFlowBuilderCore();
 
     const addCanvasNode = (event, sourceData, targetData): void => {
-        const { resource } = sourceData;
+        const { dragged: sourceResource } = sourceData;
         const { clientX, clientY } = event?.nativeEvent;
 
-        if (resource?.resourceType === ResourceTypes.Step) {
-            const position: XYPosition = screenToFlowPosition({
-                x: clientX,
-                y: clientY
-            });
-
-            setNodes((nodes: Node[]) => [ ...nodes, {
-                data: {
-                    components: []
-                },
-                deletable: true,
-                id: generateResourceId(resource.type.toLowerCase()),
-                position,
-                type: resource.type as string
-            } ]);
-        } else if (resource?.resourceType === ResourceTypes.Template) {
-            const [ newNodes, newEdges ] = onTemplateLoad(resource);
+        if (sourceResource?.resourceType === ResourceTypes.Template) {
+            const [ newNodes, newEdges ] = onTemplateLoad(sourceResource);
 
             setNodes(() => newNodes);
             setEdges(() => newEdges);
+
+            onResourceDropOnCanvas(sourceResource, null);
+
+            return;
         }
 
-        onResourceDropOnCanvas(resource, null);
+        const position: XYPosition = screenToFlowPosition({
+            x: clientX,
+            y: clientY
+        });
+
+        const generatedStep: Node = {
+            ...sourceResource,
+            data: sourceResource?.data || {},
+            deletable: true,
+            id: generateResourceId(sourceResource.type.toLowerCase()),
+            position
+        };
+
+        setNodes((nodes: Node[]) => [ ...nodes, generatedStep ]);
+
+        onResourceDropOnCanvas(generatedStep as Step, null);
     };
 
     const addToView = (event, sourceData, targetData): void => {
-        const { resource: sourceResource } = sourceData;
-        const { stepId: targetStepId, resource: targetResource } = targetData;
+        const { dragged: sourceResource } = sourceData;
+        const { stepId: targetStepId, droppedOn: targetResource } = targetData;
 
         if (sourceResource?.resourceType === ResourceTypes.Widget) {
             const [ newNodes, newEdges ] = onWidgetLoad(sourceResource, targetResource, nodes, edges);
@@ -145,13 +149,13 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                 };
             });
 
-            onResourceDropOnCanvas(sourceResource, targetStepId);
+            onResourceDropOnCanvas(generatedElement, targetStepId);
         }
     };
 
     const addToForm = (event, sourceData, targetData): void => {
-        const { resource: sourceResource } = sourceData;
-        const { stepId: targetStepId, resource: targetResource } = targetData;
+        const { dragged: sourceResource } = sourceData;
+        const { stepId: targetStepId, droppedOn: targetResource } = targetData;
 
         if (sourceResource) {
             const generatedElement: Element = generateStepElement(sourceResource);
@@ -171,7 +175,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                 };
             });
 
-            onResourceDropOnCanvas(sourceResource, targetStepId);
+            onResourceDropOnCanvas(generatedElement, targetStepId);
         }
     };
 
@@ -187,16 +191,24 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
         if (sourceData.isReordering) {
             updateNodeData(sourceData?.stepId, (node: any) => {
+                const unorderedComponents: Element[] = cloneDeep(node?.data?.components);
+
+                unorderedComponents.map((component: Element) => {
+                    if (component?.components) {
+                        component.components = move(component.components, event);
+                    }
+                });
+
                 return {
-                    components: move(node?.data?.components, event)
+                    components: move(unorderedComponents, event)
                 };
             });
         } else {
-            if (target?.id === VisualFlowConstants.FLOW_BUILDER_CANVAS_ID) {
+            if (target?.id?.startsWith(VisualFlowConstants.FLOW_BUILDER_CANVAS_ID)) {
                 addCanvasNode(event, sourceData, targetData);
-            } else if (target?.id === VisualFlowConstants.FLOW_BUILDER_VIEW_ID) {
+            } else if (target?.id?.startsWith(VisualFlowConstants.FLOW_BUILDER_VIEW_ID)) {
                 addToView(event, sourceData, targetData);
-            } else if (target?.id === VisualFlowConstants.FLOW_BUILDER_FORM_ID) {
+            } else if (target?.id?.startsWith(VisualFlowConstants.FLOW_BUILDER_FORM_ID)) {
                 addToForm(event, sourceData, targetData);
             }
         }
@@ -204,7 +216,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
     const onConnect: OnConnect = useCallback(
         (connection: any) => {
-            let edge: Edge = onEdgeResolve ? onEdgeResolve(connection, nodes) : resolveKnownEdges(connection, nodes);
+            let edge: Edge = onEdgeResolve ? onEdgeResolve(connection, nodes) : null;
 
             if (!edge) {
                 edge = {
@@ -274,7 +286,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
     return (
         <div
-            className={ classNames("decorated-visual-flow", "react-flow-container", "visual-editor") }
+            className={ classNames("decorated-visual-flow", "react-flow-container") }
             data-componentid={ componentId }
         >
             <DragDropProvider onDragEnd={ handleDragEnd }>
