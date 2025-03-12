@@ -206,7 +206,7 @@
                                         %>
                                             <div class="field mt-5">
                                                 <input
-                                                    class="text-center p-3"
+                                                    class="text-center p-1 pb-3 pt-3"
                                                     id=<%= currentStringIndex %>
                                                     name=<%= currentStringIndex %>
                                                     onkeyup="movetoNext(this, '<%= nextStringIndex %>', '<%= previousStringIndex %>')"
