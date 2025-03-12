@@ -451,16 +451,18 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                         { t("extensions:manage.features.header.links.billingPortalNav") }
                                     </ListItemText>
                                 </MenuItem>
-                                <Show featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }>
-                                    <MenuItem onClick={ handleFeaturePreviewMenuClick }>
-                                        <ListItemIcon>
-                                            <PreviewFeaturesIcon />
-                                        </ListItemIcon>
-                                        <ListItemText>{ t("Feature Preview") }</ListItemText>
-                                    </MenuItem>
-                                </Show>
                             </Show>
                         ),
+                        <Show featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                            <Show featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }>
+                                <MenuItem onClick={ handleFeaturePreviewMenuClick }>
+                                    <ListItemIcon>
+                                        <PreviewFeaturesIcon />
+                                    </ListItemIcon>
+                                    <ListItemText>{ t("Feature Preview") }</ListItemText>
+                                </MenuItem>
+                            </Show>
+                        </Show>,
                         isShowAppSwitchButton() ? (
                             <MenuItem
                                 color="inherit"
