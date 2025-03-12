@@ -25,6 +25,7 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronRightIcon } from "@oxygen-ui/react-icons";
+import AICard from "@wso2is/common.ai.v1/components/ai-card";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps } from "react";
@@ -151,6 +152,8 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
     const templates: Template[] = unfilteredTemplates.filter(
         (template: Template) => template.display?.showOnResourcePanel !== false
     );
+    const AITemplates: Template[] = unfilteredTemplates.filter(
+        (template: Template) => template.type === "GENERATE_WITH_AI");
 
     return (
         <Box
@@ -210,6 +213,15 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                                 Choose one of these templates to start building registration experience
                             </Typography>
                             <Stack direction="column" spacing={ 1 }>
+                                { AITemplates.map((aiTemplate: Template, index: number) => (
+                                    <ResourcePanelDraggableNode
+                                        id={ `${aiTemplate.resourceType}-${aiTemplate.type}-${index}` }
+                                        key={ aiTemplate.type }
+                                        resource={ aiTemplate }
+                                    >
+                                        <AICard resource={ aiTemplate } />
+                                    </ResourcePanelDraggableNode>
+                                )) }
                                 { templates.map((template: Template, index: number) => (
                                     <ResourcePanelStatic
                                         id={ `${template.resourceType}-${template.type}-${index}` }
