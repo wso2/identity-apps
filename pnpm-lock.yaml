@@ -537,7 +537,7 @@ importers:
         specifier: ^2.25.203
         version: link:../../features/admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.41.0
+        specifier: ^2.42.2
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.203
@@ -669,7 +669,7 @@ importers:
         specifier: ^2.9.12
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.6.12
+        specifier: ^2.7.1
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.4.1
@@ -8512,7 +8512,7 @@ importers:
         specifier: ^2.3.2
         version: 2.3.2(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/admin.core.v1':
-        specifier: ^2.41.0
+        specifier: ^2.42.2
         version: link:../admin.core.v1
       '@wso2is/core':
         specifier: ^2.7.0

@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.46.0
+
+### Minor Changes
+
+- [#7855](https://github.com/wso2/identity-apps/pull/7855) [`aaf3a62625563cbadda5cef23ca3eac8e599ba5d`](https://github.com/wso2/identity-apps/commit/aaf3a62625563cbadda5cef23ca3eac8e599ba5d) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Add some missing doc comments in preview feature enable/disable feature
+
+### Patch Changes
+
+- [#7868](https://github.com/wso2/identity-apps/pull/7868) [`09203b80ad75f0bc1fa473d704544cac4c066558`](https://github.com/wso2/identity-apps/commit/09203b80ad75f0bc1fa473d704544cac4c066558) Thanks [@brionmario](https://github.com/brionmario)! - Fix ordering issues
+
+- Updated dependencies [[`aaf3a62625563cbadda5cef23ca3eac8e599ba5d`](https://github.com/wso2/identity-apps/commit/aaf3a62625563cbadda5cef23ca3eac8e599ba5d)]:
+  - @wso2is/admin.core.v1@2.42.2
+  - @wso2is/theme@2.7.1
+
 ## 2.45.1
 
 ### Patch Changes
