@@ -211,7 +211,7 @@
                             <div class="equal width fields">
                                     <div class="field mt-5">
                                         <input
-                                            class="text-center p-3"
+                                            class="text-center p-1 pb-3 pt-3"
                                             id="pincode-1"
                                             name="pincode-1"
                                             tabindex="1"
@@ -225,7 +225,7 @@
                                     </div>
                                     <div class="field mt-5">
                                         <input
-                                            class="text-center p-3"
+                                            class="text-center p-1 pb-3 pt-3"
                                             id="pincode-2"
                                             name="pincode-2"
                                             tabindex="2"
@@ -238,7 +238,7 @@
                                     </div>
                                     <div class="field mt-5">
                                         <input
-                                            class="text-center p-3"
+                                            class="text-center p-1 pb-3 pt-3"
                                             id="pincode-3"
                                             name="pincode-3"
                                             tabindex="3"
@@ -251,7 +251,7 @@
                                     </div>
                                     <div class="field mt-5">
                                         <input
-                                            class="text-center p-3"
+                                            class="text-center p-1 pb-3 pt-3"
                                             id="pincode-4"
                                             name="pincode-4"
                                             tabindex="4"
@@ -264,7 +264,7 @@
                                     </div>
                                     <div class="field mt-5">
                                         <input
-                                            class="text-center p-3"
+                                            class="text-center p-1 pb-3 pt-3"
                                             id="pincode-5"
                                             name="pincode-5"
                                             tabindex="5"
@@ -277,7 +277,7 @@
                                     </div>
                                     <div class="field mt-5">
                                         <input
-                                            class="text-center p-3"
+                                            class="text-center p-1 pb-3 pt-3"
                                             id="pincode-6"
                                             name="pincode-6"
                                             tabindex="6"

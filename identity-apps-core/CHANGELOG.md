@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.19.3
+
+### Patch Changes
+
+- [#7864](https://github.com/wso2/identity-apps/pull/7864) [`316f362fac6951cc752547492c179833b6c9d22c`](https://github.com/wso2/identity-apps/commit/316f362fac6951cc752547492c179833b6c9d22c) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix mobile responsive issues in OTP input fields
+
 ## 2.19.2
 
 ### Patch Changes

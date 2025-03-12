@@ -32,8 +32,10 @@ import {
     getOutgoers,
     useEdgesState,
     useNodesState,
-    useReactFlow
+    useReactFlow,
+    useUpdateNodeInternals
 } from "@xyflow/react";
+import { UpdateNodeInternals } from "@xyflow/system";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, useCallback } from "react";
@@ -58,8 +60,14 @@ export interface DecoratedVisualFlowPropsInterface extends VisualFlowPropsInterf
      * Callback to be fired when node data is updated.
      */
     mutateComponents: (components: Element[]) => Element[];
-    onTemplateLoad: (template: Template) => [ Node[], Edge[] ];
-    onWidgetLoad: (widget: Widget, targetResource: Resource, currentNodes: Node[], edges: Edge[]) => [Node[], Edge[]];
+    onTemplateLoad: (template: Template) => [Node[], Edge[]];
+    onWidgetLoad: (
+        widget: Widget,
+        targetResource: Resource,
+        currentNodes: Node[],
+        edges: Edge[]
+    ) => [Node[], Edge[], Resource, string];
+    onStepLoad: (step: Step) => Step;
 }
 
 /**
@@ -77,12 +85,14 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     mutateComponents,
     onTemplateLoad,
     onWidgetLoad,
+    onStepLoad,
     ...rest
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
     const { screenToFlowPosition, updateNodeData } = useReactFlow();
     const [ nodes, setNodes, onNodesChange ] = useNodesState(initialNodes);
     const [ edges, setEdges, onEdgesChange ] = useEdgesState(initialEdges);
     const { generateStepElement } = useGenerateStepElement();
+    const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
 
     const {
         isResourcePanelOpen,
@@ -94,29 +104,21 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         const { dragged: sourceResource } = sourceData;
         const { clientX, clientY } = event?.nativeEvent;
 
-        if (sourceResource?.resourceType === ResourceTypes.Template) {
-            const [ newNodes, newEdges ] = onTemplateLoad(sourceResource);
-
-            setNodes(() => newNodes);
-            setEdges(() => newEdges);
-
-            onResourceDropOnCanvas(sourceResource, null);
-
-            return;
-        }
-
         const position: XYPosition = screenToFlowPosition({
             x: clientX,
             y: clientY
         });
 
-        const generatedStep: Node = {
+        let generatedStep: Step = {
             ...sourceResource,
             data: sourceResource?.data || {},
             deletable: true,
             id: generateResourceId(sourceResource.type.toLowerCase()),
             position
         };
+
+        // Decorate the step with any additional information
+        generatedStep = onStepLoad(generatedStep);
 
         setNodes((nodes: Node[]) => [ ...nodes, generatedStep ]);
 
@@ -128,12 +130,20 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         const { stepId: targetStepId, droppedOn: targetResource } = targetData;
 
         if (sourceResource?.resourceType === ResourceTypes.Widget) {
-            const [ newNodes, newEdges ] = onWidgetLoad(sourceResource, targetResource, nodes, edges);
+            const [ newNodes, newEdges, defaultPropertySelector, defaultPropertySectorStepId ] = onWidgetLoad(
+                sourceResource,
+                targetResource,
+                nodes,
+                edges
+            );
 
             setNodes(() => newNodes);
             setEdges(() => newEdges);
 
-            onResourceDropOnCanvas(sourceResource, targetStepId);
+            onResourceDropOnCanvas(
+                defaultPropertySelector ?? sourceResource,
+                defaultPropertySectorStepId ?? targetStepId
+            );
 
             return;
         }
@@ -284,13 +294,33 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         });
     };
 
+    const handleOnAdd = (resource: Resource): void => {
+        // Currently we only let templates to be added to the canvas via a click.
+        if (resource.resourceType !== ResourceTypes.Template) {
+            return;
+        }
+
+        const [ newNodes, newEdges ] = onTemplateLoad(resource);
+
+        // Letting React Flow know of the programmatic updates to node for re-drawing edges.
+        setNodes(() => {
+            newNodes.forEach((node: Node) => updateNodeInternals(node.id));
+
+            return newNodes;
+        });
+
+        setEdges(() => [ ...newEdges ]);
+
+        onResourceDropOnCanvas(resource, null);
+    };
+
     return (
         <div
             className={ classNames("decorated-visual-flow", "react-flow-container") }
             data-componentid={ componentId }
         >
             <DragDropProvider onDragEnd={ handleDragEnd }>
-                <ResourcePanel resources={ resources } open={ isResourcePanelOpen }>
+                <ResourcePanel resources={ resources } open={ isResourcePanelOpen } onAdd={ handleOnAdd }>
                     <ElementPropertiesPanel
                         open={ isResourcePropertiesPanelOpen }
                         onComponentDelete={ handleComponentDelete }

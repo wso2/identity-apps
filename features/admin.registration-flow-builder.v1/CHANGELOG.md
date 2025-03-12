@@ -1,5 +1,43 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.2.5
+
+### Patch Changes
+
+- [#7859](https://github.com/wso2/identity-apps/pull/7859) [`c7ebf8dff43fc4b6bf76f6916bb56305216a223a`](https://github.com/wso2/identity-apps/commit/c7ebf8dff43fc4b6bf76f6916bb56305216a223a) Thanks [@brionmario](https://github.com/brionmario)! - - Update cursor in breadcrumb & panel items
+  - Fix widget property panel issues
+  - Fix navigation issues with widgets
+- Updated dependencies [[`c7ebf8dff43fc4b6bf76f6916bb56305216a223a`](https://github.com/wso2/identity-apps/commit/c7ebf8dff43fc4b6bf76f6916bb56305216a223a)]:
+  - @wso2is/admin.server-configurations.v1@2.33.3
+  - @wso2is/admin.flow-builder-core.v1@0.2.3
+
+## 0.2.4
+
+### Patch Changes
+
+- [#7852](https://github.com/wso2/identity-apps/pull/7852) [`4908d061593ba0a0a25c67719b86877b0a66853d`](https://github.com/wso2/identity-apps/commit/4908d061593ba0a0a25c67719b86877b0a66853d) Thanks [@brionmario](https://github.com/brionmario)! - Add support to add `Templates` on click
+
+## 0.2.3
+
+### Patch Changes
+
+- [#7849](https://github.com/wso2/identity-apps/pull/7849) [`e0e4356f8fb7eae97613d21c65ba976d2c032d63`](https://github.com/wso2/identity-apps/commit/e0e4356f8fb7eae97613d21c65ba976d2c032d63) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the registration flow builder card to the login and registration section
+
+- Updated dependencies [[`e0e4356f8fb7eae97613d21c65ba976d2c032d63`](https://github.com/wso2/identity-apps/commit/e0e4356f8fb7eae97613d21c65ba976d2c032d63)]:
+  - @wso2is/admin.server-configurations.v1@2.33.2
+  - @wso2is/admin.feature-gate.v1@1.4.204
+
+## 0.2.2
+
+### Patch Changes
+
+- [#7845](https://github.com/wso2/identity-apps/pull/7845) [`79920a286e16780ba5f62b1e47a85535ee9f8c49`](https://github.com/wso2/identity-apps/commit/79920a286e16780ba5f62b1e47a85535ee9f8c49) Thanks [@brionmario](https://github.com/brionmario)! - Fix ordering issues inside views & set the selected connection in redirection properties
+
+* [#7848](https://github.com/wso2/identity-apps/pull/7848) [`a2d2bea040654f5ca7e9e1670c0bb52f060c16f5`](https://github.com/wso2/identity-apps/commit/a2d2bea040654f5ca7e9e1670c0bb52f060c16f5) Thanks [@brionmario](https://github.com/brionmario)! - - Auto open property panel based on template config
+  - Improve the black view
+* Updated dependencies [[`79920a286e16780ba5f62b1e47a85535ee9f8c49`](https://github.com/wso2/identity-apps/commit/79920a286e16780ba5f62b1e47a85535ee9f8c49), [`a2d2bea040654f5ca7e9e1670c0bb52f060c16f5`](https://github.com/wso2/identity-apps/commit/a2d2bea040654f5ca7e9e1670c0bb52f060c16f5)]:
+  - @wso2is/admin.flow-builder-core.v1@0.2.2
+
 ## 0.2.1
 
 ### Patch Changes
