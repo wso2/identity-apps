@@ -1,5 +1,11 @@
 # @wso2is/admin.core.v1
 
+## 2.42.1
+
+### Patch Changes
+
+- [#7857](https://github.com/wso2/identity-apps/pull/7857) [`46695375c9befd08938214022caa31ed27a39388`](https://github.com/wso2/identity-apps/commit/46695375c9befd08938214022caa31ed27a39388) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Handle feature preview for RBAC users.
+
 ## 2.42.0
 
 ### Minor Changes
