@@ -224,6 +224,30 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         }
     }, []);
 
+    const handleDragOver: (e) => void = useCallback(event => {
+        const { source, target } = event.operation;
+
+        if (event.canceled || !source || !target) {
+            return;
+        }
+
+        const { data: sourceData } = source;
+
+        updateNodeData(sourceData?.stepId, (node: any) => {
+            const unorderedComponents: Element[] = cloneDeep(node?.data?.components);
+
+            unorderedComponents.map((component: Element) => {
+                if (component?.components) {
+                    component.components = move(component.components, event);
+                }
+            });
+
+            return {
+                components: move(unorderedComponents, event)
+            };
+        });
+    }, []);
+
     const onConnect: OnConnect = useCallback(
         (connection: any) => {
             let edge: Edge = onEdgeResolve ? onEdgeResolve(connection, nodes) : null;
@@ -319,7 +343,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             className={ classNames("decorated-visual-flow", "react-flow-container") }
             data-componentid={ componentId }
         >
-            <DragDropProvider onDragEnd={ handleDragEnd }>
+            <DragDropProvider onDragEnd={ handleDragEnd } onDragOver={ handleDragOver }>
                 <ResourcePanel resources={ resources } open={ isResourcePanelOpen } onAdd={ handleOnAdd }>
                     <ElementPropertiesPanel
                         open={ isResourcePropertiesPanelOpen }
