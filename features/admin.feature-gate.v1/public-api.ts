@@ -21,6 +21,5 @@ export { default as useGetAllFeatures } from "./api/use-get-all-features";
 export { default as FeatureFlagLabel } from "./components/feature-flag-label";
 export { default as useFeatureFlag } from "./hooks/use-feature-flag";
 export { default as FeatureFlagConstants } from "./constants/feature-flag-constants";
-export { default as PreviewFeatureList } from "./components/preview-feature-list";
 export * from "./configs/endpoints";
 export * from "./models/feature-status";
