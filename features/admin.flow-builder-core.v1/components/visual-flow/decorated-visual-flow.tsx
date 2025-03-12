@@ -104,17 +104,6 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         const { dragged: sourceResource } = sourceData;
         const { clientX, clientY } = event?.nativeEvent;
 
-        if (sourceResource?.resourceType === ResourceTypes.Template) {
-            const [ newNodes, newEdges ] = onTemplateLoad(sourceResource);
-
-            setNodes(() => newNodes);
-            setEdges(() => newEdges);
-
-            onResourceDropOnCanvas(sourceResource, null);
-
-            return;
-        }
-
         const position: XYPosition = screenToFlowPosition({
             x: clientX,
             y: clientY
