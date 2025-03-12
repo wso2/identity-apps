@@ -42,8 +42,15 @@ const useGetSocialAuthenticators = <Data = AuthenticatorInterface[], Error = Req
         mutate
     } = useGetAuthenticators<Data, Error>(`(tag eq ${AuthenticatorLabels.SOCIAL})`, shouldFetch);
 
+    // TODO: Temp fix until we can properly filter federated authenticators.
+    const filteredAuthenticators: AuthenticatorInterface[] = (data as AuthenticatorInterface[])?.filter(
+        (authenticator: AuthenticatorInterface) => {
+            return (authenticator?.name).toLowerCase()?.startsWith("google");
+        }
+    );
+
     return {
-        data,
+        data: filteredAuthenticators as Data,
         error,
         isLoading,
         isValidating,
