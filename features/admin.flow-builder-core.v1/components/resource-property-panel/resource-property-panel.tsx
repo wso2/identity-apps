@@ -32,7 +32,10 @@ import "./resource-property-panel.scss";
 /**
  * Props interface of {@link ResourcePropertyPanel}
  */
-export interface ResourcePropertyPanelPropsInterface extends DrawerProps, IdentifiableComponentInterface, HTMLAttributes<HTMLDivElement> {
+export interface ResourcePropertyPanelPropsInterface
+    extends DrawerProps,
+        IdentifiableComponentInterface,
+        HTMLAttributes<HTMLDivElement> {
     onComponentDelete: (stepId: string, component: Element) => void;
 }
 
@@ -59,9 +62,15 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
     open,
     anchor = "right",
     onComponentDelete,
+    className,
     ...rest
 }: ResourcePropertyPanelPropsInterface): ReactElement => {
-    const { resourcePropertiesPanelHeading, setIsOpenResourcePropertiesPanel, lastInteractedStepId, lastInteractedResource } = useAuthenticationFlowBuilderCore();
+    const {
+        resourcePropertiesPanelHeading,
+        setIsOpenResourcePropertiesPanel,
+        lastInteractedStepId,
+        lastInteractedResource
+    } = useAuthenticationFlowBuilderCore();
 
     return (
         <Box
@@ -80,7 +89,10 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
                 anchor={ anchor }
                 onClose={ () => {} }
                 elevation={ 5 }
-                PaperProps={ { className: "flow-builder-element-property-panel" } }
+                PaperProps={ {
+                    className: classNames("flow-builder-element-property-panel", { open }, className),
+                    style: { position: "absolute" }
+                } }
                 BackdropProps={ { style: { position: "absolute" } } }
                 ModalProps={ {
                     container: document.getElementById("drawer-container"),
@@ -95,8 +107,8 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
                     }
                 } }
                 hideBackdrop={ true }
-                className={ classNames("flow-builder-element-property-panel", { mini: !open }) }
-                variant={ open ? "permanent" : "temporary" }
+                className={ classNames("flow-builder-element-property-panel", { open }) }
+                variant="permanent"
             >
                 <Box
                     display="flex"
@@ -122,7 +134,12 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
                     alignItems="right"
                     className="flow-builder-element-property-panel-footer"
                 >
-                    <Button variant="contained" onClick={ () => onComponentDelete(lastInteractedStepId, lastInteractedResource) } startIcon={ <TrashIcon size={ 14 } /> } color="error">
+                    <Button
+                        variant="contained"
+                        onClick={ () => onComponentDelete(lastInteractedStepId, lastInteractedResource) }
+                        startIcon={ <TrashIcon size={ 14 } /> }
+                        color="error"
+                    >
                         Delete
                     </Button>
                 </Box>
