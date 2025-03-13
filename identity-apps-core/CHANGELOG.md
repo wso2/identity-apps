@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.19.4
+
+### Patch Changes
+
+- [#7874](https://github.com/wso2/identity-apps/pull/7874) [`701c2cf53d2243cc54c1381eb9ed345e094b2278`](https://github.com/wso2/identity-apps/commit/701c2cf53d2243cc54c1381eb9ed345e094b2278) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix OTP field rendering issue
+
 ## 2.19.3
 
 ### Patch Changes
