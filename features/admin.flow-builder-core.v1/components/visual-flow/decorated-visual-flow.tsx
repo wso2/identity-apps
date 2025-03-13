@@ -339,12 +339,13 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     };
 
     return (
-        <div
-            className={ classNames("decorated-visual-flow", "react-flow-container") }
-            data-componentid={ componentId }
-        >
+        <div className={ classNames("decorated-visual-flow", "react-flow-container") } data-componentid={ componentId }>
             <DragDropProvider onDragEnd={ handleDragEnd } onDragOver={ handleDragOver }>
-                <ResourcePanel resources={ resources } open={ isResourcePanelOpen } onAdd={ handleOnAdd }>
+                <ResourcePanel
+                    resources={ resources }
+                    open={ isResourcePanelOpen }
+                    onAdd={ handleOnAdd }
+                >
                     <ElementPropertiesPanel
                         open={ isResourcePropertiesPanelOpen }
                         onComponentDelete={ handleComponentDelete }

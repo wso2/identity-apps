@@ -143,11 +143,11 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
                         onClick={ () => {
                             if (lastInteractedResource.resourceType === ResourceTypes.Step) {
                                 deleteElements({ nodes: [ { id: lastInteractedResource.id } ] });
-
-                                return;
+                            } else {
+                                onComponentDelete(lastInteractedStepId, lastInteractedResource);
                             }
 
-                            onComponentDelete(lastInteractedStepId, lastInteractedResource);
+                            setIsOpenResourcePropertiesPanel(false);
                         } }
                         startIcon={ <TrashIcon size={ 14 } /> }
                         color="error"
