@@ -1,0 +1,9 @@
+<svg width="16" height="16" viewBox="0 0 16 16" class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Head (Shifted Up Slightly for Space) -->
+  <circle cx="8" cy="3" r="2.5" fill="none"/>
+  <!-- Body (Monitor) (Shifted Down for Space) -->
+  <rect x="3" y="7" width="10" height="6" rx="1" ry="1" fill="none"/>
+  <!-- Base -->
+  <line x1="5" y1="13" x2="11" y2="13"/>
+  <line x1="6" y1="15" x2="10" y2="15"/>
+</svg>

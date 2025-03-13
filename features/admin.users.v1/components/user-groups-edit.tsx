@@ -136,6 +136,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             return;
         }
         mapUserGroups();
+        console.log(user.groups)
         setAssignedGroups(user.groups);
     }, []);
 

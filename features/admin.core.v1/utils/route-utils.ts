@@ -363,6 +363,12 @@ export class RouteUtils {
                 selected: history.location.pathname.includes("/api-resources")
             },
             {
+                category: build,
+                id: "agents",
+                order: 2,
+                selected: history.location.pathname.includes("/agents")
+            },
+            {
                 category: organizations,
                 id: "organizations",
                 selected: history.location.pathname.includes("/organizations")

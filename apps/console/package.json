@@ -49,6 +49,7 @@
         "@wso2is/access-control": "^3.3.19",
         "@wso2is/admin.actions.v1": "^1.11.58",
         "@wso2is/admin.administrators.v1": "^2.29.193",
+        "@wso2is/admin.agents.v1": "workspace:^",
         "@wso2is/admin.alternative-login-identifier.v1": "^1.5.193",
         "@wso2is/admin.api-resources.v1": "^2.25.193",
         "@wso2is/admin.api-resources.v2": "^2.25.193",
