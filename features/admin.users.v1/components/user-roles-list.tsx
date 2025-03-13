@@ -70,6 +70,7 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
         }
 
         if (userRoles?.length > 0) {
+            console.log(userRoles)
             setInitialSelectedRolesOptions(userRoles);
         }
     }, [ user ]);
