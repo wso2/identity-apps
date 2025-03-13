@@ -1,5 +1,15 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.3.1
+
+### Patch Changes
+
+- [#7872](https://github.com/wso2/identity-apps/pull/7872) [`ec1c1590ef33eab0d1473b1dae6f16e9aadfb7a3`](https://github.com/wso2/identity-apps/commit/ec1c1590ef33eab0d1473b1dae6f16e9aadfb7a3) Thanks [@brionmario](https://github.com/brionmario)! - Fix minor issues in AI flows
+
+- Updated dependencies [[`ec1c1590ef33eab0d1473b1dae6f16e9aadfb7a3`](https://github.com/wso2/identity-apps/commit/ec1c1590ef33eab0d1473b1dae6f16e9aadfb7a3)]:
+  - @wso2is/admin.flow-builder-core.v1@0.3.1
+  - @wso2is/common.ai.v1@2.26.1
+
 ## 0.3.0
 
 ### Minor Changes
