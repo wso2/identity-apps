@@ -24,6 +24,7 @@
         "@wso2is/admin.flow-builder-core.v1": "^0.2.3",
         "@wso2is/admin.rules.v1": "^0.4.19",
         "@wso2is/admin.server-configurations.v1": "^2.33.3",
+        "@wso2is/common.ai.v1": "^2.25.203",
         "@wso2is/core": "^2.7.0",
         "@xyflow/react": "^12.3.2",
         "@xyflow/system": "^0.0.52",

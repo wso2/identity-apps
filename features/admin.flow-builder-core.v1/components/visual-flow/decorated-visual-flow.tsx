@@ -36,7 +36,7 @@ import {
 import { UpdateNodeInternals } from "@xyflow/system";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
-import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useCallback } from "react";
+import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useCallback, useEffect } from "react";
 import VisualFlow, { VisualFlowPropsInterface } from "./visual-flow";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
@@ -68,6 +68,7 @@ export interface DecoratedVisualFlowPropsInterface extends VisualFlowPropsInterf
     onStepLoad: (step: Step) => Step;
     setNodes: Dispatch<SetStateAction<Node[]>>;
     setEdges: Dispatch<SetStateAction<Edge[]>>;
+    aiGeneratedFlow: any;
 }
 
 /**
@@ -78,6 +79,7 @@ export interface DecoratedVisualFlowPropsInterface extends VisualFlowPropsInterf
  */
 const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-editor",
+    aiGeneratedFlow,
     resources,
     initialNodes = [],
     initialEdges = [],
@@ -94,6 +96,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     onStepLoad,
     ...rest
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
+
     const { screenToFlowPosition, updateNodeData } = useReactFlow();
     const { generateStepElement } = useGenerateStepElement();
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
@@ -103,6 +106,12 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         isResourcePropertiesPanelOpen,
         onResourceDropOnCanvas
     } = useAuthenticationFlowBuilderCore();
+
+    useEffect(() => {
+        if (aiGeneratedFlow) {
+            handleOnAdd(aiGeneratedFlow);
+        }
+    }, [ aiGeneratedFlow ]);
 
     const addCanvasNode = (event, sourceData, targetData): void => {
         const { dragged: sourceResource } = sourceData;

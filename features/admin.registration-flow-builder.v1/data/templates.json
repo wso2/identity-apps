@@ -2,6 +2,20 @@
     {
         "resourceType": "TEMPLATE",
         "category": "STARTER",
+        "type": "GENERATE_WITH_AI",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Registration Flow AI",
+            "description": "Generate a new flow with AI",
+            "image": "https://www.svgrepo.com/show/521818/robot.svg",
+            "showOnResourcePanel": false
+        },
+        "config": {}
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
         "type": "BLANK",
         "version": "0.1.0",
         "deprecated": false,
