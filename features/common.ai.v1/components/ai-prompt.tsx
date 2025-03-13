@@ -34,13 +34,15 @@ interface AIPromptProps {
     setUserPrompt?: (value: string) => void;
     samplePrompts?: string[];
     userPrompt: string;
+    showHistory?: boolean;
 }
 
 const AIPrompt = ({
     handlePromptSubmit,
     setUserPrompt,
     samplePrompts,
-    userPrompt
+    userPrompt,
+    showHistory = true
 }: AIPromptProps): ReactElement => {
 
     const handleSurpriseMe = () => {
@@ -121,21 +123,23 @@ const AIPrompt = ({
                     >
                             Suggestions
                     </Button>
-                    <Button
-                        size="small"
-                        variant="outlined"
-                        startIcon={ <HistoryOutlinedIcon /> }
-                        sx={ {
-                            border: "1px solid #E8E8E8",
-                            color: "#666",
-                            mr: 2,
-                            height: 40,
-                            fontSize: "13px"
-                        } }
-                        onClick={ null }
-                    >
-                            History
-                    </Button>
+                    { showHistory && (
+                        <Button
+                            size="small"
+                            variant="outlined"
+                            startIcon={ <HistoryOutlinedIcon /> }
+                            sx={ {
+                                border: "1px solid #E8E8E8",
+                                color: "#666",
+                                fontSize: "13px",
+                                height: 40,
+                                mr: 2
+                            } }
+                            onClick={ null }
+                        >
+                                History
+                        </Button>
+                    ) }
                 </Stack>
                 <IconButton
                     onClick={ () => handlePromptSubmit() }

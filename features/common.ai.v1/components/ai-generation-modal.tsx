@@ -34,6 +34,7 @@ interface AIGenerationModalProps {
     setUserPrompt: (prompt: string) => void;
     samplePrompts?: string[];
     userPrompt: string;
+    showHistory?: boolean;
 }
 
 const AIGenerationModal = ({
@@ -42,7 +43,8 @@ const AIGenerationModal = ({
     onUserPromptSubmit,
     setUserPrompt,
     samplePrompts,
-    userPrompt
+    userPrompt,
+    showHistory = true
 }: AIGenerationModalProps): ReactElement => {
     return (
         <Dialog
@@ -75,6 +77,7 @@ const AIGenerationModal = ({
                     setUserPrompt={ setUserPrompt }
                     samplePrompts={ samplePrompts }
                     userPrompt={ userPrompt }
+                    showHistory={ showHistory }
                 />
             </DialogContent>
         </Dialog>

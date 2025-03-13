@@ -893,6 +893,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         handleModalClose={ () => setShowAIGenerationModal(false) }
                         samplePrompts={ SAMPLE_PROMPTS }
                         userPrompt={ userPrompt }
+                        showHistory={ false }
                     />
                 )
             }
