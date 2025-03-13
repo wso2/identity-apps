@@ -270,7 +270,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     const onNodesDelete: OnNodesDelete<Node> = useCallback(
         (deleted: Node[]) => {
             setEdges(
-                deleted.reduce((acc: Edge[], node: Node) => {
+                deleted?.reduce((acc: Edge[], node: Node) => {
                     const incomers: Node[] = getIncomers(node, nodes, edges);
                     const outgoers: Node[] = getOutgoers(node, nodes, edges);
                     const connectedEdges: Edge[] = getConnectedEdges([ node ], edges);
@@ -294,7 +294,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
     const handleComponentDelete = (stepId: string, component: Element): void => {
         const updateComponent = (components: Element[]): Element[] => {
-            return components.reduce((acc: Element[], _component: Element) => {
+            return components?.reduce((acc: Element[], _component: Element) => {
                 if (_component.id === component.id) {
                     return acc;
                 }

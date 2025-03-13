@@ -22,11 +22,13 @@ import Drawer, { DrawerProps } from "@oxygen-ui/react/Drawer";
 import IconButton from "@oxygen-ui/react/IconButton";
 import { TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { useReactFlow } from "@xyflow/react";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import ResourceProperties from "./resource-properties";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Element } from "../../models/elements";
+import { ResourceTypes } from "../../models/resources";
 import "./resource-property-panel.scss";
 
 /**
@@ -65,6 +67,8 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
     className,
     ...rest
 }: ResourcePropertyPanelPropsInterface): ReactElement => {
+    const { deleteElements } = useReactFlow();
+
     const {
         resourcePropertiesPanelHeading,
         setIsOpenResourcePropertiesPanel,
@@ -136,7 +140,15 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
                 >
                     <Button
                         variant="contained"
-                        onClick={ () => onComponentDelete(lastInteractedStepId, lastInteractedResource) }
+                        onClick={ () => {
+                            if (lastInteractedResource.resourceType === ResourceTypes.Step) {
+                                deleteElements({ nodes: [ { id: lastInteractedResource.id } ] });
+
+                                return;
+                            }
+
+                            onComponentDelete(lastInteractedStepId, lastInteractedResource);
+                        } }
                         startIcon={ <TrashIcon size={ 14 } /> }
                         color="error"
                     >
