@@ -101,7 +101,8 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const path: string[] = history.location.pathname.split("/");
-    const appId: string = path[path.length - 1].split("#")[0];
+    // const appId: string = path[path.length - 1].split("#")[0];
+    const appId: string = "fdda4bbd-cfdb-4e3f-8d5a-2e22c785708a";
 
     const {
         data: allAPIResourcesListData,
