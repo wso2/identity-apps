@@ -165,7 +165,7 @@
                                                 "label": "Last Name",
                                                 "required": false,
                                                 "placeholder": "Enter your last name",
-                                                "identifier": "http://wso2.org/claims/familyname"
+                                                "identifier": "http://wso2.org/claims/lastname"
                                             }
                                         },
                                         {
