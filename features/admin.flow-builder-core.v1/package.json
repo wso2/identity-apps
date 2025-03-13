@@ -24,6 +24,7 @@
         "@oxygen-ui/react": "^2.3.2",
         "@oxygen-ui/react-icons": "^2.3.2",
         "@wso2is/admin.core.v1": "^2.42.2",
+        "@wso2is/common.ai.v1": "^2.25.203",
         "@wso2is/core": "^2.7.0",
         "@xyflow/react": "^12.3.2",
         "@xyflow/system": "^0.0.52",
