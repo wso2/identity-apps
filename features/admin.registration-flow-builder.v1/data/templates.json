@@ -28,6 +28,15 @@
                         "data": {
                             "components": [
                                 {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Heading"
+                                    }
+                                },
+                                {
                                     "category": "BLOCK",
                                     "type": "FORM",
                                     "config": {},
