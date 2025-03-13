@@ -36,6 +36,7 @@ import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import AttributeSearchList from "./attributesSection/attribute-search-list";
 import CommonActionConfigForm from "./common-action-config-form";
 import RuleConfigForm from "./rule-config-form";
 import createAction from "../api/create-action";
@@ -50,10 +51,9 @@ import {
     AuthenticationPropertiesInterface,
     AuthenticationType
 } from "../models/actions";
-import "./pre-update-password-action-config-form.scss";
+import "./pre-update-profile-action-config-form.scss";
 import { useHandleError, useHandleSuccess } from "../util/alert-util";
 import { validateActionCommonFields } from "../util/form-field-util";
-import AttributeSearchList from "./attributesSection/attribute-search-list";
 
 /**
  * Prop types for the action configuration form component.
@@ -87,7 +87,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
     isReadOnly,
     actionTypeApiPath,
     isCreateFormState,
-    ["data-componentid"]: _componentId = "pre-update-password-action-config-form"
+    ["data-componentid"]: componentId = "pre-update-password-action-config-form"
 }: PreUpdateProfileActionConfigFormInterface): ReactElement => {
 
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
@@ -119,7 +119,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
         actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_UPDATE_PROFILE_RULE"));
 
     /**
-     * The following useEffect is used to set the current Action Authentication Type.
+     * This sets the the current Action Authentication Type.
      */
     useEffect(() => {
         if (!initialValues?.id) {
@@ -134,6 +134,9 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
         }
     }, [ initialValues ]);
 
+    /**
+     * Renders the loading placeholders.
+     */
     const renderLoadingPlaceholders = (): ReactElement => (
         <Box className="placeholder-box">
             <Skeleton variant="rectangular" height={ 7 } width="30%" />
@@ -143,12 +146,16 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
         </Box>
     );
 
+    /**
+     * Validates the pre update profile config form.
+     * @param values - Form values.
+     * @returns form errors.
+     */
     const validateForm = (values: ActionConfigFormPropertyInterface):
         Partial<ActionConfigFormPropertyInterface> => {
 
         const customError: Partial<ActionConfigFormPropertyInterface> = {};
 
-        // Call the utility validate function
         const commonFieldError: Partial<ActionConfigFormPropertyInterface> = validateActionCommonFields(values, {
             authenticationType: authenticationType,
             isAuthenticationUpdateFormState: isAuthenticationUpdateFormState,
@@ -156,9 +163,11 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
         });
 
         return { ...commonFieldError, ...customError };
-
     };
 
+    /**
+     * Handles the pre update profile form submit.
+     */
     const handleSubmit = (
         values: ActionConfigFormPropertyInterface,
         changedFields: ActionConfigFormPropertyInterface) => {
@@ -222,7 +231,6 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     setIsSubmitting(false);
                 });
         } else {
-            // Updating the action
             const updatingValues: ActionUpdateInterface = {
                 endpoint: isAuthenticationUpdateFormState || changedFields?.endpointUri ? {
                     authentication: isAuthenticationUpdateFormState ? {
@@ -251,6 +259,10 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
         }
     };
 
+    /**
+     * Renders the fields of the pre update profile form.
+     * @returns form fields.
+     */
     const renderFormFields = (): ReactElement => {
 
         if (isLoading) {
@@ -269,9 +281,10 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     } } />
                 <Divider className="divider-container" />
                 <Typography variant="h6" className="heading-container" >
-                    { t("actions:attributes.heading") }
+                    { t("actions:fields.userAttributes.heading") }
                 </Typography>
                 <AttributeSearchList
+                    isReadOnly={ isReadOnly }
                     data-componentid={ "selectedTemplate?.templateId " }
                 />
 
@@ -284,7 +297,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                         setRule={ setRule }
                         isHasRule={ isHasRule }
                         setIsHasRule={ setIsHasRule }
-                        data-componentid={ `${ _componentId }-rule` }
+                        data-componentid={ `${ componentId }-rule` }
                     />
                 ) }
             </>
@@ -308,7 +321,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                             <EmphasizedSegment
                                 className="form-wrapper"
                                 padded={ "very" }
-                                data-componentid={ `${_componentId}-section` }
+                                data-componentid={ `${componentId}-section` }
                             >
                                 <div className="form-container with-max-width">
                                     { renderFormFields() }
@@ -318,7 +331,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                                             variant="contained"
                                             onClick={ handleSubmit }
                                             className={ "button-container" }
-                                            data-componentid={ `${_componentId}-primary-button` }
+                                            data-componentid={ `${componentId}-primary-button` }
                                             loading={ isSubmitting }
                                             disabled={ isReadOnly }
                                         >

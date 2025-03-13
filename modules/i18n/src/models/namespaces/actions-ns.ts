@@ -42,14 +42,6 @@ export interface actionsNS {
             subHeading: string;
         }
     },
-    attributes: {
-        heading: string;
-        hint: string;
-        search: {
-            placeholder: string
-            clearButton: string
-        }
-    };
     confirmationModal: {
         header: string;
         message: string;
@@ -192,7 +184,15 @@ export interface actionsNS {
                 }
             };
             label: string;
-        }
+        };
+        userAttributes: {
+            heading: string;
+            hint: string;
+            search: {
+                placeholder: string
+                clearButton: string
+            }
+        };
     };
     goBackActions: string,
     notification: {
@@ -291,6 +291,12 @@ export interface actionsNS {
                     message: string;
                 };
             };
+            userAttributes: {
+                getAttributes: {
+                    description: string
+                    message: string
+                }
+            }
         };
         success: {
             activate: {

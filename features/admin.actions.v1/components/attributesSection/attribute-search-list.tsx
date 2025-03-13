@@ -56,9 +56,14 @@ import { ActionsConstants } from "../../constants/actions-constants";
 import "./attribute-search-list.scss";
 
 export interface AttributeSearchListPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Specifies whether the form is read-only.
+     */
+    isReadOnly: boolean;
 }
 
 const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> = ({
+    isReadOnly,
     "data-componentid": componentId = "autocomplete-search-list"
 }: AttributeSearchListPropsInterface): ReactElement => {
 
@@ -97,10 +102,10 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
             dispatch(addAlert(
                 {
                     description: error?.response?.data?.description
-                        || t("claims:local.notifications.getClaims.genericError.description"),
+                        || t("actions:notifications.genericError.userAttributes.getAttributes.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        || t("claims:local.notifications.getClaims.genericError.message")
+                        || t("actions:notifications.genericError.userAttributes.getAttributes.message")
                 }
             ));
             setIsAttributeListLoading(false);
@@ -154,6 +159,7 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
 
         return [
             {
+                disabled: isReadOnly,
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, claim: Claim): void =>
                     handleAttributeDelete(claim),
@@ -184,13 +190,11 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
                                     <AnimatedAvatar
                                         name={ retrieveInitialLetterOfClaim(claim) }
                                         size="mini"
-                                        data-testid={ `${componentId}-selected-attribute-initial-letter-image` }
                                         data-componentid={ `${componentId}-elected-attribute-initial-letter-image` }
                                     />
                                 ) }
                                 size="mini"
                                 spaced="right"
-                                data-testid={ `${componentId}-selected-attribute-initial-letter` }
                                 data-componentid={ `${componentId}-elected-attribute-initial-letter` }
                             />
                             <Header.Content>
@@ -217,6 +221,7 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
 
     return (
         <>
+            <Hint>{ t("actions:fields.userAttributes.hint") }</Hint>
             <Autocomplete
                 fullWidth
                 aria-label="Attribute selection"
@@ -279,16 +284,15 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
                 renderInput={ (params: AutocompleteRenderInputParams) => (
                     <TextField
                         { ...params }
-                        placeholder={ t("actions:attributes.search.placeholder") }
+                        placeholder={ t("actions:fields.userAttributes.search.placeholder") }
                         size="small"
                         variant="outlined"
                     />
                 ) }
+                disabled={ isReadOnly }
                 key="autocompleteSearchWithList"
-                data-testid={ `${componentId}-select-attributes` }
                 data-componentid={ `${componentId}-select-attributes` }
             />
-            <Hint>{ t("actions:attributes.hint") }</Hint>
             <Divider hidden/>
             {
                 selectedAttributesList?.length > 0 && (
@@ -303,7 +307,7 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
                                 data-componentid={ `${ componentId }-clear-all-button` }
                                 disabled={ false }
                             >
-                                { t("actions:attributes.search.clearButton") }
+                                { t("actions:fields.userAttributes.search.clearButton") }
                             </Button>
                         </div>
                         <div className="selected-attributes-list">
@@ -314,7 +318,6 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
                                 data={ selectedAttributesList }
                                 onRowClick={ () => null }
                                 showHeader={ false }
-                                data-testid={ `${componentId}-selected-attributes-list` }
                                 data-componentid={ `${componentId}-selected-attributes-list` }
                             />
                         </div>

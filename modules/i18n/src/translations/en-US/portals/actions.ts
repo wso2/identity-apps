@@ -19,14 +19,6 @@
 import { actionsNS } from "../../../models";
 
 export const actions: actionsNS = {
-    attributes: {
-        heading: "Attributes",
-        hint: "Select user attributes that need to be shared with the external service.",
-        search: {
-            clearButton: "Clear all",
-            placeholder: "Search user attribute"
-        }
-    },
     buttons: {
         addCertificate: "Add Certificate",
         cancel: "Cancel",
@@ -202,6 +194,14 @@ export const actions: actionsNS = {
                 title: "No execution rule is configured."
             },
             label: "Execution Rule"
+        },
+        userAttributes: {
+            heading: "Attributes",
+            hint: "Select user attributes that need to be shared with the external service.",
+            search: {
+                clearButton: "Clear all",
+                placeholder: "Search user attribute"
+            }
         }
     },
     goBackActions: "Go back to Actions",
@@ -300,6 +300,12 @@ export const actions: actionsNS = {
             update: {
                 description: "Couldn't update the action.",
                 message: "Something went wrong."
+            },
+            userAttributes: {
+                getAttributes: {
+                    description: "Couldn't retrieve the user attributes.",
+                    message: "Something went wrong"
+                }
             }
         },
         success: {
