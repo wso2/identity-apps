@@ -33,6 +33,8 @@ interface AIGenerationModalProps {
     onUserPromptSubmit: () => void;
     setUserPrompt: (prompt: string) => void;
     samplePrompts?: string[];
+    userPrompt: string;
+    showHistory?: boolean;
 }
 
 const AIGenerationModal = ({
@@ -40,7 +42,9 @@ const AIGenerationModal = ({
     open,
     onUserPromptSubmit,
     setUserPrompt,
-    samplePrompts
+    samplePrompts,
+    userPrompt,
+    showHistory = true
 }: AIGenerationModalProps): ReactElement => {
     return (
         <Dialog
@@ -53,7 +57,10 @@ const AIGenerationModal = ({
                     edge="end"
                     size="small"
                     sx={ { float: "right" } }
-                    onClick={ handleModalClose }
+                    onClick={ () => {
+                        setUserPrompt("");
+                        handleModalClose();
+                    } }
                 >
                     <CloseOutlinedIcon/>
                 </IconButton>
@@ -69,6 +76,8 @@ const AIGenerationModal = ({
                     handlePromptSubmit={ onUserPromptSubmit }
                     setUserPrompt={ setUserPrompt }
                     samplePrompts={ samplePrompts }
+                    userPrompt={ userPrompt }
+                    showHistory={ showHistory }
                 />
             </DialogContent>
         </Dialog>

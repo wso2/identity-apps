@@ -851,6 +851,15 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         return step;
     };
 
+    const handleResourceAdd = (resource: Resource): void => {
+        // If the template type is `GENERATE_WITH_AI`, show the AI generation modal.
+        if (resource.type === TemplateTypes.GeneratedWithAI) {
+            setShowAIGenerationModal(true);
+
+            return;
+        }
+    };
+
     if (isRegistrationFlowFetchRequestLoading || isRegistrationFlowFetchRequestValidating) {
         return null;
     }
@@ -866,6 +875,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 onTemplateLoad={ handleTemplateLoad }
                 onWidgetLoad={ handleWidgetLoad }
                 onStepLoad={ handleStepLoad }
+                onResourceAdd={ handleResourceAdd }
                 nodes={ nodes }
                 edges={ edges }
                 setNodes={ setNodes }
@@ -882,6 +892,8 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         open={ showAIGenerationModal }
                         handleModalClose={ () => setShowAIGenerationModal(false) }
                         samplePrompts={ SAMPLE_PROMPTS }
+                        userPrompt={ userPrompt }
+                        showHistory={ false }
                     />
                 )
             }

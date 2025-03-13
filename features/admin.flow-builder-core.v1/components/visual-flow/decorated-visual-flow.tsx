@@ -44,7 +44,7 @@ import useGenerateStepElement from "../../hooks/use-generate-step-element";
 import { Element } from "../../models/elements";
 import { Resource, ResourceTypes } from "../../models/resources";
 import { Step } from "../../models/steps";
-import { Template } from "../../models/templates";
+import { Template, TemplateTypes } from "../../models/templates";
 import { Widget } from "../../models/widget";
 import generateResourceId from "../../utils/generate-resource-id";
 import ResourcePanel from "../resource-panel/resource-panel";
@@ -66,6 +66,7 @@ export interface DecoratedVisualFlowPropsInterface extends VisualFlowPropsInterf
         edges: Edge[]
     ) => [Node[], Edge[], Resource, string];
     onStepLoad: (step: Step) => Step;
+    onResourceAdd: (resource: Resource) => void;
     setNodes: Dispatch<SetStateAction<Node[]>>;
     setEdges: Dispatch<SetStateAction<Edge[]>>;
     aiGeneratedFlow: any;
@@ -94,6 +95,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     onTemplateLoad,
     onWidgetLoad,
     onStepLoad,
+    onResourceAdd,
     ...rest
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
 
@@ -334,6 +336,14 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     const handleOnAdd = (resource: Resource): void => {
         // Currently we only let templates to be added to the canvas via a click.
         if (resource.resourceType !== ResourceTypes.Template) {
+            return;
+        }
+
+        // Users need to add a prompt first when they select the AI template.
+        // TODO: Handle this better.
+        if (resource.type === TemplateTypes.GeneratedWithAI) {
+            onResourceAdd(resource);
+
             return;
         }
 
