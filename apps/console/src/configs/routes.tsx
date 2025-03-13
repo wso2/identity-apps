@@ -397,6 +397,34 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             protected: true,
             showOnSidePanel: true
         },
+
+        {
+            category: "console:develop.features.sidePanel.categories.application",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.agents.v1/pages/edit-agent")),
+                    exact: true,
+                    id: "editAgent",
+                    name: "Edit Agent",
+                    path: AppConstants.getPaths().get("AGENT_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.agents.v1/pages/agents")),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().agents
+            },
+            id: "agents",
+            name: "Agents",
+            order: 1,
+            path: AppConstants.getPaths().get("AGENTS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+
         {
             category: "extensions:manage.sidePanel.categories.userManagement",
             children: [
