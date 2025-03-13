@@ -33,9 +33,11 @@ import generateIdsForResources from "@wso2is/admin.flow-builder-core.v1/utils/ge
 import generateResourceId from "@wso2is/admin.flow-builder-core.v1/utils/generate-resource-id";
 import resolveComponentMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-component-metadata";
 import resolveStepMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-step-metadata";
-import updateTemplatePlaceholderReferences from
+import updateTemplatePlaceholderReferences
+    from
     "@wso2is/admin.flow-builder-core.v1/utils/update-template-placeholder-references";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import AIGenerationModal from "@wso2is/common.ai.v1/components/ai-generation-modal";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Edge, Node, NodeTypes, useEdgesState, useNodesState, useUpdateNodeInternals } from "@xyflow/react";
 import { UpdateNodeInternals } from "@xyflow/system";
@@ -44,14 +46,22 @@ import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
 import mergeWith from "lodash-es/mergeWith";
 import unionWith from "lodash-es/unionWith";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { v4 as uuidv4 } from "uuid";
+import RegistrationFlowAILoader from "./ai-registration-flow-generation-loader";
 import StaticNodeFactory from "./resources/steps/static-step-factory";
 import StepFactory from "./resources/steps/step-factory";
+import useAIRegistrationFlowGenerationResult from "../api/use-ai-registration-flow-result";
 import useGetRegistrationFlow from "../api/use-get-registration-flow";
 import useGetRegistrationFlowBuilderResources from "../api/use-get-registration-flow-builder-resources";
 import RegistrationFlowExecutorConstants from "../constants/registration-flow-executor-constants";
+import useAIGeneratedRegistrationFlow from "../hooks/use-ai-generated-registration-flow";
+import useGenerateRegistrationFlow, {
+    UseGenerateRegistrationFlowFunction
+} from "../hooks/use-generate-registration-flow";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderCore}
@@ -70,6 +80,31 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 }: RegistrationFlowBuilderCorePropsInterface): ReactElement => {
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
 
+
+    const [ showAIGenerationModal, setShowAIGenerationModal ] = useState(false);
+
+    const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
+
+    const {
+        flowGenerationCompleted,
+        isFlowGenerating,
+        operationId,
+        setUserPrompt,
+        setIsFlowGenerating,
+        setFlowGenerationCompleted,
+        userPrompt,
+        setAIGeneratedFlow,
+        aiGeneratedFlow
+    } = useAIGeneratedRegistrationFlow();
+
+    const {
+        data: flowData,
+        error: flowError
+    } = useAIRegistrationFlowGenerationResult(operationId, flowGenerationCompleted);
+
+    const generateAIRegistrationFlow: UseGenerateRegistrationFlowFunction = useGenerateRegistrationFlow();
+
     const {
         data: registrationFlow,
         error: registrationFlowFetchRequestError,
@@ -81,11 +116,49 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
     const { steps, templates } = resources;
 
-    const dispatch: Dispatch = useDispatch();
-
     const INITIAL_FLOW_START_STEP_ID: string = StaticStepTypes.Start.toLowerCase();
     const INITIAL_FLOW_VIEW_STEP_ID: string = generateResourceId(StepTypes.View.toLowerCase());
     const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = StaticStepTypes.UserOnboard;
+
+    useEffect(() => {
+        if (flowError) {
+            setIsFlowGenerating(false);
+            setFlowGenerationCompleted(false);
+
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("ai:aiRegistrationFlow.notifications.generateResultError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("ai:aiRegistrationFlow.notifications.generateResultError.message")
+                })
+            );
+
+            return;
+        }
+
+        if (flowData?.status === "FAILED") {
+            setIsFlowGenerating(false);
+            setFlowGenerationCompleted(false);
+
+            // if data.data contains an object error then use that as the error message
+            const errorMessage: string = "error" in flowData.data
+                ? flowData.data.error : t("ai:aiRegistrationFlow.notifications.generateResultFailed.message");
+
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: errorMessage,
+                    level: AlertLevels.ERROR,
+                    message: t("ai:aiRegistrationFlow.notifications.generateResultFailed.message")
+                })
+            );
+
+            return;
+        }
+
+        if (flowData?.status === "COMPLETED" && flowData.data) {
+            handleAIGeneratedFlow(flowData.data);
+        }
+    }, [ flowData, flowGenerationCompleted ]);
 
     /**
      * Dispatches an error alert if the flow fetch fails.
@@ -96,11 +169,46 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 addAlert({
                     description: "An error occurred while fetching the registration flow.",
                     level: AlertLevels.ERROR,
-                    message: "Couldn't retrieve the registration flow."
+                    message: "Couldn't retrieve  the registration flow."
                 })
             );
         }
     }, [ registrationFlowFetchRequestError ]);
+
+    const handleAIFlowGeneration = async () => {
+
+        const traceID: string = uuidv4();
+
+        await generateAIRegistrationFlow(userPrompt, traceID);
+        setShowAIGenerationModal(false);
+    };
+
+    const handleAIGeneratedFlow = (data) => {
+        if (!data?.steps) {
+            return [ [], [] ];
+        }
+
+        const aiGeneratedRegistrationFlow: any = {
+            "resourceType": "TEMPLATE",
+            "category": "STARTER",
+            "type": "AI",
+            "version": "0.1.0",
+            "deprecated": false,
+            "display": {
+                "label": "Blank",
+                "description": "Start a new flow from scratch",
+                "image": "",
+                "showOnResourcePanel": false
+            },
+            "config": {
+                data : data
+            }
+        };
+
+        setAIGeneratedFlow(aiGeneratedRegistrationFlow);
+        setShowAIGenerationModal(false);
+        setIsFlowGenerating(false);
+    };
 
     const getBlankTemplateComponents = (): Element[] => {
         const blankTemplate: Template = cloneDeep(
@@ -512,6 +620,12 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     };
 
     const handleTemplateLoad = (template: Template): [Node[], Edge[]] => {
+        if (template?.type === "GENERATE_WITH_AI") {
+            setShowAIGenerationModal(true);
+
+            return [ [], [] ];
+        }
+
         if (!template?.config?.data?.steps) {
             return [ [], [] ];
         }
@@ -721,22 +835,36 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     }
 
     return (
-        <FlowBuilder
-            resources={ resources }
-            data-componentid={ componentId }
-            nodeTypes={ generateNodeTypes() }
-            mutateComponents={ handleMutateComponents }
-            onTemplateLoad={ handleTemplateLoad }
-            onWidgetLoad={ handleWidgetLoad }
-            onStepLoad={ handleStepLoad }
-            nodes={ nodes }
-            edges={ edges }
-            setNodes={ setNodes }
-            setEdges={ setEdges }
-            onNodesChange={ onNodesChange }
-            onEdgesChange={ onEdgesChange }
-            { ...rest }
-        />
+        <>
+            <FlowBuilder
+                aiGeneratedFlow={ aiGeneratedFlow }
+                resources={ resources }
+                data-componentid={ componentId }
+                nodeTypes={ generateNodeTypes() }
+                mutateComponents={ handleMutateComponents }
+                onTemplateLoad={ handleTemplateLoad }
+                onWidgetLoad={ handleWidgetLoad }
+                onStepLoad={ handleStepLoad }
+                nodes={ nodes }
+                edges={ edges }
+                setNodes={ setNodes }
+                setEdges={ setEdges }
+                onNodesChange={ onNodesChange }
+                onEdgesChange={ onEdgesChange }
+                { ...rest }
+            />
+            {
+                showAIGenerationModal && (
+                    <AIGenerationModal
+                        onUserPromptSubmit={ handleAIFlowGeneration }
+                        setUserPrompt={ setUserPrompt }
+                        open={ showAIGenerationModal }
+                        handleModalClose={ () => setShowAIGenerationModal(false) }
+                    />
+                )
+            }
+            { isFlowGenerating && <RegistrationFlowAILoader /> }
+        </>
     );
 };
 
