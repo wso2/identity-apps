@@ -30,15 +30,13 @@ import {
     getConnectedEdges,
     getIncomers,
     getOutgoers,
-    useEdgesState,
-    useNodesState,
     useReactFlow,
     useUpdateNodeInternals
 } from "@xyflow/react";
 import { UpdateNodeInternals } from "@xyflow/system";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
-import React, { FunctionComponent, ReactElement, useCallback } from "react";
+import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useCallback } from "react";
 import VisualFlow, { VisualFlowPropsInterface } from "./visual-flow";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
@@ -68,6 +66,8 @@ export interface DecoratedVisualFlowPropsInterface extends VisualFlowPropsInterf
         edges: Edge[]
     ) => [Node[], Edge[], Resource, string];
     onStepLoad: (step: Step) => Step;
+    setNodes: Dispatch<SetStateAction<Node[]>>;
+    setEdges: Dispatch<SetStateAction<Edge[]>>;
 }
 
 /**
@@ -81,6 +81,12 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     resources,
     initialNodes = [],
     initialEdges = [],
+    setNodes,
+    setEdges,
+    edges,
+    nodes,
+    onNodesChange,
+    onEdgesChange,
     onEdgeResolve,
     mutateComponents,
     onTemplateLoad,
@@ -89,8 +95,6 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     ...rest
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
     const { screenToFlowPosition, updateNodeData } = useReactFlow();
-    const [ nodes, setNodes, onNodesChange ] = useNodesState(initialNodes);
-    const [ edges, setEdges, onEdgesChange ] = useEdgesState(initialEdges);
     const { generateStepElement } = useGenerateStepElement();
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
 
@@ -189,7 +193,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         }
     };
 
-    const handleDragEnd: (e) => void = useCallback(event => {
+    const handleDragEnd = (event) => {
         const { source, target } = event.operation;
 
         if (event.canceled || !source || !target) {
@@ -222,7 +226,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                 addToForm(event, sourceData, targetData);
             }
         }
-    }, []);
+    };
 
     const handleDragOver: (e) => void = useCallback(event => {
         const { source, target } = event.operation;

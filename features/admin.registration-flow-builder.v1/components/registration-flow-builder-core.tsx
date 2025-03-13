@@ -33,10 +33,12 @@ import generateIdsForResources from "@wso2is/admin.flow-builder-core.v1/utils/ge
 import generateResourceId from "@wso2is/admin.flow-builder-core.v1/utils/generate-resource-id";
 import resolveComponentMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-component-metadata";
 import resolveStepMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-step-metadata";
-import updateTemplatePlaceholderReferences from "@wso2is/admin.flow-builder-core.v1/utils/update-template-placeholder-references";
+import updateTemplatePlaceholderReferences from
+    "@wso2is/admin.flow-builder-core.v1/utils/update-template-placeholder-references";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Edge, Node, NodeTypes } from "@xyflow/react";
+import { Edge, Node, NodeTypes, useEdgesState, useNodesState, useUpdateNodeInternals } from "@xyflow/react";
+import { UpdateNodeInternals } from "@xyflow/system";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
@@ -66,13 +68,17 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     "data-componentid": componentId = "registration-flow-builder-core",
     ...rest
 }: RegistrationFlowBuilderCorePropsInterface): ReactElement => {
+    const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
+
     const {
         data: registrationFlow,
         error: registrationFlowFetchRequestError,
         isLoading: isRegistrationFlowFetchRequestLoading,
         isValidating: isRegistrationFlowFetchRequestValidating
     } = useGetRegistrationFlow();
+
     const { data: resources } = useGetRegistrationFlowBuilderResources();
+
     const { steps, templates } = resources;
 
     const dispatch: Dispatch = useDispatch();
@@ -335,10 +341,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     };
 
     const initialNodes: Node[] = useMemo<Node[]>(() => {
-        if (!isEmpty(registrationFlow?.steps)) {
-            return generateSteps(registrationFlow.steps as any);
-        }
-
         return generateSteps([
             {
                 data: {
@@ -357,14 +359,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 type: StaticStepTypes.UserOnboard
             }
         ]);
-    }, [ registrationFlow, defaultTemplateComponents, generateSteps ]);
+    }, [ defaultTemplateComponents, generateSteps ]);
 
     const initialEdges: Edge[] = useMemo<Edge[]>(() => {
-        // If we have a valid registration flow with steps
-        if (registrationFlow?.steps && registrationFlow.steps.length > 0) {
-            return generateEdges(registrationFlow.steps);
-        }
-
         // Default fallback if no registration flow is found
         const defaultTemplateActionId: string = defaultTemplateComponents
             ?.map((component: Element) => {
@@ -394,7 +391,34 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 type: "base-edge"
             }
         ];
-    }, [ registrationFlow, defaultTemplateComponents, generateEdges ]);
+    }, [ defaultTemplateComponents ]);
+
+    const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
+    const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
+
+    useEffect(() => {
+        if (!isEmpty(registrationFlow?.steps)) {
+            const steps: Node[] =  generateSteps(registrationFlow.steps);
+
+            setTimeout(() => {
+                setEdges(() => generateEdges(steps as any));
+                setNodes(() => {
+                    steps.forEach((node: Node) => updateNodeInternals(node.id));
+
+                    return steps;
+                });
+            }, 0);
+        } else {
+            setTimeout(() => {
+                setEdges(() => initialEdges);
+                setNodes(() => {
+                    initialNodes.forEach((node: Node) => updateNodeInternals(node.id));
+
+                    return initialNodes;
+                });
+            }, 0);
+        }
+    }, [ registrationFlow?.steps ]);
 
     const generateNodeTypes = (): NodeTypes => {
         if (!steps) {
@@ -700,13 +724,17 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         <FlowBuilder
             resources={ resources }
             data-componentid={ componentId }
-            initialNodes={ initialNodes }
-            initialEdges={ initialEdges }
             nodeTypes={ generateNodeTypes() }
             mutateComponents={ handleMutateComponents }
             onTemplateLoad={ handleTemplateLoad }
             onWidgetLoad={ handleWidgetLoad }
             onStepLoad={ handleStepLoad }
+            nodes={ nodes }
+            edges={ edges }
+            setNodes={ setNodes }
+            setEdges={ setEdges }
+            onNodesChange={ onNodesChange }
+            onEdgesChange={ onEdgesChange }
             { ...rest }
         />
     );
