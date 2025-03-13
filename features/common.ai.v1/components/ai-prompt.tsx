@@ -33,12 +33,14 @@ interface AIPromptProps {
     handlePromptSubmit?: () => void;
     setUserPrompt?: (value: string) => void;
     samplePrompts?: string[];
+    userPrompt: string;
 }
 
 const AIPrompt = ({
     handlePromptSubmit,
     setUserPrompt,
-    samplePrompts
+    samplePrompts,
+    userPrompt
 }: AIPromptProps): ReactElement => {
 
     const handleSurpriseMe = () => {
@@ -80,6 +82,7 @@ const AIPrompt = ({
                     placeholder="Describe your flow to AI"
                     multiline
                     maxRows={ 4 }
+                    value={ userPrompt }
                     onChange={ (e) => setUserPrompt(e.target.value) }
                     sx={ {
                         flex: 1,
@@ -114,7 +117,7 @@ const AIPrompt = ({
                             height: 40,
                             fontSize: "13px"
                         } }
-                        onClick={ () => handleSurpriseMe }
+                        onClick={ () => handleSurpriseMe() }
                     >
                             Suggestions
                     </Button>

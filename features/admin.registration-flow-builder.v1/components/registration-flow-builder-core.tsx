@@ -892,6 +892,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         open={ showAIGenerationModal }
                         handleModalClose={ () => setShowAIGenerationModal(false) }
                         samplePrompts={ SAMPLE_PROMPTS }
+                        userPrompt={ userPrompt }
                     />
                 )
             }
