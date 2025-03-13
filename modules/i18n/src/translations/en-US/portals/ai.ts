@@ -150,6 +150,10 @@ export const ai: aiNS = {
                     "Please try again.",
                 message: "An error occurred"
             },
+            generateSuccess: {
+                description: "The registration flow has been generated successfully.",
+                message: "Flow generated successfully"
+            },
             rateLimitError: {
                 description: "You have exceeded the rate limit for registration flow generation. Please in a few moments.",
                 message: "Rate limit exceeded"

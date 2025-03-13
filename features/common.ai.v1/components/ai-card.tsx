@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import Box from "@oxygen-ui/react/Box";
-import { PlusIcon } from "@oxygen-ui/react-icons";
-import IconButton from "@oxygen-ui/react/IconButton";
 import Stack from "@mui/material/Stack";
 import Avatar from "@oxygen-ui/react/Avatar";
+import Box from "@oxygen-ui/react/Box";
+import IconButton from "@oxygen-ui/react/IconButton";
 import Typography from "@oxygen-ui/react/Typography";
+import { PlusIcon } from "@oxygen-ui/react-icons";
 import React, { ReactElement } from "react";
 import "./ai-generation-modal.scss";
 import { Card, CardContent } from "semantic-ui-react";

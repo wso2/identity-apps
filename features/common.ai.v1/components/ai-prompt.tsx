@@ -32,15 +32,19 @@ import React, { ReactElement } from "react";
 interface AIPromptProps {
     handlePromptSubmit?: () => void;
     setUserPrompt?: (value: string) => void;
+    samplePrompts?: string[];
 }
 
 const AIPrompt = ({
     handlePromptSubmit,
-    setUserPrompt
+    setUserPrompt,
+    samplePrompts
 }: AIPromptProps): ReactElement => {
 
     const handleSurpriseMe = () => {
-        console.log("Surprise me clicked");
+        const randomPrompt: string = samplePrompts[Math.floor(Math.random() * samplePrompts.length)];
+
+        setUserPrompt(randomPrompt);
     };
 
     return (
@@ -110,9 +114,9 @@ const AIPrompt = ({
                             height: 40,
                             fontSize: "13px"
                         } }
-                        onClick={ handleSurpriseMe }
+                        onClick={ () => handleSurpriseMe }
                     >
-                            Suprise me
+                            Suggestions
                     </Button>
                     <Button
                         size="small"

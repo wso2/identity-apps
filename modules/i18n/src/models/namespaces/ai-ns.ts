@@ -93,6 +93,7 @@ export interface aiNS{
             generateResultError: NotificationItem;
             generateResultFailed: NotificationItem;
             generateStatusError: NotificationItem;
+            generateSuccess: NotificationItem;
             rateLimitError: NotificationItem;
         };
         promptsHistory: string;

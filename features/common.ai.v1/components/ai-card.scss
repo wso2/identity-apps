@@ -2,7 +2,7 @@
     --wso2is-flow-builder-resource-panel-static-item-add-button-size: 35px;
 }
 
-.ai-card {
+.ui.card.ai-card {
     // TODO: `@oxygen-ui/react/Card` declares a default padding which is a bug.
     // Remove this once it is handled.
     // Tracker: https://github.com/wso2/oxygen-ui/issues/300

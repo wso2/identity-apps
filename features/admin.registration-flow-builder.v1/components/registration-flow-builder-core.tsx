@@ -119,6 +119,19 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     const INITIAL_FLOW_START_STEP_ID: string = StaticStepTypes.Start.toLowerCase();
     const INITIAL_FLOW_VIEW_STEP_ID: string = generateResourceId(StepTypes.View.toLowerCase());
     const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = StaticStepTypes.UserOnboard;
+    const SAMPLE_PROMPTS: string[] = [
+        "Ask the user to supply an email address and choose a strong password to begin the sign-up.",
+        "Prompt for a unique username and password, ensuring the password meets basic complexity rules.",
+        "Request a valid email address for communication and require the user to set a passphrase.",
+        "Allow the user to choose a display name alongside a secure password.",
+        "Gather basic personal details (e.g., first name, last name) plus an email and password up front.",
+        "Present a quick terms-of-service notice, then prompt for an email and passphrase to create an account.",
+        "Invite the user to pick a handle and a password, emphasizing at least 8 characters.",
+        "Offer a choice between social login (Google or Facebook) or an email/password sign-up for the first step.",
+        "Provide a field for a personal reference ID and a chosen password to initialize registration.",
+        "Require the user’s date of birth and an email address, then let them create a secure password to " +
+            "finish the first step."
+    ];
 
     useEffect(() => {
         if (flowError) {
@@ -208,6 +221,14 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         setAIGeneratedFlow(aiGeneratedRegistrationFlow);
         setShowAIGenerationModal(false);
         setIsFlowGenerating(false);
+
+        dispatch(
+            addAlert<AlertInterface>({
+                description: t("ai:aiRegistrationFlow.notifications.generateSuccess.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("ai:aiRegistrationFlow.notifications.generateSuccess.message")
+            })
+        );
     };
 
     const getBlankTemplateComponents = (): Element[] => {
@@ -860,6 +881,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         setUserPrompt={ setUserPrompt }
                         open={ showAIGenerationModal }
                         handleModalClose={ () => setShowAIGenerationModal(false) }
+                        samplePrompts={ SAMPLE_PROMPTS }
                     />
                 )
             }
