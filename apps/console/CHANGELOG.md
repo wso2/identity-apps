@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.47.0
+
+### Minor Changes
+
+- [#7866](https://github.com/wso2/identity-apps/pull/7866) [`77f1528ac2caccf5f319777dee60e2aa44db64b0`](https://github.com/wso2/identity-apps/commit/77f1528ac2caccf5f319777dee60e2aa44db64b0) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce AI assisted registration flow composer
+
+### Patch Changes
+
+- [#7869](https://github.com/wso2/identity-apps/pull/7869) [`6498f644b373793599f8fa8c08100bee885fcf2a`](https://github.com/wso2/identity-apps/commit/6498f644b373793599f8fa8c08100bee885fcf2a) Thanks [@brionmario](https://github.com/brionmario)! - Fix minor issues in registration flow builder
+
+- Updated dependencies [[`4d5ea9c18e0cb1cfb48c38d03e69e5aab09b425c`](https://github.com/wso2/identity-apps/commit/4d5ea9c18e0cb1cfb48c38d03e69e5aab09b425c)]:
+  - @wso2is/i18n@2.22.0
+  - @wso2is/admin.core.v1@2.42.3
+
 ## 2.46.0
 
 ### Minor Changes
