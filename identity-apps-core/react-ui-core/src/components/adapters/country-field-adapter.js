@@ -28,10 +28,10 @@ import ValidationError from "../validation-error";
 
 const CountryFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
 
-    const { required, identifier, placeholder, label, validation } = component.config;
+    const { required, identifier, placeholder, label, validations } = component.config;
 
     const { translations } = useTranslations();
-    const { fieldErrors, validate } = useFieldValidation(validation, selectedCountry);
+    const { fieldErrors, validate } = useFieldValidation(validations, selectedCountry);
 
     const [ countryList, setCountryList ] = useState([]);
     const [ selectedCountry, setSelectedCountry ] = useState("");
@@ -74,9 +74,9 @@ const CountryFieldAdapter = ({ component, formState, formStateHandler, fieldErro
                 selection
             />
             {
-                validation && validation.type === "CRITERIA" && validation.showValidationCriteria (
+                validations && validations.type === "RULE" && (
                     <ValidationCriteria
-                        validationConfig={ validation }
+                        validationConfig={ validations }
                         errors={ fieldErrors }
                         value={ selectedCountry }
                     />
@@ -99,7 +99,7 @@ CountryFieldAdapter.propTypes = {
             label: PropTypes.string.isRequired,
             placeholder: PropTypes.string.isRequired,
             required: PropTypes.boolean,
-            validation: PropTypes.array
+            validations: PropTypes.array
         }).isRequired,
         id: PropTypes.string,
         type: PropTypes.string,

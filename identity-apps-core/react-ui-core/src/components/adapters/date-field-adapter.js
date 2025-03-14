@@ -27,10 +27,10 @@ import ValidationError from "../validation-error";
 
 const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
 
-    const { identifier, required, label, placeholder, validation } = component.config;
+    const { identifier, required, label, placeholder, validations } = component.config;
 
     const { translations } = useTranslations();
-    const { fieldErrors, validate } = useFieldValidation(validation);
+    const { fieldErrors, validate } = useFieldValidation(validations);
 
     const [ value, setValue ] = useState("");
 
@@ -60,8 +60,8 @@ const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
                 closable
             />
             {
-                validation && validation.type === "CRITERIA" && validation.showValidationCriteria (
-                    <ValidationCriteria validationConfig={ validation } errors={ fieldErrors } value={ value } />
+                validations && validations.type === "RULE" && (
+                    <ValidationCriteria validationConfig={ validations } errors={ fieldErrors } value={ value } />
                 )
             }
             {

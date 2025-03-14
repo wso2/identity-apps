@@ -52,22 +52,23 @@ const AIGenerationModal = ({
             maxWidth="md"
             className="ai-generation-modal"
         >
-            <DialogTitle>
-                <IconButton
-                    edge="end"
-                    size="small"
-                    sx={ { float: "right" } }
-                    onClick={ () => {
-                        setUserPrompt("");
-                        handleModalClose();
-                    } }
-                >
-                    <CloseOutlinedIcon/>
-                </IconButton>
-            </DialogTitle>
+            <IconButton
+                edge="end"
+                size="small"
+                sx={ {
+                    position: "absolute",
+                    right: 8,
+                    top: 8 } }
+                onClick={ () => {
+                    setUserPrompt("");
+                    handleModalClose();
+                } }
+            >
+                <CloseOutlinedIcon/>
+            </IconButton>
             <DialogContent>
                 <Typography variant="h5" sx={ { textAlign: "center", marginBottom: "1em" } }>
-                    <span style={ { marginRight: "0.35rem" } }>Generate with</span>
+                    <span style={ { marginRight: "0.35rem" } }>Generate the</span>
                     <AIText>
                        Registration Flow AI
                     </AIText>

@@ -60,9 +60,9 @@ const useGenerateRegistrationFlow = (): UseGenerateRegistrationFlowFunction => {
                 if (error?.code === 422) {
                     dispatch(
                         addAlert<AlertInterface>({
-                            description: t("ai:aiLoginFlow.notifications.generateInputError.description"),
+                            description: t("ai:aiRegistrationFlow.notifications.generateInputError.description"),
                             level: AlertLevels.ERROR,
-                            message: t("ai:aiLoginFlow.notifications.generateInputError.message")
+                            message: t("ai:aiRegistrationFlow.notifications.generateInputError.message")
                         })
                     );
 
@@ -72,9 +72,9 @@ const useGenerateRegistrationFlow = (): UseGenerateRegistrationFlowFunction => {
                 if (error?.code === 429) {
                     dispatch(
                         addAlert<AlertInterface>({
-                            description: t("ai:aiLoginFlow.notifications.generateLimitError.description"),
+                            description: t("ai:aiRegistrationFlow.notifications.generateLimitError.description"),
                             level: AlertLevels.ERROR,
-                            message: t("ai:aiLoginFlow.notifications.generateLimitError.message")
+                            message: t("ai:aiRegistrationFlow.notifications.generateLimitError.message")
                         })
                     );
 
@@ -83,9 +83,9 @@ const useGenerateRegistrationFlow = (): UseGenerateRegistrationFlowFunction => {
 
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("ai:aiLoginFlow.notifications.generateError.description"),
+                        description: t("ai:aiRegistrationFlow.notifications.generateError.description"),
                         level: AlertLevels.ERROR,
-                        message: error.message || t("ai:aiLoginFlow.notifications.generateError.message")
+                        message: error.message || t("ai:aiRegistrationFlow.notifications.generateError.message")
                     })
                 );
             });
