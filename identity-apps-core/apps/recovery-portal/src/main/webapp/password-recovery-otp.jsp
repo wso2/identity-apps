@@ -224,7 +224,7 @@
                 request.setAttribute("screenValue", randomScreenValue);
                 request.setAttribute("resendCode", UUID.randomUUID().toString());
                 request.setAttribute("flowConfirmationCode", UUID.randomUUID().toString());
-                request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
+                request.getRequestDispatcher("otp.jsp").forward(request, response);
                 return;
             }
             for(AccountRecoveryType recoveryType: resp) {
@@ -273,7 +273,7 @@
             return;
         }
         // Redirect to enter the OTP.
-        request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
+        request.getRequestDispatcher("otp.jsp").forward(request, response);
     } else if (RecoveryStage.RESEND.equalsValue(recoveryStage)) {
         String resendCode = request.getParameter("resendCode");
         String flowConfirmationCode = request.getParameter("flowConfirmationCode");
@@ -307,7 +307,7 @@
         request.setAttribute("resendCode", resendCode);
         request.setAttribute("sp", request.getParameter("sp"));
         request.setAttribute("flowConfirmationCode", flowConfirmationCode);
-        request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
+        request.getRequestDispatcher("otp.jsp").forward(request, response);
     } else if (RecoveryStage.CONFIRM.equalsValue(recoveryStage)) {
         String flowConfirmationCode = request.getParameter("flowConfirmationCode"); 
         String OTPcode = request.getParameter("OTPcode");
@@ -336,7 +336,7 @@
             request.setAttribute("resendCode", request.getParameter("resendCode"));
             request.setAttribute("sp", request.getParameter("sp"));
             request.setAttribute("flowConfirmationCode", flowConfirmationCode);
-            request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
+            request.getRequestDispatcher("otp.jsp").forward(request, response);
             return;
         }
         String spId = Encode.forJava(request.getParameter("spId"));

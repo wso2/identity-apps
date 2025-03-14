@@ -42,6 +42,7 @@
 <%
     // Add the sms-otp screen to the list to retrieve text branding customizations.
     screenNames.add("sms-otp");
+    screenNames.add("email-otp");
 %>
 
 <%-- Branding Preferences --%>
@@ -155,7 +156,7 @@
             <div class="ui segment">
                     <%-- page content --%>
                     <h2>
-                    <%= i18n(recoveryResourceBundle, customText, "sms.otp.heading") %>
+                    <%= i18n(recoveryResourceBundle, customText, isEmailOtp ? "email.otp.heading" : "sms.otp.heading") %>
                     </h2>
                     <div class="ui divider hidden"></div>
                     <%
@@ -267,7 +268,8 @@
                             <input type='hidden' name='username'
                                 value='<%=Encode.forHtmlAttribute(username)%>'/>
                             <input type="hidden" name="channel"
-                                value='<%=IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP%>'/>
+                                value='<%=isEmailOtp ? IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL
+                                        : IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP%>'/>
                             <input type="hidden" id="recoveryStage" name="recoveryStage"
                                 value='CONFIRM'/>
                             <input type="hidden" name="resendCode"
@@ -351,12 +353,13 @@
                                         .addPath("/accountrecoveryendpoint/recoveraccountrouter.do").build()
                                         .getRelativePublicURL();
                                     String multiOptionPathWithQuery;
+                                    String selectedOption = isEmailOtp ? "EMAIL" : "SMSOTP";
                                     if (urlQuery.contains("&username=")) {
                                         multiOptionPathWithQuery =
                                             urlQuery.replaceAll("(&username=)[^&]+", "$1" + username);
                                     } else {
                                         multiOptionPathWithQuery = urlQuery + "&username=" + username
-                                            + "&selectedOption=SMSOTP";
+                                            + "&selectedOption=" + selectedOption;
                                     }
                                 %>
                                 <a class="ui primary basic button link-button" id="goBackLink"
