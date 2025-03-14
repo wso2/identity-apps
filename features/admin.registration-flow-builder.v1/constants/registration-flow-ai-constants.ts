@@ -59,3 +59,4 @@ export const INITIAL_PROGRESS: number = 5;
 export const INCREMENT: number = 0.5;
 export const FACTS_ROTATION_DELAY: number = 8000;
 export const PROGRESS_UPDATE_INTERVAL: number = 100;
+export const REGISTRATION_FLOW_AI_PROMPT_HISTORY_PREFERENCE_KEY: string = "registrationFlowAIPrompts";
