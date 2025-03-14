@@ -27,49 +27,59 @@ import ValidationError from "../validation-error";
 
 const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErrorHandler }) => {
 
+    const CONFIRM_PASSWORD_RULE = [ [ {
+        "conditions": [ {
+            "key": "confirm.password",
+            "value": "Must match with the password"
+        } ],
+        "name": "ConfirmPasswordValidator",
+        "type": "RULE"
+    } ] ];
+
     const { identifier, required, label, placeholder, validations } = component.config;
     const { translations } = useTranslations();
     const { fieldErrors: passwordErrors, validate } = useFieldValidation(validations);
+    const {
+        fieldErrors: confirmPasswordErrors,
+        validate: validateConfirmPassword
+    } = useFieldValidation(CONFIRM_PASSWORD_RULE);
+
 
     const [ password, setPassword ] = useState("");
     const [ confirmPassword, setConfirmPassword ] = useState("");
     const [ showPassword, setShowPassword ] = useState(false);
-    const [ confirmPasswordError, setConfirmPasswordError ] = useState([]);
 
     const isPasswordField = identifier === "password";
     const isConfirmPasswordField = identifier === "confirmPassword";
 
-    const confirmPasswordCriteria = {
-        "conditions": [ {
-            "error": "Passwords do not match",
-            "key": "min.length",
-            "label": "sign.up.form.fields.password.policies.passwordsMustMatch",
-            "value": "1"
-        } ],
-        "name": "ConfirmPasswordValidater",
-        "type": "RULE"
-    };
-
     useEffect(() => {
         if (isPasswordField) {
             formStateHandler(identifier, password);
-            validateConfirmPassword();
-        }
-    }, [ password ]);
-
-    useEffect(() => {
-        if (validations) {
             validate({ identifier, required }, password);
             formErrorHandler(identifier, passwordErrors);
+
+            if (formState.values.confirmPassword) {
+                validateConfirmPassword(
+                    { identifier: "confirmPassword", required },
+                    formState.values.confirmPassword,
+                    password
+                );
+                formErrorHandler("confirmPassword", confirmPasswordErrors);
+            }
         }
     }, [ password ]);
 
     useEffect(() => {
         if (isConfirmPasswordField) {
             formStateHandler(identifier, confirmPassword);
-            validateConfirmPassword();
+            validateConfirmPassword(
+                { identifier, required },
+                confirmPassword,
+                formState.values.password
+            );
+            formErrorHandler(identifier, confirmPasswordErrors);
         }
-    }, [ confirmPassword ]);
+    }, [ confirmPassword, password ]);
 
     const handlePasswordChange = (value) => {
         setPassword(value);
@@ -79,21 +89,12 @@ const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErro
         setConfirmPassword(value);
     };
 
-    const validateConfirmPassword = () => {
-        if (confirmPassword !== formState.values.password || formState.values.password === "") {
-            setConfirmPasswordError([ {
-                "error": "Passwords do not match",
-                "label": "sign.up.form.fields.password.policies.passwordsMustMatch"
-            } ]);
-        }
-    };
-
     const resolveFieldCriteria = () => {
         if (isConfirmPasswordField) {
             return (
                 <ValidationCriteria
-                    validationConfig={ confirmPasswordCriteria }
-                    errors={ confirmPasswordError }
+                    validationConfig={ CONFIRM_PASSWORD_RULE }
+                    errors={ confirmPasswordErrors }
                     value={ confirmPassword }
                 />
             );

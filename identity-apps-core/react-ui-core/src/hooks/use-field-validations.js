@@ -52,7 +52,7 @@ const useFieldValidation = (validationConfig) => {
      * Validate a single rule object (e.g. { type: "RULE", name: "LengthValidator", conditions: [...] }).
      * Return an error message if invalid, or `null` if valid.
      */
-    const validateRule = useCallback((rule, value) => {
+    const validateRule = useCallback((rule, value, compareValue) => {
         if (rule.type !== "RULE") return null;
 
         const { name, conditions } = rule;
@@ -165,6 +165,16 @@ const useFieldValidation = (validationConfig) => {
                 break;
             }
 
+            case "ConfirmPasswordValidator": {
+                console.log("value", value);
+                console.log("compareValue", compareValue);
+                if (value !== compareValue) {
+                    return "Must match with the password.";
+                }
+
+                break;
+            }
+
             default:
                 return null;
         }
@@ -176,8 +186,12 @@ const useFieldValidation = (validationConfig) => {
      * Validate the given `value` using the config’s required property
      * and all rule arrays in config.validations.
      */
-    const validate = useCallback((config, value) => {
+    const validate = useCallback((config, value, compareValue) => {
         const validationErrors = [];
+
+        console.log("config", config);
+        console.log("value", value);
+        console.log("compareValue", compareValue);
 
         if (config.required && !value) {
             validationErrors.push("This field is required.");
@@ -185,9 +199,15 @@ const useFieldValidation = (validationConfig) => {
 
         const validations = validationConfig || [];
 
+        console.log("validations", validations);
+
+        debugger;
+
         for (const validation of validations) {
             for (const rule of validation) {
-                const error = validateRule(rule, value);
+                console.log("rule", rule);
+                const error = validateRule(rule, value, compareValue);
+                console.log("error", error);
 
                 if (error) {
                     validationErrors.push(error);
