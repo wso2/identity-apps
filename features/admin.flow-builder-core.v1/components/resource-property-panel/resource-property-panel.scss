@@ -125,6 +125,15 @@
         .flow-builder-element-property-panel-footer {
             border-top: 1px solid var(--oxygen-palette-divider);
             padding: var(--oxygen-spacing-2);
+
+            .flow-builder-element-property-panel-footer-secondary-action {
+                &.icon-button {
+                    border-radius: var(--oxygen-shape-borderRadius);
+                    height: 40px;
+                    width: 40px;
+                    min-width: 40px;
+                }
+            }
         }
     }
 }
