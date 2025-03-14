@@ -27,9 +27,9 @@ import ValidationError from "../validation-error";
 
 const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErrorHandler }) => {
 
-    const { identifier, required, label, placeholder, validation } = component.config;
+    const { identifier, required, label, placeholder, validations } = component.config;
     const { translations } = useTranslations();
-    const { fieldErrors: passwordErrors, validate } = useFieldValidation(validation);
+    const { fieldErrors: passwordErrors, validate } = useFieldValidation(validations);
 
     const [ password, setPassword ] = useState("");
     const [ confirmPassword, setConfirmPassword ] = useState("");
@@ -40,12 +40,14 @@ const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErro
     const isConfirmPasswordField = identifier === "confirmPassword";
 
     const confirmPasswordCriteria = {
-        "criteria": [ {
+        "conditions": [ {
             "error": "Passwords do not match",
-            "label": "sign.up.form.fields.password.policies.passwordsMustMatch"
+            "key": "min.length",
+            "label": "sign.up.form.fields.password.policies.passwordsMustMatch",
+            "value": "1"
         } ],
-        "showValidationCriteria": true,
-        "type": "CRITERIA"
+        "name": "ConfirmPasswordValidater",
+        "type": "RULE"
     };
 
     useEffect(() => {
@@ -56,7 +58,7 @@ const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErro
     }, [ password ]);
 
     useEffect(() => {
-        if (validation) {
+        if (validations) {
             validate({ identifier, required }, password);
             formErrorHandler(identifier, passwordErrors);
         }
@@ -96,9 +98,9 @@ const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErro
                 />
             );
         } else {
-            return validation && validation.type === "CRITERIA" && validation.showValidationCriteria ? (
-                <ValidationCriteria validationConfig={ validation } errors={ passwordErrors } value={ password } />
-            ) : (passwordErrors.length > 0 || formState.errors.length > 0) &&  (
+            return validations && validations.length > 0 ? (
+                <ValidationCriteria validationConfig={ validations } errors={ passwordErrors } value={ password } />
+            ) : (
                 <ValidationError
                     name={ identifier }
                     errors={ { fieldErrors: passwordErrors, formStateErrors: formState.errors } }
@@ -149,7 +151,7 @@ PasswordFieldAdapter.propTypes = {
             name: PropTypes.string.isRequired,
             placeholder: PropTypes.string.isRequired,
             required: PropTypes.boolean,
-            validation: PropTypes.object
+            validations: PropTypes.object
         }).isRequired
     }).isRequired,
     formErrorHandler: PropTypes.func.isRequired,

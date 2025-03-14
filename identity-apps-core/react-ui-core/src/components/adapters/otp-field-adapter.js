@@ -28,25 +28,34 @@ import ValidationError from "../validation-error";
 const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler, validations }) => {
     const { placeholder, identifier, label, length, required } = component.config;
     
-    const { translations } = useTranslations();
-    const { fieldErrors, validate } = useFieldValidation(validations, otpValues ? otpValues.join("") : "");
-
-    const [ otpLength, ] = useState(9);
+    const [ otpLength, ] = useState(length ? length : 6);
     const [ otpValues, setOtpValues ] = useState(Array(otpLength).fill(""));
     const [ showOTP, setShowOTP ] = useState(false);
+    
+    const { translations } = useTranslations();
+    const { fieldErrors, validate } = useFieldValidation(validations,
+        otpValues ? (otpLength <= 6 ? otpValues.join("") : otpValues) : "");
+
 
     useEffect(() => {
-        formStateHandler(identifier, otpValues.join(""));
+        if (otpLength <= 6) {
+            formStateHandler(identifier, otpValues.join(""));
+        } else {
+            formStateHandler(identifier, otpValues);
+        }
     }, [ otpValues ]);
 
     /**
      * Handle field validation.
-     * 
-     * @param {*} value 
      */
-    const handleFieldValidation = (value) => {
-        const isValid = validate({ identifier, required }, value);
+    const handleFieldValidation = () => {
+        let isValid = false;
 
+        if (otpLength <= 6) {
+            isValid = validate({ identifier, required }, otpValues.join(""));
+        } else {
+            isValid = validate({ identifier, required }, otpValues);
+        }
         fieldErrorHandler(identifier, isValid ? null : fieldErrors);
     };
 
@@ -127,7 +136,7 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
                                         placeholder="·"
                                         maxLength="1"
                                         style={{
-                                            width: "3rem",
+                                            width: "3.1rem",
                                             textAlign: "center"
                                         }}
                                     />
@@ -136,7 +145,7 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
                         }
                     </div>
                 ) : (
-                    <div className="ui fluid left icon input addon-wrapper">
+                    <div className="ui fluid right icon input addon-wrapper">
                         <input
                             className="form-control"
                             name={ identifier }
@@ -144,10 +153,9 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
                             placeholder={ resolveElementText(translations, placeholder) }
                             required={ required }
                             onChange={ (e) => {
-                                const cleaned = e.target.value.replace(/[^0-9]/g, "").slice(0, otpLength);
-                                setOtpValues(cleaned.split(""));
+                                setOtpValues(e.target.value);
                             } }
-                            onBlur={ (e) => handleFieldValidation(e.target.value) }
+                            onBlur={ () => handleFieldValidation() }
                         />
                         <i
                             className={ classNames("eye icon right-align password-toggle", { slash: !showOTP }) }
