@@ -27,7 +27,9 @@ import {
 } from "@mui/material";
 import Button from "@oxygen-ui/react/Button";
 import Stack from "@oxygen-ui/react/Stack";
+import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 
 interface AIPromptProps {
     handlePromptSubmit?: () => void;
@@ -44,6 +46,9 @@ const AIPrompt = ({
     userPrompt,
     showHistory = true
 }: AIPromptProps): ReactElement => {
+
+    const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const handleSurpriseMe = () => {
         const randomPrompt: string = samplePrompts[Math.floor(Math.random() * samplePrompts.length)];
@@ -165,10 +170,16 @@ const AIPrompt = ({
                 sx={ {
                     textAlign: "center",
                     color: "#555",
-                    marginTop: 1
+                    marginTop: 1,
+                    maxWidth: "450px"
                 } }
             >
-                Registration flow AI can make mistakes. Check important info.
+                { t("ai:aiRegistrationFlow.disclaimer") }
+                <DocumentationLink
+                    link={ getLink("common.termsOfService") }
+                >
+                    { t("ai:aiLoginFlow.termsAndConditions") }
+                </DocumentationLink>
             </Typography>
         </Box>
     );
