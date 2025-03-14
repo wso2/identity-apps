@@ -166,8 +166,6 @@ const useFieldValidation = (validationConfig) => {
             }
 
             case "ConfirmPasswordValidator": {
-                console.log("value", value);
-                console.log("compareValue", compareValue);
                 if (value !== compareValue) {
                     return "Must match with the password.";
                 }
@@ -189,25 +187,15 @@ const useFieldValidation = (validationConfig) => {
     const validate = useCallback((config, value, compareValue) => {
         const validationErrors = [];
 
-        console.log("config", config);
-        console.log("value", value);
-        console.log("compareValue", compareValue);
-
         if (config.required && !value) {
             validationErrors.push("This field is required.");
         }
 
         const validations = validationConfig || [];
 
-        console.log("validations", validations);
-
-        debugger;
-
         for (const validation of validations) {
             for (const rule of validation) {
-                console.log("rule", rule);
                 const error = validateRule(rule, value, compareValue);
-                console.log("error", error);
 
                 if (error) {
                     validationErrors.push(error);
