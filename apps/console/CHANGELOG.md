@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.47.2
+
+### Patch Changes
+
+- [#7877](https://github.com/wso2/identity-apps/pull/7877) [`7ab069a0f77e33e380144bef2d957780abfd37b8`](https://github.com/wso2/identity-apps/commit/7ab069a0f77e33e380144bef2d957780abfd37b8) Thanks [@brionmario](https://github.com/brionmario)! - Exclude identity claims
+
+* [#7879](https://github.com/wso2/identity-apps/pull/7879) [`55b8f381f2a3dd54a619e2ed3da35eaf97fcd93f`](https://github.com/wso2/identity-apps/commit/55b8f381f2a3dd54a619e2ed3da35eaf97fcd93f) Thanks [@brionmario](https://github.com/brionmario)! - Update delete button styling
+
 ## 2.47.1
 
 ### Patch Changes

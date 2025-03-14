@@ -1,5 +1,14 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.3.2
+
+### Patch Changes
+
+- [#7879](https://github.com/wso2/identity-apps/pull/7879) [`55b8f381f2a3dd54a619e2ed3da35eaf97fcd93f`](https://github.com/wso2/identity-apps/commit/55b8f381f2a3dd54a619e2ed3da35eaf97fcd93f) Thanks [@brionmario](https://github.com/brionmario)! - Update delete button styling
+
+- Updated dependencies [[`52aa54394406ef270f18c50b160e5320445bcd13`](https://github.com/wso2/identity-apps/commit/52aa54394406ef270f18c50b160e5320445bcd13)]:
+  - @wso2is/common.ai.v1@2.26.2
+
 ## 0.3.1
 
 ### Patch Changes
