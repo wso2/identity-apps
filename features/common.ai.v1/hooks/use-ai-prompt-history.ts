@@ -42,13 +42,13 @@ const useAIPromptHistory = (
     /**
    * Add a new prompt only if it doesn't already exist in the array.
    */
-    function addPrompt(newPrompt: string): void {
+    const addPrompt = (newPrompt: string): void => {
         if (!prompts.includes(newPrompt)) {
             const updatedPrompts: string[] = [ ...prompts, newPrompt ];
 
             setPreferences({ [promptKey]: updatedPrompts });
         }
-    }
+    };
 
     /**
    * Remove an existing prompt from the array by filtering it out.

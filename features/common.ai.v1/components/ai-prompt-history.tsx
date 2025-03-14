@@ -109,7 +109,6 @@ const AIPromptHistory = ({
                         </IconButton>
                     </Box>
 
-                    { /* If no prompts, show a placeholder message */ }
                     { displayedPrompts.length === 0 ? (
                         <Box sx={ { textAlign: "center", color: "#777", py: 2, width: "100%" } }>
                             <Typography variant="body2">
