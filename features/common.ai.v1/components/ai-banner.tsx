@@ -70,11 +70,9 @@ const AIBanner = (props: AIBannerProps): ReactElement => {
                     className="ai-banner-heading"
                 >
                     { title }
-                    { aiText && (
-                        <AIText>
-                            { aiText }
-                        </AIText>
-                    ) }
+                    <AIText>
+                        { aiText }
+                    </AIText>
                     { titleLabel }
                 </Typography>
                 <Typography className="ai-banner-sub-heading">
