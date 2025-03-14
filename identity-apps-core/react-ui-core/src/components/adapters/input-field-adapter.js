@@ -73,7 +73,7 @@ const InputFieldAdapter = ({ component, formState, formStateHandler, formFieldEr
                     formErrorHandler={ formFieldError }
                 />
             );
-        case "PHONE_NUMBER":
+        case "TELEPHONE":
             return (
                 <PhoneNumberFieldAdapter
                     component={ component }
