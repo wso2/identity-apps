@@ -243,6 +243,7 @@ export class ServerConfigurationsConstants {
         "Recovery.Question.Password.Forced.Enable";
 
     public static readonly RECOVERY_EMAIL_LINK_ENABLE: string = "Recovery.Notification.Password.emailLink.Enable";
+    public static readonly RECOVERY_EMAIL_OTP_ENABLE: string = "Recovery.Notification.Password.OTP.SendOTPInEmail";
     public static readonly RECOVERY_SMS_OTP_ENABLE: string = "Recovery.Notification.Password.smsOtp.Enable";
     public static readonly RECOVERY_OTP_USE_UPPERCASE: string =
         "Recovery.Notification.Password.OTP.UseUppercaseCharactersInOTP";

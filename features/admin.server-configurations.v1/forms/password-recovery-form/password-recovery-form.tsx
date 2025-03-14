@@ -22,6 +22,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
+    EmailRecoveryOption,
     PasswordRecoveryConfigurationFormPropsInterface,
     PasswordRecoveryFormConstants,
     PasswordRecoveryFormErrorValidationsInterface,
@@ -30,6 +31,7 @@ import {
 } from "@wso2is/admin.server-configurations.v1";
 import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
+import { RadioChild } from "@wso2is/forms";
 import { Heading, Hint, Link, Message } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
@@ -72,6 +74,18 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
     const [ isUpperCaseEnabled, setIsUpperCaseEnabled ] = useState<boolean>(false);
     const [ isLowerCaseEnabled, setIsLowerCaseEnabled ] = useState<boolean>(false);
     const [ isNumericEnabled, setIsNumericEnabled ] = useState<boolean>(false);
+    const [ emailRecoveryOption, setEmailRecoveryOption ] = useState<string>(EmailRecoveryOption.EMAIL_LINK);
+
+    const EMAIL_RECOVERY_RADIO_OPTIONS: RadioChild [] = [
+        {
+            label: "extensions:manage.serverConfigurations.accountRecovery." +
+                    "passwordRecovery.form.fields.emailRecoveryOptions.emailLink.label",
+            value: EmailRecoveryOption.EMAIL_LINK },
+        {
+            label: "extensions:manage.serverConfigurations.accountRecovery." +
+                    "passwordRecovery.form.fields.emailRecoveryOptions.emailOtp.label",
+            value: EmailRecoveryOption.EMAIL_OTP }
+    ];
 
     const showSmsOtpPwdRecoveryFeatureStatusChip: boolean =
         useSelector((state: AppState) => state?.config?.ui?.showSmsOtpPwdRecoveryFeatureStatusChip);
@@ -103,10 +117,17 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                         };
 
                         break;
+                    case ServerConfigurationsConstants.RECOVERY_EMAIL_OTP_ENABLE:
+                        resolvedInitialValues = {
+                            ...resolvedInitialValues,
+                            enableEmailOtpBasedRecovery: CommonUtils.parseBoolean(property.value)
+                        };
+
+                        break;
                     case ServerConfigurationsConstants.RECOVERY_EMAIL_LINK_ENABLE:
                         resolvedInitialValues = {
                             ...resolvedInitialValues,
-                            enableEmailBasedRecovery: CommonUtils.parseBoolean(property.value)
+                            enableEmailLinkBasedRecovery: CommonUtils.parseBoolean(property.value)
                         };
 
                         break;
@@ -173,7 +194,10 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
             }
         });
         setInitialConnectorValues(resolvedInitialValues);
-        setIsEmailRecoveryEnabled(resolvedInitialValues?.enableEmailBasedRecovery);
+        setIsEmailRecoveryEnabled(resolvedInitialValues?.enableEmailLinkBasedRecovery ||
+             resolvedInitialValues?.enableEmailOtpBasedRecovery);
+        setEmailRecoveryOption(resolvedInitialValues?.enableEmailOtpBasedRecovery ?
+            EmailRecoveryOption.EMAIL_OTP : EmailRecoveryOption.EMAIL_LINK);
         setIsSMSRecoveryEnabled(resolvedInitialValues?.enableSMSBasedRecovery);
         setIsUpperCaseEnabled(resolvedInitialValues?.passwordRecoveryOtpUseUppercase);
         setIsLowerCaseEnabled(resolvedInitialValues?.passwordRecoveryOtpUseLowercase);
@@ -283,6 +307,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
      * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: Record<string, any>) => {
+
         const data: PasswordRecoveryFormUpdatableConfigsInterface = {
             "Recovery.ExpiryTime": values.expiryTime !== undefined
                 ? values.expiryTime
@@ -299,6 +324,9 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
             "Recovery.Notification.Password.OTP.OTPLength": values.smsOtpLength !== undefined
                 ? values.smsOtpLength
                 : initialConnectorValues?.smsOtpLength,
+            "Recovery.Notification.Password.OTP.SendOTPInEmail": emailRecoveryOption !== undefined
+                ? (emailRecoveryOption === EmailRecoveryOption.EMAIL_OTP && values.enableEmailBasedRecovery)
+                : initialConnectorValues?.enableEmailOtpBasedRecovery,
             "Recovery.Notification.Password.OTP.UseLowercaseCharactersInOTP":
                 values.passwordRecoveryOtpUseLowercase !== undefined
                     ? values.passwordRecoveryOtpUseLowercase
@@ -310,9 +338,9 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 values.passwordRecoveryOtpUseUppercase !== undefined
                     ? values.passwordRecoveryOtpUseUppercase
                     : initialConnectorValues?.passwordRecoveryOtpUseUppercase,
-            "Recovery.Notification.Password.emailLink.Enable": values.enableEmailBasedRecovery !== undefined
-                ? !!values.enableEmailBasedRecovery
-                : initialConnectorValues?.enableEmailBasedRecovery,
+            "Recovery.Notification.Password.emailLink.Enable": emailRecoveryOption !== undefined
+                ? (emailRecoveryOption === EmailRecoveryOption.EMAIL_LINK && values.enableEmailBasedRecovery)
+                : initialConnectorValues?.enableEmailLinkBasedRecovery,
             "Recovery.Notification.Password.smsOtp.Enable": values.enableSMSBasedRecovery !== undefined
                 ? !!values.enableSMSBasedRecovery
                 : initialConnectorValues?.enableSMSBasedRecovery,
@@ -354,6 +382,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     readOnly={ readOnly }
                     width={ 10 }
                     disabled={ !isConnectorEnabled }
+                    defaultValue = { isEmailRecoveryEnabled }
                     listen={ (value: boolean) => setIsEmailRecoveryEnabled(value) }
                     data-testid={ `${ testId }-email-link-based-recovery` }
                     data-componentid={ `${ testId }-email-link-based-recovery` }
@@ -362,6 +391,29 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.enableEmailBasedRecovery.hint") as ReactNode }
                 </Hint>
+
+                <Heading as="h6">
+                    { t("extensions:manage.serverConfigurations.accountRecovery." +
+                    "passwordRecovery.form.fields.emailRecoveryOptions.header") as ReactNode }
+                </Heading>
+                {
+                    EMAIL_RECOVERY_RADIO_OPTIONS.map((option: RadioChild) => (
+                        <Field.Radio
+                            key={ option.value }
+                            ariaLabel={ t(option.label) }
+                            label={ t(option.label) }
+                            name={ "emailRecoveryOption" }
+                            type="radio"
+                            value={ option.value }
+                            checked={ emailRecoveryOption === option.value }
+                            listen={ () => setEmailRecoveryOption(option.value) }
+                            disabled={ !isEmailRecoveryEnabled }
+                            readOnly={ readOnly }
+                        />
+                    ))
+                }
+                <br/>
+
                 <Field.Checkbox
                     ariaLabel="notifyRecoverySuccess"
                     name="notifySuccess"
@@ -374,6 +426,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     data-testid={ `${ testId }-notify-success` }
                     data-componentid={ `${ testId }-notify-success` }
                 />
+
                 <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.notifySuccess.hint") as ReactNode }

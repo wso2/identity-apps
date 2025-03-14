@@ -2841,6 +2841,15 @@ export interface Extensions {
                             passwordRecoveryOtpUseLowercase: FormAttributes;
                             passwordRecoveryOtpUseNumeric: FormAttributes;
                             passwordRecoveryOtpLength: FormAttributes;
+                            emailRecoveryOptions: {
+                                header: string;
+                                emailLink: {
+                                    label: string;
+                                },
+                                emailOtp: {
+                                    label: string;
+                                }
+                            };
                         };
                         smsProviderWarning: string;
                     };
