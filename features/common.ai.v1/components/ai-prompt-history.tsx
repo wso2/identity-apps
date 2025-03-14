@@ -96,7 +96,7 @@ const AIPromptHistory = ({
                     >
                         <Typography
                             variant="subtitle1"
-                            sx={ { color: "#333" } }
+                            sx={ { color: "#333", marginLeft: "5px" } }
                         >
                             History
                         </Typography>
@@ -110,7 +110,7 @@ const AIPromptHistory = ({
                     </Box>
 
                     { displayedPrompts.length === 0 ? (
-                        <Box sx={ { textAlign: "center", color: "#777", py: 2, width: "100%" } }>
+                        <Box sx={ { textAlign: "center", color: "#777", py: 2, width: "100%", minWidth: "600px" } }>
                             <Typography variant="body2">
                                 No prompts have been saved yet.
                             </Typography>
