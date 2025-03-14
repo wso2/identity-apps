@@ -113,7 +113,7 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
                     <div
                         className="sms-otp-fields equal width fields"
                         onPaste={ handlePaste }
-                        style={{ display: "flex", gap: "1rem", margin: "auto 0" }}
+                        style={{ display: "flex", gap: "0.8rem", margin: "auto 0" }}
                     >
                         <input
                             hidden
