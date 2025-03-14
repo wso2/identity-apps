@@ -8515,7 +8515,7 @@ importers:
         specifier: ^2.42.3
         version: link:../admin.core.v1
       '@wso2is/common.ai.v1':
-        specifier: ^2.26.1
+        specifier: ^2.26.2
         version: link:../common.ai.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -13706,7 +13706,7 @@ importers:
         specifier: ^1.4.204
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
-        specifier: ^0.3.1
+        specifier: ^0.3.2
         version: link:../admin.flow-builder-core.v1
       '@wso2is/admin.rules.v1':
         specifier: ^0.4.19
@@ -13715,7 +13715,7 @@ importers:
         specifier: ^2.33.3
         version: link:../admin.server-configurations.v1
       '@wso2is/common.ai.v1':
-        specifier: ^2.26.1
+        specifier: ^2.26.2
         version: link:../common.ai.v1
       '@wso2is/core':
         specifier: ^2.7.0
