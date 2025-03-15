@@ -376,7 +376,7 @@ export const actions: actionsNS = {
         },
         preUpdateProfile: {
             description: {
-                expanded: "Use this action to validate user attributes.",
+                expanded: "Use this action to validate user attributes at profile update.",
                 shortened: "This action is executed before updating the profile of a user."
             },
             heading: "Pre Update Profile"
