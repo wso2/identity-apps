@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.19.6
+
+### Patch Changes
+
+- [#7881](https://github.com/wso2/identity-apps/pull/7881) [`6f6564046f57869ddac09d6238fb4101bc1f9f86`](https://github.com/wso2/identity-apps/commit/6f6564046f57869ddac09d6238fb4101bc1f9f86) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce prompt history option in registration flow AI
+
 ## 2.19.5
 
 ### Patch Changes
