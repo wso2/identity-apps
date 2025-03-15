@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { Typography } from "@mui/material";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Divider from "@oxygen-ui/react/Divider";
 import Skeleton from "@oxygen-ui/react/Skeleton";
+import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
@@ -36,9 +36,9 @@ import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import UserAttributeList from "./userAttributes/user-attribute-list";
 import CommonActionConfigForm from "./common-action-config-form";
 import RuleConfigForm from "./rule-config-form";
+import UserAttributeList from "./userAttributes/user-attribute-list";
 import createAction from "../api/create-action";
 import updateAction from "../api/update-action";
 import useGetActionById from "../api/use-get-action-by-id";
