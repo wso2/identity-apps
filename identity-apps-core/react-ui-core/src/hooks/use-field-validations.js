@@ -52,7 +52,7 @@ const useFieldValidation = (validationConfig) => {
      * Validate a single rule object (e.g. { type: "RULE", name: "LengthValidator", conditions: [...] }).
      * Return an error message if invalid, or `null` if valid.
      */
-    const validateRule = useCallback((rule, value) => {
+    const validateRule = useCallback((rule, value, compareValue) => {
         if (rule.type !== "RULE") return null;
 
         const { name, conditions } = rule;
@@ -165,6 +165,14 @@ const useFieldValidation = (validationConfig) => {
                 break;
             }
 
+            case "ConfirmPasswordValidator": {
+                if (value !== compareValue) {
+                    return "Must match with the password.";
+                }
+
+                break;
+            }
+
             default:
                 return null;
         }
@@ -176,7 +184,7 @@ const useFieldValidation = (validationConfig) => {
      * Validate the given `value` using the config’s required property
      * and all rule arrays in config.validations.
      */
-    const validate = useCallback((config, value) => {
+    const validate = useCallback((config, value, compareValue) => {
         const validationErrors = [];
 
         if (config.required && !value) {
@@ -187,7 +195,7 @@ const useFieldValidation = (validationConfig) => {
 
         for (const validation of validations) {
             for (const rule of validation) {
-                const error = validateRule(rule, value);
+                const error = validateRule(rule, value, compareValue);
 
                 if (error) {
                     validationErrors.push(error);

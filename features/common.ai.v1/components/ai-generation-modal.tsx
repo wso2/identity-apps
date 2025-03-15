@@ -19,7 +19,6 @@
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Typography from "@oxygen-ui/react/Typography";
 import React, { ReactElement } from "react";
@@ -35,6 +34,7 @@ interface AIGenerationModalProps {
     samplePrompts?: string[];
     userPrompt: string;
     showHistory?: boolean;
+    promptHistoryPreferenceKey?: string;
 }
 
 const AIGenerationModal = ({
@@ -44,6 +44,7 @@ const AIGenerationModal = ({
     setUserPrompt,
     samplePrompts,
     userPrompt,
+    promptHistoryPreferenceKey,
     showHistory = true
 }: AIGenerationModalProps): ReactElement => {
     return (
@@ -67,10 +68,10 @@ const AIGenerationModal = ({
                 <CloseOutlinedIcon/>
             </IconButton>
             <DialogContent>
-                <Typography variant="h5" sx={ { textAlign: "center", marginBottom: "1em" } }>
+                <Typography variant="h5" sx={ { textAlign: "center", marginBottom: "1.25em" } }>
                     <span style={ { marginRight: "0.35rem" } }>Generate the</span>
                     <AIText>
-                       Registration Flow AI
+                       Registration Flow with AI
                     </AIText>
                 </Typography>
                 <AIPrompt
@@ -79,6 +80,7 @@ const AIGenerationModal = ({
                     samplePrompts={ samplePrompts }
                     userPrompt={ userPrompt }
                     showHistory={ showHistory }
+                    promptHistoryPreferenceKey={ promptHistoryPreferenceKey }
                 />
             </DialogContent>
         </Dialog>

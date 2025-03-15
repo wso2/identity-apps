@@ -123,8 +123,11 @@ const UserPreferencesProvider = <T,>({
      * @param key - The key of the preference to retrieve.
      * @param userId - Optional user Id. If provided, the preferences for the passed in user-id will be updated.
      */
-    const getPreferences = (key: string, userId?: string): T =>
-        get(preferencesInContext, `${userId ?? _userId}.${key}`, null);
+    const getPreferences = (key: string, userId?: string): T => {
+        const userKey: string = userId ?? _userId;
+
+        return get(preferencesInContext, userKey, {})[key] ?? null;
+    };
 
     /**
      * Get all flat-level preferences for the specified organization.

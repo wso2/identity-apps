@@ -40,6 +40,7 @@ export const getRuleLabel = (rule) => {
     // Extract min/max length from conditions if relevant.
     const minLen = getConditionValue(rule, "min.length");
     const maxLen = getConditionValue(rule, "max.length");
+    const confirmPassword = getConditionValue(rule, "confirm.password");
 
     switch (rule.name) {
         case "LengthValidator":
@@ -74,6 +75,14 @@ export const getRuleLabel = (rule) => {
             if (minLen && minLen > 0) {
                 return `Must contain at least ${minLen} special character(s).`;
             }
+
+        case "ConfirmPasswordValidator":
+
+            if (confirmPassword) {
+                return "Must match with the password.";
+            }
+            return "Must match with the password.";
+
         default:
             return null;
     }
@@ -104,7 +113,7 @@ const ValidationCriteria = ({ validationConfig, errors = [], value = "" }) => {
                             if (!label) {
                                 return null;
                             }
-
+                            
                             const hasError = errors.some((err) => err.includes(label));
 
                             return (

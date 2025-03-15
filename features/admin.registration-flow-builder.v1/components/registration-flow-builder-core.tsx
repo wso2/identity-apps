@@ -57,6 +57,7 @@ import StepFactory from "./resources/steps/step-factory";
 import useAIRegistrationFlowGenerationResult from "../api/use-ai-registration-flow-result";
 import useGetRegistrationFlow from "../api/use-get-registration-flow";
 import useGetRegistrationFlowBuilderResources from "../api/use-get-registration-flow-builder-resources";
+import { REGISTRATION_FLOW_AI_PROMPT_HISTORY_PREFERENCE_KEY } from "../constants/registration-flow-ai-constants";
 import RegistrationFlowExecutorConstants from "../constants/registration-flow-executor-constants";
 import useAIGeneratedRegistrationFlow from "../hooks/use-ai-generated-registration-flow";
 import useGenerateRegistrationFlow, {
@@ -79,7 +80,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     ...rest
 }: RegistrationFlowBuilderCorePropsInterface): ReactElement => {
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
-
 
     const [ showAIGenerationModal, setShowAIGenerationModal ] = useState(false);
 
@@ -888,7 +888,8 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         handleModalClose={ () => setShowAIGenerationModal(false) }
                         samplePrompts={ SAMPLE_PROMPTS }
                         userPrompt={ userPrompt }
-                        showHistory={ false }
+                        showHistory={ true }
+                        promptHistoryPreferenceKey={ REGISTRATION_FLOW_AI_PROMPT_HISTORY_PREFERENCE_KEY }
                     />
                 )
             }

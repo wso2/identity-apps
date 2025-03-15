@@ -28,8 +28,10 @@ import {
 import Button from "@oxygen-ui/react/Button";
 import Stack from "@oxygen-ui/react/Stack";
 import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
+import AIPromptHistory from "./ai-prompt-history";
+import useAIPromptHistory from "../hooks/use-ai-prompt-history";
 
 interface AIPromptProps {
     handlePromptSubmit?: () => void;
@@ -37,6 +39,7 @@ interface AIPromptProps {
     samplePrompts?: string[];
     userPrompt: string;
     showHistory?: boolean;
+    promptHistoryPreferenceKey?: string;
 }
 
 const AIPrompt = ({
@@ -44,11 +47,15 @@ const AIPrompt = ({
     setUserPrompt,
     samplePrompts,
     userPrompt,
+    promptHistoryPreferenceKey,
     showHistory = true
 }: AIPromptProps): ReactElement => {
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+    const { addPrompt, prompts } = useAIPromptHistory(promptHistoryPreferenceKey);
+
+    const [ showPromptHistory, setShowPromptHistory ] = useState<boolean>(false);
 
     const handleSurpriseMe = () => {
         const randomPrompt: string = samplePrompts[Math.floor(Math.random() * samplePrompts.length)];
@@ -90,7 +97,7 @@ const AIPrompt = ({
                     multiline
                     maxRows={ 4 }
                     value={ userPrompt }
-                    onChange={ (e) => setUserPrompt(e.target.value) }
+                    onBlur={ (e) => setUserPrompt(e.target.value) }
                     sx={ {
                         flex: 1,
                         color: "#333",
@@ -140,14 +147,17 @@ const AIPrompt = ({
                                 height: 40,
                                 mr: 2
                             } }
-                            onClick={ null }
+                            onClick={ () => setShowPromptHistory(true) }
                         >
                                 History
                         </Button>
                     ) }
                 </Stack>
                 <IconButton
-                    onClick={ () => handlePromptSubmit() }
+                    onClick={ () => {
+                        addPrompt(userPrompt);
+                        handlePromptSubmit();
+                    } }
                     color="primary"
                     sx={ {
                         float: "right",
@@ -165,6 +175,15 @@ const AIPrompt = ({
                     <SendOutlinedIcon />
                 </IconButton>
             </Box>
+            {
+                showPromptHistory && (
+                    <AIPromptHistory
+                        promptHistory={ prompts }
+                        setUserPrompt={ setUserPrompt }
+                        handleClose={ () => setShowPromptHistory(false) }
+                    />
+                )
+            }
             <Typography
                 variant="body2"
                 sx={ {
