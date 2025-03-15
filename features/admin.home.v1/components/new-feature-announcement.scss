@@ -1,0 +1,57 @@
+.new-feature-announcement {
+    display: flex;
+    width: 100%;
+    min-height: 200px;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-shrink: 0;
+    background: linear-gradient(92deg, #FFF3E6 1.5%, #FAF9F8 59.25%);
+    margin-bottom: var(--oxygen-spacing-3);
+    position: relative; /* Added to contain absolutely positioned elements */
+}
+
+.new-feature-announcement-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 32px;
+}
+
+.new-feature-announcement-content h3 {
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px;
+    background: var(--Primary-Button, linear-gradient(88deg, #EC5161 -3.25%, #F87643 102.62%));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+}
+
+.new-feature-announcement-content p {
+    font-size: 1.1em;
+}
+
+.login-box-overlay {
+    width: 485.469px;
+    height: 100%;
+    flex-shrink: 0;
+    background-blend-mode: hue, normal;
+    background-size: 130%;
+    background-repeat: no-repeat;
+    position: absolute;
+    right: 0;
+    background-position-y: -150px;
+    border-bottom-right-radius: var(--oxygen-shape-borderRadius);
+}
+
+.login-box {
+    position: absolute;
+    right: 0;
+}
+
+.new-feature-announcement-actions {
+    padding: 32px;
+}
