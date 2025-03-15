@@ -96,7 +96,7 @@
     }
 
     if (isDynamicPortalEnabled) {
-        dynamicUserRegisterationPortalURL = identityMgtEndpoint + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
+        dynamicUserRegisterationPortalURL = identityMgtEndpoint + ACCOUNT_RECOVERY_ENDPOINT_REGISTER + "?"  + urlParameters;
     }
 
     setDynamicPortalValues(isDynamicPortalEnabled, dynamicUserRegisterationPortalURL);
