@@ -257,12 +257,12 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                                     <AnimatedAvatar
                                         name={ retrieveInitialLetterOfClaim(claim) }
                                         size="mini"
-                                        data-componentid={ `${componentId}-elected-attribute-initial-letter-image` }
+                                        data-componentid={ `${componentId}-selected-attribute-initial-letter-image` }
                                     />
                                 ) }
                                 size="mini"
                                 spaced="right"
-                                data-componentid={ `${componentId}-elected-attribute-initial-letter` }
+                                data-componentid={ `${componentId}-selected-attribute-initial-letter` }
                             />
                             <Header.Content>
                                 { claim?.displayName }
@@ -371,7 +371,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                                     onClick={ () => setFinalAttributeList([]) }
                                     variant="outlined"
                                     size="small"
-                                    className={ "secondary-button clear-all-button" }
+                                    className="secondary-button clear-all-button"
                                     data-componentid={ `${ componentId }-clear-all-button` }
                                     disabled={ false }
                                 >

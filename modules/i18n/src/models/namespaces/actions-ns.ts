@@ -191,7 +191,7 @@ export interface actionsNS {
             search: {
                 placeholder: string
                 clearButton: string
-            }
+            };
         };
     };
     goBackActions: string,
