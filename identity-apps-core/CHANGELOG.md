@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.19.7
+
+### Patch Changes
+
+- [#7883](https://github.com/wso2/identity-apps/pull/7883) [`c4ae480beaafc677e3d73a92a9fd03c8225d7506`](https://github.com/wso2/identity-apps/commit/c4ae480beaafc677e3d73a92a9fd03c8225d7506) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix resolving application branding in new dynamic portal
+
 ## 2.19.6
 
 ### Patch Changes
