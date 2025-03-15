@@ -290,7 +290,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     initialValues={ initialValues?.attributes }
                     onAttributesChange={ handleUserAttributeChange }
                     isReadOnly={ isReadOnly }
-                    data-componentid={ "selectedTemplate?.templateId " }
+                    data-componentid={ `${ componentId }-user-attributes` }
                 />
 
                 { /* This is currently disabled */ }
