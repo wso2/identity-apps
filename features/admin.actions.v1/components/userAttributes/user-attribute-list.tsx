@@ -20,7 +20,9 @@ import Autocomplete, {
     AutocompleteInputChangeReason,
     AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
+import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import Skeleton from "@oxygen-ui/react/Skeleton";
 import TextField from "@oxygen-ui/react/TextField";
 import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -53,23 +55,33 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, DropdownProps, Header, SemanticICONS } from "semantic-ui-react";
 import { ActionsConstants } from "../../constants/actions-constants";
-import "./attribute-search-list.scss";
+import "./user-attribute-list.scss";
 
-export interface AttributeSearchListPropsInterface extends IdentifiableComponentInterface {
+export interface UserAttributeListPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Previously saved attribute list.
+     */
+    initialValues: string[];
+    /**
+     * Triggers on attribute change to pass the selected attributes to the parent component.
+     */
+    onAttributesChange: (selectedUserAttributes: Claim[]) => void;
     /**
      * Specifies whether the form is read-only.
      */
     isReadOnly: boolean;
 }
 
-const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> = ({
+const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
+    initialValues,
+    onAttributesChange,
     isReadOnly,
     "data-componentid": componentId = "autocomplete-search-list"
-}: AttributeSearchListPropsInterface): ReactElement => {
+}: UserAttributeListPropsInterface): ReactElement => {
 
-    const [ selectedAttributesList, setSelectedAttributesList ] = useState<Claim[]>([]);
     const [ allAttributesList, setAllAttributesList ] = useState<Claim[]>();
-    const [ isAttributeListLoading, setIsAttributeListLoading ] = useState<boolean>(false);
+    const [ finalAttributeList, setFinalAttributeList ] = useState<Claim[]>([]);
+    const [ isGetAllLocalClaimsLoading, setIsGetAllLocalClaimsLoading ] = useState<boolean>(false);
     const [ inputValue, setInputValue ] = useState("");
 
     const { t } = useTranslation();
@@ -77,7 +89,7 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
     const dispatch: Dispatch = useDispatch();
 
     /**
-     * Retrieves all the local claims.
+     * This useEffect retrieves all the claims in the local dialect.
      */
     useEffect(() => {
 
@@ -89,7 +101,7 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
             sort: null
         };
 
-        setIsAttributeListLoading(true);
+        setIsGetAllLocalClaimsLoading(true);
 
         getAllLocalClaims(params).then((response: Claim[]) => {
             const sortedClaims: Claim[] = response?.sort((a: Claim, b: Claim) => {
@@ -97,7 +109,7 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
             });
 
             setAllAttributesList(sortedClaims);
-            setIsAttributeListLoading(false);
+            setIsGetAllLocalClaimsLoading(false);
         }).catch((error: IdentityAppsApiException) => {
             dispatch(addAlert(
                 {
@@ -108,12 +120,50 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
                         || t("actions:notifications.genericError.userAttributes.getAttributes.message")
                 }
             ));
-            setIsAttributeListLoading(false);
+            setIsGetAllLocalClaimsLoading(false);
         });
     }, []);
 
     /**
+     * This useEffect handles previously added attributes.
+     */
+    useEffect(() => {
+
+        if(!initialValues?.length || !allAttributesList?.length) {
+            return;
+        }
+
+        // Remove duplicates and create a new array with the initial values and the final attribute list.
+        const tempFinalURIs: string[] =
+        [ ...new Set([ ...initialValues, ...finalAttributeList?.map((claim: Claim) => claim.claimURI) ]) ];
+
+        setFinalAttributeList(allAttributesList?.filter((claim: Claim) => tempFinalURIs?.includes(claim.claimURI)));
+    }, [ initialValues, allAttributesList ]);
+
+    /**
+     * This useEffects passes the final attribute list to the parent.
+     */
+    useEffect(() => {
+
+        onAttributesChange(finalAttributeList);
+    }, [ finalAttributeList ]);
+
+    /**
+     * Renders the loading placeholders for the user attribute list.
+     */
+    const renderAttributeListLoadingPlaceholders = (): ReactElement => (
+
+        <Box className="placeholder-box">
+            <Skeleton variant="rectangular" height={ 10 } />
+            <Skeleton variant="rectangular" height={ 25 } />
+            <Skeleton variant="rectangular" height={ 10 } />
+            <Skeleton variant="rectangular" height={ 10 } />
+        </Box>
+    );
+
+    /**
      * Retrieves the initial letter of the provided claim.
+     *
      * @param claim - Claim.
      * @returns the initial letter of the claim.
      */
@@ -125,33 +175,49 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
     };
 
     /**
-     * Handle the selection of an attribute from the autocomplete dropdown.
+     * Checks if the selected attribute is already added.
+     *
+     * @param selectedAttribute - Selected attribute.
+     */
+    const isAttributeAlreadyAdded = (selectedAttribute: Claim): boolean => {
+
+        return finalAttributeList?.some((existingAttribute: Claim) =>
+            existingAttribute?.claimURI === selectedAttribute?.claimURI
+        );
+    };
+
+    /**
+     * Handles the selection of an attribute from the autocomplete dropdown.
+     *
      * @param data - Dropdown data.
      */
     const handleAttributeSelect = (data: DropdownProps) => {
 
-        setSelectedAttributesList((userAttributes: Claim[]) =>
-            userAttributes?.some((claim: Claim) => claim?.claimURI === (data as Claim)?.claimURI)
-                ? userAttributes
-                : [ ...userAttributes, data as Claim ]
-        );
-
+        // Clears the search input after the selected attribute is added.
         setInputValue(ActionsConstants.EMPTY_STRING);
+
+        if (isAttributeAlreadyAdded(data as Claim)) {
+            return;
+        };
+
+        setFinalAttributeList([ ...finalAttributeList, data as Claim ]);
     };
 
     /**
-     * Handle the deletion of an attribute from the selected attributes list.
+     * Handles the deletion of an attribute from the selected attributes list.
+     *
      * @param item - Attribute to be deleted.
      */
     const handleAttributeDelete = (item: Claim) => {
 
-        setSelectedAttributesList((userAttributes: Claim[]) =>
+        setFinalAttributeList((userAttributes: Claim[]) =>
             userAttributes?.filter((claim: Claim) => claim?.claimURI !== item?.claimURI)
         );
     };
 
     /**
      * Resolves the table actions.
+     *
      * Only delete action is supported as the list is static.
      * @returns - Table actions.
      */
@@ -170,7 +236,8 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
     };
 
     /**
-     * Resolves the table columns to be displayed in the selected attributes list.
+     * Resolves the columns to be displayed in the selected attributes list table.
+     *
      * @returns - Table columns.
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
@@ -294,38 +361,39 @@ const AttributeSearchList: FunctionComponent<AttributeSearchListPropsInterface> 
                 data-componentid={ `${componentId}-select-attributes` }
             />
             <Divider hidden/>
-            {
-                selectedAttributesList?.length > 0 && (
 
-                    <div className="attribute-search-list">
-                        <div className="clear-all-button-container">
-                            <Button
-                                onClick={ () => setSelectedAttributesList([]) }
-                                variant="outlined"
-                                size="small"
-                                className={ "secondary-button clear-all-button" }
-                                data-componentid={ `${ componentId }-clear-all-button` }
-                                disabled={ false }
-                            >
-                                { t("actions:fields.userAttributes.search.clearButton") }
-                            </Button>
+            {
+                isGetAllLocalClaimsLoading ? renderAttributeListLoadingPlaceholders() : (
+                    finalAttributeList?.length > 0 && (
+                        <div className="user-attribute-list">
+                            <div className="clear-all-button-container">
+                                <Button
+                                    onClick={ () => setFinalAttributeList([]) }
+                                    variant="outlined"
+                                    size="small"
+                                    className={ "secondary-button clear-all-button" }
+                                    data-componentid={ `${ componentId }-clear-all-button` }
+                                    disabled={ false }
+                                >
+                                    { t("actions:fields.userAttributes.search.clearButton") }
+                                </Button>
+                            </div>
+                            <div className="selected-attributes-list">
+                                <DataTable<Claim[]>
+                                    className="selected-attributes-list-data-table"
+                                    actions={ resolveTableActions() }
+                                    columns={ resolveTableColumns() }
+                                    data={ finalAttributeList }
+                                    onRowClick={ () => null }
+                                    showHeader={ false }
+                                    data-componentid={ `${componentId}-selected-attributes-list` }
+                                />
+                            </div>
                         </div>
-                        <div className="selected-attributes-list">
-                            <DataTable<Claim[]>
-                                className="selected-attributes-list-data-table"
-                                actions={ resolveTableActions() }
-                                columns={ resolveTableColumns() }
-                                data={ selectedAttributesList }
-                                onRowClick={ () => null }
-                                showHeader={ false }
-                                data-componentid={ `${componentId}-selected-attributes-list` }
-                            />
-                        </div>
-                    </div>
-                )
+                    ))
             }
         </>
     );
 };
 
-export default AttributeSearchList;
+export default UserAttributeList;

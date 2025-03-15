@@ -24,10 +24,10 @@ import Skeleton from "@oxygen-ui/react/Skeleton";
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
-import { RuleExecuteCollectionWithoutIdInterface, RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
+import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     FinalForm,
     FormRenderProps } from "@wso2is/form";
@@ -36,7 +36,7 @@ import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import AttributeSearchList from "./attributesSection/attribute-search-list";
+import UserAttributeList from "./userAttributes/user-attribute-list";
 import CommonActionConfigForm from "./common-action-config-form";
 import RuleConfigForm from "./rule-config-form";
 import createAction from "../api/create-action";
@@ -46,10 +46,12 @@ import useGetActionsByType from "../api/use-get-actions-by-type";
 import { ActionsConstants } from "../constants/actions-constants";
 import {
     ActionConfigFormPropertyInterface,
-    ActionInterface,
-    ActionUpdateInterface,
     AuthenticationPropertiesInterface,
-    AuthenticationType
+    AuthenticationType,
+    PreUpdatePasswordActionConfigFormPropertyInterface,
+    PreUpdateProfileActionConfigFormPropertyInterface,
+    PreUpdateProfileActionInterface,
+    PreUpdateProfileActionUpdateInterface
 } from "../models/actions";
 import "./pre-update-profile-action-config-form.scss";
 import { useHandleError, useHandleSuccess } from "../util/alert-util";
@@ -62,9 +64,9 @@ interface PreUpdateProfileActionConfigFormInterface extends IdentifiableComponen
     /**
      * Action's initial values.
      */
-    initialValues: ActionConfigFormPropertyInterface;
+    initialValues: PreUpdateProfileActionConfigFormPropertyInterface;
     /**
-     * Flag for loading state.
+     * Specifies whether the data is still loading.
      */
     isLoading?: boolean;
     /**
@@ -72,7 +74,7 @@ interface PreUpdateProfileActionConfigFormInterface extends IdentifiableComponen
      */
     isReadOnly: boolean;
     /**
-     * Action Type of the Action.
+     * Type of the Action.
      */
     actionTypeApiPath: string;
     /**
@@ -93,6 +95,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.actions);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
+    const [ userAttributesList, setUserAttributesList ] = useState<Claim[]>([]);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isHasRule, setIsHasRule ] = useState<boolean>(false);
@@ -147,6 +150,16 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
     );
 
     /**
+     * Callback function to be triggered when the user attribute list is changed in the child component.
+     * This updates the parent's state.
+     * @param attributes - attributes list.
+     */
+    const handleUserAttributeChange = (attributes: Claim[]) => {
+
+        setUserAttributesList([ ...attributes ]);
+    };
+
+    /**
      * Validates the pre update profile config form.
      * @param values - Form values.
      * @returns form errors.
@@ -169,16 +182,8 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
      * Handles the pre update profile form submit.
      */
     const handleSubmit = (
-        values: ActionConfigFormPropertyInterface,
-        changedFields: ActionConfigFormPropertyInterface) => {
-
-        let rulePayload: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
-
-        if (isHasRule) {
-            rulePayload = rule;
-        } else if (!isCreateFormState && !rule) {
-            rulePayload = {};
-        }
+        values: PreUpdatePasswordActionConfigFormPropertyInterface,
+        changedFields: PreUpdatePasswordActionConfigFormPropertyInterface) => {
 
         const authProperties: Partial<AuthenticationPropertiesInterface> = {};
 
@@ -206,7 +211,8 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
         }
 
         if (isCreateFormState) {
-            const actionValues: ActionInterface = {
+            const actionValues: PreUpdateProfileActionInterface = {
+                attributes: userAttributesList.map((claim: Claim) => claim.claimURI),
                 endpoint: {
                     authentication: {
                         properties: authProperties,
@@ -214,8 +220,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     },
                     uri: values.endpointUri
                 },
-                name: values.name,
-                rule: rulePayload ?? undefined
+                name: values.name
             };
 
             setIsSubmitting(true);
@@ -231,7 +236,8 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     setIsSubmitting(false);
                 });
         } else {
-            const updatingValues: ActionUpdateInterface = {
+            const updatingValues: PreUpdateProfileActionUpdateInterface = {
+                attributes: userAttributesList.map((claim: Claim) => claim.claimURI),
                 endpoint: isAuthenticationUpdateFormState || changedFields?.endpointUri ? {
                     authentication: isAuthenticationUpdateFormState ? {
                         properties: authProperties,
@@ -239,8 +245,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     } : undefined,
                     uri: changedFields?.endpointUri ? values.endpointUri : undefined
                 } : undefined,
-                name: changedFields?.name ? values.name : undefined,
-                rule: rulePayload ?? undefined
+                name: changedFields?.name ? values.name : undefined
             };
 
             setIsSubmitting(true);
@@ -283,7 +288,9 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                 <Typography variant="h6" className="heading-container" >
                     { t("actions:fields.userAttributes.heading") }
                 </Typography>
-                <AttributeSearchList
+                <UserAttributeList
+                    initialValues={ initialValues?.attributes }
+                    onAttributesChange={ handleUserAttributeChange }
                     isReadOnly={ isReadOnly }
                     data-componentid={ "selectedTemplate?.templateId " }
                 />
@@ -312,7 +319,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     initialData={ initialValues?.rule }
                 >
                     <FinalForm
-                        onSubmit={ (values: ActionConfigFormPropertyInterface, form: any) => {
+                        onSubmit={ (values: PreUpdatePasswordActionConfigFormPropertyInterface, form: any) => {
                             handleSubmit(values, form.getState().dirtyFields);
                         } }
                         validate={ validateForm }

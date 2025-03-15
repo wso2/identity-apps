@@ -55,7 +55,9 @@ import PreUpdateProfileActionConfigForm from "../components/pre-update-profile-a
 import { ActionsConstants } from "../constants/actions-constants";
 import {
     ActionConfigFormPropertyInterface, PreUpdatePasswordActionConfigFormPropertyInterface,
-    PreUpdatePasswordActionResponseInterface
+    PreUpdatePasswordActionResponseInterface,
+    PreUpdateProfileActionConfigFormPropertyInterface,
+    PreUpdateProfileActionResponseInterface
 } from "../models/actions";
 import "./action-configuration-page.scss";
 import { useHandleError, useHandleSuccess } from "../util/alert-util";
@@ -155,6 +157,19 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                     certificate: (action as PreUpdatePasswordActionResponseInterface)?.passwordSharing.certificate
                         || "",
                     passwordSharing: (action as PreUpdatePasswordActionResponseInterface)?.passwordSharing.format
+                };
+            } else {
+                return null;
+            }
+        }, [ action ]);
+
+    const preUpdateProfileActionInitialValues: PreUpdateProfileActionConfigFormPropertyInterface =
+        useMemo(() => {
+
+            if (action && actionTypeApiPath === ActionsConstants.PRE_UPDATE_PROFILE_API_PATH ) {
+                return {
+                    ...actionCommonInitialValues,
+                    attributes: (action as PreUpdateProfileActionResponseInterface)?.attributes
                 };
             } else {
                 return null;
@@ -417,7 +432,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                             }
                             { actionTypeApiPath === ActionsConstants.PRE_UPDATE_PROFILE_API_PATH && (
                                 <PreUpdateProfileActionConfigForm
-                                    initialValues={ preUpdatePasswordActionInitialValues }
+                                    initialValues={ preUpdateProfileActionInitialValues }
                                     isLoading={ isLoading }
                                     isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }
