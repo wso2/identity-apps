@@ -1,5 +1,60 @@
 # @wso2is/console
 
+## 2.48.0
+
+### Minor Changes
+
+- [#7881](https://github.com/wso2/identity-apps/pull/7881) [`6f6564046f57869ddac09d6238fb4101bc1f9f86`](https://github.com/wso2/identity-apps/commit/6f6564046f57869ddac09d6238fb4101bc1f9f86) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce prompt history option in registration flow AI
+
+### Patch Changes
+
+- Updated dependencies [[`6f6564046f57869ddac09d6238fb4101bc1f9f86`](https://github.com/wso2/identity-apps/commit/6f6564046f57869ddac09d6238fb4101bc1f9f86)]:
+  - @wso2is/common.ui.v1@0.2.0
+  - @wso2is/admin.core.v1@2.42.4
+  - @wso2is/admin.server-configurations.v1@2.33.4
+
+## 2.47.2
+
+### Patch Changes
+
+- [#7877](https://github.com/wso2/identity-apps/pull/7877) [`7ab069a0f77e33e380144bef2d957780abfd37b8`](https://github.com/wso2/identity-apps/commit/7ab069a0f77e33e380144bef2d957780abfd37b8) Thanks [@brionmario](https://github.com/brionmario)! - Exclude identity claims
+
+* [#7879](https://github.com/wso2/identity-apps/pull/7879) [`55b8f381f2a3dd54a619e2ed3da35eaf97fcd93f`](https://github.com/wso2/identity-apps/commit/55b8f381f2a3dd54a619e2ed3da35eaf97fcd93f) Thanks [@brionmario](https://github.com/brionmario)! - Update delete button styling
+
+## 2.47.1
+
+### Patch Changes
+
+- [#7872](https://github.com/wso2/identity-apps/pull/7872) [`ec1c1590ef33eab0d1473b1dae6f16e9aadfb7a3`](https://github.com/wso2/identity-apps/commit/ec1c1590ef33eab0d1473b1dae6f16e9aadfb7a3) Thanks [@brionmario](https://github.com/brionmario)! - Fix minor issues in AI flows
+
+## 2.47.0
+
+### Minor Changes
+
+- [#7866](https://github.com/wso2/identity-apps/pull/7866) [`77f1528ac2caccf5f319777dee60e2aa44db64b0`](https://github.com/wso2/identity-apps/commit/77f1528ac2caccf5f319777dee60e2aa44db64b0) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce AI assisted registration flow composer
+
+### Patch Changes
+
+- [#7869](https://github.com/wso2/identity-apps/pull/7869) [`6498f644b373793599f8fa8c08100bee885fcf2a`](https://github.com/wso2/identity-apps/commit/6498f644b373793599f8fa8c08100bee885fcf2a) Thanks [@brionmario](https://github.com/brionmario)! - Fix minor issues in registration flow builder
+
+- Updated dependencies [[`4d5ea9c18e0cb1cfb48c38d03e69e5aab09b425c`](https://github.com/wso2/identity-apps/commit/4d5ea9c18e0cb1cfb48c38d03e69e5aab09b425c)]:
+  - @wso2is/i18n@2.22.0
+  - @wso2is/admin.core.v1@2.42.3
+
+## 2.46.0
+
+### Minor Changes
+
+- [#7855](https://github.com/wso2/identity-apps/pull/7855) [`aaf3a62625563cbadda5cef23ca3eac8e599ba5d`](https://github.com/wso2/identity-apps/commit/aaf3a62625563cbadda5cef23ca3eac8e599ba5d) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Add some missing doc comments in preview feature enable/disable feature
+
+### Patch Changes
+
+- [#7868](https://github.com/wso2/identity-apps/pull/7868) [`09203b80ad75f0bc1fa473d704544cac4c066558`](https://github.com/wso2/identity-apps/commit/09203b80ad75f0bc1fa473d704544cac4c066558) Thanks [@brionmario](https://github.com/brionmario)! - Fix ordering issues
+
+- Updated dependencies [[`aaf3a62625563cbadda5cef23ca3eac8e599ba5d`](https://github.com/wso2/identity-apps/commit/aaf3a62625563cbadda5cef23ca3eac8e599ba5d)]:
+  - @wso2is/admin.core.v1@2.42.2
+  - @wso2is/theme@2.7.1
+
 ## 2.45.1
 
 ### Patch Changes

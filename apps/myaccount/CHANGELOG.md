@@ -1,5 +1,12 @@
 # @wso2is/myaccount
 
+## 2.19.1
+
+### Patch Changes
+
+- Updated dependencies [[`6f6564046f57869ddac09d6238fb4101bc1f9f86`](https://github.com/wso2/identity-apps/commit/6f6564046f57869ddac09d6238fb4101bc1f9f86)]:
+  - @wso2is/common.ui.v1@0.2.0
+
 ## 2.19.0
 
 ### Minor Changes

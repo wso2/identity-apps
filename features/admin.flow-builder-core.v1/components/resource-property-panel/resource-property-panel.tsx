@@ -22,17 +22,22 @@ import Drawer, { DrawerProps } from "@oxygen-ui/react/Drawer";
 import IconButton from "@oxygen-ui/react/IconButton";
 import { TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { useReactFlow } from "@xyflow/react";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import ResourceProperties from "./resource-properties";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Element } from "../../models/elements";
+import { ResourceTypes } from "../../models/resources";
 import "./resource-property-panel.scss";
 
 /**
  * Props interface of {@link ResourcePropertyPanel}
  */
-export interface ResourcePropertyPanelPropsInterface extends DrawerProps, IdentifiableComponentInterface, HTMLAttributes<HTMLDivElement> {
+export interface ResourcePropertyPanelPropsInterface
+    extends DrawerProps,
+        IdentifiableComponentInterface,
+        HTMLAttributes<HTMLDivElement> {
     onComponentDelete: (stepId: string, component: Element) => void;
 }
 
@@ -59,9 +64,17 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
     open,
     anchor = "right",
     onComponentDelete,
+    className,
     ...rest
 }: ResourcePropertyPanelPropsInterface): ReactElement => {
-    const { resourcePropertiesPanelHeading, setIsOpenResourcePropertiesPanel, lastInteractedStepId, lastInteractedResource } = useAuthenticationFlowBuilderCore();
+    const { deleteElements } = useReactFlow();
+
+    const {
+        resourcePropertiesPanelHeading,
+        setIsOpenResourcePropertiesPanel,
+        lastInteractedStepId,
+        lastInteractedResource
+    } = useAuthenticationFlowBuilderCore();
 
     return (
         <Box
@@ -80,7 +93,10 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
                 anchor={ anchor }
                 onClose={ () => {} }
                 elevation={ 5 }
-                PaperProps={ { className: "flow-builder-element-property-panel" } }
+                PaperProps={ {
+                    className: classNames("flow-builder-element-property-panel", { open }, className),
+                    style: { position: "absolute" }
+                } }
                 BackdropProps={ { style: { position: "absolute" } } }
                 ModalProps={ {
                     container: document.getElementById("drawer-container"),
@@ -95,8 +111,8 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
                     }
                 } }
                 hideBackdrop={ true }
-                className={ classNames("flow-builder-element-property-panel", { mini: !open }) }
-                variant={ open ? "permanent" : "temporary" }
+                className={ classNames("flow-builder-element-property-panel", { open }) }
+                variant="permanent"
             >
                 <Box
                     display="flex"
@@ -122,8 +138,21 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
                     alignItems="right"
                     className="flow-builder-element-property-panel-footer"
                 >
-                    <Button variant="contained" onClick={ () => onComponentDelete(lastInteractedStepId, lastInteractedResource) } startIcon={ <TrashIcon size={ 14 } /> } color="error">
-                        Delete
+                    <Button
+                        variant="outlined"
+                        onClick={ () => {
+                            if (lastInteractedResource.resourceType === ResourceTypes.Step) {
+                                deleteElements({ nodes: [ { id: lastInteractedResource.id } ] });
+                            } else {
+                                onComponentDelete(lastInteractedStepId, lastInteractedResource);
+                            }
+
+                            setIsOpenResourcePropertiesPanel(false);
+                        } }
+                        className="flow-builder-element-property-panel-footer-secondary-action icon-button"
+                        color="error"
+                    >
+                        <TrashIcon size={ 14 } />
                     </Button>
                 </Box>
             </Drawer>

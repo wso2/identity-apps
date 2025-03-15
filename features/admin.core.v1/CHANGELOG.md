@@ -1,5 +1,27 @@
 # @wso2is/admin.core.v1
 
+## 2.42.4
+
+### Patch Changes
+
+- Updated dependencies [[`6f6564046f57869ddac09d6238fb4101bc1f9f86`](https://github.com/wso2/identity-apps/commit/6f6564046f57869ddac09d6238fb4101bc1f9f86)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.4.0
+  - @wso2is/admin.server-configurations.v1@2.33.4
+
+## 2.42.3
+
+### Patch Changes
+
+- Updated dependencies [[`6498f644b373793599f8fa8c08100bee885fcf2a`](https://github.com/wso2/identity-apps/commit/6498f644b373793599f8fa8c08100bee885fcf2a), [`4d5ea9c18e0cb1cfb48c38d03e69e5aab09b425c`](https://github.com/wso2/identity-apps/commit/4d5ea9c18e0cb1cfb48c38d03e69e5aab09b425c)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.3.0
+  - @wso2is/i18n@2.22.0
+
+## 2.42.2
+
+### Patch Changes
+
+- [#7855](https://github.com/wso2/identity-apps/pull/7855) [`aaf3a62625563cbadda5cef23ca3eac8e599ba5d`](https://github.com/wso2/identity-apps/commit/aaf3a62625563cbadda5cef23ca3eac8e599ba5d) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Add some missing doc comments in preview feature enable/disable feature
+
 ## 2.42.1
 
 ### Patch Changes

@@ -1,5 +1,29 @@
 # @wso2is/identity-apps-core
 
+## 2.19.7
+
+### Patch Changes
+
+- [#7883](https://github.com/wso2/identity-apps/pull/7883) [`c4ae480beaafc677e3d73a92a9fd03c8225d7506`](https://github.com/wso2/identity-apps/commit/c4ae480beaafc677e3d73a92a9fd03c8225d7506) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix resolving application branding in new dynamic portal
+
+## 2.19.6
+
+### Patch Changes
+
+- [#7881](https://github.com/wso2/identity-apps/pull/7881) [`6f6564046f57869ddac09d6238fb4101bc1f9f86`](https://github.com/wso2/identity-apps/commit/6f6564046f57869ddac09d6238fb4101bc1f9f86) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce prompt history option in registration flow AI
+
+## 2.19.5
+
+### Patch Changes
+
+- [#7878](https://github.com/wso2/identity-apps/pull/7878) [`52aa54394406ef270f18c50b160e5320445bcd13`](https://github.com/wso2/identity-apps/commit/52aa54394406ef270f18c50b160e5320445bcd13) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix minor issues in dynamic portl and registration flow composer
+
+## 2.19.4
+
+### Patch Changes
+
+- [#7874](https://github.com/wso2/identity-apps/pull/7874) [`701c2cf53d2243cc54c1381eb9ed345e094b2278`](https://github.com/wso2/identity-apps/commit/701c2cf53d2243cc54c1381eb9ed345e094b2278) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix OTP field rendering issue
+
 ## 2.19.3
 
 ### Patch Changes

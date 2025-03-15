@@ -29,11 +29,11 @@ import "./phone-number-field-adapter.css";
 
 const PhoneNumberFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
 
-    const { identifier, required, label, placeholder, validation } = component.config;
+    const { identifier, required, label, placeholder, validations } = component.config;
 
     const dropdownRef = useRef(null);
     const { translations } = useTranslations();
-    const { fieldErrors, validate } = useFieldValidation(validation, fullNumber);
+    const { fieldErrors, validate } = useFieldValidation(validations, fullNumber);
 
     const [ selectedCountry, setSelectedCountry ] = useState({
         key: "us",
