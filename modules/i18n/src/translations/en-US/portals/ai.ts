@@ -23,24 +23,20 @@ export const ai: aiNS = {
         banner: {
             collapsed: {
                 button: "Try Login Flow AI",
-                heading: "Configure Your Login Flow with ",
-                subheading: "Enter your ideal login sequence and "+
-                "our AI adapts authenticators and context to configure the flow."
+                heading: "Describe Your Login Flow and Generate it with AI",
+                subheading: "Describe your login flow requirements using natural language and Login Flow AI will configure it for you."
             },
             full: {
                 button: "Try Login Flow AI",
-                heading: "Simplify Authentication Flow Setup with ",
-                subheading: "Configure your application's login flow effortlessly with Login AI, " +
-                    "by describing your desired authentication sequence, including authenticators and " +
-                    "conditional authentication."
+                heading: "Describe Your Login Flow and Generate it with AI",
+                subheading: "Describe your login flow requirements using natural language and Login Flow AI will configure it for you."
             },
             input: {
                 button: "Generate Login Flow",
-                heading: "Configure Your Login Flow with ",
+                heading: "Describe Your Login Flow and Generate it with AI",
                 placeholder: "Input your login flow. Eg: have username and password as first step,"+
                 " and prompt for TOTP second factor if the user has 'manager' role.",
-                subheading: "AI-powered login configurations crafted to align with your application's"+
-                " environment and authenticators."
+                subheading: "Describe your login flow requirements using natural language and Login Flow AI will configure it for you."
             }
         },
         confirmations: {
