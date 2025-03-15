@@ -167,15 +167,13 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
     const validateForm = (values: ActionConfigFormPropertyInterface):
         Partial<ActionConfigFormPropertyInterface> => {
 
-        const customError: Partial<ActionConfigFormPropertyInterface> = {};
-
         const commonFieldError: Partial<ActionConfigFormPropertyInterface> = validateActionCommonFields(values, {
             authenticationType: authenticationType,
             isAuthenticationUpdateFormState: isAuthenticationUpdateFormState,
             isCreateFormState: isCreateFormState
         });
 
-        return { ...commonFieldError, ...customError };
+        return { ...commonFieldError };
     };
 
     /**
