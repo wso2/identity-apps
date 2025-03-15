@@ -25,12 +25,14 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronRightIcon } from "@oxygen-ui/react-icons";
+import AICard from "@wso2is/common.ai.v1/components/ai-card";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps } from "react";
-import ResourcePanelDraggableNode from "./resource-panel-draggable-node";
+import ResourcePanelDraggable from "./resource-panel-draggable";
+import ResourcePanelStatic from "./resource-panel-static";
 import { Element } from "../../models/elements";
-import { Resources } from "../../models/resources";
+import { Resource, Resources } from "../../models/resources";
 import { Step } from "../../models/steps";
 import { Template } from "../../models/templates";
 import { Widget } from "../../models/widget";
@@ -47,6 +49,11 @@ export interface ResourcePanelPropsInterface
      * Flow resources.
      */
     resources: Resources;
+    /**
+     * Callback to be triggered when a resource add button is clicked.
+     * @param resource - Added resource.
+     */
+    onAdd: (resource: Resource) => void;
 }
 
 // TODO: Move this to Oxygen UI.
@@ -125,6 +132,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
     children,
     open,
     resources,
+    onAdd,
     ...rest
 }: ResourcePanelPropsInterface): ReactElement => {
     const {
@@ -144,6 +152,8 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
     const templates: Template[] = unfilteredTemplates.filter(
         (template: Template) => template.display?.showOnResourcePanel !== false
     );
+    const AITemplates: Template[] = unfilteredTemplates.filter(
+        (template: Template) => template.type === "GENERATE_WITH_AI");
 
     return (
         <Box
@@ -203,11 +213,21 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                                 Choose one of these templates to start building registration experience
                             </Typography>
                             <Stack direction="column" spacing={ 1 }>
+                                { AITemplates.map((aiTemplate: Template, index: number) => (
+                                    <ResourcePanelStatic
+                                        id={ `${aiTemplate.resourceType}-${aiTemplate.type}-${index}` }
+                                        key={ aiTemplate.type }
+                                        resource={ aiTemplate }
+                                    >
+                                        <AICard resource={ aiTemplate } onAdd={ onAdd }/>
+                                    </ResourcePanelStatic>
+                                )) }
                                 { templates.map((template: Template, index: number) => (
-                                    <ResourcePanelDraggableNode
+                                    <ResourcePanelStatic
                                         id={ `${template.resourceType}-${template.type}-${index}` }
                                         key={ template.type }
                                         resource={ template }
+                                        onAdd={ onAdd }
                                     />
                                 )) }
                             </Stack>
@@ -231,7 +251,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                             </Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { widgets.map((widget: Widget, index: number) => (
-                                    <ResourcePanelDraggableNode
+                                    <ResourcePanelDraggable
                                         id={ `${widget.resourceType}-${widget.type}-${index}` }
                                         key={ widget.type }
                                         resource={ widget }
@@ -256,7 +276,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                             <Typography variant="body2">Use these as steps in your flow</Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { steps.map((step: Step, index: number) => (
-                                    <ResourcePanelDraggableNode
+                                    <ResourcePanelDraggable
                                         id={ `${step.resourceType}-${step.type}-${index}` }
                                         key={ step.type }
                                         resource={ step }
@@ -281,7 +301,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                             <Typography variant="body2">Use these components to build up your vies</Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { elements.map((element: Element, index: number) => (
-                                    <ResourcePanelDraggableNode
+                                    <ResourcePanelDraggable
                                         id={ `${element.resourceType}-${element.type}-${index}` }
                                         key={ element.type }
                                         resource={ element }

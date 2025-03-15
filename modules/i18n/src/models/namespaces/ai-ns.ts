@@ -85,5 +85,30 @@ export interface aiNS{
         termsAndConditions: string;
         title: string;
     };
+    aiRegistrationFlow: {
+        notifications: {
+            generateError: NotificationItem;
+            generateInputError: NotificationItem;
+            generateLimitError: NotificationItem;
+            generateResultError: NotificationItem;
+            generateResultFailed: NotificationItem;
+            generateStatusError: NotificationItem;
+            generateSuccess: NotificationItem;
+            rateLimitError: NotificationItem;
+        };
+        promptsHistory: string;
+        states:{
+            0: string;
+            1: string;
+            2: string;
+            3: string;
+            4: string;
+            5: string;
+            6: string;
+        };
+        disclaimer: string;
+        termsAndConditions: string;
+        title: string;
+    };
     subscribeToAI: string;
 }

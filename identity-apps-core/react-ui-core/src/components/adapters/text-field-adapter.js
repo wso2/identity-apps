@@ -28,10 +28,10 @@ import ValidationError from "../validation-error";
 
 const TextFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
 
-    const { identifier, required, label, placeholder, validation } = component.config;
+    const { identifier, required, label, placeholder, validations } = component.config;
 
     const { translations } = useTranslations();
-    const { fieldErrors, validate } = useFieldValidation(validation, value);
+    const { fieldErrors, validate } = useFieldValidation(validations, value);
 
     const [ value, setValue ] = useState("");
 
@@ -60,8 +60,8 @@ const TextFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
                 icon={ getInputIconClass(identifier) }
             />
             {
-                validation && validation.type === "CRITERIA" && validation.showValidationCriteria (
-                    <ValidationCriteria validationConfig={ validation } errors={ fieldErrors } value={ value } />
+                validations && validations.type === "RULE" && (
+                    <ValidationCriteria validationConfig={ validations } errors={ fieldErrors } value={ value } />
                 )
             }
             {

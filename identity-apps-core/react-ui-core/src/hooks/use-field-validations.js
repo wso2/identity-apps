@@ -18,126 +18,187 @@
 
 import { useCallback, useState } from "react";
 
+/**
+ * A custom hook for validating form fields using a flexible “rules” approach.
+ *
+ * @param {object} config - The component config, including:
+ *   - required: boolean (if the field is mandatory)
+ *   - validations: an array of validation group arrays (e.g. [[rule1, rule2], [rule3]])
+ *   - name: a unique name/identifier for the field
+ * @returns {{ fieldErrors: string[], validate: (value: string) => boolean }}
+ */
 const useFieldValidation = (validationConfig) => {
-
     const [ fieldErrors, setFieldErrors ] = useState([]);
 
-    const validateCriterion = useCallback((criterion, value) => {
-        switch (criterion.type) {
-            case "REQUIRED":
-                if (!value) {
-                    return criterion.error || "This field is required.";
+    /**
+     * Utility: Extract a numeric condition (e.g. "min.length") from the conditions array.
+     */
+    const getNumCondition = (conditions = [], conditionKey) => {
+        const found = conditions.find(cond => cond.key === conditionKey);
+
+        return found ? parseInt(found.value, 10) : null;
+    };
+
+    /**
+     * Utility: Extract a string condition (e.g. "pattern") from the conditions array.
+     */
+    const getStrCondition = (conditions = [], conditionKey) => {
+        const found = conditions.find(cond => cond.key === conditionKey);
+
+        return found ? found.value : null;
+    };
+
+    /**
+     * Validate a single rule object (e.g. { type: "RULE", name: "LengthValidator", conditions: [...] }).
+     * Return an error message if invalid, or `null` if valid.
+     */
+    const validateRule = useCallback((rule, value) => {
+        if (rule.type !== "RULE") return null;
+
+        const { name, conditions } = rule;
+
+        switch (name) {
+            case "LengthValidator": {
+                const minLen = getNumCondition(conditions, "min.length");
+                const maxLen = getNumCondition(conditions, "max.length");
+
+                if (minLen && maxLen) {
+                    if (value.length < minLen || value.length > maxLen) {
+                        return `Must be between ${minLen} and ${maxLen} characters long.`;
+                    }
                 }
-
-                break;
-
-            case "MIN_LENGTH":
-                if (value.length < criterion.value) {
-                    return criterion.error || `Must be at least ${criterion.value} characters long.`;
+                else if (minLen) {
+                    if (value.length < minLen) {
+                        return `Must be at least ${minLen} characters long.`;
+                    }
                 }
-
-                break;
-
-            case "MAX_LENGTH":
-                if (value.length > criterion.value) {
-                    return criterion.error || `Must be at most ${criterion.value} characters long.`;
-                }
-
-                break;
-
-            case "PATTERN":
-                if (!new RegExp(criterion.value).test(value)) {
-                    return criterion.error || "Invalid pattern.";
-                }
-
-                break;
-
-            case "MIN_NUMBERS":
-                if ((value.match(/[0-9]/g) || []).length < criterion.value) {
-                    return criterion.error || `Must contain at least ${criterion.value} number(s).`;
-                }
-
-                break;
-
-            case "MIN_UPPERCASE_LETTERS":
-                if ((value.match(/[A-Z]/g) || []).length < criterion.value) {
-                    return criterion.error || `Must contain at least ${criterion.value} uppercase letter(s).`;
-                }
-
-                break;
-
-            case "MIN_LOWERCASE_LETTERS":
-                if ((value.match(/[a-z]/g) || []).length < criterion.value) {
-                    return criterion.error || `Must contain at least ${criterion.value} lowercase letter(s).`;
-                }
-
-                break;
-
-            case "MIN_SPECIAL_CHARACTERS":
-                if ((value.match(/[^a-zA-Z0-9]/g) || []).length < criterion.value) {
-                    return criterion.error || `Must contain at least ${criterion.value} special character(s).`;
-                }
-
-                break;
-
-            case "MAX_REPEATED_CHARACTERS":
-                {
-                    const repeatedChars = value.split("").filter((char, i, arr) => arr.indexOf(char) !== i);
-
-                    if (repeatedChars.length > criterion.value) {
-                        return criterion.error || "Must not contain repeated characters.";
+                else if (maxLen) {
+                    if (value.length > maxLen) {
+                        return `Must be at most ${maxLen} characters long.`;
                     }
                 }
 
                 break;
+            }
+
+            case "NumeralValidator": {
+                const minNumbers = getNumCondition(conditions, "min.length");
+
+                if (minNumbers) {
+                    const digitCount = (value.match(/\d/g) || []).length;
+
+                    if (digitCount < minNumbers) {
+                        return `Must contain at least ${minNumbers} number(s).`;
+                    }
+                }
+
+                break;
+            }
+
+            case "UpperCaseValidator": {
+                const minUpper = getNumCondition(conditions, "min.length");
+
+                if (minUpper) {
+                    const upperCount = (value.match(/[A-Z]/g) || []).length;
+
+                    if (upperCount < minUpper) {
+                        return `Must contain at least ${minUpper} uppercase letter(s).`;
+                    }
+                }
+
+                break;
+            }
+
+            case "LowerCaseValidator": {
+                const minLower = getNumCondition(conditions, "min.length");
+
+                if (minLower) {
+                    const lowerCount = (value.match(/[a-z]/g) || []).length;
+
+                    if (lowerCount < minLower) {
+                        return `Must contain at least ${minLower} lowercase letter(s).`;
+                    }
+                }
+
+                break;
+            }
+
+            case "SpecialCharacterValidator": {
+                const minSpecial = getNumCondition(conditions, "min.length");
+
+                if (minSpecial && minSpecial > 0) {
+                    const specialCount = (value.match(/[^a-zA-Z0-9]/g) || []).length;
+
+                    if (specialCount < minSpecial) {
+                        return `Must contain at least ${minSpecial} special character(s).`;
+                    }
+                }
+
+                break;
+            }
+
+            case "RegexValidator": {
+                const pattern = getStrCondition(conditions, "pattern");
+
+                if (pattern) {
+                    const re = new RegExp(pattern);
+
+                    if (!re.test(value)) {
+                        return "Invalid format.";
+                    }
+                }
+
+                break;
+            }
+
+            case "PhoneNumberValidator": {
+                const pattern = getStrCondition(conditions, "pattern");
+
+                if (pattern) {
+                    const re = new RegExp(pattern);
+
+                    if (!re.test(value)) {
+                        return "Please enter a valid phone number.";
+                    }
+                }
+
+                break;
+            }
 
             default:
-                break;
+                return null;
         }
 
         return null;
     }, []);
 
+    /**
+     * Validate the given `value` using the config’s required property
+     * and all rule arrays in config.validations.
+     */
     const validate = useCallback((config, value) => {
-        let validationErrors = [];
-
-        if (validationConfig) {
-            if (validationConfig.type === "CRITERIA" && validationConfig.criteria) {
-                for (const criterion of validationConfig.criteria) {
-                    for (const validation of criterion.validation) {
-                        const error = validateCriterion(validation, value);
-
-                        if (error) {
-                            validationErrors.push({
-                                error,
-                                label: criterion.label
-                            });
-                        }
-                    }
-                }
-            } else {
-                const error = validateCriterion(validationConfig, value);
-
-                if (error) {
-                    validationErrors.push({
-                        error,
-                        label: validationConfig.label
-                    });
-                }
-            }
-        }
+        const validationErrors = [];
 
         if (config.required && !value) {
-            validationErrors.push({
-                error: "This field is required.",
-                label: config.name
-            });
+            validationErrors.push("This field is required.");
+        }
+
+        const validations = validationConfig || [];
+
+        for (const validation of validations) {
+            for (const rule of validation) {
+                const error = validateRule(rule, value);
+
+                if (error) {
+                    validationErrors.push(error);
+                }
+            }
         }
 
         setFieldErrors(validationErrors);
 
         return validationErrors.length === 0;
-    }, [ validationConfig, validateCriterion ]);
+    }, [ validationConfig, validateRule ]);
 
     return { fieldErrors, validate };
 };

@@ -198,6 +198,34 @@ export class GovernanceConnectorUtils {
         });
     }
 
+    /**
+     * Add additional connectors which are displayed based on dynamic configurations.
+     *
+     * @param currentConnectorList - Current connector list.
+     * @param additionalConnectors - Additional connectors to be added.
+     * @returns Combined connector list.
+     */
+    public static addAdditionalConnectors(
+        currentConnectorList: GovernanceConnectorCategoryInterface[],
+        additionalConnectors: Array<any>
+    ): GovernanceConnectorInterface[] {
+
+        return currentConnectorList.map((category: any) => {
+
+            const additionalConnectorsForCategory: any = additionalConnectors
+                .find((el: any) => el?.id === category?.id) ?? [];
+
+            if (additionalConnectorsForCategory?.connectors?.length > 0) {
+                return {
+                    ...category,
+                    connectors: [ ...category.connectors, ...additionalConnectorsForCategory.connectors ]
+                };
+            } else {
+                return category;
+            }
+        });
+    }
+
     public static getPredefinedConnectorCategories(): Array<any> {
 
         return [

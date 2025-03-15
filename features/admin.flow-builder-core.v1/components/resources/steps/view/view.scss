@@ -39,13 +39,13 @@
         justify-content: center;
         align-items: center;
         text-align: left;
-        
+
         .dnd-droppable {
             &.is-dropping {
                 &.allowed {
                     background-color: var(--wso2is-flow-builder-allowed-droppable-area-highlight);
                 }
-                
+
                 &.disallowed {
                     background-color: var(--wso2is-flow-builder-disallowed-droppable-area-highlight);
                 }
@@ -114,10 +114,7 @@
                     &.is-dragging {
                         .flow-builder-step-content-form-field {
                             background-color: var(--oxygen-palette-background-paper);
-                            border-radius: var(--oxygen-shape-borderRadius);
-                            border: 1px solid var(--oxygen-palette-divider);
-                            box-shadow: var(--oxygen-shadows-8);
-                            padding: var(--oxygen-spacing-1) var(--oxygen-spacing-1) var(--oxygen-spacing-1) 0px;
+                            border-right: 2px dashed var(--oxygen-palette-grey-200);
                         }
                     }
                 }
