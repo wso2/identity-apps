@@ -189,8 +189,8 @@ export interface actionsNS {
             heading: string;
             hint: string;
             search: {
-                placeholder: string
-                clearButton: string
+                placeholder: string;
+                clearButton: string;
             };
         };
     };
@@ -293,10 +293,10 @@ export interface actionsNS {
             };
             userAttributes: {
                 getAttributes: {
-                    description: string
-                    message: string
-                }
-            }
+                    description: string;
+                    message: string;
+                };
+            };
         };
         success: {
             activate: {

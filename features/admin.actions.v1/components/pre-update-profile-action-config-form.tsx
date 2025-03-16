@@ -38,7 +38,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import CommonActionConfigForm from "./common-action-config-form";
 import RuleConfigForm from "./rule-config-form";
-import UserAttributeList from "./userAttributes/user-attribute-list";
+import UserAttributeList from "./user-attributes/user-attribute-list";
 import createAction from "../api/create-action";
 import updateAction from "../api/update-action";
 import useGetActionById from "../api/use-get-action-by-id";
