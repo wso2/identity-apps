@@ -105,7 +105,6 @@ const BrandingAIBanner: FunctionComponent<PropsWithChildren<BrandingAIBannerProp
                             ? t("branding:ai.banner.full.subHeading")
                             : t("ai:subscribeToAI")
                     }
-                    aiText={ t("branding:ai.title") }
                     actionButtonText={ t("branding:ai.banner.full.button") }
                     onActionButtonClick={ handleExpandClick }
                     titleLabel={ (
@@ -134,7 +133,6 @@ const BrandingAIBanner: FunctionComponent<PropsWithChildren<BrandingAIBannerProp
                             </DocumentationLink>
                         </>
                     ) }
-                    aiText={ t("branding:ai.title") }
                     titleLabel={ (
                         <FeatureFlagLabel
                             featureFlags={ aiFeatureConfig?.featureFlags }

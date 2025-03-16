@@ -47,6 +47,9 @@ const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErr
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
+        params: {
+            "exclude-identity-claims": true
+        },
         url: store.getState().config.endpoints.localClaims
     };
 

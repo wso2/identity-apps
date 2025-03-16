@@ -139,7 +139,7 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
                     className="flow-builder-element-property-panel-footer"
                 >
                     <Button
-                        variant="contained"
+                        variant="outlined"
                         onClick={ () => {
                             if (lastInteractedResource.resourceType === ResourceTypes.Step) {
                                 deleteElements({ nodes: [ { id: lastInteractedResource.id } ] });
@@ -149,10 +149,10 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
 
                             setIsOpenResourcePropertiesPanel(false);
                         } }
-                        startIcon={ <TrashIcon size={ 14 } /> }
+                        className="flow-builder-element-property-panel-footer-secondary-action icon-button"
                         color="error"
                     >
-                        Delete
+                        <TrashIcon size={ 14 } />
                     </Button>
                 </Box>
             </Drawer>

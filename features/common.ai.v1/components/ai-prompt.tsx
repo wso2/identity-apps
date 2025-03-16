@@ -27,7 +27,11 @@ import {
 } from "@mui/material";
 import Button from "@oxygen-ui/react/Button";
 import Stack from "@oxygen-ui/react/Stack";
-import React, { ReactElement } from "react";
+import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
+import React, { ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
+import AIPromptHistory from "./ai-prompt-history";
+import useAIPromptHistory from "../hooks/use-ai-prompt-history";
 
 interface AIPromptProps {
     handlePromptSubmit?: () => void;
@@ -35,6 +39,7 @@ interface AIPromptProps {
     samplePrompts?: string[];
     userPrompt: string;
     showHistory?: boolean;
+    promptHistoryPreferenceKey?: string;
 }
 
 const AIPrompt = ({
@@ -42,8 +47,15 @@ const AIPrompt = ({
     setUserPrompt,
     samplePrompts,
     userPrompt,
+    promptHistoryPreferenceKey,
     showHistory = true
 }: AIPromptProps): ReactElement => {
+
+    const { t } = useTranslation();
+    const { getLink } = useDocumentation();
+    const { addPrompt, prompts } = useAIPromptHistory(promptHistoryPreferenceKey);
+
+    const [ showPromptHistory, setShowPromptHistory ] = useState<boolean>(false);
 
     const handleSurpriseMe = () => {
         const randomPrompt: string = samplePrompts[Math.floor(Math.random() * samplePrompts.length)];
@@ -135,14 +147,17 @@ const AIPrompt = ({
                                 height: 40,
                                 mr: 2
                             } }
-                            onClick={ null }
+                            onClick={ () => setShowPromptHistory(true) }
                         >
                                 History
                         </Button>
                     ) }
                 </Stack>
                 <IconButton
-                    onClick={ () => handlePromptSubmit() }
+                    onClick={ () => {
+                        addPrompt(userPrompt);
+                        handlePromptSubmit();
+                    } }
                     color="primary"
                     sx={ {
                         float: "right",
@@ -160,15 +175,30 @@ const AIPrompt = ({
                     <SendOutlinedIcon />
                 </IconButton>
             </Box>
+            {
+                showPromptHistory && (
+                    <AIPromptHistory
+                        promptHistory={ prompts }
+                        setUserPrompt={ setUserPrompt }
+                        handleClose={ () => setShowPromptHistory(false) }
+                    />
+                )
+            }
             <Typography
                 variant="body2"
                 sx={ {
                     textAlign: "center",
                     color: "#555",
-                    marginTop: 1
+                    marginTop: 1,
+                    maxWidth: "450px"
                 } }
             >
-                Registration flow AI can make mistakes. Check important info.
+                { t("ai:aiRegistrationFlow.disclaimer") }
+                <DocumentationLink
+                    link={ getLink("common.termsOfService") }
+                >
+                    { t("ai:aiLoginFlow.termsAndConditions") }
+                </DocumentationLink>
             </Typography>
         </Box>
     );

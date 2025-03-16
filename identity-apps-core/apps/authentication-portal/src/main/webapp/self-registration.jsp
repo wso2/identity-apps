@@ -146,6 +146,7 @@
                 const defaultMyAccountUrl = "<%= myaccountUrl %>";
                 const apiUrl = baseUrl + "${pageContext.request.contextPath}/util/self-registration-api.jsp";
                 const code = "<%= code != null ? code : null %>";
+                const state = "<%= state != null ? state : null %>";
                 
                 const locale = "en-US";
                 const translations = <%= translationsJson %>;
@@ -156,28 +157,30 @@
                 const [ error, setError ] = useState(null);
                 const [ postBody, setPostBody ] = useState(undefined);
 
-
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
+                    const actionTrigger = localStorage.getItem("actionTrigger");
 
-                    if (code !== "null") {
+                    if (code !== "null" && state !== "null") {
                         setPostBody({
                             flowId: savedFlowId,
-                            actionId: "GoogleOIDCAuthenticator",
-                            inputs: { code }
+                            actionId: actionTrigger,
+                            inputs: { 
+                                code,
+                                state 
+                            }
                         });
                     }
-                }, [ code ]);
+                }, [ code, state ]);
 
                 useEffect(() => {
                     if (!postBody && code === "null") {
                         setPostBody({ applicationId: "new-application" });
                     }
-                }, [ postBody, code ]);
+                }, []);
 
                 useEffect(() => {
                     if (!postBody) return;
-
                     setLoading(true);
 
                     fetch(apiUrl, {
@@ -251,7 +254,8 @@
 
                     switch (flow.type) {
                         case "REDIRECTION":
-                            window.location.href = flow.data.url;
+                            setLoading(true);
+                            window.location.href = flow.data.redirectURL;
 
                         default:
                             console.log(`Flow step type: ${flow.type}. No special action.`);
@@ -284,6 +288,8 @@
                         DynamicContent, {
                             elements: components,
                             handleFlowRequest: (actionId, formValues) => {
+                                setComponents([]);
+                                localStorage.setItem("actionTrigger", actionId);
                                 setPostBody({
                                     flowId: flowData.flowId,
                                     actionId,

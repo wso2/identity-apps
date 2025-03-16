@@ -57,6 +57,7 @@ import StepFactory from "./resources/steps/step-factory";
 import useAIRegistrationFlowGenerationResult from "../api/use-ai-registration-flow-result";
 import useGetRegistrationFlow from "../api/use-get-registration-flow";
 import useGetRegistrationFlowBuilderResources from "../api/use-get-registration-flow-builder-resources";
+import { REGISTRATION_FLOW_AI_PROMPT_HISTORY_PREFERENCE_KEY } from "../constants/registration-flow-ai-constants";
 import RegistrationFlowExecutorConstants from "../constants/registration-flow-executor-constants";
 import useAIGeneratedRegistrationFlow from "../hooks/use-ai-generated-registration-flow";
 import useGenerateRegistrationFlow, {
@@ -79,7 +80,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     ...rest
 }: RegistrationFlowBuilderCorePropsInterface): ReactElement => {
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
-
 
     const [ showAIGenerationModal, setShowAIGenerationModal ] = useState(false);
 
@@ -122,15 +122,10 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     const SAMPLE_PROMPTS: string[] = [
         "Ask the user to supply an email address and choose a strong password to begin the sign-up.",
         "Prompt for a unique username and password, ensuring the password meets basic complexity rules.",
-        "Request a valid email address for communication and require the user to set a passphrase.",
-        "Allow the user to choose a display name alongside a secure password.",
+        "In the first step provide option to Sign up with Password or Sign up with Email",
         "Gather basic personal details (e.g., first name, last name) plus an email and password up front.",
-        "Present a quick terms-of-service notice, then prompt for an email and passphrase to create an account.",
-        "Invite the user to pick a handle and a password, emphasizing at least 8 characters.",
-        "Offer a choice between social login (Google or Facebook) or an email/password sign-up for the first step.",
-        "Provide a field for a personal reference ID and a chosen password to initialize registration.",
-        "Require the user’s date of birth and an email address, then let them create a secure password to " +
-            "finish the first step."
+        "Offer the option to Sign up with password or Sign up with Google. If the password " +
+            "option is selected, ask for first name, last name, password. Then verify the email of the user."
     ];
 
     useEffect(() => {
@@ -893,7 +888,8 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         handleModalClose={ () => setShowAIGenerationModal(false) }
                         samplePrompts={ SAMPLE_PROMPTS }
                         userPrompt={ userPrompt }
-                        showHistory={ false }
+                        showHistory={ true }
+                        promptHistoryPreferenceKey={ REGISTRATION_FLOW_AI_PROMPT_HISTORY_PREFERENCE_KEY }
                     />
                 )
             }

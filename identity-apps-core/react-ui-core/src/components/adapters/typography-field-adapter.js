@@ -21,6 +21,7 @@ import React from "react";
 import { Header } from "semantic-ui-react";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
+import "./typography-field-adapter.css";
 
 const TypographyAdapter = ({ component }) => {
     const { variant, config } = component;

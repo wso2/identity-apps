@@ -22,6 +22,10 @@
  * @returns {string|null} - The icon class to be used or null if no icon should be shown.
  */
 export const getInputIconClass = (fieldName) => {
+    if (!fieldName) {
+        return null;
+    }
+
     const iconMapping = {
         address: "home",
         email: "envelope outline",
