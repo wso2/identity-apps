@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.48.2
+
+### Patch Changes
+
+- [#7825](https://github.com/wso2/identity-apps/pull/7825) [`9abede7d09c8e68a47d1e6bdffc6315bf8b7adc6`](https://github.com/wso2/identity-apps/commit/9abede7d09c8e68a47d1e6bdffc6315bf8b7adc6) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Implement Pre Update Profile Extension UI
+
+- Updated dependencies [[`9abede7d09c8e68a47d1e6bdffc6315bf8b7adc6`](https://github.com/wso2/identity-apps/commit/9abede7d09c8e68a47d1e6bdffc6315bf8b7adc6)]:
+  - @wso2is/admin.actions.v1@1.12.0
+  - @wso2is/admin.core.v1@2.42.5
+  - @wso2is/i18n@2.22.1
+
 ## 2.48.1
 
 ### Patch Changes
