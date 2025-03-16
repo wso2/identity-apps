@@ -16,13 +16,15 @@
  * under the License.
  */
 
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { EmptyPlaceholder } from "@wso2is/react-components";
 import {
     AnimatedAvatar, AppAvatar, DataTable, TableActionsInterface, TableColumnInterface
 } from "@wso2is/react-components";
-import React, { ReactNode, SyntheticEvent } from "react";
+import React, { ReactElement, ReactNode, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, SemanticICONS } from "semantic-ui-react";
 
@@ -137,8 +139,29 @@ export default function AgentList ({
         ];
     };
 
-    const showPlaceholders = () => {
-        return <p>Add new agent</p>;
+    /**
+     * Resolve the relevant placeholder.
+     *
+     * @returns React element.
+     */
+    const showPlaceholders = (): ReactElement => {
+        
+        if (list?.length === 0) {
+            return (
+                <EmptyPlaceholder
+                    className="list-placeholder mr-0"
+                    action={ null }
+                    image={ getEmptyPlaceholderIllustrations().newList }
+                    imageSize="tiny"
+                    subtitle={ [
+                        "No agents"
+                    ] }
+                    data-testid={ `${ componentId }-empty-placeholder` }
+                />
+            );
+        }
+
+        return null;
     };
 
     return (

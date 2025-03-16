@@ -134,25 +134,12 @@ export default function AgentIntegrations() {
             {integration.configured && (
                 <>
                     <Icon name="check circle" />
-                    Connected
+                    Configured
                 </>
             )}
         </Typography>
     </CardContent>
     <CardActions style={{ paddingLeft: 0 }}>
-        { integration.configured && <Typography
-            style={{
-                color: "red",
-                cursor: "pointer",
-                marginRight: "20px"
-            }}
-            variant="body1"
-        >
- Disconnect
-                   
-
-        </Typography>}
-
         <Typography
             style={{
                 color: "orange",
@@ -164,7 +151,7 @@ export default function AgentIntegrations() {
             {integration.configured ? "Update" : (
                 <>
                     Configure
-                    <ChevronRightIcon className="info-card-inner-action-icon" />
+                    {/* <ChevronRightIcon className="info-card-inner-action-icon" /> */}
                 </>
             )}
         </Typography>

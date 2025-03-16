@@ -22,7 +22,7 @@ import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@w
 import { EmphasizedSegment, Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Form } from "semantic-ui-react";
+import { Form, Grid } from "semantic-ui-react";
 
 interface AgentOverviewProps extends IdentifiableComponentInterface {
     agentId: string;
@@ -85,7 +85,10 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                 } }
                 render={ ({ handleSubmit }: FormRenderProps) => {
                     return (
-                        <form onSubmit={ handleSubmit } style={ { display: "flex", flexDirection: "column" } }>
+                        <Grid>
+                            <Grid.Row>
+                                <Grid.Column computer={ 12 }>
+                                <form onSubmit={ handleSubmit } style={ { display: "flex", flexDirection: "column" } }>
                             <FinalFormField
                                 name="name"
                                 label="Name"
@@ -99,6 +102,17 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                                 rows={ 4 }
                                 maxRows={ 6 }
                                 component={ TextFieldAdapter }
+                            ></FinalFormField>
+                            <FinalFormField
+                                name="manager"
+                                label="Owner"
+                                className="pt-3"
+                                component={ TextFieldAdapter }
+                                helperText={
+                                    (<Hint compact className="hint">
+                                        The human identity responsible for the agent's actions
+                                    </Hint>)
+                                }
                             ></FinalFormField>
                             <FinalFormField
                                 name="logo"
@@ -118,6 +132,9 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                                 </PrimaryButton>
                             </Form.Group>
                         </form>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
                     );
                 } }
                 initialValues={ initialValues }
