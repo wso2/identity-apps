@@ -18,71 +18,74 @@
 
 import { CardActions, CardContent, Grid, Typography } from "@mui/material";
 import Card from "@oxygen-ui/react/Card";
-import { ChevronRightIcon } from "@oxygen-ui/react-icons";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { useState } from "react";
-import { Icon, Input } from "semantic-ui-react";
+import { Icon, Input, Label } from "semantic-ui-react";
 import AddIntegrationWizard from "../wizards/add-integration-wizard";
 
 export default function AgentIntegrations() {
 
     const [trigger, setTrigger] = useState(false);
-    const [ integrations, setIntegrations ] = useState([
+    const [integrations, setIntegrations] = useState([
         {
           configured: false,
           id: 1,
           name: "Google Calendar",
-          imageUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Calendar_icon_%282020%29.svg"
+          imageUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Calendar_icon_%282020%29.svg",
+          description: "A scheduling tool from Google for managing events."
         },
         {
           configured: true,
           id: 2,
           name: "Slack",
-          imageUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d5/Slack_icon_2019.svg"
+          imageUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d5/Slack_icon_2019.svg",
+          description: "A team messaging platform for workplace communication."
         },
         {
           configured: true,
           id: 3,
           name: "Microsoft Outlook",
-          imageUrl: "https://upload.wikimedia.org/wikipedia/commons/d/df/Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg"
+          imageUrl: "https://upload.wikimedia.org/wikipedia/commons/d/df/Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg",
+          description: "An email and calendar service widely used in business."
         },
         {
           configured: true,
           id: 4,
           name: "Trello",
-          imageUrl: "https://static.macupdate.com/products/60125/m/trello-logo.png?v=1665560228"
+          imageUrl: "https://static.macupdate.com/products/60125/m/trello-logo.png?v=1665560228",
+          description: "A visual task and project management tool."
         },
         {
           configured: false,
           id: 5,
           name: "Asana",
-          imageUrl: "https://pipedream.com/s.v0/app_OVWhPX/logo/orig"
+          imageUrl: "https://pipedream.com/s.v0/app_OVWhPX/logo/orig",
+          description: "A project management tool for team collaboration."
         },
         {
           configured: false,
           id: 6,
           name: "GitHub",
-          imageUrl: "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg"
+          imageUrl: "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg",
+          description: "A platform for developers to collaborate on code."
         },
         {
           configured: true,
           id: 7,
           name: "Jira",
-          imageUrl: "https://avatars.slack-edge.com/2018-11-09/476199963234_caeebdb247973fece066_512.png"
-        },
-        {
-          configured: false,
-          id: 8,
-          name: "Notion",
-          imageUrl: "https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png"
+          imageUrl: "https://avatars.slack-edge.com/2018-11-09/476199963234_caeebdb247973fece066_512.png",
+          description: "A tool for issue tracking and agile development."
         },
         {
           configured: true,
           id: 9,
           name: "Dropbox",
-          imageUrl: "https://store-images.s-microsoft.com/image/apps.23871.13668225141277943.68205d94-7cbe-41f0-893f-53305fceb682.4c98395a-28d0-4eee-9b6e-08ecd210e980?h=210"
+          imageUrl: "https://store-images.s-microsoft.com/image/apps.23871.13668225141277943.68205d94-7cbe-41f0-893f-53305fceb682.4c98395a-28d0-4eee-9b6e-08ecd210e980?h=210",
+          description: "A cloud storage and file-sharing service."
         }
-      ])
+      ]);
+      
+
 
     const [ selectedIntegration, setSelectedIntegration ] = useState<any>();
 
@@ -119,25 +122,36 @@ export default function AgentIntegrations() {
     style={{ cursor: "pointer", minHeight: "150px" }}
 >
     <CardContent style={{ minHeight: "150px", paddingLeft: 0 }}>
-        <div style={{ display: "flex", alignItems: "center", marginBottom: "12px" }}>
+        <div style={{ display: "flex", alignItems: "center", marginBottom: "12px", height: "5vh" }}>
             <img 
                 src={integration.imageUrl} 
                 alt={`${integration.name} logo`}
                 style={{ width: "25px", height: "25px", marginRight: "12px" }}
             />
-            <Typography variant="h6">{integration.name}</Typography>
+            <div>
+                <Typography variant="h6">{integration.name}</Typography>
+                { integration.configured && (
+                    <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "2%"}}>
+                        <Label circular color="green" empty style={{ fontSize: "8px"}} />
+                        <p style={{ marginLeft: "3%", color: "gray"}}>Configured</p>
+                    </div>
+                    
+
+                )}
+            </div>
+
         </div>
-        {/* <Typography variant="body1" color="textSecondary" style={ { minHeight: "50px" } }>
+        <Typography variant="body1" color="textSecondary" style={ { minHeight: "50px" } }>
             { integration?.description }
-        </Typography> */}
-        <Typography variant="body2" className="mt-2" style={{ color: "orange" }}>
+        </Typography>
+        {/* <Typography variant="body2" className="mt-2" style={{ color: "orange" }}>
             {integration.configured && (
                 <>
                     <Icon name="check circle" />
                     Configured
                 </>
             )}
-        </Typography>
+        </Typography> */}
     </CardContent>
     <CardActions style={{ paddingLeft: 0 }}>
         <Typography
