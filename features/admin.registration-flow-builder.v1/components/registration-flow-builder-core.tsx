@@ -697,7 +697,16 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             };
 
             if (node.data?.components) {
-                (node.data?.components as any).forEach(component => processAction(node.id, component.id, component.action));
+                (node.data?.components as any).forEach((component: Element) => {
+                    processAction(node.id, component.id, component.action);
+
+                    // Process `FORM` components.
+                    if (component?.components) {
+                        component.components.forEach((nestedComponent: Element) =>
+                            processAction(node?.id, nestedComponent.id, nestedComponent.action)
+                        );
+                    }
+                });
             }
 
             if (node.data?.action) {
