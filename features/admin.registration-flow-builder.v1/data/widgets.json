@@ -95,7 +95,14 @@
         },
         "config": {
             "data": {
-                "__generationMeta__": {},
+                "__generationMeta__": {
+                    "replacers": [
+                        {
+                            "key": "EMAIL_OTP_VERIFICATION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
                 "steps": [
                     {
                         "__generationMeta__": {
