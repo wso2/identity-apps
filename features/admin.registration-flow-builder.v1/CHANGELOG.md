@@ -1,5 +1,11 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.4.1
+
+### Patch Changes
+
+- [#7889](https://github.com/wso2/identity-apps/pull/7889) [`86827234464171b26c32b0abb7f4b9116b7c94fb`](https://github.com/wso2/identity-apps/commit/86827234464171b26c32b0abb7f4b9116b7c94fb) Thanks [@brionmario](https://github.com/brionmario)! - Fix edge generation issues in Email OTP widget
+
 ## 0.4.0
 
 ### Minor Changes
