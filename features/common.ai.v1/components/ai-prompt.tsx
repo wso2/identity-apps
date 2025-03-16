@@ -97,7 +97,7 @@ const AIPrompt = ({
                     multiline
                     maxRows={ 4 }
                     value={ userPrompt }
-                    onBlur={ (e) => setUserPrompt(e.target.value) }
+                    onChange={ (e) => setUserPrompt(e.target.value) }
                     sx={ {
                         flex: 1,
                         color: "#333",
