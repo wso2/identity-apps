@@ -19,3 +19,4 @@
 export { default as ActionTypesListingPage } from "./pages/actions";
 export { default as PreIssueAccessTokenActionConfigForm } from "./components/pre-issue-access-token-action-config-form";
 export { default as PreUpdatePasswordActionConfigForm } from "./components/pre-update-password-action-config-form";
+export { default as PreUpdateProfileActionConfigForm } from "./components/pre-update-profile-action-config-form";
