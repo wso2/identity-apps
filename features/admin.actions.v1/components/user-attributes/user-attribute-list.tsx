@@ -201,9 +201,12 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
 
     /**
      * Limits the number of attributes per action.
+     * @param attributesList - List of attributes to be checked.
+     * @returns - whether the limit is reached.
      */
-    const isMaxAttributesConfigured = (): boolean => {
-        if (finalAttributeList?.length === ActionsConstants.MAX_ALLOWED_ATTRIBUTES_PRE_UPDATE_PROFILE) {
+    const isMaxAttributesConfigured = (attributesList: Claim[]): boolean => {
+
+        if (attributesList?.length === ActionsConstants.MAX_ALLOWED_ATTRIBUTES_PRE_UPDATE_PROFILE) {
             setIsAttributeLimitReached(true);
 
             return true;
@@ -224,7 +227,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
         // Clears the search input after the selected attribute is added.
         setInputValue(ActionsConstants.EMPTY_STRING);
 
-        if (isAttributeAlreadyAdded(data as Claim) || isMaxAttributesConfigured()) {
+        if (isAttributeAlreadyAdded(data as Claim) || isMaxAttributesConfigured(finalAttributeList)) {
             return;
         };
 
@@ -238,11 +241,19 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
      */
     const handleAttributeDelete = (item: Claim) => {
 
-        setFinalAttributeList((userAttributes: Claim[]) =>
-            userAttributes?.filter((claim: Claim) => claim?.claimURI !== item?.claimURI)
-        );
+        const attributeList: Claim[] = finalAttributeList?.filter((claim: Claim) => claim?.claimURI !== item?.claimURI)
+        setFinalAttributeList(attributeList);
 
-        isMaxAttributesConfigured();
+        isMaxAttributesConfigured(attributeList);
+    };
+
+    /**
+     * Handles the clearing of all selected attributes.
+     */
+    const handleOnClearAll = () => {
+
+        setFinalAttributeList([]);
+        setIsAttributeLimitReached(false);
     };
 
     /**
@@ -411,7 +422,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                         <div className="user-attribute-list">
                             <div className="clear-all-button-container">
                                 <Button
-                                    onClick={ () => setFinalAttributeList([]) }
+                                    onClick={ () => handleOnClearAll() }
                                     variant="outlined"
                                     size="small"
                                     className="secondary-button clear-all-button"
