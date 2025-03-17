@@ -17,7 +17,7 @@
  */
 
 import { GearIcon } from "@oxygen-ui/react-icons";
-import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import {
     getApplicationDetails,
     getInboundProtocolConfig,
@@ -54,7 +54,9 @@ import { useSelector } from "react-redux";
 import { Button, Card, Grid, Placeholder } from "semantic-ui-react";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
 import { DynamicApplicationContextCard } from "./dynamic-application-context-card";
+import NewFeatureAnnouncement from "./new-feature-announcement/new-feature-announcement";
 import { getGettingStartedCardIllustrations } from "../configs/ui";
+import HomeConstants from "../constants/home-constants";
 
 /**
  * Proptypes for the overview page component.
@@ -89,8 +91,18 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const username: string = useSelector((state: AppState) => state.auth.fullName);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const homeFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state?.config?.ui?.features?.gettingStarted;
+    });
+    const loginAndRegistrationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state?.config?.ui?.features?.loginAndRegistration;
+    });
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+
+    const showFeatureAnnouncementBanner: boolean = !homeFeatureConfig?.disabledFeatures?.includes(
+        HomeConstants.FEATURE_DICTIONARY.FEATURE_ANNOUNCEMENT
+    );
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
@@ -452,6 +464,16 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                     }
                 </Heading>
             </div>
+            { showFeatureAnnouncementBanner && (
+                <Show featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                    <Show
+                        when={ loginAndRegistrationFeatureConfig?.scopes?.update }
+                        featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
+                    >
+                        <NewFeatureAnnouncement />
+                    </Show>
+                </Show>
+            ) }
             <Grid stackable>
                 <Grid.Row columns={ 2 }>
                     {

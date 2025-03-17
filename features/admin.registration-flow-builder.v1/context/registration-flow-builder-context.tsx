@@ -28,6 +28,10 @@ export interface RegistrationFlowBuilderContextProps {
      */
     isNewRegistrationPortalEnabled: boolean;
     /**
+     * Is the registration flow publishing.
+     */
+    isPublishing: boolean;
+    /**
      * Callback to publish the flow.
      */
     onPublish: () => void;
@@ -50,8 +54,9 @@ const RegistrationFlowBuilderContext: Context<
     RegistrationFlowBuilderContextProps
 > = createContext<null | RegistrationFlowBuilderContextProps>(
     {
-        onPublish: () => {},
         isNewRegistrationPortalEnabled: false,
+        isPublishing: false,
+        onPublish: () => {},
         selectedAttributes: {},
         setSelectedAttributes: () => {}
     }

@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- 
+
 :root {
     --wso2is-flow-builder-background-color: #f6f7f9;
     --wso2is-flow-builder-background-color-dark: #48484C;
@@ -47,7 +47,7 @@
 
     .react-flow {
         .react-flow__edges {
-            z-index: 1;
+            z-index: 9999;
         }
 
         .react-flow__edge {
@@ -79,18 +79,18 @@
             background-size: 8px 8px;
             background-image: radial-gradient(circle, var(--xy-background-pattern-color-props) 1px, transparent 1px);
         }
-        
+
         .react-flow__edge-path {
             stroke: var(--xy-edge-stroke, var(--xy-edge-stroke-default));
             stroke-width: var(--xy-edge-stroke-width, var(--xy-edge-stroke-width-default));
         }
-        
+
         .react-flow__controls-button {
             background: var(--xy-controls-button-background-color, var(--xy-controls-button-background-color-default));
             border-bottom: 1px solid var(--xy-controls-button-border-color-props, var(--xy-controls-button-border-color, var(--xy-controls-button-border-color-default)));
             color: var(--xy-controls-button-color-props, var(--xy-controls-button-color, var(--xy-controls-button-color-default)));
         }
-        
+
         .flow-builder-step {
             box-shadow: var(--oxygen-shadows-7);
         }

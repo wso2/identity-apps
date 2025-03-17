@@ -55,8 +55,8 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
             <Autocomplete
                 disablePortal
                 key={ resource.id }
-                options={ attributes }
-                getOptionLabel={ (attribute: Attribute) => attribute.displayName }
+                options={ attributes || [] }
+                getOptionLabel={ (attribute: Attribute) => attribute?.displayName }
                 sx={ { width: "100%" } }
                 renderInput={ (params: AutocompleteRenderInputParams) => (
                     <TextField { ...params } label="Attribute" placeholder="Select an attribute" />

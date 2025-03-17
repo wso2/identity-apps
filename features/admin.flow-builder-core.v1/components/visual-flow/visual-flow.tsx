@@ -97,19 +97,15 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                 accept={ [ ...VisualFlowConstants.FLOW_BUILDER_CANVAS_ALLOWED_RESOURCE_TYPES ] }
             >
                 <ReactFlow
-                    fitView
                     nodes={ nodes }
                     edges={ edges }
                     nodeTypes={ useMemo(() => nodeTypes, []) }
                     edgeTypes={ edgeTypes as any }
-                    onNodesChange={ onNodesChange }
-                    onEdgesChange={ onEdgesChange }
                     onConnect={ onConnect }
                     onNodesDelete={ onNodesDelete }
                     proOptions={ { hideAttribution: true } }
                     data-componentid={ componentId }
                     colorMode="light"
-                    { ...rest }
                 >
                     <Controls position="top-right" />
                 </ReactFlow>
