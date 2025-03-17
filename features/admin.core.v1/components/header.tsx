@@ -33,6 +33,7 @@ import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@
 import { useMyAccountApplicationData } from "@wso2is/admin.applications.v1/api/application";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
+import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationSwitchBreadcrumb } from "@wso2is/admin.organizations.v1/components/organization-switch";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -81,7 +82,10 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     ...rest
 }: HeaderPropsInterface): ReactElement => {
     const { t } = useTranslation();
+
     const { getLink } = useDocumentation();
+
+    const { showPreviewFeaturesModal, setShowPreviewFeaturesModal } = useFeatureGate();
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -114,20 +118,11 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
     const [ anchorHelpMenu, setAnchorHelpMenu ] = useState<null | HTMLElement>(null);
-    const [ featurePreviewModalShow, setFeaturePreviewModalShow ] = useState<boolean>(false);
 
     const openHelpMenu: boolean = Boolean(anchorHelpMenu);
 
     const handleHelpMenuClick = (event: { currentTarget: React.SetStateAction<HTMLElement> }) => {
         setAnchorHelpMenu(event.currentTarget);
-    };
-
-    const handleFeaturePreviewMenuClick = () => {
-        setFeaturePreviewModalShow(true);
-    };
-
-    const handleFeaturePreviewDialogClose = () => {
-        setFeaturePreviewModalShow(false);
     };
 
     const onCloseHelpMenu = (): void => {
@@ -460,7 +455,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 when={ loginAndRegistrationFeatureConfig?.scopes?.update }
                                 featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
                             >
-                                <MenuItem onClick={ handleFeaturePreviewMenuClick }>
+                                <MenuItem onClick={ () => setShowPreviewFeaturesModal(true) }>
                                     <ListItemIcon>
                                         <PreviewFeaturesIcon />
                                     </ListItemIcon>
@@ -497,8 +492,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 { ...rest }
             />
             <FeaturePreviewModal
-                open={ featurePreviewModalShow }
-                onClose={ handleFeaturePreviewDialogClose }
+                open={ showPreviewFeaturesModal }
+                onClose={ () => setShowPreviewFeaturesModal(false) }
             />
         </>
     );
