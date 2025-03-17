@@ -198,7 +198,7 @@
                             <div class="field">
                                 <% String otpHeader = isEmailOtp ? "enter.code.sent.emailotp" : "enter.code.sent.smsotp";
 
-                                if (screenValue != null) { %>
+                                if (screenValue != null && !isEmailOtp) { %>
                                     <input type='hidden' name='screenValue' id='screenValue'
                                         value='<%=Encode.forHtmlContent(screenValue)%>'/>
                                     <label for="password">

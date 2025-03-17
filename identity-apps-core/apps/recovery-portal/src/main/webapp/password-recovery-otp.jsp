@@ -189,11 +189,8 @@
             if (resp == null) {
                 /** Handle invalid username scenario. proceeds to next level without warning to 
                 avoid an attacker bruteforcing to learn the usernames. */
-                String randomScreenValue = null;
-                if (IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP.equals(targetChannel)) {
-                    randomScreenValue = "******" + getRandomNumberString(4, username);
-                }
-                request.setAttribute("screenValue", randomScreenValue);
+                
+                request.setAttribute("screenValue", "******" + getRandomNumberString(4, username));
                 request.setAttribute("resendCode", UUID.randomUUID().toString());
                 request.setAttribute("flowConfirmationCode", UUID.randomUUID().toString());
                 request.getRequestDispatcher("otp.jsp").forward(request, response);
