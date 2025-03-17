@@ -1087,7 +1087,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             id: "auditLogsSettings",
                             name: "Audit Logs Settings",
-                            path: AppConstants.getPaths().get("LOGS_SETTINGS_AUDIT"),
+                            path: AppConstants.getPaths().get("LOG_SETTINGS_AUDIT"),
                             protected: true,
                             showOnSidePanel: false
                         },
@@ -1098,9 +1098,9 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             icon: {
                                 icon: getSidePanelIcons().childIcon
                             },
-                            id: "auditLogsSettings",
-                            name: "Audit Logs Settings",
-                            path: AppConstants.getPaths().get("LOGS_SETTINGS_DIAGNOSTICS"),
+                            id: "diagnosticLogsSettings",
+                            name: "Diagnostic Logs Settings",
+                            path: AppConstants.getPaths().get("LOG_SETTINGS_DIAGNOSTICS"),
                             protected: true,
                             showOnSidePanel: false
                         }
@@ -1110,9 +1110,9 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     icon: {
                         icon: getSidePanelIcons().childIcon
                     },
-                    id: "logsSettings",
-                    name: "Logs Settings",
-                    path: AppConstants.getPaths().get("LOGS_SETTINGS"),
+                    id: "logSettings",
+                    name: "Log Settings",
+                    path: AppConstants.getPaths().get("LOG_SETTINGS"),
                     protected: true,
                     showOnSidePanel: false
                 }
@@ -1123,6 +1123,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 icon: import("@wso2is/admin.extensions.v1/assets/images/icons/event-publishing.svg")
             },
             id: "logs",
+            featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
             name: "extensions:develop.sidePanel.monitor",
             order: 22,
             path: `${ AppConstants.getDeveloperViewBasePath() }/logs`,
