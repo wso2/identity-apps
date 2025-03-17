@@ -39,7 +39,7 @@ import updateTemplatePlaceholderReferences
 import AIGenerationModal from "@wso2is/common.ai.v1/components/ai-generation-modal";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Edge, Node, NodeTypes, useEdgesState, useNodesState, useUpdateNodeInternals } from "@xyflow/react";
+import { Edge, MarkerType, Node, NodeTypes, useEdgesState, useNodesState, useUpdateNodeInternals } from "@xyflow/react";
 import { UpdateNodeInternals } from "@xyflow/system";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
@@ -297,6 +297,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             edges.push({
                 animated: false,
                 id: `${INITIAL_FLOW_START_STEP_ID}-${firstStep.id}`,
+                markerEnd: {
+                    type: MarkerType.Arrow
+                },
                 source: INITIAL_FLOW_START_STEP_ID,
                 sourceHandle: `${ INITIAL_FLOW_START_STEP_ID }${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                 target: firstStep.id,
@@ -316,6 +319,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     edges.push({
                         animated: false,
                         id: button.id,
+                        markerEnd: {
+                            type: MarkerType.Arrow
+                        },
                         source: step.id,
                         sourceHandle: `${button.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                         target: button.action.next,
@@ -332,6 +338,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     edges.push({
                         animated: false,
                         id: button.id,
+                        markerEnd: {
+                            type: MarkerType.Arrow
+                        },
                         source: step.id,
                         sourceHandle: `${button.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                         target: userOnboardStepId,
@@ -345,6 +354,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 edges.push({
                     animated: false,
                     id: button.id,
+                    markerEnd: {
+                        type: MarkerType.Arrow
+                    },
                     source: step.id,
                     sourceHandle: `${button.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                     target: userOnboardStepId,
@@ -390,6 +402,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     edges.push({
                         animated: false,
                         id: `${step.id}-to-${step.data.action.next}`,
+                        markerEnd: {
+                            type: MarkerType.Arrow
+                        },
                         source: step.id,
                         sourceHandle: `${step.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                         target: step.data.action.next,
@@ -406,6 +421,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     edges.push({
                         animated: false,
                         id: `${step.id}-to-${userOnboardStepId}`,
+                        markerEnd: {
+                            type: MarkerType.Arrow
+                        },
                         source: step.id,
                         sourceHandle: `${step.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                         target: userOnboardStepId,
@@ -451,6 +469,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 edges.push({
                     animated: false,
                     id: edgeId,
+                    markerEnd: {
+                        type: MarkerType.Arrow
+                    },
                     source: lastViewStep.id,
                     ...(buttonId
                         ? { sourceHandle: `${buttonId}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
@@ -501,6 +522,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             {
                 animated: false,
                 id: `${INITIAL_FLOW_START_STEP_ID}-${INITIAL_FLOW_VIEW_STEP_ID}`,
+                markerEnd: {
+                    type: MarkerType.Arrow
+                },
                 source: INITIAL_FLOW_START_STEP_ID,
                 sourceHandle: `${ INITIAL_FLOW_START_STEP_ID }${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                 target: INITIAL_FLOW_VIEW_STEP_ID,
@@ -509,6 +533,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             {
                 animated: false,
                 id: defaultTemplateActionId,
+                markerEnd: {
+                    type: MarkerType.Arrow
+                },
                 source: INITIAL_FLOW_VIEW_STEP_ID,
                 sourceHandle: `${defaultTemplateActionId}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                 target: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
@@ -680,12 +707,15 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 // If no edge exists or it's pointing to the wrong node, add a missing edge
                 if (!existingEdge || existingEdge.target !== expectedTarget) {
                     missingEdges.push({
+                        animated: false,
                         id: `${buttonId}_MISSING_EDGE`,
+                        markerEnd: {
+                            type: MarkerType.Arrow
+                        },
                         source: stepId,
                         sourceHandle: `${buttonId}_NEXT`,
                         target: expectedTarget,
-                        type: "base-edge",
-                        animated: false
+                        type: "base-edge"
                     });
                 }
             }
