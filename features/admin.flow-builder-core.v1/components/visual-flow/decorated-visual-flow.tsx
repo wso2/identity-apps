@@ -270,9 +270,6 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             if (!edge) {
                 edge = {
                     ...connection,
-                    markerEnd: {
-                        type: MarkerType.Arrow
-                    },
                     type: "base-edge"
                 };
             }
