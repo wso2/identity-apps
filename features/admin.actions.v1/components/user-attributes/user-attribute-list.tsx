@@ -22,8 +22,10 @@ import Autocomplete, {
 } from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import TextField from "@oxygen-ui/react/TextField";
+import { MagnifyingGlassIcon } from "@oxygen-ui/react-icons";
 import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -82,6 +84,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
     const [ allAttributesList, setAllAttributesList ] = useState<Claim[]>();
     const [ finalAttributeList, setFinalAttributeList ] = useState<Claim[]>([]);
     const [ isGetAllLocalClaimsLoading, setIsGetAllLocalClaimsLoading ] = useState<boolean>(false);
+    const [ isAttributeLimitReached, setIsAttributeLimitReached ] = useState<boolean>(false);
     const [ inputValue, setInputValue ] = useState("");
 
     const { t } = useTranslation();
@@ -187,6 +190,21 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
     };
 
     /**
+     * Limits the number of attributes per action.
+     */
+    const isMaxAttributesConfigured = (): boolean => {
+        if (finalAttributeList?.length === ActionsConstants.MAX_ALLOWED_ATTRIBUTES_PRE_UPDATE_PROFILE) {
+            setIsAttributeLimitReached(true);
+
+            return true;
+        }
+
+        setIsAttributeLimitReached(false);
+
+        return false;
+    };
+
+    /**
      * Handles the selection of an attribute from the autocomplete dropdown.
      *
      * @param data - Dropdown data.
@@ -196,7 +214,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
         // Clears the search input after the selected attribute is added.
         setInputValue(ActionsConstants.EMPTY_STRING);
 
-        if (isAttributeAlreadyAdded(data as Claim)) {
+        if (isAttributeAlreadyAdded(data as Claim) || isMaxAttributesConfigured()) {
             return;
         };
 
@@ -328,7 +346,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                     event: SyntheticEvent<HTMLElement>,
                     data: DropdownProps
                 ) => handleAttributeSelect(data) }
-                options={ allAttributesList }
+                options={ allAttributesList?.filter((attribute: Claim) => !finalAttributeList?.includes(attribute)) }
                 getOptionLabel={ (claim: DropdownProps) =>
                     claim?.displayName
                 }
@@ -354,6 +372,18 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                         placeholder={ t("actions:fields.userAttributes.search.placeholder") }
                         size="small"
                         variant="outlined"
+                        error={ isAttributeLimitReached }
+                        InputProps={ {
+                            ...params.InputProps,
+                            startAdornment: (
+                                <InputAdornment
+                                    position="start"
+                                    className="user-attribute-list-search-icon icon"
+                                >
+                                    <MagnifyingGlassIcon />
+                                </InputAdornment>
+                            )
+                        } }
                     />
                 ) }
                 disabled={ isReadOnly }
