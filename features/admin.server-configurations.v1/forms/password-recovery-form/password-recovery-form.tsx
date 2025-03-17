@@ -371,7 +371,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 </Heading>
                 <Heading as="h5">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
-                            "passwordRecovery.recoveryOptionSubHeadingEmailLink") as ReactNode }
+                            "passwordRecovery.recoveryOptionSubHeadingEmail") as ReactNode }
                 </Heading>
                 <Field.Checkbox
                     ariaLabel="enableEmailBasedRecovery"

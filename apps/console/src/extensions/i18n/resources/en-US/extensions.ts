@@ -3320,7 +3320,7 @@ export const extensions: Extensions = {
                         smsProviderWarning:
                             "Ensure that an <1>SMS Provider</1> is configured for the OTP feature to work properly."
                     },
-                    recoveryOptionSubHeadingEmailLink: "Email",
+                    recoveryOptionSubHeadingEmail: "Email",
                     recoveryOptionSubHeadingSMS: "SMS OTP",
                     recoveryOptionHeading: "Recovery Option Selection",
                     otpConfigHeading: "OTP Code Configuration",
