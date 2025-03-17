@@ -65,7 +65,7 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                 <Box>
                     <Typography variant="h3">Design seamless self-registration experiences</Typography>
                     <Typography variant="body2">
-                        Design your user self-registration flow effortlessly with the{ " " }
+                        Effortlessly design your user self-registration flows with the{ " " }
                         new AI-powered visual designer <AIText />
                     </Typography>
                 </Box>
