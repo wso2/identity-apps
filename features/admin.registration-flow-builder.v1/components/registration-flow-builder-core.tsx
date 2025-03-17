@@ -551,51 +551,59 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         if (!isEmpty(registrationFlow?.steps)) {
             const steps: Node[] =  generateSteps(registrationFlow.steps);
 
-            setEdges(() => generateEdges(steps as any));
+            // TODO: Figure-out a better way to handle this debounce.
+            // Tracker: https://github.com/xyflow/xyflow/issues/2405
+            setTimeout(() => {
+                setEdges(() => generateEdges(steps as any));
 
-            // Letting React Flow know of the programmatic updates to node for re-drawing edges.
-            setNodes(() => {
-                steps.forEach((node: Node) => {
-                    updateNodeInternals(node.id);
+                // Letting React Flow know of the programmatic updates to node for re-drawing edges.
+                setNodes(() => {
+                    steps.forEach((node: Node) => {
+                        updateNodeInternals(node.id);
 
-                    if (node.data?.components) {
-                        (node.data.components as Element[]).forEach((component: Element) => {
-                            updateNodeInternals(component.id);
+                        if (node.data?.components) {
+                            (node.data.components as Element[]).forEach((component: Element) => {
+                                updateNodeInternals(component.id);
 
-                            if (component?.components) {
-                                component.components.forEach((nestedComponent: Element) => {
-                                    updateNodeInternals(nestedComponent.id);
-                                });
-                            }
-                        });
-                    }
+                                if (component?.components) {
+                                    component.components.forEach((nestedComponent: Element) => {
+                                        updateNodeInternals(nestedComponent.id);
+                                    });
+                                }
+                            });
+                        }
+                    });
+
+                    return steps;
                 });
-
-                return steps;
-            });
+            }, 500);
         } else {
-            setEdges(() => initialEdges);
+            // TODO: Figure-out a better way to handle this debounce.
+            // Tracker: https://github.com/xyflow/xyflow/issues/2405
+            setTimeout(() => {
+                setEdges(() => initialEdges);
 
-            // Letting React Flow know of the programmatic updates to node for re-drawing edges.
-            setNodes(() => {
-                initialNodes.forEach((node: Node) => {
-                    updateNodeInternals(node.id);
+                // Letting React Flow know of the programmatic updates to node for re-drawing edges.
+                setNodes(() => {
+                    initialNodes.forEach((node: Node) => {
+                        updateNodeInternals(node.id);
 
-                    if (node.data?.components) {
-                        (node.data.components as Element[]).forEach((component: Element) => {
-                            updateNodeInternals(component.id);
+                        if (node.data?.components) {
+                            (node.data.components as Element[]).forEach((component: Element) => {
+                                updateNodeInternals(component.id);
 
-                            if (component?.components) {
-                                component.components.forEach((nestedComponent: Element) => {
-                                    updateNodeInternals(nestedComponent.id);
-                                });
-                            }
-                        });
-                    }
+                                if (component?.components) {
+                                    component.components.forEach((nestedComponent: Element) => {
+                                        updateNodeInternals(nestedComponent.id);
+                                    });
+                                }
+                            });
+                        }
+                    });
+
+                    return initialNodes;
                 });
-
-                return initialNodes;
-            });
+            }, 500);
         }
     }, [ registrationFlow?.steps ]);
 
