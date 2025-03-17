@@ -115,32 +115,6 @@
         }
         return sb.toString();
     }
-    /**
-     * Generates a masked email using the username.
-     * If the username is shorter than or equal to 2 characters, only the first character is shown. 
-     * 
-     * If no "@" is present, "@gmail.com" is appended to treat it as an email.
-     *
-     * @param username The username or email to be masked.
-     * @return A masked email in the format: "ab*****@gmail.com".
-     */
-    public static String generateRandomMaskedEmail(String username) {
-
-        username = UserCoreUtil.removeDistinguishedName(username);
-        
-        if (!username.contains("@")) {
-            username = username + "@gmail.com";
-        } 
-
-        // Todo: check how we are masking the current email addresses.
-        int atIndex = username.indexOf('@');
-
-        String maskedUsername = username.charAt(0) + "**************";
-        String maskedDomain = username.substring(atIndex, atIndex + 2) + "***" + 
-                              username.substring(username.length() - 4, username.length());
-        return maskedUsername + maskedDomain;
-
-    }
 %>
 <%!
     /**
@@ -215,10 +189,8 @@
             if (resp == null) {
                 /** Handle invalid username scenario. proceeds to next level without warning to 
                 avoid an attacker bruteforcing to learn the usernames. */
-                String randomScreenValue;
-                if (IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL.equals(targetChannel)) {
-                    randomScreenValue = generateRandomMaskedEmail(username);
-                } else {
+                String randomScreenValue = null;
+                if (IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP.equals(targetChannel)) {
                     randomScreenValue = "******" + getRandomNumberString(4, username);
                 }
                 request.setAttribute("screenValue", randomScreenValue);
