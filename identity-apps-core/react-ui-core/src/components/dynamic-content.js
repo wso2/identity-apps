@@ -18,21 +18,29 @@
 
 import PropTypes from "prop-types";
 import React from "react";
+import { Message } from "semantic-ui-react";
 import Field from "./field";
 import Form from "./form";
 
-const DynamicContent = ({ elements, handleFlowRequest }) => {
+const DynamicContent = ({ elements, handleFlowRequest, error }) => {
 
     const renderForm = (form) => {
         if (!form) return null;
 
         if (form.components && form.components.length > 0) {
             return (
-                <Form
-                    key={ form.id }
-                    formSchema={ form.components }
-                    onSubmit={ (action, formValues) => handleFlowRequest(action, formValues) }
-                />
+                <>
+                    { error && (
+                        <Message negative>
+                            <p>{ error }</p>
+                        </Message>
+                    ) }
+                    <Form
+                        key={ form.id }
+                        formSchema={ form.components }
+                        onSubmit={ (action, formValues) => handleFlowRequest(action, formValues) }
+                    />
+                </>
             );
         }
 
@@ -44,7 +52,7 @@ const DynamicContent = ({ elements, handleFlowRequest }) => {
             <Field
                 key={ element.id }
                 component={ element }
-                flowActionHandler={ handleFlowRequest }
+                flowActionHandler={ (action, formValues) => handleFlowRequest(action, formValues) }
             />
         );
     };

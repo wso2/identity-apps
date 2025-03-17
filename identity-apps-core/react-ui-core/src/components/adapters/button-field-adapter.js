@@ -34,7 +34,10 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
                     className="ui primary fluid large button mt-4"
                     type={ component.config.type }
                     name={ component.id }
-                    onClick={ !component.config.type === "submit" ? handleButtonAction : null }
+                    onClick={ component.config.type !== "submit"
+                        ? () => handleButtonAction(component.id, {})
+                        : null
+                    }
                 >
                     { resolveElementText(translations, component.config.text) }
                 </Button>
@@ -45,18 +48,24 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
                     type={ component.config.type }
                     className="ui secondary fluid large button mt-4"
                     name={ component.id }
-                    onClick={ !component.config.type === "submit" ? handleButtonAction : null }
+                    onClick={ component.config.type !== "submit"
+                        ? () => handleButtonAction(component.id, {})
+                        : null
+                    }
                 >
                     { resolveElementText(translations, component.config.text) }
                 </Button>
             );
-        case "LINK":
+        case "TEXT":
             return (
                 <Button
                     type={ component.type }
                     name={ component.id }
                     className="link mt-4"
-                    onClick={ () => handleButtonAction(component.id, {}) }
+                    onClick={ component.config.type !== "submit"
+                        ? () => handleButtonAction(component.id, {})
+                        : null
+                    }
                 >
                     { resolveElementText(translations, component.config.text) }
                 </Button>
@@ -85,7 +94,10 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
                     type={ component.type }
                     name={ component.id }
                     className="ui button mt-4"
-                    onClick={ !component.config.type === "submit" ? handleButtonAction : null }
+                    onClick={ component.config.type !== "submit"
+                        ? () => handleButtonAction(component.id, {})
+                        : null
+                    }
                 >
                     { resolveElementText(translations, component.config.text) }
                 </Button>
