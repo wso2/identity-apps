@@ -74,10 +74,28 @@
 
     .new-feature-announcement-actions {
         padding: 0 var(--wso2is-home-section-padding) var(--wso2is-home-section-padding) var(--wso2is-home-section-padding);
+
+        svg {
+            path {
+                fill: var(--oxygen-palette-common-white);
+            }
+        }
+
+        .oxygen-button {
+            padding-left: var(--oxygen-spacing-3);
+            padding-right: var(--oxygen-spacing-3);
+        }
     }
 }
 
-// hide the login box overlay and login box in the login page in mobile view
+@media (max-width: 968px) {
+    .new-feature-announcement {
+        .new-feature-announcement-content {
+            max-width: 50%;
+        }
+    }
+}
+
 @media (max-width: 768px) {
     .new-feature-announcement {
         .new-feature-announcement-content {

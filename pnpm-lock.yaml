@@ -9071,8 +9071,11 @@ importers:
       '@wso2is/admin.organizations.v1':
         specifier: ^2.26.203
         version: link:../admin.organizations.v1
+      '@wso2is/admin.registration-flow-builder.v1':
+        specifier: workspace:^0.4.0
+        version: link:../admin.registration-flow-builder.v1
       '@wso2is/common.ai.v1':
-        specifier: workspace:^
+        specifier: ^2.25.203
         version: link:../common.ai.v1
       '@wso2is/core':
         specifier: ^2.7.0
