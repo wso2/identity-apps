@@ -55,7 +55,7 @@ import { Button, Card, Grid, Placeholder } from "semantic-ui-react";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
 import { DynamicApplicationContextCard } from "./dynamic-application-context-card";
 import { getGettingStartedCardIllustrations } from "../configs/ui";
-import NewFeatureAnnouncement from "./new-feature-announcement";
+import NewFeatureAnnouncement from "./new-feature-announcement/new-feature-announcement";
 
 /**
  * Proptypes for the overview page component.

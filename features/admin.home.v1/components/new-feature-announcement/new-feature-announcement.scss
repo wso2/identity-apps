@@ -1,0 +1,95 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+:root {
+    --wso2is-home-section-padding: var(--oxygen-spacing-3);
+}
+
+.new-feature-announcement {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-shrink: 0;
+    background: linear-gradient(92deg, #FFF3E6 1.5%, #FAF9F8 59.25%);
+    margin-bottom: var(--oxygen-spacing-3);
+    position: relative;
+    overflow: hidden;
+
+    .new-feature-announcement-content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: var(--wso2is-home-section-padding);
+        max-width: 68%;
+
+        h3 {
+            font-size: 22px;
+            font-style: normal;
+            font-weight: 700;
+            background: var(--Primary-Button, linear-gradient(88deg, #EC5161 -3.25%, #F87643 102.62%));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            font-size: 1.1em;
+        }
+    }
+
+    .login-box-overlay {
+        width: 485.469px;
+        height: 100%;
+        flex-shrink: 0;
+        background-blend-mode: hue, normal;
+        background-size: 130%;
+        background-repeat: no-repeat;
+        position: absolute;
+        right: 0;
+        background-position-y: -150px;
+        border-bottom-right-radius: var(--oxygen-shape-borderRadius);
+    }
+
+    .login-box {
+        position: absolute;
+        right: 0;
+    }
+
+    .new-feature-announcement-actions {
+        padding: 0 var(--wso2is-home-section-padding) var(--wso2is-home-section-padding) var(--wso2is-home-section-padding);
+    }
+}
+
+// hide the login box overlay and login box in the login page in mobile view
+@media (max-width: 768px) {
+    .new-feature-announcement {
+        .new-feature-announcement-content {
+            max-width: 100%;
+        }
+
+        .login-box-overlay {
+            display: none;
+        }
+
+        .login-box {
+            display: none;
+        }
+    }
+}
