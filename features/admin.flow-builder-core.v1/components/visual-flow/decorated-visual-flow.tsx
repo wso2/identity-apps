@@ -349,28 +349,32 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
         const [ newNodes, newEdges ] = onTemplateLoad(resource);
 
-        // Letting React Flow know of the programmatic updates to node for re-drawing edges.
-        setNodes(() => {
-            newNodes.forEach((node: Node) => {
-                updateNodeInternals(node.id);
+        // TODO: Figure-out a better way to handle this debounce.
+        // Tracker: https://github.com/xyflow/xyflow/issues/2405
+        setTimeout(() => {
+            // Letting React Flow know of the programmatic updates to node for re-drawing edges.
+            setNodes(() => {
+                newNodes.forEach((node: Node) => {
+                    updateNodeInternals(node.id);
 
-                if (node.data?.components) {
-                    (node.data.components as Element[]).forEach((component: Element) => {
-                        updateNodeInternals(component.id);
+                    if (node.data?.components) {
+                        (node.data.components as Element[]).forEach((component: Element) => {
+                            updateNodeInternals(component.id);
 
-                        if (component?.components) {
-                            component.components.forEach((nestedComponent: Element) => {
-                                updateNodeInternals(nestedComponent.id);
-                            });
-                        }
-                    });
-                }
+                            if (component?.components) {
+                                component.components.forEach((nestedComponent: Element) => {
+                                    updateNodeInternals(nestedComponent.id);
+                                });
+                            }
+                        });
+                    }
+                });
+
+                return newNodes;
             });
 
-            return newNodes;
-        });
-
-        setEdges(() => [ ...newEdges ]);
+            setEdges(() => [ ...newEdges ]);
+        }, 500);
 
         onResourceDropOnCanvas(resource, null);
     };
