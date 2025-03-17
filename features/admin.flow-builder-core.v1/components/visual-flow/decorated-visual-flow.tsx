@@ -351,7 +351,21 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
         // Letting React Flow know of the programmatic updates to node for re-drawing edges.
         setNodes(() => {
-            newNodes.forEach((node: Node) => updateNodeInternals(node.id));
+            newNodes.forEach((node: Node) => {
+                updateNodeInternals(node.id);
+
+                if (node.data?.components) {
+                    (node.data.components as Element[]).forEach((component: Element) => {
+                        updateNodeInternals(component.id);
+
+                        if (component?.components) {
+                            component.components.forEach((nestedComponent: Element) => {
+                                updateNodeInternals(nestedComponent.id);
+                            });
+                        }
+                    });
+                }
+            });
 
             return newNodes;
         });

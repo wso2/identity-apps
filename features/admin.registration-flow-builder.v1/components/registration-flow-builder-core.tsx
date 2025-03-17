@@ -551,23 +551,51 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         if (!isEmpty(registrationFlow?.steps)) {
             const steps: Node[] =  generateSteps(registrationFlow.steps);
 
-            setTimeout(() => {
-                setEdges(() => generateEdges(steps as any));
-                setNodes(() => {
-                    steps.forEach((node: Node) => updateNodeInternals(node.id));
+            setEdges(() => generateEdges(steps as any));
 
-                    return steps;
+            // Letting React Flow know of the programmatic updates to node for re-drawing edges.
+            setNodes(() => {
+                steps.forEach((node: Node) => {
+                    updateNodeInternals(node.id);
+
+                    if (node.data?.components) {
+                        (node.data.components as Element[]).forEach((component: Element) => {
+                            updateNodeInternals(component.id);
+
+                            if (component?.components) {
+                                component.components.forEach((nestedComponent: Element) => {
+                                    updateNodeInternals(nestedComponent.id);
+                                });
+                            }
+                        });
+                    }
                 });
-            }, 0);
+
+                return steps;
+            });
         } else {
-            setTimeout(() => {
-                setEdges(() => initialEdges);
-                setNodes(() => {
-                    initialNodes.forEach((node: Node) => updateNodeInternals(node.id));
+            setEdges(() => initialEdges);
 
-                    return initialNodes;
+            // Letting React Flow know of the programmatic updates to node for re-drawing edges.
+            setNodes(() => {
+                initialNodes.forEach((node: Node) => {
+                    updateNodeInternals(node.id);
+
+                    if (node.data?.components) {
+                        (node.data.components as Element[]).forEach((component: Element) => {
+                            updateNodeInternals(component.id);
+
+                            if (component?.components) {
+                                component.components.forEach((nestedComponent: Element) => {
+                                    updateNodeInternals(nestedComponent.id);
+                                });
+                            }
+                        });
+                    }
                 });
-            }, 0);
+
+                return initialNodes;
+            });
         }
     }, [ registrationFlow?.steps ]);
 
