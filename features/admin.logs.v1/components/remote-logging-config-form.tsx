@@ -16,36 +16,39 @@
  * under the License.
  */
 
+import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
-import Checkbox from "@oxygen-ui/react/Checkbox";
-import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Stack from "@oxygen-ui/react/Stack";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Forms, useTrigger } from "@wso2is/forms";
+import { FinalForm, FinalFormField } from "@wso2is/form";
+import { CheckboxFieldAdapter, FormValue, TextFieldAdapter } from "@wso2is/form/src";
+import { useTrigger } from "@wso2is/forms";
 import {
     ConfirmationModal,
     DangerZone,
     DangerZoneGroup,
-    Heading,
-    PrimaryButton
+    Heading
 } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import { AxiosError } from "axios";
 import startCase from "lodash-es/startCase";
 import toLower from "lodash-es/toLower";
 import React, { ReactElement, useEffect, useState } from "react";
+import { FormRenderProps } from "react-final-form";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import restoreRemoteLogPublishingConfigurationByLogType from
-    "../api/restore-remote-log-publishing-configuration-by-log-type";
-import updateRemoteLogPublishingConfigurationByLogType from
-    "../api/update-remote-log-publishing-configuration-by-log-type";
+import restoreRemoteLogPublishingConfiguration from
+        "../api/restore-remote-log-publishing-configuration";
+import updateRemoteLogPublishingConfiguration from
+        "../api/update-remote-log-publishing-configuration";
 import useTestRemoteLogPublishingConfiguration from "../api/use-test-log-publishing-configuration";
 import { LogType, RemoteLogPublishingConfigurationInterface } from "../models/remote-log-publishing";
 import "./remote-logging-config-form.scss";
+
 
 /**
  * Props interface of {@link RemoteLoggingConfigForm}
@@ -87,11 +90,10 @@ export const RemoteLoggingConfigForm = ({
     error,
     "data-componentid": componentId = "remote-logging-config-form"
 }: RemoteLoggingConfigFormProps): ReactElement => {
-    const [ isVerifyHostnameEnabled, setVerifyHostnameEnabled ] = useState<boolean>(false);
+
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ logConfig, setLogConfig ] = useState(null);
 
-    const [ resetForm, setResetForm ] = useTrigger();
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
@@ -106,7 +108,6 @@ export const RemoteLoggingConfigForm = ({
         if (error) {
             return;
         }
-        setVerifyHostnameEnabled(logConfigData?.verifyHostname);
         if (logConfigData && (!logConfigData.publishInterval || logConfigData.publishInterval < 15)) {
             logConfigData.publishInterval = 15;
         }
@@ -116,20 +117,10 @@ export const RemoteLoggingConfigForm = ({
         setLogConfig(logConfigData);
     }, [ logConfigData, error ]);
 
-    const handleRemoteLoggingConfigUpdate = (values: Map<string, string>) => {
-        const remoteLogPublishConfig: RemoteLogPublishingConfigurationInterface = {
-            connectTimeoutMillis: values.get("connectTimeoutMillis") ?
-                Number.parseInt(values.get("connectTimeoutMillis")) : 30000,
-            logType: logType,
-            password: values.get("password"),
-            publishInterval: Number.parseInt(values.get("publishInterval")),
-            url: values.get("remoteUrl"),
-            username: values.get("username"),
-            verifyHostname: isVerifyHostnameEnabled
-        };
+    const handleRemoteLoggingConfigUpdate = (remoteLogPublishConfig: RemoteLogPublishingConfigurationInterface) => {
 
-        updateRemoteLogPublishingConfigurationByLogType(remoteLogPublishConfig, logConfig === null)
-            .then(() => {
+        updateRemoteLogPublishingConfiguration(remoteLogPublishConfig, logConfig === null)
+            .then((): void => {
                 mutateRemoteLoggingRequest();
                 dispatch(
                     addAlert<AlertInterface>({
@@ -161,13 +152,11 @@ export const RemoteLoggingConfigForm = ({
             });
     };
 
-    const restoreDefaultRemoteLoggingConfiguration = () => {
-        restoreRemoteLogPublishingConfigurationByLogType(logType)
-            .then(() => {
+    const restoreDefaultRemoteLoggingConfiguration = (): void => {
+        restoreRemoteLogPublishingConfiguration(logType)
+            .then((): void => {
                 setShowDeleteConfirmationModal(false);
-                setResetForm();
                 setLogConfig(null);
-                setVerifyHostnameEnabled(false);
                 mutateRemoteLoggingRequest();
                 dispatch(
                     addAlert<AlertInterface>({
@@ -225,127 +214,188 @@ export const RemoteLoggingConfigForm = ({
             <Card className="remote-logging-content">
                 <div className="remote-logging-form">
                     <Grid xs={ 12 } md={ 8 } lg={ 4 }>
-                        <Forms onSubmit={ handleRemoteLoggingConfigUpdate } resetState={ resetForm }>
-                            <Field
-                                label={ t(
-                                    "console:manage.features.serverConfigs.remoteLogPublishing.fields.remoteURL.label"
-                                ) }
-                                name={ "remoteUrl" }
-                                required
-                                requiredErrorMessage={ t(
-                                    "console:manage.features.serverConfigs.remoteLogPublishing.fields.remoteURL" +
-                                    ".remoteURL.error.required"
-                                ) }
-                                type="text"
-                                value={ logConfig?.url }
-                                data-componentid={ componentId + "-url-value-input" }
-                            />
-                            <Field
-                                label={ t(
-                                    "console:manage.features.serverConfigs.remoteLogPublishing.fields.remoteURL" +
-                                    ".publishInterval.label"
-                                ) }
-                                name={ "publishInterval" }
-                                type="number"
-                                required
-                                requiredErrorMessage={ t(
-                                    "console:manage.features.serverConfigs.remoteLogPublishing.fields.remoteURL" +
-                                    ".publishInterval.error.required"
-                                ) }
-                                min="15"
-                                value={ logConfig?.publishInterval ?? 15 }
-                                data-componentid={ componentId + "-publish-interval-input" }
-                            />
-                            <Field
-                                label={ t(
-                                    "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-                                    "connectionTimeout.label"
-                                ) }
-                                name={ "connectTimeoutMillis" }
-                                type="number"
-                                min="0"
-                                value={ logConfig?.connectTimeoutMillis ?? 30000 }
-                                data-componentid={ componentId + "-connection-timeout-input" }
-                            />
-                            <FormControlLabel
-                                classes={ {
-                                    label: "form-control-label"
-                                } }
-                                control={
-                                    (<Checkbox
-                                        checked={ isVerifyHostnameEnabled }
-                                        onChange={ (_event: React.SyntheticEvent, checked: boolean) => {
-                                            setVerifyHostnameEnabled(checked);
+                        <FinalForm
+                            onSubmit={ (values: RemoteLogPublishingConfigurationInterface) =>
+                                handleRemoteLoggingConfigUpdate(values) }
+                            data-componentid={ `${componentId}-${logType}` }
+                            initialValues={ logConfigData }
+                            render={ ({ handleSubmit }: FormRenderProps) => (
+                                <form onSubmit={ handleSubmit }>
+                                    <FinalFormField
+                                        key="url"
+                                        FormControlProps={ {
+                                            margin: "dense"
                                         } }
-                                        inputProps={ { "aria-label": "controlled" } }
-                                        disableRipple
-                                    />)
-                                }
-                                label={ t(
-                                    "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-                                    "verifyHostname.label"
-                                ) }
-                            />
-                            <Heading as="h5" bold="500" className="pt-5">
-                                { t(
-                                    "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-                                    "basicAuthConfig.title"
-                                ) }
-                            </Heading>
-                            <Field
-                                label={ t(
-                                    "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-                                    "basicAuthConfig.serverUsername.label"
-                                ) }
-                                name={ "username" }
-                                type="text"
-                                value={ logConfig?.username }
-                                data-componentid={ componentId + "-url-value-input" }
-                            />
-                            <Field
-                                label={ t(
-                                    "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-                                    "basicAuthConfig.serverPassword.label"
-                                ) }
-                                name={ "password" }
-                                hidePassword={ t("common:hidePassword") }
-                                showPassword={ t("common:showPassword") }
-                                type="password"
-                                value={ logConfig?.password }
-                                data-componentid={ componentId + "-url-value-input" }
-                            />
-                            <div>
-                                <PrimaryButton
-                                    className="mt-6"
-                                    size="small"
-                                    type="submit"
-                                    data-testid={ "remote-logging-submit-button" }
-                                    data-componentid={ "remote-logging-submit-button" }
-                                >
-                                    { t("common:update") }
-                                </PrimaryButton>
-                                {
-                                    !logConfig ? <></> : (<PrimaryButton
-                                        className="mt-6"
-                                        size="small"
-                                        onClick={ handleTestNow }
-                                        disabled={ isTesting }
-                                        type="button"
-                                        data-testid={ "remote-logging-test-button" }
-                                        data-componentid={ "remote-logging-test-button" }
+                                        width={ 16 }
+                                        className="text-field-containe"
+                                        ariaLabel="url"
+                                        required={ true }
+                                        data-componentid={ `${componentId}-url` }
+                                        name="url"
+                                        type="text"
+                                        label={ t("console:manage.features.serverConfigs." +
+                                            "remoteLogPublishing.fields.remoteURL.label") }
+                                        placeholder={ t("console:manage.features.serverConfigs." +
+                                            "remoteLogPublishing.fields.remoteURL.placeholder") }
+                                        validate={
+                                            (value: FormValue) => {
+                                                if (!value) {
+                                                    return t("console:manage.features.serverConfigs." +
+                                                        "remoteLogPublishing.fields.remoteURL.error.required");
+                                                } else if (!FormValidation.url(value.toString())) {
+                                                    return t("console:manage.features.serverConfigs." +
+                                                        "remoteLogPublishing.fields.remoteURL.error.invalid");
+                                                }
+                                            }
+                                        }
+                                        component={ TextFieldAdapter }
+                                        maxLength={ 100 }
+                                        minLength={ 0 }
+                                    />
+                                    <FinalFormField
+                                        key="publishInterval"
+                                        width={ 16 }
+                                        className="text-field-container mt-3"
+                                        ariaLabel="publishInterval"
+                                        required={ true }
+                                        data-componentid={ `${componentId}-publishInterval` }
+                                        name="publishInterval"
+                                        type="number"
+                                        label={ t("console:manage.features.serverConfigs." +
+                                            "remoteLogPublishing.fields.publishInterval.label") }
+                                        placeholder={ t("console:manage.features.serverConfigs." +
+                                            "remoteLogPublishing.fields.publishInterval.placeholder") }
+                                        validate={
+                                            (value: FormValue) => {
+                                                if (!value) {
+                                                    return t("console:manage.features.serverConfigs." +
+                                                        "remoteLogPublishing.fields.publishInterval.error.required");
+                                                } else if (parseInt(value.toString()) < 15) {
+                                                    return t("console:manage.features.serverConfigs." +
+                                                        "remoteLogPublishing.fields.publishInterval.error.invalid");
+                                                }
+                                            }
+                                        }
+                                        component={ TextFieldAdapter }
+                                        maxLength={ 100 }
+                                        minLength={ 0 }
+                                        minValue={ 15 }
+                                        maxValue={ 1440 }
+                                    />
+                                    <FinalFormField
+                                        key="connectTimeoutMillis"
+                                        width={ 16 }
+                                        className="text-field-container mt-3"
+                                        ariaLabel="connectTimeoutMillis"
+                                        data-componentid={ `${componentId}-connectTimeoutMillis` }
+                                        name="connectTimeoutMillis"
+                                        type="number"
+                                        label={ t("console:manage.features.serverConfigs." +
+                                            "remoteLogPublishing.fields.advanced.connectionTimeout.label") }
+                                        placeholder={ t("console:manage.features.serverConfigs." +
+                                            "remoteLogPublishing.fields.advanced.connectionTimeout.placeholder") }
+                                        validate={
+                                            (value: FormValue) => {
+                                                if (value && (parseInt(value.toString()) < 1000 ||
+                                                    parseInt(value.toString()) > 60000)) {
+                                                    return t(
+                                                        "console:manage.features.serverConfigs.remoteLogPublishing." +
+                                                        "fields.advanced.connectionTimeout.error.invalid");
+                                                }
+                                            }
+                                        }
+                                        component={ TextFieldAdapter }
+                                        maxLength={ 100 }
+                                        minLength={ 0 }
+                                        minValue={ 1000 }
+                                        maxValue={ 60000 }
+                                    />
+                                    <FinalFormField
+                                        data-componentid={ `${componentId}-verifyHostname` }
+                                        name="verifyHostname"
+                                        label={ t("console:manage.features.serverConfigs." +
+                                            "remoteLogPublishing.fields.advanced.verifyHostname.label") }
+                                        component={ CheckboxFieldAdapter }
+                                    />
+                                    <Heading as="h5" bold="500">
+                                        { t("console:manage.features.serverConfigs.remoteLogPublishing.fields." +
+                                            "advanced.basicAuthConfig.title") }
+                                    </Heading>
+                                    <FinalFormField
+                                        key="username"
+                                        FormControlProps={ {
+                                            margin: "dense"
+                                        } }
+                                        width={ 16 }
+                                        className="text-field-container mt-3"
+                                        ariaLabel="username"
+                                        required={ false }
+                                        data-componentid={ `${componentId}-username` }
+                                        name="username"
+                                        type="text"
+                                        label={ t("console:manage.features.serverConfigs." +
+                                            "remoteLogPublishing.fields.advanced.basicAuthConfig." +
+                                            "serverUsername.label") }
+                                        placeholder={ t("console:manage.features.serverConfigs." +
+                                            "remoteLogPublishing.fields.advanced.basicAuthConfig." +
+                                            "serverUsername.placeholder") }
+                                        component={ TextFieldAdapter }
+                                        maxLength={ 100 }
+                                        minLength={ 0 }
+                                    />
+                                    <FinalFormField
+                                        key="password"
+                                        FormControlProps={ {
+                                            margin: "dense"
+                                        } }
+                                        width={ 16 }
+                                        className="text-field-container mt-3"
+                                        ariaLabel="password"
+                                        required={ false }
+                                        data-componentid={ `${componentId}-password` }
+                                        name="password"
+                                        type="password"
+                                        label={ t("console:manage.features.serverConfigs." +
+                                            "remoteLogPublishing.fields.advanced.basicAuthConfig." +
+                                            "serverPassword.label") }
+                                        placeholder={ t("console:manage.features.serverConfigs." +
+                                            "remoteLogPublishing.fields.advanced.basicAuthConfig." +
+                                            "serverPassword.placeholder") }
+                                        component={ TextFieldAdapter }
+                                        maxLength={ 100 }
+                                        minLength={ 0 }
+                                    />
+                                    <Button
+                                        size="medium"
+                                        variant="contained"
+                                        onClick={ handleSubmit }
+                                        className={ "button-container mt-3" }
+                                        data-componentid={ `${componentId}-submit-button` }
+                                        loading={ isLoading }
                                     >
-                                        { "Test" }
-                                    </PrimaryButton>)
-                                }
-                            </div>
-                        </Forms>
+                                        { t("common:update") }
+                                    </Button>
+                                    <Button
+                                        size="medium"
+                                        variant="contained"
+                                        onClick={ handleTestNow }
+                                        className={ "button-container mt-3 ml-3" }
+                                        data-componentid={ `${componentId}-test-button` }
+                                        loading={ isTesting }
+                                    >
+                                        { t("console:manage.features.serverConfigs.remoteLogPublishing." +
+                                            "testButtonText") }
+                                    </Button>
+                                </form>
+                            ) }
+                        />
                     </Grid>
                 </div>
             </Card>
             <DangerZoneGroup sectionHeader={ t("applications:dangerZoneGroup.header") }>
                 <DangerZone
                     isButtonDisabled={ !logConfig || Object.keys(logConfig).length === 0 }
-                    data-componentid={ componentId + "-danger-zone" }
+                    data-componentid={ `${componentId}-danger-zone` }
                     actionTitle={ t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone.title", {
                         logType: startCase(toLower(logType))
                     }) }

@@ -124,8 +124,8 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (props: LogsPageInterface
         return <AuditLogsPage />;
     };
 
-    const handleSettingsButton = () => {
-        history.push(AppConstants.getPaths().get("LOGS_SETTINGS"));
+    const handleSettingsButton = (): void => {
+        history.push(AppConstants.getPaths().get("LOG_SETTINGS"));
     };
 
     const renderLogPublishSettings = (): ReactElement => {
@@ -183,7 +183,7 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (props: LogsPageInterface
                                                 <GearIcon /> Configure
                                             </Button>
                                         ) }
-                                        content={ "Remote Log Publish Settings" }
+                                        content={ t("console:manage.features.serverConfigs.remoteLogPublishing.title") }
                                         position="top right"
                                         size="mini"
                                         hideOnScroll

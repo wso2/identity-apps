@@ -23,33 +23,25 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError, AxiosResponse } from "axios";
-import { RemoteLogPublishingConfigurationInterface } from "../models/remote-log-publishing";
+import { LogType } from "../models/remote-log-publishing";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance()
 );
 
 /**
- * Update remote log publishing configurations.
+ * Restore remote log publishing configurations.
  *
- * @param config - Data to be updated.
- * @param create
+ * @param logType - Log type.
  * @returns a promise containing the response.
  */
-const updateRemoteLogPublishingConfigurationByLogType = (
-    config: RemoteLogPublishingConfigurationInterface,
-    create: Boolean = false
-): Promise<AxiosResponse> => {
-    const { logType, ...data } = config;
-
-    data["logType"] = logType;
+const restoreRemoteLogPublishingConfiguration = (logType: LogType): Promise<AxiosResponse> => {
     const requestConfig: RequestConfigInterface = {
-        data,
         headers: {
             "Content-Type": "application/json"
         },
-        method: create ? HttpMethods.POST : HttpMethods.PUT,
-        url: `${store.getState().config.endpoints.remoteLogging}`
+        method: HttpMethods.DELETE,
+        url: `${store.getState().config.endpoints.remoteLogging}/${logType}`
     };
 
     return httpClient(requestConfig)
@@ -68,4 +60,4 @@ const updateRemoteLogPublishingConfigurationByLogType = (
         });
 };
 
-export default updateRemoteLogPublishingConfigurationByLogType;
+export default restoreRemoteLogPublishingConfiguration;

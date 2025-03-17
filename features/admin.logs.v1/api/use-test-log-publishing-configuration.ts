@@ -23,13 +23,13 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import {LogType} from "../models/remote-log-publishing";
+import { LogType } from "../models/remote-log-publishing";
 
 /**
  * Hook to get the remote log publishing configurations.
  *
  * @param shouldFetch - Should fetch the configurations.
- * @param logType
+ * @param logType - Log type to test.
  * @returns remote log publishing configurations.
  */
 const useTestRemoteLogPublishingConfiguration = <
@@ -39,17 +39,12 @@ const useTestRemoteLogPublishingConfiguration = <
         logType: LogType
     ): RequestResultInterface<Error> => {
     const requestConfig: RequestConfigInterface = {
-        headers: {
-            "Cache-Control": "no-cache, no-store, must-revalidate",
-            "Content-Type": "application/json",
-            "Expires": "0",
-            "Pragma": "no-cache"
-        },
         method: HttpMethods.GET,
         url: `${store.getState().config.endpoints.remoteLogging}/${logType}/test`
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Error>(shouldFetch ? requestConfig : null);
+    const { data, error, isValidating, mutate } =
+        useRequest<Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,

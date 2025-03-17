@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useRemoteLogPublishingConfiguration from "../api/use-remote-log-publishing-configuration";
 import RemoteLoggingConfigForm from "../components/remote-logging-config-form";
-import { LogType, RemoteLogPublishingConfigurationInterface } from "../models/remote-log-publishing";
+import { LogType } from "../models/remote-log-publishing";
 
 type LogsSettingsConfigurationPageInterface = IdentifiableComponentInterface;
 
@@ -46,23 +46,14 @@ const LogsSettingsConfigurationPage: FunctionComponent<LogsSettingsConfiguration
     }, [ history.location.pathname ]);
 
     const {
-        data: actions,
-        error: actionsFetchRequestError,
-        isLoading: isActionsLoading,
-        mutate: mutateActions
+        data: logConfig,
+        error: logConfigFetchRequestError,
+        isLoading: islogConfigLoading,
+        mutate: mutatelogConfig
     } = useRemoteLogPublishingConfiguration(true, logType);
 
-    const data: RemoteLogPublishingConfigurationInterface = useMemo(() => {
-        // Ensure a default return value if neither condition matches
-        if (actionsFetchRequestError) {
-            return null;
-        } else if (actions) {
-            return actions;
-        }
-    }, [ actionsFetchRequestError ]);
-
     const handleBackButtonClick = (): void => {
-        history.push(AppConstants.getPaths().get("LOGS_SETTINGS"));
+        history.push(AppConstants.getPaths().get("LOG_SETTINGS"));
     };
 
     return (
@@ -70,7 +61,8 @@ const LogsSettingsConfigurationPage: FunctionComponent<LogsSettingsConfiguration
             <PageLayout
                 title={ t("console:manage.features.serverConfigs.remoteLogPublishing.title") }
                 pageTitle={ t("console:manage.features.serverConfigs.remoteLogPublishing.pageTitle") }
-                description={ t("console:manage.features.serverConfigs.remoteLogPublishing.description") }
+                description={ t("console:manage.features.serverConfigs.remoteLogPublishing.descriptionWithLogType",
+                    { logType: logType.toLowerCase() } ) }
                 backButton={ {
                     "data-componentid": `${_componentId}-${logType}-page-back-button`,
                     onClick: () => handleBackButtonClick(),
@@ -80,10 +72,10 @@ const LogsSettingsConfigurationPage: FunctionComponent<LogsSettingsConfiguration
             >
                 <RemoteLoggingConfigForm
                     logType={ logType }
-                    logConfigData={ data }
-                    mutateRemoteLoggingRequest={ mutateActions }
-                    isLoading={ isActionsLoading }
-                    error={ actionsFetchRequestError }
+                    logConfigData={ logConfig }
+                    mutateRemoteLoggingRequest={ mutatelogConfig }
+                    isLoading={ islogConfigLoading }
+                    error={ logConfigFetchRequestError }
                 />
             </PageLayout>
         </div>

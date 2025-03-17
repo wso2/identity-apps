@@ -20,7 +20,7 @@ import Avatar from "@oxygen-ui/react/Avatar";
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Typography from "@oxygen-ui/react/Typography";
-import { KeyFlowIcon, PadlockAsteriskFlowIcon } from "@oxygen-ui/react-icons";
+import { DocumentIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -39,7 +39,7 @@ import "./logs-settings-page.scss";
 /**
  * Proptypes for the logs page component.
  */
-type LogsSettingsPageInterface = IdentifiableComponentInterface;
+export type LogsSettingsPageInterface = IdentifiableComponentInterface;
 
 /**
  * Logs monitoring page.
@@ -48,11 +48,12 @@ type LogsSettingsPageInterface = IdentifiableComponentInterface;
  *
  * @returns Logs Page {@link React.ReactElement}
  */
-const LogsSettingsPage: FunctionComponent<LogsSettingsPageInterface> = (props: LogsSettingsPageInterface):
-    ReactElement => {
+const LogsSettingsPage: FunctionComponent<LogsSettingsPageInterface> = ({
+    ["data-componentid"]: componentId = "logs-settings-page"
+}: LogsSettingsPageInterface): ReactElement => {
 
-    const { ["data-componentid"]: componentId } = props;
     const { t } = useTranslation();
+
     const logTypesCardsInfo = (): LogTypeCardInterface[] => {
         return [
             {
@@ -60,9 +61,9 @@ const LogsSettingsPage: FunctionComponent<LogsSettingsPageInterface> = (props: L
                 disabled: false,
                 featureStatusKey: "",
                 heading: t("console:manage.features.serverConfigs.remoteLogPublishing.logTypes.audit.name"),
-                icon: <KeyFlowIcon size="small" className="icon"/>,
+                icon: <DocumentIcon size="small" className="icon"/>,
                 identifier: LogType.AUDIT,
-                route: AppConstants.getPaths().get("LOGS_SETTINGS_AUDIT")
+                route: AppConstants.getPaths().get("LOG_SETTINGS_AUDIT")
             },
             {
                 description:
@@ -70,9 +71,9 @@ const LogsSettingsPage: FunctionComponent<LogsSettingsPageInterface> = (props: L
                 disabled: false,
                 featureStatusKey: "",
                 heading: t("console:manage.features.serverConfigs.remoteLogPublishing.logTypes.diagnostics.name"),
-                icon: <PadlockAsteriskFlowIcon size="small" className="icon"/>,
+                icon: <DocumentIcon size="small" className="icon"/>,
                 identifier: LogType.DIAGNOSTICS,
-                route: AppConstants.getPaths().get("LOGS_SETTINGS_DIAGNOSTICS")
+                route: AppConstants.getPaths().get("LOG_SETTINGS_DIAGNOSTICS")
             } ];
     };
 
@@ -141,13 +142,6 @@ const LogsSettingsPage: FunctionComponent<LogsSettingsPageInterface> = (props: L
             </PageLayout>
         </div>
     );
-};
-
-/**
- * Default props for the component.
- */
-LogsSettingsPage.defaultProps = {
-    "data-componentid": "logs-settings-page"
 };
 
 export default LogsSettingsPage;

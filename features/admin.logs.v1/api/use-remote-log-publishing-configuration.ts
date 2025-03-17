@@ -23,13 +23,13 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import {LogType, RemoteLogPublishingConfigurationInterface} from "../models/remote-log-publishing";
+import { LogType, RemoteLogPublishingConfigurationInterface } from "../models/remote-log-publishing";
 
 /**
  * Hook to get the remote log publishing configurations.
  *
  * @param shouldFetch - Should fetch the configurations.
- * @param logType
+ * @param logType - Log type.
  * @returns remote log publishing configurations.
  */
 const useRemoteLogPublishingConfiguration = <
@@ -40,21 +40,17 @@ const useRemoteLogPublishingConfiguration = <
         logType: LogType
     ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
-        headers: {
-            "Cache-Control": "no-cache, no-store, must-revalidate",
-            "Content-Type": "application/json",
-            "Expires": "0",
-            "Pragma": "no-cache"
-        },
         method: HttpMethods.GET,
         url: `${store.getState().config.endpoints.remoteLogging}/${logType}`
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
-    console.log(data);
+    const normalizedData: RemoteLogPublishingConfigurationInterface | unknown =
+        (error?.response?.status === 404) ? {} : data;
+
     return {
-        data,
+        data: normalizedData as Data,
         error: error,
         isLoading: !error && !data,
         isValidating,
