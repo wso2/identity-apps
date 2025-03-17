@@ -1,5 +1,11 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.5.1
+
+### Patch Changes
+
+- [#7899](https://github.com/wso2/identity-apps/pull/7899) [`36682cd84a4b0d65931511b8435beea3ae1ecb43`](https://github.com/wso2/identity-apps/commit/36682cd84a4b0d65931511b8435beea3ae1ecb43) Thanks [@brionmario](https://github.com/brionmario)! - Fix node moving issues
+
 ## 0.5.0
 
 ### Minor Changes
