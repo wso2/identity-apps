@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,6 +22,7 @@ import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores
 import { getUsersList } from "@wso2is/admin.users.v1/api/users";
 import { UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { getConfiguration, getUsernameConfiguration } from "@wso2is/admin.users.v1/utils";
+import { useUserStoreRegEx } from "@wso2is/admin.userstores.v1/api/use-get-user-store-regex";
 import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
@@ -29,6 +30,7 @@ import { ProfileSchemaInterface } from "@wso2is/core/src/models";
 import { Field, FormValue, Forms, RadioChild, Validation } from "@wso2is/forms";
 import { Hint, PasswordValidation } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
+import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -76,7 +78,6 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
     const [ isEmailRequired, setEmailRequired ] = useState<boolean>(true);
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
     const [ isValidPassword, setIsValidPassword ] = useState<boolean>(true);
-    const [ userstore ] = useState<string>(userstoresConfig.primaryUserstoreName);
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
 
@@ -100,6 +101,14 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
         });
 
     const { data: validationData } = useValidationConfigData();
+
+    const {
+        data: userStorePasswordRegEx
+    } = useUserStoreRegEx(
+        userstoresConfig.primaryUserstoreName,
+        USERSTORE_REGEX_PROPERTIES.PasswordRegEx,
+        isEmpty(passwordConfig)
+    );
 
     useEffect(() => {
         const emailSchema: ProfileSchemaInterface = profileSchemas
@@ -162,16 +171,11 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
      * @param password - The password to validate.
      */
     const isNewPasswordValid = async (password: string) => {
-
         if (passwordConfig) {
             return isValidPassword;
         }
 
-        const passwordRegex: string = await SharedUserStoreUtils.getUserStoreRegEx(
-            userstore,
-            USERSTORE_REGEX_PROPERTIES.PasswordRegEx);
-
-        return SharedUserStoreUtils.validateInputAgainstRegEx(password, passwordRegex);
+        return SharedUserStoreUtils.validateInputAgainstRegEx(password, userStorePasswordRegEx);
     };
 
     /**
