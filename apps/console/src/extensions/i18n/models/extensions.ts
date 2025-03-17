@@ -2853,7 +2853,7 @@ export interface Extensions {
                         };
                         smsProviderWarning: string;
                     };
-                    recoveryOptionSubHeadingEmailLink: string;
+                    recoveryOptionSubHeadingEmail: string;
                     recoveryOptionSubHeadingSMS: string;
                     recoveryOptionHeading: string;
                     otpConfigHeading: string;

@@ -156,7 +156,8 @@
             <div class="ui segment">
                     <%-- page content --%>
                     <h2>
-                    <%= i18n(recoveryResourceBundle, customText, isEmailOtp ? "email.otp.heading" : "sms.otp.heading") %>
+                    <%= i18n(recoveryResourceBundle, customText,
+                            isEmailOtp ? "email.otp.heading" : "sms.otp.heading") %>
                     </h2>
                     <div class="ui divider hidden"></div>
                     <%
