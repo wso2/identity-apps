@@ -2,6 +2,20 @@
     {
         "resourceType": "TEMPLATE",
         "category": "STARTER",
+        "type": "GENERATE_WITH_AI",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Generate with AI",
+            "description": "Describe your registration flow and generate with AI.",
+            "image": "https://www.svgrepo.com/show/521818/robot.svg",
+            "showOnResourcePanel": false
+        },
+        "config": {}
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
         "type": "BLANK",
         "version": "0.1.0",
         "deprecated": false,
@@ -27,6 +41,15 @@
                         },
                         "data": {
                             "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Heading"
+                                    }
+                                },
                                 {
                                     "category": "BLOCK",
                                     "type": "FORM",
@@ -165,7 +188,7 @@
                                                 "label": "Last Name",
                                                 "required": false,
                                                 "placeholder": "Enter your last name",
-                                                "identifier": "http://wso2.org/claims/familyname"
+                                                "identifier": "http://wso2.org/claims/lastname"
                                             }
                                         },
                                         {
@@ -229,7 +252,7 @@
         "deprecated": false,
         "display": {
             "label": "Basic + Google",
-            "description": "Google registration additional to basic registration experience",
+            "description": "Basic registration experience with Google as an addition",
             "image": "https://www.svgrepo.com/show/461597/google.svg",
             "showOnResourcePanel": true
         },
@@ -351,9 +374,9 @@
                             "action": {
                                 "type": "EXECUTOR",
                                 "executor": {
-                                    "name": "GoogleOIDCAuthenticator",
+                                    "name": "GoogleSignupExecutor",
                                     "meta": {
-                                        "idp": "{{IDP_NAME}}"
+                                        "idpName": "{{IDP_NAME}}"
                                     }
                                 },
                                 "next": "USER_ONBOARD"

@@ -17,9 +17,20 @@
  */
 
 :root {
-    --wso2is-flow-builder-element-property-panel-background: #f4f4f4;
+    --wso2is-flow-builder-element-property-panel-background: var(--oxygen-palette-common-white);
     --wso2is-flow-builder-element-property-panel-width: 350px;
-    --wso2is-flow-builder-element-property-panel-mini-width: 350px;
+}
+
+@mixin open {
+    width: var(--wso2is-flow-builder-element-property-panel-width);
+    transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+    overflow: hidden;
+}
+
+@mixin close {
+    width: 0;
+    transition: width 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+    overflow: hidden;
 }
 
 .flow-builder-element-property-panel {
@@ -27,14 +38,24 @@
         position: absolute;
         width: var(--wso2is-flow-builder-element-property-panel-width);
         background: var(--wso2is-flow-builder-element-property-panel-background);
-        box-shadow: 8px 0 18px 0 rgba(0, 0, 0, 0.06);
+        box-shadow: 3px 0px 20px 0 rgba(0, 0, 0, 0.06);
         border-right: 1px solid #E8E8E8;
         border-left: 1px solid #E8E8E8;
     }
 
-    &.mini {
-        .flow-builder-element-property-panel {
-            width: var(--wso2is-flow-builder-element-property-panel-mini-width)
+    &:not(.open) {
+        @include close;
+
+        .MuiDrawer-paper {
+            @include close;
+        }
+    }
+
+    &.open {
+        @include open;
+
+        .MuiDrawer-paper {
+            @include open;
         }
     }
 }
@@ -104,6 +125,15 @@
         .flow-builder-element-property-panel-footer {
             border-top: 1px solid var(--oxygen-palette-divider);
             padding: var(--oxygen-spacing-2);
+
+            .flow-builder-element-property-panel-footer-secondary-action {
+                &.icon-button {
+                    border-radius: var(--oxygen-shape-borderRadius);
+                    height: 40px;
+                    width: 40px;
+                    min-width: 40px;
+                }
+            }
         }
     }
 }

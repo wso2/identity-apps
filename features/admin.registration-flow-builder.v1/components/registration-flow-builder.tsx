@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import AIGeneratedFlowProvider from "@wso2is/admin.flow-builder-core.v1/providers/ai-generated-flow-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import RegistrationFlowBuilderCore from "./registration-flow-builder-core";
@@ -35,7 +36,9 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
     "data-componentid": componentId = "registration-flow-builder",
     ...rest
 }: RegistrationFlowBuilderPropsInterface): ReactElement => (
-    <RegistrationFlowBuilderCore { ...rest } />
+    <AIGeneratedFlowProvider>
+        <RegistrationFlowBuilderCore { ...rest } />
+    </AIGeneratedFlowProvider>
 );
 
 export default RegistrationFlowBuilder;

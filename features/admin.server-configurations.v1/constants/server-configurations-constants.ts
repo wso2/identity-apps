@@ -188,6 +188,12 @@ export class ServerConfigurationsConstants {
     public static readonly WSO2_ANALYTICS_ENGINE_CONNECTOR_CATEGORY_ID: string = "YW5hbHl0aWNzLWVuZ2luZQ";
 
     /**
+	 * This is a dummy connector ID to be used to display a new card in login and registration section
+     * for registration flow builder.
+	 */
+    public static readonly REGISTRATION_FLOW_BUILDER_CONNECTOR_ID: string = "REGISTRATION_FLOW_BUILDER";
+
+    /**
      * User email verification API Keyword constants.
      */
     public static readonly EMAIL_VERIFICATION_ENABLED: string = "EmailVerification.Enable";
@@ -201,6 +207,11 @@ export class ServerConfigurationsConstants {
     public static readonly ACCOUNT_LOCK_ON_CREATION: string = "SelfRegistration.LockOnCreation";
     public static readonly SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED: string =
         "SelfRegistration.Notification.InternallyManage";
+
+    /**
+     * This will be used to enable the dynamic portal for self registration flow customization.
+     */
+    public static readonly SELF_REGISTRATION_FLOW_BUILDER_ENABLED: string = "SelfRegistration.EnableDynamicPortal";
 
     public static readonly ACCOUNT_CONFIRMATION: string = "SelfRegistration.SendConfirmationOnCreation";
     public static readonly RE_CAPTCHA: string = "SelfRegistration.ReCaptcha";

@@ -16,17 +16,16 @@
  * under the License.
  */
 
-import { ActionTypes } from "../models/actions";
+.ai-generation-modal {
+    .MuiPaper-root .MuiPaper-elevation24 .MuiPaper-rounded {
+        background: url("../../themes/wso2is/assets/images/illustrations/ai-banner-background-white.svg");
+    }
 
-class ButtonAdapterConstants {
-    /**
-     * Private constructor to avoid object instantiation from outside
-     * the class.
-     */
-    private constructor() { }
+    .MuiDialogTitle-root {
+        padding-bottom: 0;
+    }
 
-    public static readonly NEXT_BUTTON_HANDLE_SUFFIX: string = `_${ ActionTypes.Next }`;
-    public static readonly PREVIOUS_BUTTON_HANDLE_SUFFIX: string = `_${ ActionTypes.Previous }`;
+    .MuiDialogContent-root {
+        padding-bottom: 25px;
+    }
 }
-
-export default ButtonAdapterConstants;

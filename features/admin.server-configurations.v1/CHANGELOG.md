@@ -1,5 +1,44 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.33.4
+
+### Patch Changes
+
+- Updated dependencies [[`6f6564046f57869ddac09d6238fb4101bc1f9f86`](https://github.com/wso2/identity-apps/commit/6f6564046f57869ddac09d6238fb4101bc1f9f86)]:
+  - @wso2is/common.ui.v1@0.2.0
+  - @wso2is/admin.core.v1@2.42.4
+  - @wso2is/admin.server-configurations.v1@2.33.4
+
+## 2.33.3
+
+### Patch Changes
+
+- [#7859](https://github.com/wso2/identity-apps/pull/7859) [`c7ebf8dff43fc4b6bf76f6916bb56305216a223a`](https://github.com/wso2/identity-apps/commit/c7ebf8dff43fc4b6bf76f6916bb56305216a223a) Thanks [@brionmario](https://github.com/brionmario)! - - Update cursor in breadcrumb & panel items
+  - Fix widget property panel issues
+  - Fix navigation issues with widgets
+- Updated dependencies [[`c7ebf8dff43fc4b6bf76f6916bb56305216a223a`](https://github.com/wso2/identity-apps/commit/c7ebf8dff43fc4b6bf76f6916bb56305216a223a)]:
+  - @wso2is/admin.server-configurations.v1@2.33.3
+
+## 2.33.2
+
+### Patch Changes
+
+- [#7849](https://github.com/wso2/identity-apps/pull/7849) [`e0e4356f8fb7eae97613d21c65ba976d2c032d63`](https://github.com/wso2/identity-apps/commit/e0e4356f8fb7eae97613d21c65ba976d2c032d63) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the registration flow builder card to the login and registration section
+
+- Updated dependencies [[`e0e4356f8fb7eae97613d21c65ba976d2c032d63`](https://github.com/wso2/identity-apps/commit/e0e4356f8fb7eae97613d21c65ba976d2c032d63)]:
+  - @wso2is/admin.server-configurations.v1@2.33.2
+  - @wso2is/admin.feature-gate.v1@1.4.204
+  - @wso2is/i18n@2.21.4
+
+## 2.33.1
+
+### Patch Changes
+
+- [#7831](https://github.com/wso2/identity-apps/pull/7831) [`57c8937653626be3a8f1e6b19ead521e1e7a5528`](https://github.com/wso2/identity-apps/commit/57c8937653626be3a8f1e6b19ead521e1e7a5528) Thanks [@brionmario](https://github.com/brionmario)! - Improve the Sign Up Composer
+
+- Updated dependencies [[`57c8937653626be3a8f1e6b19ead521e1e7a5528`](https://github.com/wso2/identity-apps/commit/57c8937653626be3a8f1e6b19ead521e1e7a5528)]:
+  - @wso2is/admin.server-configurations.v1@2.33.1
+
 ## 2.33.0
 
 ### Minor Changes

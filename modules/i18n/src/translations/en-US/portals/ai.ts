@@ -23,24 +23,20 @@ export const ai: aiNS = {
         banner: {
             collapsed: {
                 button: "Try Login Flow AI",
-                heading: "Configure Your Login Flow with ",
-                subheading: "Enter your ideal login sequence and "+
-                "our AI adapts authenticators and context to configure the flow."
+                heading: "Describe Your Login Flow and Generate it with AI",
+                subheading: "Describe your login flow requirements using natural language and Login Flow AI will configure it for you."
             },
             full: {
                 button: "Try Login Flow AI",
-                heading: "Simplify Authentication Flow Setup with ",
-                subheading: "Configure your application's login flow effortlessly with Login AI, " +
-                    "by describing your desired authentication sequence, including authenticators and " +
-                    "conditional authentication."
+                heading: "Describe Your Login Flow and Generate it with AI",
+                subheading: "Describe your login flow requirements using natural language and Login Flow AI will configure it for you."
             },
             input: {
                 button: "Generate Login Flow",
-                heading: "Configure Your Login Flow with ",
+                heading: "Describe Your Login Flow and Generate it with AI",
                 placeholder: "Input your login flow. Eg: have username and password as first step,"+
                 " and prompt for TOTP second factor if the user has 'manager' role.",
-                subheading: "AI-powered login configurations crafted to align with your application's"+
-                " environment and authenticators."
+                subheading: "Describe your login flow requirements using natural language and Login Flow AI will configure it for you."
             }
         },
         confirmations: {
@@ -119,6 +115,58 @@ export const ai: aiNS = {
         },
         termsAndConditions: "Terms and Conditions",
         title: "Login Flow AI"
+    },
+    aiRegistrationFlow: {
+        disclaimer: "Registration Flow AI can make errors. Verify the generated flow for accuracy and avoid entering sensitive personal data.",
+        notifications: {
+            generateError: {
+                description: "An error occurred while generating the registration flow. Please try again.",
+                message: "An error occurred"
+            },
+            generateInputError: {
+                description: "The input provided for the registration flow generation is invalid. Please try again.",
+                message: "Invalid input provided"
+            },
+            generateLimitError: {
+                description: "You have exceeded the limit for registration flow generation. " +
+                    "Please try again in a few moments.",
+                message: "Limit exceeded"
+            },
+            generateResultError: {
+                description: "An error occurred while retrieving the results of the registration flow generation. " +
+                    "Please try again.",
+                message: "An error occurred"
+            },
+            generateResultFailed: {
+                description: "The generated registration flow was invalid. Please try again with a different prompt.",
+                message: "Invalid registration flow generated"
+            },
+            generateStatusError: {
+                description: "An error occurred while retrieving the status of the registration flow generation. " +
+                    "Please try again.",
+                message: "An error occurred"
+            },
+            generateSuccess: {
+                description: "The registration flow has been generated successfully.",
+                message: "Flow generated successfully"
+            },
+            rateLimitError: {
+                description: "You have exceeded the rate limit for registration flow generation. Please in a few moments.",
+                message: "Rate limit exceeded"
+            }
+        },
+        promptsHistory: "History",
+        states: {
+            0: "Getting things started",
+            1: "Getting things started",
+            2: "Gathering essential data for your registration flow...",
+            3: "Gathering essential data for your registration flow...",
+            4: "Gathering essential data for your registration flow...",
+            5: "Applying final touches...",
+            6: "Applying final touches..."
+        },
+        termsAndConditions: "Terms and Conditions",
+        title: "Registration Flow AI"
     },
     subscribeToAI: "To enjoy access to AI powered features, sign up for a free WSO2 AI account and get your subscription key."
 };

@@ -17,11 +17,12 @@
  */
 
 import { pointerIntersection } from "@dnd-kit/collision";
-import { UseDroppableInput, useDroppable } from "@dnd-kit/react";
+import { UseDroppableInput, useDragDropMonitor, useDroppable } from "@dnd-kit/react";
 import Box, { BoxProps } from "@oxygen-ui/react/Box";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FC, PropsWithChildren, ReactElement } from "react";
+import React, { FC, PropsWithChildren, ReactElement, useState } from "react";
+import { Resource } from "../../models/resources";
 
 /**
  * Props interface of {@link Droppable}
@@ -41,15 +42,41 @@ const Droppable: FC<PropsWithChildren<DroppableProps>> = ({
     sx = {},
     className,
     collisionDetector = pointerIntersection,
+    data,
+    accept,
     ...rest
 }: PropsWithChildren<DroppableProps>): ReactElement => {
-    const { ref, isDropTarget } = useDroppable({ collisionDetector, id, ...rest });
+    const { ref, isDropTarget } = useDroppable({ accept, collisionDetector, data, id, ...rest });
+
+    const [ draggedResource, setDraggedResource ] = useState<Resource>(null);
+
+    useDragDropMonitor({
+        onDragEnd() {
+            setDraggedResource(null);
+        },
+        onDragOver(event) {
+            const { source } = event.operation;
+            const { data } = source;
+
+            const { dragged } = data;
+
+            setDraggedResource(dragged);
+        }
+    });
 
     return (
         <Box
             ref={ ref }
             data-componentid={ componentId }
-            className={ classNames("dnd-droppable", { "is-dropping": isDropTarget }, className) }
+            className={ classNames(
+                "dnd-droppable",
+                {
+                    allowed: draggedResource && (accept as string[])?.includes(draggedResource?.type),
+                    disallowed: draggedResource && !(accept as string[])?.includes(draggedResource?.type),
+                    "is-dropping": isDropTarget && id.includes(data?.stepId)
+                },
+                className
+            ) }
             sx={ {
                 display: "inline-flex",
                 flexDirection: "column",

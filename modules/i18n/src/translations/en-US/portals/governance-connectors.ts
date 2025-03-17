@@ -217,6 +217,11 @@ export const governanceConnectors: governanceConnectorsNS = {
                             label: "Manage JIT provisioning purposes"
                         }
                     }
+                },
+                registrationFlowBuilder: {
+                    friendlyName: "Registration Flow",
+                    description: "Design and customize the user registration journey with a flexible, no-code " +
+                        "flow builder."
                 }
             }
         },

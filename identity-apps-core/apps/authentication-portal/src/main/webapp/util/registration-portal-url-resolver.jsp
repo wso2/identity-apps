@@ -51,10 +51,10 @@
             String urlParameters) {
     
         if (dynamicPortalEnabled) {
-            return dynamicRegistrationPortalURL;
+            return dynamicRegistrationPortalURL + "?" + urlParameters;
         }
 
-        String registrationEndpointUrl = accountRegistrationEndpointURL + "?"  + urlParameters;
+        String registrationEndpointUrl = accountRegistrationEndpointURL + "?" + urlParameters;
         if (!StringUtils.isEmpty(urlEncodedURL)) {
             registrationEndpointUrl += "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
         }

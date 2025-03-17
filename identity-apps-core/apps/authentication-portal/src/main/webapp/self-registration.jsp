@@ -21,6 +21,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.nio.file.Files, java.nio.file.Paths, java.io.IOException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.SelfRegistrationMgtClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
@@ -33,6 +34,16 @@
 <%-- Data for the layout from the page --%>
 <%
     layoutData.put("containerSize", "medium");
+%>
+
+<%
+    String myaccountUrl = application.getInitParameter("MyAccountURL");
+    if (StringUtils.isNotEmpty(myaccountUrl)) {
+        myaccountUrl = myaccountUrl + "/t/" + tenantDomain;
+    } else {
+        myaccountUrl = IdentityManagementEndpointUtil.getUserPortalUrl(
+            application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
+    }
 %>
 
 <%
@@ -132,8 +143,10 @@
 
             const Content = () => {
                 const baseUrl = "<%= identityServerEndpointContextParam %>";
+                const defaultMyAccountUrl = "<%= myaccountUrl %>";
                 const apiUrl = baseUrl + "${pageContext.request.contextPath}/util/self-registration-api.jsp";
                 const code = "<%= code != null ? code : null %>";
+                const state = "<%= state != null ? state : null %>";
                 
                 const locale = "en-US";
                 const translations = <%= translationsJson %>;
@@ -144,28 +157,30 @@
                 const [ error, setError ] = useState(null);
                 const [ postBody, setPostBody ] = useState(undefined);
 
-
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
+                    const actionTrigger = localStorage.getItem("actionTrigger");
 
-                    if (code !== "null") {
+                    if (code !== "null" && state !== "null") {
                         setPostBody({
                             flowId: savedFlowId,
-                            action: "GoogleOIDCAuthenticator",
-                            inputs: { code }
+                            actionId: actionTrigger,
+                            inputs: { 
+                                code,
+                                state 
+                            }
                         });
                     }
-                }, [ code ]);
+                }, [ code, state ]);
 
                 useEffect(() => {
                     if (!postBody && code === "null") {
                         setPostBody({ applicationId: "new-application" });
                     }
-                }, [ postBody, code ]);
+                }, []);
 
                 useEffect(() => {
                     if (!postBody) return;
-
                     setLoading(true);
 
                     fetch(apiUrl, {
@@ -181,6 +196,12 @@
                         return response.json();
                     })
                     .then((data) => {
+                        if (data.error) {
+                            setError(data.error);
+
+                            return;
+                        }
+
                         if (data.flowId) {
                             localStorage.setItem("flowId", data.flowId);
                         }
@@ -214,7 +235,12 @@
                             
                         case "COMPLETE":
                             localStorage.clear();
-                            window.location.href = flow.data.url;
+
+                            if (flow.data.url !== null) {
+                                window.location.href = flow.data.url;
+                            }
+
+                            window.location.href = defaultMyAccountUrl;
                             return true;
 
                         default:
@@ -228,7 +254,8 @@
 
                     switch (flow.type) {
                         case "REDIRECTION":
-                            window.location.href = flow.data.url;
+                            setLoading(true);
+                            window.location.href = flow.data.redirectURL;
 
                         default:
                             console.log(`Flow step type: ${flow.type}. No special action.`);
@@ -236,7 +263,11 @@
                 };
 
                 if (error) {
-                    return createElement("div", null, `Error: ${error.message}`);
+                    return createElement(
+                        "div",
+                        { className: "ui visible negative message" },
+                        "An Error occurred while processing the registration flow. Please try again later."
+                    );
                 }
 
                 if (loading || (!components || components.length === 0)) {
@@ -256,10 +287,12 @@
                     createElement(
                         DynamicContent, {
                             elements: components,
-                            handleFlowRequest: (action, formValues) => {
+                            handleFlowRequest: (actionId, formValues) => {
+                                setComponents([]);
+                                localStorage.setItem("actionTrigger", actionId);
                                 setPostBody({
                                     flowId: flowData.flowId,
-                                    action,
+                                    actionId,
                                     inputs: formValues
                                 });
                             }

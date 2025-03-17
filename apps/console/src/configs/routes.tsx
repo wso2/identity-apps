@@ -1362,6 +1362,17 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.actions.v1/pages/action-configuration-page")
+                    ),
+                    exact: true,
+                    id: "pre-update-profile",
+                    name: "Pre Update Profile",
+                    path: AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() =>

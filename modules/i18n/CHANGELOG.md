@@ -1,5 +1,29 @@
 # @wso2is/i18n
 
+## 2.22.2
+
+### Patch Changes
+
+- [#7827](https://github.com/wso2/identity-apps/pull/7827) [`ccb172c1f19c30ac993f43c2153ec3df1454a0db`](https://github.com/wso2/identity-apps/commit/ccb172c1f19c30ac993f43c2153ec3df1454a0db) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Make the Branding AI banner text less marketish
+
+## 2.22.1
+
+### Patch Changes
+
+- [#7825](https://github.com/wso2/identity-apps/pull/7825) [`9abede7d09c8e68a47d1e6bdffc6315bf8b7adc6`](https://github.com/wso2/identity-apps/commit/9abede7d09c8e68a47d1e6bdffc6315bf8b7adc6) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Implement Pre Update Profile Extension UI
+
+## 2.22.0
+
+### Minor Changes
+
+- [#7866](https://github.com/wso2/identity-apps/pull/7866) [`4d5ea9c18e0cb1cfb48c38d03e69e5aab09b425c`](https://github.com/wso2/identity-apps/commit/4d5ea9c18e0cb1cfb48c38d03e69e5aab09b425c) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce AI assisted registration flow builder
+
+## 2.21.4
+
+### Patch Changes
+
+- [#7849](https://github.com/wso2/identity-apps/pull/7849) [`e0e4356f8fb7eae97613d21c65ba976d2c032d63`](https://github.com/wso2/identity-apps/commit/e0e4356f8fb7eae97613d21c65ba976d2c032d63) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the registration flow builder card to the login and registration section
+
 ## 2.21.3
 
 ### Patch Changes

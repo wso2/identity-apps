@@ -17,7 +17,7 @@
  */
 
 import FlowBuilder from "@wso2is/admin.flow-builder-core.v1/components/flow-builder";
-import ButtonAdapterConstants from "@wso2is/admin.flow-builder-core.v1/constants/button-adapter-constants";
+import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import {
     BlockTypes,
     ButtonTypes,
@@ -33,22 +33,36 @@ import generateIdsForResources from "@wso2is/admin.flow-builder-core.v1/utils/ge
 import generateResourceId from "@wso2is/admin.flow-builder-core.v1/utils/generate-resource-id";
 import resolveComponentMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-component-metadata";
 import resolveStepMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-step-metadata";
-import updateTemplatePlaceholderReferences from "@wso2is/admin.flow-builder-core.v1/utils/update-template-placeholder-references";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import updateTemplatePlaceholderReferences
+    from
+    "@wso2is/admin.flow-builder-core.v1/utils/update-template-placeholder-references";
+import AIGenerationModal from "@wso2is/common.ai.v1/components/ai-generation-modal";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Edge, Node, NodeTypes } from "@xyflow/react";
+import { Edge, Node, NodeTypes, useEdgesState, useNodesState, useUpdateNodeInternals } from "@xyflow/react";
+import { UpdateNodeInternals } from "@xyflow/system";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
 import mergeWith from "lodash-es/mergeWith";
 import unionWith from "lodash-es/unionWith";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { v4 as uuidv4 } from "uuid";
+import RegistrationFlowAILoader from "./ai-registration-flow-generation-loader";
 import StaticNodeFactory from "./resources/steps/static-step-factory";
 import StepFactory from "./resources/steps/step-factory";
+import useAIRegistrationFlowGenerationResult from "../api/use-ai-registration-flow-result";
 import useGetRegistrationFlow from "../api/use-get-registration-flow";
 import useGetRegistrationFlowBuilderResources from "../api/use-get-registration-flow-builder-resources";
+import { REGISTRATION_FLOW_AI_PROMPT_HISTORY_PREFERENCE_KEY } from "../constants/registration-flow-ai-constants";
+import RegistrationFlowExecutorConstants from "../constants/registration-flow-executor-constants";
+import useAIGeneratedRegistrationFlow from "../hooks/use-ai-generated-registration-flow";
+import useGenerateRegistrationFlow, {
+    UseGenerateRegistrationFlowFunction
+} from "../hooks/use-generate-registration-flow";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderCore}
@@ -65,20 +79,94 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     "data-componentid": componentId = "registration-flow-builder-core",
     ...rest
 }: RegistrationFlowBuilderCorePropsInterface): ReactElement => {
+    const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
+
+    const [ showAIGenerationModal, setShowAIGenerationModal ] = useState(false);
+
+    const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
+
+    const {
+        flowGenerationCompleted,
+        isFlowGenerating,
+        operationId,
+        setUserPrompt,
+        setIsFlowGenerating,
+        setFlowGenerationCompleted,
+        userPrompt,
+        setAIGeneratedFlow,
+        aiGeneratedFlow
+    } = useAIGeneratedRegistrationFlow();
+
+    const {
+        data: flowData,
+        error: flowError
+    } = useAIRegistrationFlowGenerationResult(operationId, flowGenerationCompleted);
+
+    const generateAIRegistrationFlow: UseGenerateRegistrationFlowFunction = useGenerateRegistrationFlow();
+
     const {
         data: registrationFlow,
         error: registrationFlowFetchRequestError,
         isLoading: isRegistrationFlowFetchRequestLoading,
         isValidating: isRegistrationFlowFetchRequestValidating
     } = useGetRegistrationFlow();
-    const { data: resources } = useGetRegistrationFlowBuilderResources();
-    const { steps, templates } = resources;
 
-    const dispatch: Dispatch = useDispatch();
+    const { data: resources } = useGetRegistrationFlowBuilderResources();
+
+    const { steps, templates } = resources;
 
     const INITIAL_FLOW_START_STEP_ID: string = StaticStepTypes.Start.toLowerCase();
     const INITIAL_FLOW_VIEW_STEP_ID: string = generateResourceId(StepTypes.View.toLowerCase());
     const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = StaticStepTypes.UserOnboard;
+    const SAMPLE_PROMPTS: string[] = [
+        "Ask the user to supply an email address and choose a strong password to begin the sign-up.",
+        "Prompt for a unique username and password, ensuring the password meets basic complexity rules.",
+        "In the first step provide option to Sign up with Password or Sign up with Email",
+        "Gather basic personal details (e.g., first name, last name) plus an email and password up front.",
+        "Offer the option to Sign up with password or Sign up with Google. If the password " +
+            "option is selected, ask for first name, last name, password. Then verify the email of the user."
+    ];
+
+    useEffect(() => {
+        if (flowError) {
+            setIsFlowGenerating(false);
+            setFlowGenerationCompleted(false);
+
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("ai:aiRegistrationFlow.notifications.generateResultError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("ai:aiRegistrationFlow.notifications.generateResultError.message")
+                })
+            );
+
+            return;
+        }
+
+        if (flowData?.status === "FAILED") {
+            setIsFlowGenerating(false);
+            setFlowGenerationCompleted(false);
+
+            // if data.data contains an object error then use that as the error message
+            const errorMessage: string = "error" in flowData.data
+                ? flowData.data.error : t("ai:aiRegistrationFlow.notifications.generateResultFailed.message");
+
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: errorMessage,
+                    level: AlertLevels.ERROR,
+                    message: t("ai:aiRegistrationFlow.notifications.generateResultFailed.message")
+                })
+            );
+
+            return;
+        }
+
+        if (flowData?.status === "COMPLETED" && flowData.data) {
+            handleAIGeneratedFlow(flowData.data);
+        }
+    }, [ flowData, flowGenerationCompleted ]);
 
     /**
      * Dispatches an error alert if the flow fetch fails.
@@ -89,11 +177,54 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 addAlert({
                     description: "An error occurred while fetching the registration flow.",
                     level: AlertLevels.ERROR,
-                    message: "Couldn't retrieve the registration flow."
+                    message: "Couldn't retrieve  the registration flow."
                 })
             );
         }
     }, [ registrationFlowFetchRequestError ]);
+
+    const handleAIFlowGeneration = async () => {
+
+        const traceID: string = uuidv4();
+
+        await generateAIRegistrationFlow(userPrompt, traceID);
+        setShowAIGenerationModal(false);
+    };
+
+    const handleAIGeneratedFlow = (data) => {
+        if (!data?.steps) {
+            return [ [], [] ];
+        }
+
+        const aiGeneratedRegistrationFlow: any = {
+            "resourceType": "TEMPLATE",
+            "category": "STARTER",
+            "type": "AI",
+            "version": "0.1.0",
+            "deprecated": false,
+            "display": {
+                "label": "Blank",
+                "description": "Start a new flow from scratch",
+                "image": "",
+                "showOnResourcePanel": false
+            },
+            "config": {
+                data : data
+            }
+        };
+
+        setAIGeneratedFlow(aiGeneratedRegistrationFlow);
+        setShowAIGenerationModal(false);
+        setIsFlowGenerating(false);
+
+        dispatch(
+            addAlert<AlertInterface>({
+                description: t("ai:aiRegistrationFlow.notifications.generateSuccess.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("ai:aiRegistrationFlow.notifications.generateSuccess.message")
+            })
+        );
+    };
 
     const getBlankTemplateComponents = (): Element[] => {
         const blankTemplate: Template = cloneDeep(
@@ -167,6 +298,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 animated: false,
                 id: `${INITIAL_FLOW_START_STEP_ID}-${firstStep.id}`,
                 source: INITIAL_FLOW_START_STEP_ID,
+                sourceHandle: `${ INITIAL_FLOW_START_STEP_ID }${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                 target: firstStep.id,
                 type: "base-edge"
             });
@@ -185,7 +317,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         animated: false,
                         id: button.id,
                         source: step.id,
-                        sourceHandle: `${button.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
+                        sourceHandle: `${button.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                         target: button.action.next,
                         type: "base-edge"
                     });
@@ -201,20 +333,20 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         animated: false,
                         id: button.id,
                         source: step.id,
-                        sourceHandle: `${button.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
+                        sourceHandle: `${button.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                         target: userOnboardStepId,
                         type: "base-edge"
                     });
                     userOnboardEdgeCreated = true;
                 }
-            } else if (button.action?.executor?.name === "PasswordOnboardExecutor") {
+            } else if (button.action?.executor?.name === RegistrationFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR) {
                 // For PasswordOnboardExecutor buttons without explicit next,
                 // create an edge to the user onboard step
                 edges.push({
                     animated: false,
                     id: button.id,
                     source: step.id,
-                    sourceHandle: `${button.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
+                    sourceHandle: `${button.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                     target: userOnboardStepId,
                     type: "base-edge"
                 });
@@ -259,6 +391,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         animated: false,
                         id: `${step.id}-to-${step.data.action.next}`,
                         source: step.id,
+                        sourceHandle: `${step.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                         target: step.data.action.next,
                         type: "base-edge"
                     });
@@ -274,6 +407,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         animated: false,
                         id: `${step.id}-to-${userOnboardStepId}`,
                         source: step.id,
+                        sourceHandle: `${step.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                         target: userOnboardStepId,
                         type: "base-edge"
                     });
@@ -319,7 +453,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     id: edgeId,
                     source: lastViewStep.id,
                     ...(buttonId
-                        ? { sourceHandle: `${buttonId}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}` }
+                        ? { sourceHandle: `${buttonId}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
                         : {}),
                     target: userOnboardStepId,
                     type: "base-edge"
@@ -331,10 +465,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     };
 
     const initialNodes: Node[] = useMemo<Node[]>(() => {
-        if (!isEmpty(registrationFlow?.steps)) {
-            return generateSteps(registrationFlow.steps as any);
-        }
-
         return generateSteps([
             {
                 data: {
@@ -353,14 +483,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 type: StaticStepTypes.UserOnboard
             }
         ]);
-    }, [ registrationFlow, defaultTemplateComponents, generateSteps ]);
+    }, [ defaultTemplateComponents, generateSteps ]);
 
     const initialEdges: Edge[] = useMemo<Edge[]>(() => {
-        // If we have a valid registration flow with steps
-        if (registrationFlow?.steps && registrationFlow.steps.length > 0) {
-            return generateEdges(registrationFlow.steps);
-        }
-
         // Default fallback if no registration flow is found
         const defaultTemplateActionId: string = defaultTemplateComponents
             ?.map((component: Element) => {
@@ -377,6 +502,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 animated: false,
                 id: `${INITIAL_FLOW_START_STEP_ID}-${INITIAL_FLOW_VIEW_STEP_ID}`,
                 source: INITIAL_FLOW_START_STEP_ID,
+                sourceHandle: `${ INITIAL_FLOW_START_STEP_ID }${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                 target: INITIAL_FLOW_VIEW_STEP_ID,
                 type: "base-edge"
             },
@@ -384,12 +510,39 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 animated: false,
                 id: defaultTemplateActionId,
                 source: INITIAL_FLOW_VIEW_STEP_ID,
-                sourceHandle: `${defaultTemplateActionId}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}`,
+                sourceHandle: `${defaultTemplateActionId}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
                 target: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
                 type: "base-edge"
             }
         ];
-    }, [ registrationFlow, defaultTemplateComponents, generateEdges ]);
+    }, [ defaultTemplateComponents ]);
+
+    const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
+    const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
+
+    useEffect(() => {
+        if (!isEmpty(registrationFlow?.steps)) {
+            const steps: Node[] =  generateSteps(registrationFlow.steps);
+
+            setTimeout(() => {
+                setEdges(() => generateEdges(steps as any));
+                setNodes(() => {
+                    steps.forEach((node: Node) => updateNodeInternals(node.id));
+
+                    return steps;
+                });
+            }, 0);
+        } else {
+            setTimeout(() => {
+                setEdges(() => initialEdges);
+                setNodes(() => {
+                    initialNodes.forEach((node: Node) => updateNodeInternals(node.id));
+
+                    return initialNodes;
+                });
+            }, 0);
+        }
+    }, [ registrationFlow?.steps ]);
 
     const generateNodeTypes = (): NodeTypes => {
         if (!steps) {
@@ -446,11 +599,11 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                                 return {
                                     ...formComponent,
                                     action: {
+                                        ...(formComponent?.action ?? {}),
                                         type: "EXECUTOR",
                                         executor: {
-                                            name: "PasswordOnboardExecutor"
-                                        },
-                                        next: ""
+                                            name: RegistrationFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR
+                                        }
                                     }
                                 };
                             }
@@ -459,11 +612,11 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                                 return {
                                     ...formComponent,
                                     action: {
+                                        ...(formComponent?.action ?? {}),
                                         type: "EXECUTOR",
                                         executor: {
-                                            name: "OTPOnboardExecutor"
-                                        },
-                                        next: ""
+                                            name: RegistrationFlowExecutorConstants.EMAIL_OTP_EXECUTOR
+                                        }
                                     }
                                 };
                             }
@@ -483,13 +636,22 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     };
 
     const handleTemplateLoad = (template: Template): [Node[], Edge[]] => {
+        if (template?.type === "GENERATE_WITH_AI") {
+            setShowAIGenerationModal(true);
+
+            return [ [], [] ];
+        }
+
         if (!template?.config?.data?.steps) {
             return [ [], [] ];
         }
 
         const replacers = template?.config?.data?.__generationMeta__?.replacers;
 
-        const templateSteps = updateTemplatePlaceholderReferences(generateSteps(template.config.data.steps as any), replacers);
+        const [ templateSteps ] = updateTemplatePlaceholderReferences(
+            generateSteps(template.config.data.steps as any),
+            replacers
+        );
         const templateEdges = generateEdges(templateSteps as any);
 
         return [ templateSteps, templateEdges ];
@@ -499,38 +661,57 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         const nodeIds = new Set(currentNodes.map(node => node.id));
         const missingEdges: Edge[] = [];
 
-        currentNodes.forEach(node => {
-            if (!node.data || !node.data.components) return;
+        const processAction = (stepId, resourceId, action) => {
+            if (action?.next) {
+                const buttonId = resourceId;
+                const expectedTarget = action.next;
 
-            (node.data.components as any).forEach(component => {
-                if (component.type === "BUTTON" && component.action && component.action.next) {
-                    const buttonId = component.id;
-                    const expectedTarget = component.action.next;
+                // Ensure expected target exists in nodes
+                if (!nodeIds.has(expectedTarget)) {
+                    console.warn(`Expected target node '${expectedTarget}' not found in currentNodes.`);
 
-                    // Ensure expected target exists in nodes
-                    if (!nodeIds.has(expectedTarget)) {
-                        console.warn(`Expected target node '${expectedTarget}' not found in currentNodes.`);
-
-                        return;
-                    }
-
-                    const existingEdge = currentEdges.find(
-                        edge => edge.source === node.id && edge.sourceHandle === `${buttonId}_NEXT`
-                    );
-
-                    // If no edge exists or it's pointing to the wrong node, add a missing edge
-                    if (!existingEdge || existingEdge.target !== expectedTarget) {
-                        missingEdges.push({
-                            id: `${buttonId}_MISSING_EDGE`,
-                            source: node.id,
-                            sourceHandle: `${buttonId}_NEXT`,
-                            target: expectedTarget,
-                            type: "base-edge",
-                            animated: false
-                        });
-                    }
+                    return;
                 }
-            });
+
+                const existingEdge = currentEdges.find(
+                    edge => edge.source === stepId && edge.sourceHandle === `${buttonId}_NEXT`
+                );
+
+                // If no edge exists or it's pointing to the wrong node, add a missing edge
+                if (!existingEdge || existingEdge.target !== expectedTarget) {
+                    missingEdges.push({
+                        id: `${buttonId}_MISSING_EDGE`,
+                        source: stepId,
+                        sourceHandle: `${buttonId}_NEXT`,
+                        target: expectedTarget,
+                        type: "base-edge",
+                        animated: false
+                    });
+                }
+            }
+        };
+
+        currentNodes.forEach(node => {
+            if (!node.data) {
+                return;
+            };
+
+            if (node.data?.components) {
+                (node.data?.components as any).forEach((component: Element) => {
+                    processAction(node.id, component.id, component.action);
+
+                    // Process `FORM` components.
+                    if (component?.components) {
+                        component.components.forEach((nestedComponent: Element) =>
+                            processAction(node?.id, nestedComponent.id, nestedComponent.action)
+                        );
+                    }
+                });
+            }
+
+            if (node.data?.action) {
+                processAction(node.id, node.id, node.data.action);
+            }
         });
 
         return missingEdges;
@@ -541,11 +722,11 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         targetResource: Resource,
         currentNodes: Node[],
         currentEdges: Edge[]
-    ): [Node[], Edge[]] => {
+    ): [Node[], Edge[], Resource, string] => {
         const widgetFlow = widget.config.data;
 
         if (!widgetFlow || !widgetFlow.steps) {
-            return [ currentNodes, currentEdges ];
+            return [ currentNodes, currentEdges, null, null ];
         }
 
         let newNodes: Node[] = cloneDeep(currentNodes);
@@ -580,11 +761,107 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         });
 
         const replacers = widgetFlow.__generationMeta__.replacers;
+        const defaultPropertySelectorId: string = widgetFlow.__generationMeta__.defaultPropertySelectorId;
+        let defaultPropertySectorStepId: string = null;
+        let defaultPropertySelector: Resource = null;
 
-        newNodes = resolveStepMetadata(resources, updateTemplatePlaceholderReferences(generateIdsForResources(newNodes), replacers)) as Node[];
-        newEdges = [ ...newEdges, ...generateUnconnectedEdges(newEdges, newNodes) ];
+        // Resolve step & component metadata.
+        newNodes = resolveStepMetadata(
+            resources,
+            generateIdsForResources<Node[]>(
+                newNodes.map((step: Node) => {
+                    return {
+                        data:
+                            (step.data?.components && {
+                                ...step.data,
+                                components: resolveComponentMetadata(resources, (step.data as any).components)
+                            }) ||
+                            step.data,
+                        deletable: true,
+                        id: step.id,
+                        position: step.position,
+                        type: step.type
+                    };
+                })
+            ) as Step[]
+        ) as Node[];
 
-        return [ newNodes, newEdges ];
+        // TODO: Improve this block perf.
+        newNodes.forEach((node: Node) => {
+            if (node.id === defaultPropertySelectorId) {
+                defaultPropertySectorStepId = node.id;
+                defaultPropertySelector = node as Resource;
+
+                return;
+            }
+
+            if (!isEmpty(node?.data?.components)) {
+                (node.data.components as Element[]).forEach((component: Element) => {
+                    if (component.id === defaultPropertySelectorId) {
+                        defaultPropertySectorStepId = node.id;
+                        defaultPropertySelector = component as Resource;
+
+                        return;
+                    }
+
+                    if (!isEmpty(component?.components)) {
+                        if (component.id === defaultPropertySelectorId) {
+                            defaultPropertySectorStepId = node.id;
+                            defaultPropertySelector = component as Resource;
+
+                            return;
+                        }
+                    }
+                });
+            }
+        });
+
+        const [ updatedNodes, replacedPlaceholders ] = updateTemplatePlaceholderReferences(
+            generateIdsForResources(newNodes),
+            replacers
+        );
+
+        newEdges = [ ...newEdges, ...generateUnconnectedEdges(newEdges, updatedNodes) ];
+
+        // Check if `defaultPropertySelector.id` is in the `replacedPlaceholders`.
+        // If so, update them with the replaced value.
+        if (replacedPlaceholders.has(defaultPropertySelector?.id?.replace(/[{}]/g, ""))) {
+            defaultPropertySelector.id = replacedPlaceholders.get(defaultPropertySelector.id.replace(/[{}]/g, ""));
+        }
+
+        // Check if `defaultPropertySectorStepId` is in the `replacedPlaceholders`.
+        // If so, update them with the replaced value.
+        if (replacedPlaceholders.has(defaultPropertySectorStepId?.replace(/[{}]/g, ""))) {
+            defaultPropertySectorStepId = replacedPlaceholders.get(defaultPropertySectorStepId.replace(/[{}]/g, ""));
+        }
+
+        return [ updatedNodes, newEdges, defaultPropertySelector, defaultPropertySectorStepId ];
+    };
+
+    const handleStepLoad = (step: Step): Step => {
+        // If the step is of type `VIEW` and has no components, set the default components.
+        if (step.type === StepTypes.View) {
+            if (isEmpty(step?.data?.components)) {
+                return {
+                    ...step,
+                    data: {
+                        ...step.data,
+                        components: defaultTemplateComponents
+                    }
+                };
+            }
+        }
+
+        return step;
+    };
+
+    const handleResourceAdd = (resource: Resource): void => {
+        // If the template type is `GENERATE_WITH_AI`, show the AI generation modal.
+        if (resource.type === TemplateTypes.GeneratedWithAI) {
+            setShowAIGenerationModal(true);
+
+            return;
+        }
     };
 
     if (isRegistrationFlowFetchRequestLoading || isRegistrationFlowFetchRequestValidating) {
@@ -592,17 +869,41 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     }
 
     return (
-        <FlowBuilder
-            resources={ resources }
-            data-componentid={ componentId }
-            initialNodes={ initialNodes }
-            initialEdges={ initialEdges }
-            nodeTypes={ generateNodeTypes() }
-            mutateComponents={ handleMutateComponents }
-            onTemplateLoad={ handleTemplateLoad }
-            onWidgetLoad={ handleWidgetLoad }
-            { ...rest }
-        />
+        <>
+            <FlowBuilder
+                aiGeneratedFlow={ aiGeneratedFlow }
+                resources={ resources }
+                data-componentid={ componentId }
+                nodeTypes={ generateNodeTypes() }
+                mutateComponents={ handleMutateComponents }
+                onTemplateLoad={ handleTemplateLoad }
+                onWidgetLoad={ handleWidgetLoad }
+                onStepLoad={ handleStepLoad }
+                onResourceAdd={ handleResourceAdd }
+                nodes={ nodes }
+                edges={ edges }
+                setNodes={ setNodes }
+                setEdges={ setEdges }
+                onNodesChange={ onNodesChange }
+                onEdgesChange={ onEdgesChange }
+                { ...rest }
+            />
+            {
+                showAIGenerationModal && (
+                    <AIGenerationModal
+                        onUserPromptSubmit={ handleAIFlowGeneration }
+                        setUserPrompt={ setUserPrompt }
+                        open={ showAIGenerationModal }
+                        handleModalClose={ () => setShowAIGenerationModal(false) }
+                        samplePrompts={ SAMPLE_PROMPTS }
+                        userPrompt={ userPrompt }
+                        showHistory={ true }
+                        promptHistoryPreferenceKey={ REGISTRATION_FLOW_AI_PROMPT_HISTORY_PREFERENCE_KEY }
+                    />
+                )
+            }
+            { isFlowGenerating && <RegistrationFlowAILoader /> }
+        </>
     );
 };
 

@@ -1,5 +1,29 @@
 # @wso2is/admin.authentication-flow-builder.v1
 
+## 2.25.3
+
+### Patch Changes
+
+- Updated dependencies [[`6f6564046f57869ddac09d6238fb4101bc1f9f86`](https://github.com/wso2/identity-apps/commit/6f6564046f57869ddac09d6238fb4101bc1f9f86)]:
+  - @wso2is/common.ui.v1@0.2.0
+  - @wso2is/admin.core.v1@2.42.4
+  - @wso2is/admin.server-configurations.v1@2.33.4
+
+## 2.25.2
+
+### Patch Changes
+
+- [#7852](https://github.com/wso2/identity-apps/pull/7852) [`4908d061593ba0a0a25c67719b86877b0a66853d`](https://github.com/wso2/identity-apps/commit/4908d061593ba0a0a25c67719b86877b0a66853d) Thanks [@brionmario](https://github.com/brionmario)! - Add support to add `Templates` on click
+
+## 2.25.1
+
+### Patch Changes
+
+- [#7831](https://github.com/wso2/identity-apps/pull/7831) [`57c8937653626be3a8f1e6b19ead521e1e7a5528`](https://github.com/wso2/identity-apps/commit/57c8937653626be3a8f1e6b19ead521e1e7a5528) Thanks [@brionmario](https://github.com/brionmario)! - Improve the Sign Up Composer
+
+- Updated dependencies [[`57c8937653626be3a8f1e6b19ead521e1e7a5528`](https://github.com/wso2/identity-apps/commit/57c8937653626be3a8f1e6b19ead521e1e7a5528)]:
+  - @wso2is/admin.server-configurations.v1@2.33.1
+
 ## 2.25.0
 
 ### Minor Changes

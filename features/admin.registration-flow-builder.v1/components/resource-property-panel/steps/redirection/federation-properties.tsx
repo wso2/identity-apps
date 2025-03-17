@@ -20,13 +20,13 @@ import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Au
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import { useGetAuthenticators } from "@wso2is/admin.connections.v1/api/authenticators";
-import { AuthenticatorInterface, AuthenticatorLabels } from "@wso2is/admin.connections.v1/models/authenticators";
+import { AuthenticatorInterface } from "@wso2is/admin.connections.v1/models/authenticators";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
+import useGetSocialAuthenticators from "../../../../api/use-get-social-authenticators";
 
 /**
  * Props interface of {@link FederationProperties}
@@ -45,13 +45,14 @@ const FederationProperties: FunctionComponent<FederationPropertiesPropsInterface
     ["data-componentid"]: componentId = "federation-properties-component",
     onChange
 }: FederationPropertiesPropsInterface): ReactElement => {
-    const {
-        data: authenticators,
-        isLoading: isauthenticatorsRequestLoading,
-        isValidating: isauthenticatorsRequestValidating,
-        error: authenticatorsRequestError,
-        mutate: mutateauthenticatorsRequest
-    } = useGetAuthenticators(`(tag eq ${AuthenticatorLabels.SOCIAL})`);
+    const { data: socialAuthenticators } = useGetSocialAuthenticators();
+
+    const selectedValue: AuthenticatorInterface = useMemo(() => {
+        return socialAuthenticators?.find(
+            (authenticator: AuthenticatorInterface) =>
+                authenticator?.name === resource?.data?.action?.executor?.meta?.idpName
+        );
+    }, [ resource?.data?.action?.executor?.meta?.idpName, socialAuthenticators ]);
 
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
@@ -61,12 +62,15 @@ const FederationProperties: FunctionComponent<FederationPropertiesPropsInterface
             <Autocomplete
                 disablePortal
                 key={ resource.id }
-                options={ authenticators }
-                getOptionLabel={ (authenticator: AuthenticatorInterface) => authenticator.displayName || authenticator.name }
+                options={ socialAuthenticators || [] }
+                getOptionLabel={ (authenticator: AuthenticatorInterface) =>
+                    authenticator.displayName || authenticator.name
+                }
                 sx={ { width: "100%" } }
                 renderInput={ (params: AutocompleteRenderInputParams) => (
                     <TextField { ...params } label="Connection" placeholder="Select a connection" />
                 ) }
+                value={ selectedValue }
                 onChange={ (_: ChangeEvent<HTMLInputElement>, authenticator: AuthenticatorInterface) => {
                     onChange("action.executor.meta.idpName", authenticator?.name, resource);
                 } }

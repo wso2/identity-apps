@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -45,8 +45,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid, Icon, Message, Ref } from "semantic-ui-react";
-import RegistrationFlowBuilderBanner
-    from "../../admin.registration-flow-builder.v1/components/registration-flow-builder-banner";
 import { getConnectorDetails, updateGovernanceConnector } from "../api/governance-connectors";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { ConnectorFormFactory } from "../forms";
@@ -76,20 +74,15 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const { [ "data-testid" ]: testId } = props;
 
     const dispatch: Dispatch = useDispatch();
+
     const pageContextRef: MutableRefObject<HTMLElement> = useRef(null);
 
     const { t } = useTranslation();
+
     const { getLink } = useDocumentation();
 
     const applicationFeatureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.applications);
-    const registrationFlowBuilderFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features.registrationFlowBuilder
-    );
-
-    const hasRegistrationFlowBuilderViewPermissions: boolean = useRequiredScopes(
-        registrationFlowBuilderFeatureConfig?.scopes?.read
-    );
 
     const [ isConnectorRequestLoading, setConnectorRequestLoading ] = useState<boolean>(false);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
@@ -676,22 +669,6 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
         ) : null;
     };
 
-    /**
-     * Renders a feature enhancement banner showcasing additional information about the feature.
-     * @returns Feature enhancement banner.
-     */
-    const renderFeatureEnhancementBanner = (): ReactElement => {
-        if (connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID) {
-            if (!registrationFlowBuilderFeatureConfig?.enabled || !hasRegistrationFlowBuilderViewPermissions) {
-                return null;
-            }
-
-            return <RegistrationFlowBuilderBanner />;
-        }
-
-        return null;
-    };
-
     return !isConnectorRequestLoading && connectorId ? (
         <PageLayout
             title={ resolveConnectorTitle(connector) }
@@ -706,7 +683,6 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             pageHeaderMaxWidth={ true }
             data-testid={ `${ testId }-${ connectorId }-page-layout` }
         >
-            { renderFeatureEnhancementBanner() }
             { resolveConnectorToggleProperty(connector) ? connectorToggle() : null }
             { pageInfo(connector) }
             { !(connectorId === ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID) ? (

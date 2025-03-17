@@ -194,6 +194,14 @@ export const actions: actionsNS = {
                 title: "No execution rule is configured."
             },
             label: "Execution Rule"
+        },
+        userAttributes: {
+            heading: "Attributes",
+            hint: "Select user attributes that need to be shared with the external service.",
+            search: {
+                clearButton: "Clear all",
+                placeholder: "Search user attribute"
+            }
         }
     },
     goBackActions: "Go back to Actions",
@@ -292,6 +300,12 @@ export const actions: actionsNS = {
             update: {
                 description: "Couldn't update the action.",
                 message: "Something went wrong."
+            },
+            userAttributes: {
+                getAttributes: {
+                    description: "Couldn't retrieve the user attributes.",
+                    message: "Something went wrong"
+                }
             }
         },
         success: {
@@ -362,8 +376,7 @@ export const actions: actionsNS = {
         },
         preUpdateProfile: {
             description: {
-                expanded: "This action is executed before updating the profile of a user. " +
-                "Refer the documentation for the API definition to implement.",
+                expanded: "Use this action to validate user attributes at profile update.",
                 shortened: "This action is executed before updating the profile of a user."
             },
             heading: "Pre Update Profile"
