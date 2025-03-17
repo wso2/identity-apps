@@ -186,6 +186,9 @@ export interface actionsNS {
             label: string;
         };
         userAttributes: {
+            error: {
+                attributeLimitReached: string;
+            };
             heading: string;
             hint: string;
             search: {

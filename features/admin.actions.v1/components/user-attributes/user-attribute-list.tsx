@@ -111,7 +111,8 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                 return a.displayName > b.displayName ? 1 : -1;
             });
 
-            setAllAttributesList(sortedClaims);
+            const filteredClaimList: Claim[] = disableRoleClaimAttribute(sortedClaims);
+            setAllAttributesList(filteredClaimList);
             setIsGetAllLocalClaimsLoading(false);
         }).catch((error: IdentityAppsApiException) => {
             dispatch(addAlert(
@@ -150,6 +151,15 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
 
         onAttributesChange(finalAttributeList);
     }, [ finalAttributeList ]);
+
+    /**
+     * Disables the role claim attribute.
+     * @param claimsList - List of claims.
+     * @returns - Filtered claims list.
+     */
+    const disableRoleClaimAttribute = (claimsList: Claim[]): Claim[] => {
+        return claimsList?.filter((claim: Claim) => claim.claimURI !== "http://wso2.org/claims/roles")
+    };
 
     /**
      * Renders the loading placeholders for the user attribute list.
@@ -231,6 +241,8 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
         setFinalAttributeList((userAttributes: Claim[]) =>
             userAttributes?.filter((claim: Claim) => claim?.claimURI !== item?.claimURI)
         );
+
+        isMaxAttributesConfigured();
     };
 
     /**
@@ -346,7 +358,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                     event: SyntheticEvent<HTMLElement>,
                     data: DropdownProps
                 ) => handleAttributeSelect(data) }
-                options={ allAttributesList?.filter((attribute: Claim) => !finalAttributeList?.includes(attribute)) }
+                options={ allAttributesList }
                 getOptionLabel={ (claim: DropdownProps) =>
                     claim?.displayName
                 }
@@ -373,6 +385,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                         size="small"
                         variant="outlined"
                         error={ isAttributeLimitReached }
+                        helperText={ isAttributeLimitReached && t("actions:fields.userAttributes.error.attributeLimitReached") }
                         InputProps={ {
                             ...params.InputProps,
                             startAdornment: (

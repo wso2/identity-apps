@@ -196,6 +196,9 @@ export const actions: actionsNS = {
             label: "Execution Rule"
         },
         userAttributes: {
+            error: {
+                attributeLimitReached: "You can only select up to 10 attributes."
+            },
             heading: "Attributes",
             hint: "Select user attributes that need to be shared with the external service.",
             search: {
