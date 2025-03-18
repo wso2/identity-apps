@@ -67,7 +67,7 @@ export interface UserAttributeListPropsInterface extends IdentifiableComponentIn
     /**
      * Triggers on attribute change to pass the selected attributes to the parent component.
      */
-    onAttributesChange: (selectedUserAttributes: Claim[]) => void;
+    onAttributesChange: (hasChanged: boolean, selectedUserAttributes?: string[]) => void;
     /**
      * Specifies whether the form is read-only.
      */
@@ -112,6 +112,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
             });
 
             const filteredClaimList: Claim[] = disableRoleClaimAttribute(sortedClaims);
+
             setAllAttributesList(filteredClaimList);
             setIsGetAllLocalClaimsLoading(false);
         }).catch((error: IdentityAppsApiException) => {
@@ -146,20 +147,15 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
 
     /**
      * This useEffects passes the final attribute list to the parent.
+     *
+     * Each attribute's claimURI is passed to the parent component as the API expects only the claimURI.
      */
     useEffect(() => {
 
-        onAttributesChange(finalAttributeList);
+        isInitialAttributesChanged() ?
+            onAttributesChange(true, finalAttributeList?.map((claim: Claim) => claim?.claimURI)) :
+            onAttributesChange(false, []);
     }, [ finalAttributeList ]);
-
-    /**
-     * Disables the role claim attribute.
-     * @param claimsList - List of claims.
-     * @returns - Filtered claims list.
-     */
-    const disableRoleClaimAttribute = (claimsList: Claim[]): Claim[] => {
-        return claimsList?.filter((claim: Claim) => claim.claimURI !== "http://wso2.org/claims/roles")
-    };
 
     /**
      * Renders the loading placeholders for the user attribute list.
@@ -185,6 +181,25 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
         const parts: string[] = claim?.claimURI?.split("/");
 
         return parts[ parts?.length - 1 ];
+    };
+
+    /**
+     * Checks if the initial attribute list has changed.
+     *
+     * @returns - true if the initial attribute list has changed.
+     */
+    const isInitialAttributesChanged = (): boolean => {
+
+        const sortedFinalValues: string[] = (finalAttributeList?.map((claim: Claim) => claim.claimURI)).sort();
+        const sortedInitialValues: string[] = initialValues?.sort();
+
+
+        if(sortedInitialValues?.length !== sortedFinalValues?.length) {
+
+            return true;
+        }
+
+        return !sortedFinalValues.every((attribute: string, index: number) => attribute === sortedInitialValues[index]);
     };
 
     /**
@@ -218,6 +233,18 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
     };
 
     /**
+     * Disables the role claim attribute.
+     *
+     * The role attribute is temporarily disabled until the ambuiguities
+     * related to the claim are resolved.
+     * @param claimsList - List of claims.
+     * @returns - Filtered claims list.
+     */
+    const disableRoleClaimAttribute = (claimsList: Claim[]): Claim[] => {
+
+        return claimsList?.filter((claim: Claim) => claim.claimURI !== "http://wso2.org/claims/roles");
+    };
+    /**
      * Handles the selection of an attribute from the autocomplete dropdown.
      *
      * @param data - Dropdown data.
@@ -241,7 +268,8 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
      */
     const handleAttributeDelete = (item: Claim) => {
 
-        const attributeList: Claim[] = finalAttributeList?.filter((claim: Claim) => claim?.claimURI !== item?.claimURI)
+        const attributeList: Claim[] = finalAttributeList?.filter((claim: Claim) => claim?.claimURI !== item?.claimURI);
+
         setFinalAttributeList(attributeList);
 
         isMaxAttributesConfigured(attributeList);
@@ -250,7 +278,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
     /**
      * Handles the clearing of all selected attributes.
      */
-    const handleOnClearAll = () => {
+    const handleClearAllAttributes = () => {
 
         setFinalAttributeList([]);
         setIsAttributeLimitReached(false);
@@ -396,7 +424,8 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                         size="small"
                         variant="outlined"
                         error={ isAttributeLimitReached }
-                        helperText={ isAttributeLimitReached && t("actions:fields.userAttributes.error.attributeLimitReached") }
+                        helperText={ isAttributeLimitReached &&
+                            t("actions:fields.userAttributes.error.attributeLimitReached") }
                         InputProps={ {
                             ...params.InputProps,
                             startAdornment: (
@@ -422,7 +451,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                         <div className="user-attribute-list">
                             <div className="clear-all-button-container">
                                 <Button
-                                    onClick={ () => handleOnClearAll() }
+                                    onClick={ () => handleClearAllAttributes() }
                                     variant="outlined"
                                     size="small"
                                     className="secondary-button clear-all-button"

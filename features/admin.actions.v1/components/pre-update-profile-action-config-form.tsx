@@ -95,10 +95,11 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.actions);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
-    const [ userAttributesList, setUserAttributesList ] = useState<Claim[]>([]);
+    const [ isUserAttributesChanged, setIsUserAttributesChanged ] = useState<boolean>(false);
+    const [ userAttributeList, setUserAttributeList ] = useState<string[]>([]);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ isHasRule, setIsHasRule ] = useState<boolean>(false);
+    const [ hasRule, setHasRule ] = useState<boolean>(false);
     const [ rule, setRule ] = useState<RuleWithoutIdInterface>(null);
 
     const { t } = useTranslation();
@@ -133,7 +134,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
         }
 
         if (initialValues?.rule) {
-            setIsHasRule(true);
+            setHasRule(true);
         }
     }, [ initialValues ]);
 
@@ -151,12 +152,19 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
 
     /**
      * Callback function to be triggered when the user attribute list is changed in the child component.
-     * This updates the parent's state.
+     *
      * @param attributes - attributes list.
      */
-    const handleUserAttributeChange = (attributes: Claim[]) => {
+    const handleUserAttributeChange = (hasChanged: boolean, attributes: string[]) => {
 
-        setUserAttributesList([ ...attributes ]);
+        if (!hasChanged) {
+            setIsUserAttributesChanged(false);
+
+            return;
+        }
+
+        setIsUserAttributesChanged(true);
+        setUserAttributeList([ ...attributes ]);
     };
 
     /**
@@ -210,7 +218,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
 
         if (isCreateFormState) {
             const actionValues: PreUpdateProfileActionInterface = {
-                attributes: userAttributesList.map((claim: Claim) => claim.claimURI),
+                attributes: userAttributeList,
                 endpoint: {
                     authentication: {
                         properties: authProperties,
@@ -235,7 +243,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                 });
         } else {
             const updatingValues: PreUpdateProfileActionUpdateInterface = {
-                attributes: userAttributesList.map((claim: Claim) => claim.claimURI),
+                attributes: isUserAttributesChanged ? userAttributeList : undefined,
                 endpoint: isAuthenticationUpdateFormState || changedFields?.endpointUri ? {
                     authentication: isAuthenticationUpdateFormState ? {
                         properties: authProperties,
@@ -300,8 +308,8 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                         rule={ rule }
                         ruleActionType={ actionTypeApiPath }
                         setRule={ setRule }
-                        isHasRule={ isHasRule }
-                        setIsHasRule={ setIsHasRule }
+                        isHasRule={ hasRule }
+                        setIsHasRule={ setHasRule }
                         data-componentid={ `${ componentId }-rule` }
                     />
                 ) }
