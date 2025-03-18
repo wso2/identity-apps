@@ -67,6 +67,7 @@ interface APIAuthorizationResourcesProps extends
      * Make the component read only.
      */
     readOnly?: boolean;
+    usedInAgentTemplate?: boolean
 }
 
 /**
@@ -81,6 +82,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
     const {
         templateId,
         readOnly,
+        usedInAgentTemplate,
         ["data-componentid"]: componentId
     } = props;
 
@@ -101,8 +103,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const path: string[] = history.location.pathname.split("/");
-    // const appId: string = path[path.length - 1].split("#")[0];
-    const appId: string = "fdda4bbd-cfdb-4e3f-8d5a-2e22c785708a";
+    const appId: string = usedInAgentTemplate ? localStorage.getItem("agent_application") : path[path.length - 1].split("#")[0];
 
     const {
         data: allAPIResourcesListData,
@@ -304,6 +305,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
             <EmphasizedSegment
                 padded="very"
                 loading={ isSubAPIResourcesSectionLoading }
+                style={ { border: "none", padding: "21px" } }
                 data-componentid={ `${componentId}-sub-api-resources-section` }>
                 <Grid>
                     <Grid.Row>

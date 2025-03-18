@@ -19,7 +19,7 @@
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import { Icon } from "semantic-ui-react";
@@ -28,6 +28,7 @@ import AddAgentWizard from "../components/wizards/add-agent-wizard";
 import useGetAgents from "../hooks/use-get-agents";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 
 interface AgentPageProps extends IdentifiableComponentInterface {
 
@@ -47,6 +48,34 @@ export default function Agents ({
         data: agentList,
         isLoading: isAgentListLoading
     } = useGetAgents(trigger);
+
+    const {
+        data: applicationListData,
+        isLoading: isApplicationListRequestLoading,
+        error: applicationListFetchRequestError
+    } = useApplicationList(
+        null,
+        null,
+        null,
+        null,
+        true,
+        true
+    );
+
+    useEffect(() => {
+        if (!localStorage.getItem("agents")) {
+            localStorage.setItem("agents", JSON.stringify([]));
+        }
+
+        if (applicationListData) {
+            if(!localStorage.getItem("agent_application")) {
+                const agentApp = applicationListData?.applications.find(application => application.name === "Agent Application")
+    
+                localStorage.setItem("agent_application", agentApp?.id);
+            }
+        }
+
+    }, [applicationListData])
 
     return (
         <PageLayout

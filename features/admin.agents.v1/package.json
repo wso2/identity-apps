@@ -32,6 +32,7 @@
         "@wso2is/admin.identity-providers.v1": "^2.26.203",
         "@wso2is/admin.impersonation.v1": "^1.6.203",
         "@wso2is/admin.login-flow.ai.v1": "^2.27.98",
+        "@wso2is/admin.logs.v1": "workspace:^1.5.204",
         "@wso2is/admin.oidc-scopes.v1": "^2.25.203",
         "@wso2is/admin.organizations.v1": "^2.26.203",
         "@wso2is/admin.roles.v2": "workspace:^",

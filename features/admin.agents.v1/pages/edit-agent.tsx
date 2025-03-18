@@ -101,7 +101,7 @@ export default function EditAgent({
         {
             componentId: "logs",
             menuItem: "Audit Logs",
-            render: () =>  <ResourceTab.Pane><AgentLogs /></ResourceTab.Pane>
+            render: () => <AgentLogs />
         }
     ];
 

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form/src";
@@ -37,6 +38,19 @@ export default function AddAgentWizard({
 }: AddAgentWizardProps) {
     const dispatch: any = useDispatch();
 
+    const {
+        data: applicationListData,
+        isLoading: isApplicationListRequestLoading,
+        error: applicationListFetchRequestError
+    } = useApplicationList(
+        null,
+        null,
+        null,
+        null,
+        true,
+        true
+    );
+
     return (
         <Modal
             data-testid={ componentId }
@@ -56,6 +70,16 @@ export default function AddAgentWizard({
                 <FinalForm
                     onSubmit={ (values: any) => {
                         try {
+                            if (!localStorage.getItem("agents")) {
+                                localStorage.setItem("agents", JSON.stringify([]));
+                            }
+
+                            if(!localStorage.getItem("agent_application")) {
+                                const agentApp = applicationListData.applications.find(application => application.name === "Agent Application")
+
+                                localStorage.setItem("agent_application", agentApp.id);
+                            }
+
                             const agents: any = JSON.parse(localStorage.getItem("agents"));
 
                             const newAgent = {
