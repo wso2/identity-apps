@@ -2050,6 +2050,9 @@ importers:
       '@wso2is/admin.login-flow.ai.v1':
         specifier: ^2.27.98
         version: link:../admin.login-flow.ai.v1
+      '@wso2is/admin.logs.v1':
+        specifier: workspace:^1.5.204
+        version: link:../admin.logs.v1
       '@wso2is/admin.oidc-scopes.v1':
         specifier: ^2.25.203
         version: link:../admin.oidc-scopes.v1
