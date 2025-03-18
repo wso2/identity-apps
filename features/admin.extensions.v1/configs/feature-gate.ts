@@ -33,6 +33,9 @@ export const featureGateConfig: FeatureGateInterface  = {
         saasFeatures: {
             status: FeatureStatus.DISABLED
         },
-        status: FeatureStatus.DEFAULT
+        status: FeatureStatus.DEFAULT,
+        previewFeatures: {
+            status: FeatureStatus.HIDDEN
+        }
     }
 };
