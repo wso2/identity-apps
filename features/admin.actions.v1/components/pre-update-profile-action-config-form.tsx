@@ -99,13 +99,16 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
     const [ userAttributeList, setUserAttributeList ] = useState<string[]>([]);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ hasRule, setHasRule ] = useState<boolean>(false);
+    const [ isHasRule, setIsHasRule ] = useState<boolean>(false);
     const [ rule, setRule ] = useState<RuleWithoutIdInterface>(null);
 
     const { t } = useTranslation();
 
     const handleSuccess: (operation: string) => void = useHandleSuccess();
     const handleError: (error: AxiosError, operation: string) => void = useHandleError();
+
+    const showRuleComponent: boolean = isFeatureEnabled(
+        actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_UPDATE_PROFILE_RULE"));
 
     const {
         mutate: mutateActions
@@ -117,10 +120,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
 
     const {
         data: RuleExpressionsMetaData
-    } = useGetRulesMeta(actionTypeApiPath, hasRule);
-
-    const showRuleComponent: boolean = isFeatureEnabled(
-        actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_UPDATE_PROFILE_RULE"));
+    } = useGetRulesMeta(actionTypeApiPath, showRuleComponent);
 
     /**
      * This sets the the current Action Authentication Type.
@@ -134,7 +134,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
         }
 
         if (initialValues?.rule) {
-            setHasRule(true);
+            setIsHasRule(true);
         }
     }, [ initialValues ]);
 
@@ -308,8 +308,8 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                         rule={ rule }
                         ruleActionType={ actionTypeApiPath }
                         setRule={ setRule }
-                        isHasRule={ hasRule }
-                        setIsHasRule={ setHasRule }
+                        isHasRule={ isHasRule }
+                        setIsHasRule={ setIsHasRule }
                         data-componentid={ `${ componentId }-rule` }
                     />
                 ) }
