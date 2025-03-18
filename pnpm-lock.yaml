@@ -558,7 +558,7 @@ importers:
         specifier: ^2.27.113
         version: link:../../features/admin.groups.v1
       '@wso2is/admin.home.v1':
-        specifier: ^1.6.203
+        specifier: ^1.7.1
         version: link:../../features/admin.home.v1
       '@wso2is/admin.identity-verification-providers.v1':
         specifier: ^2.27.203
@@ -9072,7 +9072,7 @@ importers:
         specifier: ^2.26.203
         version: link:../admin.organizations.v1
       '@wso2is/admin.registration-flow-builder.v1':
-        specifier: ^0.5.0
+        specifier: ^0.5.2
         version: link:../admin.registration-flow-builder.v1
       '@wso2is/common.ai.v1':
         specifier: ^2.25.203
@@ -13715,7 +13715,7 @@ importers:
         specifier: ^1.6.0
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
-        specifier: ^0.4.0
+        specifier: ^0.4.1
         version: link:../admin.flow-builder-core.v1
       '@wso2is/admin.rules.v1':
         specifier: ^0.4.19
