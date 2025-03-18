@@ -108,15 +108,6 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
 
     switch (resource.category) {
         case ElementCategories.Field:
-            if (resource.variant === InputVariants.Password) {
-                return (
-                    <>
-                        { renderElementId() }
-                        { renderElementPropertyFactory() }
-                    </>
-                );
-            }
-
             return (
                 <>
                     { renderElementId() }
