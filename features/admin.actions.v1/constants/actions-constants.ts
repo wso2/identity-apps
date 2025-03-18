@@ -72,6 +72,8 @@ export class ActionsConstants {
 
     public static readonly EMPTY_STRING: string = "";
 
+    public static readonly MAX_ALLOWED_ATTRIBUTES_PRE_UPDATE_PROFILE: number = 10;
+
     public static readonly ERROR_MESSAGES: {
         CREATE_ACTION_INVALID_STATUS_CODE_ERROR: IdentityAppsError;
         DELETE_ACTION_INVALID_STATUS_CODE_ERROR: IdentityAppsError;

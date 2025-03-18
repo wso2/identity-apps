@@ -22,8 +22,10 @@ import Autocomplete, {
 } from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import TextField from "@oxygen-ui/react/TextField";
+import { MagnifyingGlassIcon } from "@oxygen-ui/react-icons";
 import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -65,7 +67,7 @@ export interface UserAttributeListPropsInterface extends IdentifiableComponentIn
     /**
      * Triggers on attribute change to pass the selected attributes to the parent component.
      */
-    onAttributesChange: (selectedUserAttributes: Claim[]) => void;
+    onAttributesChange: (hasChanged: boolean, selectedUserAttributes: string[]) => void;
     /**
      * Specifies whether the form is read-only.
      */
@@ -80,8 +82,9 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
 }: UserAttributeListPropsInterface): ReactElement => {
 
     const [ allAttributesList, setAllAttributesList ] = useState<Claim[]>();
-    const [ finalAttributeList, setFinalAttributeList ] = useState<Claim[]>([]);
+    const [ selectedAttributeList, setSelectedAttributeList ] = useState<Claim[]>([]);
     const [ isGetAllLocalClaimsLoading, setIsGetAllLocalClaimsLoading ] = useState<boolean>(false);
+    const [ isAttributeLimitReached, setIsAttributeLimitReached ] = useState<boolean>(false);
     const [ inputValue, setInputValue ] = useState("");
 
     const { t } = useTranslation();
@@ -94,7 +97,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
     useEffect(() => {
 
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": true,
+            "exclude-identity-claims": false,
             filter: null,
             limit: null,
             offset: null,
@@ -108,7 +111,9 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                 return a.displayName > b.displayName ? 1 : -1;
             });
 
-            setAllAttributesList(sortedClaims);
+            const filteredClaimList: Claim[] = filterOutRoleClaimAttribute(sortedClaims);
+
+            setAllAttributesList(filteredClaimList);
             setIsGetAllLocalClaimsLoading(false);
         }).catch((error: IdentityAppsApiException) => {
             dispatch(addAlert(
@@ -125,7 +130,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
     }, []);
 
     /**
-     * This useEffect handles previously added attributes.
+     * This useEffect sets the previously saved attributes as the selected attributes.
      */
     useEffect(() => {
 
@@ -135,18 +140,21 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
 
         // Remove duplicates and create a new array with the initial values and the final attribute list.
         const tempFinalURIs: string[] =
-        [ ...new Set([ ...initialValues, ...finalAttributeList?.map((claim: Claim) => claim.claimURI) ]) ];
+        [ ...new Set([ ...initialValues, ...selectedAttributeList?.map((claim: Claim) => claim.claimURI) ]) ];
 
-        setFinalAttributeList(allAttributesList?.filter((claim: Claim) => tempFinalURIs?.includes(claim.claimURI)));
+        setSelectedAttributeList(allAttributesList?.filter((claim: Claim) => tempFinalURIs?.includes(claim.claimURI)));
     }, [ initialValues, allAttributesList ]);
 
     /**
      * This useEffects passes the final attribute list to the parent.
+     * Each attribute's claimURI is passed to the parent component as the API expects only the claimURI.
      */
     useEffect(() => {
 
-        onAttributesChange(finalAttributeList);
-    }, [ finalAttributeList ]);
+        isInitialAttributesChanged() ?
+            onAttributesChange(true, selectedAttributeList?.map((claim: Claim) => claim?.claimURI)) :
+            onAttributesChange(false, []);
+    }, [ selectedAttributeList ]);
 
     /**
      * Renders the loading placeholders for the user attribute list.
@@ -175,17 +183,67 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
     };
 
     /**
+     * Checks if the initial attribute list has changed.
+     *
+     * @returns - true if the initial attribute list has changed.
+     */
+    const isInitialAttributesChanged = (): boolean => {
+
+        const sortedFinalValues: string[] = (selectedAttributeList?.map((claim: Claim) => claim.claimURI)).sort();
+        const sortedInitialValues: string[] = initialValues?.sort();
+
+
+        if(sortedInitialValues?.length !== sortedFinalValues?.length) {
+
+            return true;
+        }
+
+        return !sortedFinalValues.every((attribute: string, index: number) => attribute === sortedInitialValues[index]);
+    };
+
+    /**
      * Checks if the selected attribute is already added.
      *
      * @param selectedAttribute - Selected attribute.
      */
     const isAttributeAlreadyAdded = (selectedAttribute: Claim): boolean => {
 
-        return finalAttributeList?.some((existingAttribute: Claim) =>
+        return selectedAttributeList?.some((existingAttribute: Claim) =>
             existingAttribute?.claimURI === selectedAttribute?.claimURI
         );
     };
 
+    /**
+     * Limits the number of attributes per action.
+     *
+     * @param attributesList - List of attributes to be checked.
+     * @returns - whether the limit is reached.
+     */
+    const isMaxAttributesConfigured = (attributesList: Claim[]): boolean => {
+
+        if (attributesList?.length === ActionsConstants.MAX_ALLOWED_ATTRIBUTES_PRE_UPDATE_PROFILE) {
+            setIsAttributeLimitReached(true);
+
+            return true;
+        }
+
+        setIsAttributeLimitReached(false);
+
+        return false;
+    };
+
+    /**
+     * Disables the role claim attribute.
+     *
+     * The role attribute is temporarily disabled until the ambuiguities
+     * related to the claim are resolved.
+     * @param claimsList - List of claims.
+     * @returns - Filtered claims list.
+     */
+    const filterOutRoleClaimAttribute = (claimsList: Claim[]): Claim[] => {
+
+        return claimsList?.filter((claim: Claim) => claim.claimURI !== "http://wso2.org/claims/roles");
+    };
     /**
      * Handles the selection of an attribute from the autocomplete dropdown.
      *
@@ -196,11 +254,11 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
         // Clears the search input after the selected attribute is added.
         setInputValue(ActionsConstants.EMPTY_STRING);
 
-        if (isAttributeAlreadyAdded(data as Claim)) {
+        if (isAttributeAlreadyAdded(data as Claim) || isMaxAttributesConfigured(selectedAttributeList)) {
             return;
         };
 
-        setFinalAttributeList([ ...finalAttributeList, data as Claim ]);
+        setSelectedAttributeList([ ...selectedAttributeList, data as Claim ]);
     };
 
     /**
@@ -210,9 +268,20 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
      */
     const handleAttributeDelete = (item: Claim) => {
 
-        setFinalAttributeList((userAttributes: Claim[]) =>
-            userAttributes?.filter((claim: Claim) => claim?.claimURI !== item?.claimURI)
-        );
+        const attributeList: Claim[] = selectedAttributeList?.filter((claim: Claim) =>
+            claim?.claimURI !== item?.claimURI);
+
+        setSelectedAttributeList(attributeList);
+        isMaxAttributesConfigured(attributeList);
+    };
+
+    /**
+     * Handles the clearing of all selected attributes.
+     */
+    const handleClearAllAttributes = () => {
+
+        setSelectedAttributeList([]);
+        setIsAttributeLimitReached(false);
     };
 
     /**
@@ -354,6 +423,25 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                         placeholder={ t("actions:fields.userAttributes.search.placeholder") }
                         size="small"
                         variant="outlined"
+                        error={ isAttributeLimitReached }
+                        helperText={ isAttributeLimitReached &&
+                            t("actions:fields.userAttributes.error.attributeLimitReached") }
+                        FormHelperTextProps={ {
+                            sx: {
+                                marginLeft: "2px"
+                            }
+                        } }
+                        InputProps={ {
+                            ...params.InputProps,
+                            startAdornment: (
+                                <InputAdornment
+                                    position="start"
+                                    className="user-attribute-list-search-icon icon"
+                                >
+                                    <MagnifyingGlassIcon />
+                                </InputAdornment>
+                            )
+                        } }
                     />
                 ) }
                 disabled={ isReadOnly }
@@ -364,11 +452,11 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
 
             {
                 isGetAllLocalClaimsLoading ? renderAttributeListLoadingPlaceholders() : (
-                    finalAttributeList?.length > 0 && (
+                    selectedAttributeList?.length > 0 && (
                         <div className="user-attribute-list">
                             <div className="clear-all-button-container">
                                 <Button
-                                    onClick={ () => setFinalAttributeList([]) }
+                                    onClick={ () => handleClearAllAttributes() }
                                     variant="outlined"
                                     size="small"
                                     className="secondary-button clear-all-button"
@@ -383,7 +471,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                                     className="selected-attributes-list-data-table"
                                     actions={ resolveTableActions() }
                                     columns={ resolveTableColumns() }
-                                    data={ finalAttributeList }
+                                    data={ selectedAttributeList }
                                     onRowClick={ () => null }
                                     showHeader={ false }
                                     data-componentid={ `${componentId}-selected-attributes-list` }

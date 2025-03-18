@@ -27,7 +27,7 @@ import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     FinalForm,
     FormRenderProps } from "@wso2is/form";
@@ -95,7 +95,8 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.actions);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
-    const [ userAttributesList, setUserAttributesList ] = useState<Claim[]>([]);
+    const [ isUserAttributesChanged, setIsUserAttributesChanged ] = useState<boolean>(false);
+    const [ userAttributeList, setUserAttributeList ] = useState<string[]>([]);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isHasRule, setIsHasRule ] = useState<boolean>(false);
@@ -105,6 +106,9 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
 
     const handleSuccess: (operation: string) => void = useHandleSuccess();
     const handleError: (error: AxiosError, operation: string) => void = useHandleError();
+
+    const showRuleComponent: boolean = isFeatureEnabled(
+        actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_UPDATE_PROFILE_RULE"));
 
     const {
         mutate: mutateActions
@@ -116,10 +120,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
 
     const {
         data: RuleExpressionsMetaData
-    } = useGetRulesMeta(actionTypeApiPath);
-
-    const showRuleComponent: boolean = isFeatureEnabled(
-        actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_UPDATE_PROFILE_RULE"));
+    } = useGetRulesMeta(actionTypeApiPath, showRuleComponent);
 
     /**
      * This sets the the current Action Authentication Type.
@@ -150,13 +151,21 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
     );
 
     /**
-     * Callback function to be triggered when the user attribute list is changed in the child component.
-     * This updates the parent's state.
-     * @param attributes - attributes list.
+     * Callback to be triggered when the user attribute list is updated.
+     *
+     * The final user attribute list is updated only if the user has made changes to the initial list.
+     * @param finalAttributeList - Updated attribute list.
      */
-    const handleUserAttributeChange = (attributes: Claim[]) => {
+    const handleUserAttributeChange = (hasChanged: boolean, changedAttributes: string[]) => {
 
-        setUserAttributesList([ ...attributes ]);
+        if (!hasChanged) {
+            setIsUserAttributesChanged(false);
+
+            return;
+        }
+
+        setIsUserAttributesChanged(true);
+        setUserAttributeList([ ...changedAttributes ]);
     };
 
     /**
@@ -210,7 +219,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
 
         if (isCreateFormState) {
             const actionValues: PreUpdateProfileActionInterface = {
-                attributes: userAttributesList.map((claim: Claim) => claim.claimURI),
+                attributes: userAttributeList,
                 endpoint: {
                     authentication: {
                         properties: authProperties,
@@ -235,7 +244,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                 });
         } else {
             const updatingValues: PreUpdateProfileActionUpdateInterface = {
-                attributes: userAttributesList.map((claim: Claim) => claim.claimURI),
+                attributes: isUserAttributesChanged ? userAttributeList : undefined,
                 endpoint: isAuthenticationUpdateFormState || changedFields?.endpointUri ? {
                     authentication: isAuthenticationUpdateFormState ? {
                         properties: authProperties,
