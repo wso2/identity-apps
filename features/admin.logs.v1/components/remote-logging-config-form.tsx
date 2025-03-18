@@ -23,9 +23,7 @@ import Skeleton from "@oxygen-ui/react/Skeleton";
 import Stack from "@oxygen-ui/react/Stack";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FinalFormField } from "@wso2is/form";
-import { CheckboxFieldAdapter, FormValue, TextFieldAdapter } from "@wso2is/form/src";
-import { useTrigger } from "@wso2is/forms";
+import { CheckboxFieldAdapter, FinalForm, FinalFormField, FormValue, TextFieldAdapter } from "@wso2is/form/src";
 import {
     ConfirmationModal,
     DangerZone,
@@ -41,10 +39,8 @@ import { FormRenderProps } from "react-final-form";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import restoreRemoteLogPublishingConfiguration from
-        "../api/restore-remote-log-publishing-configuration";
-import updateRemoteLogPublishingConfiguration from
-        "../api/update-remote-log-publishing-configuration";
+import restoreRemoteLogPublishingConfiguration from "../api/restore-remote-log-publishing-configuration";
+import updateRemoteLogPublishingConfiguration from "../api/update-remote-log-publishing-configuration";
 import useTestRemoteLogPublishingConfiguration from "../api/use-test-log-publishing-configuration";
 import { LogType, RemoteLogPublishingConfigurationInterface } from "../models/remote-log-publishing";
 import "./remote-logging-config-form.scss";

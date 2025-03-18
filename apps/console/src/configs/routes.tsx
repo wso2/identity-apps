@@ -1119,11 +1119,11 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ],
             component: lazy(() => import("@wso2is/admin.logs.v1/pages/logs-page")),
             exact: true,
+            featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
             icon: {
                 icon: import("@wso2is/admin.extensions.v1/assets/images/icons/event-publishing.svg")
             },
             id: "logs",
-            featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
             name: "extensions:develop.sidePanel.monitor",
             order: 22,
             path: `${ AppConstants.getDeveloperViewBasePath() }/logs`,
