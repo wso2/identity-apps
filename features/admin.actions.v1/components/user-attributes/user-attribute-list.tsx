@@ -425,6 +425,11 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                         error={ isAttributeLimitReached }
                         helperText={ isAttributeLimitReached &&
                             t("actions:fields.userAttributes.error.attributeLimitReached") }
+                        FormHelperTextProps={ {
+                            sx: {
+                                marginLeft: "2px"
+                            }
+                        } }
                         InputProps={ {
                             ...params.InputProps,
                             startAdornment: (
