@@ -27,7 +27,7 @@ import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     FinalForm,
     FormRenderProps } from "@wso2is/form";
@@ -117,7 +117,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
 
     const {
         data: RuleExpressionsMetaData
-    } = useGetRulesMeta(actionTypeApiPath);
+    } = useGetRulesMeta(actionTypeApiPath, hasRule);
 
     const showRuleComponent: boolean = isFeatureEnabled(
         actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_UPDATE_PROFILE_RULE"));
