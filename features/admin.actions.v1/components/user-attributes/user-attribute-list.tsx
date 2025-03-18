@@ -82,7 +82,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
 }: UserAttributeListPropsInterface): ReactElement => {
 
     const [ allAttributesList, setAllAttributesList ] = useState<Claim[]>();
-    const [ finalAttributeList, setFinalAttributeList ] = useState<Claim[]>([]);
+    const [ selectedAttributeList, setSelectedAttributeList ] = useState<Claim[]>([]);
     const [ isGetAllLocalClaimsLoading, setIsGetAllLocalClaimsLoading ] = useState<boolean>(false);
     const [ isAttributeLimitReached, setIsAttributeLimitReached ] = useState<boolean>(false);
     const [ inputValue, setInputValue ] = useState("");
@@ -111,7 +111,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                 return a.displayName > b.displayName ? 1 : -1;
             });
 
-            const filteredClaimList: Claim[] = disableRoleClaimAttribute(sortedClaims);
+            const filteredClaimList: Claim[] = filterOutRoleClaimAttribute(sortedClaims);
 
             setAllAttributesList(filteredClaimList);
             setIsGetAllLocalClaimsLoading(false);
@@ -130,7 +130,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
     }, []);
 
     /**
-     * This useEffect handles previously added attributes.
+     * This useEffect sets the previously saved attributes as the selected attributes.
      */
     useEffect(() => {
 
@@ -140,9 +140,9 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
 
         // Remove duplicates and create a new array with the initial values and the final attribute list.
         const tempFinalURIs: string[] =
-        [ ...new Set([ ...initialValues, ...finalAttributeList?.map((claim: Claim) => claim.claimURI) ]) ];
+        [ ...new Set([ ...initialValues, ...selectedAttributeList?.map((claim: Claim) => claim.claimURI) ]) ];
 
-        setFinalAttributeList(allAttributesList?.filter((claim: Claim) => tempFinalURIs?.includes(claim.claimURI)));
+        setSelectedAttributeList(allAttributesList?.filter((claim: Claim) => tempFinalURIs?.includes(claim.claimURI)));
     }, [ initialValues, allAttributesList ]);
 
     /**
@@ -152,9 +152,9 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
     useEffect(() => {
 
         isInitialAttributesChanged() ?
-            onAttributesChange(true, finalAttributeList?.map((claim: Claim) => claim?.claimURI)) :
+            onAttributesChange(true, selectedAttributeList?.map((claim: Claim) => claim?.claimURI)) :
             onAttributesChange(false, []);
-    }, [ finalAttributeList ]);
+    }, [ selectedAttributeList ]);
 
     /**
      * Renders the loading placeholders for the user attribute list.
@@ -189,7 +189,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
      */
     const isInitialAttributesChanged = (): boolean => {
 
-        const sortedFinalValues: string[] = (finalAttributeList?.map((claim: Claim) => claim.claimURI)).sort();
+        const sortedFinalValues: string[] = (selectedAttributeList?.map((claim: Claim) => claim.claimURI)).sort();
         const sortedInitialValues: string[] = initialValues?.sort();
 
 
@@ -208,7 +208,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
      */
     const isAttributeAlreadyAdded = (selectedAttribute: Claim): boolean => {
 
-        return finalAttributeList?.some((existingAttribute: Claim) =>
+        return selectedAttributeList?.some((existingAttribute: Claim) =>
             existingAttribute?.claimURI === selectedAttribute?.claimURI
         );
     };
@@ -240,7 +240,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
      * @param claimsList - List of claims.
      * @returns - Filtered claims list.
      */
-    const disableRoleClaimAttribute = (claimsList: Claim[]): Claim[] => {
+    const filterOutRoleClaimAttribute = (claimsList: Claim[]): Claim[] => {
 
         return claimsList?.filter((claim: Claim) => claim.claimURI !== "http://wso2.org/claims/roles");
     };
@@ -254,11 +254,11 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
         // Clears the search input after the selected attribute is added.
         setInputValue(ActionsConstants.EMPTY_STRING);
 
-        if (isAttributeAlreadyAdded(data as Claim) || isMaxAttributesConfigured(finalAttributeList)) {
+        if (isAttributeAlreadyAdded(data as Claim) || isMaxAttributesConfigured(selectedAttributeList)) {
             return;
         };
 
-        setFinalAttributeList([ ...finalAttributeList, data as Claim ]);
+        setSelectedAttributeList([ ...selectedAttributeList, data as Claim ]);
     };
 
     /**
@@ -268,9 +268,10 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
      */
     const handleAttributeDelete = (item: Claim) => {
 
-        const attributeList: Claim[] = finalAttributeList?.filter((claim: Claim) => claim?.claimURI !== item?.claimURI);
+        const attributeList: Claim[] = selectedAttributeList?.filter((claim: Claim) =>
+            claim?.claimURI !== item?.claimURI);
 
-        setFinalAttributeList(attributeList);
+        setSelectedAttributeList(attributeList);
         isMaxAttributesConfigured(attributeList);
     };
 
@@ -279,7 +280,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
      */
     const handleClearAllAttributes = () => {
 
-        setFinalAttributeList([]);
+        setSelectedAttributeList([]);
         setIsAttributeLimitReached(false);
     };
 
@@ -451,7 +452,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
 
             {
                 isGetAllLocalClaimsLoading ? renderAttributeListLoadingPlaceholders() : (
-                    finalAttributeList?.length > 0 && (
+                    selectedAttributeList?.length > 0 && (
                         <div className="user-attribute-list">
                             <div className="clear-all-button-container">
                                 <Button
@@ -470,7 +471,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                                     className="selected-attributes-list-data-table"
                                     actions={ resolveTableActions() }
                                     columns={ resolveTableColumns() }
-                                    data={ finalAttributeList }
+                                    data={ selectedAttributeList }
                                     onRowClick={ () => null }
                                     showHeader={ false }
                                     data-componentid={ `${componentId}-selected-attributes-list` }

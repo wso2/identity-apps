@@ -151,9 +151,10 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
     );
 
     /**
-     * Callback function to be triggered when the user attribute list is changed in the child component.
+     * Callback to be triggered when the user attribute list is updated.
      *
-     * @param changedAttributes - changed attributes.
+     * The final user attribute list is updated only if the user has made changes to the initial list.
+     * @param finalAttributeList - Updated attribute list.
      */
     const handleUserAttributeChange = (hasChanged: boolean, changedAttributes: string[]) => {
 

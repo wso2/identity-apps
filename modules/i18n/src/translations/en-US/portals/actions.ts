@@ -197,7 +197,7 @@ export const actions: actionsNS = {
         },
         userAttributes: {
             error: {
-                attributeLimitReached: "You can select only up to 10 attributes."
+                limitReached: "You can select only up to 10 attributes."
             },
             heading: "Attributes",
             hint: "Select user attributes that need to be shared with the external service.",
