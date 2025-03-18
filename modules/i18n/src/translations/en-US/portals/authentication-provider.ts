@@ -813,6 +813,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     hint: "The number of allowed OTP resend attempts.",
                     label: "Allowed OTP resend attempt count",
                     placeholder: "Enter allowed resend attempt count.",
+                    unit: "attempts",
                     validations: {
                         invalid: "Allowed OTP resend attempt count should be an integer.",
                         range: "Allowed OTP resend attempt count should be between 0 & 100.",
