@@ -67,7 +67,7 @@ export interface UserAttributeListPropsInterface extends IdentifiableComponentIn
     /**
      * Triggers on attribute change to pass the selected attributes to the parent component.
      */
-    onAttributesChange: (hasChanged: boolean, selectedUserAttributes?: string[]) => void;
+    onAttributesChange: (hasChanged: boolean, selectedUserAttributes: string[]) => void;
     /**
      * Specifies whether the form is read-only.
      */
