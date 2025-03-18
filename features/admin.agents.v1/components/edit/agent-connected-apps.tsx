@@ -63,6 +63,7 @@ export default function AgentConnectedApps () {
         <APIAuthorization
                                     templateId={ "custom-oidc-application" }
                                     readOnly={ false }
+                                    usedInAgentTemplate={ true }
                                 />
     )
     // return (
