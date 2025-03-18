@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.49.1
+
+### Patch Changes
+
+- [#7899](https://github.com/wso2/identity-apps/pull/7899) [`36682cd84a4b0d65931511b8435beea3ae1ecb43`](https://github.com/wso2/identity-apps/commit/36682cd84a4b0d65931511b8435beea3ae1ecb43) Thanks [@brionmario](https://github.com/brionmario)! - Fix node moving issues
+
+## 2.49.0
+
+### Minor Changes
+
+- [#7897](https://github.com/wso2/identity-apps/pull/7897) [`4ee56eb415ae8bfdedae980397dc885cb25606a4`](https://github.com/wso2/identity-apps/commit/4ee56eb415ae8bfdedae980397dc885cb25606a4) Thanks [@brionmario](https://github.com/brionmario)! - Promote the new features from the Home Page
+
 ## 2.48.3
 
 ### Patch Changes

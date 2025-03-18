@@ -103,7 +103,10 @@ const transformFlow = (flowState: any) => {
         const step = {
             id,
             type,
-            size: measured,
+            size: measured || {
+                height: 400,
+                width: 350
+            },
             position,
             data
         };

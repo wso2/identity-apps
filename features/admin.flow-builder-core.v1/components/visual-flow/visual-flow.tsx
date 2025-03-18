@@ -102,14 +102,13 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                     edges={ edges }
                     nodeTypes={ useMemo(() => nodeTypes, []) }
                     edgeTypes={ edgeTypes as any }
-                    onNodesChange={ onNodesChange }
-                    onEdgesChange={ onEdgesChange }
                     onConnect={ onConnect }
                     onNodesDelete={ onNodesDelete }
                     proOptions={ { hideAttribution: true } }
                     data-componentid={ componentId }
+                    onNodesChange={ onNodesChange }
+                    onEdgesChange={ onEdgesChange }
                     colorMode="light"
-                    { ...rest }
                 >
                     <Controls position="top-right" />
                 </ReactFlow>
