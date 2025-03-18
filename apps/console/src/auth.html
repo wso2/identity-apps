@@ -214,6 +214,7 @@
 
                     function getApiPath(path) {
                         var tenantDomain = getTenantName();
+
                         if (!tenantDomain || isCentralDeploymentEnabled) {
                             if (startupConfig.superTenantProxy) {
                                 tenantDomain = startupConfig.superTenantProxy;
@@ -454,7 +455,7 @@
                     if(isSilentSignInDisabled) {
 
                         if(isTenantSwitchPath) {
-                            if (isCentralDeploymentEnabled && userTenant && userTenant !== startupConfig.superTenant) {
+                            if (isCentralDeploymentEnabled && userTenant !== startupConfig.superTenant) {
                                 var regionalAuthConfig = getRegionalAuthConfig(userTenant);
                                 auth.initialize(regionalAuthConfig);
                             } else {
@@ -465,7 +466,7 @@
                             window.location = applicationDomain + '/<%= htmlWebpackPlugin.options.basename %>?disable_silent_sign_in=true&invite_user=true';
                         }
                     } else {
-                        if (isCentralDeploymentEnabled && userTenant && userTenant !== startupConfig.superTenant) {
+                        if (isCentralDeploymentEnabled && userTenant !== startupConfig.superTenant) {
                             var regionalAuthConfig = getRegionalAuthConfig(userTenant);
                             auth.initialize(regionalAuthConfig)
                         } else {
