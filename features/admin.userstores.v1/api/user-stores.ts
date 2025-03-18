@@ -89,6 +89,7 @@ export const getUserStoreList = (): Promise<UserstoreListResponseInterface[] | a
  * @param params - limit, offset, filter, sort, attributes.
  *
  * @returns metadata of a userstore type
+ * @deprecated - Use `useGetUserStoreMetaDataType()` instead.
  */
 export const getUserStoreMetaDataType = (id: string, params: QueryParams): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
