@@ -21,6 +21,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useReactFlow } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";
+import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
 import set from "lodash-es/set";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -28,7 +29,6 @@ import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flo
 import { Properties } from "../../models/base";
 import { Element } from "../../models/elements";
 import { Resource } from "../../models/resources";
-import isEmpty from "lodash-es/isEmpty";
 
 /**
  * Props interface of {@link ResourceProperties}
