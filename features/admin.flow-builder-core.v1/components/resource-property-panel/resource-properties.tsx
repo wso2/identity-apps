@@ -25,6 +25,7 @@ import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
 import set from "lodash-es/set";
 import React, { FunctionComponent, ReactElement } from "react";
+import ResourcePropertyPanelConstants from "../../constants/resource-property-panel-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Properties } from "../../models/base";
 import { Element } from "../../models/elements";
@@ -134,6 +135,17 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         });
     };
 
+    const filteredProperties: Properties = Object.keys(lastInteractedResource?.config || {}).reduce(
+        (acc: Properties, key: string) => {
+            if (!ResourcePropertyPanelConstants.EXCLUDED_PROPERTIES.includes(key)) {
+                acc[key] = lastInteractedResource?.config[key];
+            }
+
+            return acc;
+        },
+        {} as Properties
+    );
+
     return (
         <div className="flow-builder-element-properties" data-componentid={ componentId }>
             { lastInteractedResource ? (
@@ -141,7 +153,7 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
                     { lastInteractedResource && (
                         <ResourceProperties
                             resource={ cloneDeep(lastInteractedResource) }
-                            properties={ cloneDeep(lastInteractedResource?.config) }
+                            properties={ cloneDeep(filteredProperties) }
                             onChange={ handlePropertyChange }
                             onVariantChange={ changeSelectedVariant }
                         />
