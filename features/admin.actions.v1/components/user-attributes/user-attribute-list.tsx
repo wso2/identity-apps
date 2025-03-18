@@ -147,7 +147,6 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
 
     /**
      * This useEffects passes the final attribute list to the parent.
-     *
      * Each attribute's claimURI is passed to the parent component as the API expects only the claimURI.
      */
     useEffect(() => {
@@ -216,6 +215,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
 
     /**
      * Limits the number of attributes per action.
+     *
      * @param attributesList - List of attributes to be checked.
      * @returns - whether the limit is reached.
      */
@@ -271,7 +271,6 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
         const attributeList: Claim[] = finalAttributeList?.filter((claim: Claim) => claim?.claimURI !== item?.claimURI);
 
         setFinalAttributeList(attributeList);
-
         isMaxAttributesConfigured(attributeList);
     };
 
