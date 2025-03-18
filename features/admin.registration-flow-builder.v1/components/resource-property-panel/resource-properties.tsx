@@ -22,7 +22,8 @@ import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 import { FieldKey, FieldValue } from "@wso2is/admin.flow-builder-core.v1/models/base";
-import { Element, ElementCategories, InputVariants } from "@wso2is/admin.flow-builder-core.v1/models/elements";
+import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
+import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
 import { StepCategories, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
@@ -31,7 +32,6 @@ import ButtonExtendedProperties from "./extended-properties/button-extended-prop
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
 import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
-import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
 import FederationProperties from "./steps/redirection/federation-properties";
 
 /**

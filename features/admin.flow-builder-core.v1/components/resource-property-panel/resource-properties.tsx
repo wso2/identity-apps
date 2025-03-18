@@ -29,6 +29,7 @@ import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flo
 import { Properties } from "../../models/base";
 import { Element } from "../../models/elements";
 import { Resource } from "../../models/resources";
+import { StepData } from "../../models/steps";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -121,7 +122,7 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         };
 
         updateNodeData(lastInteractedStepId, (node: any) => {
-            const data = node?.data || {};
+            const data: StepData = node?.data || {};
 
             if (!isEmpty(node?.data?.components)) {
                 data.components = updateComponent(cloneDeep(node?.data?.components) || []);
