@@ -146,7 +146,7 @@ export default function AgentList ({
      */
     const showPlaceholders = (): ReactElement => {
         
-        if (list?.length === 0) {
+        if (!list || list?.length === 0) {
             return (
                 <EmptyPlaceholder
                     className="list-placeholder mr-0"

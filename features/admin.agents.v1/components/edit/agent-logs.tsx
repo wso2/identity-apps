@@ -16,10 +16,15 @@
  * under the License.
  */
 
+import AuditLogsPage from "@wso2is/admin.logs.v1/pages/audit-logs-page";
 import React from "react";
+import './logs.scss';
 
 export default function AgentLogs () {
-    return (
-        <></>
+    return (        
+        <div style={{ background: "rgb(250,248,247)"}}>
+        <img src="https://i.imgur.com/vQ9SsAp.png" width="100%" height="400px" />
+        
+        </div>
     );
 }
