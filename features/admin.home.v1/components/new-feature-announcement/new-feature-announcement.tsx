@@ -52,7 +52,10 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
 }: NewFeatureAnnouncementProps): ReactElement => {
     const { setShowPreviewFeaturesModal } = useFeatureGate();
 
-    const { data: isNewRegistrationPortalEnabled } = useNewRegistrationPortalFeatureStatus();
+    const {
+        data: isNewRegistrationPortalEnabled,
+        isLoading: isNewRegistrationPortalEnabledRequestLoading
+    } = useNewRegistrationPortalFeatureStatus();
 
     return (
         <Paper
@@ -90,7 +93,11 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                         </Box>
                     </Button>
                 ) : (
-                    <Button variant="contained" onClick={ () => setShowPreviewFeaturesModal(true) }>
+                    <Button
+                        variant="contained"
+                        onClick={ () => setShowPreviewFeaturesModal(true) }
+                        loading={ isNewRegistrationPortalEnabledRequestLoading }
+                    >
                         <Box display="flex" alignItems="center" gap={ 1 }>
                             <PreviewFeaturesIcon /> Enable and try out
                         </Box>
