@@ -218,8 +218,8 @@
                 "variant": "PRIMARY",
                 "deprecated": false,
                 "display": {
-                    "label": "Primary",
-                    "image": null
+                    "label": "Primary Button",
+                    "image": "https://www.svgrepo.com/show/450681/button.svg"
                 },
                 "config": {
                     "type": "button",
@@ -234,8 +234,8 @@
                 "variant": "SECONDARY",
                 "deprecated": false,
                 "display": {
-                    "label": "Secondary",
-                    "image": null
+                    "label": "Secondary Button",
+                    "image": "https://www.svgrepo.com/show/450681/button.svg"
                 },
                 "config": {
                     "type": "button",
@@ -250,8 +250,8 @@
                 "variant": "TEXT",
                 "deprecated": false,
                 "display": {
-                    "label": "Text",
-                    "image": null
+                    "label": "Text Button",
+                    "image": "https://www.svgrepo.com/show/450681/button.svg"
                 },
                 "config": {
                     "type": "button",
@@ -266,8 +266,8 @@
                 "variant": "SOCIAL",
                 "deprecated": false,
                 "display": {
-                    "label": "Social",
-                    "image": null
+                    "label": "Social Button",
+                    "image": "https://www.svgrepo.com/show/450681/button.svg"
                 },
                 "config": {
                     "type": "button",
