@@ -495,7 +495,7 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.actions.v1':
-        specifier: ^1.12.2
+        specifier: ^1.12.4
         version: link:../../features/admin.actions.v1
       '@wso2is/admin.administrators.v1':
         specifier: ^2.29.203
