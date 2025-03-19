@@ -1,5 +1,11 @@
 # @wso2is/admin.actions.v1
 
+## 1.12.2
+
+### Patch Changes
+
+- [#7908](https://github.com/wso2/identity-apps/pull/7908) [`6ab9627707be73058e161986c26185bfad7d049e`](https://github.com/wso2/identity-apps/commit/6ab9627707be73058e161986c26185bfad7d049e) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Update dependencies related to pre update profile action
+
 ## 1.12.1
 
 ### Patch Changes
