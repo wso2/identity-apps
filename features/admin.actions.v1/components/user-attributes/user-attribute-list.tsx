@@ -81,7 +81,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
     "data-componentid": componentId = "autocomplete-search-list"
 }: UserAttributeListPropsInterface): ReactElement => {
 
-    const [ allAttributesList, setAllAttributesList ] = useState<Claim[]>();
+    const [ allAttributesList, setAllAttributesList ] = useState<Claim[]>([]);
     const [ selectedAttributeList, setSelectedAttributeList ] = useState<Claim[]>([]);
     const [ isGetAllLocalClaimsLoading, setIsGetAllLocalClaimsLoading ] = useState<boolean>(false);
     const [ isAttributeLimitReached, setIsAttributeLimitReached ] = useState<boolean>(false);
@@ -362,6 +362,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
         <>
             <Hint>{ t("actions:fields.userAttributes.hint") }</Hint>
             <Autocomplete
+                loading={ isGetAllLocalClaimsLoading }
                 fullWidth
                 aria-label="Attribute selection"
                 className="pt-2"
@@ -400,7 +401,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                     event: SyntheticEvent<HTMLElement>,
                     data: DropdownProps
                 ) => handleAttributeSelect(data) }
-                options={ allAttributesList || [] }
+                options={ allAttributesList }
                 getOptionLabel={ (claim: DropdownProps) =>
                     claim?.displayName
                 }
