@@ -359,6 +359,15 @@
                 notificationChannel = recoveryResponse.getNotificationChannel();
                 request.setAttribute("callback", callback);
                 if (notificationChannel.equals("EMAIL")) {
+                    Boolean isEmailOtpBasedPasswordRecoveryEnabledByTenant = Boolean.parseBoolean(
+                        request.getParameter("isEmailOtpBasedPasswordRecoveryEnabledByTenant"));
+                    if (isEmailOtpBasedPasswordRecoveryEnabledByTenant) {
+                        request.setAttribute("channel", IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL);
+                        request.setAttribute("resendCode", recoveryResponse.getResendCode());
+                        request.setAttribute("flowConfirmationCode", recoveryResponse.getFlowConfirmationCode());
+                        request.getRequestDispatcher("otp.jsp").forward(request, response);
+                        return;
+                    }
                     request.getRequestDispatcher("password-recovery-with-claims-notify.jsp").forward(request,
                             response);
                     return;
