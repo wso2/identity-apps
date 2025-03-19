@@ -23,14 +23,10 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { UserStoreListItem } from "../models/user-stores";
+import { UserStore } from "../models/user-stores";
 
-export const useGetUserStores = <Data = UserStoreListItem[], Error = RequestErrorInterface>(
-    limit?: number,
-    offset?: number,
-    filter?: string,
-    sort?: string,
-    requiredAttributes?: string,
+export const useGetUserStore = <Data = UserStore, Error = RequestErrorInterface>(
+    id: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
@@ -39,19 +35,17 @@ export const useGetUserStores = <Data = UserStoreListItem[], Error = RequestErro
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        params: {
-            filter,
-            limit,
-            offset,
-            requiredAttributes,
-            sort
-        },
-        url: store.getState().config.endpoints.userStores
+        url: `${store.getState().config.endpoints.userStores}/${id}`
     };
 
-    const { data, error, isLoading, isValidating, mutate, response } = useRequest<Data, Error>(
-        shouldFetch ? requestConfig : null
-    );
+    const {
+        data,
+        error,
+        isLoading,
+        isValidating,
+        mutate,
+        response
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,

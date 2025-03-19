@@ -23,35 +23,44 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { UserStoreListItem } from "../models/user-stores";
+import { QueryParams, UserstoreType } from "../models/user-stores";
 
-export const useGetUserStores = <Data = UserStoreListItem[], Error = RequestErrorInterface>(
-    limit?: number,
-    offset?: number,
-    filter?: string,
-    sort?: string,
-    requiredAttributes?: string,
-    shouldFetch: boolean = true
-): RequestResultInterface<Data, Error> => {
+/**
+ * Retrieves meta data of a single userstore type.
+ *
+ * @param id - The ID of the userstore type.
+ * @param params - Optional query params such as limit, offset, filter, sort, attributes, etc.
+ * @param shouldFetch - Whether the request should be made.
+ *
+ * @returns A RequestResultInterface containing data, error, isLoading, etc.
+ */
+export const useGetUserStoreMetaDataType = <
+    Data = UserstoreType,
+    Error = RequestErrorInterface
+    >(
+        id: string,
+        params?: QueryParams,
+        shouldFetch: boolean = true
+    ): RequestResultInterface<Data, Error> => {
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        params: {
-            filter,
-            limit,
-            offset,
-            requiredAttributes,
-            sort
-        },
-        url: store.getState().config.endpoints.userStores
+        params,
+        url: `${store.getState().config.endpoints.userStores}/meta/types/${ id }`
     };
 
-    const { data, error, isLoading, isValidating, mutate, response } = useRequest<Data, Error>(
-        shouldFetch ? requestConfig : null
-    );
+    const {
+        data,
+        error,
+        isLoading,
+        isValidating,
+        mutate,
+        response
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,

@@ -26,12 +26,14 @@ import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, ResourceTab, ResourceTabPaneInterface, TabPageLayout } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { getAType, getAUserStore } from "../api";
+import { getAUserStore } from "../api";
+import { useGetUserStoreMetaDataType } from "../api/use-get-user-store-meta-data-type";
 import {
     EditBasicDetailsUserStore,
     EditConnectionDetails,
@@ -86,6 +88,16 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
 
     const hasUserStoresUpdatePermission: boolean = useRequiredScopes(featureConfig?.userStores?.scopes?.update);
 
+    const {
+        data: userStoreMetaType,
+        isLoading: isUserStoreMetaTypeFetchRequestLoading,
+        error: userStoreMetaTypeFetchRequestError
+    } = useGetUserStoreMetaDataType(
+        userStore?.typeId,
+        null,
+        !isEmpty(userStore?.typeId)
+    );
+
     /**
      * Fetches the userstore by its id
      */
@@ -115,28 +127,27 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
     }, []);
 
     useEffect(() => {
-        if (userStore) {
-            getAType(userStore?.typeId, null).then((response: UserstoreType) => {
-                setType(response);
-            }).catch((error: IdentityAppsError) => {
-                dispatch(addAlert({
-                    description: error?.description
-                        || t("userstores:notifications.fetchUserstoreMetadata." +
-                            "genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.message
-                        || t("userstores:notifications.fetchUserstoreMetadata" +
-                            ".genericError.message")
-                }));
-            });
+        if (isUserStoreMetaTypeFetchRequestLoading || !userStoreMetaType) {
+            return;
         }
-    }, [ userStore ]);
+
+        setType(userStoreMetaType);
+        setProperties(reOrganizeProperties(userStoreMetaType.properties, userStore.properties));
+    }, [ isUserStoreMetaTypeFetchRequestLoading, userStoreMetaType ]);
 
     useEffect(() => {
-        if (type) {
-            setProperties(reOrganizeProperties(type.properties, userStore.properties));
+        if (userStoreMetaTypeFetchRequestError) {
+            dispatch(addAlert({
+                description: userStoreMetaTypeFetchRequestError?.name
+                    || t("userstores:notifications.fetchUserstoreMetadata." +
+                        "genericError.description"),
+                level: AlertLevels.ERROR,
+                message: userStoreMetaTypeFetchRequestError?.message
+                    || t("userstores:notifications.fetchUserstoreMetadata" +
+                        ".genericError.message")
+            }));
         }
-    }, [ type ]);
+    }, [ userStoreMetaTypeFetchRequestError ]);
 
     /**
      * Returns if the userstore is readonly or not based on the scopes.
