@@ -1,5 +1,14 @@
 # @wso2is/admin.actions.v1
 
+## 1.12.3
+
+### Patch Changes
+
+- [#7911](https://github.com/wso2/identity-apps/pull/7911) [`db0e5b5e8d544e7a9593825720f9457423e15aae`](https://github.com/wso2/identity-apps/commit/db0e5b5e8d544e7a9593825720f9457423e15aae) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Filter out applicationRole from the configurable list
+
+- Updated dependencies [[`ece68642860ae99847f1cd7fa745e881211b0577`](https://github.com/wso2/identity-apps/commit/ece68642860ae99847f1cd7fa745e881211b0577)]:
+  - @wso2is/admin.core.v1@2.43.1
+
 ## 1.12.2
 
 ### Patch Changes
