@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.49.6
+
+### Patch Changes
+
+- [#7914](https://github.com/wso2/identity-apps/pull/7914) [`c11e5680afde8cbc5bb6ba469274bc2a79bd8107`](https://github.com/wso2/identity-apps/commit/c11e5680afde8cbc5bb6ba469274bc2a79bd8107) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Update dependencies related to pre update profile action
+
 ## 2.49.5
 
 ### Patch Changes
