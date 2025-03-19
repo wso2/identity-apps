@@ -140,9 +140,9 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
 
         // Remove duplicates and create a new array with the initial values and the final attribute list.
         const tempFinalURIs: string[] =
-        [ ...new Set([ ...initialValues, ...selectedAttributeList?.map((claim: Claim) => claim.claimURI) ]) ];
+        [ ...new Set([ ...initialValues, ...selectedAttributeList?.map((claim: Claim) => claim?.claimURI) ]) ];
 
-        setSelectedAttributeList(allAttributesList?.filter((claim: Claim) => tempFinalURIs?.includes(claim.claimURI)));
+        setSelectedAttributeList(allAttributesList?.filter((claim: Claim) => tempFinalURIs?.includes(claim?.claimURI)));
     }, [ initialValues, allAttributesList ]);
 
     /**
@@ -189,7 +189,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
      */
     const isInitialAttributesChanged = (): boolean => {
 
-        const sortedFinalValues: string[] = (selectedAttributeList?.map((claim: Claim) => claim.claimURI)).sort();
+        const sortedFinalValues: string[] = (selectedAttributeList?.map((claim: Claim) => claim?.claimURI)).sort();
         const sortedInitialValues: string[] = initialValues?.sort();
 
 
@@ -247,7 +247,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
             "http://wso2.org/claims/applicationRoles"
         ]);
 
-        return claimsList?.filter((claim: Claim) => !excludedClaims.has(claim.claimURI));
+        return claimsList?.filter((claim: Claim) => !excludedClaims.has(claim?.claimURI));
     };
     /**
      * Handles the selection of an attribute from the autocomplete dropdown.
@@ -392,7 +392,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                     reason: AutocompleteInputChangeReason) => {
 
                     if (reason === "reset") {
-                        setInputValue(null);
+                        setInputValue(ActionsConstants.EMPTY_STRING);
 
                         return;
                     } else {
@@ -409,7 +409,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                 }
                 isOptionEqualToValue={
                     (option: Claim, value: Claim) =>
-                        option.id === value.id
+                        option?.id === value?.id
                 }
                 renderOption={ (props: HTMLAttributes<HTMLLIElement>, option: Claim) => (
                     <li { ...props } key={ option.id }>
