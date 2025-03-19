@@ -21,14 +21,16 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useReactFlow } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";
+import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
 import set from "lodash-es/set";
 import React, { FunctionComponent, ReactElement } from "react";
+import ResourcePropertyPanelConstants from "../../constants/resource-property-panel-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Properties } from "../../models/base";
 import { Element } from "../../models/elements";
 import { Resource } from "../../models/resources";
-import isEmpty from "lodash-es/isEmpty";
+import { StepData } from "../../models/steps";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -121,7 +123,7 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         };
 
         updateNodeData(lastInteractedStepId, (node: any) => {
-            const data = node?.data || {};
+            const data: StepData = node?.data || {};
 
             if (!isEmpty(node?.data?.components)) {
                 data.components = updateComponent(cloneDeep(node?.data?.components) || []);
@@ -133,6 +135,17 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         });
     };
 
+    const filteredProperties: Properties = Object.keys(lastInteractedResource?.config || {}).reduce(
+        (acc: Properties, key: string) => {
+            if (!ResourcePropertyPanelConstants.EXCLUDED_PROPERTIES.includes(key)) {
+                acc[key] = lastInteractedResource?.config[key];
+            }
+
+            return acc;
+        },
+        {} as Properties
+    );
+
     return (
         <div className="flow-builder-element-properties" data-componentid={ componentId }>
             { lastInteractedResource ? (
@@ -140,7 +153,7 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
                     { lastInteractedResource && (
                         <ResourceProperties
                             resource={ cloneDeep(lastInteractedResource) }
-                            properties={ cloneDeep(lastInteractedResource?.config) }
+                            properties={ cloneDeep(filteredProperties) }
                             onChange={ handlePropertyChange }
                             onVariantChange={ changeSelectedVariant }
                         />

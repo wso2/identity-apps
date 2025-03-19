@@ -266,7 +266,7 @@
                     return createElement(
                         "div",
                         { className: "ui visible negative message" },
-                        "An Error occurred while processing the registration flow. Please try again later."
+                        "An error occurred while processing the registration flow. Please try again later."
                     );
                 }
 
@@ -295,7 +295,8 @@
                                     actionId,
                                     inputs: formValues
                                 });
-                            }
+                            },
+                            error: flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error
                         }
                     )
                 );

@@ -69,8 +69,11 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
     } = useNewRegistrationPortalFeatureStatus();
 
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
+    const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
 
     const handlePublish = async (): Promise<void> => {
+        setIsPublishing(true);
+
         const flow: any = toObject();
 
         if (!isNewRegistrationPortalEnabled) {
@@ -107,6 +110,8 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
                     message: "Flow Update Failure"
                 })
             );
+        } finally {
+            setIsPublishing(false);
         }
     };
 
@@ -114,6 +119,7 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
         <RegistrationFlowBuilderContext.Provider
             value={ {
                 isNewRegistrationPortalEnabled,
+                isPublishing,
                 onPublish: handlePublish,
                 selectedAttributes,
                 setSelectedAttributes

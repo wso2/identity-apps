@@ -43,7 +43,7 @@ export type RegistrationFlowBuilderPageHeaderProps = IdentifiableComponentInterf
 const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuilderPageHeaderProps> = ({
     ["data-componentid"]: componentId = "registration-flow-builder-page-header"
 }: RegistrationFlowBuilderPageHeaderProps): ReactElement => {
-    const { onPublish } = useRegistrationFlowBuilder();
+    const { isPublishing, onPublish } = useRegistrationFlowBuilder();
 
     return (
         <Box
@@ -63,7 +63,7 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
                         color="inherit"
                         onClick={ () => history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION")) }
                     >
-                                    Login & Registration
+                        Login & Registration
                     </Link>
                     <Typography sx={ { color: "text.primary" } }>Edit Registration Flow</Typography>
                 </Breadcrumbs>
@@ -73,7 +73,7 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
                 justifyContent="flex-end"
                 alignItems="center"
             >
-                <Button variant="contained" onClick={ () => onPublish() }>
+                <Button variant="contained" onClick={ () => onPublish() } loading={ isPublishing }>
                     Publish
                 </Button>
             </Box>

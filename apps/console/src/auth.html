@@ -215,7 +215,7 @@
                     function getApiPath(path) {
                         var tenantDomain = getTenantName();
 
-                        if (!tenantDomain) {
+                        if (!tenantDomain || isCentralDeploymentEnabled) {
                             if (startupConfig.superTenantProxy) {
                                 tenantDomain = startupConfig.superTenantProxy;
                             } else {
@@ -383,6 +383,31 @@
                         startupConfig.superTenant;
                     }
 
+                    function getRegionalAuthConfig(tenantDomain) {
+                        return regionalAuthConfig = {
+                            signInRedirectURL: deploymentUnitSignInRedirectURL(tenantDomain),
+                            signOutRedirectURL: getSignOutRedirectURL(),
+                            clientID: "<%= htmlWebpackPlugin.options.clientID %>",
+                            baseUrl: getDeploymentUnitApiPath(tenantDomain),
+                            responseMode: "query",
+                            scope: ["openid SYSTEM profile email"],
+                            storage: "webWorker",
+                            disableTrySignInSilently: false,
+                            enableOIDCSessionManagement: false,
+                            endpoints: {
+                                authorizationEndpoint: getDeploymentUnitApiPath("/oauth2/authorize", tenantDomain),
+                                clockTolerance: 300,
+                                jwksEndpointURL: getDeploymentUnitApiPath("/oauth2/jwks", tenantDomain),
+                                logoutEndpointURL: getDeploymentUnitApiPath("/oidc/logout", tenantDomain),
+                                oidcSessionIFrameEndpointURL: getDeploymentUnitApiPath("/oidc/checksession", tenantDomain),
+                                tokenEndpointURL: getDeploymentUnitApiPath("/oauth2/token", tenantDomain),
+                                tokenRevocationEndpointURL: getDeploymentUnitApiPath("/oauth2/revoke", tenantDomain),
+                                issuer: getDeploymentUnitApiPath("/oauth2/token", tenantDomain)
+                            },
+                            enablePKCE: true
+                        }
+                    }
+
                     var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
                     if (isCentralDeploymentEnabled) {
                         auth = AsgardeoAuth.AsgardeoSPAClient.getInstance("primary");
@@ -430,13 +455,23 @@
                     if(isSilentSignInDisabled) {
 
                         if(isTenantSwitchPath) {
-                            auth.initialize(authConfig);
+                            if (isCentralDeploymentEnabled && userTenant !== startupConfig.superTenant) {
+                                var regionalAuthConfig = getRegionalAuthConfig(userTenant);
+                                auth.initialize(regionalAuthConfig);
+                            } else {
+                                auth.initialize(authConfig);
+                            }
                             auth.signIn(getAuthParams({}));
                         } else {
                             window.location = applicationDomain + '/<%= htmlWebpackPlugin.options.basename %>?disable_silent_sign_in=true&invite_user=true';
                         }
                     } else {
-                        auth.initialize(authConfig);
+                        if (isCentralDeploymentEnabled && userTenant !== startupConfig.superTenant) {
+                            var regionalAuthConfig = getRegionalAuthConfig(userTenant);
+                            auth.initialize(regionalAuthConfig)
+                        } else {
+                            auth.initialize(authConfig);
+                        }
 
                         if (window.top === window.self) {
                             var authCallbackUrl = window.location.pathname + window.location.hash;
@@ -475,28 +510,7 @@
                                                 loginTenant = superTenantGlobal;
                                             }
                                             
-                                            var regionalAuthConfig = {
-                                                signInRedirectURL: deploymentUnitSignInRedirectURL(loginTenant),
-                                                signOutRedirectURL: getSignOutRedirectURL(),
-                                                clientID: "<%= htmlWebpackPlugin.options.clientID %>",
-                                                baseUrl: getDeploymentUnitApiPath(loginTenant),
-                                                responseMode: "query",
-                                                scope: ["openid SYSTEM profile email"],
-                                                storage: "webWorker",
-                                                disableTrySignInSilently: false,
-                                                enableOIDCSessionManagement: false,
-                                                endpoints: {
-                                                    authorizationEndpoint: getDeploymentUnitApiPath("/oauth2/authorize", loginTenant),
-                                                    clockTolerance: 300,
-                                                    jwksEndpointURL: getDeploymentUnitApiPath("/oauth2/jwks", loginTenant),
-                                                    logoutEndpointURL: getDeploymentUnitApiPath("/oidc/logout", loginTenant),
-                                                    oidcSessionIFrameEndpointURL: getDeploymentUnitApiPath("/oidc/checksession", loginTenant),
-                                                    tokenEndpointURL: getDeploymentUnitApiPath("/oauth2/token", loginTenant),
-                                                    tokenRevocationEndpointURL: getDeploymentUnitApiPath("/oauth2/revoke", loginTenant),
-                                                    issuer: getDeploymentUnitApiPath("/oauth2/token", loginTenant)
-                                                },
-                                                enablePKCE: true
-                                            }
+                                            var regionalAuthConfig = getRegionalAuthConfig(loginTenant);
                                             var authSecondary = AsgardeoAuth.AsgardeoSPAClient.getInstance("secondary");
 
                                             authSecondary.initialize(regionalAuthConfig);

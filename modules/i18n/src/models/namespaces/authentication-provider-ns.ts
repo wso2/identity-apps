@@ -334,6 +334,7 @@ export interface AuthenticationProviderNS {
                     hint: string;
                     label: string;
                     placeholder: string;
+                    unit: string;
                     validations: {
                         required: string;
                         invalid: string;

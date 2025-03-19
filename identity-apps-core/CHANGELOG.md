@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.19.8
+
+### Patch Changes
+
+- [#7892](https://github.com/wso2/identity-apps/pull/7892) [`c1f60ee6fd860cd38e53f5eaf86c4ff74fbb84fc`](https://github.com/wso2/identity-apps/commit/c1f60ee6fd860cd38e53f5eaf86c4ff74fbb84fc) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with button type fields
+
 ## 2.19.7
 
 ### Patch Changes
