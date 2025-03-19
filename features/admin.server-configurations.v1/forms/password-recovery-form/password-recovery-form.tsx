@@ -391,7 +391,6 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.enableEmailBasedRecovery.hint") as ReactNode }
                 </Hint>
-
                 <Heading as="h6">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                     "passwordRecovery.form.fields.emailRecoveryOptions.header") as ReactNode }
@@ -413,7 +412,6 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     ))
                 }
                 <br/>
-
                 <Field.Checkbox
                     ariaLabel="notifyRecoverySuccess"
                     name="notifySuccess"
@@ -426,7 +424,6 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     data-testid={ `${ testId }-notify-success` }
                     data-componentid={ `${ testId }-notify-success` }
                 />
-
                 <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.form.fields.notifySuccess.hint") as ReactNode }

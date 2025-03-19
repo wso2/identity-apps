@@ -151,12 +151,14 @@
     String recoveryStage = request.getParameter("recoveryStage");
 
     if (RecoveryStage.INITIATE.equalsValue(recoveryStage)) {
-        // if otp is supported by a new channel (eg: email) update this value assignment. null means unsupported.
-        final String targetChannel = IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP
-            .equals((String) request.getAttribute("channel")) ? "SMS"  
-            : IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL
-            .equals((String) request.getAttribute("channel")) ? "EMAIL"
-            : null;
+        // If otp is supported by a new channel update this value assignment. null means unsupported.
+        final String targetChannel =IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP
+            .equals((String) request.getAttribute("channel")) 
+                ? "SMS"
+                : IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL
+                .equals((String) request.getAttribute("channel"))
+                    ? "EMAIL"
+                    : null;
 
         // Manage unsupported channel
         if (StringUtils.isBlank(targetChannel)) {

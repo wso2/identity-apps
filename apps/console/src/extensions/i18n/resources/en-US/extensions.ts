@@ -3227,7 +3227,7 @@ export const extensions: Extensions = {
                                 placeholder: "Enter expiry time",
                                 validations: {
                                     invalid: "Recovery link/OTP expiry time should be an integer.",
-                                    empty: "Recovery link/Otp expiry time cannot be empty.",
+                                    empty: "Recovery link/OTP expiry time cannot be empty.",
                                     range:
                                         "Recovery link/OTP expiry time should be between 1 minute & 10080 minutes " +
                                         "(7 days).",

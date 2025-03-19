@@ -451,12 +451,12 @@
                         <div class="mt-4">
                             <%
                                 String submitButtoni18nText =
-                                    multipleRecoveryOptionsAvailable? "password.recovery.button.multi" :
-                                    ( isEmailOtpBasedPasswordRecoveryEnabledByTenant?
+                                    multipleRecoveryOptionsAvailable ? "password.recovery.button.multi" :
+                                    ( isEmailOtpBasedPasswordRecoveryEnabledByTenant ?
                                         "password.recovery.button.email.otp" :
-                                    ( isEmailLinkBasedPasswordRecoveryEnabledByTenant? 
+                                    ( isEmailLinkBasedPasswordRecoveryEnabledByTenant ? 
                                         "password.recovery.button.email.link" :
-                                    ( isQuestionBasedPasswordRecoveryEnabledByTenant? "Recover.with.question" :
+                                    ( isQuestionBasedPasswordRecoveryEnabledByTenant ? "Recover.with.question" :
                                     ( isSMSRecoveryAvailable ? "password.recovery.button.smsotp" :
                                     "Submit"))));
                             %>
@@ -465,7 +465,6 @@
                                     type="submit">
                                     <%=i18n(recoveryResourceBundle, customText, submitButtoni18nText)%>
                             </button>
-                            
                         </div>
                         <div class="mt-1 align-center">
                             <a href="javascript:goBack()" class="ui button secondary large fluid">
