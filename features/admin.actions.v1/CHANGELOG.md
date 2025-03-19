@@ -1,5 +1,11 @@
 # @wso2is/admin.actions.v1
 
+## 1.12.4
+
+### Patch Changes
+
+- [#7918](https://github.com/wso2/identity-apps/pull/7918) [`ddb26fc48ab61ef16bd39edc22e943e07b54eb93`](https://github.com/wso2/identity-apps/commit/ddb26fc48ab61ef16bd39edc22e943e07b54eb93) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Fix issue when trying to search for a non-existing option in pre update profile action
+
 ## 1.12.3
 
 ### Patch Changes
