@@ -16,21 +16,20 @@
  * under the License.
  */
 
+import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
+import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import { useMemo } from "react";
 import { useGetUserStore } from "./use-get-user-store";
 import useUserStores from "../hooks/use-user-stores";
 import { UserStoreListItem, UserStoreProperty } from "../models/user-stores";
 
-export const useUserStoreRegEx = (
+export const useUserStoreRegEx = <Error = RequestErrorInterface>(
     userstoreName: string,
     regExName: string,
     shouldFetch: boolean = true
-): {
-    data: string;
-    isLoading: boolean;
-} => {
+): Partial<RequestResultInterface<string, Error>> => {
 
     const {
         userStoresList,
@@ -50,7 +49,8 @@ export const useUserStoreRegEx = (
 
     const {
         data: fetchedUserStore,
-        isLoading: isUserStoreFetchRequestLoading
+        isLoading: isUserStoreFetchRequestLoading,
+        error: userStoreFetchError
     } = useGetUserStore(
         userStoreId,
         shouldFetch && !isEmpty(userStoreId)
@@ -67,6 +67,7 @@ export const useUserStoreRegEx = (
 
     return {
         data: userStoreRegExValue,
-        isLoading: isUserStoreFetchRequestLoading
+        error: userStoreFetchError as AxiosError<Error>,
+        isLoading: isUserStoresListLoading || isUserStoreFetchRequestLoading
     };
 };
