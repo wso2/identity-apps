@@ -43,11 +43,9 @@ export const useGetUserStoreMetaDataType = <
         shouldFetch: boolean = true
     ): RequestResultInterface<Data, Error> => {
 
-    // Build the request configuration.
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -55,10 +53,10 @@ export const useGetUserStoreMetaDataType = <
         url: `${store.getState().config.endpoints.userStores}/meta/types/${ id }`
     };
 
-    // Pass the config to `useRequest`, or null if we don't want to fetch yet.
     const {
         data,
         error,
+        isLoading,
         isValidating,
         mutate,
         response
@@ -67,7 +65,7 @@ export const useGetUserStoreMetaDataType = <
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading,
         isValidating,
         mutate,
         response

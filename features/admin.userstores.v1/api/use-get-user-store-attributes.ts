@@ -33,7 +33,6 @@ export const useGetUserStoreAttributes = <Data = UserStoreAttributes, Error = Re
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -43,16 +42,17 @@ export const useGetUserStoreAttributes = <Data = UserStoreAttributes, Error = Re
 
     const {
         data,
+        isLoading,
         error,
         isValidating,
         mutate,
         response
-    } = useRequest<Data, Error>(shouldFetch ? requestConfig: null);
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading,
         isValidating,
         mutate,
         response
