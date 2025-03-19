@@ -383,6 +383,13 @@
                         startupConfig.superTenant;
                     }
 
+                    function isSuperTenantCall() {
+                        return !userTenant || 
+                            userTenant === startupConfig.superTenantProxy ||
+                            userTenant === startupConfig.superTenant;
+                            
+                    }
+
                     function getRegionalAuthConfig(tenantDomain) {
                         return regionalAuthConfig = {
                             signInRedirectURL: deploymentUnitSignInRedirectURL(tenantDomain),
@@ -455,7 +462,7 @@
                     if(isSilentSignInDisabled) {
 
                         if(isTenantSwitchPath) {
-                            if (isCentralDeploymentEnabled && userTenant !== startupConfig.superTenant) {
+                            if (isCentralDeploymentEnabled && !isSuperTenantCall()) {
                                 var regionalAuthConfig = getRegionalAuthConfig(userTenant);
                                 auth.initialize(regionalAuthConfig);
                             } else {
@@ -466,7 +473,7 @@
                             window.location = applicationDomain + '/<%= htmlWebpackPlugin.options.basename %>?disable_silent_sign_in=true&invite_user=true';
                         }
                     } else {
-                        if (isCentralDeploymentEnabled && userTenant !== startupConfig.superTenant) {
+                        if (isCentralDeploymentEnabled && !isSuperTenantCall()) {
                             var regionalAuthConfig = getRegionalAuthConfig(userTenant);
                             auth.initialize(regionalAuthConfig)
                         } else {
