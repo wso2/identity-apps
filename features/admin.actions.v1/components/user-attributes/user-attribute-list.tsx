@@ -400,7 +400,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
                     event: SyntheticEvent<HTMLElement>,
                     data: DropdownProps
                 ) => handleAttributeSelect(data) }
-                options={ allAttributesList }
+                options={ allAttributesList || [] }
                 getOptionLabel={ (claim: DropdownProps) =>
                     claim?.displayName
                 }
