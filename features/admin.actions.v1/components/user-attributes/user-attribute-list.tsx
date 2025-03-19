@@ -242,10 +242,12 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
      */
     const filterOutRoleClaimAttribute = (claimsList: Claim[]): Claim[] => {
 
-        return claimsList?.filter((claim: Claim) =>
-            claim.claimURI !== "http://wso2.org/claims/roles" &&
-            claim.claimURI !== "http://wso2.org/claims/applicationRoles"
-        );
+        const excludedClaims: Set<string> = new Set([
+            "http://wso2.org/claims/roles",
+            "http://wso2.org/claims/applicationRoles"
+        ]);
+
+        return claimsList?.filter((claim: Claim) => !excludedClaims.has(claim.claimURI));
     };
     /**
      * Handles the selection of an attribute from the autocomplete dropdown.
