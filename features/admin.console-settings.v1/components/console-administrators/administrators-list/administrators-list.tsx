@@ -41,6 +41,7 @@ import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { deleteGuestUser } from "@wso2is/admin.users.v1/api";
 import { useInvitedUsersList } from "@wso2is/admin.users.v1/api/invite";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { AdminAccountTypes, InvitationStatus, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
@@ -205,6 +206,10 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
 
     const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
+    const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.centralDeploymentEnabled;
+    });
+
     const {
         data: OrganizationConfig,
         isLoading: isOrgConfigRequestLoading,
@@ -288,6 +293,29 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                 );
             }
         );
+    };
+
+    const handleGuestUserDelete = (user: UserBasicInterface & UserRoleInterface, onComplete: () => void): void => {
+        deleteGuestUser(user.id).then(() => {
+            onComplete();
+            mutateGuestUserListFetchRequest();
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("users:notifications.revokeAdmin.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("users:notifications.revokeAdmin.success.message")
+                })
+            );
+        }
+        ).catch(() => {
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("users:notifications.revokeAdmin.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("users:notifications.revokeAdmin.genericError.message")
+                })
+            );
+        });
     };
 
     const handleAccountStatusChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
@@ -531,7 +559,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                     defaultListItemLimit={ defaultListItemLimit }
                     administrators={ administrators }
                     onUserEdit={ handleUserEdit }
-                    onUserDelete={ handleUserDelete }
+                    onUserDelete={ isCentralDeploymentEnabled ? handleGuestUserDelete : handleUserDelete }
                     isLoading={ loading }
                     readOnlyUserStores={ readOnlyUserStores }
                     onSearchQueryClear={ handleSearchQueryClear }
