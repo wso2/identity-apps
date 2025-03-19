@@ -84,8 +84,6 @@
         return;
     }
  
-
-
     List<Claim> claims;
     UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
     try {
@@ -310,7 +308,7 @@
                             <input type="hidden" name="recoveryCode" value="<%=recoveryCode %>"/>
                             <input type="hidden" name="isPasswordRecoveryWithClaimsNotify" value="true">
                             <input type="hidden" name="isEmailOtpBasedPasswordRecoveryEnabledByTenant"
-                            value="<%=isEmailOtpBasedPasswordRecoveryEnabledByTenant %>"/>
+                                value="<%=isEmailOtpBasedPasswordRecoveryEnabledByTenant %>"/>
                             <input type="hidden" name="recoveryStage" value="INITIATE"/>
                         </div>
                         <div class="ui divider hidden"></div>
