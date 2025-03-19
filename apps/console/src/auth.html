@@ -383,7 +383,7 @@
                         startupConfig.superTenant;
                     }
 
-                    function isSuperTenantCall() {
+                    function isSuperTenant() {
                         return !userTenant || 
                             userTenant === startupConfig.superTenantProxy ||
                             userTenant === startupConfig.superTenant; 
@@ -461,7 +461,7 @@
                     if(isSilentSignInDisabled) {
 
                         if(isTenantSwitchPath) {
-                            if (isCentralDeploymentEnabled && !isSuperTenantCall()) {
+                            if (isCentralDeploymentEnabled && !isSuperTenant()) {
                                 var regionalAuthConfig = getRegionalAuthConfig(userTenant);
                                 auth.initialize(regionalAuthConfig);
                             } else {
@@ -472,7 +472,7 @@
                             window.location = applicationDomain + '/<%= htmlWebpackPlugin.options.basename %>?disable_silent_sign_in=true&invite_user=true';
                         }
                     } else {
-                        if (isCentralDeploymentEnabled && !isSuperTenantCall()) {
+                        if (isCentralDeploymentEnabled && !isSuperTenant()) {
                             var regionalAuthConfig = getRegionalAuthConfig(userTenant);
                             auth.initialize(regionalAuthConfig)
                         } else {
