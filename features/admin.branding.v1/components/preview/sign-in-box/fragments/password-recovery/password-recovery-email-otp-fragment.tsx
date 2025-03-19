@@ -32,10 +32,9 @@ export type PasswordRecoveryEmailOTPFragmentInterface = IdentifiableComponentInt
  * @param props - Props injected to the component.
  * @returns Password recovery fragment component.
  */
-const PasswordRecoveryEmailOTPFragment: FunctionComponent<PasswordRecoveryEmailOTPFragmentInterface> = (
-    props: PasswordRecoveryEmailOTPFragmentInterface
-): ReactElement => {
-    const { ["data-componentid"]: componentId } = props;
+const PasswordRecoveryEmailOTPFragment: FunctionComponent<PasswordRecoveryEmailOTPFragmentInterface> = ({
+    ["data-componentid"]: componentId = "branding-preview-password-recovery-fragment"
+} : PasswordRecoveryEmailOTPFragmentInterface): ReactElement => {
 
     const { i18n } = useBrandingPreference();
 
@@ -92,13 +91,6 @@ const PasswordRecoveryEmailOTPFragment: FunctionComponent<PasswordRecoveryEmailO
             </div>
         </div>
     );
-};
-
-/**
- * Default props for the component.
- */
-PasswordRecoveryEmailOTPFragment.defaultProps = {
-    "data-componentid": "branding-preview-password-recovery-fragment"
 };
 
 export default PasswordRecoveryEmailOTPFragment;
