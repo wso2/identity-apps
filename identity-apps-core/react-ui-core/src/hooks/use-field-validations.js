@@ -193,13 +193,11 @@ const useFieldValidation = (validationConfig) => {
 
         const validations = validationConfig || [];
 
-        for (const validation of validations) {
-            for (const rule of validation) {
-                const error = validateRule(rule, value, compareValue);
+        for (const rule of validations) {
+            const error = validateRule(rule, value, compareValue);
 
-                if (error) {
-                    validationErrors.push(error);
-                }
+            if (error) {
+                validationErrors.push(error);
             }
         }
 

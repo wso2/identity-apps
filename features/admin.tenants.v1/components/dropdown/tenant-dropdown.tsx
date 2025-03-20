@@ -230,6 +230,17 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
     useEffect(() => {
 
+        if (!currentTenant){
+            const _currentTenant: TenantInfo = {
+                associationType: "",
+                default: false,
+                domain: tenantDomain,
+                id: ""
+            };
+
+            setCurrentTenant(_currentTenant);
+        }
+
         const association: TenantAssociationsInterface = {
             associatedTenants: associatedTenants,
             currentTenant: currentTenant,

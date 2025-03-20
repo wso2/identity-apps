@@ -24,18 +24,19 @@ import Divider from "@oxygen-ui/react/Divider";
 import Grid from "@oxygen-ui/react/Grid";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
-import { CommonResourcePropertiesPropsInterface } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
+import {
+    CommonResourcePropertiesPropsInterface
+} from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 // eslint-disable-next-line max-len
 import useAuthenticationFlowBuilderCore from "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import { Element } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import isEqual from "lodash-es/isEqual";
+import omit from "lodash-es/omit";
 import React, { FunctionComponent, ReactElement } from "react";
 import useGetRegistrationFlowCoreActions from "../../../api/use-get-registration-flow-builder-actions";
 import "./button-extended-properties.scss";
-import omit from "lodash-es/omit";
-import { Element } from "@wso2is/admin.flow-builder-core.v1/models/elements";
-import { ActionTypes } from "@wso2is/admin.flow-builder-core.v1/models/actions";
 
 /**
  * Props interface of {@link ButtonExtendedProperties}
@@ -52,8 +53,7 @@ export type ButtonExtendedPropertiesPropsInterface = CommonResourcePropertiesPro
 const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsInterface> = ({
     "data-componentid": componentId = "button-extended-properties",
     resource,
-    onChange,
-    onVariantChange
+    onChange
 }: ButtonExtendedPropertiesPropsInterface): ReactElement => {
     const { data: actions } = useGetRegistrationFlowCoreActions();
     const { lastInteractedResource, setLastInteractedResource } = useAuthenticationFlowBuilderCore();
@@ -73,26 +73,29 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
                                     key={ typeIndex }
                                     xs={ 6 }
                                     onClick={ () => {
-                                        onVariantChange(actionType?.display?.defaultVariant);
-
-                                        onChange("action", actionType, resource);
+                                        onChange(
+                                            "action",
+                                            {
+                                                ...actionType.action,
+                                                ...((resource as Element)?.action?.next
+                                                    ? { next: (resource as Element)?.action?.next }
+                                                    : {})
+                                            },
+                                            resource
+                                        );
 
                                         setLastInteractedResource({
                                             ...lastInteractedResource,
-                                            action: actionType,
-                                            variant: actionType?.display?.defaultVariant
+                                            action: actionType.action
                                         });
                                     } }
                                 >
                                     <Card
                                         className={ classNames("extended-property action-type", {
-                                            selected:
-                                                isEqual(
-                                                    omit((resource as Element)?.action, "next"),
-                                                    actionType.action
-                                                ) ||
-                                                (actionType.type === ActionTypes.Next &&
-                                                    actionType.type === (resource as Element)?.action?.type)
+                                            selected: isEqual(
+                                                omit((lastInteractedResource as Element)?.action, "next"),
+                                                actionType.action
+                                            )
                                         }) }
                                         variant="outlined"
                                     >

@@ -105,31 +105,27 @@ const ValidationCriteria = ({ validationConfig, errors = [], value = "" }) => {
     return (
         <div className="validation-criteria mt-1">
             { Array.isArray(validationConfig) && validationConfig.length > 0 && (
-                validationConfig.map((rulesGroup, groupIndex) => (
-                    <React.Fragment key={ groupIndex }>
-                        { rulesGroup.map((rule, ruleIndex) => {
-                            const label = getRuleLabel(rule);
+                validationConfig.map((rule, ruleIndex) => {
+                    const label = getRuleLabel(rule);
 
-                            if (!label) {
-                                return null;
-                            }
-                            
-                            const hasError = errors.some((err) => err.includes(label));
+                    if (!label) {
+                        return null;
+                    }
 
-                            return (
-                                <div key={ ruleIndex } className="mt-1">
-                                    <div className="password-policy-description mb-2">
-                                        <PolicyValidationStatus
-                                            value={ value }
-                                            isValid={ !hasError }
-                                        />
-                                        <p className="pl-4">{ label }</p>
-                                    </div>
-                                </div>
-                            );
-                        }) }
-                    </React.Fragment>
-                ))
+                    const hasError = errors.some((err) => err.includes(label));
+
+                    return (
+                        <div key={ ruleIndex } className="mt-1">
+                            <div className="password-policy-description mb-2">
+                                <PolicyValidationStatus
+                                    value={ value }
+                                    isValid={ !hasError }
+                                />
+                                <p className="pl-4">{ label }</p>
+                            </div>
+                        </div>
+                    );
+                })
             ) }
         </div>
     );

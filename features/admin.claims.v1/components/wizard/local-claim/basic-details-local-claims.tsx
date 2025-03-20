@@ -352,9 +352,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                         </Grid.Column>
                                                         <Grid.Column width={ 11 }>
                                                             <InlineEditInput
-                                                                maxLength={ 30 }
+                                                                maxLength={ 50 }
                                                                 text={ oidcMapping }
-                                                                validation="^[A-za-z0-9#_]+$"
                                                                 errorHandler={ (status: boolean) => {
                                                                     setShowOIDCMappingError(status);
                                                                 } }
