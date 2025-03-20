@@ -181,4 +181,3 @@ export enum EmailRecoveryOption {
     EMAIL_OTP = "emailOTP",
     EMAIL_LINK = "emailLink"
 }
-
