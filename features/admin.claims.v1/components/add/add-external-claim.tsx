@@ -382,16 +382,6 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                         break;
                                                     }
                                                 }
-
-                                                if (attributeType === ClaimManagementConstants.OIDC) {
-                                                    if (!value.toString().match(/^[A-za-z0-9#_]+$/)) {
-                                                        validation.isValid = false;
-                                                        validation.errorMessages.push(t(
-                                                            "claims:external.forms.attributeURI." +
-                                                            "validationErrorMessages.invalidName",
-                                                            { type: resolveType(attributeType) }));
-                                                    }
-                                                }
                                             } }
                                             children={
                                                 serverSupportedClaims?.map((claim: string, index: number) => {
