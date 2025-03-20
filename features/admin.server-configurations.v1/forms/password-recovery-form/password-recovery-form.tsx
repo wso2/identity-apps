@@ -80,11 +80,13 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
         {
             label: "extensions:manage.serverConfigurations.accountRecovery." +
                     "passwordRecovery.form.fields.emailRecoveryOptions.emailLink.label",
-            value: EmailRecoveryOption.EMAIL_LINK },
+            value: EmailRecoveryOption.EMAIL_LINK
+        },
         {
             label: "extensions:manage.serverConfigurations.accountRecovery." +
                     "passwordRecovery.form.fields.emailRecoveryOptions.emailOtp.label",
-            value: EmailRecoveryOption.EMAIL_OTP }
+            value: EmailRecoveryOption.EMAIL_OTP
+        }
     ];
 
     const showSmsOtpPwdRecoveryFeatureStatusChip: boolean =
@@ -382,7 +384,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     readOnly={ readOnly }
                     width={ 10 }
                     disabled={ !isConnectorEnabled }
-                    defaultValue = { isEmailRecoveryEnabled }
+                    defaultValue={ isEmailRecoveryEnabled }
                     listen={ (value: boolean) => setIsEmailRecoveryEnabled(value) }
                     data-testid={ `${ testId }-email-link-based-recovery` }
                     data-componentid={ `${ testId }-email-link-based-recovery` }
@@ -393,7 +395,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 </Hint>
                 <Heading as="h6">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
-                    "passwordRecovery.form.fields.emailRecoveryOptions.header") as ReactNode }
+                    "passwordRecovery.form.fields.emailRecoveryOptions.header") }
                 </Heading>
                 {
                     EMAIL_RECOVERY_RADIO_OPTIONS.map((option: RadioChild) => (
@@ -401,7 +403,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                             key={ option.value }
                             ariaLabel={ t(option.label) }
                             label={ t(option.label) }
-                            name={ "emailRecoveryOption" }
+                            name="emailRecoveryOption"
                             type="radio"
                             value={ option.value }
                             checked={ emailRecoveryOption === option.value }
