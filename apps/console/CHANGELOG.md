@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.49.11
+
+### Patch Changes
+
+- [#7928](https://github.com/wso2/identity-apps/pull/7928) [`81785d68f11ffad8547312e786ad2d7d71b235b6`](https://github.com/wso2/identity-apps/commit/81785d68f11ffad8547312e786ad2d7d71b235b6) Thanks [@brionmario](https://github.com/brionmario)! - Update banner illustration
+
+- Updated dependencies [[`81785d68f11ffad8547312e786ad2d7d71b235b6`](https://github.com/wso2/identity-apps/commit/81785d68f11ffad8547312e786ad2d7d71b235b6)]:
+  - @wso2is/admin.home.v1@1.7.2
+
 ## 2.49.10
 
 ### Patch Changes
