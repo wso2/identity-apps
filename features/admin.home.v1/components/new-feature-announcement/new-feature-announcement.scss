@@ -69,7 +69,12 @@
 
     .login-box {
         position: absolute;
-        right: 0;
+        right: 20px;
+        top: 15px;
+
+        svg {
+            width: 480px;
+        }
     }
 
     .new-feature-announcement-actions {
@@ -96,7 +101,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 968px) {
     .new-feature-announcement {
         .new-feature-announcement-content {
             max-width: 100%;
