@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.20.0
+
+### Minor Changes
+
+- [#7922](https://github.com/wso2/identity-apps/pull/7922) [`a343ac94575641708784e3e38d9b4aec8a252365`](https://github.com/wso2/identity-apps/commit/a343ac94575641708784e3e38d9b4aec8a252365) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Update validation framework to align with API response
+
 ## 2.19.8
 
 ### Patch Changes
