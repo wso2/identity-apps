@@ -1,5 +1,11 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.4.2
+
+### Patch Changes
+
+- [#7912](https://github.com/wso2/identity-apps/pull/7912) [`431e4c6310b8d3cc80eb21fe377bdecaf1cf5148`](https://github.com/wso2/identity-apps/commit/431e4c6310b8d3cc80eb21fe377bdecaf1cf5148) Thanks [@brionmario](https://github.com/brionmario)! - Fix action type selection issues
+
 ## 0.4.1
 
 ### Patch Changes
