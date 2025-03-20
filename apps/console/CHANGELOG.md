@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.49.9
+
+### Patch Changes
+
+- [#7921](https://github.com/wso2/identity-apps/pull/7921) [`4f100415c51f705830e008379a7bed2ed0d94d3e`](https://github.com/wso2/identity-apps/commit/4f100415c51f705830e008379a7bed2ed0d94d3e) Thanks [@brionmario](https://github.com/brionmario)! - Add missing changeset
+
 ## 2.49.8
 
 ### Patch Changes
