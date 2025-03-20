@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.49.10
+
+### Patch Changes
+
+- [#7925](https://github.com/wso2/identity-apps/pull/7925) [`d7e7edd99abee149892b912e9d9fe92a3202f989`](https://github.com/wso2/identity-apps/commit/d7e7edd99abee149892b912e9d9fe92a3202f989) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix sub org display name not showing issue
+
+- Updated dependencies [[`d7e7edd99abee149892b912e9d9fe92a3202f989`](https://github.com/wso2/identity-apps/commit/d7e7edd99abee149892b912e9d9fe92a3202f989), [`598951c6131d3f9b420341a4ea7f70931966eb90`](https://github.com/wso2/identity-apps/commit/598951c6131d3f9b420341a4ea7f70931966eb90)]:
+  - @wso2is/admin.tenants.v1@2.29.7
+  - @wso2is/admin.claims.v1@2.27.114
+
 ## 2.49.9
 
 ### Patch Changes
