@@ -1,5 +1,5 @@
 ---
-"@wso2is/admin.server-configurations.v1": minor
+"@wso2is/admin.server-configurations.v1": patch
 "@wso2is/common.branding.v1": minor
 "@wso2is/admin.branding.v1": minor
 "@wso2is/identity-apps-core": minor
