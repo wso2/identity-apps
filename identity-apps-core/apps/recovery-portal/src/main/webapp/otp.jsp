@@ -40,7 +40,7 @@
 <%@ include file="includes/init-url.jsp" %>
 
 <%
-    // Add the sms-otp screen to the list to retrieve text branding customizations.
+    // Add the sms-otp and email-otp screen to the list to retrieve text branding customizations.
     screenNames.add("sms-otp");
     screenNames.add("email-otp");
 %>
