@@ -27,14 +27,14 @@ import ValidationError from "../validation-error";
 
 const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErrorHandler }) => {
 
-    const CONFIRM_PASSWORD_RULE = [ [ {
+    const CONFIRM_PASSWORD_RULE = [ {
         "conditions": [ {
             "key": "confirm.password",
             "value": "Must match with the password"
         } ],
         "name": "ConfirmPasswordValidator",
         "type": "RULE"
-    } ] ];
+    } ];
 
     const { identifier, required, label, placeholder, validations } = component.config;
     const { translations } = useTranslations();
