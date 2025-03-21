@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -30,7 +30,8 @@
 <jsp:directive.include file="./branding-preferences.jsp"/>
 
 <%
-    if (!StringUtils.isBlank(cookiePolicyURL)) {
+    boolean isCookieConsentBannerEnabled = Boolean.parseBoolean(application.getInitParameter("isCookieConsentBannerEnabled"));
+    if (!StringUtils.isBlank(cookiePolicyURL) && isCookieConsentBannerEnabled) {
 %>
 <div id="cookie-consent-banner" data-testid="cookie-consent-banner" class="ui segment cookie-consent-banner inverted aligned-right hidden transition">
     <div class="banner-image" data-testid="cookie-consent-banner-image">
