@@ -16,11 +16,13 @@
   ~ under the License.
 --%>
 
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.net.HttpURLConnection, java.net.URL, java.io.BufferedReader, java.io.InputStreamReader" %>
 <%@ page import="java.io.OutputStream" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="java.io.File" %>
+<%@ page import="javax.ws.rs.HttpMethod" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
@@ -39,6 +41,14 @@
                     "/api/server/v1/guests/invitation/accept", false);
     String confCode = request.getParameter("code");
     String acceptApiResponse = "";
+
+    // Some mail providers initially sends a HEAD request to
+    // check the validity of the link before redirecting users.
+    String httpMethod = request.getMethod();
+    if (StringUtils.equals(httpMethod, HttpMethod.HEAD)) {
+        response.setStatus(response.SC_OK);
+        return;
+    }
 
     try {
         // Create a URL object with the API URL
