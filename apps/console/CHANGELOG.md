@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.49.12
+
+### Patch Changes
+
+- [#7933](https://github.com/wso2/identity-apps/pull/7933) [`3524e3d8570ce0cadb601225815002f0a17fc0ba`](https://github.com/wso2/identity-apps/commit/3524e3d8570ce0cadb601225815002f0a17fc0ba) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix bulk user import user-store issue.
+
 ## 2.49.11
 
 ### Patch Changes
