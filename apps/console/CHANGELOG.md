@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.49.13
+
+### Patch Changes
+
+- [#7937](https://github.com/wso2/identity-apps/pull/7937) [`89d7a7a45270f553eed7a1cd48559d9e67a80915`](https://github.com/wso2/identity-apps/commit/89d7a7a45270f553eed7a1cd48559d9e67a80915) Thanks [@brionmario](https://github.com/brionmario)! - Fix edge generation issues in AI flows on refresh
+
 ## 2.49.12
 
 ### Patch Changes
