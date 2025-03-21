@@ -1,5 +1,14 @@
 # @wso2is/admin.users.v1
 
+## 2.30.116
+
+### Patch Changes
+
+- [#7931](https://github.com/wso2/identity-apps/pull/7931) [`3ee79c90e9c35e2c43167f4617e0cf765012a398`](https://github.com/wso2/identity-apps/commit/3ee79c90e9c35e2c43167f4617e0cf765012a398) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix bulk import user store issue
+
+- Updated dependencies [[`3ee79c90e9c35e2c43167f4617e0cf765012a398`](https://github.com/wso2/identity-apps/commit/3ee79c90e9c35e2c43167f4617e0cf765012a398)]:
+  - @wso2is/admin.users.v1@2.30.116
+
 ## 2.30.115
 
 ### Patch Changes
