@@ -42,6 +42,7 @@ import { getGroupList, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
@@ -707,7 +708,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     }
 
                     dataObj[RequiredBulkUserImportAttributes.USERNAME] = selectedUserStore &&
-                    selectedUserStore.toLowerCase() !== userstoresConfig.primaryUserstoreName.toLowerCase()
+                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE?.toLowerCase()
                         ? `${selectedUserStore}/${attributeValue}`
                         : attributeValue;
 
@@ -870,7 +871,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             uniqueCSVGroups.forEach((group: string) => {
                 if (isEmptyAttribute(group)) return;
                 const domainGroupName: string = selectedUserStore &&
-                    selectedUserStore.toLowerCase() !== userstoresConfig.primaryUserstoreName.toLowerCase()
+                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE?.toLowerCase()
                     ? `${selectedUserStore}/${group}`
                     : group;
 
@@ -1035,7 +1036,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
                 ],
                 userName:
-                    selectedUserStore.toLowerCase() !== userstoresConfig.primaryUserstoreName.toLowerCase()
+                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE?.toLowerCase()
                         ? `${selectedUserStore}/${email}`
                         : email,
                 [ UserManagementConstants.SYSTEMSCHEMA ]: {
