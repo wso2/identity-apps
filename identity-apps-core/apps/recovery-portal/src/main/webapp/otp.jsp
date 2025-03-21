@@ -87,6 +87,9 @@
         screenValue = (String) request.getAttribute("screenValue");
     }
     String channel = (String) request.getAttribute("channel");
+    if (channel == null) {
+        channel = Encode.forJava(request.getParameter("channel"));
+    }
     boolean isEmailOtp = IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL.equals(channel);
     String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error");
     boolean authenticationFailed = Boolean.parseBoolean((String)request.getAttribute("isAuthFailure"));
@@ -169,11 +172,11 @@
                     <% } %>
                     <%
                         if ("true".equals(String.valueOf((Object)request.getAttribute("resendSuccess")))) {
-                            String resendSuccessMessage = isEmailOtp ? "resend.code.success.emailotp"
+                            String resendSuccessMessage = isEmailOtp ? "resend.code.success.email"
                                                                      : "resend.code.success";
                     %>
                     <div id="resend-msg" class="ui positive message">
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "resend.code.success")%>
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, resendSuccessMessage)%>
                     </div>
                     <%
                         }
@@ -201,14 +204,14 @@
                                 if (screenValue != null && !isEmailOtp) { %>
                                     <input type='hidden' name='screenValue' id='screenValue'
                                         value='<%=Encode.forHtmlContent(screenValue)%>'/>
-                                    <label for="password">
+                                    <label for="password" class="text-center">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                             otpHeader)%> (<%=Encode.forHtmlContent(screenValue)%>)
                                     </label>
                                 <% } else { %>
-                                    <label for="password">
+                                    <label for="password" class="text-center">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                           otpHeader)%>:
+                                           otpHeader)%>
                                     </label>
                                 <% } %>
 
