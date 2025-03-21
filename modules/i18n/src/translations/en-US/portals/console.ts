@@ -6545,7 +6545,21 @@ export const console: ConsoleNS = {
                 remoteLogPublishing: {
                     title: "Remote Log Publishing",
                     pageTitle: "Remote Log Publishing",
-                    description: "Configure remote logging settings for audit logs in the organization.",
+                    description: "Configure remote logging settings for logs in the organization.",
+                    descriptionWithLogType: "Configure remote logging settings for " +
+                        "{{logType}} logs in the organization.",
+                    backButtonText: "Go back",
+                    testButtonText: "Test",
+                    logTypes: {
+                        audit: {
+                            name: "Audit Logs",
+                            description: "Configure Audit Log publishing"
+                        },
+                        diagnostics: {
+                            name: "Diagnostic Logs",
+                            description: "Configure Diagnostics Log publishing"
+                        }
+                    },
                     fields: {
                         logTypes: {
                             label: "Log types to be published",
@@ -6556,12 +6570,29 @@ export const console: ConsoleNS = {
                             }
                         },
                         remoteURL: {
-                            label: "Destination URL"
+                            label: "Destination URL",
+                            placeholder: "https://yourdomain.com",
+                            error: {
+                                required: "Remote logging endpoint URL is required",
+                                invalid: "Please enter a valid URL"
+                            }
+                        },
+                        publishInterval: {
+                            label: "Log publish interval (minutes)",
+                            placeholder: "15",
+                            error: {
+                                required: "Log publish interval is required",
+                                invalid: "Publish interval should not be less than 15 minutes"
+                            }
                         },
                         advanced: {
                             title: "Advanced Settings",
                             connectionTimeout: {
-                                label: "Connection timeout (ms)"
+                                label: "Connection timeout (ms)",
+                                placeholder: "1000",
+                                error: {
+                                    invalid: "Publish interval should be between 1000 and 60000"
+                                }
                             },
                             verifyHostname: {
                                 label: "Verify the hostname"
@@ -6569,10 +6600,12 @@ export const console: ConsoleNS = {
                             basicAuthConfig: {
                                 title: "Basic Authentication Configuration",
                                 serverUsername: {
-                                    label: "Remote server username"
+                                    label: "Remote server username",
+                                    placeholder: "username"
                                 },
                                 serverPassword: {
-                                    label: "Remote server password"
+                                    label: "Remote server password",
+                                    placeholder: "*****"
                                 }
                             },
                             sslConfig: {

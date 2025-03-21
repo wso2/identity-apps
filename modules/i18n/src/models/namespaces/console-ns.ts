@@ -6502,6 +6502,19 @@ export interface ConsoleNS {
                     title: string;
                     pageTitle: string;
                     description: string;
+                    descriptionWithLogType: string;
+                    backButtonText: string;
+                    testButtonText: string;
+                    logTypes: {
+                        audit: {
+                            name: string;
+                            description: string;
+                        };
+                        diagnostics: {
+                            name: string;
+                            description: string;
+                        }
+                    };
                     fields: {
                         logTypes: {
                             label: string;
@@ -6513,11 +6526,28 @@ export interface ConsoleNS {
                         };
                         remoteURL: {
                             label: string;
+                            placeholder: string;
+                            error: {
+                                required: string;
+                                invalid: string;
+                            };
+                        };
+                        publishInterval: {
+                            label: string;
+                            placeholder: string;
+                            error: {
+                                required: string;
+                                invalid: string;
+                            };
                         };
                         advanced: {
                             title: string;
                             connectionTimeout: {
                                 label: string;
+                                placeholder: string;
+                                error: {
+                                    invalid: string;
+                                };
                             };
                             verifyHostname: {
                                 label: string;
@@ -6526,9 +6556,11 @@ export interface ConsoleNS {
                                 title: string;
                                 serverUsername: {
                                     label: string;
+                                    placeholder: string;
                                 };
                                 serverPassword: {
                                     label: string;
+                                    placeholder: string;
                                 };
                             };
                             sslConfig: {
