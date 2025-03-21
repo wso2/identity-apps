@@ -42,8 +42,8 @@
     String confCode = request.getParameter("code");
     String acceptApiResponse = "";
 
-    // Some mail providers initially sends a HEAD request to
-    // check the validity of the link before redirecting users.
+    // Some mail providers send a HEAD request to verify invite links, which can invalidate them.  
+    // To prevent this, HEAD requests to this page are ignored.  
     String httpMethod = request.getMethod();
     if (StringUtils.equals(httpMethod, HttpMethod.HEAD)) {
         response.setStatus(response.SC_OK);
