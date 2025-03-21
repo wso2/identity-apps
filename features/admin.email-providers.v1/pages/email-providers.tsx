@@ -179,12 +179,10 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                             className="addon-field-wrapper"
                             name="usernameAuthProperty"
                             label={ t(
-                                "customAuthenticator:fields.createWizard.configurationsStep." +
-                                    "authenticationTypeDropdown.authProperties.username.label"
+                                "emailProviders:fields.authenticationTypeDropdown.authProperties.username.label"
                             ) }
                             placeholder={ t(
-                                "customAuthenticator:fields.createWizard.configurationsStep." +
-                                    "authenticationTypeDropdown.authProperties.username.placeholder"
+                                "emailProviders:fields.authenticationTypeDropdown.authProperties.username.placeholder"
                             ) }
                             inputType="password"
                             type={ showPrimarySecret ? "text" : "password" }
@@ -203,12 +201,10 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                             ariaLabel="password"
                             className="addon-field-wrapper"
                             label={ t(
-                                "customAuthenticator:fields.createWizard.configurationsStep." +
-                                    "authenticationTypeDropdown.authProperties.password.label"
+                                "emailProviders:fields.authenticationTypeDropdown.authProperties.password.label"
                             ) }
                             placeholder={ t(
-                                "customAuthenticator:fields.createWizard.configurationsStep." +
-                                    "authenticationTypeDropdown.authProperties.password.placeholder"
+                                "emailProviders:fields.authenticationTypeDropdown.authProperties.password.placeholder"
                             ) }
                             name="passwordAuthProperty"
                             inputType="password"
@@ -230,29 +226,32 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                 return (
                     <>
                         <Field.Input
-                            ariaLabel="clientID"
+                            ariaLabel="clientId"
                             className="addon-field-wrapper"
-                            name="clientIDAuthProperty"
-                            inputType="text"
-                            type={ "text" }
+                            name="clientIdProperty"
+                            inputType="password"
+                            type={ showPrimarySecret ? "text" : "password" }
+                            InputProps={ {
+                                endAdornment: renderInputAdornmentOfSecret(showPrimarySecret, () =>
+                                    setShowSecondarySecret(!showPrimarySecret)
+                                )
+                            } }
                             label={ t(
-                                "customAuthenticator:fields.createWizard.configurationsStep." +
-                                    "authenticationTypeDropdown.authProperties.header.label"
+                                "emailProviders:fields.authenticationTypeDropdown.authProperties.clientId.label"
                             ) }
                             placeholder={ t(
-                                "customAuthenticator:fields.createWizard.configurationsStep." +
-                                    "authenticationTypeDropdown.authProperties.header.placeholder"
+                                "emailProviders:fields.authenticationTypeDropdown.authProperties.clientId.placeholder"
                             ) }
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
-                            data-componentid={ `${componentId}-endpoint-authentication-property-header` }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-value` }
                             width={ 15 }
                         />
                         <Field.Input
-                            ariaLabel="value"
+                            ariaLabel="clientSecret"
                             className="addon-field-wrapper"
-                            name="valueAuthProperty"
+                            name="clientSecretProperty"
                             inputType="password"
                             type={ showSecondarySecret ? "text" : "password" }
                             InputProps={ {
@@ -261,12 +260,33 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                 )
                             } }
                             label={ t(
-                                "customAuthenticator:fields.createWizard.configurationsStep." +
-                                    "authenticationTypeDropdown.authProperties.value.label"
+                                "emailProviders:fields.authenticationTypeDropdown.authProperties.clientSecret.label"
                             ) }
                             placeholder={ t(
-                                "customAuthenticator:fields.createWizard.configurationsStep." +
-                                    "authenticationTypeDropdown.authProperties.value.placeholder"
+                                "emailProviders:fields.authenticationTypeDropdown.authProperties.clientSecret.placeholder"
+                            ) }
+                            required={ true }
+                            maxLength={ 100 }
+                            minLength={ 0 }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-value` }
+                            width={ 15 }
+                        />
+                        <Field.Input
+                            ariaLabel="value"
+                            className="addon-field-wrapper"
+                            name="tokenEndpointProperty"
+                            inputType="text"
+                            type={ "text" }
+                            InputProps={ {
+                                endAdornment: renderInputAdornmentOfSecret(showSecondarySecret, () =>
+                                    setShowSecondarySecret(!showSecondarySecret)
+                                )
+                            } }
+                            label={ t(
+                                "emailProviders:fields.authenticationTypeDropdown.authProperties.tokenEndpoint.label"
+                            ) }
+                            placeholder={ t(
+                                "emailProviders:fields.authenticationTypeDropdown.authProperties.tokenEndpoint.placeholder"
                             ) }
                             required={ true }
                             maxLength={ 100 }
@@ -884,9 +904,9 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                     placeholder={ t(
                         "emailProviders:fields.authenticationTypeDropdown.placeholder"
                     ) }
-                    hint={ t(
-                        "emailProviders:fields.authenticationTypeDropdown.hint"
-                    ) }
+                    // hint={ t(
+                    //     "emailProviders:fields.authenticationTypeDropdown.hint"
+                    // ) }
                     required={ true }
                     value={ endpointAuthType }
                     options={ [
