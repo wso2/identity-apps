@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import Box from "@oxygen-ui/react/Box/Box";
+import Box from "@oxygen-ui/react/Box";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
@@ -80,6 +80,13 @@ interface UserGroupsEditPropsInterface extends IdentifiableComponentInterface {
     handleUserUpdate: (userId: string) => void;
 }
 
+/**
+ * User groups list component.
+ *
+ * @param props - Props injected to the component.
+ *
+ * @returns User groups list component.
+ */
 export const UserGroupsListTable: FunctionComponent<UserGroupsEditPropsInterface> = (
     props: UserGroupsEditPropsInterface
 ): ReactElement => {
@@ -90,7 +97,7 @@ export const UserGroupsListTable: FunctionComponent<UserGroupsEditPropsInterface
         isReadOnly,
         handleOpenAddNewGroupModal,
         handleUserUpdate,
-        "data-componentid": componentId
+        "data-componentid": componentId = "edit-user-groups"
     } = props;
 
     const { t } = useTranslation();
@@ -112,22 +119,23 @@ export const UserGroupsListTable: FunctionComponent<UserGroupsEditPropsInterface
      * Set initial selected roles options
      */
     useEffect(() => {
-        setGroupsPage(0, listItemLimit, userGroupsList, searchQuery);
+        resolvePaginatedGroupsList(0, listItemLimit, userGroupsList, searchQuery);
     }, [ user, searchQuery ]);
 
     /**
-     * Util method to paginate retrieved groups  list.
+     * Util method to paginate retrieved groups list.
      *
      * @param offsetValue - pagination offset value.
      * @param itemLimit - pagination item limit.
      * @param list - Role list.
+     * @param searchQuery - Search query.
      */
-    const setGroupsPage = (
+    const resolvePaginatedGroupsList = (
         offsetValue: number,
         itemLimit: number,
         list: GroupsMemberInterface[],
         searchQuery?: string
-    ) => {
+    ): void => {
         if (!list) {
             setPaginatedGroups([]);
 
@@ -147,17 +155,19 @@ export const UserGroupsListTable: FunctionComponent<UserGroupsEditPropsInterface
         setPaginatedGroups(list?.slice(offsetValue, itemLimit + offsetValue));
     };
 
-
-    const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
+    const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
         const offsetValue: number = (data.activePage as number - 1) * listItemLimit;
 
         setListOffset(offsetValue);
-        setGroupsPage(offsetValue, listItemLimit, userGroupsList);
+        resolvePaginatedGroupsList(offsetValue, listItemLimit, userGroupsList);
     };
 
-    const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+    const handleItemsPerPageDropdownChange = (
+        event: React.MouseEvent<HTMLAnchorElement>,
+        data: DropdownProps
+    ): void => {
         setListItemLimit(data.value as number);
-        setGroupsPage(listOffset, data.value as number, userGroupsList);
+        resolvePaginatedGroupsList(listOffset, data.value as number, userGroupsList);
     };
 
     const handleSearchQueryClear = (): void => {
@@ -169,7 +179,12 @@ export const UserGroupsListTable: FunctionComponent<UserGroupsEditPropsInterface
         return Math.ceil(userGroupsList?.length / listItemLimit);
     };
 
-    const unassignUserFromGroup = (group: GroupsMemberInterface) => {
+    /**
+     * Unassign a user from a group.
+     *
+     * @param group - Group to be unassigned.
+     */
+    const unassignUserFromGroup = (group: GroupsMemberInterface): void => {
         const operationData: PatchGroupDataInterface = {
             Operations: [ {
                 "op": "remove",
@@ -212,10 +227,10 @@ export const UserGroupsListTable: FunctionComponent<UserGroupsEditPropsInterface
                 id: "groupName",
                 key: "groupName",
                 render: (group: GroupsMemberInterface): ReactNode => {
-                    const userGroup: string[] = group?.display?.split("/");
-                    const userGroupName: string = userGroup.length === 1
-                        ? userGroup[0]
-                        : userGroup[1];
+                    const groupNameSegments: string[] = group?.display?.split("/");
+                    const userGroupName: string = groupNameSegments.length === 1
+                        ? groupNameSegments[0]
+                        : groupNameSegments[1];
 
                     return (
                         <Header
@@ -250,10 +265,10 @@ export const UserGroupsListTable: FunctionComponent<UserGroupsEditPropsInterface
                 id: "domain",
                 key: "domain",
                 render: (group: GroupsMemberInterface): ReactNode => {
-                    const userGroup: string[] = group?.display?.split("/");
-                    const domain: string = userGroup.length === 1
+                    const groupNameSegments: string[] = group?.display?.split("/");
+                    const domain: string = groupNameSegments.length === 1
                         ? userstoresConfig.primaryUserstoreName
-                        : userGroup[0];
+                        : groupNameSegments[0];
 
                     return (
                         <Header
@@ -320,7 +335,6 @@ export const UserGroupsListTable: FunctionComponent<UserGroupsEditPropsInterface
      * @returns Placeholders.
      */
     const showPlaceholders = (): ReactElement => {
-        // When the search returns empty.
         if (searchQuery) {
             return (
                 <EmptyPlaceholder
@@ -417,8 +431,8 @@ export const UserGroupsListTable: FunctionComponent<UserGroupsEditPropsInterface
                         disableSearchFilterDropdown
                         filterAttributeOptions={ [] }
                         placeholder={ t("console:manage.features.groups.advancedSearch.placeholder") }
-                        defaultSearchAttribute={ "" }
-                        defaultSearchOperator={ "" }
+                        defaultSearchAttribute=""
+                        defaultSearchOperator=""
                         triggerClearQuery={ triggerClearQuery }
                     />
                 ) }
@@ -452,13 +466,12 @@ export const UserGroupsListTable: FunctionComponent<UserGroupsEditPropsInterface
             </ListLayout>
             <ConfirmationModal
                 primaryActionLoading={ isDeleting }
-                data-testid={ `${ componentId }-confirmation-modal` }
                 data-componentid={ `${ componentId }-confirmation-modal` }
                 onClose={ (): void => setShowDeleteConfirmationModal(false) }
                 type="negative"
                 open={ showDeleteConfirmationModal }
-                primaryAction="Confirm"
-                secondaryAction="Cancel"
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ (): void => {
                     setShowDeleteConfirmationModal(false);
                 } }
@@ -469,13 +482,11 @@ export const UserGroupsListTable: FunctionComponent<UserGroupsEditPropsInterface
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header
-                    data-testid={ `${ componentId }-confirmation-modal-header` }
                     data-componentid={ `${ componentId }-confirmation-modal-header` }
                 >
                     { t("users:confirmations.unassignGroup.header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Content
-                    data-testid={ `${ componentId }-confirmation-modal-content` }
                     data-componentid={ `${ componentId }-confirmation-modal-content` }
                 >
                     { t("users:confirmations.unassignGroup.content") }
@@ -483,11 +494,4 @@ export const UserGroupsListTable: FunctionComponent<UserGroupsEditPropsInterface
             </ConfirmationModal>
         </EmphasizedSegment>
     );
-};
-
-/**
- * Default props for user groups list tab component.
- */
-UserGroupsListTable.defaultProps = {
-    "data-componentid": "edit-user-groups"
 };
