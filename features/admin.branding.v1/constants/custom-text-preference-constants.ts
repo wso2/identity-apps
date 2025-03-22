@@ -168,6 +168,7 @@ export class CustomTextPreferenceConstants {
             BUTTON: {
                 SMS_OTP: string,
                 EMAIL_LINK: string,
+                EMAIL_OTP: string,
                 MULTI: string
             };
         },
@@ -221,6 +222,7 @@ export class CustomTextPreferenceConstants {
                 BODY: "password.recovery.body",
                 BUTTON: {
                     EMAIL_LINK: "password.recovery.button.email.link",
+                    EMAIL_OTP: "password.recovery.button.email.otp",
                     MULTI: "password.recovery.button.multi",
                     SMS_OTP: "password.recovery.button.smsotp"
                 },

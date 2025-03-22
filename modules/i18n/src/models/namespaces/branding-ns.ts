@@ -183,6 +183,7 @@ export interface BrandingNS {
     variations: {
         "sms-otp": string;
         "email-link": string;
+        "email-otp": string;
         "base": string;
         "multi": string;
         "sms": string;

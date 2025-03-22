@@ -31,6 +31,7 @@ import CommonFragment from "./fragments/common-fragment";
 import EmailLinkExpiryFragment from "./fragments/email-link-expiry-fragment";
 import EmailOTPFragment from "./fragments/email-otp-fragment";
 import PasswordRecoveryEmailLinkFragment from "./fragments/password-recovery/password-recovery-email-link-fragment";
+import PasswordRecoveryEmailOTPFragment from "./fragments/password-recovery/password-recovery-email-otp-fragment";
 import PasswordRecoveryMultiOptionFragment from "./fragments/password-recovery/password-recovery-multi-option-fragment";
 import PasswordRecoverySMSFragment from "./fragments/password-recovery/password-recovery-sms-otp-fragment";
 import PasswordResetFragment from "./fragments/password-reset-fragment";
@@ -95,7 +96,10 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (
                 selectedScreenVariation === PreviewScreenVariationType.BASE
             ) {
                 return <PasswordRecoveryEmailLinkFragment />;
-            } else if(selectedScreenVariation === PreviewScreenVariationType.SMS_OTP) {
+            } else if (selectedScreenVariation === PreviewScreenVariationType.EMAIL_OTP) {
+                return <PasswordRecoveryEmailOTPFragment />;
+            }
+            else if(selectedScreenVariation === PreviewScreenVariationType.SMS_OTP) {
                 return <PasswordRecoverySMSFragment/>;
             } else if(selectedScreenVariation === PreviewScreenVariationType.MULTI) {
                 return <PasswordRecoveryMultiOptionFragment/>;
