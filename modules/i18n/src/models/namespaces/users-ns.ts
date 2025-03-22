@@ -74,6 +74,11 @@ export interface usersNS {
             message: string;
             content: string;
         };
+        unassignGroup: {
+            assertionHint: string;
+            header: string;
+            content: string;
+        };
     };
     editUser: {
         tab: {

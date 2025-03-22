@@ -17,7 +17,6 @@
  */
 
 import { updateResources } from "@wso2is/admin.core.v1/api/bulk-operations";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { useGroupList } from "@wso2is/admin.groups.v1/api/groups";
@@ -27,15 +26,12 @@ import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import {
     AlertInterface,
     AlertLevels,
-    ProfileInfoInterface,
-    RolesMemberInterface
+    ProfileInfoInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import {
     ContentLoader,
-    EmphasizedSegment,
-    EmptyPlaceholder,
     Heading,
     ItemTypeLabelPropsInterface,
     LinkButton,
@@ -48,20 +44,15 @@ import { AxiosError, AxiosRequestConfig } from "axios";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import forEachRight from "lodash-es/forEachRight";
 import isEmpty from "lodash-es/isEmpty";
-import React, { ChangeEvent, FormEvent, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import {
-    Button,
-    Divider,
     Grid,
-    Icon,
-    Input,
-    Label,
-    Modal,
-    Table
+    Modal
 } from "semantic-ui-react";
+import { UserGroupsListTable } from "./user-groups-list";
 
 interface UserGroupsPropsInterface {
     /**
@@ -106,7 +97,6 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     const [ initialGroupList, setInitialGroupList ] = useState([]);
     const [ primaryGroupsList, setPrimaryGroupsList ] = useState<Map<string, string>>(undefined);
     const [ isSelectAllGroupsChecked, setIsSelectAllGroupsChecked ] = useState(false);
-    const [ assignedGroups, setAssignedGroups ] = useState<RolesMemberInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ existingGroupList, setExistingGroupList ] = useState([]);
 
@@ -136,7 +126,6 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             return;
         }
         mapUserGroups();
-        setAssignedGroups(user.groups);
     }, []);
 
     /**
@@ -176,7 +165,6 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             return;
         }
         mapUserGroups();
-        setAssignedGroups(user.groups);
     }, [ user ]);
 
     useEffect(() => {
@@ -542,174 +530,16 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         </Modal>
     );
 
-    const handleAssignedGroupListSearch = (e: ChangeEvent<HTMLInputElement>, { value }: { value: string }) => {
-        let isMatch: boolean = false;
-        const filteredGroupList: RolesMemberInterface[] = [];
-
-        if (!isEmpty(value)) {
-            const re: RegExp = new RegExp(escapeRegExp(value), "i");
-
-            assignedGroups && assignedGroups?.map((group: RolesMemberInterface) => {
-                const groupName: string[] = group?.display?.split("/");
-
-                if (groupName.length === 1) {
-                    isMatch = re.test(group.display);
-                    if (isMatch) {
-                        filteredGroupList.push(group);
-                        setAssignedGroups(filteredGroupList);
-                    }
-                }
-            });
-        } else {
-            setAssignedGroups(user.groups);
-        }
-    };
-
-    const resolveTableContent = (): ReactElement => {
-        return (
-            <Table.Body>
-                {
-                    assignedGroups?.map((group: RolesMemberInterface, index: number) => {
-                        const userGroup: string[] = group?.display?.split("/");
-
-                        if (userGroup[0] !== APPLICATION_DOMAIN &&
-                            userGroup[0] !== INTERNAL_DOMAIN) {
-                            return (
-                                <Table.Row key={ index }>
-                                    <Table.Cell>
-                                        {
-                                            userGroup?.length === 1
-                                                ? (<Label color="olive">
-                                                    {
-                                                        StringUtils.isEqualCaseInsensitive(
-                                                            primaryUserStoreDomainName, PRIMARY_USERSTORE)
-                                                            ? t("console:manage.features.users.userstores" +
-                                                                ".userstoreOptions.primary")
-                                                            : primaryUserStoreDomainName
-                                                    }
-                                                </Label>)
-                                                : (<Label color="olive">
-                                                    { userGroup[0] }
-                                                </Label>)
-                                        }
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                        {
-                                            userGroup?.length === 1
-                                                ? group?.display
-                                                : userGroup[1]
-                                        }
-                                    </Table.Cell>
-                                </Table.Row>
-                            );
-                        }
-                    })
-                }
-            </Table.Body>
-        );
-    };
-
     return (
-        <EmphasizedSegment padded="very">
-            <Heading as="h4">
-                { t("user:updateUser.groups.editGroups.heading") }
-            </Heading>
-            <Heading subHeading ellipsis as="h6">
-                { t("user:updateUser.groups.editGroups.subHeading") }
-            </Heading>
-            <Divider hidden/>
-            <Grid>
-                <Grid.Row>
-                    <Grid.Column computer={ 10 } tablet={ 16 } mobile={ 16 }>
-                        {
-                            primaryGroupsList?.size > 0 ? (
-                                <EmphasizedSegment
-                                    data-testid="user-mgt-groups-list"
-                                    className="user-role-edit-header-segment"
-                                >
-                                    <Grid.Row>
-                                        <Grid.Column>
-                                            <Input
-                                                data-testid="user-mgt-groups-list-search-input"
-                                                icon={ <Icon name="search"/> }
-                                                onChange={ handleAssignedGroupListSearch }
-                                                placeholder={ t("user:updateUser.groups." +
-                                                    "editGroups.searchPlaceholder") }
-                                                floated="left"
-                                                size="small"
-                                            />
-                                            {
-                                                !isReadOnly && (
-                                                    <Button
-                                                        data-testid="user-mgt-groups-list-update-button"
-                                                        size="medium"
-                                                        icon="pencil"
-                                                        floated="right"
-                                                        onClick={ handleOpenAddNewGroupModal }
-                                                    />
-                                                )
-                                            }
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                    <Grid.Row>
-                                        <Table singleLine compact>
-                                            <Table.Header>
-                                                <Table.Row>
-                                                    <Table.HeaderCell>
-                                                        <strong>
-                                                            { t("user:updateUser.groups." +
-                                                                "editGroups.groupList.headers.0") }
-                                                        </strong>
-                                                    </Table.HeaderCell>
-                                                    <Table.HeaderCell>
-                                                        <strong>
-                                                            { t("user:updateUser.groups." +
-                                                                "editGroups.groupList.headers.1") }
-                                                        </strong>
-                                                    </Table.HeaderCell>
-                                                </Table.Row>
-                                            </Table.Header>
-                                            { resolveTableContent() }
-                                        </Table>
-                                    </Grid.Row>
-                                </EmphasizedSegment>
-                            ) : (
-                                <EmphasizedSegment>
-                                    <EmptyPlaceholder
-                                        data-testid="user-mgt-empty-groups-list"
-                                        title={ t("user:updateUser.groups.editGroups." +
-                                            "groupList.emptyListPlaceholder.title") }
-                                        subtitle={ [
-                                            t("user:updateUser.groups.editGroups." +
-                                                    "groupList.emptyListPlaceholder.subTitle.0"),
-                                            t("user:updateUser.groups.editGroups." +
-                                                "groupList.emptyListPlaceholder.subTitle.1"),
-                                            t("user:updateUser.groups.editGroups." +
-                                                "groupList.emptyListPlaceholder.subTitle.2")
-                                        ] }
-                                        action={
-                                            !isReadOnly && (
-                                                <PrimaryButton
-                                                    data-testid="user-mgt-empty-groups-list-assign-group-button"
-                                                    onClick={ handleOpenAddNewGroupModal }
-                                                    loading={ isLoading }
-                                                    disabled={ isLoading }
-                                                >
-                                                    <Icon name="plus"/>
-                                                    Assign Group
-                                                </PrimaryButton>
-                                            )
-                                        }
-                                        image={ getEmptyPlaceholderIllustrations().emptyList }
-                                        imageSize="tiny"
-                                    />
-                                </EmphasizedSegment>
-                            )
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+        <>
+            <UserGroupsListTable
+                handleOpenAddNewGroupModal={ handleOpenAddNewGroupModal }
+                handleUserUpdate={ handleUserUpdate }
+                isLoading={ isLoading }
+                isReadOnly={ isReadOnly }
+                user={ user }
+            />
             { addNewGroupModal() }
-        </EmphasizedSegment>
+        </>
     );
 };
