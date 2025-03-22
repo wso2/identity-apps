@@ -76,7 +76,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
     const [ isNumericEnabled, setIsNumericEnabled ] = useState<boolean>(false);
     const [ emailRecoveryOption, setEmailRecoveryOption ] = useState<string>(EmailRecoveryOption.EMAIL_LINK);
 
-    const EMAIL_RECOVERY_RADIO_OPTIONS: RadioChild [] = [
+    const EMAIL_RECOVERY_RADIO_OPTIONS: RadioChild[] = [
         {
             label: "extensions:manage.serverConfigurations.accountRecovery." +
                     "passwordRecovery.form.fields.emailRecoveryOptions.emailLink.label",
