@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.50.1
+
+### Patch Changes
+
+- [#7929](https://github.com/wso2/identity-apps/pull/7929) [`cb0ee2cf165319ca096aa44d358799060f08bbf9`](https://github.com/wso2/identity-apps/commit/cb0ee2cf165319ca096aa44d358799060f08bbf9) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor user group assignment view to be consistent with other tabs
+
+- Updated dependencies [[`cb0ee2cf165319ca096aa44d358799060f08bbf9`](https://github.com/wso2/identity-apps/commit/cb0ee2cf165319ca096aa44d358799060f08bbf9), [`50f5da7cc2c407607b59e30cfd26ced6eeec672a`](https://github.com/wso2/identity-apps/commit/50f5da7cc2c407607b59e30cfd26ced6eeec672a)]:
+  - @wso2is/admin.users.v1@2.30.117
+  - @wso2is/i18n@2.22.5
+  - @wso2is/validation@2.4.2
+
 ## 2.50.0
 
 ### Minor Changes
