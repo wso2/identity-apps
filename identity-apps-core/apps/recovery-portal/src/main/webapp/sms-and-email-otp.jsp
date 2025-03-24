@@ -40,8 +40,9 @@
 <%@ include file="includes/init-url.jsp" %>
 
 <%
-    // Add the sms-otp screen to the list to retrieve text branding customizations.
+    // Add the sms-otp and email-otp screen to the list to retrieve text branding customizations.
     screenNames.add("sms-otp");
+    screenNames.add("email-otp");
 %>
 
 <%-- Branding Preferences --%>
@@ -85,6 +86,11 @@
     if (screenValue == null) {
         screenValue = (String) request.getAttribute("screenValue");
     }
+    String channel = (String) request.getAttribute("channel");
+    if (channel == null) {
+        channel = Encode.forJava(request.getParameter("channel"));
+    }
+    boolean isEmailOtp = IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL.equals(channel);
     String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error");
     boolean authenticationFailed = Boolean.parseBoolean((String)request.getAttribute("isAuthFailure"));
     boolean resendFailed = Boolean.parseBoolean((String)request.getAttribute("isResendFailure"));
@@ -153,7 +159,8 @@
             <div class="ui segment">
                     <%-- page content --%>
                     <h2>
-                    <%= i18n(recoveryResourceBundle, customText, "sms.otp.heading") %>
+                    <%= i18n(recoveryResourceBundle, customText,
+                            isEmailOtp ? "email.otp.heading" : "sms.otp.heading") %>
                     </h2>
                     <div class="ui divider hidden"></div>
                     <%
@@ -165,9 +172,11 @@
                     <% } %>
                     <%
                         if ("true".equals(String.valueOf((Object)request.getAttribute("resendSuccess")))) {
+                            String resendSuccessMessage = isEmailOtp ? "resend.code.success.email"
+                                                                     : "resend.code.success";
                     %>
                     <div id="resend-msg" class="ui positive message">
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "resend.code.success")%>
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, resendSuccessMessage)%>
                     </div>
                     <%
                         }
@@ -190,17 +199,19 @@
                             } %>
 
                             <div class="field">
-                                <% if (screenValue != null) { %>
+                                <% String otpHeader = isEmailOtp ? "enter.code.sent.emailotp" : "enter.code.sent.smsotp";
+
+                                if (screenValue != null && !isEmailOtp) { %>
                                     <input type='hidden' name='screenValue' id='screenValue'
                                         value='<%=Encode.forHtmlContent(screenValue)%>'/>
-                                    <label for="password">
+                                    <label for="password" class="text-center">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                            "enter.code.sent.smsotp")%> (<%=Encode.forHtmlContent(screenValue)%>)
+                                            otpHeader)%> (<%=Encode.forHtmlContent(screenValue)%>)
                                     </label>
                                 <% } else { %>
-                                    <label for="password">
+                                    <label for="password" class="text-center">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                            "enter.code.sent.smsotp")%>:
+                                           otpHeader)%>
                                     </label>
                                 <% } %>
 
@@ -261,7 +272,8 @@
                             <input type='hidden' name='username'
                                 value='<%=Encode.forHtmlAttribute(username)%>'/>
                             <input type="hidden" name="channel"
-                                value='<%=IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP%>'/>
+                                value='<%=isEmailOtp ? IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL
+                                        : IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP%>'/>
                             <input type="hidden" id="recoveryStage" name="recoveryStage"
                                 value='CONFIRM'/>
                             <input type="hidden" name="resendCode"
@@ -345,12 +357,13 @@
                                         .addPath("/accountrecoveryendpoint/recoveraccountrouter.do").build()
                                         .getRelativePublicURL();
                                     String multiOptionPathWithQuery;
+                                    String selectedOption = isEmailOtp ? "EMAIL" : "SMSOTP";
                                     if (urlQuery.contains("&username=")) {
                                         multiOptionPathWithQuery =
                                             urlQuery.replaceAll("(&username=)[^&]+", "$1" + username);
                                     } else {
                                         multiOptionPathWithQuery = urlQuery + "&username=" + username
-                                            + "&selectedOption=SMSOTP";
+                                            + "&selectedOption=" + selectedOption;
                                     }
                                 %>
                                 <a class="ui primary basic button link-button" id="goBackLink"

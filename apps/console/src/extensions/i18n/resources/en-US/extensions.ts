@@ -3222,17 +3222,17 @@ export const extensions: Extensions = {
                                 label: "Enable SMS based recovery"
                             },
                             expiryTime: {
-                                hint: "Password recovery link expiry time in minutes.",
-                                label: "Recovery link expiry time",
+                                hint: "Password recovery link/OTP expiry time in minutes.",
+                                label: "Recovery link/OTP expiry time",
                                 placeholder: "Enter expiry time",
                                 validations: {
-                                    invalid: "Recovery link expiry time should be an integer.",
-                                    empty: "Recovery link expiry time cannot be empty.",
+                                    invalid: "Recovery link/OTP expiry time should be an integer.",
+                                    empty: "Recovery link/OTP expiry time cannot be empty.",
                                     range:
-                                        "Recovery link expiry time should be between 1 minute & 10080 minutes " +
+                                        "Recovery link/OTP expiry time should be between 1 minute & 10080 minutes " +
                                         "(7 days).",
                                     maxLengthReached:
-                                        "Recovery link expiry time should be a number with 5 or less " + "digits."
+                                        "Recovery link/OTP expiry time should be a number with 5 or less " + "digits."
                                 }
                             },
                             notifySuccess: {
@@ -3304,14 +3304,23 @@ export const extensions: Extensions = {
                                 }
                             },
                             enableEmailBasedRecovery: {
-                                hint: "This specifies whether to send an recovery link to the email address.",
-                                label: "Enable email link based recovery"
+                                hint: "This specifies whether to send an recovery link/OTP to the email address.",
+                                label: "Enable email based recovery"
+                            },
+                            emailRecoveryOptions: {
+                                header: "Choose Email recovery option",
+                                emailLink: {
+                                    label: "Email Link"
+                                },
+                                emailOtp: {
+                                    label: "Email OTP"
+                                }
                             }
                         },
                         smsProviderWarning:
                             "Ensure that an <1>SMS Provider</1> is configured for the OTP feature to work properly."
                     },
-                    recoveryOptionSubHeadingEmailLink: "Email Link",
+                    recoveryOptionSubHeadingEmail: "Email",
                     recoveryOptionSubHeadingSMS: "SMS OTP",
                     recoveryOptionHeading: "Recovery Option Selection",
                     otpConfigHeading: "OTP Code Configuration",

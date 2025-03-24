@@ -31,6 +31,7 @@ export class PasswordRecoveryFormConstants {
         ServerConfigurationsConstants.NOTIFY_SUCCESS,
         ServerConfigurationsConstants.RECOVERY_LINK_EXPIRY_TIME,
         ServerConfigurationsConstants.RECOVERY_EMAIL_LINK_ENABLE,
+        ServerConfigurationsConstants.RECOVERY_EMAIL_OTP_ENABLE,
         ServerConfigurationsConstants.RECOVERY_SMS_OTP_ENABLE,
         ServerConfigurationsConstants.RECOVERY_SMS_EXPIRY_TIME,
         ServerConfigurationsConstants.RECOVERY_OTP_USE_UPPERCASE,
