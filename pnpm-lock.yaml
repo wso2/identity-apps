@@ -516,7 +516,7 @@ importers:
         specifier: ^2.32.6
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.authentication.v1':
-        specifier: ^2.25.203
+        specifier: ^2.25.204
         version: link:../../features/admin.authentication.v1
       '@wso2is/admin.authorization.v1':
         specifier: ^2.25.88
@@ -627,7 +627,7 @@ importers:
         specifier: ^1.5.157
         version: link:../../features/admin.template-core.v1
       '@wso2is/admin.tenants.v1':
-        specifier: ^2.29.7
+        specifier: ^2.29.8
         version: link:../../features/admin.tenants.v1
       '@wso2is/admin.username-validation.v1':
         specifier: ^1.5.203
@@ -651,7 +651,7 @@ importers:
         specifier: ^0.2.0
         version: link:../../features/common.ui.v1
       '@wso2is/core':
-        specifier: ^2.7.0
+        specifier: ^2.7.1
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.4.40
@@ -669,7 +669,7 @@ importers:
         specifier: ^2.9.12
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.7.1
+        specifier: ^2.7.2
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.4.2
@@ -3003,7 +3003,7 @@ importers:
         specifier: ^2.26.203
         version: link:../admin.organizations.v1
       '@wso2is/admin.tenants.v1':
-        specifier: ^2.29.7
+        specifier: ^2.29.8
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
         specifier: ^2.30.113
@@ -3012,7 +3012,7 @@ importers:
         specifier: ^2.27.29
         version: link:../admin.userstores.v1
       '@wso2is/core':
-        specifier: ^2.7.0
+        specifier: ^2.7.1
         version: link:../../modules/core
       '@wso2is/i18n':
         specifier: ^2.21.2
@@ -17866,7 +17866,7 @@ importers:
         specifier: ^2.27.141
         version: link:../admin.validation.v1
       '@wso2is/core':
-        specifier: ^2.7.0
+        specifier: ^2.7.1
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.4.40
@@ -17884,7 +17884,7 @@ importers:
         specifier: ^2.9.12
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.6.11
+        specifier: ^2.7.2
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.4.1
@@ -41769,6 +41769,8 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
+        optional: true
+      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)
