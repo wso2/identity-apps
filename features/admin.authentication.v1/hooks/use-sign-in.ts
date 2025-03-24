@@ -42,11 +42,11 @@ import {
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import useOrganizationSwitch from "@wso2is/admin.organizations.v1/hooks/use-organization-switch";
 import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
+import { TenantListInterface } from "@wso2is/admin.tenants.v1/models/saas/tenants";
 import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore
 } from "@wso2is/core/constants";
-import { TenantListInterface } from "@wso2is/core/models";
 import { setDeploymentConfigs, setServiceResourceEndpoints, setSignIn } from "@wso2is/core/store";
 import {
     AuthenticateUtils as CommonAuthenticateUtils,
