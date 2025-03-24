@@ -3002,6 +3002,9 @@ importers:
       '@wso2is/admin.organizations.v1':
         specifier: ^2.26.203
         version: link:../admin.organizations.v1
+      '@wso2is/admin.tenants.v1':
+        specifier: ^2.29.7
+        version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
         specifier: ^2.30.113
         version: link:../admin.users.v1
@@ -41766,8 +41769,6 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
-        optional: true
-      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)

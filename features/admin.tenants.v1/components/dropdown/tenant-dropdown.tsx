@@ -44,7 +44,6 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import {
     AlertInterface,
     AlertLevels,
-    TenantAssociationsInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert, setTenants } from "@wso2is/core/store";
@@ -80,6 +79,7 @@ import {
     TenantRequestResponse,
     TriggerPropTypesInterface
 } from "../../models";
+import { TenantAssociationsInterface } from "../../models/saas/tenants";
 import { handleTenantSwitch } from "../../utils";
 import { AddTenantWizard } from "../add-modal";
 import "./tenant-dropdown.scss";
@@ -527,11 +527,11 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         const changeValue: string = event.target.value;
 
         if (tenantAssociations && Array.isArray(tenantAssociations.associatedTenants)) {
-            let result: TenantInfo | TenantInfo[];
+            let result: TenantInfo[];
 
             if (changeValue.length > 0) {
-                result = tenantAssociations.associatedTenants.filter((item: string) =>
-                    item.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+                result = tenantAssociations.associatedTenants.filter((tenantInfo: TenantInfo) =>
+                    tenantInfo.domain?.toLowerCase()?.indexOf(changeValue.toLowerCase()) !== -1);
             } else {
                 result = tenantAssociations.associatedTenants;
             }
