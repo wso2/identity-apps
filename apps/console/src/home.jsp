@@ -176,6 +176,7 @@
             id="head-script"
             type="text/javascript"
             src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"
+            data-page-id="home"
         ></script>
         <!-- End of custom scripts added to the head -->
     </head>
