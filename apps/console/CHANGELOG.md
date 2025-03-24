@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.50.3
+
+### Patch Changes
+
+- [#7944](https://github.com/wso2/identity-apps/pull/7944) [`31a39f054c4ae66f9688ca9fc8fd2446b50b1499`](https://github.com/wso2/identity-apps/commit/31a39f054c4ae66f9688ca9fc8fd2446b50b1499) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add functionality to conditionally execute the head-script
+
 ## 2.50.2
 
 ### Patch Changes
