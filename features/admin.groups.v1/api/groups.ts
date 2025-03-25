@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,12 +17,12 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1/store";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import {
@@ -81,9 +81,11 @@ export const getGroupList = (domain: string, excludedAttributes?: string): Promi
  * @returns `RequestResultInterface<Data, Error>`
  */
 export const useGroupList = <Data = GroupListInterface, Error = RequestErrorInterface>(
+    count: number = null,
+    startIndex: number = null,
+    filter: string = null,
     domain: string,
     excludedAttributes?: string,
-    filter?: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
@@ -92,13 +94,12 @@ export const useGroupList = <Data = GroupListInterface, Error = RequestErrorInte
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        params: filter ? {
+        params:{
+            count,
             domain,
             excludedAttributes,
-            filter
-        } : {
-            domain,
-            excludedAttributes
+            filter,
+            startIndex
         },
         url: store.getState().config.endpoints.groups
     };
