@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,26 +17,27 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
+import { GearIcon } from "@oxygen-ui/react-icons";
 import { useRequiredScopes } from "@wso2is/access-control";
-import {  FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { getMiscellaneousIcons } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
-    DocumentationLink,
+    Button,
+    DocumentationLink, EmphasizedSegment, GenericIcon,
     PageLayout,
+    Popup,
     ResourceTab,
     ResourceTabPaneInterface,
     useDocumentation
 } from "@wso2is/react-components";
-import React, {
-    FunctionComponent,
-    ReactElement,
-    SyntheticEvent,
-    useState
-} from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { MenuItem, TabProps } from "semantic-ui-react";
+import { Grid, List, MenuItem, TabProps } from "semantic-ui-react";
 import AuditLogsPage from "./audit-logs-page";
 import DiagnosticLogsPage from "./diagnostic-logs-page";
 import { TabIndex } from "../models/log-models";
@@ -54,9 +55,7 @@ type LogsPageInterface = IdentifiableComponentInterface;
  *
  * @returns Logs Page {@link React.ReactElement}
  */
-const LogsPage: FunctionComponent<LogsPageInterface> = (
-    props: LogsPageInterface
-): ReactElement => {
+const LogsPage: FunctionComponent<LogsPageInterface> = (props: LogsPageInterface): ReactElement => {
     const { ["data-componentid"]: componentId } = props;
 
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(TabIndex.DIAGNOSTIC_LOGS);
@@ -72,14 +71,13 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
     };
 
     const renderLogView = (): ReactElement => {
-
         return (
             <ResourceTab
-                activeIndex= { activeTabIndex }
-                data-testid= { `${componentId}-log-tabs` }
+                activeIndex={ activeTabIndex }
+                data-testid={ `${componentId}-log-tabs` }
                 defaultActiveIndex={ 0 }
                 onTabChange={ handleTabChange }
-                panes= { resolveLogTabPanes() }
+                panes={ resolveLogTabPanes() }
             />
         );
     };
@@ -87,47 +85,116 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
     const resolveLogTabPanes = (): ResourceTabPaneInterface[] => {
         const panes: ResourceTabPaneInterface[] = [];
 
-        { featureConfig.diagnosticLogs?.enabled &&  panes.push({
-            componentId: "diagnostic-logs",
-            menuItem: (
-                <MenuItem key="text" className="item-with-chip">
-                    { t("extensions:develop.monitor.logs.tabs.diagnostic") }
-                </MenuItem>
-            ),
-            render: renderLogContentDiagnosticNew
-        }); }
+        {
+            featureConfig.diagnosticLogs?.enabled &&
+                panes.push({
+                    componentId: "diagnostic-logs",
+                    menuItem: (
+                        <MenuItem key="text" className="item-with-chip">
+                            { t("extensions:develop.monitor.logs.tabs.diagnostic") }
+                        </MenuItem>
+                    ),
+                    render: renderLogContentDiagnosticNew
+                });
+        }
 
-
-        { featureConfig.auditLogs?.enabled && hasAuditLogAccessPermissions && panes.push({
-            componentId: "audit-logs",
-            menuItem: (
-                <MenuItem key="text" className="item-with-chip">
-                    { t("extensions:develop.monitor.logs.tabs.audit") }
-                    <Chip
-                        size="small"
-                        label={ t("common:beta") }
-                        className="oxygen-chip-beta"
-                    />
-                </MenuItem>
-            ),
-            render: renderLogContentAuditNew
-        });
+        {
+            featureConfig.auditLogs?.enabled &&
+                hasAuditLogAccessPermissions &&
+                panes.push({
+                    componentId: "audit-logs",
+                    menuItem: (
+                        <MenuItem key="text" className="item-with-chip">
+                            { t("extensions:develop.monitor.logs.tabs.audit") }
+                            <Chip size="small" label={ t("common:beta") } className="oxygen-chip-beta" />
+                        </MenuItem>
+                    ),
+                    render: renderLogContentAuditNew
+                });
         }
 
         return panes;
     };
 
-    const renderLogContentDiagnosticNew = () : ReactElement => {
-        return (
-            <DiagnosticLogsPage
-                data-componentid={ componentId }
-            />
-        );
+    const renderLogContentDiagnosticNew = (): ReactElement => {
+        return <DiagnosticLogsPage data-componentid={ componentId } />;
     };
 
-    const renderLogContentAuditNew = () : ReactElement => {
+    const renderLogContentAuditNew = (): ReactElement => {
+        return <AuditLogsPage />;
+    };
+
+    const handleSettingsButton = (): void => {
+        history.push(AppConstants.getPaths().get("LOG_SETTINGS"));
+    };
+
+    const renderLogPublishSettings = (): ReactElement => {
         return (
-            <AuditLogsPage/>
+            <EmphasizedSegment
+                className="mt-0 mb-5"
+                data-componentid="log-publish-configuration"
+            >
+                <List>
+                    <List.Item>
+                        <Grid verticalAlign="middle">
+                            <Grid.Column
+                                floated="left"
+                                mobile={ 16 }
+                                computer={ 8 }
+                                verticalAlign="middle"
+                            >
+                                <List.Content verticalAlign="middle">
+                                    <GenericIcon
+                                        icon={ getMiscellaneousIcons().tenantIcon }
+                                        floated="left"
+                                        size="mini"
+                                        spaced="right"
+                                        verticalAlign="middle"
+                                        inline
+                                        square
+                                        transparent
+                                    />
+                                    <List.Header
+                                        data-componentid="application-consumer-account-link-title"
+                                        className="logs-title"
+                                    >
+                                        { t("console:manage.features.serverConfigs.remoteLogPublishing.title") }
+                                    </List.Header>
+                                    <List.Description
+                                        data-componentid="application-consumer-account-link-description"
+                                    >
+                                        { t("console:manage.features.serverConfigs.remoteLogPublishing.description") }
+                                    </List.Description>
+                                </List.Content>
+                            </Grid.Column>
+                            <Grid.Column
+                                mobile={ 16 }
+                                computer={ 4 }
+                                textAlign={ "right" }
+                            >
+                                { (
+                                    <Popup
+                                        trigger={ (
+                                            <Button
+                                                className="log-publish-settings-button"
+                                                data-componentid="navigate-to-log-publish-settings-button"
+                                                onClick={ handleSettingsButton }
+                                            >
+                                                <GearIcon /> Configure
+                                            </Button>
+                                        ) }
+                                        content={ t("console:manage.features.serverConfigs.remoteLogPublishing.title") }
+                                        position="top right"
+                                        size="mini"
+                                        hideOnScroll
+                                        inverted
+                                    />
+                                ) }
+                            </Grid.Column>
+                        </Grid>
+                    </List.Item>
+                </List>
+            </EmphasizedSegment>
         );
     };
 
@@ -136,18 +203,33 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
             <PageLayout
                 title={ t("extensions:develop.monitor.pageHeader.title") }
                 pageTitle="Logs"
-                description={ (
-                    <>
+                description={
+                    (<>
                         { t("extensions:develop.monitor.pageHeader.description") }
-                        <DocumentationLink
-                            link={ getLink("manage.logs.learnMore") }
-                        >
+                        <DocumentationLink link={ getLink("manage.logs.learnMore") }>
                             { t("common:learnMore") }
                         </DocumentationLink>
-                    </>
-                ) }
+                    </>)
+                }
+                action={
+                    (<Popup
+                        trigger={
+                            (<Button
+                                data-componentid={ "applications-settings-button" }
+                                icon={ GearIcon }
+                                onClick={ handleSettingsButton }
+                            />)
+                        }
+                        content={ t("applications:forms.applicationsSettings.title") }
+                        position="top center"
+                        size="mini"
+                        hideOnScroll
+                        inverted
+                    />)
+                }
                 data-componentid={ `${componentId}-layout` }
             >
+                { renderLogPublishSettings() }
                 { renderLogView() }
             </PageLayout>
         </div>
