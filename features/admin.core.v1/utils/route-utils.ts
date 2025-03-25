@@ -427,12 +427,6 @@ export class RouteUtils {
                 selected: history.location.pathname.includes("/settings")
             },
             {
-                category: settings,
-                id: "server",
-                order: 2,
-                selected: history.location.pathname.includes("server")
-            },
-            {
                 category: extensions,
                 id: "actions",
                 order: 0,
