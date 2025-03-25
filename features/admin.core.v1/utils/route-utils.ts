@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -199,57 +199,6 @@ export class RouteUtils {
         }
 
         return false;
-    }
-
-    /**
-     * Checks if the view is presentable.
-     *
-     * @param routes - Set of routes.
-     * @param pathsToSkip - Set of paths to skip.
-     * @returns
-     */
-    public static isViewPresentable(routes: RouteInterface[], pathsToSkip?: string[]): boolean {
-
-        const presentableRoutes: RouteInterface[] = RouteUtils.filterPresentableRoutes(routes, pathsToSkip);
-
-        return !(((presentableRoutes && Array.isArray(presentableRoutes)) && presentableRoutes.length === 0)
-            || RouteUtils.isOnlyPageNotFoundPresent(presentableRoutes)
-        );
-    }
-
-    /**
-     * Filters the list of presentable routes.
-     *
-     * @param routes - Set of routes.
-     * @param pathsToSkip - Set of paths to skip.
-     * @returns
-     */
-    public static filterPresentableRoutes(routes: RouteInterface[], pathsToSkip?: string[]): RouteInterface[] {
-
-        return routes.filter((route: RouteInterface) => {
-            if (!route.showOnSidePanel) {
-                return false;
-            }
-
-            if (pathsToSkip && Array.isArray(pathsToSkip)) {
-                return pathsToSkip.some((path: string) => route.path === path);
-            }
-        });
-    }
-
-    /**
-     * Filters and returns only the routes that are enabled for organizations.
-     *
-     * @param routes - Set of routes.
-     *
-     * @returns
-     */
-    public static filterOrganizationEnabledRoutes(routes: RouteInterface[]): RouteInterface[] {
-        return routes.filter((route: RouteInterface) => AppConstants.ORGANIZATION_ENABLED_ROUTES.includes(route.id));
-    }
-
-    public static filterOutOrganizationOnlyRoutes(routes: RouteInterface[]): RouteInterface[] {
-        return routes.filter((route: RouteInterface) => !AppConstants.ORGANIZATION_ONLY_ROUTES.includes(route.id));
     }
 
     public static groupNavbarRoutes(routes: RouteInterface[], saasFeatureStatus?: FeatureStatus): NavRouteInterface[] {
