@@ -170,9 +170,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         data: originalGroupList,
         error: groupListFetchRequestError
     } = useGroupList(
+        null,
+        null,
+        null,
         selectedUserStore,
         excludedAttributes,
-        null,
         userTypeSelection === AdminAccountTypes.EXTERNAL
     );
 

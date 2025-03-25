@@ -109,7 +109,12 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         error: groupsListFetchRequestError,
         isLoading: isGroupsListFetchRequestLoading,
         isValidating: isGroupsListFetchRequestValidating
-    } = useGroupList(domain);
+    } = useGroupList(
+        null,
+        null,
+        null,
+        domain
+    );
 
     const primaryGroups: GroupsInterface[] = useMemo(() => {
         if (originalGroupsList?.Resources) {
