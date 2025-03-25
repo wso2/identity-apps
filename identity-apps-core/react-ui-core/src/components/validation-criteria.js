@@ -114,13 +114,6 @@ export const getRuleLabel = (rule) => {
 
             return null;
 
-        case "EmailFormatValidator":
-            if (isValidatorEnabled) {
-                return "Must use an email address for the username.";
-            }
-
-            return null;
-
         default:
             return null;
     }

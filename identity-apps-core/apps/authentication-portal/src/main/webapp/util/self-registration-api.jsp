@@ -77,7 +77,7 @@
             JSONObject responseObject = new JSONObject(apiResponse.toString());
             out.print(responseObject.toString(2));
         } else if (responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR) {
-            out.print("{\"error\": \"An error occured while processing the registration flow.\"}");
+            out.print("{\"error\": {\"code\": \"500\"}}");
         } else {
             BufferedReader errorReader = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "utf-8"));
             StringBuilder errorResponse = new StringBuilder();
