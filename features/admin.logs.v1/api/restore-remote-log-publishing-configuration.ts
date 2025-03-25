@@ -41,7 +41,7 @@ const restoreRemoteLogPublishingConfiguration = (logType: LogType): Promise<Axio
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${store.getState().config.endpoints.remoteLogging}/${logType}`
+        url: `${store.getState().config.endpoints.remoteLogPublishEndpoint}/${logType}`
     };
 
     return httpClient(requestConfig)
@@ -49,14 +49,7 @@ const restoreRemoteLogPublishingConfiguration = (logType: LogType): Promise<Axio
             return Promise.resolve(response.data);
         })
         .catch((error: AxiosError) => {
-            throw new IdentityAppsApiException(
-                I18n.instance.t("console:manage.features.serverConfigs.remoteLogPublishing.errors.genericError"),
-                error.stack,
-                error.code,
-                error.request,
-                error.response,
-                error.config
-            );
+            throw error;
         });
 };
 

@@ -40,16 +40,14 @@ const updateRemoteLogPublishingConfiguration = (
     config: RemoteLogPublishingConfigurationInterface,
     create: boolean = false
 ): Promise<AxiosResponse> => {
-    const { logType, ...data } = config;
 
-    data["logType"] = logType;
     const requestConfig: RequestConfigInterface = {
-        data,
+        data: config,
         headers: {
             "Content-Type": "application/json"
         },
         method: create ? HttpMethods.POST : HttpMethods.PUT,
-        url: `${store.getState().config.endpoints.remoteLogging}`
+        url: store.getState().config.endpoints.remoteLogPublishEndpoint
     };
 
     return httpClient(requestConfig)
@@ -57,14 +55,7 @@ const updateRemoteLogPublishingConfiguration = (
             return Promise.resolve(response.data);
         })
         .catch((error: AxiosError) => {
-            throw new IdentityAppsApiException(
-                I18n.instance.t("console:manage.features.serverConfigs.remoteLogPublishing.errors.genericError"),
-                error.stack,
-                error.code,
-                error.request,
-                error.response,
-                error.config
-            );
+            throw error;
         });
 };
 

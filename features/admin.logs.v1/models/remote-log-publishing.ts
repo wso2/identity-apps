@@ -39,7 +39,7 @@ export interface RemoteLogPublishingConfigurationInterface {
     /**
      * Publish interval for logs.
      */
-    publishInterval: number,
+	publishInterval: number,
 	/**
 	 * Should hostname be verified.
 	 */

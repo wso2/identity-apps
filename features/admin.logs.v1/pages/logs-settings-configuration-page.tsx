@@ -72,10 +72,9 @@ const LogsSettingsConfigurationPage: FunctionComponent<LogsSettingsConfiguration
             >
                 <RemoteLoggingConfigForm
                     logType={ logType }
-                    logConfigData={ logConfig }
+                    initialData={ logConfig }
                     mutateRemoteLoggingRequest={ mutatelogConfig }
                     isLoading={ islogConfigLoading }
-                    error={ logConfigFetchRequestError }
                 />
             </PageLayout>
         </div>

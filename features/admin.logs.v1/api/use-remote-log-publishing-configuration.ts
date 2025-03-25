@@ -41,18 +41,19 @@ const useRemoteLogPublishingConfiguration = <
     ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.remoteLogging}/${logType}`
+        url: `${store.getState().config.endpoints.remoteLogPublishEndpoint}/${logType}`
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
+    const { data, error, isLoading, isValidating, mutate } =
+        useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     const normalizedData: RemoteLogPublishingConfigurationInterface | unknown =
         (error?.response?.status === 404) ? {} : data;
 
     return {
         data: normalizedData as Data,
-        error: error,
-        isLoading: !error && !data,
+        error,
+        isLoading,
         isValidating,
         mutate: mutate
     };

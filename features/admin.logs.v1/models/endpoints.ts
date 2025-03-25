@@ -16,19 +16,9 @@
  * under the License.
  */
 
-.remote-logging-content {
-  padding: var(--oxygen-spacing-5) var(--oxygen-spacing-6);
-  margin-bottom: var(--oxygen-spacing-4);
-
-  .remote-logging-form {
-    max-width: var(--wso2is-admin-form-max-width);
-
-    .form-field-margin-top {
-      margin-top: .75rem
-    }
-
-    .form-field-margin-left {
-      margin-left: .75rem
-    }
-  }
+/**
+ * Interface for the Remote Logging feature resource endpoints.
+ */
+export interface RemoteLoggingResourceEndpointsInterface {
+    remoteLogPublishEndpoint: string
 }

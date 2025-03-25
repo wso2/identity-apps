@@ -40,16 +40,16 @@ const useTestRemoteLogPublishingConfiguration = <
     ): RequestResultInterface<Error> => {
     const requestConfig: RequestConfigInterface = {
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.remoteLogging}/${logType}/test`
+        url: `${store.getState().config.endpoints.remoteLogPublishEndpoint}/${logType}/test`
     };
 
-    const { data, error, isValidating, mutate } =
+    const { data, error, isLoading, isValidating, mutate } =
         useRequest<Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,
-        error: error,
-        isLoading: isValidating && !error,
+        error,
+        isLoading,
         isValidating,
         mutate: mutate
     };

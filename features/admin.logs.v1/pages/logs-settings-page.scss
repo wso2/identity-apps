@@ -16,103 +16,105 @@
  * under the License.
  */
 
-.log-types-grid-wrapper {
+.logs-settings-page {
+  .log-types-grid-wrapper {
     display: flex;
     flex-direction: row;
     margin-bottom: 40px;
 
     .log-types-grid {
-        flex-grow: 1;
-        gap: 25px;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      flex-grow: 1;
+      gap: 25px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 
-        .log-type {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            border: 1px solid #e8e8e8;
-            border-radius: 10px;
-            transition: box-shadow 0.3s ease;
-            cursor: pointer;
+      .log-type {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border: 1px solid #e8e8e8;
+        border-radius: 10px;
+        transition: box-shadow 0.3s ease;
+        cursor: pointer;
 
-            .log-type-header {
-                display: flex;
-                flex-direction: row;
-                gap: 15px;
-                align-content: center;
-                align-items: center;
-                padding: 10px 14px;
+        .log-type-header {
+          display: flex;
+          flex-direction: row;
+          gap: 15px;
+          align-content: center;
+          align-items: center;
+          padding: 10px 14px;
 
-                .log-type-icon-container {
-                    border-radius: var(--oxygen-shape-borderRadius);
-                }
-            }
-
-            &.disabled {
-                cursor: not-allowed;
-                box-shadow: none;
-                filter: grayscale(100%);
-                opacity: 0.7;
-            }
-
-            .ribbon {
-                border-radius: 0;
-                font-size: 0.8em;
-                right: 0;
-                height: 24px;
-                width: auto;
-                min-width: 75px;
-                display: flex;
-                margin-left: auto;
-                margin-right: -40px;
-                margin-top: -5px;
-                flex-direction: row;
-                align-content: center;
-                align-items: center;
-                justify-content: space-around;
-                clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
-                -webkit-clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
-                padding-left: 10px;
-                padding-right: 10px;
-                white-space: nowrap;
-            }
-
-            .oxygen-chip-coming-soon {
-                min-width: auto !important;
-            }
-
-            .status-tag {
-                display: inline-flex;
-                flex-direction: row;
-                align-content: center;
-                align-items: center;
-
-                .icon-configured {
-                    color: rgb(52 146 86);
-                    font-size: 0.8em;
-                    width: 1em;
-                    height: 1em;
-                    margin-right: 5px;
-                }
-
-                .text-configured {
-                    color: rgb(52 146 86);
-                    font-size: 0.8em !important;
-                }
-
-                .text-not-configured {
-                    color: rgb(128, 134, 130);
-                    font-size: 0.8em !important;
-                }
-            }
+          .log-type-icon-container {
+            border-radius: var(--oxygen-shape-borderRadius);
+          }
         }
 
-        .placeholder-box {
-            background-color: #ffffff;
-            border-color: #e8e8e8;
-            border-radius: 8px;
-            padding: 30px;
+        &.disabled {
+          cursor: not-allowed;
+          box-shadow: none;
+          filter: grayscale(100%);
+          opacity: 0.7;
         }
+
+        .ribbon {
+          border-radius: 0;
+          font-size: 0.8em;
+          right: 0;
+          height: 24px;
+          width: auto;
+          min-width: 75px;
+          display: flex;
+          margin-left: auto;
+          margin-right: -40px;
+          margin-top: -5px;
+          flex-direction: row;
+          align-content: center;
+          align-items: center;
+          justify-content: space-around;
+          clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+          -webkit-clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+          padding-left: 10px;
+          padding-right: 10px;
+          white-space: nowrap;
+        }
+
+        .oxygen-chip-coming-soon {
+          min-width: auto !important;
+        }
+
+        .status-tag {
+          display: inline-flex;
+          flex-direction: row;
+          align-content: center;
+          align-items: center;
+
+          .icon-configured {
+            color: rgb(52 146 86);
+            font-size: 0.8em;
+            width: 1em;
+            height: 1em;
+            margin-right: 5px;
+          }
+
+          .text-configured {
+            color: rgb(52 146 86);
+            font-size: 0.8em !important;
+          }
+
+          .text-not-configured {
+            color: rgb(128, 134, 130);
+            font-size: 0.8em !important;
+          }
+        }
+      }
+
+      .placeholder-box {
+        background-color: #ffffff;
+        border-color: #e8e8e8;
+        border-radius: 8px;
+        padding: 30px;
+      }
     }
+  }
 }

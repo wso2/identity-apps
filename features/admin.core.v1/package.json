@@ -37,6 +37,7 @@
         "@wso2is/admin.groups.v1": "^2.27.109",
         "@wso2is/admin.identity-providers.v1": "^2.26.199",
         "@wso2is/admin.identity-verification-providers.v1": "^2.27.199",
+        "@wso2is/admin.logs.v1": "^1.5.200",
         "@wso2is/admin.oidc-scopes.v1": "^2.25.199",
         "@wso2is/admin.org-insights.v1": "^2.25.199",
         "@wso2is/admin.organization-discovery.v1": "^2.25.199",

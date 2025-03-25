@@ -31,7 +31,6 @@ import {
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import "./logs.scss";
 import { LogTypeCardInterface } from "../models/log-settings-models";
 import { LogType } from "../models/remote-log-publishing";
 import "./logs-settings-page.scss";
@@ -82,65 +81,64 @@ const LogsSettingsPage: FunctionComponent<LogsSettingsPageInterface> = ({
     };
 
     return (
-        <div className="diagnostic-logs">
-            <PageLayout
-                title={ t("console:manage.features.serverConfigs.remoteLogPublishing.title") }
-                pageTitle={ t("console:manage.features.serverConfigs.remoteLogPublishing.pageTitle") }
-                description={ t("console:manage.features.serverConfigs.remoteLogPublishing.description") }
-                backButton={ {
-                    "data-componentid": `${ componentId }-page-back-button`,
-                    onClick: () => handleBackButtonClick(),
-                    text: t("console:manage.features.serverConfigs.remoteLogPublishing.backButtonText")
-                } }
-                data-componentid={ `${componentId}-layout` }
-            >
-                <div className="log-types-grid-wrapper" data-componentid={ `${ componentId }-grid` }>
-                    <div className="log-types-grid">
-                        { logTypesCardsInfo().map((cardProps: LogTypeCardInterface) => {
-                            return (
-                                <Card
-                                    key={ cardProps.identifier }
-                                    className={ classNames("log-type", { "disabled": cardProps.disabled }) }
-                                    data-componentid={ `${ cardProps.identifier }-log-type-card` }
-                                    onClick={ () => history.push(cardProps.route) }
-                                >
-                                    <CardContent className="log-type-header">
-                                        <div>
-                                            <GenericIcon
-                                                size="micro"
-                                                icon={ (
-                                                    <Avatar
-                                                        variant="square"
-                                                        randomBackgroundColor
-                                                        backgroundColorRandomizer={ cardProps.identifier }
-                                                        className="log-type-icon-container"
-                                                    >
-                                                        { cardProps.icon }
-                                                    </Avatar>
-                                                ) }
-                                                inline
-                                                transparent
-                                                shape="square"
-                                            />
-                                        </div>
-                                        <div>
-                                            <Typography variant="h6">
-                                                { cardProps.heading }
-                                            </Typography>
-                                        </div>
-                                    </CardContent>
-                                    <CardContent>
-                                        <Typography variant="body2" color="text.secondary">
-                                            {  cardProps.description }
+        <PageLayout
+            title={ t("console:manage.features.serverConfigs.remoteLogPublishing.title") }
+            pageTitle={ t("console:manage.features.serverConfigs.remoteLogPublishing.pageTitle") }
+            description={ t("console:manage.features.serverConfigs.remoteLogPublishing.description") }
+            backButton={ {
+                "data-componentid": `${ componentId }-page-back-button`,
+                onClick: () => handleBackButtonClick(),
+                text: t("console:manage.features.serverConfigs.remoteLogPublishing.backButtonText")
+            } }
+            className="logs-settings-page"
+            data-componentid={ `${componentId}-layout` }
+        >
+            <div className="log-types-grid-wrapper" data-componentid={ `${ componentId }-grid` }>
+                <div className="log-types-grid">
+                    { logTypesCardsInfo().map((cardProps: LogTypeCardInterface) => {
+                        return (
+                            <Card
+                                key={ cardProps.identifier }
+                                className={ classNames("log-type", { "disabled": cardProps.disabled }) }
+                                data-componentid={ `${ cardProps.identifier }-log-type-card` }
+                                onClick={ () => history.push(cardProps.route) }
+                            >
+                                <CardContent className="log-type-header">
+                                    <div>
+                                        <GenericIcon
+                                            size="micro"
+                                            icon={ (
+                                                <Avatar
+                                                    variant="square"
+                                                    randomBackgroundColor
+                                                    backgroundColorRandomizer={ cardProps.identifier }
+                                                    className="log-type-icon-container"
+                                                >
+                                                    { cardProps.icon }
+                                                </Avatar>
+                                            ) }
+                                            inline
+                                            transparent
+                                            shape="square"
+                                        />
+                                    </div>
+                                    <div>
+                                        <Typography variant="h6">
+                                            { cardProps.heading }
                                         </Typography>
-                                    </CardContent>
-                                </Card>
-                            );
-                        }) }
-                    </div>
+                                    </div>
+                                </CardContent>
+                                <CardContent>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {  cardProps.description }
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        );
+                    }) }
                 </div>
-            </PageLayout>
-        </div>
+            </div>
+        </PageLayout>
     );
 };
 

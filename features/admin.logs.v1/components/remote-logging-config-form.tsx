@@ -45,7 +45,6 @@ import useTestRemoteLogPublishingConfiguration from "../api/use-test-log-publish
 import { LogType, RemoteLogPublishingConfigurationInterface } from "../models/remote-log-publishing";
 import "./remote-logging-config-form.scss";
 
-
 /**
  * Props interface of {@link RemoteLoggingConfigForm}
  */
@@ -57,15 +56,11 @@ export interface RemoteLoggingConfigFormProps extends IdentifiableComponentInter
     /**
      * Remote logging configuration such as `remoteUrl`, `connectTimeoutMillis`, etc.
      */
-    logConfigData: RemoteLogPublishingConfigurationInterface;
+    initialData: RemoteLogPublishingConfigurationInterface;
     /**
      * Remote log publishing configs loading.
      */
     isLoading: boolean,
-    /**
-     * Errpr fetching log config.
-     */
-    error: AxiosError,
     /**
      * Callback to mutate the remote logging request.
      */
@@ -80,15 +75,13 @@ export interface RemoteLoggingConfigFormProps extends IdentifiableComponentInter
  */
 export const RemoteLoggingConfigForm = ({
     logType,
-    logConfigData,
+    initialData,
     mutateRemoteLoggingRequest,
     isLoading,
-    error,
     "data-componentid": componentId = "remote-logging-config-form"
 }: RemoteLoggingConfigFormProps): ReactElement => {
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
-    const [ logConfig, setLogConfig ] = useState(null);
 
     const dispatch: Dispatch = useDispatch();
 
@@ -96,22 +89,8 @@ export const RemoteLoggingConfigForm = ({
 
     const [ testNow, setTestNow ] = useState(false);
 
-    // Conditionally call the hook when shouldFetch is true
     const { isLoading: isTesting, mutate: mutateTest } =
         useTestRemoteLogPublishingConfiguration(testNow, logType);
-
-    useEffect(() => {
-        if (error) {
-            return;
-        }
-        if (logConfigData && (!logConfigData.publishInterval || logConfigData.publishInterval < 15)) {
-            logConfigData.publishInterval = 15;
-        }
-        if (logConfigData && !logConfigData.connectTimeoutMillis) {
-            logConfigData.connectTimeoutMillis = 30000;
-        }
-        setLogConfig(logConfigData);
-    }, [ logConfigData, error ]);
 
     const handleRemoteLoggingConfigUpdate = (remoteLogPublishConfig: RemoteLogPublishingConfigurationInterface) => {
 
@@ -119,7 +98,7 @@ export const RemoteLoggingConfigForm = ({
             remoteLogPublishConfig.connectTimeoutMillis = 1000;
         }
         remoteLogPublishConfig.logType = logType;
-        updateRemoteLogPublishingConfiguration(remoteLogPublishConfig, logConfig === null)
+        updateRemoteLogPublishingConfiguration(remoteLogPublishConfig, initialData === null)
             .then((): void => {
                 mutateRemoteLoggingRequest();
                 dispatch(
@@ -156,7 +135,6 @@ export const RemoteLoggingConfigForm = ({
         restoreRemoteLogPublishingConfiguration(logType)
             .then((): void => {
                 setShowDeleteConfirmationModal(false);
-                setLogConfig(null);
                 mutateRemoteLoggingRequest();
                 dispatch(
                     addAlert<AlertInterface>({
@@ -189,6 +167,48 @@ export const RemoteLoggingConfigForm = ({
             });
     };
 
+    const handleTestNow = (): void => {
+        setTestNow(true);
+        mutateTest();
+    };
+
+    /**
+     * Validates the configuration form values and returns any validation errors.
+     *
+     * @param values - The form values to validate.
+     * @returns An object containing validation errors, if any.
+     */
+    const validateForm = (
+        values: RemoteLogPublishingConfigurationInterface
+    ): Partial<RemoteLogPublishingConfigurationInterface> => {
+        const errors: Partial<RemoteLogPublishingConfigurationInterface> = {};
+
+        if (!values.url) {
+            errors.url = t("console:manage.features.serverConfigs." +
+                "remoteLogPublishing.fields.remoteURL.error.required");
+        } else if (!FormValidation.url(values.url.toString())) {
+            errors.url = t("console:manage.features.serverConfigs." +
+                "remoteLogPublishing.fields.remoteURL.error.invalid");
+        }
+
+        if (!values.publishInterval) {
+            errors.publishInterval = t("console:manage.features.serverConfigs." +
+                "remoteLogPublishing.fields.publishInterval.error.required");
+        } else if (parseInt(values.publishInterval.toString()) < 15) {
+            errors.publishInterval = t("console:manage.features.serverConfigs." +
+                "remoteLogPublishing.fields.publishInterval.error.invalid");
+        }
+
+        if (values.connectTimeoutMillis && (parseInt(values.connectTimeoutMillis.toString()) < 1000 ||
+            parseInt(values.connectTimeoutMillis.toString()) > 60000)) {
+            errors.connectTimeoutMillis =  t(
+                "console:manage.features.serverConfigs.remoteLogPublishing." +
+                "fields.advanced.connectionTimeout.error.invalid");
+        }
+
+        return errors;
+    };
+
     if (isLoading) {
         return (
             <Card className="remote-logging-content">
@@ -204,11 +224,6 @@ export const RemoteLoggingConfigForm = ({
         );
     }
 
-    function handleTestNow() {
-        setTestNow(true);
-        mutateTest();
-    }
-
     return (
         <>
             <Card className="remote-logging-content">
@@ -218,7 +233,8 @@ export const RemoteLoggingConfigForm = ({
                             onSubmit={ (values: RemoteLogPublishingConfigurationInterface) =>
                                 handleRemoteLoggingConfigUpdate(values) }
                             data-componentid={ `${componentId}-${logType}` }
-                            initialValues={ logConfigData }
+                            initialValues={ initialData }
+                            validate={ validateForm }
                             render={ ({ handleSubmit }: FormRenderProps) => (
                                 <form onSubmit={ handleSubmit }>
                                     <FinalFormField
@@ -237,17 +253,6 @@ export const RemoteLoggingConfigForm = ({
                                             "remoteLogPublishing.fields.remoteURL.label") }
                                         placeholder={ t("console:manage.features.serverConfigs." +
                                             "remoteLogPublishing.fields.remoteURL.placeholder") }
-                                        validate={
-                                            (value: FormValue) => {
-                                                if (!value) {
-                                                    return t("console:manage.features.serverConfigs." +
-                                                        "remoteLogPublishing.fields.remoteURL.error.required");
-                                                } else if (!FormValidation.url(value.toString())) {
-                                                    return t("console:manage.features.serverConfigs." +
-                                                        "remoteLogPublishing.fields.remoteURL.error.invalid");
-                                                }
-                                            }
-                                        }
                                         component={ TextFieldAdapter }
                                         maxLength={ 100 }
                                         minLength={ 0 }
@@ -255,7 +260,7 @@ export const RemoteLoggingConfigForm = ({
                                     <FinalFormField
                                         key="publishInterval"
                                         width={ 16 }
-                                        className="text-field-container mt-3"
+                                        className="text-field-container form-field-margin-top"
                                         ariaLabel="publishInterval"
                                         required={ true }
                                         data-componentid={ `${componentId}-publishInterval` }
@@ -265,17 +270,6 @@ export const RemoteLoggingConfigForm = ({
                                             "remoteLogPublishing.fields.publishInterval.label") }
                                         placeholder={ t("console:manage.features.serverConfigs." +
                                             "remoteLogPublishing.fields.publishInterval.placeholder") }
-                                        validate={
-                                            (value: FormValue) => {
-                                                if (!value) {
-                                                    return t("console:manage.features.serverConfigs." +
-                                                        "remoteLogPublishing.fields.publishInterval.error.required");
-                                                } else if (parseInt(value.toString()) < 15) {
-                                                    return t("console:manage.features.serverConfigs." +
-                                                        "remoteLogPublishing.fields.publishInterval.error.invalid");
-                                                }
-                                            }
-                                        }
                                         component={ TextFieldAdapter }
                                         maxLength={ 100 }
                                         minLength={ 0 }
@@ -285,7 +279,7 @@ export const RemoteLoggingConfigForm = ({
                                     <FinalFormField
                                         key="connectTimeoutMillis"
                                         width={ 16 }
-                                        className="text-field-container mt-3"
+                                        className="text-field-container form-field-margin-top"
                                         ariaLabel="connectTimeoutMillis"
                                         data-componentid={ `${componentId}-connectTimeoutMillis` }
                                         name="connectTimeoutMillis"
@@ -294,16 +288,6 @@ export const RemoteLoggingConfigForm = ({
                                             "remoteLogPublishing.fields.advanced.connectionTimeout.label") }
                                         placeholder={ t("console:manage.features.serverConfigs." +
                                             "remoteLogPublishing.fields.advanced.connectionTimeout.placeholder") }
-                                        validate={
-                                            (value: FormValue) => {
-                                                if (value && (parseInt(value.toString()) < 1000 ||
-                                                    parseInt(value.toString()) > 60000)) {
-                                                    return t(
-                                                        "console:manage.features.serverConfigs.remoteLogPublishing." +
-                                                        "fields.advanced.connectionTimeout.error.invalid");
-                                                }
-                                            }
-                                        }
                                         component={ TextFieldAdapter }
                                         maxLength={ 100 }
                                         minLength={ 0 }
@@ -327,7 +311,7 @@ export const RemoteLoggingConfigForm = ({
                                             margin: "dense"
                                         } }
                                         width={ 16 }
-                                        className="text-field-container mt-3"
+                                        className="text-field-container form"
                                         ariaLabel="username"
                                         required={ false }
                                         data-componentid={ `${componentId}-username` }
@@ -349,7 +333,7 @@ export const RemoteLoggingConfigForm = ({
                                             margin: "dense"
                                         } }
                                         width={ 16 }
-                                        className="text-field-container mt-3"
+                                        className="text-field-container form-field-margin-top"
                                         ariaLabel="password"
                                         required={ false }
                                         data-componentid={ `${componentId}-password` }
@@ -369,7 +353,7 @@ export const RemoteLoggingConfigForm = ({
                                         size="medium"
                                         variant="contained"
                                         onClick={ handleSubmit }
-                                        className={ "button-container mt-3" }
+                                        className={ "button-container form-field-margin-top" }
                                         data-componentid={ `${componentId}-submit-button` }
                                         loading={ isLoading }
                                     >
@@ -379,9 +363,10 @@ export const RemoteLoggingConfigForm = ({
                                         size="medium"
                                         variant="contained"
                                         onClick={ handleTestNow }
-                                        className={ "button-container mt-3 ml-3" }
+                                        className={ "button-container form-field-margin-top form-field-margin-left" }
                                         data-componentid={ `${componentId}-test-button` }
                                         loading={ isTesting }
+                                        disabled={ !initialData || Object.keys(initialData).length === 0 }
                                     >
                                         { t("console:manage.features.serverConfigs.remoteLogPublishing." +
                                             "testButtonText") }
@@ -394,7 +379,7 @@ export const RemoteLoggingConfigForm = ({
             </Card>
             <DangerZoneGroup sectionHeader={ t("applications:dangerZoneGroup.header") }>
                 <DangerZone
-                    isButtonDisabled={ !logConfig || Object.keys(logConfig).length === 0 }
+                    isButtonDisabled={ !initialData || Object.keys(initialData).length === 0 }
                     data-componentid={ `${componentId}-danger-zone` }
                     actionTitle={ t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone.title", {
                         logType: startCase(toLower(logType))
