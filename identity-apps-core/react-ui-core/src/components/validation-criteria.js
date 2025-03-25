@@ -20,15 +20,38 @@ import PropTypes from "prop-types";
 import React from "react";
 
 /**
- * Parse a numeric condition from rule.conditions, if present.
+ * A helper that looks up a condition in `rule.conditions` by key,
+ * then tries to interpret the string value:
+ * - "true" -> true
+ * - "false" -> false
+ * - numeric -> parseInt(...)
+ * - otherwise -> the original string
  *
- * @param {object} rule - The rule object containing conditions.
- * @param {string} key - The conditions key to search for (e.g. "min.length").
- * @returns {number|null} The numeric value or null if not found.
+ * Returns `null` if no matching key is found.
  */
 const getConditionValue = (rule, key) => {
-    const found = rule?.conditions?.find((cond) => cond.key === key);
-    return found ? parseInt(found.value, 10) : null;
+    const found = rule.conditions.find((cond) => cond.key === key);
+
+    if (!found) {
+        return null;
+    }
+
+    const rawValue = found.value;
+
+    if (rawValue === "true") {
+        return true;
+    }
+    if (rawValue === "false") {
+        return false;
+    }
+
+    const asNumber = parseInt(rawValue, 10);
+
+    if (!isNaN(asNumber)) {
+        return asNumber;
+    }
+
+    return rawValue;
 };
 
 export const getRuleLabel = (rule) => {
@@ -41,6 +64,7 @@ export const getRuleLabel = (rule) => {
     const minLen = getConditionValue(rule, "min.length");
     const maxLen = getConditionValue(rule, "max.length");
     const confirmPassword = getConditionValue(rule, "confirm.password");
+    const isValidatorEnabled = getConditionValue(rule, "enable.validator");
 
     switch (rule.name) {
         case "LengthValidator":
@@ -51,24 +75,28 @@ export const getRuleLabel = (rule) => {
             } else if (maxLen) {
                 return `Must be at most ${maxLen} characters long.`;
             }
+
             return "Must be within the required length.";
 
         case "NumeralValidator":
             if (minLen) {
                 return `Must contain at least ${minLen} number(s).`;
             }
+
             return "Must contain the required number(s).";
 
         case "UpperCaseValidator":
             if (minLen) {
                 return `Must contain at least ${minLen} uppercase letter(s).`;
             }
+
             return "Must contain uppercase letter(s).";
 
         case "LowerCaseValidator":
             if (minLen) {
                 return `Must contain at least ${minLen} lowercase letter(s).`;
             }
+
             return "Must contain lowercase letter(s).";
 
         case "SpecialCharacterValidator":
@@ -76,12 +104,22 @@ export const getRuleLabel = (rule) => {
                 return `Must contain at least ${minLen} special character(s).`;
             }
 
+            return `Must contain at least ${minLen} special character(s).`;
+
         case "ConfirmPasswordValidator":
 
             if (confirmPassword) {
                 return "Must match with the password.";
             }
-            return "Must match with the password.";
+
+            return null;
+
+        case "EmailFormatValidator":
+            if (isValidatorEnabled) {
+                return "Must use an email address for the username.";
+            }
+
+            return null;
 
         default:
             return null;

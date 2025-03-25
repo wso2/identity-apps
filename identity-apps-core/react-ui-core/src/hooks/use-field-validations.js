@@ -17,6 +17,7 @@
  */
 
 import { useCallback, useState } from "react";
+import { validateEmail } from "../utils/validation-utils";
 
 /**
  * A custom hook for validating form fields using a flexible “rules” approach.
@@ -168,6 +169,16 @@ const useFieldValidation = (validationConfig) => {
             case "ConfirmPasswordValidator": {
                 if (value !== compareValue) {
                     return "Must match with the password.";
+                }
+
+                break;
+            }
+
+            case "EmailFormatValidator": {
+                const emailPattern = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
+
+                if (validateEmail(value, emailPattern)) {
+                    return "Must use an email address for the username.";
                 }
 
                 break;
