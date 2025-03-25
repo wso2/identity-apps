@@ -317,7 +317,16 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
         return FeatureStatusLabel[featureFlag?.flag];
     };
 
-    const generateNavbarItems = (): NavbarItems[] => {
+    /**
+     *
+     * @param routePath - current route path
+     * @returns if the navigation item is active.
+     */
+    const isRouteActive = (routePath: string): boolean => {
+        return history.location.pathname === routePath;
+    };
+
+    const navbarItems: NavbarItems[] = useMemo((): NavbarItems[] => {
         const categorizedRoutes: CategorizedRouteInterface = {};
 
         let index: number = 0;
@@ -380,16 +389,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                 };
             }
         );
-    };
-
-    /**
-     *
-     * @param routePath - current route path
-     * @returns if the navigation item is active.
-     */
-    const isRouteActive = (routePath: string): boolean => {
-        return history.location.pathname === routePath;
-    };
+    }, [ sanitizedRoutes ]);
 
     return (
         <>
@@ -424,7 +424,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                 navigation={
                     (<Navbar
                         items={
-                            !organizationLoading ? generateNavbarItems() : []
+                            !organizationLoading ? navbarItems : []
                         }
                         fill={ "solid" }
                         open={ !leftNavbarCollapsed as boolean }
