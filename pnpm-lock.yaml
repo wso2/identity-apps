@@ -587,6 +587,9 @@ importers:
       '@wso2is/admin.private-key-jwt.v1':
         specifier: ^2.25.203
         version: link:../../features/admin.private-key-jwt.v1
+      '@wso2is/admin.provisioning.v1':
+        specifier: ^2.25.203
+        version: link:../../features/admin.provisioning.v1
       '@wso2is/admin.push-providers.v1':
         specifier: ^1.0.92
         version: link:../../features/admin.push-providers.v1
@@ -41769,8 +41772,6 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
-        optional: true
-      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)

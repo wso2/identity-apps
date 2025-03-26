@@ -263,25 +263,6 @@ export class RouteUtils {
             order: 7
         };
 
-        const loginAndRegPathsToCheck: string[] = [
-            `${AppConstants.getAdminViewBasePath()}/governance-connectors/`,
-            `${AppConstants.getAdminViewBasePath()}/connector/`,
-            AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"),
-            AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"),
-            AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
-            AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN"),
-            AppConstants.getPaths().get("VALIDATION_CONFIG_EDIT"),
-            AppConstants.getPaths().get("IMPERSONATION"),
-            AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
-            AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
-            AppConstants.getPaths().get("PRIVATE_KEY_JWT_CONFIG_EDIT")
-        ];
-
-        const isConnectionsMenuItemSelected = (): boolean => {
-            return history.location.pathname.includes("/connections")
-                || history.location.pathname.includes("/identity-verification-providers");
-        };
-
         const CategoryMappedRoutes: Omit<RouteInterface, "showOnSidePanel">[] = [
             {
                 category: overview,
@@ -296,25 +277,21 @@ export class RouteUtils {
             {
                 category: build,
                 id: "applications",
-                order: 0,
-                selected: history.location.pathname.includes("applications")
+                order: 0
             },
             {
                 category: build,
                 id: "identityProviders",
-                order: 1,
-                selected: isConnectionsMenuItemSelected()
+                order: 1
             },
             {
                 category: build,
                 id: "apiResources",
-                order: 2,
-                selected: history.location.pathname.includes("/api-resources")
+                order: 2
             },
             {
                 category: organizations,
-                id: "organizations",
-                selected: history.location.pathname.includes("/organizations")
+                id: "organizations"
             },
             {
                 category: manage,
@@ -394,18 +371,11 @@ export class RouteUtils {
             },
             {
                 category: preferences,
-                id: "loginAndRegistration",
-                selected: loginAndRegPathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
+                id: "loginAndRegistration"
             },
             {
                 category: preferences,
-                id: "notificationChannels",
-                selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
-                    history.location.pathname === AppConstants.getPaths().get("SMS_PROVIDER") ||
-                    history.location.pathname === AppConstants.getPaths().get("PUSH_PROVIDER") ||
-                    history.location.pathname === AppConstants.getPaths().get("NOTIFICATION_CHANNELS") ||
-                    // remove this when enabling push notification provider support
-                    history.location.pathname === AppConstants.getPaths().get("EMAIL_AND_SMS")
+                id: "notificationChannels"
             },
             {
                 category: monitoring,
@@ -423,14 +393,12 @@ export class RouteUtils {
             {
                 category: settings,
                 id: "consoleSettings",
-                order: 1,
-                selected: history.location.pathname.includes("/settings")
+                order: 1
             },
             {
                 category: extensions,
                 id: "actions",
-                order: 0,
-                selected: history.location.pathname.includes("/actions")
+                order: 0
             },
             {
                 category: extensions,
@@ -439,43 +407,62 @@ export class RouteUtils {
             }
         ];
 
-        const itemsWithCategory: NavRouteInterface[] = routes?.filter((route: RouteInterface) => {
-            const saasFeatureIsEnabled: boolean = route.featureGateIds?.
-                includes(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER) && saasFeatureStatus !== FeatureStatus.ENABLED;
+        const enabledRoutes: RouteInterface[] = routes.filter((route: RouteInterface) => {
+            const saasFeatureRestricted: boolean = route.featureGateIds
+                ?.includes(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER) &&
+                    saasFeatureStatus !== FeatureStatus.ENABLED;
 
-            return !saasFeatureIsEnabled;
-        }).map((route: RouteInterface) => {
-            const categoryMappedRoute: Omit<RouteInterface, "showOnSidePanel">
-                = CategoryMappedRoutes.find((item: RouteInterface) => item.id === route.id);
-
-            return {
-                ...route,
-                navCategory: categoryMappedRoute?.category,
-                order: categoryMappedRoute?.order,
-                parent: categoryMappedRoute?.parent,
-                selected: categoryMappedRoute?.selected
-            };
+            return !saasFeatureRestricted;
         });
 
+        const routesWithCategoryData: NavRouteInterface[] = enabledRoutes
+            ?.map((route: RouteInterface) => {
+                const categoryMapping: Omit<RouteInterface, "showOnSidePanel"> = CategoryMappedRoutes
+                    .find((mapping: Omit<RouteInterface, "showOnSidePanel">) => mapping.id === route.id);
+
+                // If a mapping is found, inject the additional navigation properties.
+                if (categoryMapping) {
+                    return {
+                        ...route,
+                        navCategory: categoryMapping.category,
+                        order: categoryMapping.order,
+                        parent: categoryMapping.parent,
+                        selected: categoryMapping.selected
+                    };
+                }
+
+                // If no mapping is found, return the route as-is.
+                return route;
+            });
+
         const groupedByParent: Record<string, NavRouteInterface[]> = groupBy(
-            itemsWithCategory.filter(
-                (item: NavRouteInterface) => item.parent), (item: NavRouteInterface) => item.parent?.id);
+            routesWithCategoryData,
+            (route: NavRouteInterface) => route.parent?.id
+        );
 
-        const updatedGroupedItems: NavRouteInterface[] = Object.values(groupedByParent).map(
-            (group: NavRouteInterface[]) => ({
-                icon: { icon: group[0]?.parent?.icon },
-                id: group[0]?.parent?.id,
-                items: sortBy(group, (item: NavRouteInterface) => item.order),
-                name: group[0]?.parent?.name,
-                navCategory: group[0]?.navCategory,
-                order: group[0]?.parent?.order,
-                showOnSidePanel: group[0]?.parent?.showOnSidePanel || true
-            }));
+        const routesToBeSorted: NavRouteInterface[] = [];
 
-        const ungroupedItems: NavRouteInterface[] = itemsWithCategory.filter((item: NavRouteInterface) => !item.parent);
+        Object.entries(groupedByParent).forEach(
+            ([ _parent, routes ]: [ parent: string, routes: NavRouteInterface[] ]) => {
+                if (_parent !== "undefined" && routes.length > 1) {
+                    routesToBeSorted.push({
+                        icon: { icon: routes[0]?.parent?.icon },
+                        id: routes[0]?.parent?.id,
+                        items: sortBy(routes, (item: NavRouteInterface) => item.order),
+                        name: routes[0]?.parent?.name,
+                        navCategory: routes[0]?.navCategory,
+                        order: routes[0]?.parent?.order,
+                        showOnSidePanel: routes[0]?.parent?.showOnSidePanel || true
+                    });
+                } else {
+                    routes.forEach((route: NavRouteInterface) => {
+                        routesToBeSorted.push(route);
+                    });
+                }
+            });
 
         return sortBy(
-            sortBy([ ...updatedGroupedItems, ...ungroupedItems ], (item: NavRouteInterface) => item.order),
+            sortBy(routesToBeSorted, (item: NavRouteInterface) => item.order),
             (item: NavRouteInterface) => item.navCategory?.order
         );
     }

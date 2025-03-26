@@ -105,20 +105,6 @@ export const commonConfig: CommonConfig = {
                 path: AppConstants.getPaths().get("USERSTORES"),
                 protected: true,
                 showOnSidePanel: true
-            },
-            {
-                category: "extensions:manage.sidePanel.categories.userManagement",
-                component: lazy(() => import("@wso2is/admin.provisioning.v1/pages/outbound-provisioning-settings")),
-                exact: true,
-                icon: {
-                    icon: getSidePanelIcons().childIcon
-                },
-                id: "residentOutboundProvisioning",
-                name: "console:develop.features.applications.resident.provisioning.outbound.heading",
-                order: 6,
-                path: AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
-                protected: true,
-                showOnSidePanel: false
             }
         ];
 

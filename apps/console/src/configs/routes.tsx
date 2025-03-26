@@ -238,10 +238,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
-                        import(
-                            "@wso2is/admin.server-configurations.v1/" +
-                            "pages/connector-edit-page"
-                        )
+                        import("@wso2is/admin.server-configurations.v1/pages/connector-edit-page")
                     ),
                     exact: true,
                     icon: {
@@ -260,10 +257,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
-                        import(
-                            "@wso2is/admin.server-configurations.v1/" +
-                            "pages/connector-edit-page"
-                        )
+                        import("@wso2is/admin.server-configurations.v1/pages/connector-edit-page")
                     ),
                     exact: true,
                     icon: {
@@ -325,6 +319,205 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     exact: true,
                     id: "accountDisable",
                     path: AppConstants.getPaths().get("ACCOUNT_DISABLE"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.validation.v1/pages/validation-config-edit")
+                    ),
+                    exact: true,
+                    id: "validation-config-edit",
+                    name: "Validation Configuration Edit",
+                    path: AppConstants.getPaths().get("VALIDATION_CONFIG_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.server-configurations.v1/pages/connector-edit-page")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "bot-detection",
+                    name: "Bot Detection",
+                    path: AppConstants.getPaths()
+                        .get("GOVERNANCE_CONNECTOR_EDIT")
+                        .replace(
+                            ":categoryId",
+                            ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
+                        )
+                        .replace(
+                            ":connectorId",
+                            ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID
+                        ),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.server-configurations.v1/pages/connector-edit-page")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "self-registration-connector",
+                    name: "Self Registration Connector",
+                    path: AppConstants.getPaths()
+                        .get("GOVERNANCE_CONNECTOR_EDIT")
+                        .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+                        .replace(":connectorId", ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.server-configurations.v1/pages/connector-edit-page")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "user-email-verification",
+                    name: "Invite User to Set Password",
+                    path: AppConstants.getPaths()
+                        .get("GOVERNANCE_CONNECTOR_EDIT")
+                        .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+                        .replace(":connectorId",
+                            ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.server-configurations.v1/pages/connector-edit-page")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "password-recovery",
+                    name: "Password Recovery",
+                    path: AppConstants.getPaths()
+                        .get("GOVERNANCE_CONNECTOR_EDIT")
+                        .replace(
+                            ":categoryId",
+                            ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID
+                        )
+                        .replace(
+                            ":connectorId",
+                            ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID
+                        ),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import(
+                            "@wso2is/admin.server-configurations.v1/pages/connector-edit-page"
+                        )
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "username-recovery",
+                    name: "Username Recovery",
+                    path: AppConstants.getPaths()
+                        .get("USERNAME_RECOVERY_CONNECTOR_EDIT")
+                        .replace(
+                            ":type",
+                            "username"
+                        )
+                        .replace(
+                            ":categoryId",
+                            ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID
+                        )
+                        .replace(
+                            ":connectorId",
+                            ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID
+                        ),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                // {
+                //     component: lazy(() =>
+                //         import("@wso2is/admin.server-configurations.v1/pages/connector-edit-page")
+                //     ),
+                //     exact: true,
+                //     icon: {
+                //         icon: getSidePanelIcons().childIcon
+                //     },
+                //     id: "login-attempt-security",
+                //     name: "Login Attempts Security",
+                //     path: AppConstants.getPaths()
+                //         .get("GOVERNANCE_CONNECTOR_EDIT")
+                //         .replace(
+                //             ":categoryId",
+                //             ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
+                //         )
+                //         .replace(
+                //             ":connectorId",
+                //             ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID
+                //         ),
+                //     protected: true,
+                //     showOnSidePanel: false
+                // },
+                {
+                    component: lazy(() => import(
+                        "@wso2is/admin.organization-discovery.v1/pages/organization-discovery-domains-page"
+                    )),
+                    exact: true,
+                    icon: {
+                        icon: <EnvelopeMagnifyingGlassIcon />
+                    },
+                    id: "organizationDiscovery",
+                    name: "console:manage.features.sidePanel.emailDomainDiscovery",
+                    path: AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import(
+                        "@wso2is/admin.organization-discovery.v1/pages/edit-organization-discovery-domains-page"
+                    )),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().organization
+                    },
+                    id: "email-domain-edit",
+                    name: "Email Domain Edit",
+                    path: AppConstants.getPaths().get("UPDATE_ORGANIZATION_DISCOVERY_DOMAINS"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import(
+                        "@wso2is/admin.organization-discovery.v1/pages/assign-organization-discovery-domains-page"
+                    )),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().organization
+                    },
+                    id: "email-domain-assign",
+                    name: "Email Domain Assign",
+                    path: AppConstants.getPaths().get("ASSIGN_ORGANIZATION_DISCOVERY_DOMAINS"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.provisioning.v1/pages/outbound-provisioning-settings")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "residentOutboundProvisioning",
+                    name: "console:develop.features.applications.resident.provisioning.outbound.heading",
+                    order: 6,
+                    path: AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
                     protected: true,
                     showOnSidePanel: false
                 }
@@ -499,6 +692,19 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("AUTH_EDIT"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import(
+                        // eslint-disable-next-line max-len
+                        "@wso2is/admin.identity-verification-providers.v1/pages/identity-verification-provider-edit-page")
+                    ),
+                    exact: true,
+                    icon: { icon: getSidePanelIcons().identityVerificationProviders },
+                    id: "identityVerificationProviders",
+                    name: "Identity Verification Providers Edit",
+                    path: AppConstants.getPaths().get("IDVP_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() => import("@wso2is/admin.connections.v1/pages/connections")),
@@ -512,20 +718,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             path: AppConstants.getPaths().get("IDP"),
             protected: true,
             showOnSidePanel: true
-        },
-        {
-            category: "console:develop.features.sidePanel.categories.application",
-            component: lazy(() => import(
-                "@wso2is/admin.identity-verification-providers.v1/pages/identity-verification-provider-edit-page")
-            ),
-            exact: true,
-            icon: { icon: getSidePanelIcons().identityVerificationProviders },
-            id: "identityVerificationProviders",
-            name: "Identity Verification Providers Edit",
-            order: 4,
-            path: AppConstants.getPaths().get("IDVP_EDIT"),
-            protected: true,
-            showOnSidePanel: false
         },
         {
             category: "extensions:manage.sidePanel.categories.attributeManagement",
@@ -590,6 +782,30 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("CLAIM_VERIFICATION_SETTINGS"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.oidc-scopes.v1/pages/oidc-scopes")),
+                    exact: true,
+                    icon: {
+                        icon: <UserCircleDotIcon fill="black" className="icon" />
+                    },
+                    id: "oidcScopes",
+                    name: "console:develop.features.sidePanel.oidcScopes",
+                    path: AppConstants.getPaths().get("OIDC_SCOPES"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.oidc-scopes.v1/pages/oidc-scopes-edit")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "oidcScopesEdit",
+                    name: "console:develop.features.sidePanel.oidcScopes",
+                    path: AppConstants.getPaths().get("OIDC_SCOPES_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() => import("@wso2is/admin.claims.v1/pages/claim-dialects")),
@@ -604,34 +820,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             path: AppConstants.getPaths().get("CLAIM_DIALECTS"),
             protected: true,
             showOnSidePanel: true
-        },
-        {
-            category: "extensions:manage.sidePanel.categories.attributeManagement",
-            children: [
-                {
-                    component: lazy(() => import("@wso2is/admin.oidc-scopes.v1/pages/oidc-scopes-edit")),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "oidcScopesEdit",
-                    name: "console:develop.features.sidePanel.oidcScopes",
-                    path: AppConstants.getPaths().get("OIDC_SCOPES_EDIT"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() => import("@wso2is/admin.oidc-scopes.v1/pages/oidc-scopes")),
-            exact: true,
-            icon: {
-                icon: <UserCircleDotIcon fill="black" className="icon" />
-            },
-            id: "oidcScopes",
-            name: "console:develop.features.sidePanel.oidcScopes",
-            order: 11,
-            path: AppConstants.getPaths().get("OIDC_SCOPES"),
-            protected: true,
-            showOnSidePanel: false
         },
         {
             children: [
@@ -661,54 +849,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             path: AppConstants.getPaths().get("ORGANIZATIONS"),
             protected: true,
             showOnSidePanel: true
-        },
-        {
-            children: [
-                {
-                    component: lazy(() => {
-                        // eslint-disable-next-line max-len
-                        return import("@wso2is/admin.organization-discovery.v1/pages/assign-organization-discovery-domains-page");
-                    }),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().organization
-                    },
-                    id: "email-domain-assign",
-                    name: "Email Domain Assign",
-                    path: AppConstants.getPaths().get("ASSIGN_ORGANIZATION_DISCOVERY_DOMAINS"),
-                    protected: true,
-                    showOnSidePanel: false
-                },
-                {
-                    component: lazy(() => {
-                        // eslint-disable-next-line max-len
-                        return import("@wso2is/admin.organization-discovery.v1/pages/edit-organization-discovery-domains-page");
-                    }),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().organization
-                    },
-                    id: "email-domain-edit",
-                    name: "Email Domain Edit",
-                    path: AppConstants.getPaths().get("UPDATE_ORGANIZATION_DISCOVERY_DOMAINS"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() => {
-                return import("@wso2is/admin.organization-discovery.v1/pages/" +
-                    "organization-discovery-domains-page");
-            }),
-            exact: true,
-            icon: {
-                icon: <EnvelopeMagnifyingGlassIcon />
-            },
-            id: "organizationDiscovery",
-            name: "console:manage.features.sidePanel.emailDomainDiscovery",
-            order: 12,
-            path: AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
-            protected: true,
-            showOnSidePanel: false
         },
         {
             category: "extensions:develop.sidePanel.categories.branding",
@@ -758,6 +898,50 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:develop.sidePanel.categories.branding",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.email-providers.v1/pages/email-providers")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: <EnvelopeGearIcon fill="black" className="icon" />
+                    },
+                    id: "emailProviders",
+                    name: "extensions:develop.sidePanel.emailProvider",
+                    path: AppConstants.getPaths().get("EMAIL_PROVIDER"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.sms-providers.v1/pages/sms-providers")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().sms
+                    },
+                    id: "smsProviders",
+                    name: "SMS",
+                    path: AppConstants.getPaths().get("SMS_PROVIDER"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.push-providers.v1/pages/push-providers")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().push
+                    },
+                    id: "pushProviders",
+                    name: "Push Notification Provider",
+                    path: AppConstants.getPaths().get("PUSH_PROVIDER"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
             component: lazy(() =>
                 import("@wso2is/admin.email-and-sms.v1/" + "pages/email-and-sms")
             ),
@@ -773,76 +957,8 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
-            category: "extensions:develop.sidePanel.categories.branding",
-            component: lazy(() =>
-                import("@wso2is/admin.email-providers.v1" + "/pages/email-providers")
-            ),
-            exact: true,
-            icon: {
-                icon: <EnvelopeGearIcon fill="black" className="icon" />
-            },
-            id: "emailProviders",
-            name: "extensions:develop.sidePanel.emailProvider",
-            order: 16,
-            path: AppConstants.getPaths().get("EMAIL_PROVIDER"),
-            protected: true,
-            showOnSidePanel: false
-        },
-        {
-            category: "extensions:develop.sidePanel.categories.smsProvider",
-            component: lazy(() =>
-                import("@wso2is/admin.sms-providers.v1" + "/pages/sms-providers")
-            ),
-            exact: true,
-            icon: {
-                icon: getSidePanelIcons().sms
-            },
-            id: "smsProviders",
-            name: "SMS",
-            order: 17,
-            path: AppConstants.getPaths().get("SMS_PROVIDER"),
-            protected: true,
-            showOnSidePanel: false
-        },
-        {
-            category: "extensions:develop.sidePanel.categories.pushProvider",
-            component: lazy(() =>
-                import("@wso2is/admin.push-providers.v1/pages/push-providers")
-            ),
-            exact: true,
-            icon: {
-                icon: getSidePanelIcons().push
-            },
-            id: "pushProviders",
-            name: "Push Notification Provider",
-            order: 18,
-            path: AppConstants.getPaths().get("PUSH_PROVIDER"),
-            protected: true,
-            showOnSidePanel: false
-        },
-        {
             category: "extensions:manage.sidePanel.categories.AccountManagement",
             children: [
-                {
-                    component: lazy(() =>
-                        import(
-                            "@wso2is/admin.server-configurations.v1/" +
-                            "pages/connector-edit-page"
-                        )
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "self-registration-connector",
-                    name: "Self Registration Connector",
-                    path: AppConstants.getPaths()
-                        .get("GOVERNANCE_CONNECTOR_EDIT")
-                        .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
-                        .replace(":connectorId", ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID),
-                    protected: true,
-                    showOnSidePanel: false
-                },
                 {
                     component: lazy(() =>
                         import(
@@ -925,60 +1041,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "extensions:manage.sidePanel.categories.AccountManagement",
             children: [
-                {
-                    component: lazy(() =>
-                        import(
-                            "@wso2is/admin.server-configurations.v1/pages/connector-edit-page"
-                        )
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "password-recovery",
-                    name: "Password Recovery",
-                    path: AppConstants.getPaths()
-                        .get("GOVERNANCE_CONNECTOR_EDIT")
-                        .replace(
-                            ":categoryId",
-                            ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID
-                        )
-                        .replace(
-                            ":connectorId",
-                            ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID
-                        ),
-                    protected: true,
-                    showOnSidePanel: false
-                },
-                {
-                    component: lazy(() =>
-                        import(
-                            "@wso2is/admin.server-configurations.v1/pages/connector-edit-page"
-                        )
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "username-recovery",
-                    name: "Username Recovery",
-                    path: AppConstants.getPaths()
-                        .get("USERNAME_RECOVERY_CONNECTOR_EDIT")
-                        .replace(
-                            ":type",
-                            "username"
-                        )
-                        .replace(
-                            ":categoryId",
-                            ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID
-                        )
-                        .replace(
-                            ":connectorId",
-                            ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID
-                        ),
-                    protected: true,
-                    showOnSidePanel: false
-                }
+
             ],
             component: lazy(() =>
                 import(
@@ -1003,71 +1066,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "extensions:manage.sidePanel.categories.AccountManagement",
             children: [
-                {
-                    component: lazy(() =>
-                        import(
-                            "@wso2is/admin.server-configurations.v1/" +
-                            "pages/connector-edit-page"
-                        )
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "login-attempt-security",
-                    name: "Login Attempts Security",
-                    path: AppConstants.getPaths()
-                        .get("GOVERNANCE_CONNECTOR_EDIT")
-                        .replace(
-                            ":categoryId",
-                            ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
-                        )
-                        .replace(
-                            ":connectorId",
-                            ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID
-                        ),
-                    protected: true,
-                    showOnSidePanel: false
-                },
-                {
-                    component: lazy(() =>
-                        import(
-                            "@wso2is/admin.server-configurations.v1/pages/connector-edit-page"
-                        )
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "bot-detection",
-                    name: "Bot Detection",
-                    path: AppConstants.getPaths()
-                        .get("GOVERNANCE_CONNECTOR_EDIT")
-                        .replace(
-                            ":categoryId",
-                            ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
-                        )
-                        .replace(
-                            ":connectorId",
-                            ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID
-                        ),
-                    protected: true,
-                    showOnSidePanel: false
-                },
-                {
-                    component: lazy(() =>
-                        import("@wso2is/admin.validation.v1/pages/validation-config-edit")
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().organization
-                    },
-                    id: "validation-config-edit",
-                    name: "Validation Configuration Edit",
-                    path: AppConstants.getPaths().get("VALIDATION_CONFIG_EDIT"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
+
             ],
             component: lazy(() =>
                 import(
