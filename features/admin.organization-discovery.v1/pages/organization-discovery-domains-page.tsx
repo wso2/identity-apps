@@ -438,7 +438,11 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                         <EmphasizedSegment
                             padded={ true }
                         >
-                            <Form>
+                            <Form
+                                onSubmit={ () => null }
+                                id={ `${testId}-form` }
+                                uncontrolledForm={ false }
+                            >
                                 <Field.Checkbox
                                     ariaLabel="emailDomainBasedSelfRegistration"
                                     name="emailDomainBasedSelfRegistration"
