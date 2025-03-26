@@ -364,6 +364,29 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     icon: {
                         icon: getSidePanelIcons().childIcon
                     },
+                    id: "fraud-detection",
+                    name: "Fraud Detection",
+                    path: AppConstants.getPaths()
+                        .get("GOVERNANCE_CONNECTOR_EDIT")
+                        .replace(
+                            ":categoryId",
+                            ServerConfigurationsConstants.SIFT_CONNECTOR_CATEGORY_ID
+                        )
+                        .replace(
+                            ":connectorId",
+                            ServerConfigurationsConstants.SIFT_CONNECTOR_ID
+                        ),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.server-configurations.v1/pages/connector-edit-page")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
                     id: "self-registration-connector",
                     name: "Self Registration Connector",
                     path: AppConstants.getPaths()
@@ -443,29 +466,29 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     protected: true,
                     showOnSidePanel: false
                 },
-                // {
-                //     component: lazy(() =>
-                //         import("@wso2is/admin.server-configurations.v1/pages/connector-edit-page")
-                //     ),
-                //     exact: true,
-                //     icon: {
-                //         icon: getSidePanelIcons().childIcon
-                //     },
-                //     id: "login-attempt-security",
-                //     name: "Login Attempts Security",
-                //     path: AppConstants.getPaths()
-                //         .get("GOVERNANCE_CONNECTOR_EDIT")
-                //         .replace(
-                //             ":categoryId",
-                //             ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
-                //         )
-                //         .replace(
-                //             ":connectorId",
-                //             ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID
-                //         ),
-                //     protected: true,
-                //     showOnSidePanel: false
-                // },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.server-configurations.v1/pages/connector-edit-page")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "login-attempt-security",
+                    name: "Login Attempts Security",
+                    path: AppConstants.getPaths()
+                        .get("GOVERNANCE_CONNECTOR_EDIT")
+                        .replace(
+                            ":categoryId",
+                            ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
+                        )
+                        .replace(
+                            ":connectorId",
+                            ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID
+                        ),
+                    protected: true,
+                    showOnSidePanel: false
+                },
                 {
                     component: lazy(() => import(
                         "@wso2is/admin.organization-discovery.v1/pages/organization-discovery-domains-page"
