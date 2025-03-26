@@ -1,5 +1,11 @@
 # @wso2is/validation
 
+## 2.4.2
+
+### Patch Changes
+
+- [#7876](https://github.com/wso2/identity-apps/pull/7876) [`50f5da7cc2c407607b59e30cfd26ced6eeec672a`](https://github.com/wso2/identity-apps/commit/50f5da7cc2c407607b59e30cfd26ced6eeec672a) Thanks [@KD23243](https://github.com/KD23243)! - Update rolename validation regex
+
 ## 2.4.1
 
 ### Patch Changes

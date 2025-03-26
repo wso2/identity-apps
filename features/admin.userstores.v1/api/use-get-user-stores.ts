@@ -36,7 +36,6 @@ export const useGetUserStores = <Data = UserStoreListItem[], Error = RequestErro
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,

@@ -22,12 +22,13 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
-import { SCIMConfigs } from "@wso2is/admin.extensions.v1";
+import { SCIMConfigs, userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import {
     ConnectorPropertyInterface,
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1";
+import { useUserStoreRegEx } from "@wso2is/admin.userstores.v1/api/use-get-user-store-regex";
 import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
@@ -41,6 +42,7 @@ import React,
     ReactElement,
     ReactNode,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -107,8 +109,6 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     const { t } = useTranslation();
 
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
-    const [ userStorePasswordRegex, setUserStorePasswordRegex ] = useState<string>("");
-    const [ isPasswordRegExLoading, setPasswordRegExLoading ] = useState<boolean>(false);
     const [ isPasswordPatternValid, setIsPasswordPatternValid ] = useState<boolean>(true);
     const [ isConfirmPasswordMatch, setIsConfirmPasswordMatch ] = useState<boolean>(undefined);
     const [ password, setPassword ] = useState<string>("");
@@ -122,8 +122,6 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     const hasLoginAndRegistrationFeaturePermissions: boolean = useRequiredScopes(
         featureConfig?.loginAndRegistration?.scopes?.feature
@@ -133,6 +131,20 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         data: validationConfig
     } = useValidationConfigData();
 
+    const userStore: string = useMemo(() => {
+        const userNameComponents: string[] = user?.userName?.split("/");
+
+        return userNameComponents?.length > 1 ? userNameComponents[0] : userstoresConfig.primaryUserstoreName;
+    }, [ user ]);
+
+    const {
+        data: userStorePasswordRegEx,
+        isLoading: isUserStorePasswordRegExLoading
+    } = useUserStoreRegEx(
+        userStore,
+        USERSTORE_REGEX_PROPERTIES.PasswordRegEx
+    );
+
     /**
      * Retrieve the password validation configuration from the validation data.
      */
@@ -141,23 +153,6 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             setPasswordConfig(getConfiguration(validationConfig));
         }
     }, [ validationConfig ]);
-
-    /**
-     * This gets regex for the current user's userstore.
-     */
-    useEffect(() => {
-        setPasswordRegExLoading(true);
-        const userNameComponents: string[] = user?.userName?.split("/");
-        const userStore: string = userNameComponents?.length > 1 ? userNameComponents[0] : primaryUserStoreDomainName;
-
-        SharedUserStoreUtils.getUserStoreRegEx(userStore, USERSTORE_REGEX_PROPERTIES.PasswordRegEx)
-            .then((response: string) => {
-                setUserStorePasswordRegex(response);
-            })
-            .finally(() => {
-                setPasswordRegExLoading(false);
-            });
-    }, [ user ]);
 
     useEffect(() => {
         if (!connectorProperties) {
@@ -382,7 +377,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             return isPasswordPatternValid;
         }
 
-        return SharedUserStoreUtils.validateInputAgainstRegEx(password, userStorePasswordRegex);
+        return SharedUserStoreUtils.validateInputAgainstRegEx(password, userStorePasswordRegEx);
     };
 
     /**
@@ -432,7 +427,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                             type="password"
                             value=""
                             listen={ handlePasswordChange }
-                            loading={ isPasswordRegExLoading }
+                            loading={ isUserStorePasswordRegExLoading }
                             validation={ validateNewPassword }
                         />
                         { passwordConfig && (

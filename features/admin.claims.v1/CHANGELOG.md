@@ -1,5 +1,14 @@
 # @wso2is/admin.claims.v1
 
+## 2.27.114
+
+### Patch Changes
+
+- [#7926](https://github.com/wso2/identity-apps/pull/7926) [`598951c6131d3f9b420341a4ea7f70931966eb90`](https://github.com/wso2/identity-apps/commit/598951c6131d3f9b420341a4ea7f70931966eb90) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Remove attribute name validation.
+
+- Updated dependencies [[`598951c6131d3f9b420341a4ea7f70931966eb90`](https://github.com/wso2/identity-apps/commit/598951c6131d3f9b420341a4ea7f70931966eb90)]:
+  - @wso2is/admin.claims.v1@2.27.114
+
 ## 2.27.113
 
 ### Patch Changes

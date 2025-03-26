@@ -31,6 +31,7 @@ import { Properties } from "../../models/base";
 import { Element } from "../../models/elements";
 import { Resource } from "../../models/resources";
 import { StepData } from "../../models/steps";
+import "./resource-properties.scss";
 
 /**
  * Props interface of {@link ResourceProperties}

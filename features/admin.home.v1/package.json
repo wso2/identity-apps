@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.home.v1",
-    "version": "1.7.1",
+    "version": "1.7.2",
     "description": "Feature and utilities for the WSO2 Identity Server Admin Home",
     "author": "WSO2",
     "license": "Apache-2.0",

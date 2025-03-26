@@ -1636,6 +1636,7 @@ TODO : Move values to separate variables and cleanup styles.
         width: 180px;
         display: inline-block;
         margin-left: 10px;
+        overflow-wrap: break-word;
     }
 
     .log-expanded-view {

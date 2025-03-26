@@ -25,7 +25,7 @@ import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
 import {
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
-import { useUserStore } from "@wso2is/admin.userstores.v1/api/user-stores";
+import { useGetUserStore } from "@wso2is/admin.userstores.v1/api/use-get-user-store";
 import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants";
 import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 import { ValidationDataInterface, ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
@@ -150,7 +150,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     // Hook to get the userstore details of the selected userstore.
     const {
         data: originalUserStore
-    } = useUserStore(
+    } = useGetUserStore(
         userStore
     );
 

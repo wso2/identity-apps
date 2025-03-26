@@ -1,5 +1,20 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.5.4
+
+### Patch Changes
+
+- [#7937](https://github.com/wso2/identity-apps/pull/7937) [`89d7a7a45270f553eed7a1cd48559d9e67a80915`](https://github.com/wso2/identity-apps/commit/89d7a7a45270f553eed7a1cd48559d9e67a80915) Thanks [@brionmario](https://github.com/brionmario)! - Fix edge generation issues in AI flows on refresh
+
+## 0.5.3
+
+### Patch Changes
+
+- [#7912](https://github.com/wso2/identity-apps/pull/7912) [`431e4c6310b8d3cc80eb21fe377bdecaf1cf5148`](https://github.com/wso2/identity-apps/commit/431e4c6310b8d3cc80eb21fe377bdecaf1cf5148) Thanks [@brionmario](https://github.com/brionmario)! - Fix action type selection issues
+
+- Updated dependencies [[`431e4c6310b8d3cc80eb21fe377bdecaf1cf5148`](https://github.com/wso2/identity-apps/commit/431e4c6310b8d3cc80eb21fe377bdecaf1cf5148)]:
+  - @wso2is/admin.flow-builder-core.v1@0.4.2
+
 ## 0.5.2
 
 ### Patch Changes
