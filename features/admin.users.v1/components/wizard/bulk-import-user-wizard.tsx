@@ -230,7 +230,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const {
         data: groupList,
         error: groupsError
-    } = useGroupList(selectedUserStore, "members", null, true);
+    } = useGroupList(
+        null,
+        null,
+        null,
+        selectedUserStore,
+        "members"
+    );
 
     useEffect(() => {
         if (groupsError) {
