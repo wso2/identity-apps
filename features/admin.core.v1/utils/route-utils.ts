@@ -407,6 +407,7 @@ export class RouteUtils {
             }
         ];
 
+        // Filter out the routes that are restricted by the SAAS feature.
         const enabledRoutes: RouteInterface[] = routes.filter((route: RouteInterface) => {
             const saasFeatureRestricted: boolean = route.featureGateIds
                 ?.includes(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER) &&
@@ -415,6 +416,7 @@ export class RouteUtils {
             return !saasFeatureRestricted;
         });
 
+        // Inject additional navigation properties into the routes based on the category mappings.
         const routesWithCategoryData: NavRouteInterface[] = enabledRoutes
             ?.map((route: RouteInterface) => {
                 const categoryMapping: Omit<RouteInterface, "showOnSidePanel"> = CategoryMappedRoutes
@@ -435,6 +437,7 @@ export class RouteUtils {
                 return route;
             });
 
+        // Group the routes by parent.
         const groupedByParent: Record<string, NavRouteInterface[]> = groupBy(
             routesWithCategoryData,
             (route: NavRouteInterface) => route.parent?.id
@@ -444,6 +447,8 @@ export class RouteUtils {
 
         Object.entries(groupedByParent).forEach(
             ([ _parent, routes ]: [ parent: string, routes: NavRouteInterface[] ]) => {
+                // If a parent has more than one child route, then add the parent route to the list.
+                // And keep the child routes as items of the parent route.
                 if (_parent !== "undefined" && routes.length > 1) {
                     routesToBeSorted.push({
                         icon: { icon: routes[0]?.parent?.icon },
@@ -454,6 +459,8 @@ export class RouteUtils {
                         order: routes[0]?.parent?.order,
                         showOnSidePanel: routes[0]?.parent?.showOnSidePanel || true
                     });
+                // If the route has no parent or the route is the only child,
+                // then add the route to the list as it is.
                 } else {
                     routes.forEach((route: NavRouteInterface) => {
                         routesToBeSorted.push(route);
@@ -461,6 +468,8 @@ export class RouteUtils {
                 }
             });
 
+        // First sort by the order of the route,
+        // then by the order of the category.
         return sortBy(
             sortBy(routesToBeSorted, (item: NavRouteInterface) => item.order),
             (item: NavRouteInterface) => item.navCategory?.order
