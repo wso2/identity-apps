@@ -64,7 +64,6 @@ export const getRuleLabel = (rule) => {
     const minLen = getConditionValue(rule, "min.length");
     const maxLen = getConditionValue(rule, "max.length");
     const confirmPassword = getConditionValue(rule, "confirm.password");
-    const isValidatorEnabled = getConditionValue(rule, "enable.validator");
 
     switch (rule.name) {
         case "LengthValidator":
@@ -104,7 +103,7 @@ export const getRuleLabel = (rule) => {
                 return `Must contain at least ${minLen} special character(s).`;
             }
 
-            return `Must contain at least ${minLen} special character(s).`;
+            return "Must contain special character(s).";
 
         case "ConfirmPasswordValidator":
 
