@@ -7990,9 +7990,6 @@ importers:
       '@wso2is/admin.organizations.v1':
         specifier: ^2.26.203
         version: link:../admin.organizations.v1
-      '@wso2is/admin.provisioning.v1':
-        specifier: ^2.25.203
-        version: link:../admin.provisioning.v1
       '@wso2is/admin.remote-userstores.v1':
         specifier: ^1.7.159
         version: link:../admin.remote-userstores.v1
