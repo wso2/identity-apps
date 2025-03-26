@@ -383,7 +383,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             case ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_CONNECTOR_ID:
                 return "Admin Initiated Password Reset";
             case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
-                return "Multi Attribute Login";
+                return "Alternative Login Identifiers";
             case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
                 return "Invite User to Set Password";
             case ServerConfigurationsConstants.SIFT_CONNECTOR_ID:
@@ -443,8 +443,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return "Enable self-service username recovery for users on the login page." +
                     "The user will receive a usernmae reset link via email upon request.";
             case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
-                return "Manage and configure settings related configuring "
-                    + "multiple attributes as the login identifier.";
+                return "Configure alternative login identifiers and allow users to use username or configured" +
+                    " login identifier in login and recovery flows.";
             case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
                 return "Allow users to set their own passwords during admin-initiated onboarding" +
                     " and configure related settings.";
