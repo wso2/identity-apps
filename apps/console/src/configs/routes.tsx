@@ -1063,9 +1063,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:manage.sidePanel.categories.AccountManagement",
-            children: [
-
-            ],
+            children: [],
             component: lazy(() =>
                 import(
                     "@wso2is/admin.server-configurations.v1/pages/connector-listing-page"
@@ -1088,9 +1086,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:manage.sidePanel.categories.AccountManagement",
-            children: [
-
-            ],
+            children: [],
             component: lazy(() =>
                 import(
                     "@wso2is/admin.server-configurations.v1/pages/connector-listing-page"
