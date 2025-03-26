@@ -33,6 +33,7 @@ export const transferList: transferListNS = {
             },
             users: {
                 roles: {
+                    searchForResults: "Please search for {{type}} to assign.",
                     selected: "There are no {{type}} assigned to this user.",
                     unselected: "There are no {{type}} available to assign to this user."
                 }
