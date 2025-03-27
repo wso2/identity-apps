@@ -30,7 +30,7 @@ import React from "react";
  * Returns `null` if no matching key is found.
  */
 const getConditionValue = (rule, key) => {
-    const found = rule.conditions.find((cond) => cond.key === key);
+    const found = rule.conditions.find((condition) => condition.key === key);
 
     if (!found) {
         return null;
