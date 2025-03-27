@@ -40,8 +40,7 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
-import find from "lodash-es/find";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -50,24 +49,6 @@ import { deleteGroupById, useGroupList } from "../api/groups";
 import { GroupList } from "../components/group-list";
 import { CreateGroupWizard } from "../components/wizard/create-group-wizard";
 import { WizardStepsFormTypes } from "../models/groups";
-
-const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
-    {
-        key: 1,
-        text: "Name",
-        value: "name"
-    },
-    {
-        key: 3,
-        text: "Created date",
-        value: "createdDate"
-    },
-    {
-        key: 4,
-        text: "Last updated",
-        value: "lastUpdated"
-    }
-];
 
 /**
  * React component to list User Groups.
@@ -89,7 +70,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ userStore, setUserStore ] = useState(userstoresConfig.primaryUserstoreName);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>(null);
-    const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(GROUPS_SORTING_OPTIONS[ 0 ]);
 
     const {
         data,
@@ -159,18 +139,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             }));
         }
     },[ groupsError ]);
-
-    /**
-     * Sets the list sorting strategy.
-     *
-     * @param event - The event.
-     * @param data - Dropdown data.
-     */
-    const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-        setListSortingStrategy(find(GROUPS_SORTING_OPTIONS, (option: DropdownItemProps) => {
-            return data.value === option.value;
-        }));
-    };
 
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setUserStore(data?.value as string);
@@ -276,7 +244,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 advancedSearch={ (
                     <AdvancedSearchWithBasicFilters
                         data-testid="group-mgt-groups-list-advanced-search"
-                        onFilter={ (query: string) => handleGroupFilter(query)  }
+                        onFilter={ handleGroupFilter }
                         filterAttributeOptions={ [
                             {
                                 key: 0,
@@ -306,8 +274,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
-                onSortStrategyChange={ handleListSortingStrategyOnChange }
-                sortStrategy={ listSortingStrategy }
                 rightActionPanel={ (
                     <Dropdown
                         data-testid="group-mgt-groups-list-stores-dropdown"
@@ -318,7 +284,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         defaultValue={ userstoresConfig.primaryUserstoreName }
                     />
                 ) }
-                showPagination={ data?.totalResults > 0  }
+                showPagination={ true }
                 totalPages={ Math.ceil(data?.totalResults / listItemLimit) }
                 totalListSize={ data?.totalResults }
                 isLoading={ isGroupsListRequestLoading }
@@ -332,36 +298,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         imageSize="tiny"
                     />) :
                     (<GroupList
-                        advancedSearch={ (
-                            <AdvancedSearchWithBasicFilters
-                                data-testid="group-mgt-groups-list-advanced-search"
-                                onFilter={ (query: string) => handleGroupFilter(query) }
-                                filterAttributeOptions={ [
-                                    {
-                                        key: 0,
-                                        text: "Name",
-                                        value: "displayName"
-                                    }
-                                ] }
-                                filterAttributePlaceholder={
-                                    t("console:manage.features.groups.advancedSearch.form.inputs.filterAttribute" +
-                                        ".placeholder")
-                                }
-                                filterConditionsPlaceholder={
-                                    t("console:manage.features.groups.advancedSearch.form.inputs.filterCondition" +
-                                        ".placeholder")
-                                }
-                                filterValuePlaceholder={
-                                    t("console:manage.features.groups.advancedSearch.form.inputs.filterValue" +
-                                        ".placeholder")
-                                }
-                                placeholder={ t("console:manage.features.groups.advancedSearch.placeholder") }
-                                defaultSearchAttribute="displayName"
-                                defaultSearchOperator="co"
-                                triggerClearQuery={ triggerClearQuery }
-                                disableSearchAndFilterOptions={ data?.totalResults <= 0 && !searchQuery }
-                            />
-                        ) }
                         data-testid="group-mgt-groups-list"
                         handleGroupDelete={ handleOnDelete }
                         onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }

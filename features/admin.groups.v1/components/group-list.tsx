@@ -47,11 +47,6 @@ import { GroupsInterface } from "../models/groups";
 
 interface GroupListProps extends SBACInterface<FeatureConfigInterface>,
     LoadableComponentInterface, TestableComponentInterface {
-
-    /**
-     * Advanced Search component.
-     */
-    advancedSearch?: ReactNode;
     /**
      * Default list item limit.
      */
@@ -116,7 +111,6 @@ interface GroupListProps extends SBACInterface<FeatureConfigInterface>,
 export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupListProps): ReactElement => {
 
     const {
-        advancedSearch,
         defaultListItemLimit,
         handleGroupDelete,
         isLoading,
@@ -375,7 +369,6 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
         <>
             <DataTable<GroupsInterface>
                 className="groups-list"
-                externalSearch={ advancedSearch }
                 isLoading={ isLoading }
                 loadingStateOptions={ {
                     count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
