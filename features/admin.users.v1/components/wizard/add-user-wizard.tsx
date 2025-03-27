@@ -17,6 +17,7 @@
  */
 
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
+import { userConfig } from "@wso2is/admin.extensions.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
@@ -130,6 +131,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ isBasicDetailsLoading, setBasicDetailsLoading ] = useState<boolean>(false);
     const [ isStepsUpdated, setIsStepsUpdated ] = useState<boolean>(false);
     const [ askPasswordFromUser, setAskPasswordFromUser ] = useState<boolean>(true);
+    const [ passwordOption, setPasswordOption ] = useState<PasswordOptionTypes>(userConfig.defaultPasswordOption);
     const [ isOfflineUser, setOfflineUser ] = useState<boolean>(false);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>([]);
     const [ selectedUserStore, setSelectedUserStore ] =
@@ -709,6 +711,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     requestedPasswordOption={ wizardState &&
                     wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.passwordOption }
                     isUserstoreRequired={ false }
+                    passwordOption={ passwordOption }
+                    setPasswordOption={ setPasswordOption }
                     setUserSummaryEnabled={ setUserSummaryEnabled }
                     setAskPasswordFromUser={ setAskPasswordFromUser }
                     setOfflineUser={ setOfflineUser }

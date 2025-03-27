@@ -37,6 +37,7 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import moment, { Moment } from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -179,7 +180,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
             );
         }
 
-        if (groupList?.length === 0) {
+        if (isEmpty(groupList) || groupList.length === 0) {
             return (
                 <EmptyPlaceholder
                     data-testid={ `${ testId }-empty-list-empty-placeholder` }
@@ -382,7 +383,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 } }
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
-                data={ groupList }
+                data={ groupList ?? [] }
                 onRowClick={
                     (e: SyntheticEvent, group: GroupsInterface): void => {
                         handleGroupEdit(group?.id);

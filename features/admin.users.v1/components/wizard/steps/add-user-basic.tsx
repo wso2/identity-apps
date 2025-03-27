@@ -69,6 +69,8 @@ export interface AddUserProps {
     requestedPasswordOption?: PasswordOptionTypes;
     isUserstoreRequired?: boolean;
     validationConfig?: ValidationDataInterface[];
+    passwordOption: PasswordOptionTypes;
+    setPasswordOption: (option: PasswordOptionTypes) => void;
     setUserSummaryEnabled: (toggle: boolean) => void;
     setAskPasswordFromUser?: (toggle: boolean) => void;
     setOfflineUser?: (toggle: boolean) => void;
@@ -93,9 +95,11 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         emailVerificationEnabled,
         onSubmit,
         isUserstoreRequired,
+        passwordOption,
         setUserSummaryEnabled,
         setAskPasswordFromUser,
         selectedUserStore,
+        setPasswordOption,
         setSelectedUserStore,
         setOfflineUser,
         isBasicDetailsLoading,
@@ -109,7 +113,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const profileSchemas: ProfileSchemaInterface[] = useSelector(
         (state: AppState) => state.profile.profileSchemas);
 
-    const [ passwordOption, setPasswordOption ] = useState<PasswordOptionTypes>(userConfig.defaultPasswordOption);
     const [ askPasswordOption, setAskPasswordOption ] = useState<string>(userConfig.defautlAskPasswordOption);
     const [ password, setPassword ] = useState<string>(initialValues?.newPassword ?? "");
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
