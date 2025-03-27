@@ -52,6 +52,7 @@
     String translationsJson = "{}";
     String state = request.getParameter("state");
     String code = request.getParameter("code");
+    String spId = request.getParameter("spId");
     
     try {
         byte[] jsonData = Files.readAllBytes(Paths.get(jsonFilePath));
@@ -125,6 +126,8 @@
     <script src="${pageContext.request.contextPath}/libs/react/react.production.min.js"></script>
     <script src="${pageContext.request.contextPath}/libs/react/react-dom.production.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/react-ui-core.min.js"></script>
+    <script type="text/javascript" src="js/error-utils.js"></script>
+    <script type="text/javascript" src="js/constants.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -143,8 +146,9 @@
 
             const Content = () => {
                 const baseUrl = "<%= identityServerEndpointContextParam %>";
+                const authenticationEndpoint = baseUrl + "${pageContext.request.contextPath}";
                 const defaultMyAccountUrl = "<%= myaccountUrl %>";
-                const apiUrl = baseUrl + "${pageContext.request.contextPath}/util/self-registration-api.jsp";
+                const apiUrl = authenticationEndpoint + "/util/self-registration-api.jsp";
                 const code = "<%= code != null ? code : null %>";
                 const state = "<%= state != null ? state : null %>";
                 
@@ -156,6 +160,7 @@
                 const [ loading, setLoading ] = useState(true);
                 const [ error, setError ] = useState(null);
                 const [ postBody, setPostBody ] = useState(undefined);
+                const [ flowError, setFlowError ] = useState(undefined);
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
@@ -226,6 +231,21 @@
                     .finally(() => setLoading(false));
                 }, [ postBody ]);
 
+                useEffect(() => {
+                    if (error && error.code) {
+                        const errorDetails = getI18nKeyForError(error.code);
+                        const errorPageURL = baseUrl + "/authenticationendpoint/registration_error.do?" + "ERROR_MSG="
+                            + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
+                            + "<%= spId %>" + "&" + "REG_PORTAL_URL=" + authenticationEndpoint + "/register.do";
+                        
+                        window.location.href = errorPageURL;
+                    }
+
+                    if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error) {
+                        setFlowError(flowData.data.additionalData.error);
+                    }
+                }, [ error, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
+
                 const handleFlowStatus = (flow) => {
                     if (!flow) return false;
 
@@ -262,14 +282,6 @@
                     }
                 };
 
-                if (error) {
-                    return createElement(
-                        "div",
-                        { className: "ui visible negative message" },
-                        "An error occurred while processing the registration flow. Please try again later."
-                    );
-                }
-
                 if (loading || (!components || components.length === 0)) {
                     return createElement(
                         "div",
@@ -296,7 +308,7 @@
                                     inputs: formValues
                                 });
                             },
-                            error: flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error
+                            error: flowError
                         }
                     )
                 );

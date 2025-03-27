@@ -23,7 +23,6 @@ import useFieldValidation from "../../hooks/use-field-validations";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
 import { getInputIconClass } from "../../utils/ui-utils";
-import ValidationCriteria from "../validation-criteria";
 import ValidationError from "../validation-error";
 
 const TextFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
@@ -60,14 +59,12 @@ const TextFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
                 icon={ getInputIconClass(identifier) }
             />
             {
-                validations && validations.type === "RULE" && (
-                    <ValidationCriteria validationConfig={ validations } errors={ fieldErrors } value={ value } />
-                )
-            }
-            {
                 <ValidationError
                     name={ identifier }
-                    errors={ { fieldErrors: fieldErrors, formStateErrors: formState.errors } }
+                    errors={ {
+                        fieldErrors: fieldErrors,
+                        formStateErrors: formState.errors
+                    } }
                 />
             }
         </>
