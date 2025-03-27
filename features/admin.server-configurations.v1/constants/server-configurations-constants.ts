@@ -194,6 +194,11 @@ export class ServerConfigurationsConstants {
     public static readonly REGISTRATION_FLOW_BUILDER_CONNECTOR_ID: string = "REGISTRATION_FLOW_BUILDER";
 
     /**
+     * UUID of the SIFT governance connector category.
+     */
+    public static readonly SIFT_CONNECTOR_CATEGORY_ID: string = "TG9naW4gU2VjdXJpdHk";
+
+    /**
      * User email verification API Keyword constants.
      */
     public static readonly EMAIL_VERIFICATION_ENABLED: string = "EmailVerification.Enable";

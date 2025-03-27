@@ -373,22 +373,13 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                             }),
                             label: t(route.name),
                             onClick: () => history.push(route.path),
-                            selected: route.selected ?? isRouteActive(route.path),
+                            selected: route.selected ?? selectedRoute?.path === route.path,
                             tag: t(routeFlag)
                         };
                     })
                 };
             }
         );
-    };
-
-    /**
-     *
-     * @param routePath - current route path
-     * @returns if the navigation item is active.
-     */
-    const isRouteActive = (routePath: string): boolean => {
-        return history.location.pathname === routePath;
     };
 
     return (
