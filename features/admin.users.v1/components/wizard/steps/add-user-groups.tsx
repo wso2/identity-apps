@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,26 +16,28 @@
  * under the License.
  */
 
-import { RolesInterface } from "@wso2is/core/models";
+import { useGroupList } from "@wso2is/admin.groups.v1/api/groups";
+import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Forms } from "@wso2is/forms";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
-import escapeRegExp from "lodash-es/escapeRegExp";
+import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 
 /**
  * Proptypes for the application consents list component.
  */
 interface AddConsumerUserGroupPropsInterface {
-    initialValues: any;
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
-    handleGroupListChange: (groups: any) => void;
-    handleTempListChange: (groups: any) => void;
-    handleInitialTempListChange: (groups: any) => void;
-    handleInitialGroupListChange: (groups: any) => void;
-    handleSetGroupId: (groupId: string) => void;
+    selectedUserStore: string;
+    selectedGroupsList: GroupsInterface[];
+    setSelectedGroupList: (groups: GroupsInterface[]) => void;
 }
 
 /**
@@ -47,50 +49,70 @@ export const AddUserGroups: FunctionComponent<AddConsumerUserGroupPropsInterface
     props: AddConsumerUserGroupPropsInterface): ReactElement => {
 
     const {
-        initialValues,
         triggerSubmit,
         onSubmit,
-        handleGroupListChange,
-        handleTempListChange,
-        handleInitialTempListChange,
-        handleSetGroupId
+        selectedUserStore,
+        selectedGroupsList,
+        setSelectedGroupList
     } = props;
 
     const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
 
-    const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesInterface[]>([]);
-    const [ , setIsSelectUnassignedAllGroupsChecked ] = useState(false);
+    const [ , setIsSelectUnassignedAllGroupsChecked ] = useState<boolean>(false);
+    const [ searchQuery, setSearchQuery ] = useState<string>(null);
 
-    useEffect(() => {
-        setCheckedUnassignedListItems(initialValues?.tempGroupList);
-    }, [ initialValues?.tempGroupList ]);
+    const excludedAttributes: string = "members";
+
+    const {
+        data: originalGroupList,
+        error: groupsListFetchRequestError
+    } = useGroupList(
+        null,
+        null,
+        searchQuery,
+        selectedUserStore,
+        excludedAttributes
+    );
 
     /**
-     * The following method handles the onChange event of the
-     * search field. It matches the string pattern of the user
-     * input value with the elements of the user list.
-     *
-     * @param e - Click event.
-     * @param value - Input value of the field
+     * Show error if group list fetch request failed.
      */
-    const handleUnselectedListSearch = (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
-        let isMatch: boolean = false;
-        const filteredGroupList: any[] = [];
+    useEffect(() => {
+        if (groupsListFetchRequestError) {
+            if (groupsListFetchRequestError.response && groupsListFetchRequestError.response.data &&
+                groupsListFetchRequestError.response.data.description) {
+                dispatch(
+                    addAlert({
+                        description: groupsListFetchRequestError.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.roles.edit.groups.notifications.fetchError.message")
+                    })
+                );
 
-        if (!isEmpty(value)) {
-            const re: RegExp = new RegExp(escapeRegExp(value), "i");
+                return;
+            }
 
-            initialValues.initialGroupList && initialValues.initialGroupList.map((group: any) => {
-                isMatch = re.test(group.displayName);
-                if (isMatch) {
-                    filteredGroupList.push(group);
-                    handleGroupListChange(filteredGroupList);
-                }
-            });
-        } else {
-            handleGroupListChange(initialValues?.initialGroupList);
+            dispatch(
+                addAlert({
+                    description: t("console:manage.features.roles.edit.groups.notifications.fetchError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.roles.edit.groups.notifications.fetchError.message")
+                })
+            );
         }
-    };
+    }, [ groupsListFetchRequestError ]);
+
+    const handleUnselectedListSearch: DebouncedFunc<(e: FormEvent<HTMLInputElement>, query: string) => void>
+    = useCallback(debounce((e: FormEvent<HTMLInputElement>, query: string) => {
+        if (isEmpty(query.trim())) {
+            setSearchQuery(null);
+        } else {
+            const processedQuery: string = "displayName co " + query;
+
+            setSearchQuery(processedQuery);
+        }
+    }, 1000), []);
 
     // Commented when the select all option for groups was removed.
     // Uncomment if select all option is reintroduced.
@@ -111,23 +133,28 @@ export const AddUserGroups: FunctionComponent<AddConsumerUserGroupPropsInterface
      * The following method handles the onChange event of the
      * checkbox field of an unassigned item.
      */
-    const handleUnassignedItemCheckboxChange = (group: any) => {
-        const checkedGroups: RolesInterface[] = [ ...checkedUnassignedListItems ];
+    const handleUnassignedItemCheckboxChange = (group: GroupsInterface) => {
+        const checkedGroups: GroupsInterface[] = !isEmpty(selectedGroupsList)
+            ? [ ...selectedGroupsList ]
+            : [];
 
-        if (checkedGroups?.includes(group)) {
-            checkedGroups.splice(checkedGroups.indexOf(group), 1);
+        const groupIndex: number = checkedGroups.findIndex(
+            (selectedGroup: GroupsInterface) => selectedGroup.id === group.id);
+
+        if (groupIndex !== -1) {
+            checkedGroups.splice(groupIndex, 1);
         } else {
             checkedGroups.push(group);
         }
-        handleTempListChange(checkedGroups);
-        handleInitialTempListChange(checkedGroups);
-        setIsSelectUnassignedAllGroupsChecked(initialValues?.groupList?.length === checkedGroups.length);
+
+        setSelectedGroupList(checkedGroups);
+        setIsSelectUnassignedAllGroupsChecked(originalGroupList?.Resources?.length === checkedGroups.length);
     };
 
     return (
         <Forms
             onSubmit={ () => {
-                onSubmit({ groups: initialValues?.tempGroupList });
+                onSubmit({ groups: selectedGroupsList });
             } }
             submitState={ triggerSubmit }
         >
@@ -135,11 +162,13 @@ export const AddUserGroups: FunctionComponent<AddConsumerUserGroupPropsInterface
                 selectionComponent
                 searchPlaceholder={ t("transferList:searchPlaceholder",
                     { type: "Groups" }) }
-                handleUnelectedListSearch={ handleUnselectedListSearch }
+                handleUnelectedListSearch={ (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
+                    handleUnselectedListSearch(e, value);
+                } }
                 data-testid="user-mgt-add-user-wizard-modal"
             >
                 <TransferList
-                    isListEmpty={ !(initialValues?.groupList?.length > 0) }
+                    isListEmpty={ !(originalGroupList?.Resources?.length > 0) }
                     listType="unselected"
                     emptyPlaceholderContent={ t("transferList:list.emptyPlaceholders." +
                         "users.roles.unselected", { type: "groups" }) }
@@ -148,20 +177,23 @@ export const AddUserGroups: FunctionComponent<AddConsumerUserGroupPropsInterface
                         + "emptyPlaceholders.default") }
                 >
                     {
-                        initialValues?.groupList?.map((group: any, index: number)=> {
-                            const groupName: string = group?.displayName?.split("/");
+                        originalGroupList?.Resources?.map((group: GroupsInterface, index: number)=> {
+                            const groupNameSegments: string[] = group.displayName?.split("/");
+                            const groupName: string = groupNameSegments.length > 1
+                                ? groupNameSegments[1]
+                                : groupNameSegments[0];
 
                             return (
                                 <TransferListItem
                                     handleItemChange={ () => handleUnassignedItemCheckboxChange(group) }
                                     key={ index }
-                                    listItem={ groupName?.length > 1 ? groupName[1] : group?.displayName }
+                                    listItem={ groupName }
                                     listItemId={ group.id }
                                     listItemIndex={ index }
                                     listItemTypeLabel={ null }
-                                    isItemChecked={ checkedUnassignedListItems?.includes(group) }
+                                    isItemChecked={ selectedGroupsList.findIndex((item: GroupsInterface) =>
+                                        item.id === group.id) !== -1 }
                                     showSecondaryActions={ false }
-                                    handleOpenPermissionModal={ () => handleSetGroupId(group.id) }
                                     data-testid="user-mgt-add-user-wizard-modal-unselected-groups"
                                 />
                             );

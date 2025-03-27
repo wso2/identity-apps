@@ -191,11 +191,15 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             ? [ ...selectedGroupsList ]
             : [];
 
-        if (checkedGroups.includes(group)) {
-            checkedGroups.splice(checkedGroups.indexOf(group), 1);
+        const groupIndex: number = checkedGroups.findIndex(
+            (selectedGroup: GroupsInterface) => selectedGroup.id === group.id);
+
+        if (groupIndex !== -1) {
+            checkedGroups.splice(groupIndex, 1);
         } else {
             checkedGroups.push(group);
         }
+
         setSelectedGroupList(checkedGroups);
         setIsSelectAllGroupsChecked(checkedGroups.length === groupsList.length);
     };
