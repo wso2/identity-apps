@@ -534,7 +534,7 @@ importers:
         specifier: ^2.33.88
         version: link:../../features/admin.connections.v1
       '@wso2is/admin.console-settings.v1':
-        specifier: ^2.25.204
+        specifier: ^2.25.205
         version: link:../../features/admin.console-settings.v1
       '@wso2is/admin.core.v1':
         specifier: ^2.42.5
@@ -555,7 +555,7 @@ importers:
         specifier: ^1.4.204
         version: link:../../features/admin.feature-gate.v1
       '@wso2is/admin.groups.v1':
-        specifier: ^2.27.115
+        specifier: ^2.27.116
         version: link:../../features/admin.groups.v1
       '@wso2is/admin.home.v1':
         specifier: ^1.7.2
@@ -633,7 +633,7 @@ importers:
         specifier: ^1.5.203
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.30.118
+        specifier: ^2.30.119
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.29
@@ -5588,7 +5588,7 @@ importers:
         specifier: ^2.32.128
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.30.113
+        specifier: ^2.30.119
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.29
@@ -8696,7 +8696,7 @@ importers:
         specifier: ^2.27.149
         version: link:../admin.roles.v2
       '@wso2is/admin.users.v1':
-        specifier: ^2.30.118
+        specifier: ^2.30.119
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.30
@@ -18387,7 +18387,7 @@ importers:
         specifier: ^1.4.203
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.groups.v1':
-        specifier: ^2.27.115
+        specifier: ^2.27.116
         version: link:../admin.groups.v1
       '@wso2is/admin.identity-providers.v1':
         specifier: ^2.26.203
@@ -18405,7 +18405,7 @@ importers:
         specifier: ^2.29.6
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.30.118
+        specifier: ^2.30.119
         version: 'link:'
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.30

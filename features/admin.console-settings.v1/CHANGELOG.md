@@ -1,5 +1,14 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.25.205
+
+### Patch Changes
+
+- [#7953](https://github.com/wso2/identity-apps/pull/7953) [`172423b550da4224d5c71f559b5d81b4bae2b5d6`](https://github.com/wso2/identity-apps/commit/172423b550da4224d5c71f559b5d81b4bae2b5d6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Optimize user creation wizard by removing unnecessary states and fix UI bugs in console settings
+
+- Updated dependencies [[`172423b550da4224d5c71f559b5d81b4bae2b5d6`](https://github.com/wso2/identity-apps/commit/172423b550da4224d5c71f559b5d81b4bae2b5d6)]:
+  - @wso2is/admin.users.v1@2.30.119
+
 ## 2.25.204
 
 ### Patch Changes
