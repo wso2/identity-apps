@@ -67,7 +67,7 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
     const gonvernanConnectorsConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.governanceConnectors);
     const saml2WebSSO: DeprecatedFeatureInterface = gonvernanConnectorsConfig
-        .deprecatedFeaturesToShow.find((feature: any) => {
+        .deprecatedFeaturesToShow?.find((feature: any) => {
             return feature?.name === "saml2";
         });
 
