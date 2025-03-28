@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     DeprecatedFeatureInterface,
@@ -72,13 +72,10 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
         });
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
-    const isReadOnly: boolean = useMemo(() => !hasRequiredScopes(
-        featureConfig?.governanceConnectors,
-        featureConfig?.governanceConnectors?.scopes?.update,
-        allowedScopes
-    ), [ featureConfig, allowedScopes ]);
+    const isReadOnly: boolean = !useRequiredScopes(
+        featureConfig?.governanceConnectors?.scopes?.update
+    );
 
     const dispatch: Dispatch<any> = useDispatch();
 
