@@ -17,6 +17,7 @@
  */
 
 import { useCallback, useState } from "react";
+import { validateEmail } from "../utils/validation-utils";
 
 /**
  * A custom hook for validating form fields using a flexible “rules” approach.
@@ -56,6 +57,8 @@ const useFieldValidation = (validationConfig) => {
         if (rule.type !== "RULE") return null;
 
         const { name, conditions } = rule;
+
+        console.log("rule", rule);
 
         switch (name) {
             case "LengthValidator": {
@@ -172,6 +175,17 @@ const useFieldValidation = (validationConfig) => {
 
                 break;
             }
+
+            case "EmailFormatValidator": {
+                const emailPattern = "^([a-zA-Z0-9!#$'\\+=^_\\.{|}~\\-&])+\\@(([a-zA-Z0-9\\-])+\\.)+([a-zA-Z0-9]{2,10})+$";
+
+                if (!validateEmail(value, emailPattern)) {
+                    return "Must use a valid email address.";
+                }
+
+                break;
+            }
+
 
             default:
                 return null;

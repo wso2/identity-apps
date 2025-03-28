@@ -64,6 +64,7 @@ export const getRuleLabel = (rule) => {
     const minLen = getConditionValue(rule, "min.length");
     const maxLen = getConditionValue(rule, "max.length");
     const confirmPassword = getConditionValue(rule, "confirm.password");
+    const isValidatorEnabled = getConditionValue(rule, "enable.validator");
 
     switch (rule.name) {
         case "LengthValidator":
@@ -109,6 +110,14 @@ export const getRuleLabel = (rule) => {
 
             if (confirmPassword) {
                 return "Must match with the password.";
+            }
+
+            return null;
+
+        case "EmailFormatValidator":
+
+            if (isValidatorEnabled) {
+                return "Must use a valid email address.";
             }
 
             return null;
