@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.22.2
+
+### Patch Changes
+
+- [#7954](https://github.com/wso2/identity-apps/pull/7954) [`cb66573556871b58a2253ef638c647245cbb4283`](https://github.com/wso2/identity-apps/commit/cb66573556871b58a2253ef638c647245cbb4283) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues with Google one-tap prompt
+
 ## 2.22.1
 
 ### Patch Changes
