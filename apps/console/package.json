@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/console",
-    "version": "2.50.5",
+    "version": "2.50.6",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -59,7 +59,7 @@
         "@wso2is/admin.certificates.v1": "^2.25.203",
         "@wso2is/admin.claims.v1": "^2.27.114",
         "@wso2is/admin.connections.v1": "^2.33.88",
-        "@wso2is/admin.console-settings.v1": "^2.25.205",
+        "@wso2is/admin.console-settings.v1": "^2.25.206",
         "@wso2is/admin.core.v1": "^2.42.5",
         "@wso2is/admin.email-and-sms.v1": "^2.25.203",
         "@wso2is/admin.email-management.v1": "^2.25.203",
