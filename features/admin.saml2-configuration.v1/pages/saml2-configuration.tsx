@@ -33,7 +33,7 @@ import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
 import { EmphasizedSegment, PageLayout, PrimaryButton, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
