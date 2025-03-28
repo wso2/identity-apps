@@ -190,8 +190,14 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
                     value={ activeAdministratorGroup }
                     onChange={ (_: ChangeEvent<HTMLInputElement>, value: string) => setActiveAdministratorGroup(value) }
                 >
-                    <FormControlLabel value="administrators" control={ <Radio /> } label={ productName } />
                     <FormControlLabel
+                        data-componentid={ `${ componentId }-radio-group-administrators` }
+                        value="administrators"
+                        control={ <Radio /> }
+                        label={ productName }
+                    />
+                    <FormControlLabel
+                        data-componentid={ `${ componentId }-radio-group-privileged-users` }
                         value="privilegedUsers"
                         control={ <Radio /> }
                         label={ t("common:organizationName", { orgName: organizationName }) }
