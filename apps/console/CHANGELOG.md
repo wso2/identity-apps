@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.50.7
+
+### Patch Changes
+
+- [#7964](https://github.com/wso2/identity-apps/pull/7964) [`b786b83ec4778f8298997587f89c9de8d5605006`](https://github.com/wso2/identity-apps/commit/b786b83ec4778f8298997587f89c9de8d5605006) Thanks [@savindi7](https://github.com/savindi7)! - Fix null check in Gov Connectors.
+
+* [#7936](https://github.com/wso2/identity-apps/pull/7936) [`8c77be8232c791ea1badaa04ee40ec8b35b5edb6`](https://github.com/wso2/identity-apps/commit/8c77be8232c791ea1badaa04ee40ec8b35b5edb6) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Add global configuration and support configurations in authentication and recovery portals to show/hide cookie consent banner
+
+* Updated dependencies [[`b786b83ec4778f8298997587f89c9de8d5605006`](https://github.com/wso2/identity-apps/commit/b786b83ec4778f8298997587f89c9de8d5605006)]:
+  - @wso2is/admin.saml2-configuration.v1@2.25.204
+
 ## 2.50.6
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.22.3
+
+### Patch Changes
+
+- [#7935](https://github.com/wso2/identity-apps/pull/7935) [`05a2dc96ad980edaeac2e362fb34c5f06a438b9c`](https://github.com/wso2/identity-apps/commit/05a2dc96ad980edaeac2e362fb34c5f06a438b9c) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Validate HEAD requests when clicking on org invitation link
+
+* [#7936](https://github.com/wso2/identity-apps/pull/7936) [`8c77be8232c791ea1badaa04ee40ec8b35b5edb6`](https://github.com/wso2/identity-apps/commit/8c77be8232c791ea1badaa04ee40ec8b35b5edb6) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Add global configuration and support configurations in authentication and recovery portals to show/hide cookie consent banner
+
 ## 2.22.2
 
 ### Patch Changes
