@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.22.1
+
+### Patch Changes
+
+- [#7957](https://github.com/wso2/identity-apps/pull/7957) [`ea8fa90dfe5e4ccadc7c705e02c20354f98fa59b`](https://github.com/wso2/identity-apps/commit/ea8fa90dfe5e4ccadc7c705e02c20354f98fa59b) Thanks [@ThaminduDilshan](https://github.com/ThaminduDilshan)! - Import registration-portal-url-resolver to the user-not-found page
+
 ## 2.22.0
 
 ### Minor Changes
