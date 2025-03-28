@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.22.0
+
+### Minor Changes
+
+- [#7949](https://github.com/wso2/identity-apps/pull/7949) [`a29a79750806383bb9c9bdc60382b043d6d9796f`](https://github.com/wso2/identity-apps/commit/a29a79750806383bb9c9bdc60382b043d6d9796f) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve API error response handling in dynamic registration portal
+
 ## 2.21.0
 
 ### Minor Changes
