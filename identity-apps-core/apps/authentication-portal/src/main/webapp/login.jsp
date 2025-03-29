@@ -18,6 +18,8 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="org.apache.commons.collections.CollectionUtils" %>
+<%@ page import="org.apache.commons.httpclient.HttpURL" %>
+<%@ page import="org.apache.commons.httpclient.HttpsURL" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EndpointConfigManager" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
@@ -1234,6 +1236,9 @@
                                     String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
                                     String prmstr = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
                                     String urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
+                                    if ((scheme == "http" && serverPort == HttpURL.DEFAULT_PORT) || (scheme == "https" && serverPort == HttpsURL.DEFAULT_PORT)) {
+                                        urlWithoutEncoding = scheme + "://" + serverName + uri + "?" + prmstr;
+                                    }
                                     urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
                                     urlParameters = prmstr;
                                 } else {
