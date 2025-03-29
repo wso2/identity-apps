@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.22.4
+
+### Patch Changes
+
+- [#7966](https://github.com/wso2/identity-apps/pull/7966) [`3757b978b324f47c13deea30254de36e0758da4e`](https://github.com/wso2/identity-apps/commit/3757b978b324f47c13deea30254de36e0758da4e) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Remove server port when building the callback url when the server is starting at default https port
+
 ## 2.22.3
 
 ### Patch Changes
