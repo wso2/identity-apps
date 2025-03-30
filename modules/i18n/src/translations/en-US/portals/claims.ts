@@ -461,11 +461,6 @@ export const claims: ClaimsNS = {
                 label: "Display Order",
                 placeholder: "Enter the display order"
             },
-            multiValued: {
-                label: "Allow multiple values for this attribute",
-                placeholder: "Select a user attribute"
-            },
-            multiValuedHint: "Select this option if the attribute can have multiple values.",
             displayOrderHint: "This determines the position at which this attribute is "
                 + "displayed in the user profile and the user registration page",
             infoMessages: {
@@ -474,6 +469,11 @@ export const claims: ClaimsNS = {
                 disabledConfigInfo: "Please note that below section is disabled as there is no " +
                     "external claim mapping found for this claim attribute."
             },
+            multiValued: {
+                label: "Allow multiple values for this attribute",
+                placeholder: "Select a user attribute"
+            },
+            multiValuedHint: "Select this option if the attribute can have multiple values.",
             name: {
                 label: "Attribute Display Name",
                 placeholder: "Enter the display name",
