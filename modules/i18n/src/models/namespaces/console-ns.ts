@@ -4275,6 +4275,11 @@ export interface ConsoleNS {
                             placeholder: string;
                         };
                         displayOrderHint: string;
+                        multiValued: {
+                            label: string;
+                            placeholder: string;
+                        };
+                        multiValuedHint: string;
                         required: {
                             label: string;
                         };

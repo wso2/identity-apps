@@ -169,6 +169,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                      description: values.get("description")?.toString(),
                      displayName: values.get("name").toString(),
                      displayOrder: values.get("displayOrder") ? parseInt(values.get("displayOrder")?.toString()) : 0,
+                     multiValued: values.get("multiValued")?.length > 0,
                      readOnly: values.get("readOnly")?.length > 0,
                      regEx: values.get("regularExpression")?.toString(),
                      required: values.get("required")?.length > 0,
