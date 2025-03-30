@@ -21,7 +21,6 @@ import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
 import Divider from "@oxygen-ui/react/Divider";
 import OxygenHeader, { HeaderProps } from "@oxygen-ui/react/Header";
-import Image from "@oxygen-ui/react/Image";
 import Link from "@oxygen-ui/react/Link";
 import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
@@ -39,10 +38,8 @@ import { OrganizationSwitchBreadcrumb } from "@wso2is/admin.organizations.v1/com
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
 import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
-import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { FeatureAccessConfigInterface } from "@wso2is/core/src/models";
-import { StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import { useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
@@ -64,6 +61,7 @@ import { AppState } from "../store";
 import { CommonUtils } from "../utils/common-utils";
 import { EventPublisher } from "../utils/event-publisher";
 import "./header.scss";
+import LogoImage from "./logo-image";
 
 /**
  * Dashboard layout Prop types.
@@ -353,33 +351,14 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         return accountAppURL;
     };
 
-    const LOGO_IMAGE = () => {
-        return (
-            <Image
-                src={ resolveAppLogoFilePath(
-                    window["AppUtils"].getConfig().ui.appLogo?.defaultLogoPath ??
-                        window["AppUtils"].getConfig().ui.appLogoPath,
-                    `${window["AppUtils"].getConfig().clientOrigin}/` +
-                        `${
-                            StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBase) !== ""
-                                ? StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBase) + "/"
-                                : ""
-                        }libs/themes/` +
-                        config.ui.theme.name
-                ) }
-                alt="logo"
-            />
-        );
-    };
-
     return (
         <>
             <OxygenHeader
                 className="is-header"
                 brand={ {
                     logo: {
-                        desktop: <LOGO_IMAGE />,
-                        mobile: <LOGO_IMAGE />
+                        desktop: <LogoImage />,
+                        mobile: <LogoImage />
                     },
                     onClick: () =>
                         hasGettingStartedViewPermission &&

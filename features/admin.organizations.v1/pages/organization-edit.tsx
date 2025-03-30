@@ -177,6 +177,10 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
      * Method that handles the organization switch.
      */
     const handleOrganizationSwitch = async (): Promise<void> => {
+        document.dispatchEvent(new CustomEvent("orgSwitchStart", {
+            detail: { organization }
+        }));
+
         let response: BasicUserInfo = null;
 
         try {
@@ -198,6 +202,10 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
                     )
                 })
             );
+        } finally {
+            document.dispatchEvent(new CustomEvent("orgSwitchEnd", {
+                detail: { organization: null }
+            }));
         }
     };
 
