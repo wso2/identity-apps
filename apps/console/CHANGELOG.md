@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.51.0
+
+### Minor Changes
+
+- [#7974](https://github.com/wso2/identity-apps/pull/7974) [`ebffbaea1bc2d199cdf037c0f9208c2d8402debb`](https://github.com/wso2/identity-apps/commit/ebffbaea1bc2d199cdf037c0f9208c2d8402debb) Thanks [@brionmario](https://github.com/brionmario)! - Rename @wso2is/admin.authentication-flow-builder.v1 -> `@wso2is/admin.login-flow-builder.v1`
+
+### Patch Changes
+
+- Updated dependencies [[`ebffbaea1bc2d199cdf037c0f9208c2d8402debb`](https://github.com/wso2/identity-apps/commit/ebffbaea1bc2d199cdf037c0f9208c2d8402debb)]:
+  - @wso2is/admin.applications.v1@2.33.0
+
 ## 2.50.8
 
 ### Patch Changes
