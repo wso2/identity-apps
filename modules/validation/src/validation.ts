@@ -347,7 +347,7 @@ export const isValidRoleName = (value: string): boolean => {
     try {
         const result: ValidationResult = Joi.string()
             .regex(new RegExp("^[^/]+$"))
-            .min(3)
+            .min(1)
             .max(255)
             .validate(value);
 

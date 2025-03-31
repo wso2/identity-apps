@@ -599,7 +599,7 @@ export const governanceConnectors: governanceConnectorsNS = {
                     }
                 },
                 userClaimUpdate: {
-                    friendlyName: "Attribute Update Settings",
+                    friendlyName: "Attribute Update Verification Settings",
                     subTitle: "Configure verification & notification settings when updating user attributes.",
                     properties: {
                         userClaimUpdateEmailEnableVerification: {

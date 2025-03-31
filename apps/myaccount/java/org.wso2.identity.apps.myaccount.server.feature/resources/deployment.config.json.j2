@@ -355,8 +355,10 @@
                 }
             }
         },
-        {% if myaccount.ui.is_cookie_consent_banner_enabled is defined %}
-        "isCookieConsentBannerEnabled": {{ myaccount.ui.is_cookie_consent_banner_enabled }},
+        {% set cookie_consent = myaccount.ui.is_cookie_consent_banner_enabled if myaccount.ui.is_cookie_consent_banner_enabled is defined
+            else ui.is_cookie_consent_banner_enabled %}
+        {% if cookie_consent is defined %}
+        "isCookieConsentBannerEnabled": {{ cookie_consent }},
         {% endif %}
         {% if myaccount.ui.cookie_policy_url is defined %}
         "cookiePolicyUrl": "{{ myaccount.ui.cookie_policy_url }}",

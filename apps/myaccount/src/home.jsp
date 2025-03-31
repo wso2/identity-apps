@@ -1,5 +1,5 @@
 <!--
-~    Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+~    Copyright (c) 2022-2025, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
 ~
 ~    This software is the property of WSO2 Inc. and its suppliers, if any.
 ~    Dissemination of any information or reproduction of any material contained
@@ -156,7 +156,12 @@
         <!-- End of custom stylesheets -->
 
         <!-- Start of custom scripts added to the head -->
-        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"></script>
+        <script
+            id="head-script"
+            type="text/javascript"
+            src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"
+            data-page-id="home"
+        ></script>
         <!-- End of custom scripts added to the head -->
     </head>
     <body>

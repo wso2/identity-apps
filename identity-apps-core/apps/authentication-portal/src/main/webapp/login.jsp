@@ -18,6 +18,8 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="org.apache.commons.collections.CollectionUtils" %>
+<%@ page import="org.apache.commons.httpclient.HttpURL" %>
+<%@ page import="org.apache.commons.httpclient.HttpsURL" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EndpointConfigManager" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
@@ -719,22 +721,14 @@
                                     <br>
                                 <% } else if (isGoogleIdp) { %>
                                     <div class="social-login blurring social-dimmer">
-                                        <div
-                                            class="ui basic segment google-one-tap-loader"
-                                            id="googleSignInLoading"
-                                            data-testid="login-page-sign-in-with-google-loader"
-                                        >
-                                            <div class="ui active inverted dimmer">
-                                                <div class="ui small loader"></div>
-                                            </div>
-                                        </div>
-                                        <div class="field" id="googleSignIn" style="display: none;">
-                                            <button type="button"
-                                                    class="ui button"
-                                                    data-testid="login-page-sign-in-with-google"
-                                                    onclick="handleNoDomain(this,
-                                                                '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
-                                                                '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
+                                        <div class="field" id="googleSignIn">
+                                            <button
+                                                type="button"
+                                                class="ui button"
+                                                data-testid="login-page-sign-in-with-google"
+                                                onclick="handleNoDomain(this,
+                                                    '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
+                                                    '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
                                             >
                                                 <img
                                                     class="ui image"
@@ -748,9 +742,7 @@
 
                                     <% if (GOOGLE_ONE_TAP_ENABLED) { %>
 
-                                        <script src="https://accounts.google.com/gsi/client" async defer></script>
-
-                                        <div id="google_parent" class="google-one-tap-container"></div>
+                                        <script src="https://accounts.google.com/gsi/client" defer></script>
 
                                         <form action="<%=GOOGLE_CALLBACK_URL%>" method="post" id="googleOneTapForm" style="display: none;">
                                             <input type="hidden" name="state" value="<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>"/>
@@ -762,51 +754,16 @@
                                         </form>
 
                                         <script>
+                                            document.addEventListener("DOMContentLoaded", function() {
 
-                                            if (navigator) {
-                                                var userAgent = navigator.userAgent;
-                                                var browserName = void 0;
-                                                var restrictedBrowsersForGOT = "<%=restrictedBrowsersForGOT%>";
-
-                                                if (userAgent.match(/chrome|chromium|crios/i)) {
-                                                    browserName = "chrome";
-                                                } else if (userAgent.match(/firefox|fxios/i)) {
-                                                    browserName = "firefox";
-                                                } else if (userAgent.match(/safari/i)) {
-                                                    browserName = "safari";
-                                                } else if (userAgent.match(/opr\//i)) {
-                                                    browserName = "opera";
-                                                } else if (userAgent.match(/edg/i)) {
-                                                    browserName = "edge";
-                                                } else {
-                                                    browserName = "No browser detection";
-                                                }
-
-                                                if (restrictedBrowsersForGOT !== null
-                                                    && restrictedBrowsersForGOT.trim() !== ''
-                                                    && restrictedBrowsersForGOT.toLowerCase().includes(browserName)) {
-                                                        document.getElementById("googleSignInLoading").style.display = "none";
-                                                        document.getElementById("googleSignIn").style.display = "block";
-                                                } else {
-                                                    window.onload = function callGoogleOneTap() {
-                                                        google.accounts.id.initialize({
-                                                            client_id: "<%=Encode.forJavaScriptAttribute(GOOGLE_CLIENT_ID)%>",
-                                                            prompt_parent_id: "google_parent",
-                                                            cancel_on_tap_outside: false,
-                                                            nonce: "<%=Encode.forJavaScriptAttribute(request.getParameter("sessionDataKey"))%>",
-                                                            callback: handleCredentialResponse
-                                                        });
-                                                        google.accounts.id.prompt((notification) => {
-                                                             onMoment(notification);
-                                                        });
-                                                    }
-                                                }
-                                            }
-                                        </script>
-                                    <%} else {%>
-                                        <script>
-                                           document.getElementById("googleSignInLoading").style.display = "none";
-                                           document.getElementById("googleSignIn").style.display = "block";
+                                                google.accounts.id.initialize({
+                                                    client_id: "<%=Encode.forJavaScriptAttribute(GOOGLE_CLIENT_ID)%>",
+                                                    cancel_on_tap_outside: false,
+                                                    nonce: "<%=Encode.forJavaScriptAttribute(request.getParameter("sessionDataKey"))%>",
+                                                    callback: handleCredentialResponse
+                                                });
+                                                google.accounts.id.prompt();
+                                            });
                                         </script>
                                     <%} %>
                                     <br>
@@ -1120,6 +1077,7 @@
                                     }
 
                                     if (localAuthenticator.startsWith(CUSTOM_LOCAL_AUTHENTICATOR_PREFIX)) {
+
                                         String customLocalAuthenticatorImageURL = "libs/themes/default/assets/images/authenticators/custom-authenticator.svg";
                                         String customLocalAuthenticatorDisplayName = "DEFAULT CUSTOM AUTHENTICATOR NAME";
                                         Map<String, String> authenticatorConfigMap = new HashMap<>();
@@ -1130,9 +1088,9 @@
                                             // Exception is ignored and the default values will be used as a fallback.
                                         }
 
-                                        if (MapUtils.isNotEmpty(authenticatorConfigMap) && authenticatorConfigMap.containsKey("definedBy") 
+                                        if (MapUtils.isNotEmpty(authenticatorConfigMap) && authenticatorConfigMap.containsKey("definedBy")
                                             && authenticatorConfigMap.get("definedBy").equals("USER")) {
-                                            
+
                                             if (authenticatorConfigMap.containsKey("image")) {
                                                 customLocalAuthenticatorImageURL = authenticatorConfigMap.get("image");
                                             }
@@ -1291,6 +1249,9 @@
                                     String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
                                     String prmstr = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
                                     String urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
+                                    if ((scheme == "http" && serverPort == HttpURL.DEFAULT_PORT) || (scheme == "https" && serverPort == HttpsURL.DEFAULT_PORT)) {
+                                        urlWithoutEncoding = scheme + "://" + serverName + uri + "?" + prmstr;
+                                    }
                                     urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
                                     urlParameters = prmstr;
                                 } else {
@@ -1384,51 +1345,6 @@
                 $(".ui.segment").hide();
                 window.location = "<%=getRegistrationPortalUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING))%>";
         <% } %>
-
-        function onMoment(notification) {
-            displayGoogleSignIn(notification.isNotDisplayed() || notification.isSkippedMoment());
-
-            const observed = document.querySelector('#credential_picker_container');
-
-            if (observed != null && notification.isDisplayed()) {
-                let style = window.getComputedStyle(observed);
-                const observer = new MutationObserver(function(mutations) {
-                    mutations.find(function(mutation) {
-                        if (style.display == "none") {
-                          displayGoogleSignIn(true);
-                        }
-                        return true;
-                    });
-                    observer.takeRecords();
-                    observer.disconnect();
-                });
-                observer.observe(observed, {
-                    attributesList: ["style"],
-                    attributes: true,
-                    subtree: true,
-                    childList: true
-                });
-            }
-
-            var googleOneTapLoadingElement = document.getElementById("googleSignInLoading");
-            if (googleOneTapLoadingElement != null) {
-                googleOneTapLoadingElement.style.display = "none";
-            }
-
-            // Add loaded class to google_parent element to animate the google one tap container.
-            document.getElementById("google_parent").classList.add('loaded');
-        }
-
-        function displayGoogleSignIn(display) {
-            var element = document.getElementById("googleSignIn");
-            if (element != null) {
-                if (display) {
-                    element.style.display = "block";
-                } else {
-                    element.style.display = "none";
-                }
-            }
-        }
 
         function handleCredentialResponse(response) {
             $('#credential').val(response.credential);

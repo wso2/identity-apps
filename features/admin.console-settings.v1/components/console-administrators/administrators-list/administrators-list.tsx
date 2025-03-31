@@ -605,6 +605,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                 <AddExistingUserWizard
                     onSuccess={ () => mutateAdministratorsListFetchRequest() }
                     onClose={ () => setShowAddExistingUserWizard(false) }
+                    selectedUserStore={ selectedUserStore }
                 />
             ) }
             { showInviteNewAdministratorModal && (

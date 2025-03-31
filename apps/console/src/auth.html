@@ -1,5 +1,5 @@
 <!--
-~    Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+~    Copyright (c) 2022-2025, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
 ~
 ~    This software is the property of WSO2 Inc. and its suppliers, if any.
 ~    Dissemination of any information or reproduction of any material contained
@@ -232,7 +232,7 @@
 
                     /**
                      * Get the deployment unit API path.
-                     * 
+                     *
                      * @param {string} path - Path to be appended to the API path.
                      * @param {string} tenantDomain - Tenant domain.
                      * @returns {string} Constructed API path.
@@ -306,11 +306,11 @@
 
                     /**
                      * Construct the sign-in redirect URL for deployment unit.
-                     * 
+                     *
                      * @returns {string} Constructed URL
                      */
                     function deploymentUnitSignInRedirectURL(tenantDomain) {
-                        
+
                         var contextPath = (!proxyContextPathGlobal || proxyContextPathGlobal === "null") ? "" : "/" + proxyContextPathGlobal;
 
                         if (tenantDomain === startupConfig.superTenant) {
@@ -318,7 +318,7 @@
                                 + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                         }
 
-                        return `${applicationDomain}/${tenantPrefixGlobal}/${tenantDomain}` 
+                        return `${applicationDomain}/${tenantPrefixGlobal}/${tenantDomain}`
                             + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                     }
 
@@ -384,9 +384,9 @@
                     }
 
                     function isSuperTenant() {
-                        return !userTenant || 
+                        return !userTenant ||
                             userTenant === startupConfig.superTenantProxy ||
-                            userTenant === startupConfig.superTenant; 
+                            userTenant === startupConfig.superTenant;
                     }
 
                     function getRegionalAuthConfig(tenantDomain) {
@@ -515,7 +515,7 @@
                                             if (!loginTenantAssociation) {
                                                 loginTenant = superTenantGlobal;
                                             }
-                                            
+
                                             var regionalAuthConfig = getRegionalAuthConfig(loginTenant);
                                             var authSecondary = AsgardeoAuth.AsgardeoSPAClient.getInstance("secondary");
 
@@ -558,7 +558,13 @@
 
         <!-- Start of custom scripts added to the head -->
 
-        <script defer type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"></script>
+        <script
+            defer
+            id="head-script"
+            type="text/javascript"
+            src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"
+            data-page-id="preauth"
+        ></script>
 
         <!-- End of custom scripts added to the head -->
     </head>

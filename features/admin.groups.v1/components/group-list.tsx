@@ -22,13 +22,10 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { StringUtils } from "@wso2is/core/utils";
 import {
     AnimatedAvatar,
     AppAvatar,
@@ -40,21 +37,16 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import moment, { Moment } from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { GroupConstants } from "../constants/group-constants";
 import { GroupsInterface } from "../models/groups";
 
 interface GroupListProps extends SBACInterface<FeatureConfigInterface>,
     LoadableComponentInterface, TestableComponentInterface {
-
-    /**
-     * Advanced Search component.
-     */
-    advancedSearch?: ReactNode;
     /**
      * Default list item limit.
      */
@@ -119,7 +111,6 @@ interface GroupListProps extends SBACInterface<FeatureConfigInterface>,
 export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupListProps): ReactElement => {
 
     const {
-        advancedSearch,
         defaultListItemLimit,
         handleGroupDelete,
         isLoading,
@@ -140,9 +131,6 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
 
     const { t } = useTranslation();
 
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
-
     const { readOnlyUserStoreNamesList: readOnlyUserStores } = useUserStores();
 
     const [ showGroupDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
@@ -153,45 +141,6 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
 
     const handleGroupEdit = (groupId: string): void => {
         history.push(AppConstants.getPaths().get("GROUP_EDIT").replace(":id", groupId));
-    };
-
-    /**
-     * Util method to generate listing header content.
-     *
-     * @param displayName - display name of the group
-     *
-     * @returns - React element if containing a prefix or the string
-     */
-    const generateHeaderContent = (displayName: string): ReactElement | string => {
-        if (displayName.indexOf("/") !== -1){
-            return (
-                <>
-                    <Label
-                        data-testid={ `${ testId }-group-${ displayName.split("/")[0] }-label` }
-                        content={ displayName.split("/")[0] }
-                        size="mini"
-                        color="olive"
-                        className={ "group-label" }
-                    />
-                    { " / " + displayName.split("/")[1] }
-                </>
-            );
-        } else {
-            return (
-                <>
-                    <Label
-                        data-testid={ `${ testId }-group-${ displayName }-label` }
-                        content={ StringUtils.isEqualCaseInsensitive(primaryUserStoreDomainName, PRIMARY_USERSTORE)
-                            ? t("console:manage.features.users.userstores.userstoreOptions.primary")
-                            : primaryUserStoreDomainName }
-                        size="mini"
-                        color="teal"
-                        className={ "primary-label" }
-                    />
-                    { " / " + displayName }
-                </>
-            );
-        }
     };
 
     /**
@@ -225,7 +174,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
             );
         }
 
-        if (groupList?.length === 0) {
+        if (isEmpty(groupList) || groupList.length === 0) {
             return (
                 <EmptyPlaceholder
                     data-testid={ `${ testId }-empty-list-empty-placeholder` }
@@ -286,30 +235,37 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 dataIndex: "name",
                 id: "name",
                 key: "name",
-                render: (group: GroupsInterface): ReactNode => (
-                    <Header
-                        image
-                        as="h6"
-                        className="header-with-icon"
-                        data-testid={ `${ testId }-item-heading` }
-                    >
-                        <AppAvatar
-                            image={ (
-                                <AnimatedAvatar
-                                    name={ group.displayName }
-                                    size="mini"
-                                    data-testid={ `${ testId }-item-image-inner` }
-                                />
-                            ) }
-                            size="mini"
-                            spaced="right"
-                            data-testid={ `${ testId }-item-image` }
-                        />
-                        <Header.Content>
-                            { generateHeaderContent(group.displayName) }
-                        </Header.Content>
-                    </Header>
-                ),
+                render: (group: GroupsInterface): ReactNode => {
+                    const groupNameSegments: string[] = group?.displayName?.split("/");
+                    const groupName: string = groupNameSegments?.length > 1
+                        ? groupNameSegments[1]
+                        : groupNameSegments[0];
+
+                    return (
+                        <Header
+                            image
+                            as="h6"
+                            className="header-with-icon"
+                            data-testid={ `${ testId }-item-heading` }
+                        >
+                            <AppAvatar
+                                image={ (
+                                    <AnimatedAvatar
+                                        name={ groupName }
+                                        size="mini"
+                                        data-testid={ `${ testId }-item-image-inner` }
+                                    />
+                                ) }
+                                size="mini"
+                                spaced="right"
+                                data-testid={ `${ testId }-item-image` }
+                            />
+                            <Header.Content>
+                                { groupName }
+                            </Header.Content>
+                        </Header>
+                    );
+                },
                 title: t("console:manage.features.groups.list.columns.name")
             },
             {
@@ -413,7 +369,6 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
         <>
             <DataTable<GroupsInterface>
                 className="groups-list"
-                externalSearch={ advancedSearch }
                 isLoading={ isLoading }
                 loadingStateOptions={ {
                     count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
@@ -421,7 +376,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 } }
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
-                data={ groupList }
+                data={ groupList ?? [] }
                 onRowClick={
                     (e: SyntheticEvent, group: GroupsInterface): void => {
                         handleGroupEdit(group?.id);

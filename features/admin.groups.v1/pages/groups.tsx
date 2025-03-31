@@ -40,8 +40,7 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
-import find from "lodash-es/find";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -49,25 +48,7 @@ import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } fro
 import { deleteGroupById, useGroupList } from "../api/groups";
 import { GroupList } from "../components/group-list";
 import { CreateGroupWizard } from "../components/wizard/create-group-wizard";
-import { GroupsInterface, WizardStepsFormTypes } from "../models/groups";
-
-const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
-    {
-        key: 1,
-        text: "Name",
-        value: "name"
-    },
-    {
-        key: 3,
-        text: "Created date",
-        value: "createdDate"
-    },
-    {
-        key: 4,
-        text: "Last updated",
-        value: "lastUpdated"
-    }
-];
+import { WizardStepsFormTypes } from "../models/groups";
 
 /**
  * React component to list User Groups.
@@ -84,21 +65,25 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [ listOffset, setListOffset ] = useState<number>(0);
+    const [ listOffset, setListOffset ] = useState<number>(1);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ userStore, setUserStore ] = useState(userstoresConfig.primaryUserstoreName);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-    const [ searchQuery, setSearchQuery ] = useState<string>("");
-    const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
-    const [ paginatedGroups, setPaginatedGroups ] = useState<GroupsInterface[]>(undefined);
-    const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(GROUPS_SORTING_OPTIONS[ 0 ]);
+    const [ searchQuery, setSearchQuery ] = useState<string>(null);
 
     const {
         data,
         error: groupsError,
         isLoading: isGroupsListRequestLoading,
         mutate: mutateGroupsFetchRequest
-    } = useGroupList(userStore, "members,roles", searchQuery, true);
+    } = useGroupList(
+        listItemLimit,
+        listOffset,
+        searchQuery,
+        userStore,
+        "members,roles",
+        true
+    );
 
     const isUserstoreDeleteDisabled: boolean = !groupConfig?.allowGroupDeleteForRemoteUserstores
         && userStore !== userstoresConfig.primaryUserstoreName;
@@ -144,16 +129,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     }, []);
 
     useEffect(() => {
-        const updatedResources: GroupsInterface[] = data?.Resources?.filter((role: GroupsInterface) => {
-            return !role.displayName.includes("Application/")
-                    && !role.displayName.includes("Internal/");
-        });
-
-        setGroupsList(updatedResources);
-        setGroupsPage(0, listItemLimit, updatedResources);
-    },[ data ] );
-
-    useEffect(() => {
         if (groupsError) {
             dispatch(addAlert({
                 description: groupsError?.response?.data?.description ?? groupsError?.response?.data?.detail
@@ -165,51 +140,31 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         }
     },[ groupsError ]);
 
-
-    /**
-     * Sets the list sorting strategy.
-     *
-     * @param event - The event.
-     * @param data - Dropdown data.
-     */
-    const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-        setListSortingStrategy(find(GROUPS_SORTING_OPTIONS, (option: DropdownItemProps) => {
-            return data.value === option.value;
-        }));
-    };
-
-    /**
-     * Util method to paginate retrieved email template type list.
-     *
-     * @param offsetValue - pagination offset value.
-     * @param itemLimit - pagination item limit.
-     * @param list - Role list.
-     */
-    const setGroupsPage = (offsetValue: number, itemLimit: number, list: GroupsInterface[]) => {
-
-        if (!list) {
-            setPaginatedGroups([]);
-
-            return;
-        }
-
-        setPaginatedGroups(list?.slice(offsetValue, itemLimit + offsetValue));
-    };
-
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setUserStore(data?.value as string);
+        setListOffset(1);
+        setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
-        const offsetValue: number = (data.activePage as number - 1) * listItemLimit;
+        const offsetValue: number = (data.activePage as number - 1) * listItemLimit + 1;
 
         setListOffset(offsetValue);
-        setGroupsPage(offsetValue, listItemLimit, groupList);
     };
 
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
-        setGroupsPage(listOffset, data.value as number, groupList);
+    };
+
+    /**
+     * Handles the `onFilter` callback action from the
+     * groups search component.
+     *
+     * @param query - Search query.
+     */
+    const handleGroupFilter = (query: string): void => {
+        setSearchQuery(query);
+        setListOffset(1);
     };
 
     /**
@@ -255,7 +210,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     return (
         <PageLayout
             action={
-                (!isGroupsListRequestLoading && paginatedGroups?.length > 0)
+                (!isGroupsListRequestLoading && data?.totalResults > 0)
                 && !isUserstoreAddDisabled
                 && !isReadOnlyUserStore
                 && (
@@ -289,7 +244,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 advancedSearch={ (
                     <AdvancedSearchWithBasicFilters
                         data-testid="group-mgt-groups-list-advanced-search"
-                        onFilter={ (query: string) => setSearchQuery(query)  }
+                        onFilter={ handleGroupFilter }
                         filterAttributeOptions={ [
                             {
                                 key: 0,
@@ -310,17 +265,15 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         }
                         placeholder={ t("console:manage.features.groups.advancedSearch.placeholder") }
                         defaultSearchAttribute="displayName"
-                        defaultSearchOperator="sw"
+                        defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
                         disableSearchAndFilterOptions={ data?.totalResults <= 0 && !searchQuery }
                     />
                 ) }
-                currentListSize={ listItemLimit }
+                currentListSize={ data?.itemsPerPage }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
-                onSortStrategyChange={ handleListSortingStrategyOnChange }
-                sortStrategy={ listSortingStrategy }
                 rightActionPanel={ (
                     <Dropdown
                         data-testid="group-mgt-groups-list-stores-dropdown"
@@ -331,9 +284,9 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         defaultValue={ userstoresConfig.primaryUserstoreName }
                     />
                 ) }
-                showPagination={ paginatedGroups?.length > 0  }
-                totalPages={ Math.ceil(groupList?.length / listItemLimit) }
-                totalListSize={ groupList?.length }
+                showPagination={ true }
+                totalPages={ Math.ceil(data?.totalResults / listItemLimit) }
+                totalListSize={ data?.totalResults }
                 isLoading={ isGroupsListRequestLoading }
             >
                 { groupsError
@@ -345,44 +298,14 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         imageSize="tiny"
                     />) :
                     (<GroupList
-                        advancedSearch={ (
-                            <AdvancedSearchWithBasicFilters
-                                data-testid="group-mgt-groups-list-advanced-search"
-                                onFilter={ (query: string) => setSearchQuery(query) }
-                                filterAttributeOptions={ [
-                                    {
-                                        key: 0,
-                                        text: "Name",
-                                        value: "displayName"
-                                    }
-                                ] }
-                                filterAttributePlaceholder={
-                                    t("console:manage.features.groups.advancedSearch.form.inputs.filterAttribute" +
-                                        ".placeholder")
-                                }
-                                filterConditionsPlaceholder={
-                                    t("console:manage.features.groups.advancedSearch.form.inputs.filterCondition" +
-                                        ".placeholder")
-                                }
-                                filterValuePlaceholder={
-                                    t("console:manage.features.groups.advancedSearch.form.inputs.filterValue" +
-                                        ".placeholder")
-                                }
-                                placeholder={ t("console:manage.features.groups.advancedSearch.placeholder") }
-                                defaultSearchAttribute="displayName"
-                                defaultSearchOperator="sw"
-                                triggerClearQuery={ triggerClearQuery }
-                                disableSearchAndFilterOptions={ data?.totalResults <= 0 && !searchQuery }
-                            />
-                        ) }
                         data-testid="group-mgt-groups-list"
                         handleGroupDelete={ handleOnDelete }
                         onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                         onSearchQueryClear={ () => {
                             setTriggerClearQuery(!triggerClearQuery);
-                            setSearchQuery("");
+                            handleGroupFilter(null);
                         } }
-                        groupList={ paginatedGroups }
+                        groupList={ data?.Resources }
                         searchQuery={ searchQuery }
                         featureConfig={ featureConfig }
                         isReadOnlyUserStore={ isReadOnlyUserStore }
