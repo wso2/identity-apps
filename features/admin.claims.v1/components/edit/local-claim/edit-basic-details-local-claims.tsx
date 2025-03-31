@@ -959,7 +959,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     />
 
                     <Field.Checkbox
-                        ariaLabel="multiValued"
+                        ariaLabel={ t("claims:local.forms.multiValued.label") }
                         name="multiValued"
                         label={ t("claims:local.forms.multiValued.label") }
                         required={ false }
