@@ -25,7 +25,7 @@ import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 /**
  * Proptypes for the adaptive script reset confirmation modal component.
  */
-export type AdaptiveScriptResetConfirmationModalPropsInterface = Partial<ConfirmationModalPropsInterface> & 
+export type AdaptiveScriptResetConfirmationModalPropsInterface = Partial<ConfirmationModalPropsInterface> &
     IdentifiableComponentInterface
 
 /**
