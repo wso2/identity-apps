@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.50.8
+
+### Patch Changes
+
+- [#7972](https://github.com/wso2/identity-apps/pull/7972) [`17af8e8d269c5d238e8890d0bddac21f3ec51e11`](https://github.com/wso2/identity-apps/commit/17af8e8d269c5d238e8890d0bddac21f3ec51e11) Thanks [@KD23243](https://github.com/KD23243)! - Update role name validation
+
 ## 2.50.7
 
 ### Patch Changes
