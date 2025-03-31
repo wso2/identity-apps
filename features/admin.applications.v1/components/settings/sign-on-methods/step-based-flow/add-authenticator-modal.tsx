@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import {
     ConnectionTemplateInterface
 } from "@wso2is/admin.connections.v1";
@@ -39,6 +38,7 @@ import {
     AuthenticatorCategories,
     GenericAuthenticatorInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import useAuthenticationFlow from "@wso2is/admin.login-flow-builder.v1/hooks/use-authentication-flow";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
