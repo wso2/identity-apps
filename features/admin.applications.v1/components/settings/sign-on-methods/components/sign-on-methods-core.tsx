@@ -16,10 +16,6 @@
  * under the License.
  */
 
-import AuthenticationFlowBuilder
-    from "@wso2is/admin.authentication-flow-builder.v1/components/authentication-flow-builder";
-import AuthenticationFlowProvider
-    from "@wso2is/admin.authentication-flow-builder.v1/providers/authentication-flow-provider";
 import { AuthenticatorCreateWizardFactory } from "@wso2is/admin.connections.v1";
 import {
     CommonAuthenticatorConstants
@@ -45,6 +41,10 @@ import {
 import {
     IdentityProviderManagementUtils
 } from "@wso2is/admin.identity-providers.v1/utils/identity-provider-management-utils";
+import AuthenticationFlowBuilder
+    from "@wso2is/admin.login-flow-builder.v1/components/authentication-flow-builder";
+import AuthenticationFlowProvider
+    from "@wso2is/admin.login-flow-builder.v1/providers/authentication-flow-provider";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

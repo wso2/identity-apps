@@ -18,7 +18,7 @@
 
 import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
 import { useContext } from "react";
-import AuthenticationFlowContext, { AuthenticationFlowContextProps } from "./../context/authentication-flow-context";
+import AuthenticationFlowContext, { AuthenticationFlowContextProps } from "../context/authentication-flow-context";
 import { AuthenticationFlowBuilderModes } from "../models/flow-builder";
 
 /**
