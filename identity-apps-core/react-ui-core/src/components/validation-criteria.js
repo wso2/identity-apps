@@ -107,7 +107,6 @@ export const getRuleLabel = (rule) => {
             return "Must contain special character(s).";
 
         case "ConfirmPasswordValidator":
-
             if (confirmPassword) {
                 return "Must match with the password.";
             }
@@ -115,9 +114,15 @@ export const getRuleLabel = (rule) => {
             return null;
 
         case "EmailFormatValidator":
-
             if (isValidatorEnabled) {
                 return "Must use a valid email address.";
+            }
+
+            return null;
+
+        case "AlphanumericValidator":
+            if (isValidatorEnabled) {
+                return "Must contain only alphanumeric characters.";
             }
 
             return null;
@@ -168,6 +173,11 @@ const ValidationCriteria = ({ validationConfig, errors = [], value = "" }) => {
             ) }
         </div>
     );
+};
+
+PolicyValidationStatus.propTypes = {
+    isValid: PropTypes.boolean,
+    value: PropTypes.string
 };
 
 ValidationCriteria.propTypes = {
