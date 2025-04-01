@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.logs.v1",
-    "version": "1.6.0",
+    "version": "1.6.1",
     "description": "Query your logs to troubleshoot issues and monitor resource activities.",
     "author": "WSO2",
     "license": "Apache-2.0",
