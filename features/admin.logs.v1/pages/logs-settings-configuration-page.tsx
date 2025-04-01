@@ -47,7 +47,6 @@ const LogsSettingsConfigurationPage: FunctionComponent<LogsSettingsConfiguration
 
     const {
         data: logConfig,
-        error: logConfigFetchRequestError,
         isLoading: islogConfigLoading,
         mutate: mutatelogConfig
     } = useRemoteLogPublishingConfiguration(true, logType);

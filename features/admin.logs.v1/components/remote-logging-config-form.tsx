@@ -23,7 +23,7 @@ import Skeleton from "@oxygen-ui/react/Skeleton";
 import Stack from "@oxygen-ui/react/Stack";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { CheckboxFieldAdapter, FinalForm, FinalFormField, FormValue, TextFieldAdapter } from "@wso2is/form/src";
+import { CheckboxFieldAdapter, FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/form/src";
 import {
     ConfirmationModal,
     DangerZone,
@@ -34,7 +34,7 @@ import { FormValidation } from "@wso2is/validation";
 import { AxiosError } from "axios";
 import startCase from "lodash-es/startCase";
 import toLower from "lodash-es/toLower";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { FormRenderProps } from "react-final-form";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
