@@ -243,7 +243,7 @@ export const RemoteLoggingConfigForm = ({
                                             margin: "dense"
                                         } }
                                         width={ 16 }
-                                        className="text-field-containe"
+                                        className="text-field-container"
                                         ariaLabel="url"
                                         required={ true }
                                         data-componentid={ `${componentId}-url` }
@@ -311,7 +311,7 @@ export const RemoteLoggingConfigForm = ({
                                             margin: "dense"
                                         } }
                                         width={ 16 }
-                                        className="text-field-container form"
+                                        className="text-field-container form-field-margin-top"
                                         ariaLabel="username"
                                         required={ false }
                                         data-componentid={ `${componentId}-username` }
@@ -410,16 +410,16 @@ export const RemoteLoggingConfigForm = ({
                     setShowDeleteConfirmationModal(false);
                 } }
                 onPrimaryActionClick={ (): void => restoreDefaultRemoteLoggingConfiguration() }
-                data-testid={ "remote-logging-delete-confirmation-modal" }
+                data-componentid={ "remote-logging-delete-confirmation-modal" }
                 closeOnDimmerClick={ false }
             >
-                <ConfirmationModal.Header data-testid={ "remote-logging-delete-confirmation-modal-header" }>
+                <ConfirmationModal.Header data-componentid={ "remote-logging-delete-confirmation-modal-header" }>
                     { t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone.confirmation.header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
                     negative
-                    data-testid={ "remote-logging-delete-confirmation-modal-message" }
+                    data-componentid={ "remote-logging-delete-confirmation-modal-message" }
                 >
                     { t(
                         "console:manage.features.serverConfigs.remoteLogPublishing.dangerZone." +
@@ -429,7 +429,7 @@ export const RemoteLoggingConfigForm = ({
                         }
                     ) }
                 </ConfirmationModal.Message>
-                <ConfirmationModal.Content data-testid={ "remote-logging-delete-confirmation-modal-content" }>
+                <ConfirmationModal.Content data-componentid={ "remote-logging-delete-confirmation-modal-content" }>
                     { t(
                         "console:manage.features.serverConfigs.remoteLogPublishing.dangerZone." +
                         "confirmation.content",

@@ -28,32 +28,32 @@ export enum LogType {
  * Interface for the remote log publishing configuration.
  */
 export interface RemoteLogPublishingConfigurationInterface {
-	/**
-	 * Destination to where the logs should be published.
-	 */
-	url: string,
-	/**
-	 * Connection timeout in milliseconds.
-	 */
-	connectTimeoutMillis: number,
+    /**
+     * Destination to where the logs should be published.
+     */
+    url: string,
+    /**
+     * Connection timeout in milliseconds.
+     */
+    connectTimeoutMillis: number,
     /**
      * Publish interval for logs.
      */
-	publishInterval: number,
-	/**
-	 * Should hostname be verified.
-	 */
-	verifyHostname: boolean,
-	/**
-	 * Log type for which the configurations should be applied.
-	 */
-	logType: LogType.AUDIT | LogType.DIAGNOSTICS,
-	/**
-	 * Remote server username
-	 */
-	username: string,
-	/**
-	 * Remote server password
-	 */
-	password: string,
+    publishInterval: number,
+    /**
+     * Should hostname be verified.
+     */
+    verifyHostname: boolean,
+    /**
+     * Log type for which the configurations should be applied.
+     */
+    logType: LogType.AUDIT | LogType.DIAGNOSTICS,
+    /**
+     * Remote server username
+     */
+    username: string,
+    /**
+     * Remote server password
+     */
+    password: string,
 }

@@ -10662,6 +10662,9 @@ importers:
       '@wso2is/admin.core.v1':
         specifier: ^2.40.2
         version: link:../admin.core.v1
+      '@wso2is/admin.feature-gate.v1':
+        specifier: ^1.4.199
+        version: link:../admin.feature-gate.v1
       '@wso2is/core':
         specifier: ^2.7.0
         version: link:../../modules/core

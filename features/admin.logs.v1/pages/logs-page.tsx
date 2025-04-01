@@ -24,6 +24,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     Button,
@@ -74,7 +75,7 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (props: LogsPageInterface
         return (
             <ResourceTab
                 activeIndex={ activeTabIndex }
-                data-testid={ `${componentId}-log-tabs` }
+                data-componentid={ `${componentId}-log-tabs` }
                 defaultActiveIndex={ 0 }
                 onTabChange={ handleTabChange }
                 panes={ resolveLogTabPanes() }
@@ -129,6 +130,13 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (props: LogsPageInterface
     };
 
     const renderLogPublishSettings = (): ReactElement => {
+
+        if (featureConfig?.auditLogs.disabledFeatures?.includes(FeatureFlagConstants
+            .FEATURE_FLAG_KEY_MAP.REMOTE_LOG_PUBLISH)) {
+
+            return <></>;
+        }
+
         return (
             <EmphasizedSegment
                 className="mt-0 mb-5"
@@ -210,22 +218,6 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (props: LogsPageInterface
                             { t("common:learnMore") }
                         </DocumentationLink>
                     </>)
-                }
-                action={
-                    (<Popup
-                        trigger={
-                            (<Button
-                                data-componentid={ "applications-settings-button" }
-                                icon={ GearIcon }
-                                onClick={ handleSettingsButton }
-                            />)
-                        }
-                        content={ t("applications:forms.applicationsSettings.title") }
-                        position="top center"
-                        size="mini"
-                        hideOnScroll
-                        inverted
-                    />)
                 }
                 data-componentid={ `${componentId}-layout` }
             >

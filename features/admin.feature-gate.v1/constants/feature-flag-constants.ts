@@ -53,6 +53,7 @@ class FeatureFlagConstants {
         ORGANIZATION_BRANDING_TEXT: "branding.stylesAndText.organization.text",
         PUSH_PROVIDERS: "pushProviders",
         PUSH_PROVIDER_TEMPLATES: "pushProviders.templates",
+        REMOTE_LOG_PUBLISH: "remote.log.publish",
         SMS_TEMPLATES: "smsTemplates",
         USER_ROLES: "userRoles",
         USER_STORES: "userStores"

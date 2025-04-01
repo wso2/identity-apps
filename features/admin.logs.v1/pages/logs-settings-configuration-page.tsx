@@ -57,27 +57,25 @@ const LogsSettingsConfigurationPage: FunctionComponent<LogsSettingsConfiguration
     };
 
     return (
-        <div>
-            <PageLayout
-                title={ t("console:manage.features.serverConfigs.remoteLogPublishing.title") }
-                pageTitle={ t("console:manage.features.serverConfigs.remoteLogPublishing.pageTitle") }
-                description={ t("console:manage.features.serverConfigs.remoteLogPublishing.descriptionWithLogType",
-                    { logType: logType.toLowerCase() } ) }
-                backButton={ {
-                    "data-componentid": `${_componentId}-${logType}-page-back-button`,
-                    onClick: () => handleBackButtonClick(),
-                    text: t("console:manage.features.serverConfigs.remoteLogPublishing.backButtonText")
-                } }
-                data-componentid={ `${_componentId}-layout` }
-            >
-                <RemoteLoggingConfigForm
-                    logType={ logType }
-                    initialData={ logConfig }
-                    mutateRemoteLoggingRequest={ mutatelogConfig }
-                    isLoading={ islogConfigLoading }
-                />
-            </PageLayout>
-        </div>
+        <PageLayout
+            title={ t("console:manage.features.serverConfigs.remoteLogPublishing.title") }
+            pageTitle={ t("console:manage.features.serverConfigs.remoteLogPublishing.pageTitle") }
+            description={ t("console:manage.features.serverConfigs.remoteLogPublishing.descriptionWithLogType",
+                { logType: logType.toLowerCase() } ) }
+            backButton={ {
+                "data-componentid": `${_componentId}-${logType}-page-back-button`,
+                onClick: () => handleBackButtonClick(),
+                text: t("console:manage.features.serverConfigs.remoteLogPublishing.backButtonText")
+            } }
+            data-componentid={ `${_componentId}-layout` }
+        >
+            <RemoteLoggingConfigForm
+                logType={ logType }
+                initialData={ logConfig }
+                mutateRemoteLoggingRequest={ mutatelogConfig }
+                isLoading={ islogConfigLoading }
+            />
+        </PageLayout>
     );
 };
 

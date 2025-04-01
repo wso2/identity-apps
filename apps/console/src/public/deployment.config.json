@@ -505,9 +505,16 @@
                 }
             },
             "auditLogs": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "remote.log.publish"
+                ],
                 "enabled": true,
-                "featureFlags": [],
+                "featureFlags": [
+                    {
+                        "feature": "remote.log.publish",
+                        "flag": ""
+                    }
+                ],
                 "scopes": {
                     "update": [
                         "internal_application_mgt_view"
