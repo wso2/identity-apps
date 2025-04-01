@@ -98,7 +98,7 @@ export const RemoteLoggingConfigForm = ({
             remoteLogPublishConfig.connectTimeoutMillis = 1000;
         }
         remoteLogPublishConfig.logType = logType;
-        updateRemoteLogPublishingConfiguration(remoteLogPublishConfig, initialData === null)
+        updateRemoteLogPublishingConfiguration(remoteLogPublishConfig, !initialData)
             .then((): void => {
                 mutateRemoteLoggingRequest();
                 dispatch(
