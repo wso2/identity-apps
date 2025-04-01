@@ -26,7 +26,7 @@ import {
 } from "@wso2is/admin.identity-providers.v1/models";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FormRenderProps, FormSpy } from "@wso2is/form";
+import { FinalForm, FormRenderProps } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -104,7 +104,6 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
     const [ endpointAuthenticationType, setEndpointAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isEndpointAuthenticationUpdated, setIsEndpointAuthenticationUpdated ] = useState<boolean>(false);
     const [ isEndpointDetailsLoading, setIsEndpointDetailsLoading ] = useState<boolean>(false);
-    const [ skipActionUpdatePermission, setSkipActionUpdatePermission ] = useState<boolean>(false);
 
     useEffect(() => {
         if (isCustomLocalAuthenticator) {
@@ -119,17 +118,6 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
             getCustomFederatedAuthenticatorInitialValues(customAuthenticatorId);
         }
     }, []);
-
-    /**
-     * When the user has connection edit permission, skip inherent permission check in the action configuration form.
-     */
-    useEffect(() => {
-        if (isReadOnly) {
-            return;
-        }
-
-        setSkipActionUpdatePermission(true);
-    }, [ isReadOnly ]);
 
     /**
      * This function is utilized only for custom federated authenticators since endpoint details are not
@@ -305,100 +293,38 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                 onSubmit={ handleSubmit }
                 initialValues={ initialValues }
                 validate={ validateForm }
-                render={ ({ handleSubmit, form }: FormRenderProps) => (
-                    <form onSubmit={ handleSubmit }>
-                        <EmphasizedSegment
-                            className="endpoint-settings-container"
-                            padded={ "very" }
-                            data-componentid={ `${componentId}-section` }
-                        >
-                            <div className="form-container with-max-width">
-                                <ActionEndpointConfigForm
-                                    initialValues={ initialValues }
-                                    isCreateFormState={ false }
-                                    skipUpdatePermission={ skipActionUpdatePermission }
-                                    onAuthenticationTypeChange={ (
-                                        authenticationType: AuthenticationType,
-                                        isAuthenticationUpdated: boolean
-                                    ) => {
-                                        setEndpointAuthenticationType(authenticationType);
-                                        setIsEndpointAuthenticationUpdated(isAuthenticationUpdated);
-                                    } }
-                                />
-                                { !isLoading && !isReadOnly && (
-                                    <Button
-                                        size="medium"
-                                        variant="contained"
-                                        onClick={ handleSubmit }
-                                        className={ "button-container" }
-                                        data-componentid={ `${componentId}-primary-button` }
-                                    >
-                                        { t("actions:buttons.update") }
-                                    </Button>
-                                ) }
-                            </div>
-                        </EmphasizedSegment>
-                        <FormSpy subscription={ { values: true } }>
-                            { ({ values }: { values: EndpointConfigFormPropertyInterface }) => {
-                                if (!isEndpointAuthenticationUpdated) {
-                                    form.change("authenticationType", values?.authenticationType);
-                                    switch (values?.authenticationType) {
-                                        case AuthenticationType.BASIC:
-                                            delete values.usernameAuthProperty;
-                                            delete values.passwordAuthProperty;
-
-                                            break;
-                                        case AuthenticationType.BEARER:
-                                            delete values.accessTokenAuthProperty;
-
-                                            break;
-                                        case AuthenticationType.API_KEY:
-                                            delete values.headerAuthProperty;
-                                            delete values.valueAuthProperty;
-
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
-
-                                // Clear inputs of property field values of other authentication types.
-                                switch (values?.authenticationType) {
-                                    case AuthenticationType.BASIC:
-                                        delete values.accessTokenAuthProperty;
-                                        delete values.headerAuthProperty;
-                                        delete values.valueAuthProperty;
-
-                                        break;
-                                    case AuthenticationType.BEARER:
-                                        delete values.usernameAuthProperty;
-                                        delete values.passwordAuthProperty;
-                                        delete values.headerAuthProperty;
-                                        delete values.valueAuthProperty;
-
-                                        break;
-                                    case AuthenticationType.API_KEY:
-                                        delete values.usernameAuthProperty;
-                                        delete values.passwordAuthProperty;
-                                        delete values.accessTokenAuthProperty;
-
-                                        break;
-                                    case AuthenticationType.NONE:
-                                        delete values.usernameAuthProperty;
-                                        delete values.passwordAuthProperty;
-                                        delete values.headerAuthProperty;
-                                        delete values.valueAuthProperty;
-                                        delete values.accessTokenAuthProperty;
-
-                                        break;
-                                    default:
-                                        break;
-                                }
-
-                                return null;
-                            } }
-                        </FormSpy>
-                    </form>
+                render={ ({ handleSubmit }: FormRenderProps) => (
+                    <EmphasizedSegment
+                        className="endpoint-settings-container"
+                        padded={ "very" }
+                        data-componentid={ `${componentId}-section` }
+                    >
+                        <div className="form-container with-max-width">
+                            <ActionEndpointConfigForm
+                                initialValues={ initialValues }
+                                isCreateFormState={ false }
+                                isReadOnly={ isReadOnly }
+                                onAuthenticationTypeChange={ (
+                                    authenticationType: AuthenticationType,
+                                    isAuthenticationUpdated: boolean
+                                ) => {
+                                    setEndpointAuthenticationType(authenticationType);
+                                    setIsEndpointAuthenticationUpdated(isAuthenticationUpdated);
+                                } }
+                            />
+                            { !isLoading && !isReadOnly && (
+                                <Button
+                                    size="medium"
+                                    variant="contained"
+                                    onClick={ handleSubmit }
+                                    className={ "button-container" }
+                                    data-componentid={ `${componentId}-update-button` }
+                                >
+                                    { t("actions:buttons.update") }
+                                </Button>
+                            ) }
+                        </div>
+                    </EmphasizedSegment>
                 ) }
             ></FinalForm>
         </div>

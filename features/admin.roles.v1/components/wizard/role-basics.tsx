@@ -16,20 +16,16 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { SharedUserStoreConstants } from "@wso2is/admin.core.v1/constants";
-import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils";
-import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
-import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
+import { SharedUserStoreConstants } from "@wso2is/admin.core.v1/constants/user-store-constants";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
+import { useUserStoreRegEx } from "@wso2is/admin.userstores.v1/api/use-get-user-store-regex";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { StringUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
+import { Grid, GridColumn, GridRow } from "semantic-ui-react";
+import { userstoresConfig } from "../../../admin.extensions.v1";
 import { searchRoleList } from "../../api/roles";
 import { CreateRoleFormData, SearchRoleInterface } from "../../models/roles";
 
@@ -55,84 +51,28 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         onSubmit,
         triggerSubmit,
         initialValues,
-        isAddGroup,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
 
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
-
     const [ isRoleNamePatternValid, setIsRoleNamePatternValid ] = useState<boolean>(true);
-    const [ , setUserStoresList ] = useState([]);
-    const [ userStore ] = useState<string>(primaryUserStoreDomainName);
-    const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
 
-    useEffect(() => {
-        getUserStores();
-    }, [ isAddGroup ]);
+    const {
+        data: userStoreRegEx,
+        isLoading: isUserStoreRegExLoading
+    } = useUserStoreRegEx(
+        userstoresConfig.primaryUserstoreName,
+        SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx
+    );
 
     /**
      * The following function validates role name against the user store regEx.
      *
      * @param roleName - User input role name
      */
-    const validateRoleNamePattern = async (roleName: string): Promise<void> => {
-        let userStoreRegEx: string = "";
-
-        if (!StringUtils.isEqualCaseInsensitive(userStore, primaryUserStoreDomainName)) {
-            await SharedUserStoreUtils.getUserStoreRegEx(
-                userStore,
-                SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx
-            )
-                .then((response: string) => {
-                    setRegExLoading(true);
-                    userStoreRegEx = response;
-                });
-        } else {
-            userStoreRegEx = SharedUserStoreConstants.PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
-        }
+    const validateRoleNamePattern = (roleName: string): void => {
         setIsRoleNamePatternValid(SharedUserStoreUtils.validateInputAgainstRegEx(roleName, userStoreRegEx));
-    };
-
-    /**
-     * The following function fetch the user store list and set it to the state.
-     */
-    const getUserStores = () => {
-        const storeOptions: DropdownItemProps[] = [
-            {
-                key: -1,
-                text: StringUtils.isEqualCaseInsensitive(primaryUserStoreDomainName, PRIMARY_USERSTORE)
-                    ? t("console:manage.features.users.userstores.userstoreOptions.primary")
-                    : primaryUserStoreDomainName,
-                value: primaryUserStoreDomainName
-            }
-        ];
-        let storeOption: DropdownItemProps = {
-            key: null,
-            text: "",
-            value: ""
-        };
-
-        getUserStoreList()
-            .then((response: AxiosResponse<UserStoreListItem[]>) => {
-                if (storeOptions.length === 0) {
-                    storeOptions.push(storeOption);
-                }
-                response.data.map((store: UserStoreListItem, index: number) => {
-                    storeOption = {
-                        key: index,
-                        text: store.name,
-                        value: store.name
-                    };
-                    storeOptions.push(storeOption);
-                }
-                );
-                setUserStoresList(storeOptions);
-            });
-
-        setUserStoresList(storeOptions);
     };
 
     /**
@@ -193,7 +133,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                     );
                                 }
 
-                                await validateRoleNamePattern(value.toString());
+                                validateRoleNamePattern(value.toString());
 
                                 if (!isRoleNamePatternValid) {
                                     validation.isValid = false;
@@ -204,7 +144,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                 }
                             } }
                             value={ initialValues && initialValues.roleName }
-                            loading={ isRegExLoading }
+                            loading={ isUserStoreRegExLoading }
                         />
                     </GridColumn>
                 </GridRow>

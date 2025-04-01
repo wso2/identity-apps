@@ -884,6 +884,22 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import(
+                            // eslint-disable-next-line max-len
+                            "@wso2is/admin.server-configurations.v1/pages/registration-flow-builder/registration-flow-builder-page"
+                        )
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "registrationFlowBuilder",
+                    path: AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() =>
@@ -1386,6 +1402,17 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     id: "pre-update-password",
                     name: "Pre Update Password",
                     path: AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.actions.v1/pages/action-configuration-page")
+                    ),
+                    exact: true,
+                    id: "pre-update-profile",
+                    name: "Pre Update Profile",
+                    path: AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT"),
                     protected: true,
                     showOnSidePanel: false
                 }

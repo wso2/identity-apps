@@ -1,5 +1,95 @@
 # @wso2is/admin.actions.v1
 
+## 1.12.4
+
+### Patch Changes
+
+- [#7918](https://github.com/wso2/identity-apps/pull/7918) [`ddb26fc48ab61ef16bd39edc22e943e07b54eb93`](https://github.com/wso2/identity-apps/commit/ddb26fc48ab61ef16bd39edc22e943e07b54eb93) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Fix issue when trying to search for a non-existing option in pre update profile action
+
+## 1.12.3
+
+### Patch Changes
+
+- [#7911](https://github.com/wso2/identity-apps/pull/7911) [`db0e5b5e8d544e7a9593825720f9457423e15aae`](https://github.com/wso2/identity-apps/commit/db0e5b5e8d544e7a9593825720f9457423e15aae) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Filter out applicationRole from the configurable list
+
+- Updated dependencies [[`ece68642860ae99847f1cd7fa745e881211b0577`](https://github.com/wso2/identity-apps/commit/ece68642860ae99847f1cd7fa745e881211b0577)]:
+  - @wso2is/admin.core.v1@2.43.1
+
+## 1.12.2
+
+### Patch Changes
+
+- [#7908](https://github.com/wso2/identity-apps/pull/7908) [`6ab9627707be73058e161986c26185bfad7d049e`](https://github.com/wso2/identity-apps/commit/6ab9627707be73058e161986c26185bfad7d049e) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Update dependencies related to pre update profile action
+
+## 1.12.1
+
+### Patch Changes
+
+- [#7895](https://github.com/wso2/identity-apps/pull/7895) [`21c34e780c2b03b1219a59cbf264c3d34946ee36`](https://github.com/wso2/identity-apps/commit/21c34e780c2b03b1219a59cbf264c3d34946ee36) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Enhance Pre-Update Profile UI to align with recent API improvements
+
+- Updated dependencies [[`f1752da359591d2cafc68bfc1b6e85e0a65b7807`](https://github.com/wso2/identity-apps/commit/f1752da359591d2cafc68bfc1b6e85e0a65b7807), [`21c34e780c2b03b1219a59cbf264c3d34946ee36`](https://github.com/wso2/identity-apps/commit/21c34e780c2b03b1219a59cbf264c3d34946ee36), [`18c5d10a5be7de56943e604d531fa8409c9b791d`](https://github.com/wso2/identity-apps/commit/18c5d10a5be7de56943e604d531fa8409c9b791d)]:
+  - @wso2is/i18n@2.22.3
+
+## 1.12.0
+
+### Minor Changes
+
+- [#7825](https://github.com/wso2/identity-apps/pull/7825) [`9abede7d09c8e68a47d1e6bdffc6315bf8b7adc6`](https://github.com/wso2/identity-apps/commit/9abede7d09c8e68a47d1e6bdffc6315bf8b7adc6) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Implement Pre Update Profile Extension UI
+
+### Patch Changes
+
+- Updated dependencies [[`9abede7d09c8e68a47d1e6bdffc6315bf8b7adc6`](https://github.com/wso2/identity-apps/commit/9abede7d09c8e68a47d1e6bdffc6315bf8b7adc6)]:
+  - @wso2is/admin.core.v1@2.42.5
+  - @wso2is/i18n@2.22.1
+
+## 1.11.69
+
+### Patch Changes
+
+- [#7801](https://github.com/wso2/identity-apps/pull/7801) [`5c763bacee477d58cd3d1105696a3522eae92765`](https://github.com/wso2/identity-apps/commit/5c763bacee477d58cd3d1105696a3522eae92765) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Refactor action forms
+
+## 1.11.68
+
+### Patch Changes
+
+- Updated dependencies [[`c78a6b3b4b54342fed9f06fceaef9aab27c53803`](https://github.com/wso2/identity-apps/commit/c78a6b3b4b54342fed9f06fceaef9aab27c53803)]:
+  - @wso2is/admin.extensions.v1@2.36.128
+  - @wso2is/admin.core.v1@2.40.6
+  - @wso2is/admin.feature-gate.v1@1.4.203
+  - @wso2is/admin.rules.v1@0.4.19
+
+## 1.11.67
+
+### Patch Changes
+
+- Updated dependencies [[`725295582b41eab8705a4e821d169499ced1c647`](https://github.com/wso2/identity-apps/commit/725295582b41eab8705a4e821d169499ced1c647)]:
+  - @wso2is/i18n@2.21.2
+  - @wso2is/admin.extensions.v1@2.36.127
+  - @wso2is/admin.core.v1@2.40.5
+  - @wso2is/admin.feature-gate.v1@1.4.202
+  - @wso2is/admin.rules.v1@0.4.18
+
+## 1.11.66
+
+### Patch Changes
+
+- Updated dependencies [[`152e91a6dd4848fe0fb0a0728a1e78fa97a88e12`](https://github.com/wso2/identity-apps/commit/152e91a6dd4848fe0fb0a0728a1e78fa97a88e12)]:
+  - @wso2is/i18n@2.21.1
+  - @wso2is/admin.core.v1@2.40.4
+  - @wso2is/admin.extensions.v1@2.36.126
+  - @wso2is/admin.feature-gate.v1@1.4.201
+  - @wso2is/admin.rules.v1@0.4.17
+
+## 1.11.65
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.40.3
+  - @wso2is/admin.extensions.v1@2.36.125
+  - @wso2is/admin.feature-gate.v1@1.4.200
+  - @wso2is/admin.rules.v1@0.4.16
+
 ## 1.11.64
 
 ### Patch Changes

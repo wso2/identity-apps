@@ -1,5 +1,68 @@
 # @wso2is/admin.policy-administration.v1
 
+## 1.0.120
+
+### Patch Changes
+
+- [#7773](https://github.com/wso2/identity-apps/pull/7773) [`18c5d10a5be7de56943e604d531fa8409c9b791d`](https://github.com/wso2/identity-apps/commit/18c5d10a5be7de56943e604d531fa8409c9b791d) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Disable policy edit button in the active policy list in Policy Administration page and change tooltip text
+
+- Updated dependencies [[`f1752da359591d2cafc68bfc1b6e85e0a65b7807`](https://github.com/wso2/identity-apps/commit/f1752da359591d2cafc68bfc1b6e85e0a65b7807), [`21c34e780c2b03b1219a59cbf264c3d34946ee36`](https://github.com/wso2/identity-apps/commit/21c34e780c2b03b1219a59cbf264c3d34946ee36), [`18c5d10a5be7de56943e604d531fa8409c9b791d`](https://github.com/wso2/identity-apps/commit/18c5d10a5be7de56943e604d531fa8409c9b791d)]:
+  - @wso2is/i18n@2.22.3
+
+## 1.0.119
+
+### Patch Changes
+
+- Updated dependencies [[`c78a6b3b4b54342fed9f06fceaef9aab27c53803`](https://github.com/wso2/identity-apps/commit/c78a6b3b4b54342fed9f06fceaef9aab27c53803)]:
+  - @wso2is/admin.applications.v1@2.32.6
+  - @wso2is/admin.extensions.v1@2.36.128
+  - @wso2is/admin.core.v1@2.40.6
+  - @wso2is/admin.organizations.v1@2.26.203
+  - @wso2is/admin.users.v1@2.30.113
+  - @wso2is/admin.validation.v1@2.27.141
+  - @wso2is/admin.feature-gate.v1@1.4.203
+
+## 1.0.118
+
+### Patch Changes
+
+- Updated dependencies [[`281011fd2fd4b725d41dfc37e1747f3688d6b0f1`](https://github.com/wso2/identity-apps/commit/281011fd2fd4b725d41dfc37e1747f3688d6b0f1), [`725295582b41eab8705a4e821d169499ced1c647`](https://github.com/wso2/identity-apps/commit/725295582b41eab8705a4e821d169499ced1c647)]:
+  - @wso2is/admin.applications.v1@2.32.5
+  - @wso2is/admin.users.v1@2.30.112
+  - @wso2is/i18n@2.21.2
+  - @wso2is/admin.extensions.v1@2.36.127
+  - @wso2is/admin.core.v1@2.40.5
+  - @wso2is/admin.organizations.v1@2.26.202
+  - @wso2is/admin.validation.v1@2.27.140
+  - @wso2is/admin.feature-gate.v1@1.4.202
+
+## 1.0.117
+
+### Patch Changes
+
+- Updated dependencies [[`152e91a6dd4848fe0fb0a0728a1e78fa97a88e12`](https://github.com/wso2/identity-apps/commit/152e91a6dd4848fe0fb0a0728a1e78fa97a88e12), [`b9163e60298aecf2d38e64752a00990387d3e512`](https://github.com/wso2/identity-apps/commit/b9163e60298aecf2d38e64752a00990387d3e512)]:
+  - @wso2is/i18n@2.21.1
+  - @wso2is/admin.users.v1@2.30.111
+  - @wso2is/admin.applications.v1@2.32.4
+  - @wso2is/admin.core.v1@2.40.4
+  - @wso2is/admin.extensions.v1@2.36.126
+  - @wso2is/admin.organizations.v1@2.26.201
+  - @wso2is/admin.validation.v1@2.27.139
+  - @wso2is/admin.feature-gate.v1@1.4.201
+
+## 1.0.116
+
+### Patch Changes
+
+- Updated dependencies [[`782800184a6f99a2c0f4d0bc2c6bcc857d063c5c`](https://github.com/wso2/identity-apps/commit/782800184a6f99a2c0f4d0bc2c6bcc857d063c5c)]:
+  - @wso2is/admin.users.v1@2.30.110
+  - @wso2is/admin.applications.v1@2.32.3
+  - @wso2is/admin.core.v1@2.40.3
+  - @wso2is/admin.extensions.v1@2.36.125
+  - @wso2is/admin.organizations.v1@2.26.200
+  - @wso2is/admin.validation.v1@2.27.138
+  - @wso2is/admin.feature-gate.v1@1.4.200
+
 ## 1.0.115
 
 ### Patch Changes

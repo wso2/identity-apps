@@ -1,5 +1,66 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.6.0
+
+### Minor Changes
+
+- [#7891](https://github.com/wso2/identity-apps/pull/7891) [`29edf4fd3d7425985db9bb4103caf9d549e3570c`](https://github.com/wso2/identity-apps/commit/29edf4fd3d7425985db9bb4103caf9d549e3570c) Thanks [@brionmario](https://github.com/brionmario)! - Add feature announcement banner
+
+### Patch Changes
+
+- Updated dependencies [[`29edf4fd3d7425985db9bb4103caf9d549e3570c`](https://github.com/wso2/identity-apps/commit/29edf4fd3d7425985db9bb4103caf9d549e3570c)]:
+  - @wso2is/admin.core.v1@2.43.0
+
+## 1.5.0
+
+### Minor Changes
+
+- [#7851](https://github.com/wso2/identity-apps/pull/7851) [`3f254e98d447c8b2c275e6566b801c7404125a24`](https://github.com/wso2/identity-apps/commit/3f254e98d447c8b2c275e6566b801c7404125a24) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Add preview features enable/disable option to the console
+
+### Patch Changes
+
+- Updated dependencies [[`3f254e98d447c8b2c275e6566b801c7404125a24`](https://github.com/wso2/identity-apps/commit/3f254e98d447c8b2c275e6566b801c7404125a24)]:
+  - @wso2is/admin.core.v1@2.42.0
+  - @wso2is/access-control@3.4.0
+
+## 1.4.204
+
+### Patch Changes
+
+- [#7849](https://github.com/wso2/identity-apps/pull/7849) [`e0e4356f8fb7eae97613d21c65ba976d2c032d63`](https://github.com/wso2/identity-apps/commit/e0e4356f8fb7eae97613d21c65ba976d2c032d63) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the registration flow builder card to the login and registration section
+
+## 1.4.203
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.40.6
+  - @wso2is/admin.organizations.v1@2.26.203
+
+## 1.4.202
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.40.5
+  - @wso2is/admin.organizations.v1@2.26.202
+
+## 1.4.201
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.40.4
+  - @wso2is/admin.organizations.v1@2.26.201
+
+## 1.4.200
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.40.3
+  - @wso2is/admin.organizations.v1@2.26.200
+
 ## 1.4.199
 
 ### Patch Changes

@@ -1,5 +1,77 @@
 # @wso2is/i18n
 
+## 2.22.6
+
+### Patch Changes
+
+- [#7947](https://github.com/wso2/identity-apps/pull/7947) [`8b6bf7c6048b61562bd933051cd35f6c344e7842`](https://github.com/wso2/identity-apps/commit/8b6bf7c6048b61562bd933051cd35f6c344e7842) Thanks [@savindi7](https://github.com/savindi7)! - Update governance connector names.
+
+* [#7946](https://github.com/wso2/identity-apps/pull/7946) [`f7c26d3eff8818c63211d90c91d11b109710aaae`](https://github.com/wso2/identity-apps/commit/f7c26d3eff8818c63211d90c91d11b109710aaae) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add BE-based pagination support for groups listing UI
+
+## 2.22.5
+
+### Patch Changes
+
+- [#7929](https://github.com/wso2/identity-apps/pull/7929) [`cb0ee2cf165319ca096aa44d358799060f08bbf9`](https://github.com/wso2/identity-apps/commit/cb0ee2cf165319ca096aa44d358799060f08bbf9) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor user group assignment view to be consistent with other tabs
+
+## 2.22.4
+
+### Patch Changes
+
+- [#7901](https://github.com/wso2/identity-apps/pull/7901) [`d7eb376080cc93f307ce6f57b680d0cdd7d9fad5`](https://github.com/wso2/identity-apps/commit/d7eb376080cc93f307ce6f57b680d0cdd7d9fad5) Thanks [@Malith-19](https://github.com/Malith-19)! - Add password recovery email otp support.
+
+## 2.22.3
+
+### Patch Changes
+
+- [#7894](https://github.com/wso2/identity-apps/pull/7894) [`f1752da359591d2cafc68bfc1b6e85e0a65b7807`](https://github.com/wso2/identity-apps/commit/f1752da359591d2cafc68bfc1b6e85e0a65b7807) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add SMS otp authenticator resend attempt config to UI
+
+* [#7895](https://github.com/wso2/identity-apps/pull/7895) [`21c34e780c2b03b1219a59cbf264c3d34946ee36`](https://github.com/wso2/identity-apps/commit/21c34e780c2b03b1219a59cbf264c3d34946ee36) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Enhance Pre-Update Profile UI to align with recent API improvements
+
+- [#7773](https://github.com/wso2/identity-apps/pull/7773) [`18c5d10a5be7de56943e604d531fa8409c9b791d`](https://github.com/wso2/identity-apps/commit/18c5d10a5be7de56943e604d531fa8409c9b791d) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Disable policy edit button in the active policy list in Policy Administration page and change tooltip text
+
+## 2.22.2
+
+### Patch Changes
+
+- [#7827](https://github.com/wso2/identity-apps/pull/7827) [`ccb172c1f19c30ac993f43c2153ec3df1454a0db`](https://github.com/wso2/identity-apps/commit/ccb172c1f19c30ac993f43c2153ec3df1454a0db) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Make the Branding AI banner text less marketish
+
+## 2.22.1
+
+### Patch Changes
+
+- [#7825](https://github.com/wso2/identity-apps/pull/7825) [`9abede7d09c8e68a47d1e6bdffc6315bf8b7adc6`](https://github.com/wso2/identity-apps/commit/9abede7d09c8e68a47d1e6bdffc6315bf8b7adc6) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Implement Pre Update Profile Extension UI
+
+## 2.22.0
+
+### Minor Changes
+
+- [#7866](https://github.com/wso2/identity-apps/pull/7866) [`4d5ea9c18e0cb1cfb48c38d03e69e5aab09b425c`](https://github.com/wso2/identity-apps/commit/4d5ea9c18e0cb1cfb48c38d03e69e5aab09b425c) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce AI assisted registration flow builder
+
+## 2.21.4
+
+### Patch Changes
+
+- [#7849](https://github.com/wso2/identity-apps/pull/7849) [`e0e4356f8fb7eae97613d21c65ba976d2c032d63`](https://github.com/wso2/identity-apps/commit/e0e4356f8fb7eae97613d21c65ba976d2c032d63) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the registration flow builder card to the login and registration section
+
+## 2.21.3
+
+### Patch Changes
+
+- [#7804](https://github.com/wso2/identity-apps/pull/7804) [`084f8f96a8370514a418ea59362f0d2a72cddb7a`](https://github.com/wso2/identity-apps/commit/084f8f96a8370514a418ea59362f0d2a72cddb7a) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Show verification pending email/mobile in console user profile
+
+## 2.21.2
+
+### Patch Changes
+
+- [#7788](https://github.com/wso2/identity-apps/pull/7788) [`725295582b41eab8705a4e821d169499ced1c647`](https://github.com/wso2/identity-apps/commit/725295582b41eab8705a4e821d169499ced1c647) Thanks [@savindi7](https://github.com/savindi7)! - Update attribute resolution config labels and hints.
+
+## 2.21.1
+
+### Patch Changes
+
+- [#7771](https://github.com/wso2/identity-apps/pull/7771) [`152e91a6dd4848fe0fb0a0728a1e78fa97a88e12`](https://github.com/wso2/identity-apps/commit/152e91a6dd4848fe0fb0a0728a1e78fa97a88e12) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the confimation message for sms provider deletion.
+
 ## 2.21.0
 
 ### Minor Changes

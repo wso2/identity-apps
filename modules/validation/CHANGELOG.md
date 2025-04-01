@@ -1,5 +1,17 @@
 # @wso2is/validation
 
+## 2.4.3
+
+### Patch Changes
+
+- [#7969](https://github.com/wso2/identity-apps/pull/7969) [`3250ab7d1d279532b301b3b705ca3dc2c2bcf046`](https://github.com/wso2/identity-apps/commit/3250ab7d1d279532b301b3b705ca3dc2c2bcf046) Thanks [@KD23243](https://github.com/KD23243)! - Remove rolename lower limit
+
+## 2.4.2
+
+### Patch Changes
+
+- [#7876](https://github.com/wso2/identity-apps/pull/7876) [`50f5da7cc2c407607b59e30cfd26ced6eeec672a`](https://github.com/wso2/identity-apps/commit/50f5da7cc2c407607b59e30cfd26ced6eeec672a) Thanks [@KD23243](https://github.com/KD23243)! - Update rolename validation regex
+
 ## 2.4.1
 
 ### Patch Changes

@@ -346,8 +346,8 @@ export const isValidResourceKey = (value: string): boolean => {
 export const isValidRoleName = (value: string): boolean => {
     try {
         const result: ValidationResult = Joi.string()
-            .regex(new RegExp("^[a-zA-Z][a-zA-Z0-9-_. ]+$"))
-            .min(3)
+            .regex(new RegExp("^[^/]+$"))
+            .min(1)
             .max(255)
             .validate(value);
 

@@ -40,6 +40,9 @@ import { getPolicyAdministrationResourceEndpoints } from "@wso2is/admin.policy-a
 import {
     getPushProviderResourceEndpoints, getPushProviderTemplateEndpoints
 } from "@wso2is/admin.push-providers.v1/configs/endpoints";
+import {
+    getRegistrationFlowBuilderResourceEndpoints
+} from "@wso2is/admin.registration-flow-builder.v1/config/endpoints";
 import { getRemoteFetchConfigResourceEndpoints } from "@wso2is/admin.remote-repository-configuration.v1";
 import { getRolesResourceEndpoints } from "@wso2is/admin.roles.v2/configs/endpoints";
 import { getRulesEndpoints } from "@wso2is/admin.rules.v1/configs/endpoints";
@@ -290,6 +293,7 @@ export class Config {
             ...getPushProviderResourceEndpoints(this.resolveServerHost()),
             ...getPushProviderTemplateEndpoints(this.resolveServerHost()),
             ...getRemoteLoggingEndpoints(this.resolveServerHost()),
+            ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,

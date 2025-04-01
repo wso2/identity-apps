@@ -1,0 +1,144 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+:root {
+    --wso2is-flow-builder-step-background-color: #252525;
+    --wso2is-flow-builder-step-action-panel-height: 44px;
+    --wso2is-flow-builder-step-remove-button-color: var(--oxygen-palette-grey-500);
+    --wso2is-flow-builder-step-remove-button-hover-color: var(--oxygen-palette-primary-contrastText);
+    --wso2is-flow-builder-step-content-background-color: var(--oxygen-palette-background-paper);
+    --wso2is-flow-builder-step-content-box-width: 350px;
+    --wso2is-flow-builder-step-content-form-field-drag-handle-width: 25px;
+    --wso2is-flow-builder-allowed-droppable-area-highlight: #e0ffe1;
+    --wso2is-flow-builder-disallowed-droppable-area-highlight: #ffeaea;
+}
+
+.flow-builder-step {
+    background-color: var(--wso2is-flow-builder-step-background-color);
+    border-radius: var(--oxygen-shape-borderRadius);
+
+    .flow-builder-step-content {
+        display: flex;
+        flex-flow: column nowrap;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        text-align: left;
+
+        .dnd-droppable {
+            &.is-dropping {
+                &.allowed {
+                    background-color: var(--wso2is-flow-builder-allowed-droppable-area-highlight);
+                }
+
+                &.disallowed {
+                    background-color: var(--wso2is-flow-builder-disallowed-droppable-area-highlight);
+                }
+
+                .MuiBadge-badge {
+                    border: 1px solid var(--oxygen-palette-divider);
+                }
+            }
+        }
+
+        .flow-builder-step-content-box {
+            background-color: var(--wso2is-flow-builder-step-content-background-color);
+            width: var(--wso2is-flow-builder-step-content-box-width);
+            cursor: auto;
+        }
+
+        .flow-builder-step-content-form {
+            .oxygen-form-group {
+                .flow-builder-step-content-form-field {
+                    border: 2px dashed transparent;
+                    margin-left: calc(-1 * (var(--wso2is-flow-builder-step-content-form-field-drag-handle-width)));
+
+                    .flow-builder-step-content-form-field-drag-handle {
+                        display: flex;
+                        visibility: hidden;
+                        justify-content: center;
+                        width: var(--wso2is-flow-builder-step-content-form-field-drag-handle-width);
+                        border-right: 2px dashed transparent;
+                        margin-right: 5px;
+
+                        svg {
+                            margin: 5px 0;
+                        }
+                    }
+
+                    .flow-builder-step-content-form-field-content {
+                        width: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        gap: var(--oxygen-spacing-1);
+
+                        .adapter {
+                            position: relative;
+                        }
+                    }
+
+                    .flow-builder-dnd-action  {
+                        visibility: hidden;
+                    }
+
+                    &:hover, &:focus, &:active {
+                        border-color: var(--oxygen-palette-grey-200);
+
+                        >.flow-builder-dnd-action  {
+                            visibility: visible;
+                        }
+
+                        .flow-builder-step-content-form-field-drag-handle {
+                            visibility: visible;
+                            border-right: 2px dashed var(--oxygen-palette-grey-200);
+                        }
+                    }
+                }
+
+                .dnd-sortable {
+                    &.is-dragging {
+                        .flow-builder-step-content-form-field {
+                            background-color: var(--oxygen-palette-background-paper);
+                            border-right: 2px dashed var(--oxygen-palette-grey-200);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .flow-builder-step-action-panel {
+        padding: 10px 14px;
+        height: var(--wso2is-flow-builder-step-action-panel-height);
+
+        .flow-builder-step-id {
+            color: var(--oxygen-palette-primary-contrastText);
+        }
+
+        .flow-builder-step-remove-button {
+            border: 2px solid var(--wso2is-flow-builder-step-remove-button-color);
+            padding: 2px;
+            color: var(--wso2is-flow-builder-step-remove-button-color);
+
+            &:hover {
+                border-color: var(--wso2is-flow-builder-step-remove-button-hover-color);
+                color: var(--wso2is-flow-builder-step-remove-button-hover-color);
+            }
+        }
+    }
+}

@@ -49,6 +49,7 @@ import {
     UserAvatar
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -569,7 +570,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             );
         }
 
-        if (usersList?.totalResults === 0) {
+        if (isEmpty(usersList) || usersList.totalResults === 0) {
             return (
                 <EmptyPlaceholder
                     data-testid={ `${testId}-empty-placeholder` }

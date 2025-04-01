@@ -46,6 +46,7 @@ import {
     UserAvatar,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -423,7 +424,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
-        if (searchQuery && administrators?.totalResults === 0) {
+        if (searchQuery && isEmpty(administrators?.Resources)) {
             return (
                 <EmptyPlaceholder
                     action={ (
@@ -443,7 +444,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
             );
         }
 
-        if (administrators?.totalResults === 0) {
+        if (isEmpty(administrators?.Resources)) {
             return (
                 <EmptyPlaceholder
                     data-componentid={ `${ componentId }-empty-placeholder` }

@@ -21,11 +21,11 @@
   "type": "module",
   "devDependencies": {
     "@asgardeo/auth-react": "^5.1.2",
-    "@wso2is/admin.extensions.v1": "workspace:*",
-    "@wso2is/admin.core.v1": "workspace:*",
+    "@wso2is/admin.extensions.v1": "^2.36.128",
+    "@wso2is/admin.core.v1": "^2.40.6",
     "msw": "^0.36.8",
     "react": "^18.2.0",
-    "@wso2is/access-control": "workspace:*",
+    "@wso2is/access-control": "^3.3.20",
     "redux-mock-store": "^1.5.4",
     "redux": "^4.0.4"
   },

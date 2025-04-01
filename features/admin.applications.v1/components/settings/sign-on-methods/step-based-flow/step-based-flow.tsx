@@ -18,10 +18,6 @@
 
 import { useRequiredScopes } from "@wso2is/access-control";
 import {
-    isCustomAuthenticator,
-    isSecondFactorAuthenticator
-} from "@wso2is/admin.authentication-flow-builder.v1/utils/authentication-flow-builder-utils";
-import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
@@ -34,6 +30,10 @@ import {
     GenericAuthenticatorInterface,
     SupportedAuthenticators
 } from "@wso2is/admin.identity-providers.v1/models";
+import {
+    isCustomAuthenticator,
+    isSecondFactorAuthenticator
+} from "@wso2is/admin.login-flow-builder.v1/utils/authentication-flow-builder-utils";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, GenericIcon, Popup } from "@wso2is/react-components";

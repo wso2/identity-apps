@@ -1,5 +1,64 @@
 # @wso2is/admin.branding.ai.v1
 
+## 2.27.99
+
+### Patch Changes
+
+- [#7827](https://github.com/wso2/identity-apps/pull/7827) [`ccb172c1f19c30ac993f43c2153ec3df1454a0db`](https://github.com/wso2/identity-apps/commit/ccb172c1f19c30ac993f43c2153ec3df1454a0db) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Make the Branding AI banner text less marketish
+
+- Updated dependencies [[`ccb172c1f19c30ac993f43c2153ec3df1454a0db`](https://github.com/wso2/identity-apps/commit/ccb172c1f19c30ac993f43c2153ec3df1454a0db)]:
+  - @wso2is/i18n@2.22.2
+
+## 2.27.98
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.40.6
+  - @wso2is/admin.organizations.v1@2.26.203
+  - @wso2is/admin.branding.v1@2.28.60
+  - @wso2is/admin.feature-gate.v1@1.4.203
+  - @wso2is/common.ai.v1@2.25.203
+  - @wso2is/common.branding.v1@2.26.60
+
+## 2.27.97
+
+### Patch Changes
+
+- Updated dependencies [[`725295582b41eab8705a4e821d169499ced1c647`](https://github.com/wso2/identity-apps/commit/725295582b41eab8705a4e821d169499ced1c647)]:
+  - @wso2is/i18n@2.21.2
+  - @wso2is/admin.core.v1@2.40.5
+  - @wso2is/admin.organizations.v1@2.26.202
+  - @wso2is/admin.branding.v1@2.28.59
+  - @wso2is/common.ai.v1@2.25.202
+  - @wso2is/admin.feature-gate.v1@1.4.202
+  - @wso2is/common.branding.v1@2.26.59
+
+## 2.27.96
+
+### Patch Changes
+
+- Updated dependencies [[`152e91a6dd4848fe0fb0a0728a1e78fa97a88e12`](https://github.com/wso2/identity-apps/commit/152e91a6dd4848fe0fb0a0728a1e78fa97a88e12)]:
+  - @wso2is/i18n@2.21.1
+  - @wso2is/admin.core.v1@2.40.4
+  - @wso2is/admin.branding.v1@2.28.58
+  - @wso2is/admin.organizations.v1@2.26.201
+  - @wso2is/common.ai.v1@2.25.201
+  - @wso2is/admin.feature-gate.v1@1.4.201
+  - @wso2is/common.branding.v1@2.26.58
+
+## 2.27.95
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.40.3
+  - @wso2is/admin.organizations.v1@2.26.200
+  - @wso2is/admin.branding.v1@2.28.57
+  - @wso2is/admin.feature-gate.v1@1.4.200
+  - @wso2is/common.ai.v1@2.25.200
+  - @wso2is/common.branding.v1@2.26.57
+
 ## 2.27.94
 
 ### Patch Changes

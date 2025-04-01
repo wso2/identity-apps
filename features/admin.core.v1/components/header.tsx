@@ -33,6 +33,7 @@ import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@
 import { useMyAccountApplicationData } from "@wso2is/admin.applications.v1/api/application";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
+import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationSwitchBreadcrumb } from "@wso2is/admin.organizations.v1/components/organization-switch";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -47,6 +48,8 @@ import { useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import FeaturePreviewModal from "./modals/feature-preview-modal";
+import { ReactComponent as PreviewFeaturesIcon } from "../../themes/default/assets/images/icons/flask-icon.svg";
 import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../themes/default/assets/images/icons/user-icon.svg";
 import { ReactComponent as AskHelpIcon } from "../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
@@ -79,7 +82,10 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     ...rest
 }: HeaderPropsInterface): ReactElement => {
     const { t } = useTranslation();
+
     const { getLink } = useDocumentation();
+
+    const { showPreviewFeaturesModal, setShowPreviewFeaturesModal } = useFeatureGate();
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -97,6 +103,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         useSelector((state: AppState) => state.config.ui.features.gettingStarted);
     const scopes: string = useSelector((state: AppState) => state.auth.allowedScopes);
     const userOrganizationID: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
+    const loginAndRegistrationFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state?.config?.ui?.features?.loginAndRegistration);
 
     const hasGettingStartedViewPermission: boolean = useRequiredScopes(
         gettingStartedFeatureConfig?.scopes?.feature
@@ -365,110 +373,129 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     };
 
     return (
-        <OxygenHeader
-            className="is-header"
-            brand={ {
-                logo: {
-                    desktop: <LOGO_IMAGE />,
-                    mobile: <LOGO_IMAGE />
-                },
-                onClick: () =>
-                    hasGettingStartedViewPermission &&
-                    history.push(config.deployment.appHomePath),
-                title: config.ui.appName
-            } }
-            user={ {
-                email:
-                    profileInfo?.email ?? typeof profileInfo?.emails[0] === "string"
-                        ? (profileInfo?.emails[0] as string)
-                        : profileInfo?.emails[0]?.value,
-                image: profileInfo?.profileUrl,
-                name: resolveUsername()
-            } }
-            showCollapsibleHamburger
-            onCollapsibleHamburgerClick={ onCollapsibleHamburgerClick }
-            position="fixed"
-            leftAlignedElements={ [ isOrgSwitcherEnabled ? <OrganizationSwitchBreadcrumb /> : null ] }
-            rightAlignedElements={ generateHeaderButtons() }
-            userDropdownMenu={ {
-                actionIcon: <LogoutIcon />,
-                actionText: t("common:logout"),
-                footerContent: [
-                    <Box key="footer" className="user-dropdown-footer">
-                        <Link
-                            variant="body3"
-                            href={ getLink("common.privacyPolicy") }
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            { I18n.instance.t("console:common.dropdown.footer.privacyPolicy") as string }
-                        </Link>
-                        <Link
-                            variant="body3"
-                            href={ getLink("common.cookiePolicy") }
-                            target="_blank"
-                            rel="noreferrer">
-                            { I18n.instance.t("console:common.dropdown.footer.cookiePolicy") as string }
-                        </Link>
-                        <Link
-                            variant="body3"
-                            href={ getLink("common.termsOfService") }
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            { I18n.instance.t("console:common.dropdown.footer.termsOfService") as string }
-                        </Link>
-                    </Box>
-                ],
-                menuItems: [
-                    billingPortalURL &&
-                        window["AppUtils"].getConfig().extensions.billingPortalUrl &&
-                        !isPrivilegedUser && (
-                        <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+        <>
+            <OxygenHeader
+                className="is-header"
+                brand={ {
+                    logo: {
+                        desktop: <LOGO_IMAGE />,
+                        mobile: <LOGO_IMAGE />
+                    },
+                    onClick: () =>
+                        hasGettingStartedViewPermission &&
+                        history.push(config.deployment.appHomePath),
+                    title: config.ui.appName
+                } }
+                user={ {
+                    email:
+                        profileInfo?.email ?? typeof profileInfo?.emails[0] === "string"
+                            ? (profileInfo?.emails[0] as string)
+                            : profileInfo?.emails[0]?.value,
+                    image: profileInfo?.profileUrl,
+                    name: resolveUsername()
+                } }
+                showCollapsibleHamburger
+                onCollapsibleHamburgerClick={ onCollapsibleHamburgerClick }
+                position="fixed"
+                leftAlignedElements={ [ isOrgSwitcherEnabled ? <OrganizationSwitchBreadcrumb /> : null ] }
+                rightAlignedElements={ generateHeaderButtons() }
+                userDropdownMenu={ {
+                    actionIcon: <LogoutIcon />,
+                    actionText: t("common:logout"),
+                    footerContent: [
+                        <Box key="footer" className="user-dropdown-footer">
+                            <Link
+                                variant="body3"
+                                href={ getLink("common.privacyPolicy") }
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                { I18n.instance.t("console:common.dropdown.footer.privacyPolicy") as string }
+                            </Link>
+                            <Link
+                                variant="body3"
+                                href={ getLink("common.cookiePolicy") }
+                                target="_blank"
+                                rel="noreferrer">
+                                { I18n.instance.t("console:common.dropdown.footer.cookiePolicy") as string }
+                            </Link>
+                            <Link
+                                variant="body3"
+                                href={ getLink("common.termsOfService") }
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                { I18n.instance.t("console:common.dropdown.footer.termsOfService") as string }
+                            </Link>
+                        </Box>
+                    ],
+                    menuItems: [
+                        billingPortalURL &&
+                            window["AppUtils"].getConfig().extensions.billingPortalUrl &&
+                            !isPrivilegedUser && (
+                            <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                                <MenuItem
+                                    color="inherit"
+                                    onClick={ () => {
+                                        window.open(billingPortalURL, "_blank", "noopener");
+                                    } }
+                                    data-testid="app-switch-billingPortal"
+                                >
+                                    <ListItemIcon>
+                                        <BillingPortalIcon />
+                                    </ListItemIcon>
+                                    <ListItemText>
+                                        { t("extensions:manage.features.header.links.billingPortalNav") }
+                                    </ListItemText>
+                                </MenuItem>
+                            </Show>
+                        ),
+                        <Show featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                            <Show
+                                when={ loginAndRegistrationFeatureConfig?.scopes?.update }
+                                featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
+                            >
+                                <MenuItem onClick={ () => setShowPreviewFeaturesModal(true) }>
+                                    <ListItemIcon>
+                                        <PreviewFeaturesIcon />
+                                    </ListItemIcon>
+                                    <ListItemText>{ t("Feature Preview") }</ListItemText>
+                                </MenuItem>
+                            </Show>
+                        </Show>,
+                        isShowAppSwitchButton() ? (
                             <MenuItem
                                 color="inherit"
+                                key={ t("myAccount:components.header.appSwitch.console.name") }
                                 onClick={ () => {
-                                    window.open(billingPortalURL, "_blank", "noopener");
+                                    eventPublisher.publish("console-click-visit-my-account");
+                                    window.open(
+                                        getMyAccountUrl(),
+                                        "_blank",
+                                        "noopener"
+                                    );
                                 } }
-                                data-testid="app-switch-billingPortal"
                             >
                                 <ListItemIcon>
-                                    <BillingPortalIcon />
+                                    <MyAccountIcon />
                                 </ListItemIcon>
-                                <ListItemText>
-                                    { t("extensions:manage.features.header.links.billingPortalNav") }
-                                </ListItemText>
+                                <ListItemText>{ t("console:common.header.appSwitch.myAccount.name") }</ListItemText>
                             </MenuItem>
-                        </Show>
-                    ),
-                    isShowAppSwitchButton() ? (
-                        <MenuItem
-                            color="inherit"
-                            key={ t("myAccount:components.header.appSwitch.console.name") }
-                            onClick={ () => {
-                                eventPublisher.publish("console-click-visit-my-account");
-                                window.open(
-                                    getMyAccountUrl(),
-                                    "_blank",
-                                    "noopener"
-                                );
-                            } }
-                        >
-                            <ListItemIcon>
-                                <MyAccountIcon />
-                            </ListItemIcon>
-                            <ListItemText>{ t("console:common.header.appSwitch.myAccount.name") }</ListItemText>
-                        </MenuItem>
-                    ) : null
-                ],
-                onActionClick: () => history.push(AppConstants.getAppLogoutPath()),
-                triggerOptions: {
-                    "data-componentid": "app-header-user-avatar",
-                    "data-testid": "app-header-user-avatar"
-                }
-            } }
-            { ...rest }
-        />
+                        ) : null
+                    ],
+                    onActionClick: () => history.push(AppConstants.getAppLogoutPath()),
+                    triggerOptions: {
+                        "data-componentid": "app-header-user-avatar",
+                        "data-testid": "app-header-user-avatar"
+                    }
+                } }
+                { ...rest }
+            />
+            <FeaturePreviewModal
+                open={ showPreviewFeaturesModal }
+                onClose={ () => setShowPreviewFeaturesModal(false) }
+            />
+        </>
     );
 };
 

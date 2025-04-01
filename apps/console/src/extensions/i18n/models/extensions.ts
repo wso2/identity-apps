@@ -2841,10 +2841,19 @@ export interface Extensions {
                             passwordRecoveryOtpUseLowercase: FormAttributes;
                             passwordRecoveryOtpUseNumeric: FormAttributes;
                             passwordRecoveryOtpLength: FormAttributes;
+                            emailRecoveryOptions: {
+                                header: string;
+                                emailLink: {
+                                    label: string;
+                                },
+                                emailOtp: {
+                                    label: string;
+                                }
+                            };
                         };
                         smsProviderWarning: string;
                     };
-                    recoveryOptionSubHeadingEmailLink: string;
+                    recoveryOptionSubHeadingEmail: string;
                     recoveryOptionSubHeadingSMS: string;
                     recoveryOptionHeading: string;
                     otpConfigHeading: string;

@@ -613,6 +613,9 @@ export interface userNS {
                 };
             };
         };
+        tooltips: {
+            confirmationPending: string;
+        };
     };
     updateUser: {
         groups: {

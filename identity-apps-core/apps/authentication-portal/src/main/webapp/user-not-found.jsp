@@ -1,6 +1,6 @@
 <%--
  ~
- ~ Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ ~ Copyright (c) 2021-2025, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
  ~
  ~ This software is the property of WSO2 Inc. and its suppliers, if any.
  ~ Dissemination of any information or reproduction of any material contained
@@ -48,6 +48,9 @@
 
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
+
+<%-- Include registration portal URL resolver --%>
+<jsp:directive.include file="util/registration-portal-url-resolver.jsp"/>
 
 <%!
     private static final String JAVAX_SERVLET_FORWARD_REQUEST_URI = "javax.servlet.forward.request_uri";
@@ -123,17 +126,13 @@
         }
     }
 
-    accountRegistrationEndpointURL = application.getInitParameter("AccountRegisterEndpointURL");
-    if (StringUtils.isBlank(accountRegistrationEndpointURL)) {
+    if (isDynamicPortalEnabled) {
         accountRegistrationEndpointURL = identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
-    }
-%>
-
-<%!
-    private String getRegistrationUrl(String accountRegistrationEndpointURL, String urlEncodedURL,
-            String urlParameters) {
-
-        return accountRegistrationEndpointURL + "?" + urlParameters + "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
+    } else {
+        accountRegistrationEndpointURL = application.getInitParameter("AccountRegisterEndpointURL");
+        if (StringUtils.isBlank(accountRegistrationEndpointURL)) {
+            accountRegistrationEndpointURL = identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
+        }
     }
 %>
 
@@ -192,7 +191,7 @@
                             class="ui primary fluid large button"
                             type="button"
                             value="submit"
-                            onclick="window.location.href='<%=getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters)%>';"
+                            onclick="window.location.href='<%=getRegistrationPortalUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters)%>';"
                         >
                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "go.to.sign.up")%>
                         </button>

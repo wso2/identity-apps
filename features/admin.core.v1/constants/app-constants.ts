@@ -324,6 +324,7 @@ export class AppConstants {
                     AppConstants.EMAIL_TEMPLATE_ADD_URL_PARAM }`
             ],
             [ "EXTERNAL_DIALECT_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attribute-mappings/:id` ],
+            [ "REGISTRATION_FLOW_BUILDER", `${ AppConstants.getMainViewBasePath() }/edit-self-registration-flow` ],
             [ "GROUPS", `${ AppConstants.getAdminViewBasePath() }/groups` ],
             [ "GROUP_EDIT", `${ AppConstants.getAdminViewBasePath() }/groups/:id` ],
             [ "IDP", `${ AppConstants.getDeveloperViewBasePath() }/connections` ],
@@ -419,6 +420,8 @@ export class AppConstants {
                 `${AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ],
             [ "PRE_UPDATE_PASSWORD_EDIT",
                 `${AppConstants.getAdminViewBasePath()}/actions/pre-update-password` ],
+            [ "PRE_UPDATE_PROFILE_EDIT",
+                `${AppConstants.getAdminViewBasePath()}/actions/pre-update-profile` ],
             [ "TENANTS", `${AppConstants.getDefaultLayoutBasePath()}/organizations` ],
             [ "EDIT_TENANT", `${AppConstants.getDefaultLayoutBasePath()}/organizations/:id` ],
             [ "SYSTEM_SETTINGS", `${AppConstants.getDefaultLayoutBasePath()}/organizations/system-settings` ],

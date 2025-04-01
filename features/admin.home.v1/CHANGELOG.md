@@ -1,5 +1,79 @@
 # @wso2is/admin.home.v1
 
+## 1.7.2
+
+### Patch Changes
+
+- [#7928](https://github.com/wso2/identity-apps/pull/7928) [`81785d68f11ffad8547312e786ad2d7d71b235b6`](https://github.com/wso2/identity-apps/commit/81785d68f11ffad8547312e786ad2d7d71b235b6) Thanks [@brionmario](https://github.com/brionmario)! - Update banner illustration
+
+## 1.7.1
+
+### Patch Changes
+
+- [#7903](https://github.com/wso2/identity-apps/pull/7903) [`d6b9e16942e72fb36d6be9e4e8b0c06f20269848`](https://github.com/wso2/identity-apps/commit/d6b9e16942e72fb36d6be9e4e8b0c06f20269848) Thanks [@brionmario](https://github.com/brionmario)! - Fix minor issues
+
+- Updated dependencies [[`d6b9e16942e72fb36d6be9e4e8b0c06f20269848`](https://github.com/wso2/identity-apps/commit/d6b9e16942e72fb36d6be9e4e8b0c06f20269848)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.5.2
+
+## 1.7.0
+
+### Minor Changes
+
+- [#7891](https://github.com/wso2/identity-apps/pull/7891) [`29edf4fd3d7425985db9bb4103caf9d549e3570c`](https://github.com/wso2/identity-apps/commit/29edf4fd3d7425985db9bb4103caf9d549e3570c) Thanks [@brionmario](https://github.com/brionmario)! - Add feature announcement banner
+
+### Patch Changes
+
+- Updated dependencies [[`29edf4fd3d7425985db9bb4103caf9d549e3570c`](https://github.com/wso2/identity-apps/commit/29edf4fd3d7425985db9bb4103caf9d549e3570c)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.5.0
+  - @wso2is/admin.feature-gate.v1@1.6.0
+  - @wso2is/admin.core.v1@2.43.0
+
+## 1.6.203
+
+### Patch Changes
+
+- Updated dependencies [[`c78a6b3b4b54342fed9f06fceaef9aab27c53803`](https://github.com/wso2/identity-apps/commit/c78a6b3b4b54342fed9f06fceaef9aab27c53803)]:
+  - @wso2is/admin.applications.v1@2.32.6
+  - @wso2is/admin.extensions.v1@2.36.128
+  - @wso2is/admin.core.v1@2.40.6
+  - @wso2is/admin.organizations.v1@2.26.203
+  - @wso2is/admin.feature-gate.v1@1.4.203
+
+## 1.6.202
+
+### Patch Changes
+
+- Updated dependencies [[`281011fd2fd4b725d41dfc37e1747f3688d6b0f1`](https://github.com/wso2/identity-apps/commit/281011fd2fd4b725d41dfc37e1747f3688d6b0f1), [`725295582b41eab8705a4e821d169499ced1c647`](https://github.com/wso2/identity-apps/commit/725295582b41eab8705a4e821d169499ced1c647)]:
+  - @wso2is/admin.applications.v1@2.32.5
+  - @wso2is/i18n@2.21.2
+  - @wso2is/admin.extensions.v1@2.36.127
+  - @wso2is/admin.core.v1@2.40.5
+  - @wso2is/admin.organizations.v1@2.26.202
+  - @wso2is/admin.feature-gate.v1@1.4.202
+
+## 1.6.201
+
+### Patch Changes
+
+- Updated dependencies [[`152e91a6dd4848fe0fb0a0728a1e78fa97a88e12`](https://github.com/wso2/identity-apps/commit/152e91a6dd4848fe0fb0a0728a1e78fa97a88e12)]:
+  - @wso2is/i18n@2.21.1
+  - @wso2is/admin.applications.v1@2.32.4
+  - @wso2is/admin.core.v1@2.40.4
+  - @wso2is/admin.extensions.v1@2.36.126
+  - @wso2is/admin.organizations.v1@2.26.201
+  - @wso2is/admin.feature-gate.v1@1.4.201
+
+## 1.6.200
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.32.3
+  - @wso2is/admin.core.v1@2.40.3
+  - @wso2is/admin.extensions.v1@2.36.125
+  - @wso2is/admin.organizations.v1@2.26.200
+  - @wso2is/admin.feature-gate.v1@1.4.200
+
 ## 1.6.199
 
 ### Patch Changes

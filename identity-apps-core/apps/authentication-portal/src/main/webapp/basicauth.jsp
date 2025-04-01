@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2014-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2014-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,8 @@
   ~ under the License.
 --%>
 
+<%@ page import="org.apache.commons.httpclient.HttpURL" %>
+<%@ page import="org.apache.commons.httpclient.HttpsURL" %>
 <%@ page import="org.apache.cxf.jaxrs.client.JAXRSClientFactory" %>
 <%@ page import="org.apache.cxf.jaxrs.provider.json.JSONProvider" %>
 <%@ page import="org.apache.cxf.jaxrs.client.WebClient" %>
@@ -577,7 +579,11 @@
                 int serverPort = request.getServerPort();
                 String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
                 String prmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
-                urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
+                if ((scheme == "http" && serverPort == HttpURL.DEFAULT_PORT) || (scheme == "https" && serverPort == HttpsURL.DEFAULT_PORT)) {
+                    urlWithoutEncoding = scheme + "://" + serverName + uri + "?" + prmstr;
+                } else {
+                    urlWithoutEncoding = scheme + "://" + serverName + ":" + serverPort + uri + "?" + prmstr;
+                }
             }
             urlWithoutEncoding = IdentityManagementEndpointUtil.replaceUserTenantHintPlaceholder(
                     urlWithoutEncoding, userTenantDomain);
@@ -696,7 +702,7 @@
                     <% if(StringUtils.isNotBlank(selfSignUpOverrideURL)) { %>
                     href="<%=i18nLink(userLocale, selfSignUpOverrideURL)%>"
                     <% } else { %>
-                    href="<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>"
+                    href="<%=StringEscapeUtils.escapeHtml4(getRegistrationPortalUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>"
                     <% } %>
                     target="_self"
                     class="clickable-link"
@@ -750,17 +756,6 @@
             return identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_RECOVER + "?" + urlParameters
                     + "&isUsernameRecovery=" + isUsernameRecovery + "&callback=" + Encode
                     .forHtmlAttribute(urlEncodedURL);
-        }
-
-        private String getRegistrationUrl(String accountRegistrationEndpointURL, String urlEncodedURL,
-                String urlParameters) {
-
-            String registrationUrl = accountRegistrationEndpointURL + "?"  + urlParameters;
-            if (!StringUtils.isEmpty(urlEncodedURL)) {
-                registrationUrl += "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
-            }
-
-            return registrationUrl;
         }
     %>
 

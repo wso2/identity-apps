@@ -19,22 +19,27 @@
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
 import {
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
-import { useUserStore } from "@wso2is/admin.userstores.v1/api/user-stores";
+import { useGetUserStore } from "@wso2is/admin.userstores.v1/api/use-get-user-store";
 import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants";
-import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreListItem, UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 import { ValidationDataInterface, ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
+import { ProfileSchemaInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Button, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Menu, Message, Radio } from "semantic-ui-react";
 import { getUsersList } from "../../../api/users";
 import {
@@ -61,13 +66,11 @@ export interface AddUserProps {
     triggerSubmit: boolean;
     emailVerificationEnabled: boolean;
     onSubmit: (values: BasicUserDetailsInterface) => void;
-    hiddenFields?: (HiddenFieldNames)[];
     requestedPasswordOption?: PasswordOptionTypes;
     isUserstoreRequired?: boolean;
-    isFirstNameRequired?: boolean;
-    isLastNameRequired?: boolean;
-    isEmailRequired?: boolean;
     validationConfig?: ValidationDataInterface[];
+    passwordOption: PasswordOptionTypes;
+    setPasswordOption: (option: PasswordOptionTypes) => void;
     setUserSummaryEnabled: (toggle: boolean) => void;
     setAskPasswordFromUser?: (toggle: boolean) => void;
     setOfflineUser?: (toggle: boolean) => void;
@@ -75,7 +78,6 @@ export interface AddUserProps {
     setSelectedUserStore?: (selectedUserStore: string) => void;
     isBasicDetailsLoading?: boolean;
     setBasicDetailsLoading?: (toggle: boolean) => void;
-    readWriteUserStoresList: DropdownItemProps[];
     selectedUserStoreId: string;
 }
 
@@ -92,24 +94,25 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         triggerSubmit,
         emailVerificationEnabled,
         onSubmit,
-        hiddenFields,
         isUserstoreRequired,
-        isFirstNameRequired,
-        isLastNameRequired,
-        isEmailRequired,
+        passwordOption,
         setUserSummaryEnabled,
         setAskPasswordFromUser,
         selectedUserStore,
+        setPasswordOption,
         setSelectedUserStore,
         setOfflineUser,
         isBasicDetailsLoading,
         setBasicDetailsLoading,
         validationConfig,
-        readWriteUserStoresList,
         selectedUserStoreId
     } = props;
 
-    const [ passwordOption, setPasswordOption ] = useState<PasswordOptionTypes>(userConfig.defaultPasswordOption);
+    const { isUserStoreReadOnly, userStoresList } = useUserStores();
+
+    const profileSchemas: ProfileSchemaInterface[] = useSelector(
+        (state: AppState) => state.profile.profileSchemas);
+
     const [ askPasswordOption, setAskPasswordOption ] = useState<string>(userConfig.defautlAskPasswordOption);
     const [ password, setPassword ] = useState<string>(initialValues?.newPassword ?? "");
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
@@ -119,6 +122,10 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const [ userStore, setUserStore ] = useState<string>(selectedUserStoreId);
     const [ isValidEmail, setIsValidEmail ] = useState<boolean>(false);
     const [ isEmailFilled, setIsEmailFilled ] = useState<boolean>(false);
+    const [ hiddenFields, setHiddenFields ] = useState<(HiddenFieldNames)[]>([]);
+    const [ isFirstNameRequired, setFirstNameRequired ] = useState<boolean>(true);
+    const [ isLastNameRequired, setLastNameRequired ] = useState<boolean>(true);
+    const [ isEmailRequired, setEmailRequired ] = useState<boolean>(false);
 
     const formBottomRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
     const emailRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
@@ -150,7 +157,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     // Hook to get the userstore details of the selected userstore.
     const {
         data: originalUserStore
-    } = useUserStore(
+    } = useGetUserStore(
         userStore
     );
 
@@ -167,6 +174,39 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                 (property: UserStoreProperty) => property.name === USERSTORE_REGEX_PROPERTIES.PasswordRegEx)?.value;
         }
     }, [ originalUserStore ]);
+
+    const readWriteUserStoresList: DropdownItemProps[] = useMemo(() => {
+        const storeOptions: DropdownItemProps[] = [
+            {
+                key: -1,
+                text: userstoresConfig.primaryUserstoreName,
+                value: userstoresConfig.primaryUserstoreId
+            }
+        ];
+
+        if (userStoresList?.length > 0) {
+            userStoresList.forEach((store: UserStoreListItem, index: number) => {
+                const isReadOnly: boolean = isUserStoreReadOnly(store.name);
+                const isEnabled: boolean = store.enabled;
+
+                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && !isReadOnly && isEnabled) {
+                    const storeOption: DropdownItemProps = {
+                        key: index,
+                        text: store.name,
+                        value: store.id
+                    };
+
+                    storeOptions.push(storeOption);
+                }
+            });
+        }
+
+        return storeOptions;
+    }, [ userStoresList ]);
+
+    useEffect(() => {
+        resolveNamefieldAttributes();
+    }, []);
 
     /**
      *
@@ -208,6 +248,53 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
             setIsValidEmail(false);
         }
     }, [ usernameConfig ]);
+
+    const resolveNamefieldAttributes = () => {
+        const hiddenAttributes: (HiddenFieldNames)[] = [];
+        const nameSchema: ProfileSchemaInterface = profileSchemas
+            .find((schema: ProfileSchemaInterface) => schema.name === "name");
+        const emailSchema: ProfileSchemaInterface = profileSchemas
+            .find((schema: ProfileSchemaInterface) => (schema.name === "emails"));
+
+        if (emailSchema) {
+            hiddenAttributes.push(HiddenFieldNames.EMAIL);
+            setEmailRequired(emailSchema.required);
+        }
+
+        if (nameSchema?.subAttributes?.length > 0) {
+            // Check for presence of firstName, lastName attributes.
+            const firstNameAttribute: ProfileSchemaInterface = nameSchema.subAttributes
+                .find((attribute: ProfileSchemaInterface) => attribute.name === "givenName");
+            const lastNameAttribute: ProfileSchemaInterface = nameSchema.subAttributes
+                .find((attribute: ProfileSchemaInterface) => attribute.name === "familyName");
+
+            if (firstNameAttribute && lastNameAttribute) {
+                setFirstNameRequired(firstNameAttribute.required);
+                setLastNameRequired(lastNameAttribute.required);
+
+            } else {
+                if (firstNameAttribute) {
+                    // First Name attribute is available.
+                    // But Last Name attribute is not available
+                    hiddenAttributes.push(HiddenFieldNames.LASTNAME);
+                    setFirstNameRequired(firstNameAttribute.required);
+                }
+
+                if (lastNameAttribute) {
+                    // Last Name attribute is available.
+                    // But First Name attribute is not available
+                    hiddenAttributes.push(HiddenFieldNames.FIRSTNAME);
+                    setLastNameRequired(lastNameAttribute.required);
+                }
+            }
+        } else {
+            // If nameSchema is not present, firstName and lastName is set
+            // to be not visible on the attributes.
+            // Therefore it is hidden from the add user wizard.
+            hiddenAttributes.push(HiddenFieldNames.FIRSTNAME, HiddenFieldNames.LASTNAME);
+        }
+        setHiddenFields(hiddenAttributes);
+    };
 
     /**
      * Check whether the alphanumeric usernames are enabled.
@@ -1083,9 +1170,4 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
             </Grid>
         </Forms>
     );
-};
-
-AddUserUpdated.defaultProps = {
-    hiddenFields: [],
-    requestedPasswordOption: PasswordOptionTypes.ASK_PASSWORD
 };

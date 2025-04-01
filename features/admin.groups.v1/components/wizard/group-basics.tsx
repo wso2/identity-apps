@@ -16,25 +16,21 @@
  * under the License.
  */
 
-import { UserStoreDetails } from "@wso2is/admin.core.v1/models/user-store";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
-import { getAUserStore, getUserStoreList } from "@wso2is/admin.userstores.v1/api/user-stores";
+import { useUserStoreRegEx } from "@wso2is/admin.userstores.v1/api/use-get-user-store-regex";
 import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants";
-import useUserStoresContext from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
-import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
-import { AlertLevels, IdentifiableComponentInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { StringUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
+import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { searchGroupList } from "../../api/groups";
 import { CreateGroupFormData, SearchGroupInterface } from "../../models/groups";
 
@@ -66,20 +62,59 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { isUserStoreReadOnly } = useUserStoresContext();
+    const {
+        isLoading: isUserStoresLoading,
+        isUserStoreReadOnly,
+        mutateUserStoreList,
+        userStoresList
+    } = useUserStores();
 
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
-
-    const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
     const [ basicDetails, setBasicDetails ] = useState<any>(null);
 
     const groupName: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
 
+    const {
+        data: userStoreRegEx,
+        isLoading: isUserStoreRegExLoading
+    } = useUserStoreRegEx(
+        userStore,
+        USERSTORE_REGEX_PROPERTIES.RolenameRegEx
+    );
+
+    const userStoreOptions: UserStoreDropdownItem[] = useMemo(() => {
+        const storeOptions: UserStoreDropdownItem[] = [
+            {
+                key: -1,
+                text: userstoresConfig?.primaryUserstoreName,
+                value: userstoresConfig?.primaryUserstoreName
+            }
+        ];
+
+        if (userStoresList && !isUserStoresLoading) {
+            if (userStoresList?.length > 0) {
+                userStoresList.forEach((store: UserStoreListItem, index: number) => {
+                    const isEnabled: boolean = store.enabled;
+                    const isReadOnly: boolean = isUserStoreReadOnly(store?.name);
+
+                    if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName
+                        && isEnabled && !isReadOnly) {
+                        const storeOption: UserStoreDropdownItem = {
+                            key: index,
+                            text: store.name,
+                            value: store.name
+                        };
+
+                        storeOptions.push(storeOption);
+                    }
+                });
+            }
+        }
+
+        return storeOptions;
+    }, [ userStoresList, isUserStoresLoading ]);
+
     useEffect(() => {
-        // To-do: Replace this with userstore provider logic.
-        getUserStores();
+        mutateUserStoreList();
     }, []);
 
     useEffect(() => {
@@ -97,114 +132,6 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
         const domain: string = values?.get("domain")?.toString();
 
         setUserStore(domain);
-    };
-
-    /**
-     * The following function validates role name against the user store regEx.
-     */
-    const validateGroupNamePattern = async (): Promise<string> => {
-
-        let userStoreRegEx: string = "";
-
-        if (userStore && !StringUtils.isEqualCaseInsensitive(userStore, primaryUserStoreDomainName)) {
-            await SharedUserStoreUtils.getUserStoreRegEx(userStore,
-                USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
-                .then((response: string) => {
-                    setRegExLoading(true);
-                    userStoreRegEx = response;
-                });
-        } else {
-            await SharedUserStoreUtils.getPrimaryUserStore().then((response: void | UserStoreDetails) => {
-                setRegExLoading(true);
-                if (response && response.properties) {
-                    userStoreRegEx = response?.properties?.filter((property: UserStoreProperty) => {
-                        return property.name === USERSTORE_REGEX_PROPERTIES.RolenameRegEx;
-                    })[ 0 ].value;
-                }
-            });
-        }
-
-        setRegExLoading(false);
-
-        return new Promise((resolve: (value: string) => void, reject: (reason: string) => void) => {
-            if (userStoreRegEx !== "") {
-                resolve(userStoreRegEx);
-            } else {
-                reject("");
-            }
-        });
-    };
-
-    /**
-     * Check the given user store is Read/Write enabled.
-     *
-     * @param userStoreID - Userstore Id.
-     * @returns If the given userstore is Read/Write enabled or not.
-     */
-    const isUserStoreReadWrite = async (userStoreID: string): Promise<boolean> => {
-        try {
-            const response: UserStoreDetails = await getAUserStore(userStoreID);
-
-            // Check whether the user store is disabled.
-            const isDisabled: boolean = response.properties.find(
-                (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
-
-            // If the user store not read only and not disabled, return true.
-            return !isUserStoreReadOnly(response?.name) && !isDisabled;
-        } catch (error) {
-            dispatch(addAlert({
-                description: t("userstores:notifications.fetchUserstores.genericError." +
-                    "description"),
-                level: AlertLevels.ERROR,
-                message: t("userstores:notifications.fetchUserstores.genericError.message")
-            }));
-
-            return false;
-        }
-    };
-
-
-    /**
-     * The following function fetch the user store list and set it to the state.
-     */
-    const getUserStores = async () => {
-        const storeOptions: DropdownItemProps[] = [
-            {
-                key: -1,
-                text: userstoresConfig.primaryUserstoreName,
-                value: userstoresConfig.primaryUserstoreName
-            }
-        ];
-
-        try {
-            const response: AxiosResponse<UserstoreListResponseInterface[]> = await getUserStoreList();
-
-            const readWriteStores: UserstoreListResponseInterface[] = await Promise.all(response.data?.map(
-                async (store: UserstoreListResponseInterface) => {
-                    const isReadWrite: boolean = await isUserStoreReadWrite(store?.id);
-
-                    return isReadWrite ? store : null;
-                }));
-
-            readWriteStores.filter(Boolean).forEach((store: UserstoreListResponseInterface, index: number) => {
-                if (store) {
-                    storeOptions.push({
-                        key: index,
-                        text: store.name,
-                        value: store.name
-                    });
-                }
-            });
-
-            setUserStoresList(storeOptions);
-        } catch (error) {
-            dispatch(addAlert({
-                description: t(
-                    "userstores:notifications.fetchUserstores.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("userstores:notifications.fetchUserstores.genericError.message")
-            }));
-        }
     };
 
     /**
@@ -269,22 +196,19 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                 "roleBasicDetails.roleName.validations.empty", { type: "Group" }) }
                             validation={ async (value: string, validation: Validation) => {
                                 let isGroupNameValid: boolean = true;
-                                let userstoreRegex: string = "";
 
-                                await validateGroupNamePattern().then((regex: string) => {
-                                    userstoreRegex = regex;
-                                    isGroupNameValid = SharedUserStoreUtils.validateInputAgainstRegEx(value, regex);
-                                });
+                                isGroupNameValid = SharedUserStoreUtils
+                                    .validateInputAgainstRegEx(value, userStoreRegEx);
 
                                 if (!isGroupNameValid) {
                                     validation.isValid = false;
-                                    if (userstoreRegex === groupConfig.defaultUserstoreRegex) {
+                                    if (userStoreRegEx === groupConfig.defaultUserstoreRegex) {
                                         // If the userstore regex is the default regex, show the default error message.
                                         validation.errorMessages.push(t(groupConfig?.groupPrimaryUserstoreRegexHint));
                                     } else {
                                         // If the userstore regex is a custom regex, show the custom regex.
                                         validation.errorMessages.push(t("groups:groupCreateWizard" +
-                                            ".groupNameRegexCustomHint", { regex: userstoreRegex }));;
+                                            ".groupNameRegexCustomHint", { regex: userStoreRegEx }));;
                                     }
                                 }
 
@@ -316,7 +240,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
                             } }
                             value={  initialValues?.basicDetails?.groupName }
-                            loading={ isRegExLoading }
+                            loading={ isUserStoreRegExLoading }
                         />
                         <Hint>
                             { t(groupConfig?.groupPrimaryUserstoreRegexHint) }

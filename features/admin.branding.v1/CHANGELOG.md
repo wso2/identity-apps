@@ -1,5 +1,78 @@
 # @wso2is/admin.branding.v1
 
+## 2.29.0
+
+### Minor Changes
+
+- [#7901](https://github.com/wso2/identity-apps/pull/7901) [`d7eb376080cc93f307ce6f57b680d0cdd7d9fad5`](https://github.com/wso2/identity-apps/commit/d7eb376080cc93f307ce6f57b680d0cdd7d9fad5) Thanks [@Malith-19](https://github.com/Malith-19)! - Add password recovery email otp support.
+
+### Patch Changes
+
+- Updated dependencies [[`d7eb376080cc93f307ce6f57b680d0cdd7d9fad5`](https://github.com/wso2/identity-apps/commit/d7eb376080cc93f307ce6f57b680d0cdd7d9fad5)]:
+  - @wso2is/admin.server-configurations.v1@2.34.1
+  - @wso2is/common.branding.v1@2.27.0
+  - @wso2is/i18n@2.22.4
+
+## 2.28.61
+
+### Patch Changes
+
+- [#7864](https://github.com/wso2/identity-apps/pull/7864) [`316f362fac6951cc752547492c179833b6c9d22c`](https://github.com/wso2/identity-apps/commit/316f362fac6951cc752547492c179833b6c9d22c) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix mobile responsive issues in OTP input fields
+
+## 2.28.60
+
+### Patch Changes
+
+- Updated dependencies [[`c78a6b3b4b54342fed9f06fceaef9aab27c53803`](https://github.com/wso2/identity-apps/commit/c78a6b3b4b54342fed9f06fceaef9aab27c53803)]:
+  - @wso2is/admin.extensions.v1@2.36.128
+  - @wso2is/admin.core.v1@2.40.6
+  - @wso2is/admin.organizations.v1@2.26.203
+  - @wso2is/admin.server-configurations.v1@2.32.128
+  - @wso2is/admin.branding.ai.v1@2.27.98
+  - @wso2is/admin.feature-gate.v1@1.4.203
+  - @wso2is/common.branding.v1@2.26.60
+
+## 2.28.59
+
+### Patch Changes
+
+- Updated dependencies [[`725295582b41eab8705a4e821d169499ced1c647`](https://github.com/wso2/identity-apps/commit/725295582b41eab8705a4e821d169499ced1c647)]:
+  - @wso2is/i18n@2.21.2
+  - @wso2is/admin.extensions.v1@2.36.127
+  - @wso2is/admin.core.v1@2.40.5
+  - @wso2is/admin.organizations.v1@2.26.202
+  - @wso2is/admin.server-configurations.v1@2.32.127
+  - @wso2is/admin.branding.ai.v1@2.27.97
+  - @wso2is/admin.feature-gate.v1@1.4.202
+  - @wso2is/common.branding.v1@2.26.59
+
+## 2.28.58
+
+### Patch Changes
+
+- Updated dependencies [[`152e91a6dd4848fe0fb0a0728a1e78fa97a88e12`](https://github.com/wso2/identity-apps/commit/152e91a6dd4848fe0fb0a0728a1e78fa97a88e12)]:
+  - @wso2is/i18n@2.21.1
+  - @wso2is/admin.core.v1@2.40.4
+  - @wso2is/admin.extensions.v1@2.36.126
+  - @wso2is/admin.branding.ai.v1@2.27.96
+  - @wso2is/admin.organizations.v1@2.26.201
+  - @wso2is/admin.server-configurations.v1@2.32.126
+  - @wso2is/admin.feature-gate.v1@1.4.201
+  - @wso2is/common.branding.v1@2.26.58
+
+## 2.28.57
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.40.3
+  - @wso2is/admin.extensions.v1@2.36.125
+  - @wso2is/admin.organizations.v1@2.26.200
+  - @wso2is/admin.server-configurations.v1@2.32.125
+  - @wso2is/admin.branding.ai.v1@2.27.95
+  - @wso2is/admin.feature-gate.v1@1.4.200
+  - @wso2is/common.branding.v1@2.26.57
+
 ## 2.28.56
 
 ### Patch Changes

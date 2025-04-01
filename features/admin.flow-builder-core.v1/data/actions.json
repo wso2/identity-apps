@@ -1,0 +1,58 @@
+[
+    {
+        "resourceType": "ELEMENT",
+        "category": "NAVIGATION",
+        "display": {
+            "label": "Navigation",
+            "image": ""
+        },
+        "types": [
+            {
+                "action": {
+                    "type": "NEXT"
+                },
+                "display": {
+                    "label": "Next",
+                    "image": "https://www.svgrepo.com/show/305382/arrowhead-right-outline.svg",
+                    "defaultVariant": "PRIMARY"
+                }
+            }
+        ]
+    },
+    {
+        "resourceType": "ELEMENT",
+        "category": "ONBOARDING",
+        "display": {
+            "label": "Onboarding",
+            "image": ""
+        },
+        "types": [
+            {
+                "action": {
+                    "type": "EXECUTOR",
+                    "executor": {
+                        "name": "PasswordOnboardExecutor"
+                    }
+                },
+                "display": {
+                    "label": "Onboard Password",
+                    "image": "https://www.svgrepo.com/show/526627/password.svg",
+                    "defaultVariant": "PRIMARY"
+                }
+            },
+            {
+                "action": {
+                    "type": "EXECUTOR",
+                    "executor": {
+                        "name": "EmailOTPExecutor"
+                    }
+                },
+                "display": {
+                    "label": "Verify OTP Code",
+                    "image": "https://www.svgrepo.com/show/479622/email-18.svg",
+                    "defaultVariant": "PRIMARY"
+                }
+            }
+        ]
+    }
+]

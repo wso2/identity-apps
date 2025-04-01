@@ -37,8 +37,9 @@ export interface transferListNS {
             };
             users: {
                 roles: {
-                    unselected: string;
+                    searchForResults: string;
                     selected: string;
+                    unselected: string;
                 };
             };
         };

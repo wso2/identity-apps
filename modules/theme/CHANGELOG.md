@@ -1,5 +1,29 @@
 # @wso2is/theme
 
+## 2.7.2
+
+### Patch Changes
+
+- [#7939](https://github.com/wso2/identity-apps/pull/7939) [`ddb77655f38e23d9fcb5715a03a69e6d7fdb2bc9`](https://github.com/wso2/identity-apps/commit/ddb77655f38e23d9fcb5715a03a69e6d7fdb2bc9) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix overflow issue in logs page
+
+## 2.7.1
+
+### Patch Changes
+
+- [#7855](https://github.com/wso2/identity-apps/pull/7855) [`aaf3a62625563cbadda5cef23ca3eac8e599ba5d`](https://github.com/wso2/identity-apps/commit/aaf3a62625563cbadda5cef23ca3eac8e599ba5d) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Add some missing doc comments in preview feature enable/disable feature
+
+## 2.7.0
+
+### Minor Changes
+
+- [#7851](https://github.com/wso2/identity-apps/pull/7851) [`3f254e98d447c8b2c275e6566b801c7404125a24`](https://github.com/wso2/identity-apps/commit/3f254e98d447c8b2c275e6566b801c7404125a24) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Add preview features enable/disable option to the console
+
+## 2.6.12
+
+### Patch Changes
+
+- [#7817](https://github.com/wso2/identity-apps/pull/7817) [`7844c2db96d56c30c352e9287b2f4d5ad75212ce`](https://github.com/wso2/identity-apps/commit/7844c2db96d56c30c352e9287b2f4d5ad75212ce) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add resources for LinkedIn connection
+
 ## 2.6.11
 
 ### Patch Changes

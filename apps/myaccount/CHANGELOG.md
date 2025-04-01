@@ -1,5 +1,97 @@
 # @wso2is/myaccount
 
+## 2.19.3
+
+### Patch Changes
+
+- [#7936](https://github.com/wso2/identity-apps/pull/7936) [`8c77be8232c791ea1badaa04ee40ec8b35b5edb6`](https://github.com/wso2/identity-apps/commit/8c77be8232c791ea1badaa04ee40ec8b35b5edb6) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Add global configuration and support configurations in authentication and recovery portals to show/hide cookie consent banner
+
+## 2.19.2
+
+### Patch Changes
+
+- [#7944](https://github.com/wso2/identity-apps/pull/7944) [`31a39f054c4ae66f9688ca9fc8fd2446b50b1499`](https://github.com/wso2/identity-apps/commit/31a39f054c4ae66f9688ca9fc8fd2446b50b1499) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add functionality to conditionally execute the head-script
+
+## 2.19.1
+
+### Patch Changes
+
+- Updated dependencies [[`6f6564046f57869ddac09d6238fb4101bc1f9f86`](https://github.com/wso2/identity-apps/commit/6f6564046f57869ddac09d6238fb4101bc1f9f86)]:
+  - @wso2is/common.ui.v1@0.2.0
+
+## 2.19.0
+
+### Minor Changes
+
+- [#7653](https://github.com/wso2/identity-apps/pull/7653) [`a8ab43d1fb107db42ebcb9b4c894a6caa3368fe9`](https://github.com/wso2/identity-apps/commit/a8ab43d1fb107db42ebcb9b4c894a6caa3368fe9) Thanks [@brionmario](https://github.com/brionmario)! - - Refactor `UserPreferencesProvider` and move it to a new `common.ui.v1` package.
+  - Refactor the existing usages.
+  - Persist the side panel state in the local storage.
+  - https://github.com/wso2/product-is/issues/19315
+  - Close the Navbar when a fresh user tries out the new Self Sign Up composer.
+
+### Patch Changes
+
+- Updated dependencies [[`a8ab43d1fb107db42ebcb9b4c894a6caa3368fe9`](https://github.com/wso2/identity-apps/commit/a8ab43d1fb107db42ebcb9b4c894a6caa3368fe9)]:
+  - @wso2is/common.ui.v1@0.1.0
+
+## 2.18.2
+
+### Patch Changes
+
+- [#7804](https://github.com/wso2/identity-apps/pull/7804) [`084f8f96a8370514a418ea59362f0d2a72cddb7a`](https://github.com/wso2/identity-apps/commit/084f8f96a8370514a418ea59362f0d2a72cddb7a) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Show verification pending email/mobile in console user profile
+
+- Updated dependencies [[`084f8f96a8370514a418ea59362f0d2a72cddb7a`](https://github.com/wso2/identity-apps/commit/084f8f96a8370514a418ea59362f0d2a72cddb7a)]:
+  - @wso2is/forms@2.3.23
+  - @wso2is/i18n@2.21.3
+
+## 2.18.1
+
+### Patch Changes
+
+- [#7815](https://github.com/wso2/identity-apps/pull/7815) [`9ff854d15cec203f02dd6e50228d86bae906145a`](https://github.com/wso2/identity-apps/commit/9ff854d15cec203f02dd6e50228d86bae906145a) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Bump portal versions
+
+## 2.18.0
+
+### Minor Changes
+
+- [#7803](https://github.com/wso2/identity-apps/pull/7803) [`4dc7fa24e95b337cc3372864c2b86c89e654a50b`](https://github.com/wso2/identity-apps/commit/4dc7fa24e95b337cc3372864c2b86c89e654a50b) Thanks [@brionmario](https://github.com/brionmario)! - 🎉 Introduce Self Registration Sign-up Composer - https://github.com/wso2/product-is/issues/21562
+
+## 2.17.63
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.203
+  - @wso2is/common.branding.v1@2.26.60
+
+## 2.17.62
+
+### Patch Changes
+
+- Updated dependencies [[`725295582b41eab8705a4e821d169499ced1c647`](https://github.com/wso2/identity-apps/commit/725295582b41eab8705a4e821d169499ced1c647)]:
+  - @wso2is/i18n@2.21.2
+  - @wso2is/admin.organizations.v1@2.26.202
+  - @wso2is/common.branding.v1@2.26.59
+
+## 2.17.61
+
+### Patch Changes
+
+- [#7779](https://github.com/wso2/identity-apps/pull/7779) [`b6606b870e42eb9715e806a8ed59adbbf5ea80cd`](https://github.com/wso2/identity-apps/commit/b6606b870e42eb9715e806a8ed59adbbf5ea80cd) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Trigger new patch release
+
+- Updated dependencies [[`152e91a6dd4848fe0fb0a0728a1e78fa97a88e12`](https://github.com/wso2/identity-apps/commit/152e91a6dd4848fe0fb0a0728a1e78fa97a88e12)]:
+  - @wso2is/i18n@2.21.1
+  - @wso2is/admin.organizations.v1@2.26.201
+  - @wso2is/common.branding.v1@2.26.58
+
+## 2.17.60
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.200
+  - @wso2is/common.branding.v1@2.26.57
+
 ## 2.17.59
 
 ### Patch Changes

@@ -184,7 +184,18 @@ export interface actionsNS {
                 }
             };
             label: string;
-        }
+        };
+        userAttributes: {
+            error: {
+                limitReached: string;
+            };
+            heading: string;
+            hint: string;
+            search: {
+                placeholder: string;
+                clearButton: string;
+            };
+        };
     };
     goBackActions: string,
     notification: {
@@ -279,6 +290,12 @@ export interface actionsNS {
                     message : string;
                 };
                 delete: {
+                    description: string;
+                    message: string;
+                };
+            };
+            userAttributes: {
+                getAttributes: {
                     description: string;
                     message: string;
                 };

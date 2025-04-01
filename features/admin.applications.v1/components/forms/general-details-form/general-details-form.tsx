@@ -36,7 +36,7 @@ import { ApplicationTabIDs, applicationConfig, userstoresConfig } from "@wso2is/
 import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
-import { useUserStores } from "@wso2is/admin.userstores.v1/api";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import {
     AlertLevels,
@@ -264,15 +264,17 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         isLoading: isMyAccountStatusLoading
     } = useMyAccountStatus(!isSubOrg && applicationConfig?.advancedConfigurations?.showMyAccountStatus);
     const {
-        data: userStores,
-        isLoading: isUserStoresLoading,
-        error: userStoreListFetchError
-    } = useUserStores(null);
+        userStoresList: userStores,
+        isLoading: isUserStoresLoading
+    } = useUserStores();
+
     const {
         data: groupsList,
         isLoading: isGroupsListLoading,
         error: groupsListFetchError
     } = useGetGroupsMetadata(selectedUserStoreDomain, searchTerm);
+
+    const isSharedApp: boolean = application?.advancedConfigurations?.fragment || false;
 
     /**
      * Handle the discoverable group option based on the application configuration.
@@ -299,19 +301,17 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             value: userstoresConfig?.primaryUserstoreName
         } ];
 
-        if (!userStores) {
-            return storeOptions;
+        if (userStores?.length > 0) {
+            userStores.forEach((store: UserStoreListItem, index: number) => {
+                if (store?.name?.toUpperCase() !== userstoresConfig?.primaryUserstoreName && store?.enabled) {
+                    storeOptions.push({
+                        key: index,
+                        text: store.name,
+                        value: store.name
+                    });
+                }
+            });
         }
-
-        userStores.forEach((store: UserStoreListItem, index: number) => {
-            if (store?.name?.toUpperCase() !== userstoresConfig?.primaryUserstoreName && store?.enabled) {
-                storeOptions.push({
-                    key: index,
-                    text: store.name,
-                    value: store.name
-                });
-            }
-        });
 
         return storeOptions;
     }, [ userStores ]);
@@ -331,21 +331,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         );
         setSelectedGroupsFromUserStore(allSelectedGroupsList);
     }, [ application ]);
-
-    /**
-     * Handle the error scenario of fetching user stores.
-     */
-    useEffect(() => {
-        if (!userStoreListFetchError) {
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("userstores:notifications.fetchUserstores.genericError.description"),
-            level: AlertLevels.ERROR,
-            message: t("userstores:notifications.fetchUserstores.genericError.message")
-        }));
-    }, [ userStoreListFetchError ]);
 
     /**
      * Handle the error scenario of fetching groups.
@@ -579,7 +564,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             </Grid.Column>
                         </Grid.Row>
                     ) }
-                    { !UIConfig.systemAppsIdentifiers.includes(name) && !isSubOrganizationType && (
+                    { !UIConfig.systemAppsIdentifiers.includes(name) && !isSharedApp && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field.Input
@@ -596,7 +581,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                             ".placeholder")
                                     }
                                     value={ name }
-                                    readOnly={ readOnly || isSubOrganizationType }
+                                    readOnly={ readOnly }
                                     validation ={ (value: string) => validateName(value.toString().trim()) }
                                     maxLength={
                                         ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
@@ -608,7 +593,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         </Grid.Row>
                     ) }
                     {
-                        name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME && !isSubOrganizationType && (
+                        name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME &&
+                        !isSharedApp && (
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field.Textarea
@@ -636,7 +622,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         )
                     }
                     {
-                        !isSubOrganizationType && !hiddenFields?.includes("imageUrl") && (
+                        !isSharedApp && !hiddenFields?.includes("imageUrl") && (
                             <Grid.Row columns={ 1 } data-componentid="application-edit-general-details-form-image-url">
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field.Input
@@ -933,7 +919,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             {
                                 (!isBrandingSectionHidden &&
                                 !isM2MApplication &&
-                                orgType !== OrganizationType.SUBORGANIZATION) && <Divider />
+                                !isSharedApp ) && <Divider />
                             }
                             {
                                 (!isBrandingSectionHidden && !isM2MApplication) && (
@@ -982,7 +968,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 loading={ isSubmitting }
                 label={ t("common:update") }
                 hidden={
-                    isSubOrganizationType || !hasRequiredScope || (
+                    isSharedApp || !hasRequiredScope || (
                         readOnly
                         && applicationConfig.generalSettings.getFieldReadOnlyStatus(
                             application, "ACCESS_URL"

@@ -120,6 +120,16 @@
                 "description": "This email informs the user that the email address is updated",
                 "displayName": "Email Update Notification",
                 "id": "bm90aWZ5T25FeGlzdGluZ0VtYWlsVXBkYXRl"
+            },
+            {
+                "description": "This email sends an Email OTP to a user for password reset",
+                "displayName": "Password Reset Email OTP",
+                "id": "UGFzc3dvcmRSZXNldE9UUA"
+            },
+            {
+                "description": "This email resends an Email OTP to a user for password reset",
+                "displayName": "Resend Password Reset Email OTP",
+                "id": "cmVzZW5kUGFzc3dvcmRSZXNldE9UUA"
             }
         ],
         "outboundProvisioningConnectors": [],
@@ -895,6 +905,10 @@
                     {
                         "feature": "loginAndRegistration.organizationSettings.impersonation",
                         "flag": ""
+                    },
+                    {
+                        "feature": "loginAndRegistration.userOnboarding.registrationFlowBuilder",
+                        "flag": ""
                     }
                 ],
                 "scopes": {
@@ -1088,6 +1102,23 @@
                     ]
                 }
              },
+            "registrationFlowBuilder": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [
+                        "internal_authenticator_view",
+                        "internal_registration_flow_view"
+                    ],
+                    "update": [
+                        "internal_governance_update",
+                        "internal_registration_flow_update"
+                    ]
+                }
+            },
             "remoteFetchConfig": {
                 "disabledFeatures": [],
                 "enabled": false,

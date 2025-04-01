@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,10 +17,8 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import useRequest, {
-    RequestConfigInterface,
-    RequestErrorInterface,
-    RequestResultInterface
+import {
+    RequestConfigInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { UserstoreConstants } from "@wso2is/core/constants";
@@ -32,16 +30,8 @@ import {
     PatchData,
     QueryParams,
     TestConnection,
-    UserStore,
-    UserStoreAttributes,
-    UserStoreListItem,
     UserStorePostData
 } from "../models";
-
-/**
- * The error code that is returned when there is no item in the list.
- */
-const RESOURCE_NOT_FOUND_ERROR_MESSAGE: string = "Resource not found.";
 
 /**
  * Initialize an axios Http client.
@@ -49,39 +39,6 @@ const RESOURCE_NOT_FOUND_ERROR_MESSAGE: string = "Resource not found.";
  */
 const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
-
-/**
- * Fetches all userstores.
- *
- * @param params - sort, filter, limit, attributes, offset.
- * @returns user stores
- */
-export const getUserStores = (params: QueryParams | any): Promise<any> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        params,
-        url: store.getState().config.endpoints.userStores
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
-                return Promise.reject(`An error occurred. The server returned ${response.status}`);
-            }
-
-            return Promise.resolve(response.data);
-        })
-        .catch((error: AxiosError) => {
-            if (error?.response?.data?.message !== RESOURCE_NOT_FOUND_ERROR_MESSAGE) {
-                return Promise.reject(error?.response?.data);
-            }
-        });
-};
 
 /**
  * Retrieve the list of user stores that are currently in the system.
@@ -126,120 +83,15 @@ export const getUserStoreList = (): Promise<UserstoreListResponseInterface[] | a
 };
 
 /**
- * Hook to get the Userstores from the API.
- * @deprecated - This hook will be removed in the future.
- * Use the hook from admin.userstores.v1/api/use-get-user-stores.ts
- *
- * @param params - sort, filter, limit, attributes, offset.
- * @returns user store list with SWR hook
- */
-export const useUserStores = <Data = UserStoreListItem[], Error = RequestErrorInterface>(
-    params: QueryParams,
-    shouldFetch: boolean = true
-): RequestResultInterface<Data, Error> => {
-
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        params,
-        url: store.getState().config.endpoints.userStores
-    };
-
-    const {
-        data,
-        error,
-        isValidating,
-        mutate,
-        response
-    } = useRequest<Data, Error>(shouldFetch ? requestConfig: null);
-
-    return {
-        data,
-        error,
-        isLoading: !error && !data,
-        isValidating,
-        mutate,
-        response
-    };
-};
-
-/**
- * Hook to get details of a userstore with a given ID
- */
-export const useUserStore = <Data = UserStore, Error = RequestErrorInterface>(
-    id: string,
-    shouldFetch: boolean = true
-): RequestResultInterface<Data, Error> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.userStores}/${id}`
-    };
-
-    const {
-        data,
-        error,
-        isValidating,
-        mutate,
-        response
-    } = useRequest<Data, Error>(shouldFetch ? requestConfig: null);
-
-    return {
-        data,
-        error,
-        isLoading: !error && !data,
-        isValidating,
-        mutate,
-        response
-    };
-};
-
-/**
- * Fetch types of userstores.
- *
- * @returns userstore types.
- */
-export const getUserstoreTypes = (): Promise<any> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.userStores}/meta/types`
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
-                return Promise.reject(`An error occurred. The server returned ${response.status}`);
-            }
-
-            return Promise.resolve(response.data);
-        })
-        .catch((error: AxiosError) => {
-            return Promise.reject(error?.response?.data);
-        });
-};
-
-/**
  * Gets the meta data of a type.
  *
  * @param id - Type ID.
  * @param params - limit, offset, filter, sort, attributes.
  *
  * @returns metadata of a userstore type
+ * @deprecated - Use `useGetUserStoreMetaDataType()` instead.
  */
-export const getAType = (id: string, params: QueryParams): Promise<any> => {
+export const getUserStoreMetaDataType = (id: string, params: QueryParams): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
@@ -441,40 +293,6 @@ export const testConnection = (data: TestConnection): Promise<any> => {
         },
         method: HttpMethods.POST,
         url: `${store.getState().config.endpoints.userStores}/test-connection`
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
-                return Promise.reject(`An error occurred. The server returned ${response.status}`);
-            }
-
-            return Promise.resolve(response.data);
-        })
-        .catch((error: AxiosError) => {
-            return Promise.reject(error?.response?.data);
-        });
-};
-
-/**
- * Gets the user store attributes.
- *
- * @param id - Type ID.
- * @param params - limit, offset, filter, sort, attributes.
- *
- * @returns userstore attributes.
- */
-export const getUserStoreAttributes = (id: string, params: QueryParams): Promise<UserStoreAttributes> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json",
-            params
-        },
-        method: HttpMethods.GET,
-        params,
-        url: `${store.getState().config.endpoints.userStores}/meta/types/${id}/attributes`
     };
 
     return httpClient(requestConfig)
