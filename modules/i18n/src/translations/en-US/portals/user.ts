@@ -88,6 +88,14 @@ export const user: userNS = {
                 part1:"Enter the",
                 part2: "in the format YYYY-MM-DD"
             }
+        },
+        userActionZoneGroup: {
+            header: "User Action",
+            impersonateUserZone: {
+                actionTitle: "Impersonate User",
+                header: "Impersonate User",
+                subheader: "Once Started impersonating the user, you will no longer be able to login with your identity until you terminated the session."
+            }
         }
     },
     forms: {

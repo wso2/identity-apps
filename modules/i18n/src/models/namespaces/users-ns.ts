@@ -362,6 +362,20 @@ export interface usersNS {
                 description: string;
             };
         };
+        impersonateUser: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
         revokeAdmin: {
             error: {
                 message: string;

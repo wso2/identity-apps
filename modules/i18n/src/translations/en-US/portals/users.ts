@@ -282,6 +282,20 @@ export const users: usersNS = {
                 message: "Role retrieval successful"
             }
         },
+        impersonateUser: {
+            error: {
+                description: "Couldn't impersonate user.",
+                message: "Error impersonating user"
+            },
+            genericError: {
+                description: "Couldn't impersonate user.",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "Successfully impersonated the user.",
+                message: "User impersonation successful"
+            }
+        },
         revokeAdmin: {
             error: {
                 description: "{{description}}",
