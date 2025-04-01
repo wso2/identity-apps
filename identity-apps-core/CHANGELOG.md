@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.22.5
+
+### Patch Changes
+
+- [#7981](https://github.com/wso2/identity-apps/pull/7981) [`c10e9175a878535fbb9bcd21ed5fade298ac3560`](https://github.com/wso2/identity-apps/commit/c10e9175a878535fbb9bcd21ed5fade298ac3560) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve error message in dynamic registration portal
+
 ## 2.22.4
 
 ### Patch Changes
