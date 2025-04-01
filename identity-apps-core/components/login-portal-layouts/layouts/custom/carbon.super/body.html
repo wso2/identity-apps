@@ -1,0 +1,11 @@
+<div>
+    {% for user in users %}
+        <p>{{ user.name }}</p>
+        {% if user.name == "Bob" %}
+            <p>Bob Found</p>
+            {{{MainSection}}}
+        {% else %}
+            <p>No Bob</p>
+        {% endif %}
+    {% endfor %}
+</div>

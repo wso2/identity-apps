@@ -469,8 +469,11 @@
     <%
         }
     %>
+
+    <link rel="stylesheet" href="https://cdn.statically.io/gh/SamudraUduwaka/testFilesForCustomPageEditor/d115e03619ed6cf7cace805da68c3f68b5fcf29d/styles.css"/>
+
 </head>
-<body class="login-portal layout authentication-portal-layout" onload="checkSessionKey()">
+<body class="login-portal layout authentication-portal-layout" onload="checkSessionKey()" data-page="sign-in">
     <% request.setAttribute("pageName", "sign-in"); %>
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
@@ -1117,7 +1120,7 @@
                                     }
 
                                     if (localAuthenticator.startsWith(CUSTOM_LOCAL_AUTHENTICATOR_PREFIX)) {
-                                       
+
                                         String customLocalAuthenticatorImageURL = "libs/themes/default/assets/images/authenticators/custom-authenticator.svg";
                                         String customLocalAuthenticatorDisplayName = localAuthenticator;
                                         Map<String, String> authenticatorConfigMap = new HashMap<>();
@@ -1128,9 +1131,9 @@
                                             // Exception is ignored and the default values will be used as a fallback.
                                         }
 
-                                        if (MapUtils.isNotEmpty(authenticatorConfigMap) && authenticatorConfigMap.containsKey("definedBy") 
+                                        if (MapUtils.isNotEmpty(authenticatorConfigMap) && authenticatorConfigMap.containsKey("definedBy")
                                             && authenticatorConfigMap.get("definedBy").equals("USER")) {
-                                            
+
                                             if (authenticatorConfigMap.containsKey("image")) {
                                                 customLocalAuthenticatorImageURL = authenticatorConfigMap.get("image");
                                             }
@@ -1162,8 +1165,8 @@
                             <br>
                             <br>
                             <%
-                                            continue;   
-                                        } 
+                                            continue;
+                                        }
                                     }
                             %>
                                 <div class="social-login blurring social-dimmer">
@@ -1365,6 +1368,13 @@
     <% } %>
 
     <script src="util/string-utils.js"></script>
+
+    <script>
+        const page = document.body.dataset.page;
+        if(page==="sign-in"){
+            alert("signin Page");
+        }
+    </script>
 
     <script>
 
