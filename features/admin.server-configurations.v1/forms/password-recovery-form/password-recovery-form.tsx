@@ -386,8 +386,8 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     disabled={ !isConnectorEnabled }
                     defaultValue={ isEmailRecoveryEnabled }
                     listen={ (value: boolean) => setIsEmailRecoveryEnabled(value) }
-                    data-testid={ `${ testId }-email-link-based-recovery` }
-                    data-componentid={ `${ testId }-email-link-based-recovery` }
+                    data-testid={ `${ testId }-email-based-recovery` }
+                    data-componentid={ `${ testId }-email-based-recovery` }
                 />
                 <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
@@ -410,6 +410,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                             listen={ () => setEmailRecoveryOption(option.value) }
                             disabled={ !isEmailRecoveryEnabled }
                             readOnly={ readOnly }
+                            data-componentid={ `${ testId }-email-recovery-option-${ option.value }` }
                         />
                     ))
                 }
