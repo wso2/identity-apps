@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,19 @@
  * under the License.
  */
 
-export { default as AuditLogsPage } from "./pages/audit-logs-page";
-export { default as DiagnosticLogsPage } from "./pages/diagnostic-logs-page";
-export { default as LogsPage } from "./pages/logs-page";
-export { default as LogsSettingsPage } from "./pages/logs-settings-page";
+import { RemoteLoggingResourceEndpointsInterface } from "../models/endpoints";
+
+/**
+ * Get the resource endpoints for the Remote Logging feature.
+ *
+ * @param serverHost - Server Host.
+ * @returns The resource endpoints for the Remote Logging feature.
+ */
+export const getRemoteLoggingEndpoints = (
+    serverHost: string
+): RemoteLoggingResourceEndpointsInterface => {
+
+    return {
+        remoteLogPublishEndpoint: `${ serverHost }/api/asgardeo/v2/logs/remote-log-publish`
+    };
+};

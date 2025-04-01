@@ -16,16 +16,38 @@
  * under the License.
  */
 
- .tabs.resource-tabs {
+import { ReactNode } from "react";
 
-    .ui.pointing.secondary.menu {
-
-        .item.item-with-chip {
-
-            min-height: 50px;
-            .oxygen-chip-beta {
-                margin-left: 8px;
-            }
-        }
-    }
+/**
+ *  Log Type card info Interface.
+ */
+export interface LogTypeCardInterface {
+    /**
+     * Description of the Action type.
+     */
+    description: string,
+    /**
+     * Feature status label of the Action type.
+     */
+    featureStatusKey: string,
+    /**
+     * Heading of the Action type.
+     */
+    heading: string,
+    /**
+     * Icon of the Action type.
+     */
+    icon: ReactNode,
+    /**
+     * Identifier of the Action type.
+     */
+    identifier: string,
+    /**
+     * Route of the Action type.
+     */
+    route: string,
+    /**
+     * Disabled status of the Action type.
+     */
+    disabled?: boolean
 }
