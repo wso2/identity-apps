@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.22.7
+
+### Patch Changes
+
+- [#7782](https://github.com/wso2/identity-apps/pull/7782) [`1314db3d54db923ab2974d33557a13af1e5c61ab`](https://github.com/wso2/identity-apps/commit/1314db3d54db923ab2974d33557a13af1e5c61ab) Thanks [@Avarjana](https://github.com/Avarjana)! - Introduce remote log publish feature
+
 ## 2.22.6
 
 ### Patch Changes
