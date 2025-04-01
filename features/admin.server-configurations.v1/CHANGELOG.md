@@ -1,5 +1,14 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.34.3
+
+### Patch Changes
+
+- [#7958](https://github.com/wso2/identity-apps/pull/7958) [`e4418cdc61d2d0740114f82b0c60274ebc78c401`](https://github.com/wso2/identity-apps/commit/e4418cdc61d2d0740114f82b0c60274ebc78c401) Thanks [@Malith-19](https://github.com/Malith-19)! - Add test component ids for password recovery form.
+
+- Updated dependencies [[`e4418cdc61d2d0740114f82b0c60274ebc78c401`](https://github.com/wso2/identity-apps/commit/e4418cdc61d2d0740114f82b0c60274ebc78c401)]:
+  - @wso2is/admin.server-configurations.v1@2.34.3
+
 ## 2.34.2
 
 ### Patch Changes
