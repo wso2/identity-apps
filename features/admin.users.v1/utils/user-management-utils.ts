@@ -80,6 +80,39 @@ export class UserManagementUtils {
     }
 
     /**
+     * Generates code verifier for PKCE.
+     *
+     * @returns A generated code verifier.
+     */
+    public static generateCodeVerifier(): string {
+        const array: Uint8Array = new Uint8Array(32);
+
+        window.crypto.getRandomValues(array);
+
+        return btoa(String.fromCharCode(...array))
+            .replace(/\+/g, "-")
+            .replace(/\//g, "_")
+            .replace(/=+$/, "");
+    };
+
+    /**
+     * Generates code challange for code verifier.
+     *
+     * @param plain - The code verifier.
+     * @returns A generated code challange.
+     */
+    public static sha256 = async (plain: string) => {
+        const encoder: TextEncoder = new TextEncoder();
+        const data: Uint8Array = encoder.encode(plain);
+        const hash: ArrayBuffer = await window.crypto.subtle.digest("SHA-256", data);
+
+        return btoa(String.fromCharCode(...new Uint8Array(hash)))
+            .replace(/\+/g, "-")
+            .replace(/\//g, "_")
+            .replace(/=+$/, "");
+    };
+
+    /**
      * Resolves the sub header of the user list item.
      *
      * @param user - User object.
