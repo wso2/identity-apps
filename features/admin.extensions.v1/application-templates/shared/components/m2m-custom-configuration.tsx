@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,10 +22,9 @@ import {
     AuthorizedPermissionListItemInterface
 } from "@wso2is/admin.applications.v1/models/api-authorization";
 import { OIDCApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import {
     CodeEditor,
     CopyInputField,
@@ -36,7 +35,7 @@ import {
     SegmentedAccordion,
     Text
 } from "@wso2is/react-components";
-import React, { FC, ReactElement, useEffect, useState } from "react";
+import React, { FC, ReactElement, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Card, Form, Grid } from "semantic-ui-react";
@@ -93,38 +92,23 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
         (state: AppState) => state.application.oidcConfigurations);
 
     const [ isConfigOpen, setConfigOpen ] = useState<boolean>(true);
-    const [ sdkConfig, setSdkConfig ] = useState<CustomConfigInterface>(undefined);
     const [ allAuthorizedScopes, setAllAuthorizedScopes ] = useState<AuthorizedPermissionListItemInterface[]>([]);
     const [ copyScopesValue, setCopyScopesValue ] = useState<string>(null);
 
     /**
-     * Runs when `inboundProtocolConfig` changes and sets the SDK init configs.
+     * Extracts the sdk configuration from the inbound protocol configuration and the oidc configurations.
      */
-    useEffect(() => {
-        if (!inboundProtocolConfig?.oidc) {
-            return;
+    const sdkConfig: CustomConfigInterface = useMemo(() => {
+        if (!inboundProtocolConfig?.oidc || !oidcConfigurations) {
+            return undefined;
         }
 
-        const configuredCallbacks: string[] = [];
-
-        if (inboundProtocolConfig?.oidc?.callbackURLs.length > 0) {
-            const callbacks: string[] = EncodeDecodeUtils.decodeURLRegex(inboundProtocolConfig.oidc.callbackURLs[ 0 ]);
-
-            if (callbacks.length > 0) {
-                callbacks.forEach((url: string) => {
-                    configuredCallbacks.push(url);
-                });
-            }
-        }
-
-        const configs: CustomConfigInterface = {
+        return {
             clientId: inboundProtocolConfig.oidc.clientId,
             clientSecret: inboundProtocolConfig.oidc.clientSecret,
-            tokenEndpoint: oidcConfigurations?.tokenEndpoint
+            tokenEndpoint: oidcConfigurations.tokenEndpoint
         };
-
-        setSdkConfig(configs);
-    }, []);
+    }, [ inboundProtocolConfig, oidcConfigurations ]);
 
     /**
      * Initalize the all authorized scopes.
