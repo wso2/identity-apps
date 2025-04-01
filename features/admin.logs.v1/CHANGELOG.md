@@ -1,5 +1,11 @@
 # @wso2is/admin.logs.v1
 
+## 1.6.1
+
+### Patch Changes
+
+- [#7989](https://github.com/wso2/identity-apps/pull/7989) [`27ce9546324f2edbf8d9282831a16d3863a64223`](https://github.com/wso2/identity-apps/commit/27ce9546324f2edbf8d9282831a16d3863a64223) Thanks [@Avarjana](https://github.com/Avarjana)! - Fix form submit logic in Remote Log Publish
+
 ## 1.6.0
 
 ### Minor Changes
