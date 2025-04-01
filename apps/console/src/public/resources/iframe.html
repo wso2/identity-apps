@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Impersonate Iframe</title>
+    </head>
+    <body onload="authenticate()">
+        <script>
+            var hash = window.location.hash;
+            const params = new URLSearchParams(window.location.search);
+            const userId = params.get("userId");
+            const code_challenge = params.get("codeChallenge");
+            const client_id = "Pfao0gjJ07be0gf29PzEcLFKmUIa";
+            const authorization_endpoint = sessionStorage.getItem("authorization_endpoint");
+
+            function authenticate() {
+
+                const requestUrl = authorization_endpoint
+                    + "?client_id=" + client_id +
+                    "&redirect_uri=" + window.location.origin + window.location.pathname +
+                    "&state=sample_state&scope=internal_user_impersonate&response_type=id_token%20subject_token" +
+                    "&requested_subject=" + userId +
+                    "&nonce=2131236&code_challenge=" + code_challenge + "&code_challenge_method=S256";
+                
+                if (hash === null || hash === "") {
+                    window.location.href = requestUrl;
+                } else {
+                    if (sessionStorage.getItem("impersonation_artifacts") === null) {
+                        sessionStorage.setItem("impersonation_artifacts", hash);
+                    }
+                    window.parent.postMessage("impersonation-authorize-request-complete", "*");
+                }
+            }
+        </script>
+    </body>
+</html>

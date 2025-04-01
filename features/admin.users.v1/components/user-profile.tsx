@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { HttpResponse, useAuthContext } from "@asgardeo/auth-react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -44,6 +45,7 @@ import {
 import { ConnectorPropertyInterface  } from "@wso2is/admin.server-configurations.v1";
 import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
 import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
+import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -79,7 +81,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
-import { updateUserInfo } from "../api";
+import { updateUserInfo, useUserDetails } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
     AdminAccountTypes,
@@ -162,7 +164,7 @@ interface UserProfilePropsInterface extends TestableComponentInterface {
     editUserDisclaimerMessage?: ReactNode;
     /**
      * Admin user type
-     */
+    */
     adminUserType?: string;
     /**
      * Is user managed by parent organization.
@@ -198,8 +200,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-
     const dispatch: Dispatch = useDispatch();
+
+    const { httpRequest } = useAuthContext();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
@@ -241,6 +244,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ adminRoleId, setAdminRoleId ] = useState<string>("");
     const [ associationType, setAssociationType ] = useState<string>("");
+    const [ impersonationInProgress, setImpersonationInProgress ] = useState<boolean>(false);
+    const [ codeVerifier, setCodeVerifier ] = useState<string>(undefined);
+    const [ codeChallenge, setCodeChallenge ] = useState<string>(undefined);
+    const [ idToken, setIdToken ] = useState(undefined);
+    const [ subjectToken, setSubjectToken ] = useState(undefined);
+    const [ authenticatedUserRoles, setAuthenticatedUserRoles ] = useState<RolesMemberInterface[]>([]);
 
     const createdDate: string = user?.meta?.created;
     const modifiedDate: string = user?.meta?.lastModified;
@@ -262,6 +271,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const isMultipleEmailAndMobileNumberEnabled: boolean = useMemo(() => {
         return isMultipleEmailsAndMobileNumbersEnabled(profileInfo, profileSchema);
     }, [ profileSchema, profileInfo ]);
+    const authenticatedUserProfileInfo: ProfileInfoInterface
+        = useSelector((state: AppState) => state?.profile?.profileInfo);
+    const {
+        data: authenticatedUserProfileInfoData,
+        isLoading: isAuthenticatedUserFetchRequestLoading,
+    } = useUserDetails(authenticatedUserProfileInfo?.id);
+    const consumerAccountURL: string = useSelector((state: AppState) =>
+        state?.config?.deployment?.accountApp?.tenantQualifiedPath);
+
+    let impersonation_artifacts: any = sessionStorage.getItem("impersonation_artifacts");
 
     useEffect(() => {
         if (connectorProperties && Array.isArray(connectorProperties) && connectorProperties?.length > 0) {
@@ -286,9 +305,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
     }, [ connectorProperties ]);
 
-    /**
-     *  .
-     */
     useEffect(() => {
         // This will load the countries to the dropdown
         setCountryList(CommonUtils.getCountryList());
@@ -650,6 +666,131 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         setMultiValuedAttributeValues(tempMultiValuedAttributeValues);
         setPrimaryValues(tempPrimaryValues);
+    };
+
+    useEffect(() => {
+        if (!isAuthenticatedUserFetchRequestLoading) {
+            if (authenticatedUserProfileInfoData) {
+                setAuthenticatedUserRoles(authenticatedUserProfileInfoData?.roles);
+            }
+        }
+    }, [ isAuthenticatedUserFetchRequestLoading ]);
+
+    useEffect(() => {
+        if (impersonation_artifacts != undefined && impersonation_artifacts != null) {
+
+            const id_token: any = new URLSearchParams(impersonation_artifacts)
+                .get(UserManagementConstants.ID_TOKEN);
+            const subject_token: any = new URLSearchParams(impersonation_artifacts)
+                .get(UserManagementConstants.SUBJECT_TOKEN);
+
+            if (id_token && subject_token) {
+                setIdToken(id_token);
+                setSubjectToken(subject_token);
+            }
+        }
+    }, [ impersonation_artifacts ]);
+
+    const handleMessage = (event: any) => {
+        if (event.data === "impersonation-authorize-request-complete") {
+            impersonation_artifacts = sessionStorage.getItem("impersonation_artifacts").substring(1);
+            const id_token: any = new URLSearchParams(impersonation_artifacts).get("id_token");
+            const subject_token: any = new URLSearchParams(impersonation_artifacts).get("subject_token");
+
+            if (id_token && subject_token) {
+                setIdToken(id_token);
+                setSubjectToken(subject_token);
+            }
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener("message", handleMessage);
+
+        return () => window.removeEventListener("message", handleMessage);
+    }, []);
+
+    useEffect(() => {
+
+        if (idToken && subjectToken) {
+
+            const formData: any = {
+                actor_token: idToken,
+                actor_token_type: "urn:ietf:params:oauth:token-type:id_token",
+                client_id: "Pfao0gjJ07be0gf29PzEcLFKmUIa",
+                code_verifier: codeVerifier,
+                grant_type: "urn:ietf:params:oauth:grant-type:token-exchange",
+                requested_token_type: "urn:ietf:params:oauth:token-type:access_token",
+                subject_token: subjectToken,
+                subject_token_type: "urn:ietf:params:oauth:token-type:jwt"
+            };
+
+            const urlEncodedData: any = new URLSearchParams(formData).toString();
+
+            const requestConfig: any = {
+                attachToken: false,
+                data: urlEncodedData,
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                method: "post",
+                shouldAttachIDPAccessToken: false,
+                shouldEncodeToFormData: false,
+                url: sessionStorage.getItem("token_endpoint")
+            };
+
+            httpRequest(requestConfig)
+                .then((response: HttpResponse) => {
+                    if (response.status === 200) {
+                        setImpersonationInProgress(false);
+                        setIdToken(undefined);
+                        setSubjectToken(undefined);
+                        setCodeChallenge(undefined);
+                        setCodeVerifier(undefined);
+                        if (sessionStorage.getItem("impersonation_artifacts") != undefined) {
+                            sessionStorage.removeItem("impersonation_artifacts");
+                        }
+                        dispatch(addAlert({
+                            description: t(
+                                "users:notifications.impersonateUser.success.description"
+                            ),
+                            level: AlertLevels.SUCCESS,
+                            message: t(
+                                "users:notifications.impersonateUser.success.message"
+                            )
+                        }));
+                        window.open(consumerAccountURL, "_blank");
+                    }
+                })
+                .catch(() => {
+                    setImpersonationInProgress(false);
+                    if (sessionStorage.getItem("impersonation_artifacts") != undefined) {
+                        sessionStorage.removeItem("impersonation_artifacts");
+                    }
+                    dispatch(addAlert({
+                        description: t(
+                            "users:notifications.impersonateUser.error.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "users:notifications.impersonateUser.error.message"
+                        )
+                    }));
+                });
+        }
+    }, [ idToken, subjectToken ]);
+
+    /**
+     * This function handles impersonation of the user.
+     */
+    const handleUserImpersonation = async (): Promise<void> => {
+
+        const codeVerifier: string = UserManagementUtils.generateCodeVerifier();
+        const codeChallenge: string = await UserManagementUtils.sha256(codeVerifier);
+
+        setCodeVerifier(codeVerifier);
+        setCodeChallenge(codeChallenge);
+        setImpersonationInProgress(true);
     };
 
     /**
@@ -1511,14 +1652,99 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             });
     };
 
+    const resolveUserActions = (): ReactElement => {
+        if (!hasUsersUpdatePermissions) {
+            return null;
+        }
+
+        const resolvedUsername: string = resolveUsernameOrDefaultEmail(user, false);
+        const isUserCurrentLoggedInUser: boolean = authenticatedUser?.includes(resolvedUsername);
+
+        const isLoggedInUserAuthorizedToImpersonate = (): boolean => {
+
+            for (let index: number = 0; index < authenticatedUserRoles?.length; index++) {
+                const authenticatedUserRole: RolesMemberInterface = authenticatedUserRoles[index];
+
+                if (authenticatedUserRole.display == "impersonate-myaccount") {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
+        const isMyAccountImpersonatable = (): boolean => {
+
+            // Load My Account Application and check
+            // 1. If it has skip login consent.
+            // 2. If it has disabled application.
+            // 3. If it has shared with the sub org.
+            return !isUserCurrentLoggedInUser && isLoggedInUserAuthorizedToImpersonate();
+        };
+
+        return (
+            (
+                !isReadOnly
+                || isUserManagedByParentOrg
+                || user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
+            ) && (
+                !isCurrentUserAdmin
+                || !isUserCurrentLoggedInUser
+            ) && isLoggedInUserAuthorizedToImpersonate() ?
+                (
+                    <React.Fragment>
+                        <DangerZoneGroup
+                            sectionHeader={ t("user:editUser.userActionZoneGroup.header") }
+                            className="action-zone"
+                        >
+                            {
+                                !isUserManagedByParentOrg && (
+                                    <DangerZone
+                                        data-testid={ `${ testId }-danger-zone-toggle` }
+                                        className="action-zone"
+                                        actionTitle={ t("user:editUser." +
+                                    "userActionZoneGroup.impersonateUserZone.actionTitle") }
+                                        header={
+                                            t("user:editUser.userActionZoneGroup.impersonateUserZone.header")
+                                        }
+                                        subheader={
+                                            t("user:editUser.userActionZoneGroup.impersonateUserZone.subheader")
+                                        }
+                                        onActionClick={ (): void => {
+                                            handleUserImpersonation();
+                                        } }
+                                        isButtonDisabled={ !isMyAccountImpersonatable() }
+                                        isButtonLoading={ impersonationInProgress }
+                                    />
+                                )
+                            }
+                        </DangerZoneGroup>
+                        {
+                            impersonationInProgress && codeChallenge != undefined && codeChallenge != null && (
+                                <div>
+                                    <iframe
+                                        hidden
+                                        src={ "https://localhost:9001/console/resources/iframe.html"
+                                    + `?userId=${encodeURIComponent(user.id)}`
+                                    + `&codeChallenge=${encodeURIComponent(codeChallenge)}`
+                                        }
+                                    />
+                                </div>
+                            )
+                        }
+                        <Divider hidden/>
+                    </React.Fragment>
+                ) : null
+        );
+    };
+
     const resolveDangerActions = (): ReactElement => {
         if (!hasUsersUpdatePermissions) {
             return null;
         }
 
         const resolvedUsername: string = resolveUsernameOrDefaultEmail(user, false);
-        const isUserCurrentLoggedInUser: boolean =
-            authenticatedUser?.includes(resolvedUsername);
+        const isUserCurrentLoggedInUser: boolean = authenticatedUser?.includes(resolvedUsername);
 
         return (
             <>
@@ -2791,6 +3017,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     </Forms>
                 </EmphasizedSegment>
                 <Divider hidden />
+                { resolveUserActions() }
                 { resolveDangerActions() }
                 {
                     deletingUser && (
