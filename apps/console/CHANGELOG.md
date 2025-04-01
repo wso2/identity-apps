@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.51.2
+
+### Patch Changes
+
+- [#7983](https://github.com/wso2/identity-apps/pull/7983) [`ec91e3703dba3ee58089503829d7bcf64813afb6`](https://github.com/wso2/identity-apps/commit/ec91e3703dba3ee58089503829d7bcf64813afb6) Thanks [@Malith-19](https://github.com/Malith-19)! - Add test component ids for password recovery form. https://github.com/wso2/identity-apps/pull/7958
+
 ## 2.51.1
 
 ### Patch Changes
