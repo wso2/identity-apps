@@ -467,3 +467,22 @@ export const resolveUserSearchAttributes = (
 
     return searchAttributes;
 };
+
+/**
+ * The following method accepts a Map and returns the values as a string.
+ *
+ * @param attributeMap - IterableIterator<string>
+ * @returns attribute string
+ */
+export const generateAttributesString = (attributeMap: IterableIterator<string>) => {
+    const attArray: string[] = [];
+    const iterator1: IterableIterator<string> = attributeMap[ Symbol.iterator ]();
+
+    for (const attribute of iterator1) {
+        if (attribute !== "") {
+            attArray.push(attribute);
+        }
+    }
+
+    return attArray.toString();
+};
