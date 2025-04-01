@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.feature-gate.v1",
-    "version": "1.6.0",
+    "version": "1.6.1",
     "description": "Access control management for admin level features.",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -31,7 +31,7 @@
         "@mui/system": "^5.12.3",
         "@mui/utils": "^5.12.3",
         "@oxygen-ui/react": "^2.3.4",
-        "@wso2is/admin.core.v1": "^2.43.0",
+        "@wso2is/admin.core.v1": "^2.43.2",
         "@wso2is/admin.organizations.v1": "^2.26.203",
         "@wso2is/access-control": "^3.4.0",
         "@wso2is/core": "^2.7.0",
