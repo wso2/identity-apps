@@ -4,4 +4,4 @@
 "@wso2is/console": patch
 ---
 
-Fix Users are not searchable via API in group creation wizard
+Fix Users not being searchable via API in group creation wizard
