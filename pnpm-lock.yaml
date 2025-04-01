@@ -16084,7 +16084,7 @@ importers:
         specifier: ^2.26.203
         version: link:../admin.organizations.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.34.2
+        specifier: ^2.34.3
         version: 'link:'
       '@wso2is/admin.users.v1':
         specifier: ^2.30.118
