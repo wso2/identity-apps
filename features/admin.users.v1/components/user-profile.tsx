@@ -48,9 +48,11 @@ import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
+    FeatureAccessConfigInterface,
     MultiValueAttributeInterface,
     PatchOperationRequest,
     ProfileInfoInterface,
@@ -279,7 +281,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     } = useUserDetails(authenticatedUserProfileInfo?.id);
     const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
-
+    const userFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state.config.ui.features?.users
+    );
     let impersonation_artifacts: any = sessionStorage.getItem("impersonation_artifacts");
 
     useEffect(() => {
@@ -1690,7 +1694,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             ) && (
                 !isCurrentUserAdmin
                 || !isUserCurrentLoggedInUser
-            ) && isLoggedInUserAuthorizedToImpersonate() ?
+            ) && isLoggedInUserAuthorizedToImpersonate() && isFeatureEnabled(userFeatureConfig, "IMPERSONATE_USER") ?
                 (
                     <React.Fragment>
                         <DangerZoneGroup

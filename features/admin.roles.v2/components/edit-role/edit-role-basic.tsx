@@ -238,6 +238,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                 t("roles:edit.basics.dangerZone.subheader",
                                     { type: "role" })
                             }
+                            isButtonDisabled={ isSubmitting || role?.displayName === "impersonate-myaccount" }
                             onActionClick={ () => onRoleDeleteClicked() }
                             data-componentid={ `${ componentid }-role-danger-zone` }
                         />

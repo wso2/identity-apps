@@ -318,7 +318,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         RoleConstants.FEATURE_DICTIONARY.get("ROLE_DELETE"))
                     || !hasRequiredScopes(userRolesFeatureConfig,
                         userRolesFeatureConfig?.scopes?.delete, allowedScopes)
-                    || isSharedRole;
+                    || isSharedRole
+                    || role?.displayName === "impersonate-myaccount";
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
