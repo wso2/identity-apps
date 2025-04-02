@@ -365,6 +365,7 @@ export interface ApplicationTemplateListItemInterface {
      */
     subTemplatesSectionTitle?: string;
     previewOnly?: boolean;
+    originalTemplateId?: string;
 }
 
 export interface ApplicationTemplateGroupInterface {
