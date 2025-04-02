@@ -79,9 +79,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
-import { updateUserInfo } from "../api";
+import { ResendCodeRequest, resendCode, updateUserInfo } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
+    ACCOUNT_LOCK_REASON_TO_RECOVERY_SCENARIO_MAP,
     AdminAccountTypes,
     CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP,
     LocaleJoiningSymbol,
@@ -2636,6 +2637,53 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         return "";
     };
 
+    // The resend option will only be shown for the "Ask Password" and "Forced Password Reset" flows.
+    const showResendLink: boolean = accountLockedReason === "PENDING_ASK_PASSWORD" ||
+        accountLockedReason === "PENDING_ADMIN_FORCED_USER_PASSWORD_RESET";
+
+
+    const handleResendCode = async (accountLockedReason: string) => {
+        setIsSubmitting(true);
+
+        try {
+            // Map lock reason to recovery scenario
+            const recoveryScenario: string = ACCOUNT_LOCK_REASON_TO_RECOVERY_SCENARIO_MAP[accountLockedReason];
+
+            if (!recoveryScenario) {
+                throw new Error("Invalid recovery scenario.");
+            }
+
+            const requestData: ResendCodeRequest = {
+                properties: [
+                    {
+                        key: "RecoveryScenario",
+                        value: recoveryScenario
+                    }
+                ],
+                user: {
+                    realm: user[ SCIMConfigs.scim.systemSchema ]?.userSource,
+                    username: user?.userName
+                }
+            };
+
+            await resendCode(requestData);
+            onAlertFired({
+                description: t("user:profile.notifications.resendCode.success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("user:profile.notifications.resendCode.success.message")
+            });
+        } catch (error: any) {
+            onAlertFired({
+                description: error.response?.data?.description ||
+                    t("user:profile.notifications.resendCode.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("user:profile.notifications.resendCode.genericError.message")
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     return (
         !isReadOnlyUserStoresLoading && !isEmpty(profileInfo)
             ? (<>
@@ -2643,6 +2691,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     (accountLocked || accountDisabled) && (
                         <Alert severity="warning">
                             { t(resolveUserAccountLockedReason()) }
+                            { showResendLink && (
+                                <>
+                                    &nbsp;
+                                    <a
+                                        className="link pointing"
+                                        onClick={ () => handleResendCode(accountLockedReason) }
+                                    >
+                                        { t("user:resendCode.resend") }
+                                    </a>
+                                </>
+                            ) }
                         </Alert>
                     )
                 }

@@ -568,6 +568,16 @@ export const user: userNS = {
                     message: "Unable to trigger a force password reset"
                 }
             },
+            resendCode: {
+                genericError: {
+                    description: "Something went wrong",
+                    message: "Error occurred while resending the recovery option."
+                },
+                success: {
+                    description: "Resending the recovery option was successful.",
+                    message: "Recovery option sent successfully."
+                }
+            },
             unlockUserAccount: {
                 error: {
                     description: "{{description}}",
@@ -640,6 +650,9 @@ export const user: userNS = {
         tooltips: {
             confirmationPending: "Confirmation pending!"
         }
+    },
+    resendCode:{
+        resend: "Resend"
     },
     revokeAdmin: {
         confirmationModal: {

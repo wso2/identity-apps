@@ -31,6 +31,7 @@ export const getUsersResourceEndpoints = (serverHost: string): UsersResourceEndp
         guests: `${ serverHost }/api/server/v1/guests/invite`,
         guestsList: `${ serverHost }/api/server/v1/guests/invitations`,
         me: `${serverHost}/scim2/Me`,
+        resendCode: `${serverHost}/api/identity/user/v1.0/resend-code`,
         schemas: `${ serverHost }/scim2/Schemas`,
         userSessions: `${ serverHost }/api/users/v1/{0}/sessions`,
         userStores: `${ serverHost }/api/server/v1/userstores`,

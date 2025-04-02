@@ -597,6 +597,16 @@ export interface userNS {
                     description: string;
                 };
             };
+            resendCode: {
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+                success: {
+                    message: string;
+                    description: string;
+                };
+            };
         };
         placeholders: {
             SCIMDisabled: {
@@ -809,4 +819,7 @@ export interface userNS {
             };
         };
     };
+    resendCode:{
+        resend: string;
+    }
 }
