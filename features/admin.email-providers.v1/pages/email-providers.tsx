@@ -17,6 +17,8 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
+import Box from "@oxygen-ui/react/Box";
+import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -32,6 +34,7 @@ import {
     DangerZoneGroup,
     DocumentationLink,
     EmphasizedSegment,
+    Heading,
     PageLayout,
     PrimaryButton,
     SecondaryButton,
@@ -49,9 +52,13 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Grid, Placeholder, Ref } from "semantic-ui-react";
+import { Divider, DropdownProps, Grid, Placeholder, Ref, Icon } from "semantic-ui-react";
 import { deleteEmailProviderConfigurations, updateEmailProviderConfigurations, useEmailProviderConfig } from "../api";
-import { EmailProviderConstants } from "../constants";
+import { 
+    AuthenticationTypeDropdownOption,
+    AuthenticationType,
+    EmailProviderConstants 
+} from "../constants";
 import {
     EmailProviderConfigAPIResponseInterface,
     EmailProviderConfigFormErrorValidationsInterface,
@@ -101,6 +108,10 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
         error: emailProviderConfigFetchRequestError
     } = useEmailProviderConfig();
 
+    const [ endpointAuthType, setEndpointAuthType ] = useState<AuthenticationType>(null);
+    const [ showPrimarySecret, setShowPrimarySecret ] = useState<boolean>(false);
+    const [ showSecondarySecret, setShowSecondarySecret ] = useState<boolean>(false);
+    
     useEffect(() => {
         if (originalEmailProviderConfig instanceof IdentityAppsApiException || emailProviderConfigFetchRequestError) {
             handleRetrieveError();
@@ -137,6 +148,148 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             });
         }
     }, [ originalEmailProviderConfig ]);
+
+
+    const renderInputAdornmentOfSecret = (showSecret: boolean, onClick: () => void): ReactElement => (
+        <InputAdornment position="end">
+            <Icon
+                link={ true }
+                className="list-icon reset-field-to-default-adornment"
+                size="small"
+                color="grey"
+                name={ !showSecret ? "eye" : "eye slash" }
+                data-componentid={ `${componentId}-endpoint-authentication-property-secret-view-button` }
+                onClick={ onClick }
+            />
+        </InputAdornment>
+    );
+
+    /**
+     * This method renders property fields of each endpoint authentication type.
+     *
+     * @returns property fields of the selected authentication type.
+     */
+    const renderEndpointAuthPropertyFields = (): ReactElement => {
+        switch (endpointAuthType) {
+            case AuthenticationType.BASIC:
+                return (
+                    <>
+                        <Field.Input
+                            ariaLabel="username"
+                            className="addon-field-wrapper"
+                            name="usernameAuthProperty"
+                            label={ t(
+                                "customAuthenticator:fields.createWizard.configurationsStep." +
+                                    "authenticationTypeDropdown.authProperties.username.label"
+                            ) }
+                            placeholder={ t(
+                                "customAuthenticator:fields.createWizard.configurationsStep." +
+                                    "authenticationTypeDropdown.authProperties.username.placeholder"
+                            ) }
+                            inputType="password"
+                            type={ showPrimarySecret ? "text" : "password" }
+                            InputProps={ {
+                                endAdornment: renderInputAdornmentOfSecret(showPrimarySecret, () =>
+                                    setShowPrimarySecret(!showPrimarySecret)
+                                )
+                            } }
+                            required={ true }
+                            maxLength={ 100 }
+                            minLength={ 0 }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-username` }
+                            width={ 15 }
+                        />
+                        <Field.Input
+                            ariaLabel="password"
+                            className="addon-field-wrapper"
+                            label={ t(
+                                "customAuthenticator:fields.createWizard.configurationsStep." +
+                                    "authenticationTypeDropdown.authProperties.password.label"
+                            ) }
+                            placeholder={ t(
+                                "customAuthenticator:fields.createWizard.configurationsStep." +
+                                    "authenticationTypeDropdown.authProperties.password.placeholder"
+                            ) }
+                            name="passwordAuthProperty"
+                            inputType="password"
+                            type={ showSecondarySecret ? "text" : "password" }
+                            InputProps={ {
+                                endAdornment: renderInputAdornmentOfSecret(showSecondarySecret, () =>
+                                    setShowSecondarySecret(!showSecondarySecret)
+                                )
+                            } }
+                            required={ true }
+                            maxLength={ 100 }
+                            minLength={ 0 }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-password` }
+                            width={ 15 }
+                        />
+                    </>
+                );
+            case AuthenticationType.CLIENT_CREDENTIAL:
+                return (
+                    <>
+                        <Field.Input
+                            ariaLabel="clientID"
+                            className="addon-field-wrapper"
+                            name="clientIDAuthProperty"
+                            inputType="text"
+                            type={ "text" }
+                            label={ t(
+                                "customAuthenticator:fields.createWizard.configurationsStep." +
+                                    "authenticationTypeDropdown.authProperties.header.label"
+                            ) }
+                            placeholder={ t(
+                                "customAuthenticator:fields.createWizard.configurationsStep." +
+                                    "authenticationTypeDropdown.authProperties.header.placeholder"
+                            ) }
+                            required={ true }
+                            maxLength={ 100 }
+                            minLength={ 0 }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-header` }
+                            width={ 15 }
+                        />
+                        <Field.Input
+                            ariaLabel="value"
+                            className="addon-field-wrapper"
+                            name="valueAuthProperty"
+                            inputType="password"
+                            type={ showSecondarySecret ? "text" : "password" }
+                            InputProps={ {
+                                endAdornment: renderInputAdornmentOfSecret(showSecondarySecret, () =>
+                                    setShowSecondarySecret(!showSecondarySecret)
+                                )
+                            } }
+                            label={ t(
+                                "customAuthenticator:fields.createWizard.configurationsStep." +
+                                    "authenticationTypeDropdown.authProperties.value.label"
+                            ) }
+                            placeholder={ t(
+                                "customAuthenticator:fields.createWizard.configurationsStep." +
+                                    "authenticationTypeDropdown.authProperties.value.placeholder"
+                            ) }
+                            required={ true }
+                            maxLength={ 100 }
+                            minLength={ 0 }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-value` }
+                            width={ 15 }
+                        />
+                    </>
+                );
+            default:
+                break;
+        }
+    };
+
+    /**
+     * This method handles authentication type dropdown changes.
+     *
+     * @param event - event associated with the dropdown change.
+     * @param data - data changed by the event
+     */
+    const handleDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+        setEndpointAuthType(data.value as AuthenticationType);
+    };
 
     /**
      * Displays the error banner when unable to fetch email provider configuration.
@@ -635,7 +788,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                             />
                                                         </Grid.Column>
                                                     </Grid.Row>
-                                                    <Grid.Row columns={ 2 } key={ 3 }>
+                                                    {/* <Grid.Row columns={ 2 } key={ 3 }>
                                                         <Grid.Column key="userName">
                                                             <Field.Input
                                                                 ariaLabel="Username Field"
@@ -687,7 +840,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                 autoComplete="new-password"
                                                             />
                                                         </Grid.Column>
-                                                    </Grid.Row>
+                                                    </Grid.Row> */}
                                                     <Grid.Row columns={ 2 } key={ 3 }>
                                                         <Grid.Column key="displayName">
                                                             <Field.Input
@@ -716,6 +869,39 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                         </Grid.Column>
                                                     </Grid.Row>
                                                 </Grid>
+
+            <Divider className="divider-container" />
+            <Heading className="heading-container" as="h5">
+                { t("emailProviders:fields.authenticationTypeDropdown.title") }
+            </Heading>
+            <Box className="box-container">
+                <Field.Dropdown
+                    ariaLabel="authenticationType"
+                    name="authenticationType"
+                    label={ t(
+                        "emailProviders:fields.authenticationTypeDropdown.label"
+                    ) }
+                    placeholder={ t(
+                        "emailProviders:fields.authenticationTypeDropdown.placeholder"
+                    ) }
+                    hint={ t(
+                        "emailProviders:fields.authenticationTypeDropdown.hint"
+                    ) }
+                    required={ true }
+                    value={ endpointAuthType }
+                    options={ [
+                        ...EmailProviderConstants.AUTH_TYPES.map((option: AuthenticationTypeDropdownOption) => ({
+                            text: t(option.text),
+                            value: option.value.toString()
+                        }))
+                    ] }
+                    onChange={ handleDropdownChange }
+                    enableReinitialize={ true }
+                    data-componentid={ `${componentId}-create-wizard-endpoint-authentication-dropdown` }
+                    width={ 15 }
+                />
+                <div className="box-field">{ renderEndpointAuthPropertyFields() }</div>
+            </Box>
                                             </Form>
                                             {
                                                 hasEmailProviderUpdatePermissions && (
