@@ -24,6 +24,7 @@ import {
     useAuthContext
 } from "@asgardeo/auth-react";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
+import LogoImage from "@wso2is/admin.core.v1/components/logo-image";
 import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -113,6 +114,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
     const [ isUserTenantless, setIsUserTenantless ] = useState(undefined);
+
+    const [ switchingOrganization, setSwitchingOrganization ] = useState(null);
 
     useEffect(() => {
         dispatch(
@@ -353,33 +356,62 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         filterRoutes(() => setRoutesFiltered(true), isUserTenantless, isFirstLevelOrg);
     }, [ filterRoutes, state.isAuthenticated, isFirstLevelOrg, isUserTenantless ]);
 
+    useEffect(() => {
+        document.addEventListener("orgSwitchStart", (event: CustomEvent) => {
+            setSwitchingOrganization(event?.detail?.organization);
+        });
+
+        document.addEventListener("orgSwitchEnd", (_event: CustomEvent) => {
+            setSwitchingOrganization(null);
+        });
+    }, []);
+
     return (
-        <SecureApp
-            fallback={ <PreLoader /> }
-            overrideSignIn={ async () => {
-                const prompt: string = new URL(location.href).searchParams.get("prompt");
-                const fidp: string = new URL(location.href).searchParams.get("fidp");
+        <>
+            { switchingOrganization && (<div
+                className="ui modal transition"
+                style={ {
+                    alignContent: "center",
+                    alignItems: "center",
+                    borderRadius: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100vh",
+                    justifyContent: "center",
+                    width: "100vw"
+                } }>
+                <LogoImage />
+                <p className="mt-5">Switching to <strong>{ switchingOrganization?.name }</strong> organization</p>
+            </div>) }
+            <SecureApp
+                fallback={ <PreLoader /> }
+                overrideSignIn={ async () => {
+                    const prompt: string = new URL(location.href).searchParams.get("prompt");
+                    const fidp: string = new URL(location.href).searchParams.get("fidp");
 
-                // This is to prompt the SSO page if a user tries to sign in
-                // through a federated IdP using an existing email address.
-                if (prompt) {
-                    await signIn({ prompt: "login" });
-                } else {
-                    const authParams: { fidp?: string; } = {};
+                    // This is to prompt the SSO page if a user tries to sign in
+                    // through a federated IdP using an existing email address.
+                    if (prompt) {
+                        await signIn({ prompt: "login" });
+                    } else {
+                        const authParams: { fidp?: string; } = {};
 
-                    if (fidp) {
-                        authParams["fidp"] = fidp;
+                        if (fidp) {
+                            authParams["fidp"] = fidp;
+                        }
+
+                        await signIn(authParams);
                     }
+                } }
+            >
+                <I18nextProvider i18n={ I18n.instance }>
+                    <SubscriptionProvider tierName={ tenantTier?.tierName ?? TenantTier.FREE }>
+                        { renderApp && routesFiltered ? <App /> : <PreLoader /> }
+                    </SubscriptionProvider>
+                </I18nextProvider>
+            </SecureApp>
 
-                    await signIn(authParams);
-                }
-            } }
-        >
-            <I18nextProvider i18n={ I18n.instance }>
-                <SubscriptionProvider tierName={ tenantTier?.tierName ?? TenantTier.FREE }>
-                    { renderApp && routesFiltered ? <App /> : <PreLoader /> }
-                </SubscriptionProvider>
-            </I18nextProvider>
-        </SecureApp>
+        </>
+
     );
 };

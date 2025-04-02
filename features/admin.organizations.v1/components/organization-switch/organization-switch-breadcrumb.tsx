@@ -160,6 +160,9 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         organization: GenericOrganization,
         redirectToStart: boolean = true
     ): Promise<void> => {
+        document.dispatchEvent(new CustomEvent("orgSwitchStart", {
+            detail: { organization }
+        }));
         let response: BasicUserInfo = null;
 
         try {
@@ -182,6 +185,10 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
             }
         } catch(e) {
             // TODO: Handle error
+        } finally {
+            document.dispatchEvent(new CustomEvent("orgSwitchEnd", {
+                detail: { organization: null }
+            }));
         }
     };
 

@@ -269,6 +269,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     const handleOrganizationSwitch = async (
         organization: GenericOrganization
     ): Promise<void> => {
+        document.dispatchEvent(new CustomEvent("orgSwitchStart", {
+            detail: { organization }
+        }));
 
         let response: BasicUserInfo = null;
 
@@ -280,6 +283,10 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
             history.push(AppConstants.getPaths().get("GETTING_STARTED"));
         } catch(e) {
             // TODO: Handle error
+        } finally {
+            document.dispatchEvent(new CustomEvent("orgSwitchEnd", {
+                detail: { organization: null }
+            }));
         }
     };
 
