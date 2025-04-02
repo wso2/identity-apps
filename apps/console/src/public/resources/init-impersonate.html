@@ -12,7 +12,6 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Impersonate Iframe</title>
     </head>
     <body onload="authenticate()">
         <script>
@@ -20,7 +19,7 @@
             const params = new URLSearchParams(window.location.search);
             const userId = params.get("userId");
             const code_challenge = params.get("codeChallenge");
-            const client_id = "Pfao0gjJ07be0gf29PzEcLFKmUIa";
+            const client_id = params.get("clientId");
             const authorization_endpoint = sessionStorage.getItem("authorization_endpoint");
 
             function authenticate() {
@@ -32,7 +31,7 @@
                     "&requested_subject=" + userId +
                     "&nonce=2131236&code_challenge=" + code_challenge + "&code_challenge_method=S256";
                 
-                if (hash === null || hash === "") {
+                if (!hash) {
                     window.location.href = requestUrl;
                 } else {
                     if (sessionStorage.getItem("impersonation_artifacts") === null) {

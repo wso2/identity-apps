@@ -123,7 +123,7 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
         [ "data-testid" ]: testId
     } = props;
     const { isMobileViewport } = useMediaContext();
-    const defaultClassName = className ? className : "danger-zone";
+    const defaultClassName = className ?? "danger-zone";
 
     return (
         <Segment data-testid={ testId } data-componentid={ componentId } className={ defaultClassName } padded clearing>

@@ -83,6 +83,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
+import { ApplicationManagementConstants } from "../../admin.applications.v1/constants/application-management";
 import { updateUserInfo, useUserDetails } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
@@ -106,6 +107,7 @@ import {
     isMultipleEmailsAndMobileNumbersEnabled,
     isSchemaReadOnly
 } from "../utils/user-management-utils";
+import { log } from "console";
 
 const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
 const MOBILE_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
@@ -165,8 +167,8 @@ interface UserProfilePropsInterface extends TestableComponentInterface {
      */
     editUserDisclaimerMessage?: ReactNode;
     /**
-     * Admin user type
-    */
+     * Admin user typeisLoading: isAuthenticatedUserFetchRequestLoading
+     */
     adminUserType?: string;
     /**
      * Is user managed by parent organization.
@@ -277,13 +279,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         = useSelector((state: AppState) => state?.profile?.profileInfo);
     const {
         data: authenticatedUserProfileInfoData,
-        isLoading: isAuthenticatedUserFetchRequestLoading,
+        isLoading: isAuthenticatedUserFetchRequestLoading
     } = useUserDetails(authenticatedUserProfileInfo?.id);
     const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const userFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state.config.ui.features?.users
     );
+    const accountAppClientID: string = useSelector((state: AppState) => state.config.deployment.accountApp.clientID);
+    const accountAppImpersonateRoleName: string = useSelector(
+        (state: AppState) => state.config.deployment.accountApp.impersonationRoleName);
+
     let impersonation_artifacts: any = sessionStorage.getItem("impersonation_artifacts");
 
     useEffect(() => {
@@ -695,7 +701,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
     }, [ impersonation_artifacts ]);
 
-    const handleMessage = (event: any) => {
+    const handleInitImpersonateIframeMessage = (event: CompositionEvent) => {
         if (event.data === "impersonation-authorize-request-complete") {
             impersonation_artifacts = sessionStorage.getItem("impersonation_artifacts").substring(1);
             const id_token: any = new URLSearchParams(impersonation_artifacts).get("id_token");
@@ -709,9 +715,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     useEffect(() => {
-        window.addEventListener("message", handleMessage);
+        window.addEventListener("message", handleInitImpersonateIframeMessage);
 
-        return () => window.removeEventListener("message", handleMessage);
+        return () => window.removeEventListener("message", handleInitImpersonateIframeMessage);
     }, []);
 
     useEffect(() => {
@@ -723,7 +729,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 actor_token_type: "urn:ietf:params:oauth:token-type:id_token",
                 client_id: "Pfao0gjJ07be0gf29PzEcLFKmUIa",
                 code_verifier: codeVerifier,
-                grant_type: "urn:ietf:params:oauth:grant-type:token-exchange",
+                grant_type: ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
                 requested_token_type: "urn:ietf:params:oauth:token-type:access_token",
                 subject_token: subjectToken,
                 subject_token_type: "urn:ietf:params:oauth:token-type:jwt"
@@ -1669,7 +1675,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             for (let index: number = 0; index < authenticatedUserRoles?.length; index++) {
                 const authenticatedUserRole: RolesMemberInterface = authenticatedUserRoles[index];
 
-                if (authenticatedUserRole.display == "impersonate-myaccount") {
+                if (authenticatedUserRole.display === accountAppImpersonateRoleName) {
                     return true;
                 }
             }
@@ -1698,7 +1704,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 (
                     <React.Fragment>
                         <DangerZoneGroup
-                            sectionHeader={ t("user:editUser.userActionZoneGroup.header") }
                             className="action-zone"
                         >
                             {
@@ -1728,9 +1733,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 <div>
                                     <iframe
                                         hidden
-                                        src={ "https://localhost:9001/console/resources/iframe.html"
+                                        src={ "https://localhost:9001/console/resources/init-impersonate.html"
                                     + `?userId=${encodeURIComponent(user.id)}`
                                     + `&codeChallenge=${encodeURIComponent(codeChallenge)}`
+                                    + `&clientId=${encodeURIComponent(accountAppClientID)}`
                                         }
                                     />
                                 </div>
