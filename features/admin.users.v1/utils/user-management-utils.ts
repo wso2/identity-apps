@@ -469,20 +469,10 @@ export const resolveUserSearchAttributes = (
 };
 
 /**
- * The following method accepts a Map and returns the values as a string.
+ * Generates a comma-separated string of non-empty attributes from the given iterator.
  *
- * @param attributeMap - IterableIterator<string>
- * @returns attribute string
+ * @param attributeIterator - An iterator that provides string attributes.
+ * @returns The comma-separated string of non-empty attribute values.
  */
-export const generateAttributesString = (attributeMap: IterableIterator<string>) => {
-    const attArray: string[] = [];
-    const iterator1: IterableIterator<string> = attributeMap[ Symbol.iterator ]();
-
-    for (const attribute of iterator1) {
-        if (attribute !== "") {
-            attArray.push(attribute);
-        }
-    }
-
-    return attArray.toString();
-};
+export const generateAttributesString = (attributeIterator: IterableIterator<string>) =>
+    Array.from(attributeIterator).filter((attr: string) => attr !== "").join(",");
