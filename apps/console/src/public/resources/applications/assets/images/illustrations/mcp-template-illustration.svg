@@ -1,3 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use thixs file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
 <svg width="70" height="66" viewBox="0 0 70 66" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M66 0H4C1.79086 0 0 1.79086 0 4V52C0 54.2091 1.79086 56 4 56H66C68.2091 56 70 54.2091 70 52V4C70 1.79086 68.2091 0 66 0Z" fill="#ECECEC"/>
 <path d="M3 14H17C18.1046 14 19 14.8954 19 16V50C19 51.1046 18.1046 52 17 52H3V14Z" fill="white"/>
