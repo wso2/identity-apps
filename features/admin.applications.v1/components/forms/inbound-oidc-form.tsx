@@ -2763,12 +2763,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         ) }
 
 
-                        <Grid.Row columns={ 1 }>
+                        <Grid.Row columns={ 1 } data-componentid={ testId + "-jwt-access-token-attributes" }>
                             <Grid.Column
                                 mobile={ 16 }
                                 tablet={ 16 }
                                 computer={ 16 }
-                                data-componentid={ testId + "-jwt-access-token-attributes" }
                             >
                                 { isJWTAccessTokenTypeSelected && !isM2MApplication &&
                                 isFeatureEnabled(applicationFeatureConfig, "applications.accessTokenAttributes") ? (
