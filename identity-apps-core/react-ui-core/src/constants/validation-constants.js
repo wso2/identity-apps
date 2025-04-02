@@ -16,15 +16,5 @@
  * under the License.
  */
 
-export const isRequired = value => value !== undefined && value !== null && value.trim() !== "";
-
-export const validateWithRegex = (value, regex) => {
-    if (!value || !regex) {
-
-        return false;
-    }
-
-    const pattern = new RegExp(regex);
-
-    return pattern.test(value);
-};
+export const DEFAULT_EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+export const DEFAULT_ALPHANUMERIC_REGEX = "^[a-zA-Z0-9]+$";
