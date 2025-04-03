@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,7 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
-import { Button, Checkbox, Grid, Icon, Segment } from "semantic-ui-react";
+import { Button, Checkbox, Grid, GridColumn, Icon, Segment } from "semantic-ui-react";
 import { TransferListSearch } from "./transfer-list-search";
 
 /**
@@ -71,6 +71,10 @@ export interface TransferComponentPropsInterface extends IdentifiableComponentIn
      */
     selectAllCheckboxLabel?: ReactNode;
     disabled?: boolean;
+    /**
+     * Element to be rendered on the left side of the search input.
+     */
+    leftActionPanel?: ReactElement;
 }
 
 /**
@@ -101,6 +105,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         handleSelectedListSearch,
         handleHeaderCheckboxChange,
         isHeaderCheckboxChecked,
+        leftActionPanel,
         showSelectAllCheckbox,
         showListSearch,
         disabled,
@@ -143,22 +148,30 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                         }
                                                         className="transfer-segment"
                                                     >
-                                                        {
-                                                            showListSearch && (
-                                                                <TransferListSearch
-                                                                    data-componentid={
-                                                                        componentId + "-unselected-groups-search-input"
-                                                                    }
-                                                                    data-testid={
-                                                                        testId + "-unselected-groups-search-input"
-                                                                    }
-                                                                    handleListSearch={ handleUnelectedListSearch }
-                                                                    iconPosition={ iconPosition }
-                                                                    placeholder={ searchPlaceholder }
-                                                                    disabled={ disabled }
-                                                                />
-                                                            )
-                                                        }
+                                                        <Grid>
+                                                            {
+                                                                leftActionPanel && leftActionPanel
+                                                            }
+                                                            {
+                                                                showListSearch && (
+                                                                    <GridColumn width="8">
+                                                                        <TransferListSearch
+                                                                            data-componentid={ componentId +
+                                                                                "-unselected-groups-search-input"
+                                                                            }
+                                                                            data-testid={ testId +
+                                                                                "-unselected-groups-search-input"
+                                                                            }
+                                                                            handleListSearch={
+                                                                                handleUnelectedListSearch }
+                                                                            iconPosition={ iconPosition }
+                                                                            placeholder={ searchPlaceholder }
+                                                                            disabled={ disabled }
+                                                                        />
+                                                                    </GridColumn>
+                                                                )
+                                                            }
+                                                        </Grid>
                                                         {
                                                             (!isLoading
                                                                 && showSelectAllCheckbox

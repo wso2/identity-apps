@@ -279,6 +279,7 @@ export interface rolesNS {
             heading: string;
             subHeading: string;
             placeholders: {
+                beginSearch: string
                 emptyPlaceholder: {
                     action: string;
                     title: string;
@@ -286,6 +287,7 @@ export interface rolesNS {
                         0: string;
                     };
                 };
+                emptySearchResult: string;
                 errorPlaceholder: {
                     action: string;
                     title: string;
