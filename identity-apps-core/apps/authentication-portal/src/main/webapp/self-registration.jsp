@@ -161,6 +161,7 @@
                 const [ error, setError ] = useState(null);
                 const [ postBody, setPostBody ] = useState(undefined);
                 const [ flowError, setFlowError ] = useState(undefined);
+                const [ apiError, setApiError ] = useState(undefined);
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
@@ -233,12 +234,7 @@
 
                 useEffect(() => {
                     if (error && error.code) {
-                        const errorDetails = getI18nKeyForError(error.code);
-                        const errorPageURL = baseUrl + "/authenticationendpoint/registration_error.do?" + "ERROR_MSG="
-                            + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
-                            + "<%= spId %>" + "&" + "REG_PORTAL_URL=" + authenticationEndpoint + "/register.do";
-                        
-                        window.location.href = errorPageURL;
+                        setApiError(error);
                     }
 
                     if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error) {
@@ -281,6 +277,17 @@
                             console.log(`Flow step type: ${flow.type}. No special action.`);
                     }
                 };
+
+                if (apiError) {
+                    return createElement(
+                        "div",
+                        { className: "ui visible negative message text-center" },
+                        [
+                            createElement("div", { key: "header", className: "header mb-2" }, apiError.message),
+                            createElement("p", { key: "description" }, apiError.description)
+                        ]
+                    );
+                }
 
                 if (loading || (!components || components.length === 0)) {
                     return createElement(

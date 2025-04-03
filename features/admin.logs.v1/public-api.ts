@@ -19,3 +19,4 @@
 export { default as AuditLogsPage } from "./pages/audit-logs-page";
 export { default as DiagnosticLogsPage } from "./pages/diagnostic-logs-page";
 export { default as LogsPage } from "./pages/logs-page";
+export { default as LogsSettingsPage } from "./pages/logs-settings-page";

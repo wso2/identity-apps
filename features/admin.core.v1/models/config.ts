@@ -28,6 +28,7 @@ import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificat
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
 import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.v1";
 import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1/models/endpoints";
+import { RemoteLoggingResourceEndpointsInterface } from "@wso2is/admin.logs.v1/models/endpoints";
 import { ScopesResourceEndpointsInterface } from "@wso2is/admin.oidc-scopes.v1";
 import { OrganizationResourceEndpointsInterface } from "@wso2is/admin.organizations.v1/models";
 import { PolicyAdministrationEndpointsInterface } from "@wso2is/admin.policy-administration.v1/models/endpoints";
@@ -622,7 +623,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     SMSTemplateResourceEndpointsInterface,
     ActionsResourceEndpointsInterface,
     PolicyAdministrationEndpointsInterface,
-    RulesEndpointsInterface {
+    RulesEndpointsInterface,
+    RemoteLoggingResourceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details

@@ -1,5 +1,17 @@
 # @wso2is/identity-apps-core
 
+## 2.22.6
+
+### Patch Changes
+
+- [#7843](https://github.com/wso2/identity-apps/pull/7843) [`06d97bc5656fb699d406a2dec113a28d6b94a0b1`](https://github.com/wso2/identity-apps/commit/06d97bc5656fb699d406a2dec113a28d6b94a0b1) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix My Account access url issue when accountLockOnCreationEnabled
+
+## 2.22.5
+
+### Patch Changes
+
+- [#7981](https://github.com/wso2/identity-apps/pull/7981) [`c10e9175a878535fbb9bcd21ed5fade298ac3560`](https://github.com/wso2/identity-apps/commit/c10e9175a878535fbb9bcd21ed5fade298ac3560) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve error message in dynamic registration portal
+
 ## 2.22.4
 
 ### Patch Changes
