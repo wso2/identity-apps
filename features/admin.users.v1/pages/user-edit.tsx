@@ -473,9 +473,18 @@ const UserEditPage = (): ReactElement => {
                     text: getBackButtonText()
                 } }
                 action={ (
-                    <Button variant="outlined" onClick={ () => console.log("sanks") }>
-                        { t("console:common.placeholders.brokenPage.action") }
-                    </Button>
+
+                    <ImpersonateUserAction
+                        user={ user }
+                        isReadOnly= { !hasUsersUpdatePermissions }
+                        isUserManagedByParentOrg= { user?.isUserManagedByParentOrg }
+                    />
+
+                    // <Button
+                    //     variant="outlined"
+                    //     onClick={ () => console.log("sanks") }>
+                    //     { t("user:editUser.userActionZoneGroup.impersonateUserZone.actionTitle") }
+                    // </Button>
                 ) }
                 titleTextAlign="left"
                 bottomMargin={ false }
