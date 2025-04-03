@@ -346,6 +346,22 @@ export enum UserSharedType {
 }
 
 /**
+ * Enum for account lock reason.
+ *
+ * @readonly
+ */
+export enum AccountLockedReason {
+
+    PENDING_SELF_REGISTRATION = "PENDING_SELF_REGISTRATION",
+    PENDING_ADMIN_FORCED_USER_PASSWORD_RESET = "PENDING_ADMIN_FORCED_USER_PASSWORD_RESET",
+    PENDING_EMAIL_VERIFICATION = "PENDING_EMAIL_VERIFICATION",
+    PENDING_ASK_PASSWORD = "PENDING_ASK_PASSWORD",
+    IDLE_ACCOUNT = "IDLE_ACCOUNT",
+    ADMIN_INITIATED = "ADMIN_INITIATED",
+    MAX_ATTEMPTS_EXCEEDED = "MAX_ATTEMPTS_EXCEEDED"
+}
+
+/**
  *  user account locked reason.
  *
  * @readonly

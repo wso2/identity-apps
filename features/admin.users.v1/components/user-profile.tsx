@@ -83,6 +83,7 @@ import { ResendCodeRequest, resendCode, updateUserInfo } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
     ACCOUNT_LOCK_REASON_TO_RECOVERY_SCENARIO_MAP,
+    AccountLockedReason,
     AdminAccountTypes,
     CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP,
     LocaleJoiningSymbol,
@@ -1559,7 +1560,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                             onActionClick={ (): void => {
                                                                 setOpenChangePasswordModal(true);
                                                             } }
-                                                            isButtonDisabled={ accountLocked }
+                                                            isButtonDisabled={
+                                                                accountLocked &&
+                                                                // eslint-disable-next-line max-len
+                                                                accountLockedReason !== AccountLockedReason.PENDING_ADMIN_FORCED_USER_PASSWORD_RESET &&
+                                                                // eslint-disable-next-line max-len
+                                                                accountLockedReason !== AccountLockedReason.MAX_ATTEMPTS_EXCEEDED
+                                                            }
                                                             buttonDisableHint={ t("user:editUser." +
                                                                 "dangerZoneGroup.passwordResetZone.buttonHint") }
                                                         />
@@ -2666,7 +2673,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      *
      * @returns True to display "Force Password Reset"; false to display "Set Password".
      */
-    const isResetPassword = (): boolean => accountLockedReason !== "PENDING_ASK_PASSWORD";
+    const isResetPassword = (): boolean => accountLockedReason !== AccountLockedReason.PENDING_ASK_PASSWORD;
 
 
     /**
@@ -2680,8 +2687,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      *
      * @returns True if the resend link should be shown; false otherwise.
      */
-    const showResendLink: boolean = accountLockedReason === "PENDING_ASK_PASSWORD" ||
-        accountLockedReason === "PENDING_ADMIN_FORCED_USER_PASSWORD_RESET";
+    const showResendLink: boolean = accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD ||
+        accountLockedReason === AccountLockedReason.PENDING_ADMIN_FORCED_USER_PASSWORD_RESET;
 
 
     const handleResendCode = async (accountLockedReason: string) => {
