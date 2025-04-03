@@ -1547,21 +1547,36 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             user.userName !== adminUsername
                                         ) ? (
                                                 <Show when={ featureConfig?.users?.scopes?.update }>
-                                                    <DangerZone
-                                                        data-testid={ `${ testId }-change-password` }
-                                                        actionTitle={ t("user:editUser." +
-                                                            "dangerZoneGroup.passwordResetZone.actionTitle") }
-                                                        header={ t("user:editUser." +
-                                                            "dangerZoneGroup.passwordResetZone.header") }
-                                                        subheader={ t("user:editUser." +
-                                                            "dangerZoneGroup.passwordResetZone.subheader") }
-                                                        onActionClick={ (): void => {
-                                                            setOpenChangePasswordModal(true);
-                                                        } }
-                                                        isButtonDisabled={ accountLocked }
-                                                        buttonDisableHint={ t("user:editUser." +
-                                                            "dangerZoneGroup.passwordResetZone.buttonHint") }
-                                                    />
+                                                    { isResetPassword() ? (
+                                                        <DangerZone
+                                                            data-testid={ `${ testId }-change-password` }
+                                                            actionTitle={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordResetZone.actionTitle") }
+                                                            header={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordResetZone.header") }
+                                                            subheader={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordResetZone.subheader") }
+                                                            onActionClick={ (): void => {
+                                                                setOpenChangePasswordModal(true);
+                                                            } }
+                                                            isButtonDisabled={ accountLocked }
+                                                            buttonDisableHint={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordResetZone.buttonHint") }
+                                                        />
+                                                    ) : (
+                                                        <DangerZone
+                                                            data-testid={ `${ testId }-set-password` }
+                                                            actionTitle={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordSetZone.actionTitle") }
+                                                            header={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordSetZone.header") }
+                                                            subheader={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordSetZone.subheader") }
+                                                            onActionClick={ (): void => {
+                                                                setOpenChangePasswordModal(true);
+                                                            } }
+                                                        />
+                                                    ) }
                                                 </Show>
                                             ) : null
                                     }
@@ -2637,7 +2652,34 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         return "";
     };
 
-    // The resend option will only be shown for the "Ask Password" and "Forced Password Reset" flows.
+    /**
+     * Determines which password changing option to display.
+     *
+     * Returns true if the "Force Password Reset" option should be displayed.
+     * This indicates that the account is not in the "PENDING_ASK_PASSWORD" state,
+     * meaning the user already has an existing password and the admin can force a password reset
+     * if needed.
+     *
+     * Returns false if the "Set Password" option should be displayed.
+     * This occurs when the account is in the "PENDING_ASK_PASSWORD" state, indicating that
+     * the user has not yet set a password and the admin can set a new password if needed.
+     *
+     * @returns True to display "Force Password Reset"; false to display "Set Password".
+     */
+    const isResetPassword = (): boolean => accountLockedReason !== "PENDING_ASK_PASSWORD";
+
+
+    /**
+     * Determines whether the "Resend" link should be displayed.
+     *
+     * The resend option is shown when:
+     * - The account is in the "PENDING_ASK_PASSWORD" state,
+     *   indicating an initial password setup link has been sent.
+     * - The account is in the "PENDING_ADMIN_FORCED_USER_PASSWORD_RESET" state,
+     *   indicating that an admin-forced password reset has been sent.
+     *
+     * @returns True if the resend link should be shown; false otherwise.
+     */
     const showResendLink: boolean = accountLockedReason === "PENDING_ASK_PASSWORD" ||
         accountLockedReason === "PENDING_ADMIN_FORCED_USER_PASSWORD_RESET";
 
@@ -2987,6 +3029,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     onAlertFired={ onAlertFired }
                     user={ user }
                     handleUserUpdate={ handleUserUpdate }
+                    isResetPassword={ isResetPassword() }
                 />
             </>)
             : <ContentLoader dimmer/>

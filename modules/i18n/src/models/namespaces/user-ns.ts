@@ -71,6 +71,11 @@ export interface userNS {
                 subheader: string;
                 buttonHint: string;
             };
+            passwordSetZone: {
+                actionTitle: string;
+                header: string;
+                subheader: string;
+            };
             deleteAdminPriviledgeZone: {
                 actionTitle: string;
                 header: string;
@@ -343,6 +348,11 @@ export interface userNS {
             };
             button: string;
         };
+        setPasswordModal: {
+            header: string;
+            message: string;
+            button: string;
+        };
     };
     profile: {
         confirmationModals: {
@@ -533,6 +543,20 @@ export interface userNS {
                     message: string;
                     description: string;
                     genericMessage: string;
+                };
+            };
+            setUserPassword: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+                success: {
+                    message: string;
+                    description: string;
                 };
             };
             changeUserPassword: {
