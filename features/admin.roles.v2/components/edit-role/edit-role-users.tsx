@@ -16,45 +16,39 @@
  * under the License.
  */
 
-import { SelectChangeEvent } from "@mui/material/Select";
-import Autocomplete, {
-    AutocompleteRenderGetTagProps,
-    AutocompleteRenderInputParams
-} from "@oxygen-ui/react/Autocomplete";
-import Button from "@oxygen-ui/react/Button";
-import FormControl from "@oxygen-ui/react/FormControl";
-import Grid from "@oxygen-ui/react/Grid";
-import MenuItem from "@oxygen-ui/react/MenuItem";
-import Select from "@oxygen-ui/react/Select";
-import TextField from "@oxygen-ui/react/TextField";
-import { updateResources } from "@wso2is/admin.core.v1/api/bulk-operations";
+import Box from "@oxygen-ui/react/Box";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
-import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
-import { useUsersList } from "@wso2is/admin.users.v1/api";
-import {
-    PatchBulkUserDataInterface,
-    PatchUserAddOpInterface,
-    PatchUserOpInterface,
-    PatchUserRemoveOpInterface,
-    UserBasicInterface
-} from "@wso2is/admin.users.v1/models/user";
+import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
+import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
+import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
-import { EmphasizedSegment, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
+import {
+    DataTable,
+    EmphasizedSegment,
+    EmptyPlaceholder,
+    Heading,
+    LinkButton,
+    ListLayout,
+    PrimaryButton,
+    TableActionsInterface,
+    TableColumnInterface,
+    UserAvatar
+} from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
-    HTMLAttributes,
     ReactElement,
+    ReactNode,
     SyntheticEvent,
-    useCallback,
     useEffect,
     useMemo,
     useState
@@ -62,12 +56,10 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Icon } from "semantic-ui-react";
-import { AutoCompleteRenderOption } from "./edit-role-common/auto-complete-render-option";
-import { RenderChip } from "./edit-role-common/render-chip";
-import { RoleConstants, Schemas } from "../../constants";
-import { RoleEditSectionsInterface } from "../../models/roles";
-import { RoleManagementUtils } from "../../utils/role-management-utils";
+import { Divider, Dropdown, DropdownProps, Header, Icon, PaginationProps, SemanticICONS } from "semantic-ui-react";
+import { AddRoleUserModal } from "./add-role-user-modal";
+import { updateRoleDetails } from "../../api";
+import { CreateRoleMemberInterface, PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import "./edit-role.scss";
 
 type RoleUsersPropsInterface = IdentifiableComponentInterface & RoleEditSectionsInterface;
@@ -82,7 +74,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         isReadOnly,
         tabIndex,
         activeUserStore,
-        [ "data-componentid" ]: componentId
+        [ "data-componentid" ]: componentId = "edit-role-users"
     } = props;
 
     const { t } = useTranslation();
@@ -91,34 +83,22 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
-    const [ userSearchValue, setUserSearchValue ] = useState<string>(undefined);
-    const [ isUserSearchLoading, setUserSearchLoading ] = useState<boolean>(false);
-    const [ users, setUsers ] = useState<UserBasicInterface[]>([]);
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ activeOption, setActiveOption ] = useState<GroupsInterface|UserBasicInterface>(undefined);
-    const [ selectedUserStoreDomainName, setSelectedUserStoreDomainName ] = useState<string>();
-    const [ isPlaceholderVisible, setIsPlaceholderVisible ] = useState<boolean>(true);
+    const [ selectedUserStoreDomainName, setSelectedUserStoreDomainName ] = useState<string>(
+        activeUserStore ?? userstoresConfig?.primaryUserstoreName
+    );
     const [ selectedUsersFromUserStore, setSelectedUsersFromUserStore ] = useState<UserBasicInterface[]>([]);
-    const [ selectedAllUsers, setSelectedAllUsers ] = useState<Record<string, UserBasicInterface[] | undefined>>({});
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ searchQuery, setSearchQuery ] = useState<string>(null);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [ listOffset, setListOffset ] = useState<number>(0);
+    const [ paginatedUsers, setPaginatedUsers ] = useState<UserBasicInterface[]>([]);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+    const [ showAddNewUserModal, setShowAddNewUserModal ] = useState<boolean>(false);
 
     const {
         isLoading: isUserStoresLoading,
         userStoresList
     } = useUserStores();
-
-    const {
-        data: userResponse,
-        isLoading: isUserListFetchRequestLoading,
-        error: userListFetchRequestError
-    } = useUsersList(
-        null,
-        null,
-        userSearchValue ? `userName co ${ userSearchValue }` : null,
-        null,
-        selectedUserStoreDomainName,
-        null,
-        !!selectedUserStoreDomainName || !!userSearchValue
-    );
 
     const availableUserStores: UserStoreDropdownItem[] = useMemo(() => {
         const storeOptions: UserStoreDropdownItem[] = [
@@ -151,19 +131,9 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     }, [ userStoresList, isUserStoresLoading ]);
 
     useEffect(() => {
-        if (activeUserStore) {
-            setSelectedUserStoreDomainName(activeUserStore);
-        } else {
-            setSelectedUserStoreDomainName(userstoresConfig.primaryUserstoreName);
-        }
-    }, [ activeUserStore ]);
-
-    useEffect(() => {
         if (!role?.users?.length) {
             return;
         }
-
-        setIsPlaceholderVisible(false);
 
         const alreadyAssignedUsersFromSelectedUserStore: UserBasicInterface[] = role?.users?.map(
             (user: RolesMemberInterface) => ({
@@ -174,53 +144,27 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             isUserBelongToSelectedUserStore(user, selectedUserStoreDomainName)
         ) ?? [];
 
-        // if `selectedAllUsers[selectedUserStoreDomainName]` is undefined, that means the assigned users
-        // for the selected user store have not yet been edited since page load. In such cases, the autocomplete
-        // input is populated with already assigned users to role.
-        const usersFromSelectedStore: UserBasicInterface[] =
-            selectedAllUsers[selectedUserStoreDomainName] || alreadyAssignedUsersFromSelectedUserStore;
-
-        setSelectedUsersFromUserStore(usersFromSelectedStore);
+        setSelectedUsersFromUserStore(alreadyAssignedUsersFromSelectedUserStore);
     },[ role, selectedUserStoreDomainName ]);
 
     /**
-     * Set available to select users.
+     * Performs the pagination of the users list.
      */
     useEffect(() => {
-        if (!isReadOnly && userResponse?.totalResults > 0 && Array.isArray(userResponse?.Resources)) {
-            const usersAvailableToSelect: UserBasicInterface[] = userResponse?.Resources?.filter(
-                (user: UserBasicInterface) => {
-                    const isUserInSelectedUserStore: boolean = isUserBelongToSelectedUserStore(
-                        user, selectedUserStoreDomainName
-                    );
-
-                    const isUserAlreadySelected: boolean = selectedUsersFromUserStore?.find(
-                        (selectedUser: UserBasicInterface) => selectedUser.id === user.id) !== undefined;
-
-                    return !isUserAlreadySelected && isUserInSelectedUserStore;
-                }) ?? [];
-
-            setUsers(usersAvailableToSelect);
-        } else {
-            setUsers([]);
-        }
-    }, [ userResponse, selectedUsersFromUserStore ]);
+        resolvePaginatedUsersList(listOffset, listItemLimit, selectedUsersFromUserStore, searchQuery);
+    }, [
+        listOffset,
+        listItemLimit,
+        selectedUsersFromUserStore,
+        searchQuery
+    ]);
 
     /**
-     * Show error if user list fetch request failed
+     * Checks whether the user belongs to the selected user store.
+     *
+     * @param user - User.
+     * @param userStoreName - User store name.
      */
-    useEffect(() => {
-        if ( userListFetchRequestError ) {
-            dispatch(
-                addAlert({
-                    description: t("roles:edit.users.notifications.fetchError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("roles:edit.users.notifications.fetchError.message")
-                })
-            );
-        }
-    }, [ userListFetchRequestError ]);
-
     const isUserBelongToSelectedUserStore = (user: UserBasicInterface, userStoreName: string) => {
         const userNameChunks: string[] = user.userName.split("/");
 
@@ -230,130 +174,119 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     };
 
     /**
-     * Get the place holder components.
+     * Util method to paginate retrieved users list.
      *
-     * @returns - place holder components
+     * @param offsetValue - pagination offset value.
+     * @param itemLimit - pagination item limit.
+     * @param list - users list.
+     * @param searchQuery - Search query.
      */
-    const getPlaceholders = () => {
-        return (
-            <EmptyPlaceholder
-                subtitle={
-                    [ t("roles:edit.users.placeholders.emptyPlaceholder.subtitles.0") ]
-                }
-                title={ t("roles:edit.users.placeholders.emptyPlaceholder.title") }
-                image={ getEmptyPlaceholderIllustrations().emptyList }
-                imageSize="tiny"
-                action={
-                    !isReadOnly
-                        ? (
-                            <PrimaryButton
-                                onClick={ () => setIsPlaceholderVisible(false) }
-                            >
-                                <Icon name="plus"/>
-                                { t("roles:edit.users.placeholders.emptyPlaceholder" +
-                                        ".action") }
-                            </PrimaryButton>
-                        )
-                        : null
-                }
-            />
-        );
-    };
+    const resolvePaginatedUsersList = (
+        offsetValue: number,
+        itemLimit: number,
+        list: UserBasicInterface[],
+        searchQuery?: string
+    ): void => {
+        if (!list) {
+            setPaginatedUsers([]);
 
-    /**
-     * Handles temporarily storing the users selected from the specified user store.
-     */
-    const updateSelectedAllUsers = () => {
-        if (Array.isArray(selectedUsersFromUserStore)) {
-            const tempSelectedAllUsers: Record<string, UserBasicInterface[]> = selectedAllUsers;
-
-            tempSelectedAllUsers[selectedUserStoreDomainName] = selectedUsersFromUserStore;
-
-            setSelectedAllUsers(tempSelectedAllUsers);
+            return;
         }
+
+        if (!isEmpty(searchQuery)) {
+            const filteredList: UserBasicInterface[] = list.filter((user: UserBasicInterface) => {
+                return user.userName.toLowerCase().includes(searchQuery.toLowerCase());
+            });
+
+            setPaginatedUsers(filteredList?.slice(offsetValue, itemLimit + offsetValue));
+
+            return;
+        }
+
+        setPaginatedUsers(list?.slice(offsetValue, itemLimit + offsetValue));
     };
 
     /**
-     * Handles the search query for the users list.
+     * Assigns users to the role.
+     *
+     * @param selectedUsers - selected users.
      */
-    const searchUsers: DebouncedFunc<(query: string) => void> =
-        useCallback(debounce((query: string) => {
-            query = !isEmpty(query) ? query : null;
-            setUserSearchValue(query);
-        }, RoleConstants.DEBOUNCE_TIMEOUT), []);
+    const assignUsersToRole = (selectedUsers: UserBasicInterface[]): void => {
+        const addedUsers: CreateRoleMemberInterface[] = selectedUsers?.map((user: UserBasicInterface) => {
+            return {
+                "display": user.userName,
+                "value": user.id
+            };
+        });
+
+        const roleData: PatchRoleDataInterface = {
+            Operations: [
+                {
+                    op: "add",
+                    value: {
+                        users: addedUsers
+                    }
+                }
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        };
+
+        setIsSubmitting(true);
+        updateRoleDetails(role.id, roleData)
+            .then(() => {
+                dispatch(
+                    addAlert({
+                        description: t("roles:edit.users.notifications.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("roles:edit.users.notifications.success.message")
+                    })
+                );
+                onRoleUpdate(tabIndex);
+            })
+            .catch( (error: AxiosError) => {
+                if (error?.response?.data?.detail) {
+                    dispatch(
+                        addAlert({
+                            description:
+                                t("roles:edit.groups.notifications.error.description",
+                                    { description: error.response.data.detail }),
+                            level: AlertLevels.ERROR,
+                            message: t("roles:edit.groups.notifications.error.message")
+                        })
+                    );
+                } else {
+                    dispatch(
+                        addAlert({
+                            description: t("roles:edit.groups.notifications.genericError" +
+                                ".description"),
+                            level: AlertLevels.ERROR,
+                            message: t("roles:edit.groups.notifications.genericError.message")
+                        })
+                    );
+                }
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+                setShowAddNewUserModal(false);
+            });
+    };
 
     /**
-     * Handles updating the assigned users for the role.
+     * Unassigns users from the role.
+     *
+     * @param user - user to be unassigned.
      */
-    const handleUsersUpdate: () => void = () => {
-        setIsSubmitting(true);
-
-        updateSelectedAllUsers();
-
-        const bulkData: PatchBulkUserDataInterface = {
-            Operations: [],
-            failOnErrors: 1,
-            schemas: [ Schemas.BULK_REQUEST ]
-        };
-
-        const operation: PatchUserOpInterface = {
-            data: {
-                "Operations": []
-            },
-            method: "PATCH",
-            path: "/v2/Roles/" + role.id
-        };
-
-        const selectedUsers: UserBasicInterface[] = Object.keys(selectedAllUsers).map((userStoreName: string) => {
-            return selectedAllUsers[userStoreName];
-        }).flat();
-
-        // Formatting unassigned users list.
-        const removedUsers: RolesMemberInterface[] = role?.users?.filter((user: RolesMemberInterface) => {
-            return selectedUsers?.find(
-                (selectedUser: UserBasicInterface) => selectedUser.id === user.value) === undefined;
-        }).filter((user: RolesMemberInterface) => {
-            const userNameChunks: string[] = user.display.split("/");
-
-            return (userNameChunks.length === 1 &&
-                StringUtils.isEqualCaseInsensitive(selectedUserStoreDomainName, primaryUserStoreDomainName))
-            || (userNameChunks.length === 2 &&
-                StringUtils.isEqualCaseInsensitive(userNameChunks[0], selectedUserStoreDomainName));
-        }) ?? [];
-
-
-
-        const removeOperations: PatchUserRemoveOpInterface[] = removedUsers?.map((user: RolesMemberInterface) => {
-            return ({
+    const unassignUserFromRole = (user: UserBasicInterface): void => {
+        const roleData: PatchRoleDataInterface = {
+            Operations: [ {
                 "op": "remove",
-                "path": `users[value eq ${ user.value }]`
-            });
-        } );
+                "path": `users[value eq ${ user.id }]`
+            } ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        };
 
-        operation.data.Operations.push(...removeOperations);
-
-        // Formatting newly assigned users list.
-        const addedUsers: UserBasicInterface[] = selectedUsers?.filter((user: UserBasicInterface) => {
-            return role?.users?.find(
-                (selectedUser: RolesMemberInterface) => selectedUser.value === user.id) === undefined;
-        }) ?? [];
-
-        const addOperations: PatchUserAddOpInterface[] = addedUsers?.map((user: UserBasicInterface) => {
-            return ({
-                "op": "add",
-                "value": {
-                    "users": [ {
-                        "value": user.id
-                    } ]
-                }
-            });
-        } );
-
-        operation.data.Operations.push(...addOperations);
-
-        bulkData.Operations.push(operation);
-
-        updateResources(bulkData)
+        setIsSubmitting(true);
+        updateRoleDetails(role.id, roleData)
             .then(() => {
                 dispatch(
                     addAlert({
@@ -391,156 +324,262 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             });
     };
 
-    // TODO: need to add the details of the managed by to the users list
-    return (
-        <EmphasizedSegment padded="very" className="edit-role users">
-            <Heading as="h4">
-                { t("roles:edit.users.heading") }
-            </Heading>
-            <Heading subHeading ellipsis as="h6">
-                { t("roles:edit.users.subHeading") }
-            </Heading>
+    const handleOpenAddNewUserModal = () => {
+        setShowAddNewUserModal(true);
+    };
+
+    const handleCloseAddNewUserModal = () => {
+        setShowAddNewUserModal(false);
+    };
+
+    const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
+        const offsetValue: number = (data.activePage as number - 1) * listItemLimit;
+
+        setListOffset(offsetValue);
+    };
+
+    const handleItemsPerPageDropdownChange = (
+        event: React.MouseEvent<HTMLAnchorElement>,
+        data: DropdownProps
+    ): void => {
+        setListItemLimit(data.value as number);
+    };
+
+    /**
+     * Handles the `onFilter` callback action from the
+     * users search component.
+     *
+     * @param query - Search query.
+     */
+    const handleUserFilter = (query: string): void => {
+        setSearchQuery(query);
+        setListOffset(0);
+    };
+
+    const handleSearchQueryClear = (): void => {
+        setTriggerClearQuery(!triggerClearQuery);
+        setSearchQuery(null);
+    };
+
+    const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+        setListOffset(0);
+        setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+        setSelectedUserStoreDomainName(
+            data.value as string
+        );
+    };
+
+    /**
+     * Shows list placeholders.
+     *
+     * @returns Placeholders.
+     */
+    const showPlaceholders = (): ReactElement => {
+        if (searchQuery) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ handleSearchQueryClear }>
+                            { t("users:usersList.search.emptyResultPlaceholder.clearButton") }
+                        </LinkButton>
+                    ) }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
+                    imageSize="tiny"
+                    title={ t("users:usersList.search.emptyResultPlaceholder.title") }
+                    subtitle={ [
+                        t("users:usersList.search.emptyResultPlaceholder.subTitle.0",
+                            { query: searchQuery }),
+                        t("users:usersList.search.emptyResultPlaceholder.subTitle.1")
+                    ] }
+                />
+            );
+        }
+
+        if (paginatedUsers.length === 0) {
+            return (
+                <EmptyPlaceholder
+                    title={ t("roles:edit.users.list." +
+                        "emptyPlaceholder.title") }
+                    subtitle={ [
+                        t("roles:edit.users.list." +
+                            "emptyPlaceholder.subtitles", { type: "role" })
+                    ] }
+                    image={ getEmptyPlaceholderIllustrations().emptyList }
+                    imageSize="tiny"
+                />
+            );
+        }
+
+        return null;
+    };
+
+    /**
+     * Resolves data table columns.
+     *
+     * @returns the data table columns.
+     */
+    const resolveTableColumns = (): TableColumnInterface[] => {
+        const defaultColumns: TableColumnInterface[] = [
             {
-                isPlaceholderVisible
-                    ? getPlaceholders()
-                    : (
-                        <>
-                            {
-                                users && availableUserStores && !isReadOnly && (
-                                    <Grid container spacing={ 1 }>
-                                        { !activeUserStore && (
-                                            <Grid xs={ 12 } sm={ 4 } md={ 2 } alignItems="center">
-                                                <FormControl fullWidth size="medium">
-                                                    <Select
-                                                        value={ selectedUserStoreDomainName }
-                                                        onChange={
-                                                            (e: SelectChangeEvent<unknown>) => {
-                                                                updateSelectedAllUsers();
-                                                                setSelectedUsersFromUserStore([]);
-                                                                setSelectedUserStoreDomainName(
-                                                                    e.target.value as string
-                                                                );
-                                                            }
-                                                        }
-                                                        data-componentid={
-                                                            `${ componentId }-user-store-domain-dropdown`
-                                                        }
-                                                    >
-                                                        { isUserStoresLoading
-                                                            ? <p>{ t("common:loading") }</p>
-                                                            : availableUserStores?.map(
-                                                                (userstore: UserStoreDropdownItem) =>
-                                                                    (<MenuItem
-                                                                        key={ userstore.key }
-                                                                        value={ userstore.value }
-                                                                    >
-                                                                        { userstore.text }
-                                                                    </MenuItem>)
-                                                            )
-                                                        }
-                                                    </Select>
-                                                </FormControl>
-                                            </Grid>
-                                        ) }
-                                        <Grid xs={ 12 } sm={ 4 } md={ 8 }>
-                                            <Autocomplete
-                                                multiple
-                                                disableCloseOnSelect
-                                                loading={ isUserListFetchRequestLoading || isUserSearchLoading }
-                                                options={ users }
-                                                value={ selectedUsersFromUserStore }
-                                                data-componentid={ `${ componentId }-user-search-text-input` }
-                                                getOptionLabel={
-                                                    (user: UserBasicInterface) =>
-                                                        RoleManagementUtils.getUserUsername(user)
-                                                }
-                                                renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                    <TextField
-                                                        { ...params }
-                                                        placeholder= {
-                                                            t("roles:edit.users" +
-                                                                                  ".actions.assign.placeholder") }
-                                                    />
-                                                ) }
-                                                onChange={ (event: SyntheticEvent, users: UserBasicInterface[]) => {
-                                                    setSelectedUsersFromUserStore(users);
-                                                } }
-                                                filterOptions={ (users: UserBasicInterface[]) => users }
-                                                onInputChange={
-                                                    (_event: SyntheticEvent, searchTerm: string) => {
-                                                        setUserSearchLoading(true);
-                                                        searchUsers(searchTerm);
-                                                    }
-                                                }
-                                                isOptionEqualToValue={
-                                                    (option: UserBasicInterface, value: UserBasicInterface) =>
-                                                        option.id === value.id
-                                                }
-                                                renderTags={ (
-                                                    value: UserBasicInterface[],
-                                                    getTagProps: AutocompleteRenderGetTagProps
-                                                ) => value.map((option: UserBasicInterface, index: number) => (
-                                                    <RenderChip
-                                                        { ...getTagProps({ index }) }
-                                                        key={ index }
-                                                        primaryText={ RoleManagementUtils.getUserUsername(option) }
-                                                        userStore={
-                                                            RoleManagementUtils.getUserStore(option.userName)
-                                                        }
-                                                        option={ option }
-                                                        activeOption={ activeOption }
-                                                        setActiveOption={ setActiveOption }
-                                                        variant="filled"
-                                                    />
-                                                )) }
-                                                renderOption={ (
-                                                    props: HTMLAttributes<HTMLLIElement>,
-                                                    option: UserBasicInterface,
-                                                    { selected }: { selected: boolean }
-                                                ) => (
-                                                    <AutoCompleteRenderOption
-                                                        selected={ selected }
-                                                        subTitle={ RoleManagementUtils.getUserUsername(option) }
-                                                        displayName={
-                                                            RoleManagementUtils.getNameToDisplayOfUser(option)
-                                                        }
-                                                        userstore={
-                                                            RoleManagementUtils.getUserStore(option.userName)
-                                                        }
-                                                        renderOptionProps={ props }
-                                                    />
-                                                ) }
-                                            />
+                allowToggleVisibility: false,
+                dataIndex: "name",
+                id: "name",
+                key: "name",
+                render: (user: UserBasicInterface): ReactNode => {
+                    const header: string = getUserNameWithoutDomain(user?.userName);
 
-                                        </Grid>
-                                    </Grid>
-                                )
-                            }
+                    return (
+                        <Header
+                            image
+                            as="h6"
+                            className="header-with-icon"
+                            data-componentid={ `${ componentId }-list-item-heading` }
+                        >
+                            <UserAvatar
+                                data-componentid={ `${ componentId }-list-item-image` }
+                                name={ UserManagementUtils.resolveAvatarUsername(user) }
+                                size="mini"
+                                image={ user.profileUrl }
+                                spaced="right"
+                                data-suppress=""
+                            />
+                            <Header.Content>
+                                <div>
+                                    { header as ReactNode }
+                                </div>
+                            </Header.Content>
+                        </Header>
+                    );
+                },
+                title: "User"
+            }
+        ];
 
-                            {
-                                !isReadOnly
-                                    ? (
-                                        <Button
-                                            className="role-assigned-button"
-                                            variant="contained"
-                                            loading={ isSubmitting }
-                                            onClick={ handleUsersUpdate }
-                                            data-componentid={ `${ componentId }-update-role-users-button` }
-                                        >
-                                            { t("common:update") }
-                                        </Button>
-                                    ) : null
-                            }
-                        </>
-                    )
+        defaultColumns.push(
+            {
+                allowToggleVisibility: false,
+                dataIndex: "action",
+                id: "actions",
+                key: "actions",
+                textAlign: "right",
+                title: ""
+            }
+        );
+
+        return defaultColumns;
+    };
+
+    /**
+     * Resolves data table actions.
+     *
+     * @returns Table actions.
+     */
+    const resolveTableActions = (): TableActionsInterface[] => {
+        const actions: TableActionsInterface[] = [
+            {
+                "data-componentid": `${ componentId }-list-item-delete-button`,
+                hidden: (): boolean => isReadOnly,
+                icon: (): SemanticICONS =>  "trash alternate",
+                onClick: (e: SyntheticEvent, user: UserBasicInterface): void =>
+                    unassignUserFromRole(user),
+                popupText: (): string => t("common:delete"),
+                renderer: "semantic-icon"
+            }
+        ];
+
+        return actions;
+    };
+
+    const advancedSearchFilter = (): ReactElement => (
+        <AdvancedSearchWithBasicFilters
+            data-componentid={ `${ componentId }-list-advanced-search` }
+            onFilter={ (query: string) => handleUserFilter(query?.trim()) }
+            disableSearchFilterDropdown
+            filterAttributeOptions={ [] }
+            placeholder={ t("console:manage.features.groups.advancedSearch.placeholder") }
+            defaultSearchAttribute=""
+            defaultSearchOperator=""
+            triggerClearQuery={ triggerClearQuery }
+            disableSearchAndFilterOptions={ selectedUsersFromUserStore?.length === 0 }
+        />
+    );
+
+    return (
+        <EmphasizedSegment padded="very" className="list-role-users-section">
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+                <div>
+                    <Heading as="h4">
+                        { t("roles:edit.users.heading") }
+                    </Heading>
+                    <Heading subHeading ellipsis as="h6">
+                        { t("roles:edit.users.subHeading") }
+                    </Heading>
+                </div>
+                { !isReadOnly && (
+                    <PrimaryButton
+                        data-componentid={
+                            `${ componentId }-list-edit-button`
+                        }
+                        onClick={ handleOpenAddNewUserModal }
+                    >
+                        <Icon name="plus"/>
+                        { t("console:manage.features.roles.edit.users.list." +
+                            "emptyPlaceholder.action") }
+                    </PrimaryButton>
+                ) }
+            </Box>
+            <Divider hidden/>
+            <ListLayout
+                advancedSearch={ advancedSearchFilter() }
+                currentListSize={ role?.users?.length }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                data-componentid={ `${ componentId }-list-layout` }
+                onPageChange={ handlePaginationChange }
+                showPagination={ true }
+                totalPages={ Math.ceil(selectedUsersFromUserStore?.length / listItemLimit) }
+                totalListSize={ selectedUsersFromUserStore?.length }
+                isLoading={ isUserStoresLoading || isSubmitting }
+                showPaginationPageLimit={ !isReadOnly }
+                rightActionPanel={ (
+                    <Dropdown
+                        data-componentid={ `${ componentId }-list-usertore-dropdown` }
+                        selection
+                        options={ availableUserStores }
+                        placeholder={ t("console:manage.features.groups.list.storeOptions") }
+                        onChange={ handleDomainChange }
+                        defaultValue={ userstoresConfig.primaryUserstoreName }
+                    />
+                ) }
+            >
+                <DataTable<UserBasicInterface>
+                    isLoading={ isUserStoresLoading }
+                    loadingStateOptions={ {
+                        count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                        imageType: "circular"
+                    } }
+                    actions={ resolveTableActions() }
+                    columns={ resolveTableColumns() }
+                    data={ paginatedUsers }
+                    onRowClick={ () =>  null }
+                    placeholders={ showPlaceholders() }
+                    selectable={ false }
+                    showHeader={ true }
+                    transparent={ true }
+                />
+            </ListLayout>
+            {
+                showAddNewUserModal && (
+                    <AddRoleUserModal
+                        data-componentid={ `${ componentId }-add-user-modal ` }
+                        showAddNewUserModal={ showAddNewUserModal }
+                        handleAddUserSubmit={ assignUsersToRole }
+                        handleCloseAddNewUserModal={ handleCloseAddNewUserModal }
+                        role={ role }
+                        userstore={ selectedUserStoreDomainName }
+                    />
+                )
             }
         </EmphasizedSegment>
     );
-};
-
-/**
- * Default props for application roles tab component.
- */
-RoleUsersList.defaultProps = {
-    "data-componentid": "edit-role-users"
 };

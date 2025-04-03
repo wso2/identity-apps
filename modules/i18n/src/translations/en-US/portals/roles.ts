@@ -148,14 +148,14 @@ export const roles: rolesNS = {
         },
         users: {
             assignUserModal: {
-                heading: "Manage Users",
+                heading: "Assign Users",
                 hint: "Select users to add them to the user group.",
                 list: {
                     listHeader: "Name",
-                    searchPlaceholder: "Search users",
-                    searchByEmailPlaceholder: "Search users by email address"
+                    searchByEmailPlaceholder: "Search users by email address",
+                    searchPlaceholder: "Search users"
                 },
-                subHeading: "Add new users or remove existing users assigned to the {{type}}."
+                subHeading: "Assign new users to the {{type}}."
             }
         },
         wizardSteps: {
@@ -311,6 +311,7 @@ export const roles: rolesNS = {
                     },
                     title: "No users assigned to the role."
                 },
+                emptySearchResult: "We couldn't find any results. Please try a different search term.",
                 errorPlaceholder: {
                     action: "Refresh",
                     subtitles: {

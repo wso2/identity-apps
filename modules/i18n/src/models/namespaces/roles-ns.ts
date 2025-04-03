@@ -286,6 +286,7 @@ export interface rolesNS {
                         0: string;
                     };
                 };
+                emptySearchResult: string;
                 errorPlaceholder: {
                     action: string;
                     title: string;
