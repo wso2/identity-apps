@@ -27,7 +27,7 @@ export interface DangerZoneGroupProps extends TestableComponentInterface, Identi
     /**
      * Danger zone section heading.
      */
-    sectionHeader: string;
+    sectionHeader?: string;
     /**
      * Danger zone style class name.
      */

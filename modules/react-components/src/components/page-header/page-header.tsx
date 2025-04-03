@@ -303,7 +303,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                     } }
                 >
                     <Box className="heading-wrapper">{ headingContent }</Box>
-                    <Box className="action-wrapper">{ action }</Box>
+                    <Box className="action-wrapper">{ "Mad" }</Box>
                 </Box>
             );
         }

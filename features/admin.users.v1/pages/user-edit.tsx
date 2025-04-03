@@ -472,6 +472,11 @@ const UserEditPage = (): ReactElement => {
                     onClick: handleBackButtonClick,
                     text: getBackButtonText()
                 } }
+                action={ (
+                    <Button variant="outlined" onClick={ () => console.log("sanks") }>
+                        { t("console:common.placeholders.brokenPage.action") }
+                    </Button>
+                ) }
                 titleTextAlign="left"
                 bottomMargin={ false }
             >

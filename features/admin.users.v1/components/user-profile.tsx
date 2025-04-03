@@ -687,8 +687,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     }, [ isAuthenticatedUserFetchRequestLoading ]);
 
     useEffect(() => {
-        if (impersonation_artifacts != undefined && impersonation_artifacts != null) {
+        console.log("impersonation_artifacts", impersonation_artifacts);
 
+        if (impersonation_artifacts != undefined && impersonation_artifacts != null) {
             const id_token: any = new URLSearchParams(impersonation_artifacts)
                 .get(UserManagementConstants.ID_TOKEN);
             const subject_token: any = new URLSearchParams(impersonation_artifacts)
@@ -704,6 +705,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const handleInitImpersonateIframeMessage = (event: CompositionEvent) => {
         if (event.data === "impersonation-authorize-request-complete") {
             impersonation_artifacts = sessionStorage.getItem("impersonation_artifacts").substring(1);
+            if (impersonation_artifacts != undefined) {
+                sessionStorage.removeItem("impersonation_artifacts");
+            }
             const id_token: any = new URLSearchParams(impersonation_artifacts).get("id_token");
             const subject_token: any = new URLSearchParams(impersonation_artifacts).get("subject_token");
 
@@ -727,7 +731,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             const formData: any = {
                 actor_token: idToken,
                 actor_token_type: "urn:ietf:params:oauth:token-type:id_token",
-                client_id: "Pfao0gjJ07be0gf29PzEcLFKmUIa",
+                client_id: accountAppClientID,
                 code_verifier: codeVerifier,
                 grant_type: ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
                 requested_token_type: "urn:ietf:params:oauth:token-type:access_token",
@@ -744,7 +748,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
                 method: "post",
-                shouldAttachIDPAccessToken: false,
                 shouldEncodeToFormData: false,
                 url: sessionStorage.getItem("token_endpoint")
             };
@@ -757,9 +760,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         setSubjectToken(undefined);
                         setCodeChallenge(undefined);
                         setCodeVerifier(undefined);
-                        if (sessionStorage.getItem("impersonation_artifacts") != undefined) {
-                            sessionStorage.removeItem("impersonation_artifacts");
-                        }
                         dispatch(addAlert({
                             description: t(
                                 "users:notifications.impersonateUser.success.description"
@@ -774,9 +774,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 })
                 .catch(() => {
                     setImpersonationInProgress(false);
-                    if (sessionStorage.getItem("impersonation_artifacts") != undefined) {
-                        sessionStorage.removeItem("impersonation_artifacts");
-                    }
                     dispatch(addAlert({
                         description: t(
                             "users:notifications.impersonateUser.error.description"
@@ -796,7 +793,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const handleUserImpersonation = async (): Promise<void> => {
 
         const codeVerifier: string = UserManagementUtils.generateCodeVerifier();
-        const codeChallenge: string = await UserManagementUtils.sha256(codeVerifier);
+        const codeChallenge: string = await UserManagementUtils.getCodeChallangeForTheVerifier(codeVerifier);
 
         setCodeVerifier(codeVerifier);
         setCodeChallenge(codeChallenge);

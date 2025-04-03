@@ -94,7 +94,7 @@ export const user: userNS = {
             impersonateUserZone: {
                 actionTitle: "Impersonate User",
                 header: "Impersonate User",
-                subheader: "Once Started impersonating the user, you will no longer be able to login with your identity until you terminated the session."
+                subheader: "Once Started impersonating a user, the initiator no longer be able to login with their identity until they terminate the existing session."
             }
         }
     },
