@@ -279,6 +279,7 @@ export interface rolesNS {
             heading: string;
             subHeading: string;
             placeholders: {
+                beginSearch: string
                 emptyPlaceholder: {
                     action: string;
                     title: string;

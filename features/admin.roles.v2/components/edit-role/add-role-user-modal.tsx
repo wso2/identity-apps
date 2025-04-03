@@ -21,6 +21,7 @@ import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { useUsersList } from "@wso2is/admin.users.v1/api";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
+import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -39,7 +40,7 @@ import React, { FormEvent, FunctionComponent, ReactElement, useCallback, useEffe
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Grid, Modal } from "semantic-ui-react";
+import { Dropdown, DropdownProps, Grid, GridColumn, Modal } from "semantic-ui-react";
 
 /**
  * Proptypes for the group users list component.
@@ -50,6 +51,7 @@ interface AddRoleUserModalProps extends IdentifiableComponentInterface {
     handleCloseAddNewUserModal: () => void;
     showAddNewUserModal: boolean;
     userstore: string;
+    availableUserStores: UserStoreDropdownItem[];
 }
 
 export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
@@ -57,6 +59,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
 ): ReactElement => {
 
     const {
+        availableUserStores,
         [ "data-componentid" ]: componentId = "edit-role-users-add-user-modal",
         handleAddUserSubmit,
         handleCloseAddNewUserModal,
@@ -76,6 +79,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
     const [ userList, setUserList ] = useState<UserBasicInterface[]>([]);
     const [ selectedUsers, setSelectedUsers ] = useState<UserBasicInterface[]>([]);
     const [ searchQuery, setSearchQuery ] = useState<string>(null);
+    const [ selectedUserstore, setSelectedUserStore ] = useState<string>(userstore);
 
     /**
      * Fetch the user list.
@@ -90,7 +94,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
         0,
         searchQuery,
         null,
-        userstore,
+        selectedUserstore,
         null
     );
 
@@ -231,63 +235,90 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                     }
                 </Heading>
             </Modal.Header>
-            <Modal.Content image>
-                { alert && alertComponent }
-                <TransferComponent
-                    compact
-                    basic
-                    bordered
-                    className="one-column-selection"
-                    selectionComponent
-                    searchPlaceholder={ t("groups:edit.users.searchUsers") }
-                    isLoading={ isUserListFetchRequestLoading || isUserListFetchRequestValidating }
-                    handleHeaderCheckboxChange={ () => selectAllAssignedList() }
-                    isHeaderCheckboxChecked={ isSelectAllUsers }
-                    handleUnelectedListSearch={ (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
-                        handleSearchFieldChange(e, value);
-                    } }
-                    showSelectAllCheckbox={ !isUserListFetchRequestLoading && userList.length > 0 }
-                    data-componentid={ `${ componentId }-transfer-component` }
-                >
-                    <TransferList
+            <Modal.Content>
+                <Grid>
+                    { alert && alertComponent }
+                    <TransferComponent
+                        compact
+                        basic
+                        bordered
+                        className="one-column-selection"
                         selectionComponent
-                        isListEmpty={ isEmpty(userList) || userList.length <= 0 }
+                        searchPlaceholder={ t("groups:edit.users.searchUsers") }
                         isLoading={ isUserListFetchRequestLoading || isUserListFetchRequestValidating }
-                        listType="unselected"
-                        selectAllCheckboxLabel={ t("groups:edit.users.selectAllUsers") }
-                        data-componentid={ `${ componentId }-unselected-transfer-list` }
-                        emptyPlaceholderContent={ t("roles:edit.users.placeholders.emptySearchResult") }
-                        emptyPlaceholderDefaultContent={ t("transferList:list."
-                            + "emptyPlaceholders.default") }
-                    >
-                        {
-                            userList?.map((user: UserBasicInterface, index: number) => {
-                                const resolvedGivenName: string = UserManagementUtils.resolveUserListSubheader(user);
-                                const resolvedUsername: string = getUserNameWithoutDomain(user?.userName);
-
-                                return (
-                                    <TransferListItem
-                                        handleItemChange={ () => handleItemCheckboxChange(user) }
-                                        key={ index }
-                                        listItem={ resolvedGivenName ?? resolvedUsername }
-                                        listItemId={ user.id }
-                                        listItemIndex={ index }
-                                        isItemChecked={
-                                            selectedUsers?.findIndex((selectedUser: UserBasicInterface) =>
-                                                selectedUser.id === user.id) !== -1
+                        handleHeaderCheckboxChange={ () => selectAllAssignedList() }
+                        isHeaderCheckboxChecked={ isSelectAllUsers }
+                        handleUnelectedListSearch={ (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
+                            handleSearchFieldChange(e, value);
+                        } }
+                        showSelectAllCheckbox={ !isUserListFetchRequestLoading && userList.length > 0 }
+                        data-componentid={ `${ componentId }-transfer-component` }
+                        leftActionPanel={ (
+                            <GridColumn width={ 1 }>
+                                <Dropdown
+                                    fluid
+                                    selection
+                                    labeled
+                                    options={ availableUserStores }
+                                    data-testid="user-mgt-add-user-form-userstore-dropdown"
+                                    name="userstore"
+                                    disabled={ false }
+                                    value={ selectedUserstore }
+                                    onChange={
+                                        (e: React.ChangeEvent<HTMLInputElement>, data: DropdownProps) => {
+                                            setSelectedUserStore(data.value as string);
                                         }
-                                        showSecondaryActions={ false }
-                                        showListSubItem={ true }
-                                        listSubItem={ resolvedGivenName && (
-                                            <Code compact withBackground={ false }>{ resolvedUsername }</Code>
-                                        ) }
-                                        data-componentid={ `${ componentId }-unselected-transfer-list-item-${ index }` }
-                                    />
-                                );
-                            })
-                        }
-                    </TransferList>
-                </TransferComponent>
+                                    }
+                                    tabIndex={ 1 }
+                                    maxLength={ 60 }
+                                />
+                            </GridColumn>
+                        ) }
+                    >
+                        <TransferList
+                            selectionComponent
+                            isListEmpty={ isEmpty(userList) || userList.length <= 0 }
+                            isLoading={ isUserListFetchRequestLoading || isUserListFetchRequestValidating }
+                            listType="unselected"
+                            selectAllCheckboxLabel={ t("groups:edit.users.selectAllUsers") }
+                            data-componentid={ `${ componentId }-unselected-transfer-list` }
+                            emptyPlaceholderContent={ isEmpty(searchQuery)
+                                ? t("roles:edit.users.placeholders.beginSearch")
+                                : t("roles:edit.users.placeholders.emptySearchResult") }
+                            emptyPlaceholderDefaultContent={ t("transferList:list."
+                                + "emptyPlaceholders.default") }
+                        >
+                            {
+                                userList?.map((user: UserBasicInterface, index: number) => {
+                                    const resolvedGivenName: string =
+                                        UserManagementUtils.resolveUserListSubheader(user);
+                                    const resolvedUsername: string = getUserNameWithoutDomain(user?.userName);
+
+                                    return (
+                                        <TransferListItem
+                                            handleItemChange={ () => handleItemCheckboxChange(user) }
+                                            key={ index }
+                                            listItem={ resolvedGivenName ?? resolvedUsername }
+                                            listItemId={ user.id }
+                                            listItemIndex={ index }
+                                            isItemChecked={
+                                                selectedUsers?.findIndex((selectedUser: UserBasicInterface) =>
+                                                    selectedUser.id === user.id) !== -1
+                                            }
+                                            showSecondaryActions={ false }
+                                            showListSubItem={ true }
+                                            listSubItem={ resolvedGivenName && (
+                                                <Code compact withBackground={ false }>{ resolvedUsername }</Code>
+                                            ) }
+                                            data-componentid={
+                                                `${ componentId }-unselected-transfer-list-item-${ index }` }
+                                        />
+                                    );
+                                })
+                            }
+                        </TransferList>
+                    </TransferComponent>
+                </Grid>
             </Modal.Content>
             <Modal.Actions>
                 <Grid>

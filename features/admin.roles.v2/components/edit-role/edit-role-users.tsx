@@ -577,6 +577,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         handleCloseAddNewUserModal={ handleCloseAddNewUserModal }
                         role={ role }
                         userstore={ selectedUserStoreDomainName }
+                        availableUserStores={ availableUserStores }
                     />
                 )
             }

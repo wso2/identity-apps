@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,6 +25,7 @@ import { rolesNS } from "../../../models";
 
 export const roles: rolesNS = {
     addRoleWizard: {
+        back: "Go back",
         buttons: {
             finish: "Finish",
             next: "Next",
@@ -32,6 +33,20 @@ export const roles: rolesNS = {
         },
         forms: {
             roleBasicDetails: {
+                assignedApplication: {
+                    applicationSubTitle: {
+                        application: "Support application-scoped roles.",
+                        changeAudience: "Change the audience",
+                        organization: "Support organization-scoped role. "
+                    },
+                    hint: "Assign an application for the role. Note that assigned application for this role cannot be edited after the role is created.",
+                    label: "Assigned application",
+                    note: "Note that assigned application for this role cannot be edited after the role is created.",
+                    placeholder: "Select application to assign the role",
+                    validations: {
+                        empty: "Assigned application is required to create an application-scoped role."
+                    }
+                },
                 domain: {
                     label: {
                         group: "User Store",
@@ -45,6 +60,23 @@ export const roles: rolesNS = {
                         }
                     }
                 },
+                notes: {
+                    appNote: "When the role audience is application, you can associate the role with an application which allows application audience roles.",
+                    cannotCreateRole: "You cannot create a role with role audience as application because there are currently no applications that support application audience roles. Please <1>create an application</1> that supports application audience roles to proceed.",
+                    orgNote: "When the role audience is organization, you can associate the role with an application which allows organization audience roles.",
+                    subOrganization: {
+                        appNote: "When the role audience is application, you can associate the role with an application which allows application audience roles. You cannot associate the role with a shared application.",
+                        orgNote: "When the role audience is organization, you can associate the role with an application which allows organization audience roles. You cannot associate the role with a shared application."
+                    }
+                },
+                roleAudience: {
+                    hint: "Set the audience of the role. <1>Note that audience of the role cannot be changed.</1>",
+                    label: "Select the role audience",
+                    values: {
+                        application: "Application",
+                        organization: "Organization"
+                    }
+                },
                 roleName: {
                     hint: "A name for the {{type}}.",
                     label: "{{type}} Name",
@@ -56,59 +88,15 @@ export const roles: rolesNS = {
                         invalid: "A {{type}} name can only contain alphanumeric characters, -, and _. "
                             + "And must be of length between 3 to 30 characters."
                     }
-                },
-                roleAudience: {
-                    hint: "Set the audience of the role. <1>Note that audience of the role cannot be changed.</1>",
-                    label: "Select the role audience",
-                    values: {
-                        organization: "Organization",
-                        application: "Application"
-                    }
-                },
-                notes: {
-                    appNote: "When the role audience is application, you can associate the role with an application which allows application audience roles.",
-                    cannotCreateRole: "You cannot create a role with role audience as application because there are currently no applications that support application audience roles. Please <1>create an application</1> that supports application audience roles to proceed.",
-                    orgNote: "When the role audience is organization, you can associate the role with an application which allows organization audience roles.",
-                    subOrganization: {
-                        appNote: "When the role audience is application, you can associate the role with an application which allows application audience roles. You cannot associate the role with a shared application.",
-                        orgNote: "When the role audience is organization, you can associate the role with an application which allows organization audience roles. You cannot associate the role with a shared application."
-                    }
-                },
-                assignedApplication: {
-                    hint: "Assign an application for the role. Note that assigned application for this role cannot be edited after the role is created.",
-                    label: "Assigned application",
-                    placeholder: "Select application to assign the role",
-                    applicationSubTitle: {
-                        application: "Support application-scoped roles.",
-                        organization: "Support organization-scoped role. ",
-                        changeAudience: "Change the audience"
-                    },
-                    validations: {
-                        empty: "Assigned application is required to create an application-scoped role."
-                    },
-                    note: "Note that assigned application for this role cannot be edited after the role is created."
                 }
             },
             rolePermission: {
                 apiResource: {
-                    label: "Select API Resource",
-                    placeholder: "Select an API resource to assign permissions(scopes)",
                     hint: {
                         empty: "There are no API resources authorized for the selected application. API Resources can be authorized through <1>here</1>."
-                    }
-                },
-                permissions: {
-                    label: "Select permissions(scopes) from the selected API resources",
-                    placeholder: "Select permissions(scopes)",
-                    tooltips: {
-                        noScopes: "No scopes available for the selected API resource",
-                        selectAllScopes: "Select all permissions(scopes)",
-                        removeAPIResource: "Remove API resource"
                     },
-                    validation: {
-                        empty: "Permissions(scopes) list cannot be empty. Select at least one permission(scope)."
-                    },
-                    permissionsLabel: "Permissions (scopes)"
+                    label: "Select API Resource",
+                    placeholder: "Select an API resource to assign permissions(scopes)"
                 },
                 notes: {
                     applicationRoles: "Only the APIs and the permissions(scopes) that are authorized in the selected application(<1>{{applicationName}}</1>) will be listed to select."
@@ -119,6 +107,19 @@ export const roles: rolesNS = {
                             description: "Something went wrong while fetching API resources. Please try again.",
                             message: "Something went wrong"
                         }
+                    }
+                },
+                permissions: {
+                    label: "Select permissions(scopes) from the selected API resources",
+                    permissionsLabel: "Permissions (scopes)",
+                    placeholder: "Select permissions(scopes)",
+                    tooltips: {
+                        noScopes: "No scopes available for the selected API resource",
+                        removeAPIResource: "Remove API resource",
+                        selectAllScopes: "Select all permissions(scopes)"
+                    },
+                    validation: {
+                        empty: "Permissions(scopes) list cannot be empty. Select at least one permission(scope)."
                     }
                 }
             }
@@ -132,7 +133,6 @@ export const roles: rolesNS = {
             }
         },
         subHeading: "Create a new {{type}} in the system.",
-        back: "Go back",
         summary: {
             labels: {
                 domain: {
@@ -184,16 +184,6 @@ export const roles: rolesNS = {
         placeholder: "Search by role name"
     },
     edit: {
-        placeholders: {
-            errorPlaceHolder: {
-                action: "Go back",
-                subtitles: {
-                    0: "An error occurred while retrieving the requested role, possibly because the role does not exist.",
-                    1: "Please try again."
-                },
-                title: "Something went wrong"
-            }
-        },
         basics: {
             buttons: {
                 update: "Update"
@@ -222,9 +212,42 @@ export const roles: rolesNS = {
             }
         },
         groups: {
+            actions: {
+                assign: {
+                    placeholder: "Assign groups"
+                },
+                remove: {
+                    label: "Removing groups",
+                    placeholder: "Restore groups"
+                },
+                search: {
+                    placeholder: "Search groups"
+                }
+            },
             addGroupsModal: {
                 heading: "Update Role Groups",
                 subHeading: "Add new groups or remove existing groups assigned to the role."
+            },
+            externalGroupsHeading: "External Groups",
+            heading: "Assigned Groups",
+            localGroupsHeading: "Local Groups",
+            notifications: {
+                error: {
+                    description: "{{description}}",
+                    message: "Error occurred while updating the groups assigned to the role."
+                },
+                fetchError: {
+                    description: "We were unable to fetch the groups assigned to the role.",
+                    message: "Something went wrong"
+                },
+                genericError: {
+                    description: "We were unable to update the groups assigned to the role.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "The groups assigned to the role have been successfully updated.",
+                    message: "Role updated successfully"
+                }
             },
             placeholders: {
                 emptyPlaceholder: {
@@ -243,41 +266,9 @@ export const roles: rolesNS = {
                     title: "Something went wrong"
                 }
             },
-            notifications: {
-                error: {
-                    description: "{{description}}",
-                    message: "Error occurred while updating the groups assigned to the role."
-                },
-                success: {
-                    message: "Role updated successfully",
-                    description: "The groups assigned to the role have been successfully updated."
-                },
-                genericError: {
-                    message: "Something went wrong",
-                    description: "We were unable to update the groups assigned to the role."
-                },
-                fetchError: {
-                    message: "Something went wrong",
-                    description: "We were unable to fetch the groups assigned to the role."
-                }
-            },
-            externalGroupsHeading: "External Groups",
-            heading: "Assigned Groups",
-            localGroupsHeading: "Local Groups",
             subHeading: "Add or remove the groups assigned to this role. Note that this "
-                + "will affect performing certain tasks.",
-            actions: {
-                search: {
-                    placeholder: "Search groups"
-                },
-                assign: {
-                    placeholder: "Assign groups"
-                },
-                remove: {
-                    label: "Removing groups",
-                    placeholder: "Restore groups"
-                }
-            }
+                + "will affect performing certain tasks."
+
 
         },
         menuItems: {
@@ -288,22 +279,65 @@ export const roles: rolesNS = {
             roles: "Roles",
             users: "Users"
         },
-        users: {
-            heading: "Assigned Users",
-            subHeading: "Add or remove the users assigned to this role. Note that this will affect performing certain tasks.",
-            actions: {
-                search: {
-                    placeholder: "Search users"
+        permissions: {
+            heading: "Assigned Permissions",
+            readOnlySubHeading: "View the assigned permissions of the role.",
+            removedPermissions: "Removed Permissions",
+            subHeading: "Manage assigned permissions in the role."
+        },
+        placeholders: {
+            errorPlaceHolder: {
+                action: "Go back",
+                subtitles: {
+                    0: "An error occurred while retrieving the requested role, possibly because the role does not exist.",
+                    1: "Please try again."
                 },
+                title: "Something went wrong"
+            }
+        },
+        users: {
+            actions: {
                 assign: {
                     placeholder: "Type username/s to search and assign users"
                 },
                 remove: {
                     label: "Removing users",
                     placeholder: "Restore users"
+                },
+                search: {
+                    placeholder: "Search users"
+                }
+            },
+            heading: "Assigned Users",
+            list: {
+                emptyPlaceholder: {
+                    action: "Assign User",
+                    subtitles: "There are no users assigned to the {{type}} at the moment.",
+                    title: "No Users Assigned"
+                },
+                organization: "Managed By",
+                user: "User"
+            },
+            notifications: {
+                error: {
+                    description: "{{description}}",
+                    message: "Error occurred while updating the users assigned to the role."
+                },
+                fetchError: {
+                    description: "We were unable to fetch the users assigned to the role.",
+                    message: "Something went wrong"
+                },
+                genericError: {
+                    description: "We were unable to update the users assigned to the role.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "The users assigned to the role have been successfully updated.",
+                    message: "Role updated successfully"
                 }
             },
             placeholders: {
+                beginSearch: "To begin, search users by typing the username. You may have to type the complete username.",
                 emptyPlaceholder: {
                     action: "Assign Users",
                     subtitles: {
@@ -311,7 +345,7 @@ export const roles: rolesNS = {
                     },
                     title: "No users assigned to the role."
                 },
-                emptySearchResult: "We couldn't find any results. Please try a different search term.",
+                emptySearchResult: "We couldn't find any results. Please try with the complete username.",
                 errorPlaceholder: {
                     action: "Refresh",
                     subtitles: {
@@ -321,39 +355,7 @@ export const roles: rolesNS = {
                     title: "Something went wrong"
                 }
             },
-            notifications: {
-                error: {
-                    description: "{{description}}",
-                    message: "Error occurred while updating the users assigned to the role."
-                },
-                success: {
-                    message: "Role updated successfully",
-                    description: "The users assigned to the role have been successfully updated."
-                },
-                genericError: {
-                    message: "Something went wrong",
-                    description: "We were unable to update the users assigned to the role."
-                },
-                fetchError: {
-                    message: "Something went wrong",
-                    description: "We were unable to fetch the users assigned to the role."
-                }
-            },
-            list: {
-                emptyPlaceholder: {
-                    action: "Assign User",
-                    subtitles: "There are no users assigned to the {{type}} at the moment.",
-                    title: "No Users Assigned"
-                },
-                user: "User",
-                organization: "Managed By"
-            }
-        },
-        permissions: {
-            heading: "Assigned Permissions",
-            readOnlySubHeading: "View the assigned permissions of the role.",
-            removedPermissions: "Removed Permissions",
-            subHeading: "Manage assigned permissions in the role."
+            subHeading: "Add or remove the users assigned to this role. Note that this will affect performing certain tasks."
         }
     },
     list: {
@@ -366,17 +368,14 @@ export const roles: rolesNS = {
             audience: "Audience",
             lastModified: "Modified Time",
             managedByApp: {
-                label: "Can be used only in the application: ",
-                header: "Managed By"
+                header: "Managed By",
+                label: "Can be used only in the application: "
             },
             managedByOrg: {
-                label: "Can be used within the organization: ",
-                header: "Managed By"
+                header: "Managed By",
+                label: "Can be used within the organization: "
             },
             name: "Role"
-        },
-        labels: {
-            shared: "Shared role"
         },
         confirmations: {
             deleteItem: {
@@ -413,29 +412,21 @@ export const roles: rolesNS = {
                 title: "No results found"
             }
         },
-        popups: {
-            delete: "Delete {{type}}",
-            edit: "Edit {{type}}"
+        filterAttirbutes: {
+            audience: "Role Audience",
+            name: "Name"
         },
         filterOptions: {
             all: "Show All",
             applicationRoles: "Application Roles",
             organizationRoles: "Organization Roles"
         },
-        filterAttirbutes: {
-            name: "Name",
-            audience: "Role Audience"
-        }
-    },
-    readOnlyList: {
-        emptyPlaceholders: {
-            searchAndFilter: {
-                subtitles: {
-                    0: "We couldn't find any results for the specified role name and audience combination.",
-                    1: "Please try a different combination."
-                },
-                title: "No results found"
-            }
+        labels: {
+            shared: "Shared role"
+        },
+        popups: {
+            delete: "Delete {{type}}",
+            edit: "Edit {{type}}"
         }
     },
     notifications: {
@@ -481,15 +472,15 @@ export const roles: rolesNS = {
                 message: "Role deleted successfully"
             }
         },
-        fetchRoles: {
-            genericError: {
-                description: "An error occurred while retrieving roles.",
-                message: "Something went wrong"
-            }
-        },
         fetchRole: {
             genericError: {
                 description: "An error occurred while retrieving the role.",
+                message: "Something went wrong"
+            }
+        },
+        fetchRoles: {
+            genericError: {
+                description: "An error occurred while retrieving roles.",
                 message: "Something went wrong"
             }
         },
@@ -507,5 +498,16 @@ export const roles: rolesNS = {
                 message: "Role updated successfully"
             }
         }
+    },
+    readOnlyList: {
+        emptyPlaceholders: {
+            searchAndFilter: {
+                subtitles: {
+                    0: "We couldn't find any results for the specified role name and audience combination.",
+                    1: "Please try a different combination."
+                },
+                title: "No results found"
+            }
+        }
     }
-}
+};
