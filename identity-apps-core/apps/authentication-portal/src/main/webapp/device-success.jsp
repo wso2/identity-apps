@@ -30,13 +30,7 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("isResponsePage", true);
-    layoutData.put("isErrorResponse", request.getParameter("app_name") == null);
-    layoutData.put("isSuccessResponse", request.getParameter("app_name") != null);
-    layoutData.put("isDeviceSuccessPage", request.getParameter("app_name") != null);
-%>
+<% request.setAttribute("pageName","device-success"); %>
 
 <!doctype html>
 <html>
@@ -51,7 +45,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout" onload="loadFunc()">
+<body class="login-portal layout authentication-portal-layout" onload="loadFunc()" data-isResponsePage="true" data-isErrorResponse="<%= request.getParameter("app_name") == null %>" data-isSuccessResponse="<%= request.getParameter("app_name") != null %>" data-isDeviceSuccessPage="<%= request.getParameter("app_name") != null %>" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

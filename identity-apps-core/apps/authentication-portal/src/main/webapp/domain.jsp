@@ -33,7 +33,7 @@
     if (Boolean.parseBoolean(request.getParameter("authFailure"))) {
         loginFailed = true;
         if (request.getParameter("authFailureMsg") != null) {
-            /* 
+            /*
             * Only allowing error messages defined in the resourceBundle.
             * AuthenticationEndpointUtil.i18n() will return the value of the provided key if the key is found
             * in the resourceBundle. If the key is not found, it will return the key itself.
@@ -42,7 +42,7 @@
             if (!error.equalsIgnoreCase(AuthenticationEndpointUtil.i18n(resourceBundle, error))) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, error);
             }
-            
+
             if (domainUnknown.equalsIgnoreCase(error)) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "domain.cannot.be.identified");
             }
@@ -50,10 +50,7 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "large");
-%>
+<% request.setAttribute("pageName","domain"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -68,7 +65,7 @@
         <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

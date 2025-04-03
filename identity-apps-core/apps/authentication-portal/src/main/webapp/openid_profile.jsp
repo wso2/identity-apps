@@ -38,10 +38,7 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "large");
-%>
+<% request.setAttribute("pageName", "openid-profile"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -56,7 +53,7 @@
         <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

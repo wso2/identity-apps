@@ -20,6 +20,8 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<% request.setAttribute("pageName", "oauth2-logout-consent"); %>
+
 <!doctype html>
 <html>
 <head>
@@ -33,7 +35,7 @@
         <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

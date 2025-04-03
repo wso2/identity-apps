@@ -44,7 +44,7 @@
            errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
            if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
-            } else if (isSelfRegistration && (errorMessage.equalsIgnoreCase("Can't identify organization") 
+            } else if (isSelfRegistration && (errorMessage.equalsIgnoreCase("Can't identify organization")
                || errorMessage.equalsIgnoreCase("Organization is not associated with this application."))) {
                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.discovery.input.self.registration");
             } else if (errorMessage.equalsIgnoreCase("Can't identify organization")) {
@@ -57,10 +57,9 @@
        }
    }
 %>
-<%-- Data for the layout from the page --%>
-<%
-   layoutData.put("containerSize", "medium");
-%>
+
+<% request.setAttribute("pageName", "org-discovery"); %>
+
 <html lang="en-US">
    <head>
       <%-- header --%>
@@ -77,7 +76,7 @@
          }
       %>
    </head>
-   <body class="login-portal layout authentication-portal-layout">
+   <body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
       <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
          <layout:component componentName="ProductHeader">
             <%-- product-title --%>

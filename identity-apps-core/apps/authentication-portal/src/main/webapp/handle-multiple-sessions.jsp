@@ -57,10 +57,7 @@
     Map data = gson.fromJson(contextProperties, Map.class);
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
+<% request.setAttribute("pageName", "handle-multiple-sessions"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -75,7 +72,7 @@
         <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -104,7 +101,7 @@
 
                         <h5>
                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.have.reached.maximum.active.sessions.1")%> <fmt:formatNumber><e:forHtmlContent value='${requestScope.data["MaxSessionCount"]}'/></fmt:formatNumber>
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.have.reached.maximum.active.sessions.2")%>. 
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.have.reached.maximum.active.sessions.2")%>.
                         </h5>
                         <h5>
                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "terminate.unwanted.sessions.message.1")%>.
@@ -198,11 +195,11 @@
                 var accessedTime = getDateFromTimestamp(<e:forJavaScript value="${session[1]}"/>);
                 var tableRow =
                     "<tr>"
-                    + "<td class='td-session-checkbox'>" 
-                        + "<div class='ui checkbox'>" 
-                            + "<input type='checkbox' class='checkbox-session' onchange='handleToggleSessionCheckbox()' value='<e:forHtmlAttribute value="${session[0]}"/>' name='sessionsToTerminate' />" 
-                            + "<label class='session-checkbox-label' style='padding-left: 0px;'></label>" 
-                        + "</div>" 
+                    + "<td class='td-session-checkbox'>"
+                        + "<div class='ui checkbox'>"
+                            + "<input type='checkbox' class='checkbox-session' onchange='handleToggleSessionCheckbox()' value='<e:forHtmlAttribute value="${session[0]}"/>' name='sessionsToTerminate' />"
+                            + "<label class='session-checkbox-label' style='padding-left: 0px;'></label>"
+                        + "</div>"
                     + "</td>"
                     + "<td><e:forHtmlContent value="${session[2]}"/></td>"
                     + "<td><e:forHtmlContent value="${session[3]}"/></td>"
@@ -231,13 +228,13 @@
         }
 
         function handleToggleSessionCheckbox() {
-            
+
             toggleMasterCheckbox();
             handleTerminateButtonActivation();
         }
 
         function handleTerminateButtonActivation() {
-            
+
             var checkboxes = document.sessionsForm.sessionsToTerminate;
             var existsCheckedSession = false;
             if (checkboxes instanceof RadioNodeList) {
@@ -250,7 +247,7 @@
             } else {
                 existsCheckedSession = checkboxes.checked
             }
-            
+
             if (existsCheckedSession) {
                 document.getElementById("terminateActiveSessionsAction").classList.remove("disabled");
             } else {
@@ -259,7 +256,7 @@
         }
 
         function toggleSessionCheckboxes() {
-            
+
             var isMasterCheckboxChecked = document.getElementById("masterCheckbox").checked;
             var checkboxes = document.sessionsForm.sessionsToTerminate;
 
@@ -316,7 +313,7 @@
         }
 
         function setRefreshActionAndSubmitForm() {
-            
+
             document.sessionsForm.submitted = "refreshActiveSessionsAction";
             if (validateForm("refreshActiveSessionsAction")) {
                 document.sessionsForm.submit();

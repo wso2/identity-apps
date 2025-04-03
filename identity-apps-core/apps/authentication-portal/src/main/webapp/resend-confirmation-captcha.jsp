@@ -42,10 +42,7 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
+<% request.setAttribute("pageName", "resend-confirmation-captcha"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -70,7 +67,7 @@
     %>
 
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

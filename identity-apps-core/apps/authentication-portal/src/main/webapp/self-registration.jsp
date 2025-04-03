@@ -31,10 +31,7 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
+<% request.setAttribute("pageName", "self-registration"); %>
 
 <%
     String myaccountUrl = application.getInitParameter("MyAccountURL");
@@ -52,7 +49,7 @@
     String translationsJson = "{}";
     String state = request.getParameter("state");
     String code = request.getParameter("code");
-    
+
     try {
         byte[] jsonData = Files.readAllBytes(Paths.get(jsonFilePath));
         translationsJson = new String(jsonData, "UTF-8");
@@ -78,7 +75,7 @@
     <link rel="preload" href="${pageContext.request.contextPath}/libs/react/react-dom.production.min.js" as="script" />
     <link rel="preload" href="${pageContext.request.contextPath}/js/react-ui-core.min.js" as="script" />
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
   <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
       <layout:component componentName="ProductHeader">
           <%-- product-title --%>
@@ -147,10 +144,10 @@
                 const apiUrl = baseUrl + "${pageContext.request.contextPath}/util/self-registration-api.jsp";
                 const code = "<%= code != null ? code : null %>";
                 const state = "<%= state != null ? state : null %>";
-                
+
                 const locale = "en-US";
                 const translations = <%= translationsJson %>;
-                
+
                 const [ flowData, setFlowData ] = useState(null);
                 const [ components, setComponents ] = useState([]);
                 const [ loading, setLoading ] = useState(true);
@@ -165,9 +162,9 @@
                         setPostBody({
                             flowId: savedFlowId,
                             actionId: actionTrigger,
-                            inputs: { 
+                            inputs: {
                                 code,
-                                state 
+                                state
                             }
                         });
                     }
@@ -207,7 +204,7 @@
                         }
 
                         const isFlowEnded = handleFlowStatus(data);
-                        
+
                         if (isFlowEnded) {
                             return;
                         }
@@ -232,7 +229,7 @@
                     switch (flow.flowStatus) {
                         case "INCOMPLETE":
                             return false;
-                            
+
                         case "COMPLETE":
                             localStorage.clear();
 
@@ -279,7 +276,7 @@
                             { className: "spinner" }
                         )
                     );
-                } 
+                }
 
                 return createElement(
                     "div",

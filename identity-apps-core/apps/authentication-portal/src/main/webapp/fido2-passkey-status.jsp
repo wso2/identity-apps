@@ -33,7 +33,7 @@
 <%
     String isKeyExist = request.getParameter("keyExist");
 
-    Map data = ((AuthenticationRequestWrapper) request).getAuthParams();    
+    Map data = ((AuthenticationRequestWrapper) request).getAuthParams();
     boolean enablePasskeyProgressiveEnrollment = (boolean) data.get("FIDO.EnablePasskeyProgressiveEnrollment");
 %>
 
@@ -43,6 +43,8 @@
 
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp" />
+
+<% request.setAttribute("pageName", "fido2-passkey-status"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -67,7 +69,7 @@
         <jsp:include page="includes/analytics.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
     <% } else { %>

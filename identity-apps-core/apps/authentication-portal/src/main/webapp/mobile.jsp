@@ -64,6 +64,8 @@
     }
 %>
 
+<% request.setAttribute("pageName", "mobile"); %>
+
 <html>
     <head>
         <%-- header --%>
@@ -82,7 +84,7 @@
         <![endif]-->
     </head>
 
-    <body class="login-portal layout sms-otp-portal-layout" onload="getLoginDiv()">
+    <body class="login-portal layout sms-otp-portal-layout" onload="getLoginDiv()" data-page="<%= request.getAttribute("pageName") %>">
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
             <layout:component componentName="ProductHeader">
                 <%-- product-title --%>

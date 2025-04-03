@@ -44,14 +44,11 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
-
 <%
     String regRequest = request.getParameter("data");
 %>
+
+<% request.setAttribute("pageName", "fido2-enroll"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -66,7 +63,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
 
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
@@ -128,7 +125,7 @@
                             </p>
                             <div class="ui form">
                                 <div class="field">
-                                    <input type="text" id="keynameInput" 
+                                    <input type="text" id="keynameInput"
                                             placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.placeholder.name.passkey")%>">
                                     <div class="mt-1 left aligned" id="keynameError" style="display: none;">
                                         <i class="red exclamation circle fitted icon"></i>

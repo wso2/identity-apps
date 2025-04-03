@@ -36,10 +36,7 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
+<% request.setAttribute("pageName", "enter-user-code"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -54,7 +51,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout" onload="loadFunc()">
+<body class="login-portal layout authentication-portal-layout" onload="loadFunc()" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

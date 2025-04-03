@@ -130,27 +130,29 @@
 <link rel="stylesheet" href="<%= StringEscapeUtils.escapeHtml4(overrideStylesheet) %>">
 <% } %>
 
-<%-- Layout specific style sheet --%>
-<%
-    String styleFilePath = "";
-    if (StringUtils.startsWith(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME)) {
-        if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR
-                + tenantRequestingPreferences)) {
-            styleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/styles.css";
-        } else if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR
-                + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + convertApplicationName(applicationRequestingPreferences))) {
-            styleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences) + "/styles.css";
-        }
-    } else {
-        styleFilePath = "includes/layouts/" + layout + "/styles.css";
-    }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SamudraUduwaka/testFilesForCustomPageEditor@main/left-aligned.css"/>
 
-    if (styleFilePath.startsWith("http") || config.getServletContext().getResource(styleFilePath) != null) {
-%>
-        <link rel="stylesheet" href="<%= styleFilePath %>">
-<%
-    }
-%>
+<%-- Layout specific style sheet --%>
+<%--<%--%>
+<%--    String styleFilePath = "";--%>
+<%--    if (StringUtils.startsWith(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME)) {--%>
+<%--        if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR--%>
+<%--                + tenantRequestingPreferences)) {--%>
+<%--            styleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/styles.css";--%>
+<%--        } else if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR--%>
+<%--                + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + convertApplicationName(applicationRequestingPreferences))) {--%>
+<%--            styleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences) + "/styles.css";--%>
+<%--        }--%>
+<%--    } else {--%>
+<%--        styleFilePath = "includes/layouts/" + layout + "/styles.css";--%>
+<%--    }--%>
+
+<%--    if (styleFilePath.startsWith("http") || config.getServletContext().getResource(styleFilePath) != null) {--%>
+<%--%>--%>
+<%--        <link rel="stylesheet" href="<%= styleFilePath %>">--%>
+<%--<%--%>
+<%--    }--%>
+<%--%>--%>
 
 <%-- Updates the site tile with the text resolved in branding-preferences --%>
 <title><%= i18n(resourceBundle, customText, "site.title", __DEPRECATED__siteTitle) %></title>

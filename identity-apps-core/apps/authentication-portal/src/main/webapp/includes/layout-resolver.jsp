@@ -90,6 +90,8 @@
                                 layoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/body.ser";
                                 layoutData.put("BASE_URL", layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences));
                             }
+//                            layout = "custom";
+//                            layoutFileRelativePath = "http://localhost:5001/resources/left-aligned.html";
                         } else {
                             // Pre-added layouts
                             String layoutFilePath = "includes/layouts/" + temp + "/body.ser";

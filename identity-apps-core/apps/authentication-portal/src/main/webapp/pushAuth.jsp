@@ -89,6 +89,8 @@
     String mobileResponseReceived = AuthenticationEndpointUtil.i18n(resourceBundle, "push.notification.mobile.response.received");
 %>
 
+<% request.setAttribute("pageName", "push-auth"); %>
+
 <html>
     <head>
         <%-- header --%>
@@ -107,7 +109,7 @@
         <![endif]-->
     </head>
 
-    <body class="login-portal layout push-auth-portal-layout">
+    <body class="login-portal layout push-auth-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
 
         <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
             <jsp:include page="extensions/timeout.jsp"/>
@@ -174,7 +176,7 @@
                                     </div>
                                     <div style="width: 70%">
                                         <p><%= mobileResponseReceived %></p>
-                                    </div> 
+                                    </div>
                                 </div>
                                 <div id='noResponseMessage' class='ui negative message transition hidden' style='text-align: center;'><%= noAuthResponseMessage %></div>
                                 <div id="instruction-div">

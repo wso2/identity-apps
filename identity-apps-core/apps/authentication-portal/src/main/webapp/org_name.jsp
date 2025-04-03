@@ -58,10 +58,7 @@
     boolean isOrgDiscoveryEnabled = Boolean.parseBoolean(request.getParameter("orgDiscoveryEnabled"));
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
+<% request.setAttribute("pageName", "org-name"); %>
 
 <html lang="en-US">
     <head>
@@ -85,7 +82,7 @@
         <![endif]-->
     </head>
 
-    <body class="login-portal layout authentication-portal-layout">
+    <body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
             <layout:component componentName="ProductHeader">
                 <%-- product-title --%>
@@ -193,7 +190,7 @@
             function goBack() {
                 window.history.back();
             }
-            
+
             function promptDiscovery() {
                 document.getElementById("ORG_NAME").disabled = true;
                 document.getElementById("pin_form").submit();

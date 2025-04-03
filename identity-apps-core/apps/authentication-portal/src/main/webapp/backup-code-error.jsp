@@ -65,11 +65,7 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("isResponsePage", true);
-    layoutData.put("isErrorResponse", true);
-%>
+<% request.setAttribute("pageName","backup-code-error"); %>
 
 <html lang="en-US">
     <head>
@@ -92,7 +88,7 @@
         <% } else { %>
             <jsp:include page="includes/analytics.jsp"/>
         <% } %>
-        
+
         <script type="text/javascript">
             trackEvent("authentication-portal-error-backup-code", {
                 "type": "error-response",
@@ -108,7 +104,7 @@
         <![endif]-->
     </head>
 
-    <body class="login-portal layout backup-code-portal-layout" onload="getLoginDiv()">
+    <body class="login-portal layout backup-code-portal-layout" onload="getLoginDiv()" data-isResponsePage=true data-isErrorResponse=true data-page="<%= request.getAttribute("pageName") %>">
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
             <layout:component componentName="ProductHeader">
                 <%

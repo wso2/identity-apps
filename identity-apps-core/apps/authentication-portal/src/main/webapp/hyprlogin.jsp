@@ -38,6 +38,8 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<% request.setAttribute("pageName", "hyprlogin"); %>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -53,7 +55,7 @@
     <% } %>
 </head>
 
-<body class="login-portal layout email-otp-portal-layout">
+<body class="login-portal layout email-otp-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

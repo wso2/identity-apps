@@ -436,6 +436,7 @@
     }
 %>
 
+<% request.setAttribute("pageName", "sign-in"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -470,18 +471,20 @@
         }
     %>
 
-    <link rel="stylesheet" href="https://cdn.statically.io/gh/SamudraUduwaka/testFilesForCustomPageEditor/d115e03619ed6cf7cace805da68c3f68b5fcf29d/styles.css"/>
+<%--<link rel="stylesheet" href="https://cdn.statically.io/gh/SamudraUduwaka/testFilesForCustomPageEditor/d115e03619ed6cf7cace805da68c3f68b5fcf29d/styles.css"/>--%>
 
 </head>
-<body class="login-portal layout authentication-portal-layout" onload="checkSessionKey()" data-page="sign-in">
-    <% request.setAttribute("pageName", "sign-in"); %>
+
+<body class="login-portal layout authentication-portal-layout" onload="checkSessionKey()" data-page="<%= request.getAttribute("pageName") %>">
+
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
     <% } else { %>
         <jsp:include page="util/timeout.jsp"/>
     <% } %>
 
-    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+    <layout:main layoutName="custom" layoutFileRelativePath="http://localhost:5001/resources/left-aligned.html" data="<%= layoutData %>" compile="true">
+<%--    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" compile="true">--%>
         <layout:component componentName="ProductHeader">
             <%
                 if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT) &&
@@ -1368,13 +1371,6 @@
     <% } %>
 
     <script src="util/string-utils.js"></script>
-
-    <script>
-        const page = document.body.dataset.page;
-        if(page==="sign-in"){
-            alert("signin Page");
-        }
-    </script>
 
     <script>
 

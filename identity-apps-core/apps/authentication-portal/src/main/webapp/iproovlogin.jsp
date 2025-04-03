@@ -45,6 +45,8 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<% request.setAttribute("pageName", "iproovlogin"); %>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -90,7 +92,7 @@
     </style>
 </head>
 
-<body class="login-portal layout iproov-layout">
+<body class="login-portal layout iproov-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

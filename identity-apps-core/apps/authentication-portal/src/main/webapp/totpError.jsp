@@ -58,11 +58,7 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("isResponsePage", true);
-    layoutData.put("isErrorResponse", true);
-%>
+<% request.setAttribute("pageName", "totp-error"); %>
 
 <html>
     <head>
@@ -85,7 +81,7 @@
         <% } else { %>
             <jsp:include page="includes/analytics.jsp"/>
         <% } %>
-        
+
         <script src="js/scripts.js"></script>
         <script src="/totpauthenticationendpoint/js/scripts.js"></script>
 
@@ -102,7 +98,7 @@
         </script>
     </head>
 
-    <body class="login-portal layout totp-portal-layout" onload="getLoginDiv()">
+    <body class="login-portal layout totp-portal-layout" onload="getLoginDiv()" data-isResponsePage=true data-isErrorResponse=true data-page="<%= request.getAttribute("pageName") %>">
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
             <layout:component componentName="ProductHeader">
                 <%-- product-title --%>

@@ -135,6 +135,8 @@
 
 %>
 
+<% request.setAttribute("pageName", "oauth-response"); %>
+
 <html>
 
 <head>
@@ -503,7 +505,7 @@
     <% } %>
 </head>
 
-<body class="login-portal layout recovery-layout" onload="javascript:document.getElementById('oauth-response').submit()">
+<body class="login-portal layout recovery-layout" onload="javascript:document.getElementById('oauth-response').submit()" data-page="<%= request.getAttribute("pageName") %>">
     <div class="page-wrapper">
         <main class="center-segment registration-loader">
             <div class="ui container aligned middle aligned text-center">

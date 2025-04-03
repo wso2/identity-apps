@@ -84,11 +84,7 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("isResponsePage", true);
-    layoutData.put("isErrorResponse", true);
-%>
+<% request.setAttribute("pageName", "sms-otp-error"); %>
 
 <html>
     <head>
@@ -107,7 +103,7 @@
         <script src="js/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body class="login-portal layout sms-otp-portal-layout">
+    <body class="login-portal layout sms-otp-portal-layout" data-isResponsePage=true data-isErrorResponse=true data-page="<%= request.getAttribute("pageName") %>">
 
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
             <layout:component componentName="ProductHeader">
@@ -140,7 +136,7 @@
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
                         <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
                             <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
-                        </a> 
+                        </a>
                     <%
                         if (config.getServletContext().getResource("extensions/error-tracking-reference.jsp") != null) {
                     %>

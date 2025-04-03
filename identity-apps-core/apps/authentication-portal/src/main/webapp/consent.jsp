@@ -41,6 +41,8 @@
     }
 %>
 
+<% request.setAttribute("pageName","consent"); %>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -54,7 +56,7 @@
         <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
     <% } else { %>

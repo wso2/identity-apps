@@ -57,6 +57,8 @@
     }
 %>
 
+<% request.setAttribute("pageName", "requested-claims"); %>
+
 <!doctype html>
 <html>
 <head>
@@ -74,7 +76,7 @@
     <link rel="stylesheet" href="libs/addons/calendar.min.css"/>
 </head>
 
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
     <% } else { %>

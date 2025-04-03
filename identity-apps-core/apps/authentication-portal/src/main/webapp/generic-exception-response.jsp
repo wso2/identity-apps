@@ -98,11 +98,7 @@
     session.invalidate();
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("isResponsePage", true);
-    layoutData.put("isErrorResponse", true);
-%>
+<% request.setAttribute("pageName", "generic-exception-response"); %>
 
 <!doctype html>
 <html>
@@ -135,7 +131,7 @@
         });
     </script>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-isResponsePage=true data-isErrorResponse=true data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

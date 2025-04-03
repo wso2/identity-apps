@@ -66,6 +66,8 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp" />
 
+<% request.setAttribute("pageName", "fido2-identifierfirst"); %>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -89,7 +91,7 @@
         <jsp:include page="includes/analytics.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
     <% } else { %>
@@ -178,8 +180,8 @@
                                 if (multiOptionURI != null && AuthenticationEndpointUtil.isValidMultiOptionURI(multiOptionURI) &&
                                     isMultiAuthAvailable(multiOptionURI)) {
                             %>
-                                <a 
-                                    class="ui primary basic button link-button" 
+                                <a
+                                    class="ui primary basic button link-button"
                                     id="goBackLink"
                                     href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'
                                 >

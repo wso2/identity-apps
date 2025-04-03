@@ -31,10 +31,7 @@
     String authRequest = request.getParameter("data");
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
+<% request.setAttribute("pageName", "fido-auth"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -49,7 +46,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout" onload="talkToDevice();">
+<body class="login-portal layout authentication-portal-layout" onload="talkToDevice();" data-page="<%= request.getAttribute("pageName") %>">
 
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>

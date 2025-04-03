@@ -72,10 +72,7 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
+<% request.setAttribute("pageName","email-otp-error"); %>
 
 <html lang="en-US">
 <head>
@@ -95,7 +92,7 @@
     <![endif]-->
 </head>
 
-<body class="login-portal layout email-otp-portal-layout">
+<body class="login-portal layout email-otp-portal-layout" data-isResponsePage=true data-isErrorResponse=true data-page="<%= request.getAttribute("pageName") %>">
 <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
     <layout:component componentName="ProductHeader">
         <%-- product-title --%>
