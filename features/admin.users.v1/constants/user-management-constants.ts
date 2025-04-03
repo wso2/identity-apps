@@ -90,6 +90,8 @@ export class UserManagementConstants {
     public static readonly TERMINATE_ALL_USER_SESSIONS_ERROR: string = "Could not terminate all the user sessions " +
         "due to some error.";
 
+    public static readonly RESEND_CODE_REQUEST_ERROR: string = "Error occured while resending the recovery option.";
+
     public static readonly WSO2_LOCAL_CLAIM_DIALECT: string = "http://wso2.org/claims";
     public static readonly SCIM2_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0:User";
     public static readonly BULK_REQUEST_SCHEMA: string = "urn:ietf:params:scim:api:messages:2.0:BulkRequest";
@@ -344,6 +346,22 @@ export enum UserSharedType {
 }
 
 /**
+ * Enum for account lock reason.
+ *
+ * @readonly
+ */
+export enum AccountLockedReason {
+
+    PENDING_SELF_REGISTRATION = "PENDING_SELF_REGISTRATION",
+    PENDING_ADMIN_FORCED_USER_PASSWORD_RESET = "PENDING_ADMIN_FORCED_USER_PASSWORD_RESET",
+    PENDING_EMAIL_VERIFICATION = "PENDING_EMAIL_VERIFICATION",
+    PENDING_ASK_PASSWORD = "PENDING_ASK_PASSWORD",
+    IDLE_ACCOUNT = "IDLE_ACCOUNT",
+    ADMIN_INITIATED = "ADMIN_INITIATED",
+    MAX_ATTEMPTS_EXCEEDED = "MAX_ATTEMPTS_EXCEEDED"
+}
+
+/**
  *  user account locked reason.
  *
  * @readonly
@@ -372,4 +390,9 @@ export const PASSWORD_RESET_PROPERTIES: string[] = [
     ServerConfigurationsConstants.OTP_PASSWORD_RESET,
     ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET
 ];
+
+export const ACCOUNT_LOCK_REASON_TO_RECOVERY_SCENARIO_MAP: Record<string, string> = {
+    PENDING_ADMIN_FORCED_USER_PASSWORD_RESET: "ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK",
+    PENDING_ASK_PASSWORD: "ASK_PASSWORD"
+};
 

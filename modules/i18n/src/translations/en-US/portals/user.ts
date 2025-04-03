@@ -81,6 +81,11 @@ export const user: userNS = {
                 header: "Reset password",
                 subheader: "Once you change the password, the user will no longer be able to log in to " +
                     "any application using the current password."
+            },
+            passwordSetZone: {
+                actionTitle: "Set Password",
+                header: "Set password",
+                subheader: "Once you set the password, the user will no longer be able to set their own password using the setup link."
             }
         },
         dateOfBirth: {
@@ -368,6 +373,12 @@ export const user: userNS = {
                 userNotFound: "User not found"
             },
             totalInvitations: "Total Invitation(s)"
+        },
+        setPasswordModal: {
+            button: "Set Password",
+            header: "Set User Password",
+            message: "WARNING: Please note that after setting the password, the user will " +
+            "no longer be able to set their own password using the setup link."
         }
     },
     profile: {
@@ -568,6 +579,30 @@ export const user: userNS = {
                     message: "Unable to trigger a force password reset"
                 }
             },
+            resendCode: {
+                genericError: {
+                    description: "Error occurred while resending the recovery option.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "The recovery option was resent successfully.",
+                    message: "Resend successful."
+                }
+            },
+            setUserPassword: {
+                error: {
+                    description: "{{description}}",
+                    message: "Error while setting user password."
+                },
+                genericError: {
+                    description: "Error occurred while setting the user password.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "The password for the user was set successfully.",
+                    message: "Successfully set password"
+                }
+            },
             unlockUserAccount: {
                 error: {
                     description: "{{description}}",
@@ -640,6 +675,9 @@ export const user: userNS = {
         tooltips: {
             confirmationPending: "Confirmation pending!"
         }
+    },
+    resendCode:{
+        resend: "Resend"
     },
     revokeAdmin: {
         confirmationModal: {

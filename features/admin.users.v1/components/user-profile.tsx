@@ -79,9 +79,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
-import { updateUserInfo } from "../api";
+import { ResendCodeRequest, resendCode, updateUserInfo } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
+    ACCOUNT_LOCK_REASON_TO_RECOVERY_SCENARIO_MAP,
+    AccountLockedReason,
     AdminAccountTypes,
     CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP,
     LocaleJoiningSymbol,
@@ -1546,21 +1548,42 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             user.userName !== adminUsername
                                         ) ? (
                                                 <Show when={ featureConfig?.users?.scopes?.update }>
-                                                    <DangerZone
-                                                        data-testid={ `${ testId }-change-password` }
-                                                        actionTitle={ t("user:editUser." +
-                                                            "dangerZoneGroup.passwordResetZone.actionTitle") }
-                                                        header={ t("user:editUser." +
-                                                            "dangerZoneGroup.passwordResetZone.header") }
-                                                        subheader={ t("user:editUser." +
-                                                            "dangerZoneGroup.passwordResetZone.subheader") }
-                                                        onActionClick={ (): void => {
-                                                            setOpenChangePasswordModal(true);
-                                                        } }
-                                                        isButtonDisabled={ accountLocked }
-                                                        buttonDisableHint={ t("user:editUser." +
-                                                            "dangerZoneGroup.passwordResetZone.buttonHint") }
-                                                    />
+                                                    { isResetPassword() ? (
+                                                        <DangerZone
+                                                            data-testid={ `${ testId }-change-password` }
+                                                            actionTitle={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordResetZone.actionTitle") }
+                                                            header={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordResetZone.header") }
+                                                            subheader={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordResetZone.subheader") }
+                                                            onActionClick={ (): void => {
+                                                                setOpenChangePasswordModal(true);
+                                                            } }
+                                                            isButtonDisabled={
+                                                                accountLocked &&
+                                                                // eslint-disable-next-line max-len
+                                                                accountLockedReason !== AccountLockedReason.PENDING_ADMIN_FORCED_USER_PASSWORD_RESET &&
+                                                                // eslint-disable-next-line max-len
+                                                                accountLockedReason !== AccountLockedReason.MAX_ATTEMPTS_EXCEEDED
+                                                            }
+                                                            buttonDisableHint={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordResetZone.buttonHint") }
+                                                        />
+                                                    ) : (
+                                                        <DangerZone
+                                                            data-testid={ `${ testId }-set-password` }
+                                                            actionTitle={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordSetZone.actionTitle") }
+                                                            header={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordSetZone.header") }
+                                                            subheader={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordSetZone.subheader") }
+                                                            onActionClick={ (): void => {
+                                                                setOpenChangePasswordModal(true);
+                                                            } }
+                                                        />
+                                                    ) }
                                                 </Show>
                                             ) : null
                                     }
@@ -2636,6 +2659,80 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         return "";
     };
 
+    /**
+     * Determines which password changing option to display.
+     *
+     * Returns true if the "Force Password Reset" option should be displayed.
+     * This indicates that the account is not in the "PENDING_ASK_PASSWORD" state,
+     * meaning the user already has an existing password and the admin can force a password reset
+     * if needed.
+     *
+     * Returns false if the "Set Password" option should be displayed.
+     * This occurs when the account is in the "PENDING_ASK_PASSWORD" state, indicating that
+     * the user has not yet set a password and the admin can set a new password if needed.
+     *
+     * @returns True to display "Force Password Reset"; false to display "Set Password".
+     */
+    const isResetPassword = (): boolean => accountLockedReason !== AccountLockedReason.PENDING_ASK_PASSWORD;
+
+
+    /**
+     * Determines whether the "Resend" link should be displayed.
+     *
+     * The resend option is shown when:
+     * - The account is in the "PENDING_ASK_PASSWORD" state,
+     *   indicating an initial password setup link has been sent.
+     * - The account is in the "PENDING_ADMIN_FORCED_USER_PASSWORD_RESET" state,
+     *   indicating that an admin-forced password reset has been sent.
+     *
+     * @returns True if the resend link should be shown; false otherwise.
+     */
+    const showResendLink: boolean = accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD ||
+        accountLockedReason === AccountLockedReason.PENDING_ADMIN_FORCED_USER_PASSWORD_RESET;
+
+
+    const handleResendCode = async (accountLockedReason: string) => {
+        setIsSubmitting(true);
+
+        try {
+            // Map lock reason to recovery scenario
+            const recoveryScenario: string = ACCOUNT_LOCK_REASON_TO_RECOVERY_SCENARIO_MAP[accountLockedReason];
+
+            if (!recoveryScenario) {
+                throw new Error("Invalid recovery scenario.");
+            }
+
+            const requestData: ResendCodeRequest = {
+                properties: [
+                    {
+                        key: "RecoveryScenario",
+                        value: recoveryScenario
+                    }
+                ],
+                user: {
+                    realm: user[ SCIMConfigs.scim.systemSchema ]?.userSource,
+                    username: user?.userName
+                }
+            };
+
+            await resendCode(requestData);
+            onAlertFired({
+                description: t("user:profile.notifications.resendCode.success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("user:profile.notifications.resendCode.success.message")
+            });
+        } catch (error: any) {
+            onAlertFired({
+                description: error.response?.data?.description ||
+                    t("user:profile.notifications.resendCode.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("user:profile.notifications.resendCode.genericError.message")
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     return (
         !isReadOnlyUserStoresLoading && !isEmpty(profileInfo)
             ? (<>
@@ -2643,6 +2740,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     (accountLocked || accountDisabled) && (
                         <Alert severity="warning">
                             { t(resolveUserAccountLockedReason()) }
+                            { showResendLink && (
+                                <>
+                                    &nbsp;
+                                    <a
+                                        className="link pointing"
+                                        onClick={ () => handleResendCode(accountLockedReason) }
+                                    >
+                                        { t("user:resendCode.resend") }
+                                    </a>
+                                </>
+                            ) }
                         </Alert>
                     )
                 }
@@ -2928,6 +3036,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     onAlertFired={ onAlertFired }
                     user={ user }
                     handleUserUpdate={ handleUserUpdate }
+                    isResetPassword={ isResetPassword() }
                 />
             </>)
             : <ContentLoader dimmer/>

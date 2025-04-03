@@ -470,3 +470,61 @@ export const terminateAllUserSessions = (userId: string): Promise<AxiosResponse>
                 error.config);
         });
 };
+
+/**
+ * Interface for the resend code request payload.
+ */
+export interface ResendCodeRequest {
+    user: {
+        username: string;
+        realm: string;
+    };
+    properties: Array<{
+        key: string;
+        value: string;
+    }>;
+}
+
+/**
+ * Resends the verification code for the for recovery-related scenarios.
+ *
+ * @param data - The request payload containing user information and properties.
+ * @returns A promise containing the response.
+ * @throws `IdentityAppsApiException` if the request fails or if the response status is not as expected.
+ */
+export const resendCode = (data: ResendCodeRequest): Promise<any> => {
+
+    const requestConfig: RequestConfigInterface = {
+        data,
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.resendCode
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 201) {
+                throw new IdentityAppsApiException(
+                    UserManagementConstants.RESEND_CODE_REQUEST_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                UserManagementConstants.RESEND_CODE_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};

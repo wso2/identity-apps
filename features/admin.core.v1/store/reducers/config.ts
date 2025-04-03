@@ -146,6 +146,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             remoteLogPublishEndpoint: "",
             remoteLogging: "",
             requestPathAuthenticators: "",
+            resendCode: "",
             resourceTypes: "",
             roles: "",
             rolesV2: "",
