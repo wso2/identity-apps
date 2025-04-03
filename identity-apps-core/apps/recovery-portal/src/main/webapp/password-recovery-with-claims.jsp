@@ -134,10 +134,7 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "large");
-%>
+<% request.setAttribute("pageName", "password-recovery-with-claims"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -161,7 +158,7 @@
         }
     %>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -243,7 +240,7 @@
                         <div class="field">
                             <label class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                     "Email")%></label>
-                            <input id="email" type="email" name="http://wso2.org/claims/emailaddress" 
+                            <input id="email" type="email" name="http://wso2.org/claims/emailaddress"
                                 class="form-control claims" data-validate="email"
                                 placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Email")%>">
                         </div>

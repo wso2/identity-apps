@@ -220,12 +220,7 @@
     <input type="hidden" id="userId" name="userId" value="<%= Encode.forHtmlAttribute(userId) %>" />
 <% } %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("isResponsePage", true);
-    layoutData.put("isSuccessResponse", true);
-    layoutData.put("isSelfRegistrationCompletePage", true);
-%>
+<% request.setAttribute("pageName", "self-registration-complete"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -239,7 +234,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout">
+<body class="login-portal layout" data-isResponsePage=true data-isSuccessResponse=true data-isSelfRegistrationCompletePage=true data-page="<%= request.getAttribute("pageName") %>">
     <script>
         function redirect(redirectURL) {
             var url = redirectURL;

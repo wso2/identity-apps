@@ -98,6 +98,8 @@
     boolean isForgotPasswordFlow = StringUtils.isNotBlank(resetCode);
 %>
 
+<% request.setAttribute("pageName", "password-reset"); %>
+
 <!doctype html>
 <html lang="en-US">
     <head>
@@ -110,7 +112,7 @@
         <jsp:include page="includes/header.jsp"/>
         <% } %>
     </head>
-    <body class="login-portal layout recovery-layout">
+    <body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
             <layout:component componentName="ProductHeader">
                 <%-- product-title --%>

@@ -40,11 +40,7 @@
             application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("isResponsePage", true);
-    layoutData.put("isSuccessResponse", true);
-%>
+<% request.setAttribute("pageName", "self-registration-with-verification-notify"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -58,7 +54,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout">
+<body class="login-portal layout" data-isResponsePage=true data-isSuccessResponse=true data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader" >
             <%-- product-title --%>

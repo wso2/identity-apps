@@ -186,6 +186,8 @@
     }
 %>
 
+<% request.setAttribute("pageName", "password-recovery"); %>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -217,7 +219,7 @@
         }
     %>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>"
         data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">

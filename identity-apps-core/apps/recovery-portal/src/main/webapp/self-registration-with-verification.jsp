@@ -66,11 +66,6 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("isSelfRegistrationWithVerificationPage", true);
-%>
-
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorCodeFromRequest = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorCode"));
@@ -313,6 +308,8 @@
     }
 %>
 
+<% request.setAttribute("pageName", "self-registration-with-verification"); %>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -336,7 +333,7 @@
     %>
     <link rel="stylesheet" href="libs/addons/calendar.min.css"/>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-isSelfRegistrationWithVerificationPage=true data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

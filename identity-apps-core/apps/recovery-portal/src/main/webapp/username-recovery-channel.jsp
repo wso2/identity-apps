@@ -60,7 +60,7 @@
      *
      * @param channels    A list of {@link RecoveryChannel} objects representing available recovery channels.
      * @param channelName The name of the recovery channel to search for (e.g., "EMAIL" or "SMS").
-     * @return            The ID of the matching channel if found in the channels list, 
+     * @return            The ID of the matching channel if found in the channels list,
      *                    "1" for "EMAIL" and "2" for "SMS" if channels list is null, or null if no match is found.
      */
     public static String getChannelIdFromChannelName(List<RecoveryChannel> channels, String channelName){
@@ -73,7 +73,7 @@
                 return "2";
             }
         }
-       
+
        // If channels are not null, loop throught them.
         for (RecoveryChannel channel : channels) {
             if (channel.getType().equals(channelName)) {
@@ -99,10 +99,10 @@
     if (request.getAttribute("channels") != null) {
         channels = (List<RecoveryChannel>) request.getAttribute("channels");
     }
-    
+
     String recoveryCode = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("recoveryCode"));
     Boolean isUserFound = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("isUserFound"));
-    
+
     String EMAIL = "EMAIL";
     String SMS = "SMS";
     String selectedOption = EMAIL;
@@ -136,13 +136,10 @@
         request.setAttribute("recoveryStage", "NOTIFY");
         request.getRequestDispatcher("verify.do").forward(request, response);
     }
-    
+
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "large");
-%>
+<% request.setAttribute("pageName", "username-recovery-channel"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -158,7 +155,7 @@
     <% } %>
 
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -208,7 +205,7 @@
 
                             <div class="field">
                                 <div class="ui radio checkbox">
-                                    <input type="radio" name="usernameRecoveryOption" 
+                                    <input type="radio" name="usernameRecoveryOption"
                                         value="<%=Encode.forHtmlAttribute(getChannelIdFromChannelName(channels, EMAIL) + ":" + EMAIL)%>"
                                         <%=EMAIL.equals(selectedOption)?"checked":""%>/>
                                     <label><%=i18n(recoveryResourceBundle, customText, "send.username.via.email")%>
@@ -217,7 +214,7 @@
                             </div>
                             <div class="field">
                                 <div class="ui radio checkbox">
-                                    <input type="radio" name="usernameRecoveryOption" 
+                                    <input type="radio" name="usernameRecoveryOption"
                                         value="<%=Encode.forHtmlAttribute(getChannelIdFromChannelName(channels, SMS) + ":" + SMS)%>"
                                         <%=SMS.equals(selectedOption)?"checked":""%>/>
                                     <label><%=i18n(recoveryResourceBundle, customText, "send.username.via.sms")%>
@@ -282,7 +279,7 @@
 
         $(document).ready(function () {
             $("#channelSelectionForm").submit(function (e) {
-                
+
                 // Prevent clicking multiple times, and notify the user something
                 // is happening in the background.
                 const submitButton = $("#recoverySubmit");

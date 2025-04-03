@@ -136,11 +136,13 @@
     }
 %>
 
+<% request.setAttribute("pageName", "lite-user-confirm"); %>
+
 <html lang="en-US">
 <head>
     <title></title>
 </head>
-<body>
+<body data-page="<%= request.getAttribute("pageName") %>">
 
 </body>
 </html>

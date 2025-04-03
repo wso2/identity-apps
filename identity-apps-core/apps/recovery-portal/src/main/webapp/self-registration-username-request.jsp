@@ -85,11 +85,6 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("isSelfRegistrationUsernameRequestPage", true);
-%>
-
 <%
     String BASIC_AUTHENTICATOR = "BasicAuthenticator";
     String OPEN_ID_AUTHENTICATOR = "OpenIDAuthenticator";
@@ -427,6 +422,8 @@
     }
 %>
 
+<% request.setAttribute("pageName", "self-registration-username-request"); %>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -449,7 +446,7 @@
     %>
     <link rel="stylesheet" href="libs/addons/calendar.min.css"/>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-isSelfRegistrationUsernameRequestPage=true data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

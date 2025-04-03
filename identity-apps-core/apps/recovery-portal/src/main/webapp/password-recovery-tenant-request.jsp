@@ -45,10 +45,7 @@ if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "large");
-%>
+<% request.setAttribute("pageName", "password-recovery-tenant-request"); %>
 
 <html lang="en-US">
 <head>
@@ -62,7 +59,7 @@ if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
         <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -95,7 +92,7 @@ if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
                 <div class="segment-form">
                     <form class="ui large form" method="post" action="password-recovery-with-claims.jsp"
                         id="tenantBasedRecovery">
-                        <input id="tenant-domain" type="text" name="tenantDomain" class="form-control align-center" 
+                        <input id="tenant-domain" type="text" name="tenantDomain" class="form-control align-center"
                                 placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Tenant.domain")%>">
                         <%
                             String callback = Encode.forHtmlAttribute

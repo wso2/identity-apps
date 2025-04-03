@@ -76,6 +76,8 @@
     }
 %>
 
+<% request.setAttribute("pageName", "self-registration-without-verification"); %>
+
 <html lang="en-US">
 <head>
     <%-- header --%>
@@ -97,7 +99,7 @@
         }
     %>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
