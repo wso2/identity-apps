@@ -377,8 +377,8 @@ export class ServerConfigurationsConstants {
    */
     public static readonly ACCOUNT_MANAGEMENT_CATEGORY_ID: string = "QWNjb3VudCBNYW5hZ2VtZW50";
     public static readonly ADMIN_FORCE_PASSWORD_RESET_CONNECTOR_ID: string = "YWRtaW4tZm9yY2VkLXBhc3N3b3JkLXJlc2V0";
-    public static readonly RECOVERY_LINK_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.RecoveryLink";
-    public static readonly OTP_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.OTP";
+    public static readonly ADMIN_FORCE_PASSWORD_RESET_EMAIL_LINK: string = "Recovery.AdminPasswordReset.RecoveryLink";
+    public static readonly ADMIN_FORCE_PASSWORD_RESET_EMAIL_OTP: string = "Recovery.AdminPasswordReset.OTP";
     public static readonly OFFLINE_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.Offline";
     public static readonly ADMIN_FORCED_PASSWORD_RESET_EXPIRY_TIME: string = "Recovery.AdminPasswordReset.ExpiryTime";
 

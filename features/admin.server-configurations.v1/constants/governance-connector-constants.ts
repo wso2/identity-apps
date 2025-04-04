@@ -152,4 +152,17 @@ export class GovernanceConnectorConstants {
     } = {
         TIMEOUT_MIN_LENGTH: 0
     };
+
+    public static readonly FORCED_PASSWORD_RESET_FORM_FIELD_CONSTRAINTS: {
+
+        EXPIRY_TIME_MAX_LENGTH: number;
+        EXPIRY_TIME_MAX_VALUE: number;
+        EXPIRY_TIME_MIN_LENGTH: number;
+        EXPIRY_TIME_MIN_VALUE: number;
+    } = {
+        EXPIRY_TIME_MAX_LENGTH: 5,
+        EXPIRY_TIME_MAX_VALUE: 10080,
+        EXPIRY_TIME_MIN_LENGTH: 1,
+        EXPIRY_TIME_MIN_VALUE: 1
+    }
 }

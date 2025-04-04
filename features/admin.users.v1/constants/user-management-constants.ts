@@ -368,8 +368,8 @@ export const CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP: Record<string, string> = {
 };
 
 export const PASSWORD_RESET_PROPERTIES: string[] = [
-    ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET,
-    ServerConfigurationsConstants.OTP_PASSWORD_RESET,
+    ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_LINK,
+    ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_OTP,
     ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET
 ];
 

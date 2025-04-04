@@ -3355,6 +3355,28 @@ export const extensions: Extensions = {
                     },
                     heading: "Enable self-service username recovery for users on the login page."
                 },
+                forcedPasswordRecovery: {
+                    form: {
+                        fields: {
+                            enableEmailLinkBasedReset: {
+                                label: "Email Link"
+                            },
+                            enableEmailOTPBasedReset: {
+                                label: "Email OTP"
+                            },
+                            expiryTime: {
+                                label: "Reset link/OTP expiry time",
+                                hint: "Password Reset Link/OTP expiry time in minutes.",
+                                placeholder: "Enter expiry time"
+                            }
+                        },
+                        heading: {
+                            label: "Enable password reset via recovery Email",
+                            hint: "User gets notified with a link/OTP to reset password."
+                        },
+                        subheading: "Choose password reset option"
+                    }
+                },
                 subHeading: "Account Recovery related settings."
             },
             accountSecurity: {
@@ -3709,8 +3731,12 @@ export const extensions: Extensions = {
                     changePasswordModal: {
                         emailUnavailableWarning: "WARNING: Cannot find an email address for the user account." +
                             "Please provide an email address to proceed with inviting the user to reset the password.",
-                        emailResetWarning: "An email with a link to reset the password will be sent to the provided " +
+                        emailResetWarning: {
+                            emailLink: "An email with a link to reset the password will be sent to the provided " +
                             "email address for the user to set their own password.",
+                            emailOTP: "An email with a OTP to reset the password will be sent to the provided " +
+                            "email address for the user to set their own password."
+                        },
                         passwordResetConfigDisabled: "Password reset via recovery email is not enabled. Please make " +
                             "sure to enable it from <1> " +
                             " Login and Registration </1> configurations."
