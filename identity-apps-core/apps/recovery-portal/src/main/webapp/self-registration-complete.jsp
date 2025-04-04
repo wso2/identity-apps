@@ -234,7 +234,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout" data-isResponsePage=true data-isSuccessResponse=true data-isSelfRegistrationCompletePage=true data-page="<%= request.getAttribute("pageName") %>">
+<body class="login-portal layout" data-responsetype="success" data-page="<%= request.getAttribute("pageName") %>">
     <script>
         function redirect(redirectURL) {
             var url = redirectURL;

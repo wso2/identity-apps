@@ -85,9 +85,9 @@
 
 <%-- Data for the layout from the page --%>
 <%
-    String isResponseType = "isErrorResponse";
+    String responseType = "error";
     if(acceptApiResponse.equalsIgnoreCase("SUCCESS")) {
-        isResponseType = "isSuccessResponse";
+        responseType = "success";
 %>
 
 <% request.setAttribute("pageName", "accept-invitation"); %>
@@ -104,7 +104,7 @@
         <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout" data-isResponsePage=true data-<%= isResponseType%>=true data-isAcceptInvitationPage="true" data-page="<%= request.getAttribute("pageName") %>">
+<body class="login-portal layout" data-responsetype="<%= responseType%>" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader" >
             <%-- product-title --%>
