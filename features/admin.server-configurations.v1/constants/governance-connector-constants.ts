@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,11 +30,11 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MIN_LENGTH: number;
         EXPIRY_TIME_MIN_VALUE: number;
     } = {
-        EXPIRY_TIME_MAX_LENGTH: 5,
-        EXPIRY_TIME_MAX_VALUE: 10080,
-        EXPIRY_TIME_MIN_LENGTH: 1,
-        EXPIRY_TIME_MIN_VALUE: -1
-    };
+            EXPIRY_TIME_MAX_LENGTH: 5,
+            EXPIRY_TIME_MAX_VALUE: 10080,
+            EXPIRY_TIME_MIN_LENGTH: 1,
+            EXPIRY_TIME_MIN_VALUE: -1
+        };
 
     /**
      * Self Registration Form element constraints.
@@ -45,11 +45,11 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MIN_LENGTH: number;
         EXPIRY_TIME_MIN_VALUE: number;
     } = {
-        EXPIRY_TIME_MAX_LENGTH: 5,
-        EXPIRY_TIME_MAX_VALUE: 10080,
-        EXPIRY_TIME_MIN_LENGTH: 1,
-        EXPIRY_TIME_MIN_VALUE: 1
-    };
+            EXPIRY_TIME_MAX_LENGTH: 5,
+            EXPIRY_TIME_MAX_VALUE: 10080,
+            EXPIRY_TIME_MIN_LENGTH: 1,
+            EXPIRY_TIME_MIN_VALUE: 1
+        };
 
     /**
      * Password Recovery Form element constraints.
@@ -74,25 +74,25 @@ export class GovernanceConnectorConstants {
         SMS_OTP_CODE_LENGTH_MIN_LENGTH: number;
         SMS_OTP_CODE_LENGTH_MIN_VALUE: number;
     } = {
-        EXPIRY_TIME_MAX_LENGTH: 5,
-        EXPIRY_TIME_MAX_VALUE: 10080,
-        EXPIRY_TIME_MIN_LENGTH: 1,
-        EXPIRY_TIME_MIN_VALUE: 1,
-        MAX_FAILED_ATTEMPT_COUNT_MAX_LENGTH: 2,
-        MAX_FAILED_ATTEMPT_COUNT_MAX_VALUE: 10,
-        MAX_FAILED_ATTEMPT_COUNT_MIN_LENGTH: 1,
-        MAX_FAILED_ATTEMPT_COUNT_MIN_VALUE: 1,
-        MAX_RESEND_COUNT_MAX_LENGTH: 1,
-        MAX_RESEND_COUNT_MAX_VALUE: 5,
-        MAX_RESEND_COUNT_MIN_LENGTH: 1,
-        MAX_RESEND_COUNT_MIN_VALUE: 1,
-        SMS_OTP_CODE_LENGTH_MAX_LENGTH: 2,
-        SMS_OTP_CODE_LENGTH_MAX_VALUE: 10,
-        SMS_OTP_CODE_LENGTH_MIN_LENGTH: 1,
-        SMS_OTP_CODE_LENGTH_MIN_VALUE: 4,
-        SMS_OTP_EXPIRY_TIME_MAX_LENGTH: 4,
-        SMS_OTP_EXPIRY_TIME_MAX_VALUE: 1440
-    };
+            EXPIRY_TIME_MAX_LENGTH: 5,
+            EXPIRY_TIME_MAX_VALUE: 10080,
+            EXPIRY_TIME_MIN_LENGTH: 1,
+            EXPIRY_TIME_MIN_VALUE: 1,
+            MAX_FAILED_ATTEMPT_COUNT_MAX_LENGTH: 2,
+            MAX_FAILED_ATTEMPT_COUNT_MAX_VALUE: 10,
+            MAX_FAILED_ATTEMPT_COUNT_MIN_LENGTH: 1,
+            MAX_FAILED_ATTEMPT_COUNT_MIN_VALUE: 1,
+            MAX_RESEND_COUNT_MAX_LENGTH: 1,
+            MAX_RESEND_COUNT_MAX_VALUE: 5,
+            MAX_RESEND_COUNT_MIN_LENGTH: 1,
+            MAX_RESEND_COUNT_MIN_VALUE: 1,
+            SMS_OTP_CODE_LENGTH_MAX_LENGTH: 2,
+            SMS_OTP_CODE_LENGTH_MAX_VALUE: 10,
+            SMS_OTP_CODE_LENGTH_MIN_LENGTH: 1,
+            SMS_OTP_CODE_LENGTH_MIN_VALUE: 4,
+            SMS_OTP_EXPIRY_TIME_MAX_LENGTH: 4,
+            SMS_OTP_EXPIRY_TIME_MAX_VALUE: 1440
+        };
 
     /**
      * Login Attempt Security Form element constraints.
@@ -111,19 +111,19 @@ export class GovernanceConnectorConstants {
         FAILED_ATTEMPTS_MIN_LENGTH: number;
         FAILED_ATTEMPTS_MIN_VALUE: number;
     } = {
-        ACCOUNT_LOCK_INCREMENT_FACTOR_MAX_LENGTH: 2,
-        ACCOUNT_LOCK_INCREMENT_FACTOR_MAX_VALUE: 10,
-        ACCOUNT_LOCK_INCREMENT_FACTOR_MIN_LENGTH: 1,
-        ACCOUNT_LOCK_INCREMENT_FACTOR_MIN_VALUE: 1,
-        ACCOUNT_LOCK_TIME_MAX_LENGTH: 4,
-        ACCOUNT_LOCK_TIME_MAX_VALUE: 1440,
-        ACCOUNT_LOCK_TIME_MIN_LENGTH: 1,
-        ACCOUNT_LOCK_TIME_MIN_VALUE: 1,
-        FAILED_ATTEMPTS_MAX_LENGTH: 2,
-        FAILED_ATTEMPTS_MAX_VALUE: 10,
-        FAILED_ATTEMPTS_MIN_LENGTH: 1,
-        FAILED_ATTEMPTS_MIN_VALUE: 1
-    };
+            ACCOUNT_LOCK_INCREMENT_FACTOR_MAX_LENGTH: 2,
+            ACCOUNT_LOCK_INCREMENT_FACTOR_MAX_VALUE: 10,
+            ACCOUNT_LOCK_INCREMENT_FACTOR_MIN_LENGTH: 1,
+            ACCOUNT_LOCK_INCREMENT_FACTOR_MIN_VALUE: 1,
+            ACCOUNT_LOCK_TIME_MAX_LENGTH: 4,
+            ACCOUNT_LOCK_TIME_MAX_VALUE: 1440,
+            ACCOUNT_LOCK_TIME_MIN_LENGTH: 1,
+            ACCOUNT_LOCK_TIME_MIN_VALUE: 1,
+            FAILED_ATTEMPTS_MAX_LENGTH: 2,
+            FAILED_ATTEMPTS_MAX_VALUE: 10,
+            FAILED_ATTEMPTS_MIN_LENGTH: 1,
+            FAILED_ATTEMPTS_MIN_VALUE: 1
+        };
 
     /**
      * Password Expiry Form element constraints.
@@ -136,13 +136,13 @@ export class GovernanceConnectorConstants {
         EXPIRY_RULES_MAX_COUNT: number;
         EXPIRY_RULE_MAX_VALUES_PER_RULE: number;
     } = {
-        EXPIRY_RULES_MAX_COUNT: 10,
-        EXPIRY_RULE_MAX_VALUES_PER_RULE: 5,
-        EXPIRY_TIME_MAX_LENGTH: 5,
-        EXPIRY_TIME_MAX_VALUE: 10080,
-        EXPIRY_TIME_MIN_LENGTH: 1,
-        EXPIRY_TIME_MIN_VALUE: 1
-    };
+            EXPIRY_RULES_MAX_COUNT: 10,
+            EXPIRY_RULE_MAX_VALUES_PER_RULE: 5,
+            EXPIRY_TIME_MAX_LENGTH: 5,
+            EXPIRY_TIME_MAX_VALUE: 10080,
+            EXPIRY_TIME_MIN_LENGTH: 1,
+            EXPIRY_TIME_MIN_VALUE: 1
+        };
 
     /**
      * Analytics Form element constraints.
@@ -150,8 +150,8 @@ export class GovernanceConnectorConstants {
     public static readonly ANALYTICS_FORM_FIELD_CONSTRAINTS: {
         TIMEOUT_MIN_LENGTH: number;
     } = {
-        TIMEOUT_MIN_LENGTH: 0
-    };
+            TIMEOUT_MIN_LENGTH: 0
+        };
 
     public static readonly FORCED_PASSWORD_RESET_FORM_FIELD_CONSTRAINTS: {
 
@@ -160,9 +160,9 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MIN_LENGTH: number;
         EXPIRY_TIME_MIN_VALUE: number;
     } = {
-        EXPIRY_TIME_MAX_LENGTH: 5,
-        EXPIRY_TIME_MAX_VALUE: 10080,
-        EXPIRY_TIME_MIN_LENGTH: 1,
-        EXPIRY_TIME_MIN_VALUE: 1
-    }
+            EXPIRY_TIME_MAX_LENGTH: 5,
+            EXPIRY_TIME_MAX_VALUE: 10080,
+            EXPIRY_TIME_MIN_LENGTH: 1,
+            EXPIRY_TIME_MIN_VALUE: 1
+        };
 }
