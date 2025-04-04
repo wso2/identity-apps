@@ -106,6 +106,8 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
     const [ isEveryoneRole, setIsEveryoneRole ] = useState<boolean>(false);
+    const accountAppImpersonateRoleName: string = useSelector(
+        (state: AppState) => state.config.deployment.accountApp.impersonationRoleName);
 
     /**
      * Set the if the role is `Internal/admin`.
@@ -127,7 +129,8 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <BasicRoleDetails
-                            isReadOnly={ isAdminRole || isEveryoneRole || isReadOnly || isSharedRole }
+                            isReadOnly={ isAdminRole || isEveryoneRole || isReadOnly || isSharedRole
+                                || roleObject?.displayName === accountAppImpersonateRoleName }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 0 }
@@ -140,7 +143,8 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <UpdatedRolePermissionDetails
-                            isReadOnly={ isAdminRole || isReadOnly || isSharedRole }
+                            isReadOnly={ isAdminRole || isReadOnly || isSharedRole
+                                || roleObject?.displayName === accountAppImpersonateRoleName }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 1 }

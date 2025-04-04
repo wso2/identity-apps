@@ -17,13 +17,14 @@
  */
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { deleteRoleById, updateRoleDetails } from "../../api";
@@ -75,6 +76,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         error: rolesListError,
         isValidating: isRolesListValidating
     } = useGetRolesList(undefined, undefined, roleNameSearchQuery, "users,groups,permissions,associatedApplications");
+    const accountAppImpersonateRoleName: string = useSelector(
+        (state: AppState) => state.config.deployment.accountApp.impersonationRoleName);
 
     /**
      * Dispatches the alert object to the redux store.
@@ -238,6 +241,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                 t("roles:edit.basics.dangerZone.subheader",
                                     { type: "role" })
                             }
+                            isButtonDisabled={ isSubmitting || role?.displayName === accountAppImpersonateRoleName }
                             onActionClick={ () => onRoleDeleteClicked() }
                             data-componentid={ `${ componentid }-role-danger-zone` }
                         />

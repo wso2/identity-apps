@@ -472,6 +472,20 @@ const UserEditPage = (): ReactElement => {
                     onClick: handleBackButtonClick,
                     text: getBackButtonText()
                 } }
+                action={ (
+
+                    <ImpersonateUserAction
+                        user={ user }
+                        isReadOnly= { !hasUsersUpdatePermissions }
+                        isUserManagedByParentOrg= { user?.isUserManagedByParentOrg }
+                    />
+
+                    // <Button
+                    //     variant="outlined"
+                    //     onClick={ () => console.log("sanks") }>
+                    //     { t("user:editUser.userActionZoneGroup.impersonateUserZone.actionTitle") }
+                    // </Button>
+                ) }
                 titleTextAlign="left"
                 bottomMargin={ false }
             >

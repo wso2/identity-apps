@@ -83,6 +83,14 @@ export interface userNS {
                 part2: string;
             };
         };
+        userActionZoneGroup: {
+            header: string;
+            impersonateUserZone: {
+                actionTitle: string;
+                header: string;
+                subheader: string;
+            };
+        };
     };
     forms: {
         addUserForm: {

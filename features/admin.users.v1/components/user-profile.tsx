@@ -161,7 +161,7 @@ interface UserProfilePropsInterface extends TestableComponentInterface {
      */
     editUserDisclaimerMessage?: ReactNode;
     /**
-     * Admin user type
+     * Admin user typeisLoading: isAuthenticatedUserFetchRequestLoading
      */
     adminUserType?: string;
     /**
@@ -198,7 +198,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-
     const dispatch: Dispatch = useDispatch();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
@@ -286,9 +285,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
     }, [ connectorProperties ]);
 
-    /**
-     *  .
-     */
     useEffect(() => {
         // This will load the countries to the dropdown
         setCountryList(CommonUtils.getCountryList());
@@ -1517,8 +1513,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
 
         const resolvedUsername: string = resolveUsernameOrDefaultEmail(user, false);
-        const isUserCurrentLoggedInUser: boolean =
-            authenticatedUser?.includes(resolvedUsername);
+        const isUserCurrentLoggedInUser: boolean = authenticatedUser?.includes(resolvedUsername);
 
         return (
             <>
