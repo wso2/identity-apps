@@ -32,6 +32,14 @@
 
 <% request.setAttribute("pageName","device-success"); %>
 
+<%
+    String responseType = "error";
+    if (request.getParameter("app_name") != null){
+        responseType = "success";
+    }
+%>
+
+
 <!doctype html>
 <html>
 <head>
@@ -45,7 +53,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout" onload="loadFunc()" data-isResponsePage="true" data-isErrorResponse="<%= request.getParameter("app_name") == null %>" data-isSuccessResponse="<%= request.getParameter("app_name") != null %>" data-isDeviceSuccessPage="<%= request.getParameter("app_name") != null %>" data-page="<%= request.getAttribute("pageName") %>">
+<body class="login-portal layout authentication-portal-layout" onload="loadFunc()" data-responsetype="<%= responseType %>" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

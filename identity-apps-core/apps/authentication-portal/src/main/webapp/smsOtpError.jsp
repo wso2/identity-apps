@@ -103,7 +103,7 @@
         <script src="js/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body class="login-portal layout sms-otp-portal-layout" data-isResponsePage=true data-isErrorResponse=true data-page="<%= request.getAttribute("pageName") %>">
+    <body class="login-portal layout sms-otp-portal-layout" data-responsetype="error" data-page="<%= request.getAttribute("pageName") %>">
 
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
             <layout:component componentName="ProductHeader">

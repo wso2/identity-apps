@@ -43,7 +43,7 @@
         <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout policy-page-layout cookie-policy-page-layout" data-isPolicyPage=true data-page="<%= request.getAttribute("pageName") %>">
+<body class="login-portal layout authentication-portal-layout policy-page-layout cookie-policy-page-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
