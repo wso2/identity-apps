@@ -165,7 +165,7 @@
                 const authenticationEndpoint = baseUrl + "${pageContext.request.contextPath}";
                 const defaultMyAccountUrl = "<%= myaccountUrl %>";
                 const authPortalURL = "<%= authenticationPortalURL %>";
-                const apiUrl = authPortalURL + "/util/self-registration-api.jsp";
+                const registrationFlowApiProxyPath = authPortalURL + "/util/self-registration-api.jsp";
                 const code = "<%= code != null ? code : null %>";
                 const state = "<%= state != null ? state : null %>";
                 
@@ -205,7 +205,7 @@
                     if (!postBody) return;
                     setLoading(true);
 
-                    fetch(apiUrl, {
+                    fetch(registrationFlowApiProxyPath, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(postBody)
