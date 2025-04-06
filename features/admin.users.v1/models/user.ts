@@ -430,6 +430,20 @@ export interface UserInviteInterface {
 }
 
 /**
+ * Interface for the resend code request payload.
+ */
+export interface ResendCodeRequest {
+    user: {
+        username: string;
+        realm: string;
+    };
+    properties: Array<{
+        key: string;
+        value: string;
+    }>;
+}
+
+/**
  * Enum for Invite User Status.
  *
  * @readonly

@@ -90,7 +90,7 @@ export class UserManagementConstants {
     public static readonly TERMINATE_ALL_USER_SESSIONS_ERROR: string = "Could not terminate all the user sessions " +
         "due to some error.";
 
-    public static readonly RESEND_CODE_REQUEST_ERROR: string = "Error occured while resending the recovery option.";
+    public static readonly RESEND_CODE_REQUEST_ERROR: string = "Error occured while resending the recovery link/code.";
 
     public static readonly WSO2_LOCAL_CLAIM_DIALECT: string = "http://wso2.org/claims";
     public static readonly SCIM2_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0:User";

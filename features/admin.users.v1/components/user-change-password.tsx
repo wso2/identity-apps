@@ -85,7 +85,7 @@ interface ChangePasswordPropsInterface extends TestableComponentInterface {
     handleForcePasswordResetTrigger?: () => void;
     /**
      * Flag to identify if this is a password reset operation.
-     * When false, it indicates newly setting password (usage : In ask password flow).
+     * When false, it indicates that a new password is being set (Usage: in the ask password flow).
      */
     isResetPassword?: boolean;
 }
@@ -680,7 +680,9 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             <Message
                                 type="warning"
-                                content={ t("user:modals.changePasswordModal.message") }
+                                content={ isResetPassword
+                                    ? t("user:modals.changePasswordModal.message")
+                                    :  t("user:modals.setPasswordModal.message") }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -692,17 +694,12 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                     { passwordFormFields() }
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            { isResetPassword ? (
-                                <Message
-                                    type="warning"
-                                    content={ t("user:modals.changePasswordModal.message") }
-                                />
-                            ) : (
-                                <Message
-                                    type="warning"
-                                    content={ t("user:modals.setPasswordModal.message") }
-                                />
-                            ) }
+                            <Message
+                                type="warning"
+                                content={ isResetPassword
+                                    ? t("user:modals.changePasswordModal.message")
+                                    : t("user:modals.setPasswordModal.message") }
+                            />
                         </Grid.Column>
                     </Grid.Row>
                 </>

@@ -31,6 +31,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { UserManagementConstants } from "../constants";
 import { SCIMBulkEndpointInterface } from "../models/endpoints";
 import {
+    ResendCodeRequest,
     UserDetailsInterface,
     UserListInterface,
     UserSessionsInterface
@@ -472,20 +473,6 @@ export const terminateAllUserSessions = (userId: string): Promise<AxiosResponse>
 };
 
 /**
- * Interface for the resend code request payload.
- */
-export interface ResendCodeRequest {
-    user: {
-        username: string;
-        realm: string;
-    };
-    properties: Array<{
-        key: string;
-        value: string;
-    }>;
-}
-
-/**
  * Resends the verification code for the for recovery-related scenarios.
  *
  * @param data - The request payload containing user information and properties.
@@ -497,7 +484,6 @@ export const resendCode = (data: ResendCodeRequest): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,

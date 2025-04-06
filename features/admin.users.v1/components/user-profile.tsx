@@ -79,7 +79,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
-import { ResendCodeRequest, resendCode, updateUserInfo } from "../api";
+import { resendCode, updateUserInfo } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
     ACCOUNT_LOCK_REASON_TO_RECOVERY_SCENARIO_MAP,
@@ -93,6 +93,7 @@ import {
 import {
     AccountConfigSettingsInterface,
     PatchUserOperationValue,
+    ResendCodeRequest,
     SchemaAttributeValueInterface,
     SubValueInterface
 } from "../models/user";
@@ -1563,9 +1564,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                             isButtonDisabled={
                                                                 accountLocked &&
                                                                 // eslint-disable-next-line max-len
-                                                                accountLockedReason !== AccountLockedReason.PENDING_ADMIN_FORCED_USER_PASSWORD_RESET &&
-                                                                // eslint-disable-next-line max-len
-                                                                accountLockedReason !== AccountLockedReason.MAX_ATTEMPTS_EXCEEDED
+                                                                accountLockedReason !== AccountLockedReason.PENDING_ADMIN_FORCED_USER_PASSWORD_RESET
                                                             }
                                                             buttonDisableHint={ t("user:editUser." +
                                                                 "dangerZoneGroup.passwordResetZone.buttonHint") }
@@ -2662,7 +2661,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     /**
      * Determines which password changing option to display.
      *
-     * Returns true if the "Force Password Reset" option should be displayed.
+     * @returns  true if the "Force Password Reset" option should be displayed.
      * This indicates that the account is not in the "PENDING_ASK_PASSWORD" state,
      * meaning the user already has an existing password and the admin can force a password reset
      * if needed.
@@ -2670,11 +2669,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * Returns false if the "Set Password" option should be displayed.
      * This occurs when the account is in the "PENDING_ASK_PASSWORD" state, indicating that
      * the user has not yet set a password and the admin can set a new password if needed.
-     *
-     * @returns True to display "Force Password Reset"; false to display "Set Password".
      */
     const isResetPassword = (): boolean => accountLockedReason !== AccountLockedReason.PENDING_ASK_PASSWORD;
-
 
     /**
      * Determines whether the "Resend" link should be displayed.
@@ -2685,12 +2681,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * - The account is in the "PENDING_ADMIN_FORCED_USER_PASSWORD_RESET" state,
      *   indicating that an admin-forced password reset has been sent.
      *
-     * @returns True if the resend link should be shown; false otherwise.
+     * @returns whether the "Resend" link option should be displayed.
      */
     const showResendLink: boolean = accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD ||
         accountLockedReason === AccountLockedReason.PENDING_ADMIN_FORCED_USER_PASSWORD_RESET;
 
-
+    /**
+     * Initiates a recovery process based on the account's locked reason.
+     *
+     **/
     const handleResendCode = async (accountLockedReason: string) => {
         setIsSubmitting(true);
 

@@ -377,8 +377,8 @@ export const user: userNS = {
         setPasswordModal: {
             button: "Set Password",
             header: "Set User Password",
-            message: "WARNING: Please note that after setting the password, the user will " +
-            "no longer be able to set their own password using the setup link."
+            message: "After setting the password, the user will " +
+                "no longer be able to set their own password using the initial setup link."
         }
     },
     profile: {
@@ -581,11 +581,11 @@ export const user: userNS = {
             },
             resendCode: {
                 genericError: {
-                    description: "Error occurred while resending the recovery option.",
+                    description: "Error occurred while resending the recovery code.",
                     message: "Something went wrong"
                 },
                 success: {
-                    description: "The recovery option was resent successfully.",
+                    description: "The recovery code was resent successfully.",
                     message: "Resend successful."
                 }
             },
