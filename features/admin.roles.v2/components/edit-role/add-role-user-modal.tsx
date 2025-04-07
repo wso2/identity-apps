@@ -171,7 +171,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
     const handleSearchFieldChange: DebouncedFunc<(e: FormEvent<HTMLInputElement>, query: string) => void>
     = useCallback(debounce((e: FormEvent<HTMLInputElement>, query: string) => {
         if (isEmpty(query.trim())) {
-            setSearchQuery("");
+            setSearchQuery(null);
         } else {
             const processedQuery: string = "userName co " + query;
 
@@ -267,6 +267,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                                     onChange={
                                         (e: React.ChangeEvent<HTMLInputElement>, data: DropdownProps) => {
                                             setSelectedUserStore(data.value as string);
+                                            setIsSelectAllUsers(false);
                                         }
                                     }
                                     tabIndex={ 1 }
