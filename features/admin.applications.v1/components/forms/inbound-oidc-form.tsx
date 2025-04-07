@@ -2227,7 +2227,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 value: ENABLE_PKCE_CHECKBOX_VALUE
                                             }
                                         ] }
-                                    readOnly={ readOnly }
+                                    readOnly={ readOnly || isMcpClientApplication }
                                     data-testid={ `${ testId }-pkce-checkbox-group` }
                                 />
                                 <Hint>
@@ -2374,7 +2374,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                             value: "supportPublicClients"
                                                         }
                                                     ] }
-                                                    readOnly={ readOnly }
+                                                    readOnly={ readOnly || isMcpClientApplication }
                                                     listen={ (values: Map<string, FormValue>): void => {
                                                         const isPublicClient: boolean =
                                                             values.get("supportPublicClients")
