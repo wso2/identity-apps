@@ -20,7 +20,7 @@
         "@wso2is/admin.api-resources.v2": "^2.25.203",
         "@wso2is/admin.application-templates.v1": "^1.4.203",
         "@wso2is/admin.applications.v1": "workspace:^",
-        "@wso2is/admin.authentication-flow-builder.v1": "^2.24.203",
+        "@wso2is/admin.login-flow-builder.v1": "^2.24.203",
         "@wso2is/admin.authorization.v1": "^2.25.88",
         "@wso2is/admin.branding.v1": "^2.28.60",
         "@wso2is/admin.claims.v1": "^2.27.113",
