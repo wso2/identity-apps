@@ -1,5 +1,11 @@
 # @wso2is/admin.branding.v1
 
+## 2.30.0
+
+### Minor Changes
+
+- [#7998](https://github.com/wso2/identity-apps/pull/7998) [`7cad408a2867cc72008328edc972d892dc99c7c6`](https://github.com/wso2/identity-apps/commit/7cad408a2867cc72008328edc972d892dc99c7c6) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Add self-signup URL input in branding for sub-organizations
+
 ## 2.29.0
 
 ### Minor Changes
