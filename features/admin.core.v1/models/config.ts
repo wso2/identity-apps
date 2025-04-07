@@ -320,7 +320,7 @@ interface ExternalAppConfigInterface {
     /**
      * Access URL for the central app.
      */
-        centralAppPath?: string;
+    centralAppPath?: string;
     /**
      * App base path. ex: `/account`, `/admin` etc.
      */
