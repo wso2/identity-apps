@@ -24,11 +24,12 @@ import { SupportedAuthProtocolTypes } from "@wso2is/admin.applications.v1/models
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 
-import { Button, Code, CopyInputField, EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
+import { Button, Code, CopyInputField, EmphasizedSegment, Heading, PrimaryButton } from "@wso2is/react-components";
 import { t } from "i18next";
 import React, { Fragment } from "react";
 import { Trans } from "react-i18next";
 import { Divider } from "semantic-ui-react";
+import { Grid as SemanticGrid } from "semantic-ui-react";
 
 interface AgentCredentialsProps extends IdentifiableComponentInterface {
     agentId: string;
@@ -88,29 +89,29 @@ export default function AgentCredentials({
 
 
 
-                    <ApplicationCertificateWrapper
-                        protocol={ SupportedAuthProtocolTypes.OIDC }
-                        reasonInsideTooltipWhyDeleteIsNotAllowed={ (
-                            <Fragment>
-                                <Trans
-                                    i18nKey={ "applications:forms" +
-                                                            ".inboundOIDC.sections.certificates.disabledPopup" }
+
+                    <>
+                        <Divider />
+                        <Divider hidden />
+                        <SemanticGrid.Row columns={ 1 }>
+                            <SemanticGrid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Heading as="h4">
+                        Certificate
+                                </Heading>
+                                <Button
+                                    basic
+                                    primary
+                                    size="small"
+                                    className="form-button"
+                                    data-testid={ `${ componentId }-submit-button` }
                                 >
-                                    This certificate is used to encrypt the <Code>id_token</Code>.
-                                    First, you need to disable <Code>id_token</Code> encryption to proceed.
-                                </Trans>
-                            </Fragment>
-                        ) }
-                        onUpdate={ null }
-                        hidden={ false }
-                        readOnly={ false }
-                        application={ null }
-                        updateCertFinalValue={ () => null }
-                        updateCertType={ () => null }
-                        certificate={ null }
-                        isRequired={ true }
-                        triggerSubmit={ null }
-                    />
+                                Generate Certificate
+                                </Button>
+                            </SemanticGrid.Column>
+                        </SemanticGrid.Row>
+                    </>
+                
+            
 
                     <PrimaryButton className="mt-5">Update</PrimaryButton>
 
