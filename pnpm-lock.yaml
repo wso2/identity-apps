@@ -537,7 +537,7 @@ importers:
         specifier: ^2.25.206
         version: link:../../features/admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.43.2
+        specifier: ^2.43.3
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.203
