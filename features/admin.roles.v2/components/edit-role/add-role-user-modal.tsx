@@ -46,11 +46,29 @@ import { Dropdown, DropdownProps, Grid, GridColumn, Modal } from "semantic-ui-re
  * Proptypes for the group users list component.
  */
 interface AddRoleUserModalProps extends IdentifiableComponentInterface {
+    /**
+     * The role object which users are being assigned to.
+     */
     role: RolesInterface;
+    /**
+     * The function to be called when the user list is submitted.
+     */
     handleAddUserSubmit: (selectedUsers: UserBasicInterface[]) => void;
+    /**
+     * The function to be called when the modal is closed.
+     */
     handleCloseAddNewUserModal: () => void;
+    /**
+     * Flag to show/hide the modal.
+     */
     showAddNewUserModal: boolean;
+    /**
+     * Currently selected user store.
+     */
     userstore: string;
+    /**
+     * List of available user stores.
+     */
     availableUserStores: UserStoreDropdownItem[];
 }
 
