@@ -75,10 +75,6 @@ const useDynamicForm = (fields) => {
     const handleSubmit = (onSubmit) => (event) => {
         event.preventDefault();
 
-        if (!formState.isValid) {
-            return;
-        }
-
         let errors = [];
 
         fields.forEach(field => {
