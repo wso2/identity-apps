@@ -1,5 +1,14 @@
 # @wso2is/admin.extensions.v1
 
+## 2.37.3
+
+### Patch Changes
+
+- [#8005](https://github.com/wso2/identity-apps/pull/8005) [`43088ae8e3ef6aee49e7ed6f60ee3bd520a11e25`](https://github.com/wso2/identity-apps/commit/43088ae8e3ef6aee49e7ed6f60ee3bd520a11e25) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add support to show back channel logout URL based on feature config
+
+- Updated dependencies [[`43088ae8e3ef6aee49e7ed6f60ee3bd520a11e25`](https://github.com/wso2/identity-apps/commit/43088ae8e3ef6aee49e7ed6f60ee3bd520a11e25)]:
+  - @wso2is/admin.applications.v1@2.34.1
+
 ## 2.37.2
 
 ### Patch Changes

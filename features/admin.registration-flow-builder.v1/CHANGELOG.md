@@ -1,5 +1,14 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.5.5
+
+### Patch Changes
+
+- [#8003](https://github.com/wso2/identity-apps/pull/8003) [`beb66226b10a981b51dcd1494219fe5c223185df`](https://github.com/wso2/identity-apps/commit/beb66226b10a981b51dcd1494219fe5c223185df) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve registration AI loading screen
+
+- Updated dependencies [[`beb66226b10a981b51dcd1494219fe5c223185df`](https://github.com/wso2/identity-apps/commit/beb66226b10a981b51dcd1494219fe5c223185df)]:
+  - @wso2is/common.ai.v1@2.27.2
+
 ## 0.5.4
 
 ### Patch Changes

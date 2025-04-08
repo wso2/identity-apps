@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.52.2
+
+### Patch Changes
+
+- [#8008](https://github.com/wso2/identity-apps/pull/8008) [`ea95f2a8d6c9390394e74362d261de97eb7f48fc`](https://github.com/wso2/identity-apps/commit/ea95f2a8d6c9390394e74362d261de97eb7f48fc) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add support to show back channel logout URL based on feature config
+
+* [#8003](https://github.com/wso2/identity-apps/pull/8003) [`beb66226b10a981b51dcd1494219fe5c223185df`](https://github.com/wso2/identity-apps/commit/beb66226b10a981b51dcd1494219fe5c223185df) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve registration AI loading screen
+
+* Updated dependencies [[`43088ae8e3ef6aee49e7ed6f60ee3bd520a11e25`](https://github.com/wso2/identity-apps/commit/43088ae8e3ef6aee49e7ed6f60ee3bd520a11e25)]:
+  - @wso2is/admin.applications.v1@2.34.1
+  - @wso2is/admin.extensions.v1@2.37.3
+
 ## 2.52.1
 
 ### Patch Changes

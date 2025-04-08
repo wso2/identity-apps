@@ -513,7 +513,7 @@ importers:
         specifier: ^1.5.0
         version: link:../../features/admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.34.0
+        specifier: ^2.34.1
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.authentication.v1':
         specifier: ^2.25.204
@@ -549,7 +549,7 @@ importers:
         specifier: ^2.25.203
         version: link:../../features/admin.email-providers.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.37.2
+        specifier: ^2.37.3
         version: link:../../features/admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.6.1
@@ -2632,7 +2632,7 @@ importers:
         specifier: ^2.40.6
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.37.2
+        specifier: ^2.37.3
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.4.203
@@ -7792,7 +7792,7 @@ importers:
         specifier: ^2.25.203
         version: link:../admin.api-resources.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.34.0
+        specifier: ^2.34.1
         version: link:../admin.applications.v1
       '@wso2is/admin.authentication.v1':
         specifier: ^2.25.203
@@ -13733,7 +13733,7 @@ importers:
         specifier: ^2.34.0
         version: link:../admin.server-configurations.v1
       '@wso2is/common.ai.v1':
-        specifier: ^2.27.0
+        specifier: ^2.27.2
         version: link:../common.ai.v1
       '@wso2is/core':
         specifier: ^2.7.0
