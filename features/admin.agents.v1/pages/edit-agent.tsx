@@ -98,11 +98,11 @@ export default function EditAgent({
             menuItem: "Groups",
             render: () =>  <ResourceTab.Pane><AgentGroups /></ResourceTab.Pane>
         },
-        {
-            componentId: "logs",
-            menuItem: "Audit Logs",
-            render: () => <AgentLogs />
-        }
+        // {
+        //     componentId: "logs",
+        //     menuItem: "Audit Logs",
+        //     render: () => <AgentLogs />
+        // }
     ];
 
     const handleBackButtonClick = () => {
