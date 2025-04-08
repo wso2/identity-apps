@@ -19,14 +19,17 @@
 import { AutocompleteRenderGetTagProps, AutocompleteRenderInputParams, Typography } from "@mui/material";
 import TextField from "@oxygen-ui/react/TextField/TextField";
 import { AutoCompleteRenderOption } from "@wso2is/admin.roles.v2/components/edit-role/edit-role-common/auto-complete-render-option";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { CheckboxFieldAdapter, FinalForm, FinalFormField, FormRenderProps } from "@wso2is/form/src";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { CheckboxFieldAdapter, FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form/src";
 import { Button, Hint, Steps } from "@wso2is/react-components";
 import { t } from "i18next";
 import React, { HTMLAttributes, SyntheticEvent, memo, useMemo, useState } from "react";
 import "./add-integration-form.scss";
+import { useDispatch } from "react-redux";
 import { Checkbox, Divider, Grid, Icon, Input, Modal, Radio } from "semantic-ui-react";
 
+import { v4 as uuidv4 } from "uuid";
 import { STATIC_CREDENTIAL_ENABLED_INTEGRATIONS } from "../../constants/agents";
 import Autocomplete from "@oxygen-ui/react/Autocomplete";
 
@@ -52,6 +55,8 @@ export default function AddIntegrationWizard({
     onUpdate,
     ["data-componentid"]: componentId
 }: AddIntegrationFormProps) {
+    const dispatch: any = useDispatch();
+
     const [ selectedCredentialType, setSelectedCredentialType ] = useState<CredentialType>(CredentialType.OAUTH2);
 
     const [ isAccount, setIsAccountSelected ] = useState(false);
@@ -59,10 +64,10 @@ export default function AddIntegrationWizard({
 
 
     // Define state for each checkbox
-  const [isCalendarSelected, setCalendarSelected] = useState(false);
-  const [isReadonlySelected, setReadonlySelected] = useState(false);
-  const [isCeventsSelected, setCeventsSelected] = useState(false);
-  const [isFreebusySelected, setFreebusySelected] = useState(false);
+    const [ isCalendarSelected, setCalendarSelected ] = useState(false);
+    const [ isReadonlySelected, setReadonlySelected ] = useState(false);
+    const [ isCeventsSelected, setCeventsSelected ] = useState(false);
+    const [ isFreebusySelected, setFreebusySelected ] = useState(false);
 
 
 
@@ -90,71 +95,71 @@ export default function AddIntegrationWizard({
 
                 <div style={ { height: "130px", overflow: "scroll", overflowX: "hidden" } }>
 
-                <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-  <Checkbox
-    className="mt-5"
-    label={""}
-    onChange={() => setCalendarSelected(!isCalendarSelected)}
-    checked={isCalendarSelected}
-    data-componentid={`${componentId}-connected-account-checkbox-calendar`}
-  />
-  <div style={{ marginTop: "5%", marginLeft: "2%" }}>
-    <Typography variant="body1">
+                    <div style={ { display: "flex", flexDirection: "row", alignItems: "center" } }>
+                        <Checkbox
+                            className="mt-5"
+                            label={ "" }
+                            onChange={ () => setCalendarSelected(!isCalendarSelected) }
+                            checked={ isCalendarSelected }
+                            data-componentid={ `${componentId}-connected-account-checkbox-calendar` }
+                        />
+                        <div style={ { marginTop: "5%", marginLeft: "2%" } }>
+                            <Typography variant="body1">
       See, edit, share, and delete all the calendars you can access using Google Calendar.
-    </Typography>
-    <Typography variant="body2">
+                            </Typography>
+                            <Typography variant="body2">
       https://www.googleapis.com/auth/calendar
-    </Typography>
-  </div>
-</div>
+                            </Typography>
+                        </div>
+                    </div>
 
-<div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-  <Checkbox
-    className="mt-5"
-    label={""}
-    onChange={() => setReadonlySelected(!isReadonlySelected)}
-    checked={isReadonlySelected}
-    data-componentid={`${componentId}-connected-account-checkbox-readonly`}
-  />
-  <div style={{ marginTop: "5%", marginLeft: "2%" }}>
-    <Typography variant="body1">View events on all your calendars.</Typography>
-    <Typography variant="body2">
+                    <div style={ { display: "flex", flexDirection: "row", alignItems: "center" } }>
+                        <Checkbox
+                            className="mt-5"
+                            label={ "" }
+                            onChange={ () => setReadonlySelected(!isReadonlySelected) }
+                            checked={ isReadonlySelected }
+                            data-componentid={ `${componentId}-connected-account-checkbox-readonly` }
+                        />
+                        <div style={ { marginTop: "5%", marginLeft: "2%" } }>
+                            <Typography variant="body1">View events on all your calendars.</Typography>
+                            <Typography variant="body2">
       https://www.googleapis.com/auth/calendar.events.readonly
-    </Typography>
-  </div>
-</div>
+                            </Typography>
+                        </div>
+                    </div>
 
-<div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-  <Checkbox
-    className="mt-5"
-    label={""}
-    onChange={() => setCeventsSelected(!isCeventsSelected)}
-    checked={isCeventsSelected}
-    data-componentid={`${componentId}-connected-account-checkbox-cevents`}
-  />
-  <div style={{ marginTop: "5%", marginLeft: "2%" }}>
-    <Typography variant="body1">View and edit events on all your calendars.</Typography>
-    <Typography variant="body2">
+                    <div style={ { display: "flex", flexDirection: "row", alignItems: "center" } }>
+                        <Checkbox
+                            className="mt-5"
+                            label={ "" }
+                            onChange={ () => setCeventsSelected(!isCeventsSelected) }
+                            checked={ isCeventsSelected }
+                            data-componentid={ `${componentId}-connected-account-checkbox-cevents` }
+                        />
+                        <div style={ { marginTop: "5%", marginLeft: "2%" } }>
+                            <Typography variant="body1">View and edit events on all your calendars.</Typography>
+                            <Typography variant="body2">
       https://www.googleapis.com/auth/calendar.events
-    </Typography>
-  </div>
-</div>
+                            </Typography>
+                        </div>
+                    </div>
 
-<div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-  <Checkbox
-    className="mt-5"
-    label={""}
-    onChange={() => setFreebusySelected(!isFreebusySelected)}
-    checked={isFreebusySelected}
-    data-componentid={`${componentId}-connected-account-checkbox-freebusy`}
-  />
-  <div style={{ marginTop: "5%", marginLeft: "2%" }}>
-    <Typography variant="body1">View your availability in your calendars.</Typography>
-    <Typography variant="body2">
+                    <div style={ { display: "flex", flexDirection: "row", alignItems: "center" } }>
+                        <Checkbox
+                            className="mt-5"
+                            label={ "" }
+                            onChange={ () => setFreebusySelected(!isFreebusySelected) }
+                            checked={ isFreebusySelected }
+                            data-componentid={ `${componentId}-connected-account-checkbox-freebusy` }
+                        />
+                        <div style={ { marginTop: "5%", marginLeft: "2%" } }>
+                            <Typography variant="body1">View your availability in your calendars.</Typography>
+                            <Typography variant="body2">
       https://www.googleapis.com/auth/calendar.events.freebusy
-    </Typography>
-  </div>
-</div>
+                            </Typography>
+                        </div>
+                    </div>
 
 
                 </div>
@@ -186,92 +191,123 @@ export default function AddIntegrationWizard({
                 </div>
             </Modal.Header>
             <Modal.Content scrolling style={ { height: "70vh" } }>
-                <Typography variant="h6">Connection Method</Typography>
-
-                <Radio
-                    className="mt-3"
-                    label={ "OAuth 2.0" }
-                    onChange={ () => setSelectedCredentialType(CredentialType.OAUTH2) }
-                    checked={ selectedCredentialType === CredentialType.OAUTH2 }
-                    data-componentid={ `${componentId}-oauth2-checkbox` }
-                />
-
-                <Radio
-                    className="ml-5 mt-3"
-                    label={ "Token (Eg: PAT, API key etc)" }
-                    onChange={ () => setSelectedCredentialType(CredentialType.STATIC) }
-                    checked={ selectedCredentialType === CredentialType.STATIC }
-                    data-componentid={ `${componentId}-static-credential-checkbox` }
-                />
-                <Hint inline popup>
-                    Provide a long-lived credential that the agent can use without requiring user approval during execution.
-                </Hint>
-
-                <Grid.Row>
-                    <Grid.Column computer={ 12 }>
-                        { selectedCredentialType === CredentialType.STATIC && (
-                            <TextField
-                                type="password"
-                                className="mt-2"
-                                sx={ { width: "100%" } }
-                                placeholder={ "Enter the token obtained from " + selectedIntegration?.name }
-                            />
-                        ) }
-                    </Grid.Column>
-                </Grid.Row>
-
-                { selectedCredentialType === CredentialType.OAUTH2 && (<>
-                    <Scopes />
-                    <Divider style={ { marginTop: "7%", marginBottom: "0%" } }/>
-                </>) }
+                { selectedIntegration?.name === "MCP Client" ? (<div>
+                    <FinalForm
+                        onSubmit={ (values: any) => {
 
 
-                { selectedCredentialType === CredentialType.OAUTH2 && (
-                    <Grid>
-                        <Grid.Row>
-                            <Grid.Column width={ 16 }>
-                                <Checkbox
-                                    className="mt-5"
-                                    label={ "Connected account" }
-                                    onChange={ () => setIsAccountSelected(!isAccount) }
-                                    checked={ isAccount === true }
-                                    data-componentid={ `${componentId}-connected-account-checkbox` }
+                        } }
+                        render={ ({ handleSubmit }: FormRenderProps) => {
+                            return (<form id="addAgentForm" onSubmit={ handleSubmit }>
+                                <FinalFormField
+                                    name="name"
+                                    label="Name"
+                                    autoComplete="new-password"
+                                    component={ TextFieldAdapter }
                                 />
-                                <Hint inline popup>
-                                    Connect an account for the agent to use.
-                                </Hint>
+                                <FinalFormField
+                                    label="Authorized Redirect URL"
+                                    name="callbackUrl"
+                                    className="mt-3"
+                                    autoComplete="new-password"
+                                    placeholder="Enter the callback URL"
+                                    component={ TextFieldAdapter }
+                                />
+                            </form>);
+                        } }
+                    />
 
-                                { isAccount && (
-                                    <div
-                                        style={ { display: "flex", flexDirection: "row", width: "100%" } }
+                </div>) : (
+                    <div>
+                        <Typography variant="h6">Connection Method</Typography>
+
+                        <Radio
+                            className="mt-3"
+                            label={ "OAuth 2.0" }
+                            onChange={ () => setSelectedCredentialType(CredentialType.OAUTH2) }
+                            checked={ selectedCredentialType === CredentialType.OAUTH2 }
+                            data-componentid={ `${componentId}-oauth2-checkbox` }
+                        />
+
+                        <Radio
+                            className="ml-5 mt-3"
+                            label={ "Token (Eg: PAT, API key etc)" }
+                            onChange={ () => setSelectedCredentialType(CredentialType.STATIC) }
+                            checked={ selectedCredentialType === CredentialType.STATIC }
+                            data-componentid={ `${componentId}-static-credential-checkbox` }
+                        />
+                        <Hint inline popup>
+Provide a long-lived credential that the agent can use without requiring user approval during execution.
+                        </Hint>
+
+                        <Grid.Row>
+                            <Grid.Column computer={ 12 }>
+                                { selectedCredentialType === CredentialType.STATIC && (
+                                    <TextField
+                                        type="password"
                                         className="mt-2"
-                                    >
-                                        <TextField
-                                            type="text"
-                                            placeholder="Enter account identifier"
-                                            sx={ { width: "20vw" } }
-                                        />
-                                        <Button basic primary className="ml-3">
-                                            Connect
-                                        </Button>
-                                    </div>
+                                        sx={ { width: "100%" } }
+                                        placeholder={ "Enter the token obtained from " + selectedIntegration?.name }
+                                    />
                                 ) }
                             </Grid.Column>
-                            <Grid.Column width={ 16 }>
-                                <Checkbox
-                                    className="mt-5"
-                                    label="Request on demand"
-                                    onChange={ () => setIsRequest(!isRequest) }
-                                    checked={ isRequest === true }
-                                    data-componentid={ `${componentId}-request-on-demand-checkbox` }
-                                />
-                                <Hint inline popup>
-                                    Configure agent to request access token with the selected scopes on demand.
-                                </Hint>
-                            </Grid.Column>
                         </Grid.Row>
-                    </Grid>
+
+                        { selectedCredentialType === CredentialType.OAUTH2 && (<>
+                            <Scopes />
+                            <Divider style={ { marginTop: "7%", marginBottom: "0%" } }/>
+                        </>) }
+
+
+                        { selectedCredentialType === CredentialType.OAUTH2 && (
+                            <Grid>
+                                <Grid.Row>
+                                    <Grid.Column width={ 16 }>
+                                        <Checkbox
+                                            className="mt-5"
+                                            label={ "Connected account" }
+                                            onChange={ () => setIsAccountSelected(!isAccount) }
+                                            checked={ isAccount === true }
+                                            data-componentid={ `${componentId}-connected-account-checkbox` }
+                                        />
+                                        <Hint inline popup>
+                Connect an account for the agent to use.
+                                        </Hint>
+
+                                        { isAccount && (
+                                            <div
+                                                style={ { display: "flex", flexDirection: "row", width: "100%" } }
+                                                className="mt-2"
+                                            >
+                                                <TextField
+                                                    type="text"
+                                                    placeholder="Enter account identifier"
+                                                    sx={ { width: "20vw" } }
+                                                />
+                                                <Button basic primary className="ml-3">
+                        Connect
+                                                </Button>
+                                            </div>
+                                        ) }
+                                    </Grid.Column>
+                                    <Grid.Column width={ 16 }>
+                                        <Checkbox
+                                            className="mt-5"
+                                            label="Request on demand"
+                                            onChange={ () => setIsRequest(!isRequest) }
+                                            checked={ isRequest === true }
+                                            data-componentid={ `${componentId}-request-on-demand-checkbox` }
+                                        />
+                                        <Hint inline popup>
+                Configure agent to request access token with the selected scopes on demand.
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        ) }
+                    </div>
                 ) }
+
             </Modal.Content>
 
             <Modal.Actions>
