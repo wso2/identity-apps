@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.23.1
+
+### Patch Changes
+
+- [#8014](https://github.com/wso2/identity-apps/pull/8014) [`138996caee82130d30cfedf7acc62bdce351140a`](https://github.com/wso2/identity-apps/commit/138996caee82130d30cfedf7acc62bdce351140a) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with password validation
+
 ## 2.23.0
 
 ### Minor Changes
