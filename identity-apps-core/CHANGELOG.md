@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.23.2
+
+### Patch Changes
+
+- [#8016](https://github.com/wso2/identity-apps/pull/8016) [`2bc210fce9c48f32e571fd415cd12f4c5d957924`](https://github.com/wso2/identity-apps/commit/2bc210fce9c48f32e571fd415cd12f4c5d957924) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with form submit
+
 ## 2.23.1
 
 ### Patch Changes
