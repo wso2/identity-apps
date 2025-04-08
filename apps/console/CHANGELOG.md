@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.52.1
+
+### Patch Changes
+
+- [#8001](https://github.com/wso2/identity-apps/pull/8001) [`2a85b7b79cd5b60bb7d669f8b19986ae2eaa3fd8`](https://github.com/wso2/identity-apps/commit/2a85b7b79cd5b60bb7d669f8b19986ae2eaa3fd8) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Add self-signup URL input in branding for sub-organizations. https://github.com/wso2/identity-apps/pull/7998
+
 ## 2.52.0
 
 ### Minor Changes
