@@ -218,6 +218,7 @@ export const AppUtils: any = (function() {
             return {
                 __experimental__platformIdP: _config.__experimental__platformIdP,
                 accountApp: {
+                    centralAppPath: _config.accountApp.centralAppOrigin + _config.accountApp.path,
                     commonPostLogoutUrl : commonPostLogoutUrl,
                     path: skipTenant ?
                         _config.accountAppOrigin + _config.accountApp.path:
