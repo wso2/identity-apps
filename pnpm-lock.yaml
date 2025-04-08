@@ -585,7 +585,7 @@ importers:
         specifier: ^2.26.203
         version: link:../../features/admin.organizations.v1
       '@wso2is/admin.policy-administration.v1':
-        specifier: ^1.0.120
+        specifier: ^1.0.119
         version: link:../../features/admin.policy-administration.v1
       '@wso2is/admin.private-key-jwt.v1':
         specifier: ^2.25.203
