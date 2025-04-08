@@ -232,6 +232,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         state.organization.organization);
     const disabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.applications?.disabledFeatures);
+    const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications);
+    const isBackChannelLogoutEnabled: boolean = isFeatureEnabled(
+        applicationFeatureConfig,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_BACK_CHANNEL_LOGOUT")
+    );
 
     const { isFAPIApplication } = initialValues;
     const { isOrganizationManagementEnabled } = useGlobalVariables();
@@ -385,10 +391,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const ENABLE_PKCE_CHECKBOX_VALUE: string = "mandatory";
     const SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE: string = "supportPlainTransformAlgorithm";
     const JWT: string = "JWT";
-
-    const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
-        state.config.ui.features?.applications
-    );
 
     /**
      * The listener handler for the enable PKCE toggle form field. This function
@@ -1385,7 +1387,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     idTokenSignedResponseAlg: values.get("idTokenSignedResponseAlg")
                 },
                 logout: {
-                    backChannelLogoutUrl: values.get("backChannelLogoutUrl"),
+                    backChannelLogoutUrl: isBackChannelLogoutEnabled
+                        ? values.get("backChannelLogoutUrl")
+                        : initialValues?.logout?.backChannelLogoutUrl,
                     frontChannelLogoutUrl: values.get("frontChannelLogoutUrl")
                 },
                 publicClient: !isMobileApplication ? values.get("supportPublicClients")?.length > 0 : true,
@@ -1411,8 +1415,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 && delete inboundConfigFormValues.scopeValidators;
             !applicationConfig.inboundOIDCForm.showIdTokenEncryption
             && delete inboundConfigFormValues.idToken.encryption;
-            !applicationConfig.inboundOIDCForm.showBackChannelLogout
-            && delete inboundConfigFormValues.logout.backChannelLogoutUrl;
             !applicationConfig.inboundOIDCForm.showRequestObjectSignatureValidation
             && delete inboundConfigFormValues.validateRequestObjectSignature;
 
@@ -3784,7 +3786,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             {
                 !isSPAApplication
                 && !isSubOrganization()
-                && applicationConfig.inboundOIDCForm.showBackChannelLogout
+                && isBackChannelLogoutEnabled
                 && !isSystemApplication
                 && !isDefaultApplication
                 && (
