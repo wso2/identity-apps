@@ -30,7 +30,7 @@ import useAIRegistrationFlowGenerationStatus from "../api/use-ai-registration-fl
 import {
     FACTS_ROTATION_DELAY,
     PROGRESS_UPDATE_INTERVAL,
-    STATUS_PROGRESS_MAP,
+    statusProgressMap,
     useGetFacts,
     useGetStatusLabels
 } from "../constants/registration-flow-ai-constants";
@@ -56,7 +56,7 @@ const RegistrationFlowAILoader = (): ReactElement => {
     const [ factIndex, setFactIndex ] = useState<number>(0);
     const [ showModal, setShowModal ] = useState<boolean>(true);
 
-    const statusProgress: Record<string, number> = STATUS_PROGRESS_MAP;
+    const statusProgress: Record<string, number> = statusProgressMap;
 
     useEffect(() => {
         const targetProgress: number = getProgress();

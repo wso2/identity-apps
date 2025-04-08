@@ -30,7 +30,7 @@
     margin-right: auto;
 
     .ai-prompt-input-container {
-        background-color: #fff;
+        background-color: var(--oxygen-palette-common-white);
         border-top-left-radius: 2rem;
         border-top-right-radius: 2rem;
         display: flex;
@@ -47,7 +47,7 @@
 
     .ai-prompt-actions-container {
         justify-content: space-between;
-        background-color: #fff;
+        background-color: var(--oxygen-palette-common-white);
         border-bottom-left-radius: 2rem;
         border-bottom-right-radius: 2rem;
         display: flex;
@@ -59,7 +59,7 @@
         padding-right: 16px;
 
         .ai-prompt-suggestions-button {
-            border: 1px solid #E8E8E8;
+            border: 1px solid var(--oxygen-palette-divider);
             color: #666;
             margin-right: 0.5rem;
             height: 40px;
@@ -72,7 +72,7 @@
         }
 
         .ai-prompt-history-button {
-            border: 1px solid #E8E8E8;
+            border: 1px solid var(--oxygen-palette-divider);
             color: #666;
             font-size: 13px;
             height: 40px;
@@ -88,7 +88,7 @@
         .ai-prompt-submit-button {
             float: right;
             background: linear-gradient(270deg, var(--oxygen-palette-gradients-primary-stop2), var(--oxygen-palette-gradients-primary-stop1));
-            color: #fff;
+            color: var(--oxygen-palette-common-white);
             border-radius: 50%;
             width: 40px;
             height: 40px;

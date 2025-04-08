@@ -45,7 +45,7 @@ export const useGetStatusLabels = (): Record<string, string> => {
     };
 };
 
-export const STATUS_PROGRESS_MAP: Record<string, number> = {
+export const statusProgressMap: Record<string, number> = {
     generating_registration_flow: 75,
     generation_of_registration_flow_complete: 100,
     generation_of_registration_step_complete: 80,
