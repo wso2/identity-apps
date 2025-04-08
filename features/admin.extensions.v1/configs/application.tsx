@@ -454,7 +454,6 @@ export const applicationConfig: ApplicationConfig = {
             "custom-application": []
         },
         shouldValidateCertificate: true,
-        showBackChannelLogout: true,
         showCertificates: true,
         showClientSecretMessage: false,
         showFrontChannelLogout: false,
