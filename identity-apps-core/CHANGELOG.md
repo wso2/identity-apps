@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.22.8
+
+### Patch Changes
+
+- [#7977](https://github.com/wso2/identity-apps/pull/7977) [`6d8d15189fd5e090ded37fc16fe6d7bf136a19c4`](https://github.com/wso2/identity-apps/commit/6d8d15189fd5e090ded37fc16fe6d7bf136a19c4) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve username validation
+
 ## 2.22.7
 
 ### Patch Changes
