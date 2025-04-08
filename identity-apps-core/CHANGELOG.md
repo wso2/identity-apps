@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.22.7
+
+### Patch Changes
+
+- [#7994](https://github.com/wso2/identity-apps/pull/7994) [`6c94cb58ffab51345823040b904398652d7f169b`](https://github.com/wso2/identity-apps/commit/6c94cb58ffab51345823040b904398652d7f169b) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve error handling in dynamic portal
+
 ## 2.22.6
 
 ### Patch Changes

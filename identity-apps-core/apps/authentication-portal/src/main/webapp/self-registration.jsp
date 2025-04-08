@@ -22,6 +22,7 @@
 <%@ page import="java.nio.file.Files, java.nio.file.Paths, java.io.IOException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.SelfRegistrationMgtClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
@@ -44,6 +45,21 @@
         myaccountUrl = IdentityManagementEndpointUtil.getUserPortalUrl(
             application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
     }
+%>
+
+<%
+    String accessedURL = request.getRequestURL().toString();
+    String servletPath = request.getServletPath();
+    String contextPath = request.getContextPath();
+    String subPath = servletPath + contextPath;
+    String baseURL = accessedURL.substring(0, accessedURL.length() - subPath.length());
+    String authenticationPortalURL = baseURL + contextPath;
+    
+    if (tenantDomain != null 
+        && !tenantDomain.isEmpty()
+        && !tenantDomain.equalsIgnoreCase(IdentityManagementEndpointConstants.SUPER_TENANT)) {
+        authenticationPortalURL = baseURL + "/t/" + tenantDomain + contextPath;
+    } 
 %>
 
 <%
@@ -148,7 +164,8 @@
                 const baseUrl = "<%= identityServerEndpointContextParam %>";
                 const authenticationEndpoint = baseUrl + "${pageContext.request.contextPath}";
                 const defaultMyAccountUrl = "<%= myaccountUrl %>";
-                const apiUrl = authenticationEndpoint + "/util/self-registration-api.jsp";
+                const authPortalURL = "<%= authenticationPortalURL %>";
+                const registrationFlowApiProxyPath = authPortalURL + "/util/self-registration-api.jsp";
                 const code = "<%= code != null ? code : null %>";
                 const state = "<%= state != null ? state : null %>";
                 
@@ -161,7 +178,6 @@
                 const [ error, setError ] = useState(null);
                 const [ postBody, setPostBody ] = useState(undefined);
                 const [ flowError, setFlowError ] = useState(undefined);
-                const [ apiError, setApiError ] = useState(undefined);
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
@@ -189,7 +205,7 @@
                     if (!postBody) return;
                     setLoading(true);
 
-                    fetch(apiUrl, {
+                    fetch(registrationFlowApiProxyPath, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(postBody)
@@ -234,7 +250,12 @@
 
                 useEffect(() => {
                     if (error && error.code) {
-                        setApiError(error);
+                        const errorDetails = getI18nKeyForError(error.code);
+                        const errorPageURL = authPortalURL + "/registration_error.do?" + "ERROR_MSG="
+                            + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
+                            + "<%= spId %>" + "&" + "REG_PORTAL_URL=" + authPortalURL + "/register.do";
+                        
+                        window.location.href = errorPageURL;
                     }
 
                     if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error) {
@@ -277,17 +298,6 @@
                             console.log(`Flow step type: ${flow.type}. No special action.`);
                     }
                 };
-
-                if (apiError) {
-                    return createElement(
-                        "div",
-                        { className: "ui visible negative message text-center" },
-                        [
-                            createElement("div", { key: "header", className: "header mb-2" }, apiError.message),
-                            createElement("p", { key: "description" }, apiError.description)
-                        ]
-                    );
-                }
 
                 if (loading || (!components || components.length === 0)) {
                     return createElement(
