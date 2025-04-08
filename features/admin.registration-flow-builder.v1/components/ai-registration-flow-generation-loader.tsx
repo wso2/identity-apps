@@ -183,7 +183,7 @@ const RegistrationFlowAILoader = (): ReactElement => {
                 <LinearProgress
                     variant="buffer"
                     value={ currentProgress }
-                    valueBuffer={ currentProgress + 1 }
+                    valueBuffer={ currentProgress + (1 + Math.random() * 10) }
                     sx={ {
                         width: "100%",
                         margin: "0 auto",

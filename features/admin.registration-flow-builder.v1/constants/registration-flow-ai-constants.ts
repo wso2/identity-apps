@@ -46,13 +46,13 @@ export const useGetStatusLabels = (): Record<string, string> => {
 };
 
 export const STATUS_PROGRESS_MAP: Record<string, number> = {
-    generating_registration_flow: 98,
+    generating_registration_flow: 75,
     generation_of_registration_flow_complete: 100,
-    generation_of_registration_step_complete: 100,
+    generation_of_registration_step_complete: 80,
     optimization_and_validation_complete: 40,
     optimizing_and_validating_user_query: 20,
-    retrieval_of_examples_complete: 90,
-    retrieving_examples: 70
+    retrieval_of_examples_complete: 70,
+    retrieving_examples: 60
 };
 
 export const INITIAL_PROGRESS: number = 5;
