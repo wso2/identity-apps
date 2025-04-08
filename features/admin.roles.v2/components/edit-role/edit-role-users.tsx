@@ -571,7 +571,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             {
                 showAddNewUserModal && (
                     <AddRoleUserModal
-                        data-componentid={ `${ componentId }-add-user-modal ` }
+                        data-componentid={ `${ componentId }-add-user-modal` }
                         showAddNewUserModal={ showAddNewUserModal }
                         handleAddUserSubmit={ assignUsersToRole }
                         handleCloseAddNewUserModal={ handleCloseAddNewUserModal }

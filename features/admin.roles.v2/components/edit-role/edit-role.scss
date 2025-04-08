@@ -45,3 +45,13 @@
         background: transparent;
     }
 }
+
+.add-role-user-modal-content {
+    min-height: 400px;
+}
+
+.ui.grid {
+    .column.add-role-user-modal-userstore-dropdown {
+        padding-right: 0px;
+    }
+}

@@ -198,7 +198,6 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
         }
 
         setSelectedUsers(checkedUsers);
-        setIsSelectAllUsers(userList?.length === checkedUsers?.length);
     };
 
     /**
@@ -235,7 +234,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                     }
                 </Heading>
             </Modal.Header>
-            <Modal.Content>
+            <Modal.Content className="add-role-user-modal-content">
                 <Grid>
                     { alert && alertComponent }
                     <TransferComponent
@@ -254,13 +253,13 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                         showSelectAllCheckbox={ !isUserListFetchRequestLoading && userList.length > 0 }
                         data-componentid={ `${ componentId }-transfer-component` }
                         leftActionPanel={ (
-                            <GridColumn width={ 1 }>
+                            <GridColumn width={ 1 } className="add-role-user-modal-userstore-dropdown">
                                 <Dropdown
                                     fluid
                                     selection
                                     labeled
                                     options={ availableUserStores }
-                                    data-testid="user-mgt-add-user-form-userstore-dropdown"
+                                    data-componentid={ `${ componentId }-userstore-dropdown` }
                                     name="userstore"
                                     disabled={ false }
                                     value={ selectedUserstore }
