@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.23.0
+
+### Minor Changes
+
+- [#8012](https://github.com/wso2/identity-apps/pull/8012) [`5e8c6e7c10e4ee98139f0211deb99acecea39238`](https://github.com/wso2/identity-apps/commit/5e8c6e7c10e4ee98139f0211deb99acecea39238) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Drop action ID in Google signup request
+
 ## 2.22.8
 
 ### Patch Changes
