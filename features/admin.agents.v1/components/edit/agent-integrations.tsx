@@ -30,7 +30,7 @@ export default function AgentIntegrations() {
         {
             configured: false,
             id: 0,
-            name: "MCP Client",
+            name: "MCP Server",
             imageUrl: "https://avatars.githubusercontent.com/u/182288589?s=200&v=4",
             description: "Allow agent to consume MCP servers."
         },

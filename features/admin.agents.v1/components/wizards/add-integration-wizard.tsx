@@ -191,7 +191,7 @@ export default function AddIntegrationWizard({
                 </div>
             </Modal.Header>
             <Modal.Content scrolling style={ { height: "70vh" } }>
-                { selectedIntegration?.name === "MCP Client" ? (<div>
+                { selectedIntegration?.name === "MCP Server" ? (<div>
                     <FinalForm
                         onSubmit={ (values: any) => {
 
@@ -203,6 +203,7 @@ export default function AddIntegrationWizard({
                                     name="name"
                                     label="Name"
                                     autoComplete="new-password"
+                                    placeholder="MCP server name"
                                     component={ TextFieldAdapter }
                                 />
                                 <FinalFormField
