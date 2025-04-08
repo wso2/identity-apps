@@ -27,13 +27,15 @@ import {
 } from "@mui/material";
 import Button from "@oxygen-ui/react/Button";
 import Stack from "@oxygen-ui/react/Stack";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AIPromptHistory from "./ai-prompt-history";
 import useAIPromptHistory from "../hooks/use-ai-prompt-history";
+import "./ai-prompt.scss";
 
-interface AIPromptProps {
+interface AIPromptProps extends IdentifiableComponentInterface {
     handlePromptSubmit?: () => void;
     setUserPrompt?: (value: string) => void;
     samplePrompts?: string[];
@@ -48,7 +50,8 @@ const AIPrompt = ({
     samplePrompts,
     userPrompt,
     promptHistoryPreferenceKey,
-    showHistory = true
+    showHistory = true,
+    "data-componentid": componentId = "ai-prompt"
 }: AIPromptProps): ReactElement => {
 
     const { t } = useTranslation();
@@ -65,112 +68,55 @@ const AIPrompt = ({
 
     return (
         <Box
-            sx={ {
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 0,
-                backgroundColor: "#f5f5f5",
-                p: 2,
-                borderRadius: 4,
-                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                width: "fit-content",
-                mx: "auto"
-            } }
+            className="ai-prompt-container"
+            data-componentid={ `${ componentId }-container` }
         >
-            <Box
-                sx={ {
-                    backgroundColor: "#fff",
-                    borderTopLeftRadius: "2rem",
-                    borderTopRightRadius: "2rem",
-                    display: "flex",
-                    alignItems: "center",
-                    minWidth: 600,
-                    paddingTop: "14px",
-                    paddingBottom: "12px",
-                    paddingLeft: "22px",
-                    paddingRight: "22px"
-                } }
-            >
+            <Box className="ai-prompt-input-container">
                 <InputBase
+                    className="ai-prompt-input"
+                    data-componentid={ `${ componentId }-input` }
                     placeholder="Describe your flow to AI"
                     multiline
                     maxRows={ 4 }
                     value={ userPrompt }
-                    onChange={ (e) => setUserPrompt(e.target.value) }
-                    sx={ {
-                        flex: 1,
-                        color: "#333",
-                        fontSize: "1rem"
-                    } }
+                    onChange={ (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+                    ) => setUserPrompt(e.target.value) }
                 />
             </Box>
-            <Box
-                sx={ {
-                    justifyContent: "space-between",
-                    backgroundColor: "#fff",
-                    borderBottomLeftRadius: "2rem",
-                    borderBottomRightRadius: "2rem",
-                    display: "flex",
-                    alignItems: "center",
-                    paddingBottom: "14px",
-                    paddingTop: "8px",
-                    minWidth: 600,
-                    px: 2
-                } }
-            >
+            <Box className="ai-prompt-actions-container">
                 <Stack direction="row" spacing={ 1 }>
                     <Button
+                        className="ai-prompt-suggestions-button"
+                        data-componentid={ `${ componentId }-suggestions-button` }
                         size="small"
                         variant="outlined"
                         startIcon={ <LightbulbOutlinedIcon /> }
-                        sx={ {
-                            border: "1px solid #E8E8E8",
-                            color: "#666",
-                            mr: 2,
-                            height: 40,
-                            fontSize: "13px"
-                        } }
                         onClick={ () => handleSurpriseMe() }
                     >
-                            Suggestions
+                        Suggestions
                     </Button>
                     { showHistory && (
                         <Button
+                            className="ai-prompt-history-button"
+                            data-componentid={ `${ componentId }-history-button` }
                             size="small"
                             variant="outlined"
                             startIcon={ <HistoryOutlinedIcon /> }
-                            sx={ {
-                                border: "1px solid #E8E8E8",
-                                color: "#666",
-                                fontSize: "13px",
-                                height: 40,
-                                mr: 2
-                            } }
                             onClick={ () => setShowPromptHistory(true) }
                         >
-                                History
+                            History
                         </Button>
                     ) }
                 </Stack>
                 <IconButton
+                    className="ai-prompt-submit-button"
+                    data-componentid={ `${ componentId }-submit-button` }
                     onClick={ () => {
                         addPrompt(userPrompt);
                         handlePromptSubmit();
                     } }
                     color="primary"
-                    sx={ {
-                        float: "right",
-                        ml: 2,
-                        backgroundColor: "primary.main",
-                        color: "#fff",
-                        borderRadius: "50%",
-                        width: 40,
-                        height: 40,
-                        "&:hover": {
-                            backgroundColor: "primary.dark"
-                        }
-                    } }
+                    disabled={ !userPrompt }
                 >
                     <SendOutlinedIcon />
                 </IconButton>
@@ -185,13 +131,9 @@ const AIPrompt = ({
                 )
             }
             <Typography
+                className="ai-prompt-disclaimer"
+                data-componentid={ `${ componentId }-disclaimer` }
                 variant="body2"
-                sx={ {
-                    textAlign: "center",
-                    color: "#555",
-                    marginTop: 1,
-                    maxWidth: "450px"
-                } }
             >
                 { t("ai:aiRegistrationFlow.disclaimer") }
                 <DocumentationLink
