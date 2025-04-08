@@ -181,12 +181,11 @@
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
-                    const actionTrigger = localStorage.getItem("actionTrigger");
 
                     if (code !== "null" && state !== "null") {
                         setPostBody({
                             flowId: savedFlowId,
-                            actionId: actionTrigger,
+                            actionId: "",
                             inputs: { 
                                 code,
                                 state 
