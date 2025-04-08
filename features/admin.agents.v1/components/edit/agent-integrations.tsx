@@ -28,6 +28,13 @@ export default function AgentIntegrations() {
     const [trigger, setTrigger] = useState(false);
     const [integrations, setIntegrations] = useState([
         {
+            configured: false,
+            id: 0,
+            name: "MCP Client",
+            imageUrl: "https://avatars.githubusercontent.com/u/182288589?s=200&v=4",
+            description: "Allow agent to consume MCP servers."
+        },
+        {
           configured: false,
           id: 1,
           name: "Google Calendar",
