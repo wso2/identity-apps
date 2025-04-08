@@ -354,6 +354,20 @@
                     "update": []
                 }
             },
+            "agents": {
+                "disabledFeatures": [
+                    "agents.groups",
+                    "agents.roles"
+                ],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "read": [],
+                    "update": []
+                }
+            },
             "ai": {
                 "disabledFeatures": [],
                 "enabled": false,
