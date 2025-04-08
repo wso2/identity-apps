@@ -159,6 +159,16 @@
             };
         </script>
         <script>
+            function isSuperTenant() {
+                return !userTenant ||
+                    userTenant === startupConfig.superTenantProxy ||
+                    userTenant === startupConfig.superTenant;
+            }
+
+            if (startupConfig.centralDeploymentEnabled && isSuperTenant()) {
+                window.location.replace(startupConfig.centralServerUrl);
+            }
+
             var proxyContextPathGlobal = startupConfig.proxyContextPathGlobal;
 
             var applicationDomain = window.location.origin;
