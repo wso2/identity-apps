@@ -21037,6 +21037,9 @@ importers:
       eslint-plugin-react-hooks:
         specifier: ^4.0.0
         version: 4.6.2(eslint@8.46.0)
+      jest-environment-jsdom:
+        specifier: ^29.7.0
+        version: 29.7.0
       rimraf:
         specifier: ^3.0.2
         version: 3.0.2
@@ -25739,7 +25742,6 @@ packages:
   /@mui/base@5.0.0-alpha.108(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-KjzRUts2i/ODlMfywhFTqTzQl+Cr9nlDSZxJcnYjrbOV/iRyQNBTDoiFJt+XEdRi0fZBHnk74AFbnP56ehybsA==}
     engines: {node: '>=12.0.0'}
-    deprecated: This package has been replaced by @base-ui-components/react
     peerDependencies:
       '@types/react': 18.0.18
       react: ^17.0.0 || ^18.0.0

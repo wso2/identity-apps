@@ -78,7 +78,10 @@ import { DiscoverableGroupRenderOption } from "./discoverable-group-render-optio
 import { useMyAccountStatus } from "../../../api/application";
 import { useGetGroupsMetadata } from "../../../api/use-get-groups-metadata";
 import { ApplicationManagementConstants } from "../../../constants/application-management";
-import { ApplicationInterface, DiscoverableGroupInterface, GroupMetadataInterface } from "../../../models/application";
+import {
+    ApplicationInterface, ApplicationTemplateListItemInterface,
+    DiscoverableGroupInterface, GroupMetadataInterface
+} from "../../../models/application";
 import "./general-details-form.scss";
 
 /**
@@ -141,6 +144,7 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface, Id
      * Is the Branding Section Hidden?
      */
     isBrandingSectionHidden?: boolean;
+    template?: ApplicationTemplateListItemInterface;
 }
 
 /**
@@ -224,6 +228,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         isSubmitting,
         isManagementApp,
         application,
+        template,
         isBrandingSectionHidden,
         [ "data-testid" ]: testId = "application-general-settings-form",
         [ "data-componentid" ]: componentId = "application-general-settings-form"
@@ -258,6 +263,14 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
     const isSubOrganizationType: boolean = orgType === OrganizationType.SUBORGANIZATION;
+
+    const [ isMcpClientApplication, setIsMcpClientApplication ] = useState<boolean>();
+
+    useEffect(() => {
+        if (template["originalTemplateId"] === "mcp-client-application") {
+            setIsMcpClientApplication(true);
+        }
+    }, [ template ]);
 
     const {
         data: myAccountStatus,
@@ -654,7 +667,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         )
                     }
                     {
-                        !isM2MApplication && isMyAccountEnabled && !isSubOrganizationType && (
+                        !isM2MApplication &&
+                        isMyAccountEnabled &&
+                        !isSubOrganizationType &&
+                        !isMcpClientApplication && (
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     { !isSubOrganizationType && <Divider /> }
@@ -726,7 +742,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         )
                     }
                     {
-                        !isM2MApplication && isMyAccountEnabled && !isSubOrganizationType && (
+                        !isM2MApplication &&
+                        isMyAccountEnabled &&
+                        !isSubOrganizationType &&
+                        !isMcpClientApplication && (
                             <Grid.Row columns={ 16 } className="discoverable-groups">
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Heading as="h6">
