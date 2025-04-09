@@ -1554,7 +1554,7 @@ export const console: ConsoleNS = {
                     certificateSection: {
                         heading: "Certificates",
                         description: "The certificate information provided here is used to verify signed responses from the external Identity Provider (IdP).",
-                        info: "This validation is applicable only to federated IdP-initiated logout and federated authentication flows " +
+                        info: "This validation is applicable only to federated IdP-initiated logout, and federated authentication flows " +
                         "that use native SDK-based app-native authentication.",
                         certificateEditSwitch: {
                             jwks: "Use JWKS Endpoint",

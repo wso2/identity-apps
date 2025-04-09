@@ -76,9 +76,8 @@ export interface IdpCertificatesV2Props extends IdentifiableComponentInterface {
 
 export type CertificateConfigurationMode = "jwks" | "certificates";
 
-const
-    FORM_ID: string = "idp-certificate-jwks-input-form",
-    JWKS: string = "jwks";
+const FORM_ID: string = "idp-certificate-jwks-input-form";
+const JWKS: string = "jwks";
 
 /**
  * This is the certificates component for IdPs.
@@ -413,9 +412,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     <Heading as="h4">
                         { t("console:develop.features.authenticationProvider.forms.certificateSection.heading") }
                     </Heading>
-                </Grid>
-                <Grid md={ 12 } lg={ 6 }>
-                    <Heading as="h6" color="grey">
+                    <Heading subHeading as="h6" color="grey">
                         { t("console:develop.features.authenticationProvider.forms.certificateSection.description") }
                     </Heading>
                 </Grid>
