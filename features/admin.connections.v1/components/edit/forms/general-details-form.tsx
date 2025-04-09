@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ImageUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
-import { EmphasizedSegment, Heading } from "@wso2is/react-components";
+import { EmphasizedSegment } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider, Grid } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import { FederatedAuthenticatorConstants } from "../../../constants/federated-authenticator-constants";
@@ -441,13 +441,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             { shouldShowCertificates() && (
                 <React.Fragment>
                     <Divider hidden/>
-                    <Grid>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Heading as="h4">Certificates</Heading>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
                     <IdpCertificates
                         isJWKSEnabled={
                             certificateOptionsForTemplate !== undefined
