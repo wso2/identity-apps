@@ -362,6 +362,20 @@ export enum AccountLockedReason {
 }
 
 /**
+ *  User account state.
+ *
+ * @readonly
+ */
+export enum AccountState {
+    LOCKED = "LOCKED",
+    PENDING_AP = "PENDING_AP",
+    PENDING_SR = "PENDING_SR",
+    PENDING_LR = "PENDING_LR",
+    DISABLED = "DISABLED",
+    UNLOCKED = "UNLOCKED"
+}
+
+/**
  *  user account locked reason.
  *
  * @readonly
@@ -394,5 +408,9 @@ export const PASSWORD_RESET_PROPERTIES: string[] = [
 export const ACCOUNT_LOCK_REASON_TO_RECOVERY_SCENARIO_MAP: Record<string, string> = {
     PENDING_ADMIN_FORCED_USER_PASSWORD_RESET: "ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK",
     PENDING_ASK_PASSWORD: "ASK_PASSWORD"
+};
+
+export const ACCOUNT_STATE_TO_RECOVERY_SCENARIO_MAP: Record<string, string> = {
+    PENDING_AP: "ASK_PASSWORD"
 };
 

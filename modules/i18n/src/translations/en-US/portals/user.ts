@@ -394,6 +394,9 @@ export const user: userNS = {
                 "user to be activated.",
             pendingSelfRegistration: "The account is locked pending user verification via the self-registration email."
         },
+        accountState: {
+            pendingAskPassword: "The user has not yet set a password using the setup email sent."
+        },
         confirmationModals: {
             deleteAttributeConfirmation: {
                 assertionHint: "Please confirm your action.",
@@ -583,6 +586,10 @@ export const user: userNS = {
                 genericError: {
                     description: "Error occurred while resending the recovery code.",
                     message: "Something went wrong"
+                },
+                inValidRecoveryScenarioError: {
+                    description: "No recovery options are configured.",
+                    message: "Invalid recovery scenario."
                 },
                 success: {
                     description: "The recovery code was resent successfully.",

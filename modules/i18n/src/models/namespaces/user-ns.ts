@@ -373,6 +373,9 @@ export interface userNS {
             pendingEmailVerification: string;
             pendingSelfRegistration: string;
         };
+        accountState: {
+            pendingAskPassword: string;
+        };
         fields: {
             createdDate: string;
             generic: {
@@ -623,6 +626,10 @@ export interface userNS {
             };
             resendCode: {
                 genericError: {
+                    message: string;
+                    description: string;
+                };
+                inValidRecoveryScenarioError: {
                     message: string;
                     description: string;
                 };
