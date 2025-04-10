@@ -13,7 +13,7 @@ import { FinalForm, FinalFormField, FormRenderProps, RadioGroupFieldAdapter, Tex
 import { SelectFieldAdapter } from "@wso2is/form/src";
 import { DropdownItemProps, DropdownProps } from "semantic-ui-react";
 import { WorkflowEngineTypeDropdownOption } from "../../models";
-import "./general-approval-process-details-form.scss";
+import "./general-workflow-model-details-form.scss";
 import { APPROVALPROCESS_VALIDATION_REGEX_PATTERNS } from "../../constants/workflow-model-constants";
 import { validateInputWithRegex } from "../../utils/approvalProcess-utils";
 import { SelectChangeEvent } from "@mui/material";
