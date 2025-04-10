@@ -169,7 +169,8 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             usersSuperOrganization: "",
             validationServiceMgt: "",
             validationServiceMgtSubOrg: "",
-            wellKnown: ""
+            wellKnown: "",
+            workflows: ""
         },
         features: {
             applications: null,
