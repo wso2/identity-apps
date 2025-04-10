@@ -29,6 +29,10 @@ export interface pagesNS {
         title: string;
         subTitle: string;
     };
+    approvalProcesses: {
+        title: string;
+        subTitle: string;
+    };
     editTemplate: {
         title: string;
         subTitle: string;

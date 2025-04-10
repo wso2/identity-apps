@@ -3856,6 +3856,7 @@ export const extensions: Extensions = {
                 attributeManagement: "Attribute Management",
                 AccountManagement: "Account Management",
                 userManagement: "User Management",
+                workflows: "Workflows",
                 organizationSettings: "Organization Settings"
             }
         }

@@ -6653,6 +6653,7 @@ export interface ConsoleNS {
                 addEmailTemplate: string;
                 addEmailTemplateLocale: string;
                 approvals: string;
+                workflowDefinitions: string;
                 attributeDialects: string;
                 categories: {
                     attributes: string;
@@ -6665,6 +6666,7 @@ export interface ConsoleNS {
                 };
                 certificates: string;
                 configurations: string;
+                createWorkflows: string;
                 editEmailTemplate: string;
                 editExternalDialect: string;
                 editGroups: string;
@@ -6672,6 +6674,7 @@ export interface ConsoleNS {
                 editRoles: string;
                 editUsers: string;
                 editUserstore: string;
+                editWorkflowModel: string;
                 emailDomainDiscovery: string;
                 emailTemplateTypes: string;
                 emailTemplates: string;
