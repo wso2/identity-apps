@@ -41,7 +41,7 @@
         "@wso2is/admin.users.v1": "^2.30.76",
         "@wso2is/admin.userstores.v1": "^2.26.125",
         "@wso2is/admin.validation.v1": "^2.27.104",
-        "@wso2is/admin.workflow-definitions.v1": "^0.0.1",
+        "@wso2is/admin.workflow-models.v1": "^0.0.1",
         "@wso2is/core": "^2.6.3",
         "@wso2is/dynamic-forms": "^2.4.36",
         "@wso2is/form": "^2.6.30",

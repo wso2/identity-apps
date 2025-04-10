@@ -6653,7 +6653,7 @@ export interface ConsoleNS {
                 addEmailTemplate: string;
                 addEmailTemplateLocale: string;
                 approvals: string;
-                workflowDefinitions: string;
+                workflowModels: string;
                 attributeDialects: string;
                 categories: {
                     attributes: string;

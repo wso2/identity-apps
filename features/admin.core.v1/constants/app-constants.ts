@@ -288,7 +288,7 @@ export class AppConstants {
                 `${ AppConstants.getDeveloperViewBasePath() }/applications/:id:tabName`
             ],
             [ "APPROVALS", `${ AppConstants.getAdminViewBasePath() }/approvals` ],
-            ["WORKFLOW_DEFINITIONS",`${ AppConstants.getAdminViewBasePath() }/workflows` ],
+            ["WORKFLOW_MODELS",`${ AppConstants.getAdminViewBasePath() }/workflows` ],
             ["WORKFLOW_MODEL_EDIT",`${ AppConstants.getAdminViewBasePath() }/workflows/:id` ],
             [ "BRANDING", `${ AppConstants.getDeveloperViewBasePath() }/branding` ],
             [ "CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates` ],

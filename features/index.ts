@@ -61,6 +61,6 @@ export * from "./admin.users.v1/public-api";
 export * from "./admin.userstores.v1/public-api";
 export * from "./admin.validation.v1/public-api";
 export * from "./admin.workflow-approvals.v1/public-api";
-export * from "./admin.workflow-definitions.v1/public-api";
+// export * from "./admin.workflow-models.v1/public-api";
 export * from "./admin.wsfed-configuration.v1/public-api";
 export * from "./admin.impersonation.v1/public-api";

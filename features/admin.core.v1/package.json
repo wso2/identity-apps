@@ -61,7 +61,7 @@
         "@wso2is/admin.userstores.v1": "^2.26.125",
         "@wso2is/admin.validation.v1": "^2.27.104",
         "@wso2is/admin.workflow-approvals.v1": "^2.25.166",
-        "@wso2is/admin.workflow-definitions.v1": "^0.0.1",
+        "@wso2is/admin.workflow-models.v1": "^0.0.1",
         "@wso2is/admin.wsfed-configuration.v1": "^2.25.166",
         "@wso2is/core": "^2.6.3",
         "@wso2is/forms": "^2.3.19",

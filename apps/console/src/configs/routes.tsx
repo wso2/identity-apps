@@ -1165,7 +1165,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             category: "extensions:manage.sidePanel.categories.userManagement",
             children: [
                 {
-                    component: lazy(() => import("@wso2is/admin.workflow-definitions.v1/pages/workflow-model-edit-page")),
+                    component: lazy(() => import("@wso2is/admin.workflow-models.v1/pages/workflow-model-edit-page")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
@@ -1177,15 +1177,15 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 }
             ],
-            component: lazy(() => import("@wso2is/admin.workflow-definitions.v1/pages/workflow-definitions")),
+            component: lazy(() => import("@wso2is/admin.workflow-models.v1/pages/workflow-models")),
             exact: true,
             icon: {
                 icon: <DocumentCheckIcon fill="black" className="icon" />
             },
-            id: "workflow-definitions",
-            name: "console:manage.features.sidePanel.workflowDefinitions",
+            id: "workflow-models",
+            name: "console:manage.features.sidePanel.workflowModels",
             order: 27,
-            path: AppConstants.getPaths().get("WORKFLOW_DEFINITIONS"),
+            path: AppConstants.getPaths().get("WORKFLOW_MODELS"),
             protected: true,
             showOnSidePanel: true
         },

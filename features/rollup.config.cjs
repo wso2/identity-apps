@@ -88,7 +88,7 @@ module.exports = [
             "./admin.validation.v1/public-api.ts",
             "./admin.workflow-approvals.v1/public-api.ts",
             "./admin.wsfed-configuration.v1/public-api.ts",
-            "./admin.workflow-definitions.v1/public-api.ts"
+            "./admin.workflow-models.v1/public-api.ts"
         ],
         onwarn,
         output: [
@@ -166,7 +166,7 @@ module.exports = [
                         "./admin.validation.v1": "./admin.validation.v1/public-api.js",
                         "./admin.workflow-approvals.v1": "./admin.workflow-approvals.v1/public-api.js",                  
                         "./admin.wsfed-configuration.v1": "./admin.wsfed-configuration.v1/public-api.js",
-                        "./admin.workflow-definitions.v1": "./admin.workflow-definitions.v1/public-api.js",
+                        "./admin.workflow-models.v1": "./admin.workflow-models.v1/public-api.js",
                     },
                     main: "./index.js",
                     module: "./index.js",

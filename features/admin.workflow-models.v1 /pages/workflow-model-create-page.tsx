@@ -16,7 +16,7 @@ import { ApprovalProcessFormDataInterface, ConfigurationsFormValuesInterface } f
 import { GeneralDetailsFormValuesInterface } from "../models/ui";
 import { useTranslation } from "react-i18next";
 import ConfigurationsForm, { ConfigurationsFormRef } from "../components/create/configuration-details-form";
-import "./approval-process-create-page.scss";
+import "./workflow-model-create-page.scss";
 import { useRequiredScopes } from "@wso2is/access-control";
 import {
     WorkflowDetails,

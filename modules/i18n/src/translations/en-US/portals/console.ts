@@ -6702,7 +6702,7 @@ export const console: ConsoleNS = {
                 addEmailTemplate: "Add Email Template",
                 addEmailTemplateLocale: "Add Email Template Locale",
                 approvals: "Approvals",
-                workflowDefinitions: "Workflow Models",
+                workflowModels: "Workflow Models",
                 attributeDialects: "Attributes",
                 categories: {
                     attributes: "User Attributes",
