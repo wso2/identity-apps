@@ -531,7 +531,7 @@ importers:
         specifier: ^2.27.114
         version: link:../../features/admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.33.89
+        specifier: ^2.33.90
         version: link:../../features/admin.connections.v1
       '@wso2is/admin.console-settings.v1':
         specifier: ^2.25.206
@@ -567,7 +567,7 @@ importers:
         specifier: ^1.6.203
         version: link:../../features/admin.impersonation.v1
       '@wso2is/admin.logs.v1':
-        specifier: ^1.6.1
+        specifier: ^1.6.2
         version: link:../../features/admin.logs.v1
       '@wso2is/admin.oidc-scopes.v1':
         specifier: ^2.25.203
@@ -663,7 +663,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.22.7
+        specifier: ^2.22.8
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.12
@@ -4980,7 +4980,7 @@ importers:
         specifier: ^2.27.113
         version: link:../admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.33.89
+        specifier: ^2.33.90
         version: 'link:'
       '@wso2is/admin.console-settings.v1':
         specifier: ^2.25.203
@@ -5025,7 +5025,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.21.2
+        specifier: ^2.22.8
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.12
@@ -10811,7 +10811,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.22.7
+        specifier: ^2.22.8
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.12
