@@ -1162,6 +1162,34 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
+            category: "extensions:manage.sidePanel.categories.userManagement",
+            children: [
+                {
+                    component: lazy(() => import("@wso2is/admin.workflow-definitions.v1/pages/workflow-model-edit-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "workflowModelEdit",
+                    name: "console:manage.features.sidePanel.editWorkflowModel",
+                    path: AppConstants.getPaths().get("WORKFLOW_MODEL_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.workflow-definitions.v1/pages/workflow-definitions")),
+            exact: true,
+            icon: {
+                icon: <DocumentCheckIcon fill="black" className="icon" />
+            },
+            id: "workflow-definitions",
+            name: "console:manage.features.sidePanel.workflowDefinitions",
+            order: 27,
+            path: AppConstants.getPaths().get("WORKFLOW_DEFINITIONS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
             category: "console:manage.features.sidePanel.categories.legacy",
             component: lazy(() => import("@wso2is/admin.certificates.v1/pages/certificates-keystore")),
             icon: {
