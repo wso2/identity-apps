@@ -53,6 +53,7 @@ import { useLayout, useLayoutStyle } from "../../api/layout";
 import { usePreviewContent, usePreviewStyle } from "../../api/preview-skeletons";
 import { BrandingPreferenceMeta } from "../../meta/branding-preference-meta";
 import { LAYOUT_DATA, PredefinedLayouts } from "../../meta/layouts";
+import "./"
 
 /**
  * Proptypes for the Branding preference preview component.
@@ -330,6 +331,12 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         return layoutContext[4];
     };
 
+    const handleClick = () => {
+        // Example: Open editor modal, or navigate to a route
+        console.log("Edit button clicked");
+        // e.g. openEditorModal();
+    };
+
     return (
         <div
             className="branding-preference-preview-container"
@@ -394,6 +401,12 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                                             title={ t("extensions:develop.branding.tabs.preview."
                                                 + "info.layout.activatedMessage.title") }
                                         />
+                                        <button
+                                            className="floating-editor-button"
+                                            onClick={ handleClick }
+                                        >
+                                                Edit Layout
+                                        </button>
                                     </div>
                                 ) : (
                                     isErrorOccured
