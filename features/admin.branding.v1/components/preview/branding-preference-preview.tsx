@@ -16,6 +16,7 @@
  * under the License.
  */
 
+// import Button from "@oxygen-ui/react/Button";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
 import { BrandingPreferenceInterface, PreviewScreenType } from "@wso2is/common.branding.v1/models";
@@ -26,6 +27,7 @@ import {
     EmptyPlaceholder,
     Iframe,
     Link,
+    PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
 import get from "lodash-es/get";
@@ -53,7 +55,6 @@ import { useLayout, useLayoutStyle } from "../../api/layout";
 import { usePreviewContent, usePreviewStyle } from "../../api/preview-skeletons";
 import { BrandingPreferenceMeta } from "../../meta/branding-preference-meta";
 import { LAYOUT_DATA, PredefinedLayouts } from "../../meta/layouts";
-import "./"
 
 /**
  * Proptypes for the Branding preference preview component.
@@ -331,10 +332,26 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         return layoutContext[4];
     };
 
+    const floatingButtonStyles = () => [
+        `
+        .floating-editor-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        `
+    ];
+
     const handleClick = () => {
-        // Example: Open editor modal, or navigate to a route
-        console.log("Edit button clicked");
+        //console.log("Edit button clicked");
         // e.g. openEditorModal();
+        window.location.href = "https://www.youtube.com";
     };
 
     return (
@@ -357,7 +374,9 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
             <Iframe
                 cloneParentStyleSheets
                 injectStyleNodeAfterParentStyles
-                styles={ resolveIframeStyles() }
+                styles={ layoutContext[0] === PredefinedLayouts.CUSTOM
+                    ? [ ...resolveIframeStyles(), ...floatingButtonStyles() ].join("")
+                    : resolveIframeStyles() }
                 styleNodeInjectionStrategy="prepend"
                 stylesheets={
                     isErrorOccured || layoutContext[0] === PredefinedLayouts.CUSTOM
@@ -401,12 +420,12 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                                             title={ t("extensions:develop.branding.tabs.preview."
                                                 + "info.layout.activatedMessage.title") }
                                         />
-                                        <button
+                                        <PrimaryButton
                                             className="floating-editor-button"
                                             onClick={ handleClick }
                                         >
-                                                Edit Layout
-                                        </button>
+                                            Create
+                                        </PrimaryButton>
                                     </div>
                                 ) : (
                                     isErrorOccured
