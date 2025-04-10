@@ -32,7 +32,9 @@ import {
     CertFileStrategy,
     Code,
     EmphasizedSegment,
+    Heading,
     Hint,
+    Message,
     PrimaryButton,
     Switcher,
     SwitcherOptionProps
@@ -75,6 +77,7 @@ export interface IdpCertificatesV2Props extends IdentifiableComponentInterface {
 export type CertificateConfigurationMode = "jwks" | "certificates";
 
 const FORM_ID: string = "idp-certificate-jwks-input-form";
+const JWKS: string = "jwks";
 
 /**
  * This is the certificates component for IdPs.
@@ -267,11 +270,11 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
         >
             <Field.Input
                 hint={ (
-                    <React.Fragment>
-                        A JSON Web Key (JWK) Set is a JSON object that represents a set of JWKs. The JSON
-                        object MUST have a <Code>keys</Code> member, with its value being an array of
+                    <>
+                        The JWKS (JSON Web Key Set) endpoint must return a JSON object that represents a set of JWKs.
+                        The JSON object MUST have a <Code>keys</Code> member, with its value being an array of
                         JWKs.
-                    </React.Fragment>
+                    </>
                 ) }
                 label="JWKS Endpoint URL"
                 ariaLabel="JWKS Endpoint URL"
@@ -325,7 +328,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
     );
 
     const certificateForm: ReactNode = (
-        <React.Fragment>
+        <>
             { !editingIDP?.certificate?.certificates?.length
                 ? (
                     <EmptyCertificatesPlaceholder
@@ -360,7 +363,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     </Segment>
                 )
             }
-        </React.Fragment>
+        </>
     );
 
     const supportedMimes = () => {
@@ -380,6 +383,14 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
     const shouldShowNoCertificatesAlert = (): boolean => templateType ===
         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER && !editingIDP?.certificate;
 
+    /**
+     * Checks if the info box in the certificates section should be shown.
+     *
+     * @returns `true` if the IDP is not a trusted token issuer, `false` otherwise.
+     */
+    const shouldShowCertificatesInfo = (): boolean => templateType !==
+        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER;
+
     if (!isJWKSEnabled && !isPEMEnabled) {
         return null;
     }
@@ -397,45 +408,61 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                         </Grid>
                     )
                 }
-                <Grid direction="column" container spacing={ 3 } xs={ 12 }>
-                    { isJWKSEnabled && isPEMEnabled && (
-                        <Grid md={ 12 } lg={ 6 }>
-                            <Switcher
-                                widths={ "two" }
-                                compact
-                                data-testid={ `${ testId }-switcher` }
-                                selectedValue={ selectedConfigurationMode }
-                                onChange={ onSelectionChange }
-                                options={ [
-                                    {
-                                        label: t("authenticationProvider:forms." +
-                                            "certificateSection.certificateEditSwitch.jwks"),
-                                        value: ("jwks" as CertificateConfigurationMode)
-                                    },
-                                    {
-                                        label: t("authenticationProvider:forms." +
-                                            "certificateSection.certificateEditSwitch.pem"),
-                                        value: ("certificates" as CertificateConfigurationMode)
-                                    }
-                                ] }
-                            />
-                        </Grid>
-                    ) }
+                <Grid md={ 12 } lg={ 6 }>
+                    <Heading as="h4">
+                        { t("console:develop.features.authenticationProvider.forms.certificateSection.heading") }
+                    </Heading>
+                    <Heading subHeading as="h6" color="grey">
+                        { t("console:develop.features.authenticationProvider.forms.certificateSection.description") }
+                    </Heading>
+                </Grid>
+                { shouldShowCertificatesInfo() && (
                     <Grid md={ 12 } lg={ 6 }>
-                        { selectedConfigurationMode === "jwks"
-                            ? jwksInputForm
-                            : (
-                                <React.Fragment>
-                                    { certificateForm }
-                                    <Hint>
-                                        Upload certificate(s) for this Identity Provider. You can include
-                                        multiple certificates in case if there&apos;s any certificate rotations.
-                                        You can upload { supportedMimes() } types of certificates.
-                                    </Hint>
-                                </React.Fragment>
-                            )
-                        }
+                        <Message
+                            data-componentid={ `${ testId }-info-messege` }
+                            type="info"
+                            content={ t("console:develop.features.authenticationProvider.forms." +
+                                "certificateSection.info") }
+                        />
                     </Grid>
+                ) }
+                { isJWKSEnabled && isPEMEnabled && (
+                    <Grid md={ 12 } lg={ 6 }>
+                        <Switcher
+                            widths="two"
+                            compact
+                            data-testid={ `${ testId }-switcher` }
+                            selectedValue={ selectedConfigurationMode }
+                            onChange={ onSelectionChange }
+                            options={ [
+                                {
+                                    label: t("authenticationProvider:forms." +
+                                        "certificateSection.certificateEditSwitch.jwks"),
+                                    value: (JWKS as CertificateConfigurationMode)
+                                },
+                                {
+                                    label: t("authenticationProvider:forms." +
+                                        "certificateSection.certificateEditSwitch.pem"),
+                                    value: ("certificates" as CertificateConfigurationMode)
+                                }
+                            ] }
+                        />
+                    </Grid>
+                ) }
+                <Grid md={ 12 } lg={ 6 }>
+                    { selectedConfigurationMode === JWKS
+                        ? jwksInputForm
+                        : (
+                            <>
+                                { certificateForm }
+                                <Hint>
+                                    Upload certificate(s) for this Identity Provider. You can include
+                                    multiple certificates in case if there&apos;s any certificate rotations.
+                                    You can upload { supportedMimes() } types of certificates.
+                                </Hint>
+                            </>
+                        )
+                    }
                 </Grid>
             </Grid>
             { isPEMEnabled && (
