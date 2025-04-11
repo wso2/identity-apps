@@ -31,6 +31,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { UserManagementConstants } from "../constants";
 import { SCIMBulkEndpointInterface } from "../models/endpoints";
 import {
+    ResendCodeRequestData,
     UserDetailsInterface,
     UserListInterface,
     UserSessionsInterface
@@ -463,6 +464,51 @@ export const terminateAllUserSessions = (userId: string): Promise<AxiosResponse>
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 UserManagementConstants.TERMINATE_ALL_USER_SESSIONS_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Resends the verification code/link for a user. This supports scenarios such as resending the
+ * verification link or code needed to complete an admin-forced password reset, resending an account
+ * confirmation link or code, and similar use cases.
+ *
+ * @param data - The request payload containing user information and properties.
+ * @returns A promise that resolves when the code is sent successfully.
+ * @throws `IdentityAppsApiException` if the request fails or if the response status is not as expected.
+ */
+export const resendCode = (data: ResendCodeRequestData): Promise<void> => {
+
+    const requestConfig: RequestConfigInterface = {
+        data,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.resendCode
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 201) {
+                throw new IdentityAppsApiException(
+                    UserManagementConstants.RESEND_CODE_REQUEST_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve();
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                UserManagementConstants.RESEND_CODE_REQUEST_ERROR,
                 error.stack,
                 error.code,
                 error.request,

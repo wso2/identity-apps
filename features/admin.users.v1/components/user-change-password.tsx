@@ -83,6 +83,11 @@ interface ChangePasswordPropsInterface extends TestableComponentInterface {
      * Handles force password reset trigger.
      */
     handleForcePasswordResetTrigger?: () => void;
+    /**
+     * Flag to identify if this is a password reset operation.
+     * When false, it indicates that a new password is being set (Usage: in the ask password flow).
+     */
+    isResetPassword?: boolean;
 }
 
 /**
@@ -103,6 +108,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         handleCloseChangePasswordModal,
         connectorProperties,
         handleForcePasswordResetTrigger,
+        isResetPassword = true,
         [ "data-testid" ]: testId
     } = props;
 
@@ -585,11 +591,15 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         updateUserInfo(user.id, data).then(() => {
             onAlertFired({
                 description: t(
-                    "user:profile.notifications.changeUserPassword.success.description"
+                    isResetPassword
+                        ? "user:profile.notifications.changeUserPassword.success.description"
+                        : "user:profile.notifications.setUserPassword.success.description"
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "user:profile.notifications.changeUserPassword.success.message"
+                    isResetPassword
+                        ? "user:profile.notifications.changeUserPassword.success.message"
+                        : "user:profile.notifications.setUserPassword.success.message"
                 )
             });
             handleCloseChangePasswordModal();
@@ -599,22 +609,35 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             .catch((error: any) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     onAlertFired({
-                        description: t("user:profile.notifications.changeUserPassword.error.description",
-                            { description: error.response.data.detail }),
+                        description: t(
+                            isResetPassword
+                                ? "user:profile.notifications.changeUserPassword.error.description"
+                                : "user:profile.notifications.setUserPassword.error.description",
+                            { description: error.response.data.detail }
+                        ),
                         level: AlertLevels.ERROR,
-                        message: t("user:profile.notifications.changeUserPassword.error." +
-                        "message")
+                        message: t(
+                            isResetPassword
+                                ? "user:profile.notifications.changeUserPassword.error.message"
+                                : "user:profile.notifications.setUserPassword.error.message"
+                        )
                     });
 
                     return;
                 }
 
                 onAlertFired({
-                    description: t("user:profile.notifications.changeUserPassword" +
-                        ".genericError.description"),
+                    description: t(
+                        isResetPassword
+                            ? "user:profile.notifications.changeUserPassword.genericError.description"
+                            : "user:profile.notifications.setUserPassword.genericError.description"
+                    ),
                     level: AlertLevels.ERROR,
-                    message: t("user:profile.notifications.changeUserPassword.genericError." +
-                        "message")
+                    message: t(
+                        isResetPassword
+                            ? "user:profile.notifications.changeUserPassword.genericError.message"
+                            : "user:profile.notifications.setUserPassword.genericError.message"
+                    )
                 });
                 handleCloseChangePasswordModal();
                 handleModalClose();
@@ -629,7 +652,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
      * configured in the server.
      */
     const resolveModalContent = () => {
-        if (governanceConnectorProperties?.length > 1) {
+        if (isResetPassword && governanceConnectorProperties?.length > 1) {
             return (
                 <>
                     <Grid.Row>
@@ -671,7 +694,9 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             <Message
                                 type="warning"
-                                content={ t("user:modals.changePasswordModal.message") }
+                                content={ isResetPassword
+                                    ? t("user:modals.changePasswordModal.message")
+                                    : t("user:modals.setPasswordModal.message") }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -687,7 +712,9 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             size="tiny"
         >
             <Modal.Header>
-                { t("user:modals.changePasswordModal.header") }
+                { isResetPassword
+                    ? t("user:modals.changePasswordModal.header")
+                    : t("user:modals.setPasswordModal.header") }
             </Modal.Header>
             <Modal.Content>
                 <Forms
@@ -717,7 +744,9 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                 disabled={ isSubmitting }
                                 onClick={ () => setTriggerSubmit() }
                             >
-                                { t("user:modals.changePasswordModal.button") }
+                                { isResetPassword
+                                    ? t("user:modals.changePasswordModal.button")
+                                    : t("user:modals.setPasswordModal.button") }
                             </PrimaryButton>
                             <LinkButton
                                 data-testid={ `${ testId }-cancel-button` }
