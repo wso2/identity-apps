@@ -399,7 +399,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
 
         {
-            category: "console:develop.features.sidePanel.categories.application",
+            category: "console:develop.features.sidePanel.categories.userManagement",
             children: [
                 {
                     component: lazy(() =>

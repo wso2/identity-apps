@@ -24,7 +24,7 @@ import { SupportedAuthProtocolTypes } from "@wso2is/admin.applications.v1/models
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 
-import { Button, Code, CopyInputField, EmphasizedSegment, Heading, PrimaryButton } from "@wso2is/react-components";
+import { Button, Code, CopyInputField, EmphasizedSegment, Heading, Message, PrimaryButton } from "@wso2is/react-components";
 import { t } from "i18next";
 import React, { Fragment } from "react";
 import { Trans } from "react-i18next";
@@ -35,25 +35,15 @@ interface AgentCredentialsProps extends IdentifiableComponentInterface {
     agentId: string;
 }
 
-const certificateOptions: any = [
-    {
-        label: "None",
-        value: "none"
-    },
-    {
-        label: "JWKS URL",
-        value: "jwks"
-    },
-    {
-        label: "Provide certificate",
-        value: "certificate"
-    }
-];
-
 export default function AgentCredentials({
     agentId,
     ["data-componentid"]: componentId = "agent-credentials"
 }: AgentCredentialsProps) {
+
+    const regenerateAgentScret = () => {
+        /** TODO Impl. */
+    }
+
     return (
         <EmphasizedSegment padded="very" style={ { border: "none", padding: "21px" } }>
             <Typography variant="h4">
@@ -65,26 +55,38 @@ export default function AgentCredentials({
             <Grid container>
                 <Grid xs={ 8 }>
                     <div style={ { marginBottom: "20px" } }>
-                        <label>Client ID</label>
+                        <label>Agent ID</label>
                         <CopyInputField value={ "dZBvthATdJmUNb_knryEiKZ26Xoa" } />
                     </div>
 
-                    <label className="mt-5">Client secret</label>
                     <div style={ { display: "flex", flexDirection: "row" } }>
-                        <CopyInputField
-                            secret
-                            value={ "sdjskjksjkdjkjsdk" }
-                            hideSecretLabel={ "Hide secret" }
-                            showSecretLabel={ "Show secret" }
-                            data-componentid={ "client-secret-readonly-input" }
-                        />
-                        <Button
-                            color="red"
-                            className="oidc-action-button"
-                            data-testid={ `${componentId}-oidc-regenerate-button` }
-                        >
+
+
+                        <Message info className="">
+                            <div className="ui grid">
+                                <div className="eleven wide column">
+                                    If you’ve lost or forgotten the agent secret, you can { " " }
+                                    regenerate it, but be aware that any scripts or applications { " " }
+                                    using the current agent secret will need to be updated.
+                                </div>
+                                <div className="five wide column" style={ { display: "flex" } }>
+                                    <Button
+                                        color="red"
+                                        onClick={ regenerateAgentScret }
+                                        style={{width: "100%", height: "5vh", marginTop: "5%"}}
+                                        data-testid={ `${componentId}-oidc-regenerate-button` }
+                                    >
                             Regenerate
-                        </Button>
+                                    </Button>
+
+                                </div>
+                            </div>
+
+
+
+
+                        </Message>
+
                     </div>
 
 
@@ -110,8 +112,8 @@ export default function AgentCredentials({
                             </SemanticGrid.Column>
                         </SemanticGrid.Row>
                     </>
-                
-            
+
+
 
                     <PrimaryButton className="mt-5">Update</PrimaryButton>
 

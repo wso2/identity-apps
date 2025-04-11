@@ -3894,7 +3894,7 @@ export const extensions: Extensions = {
             categories: {
                 attributeManagement: "Attribute Management",
                 AccountManagement: "Account Management",
-                userManagement: "User Management",
+                userManagement: "Identities",
                 organizationSettings: "Organization Settings"
             }
         }

@@ -105,37 +105,6 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                                                 maxRows={ 6 }
                                                 component={ TextFieldAdapter }
                                             ></FinalFormField>
-                                            <Grid><Grid.Row>
-                                                <Grid.Column computer={ 11 }>
-                                                <FinalFormField
-                                name="manager"
-                                label="Owner"
-                                className="pt-3"
-                                readOnly
-                                initialValue={"admin@wso2.com"}
-                                component={ TextFieldAdapter }
-                                helperText={
-                                    (<Hint compact className="hint">
-                                        The human identity responsible for the agent's actions
-                                    </Hint>)
-                                }
-                            ></FinalFormField>
-                                                </Grid.Column>
-                     
-                                                <Grid.Column computer={ 5 }>
-                                                <Button basic primary className="ml-3" style={{ width: "95%", marginTop: "18%"}}>
-
-{"Update ownership" }
-</Button>
-                     
-                                                </Grid.Column>
-                                            
-
-                                            </Grid.Row>
-                                 
-                                                
-                                            </Grid>
-                                                       
                                             <FinalFormField
                                                 name="logo"
                                                 label="Logo"
@@ -172,6 +141,20 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                         onActionClick={ (): void => null }
                         data-testid={ `danger-zone-disable` }
                     /> */}
+
+                    <DangerZone
+                        actionTitle={
+                            "Disable agent"
+                        }
+                        header={
+                            "Disable agent"
+                        }
+                        subheader={
+                            "Once disabled, this agent will not be able to connect to any application or connection. Please be certain before you proceed"
+                        }
+                        onActionClick={ (): void => null }
+                        data-testid={ `-danger-zone` }
+                    />
 
                     <DangerZone
                         actionTitle={
