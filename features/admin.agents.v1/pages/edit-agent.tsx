@@ -79,8 +79,8 @@ export default function EditAgent({
             )
         },
         {
-            componentId: "api-resources",
-            menuItem: "API Resources",
+            componentId: "applications",
+            menuItem: "Applications",
             render: () =>  <ResourceTab.Pane><AgentConnectedApps /></ResourceTab.Pane>
         },
         {

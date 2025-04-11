@@ -38,6 +38,10 @@ export interface CopyInputFieldPropsInterface extends IdentifiableComponentInter
      */
     className?: string;
     /**
+     * Whether to provide the option to view secret.
+     */
+    showSecret?: boolean;
+    /**
      * Popup label for secret show state.
      */
     showSecretLabel?: string;
@@ -68,6 +72,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
     const {
         value,
         className,
+        showSecret,
         hideSecretLabel,
         secret,
         showSecretLabel,
@@ -138,7 +143,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
                         : "password"
             }
             icon={
-                secret && (
+                secret && showSecret && (
                     <Popup
                         trigger={ (
                             <Icon
