@@ -25,6 +25,7 @@ export interface Claim {
     dialectURI?: string;
     description: string;
     displayOrder: number;
+    multiValued: boolean;
     displayName: string;
     readOnly: boolean;
     regEx: string;
