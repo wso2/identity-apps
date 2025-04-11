@@ -41,7 +41,7 @@ import {
     ScimOperationsInterface,
     SearchRoleInterface
 } from "@wso2is/admin.roles.v2/models/roles";
-import { ConnectorPropertyInterface  } from "@wso2is/admin.server-configurations.v1";
+import { ConnectorPropertyInterface, ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
 import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
 import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { ProfileConstants } from "@wso2is/core/constants";
@@ -82,14 +82,14 @@ import { ChangePasswordComponent } from "./user-change-password";
 import { resendCode, updateUserInfo } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
-    ACCOUNT_LOCK_REASON_TO_RECOVERY_SCENARIO_MAP,
-    ACCOUNT_STATE_TO_RECOVERY_SCENARIO_MAP,
     AccountLockedReason,
     AccountState,
     AdminAccountTypes,
     CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP,
     LocaleJoiningSymbol,
     PASSWORD_RESET_PROPERTIES,
+    RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP,
+    RecoveryScenario,
     UserManagementConstants
 } from "../constants";
 import {
@@ -1552,7 +1552,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             user.userName !== adminUsername
                                         ) ? (
                                                 <Show when={ featureConfig?.users?.scopes?.update }>
-                                                    { isSetPassword() ? (
+                                                    { isSetPassword ? (
                                                         <DangerZone
                                                             data-testid={ `${ testId }-set-password` }
                                                             actionTitle={ t("user:editUser." +
@@ -2664,23 +2664,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     /**
      * Checks if the user account is in a pending ask password state where the user hasn't
      * set their password via the setup link yet.
-     *
-     * @returns true if the account state is PENDING_AP, false otherwise
      */
-    const isPendingAskPassword: boolean = useMemo(
-        (): boolean => accountState && accountState === AccountState.PENDING_AP, [ accountState ]);
+    const isPendingAskPassword: boolean = accountState === AccountState.PENDING_AP;
 
     /**
-     * Determines which password change option to display for the user.
+     * Determines which password change option to be displayed.
      *
-     * @returns true if the "Set Password" option should be presented—this indicates that the
+     * Is true if the "Set Password" option should be presented—this indicates that the
      * account is in the pending ask password state (i.e. the user hasn’t set a password yet).
-     * Returns false if the "Force Password Reset" option should be displayed, meaning the user
+     *
+     * Else false if the "Force Password Reset" option should be displayed, meaning the user
      * already has an existing password.
      */
-    const isSetPassword = (): boolean =>
-        (accountState && accountState === AccountState.PENDING_AP) ||
-        (accountLockedReason && accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD);
+    const isSetPassword: boolean =
+        (accountState === AccountState.PENDING_AP) ||
+        (accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD);
 
     /**
      * Determines whether the "Resend" link should be displayed.
@@ -2707,56 +2705,107 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const handleResendCode = async () => {
         setIsSubmitting(true);
 
+        const recoveryScenario: string | null = resolveRecoveryScenario();
+
+        if (!recoveryScenario) {
+            onAlertFired({
+                description: t("user:profile.notifications.resendCode.inValidRecoveryScenarioError.description"),
+                level: AlertLevels.ERROR,
+                message: t("user:profile.notifications.resendCode.inValidRecoveryScenarioError.message")
+            });
+        }
+
         try {
-            let recoveryScenario: string = null;
-
-            // If account is locked determine the recovery scenario based on the locked reason.
-            if (accountLocked && accountLockedReason) {
-                recoveryScenario = ACCOUNT_LOCK_REASON_TO_RECOVERY_SCENARIO_MAP[accountLockedReason];
-            }
-
-            // If account is not locked determine the recovery scenario based on the account state.
-            if (!accountLocked && isPendingAskPassword) {
-                recoveryScenario = ACCOUNT_STATE_TO_RECOVERY_SCENARIO_MAP[accountState];
-            }
-
-            if (recoveryScenario) {
-                const requestData: ResendCodeRequest = {
-                    properties: [
-                        {
-                            key: "RecoveryScenario",
-                            value: recoveryScenario
-                        }
-                    ],
-                    user: {
-                        realm: user[ SCIMConfigs.scim.systemSchema ]?.userSource,
-                        username: user?.userName
+            const requestData: ResendCodeRequest = {
+                properties: [
+                    {
+                        key: "RecoveryScenario",
+                        value: recoveryScenario
                     }
-                };
+                ],
+                user: {
+                    realm: user[ SCIMConfigs.scim.systemSchema ]?.userSource,
+                    username: user?.userName
+                }
+            };
 
-                await resendCode(requestData);
-                onAlertFired({
-                    description: t("user:profile.notifications.resendCode.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("user:profile.notifications.resendCode.success.message")
-                });
-            } else {
-                onAlertFired({
-                    description: t("user:profile.notifications.resendCode.inValidRecoveryScenarioError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("user:profile.notifications.resendCode.inValidRecoveryScenarioError.message")
-                });
-            }
+            await resendCode(requestData);
+            onAlertFired({
+                description: t("user:profile.notifications.resendCode.success.description",
+                    { recoveryOption: RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP[recoveryScenario] }),
+                level: AlertLevels.SUCCESS,
+                message: t("user:profile.notifications.resendCode.success.message")
+            });
         } catch (error: any) {
             onAlertFired({
                 description: error.response?.data?.description ||
-                    t("user:profile.notifications.resendCode.genericError.description"),
+                    t("user:profile.notifications.resendCode.genericError.description", {
+                        recoveryOption: RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP[recoveryScenario] }),
                 level: AlertLevels.ERROR,
                 message: t("user:profile.notifications.resendCode.genericError.message")
             });
         } finally {
             setIsSubmitting(false);
         }
+    };
+
+    /**
+     * Resolves the recovery scenario based on the account locked reason or account state.
+     *
+     * @returns The resolved recovery scenario.
+     */
+    const resolveRecoveryScenario = (): string | null => {
+        // If the account is locked and a locked reason is provided, process locked reason
+        // to determine the scenario.
+        if (accountLocked && accountLockedReason) {
+            if (accountLockedReason === AccountLockedReason.PENDING_ADMIN_FORCED_USER_PASSWORD_RESET) {
+                if (isAdminPasswordResetEmailLinkEnabled()) {
+                    return RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK;
+                }
+                if (isAdminPasswordResetEmailOTPEnabled()) {
+                    return RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_OTP;
+                }
+            }
+            if (accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD) {
+                return RecoveryScenario.ASK_PASSWORD;
+            }
+        }
+        // For non-locked accounts, use the account state to determine the scenario.
+        if (!accountLocked && accountState) {
+            if (accountState === AccountState.PENDING_AP) {
+                return RecoveryScenario.ASK_PASSWORD;
+            }
+        }
+
+        return null;
+    };
+
+    /**
+     * Checks if admin forced password reset via Email link is enabled.
+     *
+     * @returns true if enabled, false otherwise.
+     */
+    const isAdminPasswordResetEmailLinkEnabled = (): boolean => {
+        const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
+            (property: ConnectorPropertyInterface) =>
+                property.name === ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET
+        );
+
+        return property?.value === "true";
+    };
+
+    /**
+     * Checks if admin forced password reset via Email OTP is enabled.
+     *
+     * @returns true if enabled, false otherwise
+     */
+    const isAdminPasswordResetEmailOTPEnabled = (): boolean => {
+        const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
+            (property: ConnectorPropertyInterface) =>
+                property.name === ServerConfigurationsConstants.OTP_PASSWORD_RESET
+        );
+
+        return property?.value === "true";
     };
 
     return (
@@ -2768,7 +2817,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             { t(resolveUserAccountLockedReason()) }
                             { showResendLink && (
                                 <>
-                                    &nbsp;
                                     <a
                                         className="link pointing"
                                         onClick={ () => handleResendCode() }
@@ -2786,7 +2834,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             { t("user:profile.accountState.pendingAskPassword") }
                             { showResendLink && (
                                 <>
-                                    &nbsp;
                                     <a
                                         className="link pointing"
                                         onClick={ () => handleResendCode() }
@@ -3080,7 +3127,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     onAlertFired={ onAlertFired }
                     user={ user }
                     handleUserUpdate={ handleUserUpdate }
-                    isResetPassword={ !isSetPassword() }
+                    isResetPassword={ !isSetPassword }
                 />
             </>)
             : <ContentLoader dimmer/>

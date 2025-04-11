@@ -680,9 +680,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             <Message
                                 type="warning"
-                                content={ isResetPassword
-                                    ? t("user:modals.changePasswordModal.message")
-                                    :  t("user:modals.setPasswordModal.message") }
+                                content={ t("user:modals.changePasswordModal.message") }
                             />
                         </Grid.Column>
                     </Grid.Row>

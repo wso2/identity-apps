@@ -473,13 +473,15 @@ export const terminateAllUserSessions = (userId: string): Promise<AxiosResponse>
 };
 
 /**
- * Resends the verification code for the for recovery-related scenarios.
+ * Resends the verification code/link for a user. This supports scenarios such as resending the
+ * verification link or code needed to complete an admin-forced password reset, resending an account
+ * confirmation link or code, and similar use cases.
  *
  * @param data - The request payload containing user information and properties.
- * @returns A promise containing the response.
+ * @returns A promise that resolves when the code is sent successfully.
  * @throws `IdentityAppsApiException` if the request fails or if the response status is not as expected.
  */
-export const resendCode = (data: ResendCodeRequest): Promise<any> => {
+export const resendCode = (data: ResendCodeRequest): Promise<void> => {
 
     const requestConfig: RequestConfigInterface = {
         data,
@@ -502,7 +504,7 @@ export const resendCode = (data: ResendCodeRequest): Promise<any> => {
                     response.config);
             }
 
-            return Promise.resolve(response.data);
+            return Promise.resolve();
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(

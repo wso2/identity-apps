@@ -90,7 +90,8 @@ export class UserManagementConstants {
     public static readonly TERMINATE_ALL_USER_SESSIONS_ERROR: string = "Could not terminate all the user sessions " +
         "due to some error.";
 
-    public static readonly RESEND_CODE_REQUEST_ERROR: string = "Error occured while resending the recovery link/code.";
+    public static readonly RESEND_CODE_REQUEST_ERROR: string = "Error occured while resending the " +
+        "verification link/code.";
 
     public static readonly WSO2_LOCAL_CLAIM_DIALECT: string = "http://wso2.org/claims";
     public static readonly SCIM2_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0:User";
@@ -351,7 +352,6 @@ export enum UserSharedType {
  * @readonly
  */
 export enum AccountLockedReason {
-
     PENDING_SELF_REGISTRATION = "PENDING_SELF_REGISTRATION",
     PENDING_ADMIN_FORCED_USER_PASSWORD_RESET = "PENDING_ADMIN_FORCED_USER_PASSWORD_RESET",
     PENDING_EMAIL_VERIFICATION = "PENDING_EMAIL_VERIFICATION",
@@ -376,18 +376,52 @@ export enum AccountState {
 }
 
 /**
+ * Enum for recovery scenario.
+ *
+ * @readonly
+ */
+export enum RecoveryScenario {
+    NOTIFICATION_BASED_PW_RECOVERY = "NOTIFICATION_BASED_PW_RECOVERY",
+    QUESTION_BASED_PWD_RECOVERY = "QUESTION_BASED_PWD_RECOVERY",
+    USERNAME_RECOVERY = "USERNAME_RECOVERY",
+    SELF_SIGN_UP = "SELF_SIGN_UP",
+    ASK_PASSWORD = "ASK_PASSWORD",
+    ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK = "ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK",
+    ADMIN_FORCED_PASSWORD_RESET_VIA_OTP = "ADMIN_FORCED_PASSWORD_RESET_VIA_OTP",
+    EMAIL_VERIFICATION_ON_UPDATE = "EMAIL_VERIFICATION_ON_UPDATE",
+    EMAIL_VERIFICATION_ON_VERIFIED_LIST_UPDATE = "EMAIL_VERIFICATION_ON_VERIFIED_LIST_UPDATE",
+    MOBILE_VERIFICATION_ON_UPDATE = "MOBILE_VERIFICATION_ON_UPDATE",
+    MOBILE_VERIFICATION_ON_VERIFIED_LIST_UPDATE = "MOBILE_VERIFICATION_ON_VERIFIED_LIST_UPDATE",
+    LITE_SIGN_UP = "LITE_SIGN_UP",
+    TENANT_ADMIN_ASK_PASSWORD = "TENANT_ADMIN_ASK_PASSWORD",
+    PASSWORD_EXPIRY = "PASSWORD_EXPIRY",
+    ADMIN_INVITE_SET_PASSWORD_OFFLINE = "ADMIN_INVITE_SET_PASSWORD_OFFLINE"
+}
+
+/**
+ * Enum for recovery option types.
+ *
+ * @readonly
+ */
+export enum RecoveryOptionTypes {
+    CODE = "code",
+    LINK = "link"
+}
+
+/**
  *  user account locked reason.
  *
  * @readonly
  */
 export const ACCOUNT_LOCK_REASON_MAP: Record<string, string> = {
-    ADMIN_INITIATED: "user:profile.accountLockReason.adminInitiated",
-    DEFAULT: "user:profile.accountLockReason.default",
-    MAX_ATTEMPTS_EXCEEDED: "user:profile.accountLockReason.maxAttemptsExceeded",
-    PENDING_ADMIN_FORCED_USER_PASSWORD_RESET: "user:profile.accountLockReason.pendingAdminForcedUserPasswordReset",
-    PENDING_ASK_PASSWORD: "user:profile.accountLockReason.pendingAskPassword",
-    PENDING_EMAIL_VERIFICATION: "user:profile.accountLockReason.pendingEmailVerification",
-    PENDING_SELF_REGISTRATION: "user:profile.accountLockReason.pendingSelfRegistration"
+    [AccountLockedReason.ADMIN_INITIATED]: "user:profile.accountLockReason.adminInitiated",
+    "DEFAULT": "user:profile.accountLockReason.default",
+    [AccountLockedReason.MAX_ATTEMPTS_EXCEEDED]: "user:profile.accountLockReason.maxAttemptsExceeded",
+    [AccountLockedReason.PENDING_ADMIN_FORCED_USER_PASSWORD_RESET]:
+        "user:profile.accountLockReason.pendingAdminForcedUserPasswordReset",
+    [AccountLockedReason.PENDING_ASK_PASSWORD]: "user:profile.accountLockReason.pendingAskPassword",
+    [AccountLockedReason.PENDING_EMAIL_VERIFICATION]: "user:profile.accountLockReason.pendingEmailVerification",
+    [AccountLockedReason.PENDING_SELF_REGISTRATION]: "user:profile.accountLockReason.pendingSelfRegistration"
 };
 
 export const CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP: Record<string, string> = {
@@ -405,12 +439,8 @@ export const PASSWORD_RESET_PROPERTIES: string[] = [
     ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET
 ];
 
-export const ACCOUNT_LOCK_REASON_TO_RECOVERY_SCENARIO_MAP: Record<string, string> = {
-    PENDING_ADMIN_FORCED_USER_PASSWORD_RESET: "ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK",
-    PENDING_ASK_PASSWORD: "ASK_PASSWORD"
+export const RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP: Record<string, string[]> = {
+    [RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK]: [ RecoveryOptionTypes.LINK ],
+    [RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_OTP]: [ RecoveryOptionTypes.CODE ],
+    [RecoveryScenario.ASK_PASSWORD]: [ RecoveryOptionTypes.LINK ]
 };
-
-export const ACCOUNT_STATE_TO_RECOVERY_SCENARIO_MAP: Record<string, string> = {
-    PENDING_AP: "ASK_PASSWORD"
-};
-

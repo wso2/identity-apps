@@ -584,7 +584,7 @@ export const user: userNS = {
             },
             resendCode: {
                 genericError: {
-                    description: "Error occurred while resending the recovery code.",
+                    description: "Error occurred while resending the recovery {{recoveryOption}}.",
                     message: "Something went wrong"
                 },
                 inValidRecoveryScenarioError: {
@@ -592,7 +592,7 @@ export const user: userNS = {
                     message: "Invalid recovery scenario."
                 },
                 success: {
-                    description: "The recovery code was resent successfully.",
+                    description: "The recovery {{recoveryOption}} resent successfully.",
                     message: "Resend successful."
                 }
             },
