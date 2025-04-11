@@ -78,8 +78,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     edges,
     onEdgesChange,
     onConnect,
-    onNodesDelete,
-    ...rest
+    onNodesDelete
 }: VisualFlowPropsInterface): ReactElement => {
     const edgeTypes: { [key: string]: FC<Edge> } = useMemo(() => {
         return {
