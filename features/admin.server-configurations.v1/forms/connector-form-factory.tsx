@@ -24,7 +24,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
-import { AdminForcedPasswordResetForm } from "./admin-forced-password-reset";
+import { AdminForcedPasswordResetForm } from "./admin-forced-password-reset-form/admin-forced-password-reset-form";
 import { AnalyticsConfigurationForm } from "./analytics-form";
 import { AskPasswordForm } from "./ask-password";
 import { LoginAttemptSecurityConfigurationFrom } from "./login-attempt-security-form";
