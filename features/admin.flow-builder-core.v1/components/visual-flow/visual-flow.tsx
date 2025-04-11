@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Controls, Edge, Node, NodeTypes, ReactFlow, ReactFlowProps, useReactFlow } from "@xyflow/react";
+import { Controls, Edge, Node, NodeTypes, ReactFlow, ReactFlowProps } from "@xyflow/react";
 import React, { FC, FunctionComponent, ReactElement, useMemo } from "react";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
 import { Resources } from "../../models/resources";
