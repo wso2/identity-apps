@@ -49,10 +49,10 @@ export class ApplicationTemplateConstants {
     public static readonly APPLICATION_INBOUND_PROTOCOL_KEYS: {
         [ AuthProtocolTypes.WS_FEDERATION ]: string;
         [ AuthProtocolTypes.WS_TRUST ]: string;
-    } = {
-        [ AuthProtocolTypes.WS_FEDERATION ]: "passiveSts",
-        [ AuthProtocolTypes.WS_TRUST ]: "wsTrust"
-    };
+        } = {
+            [ AuthProtocolTypes.WS_FEDERATION ]: "passiveSts",
+            [ AuthProtocolTypes.WS_TRUST ]: "wsTrust"
+        };
 
     /**
      * Excludes old application templates from triggering API calls to fetch
