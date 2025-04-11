@@ -1001,7 +1001,7 @@
                 border: @defaultBorderWidth solid @defaultBorderColor;
                 background-color: @pageBackground;
                 padding: 10px;
-                border-radius: 3px;
+                border-radius: 8px;
                 font-weight: 500;
             }
         }
@@ -1018,6 +1018,11 @@
                     top: 0;
                     z-index: 2;
                 }
+            }
+
+            &.bordered {
+                border: @defaultBorderWidth solid @defaultBorderColor !important;
+                padding: 0px 10px;
             }
         }
     }

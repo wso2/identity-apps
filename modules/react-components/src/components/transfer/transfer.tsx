@@ -75,6 +75,10 @@ export interface TransferComponentPropsInterface extends IdentifiableComponentIn
      * Element to be rendered on the left side of the search input.
      */
     leftActionPanel?: ReactElement;
+    /**
+     * Toggle list border.
+     */
+    listBordered?: boolean;
 }
 
 /**
@@ -109,6 +113,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         showSelectAllCheckbox,
         showListSearch,
         disabled,
+        listBordered,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
@@ -186,7 +191,8 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                             )
                                                         }
                                                         <Segment
-                                                            className="transfer-list-segment"
+                                                            className={ `transfer-list-segment ${listBordered
+                                                                ? "bordered" : null}` }
                                                             disabled={ disabled }
                                                         >
                                                             { list }
@@ -261,7 +267,8 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                             disabled={ disabled }
                                                         />
                                                         <Segment
-                                                            className="transfer-list-segment"
+                                                            className={ `transfer-list-segment ${listBordered
+                                                                ? "bordered" : null}` }
                                                             disabled={ disabled }
                                                         >
                                                             { list }
@@ -291,6 +298,7 @@ TransferComponent.defaultProps = {
     "data-testid": "transfer-component",
     disabled: false,
     isLoading: false,
+    listBordered: false,
     selectAllCheckboxLabel: "Select all",
     showListSearch: true
 };

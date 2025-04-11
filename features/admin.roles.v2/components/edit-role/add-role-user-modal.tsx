@@ -258,7 +258,8 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                     <TransferComponent
                         compact
                         basic
-                        bordered
+                        bordered={ false }
+                        listBordered={ true }
                         className="one-column-selection"
                         selectionComponent
                         searchPlaceholder={ t("groups:edit.users.searchUsers") }
@@ -294,6 +295,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                         ) }
                     >
                         <TransferList
+                            bordered={ true }
                             selectionComponent
                             isListEmpty={ isEmpty(userList) || userList.length <= 0 }
                             isLoading={ isUserListFetchRequestLoading || isUserListFetchRequestValidating }

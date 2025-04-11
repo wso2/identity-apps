@@ -50,6 +50,7 @@ export interface TransferListPropsInterface extends TableProps, IdentifiableComp
      */
     emptyPlaceholderDefaultContent?: string;
     disabled?: boolean;
+    bordered?: boolean;
 }
 
 /**
@@ -63,6 +64,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
 ): ReactElement => {
 
     const {
+        bordered,
         children,
         listHeaders,
         isListEmpty,
@@ -86,7 +88,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
             {
                 !isListEmpty
                     ? (
-                        <Table>
+                        <Table basic={ bordered ? "very" : true } padded={ bordered }>
                             {
                                 listHeaders instanceof Array && (
                                     <Table.Header>
@@ -151,6 +153,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
  * Default props for the transfer list component.
  */
 TransferList.defaultProps = {
+    bordered: false,
     "data-componentid": "transfer-list",
     "data-testid": "transfer-list",
     disabled: false
