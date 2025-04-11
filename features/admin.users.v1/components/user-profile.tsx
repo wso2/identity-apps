@@ -95,7 +95,7 @@ import {
 import {
     AccountConfigSettingsInterface,
     PatchUserOperationValue,
-    ResendCodeRequest,
+    ResendCodeRequestData,
     SchemaAttributeValueInterface,
     SubValueInterface
 } from "../models/user";
@@ -1579,8 +1579,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                             } }
                                                             isButtonDisabled={
                                                                 accountLocked &&
-                                                                // eslint-disable-next-line max-len
-                                                                accountLockedReason !== AccountLockedReason.PENDING_ADMIN_FORCED_USER_PASSWORD_RESET
+                                                                accountLockedReason !== AccountLockedReason.
+                                                                    PENDING_ADMIN_FORCED_USER_PASSWORD_RESET
                                                             }
                                                             buttonDisableHint={ t("user:editUser." +
                                                                 "dangerZoneGroup.passwordResetZone.buttonHint") }
@@ -2645,8 +2645,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         );
     };
 
-    /*
+    /**
      * Resolves the user account locked reason text.
+     *
      * @returns The resolved account locked reason in readable text.
      */
     const resolveUserAccountLockedReason = (): string => {
@@ -2700,9 +2701,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     /**
      * Initiates a recovery process based on the account's locked reason or account state.
-     *
      **/
-    const handleResendCode = async () => {
+    const handleResendCode = () => {
         setIsSubmitting(true);
 
         const recoveryScenario: string | null = resolveRecoveryScenario();
@@ -2713,40 +2713,45 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 level: AlertLevels.ERROR,
                 message: t("user:profile.notifications.resendCode.inValidRecoveryScenarioError.message")
             });
-        }
-
-        try {
-            const requestData: ResendCodeRequest = {
-                properties: [
-                    {
-                        key: "RecoveryScenario",
-                        value: recoveryScenario
-                    }
-                ],
-                user: {
-                    realm: user[ SCIMConfigs.scim.systemSchema ]?.userSource,
-                    username: user?.userName
-                }
-            };
-
-            await resendCode(requestData);
-            onAlertFired({
-                description: t("user:profile.notifications.resendCode.success.description",
-                    { recoveryOption: RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP[recoveryScenario] }),
-                level: AlertLevels.SUCCESS,
-                message: t("user:profile.notifications.resendCode.success.message")
-            });
-        } catch (error: any) {
-            onAlertFired({
-                description: error.response?.data?.description ||
-                    t("user:profile.notifications.resendCode.genericError.description", {
-                        recoveryOption: RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP[recoveryScenario] }),
-                level: AlertLevels.ERROR,
-                message: t("user:profile.notifications.resendCode.genericError.message")
-            });
-        } finally {
             setIsSubmitting(false);
+
+            return;
         }
+
+        const requestData: ResendCodeRequestData = {
+            properties: [
+                {
+                    key: "RecoveryScenario",
+                    value: recoveryScenario
+                }
+            ],
+            user: {
+                realm: user[ SCIMConfigs.scim.systemSchema ]?.userSource,
+                username: user?.userName
+            }
+        };
+
+        resendCode(requestData)
+            .then(() => {
+                onAlertFired({
+                    description: t("user:profile.notifications.resendCode.success.description",
+                        { recoveryOption: RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP[recoveryScenario] }),
+                    level: AlertLevels.SUCCESS,
+                    message: t("user:profile.notifications.resendCode.success.message")
+                });
+            })
+            .catch((error: IdentityAppsApiException) => {
+                dispatch(addAlert({
+                    description: error?.response?.data?.description || error?.response?.data?.detail ||
+                        t("user:profile.notifications.resendCode.genericError.description", {
+                            recoveryOption: RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP[recoveryScenario] }),
+                    level: AlertLevels.ERROR,
+                    message: t("user:profile.notifications.resendCode.genericError.message")
+                }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
     };
 
     /**
@@ -2813,34 +2818,30 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             ? (<>
                 {
                     (accountLocked || accountDisabled) && (
-                        <Alert severity="warning">
+                        <Alert severity="warning" className="user-profile-alert">
                             { t(resolveUserAccountLockedReason()) }
                             { showResendLink && (
-                                <>
-                                    <a
-                                        className="link pointing"
-                                        onClick={ () => handleResendCode() }
-                                    >
-                                        { t("user:resendCode.resend") }
-                                    </a>
-                                </>
+                                <a
+                                    className="link pointing"
+                                    onClick={ () => handleResendCode() }
+                                >
+                                    { t("user:resendCode.resend") }
+                                </a>
                             ) }
                         </Alert>
                     )
                 }
                 {
                     (!accountLocked && isPendingAskPassword) && (
-                        <Alert severity="warning">
+                        <Alert severity="warning" className="user-profile-alert">
                             { t("user:profile.accountState.pendingAskPassword") }
                             { showResendLink && (
-                                <>
-                                    <a
-                                        className="link pointing"
-                                        onClick={ () => handleResendCode() }
-                                    >
-                                        { t("user:resendCode.resend") }
-                                    </a>
-                                </>
+                                <a
+                                    className="link pointing"
+                                    onClick={ () => handleResendCode() }
+                                >
+                                    { t("user:resendCode.resend") }
+                                </a>
                             ) }
                         </Alert>
                     )

@@ -432,7 +432,7 @@ export interface UserInviteInterface {
 /**
  * Interface for the resend code request payload.
  */
-export interface ResendCodeRequest {
+export interface ResendCodeRequestData {
     user: {
         username: string;
         realm: string;

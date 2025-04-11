@@ -31,7 +31,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { UserManagementConstants } from "../constants";
 import { SCIMBulkEndpointInterface } from "../models/endpoints";
 import {
-    ResendCodeRequest,
+    ResendCodeRequestData,
     UserDetailsInterface,
     UserListInterface,
     UserSessionsInterface
@@ -481,7 +481,7 @@ export const terminateAllUserSessions = (userId: string): Promise<AxiosResponse>
  * @returns A promise that resolves when the code is sent successfully.
  * @throws `IdentityAppsApiException` if the request fails or if the response status is not as expected.
  */
-export const resendCode = (data: ResendCodeRequest): Promise<void> => {
+export const resendCode = (data: ResendCodeRequestData): Promise<void> => {
 
     const requestConfig: RequestConfigInterface = {
         data,
