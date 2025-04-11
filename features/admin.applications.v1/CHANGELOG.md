@@ -1,5 +1,11 @@
 # @wso2is/admin.applications.v1
 
+## 2.34.3
+
+### Patch Changes
+
+- [#8028](https://github.com/wso2/identity-apps/pull/8028) [`8769b37130d71944d4de16de08e4057c185ce90e`](https://github.com/wso2/identity-apps/commit/8769b37130d71944d4de16de08e4057c185ce90e) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix application edit view breaking in sub organizations
+
 ## 2.34.2
 
 ### Patch Changes

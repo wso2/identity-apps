@@ -513,7 +513,7 @@ importers:
         specifier: ^1.5.2
         version: link:../../features/admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.34.1
+        specifier: ^2.34.3
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.authentication.v1':
         specifier: ^2.25.204

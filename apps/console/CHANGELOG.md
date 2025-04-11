@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.52.7
+
+### Patch Changes
+
+- [#8030](https://github.com/wso2/identity-apps/pull/8030) [`1bc4bd1c9816515bf30f32d88e6ef3a721f910db`](https://github.com/wso2/identity-apps/commit/1bc4bd1c9816515bf30f32d88e6ef3a721f910db) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix application edit view breaking in sub organizations
+
+- Updated dependencies [[`8769b37130d71944d4de16de08e4057c185ce90e`](https://github.com/wso2/identity-apps/commit/8769b37130d71944d4de16de08e4057c185ce90e)]:
+  - @wso2is/admin.applications.v1@2.34.3
+
 ## 2.52.6
 
 ### Patch Changes
