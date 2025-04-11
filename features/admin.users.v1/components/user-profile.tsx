@@ -315,7 +315,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             if (schema.name === META_VERSION) {
                 continue;
             }
-
             if (schema.multiValued) {
                 multiValuedSchemas.push(schema);
             }
@@ -1081,10 +1080,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             multiValuedInputFieldValue[schema.name]
                                         )
                                     };
-                                } else {
-                                    // Ignored as core schema and user schema does not allow multi-valued attributes
-                                    // other than specially handled values.
                                 }
+                                // Core schema and user schema does not allow custom multi-valued attributes
+                                // except for the defined attributes.
                             }
                         } else {
                             if (schemaNames.length === 1) {
