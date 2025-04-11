@@ -23,6 +23,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
+import { ApplicationTemplateConstants } from "../constants/templates";
 import { ApplicationTemplateMetadataInterface } from "../models/templates";
 
 /**
@@ -45,7 +46,11 @@ const useGetApplicationTemplateMetadata = <Data = ApplicationTemplateMetadataInt
         url: store?.getState()?.config?.endpoints?.applicationTemplateMetadata?.replace("{{id}}", id)
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
+    const isExcludedAppTemplateForExtensionAPI: boolean =
+        ApplicationTemplateConstants.EXCLUDED_APP_TEMPLATES_FOR_EXTENSION_API.includes(id);
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(
+        shouldFetch && !isExcludedAppTemplateForExtensionAPI ? requestConfig : null);
 
     return {
         data,
