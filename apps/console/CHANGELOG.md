@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.52.6
+
+### Patch Changes
+
+- [#8025](https://github.com/wso2/identity-apps/pull/8025) [`840bd74ba311dfb46d20322895366914d5fe113d`](https://github.com/wso2/identity-apps/commit/840bd74ba311dfb46d20322895366914d5fe113d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Filter out old application templates in extension API calls
+
+- Updated dependencies [[`840bd74ba311dfb46d20322895366914d5fe113d`](https://github.com/wso2/identity-apps/commit/840bd74ba311dfb46d20322895366914d5fe113d)]:
+  - @wso2is/admin.application-templates.v1@1.5.2
+
 ## 2.52.5
 
 ### Patch Changes
