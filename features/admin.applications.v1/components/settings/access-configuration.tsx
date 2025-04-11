@@ -1070,7 +1070,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         }
 
         if (applicationTemplateId === ApplicationTemplateIdTypes.M2M_APPLICATION ||
-            template["originalTemplateId"] === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
+            template?.["originalTemplateId"] === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
         ) {
             return (
                 <>
@@ -1176,7 +1176,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                 protocol: ApplicationManagementUtils
                                     .resolveProtocolDisplayName(
                                         applicationTemplateId === ApplicationTemplateIdTypes.M2M_APPLICATION ||
-                                        template["originalTemplateId"] ===
+                                        template?.["originalTemplateId"] ===
                                             ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
                                             ? SupportedAuthProtocolTypes.OAUTH2
                                             : SupportedAuthProtocolTypes.OAUTH2_OIDC

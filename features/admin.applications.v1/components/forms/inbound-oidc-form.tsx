@@ -606,7 +606,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     }, [ template ]);
 
     useEffect(() => {
-        if (template["originalTemplateId"] === "mcp-client-application") {
+        if (template?.["originalTemplateId"] === "mcp-client-application") {
             setIsMcpClientApplication(true);
         }
     }, [ template ]);
@@ -1222,8 +1222,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 }
 
                 if (
-                    template["originalTemplateId"] &&
-                    !applicationConfig.allowedGrantTypes[template["originalTemplateId"]].includes(name)
+                    template?.["originalTemplateId"] &&
+                    !applicationConfig.allowedGrantTypes[template["originalTemplateId"]]?.includes(name)
                 ) {
                     return;
                 }
