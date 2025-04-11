@@ -83,6 +83,7 @@ import { updateUserInfo } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
     AdminAccountTypes,
+    AttributeDataType,
     CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP,
     LocaleJoiningSymbol,
     PASSWORD_RESET_PROPERTIES,
@@ -306,16 +307,26 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * Sort the elements of the profileSchema state accordingly by the displayOrder attribute in the ascending order.
      */
     useEffect(() => {
+        const META_VERSION: string = ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION");
+        const filteredSchemas: ProfileSchemaInterface[] = [];
+        const multiValuedSchemas: ProfileSchemaInterface[] = [];
 
-        const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
-            .filter((item: ProfileSchemaInterface) =>
-                item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"))
-            .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
-                return getDisplayOrder(a) - getDisplayOrder(b);
-            });
+        for (const schema of ProfileUtils.flattenSchemas([ ...profileSchemas ])) {
+            if (schema.name === META_VERSION) {
+                continue;
+            }
 
-        setProfileSchema(sortedSchemas);
-        setMultiValuedProfileSchema(sortedSchemas.filter((schema: ProfileSchemaInterface) => schema.multiValued));
+            if (schema.multiValued) {
+                multiValuedSchemas.push(schema);
+            }
+            filteredSchemas.push(schema);
+        }
+
+        filteredSchemas.sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) =>
+            getDisplayOrder(a) - getDisplayOrder(b));
+
+        setProfileSchema(filteredSchemas);
+        setMultiValuedProfileSchema(multiValuedSchemas);
     }, [ profileSchemas ]);
 
     useEffect(() => {
@@ -1035,7 +1046,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const attValues: Map<string, string | string []> = new Map();
 
                             if (schemaNames.length === 1 || schemaNames.length === 2) {
-                                if (schema.type.toUpperCase() === "COMPLEX") {
+                                if (schema.type.toUpperCase() === AttributeDataType.COMPLEX) {
                                     // Extract the sub attributes from the form values.
                                     for (const value of values.keys()) {
                                         const subAttribute: string[] = value.split(".");
@@ -1070,6 +1081,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             multiValuedInputFieldValue[schema.name]
                                         )
                                     };
+                                } else {
+                                    // Ignored as core schema and user schema does not allow multi-valued attributes
+                                    // other than specially handled values.
                                 }
                             }
                         } else {
@@ -1886,7 +1900,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         const showMakePrimaryButton = (value: string): boolean => {
 
-            if (primaryAttributeValue === "") {
+            if (isEmpty(primaryAttributeValue)) {
                 return false;
             }
             if (verificationEnabled) {

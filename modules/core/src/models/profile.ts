@@ -131,6 +131,28 @@ export interface LinkedAccountInterface {
 }
 
 /**
+ * Schema response interface.
+ */
+export interface SchemaResponseInterface {
+    /**
+     * Name of the schema.
+     */
+    name: string;
+    /**
+     * Description of the schema.
+     */
+    description: string;
+    /**
+     * Attributes of the schema.
+     */
+    attributes: ProfileSchemaInterface[];
+    /**
+     * Identifier of the schema.
+     */
+    id: string;
+}
+
+/**
  * Profile schema interface.
  */
 export interface ProfileSchemaInterface {

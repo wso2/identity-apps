@@ -373,3 +373,12 @@ export const PASSWORD_RESET_PROPERTIES: string[] = [
     ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET
 ];
 
+/**
+ * Enum for data type of scim attributes.
+ *
+ * @readonly
+ */
+export enum AttributeDataType {
+    COMPLEX = "COMPLEX"
+}
+
