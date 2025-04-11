@@ -113,6 +113,7 @@ export class ProfileConstants {
     public static readonly URI_CLAIM_VALUE_MAX_LENGTH: number = 1024;
     public static readonly MAX_MOBILE_NUMBERS_ALLOWED: number = 10;
     public static readonly MAX_EMAIL_ADDRESSES_ALLOWED: number = 10;
+    public static readonly MAX_MULTI_VALUES_ALLOWED: number = 10;
 
     // Mobile and email verification
 
