@@ -18,11 +18,13 @@
 
 export const isRequired = value => value !== undefined && value !== null && value.trim() !== "";
 
-export const validateEmail = (email, emailRegex) => {
-    if (!email) {
+export const validateWithRegex = (value, regex) => {
+    if (!value || !regex) {
 
         return false;
     }
 
-    return emailRegex.test(email);
+    const pattern = new RegExp(regex);
+
+    return pattern.test(value);
 };

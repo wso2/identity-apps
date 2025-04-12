@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
+import { ApplicationTemplateConstants } from "../constants/templates";
 import { ApplicationTemplateInterface } from "../models/templates";
 
 /**
@@ -44,7 +45,11 @@ const useGetApplicationTemplate = <Data = ApplicationTemplateInterface, Error = 
         url: store?.getState()?.config?.endpoints?.applicationTemplate?.replace("{{id}}", id)
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
+    const isExcludedAppTemplateForExtensionAPI: boolean =
+            ApplicationTemplateConstants.EXCLUDED_APP_TEMPLATES_FOR_EXTENSION_API.includes(id);
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(
+        shouldFetch && !isExcludedAppTemplateForExtensionAPI ? requestConfig : null);
 
     return {
         data,

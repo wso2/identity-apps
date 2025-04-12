@@ -1,5 +1,41 @@
 # @wso2is/identity-apps-core
 
+## 2.23.2
+
+### Patch Changes
+
+- [#8016](https://github.com/wso2/identity-apps/pull/8016) [`2bc210fce9c48f32e571fd415cd12f4c5d957924`](https://github.com/wso2/identity-apps/commit/2bc210fce9c48f32e571fd415cd12f4c5d957924) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with form submit
+
+## 2.23.1
+
+### Patch Changes
+
+- [#8014](https://github.com/wso2/identity-apps/pull/8014) [`138996caee82130d30cfedf7acc62bdce351140a`](https://github.com/wso2/identity-apps/commit/138996caee82130d30cfedf7acc62bdce351140a) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with password validation
+
+## 2.23.0
+
+### Minor Changes
+
+- [#8012](https://github.com/wso2/identity-apps/pull/8012) [`5e8c6e7c10e4ee98139f0211deb99acecea39238`](https://github.com/wso2/identity-apps/commit/5e8c6e7c10e4ee98139f0211deb99acecea39238) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Drop action ID in Google signup request
+
+## 2.22.8
+
+### Patch Changes
+
+- [#7977](https://github.com/wso2/identity-apps/pull/7977) [`6d8d15189fd5e090ded37fc16fe6d7bf136a19c4`](https://github.com/wso2/identity-apps/commit/6d8d15189fd5e090ded37fc16fe6d7bf136a19c4) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve username validation
+
+## 2.22.7
+
+### Patch Changes
+
+- [#7994](https://github.com/wso2/identity-apps/pull/7994) [`6c94cb58ffab51345823040b904398652d7f169b`](https://github.com/wso2/identity-apps/commit/6c94cb58ffab51345823040b904398652d7f169b) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve error handling in dynamic portal
+
+## 2.22.6
+
+### Patch Changes
+
+- [#7843](https://github.com/wso2/identity-apps/pull/7843) [`06d97bc5656fb699d406a2dec113a28d6b94a0b1`](https://github.com/wso2/identity-apps/commit/06d97bc5656fb699d406a2dec113a28d6b94a0b1) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix My Account access url issue when accountLockOnCreationEnabled
+
 ## 2.22.5
 
 ### Patch Changes

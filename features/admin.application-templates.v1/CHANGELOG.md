@@ -1,5 +1,31 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.5.2
+
+### Patch Changes
+
+- [#8025](https://github.com/wso2/identity-apps/pull/8025) [`840bd74ba311dfb46d20322895366914d5fe113d`](https://github.com/wso2/identity-apps/commit/840bd74ba311dfb46d20322895366914d5fe113d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Filter out old application templates in extension API calls
+
+## 1.5.1
+
+### Patch Changes
+
+- [#7997](https://github.com/wso2/identity-apps/pull/7997) [`84e52eb60374cdbe0a7f76adf760e676148db380`](https://github.com/wso2/identity-apps/commit/84e52eb60374cdbe0a7f76adf760e676148db380) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improvements to MCP client application template
+
+- Updated dependencies [[`84e52eb60374cdbe0a7f76adf760e676148db380`](https://github.com/wso2/identity-apps/commit/84e52eb60374cdbe0a7f76adf760e676148db380)]:
+  - @wso2is/admin.applications.v1@2.34.2
+
+## 1.5.0
+
+### Minor Changes
+
+- [#7990](https://github.com/wso2/identity-apps/pull/7990) [`5161765cb3777121c140698e69908a25196fbb62`](https://github.com/wso2/identity-apps/commit/5161765cb3777121c140698e69908a25196fbb62) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Introduce MCP client application template
+
+### Patch Changes
+
+- Updated dependencies [[`5161765cb3777121c140698e69908a25196fbb62`](https://github.com/wso2/identity-apps/commit/5161765cb3777121c140698e69908a25196fbb62)]:
+  - @wso2is/admin.applications.v1@2.34.0
+
 ## 1.4.203
 
 ### Patch Changes

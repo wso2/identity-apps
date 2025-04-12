@@ -362,7 +362,7 @@ export enum AccountLockedReason {
 }
 
 /**
- *  User account state.
+ * Enum for user account state.
  *
  * @readonly
  */
@@ -439,8 +439,22 @@ export const PASSWORD_RESET_PROPERTIES: string[] = [
     ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET
 ];
 
+/**
+ * Map of recovery scenario to recovery option type.
+ *
+ * @readonly
+ */
 export const RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP: Record<string, string[]> = {
     [RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK]: [ RecoveryOptionTypes.LINK ],
     [RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_OTP]: [ RecoveryOptionTypes.CODE ],
     [RecoveryScenario.ASK_PASSWORD]: [ RecoveryOptionTypes.LINK ]
 };
+
+/**
+ * Enum for data type of scim attributes.
+ *
+ * @readonly
+ */
+export enum AttributeDataType {
+    COMPLEX = "COMPLEX"
+}
