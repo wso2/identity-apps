@@ -61,6 +61,10 @@
                 color: @loginPortalLogoTaglineColor;
             }
 
+            .user-invitation-content-wrapper {
+                margin: auto;
+            }
+
             .registration-loader {
                 svg #_1{
                     animation-name: alert-success;
