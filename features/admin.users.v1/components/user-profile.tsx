@@ -442,11 +442,20 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 ?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaName]
                                 ?.[schemaSecondaryProperty];
 
-                            if (schema.extended && (userProfileSchema || enterpriseSchema)) {
+                            const customSchema: string = userInfo
+                                ?.[userSchemaURI]?.[schemaName]
+                                ?.[schemaSecondaryProperty];
+
+                            if (schema.extended && (userProfileSchema || enterpriseSchema || customSchema)) {
                                 if (userProfileSchema) {
                                     tempProfileInfo.set(schema.name, userProfileSchema);
                                 } else if (enterpriseSchema) {
                                     tempProfileInfo.set(schema.name, enterpriseSchema);
+                                } else if (customSchema && schema.multiValued) {
+                                    tempProfileInfo.set(schema.name,
+                                        Array.isArray(customSchema) ? customSchema.join(",") : "");
+                                } else if (customSchema) {
+                                    tempProfileInfo.set(schema.name, customSchema);
                                 }
                             } else {
                                 const subValue: SubValueInterface = userInfo[schemaName] &&
@@ -1118,7 +1127,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             : { [schemaNames[0]]: values.get(schemaNames[0]) };
                                 }
                             } else {
-                                if(schema.extended) {
+                                if (schema.extended && schema.multiValued) {
+                                    opValue = {
+                                        [schema.schemaId]: {
+                                            [schemaNames[0]]: constructPatchOpValueForMultiValuedAttribute(
+                                                schemaNames[1],
+                                                multiValuedAttributeValues[schema.name],
+                                                multiValuedInputFieldValue[schema.name]
+                                            )
+                                        }
+                                    };
+                                } else if (schema.extended) {
                                     const schemaId: string = schema?.schemaId
                                         ? schema.schemaId
                                         : userConfig.userProfileSchema;
