@@ -2685,7 +2685,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * Checks if the user account is in a pending ask password state where the user hasn't
      * set their password via the setup link yet.
      */
-    const isPendingAskPassword: boolean = accountState === AccountState.PENDING_AP;
+    const isPendingAskPasswordState: boolean = accountState === AccountState.PENDING_AP;
 
     /**
      * Determines which password change option to be displayed.
@@ -2696,46 +2696,66 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * Else false if the "Force Password Reset" option should be displayed, meaning the user
      * already has an existing password.
      */
-    const isSetPassword: boolean =
-        (accountState === AccountState.PENDING_AP) ||
+    const isSetPassword: boolean = isPendingAskPasswordState ||
         (accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD);
 
     /**
-     * Determines whether the "Resend" link should be displayed.
+     * Resolves the recovery scenario based on the account locked reason or account state.
+     * This recoveryscenario is then used to determine whether the resending code/link is supported.
      *
-     * The resend option is shown when:
-     * - The account is locked due to  "PENDING_ASK_PASSWORD",
-     *   indicating an initial password setup link has been sent.
-     * - The account is locked due to"PENDING_ADMIN_FORCED_USER_PASSWORD_RESET",
-     *   indicating that an admin-forced password reset has been sent.
-     * - The account is not locked but account state is "PENDING_AP",
-     *   indicating that the user hasn't set their password via the setup link yet.
-     *
-     * @returns whether the "Resend" link option should be displayed.
+     * @returns The resolved recovery scenario.
      */
-    const showResendLink: boolean =
-        accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD ||
-        accountLockedReason === AccountLockedReason.PENDING_ADMIN_FORCED_USER_PASSWORD_RESET ||
-        accountState === AccountState.PENDING_AP;
+    const resolveRecoveryScenario = (): string | null => {
+        // If the account is locked and a locked reason is provided, process locked reason
+        // to determine the scenario.
+        if (accountLocked && accountLockedReason) {
+            if (accountLockedReason === AccountLockedReason.PENDING_ADMIN_FORCED_USER_PASSWORD_RESET) {
+                if (isAdminPasswordResetEmailLinkEnabled()) {
+                    return RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK;
+                }
+                if (isAdminPasswordResetEmailOTPEnabled()) {
+                    return RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_OTP;
+                }
+            }
+            if (accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD) {
+                return RecoveryScenario.ASK_PASSWORD;
+            }
+        }
+        // For non-locked accounts, use the account state to determine the scenario.
+        if (!accountLocked && accountState) {
+            if (accountState === AccountState.PENDING_AP) {
+                return RecoveryScenario.ASK_PASSWORD;
+            }
+        }
+
+        return null;
+    };
+
+    /**
+     * Renders the "Resend" link component.
+     *
+     * The resend option is shown when a valid recovery scenario is resolved either from
+     * the account locked reason or account state.
+     *
+     * @returns The "Resend" link component.
+     */
+    const ResendLink = (): JSX.Element | null => {
+        const recoveryScenario: string | null = resolveRecoveryScenario();
+
+        if (!recoveryScenario) return null;
+
+        return (
+            <a className="link pointing" onClick={ () => handleResendCode(recoveryScenario) }>
+                { t("user:resendCode.resend") }
+            </a>
+        );
+    };
 
     /**
      * Initiates a recovery process based on the account's locked reason or account state.
      **/
-    const handleResendCode = () => {
+    const handleResendCode = (recoveryScenario: string) => {
         setIsSubmitting(true);
-
-        const recoveryScenario: string | null = resolveRecoveryScenario();
-
-        if (!recoveryScenario) {
-            onAlertFired({
-                description: t("user:profile.notifications.resendCode.inValidRecoveryScenarioError.description"),
-                level: AlertLevels.ERROR,
-                message: t("user:profile.notifications.resendCode.inValidRecoveryScenarioError.message")
-            });
-            setIsSubmitting(false);
-
-            return;
-        }
 
         const requestData: ResendCodeRequestData = {
             properties: [
@@ -2774,37 +2794,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
-     * Resolves the recovery scenario based on the account locked reason or account state.
-     *
-     * @returns The resolved recovery scenario.
-     */
-    const resolveRecoveryScenario = (): string | null => {
-        // If the account is locked and a locked reason is provided, process locked reason
-        // to determine the scenario.
-        if (accountLocked && accountLockedReason) {
-            if (accountLockedReason === AccountLockedReason.PENDING_ADMIN_FORCED_USER_PASSWORD_RESET) {
-                if (isAdminPasswordResetEmailLinkEnabled()) {
-                    return RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK;
-                }
-                if (isAdminPasswordResetEmailOTPEnabled()) {
-                    return RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_OTP;
-                }
-            }
-            if (accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD) {
-                return RecoveryScenario.ASK_PASSWORD;
-            }
-        }
-        // For non-locked accounts, use the account state to determine the scenario.
-        if (!accountLocked && accountState) {
-            if (accountState === AccountState.PENDING_AP) {
-                return RecoveryScenario.ASK_PASSWORD;
-            }
-        }
-
-        return null;
-    };
-
-    /**
      * Checks if admin forced password reset via Email link is enabled.
      *
      * @returns true if enabled, false otherwise.
@@ -2839,29 +2828,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     (accountLocked || accountDisabled) && (
                         <Alert severity="warning" className="user-profile-alert">
                             { t(resolveUserAccountLockedReason()) }
-                            { showResendLink && (
-                                <a
-                                    className="link pointing"
-                                    onClick={ () => handleResendCode() }
-                                >
-                                    { t("user:resendCode.resend") }
-                                </a>
-                            ) }
+                            <ResendLink />
                         </Alert>
                     )
                 }
                 {
-                    (!accountLocked && isPendingAskPassword) && (
+                    (!accountLocked && isPendingAskPasswordState) && (
                         <Alert severity="warning" className="user-profile-alert">
                             { t("user:profile.accountState.pendingAskPassword") }
-                            { showResendLink && (
-                                <a
-                                    className="link pointing"
-                                    onClick={ () => handleResendCode() }
-                                >
-                                    { t("user:resendCode.resend") }
-                                </a>
-                            ) }
+                            <ResendLink />
                         </Alert>
                     )
                 }

@@ -629,10 +629,6 @@ export interface userNS {
                     message: string;
                     description: string;
                 };
-                inValidRecoveryScenarioError: {
-                    message: string;
-                    description: string;
-                };
                 success: {
                     message: string;
                     description: string;

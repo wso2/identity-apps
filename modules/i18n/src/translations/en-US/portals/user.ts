@@ -587,10 +587,6 @@ export const user: userNS = {
                     description: "Error occurred while resending the recovery {{recoveryOption}}.",
                     message: "Something went wrong"
                 },
-                inValidRecoveryScenarioError: {
-                    description: "No recovery options are configured.",
-                    message: "Invalid recovery scenario."
-                },
                 success: {
                     description: "The recovery {{recoveryOption}} resent successfully.",
                     message: "Resend successful."
