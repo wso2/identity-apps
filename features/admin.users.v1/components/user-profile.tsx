@@ -643,7 +643,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         const tempPrimaryValues: Record<string, string> = {};
 
         multiValuedProfileSchema?.forEach((schema: ProfileSchemaInterface) => {
-            tempMultiValuedAttributeValues[schema.name] = profileData?.get(schema.name)?.split(",") ?? [];
+            const attributeValue: string = profileData?.get(schema.name);
+
+            tempMultiValuedAttributeValues[schema.name] = attributeValue ? attributeValue.split(",") : [];
         });
 
         if (isMultipleEmailAndMobileNumberEnabled) {
@@ -1901,6 +1903,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         const showPrimaryPopup = (value: string): boolean => {
+            if (isEmpty(primaryAttributeValue)) {
+                return false;
+            }
             if (verificationEnabled && !verifiedAttributeValueList.includes(value)) {
                 return value === fetchedPrimaryAttributeValue;
             }
@@ -1916,7 +1921,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         const showMakePrimaryButton = (value: string): boolean => {
-
             if (isEmpty(primaryAttributeValue)) {
                 return false;
             }
@@ -1925,7 +1929,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             }
 
             return value !== primaryAttributeValue;
-
         };
 
         const showVerifyButton = (value: string): boolean =>
