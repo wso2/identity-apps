@@ -98,7 +98,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                 <ReactFlow
                     fitView
                     fitViewOptions={ {
-                        maxZoom: 0.5
+                        maxZoom: 0.8
                     } }
                     nodes={ nodes }
                     edges={ edges }
