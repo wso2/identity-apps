@@ -1,5 +1,16 @@
 # @wso2is/admin.users.v1
 
+## 2.30.122
+
+### Patch Changes
+
+- [#8036](https://github.com/wso2/identity-apps/pull/8036) [`5755f6304a3829c8a9d0ed277f18b9d7748f28f4`](https://github.com/wso2/identity-apps/commit/5755f6304a3829c8a9d0ed277f18b9d7748f28f4) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Resolve loading custom complex attribute values in user profile
+
+- Updated dependencies [[`f44217d609d530a8588ffcc0c2684569852e7c35`](https://github.com/wso2/identity-apps/commit/f44217d609d530a8588ffcc0c2684569852e7c35), [`e09f6aac4d52f5385c2ebb62ec859decf86981ab`](https://github.com/wso2/identity-apps/commit/e09f6aac4d52f5385c2ebb62ec859decf86981ab), [`5755f6304a3829c8a9d0ed277f18b9d7748f28f4`](https://github.com/wso2/identity-apps/commit/5755f6304a3829c8a9d0ed277f18b9d7748f28f4)]:
+  - @wso2is/i18n@2.22.9
+  - @wso2is/admin.claims.v1@2.27.115
+  - @wso2is/admin.users.v1@2.30.122
+
 ## 2.30.121
 
 ### Patch Changes
