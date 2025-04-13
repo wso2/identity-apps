@@ -33,9 +33,9 @@
     "dependencies": {
         "@oxygen-ui/react": "^2.3.4",
         "@mui/material": "^5.13.0",
-        "@wso2is/core": "^2.7.0",
-        "@wso2is/validation": "^2.4.1",
-        "@wso2is/react-components": "^2.9.12",
+        "@wso2is/core": "workspace:*",
+        "@wso2is/validation": "workspace:*",
+        "@wso2is/react-components": "workspace:*",
         "final-form": "^4.20.9",
         "joi": "^17.4.0",
         "lodash-es": "^4.17.21",

@@ -38,7 +38,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/core": "^2.7.0",
+        "@wso2is/core": "workspace:*",
         "@types/jest": "^29.5.12",
         "babel-jest": "^26.3.0",
         "i18next": "^21.9.1",

@@ -6,8 +6,8 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/core": "^2.7.0",
-        "@wso2is/admin.core.v1": "^2.40.6",
+        "@wso2is/core": "workspace:*",
+        "@wso2is/admin.core.v1": "workspace:*",
         "i18next": "^21.9.1",
         "react-redux": "^7.2.9",
         "redux": "^4.0.4"

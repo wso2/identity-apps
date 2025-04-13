@@ -14,7 +14,7 @@
         "transpile-react-jsx-components": "pnpm webpack --config webpack.config.js"
     },
     "dependencies": {
-        "@wso2is/theme": "^2.6.11",
+        "@wso2is/theme": "workspace:*",
         "react": "^18.2.0",
         "semantic-ui-calendar-react": "^0.15.3",
         "semantic-ui-react": "^2.1.3"
