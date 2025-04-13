@@ -370,8 +370,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         } else {
                             const schemaName:string = schemaNames[0];
 
-                            if (schema.extended && userInfo[userConfig.userProfileSchema]
-                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
+                            // System Schema
+                            if (schema.extended
+                                && userInfo[userConfig.userProfileSchema]?.[schemaNames[0]]
+                            ) {
                                 if (UserManagementConstants.MULTI_VALUED_ATTRIBUTES.includes(schemaNames[0])) {
                                     const attributeValue: string | string[] =
                                         userInfo[userConfig.userProfileSchema]?.[schemaNames[0]];
@@ -390,8 +392,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return;
                             }
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
+                            // Enterprise Schema
+                            if (schema.extended
+                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]
+                            ) {
+                                if (schema.multiValued) {
+                                    const attributeValue: string | string[] =
+                                        userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]];
+                                    const formattedValue: string = Array.isArray(attributeValue)
+                                        ? attributeValue.join(",")
+                                        : "";
+
+                                    tempProfileInfo.set(schema.name, formattedValue);
+
+                                    return;
+                                }
                                 tempProfileInfo.set(
                                     schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
                                 );
@@ -399,6 +414,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return;
                             }
 
+                            // Custom Schema
                             if (
                                 schema.extended
                                 && userInfo?.[userSchemaURI]?.[schemaNames[0]]
@@ -442,11 +458,23 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 ?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaName]
                                 ?.[schemaSecondaryProperty];
 
-                            if (schema.extended && (userProfileSchema || enterpriseSchema)) {
+                            const customSchema: string = userInfo
+                                ?.[userSchemaURI]?.[schemaName]
+                                ?.[schemaSecondaryProperty];
+
+                            if (schema.extended && (userProfileSchema || enterpriseSchema || customSchema)) {
                                 if (userProfileSchema) {
                                     tempProfileInfo.set(schema.name, userProfileSchema);
+                                } else if (enterpriseSchema && schema.multiValued) {
+                                    tempProfileInfo.set(schema.name,
+                                        Array.isArray(enterpriseSchema) ? enterpriseSchema.join(",") : "");
                                 } else if (enterpriseSchema) {
                                     tempProfileInfo.set(schema.name, enterpriseSchema);
+                                } else if (customSchema && schema.multiValued) {
+                                    tempProfileInfo.set(schema.name,
+                                        Array.isArray(customSchema) ? customSchema.join(",") : "");
+                                } else if (customSchema) {
+                                    tempProfileInfo.set(schema.name, customSchema);
                                 }
                             } else {
                                 const subValue: SubValueInterface = userInfo[schemaName] &&
@@ -634,7 +662,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         const tempPrimaryValues: Record<string, string> = {};
 
         multiValuedProfileSchema?.forEach((schema: ProfileSchemaInterface) => {
-            tempMultiValuedAttributeValues[schema.name] = profileData?.get(schema.name)?.split(",") ?? [];
+            const attributeValue: string = profileData?.get(schema.name);
+
+            tempMultiValuedAttributeValues[schema.name] = attributeValue ? attributeValue.split(",") : [];
         });
 
         if (isMultipleEmailAndMobileNumberEnabled) {
@@ -1118,7 +1148,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             : { [schemaNames[0]]: values.get(schemaNames[0]) };
                                 }
                             } else {
-                                if(schema.extended) {
+                                if (schema.extended && schema.multiValued) {
+                                    opValue = {
+                                        [schema.schemaId]: {
+                                            [schemaNames[0]]: constructPatchOpValueForMultiValuedAttribute(
+                                                schemaNames[1],
+                                                multiValuedAttributeValues[schema.name],
+                                                multiValuedInputFieldValue[schema.name]
+                                            )
+                                        }
+                                    };
+                                } else if (schema.extended) {
                                     const schemaId: string = schema?.schemaId
                                         ? schema.schemaId
                                         : userConfig.userProfileSchema;
@@ -1882,6 +1922,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         const showPrimaryPopup = (value: string): boolean => {
+            if (isEmpty(primaryAttributeValue)) {
+                return false;
+            }
             if (verificationEnabled && !verifiedAttributeValueList.includes(value)) {
                 return value === fetchedPrimaryAttributeValue;
             }
@@ -1897,7 +1940,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         const showMakePrimaryButton = (value: string): boolean => {
-
             if (isEmpty(primaryAttributeValue)) {
                 return false;
             }
@@ -1906,7 +1948,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             }
 
             return value !== primaryAttributeValue;
-
         };
 
         const showVerifyButton = (value: string): boolean =>
