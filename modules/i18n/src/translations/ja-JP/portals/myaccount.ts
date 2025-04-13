@@ -1407,6 +1407,12 @@ export const myAccount: MyAccountNS = {
                 }
             },
             modals: {
+                customMultiAttributeDeleteConfirmation: {
+                    assertionHint: "あなたの行動を確認してください。",
+                    content: "この操作は元に戻すことができず、選択した値が完全に削除されます。",
+                    description: "選択した値を削除すると、プロフィールから完全に削除されます。",
+                    heading: "本気ですか？"
+                },
                 emailAddressDeleteConfirmation: {
                     assertionHint: "あなたの行動を確認してください。",
                     content: "このアクションは不可逆的であり、メールアドレスを永久に削除します。",
