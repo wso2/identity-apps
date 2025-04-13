@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.52.8
+
+### Patch Changes
+
+- [#8034](https://github.com/wso2/identity-apps/pull/8034) [`9bd84635ada11909ad1d285cb85e94b7a47cb112`](https://github.com/wso2/identity-apps/commit/9bd84635ada11909ad1d285cb85e94b7a47cb112) Thanks [@brionmario](https://github.com/brionmario)! - Fix the initial zoom issue in the registration flow builder
+
+* [#8027](https://github.com/wso2/identity-apps/pull/8027) [`913fa68968a319095b93afaa24e8f71a1a7642a6`](https://github.com/wso2/identity-apps/commit/913fa68968a319095b93afaa24e8f71a1a7642a6) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Support multivalued attributes in console user profile
+
+* Updated dependencies [[`913fa68968a319095b93afaa24e8f71a1a7642a6`](https://github.com/wso2/identity-apps/commit/913fa68968a319095b93afaa24e8f71a1a7642a6)]:
+  - @wso2is/admin.users.v1@2.30.121
+  - @wso2is/core@2.7.2
+
 ## 2.52.7
 
 ### Patch Changes
