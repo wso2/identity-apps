@@ -455,6 +455,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                     if (
                                         (schemaURI === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA &&
                                             multiValuedAttributes.includes(schemaNames[0])) ||
+                                        (schemaURI === ProfileConstants.SCIM2_ENT_USER_SCHEMA && schema.multiValued) ||
                                         (schemaURI === userSchemaURI && schema.multiValued)
                                     ) {
                                         const attributeValue: string | string[] =
@@ -508,21 +509,35 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         }
                     } else {
                         if (schema.extended
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]) {
-                            tempProfileInfo.set(
-                                schema.name,
-                                profileDetails.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][
-                                    schemaNames[1]]
-                                ?? "");
-                        } else if (schema.extended &&
-                            profileDetails?.profileInfo[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[schemaNames[0]]) {
+                            && schema.schemaId === ProfileConstants.SCIM2_ENT_USER_SCHEMA
+                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]
+                        ) {
+                            const attributeValue: string | string[] = profileDetails?.
+                                profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]][schemaNames[1]];
+
+                            if (schema.multiValued) {
+                                const formattedValue: string = Array.isArray(attributeValue)
+                                    ? attributeValue.join(",")
+                                    : "";
+
+                                tempProfileInfo.set(schema.name,formattedValue);
+                            } else {
+                                tempProfileInfo.set(
+                                    schema.name, attributeValue as string ?? "");
+                            }
+                        } else if (schema.extended
+                            && schema.schemaId === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA
+                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[schemaNames[0]]
+                        ) {
                             tempProfileInfo.set(
                                 schema.name,
                                 profileDetails.profileInfo[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][schemaNames[0]][
                                     schemaNames[1]]
                                 ?? "");
-                        } else if (schema.extended &&
-                            profileDetails?.profileInfo[userSchemaURI]?.[schemaNames[0]]) {
+                        } else if (schema.extended
+                            && schema.schemaId === userSchemaURI
+                            && profileDetails?.profileInfo[userSchemaURI]?.[schemaNames[0]]
+                        ) {
                             const attributeValue: string | string[] =
                                 profileDetails?.profileInfo[userSchemaURI]?.[schemaNames[0]][schemaNames[1]];
 
