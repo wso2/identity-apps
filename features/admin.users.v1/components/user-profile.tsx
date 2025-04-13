@@ -370,8 +370,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         } else {
                             const schemaName:string = schemaNames[0];
 
-                            if (schema.extended && userInfo[userConfig.userProfileSchema]
-                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
+                            // System Schema
+                            if (schema.extended
+                                && userInfo[userConfig.userProfileSchema]?.[schemaNames[0]]
+                            ) {
                                 if (UserManagementConstants.MULTI_VALUED_ATTRIBUTES.includes(schemaNames[0])) {
                                     const attributeValue: string | string[] =
                                         userInfo[userConfig.userProfileSchema]?.[schemaNames[0]];
@@ -390,8 +392,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return;
                             }
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
+                            // Enterprise Schema
+                            if (schema.extended
+                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]
+                            ) {
+                                if (schema.multiValued) {
+                                    const attributeValue: string | string[] =
+                                        userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]];
+                                    const formattedValue: string = Array.isArray(attributeValue)
+                                        ? attributeValue.join(",")
+                                        : "";
+
+                                    tempProfileInfo.set(schema.name, formattedValue);
+
+                                    return;
+                                }
                                 tempProfileInfo.set(
                                     schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
                                 );
@@ -399,6 +414,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return;
                             }
 
+                            // Custom Schema
                             if (
                                 schema.extended
                                 && userInfo?.[userSchemaURI]?.[schemaNames[0]]
@@ -449,6 +465,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             if (schema.extended && (userProfileSchema || enterpriseSchema || customSchema)) {
                                 if (userProfileSchema) {
                                     tempProfileInfo.set(schema.name, userProfileSchema);
+                                } else if (enterpriseSchema && schema.multiValued) {
+                                    tempProfileInfo.set(schema.name,
+                                        Array.isArray(enterpriseSchema) ? enterpriseSchema.join(",") : "");
                                 } else if (enterpriseSchema) {
                                     tempProfileInfo.set(schema.name, enterpriseSchema);
                                 } else if (customSchema && schema.multiValued) {
