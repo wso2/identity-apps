@@ -999,18 +999,24 @@ export interface MyAccountNS {
                 };
             };
             modals: {
+                customMultiAttributeDeleteConfirmation: {
+                    assertionHint: string;
+                    content: string;
+                    description: string;
+                    heading: string;
+                };
                 emailAddressDeleteConfirmation: {
                     assertionHint: string;
                     content: string;
                     description: string;
                     heading: string;
-                },
+                };
                 mobileNumberDeleteConfirmation: {
                     assertionHint: string;
                     content: string;
                     description: string;
                     heading: string;
-                }
+                };
             },
             notifications: {
                 getProfileCompletion: Notification;
