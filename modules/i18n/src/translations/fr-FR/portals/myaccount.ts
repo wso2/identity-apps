@@ -1563,12 +1563,6 @@ export const myAccount: MyAccountNS = {
                 }
             },
             modals: {
-                customMultiAttributeDeleteConfirmation: {
-                    assertionHint: "Veuillez confirmer votre action.",
-                    content: "Cette action est irréversible et supprime définitivement la valeur sélectionnée.",
-                    description: "Si vous supprimez cette valeur sélectionnée, elle sera définitivement supprimée de votre profil.",
-                    heading: "Es-tu sûr?"
-                },
                 emailAddressDeleteConfirmation: {
                     assertionHint: "Veuillez confirmer votre action.",
                     content: "Cette action est irréversible et supprime de façon permanente l'adresse e-mail.",

@@ -1532,12 +1532,6 @@ export const myAccount: MyAccountNS = {
                 }
             },
             modals: {
-                customMultiAttributeDeleteConfirmation: {
-                    assertionHint: "Please confirm your action.",
-                    content: "This action is irreversible and will permanently delete the selected value.",
-                    description: "If you delete this selected value, it will be permanently removed from your profile.",
-                    heading: "Are you sure?"
-                },
                 emailAddressDeleteConfirmation: {
                     assertionHint: "Please confirm your action.",
                     content: "This action is irreversible and will permanently delete the email address.",

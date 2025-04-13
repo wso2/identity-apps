@@ -452,11 +452,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                         VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
                                     ];
 
-                                    if (
-                                        (schemaURI === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA &&
-                                            multiValuedAttributes.includes(schemaNames[0])) ||
-                                        (schemaURI === userSchemaURI && schema.multiValued)
-                                    ) {
+                                    if (schemaURI === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA
+                                        && multiValuedAttributes.includes(schemaNames[0])) {
                                         const attributeValue: string | string[] =
                                             profileDetails?.profileInfo[schemaURI]?.[schemaNames[0]];
 
@@ -521,21 +518,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                 profileDetails.profileInfo[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][schemaNames[0]][
                                     schemaNames[1]]
                                 ?? "");
-                        } else if (schema.extended &&
-                            profileDetails?.profileInfo[userSchemaURI]?.[schemaNames[0]]) {
-                            const attributeValue: string | string[] =
-                                profileDetails?.profileInfo[userSchemaURI]?.[schemaNames[0]][schemaNames[1]];
-
-                            if (schema.multiValued) {
-                                const formattedValue: string = Array.isArray(attributeValue)
-                                    ? attributeValue.join(",")
-                                    : "";
-
-                                tempProfileInfo.set(schema.name,formattedValue);
-                            } else {
-                                tempProfileInfo.set(
-                                    schema.name, attributeValue as string ?? "");
-                            }
                         } else {
                             const subValue: BasicProfileInterface = profileDetails.profileInfo[schemaNames[0]]
                                 && profileDetails.profileInfo[schemaNames[0]].find(
@@ -649,15 +631,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             || schemaNames[0] === "phoneNumbers") {
             const attributeValues: string[] = [];
 
-            if (schema.extended && schema.multiValued) {
+            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
                 if (isEmpty(values.get(formName))) {
                     setIsSubmitting(false);
 
                     return;
                 }
 
-                const resolvedSchemaValue: string = resolveProfileInfoSchemaValue(schema);
-                const currentValues: string[] = resolvedSchemaValue ? resolvedSchemaValue.split(",") : [];
+                const currentValues: string[] = resolveProfileInfoSchemaValue(schema)?.split(",") || [];
                 let primaryValue: string | null;
                 let isVerificationEnabled: boolean = false;
                 let verifiedAttributeName: string = "";
@@ -808,21 +789,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     value = { [schemaNames[0]]: values.get(formName) };
                 }
             } else {
-                if (isExtended && schema.multiValued) {
-                    const initialAttributeValue: string = profileInfo?.get(schema.name);
-                    const initialValueList: string[] = initialAttributeValue ? initialAttributeValue.split(",") : [];
-                    const newValue: string = values.get(formName) as string;
-                    const newValueList: string[] = initialValueList.includes(newValue)
-                        ? initialValueList : [ ...initialValueList, newValue ];
-
-                    value = {
-                        [schema.schemaId]: {
-                            [schemaNames[0]]: {
-                                [schemaNames[1]]: newValueList
-                            }
-                        }
-                    };
-                } else if (isExtended) {
+                if (isExtended) {
                     value = {
                         [schema.schemaId]: {
                             [schemaNames[0]]: {
@@ -1259,28 +1226,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     }
                 });
             }
-        } else {
-            const initialAttributeValue: string = profileInfo?.get(schema.name);
-            const initialValueList: string[] = initialAttributeValue ? initialAttributeValue.split(",") : [];
-            const updatedValueList: string[] = initialValueList.filter((value: string) => value !== attributeValue);
-            const schemaNames: string[] = schema.name.split(".");
-
-            if (schemaNames.length === 1) {
-                data.Operations[0].value = {
-                    [schema.schemaId]: {
-                        [schema.name]: updatedValueList
-                    }
-                };
-            } else {
-                // Complex attribute.
-                data.Operations[0].value = {
-                    [schema.schemaId]: {
-                        [schemaNames[0]]: {
-                            [schemaNames[1]]: updatedValueList
-                        }
-                    }
-                };
-            }
         }
         updateProfileInfo(data as unknown as Record<string, unknown>).then((response: AxiosResponse) => {
             if (response.status === 200) {
@@ -1646,7 +1591,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             return generateCountryDropdown(schema, fieldName);
         } else if (checkSchemaType(schema.name, "locale")) {
             return generateEditableLocaleField(schema, fieldName);
-        } else if (schema.extended && schema.multiValued) {
+        } else if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
+            || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             return generateMultiValuedField(schema, fieldName);
         } else {
             return generateTextField(schema, fieldName);
@@ -1690,10 +1636,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             verificationEnabled = isMobileVerificationEnabled;
             primaryAttributeSchema = getSchemaFromName(MOBILE_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;
-        } else {
-            attributeValueList = profileInfo?.get(schema.name) ? profileInfo?.get(schema.name).split(",") : [];
-            primaryAttributeSchema = schema;
-            maxAllowedLimit = ProfileConstants.MAX_MULTI_VALUES_ALLOWED;
         }
 
         // Move the primary attribute value to the top of the list.
@@ -1718,17 +1660,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         };
 
         const showPrimaryChip = (value: string): boolean => {
-            if (isEmpty(primaryAttributeValue)) {
-                return false;
-            }
-
             return value === primaryAttributeValue;
         };
 
         const showMakePrimaryButton = (value: string): boolean => {
-            if (isEmpty(primaryAttributeValue)) {
-                return false;
-            }
             if (verificationEnabled) {
                 return verifiedAttributeValueList.includes(value) && value !== primaryAttributeValue;
             } else {
@@ -1740,8 +1675,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             verificationEnabled && !verifiedAttributeValueList.includes(value) && value !== primaryAttributeValue;
 
         const showDeleteButton = (value: string): boolean => {
-            return !((primaryAttributeSchema?.required && value === primaryAttributeValue) ||
-                (resolvedRequiredValue && attributeValueList.length === 1));
+            return !(primaryAttributeSchema?.required && value === primaryAttributeValue);
         };
 
         return (
@@ -2164,7 +2098,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     />
                 </>
             );
-        } else if (schema.extended && schema.multiValued) {
+        } else if ( schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             return generateReadOnlyMultiValuedField(schema, fieldName);
         } else if (profileInfo.get(schema.name)) {
             return <>{ resolveProfileInfoSchemaValue(schema) }</>;
@@ -2195,8 +2129,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             attributeValueList = profileInfo.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
             verifiedAttributeValueList = profileInfo.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
             primaryAttributeValue = profileInfo.get(MOBILE_ATTRIBUTE);
-        } else {
-            attributeValueList = profileInfo?.get(schema.name) ? profileInfo?.get(schema.name).split(",") : [];
         }
 
         // Ensure primaryAttributeValue is defined and attributeValueList is an array.
@@ -2221,10 +2153,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         };
 
         const showPrimaryChip = (value: string): boolean => {
-            if (isEmpty(primaryAttributeValue)) {
-                return false;
-            }
-
             return value === primaryAttributeValue;
         };
 
@@ -2725,10 +2653,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         if (selectedAttributeInfo?.schema?.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             translationKey = "myAccount:components.profile.modals.emailAddressDeleteConfirmation.";
-        } else if (selectedAttributeInfo?.schema?.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            translationKey = "myAccount:components.profile.modals.mobileNumberDeleteConfirmation.";
         } else {
-            translationKey = "myAccount:components.profile.modals.customMultiAttributeDeleteConfirmation.";
+            translationKey = "myAccount:components.profile.modals.mobileNumberDeleteConfirmation.";
         }
 
         return (
