@@ -21,7 +21,7 @@ import { UseSortableInput, useSortable } from "@dnd-kit/react/sortable";
 import Box from "@oxygen-ui/react/Box";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FC, PropsWithChildren, ReactElement, RefObject } from "react";
+import React, { CSSProperties, FC, PropsWithChildren, ReactElement, RefObject } from "react";
 
 /**
  * Props interface of {@link Sortable}
@@ -50,7 +50,6 @@ const Sortable: FC<PropsWithChildren<SortableProps>> = ({
 }: PropsWithChildren<SortableProps>): ReactElement => {
     const { ref, isDragging } = useSortable({
         collisionDetector,
-        feedback: "default",
         handle: handleRef,
         id,
         index,
@@ -58,11 +57,16 @@ const Sortable: FC<PropsWithChildren<SortableProps>> = ({
         ...rest
     });
 
+    const elementStyle: CSSProperties = {
+        transform: isDragging ? "scale(1.02)" : undefined,
+        transition: "transform 200ms cubic-bezier(0.2, 0, 0, 1)"
+    };
+
     return (
         <Box
             ref={ ref }
             data-componentid={ componentId }
-            sx={ { height: "100%", width: "100%" } }
+            sx={ { height: "100%", width: "100%", ...elementStyle } }
             className={ classNames("dnd-sortable", { "is-dragging": isDragging }) }
         >
             { children }

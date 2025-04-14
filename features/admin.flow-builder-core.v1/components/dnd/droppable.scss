@@ -1,0 +1,21 @@
+.dnd-droppable {
+    &.is-dropping {
+        background-color: rgba(0, 0, 0, 0.03);
+        border-radius: 4px;
+
+        > * {
+            transform: scale(1.02);
+            transition: transform 200ms cubic-bezier(0.2, 0, 0, 1);
+        }
+    }
+
+    &.allowed {
+        background-color: rgba(0, 128, 0, 0.05);
+        border: 2px dashed rgba(0, 128, 0, 0.2);
+    }
+
+    &.disallowed {
+        background-color: rgba(255, 0, 0, 0.05);
+        border: 2px dashed rgba(255, 0, 0, 0.2);
+    }
+}
