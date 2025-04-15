@@ -26,6 +26,9 @@
     --wso2is-flow-builder-step-content-form-field-drag-handle-width: 25px;
     --wso2is-flow-builder-allowed-droppable-area-highlight: #e0ffe1;
     --wso2is-flow-builder-disallowed-droppable-area-highlight: #ffeaea;
+    --wso2is-flow-builder-dragging-form-field-hover-border-color: #338add;
+    --wso2is-flow-builder-dragging-form-field-hover-background-color: #f2f7fb;
+    --wso2is-flow-builder-dragging-form-field-action-panel-background-color: #1685ea;
 }
 
 .flow-builder-step {
@@ -64,9 +67,14 @@
 
         .flow-builder-step-content-form {
             .oxygen-form-group {
+                > .dnd-droppable {
+                    padding: var(--oxygen-spacing-4) var(--oxygen-spacing-1);
+                }
+
                 .flow-builder-step-content-form-field {
+                    position: relative;
                     border: 2px dashed transparent;
-                    margin-left: calc(-1 * (var(--wso2is-flow-builder-step-content-form-field-drag-handle-width)));
+                    padding: var(--oxygen-spacing-2) var(--oxygen-spacing-1);
 
                     .flow-builder-step-content-form-field-drag-handle {
                         display: flex;
@@ -92,14 +100,33 @@
                         }
                     }
 
-                    .flow-builder-dnd-action  {
+                    .flow-builder-dnd-actions  {
                         visibility: hidden;
+                        position: absolute;
+                        background: var(--wso2is-flow-builder-dragging-form-field-action-panel-background-color);
+                        right: 0;
+                        top: 0;
+                        width: 120px;
+                        height: 32px;
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: center;
+                        border-bottom-left-radius: var(--oxygen-shape-borderRadius);
+                        gap: 2px;
+                        z-index: 1;
+
+                        svg {
+                            width: 16px;
+                            fill: var(--oxygen-palette-common-white);
+                        }
                     }
 
                     &:hover, &:focus, &:active {
-                        border-color: var(--oxygen-palette-grey-200);
+                        border-color: var(--wso2is-flow-builder-dragging-form-field-hover-border-color);
+                        background-color: var(--wso2is-flow-builder-dragging-form-field-hover-background-color);
 
-                        >.flow-builder-dnd-action  {
+                        > .flow-builder-dnd-actions  {
                             visibility: visible;
                         }
 

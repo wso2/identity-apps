@@ -40,6 +40,7 @@ import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useCa
 import VisualFlow, { VisualFlowPropsInterface } from "./visual-flow";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
+import useComponentDelete from "../../hooks/use-component-delete";
 import useGenerateStepElement from "../../hooks/use-generate-step-element";
 import { Element } from "../../models/elements";
 import { Resource, ResourceTypes } from "../../models/resources";
@@ -98,10 +99,10 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     onResourceAdd,
     ...rest
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
-
     const { screenToFlowPosition, updateNodeData } = useReactFlow();
     const { generateStepElement } = useGenerateStepElement();
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
+    const { deleteComponent } = useComponentDelete();
 
     const {
         isResourcePanelOpen,
@@ -314,32 +315,6 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         [ nodes, edges ]
     );
 
-    const handleComponentDelete = (stepId: string, component: Element): void => {
-        const updateComponent = (components: Element[]): Element[] => {
-            return components?.reduce((acc: Element[], _component: Element) => {
-                if (_component.id === component.id) {
-                    return acc;
-                }
-
-                if (_component.components) {
-                    _component.components = updateComponent(_component.components);
-                }
-
-                acc.push(_component);
-
-                return acc;
-            }, []);
-        };
-
-        updateNodeData(stepId, (node: any) => {
-            const components: Element[] = updateComponent(cloneDeep(node?.data?.components));
-
-            return {
-                components
-            };
-        });
-    };
-
     const handleOnAdd = (resource: Resource): void => {
         // Currently we only let templates to be added to the canvas via a click.
         if (resource.resourceType !== ResourceTypes.Template) {
@@ -396,7 +371,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                 >
                     <ElementPropertiesPanel
                         open={ isResourcePropertiesPanelOpen }
-                        onComponentDelete={ handleComponentDelete }
+                        onComponentDelete={ deleteComponent }
                     >
                         <VisualFlow
                             resources={ resources }

@@ -67,10 +67,6 @@
             .flow-builder-step-content-form-field {
                 margin-left: 0 !important;
 
-                .flow-builder-step-content-form-field-content {
-                    padding-right: var(--oxygen-spacing-2);
-                }
-
                 transition: transform 200ms cubic-bezier(0.2, 0, 0, 1);
                 will-change: transform;
 
