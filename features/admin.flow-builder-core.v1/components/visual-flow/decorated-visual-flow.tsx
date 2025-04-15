@@ -246,14 +246,13 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             return;
         }
 
-        // Only handle reordering operations during drag over
+        // If not a reordering operation, return.
         if (!source.data.isReordering) {
             return;
         }
 
         const { data: sourceData } = source;
 
-        // Use requestAnimationFrame to throttle updates during drag
         requestAnimationFrame(() => {
             updateNodeData(sourceData?.stepId, (node: any) => {
                 const unorderedComponents: Element[] = cloneDeep(node?.data?.components);
