@@ -82,9 +82,7 @@ const Droppable: FC<PropsWithChildren<DroppableProps>> = ({
                 flexDirection: "column",
                 gap: "10px",
                 height: "100%",
-                perspective: "500px",
-                transform: "translate3d(0, 0, 0)",
-                transition: "transform 200ms cubic-bezier(0.2, 0, 0, 1)",
+                transition: "background-color 0.2s ease",
                 width: "100%",
                 ...sx
             } }

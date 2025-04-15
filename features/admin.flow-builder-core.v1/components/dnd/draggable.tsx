@@ -50,8 +50,9 @@ const Draggable: FC<PropsWithChildren<DraggableProps>> = ({
     });
 
     const style: CSSProperties = {
-        transform: isDragging ? "scale(1.05)" : undefined,
-        transition: "transform 200ms cubic-bezier(0.2, 0, 0, 1)"
+        opacity: isDragging ? 0.4 : 1,
+        transform: isDragging ? "scale(1.01)" : "none",
+        transition: isDragging ? "none" : "transform 0.2s ease, opacity 0.2s ease"
     };
 
     return (

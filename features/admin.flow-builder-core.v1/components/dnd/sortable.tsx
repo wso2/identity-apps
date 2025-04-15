@@ -58,8 +58,9 @@ const Sortable: FC<PropsWithChildren<SortableProps>> = ({
     });
 
     const elementStyle: CSSProperties = {
-        transform: isDragging ? "scale(1.02)" : undefined,
-        transition: "transform 200ms cubic-bezier(0.2, 0, 0, 1)"
+        opacity: isDragging ? 0.4 : 1,
+        transform: isDragging ? "scale(1.01)" : "none",
+        transition: isDragging ? "none" : "all 0.2s ease"
     };
 
     return (

@@ -246,20 +246,28 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             return;
         }
 
+        // Only handle reordering operations during drag over
+        if (!source.data.isReordering) {
+            return;
+        }
+
         const { data: sourceData } = source;
 
-        updateNodeData(sourceData?.stepId, (node: any) => {
-            const unorderedComponents: Element[] = cloneDeep(node?.data?.components);
+        // Use requestAnimationFrame to throttle updates during drag
+        requestAnimationFrame(() => {
+            updateNodeData(sourceData?.stepId, (node: any) => {
+                const unorderedComponents: Element[] = cloneDeep(node?.data?.components);
 
-            unorderedComponents.map((component: Element) => {
-                if (component?.components) {
-                    component.components = move(component.components, event);
-                }
+                unorderedComponents.map((component: Element) => {
+                    if (component?.components) {
+                        component.components = move(component.components, event);
+                    }
+                });
+
+                return {
+                    components: move(unorderedComponents, event)
+                };
             });
-
-            return {
-                components: move(unorderedComponents, event)
-            };
         });
     }, []);
 
