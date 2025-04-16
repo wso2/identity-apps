@@ -65,6 +65,10 @@
                 margin: auto;
             }
 
+            .self-registration-content-wrapper {
+                margin: auto;
+            }
+
             .registration-loader {
                 svg #_1{
                     animation-name: alert-success;
