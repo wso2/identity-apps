@@ -18,7 +18,8 @@
 
 .flow-builder-dnd-action {
     display: flex;
-    width: 12px;
+    width: 26px;
+    height: 26px;
     padding: 5px 10px;
     margin: 0 3px;
     align-items: center;
@@ -33,17 +34,17 @@
     background-color: transparent;
     -webkit-tap-highlight-color: transparent;
     --fill: #919eab;
-    
+
     &:hover, &:active {
         background-color: var(--background, rgba(0, 0, 0, 0.05));
         --fill: #6f7b88;
     }
-    
+
     &:focus-visible {
         outline: none;
         box-shadow: 0 0 0 2px rgba(255, 255, 255, 0), inset 0 0px 0px 2.5px #4c9ffe;
     }
-    
+
     svg {
         flex: 0 0 auto;
         margin: auto;

@@ -71,7 +71,7 @@ const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
             >
                 { shouldShowFormFieldsPlaceholder && (
                     <Box className="form-adapter-placeholder">
-                        <Typography variant="body2">DROP FORM FIELDS HERE</Typography>
+                        <Typography variant="body2">DROP FORM COMPONENTS HERE</Typography>
                     </Box>
                 ) }
                 { (resource?.components as any)?.map((component: Element, index: number) => (
