@@ -42,10 +42,11 @@ import { Dispatch } from "redux";
  *  Gets profile information by making an API call
  */
 export const getProfileInformation = (
-    meEndpoint: string = Config.getServiceResourceEndpoints().me,
     clientOrigin: string = window["AppUtils"].getConfig().clientOriginWithTenant,
     fetchProfileSchema: boolean = false
 ) => (dispatch: Dispatch): void => {
+
+    const meEndpoint: string = store.getState().config.endpoints.me;
 
     dispatch(setProfileInfoRequestLoadingStatus(true));
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,12 +17,12 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { Config } from "@wso2is/admin.core.v1/configs/app";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
@@ -47,7 +47,7 @@ export const useSaml2Config = <
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().saml2Configurations
+        url: store.getState().config.endpoints.saml2Configurations
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
@@ -77,7 +77,7 @@ export const updateSaml2Configurations = (data: Saml2ConfigAPIResponseInterface)
             "Content-Type": "application/json"
         },
         method:  HttpMethods.PATCH,
-        url: Config.getServiceResourceEndpoints().saml2Configurations
+        url: store.getState().config.endpoints.saml2Configurations
     };
 
     return httpClient(requestConfig)
