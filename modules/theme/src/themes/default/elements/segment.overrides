@@ -198,6 +198,8 @@
 .ui.segment {
     &.transfer-segment {
         width: @TransferComponentSegmentWidth;
+        box-shadow: none;
+        border: none;
     }
 
     &.transfer-list-segment {

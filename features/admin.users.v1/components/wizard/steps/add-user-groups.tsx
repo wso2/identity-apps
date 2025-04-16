@@ -160,6 +160,7 @@ export const AddUserGroups: FunctionComponent<AddConsumerUserGroupPropsInterface
         >
             <TransferComponent
                 selectionComponent
+                bordered={ false }
                 searchPlaceholder={ t("transferList:searchPlaceholder",
                     { type: "Groups" }) }
                 handleUnelectedListSearch={ (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
@@ -168,6 +169,7 @@ export const AddUserGroups: FunctionComponent<AddConsumerUserGroupPropsInterface
                 data-testid="user-mgt-add-user-wizard-modal"
             >
                 <TransferList
+                    bordered={ true }
                     isListEmpty={ !(originalGroupList?.Resources?.length > 0) }
                     listType="unselected"
                     emptyPlaceholderContent={ t("transferList:list.emptyPlaceholders." +

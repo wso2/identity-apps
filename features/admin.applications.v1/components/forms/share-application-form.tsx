@@ -618,6 +618,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                                     </Message>
                                 ) }
                                 <TransferComponent
+                                    bordered={ false }
                                     className="pl-2"
                                     disabled={ shareType !== ShareType.SHARE_SELECTED }
                                     selectionComponent
