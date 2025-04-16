@@ -69,7 +69,7 @@ const Droppable: FC<PropsWithChildren<DroppableProps>> = ({
             ref={ ref }
             data-componentid={ componentId }
             className={ classNames(
-                "dnd-droppable",
+                "flow-builder-dnd-droppable",
                 {
                     allowed: draggedResource && (accept as string[])?.includes(draggedResource?.type),
                     disallowed: draggedResource && !(accept as string[])?.includes(draggedResource?.type),

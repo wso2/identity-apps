@@ -43,7 +43,7 @@
         align-items: center;
         text-align: left;
 
-        .dnd-droppable {
+        .flow-builder-dnd-droppable {
             &.is-dropping {
                 &.allowed {
                     background-color: var(--wso2is-flow-builder-allowed-droppable-area-highlight);
@@ -67,7 +67,7 @@
 
         .flow-builder-step-content-form {
             .oxygen-form-group {
-                > .dnd-droppable {
+                > .flow-builder-dnd-droppable {
                     padding: var(--oxygen-spacing-4) var(--oxygen-spacing-1);
                 }
 
