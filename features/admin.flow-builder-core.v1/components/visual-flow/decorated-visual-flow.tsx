@@ -116,7 +116,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         }
     }, [ aiGeneratedFlow ]);
 
-    const addCanvasNode = (event, sourceData): void => {
+    const addCanvasNode = (event, sourceData, targetData): void => {
         const { dragged: sourceResource } = sourceData;
         const { clientX, clientY } = event?.nativeEvent;
 
