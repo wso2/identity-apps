@@ -24,6 +24,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
@@ -229,6 +230,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const hasAttributeCreatePermissions: boolean = useRequiredScopes(featureConfig?.attributeDialects?.scopes?.create);
     const hasAttributeUpdatePermissions: boolean = useRequiredScopes(featureConfig?.attributeDialects?.scopes?.update);
     const hasAttributeDeletePermissions: boolean = useRequiredScopes(featureConfig?.attributeDialects?.scopes?.delete);
+
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+    const isReadOnly: boolean = isSubOrganization() || !hasAttributeUpdatePermissions;
 
     const dispatch: ThunkDispatch<AppState, any, any> = useDispatch();
 
@@ -1003,15 +1007,15 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         if (isLocalClaim(list)) {
             return [
                 {
-                    icon: (): SemanticICONS => !hasAttributeUpdatePermissions
+                    icon: (): SemanticICONS => isReadOnly
                         ? "eye"
                         : "pencil alternate",
                     onClick: (e: SyntheticEvent, claim: Claim | ExternalClaim | ClaimDialect): void => {
                         history.push(AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT").replace(":id", claim?.id));
                     },
-                    popupText: (): string => hasAttributeUpdatePermissions
-                        ? t("common:edit")
-                        : t("common:view"),
+                    popupText: (): string => isReadOnly
+                        ? t("common:view")
+                        : t("common:edit"),
                     renderer: "semantic-icon"
                 },
                 attributeConfig.attributes.deleteAction && {
