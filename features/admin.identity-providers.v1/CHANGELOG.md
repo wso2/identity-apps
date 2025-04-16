@@ -1,5 +1,14 @@
 # @wso2is/admin.identity-providers.v1
 
+## 2.26.205
+
+### Patch Changes
+
+- [#8033](https://github.com/wso2/identity-apps/pull/8033) [`b61fcb04b47f0bf215a24ff49d81019f75f190f7`](https://github.com/wso2/identity-apps/commit/b61fcb04b47f0bf215a24ff49d81019f75f190f7) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with fetching connections in login flow
+
+- Updated dependencies [[`b61fcb04b47f0bf215a24ff49d81019f75f190f7`](https://github.com/wso2/identity-apps/commit/b61fcb04b47f0bf215a24ff49d81019f75f190f7)]:
+  - @wso2is/admin.identity-providers.v1@2.26.205
+
 ## 2.26.204
 
 ### Patch Changes
