@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -37,7 +37,7 @@ export const getExtendedFeatureResourceEndpoints = (serverHost: string,
         authzEndpoint: `${ authzServiceHost }/o/${ orgId }`,
         choreoEventingEndpoint: deploymentConfig.extensions?.choreoEventingEndpoint as string,
         diagnosticLogsEndpoint: `${ serverHost }/api/asgardeo/v2/logs/diagnostics/search`,
-        emailManagement: `${ serverHost }/api/server/v1/email`,
+        emailManagement: `${ serverHost }/api/server/v1/notification/email`,
         emailProviderEndpoint: `${ serverHost }/api/server/v1/notification-senders/email`,
         eventsEndpoint: `${ serverHost }/api/event-configurations/v1/events`,
         inviteEndpoint: `${ serverHost }/api/asgardeo-guest/v1/users/invite`,

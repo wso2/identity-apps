@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -122,7 +122,7 @@ const ReduxStoreStateMock: any = {
             publicCertificates: "https://localhost:9443/api/server/v1/keystores/certs/public",
             identityProviders: "https://localhost:9443/api/server/v1/identity-providers",
             localAuthenticators: "https://localhost:9443/api/server/v1/configs/authenticators",
-            emailTemplateType: "https://localhost:9443/api/server/v1/email/template-types",
+            emailTemplateType: "https://localhost:9443/api/server/v1/notification/email/template-types",
             permission: "https://localhost:9443/api/server/v1/permission-management/permissions",
             roles: "https://localhost:9443/scim2/Roles",
             accountDisabling: "https://localhost:9443/api/server/v1/identity-governance/TG9naW4gUG9saWNpZXM/connectors/YWNjb3VudC5kaXNhYmxlLmhhbmRsZXI",
