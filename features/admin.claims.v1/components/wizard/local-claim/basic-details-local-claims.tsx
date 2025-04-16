@@ -221,8 +221,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                         loading={ validateMapping }
                                         listen={ (values: Map<string, FormValue>) => {
                                             setClaimID(values.get("claimURI").toString());
-                                            setOidcMapping(values.get("claimURI").toString().replace(/\./g,""));
-                                            setScimMapping(values.get("claimURI").toString().replace(/\./g,""));
+                                            setOidcMapping(values.get("claimURI").toString());
+                                            setScimMapping(values.get("claimURI").toString());
                                             setIsScimMappingRemoved(false);
                                         } }
                                         onMouseOver={ () => {
@@ -241,7 +241,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                             let isAttributeValid: boolean = true;
 
                                             // TODO : Discuss on max characters for attribute name
-                                            if (!value.match(/^\w+$/) || value.length > 30) {
+                                            if (!value.match(/^\w+(\.\w+)?$/) || value.length > 30) {
                                                 isAttributeValid = false;
                                             }
 

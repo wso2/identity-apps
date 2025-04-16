@@ -39,6 +39,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             __experimental__platformIdP: null,
             accountApp: {
                 basePath: "",
+                centralAppPath: "",
                 displayName: "",
                 path: "",
                 tenantQualifiedPath: ""
@@ -146,6 +147,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             remoteLogPublishEndpoint: "",
             remoteLogging: "",
             requestPathAuthenticators: "",
+            resendCode: "",
             resourceTypes: "",
             roles: "",
             rolesV2: "",

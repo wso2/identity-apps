@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.7.3
+
+### Patch Changes
+
+- [#8035](https://github.com/wso2/identity-apps/pull/8035) [`4591b3ea74dda325425f08630075ebac8d1fa1e4`](https://github.com/wso2/identity-apps/commit/4591b3ea74dda325425f08630075ebac8d1fa1e4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update admin invitation flow styling
+
 ## 2.7.2
 
 ### Patch Changes

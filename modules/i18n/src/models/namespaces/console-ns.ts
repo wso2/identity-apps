@@ -1376,6 +1376,9 @@ export interface ConsoleNS {
                         };
                     };
                     certificateSection: {
+                        heading: string;
+                        description: string;
+                        info: string;
                         certificateEditSwitch: {
                             jwks: string;
                             pem: string;

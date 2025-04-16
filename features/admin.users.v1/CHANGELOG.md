@@ -1,5 +1,37 @@
 # @wso2is/admin.users.v1
 
+## 2.30.122
+
+### Patch Changes
+
+- [#8036](https://github.com/wso2/identity-apps/pull/8036) [`5755f6304a3829c8a9d0ed277f18b9d7748f28f4`](https://github.com/wso2/identity-apps/commit/5755f6304a3829c8a9d0ed277f18b9d7748f28f4) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Resolve loading custom complex attribute values in user profile
+
+- Updated dependencies [[`f44217d609d530a8588ffcc0c2684569852e7c35`](https://github.com/wso2/identity-apps/commit/f44217d609d530a8588ffcc0c2684569852e7c35), [`e09f6aac4d52f5385c2ebb62ec859decf86981ab`](https://github.com/wso2/identity-apps/commit/e09f6aac4d52f5385c2ebb62ec859decf86981ab), [`5755f6304a3829c8a9d0ed277f18b9d7748f28f4`](https://github.com/wso2/identity-apps/commit/5755f6304a3829c8a9d0ed277f18b9d7748f28f4)]:
+  - @wso2is/i18n@2.22.9
+  - @wso2is/admin.claims.v1@2.27.115
+  - @wso2is/admin.users.v1@2.30.122
+
+## 2.30.121
+
+### Patch Changes
+
+- [#8027](https://github.com/wso2/identity-apps/pull/8027) [`913fa68968a319095b93afaa24e8f71a1a7642a6`](https://github.com/wso2/identity-apps/commit/913fa68968a319095b93afaa24e8f71a1a7642a6) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Support multivalued attributes in console user profile
+
+- Updated dependencies [[`913fa68968a319095b93afaa24e8f71a1a7642a6`](https://github.com/wso2/identity-apps/commit/913fa68968a319095b93afaa24e8f71a1a7642a6)]:
+  - @wso2is/admin.users.v1@2.30.121
+  - @wso2is/core@2.7.2
+
+## 2.30.120
+
+### Patch Changes
+
+- [#7987](https://github.com/wso2/identity-apps/pull/7987) [`22c135c791784fc9a235aa21c5593e90aa4ddf29`](https://github.com/wso2/identity-apps/commit/22c135c791784fc9a235aa21c5593e90aa4ddf29) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix Users not being searchable via API in group creation wizard
+
+- Updated dependencies [[`5161765cb3777121c140698e69908a25196fbb62`](https://github.com/wso2/identity-apps/commit/5161765cb3777121c140698e69908a25196fbb62), [`22c135c791784fc9a235aa21c5593e90aa4ddf29`](https://github.com/wso2/identity-apps/commit/22c135c791784fc9a235aa21c5593e90aa4ddf29)]:
+  - @wso2is/admin.extensions.v1@2.37.2
+  - @wso2is/admin.groups.v1@2.27.117
+  - @wso2is/admin.users.v1@2.30.120
+
 ## 2.30.119
 
 ### Patch Changes

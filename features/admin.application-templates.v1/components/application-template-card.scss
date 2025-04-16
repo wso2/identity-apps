@@ -42,7 +42,7 @@
         right: 0;
         font-size: .8em;
         height: 24px;
-        width: 100px;
+        width: 60px;
         display: flex;
         flex-direction: row;
         align-content: center;
@@ -86,6 +86,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             -webkit-line-clamp: 2; /* Number of lines to show */
+            line-clamp: 2;
             /* Ensure compatibility with other browsers */
             height: calc(0.875rem * 1.5 * 2); /* Line height * number of lines */
             white-space: normal;

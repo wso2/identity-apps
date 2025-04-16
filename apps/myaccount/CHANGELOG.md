@@ -1,5 +1,22 @@
 # @wso2is/myaccount
 
+## 2.19.5
+
+### Patch Changes
+
+- [#8038](https://github.com/wso2/identity-apps/pull/8038) [`f44217d609d530a8588ffcc0c2684569852e7c35`](https://github.com/wso2/identity-apps/commit/f44217d609d530a8588ffcc0c2684569852e7c35) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Support custom multi valued attributes and complex attributes in myaccount
+
+- Updated dependencies [[`f44217d609d530a8588ffcc0c2684569852e7c35`](https://github.com/wso2/identity-apps/commit/f44217d609d530a8588ffcc0c2684569852e7c35)]:
+  - @wso2is/i18n@2.22.9
+
+## 2.19.4
+
+### Patch Changes
+
+- [#8006](https://github.com/wso2/identity-apps/pull/8006) [`83edb4cd6bd35342dfc94d5c6e9a994b489e117c`](https://github.com/wso2/identity-apps/commit/83edb4cd6bd35342dfc94d5c6e9a994b489e117c) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - [development] Update webpack rewrite logic to facilitate pre-auth in myaccount local development
+
+* [#8010](https://github.com/wso2/identity-apps/pull/8010) [`549c16c3f48ed28b4d1c72513887d45046edb45c`](https://github.com/wso2/identity-apps/commit/549c16c3f48ed28b4d1c72513887d45046edb45c) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Redirect to central server when access my account with super tenant path
+
 ## 2.19.3
 
 ### Patch Changes

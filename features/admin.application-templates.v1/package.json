@@ -1,12 +1,12 @@
 {
     "private": true,
     "name": "@wso2is/admin.application-templates.v1",
-    "version": "1.4.203",
+    "version": "1.5.2",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/admin.applications.v1": "^2.32.6",
+        "@wso2is/admin.applications.v1": "^2.34.2",
         "@wso2is/admin.core.v1": "^2.40.6",
         "@wso2is/admin.template-core.v1": "^1.5.157",
         "@wso2is/admin.feature-gate.v1": "^1.4.203"

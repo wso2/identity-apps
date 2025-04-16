@@ -91,6 +91,9 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const showAppSwitchButton: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
     const accountAppURL: string = useSelector((state: AppState) => state.config.deployment.accountApp.path);
+    const centralAppURL: string = useSelector(
+        (state: AppState) => state.config.deployment.accountApp.centralAppPath
+    );
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const associatedTenants: any[] = useSelector((state: AppState) => state?.auth?.tenants);
     const privilegedUserAccountURL: string = useSelector(
@@ -105,6 +108,9 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const userOrganizationID: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
     const loginAndRegistrationFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.loginAndRegistration);
+    const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.centralDeploymentEnabled;
+    });
 
     const hasGettingStartedViewPermission: boolean = useRequiredScopes(
         gettingStartedFeatureConfig?.scopes?.feature
@@ -348,6 +354,10 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
 
         if (isSubOrganization()) {
             return consumerAccountURL;
+        }
+
+        if (isCentralDeploymentEnabled) {
+            return centralAppURL;
         }
 
         return accountAppURL;
