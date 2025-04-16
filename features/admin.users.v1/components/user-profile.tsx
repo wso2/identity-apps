@@ -228,7 +228,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
-    const [ multiValuedProfileSchema, setMultiValuedProfileSchema ] = useState<ProfileSchemaInterface[]>();
+    const [ simpleMultiValuedExtendedProfileSchema, setSimpleMultiValuedExtendedProfileSchema ]
+        = useState<ProfileSchemaInterface[]>();
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showAdminRevokeConfirmationModal, setShowAdminRevokeConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<ProfileInfoInterface>(undefined);
@@ -315,14 +316,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     useEffect(() => {
         const META_VERSION: string = ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION");
         const filteredSchemas: ProfileSchemaInterface[] = [];
-        const multiValuedSchemas: ProfileSchemaInterface[] = [];
+        const simpleMultiValuedExtendedSchemas: ProfileSchemaInterface[] = [];
 
         for (const schema of ProfileUtils.flattenSchemas([ ...profileSchemas ])) {
             if (schema.name === META_VERSION) {
                 continue;
             }
-            if (schema.multiValued) {
-                multiValuedSchemas.push(schema);
+            // Only simple multi-valued attributes in extended schemas are supported generally.
+            if (schema.extended && schema.multiValued && schema.type !== AttributeDataType.COMPLEX) {
+                simpleMultiValuedExtendedSchemas.push(schema);
             }
             filteredSchemas.push(schema);
         }
@@ -331,7 +333,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             getDisplayOrder(a) - getDisplayOrder(b));
 
         setProfileSchema(filteredSchemas);
-        setMultiValuedProfileSchema(multiValuedSchemas);
+        setSimpleMultiValuedExtendedProfileSchema(simpleMultiValuedExtendedSchemas);
     }, [ profileSchemas ]);
 
     useEffect(() => {
@@ -667,7 +669,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         const tempMultiValuedAttributeValues: Record<string, string[]> = {};
         const tempPrimaryValues: Record<string, string> = {};
 
-        multiValuedProfileSchema?.forEach((schema: ProfileSchemaInterface) => {
+        simpleMultiValuedExtendedProfileSchema?.forEach((schema: ProfileSchemaInterface) => {
             const attributeValue: string = profileData?.get(schema.name);
 
             tempMultiValuedAttributeValues[schema.name] = attributeValue ? attributeValue.split(",") : [];
@@ -679,14 +681,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
             if (!isEmpty(primaryEmail)) {
                 const emailAddresses: string[] = tempMultiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE]
-                    .filter((value: string) => !isEmpty(value) && value !== primaryEmail);
+                    ?.filter((value: string) => !isEmpty(value) && value !== primaryEmail) ?? [];
 
                 emailAddresses.unshift(primaryEmail);
                 tempMultiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] = emailAddresses;
             }
             if (!isEmpty(primaryMobile)) {
                 const mobileNumbers: string[] = tempMultiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE]
-                    .filter((value: string) => !isEmpty(value) && value !== primaryMobile);
+                    ?.filter((value: string) => !isEmpty(value) && value !== primaryMobile) ?? [];
 
                 mobileNumbers.unshift(primaryMobile);
                 tempMultiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] = mobileNumbers;
@@ -1081,7 +1083,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const attValues: Map<string, string | string []> = new Map();
 
                             if (schemaNames.length === 1 || schemaNames.length === 2) {
-                                if (schema.type.toUpperCase() === AttributeDataType.COMPLEX) {
+                                if (schema.extended) {
+                                    opValue = {
+                                        [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
+                                            schema.name,
+                                            multiValuedAttributeValues[schema.name],
+                                            multiValuedInputFieldValue[schema.name]
+                                        )
+                                    };
+                                } else {
+                                    // Handle emails and phoneNumbers and their sub attributes.
                                     // Extract the sub attributes from the form values.
                                     for (const value of values.keys()) {
                                         const subAttribute: string[] = value.split(".");
@@ -1108,17 +1119,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     opValue = {
                                         [schemaNames[0]]: attributeValues
                                     };
-                                } else if (schema.extended) {
-                                    opValue = {
-                                        [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
-                                            schema.name,
-                                            multiValuedAttributeValues[schema.name],
-                                            multiValuedInputFieldValue[schema.name]
-                                        )
-                                    };
                                 }
-                                // Core schema and user schema does not allow custom multi-valued attributes
-                                // except for the defined attributes.
                             }
                         } else {
                             if (schemaNames.length === 1) {
