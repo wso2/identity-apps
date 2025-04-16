@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.7.4
+
+### Patch Changes
+
+- [#8043](https://github.com/wso2/identity-apps/pull/8043) [`9c1ce998f2bbbad563170846d13a7e983f67063c`](https://github.com/wso2/identity-apps/commit/9c1ce998f2bbbad563170846d13a7e983f67063c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update self registration flow styling
+
 ## 2.7.3
 
 ### Patch Changes
