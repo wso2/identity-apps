@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,6 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { ProfileConstants } from "@wso2is/core/constants";
@@ -191,7 +190,7 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
             "Accept": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().schemas
+        url: store.getState().config.endpoints.schemas
     };
     const schemaAttributes: ProfileSchemaInterface[] = [];
 

@@ -17,7 +17,6 @@
  */
 
 import { AsgardeoSPAClient, DecodedIDTokenPayload } from "@asgardeo/auth-react";
-import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { store } from "@wso2is/admin.core.v1/store";
 import { getProfileInfo, getProfileSchemas } from "@wso2is/admin.users.v1/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -42,10 +41,11 @@ import { Dispatch } from "redux";
  *  Gets profile information by making an API call
  */
 export const getProfileInformation = (
-    meEndpoint: string = Config.getServiceResourceEndpoints().me,
     clientOrigin: string = window["AppUtils"].getConfig().clientOriginWithTenant,
     fetchProfileSchema: boolean = false
 ) => (dispatch: Dispatch): void => {
+
+    const meEndpoint: string = store.getState().config.endpoints.me;
 
     dispatch(setProfileInfoRequestLoadingStatus(true));
 

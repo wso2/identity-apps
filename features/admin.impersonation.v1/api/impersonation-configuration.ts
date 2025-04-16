@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,19 +17,19 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { Config } from "@wso2is/admin.core.v1/configs/app";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { ImpersonationConfigConstants } from "../constants/impersonation-configuration";
 import {
     ImpersonationConfigAPIResponseInterface,
-    ImpersonationConfigPatchInterface 
+    ImpersonationConfigPatchInterface
 } from "../models/impersonation-configuration";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
@@ -49,7 +49,7 @@ export const useImpersonationConfig = <
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().impersonationConfigurations
+        url: store.getState().config.endpoints.impersonationConfigurations
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
@@ -78,7 +78,7 @@ export const updateImpersonationConfigurations = (data: ImpersonationConfigPatch
             "Content-Type": "application/json"
         },
         method:  HttpMethods.PATCH,
-        url: Config.getServiceResourceEndpoints().impersonationConfigurations
+        url: store.getState().config.endpoints.impersonationConfigurations
     };
 
     return httpClient(requestConfig)

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -71,6 +71,7 @@ import { Redirect, Route, RouteComponentProps, Router, Switch } from "react-rout
 import { Dispatch } from "redux";
 import "moment/locale/si";
 import "moment/locale/fr";
+import { getServiceResourceEndpoints } from "./configs/endpoints";
 import { getBaseRoutes } from "./configs/routes";
 import DecoratedApp from "./decorated-app";
 import "./app.scss";
@@ -129,9 +130,9 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
      * Set the deployment configs in redux state.
      */
     useEffect(() => {
-        dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
+        dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(getServiceResourceEndpoints()));
         dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
-        setResourceEndpoints(Config.getServiceResourceEndpoints() as any);
+        setResourceEndpoints(getServiceResourceEndpoints() as any);
     }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     /**

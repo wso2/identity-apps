@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { handlers as extendedHandlers } from "@wso2is/admin.extensions.v1/test-configs/__mocks__/server/handlers";
 import { ResponseComposition, RestContext, RestHandler, RestRequest, rest } from "msw";
+import ReduxStoreStateMock from "../redux/redux-store-state";
 
 /**
  * MSW Request Handlers.
@@ -26,7 +26,7 @@ import { ResponseComposition, RestContext, RestHandler, RestRequest, rest } from
  */
 export const handlers: RestHandler[] = [
 
-    rest.get(Config.getServiceResourceEndpoints().users, (
+    rest.get(ReduxStoreStateMock.config.endpoints.users, (
         req: RestRequest,
         res: ResponseComposition,
         ctx: RestContext) => {
@@ -35,7 +35,7 @@ export const handlers: RestHandler[] = [
             ctx.status(200)
         );
     }),
-    rest.get(Config.getServiceResourceEndpoints().applications, (
+    rest.get(ReduxStoreStateMock.config.endpoints.applications, (
         req: RestRequest,
         res: ResponseComposition,
         ctx: RestContext) => {
