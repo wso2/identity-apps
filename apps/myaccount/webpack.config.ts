@@ -182,6 +182,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     const devServerHost: string = process.env.DEV_SERVER_HOST || config.devServer?.host;
     const isDevServerHostCheckDisabled: boolean = process.env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
     const isESLintPluginDisabled: boolean = process.env.DISABLE_ESLINT_PLUGIN === "true";
+    const isTSCheckPluginDisabled: boolean = process.env.DISABLE_TS_CHECK_PLUGIN === "true";
     const devServerWebSocketHost: string = process.env.WDS_SOCKET_HOST;
     const devServerWebSocketPath: string = process.env.WDS_SOCKET_PATH;
     const devServerWebSocketPort: string = process.env.WDS_SOCKET_PORT;
@@ -200,6 +201,17 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         // This is set to `info` in profiling mode to get the desired result.
         level: process.env.LOG_LEVEL ? process.env.LOG_LEVEL : isProfilingMode ? "info" : "none"
     } as WebpackOptionsNormalized["infrastructureLogging"];
+
+    // Disable the TS Check in the Dev server if disabled from the `.env`.
+    if (!isProduction && isTSCheckPluginDisabled) {
+        const forkTsCheckerPluginIndex: number = config.plugins.findIndex((plugin: WebpackPluginInstance) => {
+            return plugin.constructor.name === "ForkTsCheckerWebpackPlugin";
+        });
+
+        if (forkTsCheckerPluginIndex !== -1) {
+            config.plugins.splice(forkTsCheckerPluginIndex, 1);
+        }
+    }
 
     // Remove `IndexHtmlWebpackPlugin` plugin added by NX and add `HtmlWebpackPlugin` instead.
     const indexHtmlWebpackPluginIndex: number = config.plugins.findIndex((plugin: webpack.WebpackPluginInstance) => {
