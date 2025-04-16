@@ -177,14 +177,6 @@ export class FederatedAuthenticatorConstants {
     public static readonly APPLE_SECRET_REGENERATE_ATTRIBUTE_KEY: string = "RegenerateClientSecret";
 
     /**
-     * SIWE Scope mappings.
-     */
-    public static readonly SIWE_SCOPE_DICTIONARY: Record<string, string> = {
-        OPENID: "openid",
-        PROFILE: "profile"
-    };
-
-    /**
      * @deprecated Use `ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME` from
      * `FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES` instead.
      * Hardcoded name for SSO authenticator.

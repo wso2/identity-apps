@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState 
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
 import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
-import { FederatedAuthenticatorConstants } from "../../../../constants/federated-authenticator-constants";
+import SIWEConstants from "../../../../constants/siwe-constants";
 import {
     CommonAuthenticatorFormFieldInterface,
     CommonAuthenticatorFormFieldMetaInterface,
@@ -230,7 +230,7 @@ export const SIWEAuthenticatorForm: FunctionComponent<SIWEAuthenticatorFormProps
      */
     const resolveScopeMetadata = (scope: string): ScopeMetaInterface => {
 
-        if (scope === FederatedAuthenticatorConstants.SIWE_SCOPE_DICTIONARY.PROFILE) {
+        if (scope === SIWEConstants.SIWE_SCOPE_DICTIONARY.PROFILE) {
             return {
                 description: t("extensions:develop.identityProviders.siwe.forms.authenticatorSettings" +
                     ".scopes.list.profile.description"),
@@ -241,7 +241,7 @@ export const SIWEAuthenticatorForm: FunctionComponent<SIWEAuthenticatorFormProps
                 ),
                 icon: "user outline"
             };
-        } else if (scope === FederatedAuthenticatorConstants.SIWE_SCOPE_DICTIONARY.OPENID) {
+        } else if (scope === SIWEConstants.SIWE_SCOPE_DICTIONARY.OPENID) {
             return {
                 description: t("extensions:develop.identityProviders.siwe.forms.authenticatorSettings" +
                     ".scopes.list.openid.description"),
