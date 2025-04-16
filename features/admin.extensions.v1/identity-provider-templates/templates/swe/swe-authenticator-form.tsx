@@ -17,6 +17,7 @@
  */
 
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
+import SIWEConstants from "@wso2is/admin.connections.v1/constants/siwe-constants";
 import {
     CommonAuthenticatorFormFieldInterface,
     CommonAuthenticatorFormFieldMetaInterface,
@@ -32,7 +33,6 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
-import { SIWEConstants } from "../../../components/identity-providers/constants";
 
 /**
  * Interface for SIWE Authenticator Settings Form props.
