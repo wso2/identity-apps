@@ -54,7 +54,7 @@ const Droppable: FC<PropsWithChildren<DroppableProps>> = ({
         onDragEnd() {
             setDraggedResource(null);
         },
-        onDragOver(event: { operation: { source: { data: { dragged: Resource } } } }) {
+        onDragOver(event) {
             const { source } = event.operation;
             const { data } = source;
 

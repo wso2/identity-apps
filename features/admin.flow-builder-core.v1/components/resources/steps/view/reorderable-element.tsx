@@ -47,7 +47,7 @@ export interface ReorderableComponentPropsInterface
     draggableProps?: Partial<GetDragItemProps>;
 }
 
-const PencilIcon = ({ width = 16, height = 16 }: SVGProps): ReactElement => (
+const PencilIcon = ({ width = 16, height = 16 }: SVGProps<SVGSVGElement>): ReactElement => (
     <svg width={ width } height={ height } viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
             // eslint-disable-next-line max-len
