@@ -225,6 +225,9 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                     }
                 });
 
+                // Update node internals to fix handle positions after reordering
+                updateNodeInternals(sourceData.stepId);
+
                 return {
                     components: move(unorderedComponents, event)
                 };
