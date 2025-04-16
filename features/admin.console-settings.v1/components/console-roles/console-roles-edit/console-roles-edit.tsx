@@ -109,6 +109,10 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
 
     const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
+    const isPrivilegedUsersToggleVisible: boolean = isFirstLevelOrganization() &&
+        isEnterpriseLoginEnabled &&
+        isPrivilegedUsersInConsoleSettingsEnabled;
+
     const {
         data: OrganizationConfig,
         isLoading: isOrgConfigRequestLoading,
@@ -195,9 +199,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                 menuItem: t("roles:edit.menuItems.users"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        { isFirstLevelOrganization() &&
-                            isEnterpriseLoginEnabled &&
-                            isPrivilegedUsersInConsoleSettingsEnabled && (
+                        { isPrivilegedUsersToggleVisible && (
                             <RadioGroup
                                 row
                                 aria-labelledby="console-administrators-radio-group"
@@ -223,6 +225,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                         ) }
 
                         <RoleUsersList
+                            isPrivilegedUsersToggleVisible={ isPrivilegedUsersToggleVisible }
                             isReadOnly={ !hasRolesUpdatePermissions }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }

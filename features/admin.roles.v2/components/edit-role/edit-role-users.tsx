@@ -24,6 +24,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
@@ -74,6 +75,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         isReadOnly,
         tabIndex,
         activeUserStore,
+        isPrivilegedUsersToggleVisible = false,
         [ "data-componentid" ]: componentId = "edit-role-users"
     } = props;
 
@@ -84,7 +86,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ selectedUserStoreDomainName, setSelectedUserStoreDomainName ] = useState<string>(
-        activeUserStore ?? userstoresConfig?.primaryUserstoreName
+        isEmpty(activeUserStore) ? userstoresConfig?.primaryUserstoreName : activeUserStore
     );
     const [ selectedUsersFromUserStore, setSelectedUsersFromUserStore ] = useState<UserBasicInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -158,6 +160,16 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         selectedUsersFromUserStore,
         searchQuery
     ]);
+
+    /**
+     * Sets the selected user store domain name.
+     * If the active user store is empty, it sets the primary user store domain name.
+     */
+    useEffect(() => {
+        setSelectedUserStoreDomainName(
+            isEmpty(activeUserStore) ? userstoresConfig?.primaryUserstoreName : activeUserStore
+        );
+    }, [ activeUserStore ]);
 
     /**
      * Checks whether the user belongs to the selected user store.
@@ -541,7 +553,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 totalListSize={ selectedUsersFromUserStore?.length }
                 isLoading={ isUserStoresLoading || isSubmitting }
                 showPaginationPageLimit={ !isReadOnly }
-                rightActionPanel={ (
+                rightActionPanel={ !isPrivilegedUsersToggleVisible ||
+                selectedUserStoreDomainName !== PRIMARY_USERSTORE && (
                     <Dropdown
                         data-componentid={ `${ componentId }-list-usertore-dropdown` }
                         selection
@@ -577,7 +590,11 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         handleCloseAddNewUserModal={ handleCloseAddNewUserModal }
                         role={ role }
                         userstore={ selectedUserStoreDomainName }
-                        availableUserStores={ availableUserStores }
+                        availableUserStores={ (!isPrivilegedUsersToggleVisible ||
+                            selectedUserStoreDomainName !== PRIMARY_USERSTORE)
+                            ? availableUserStores
+                            : []
+                        }
                     />
                 )
             }

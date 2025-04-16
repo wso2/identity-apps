@@ -123,11 +123,11 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
      * If the user is already assigned to the role, it will be added to the selected users list.
      */
     useEffect(() => {
-        if (!originalUserList || isUserListFetchRequestLoading) {
+        if (isUserListFetchRequestLoading) {
             return;
         }
 
-        if (originalUserList.Resources) {
+        if (originalUserList && originalUserList.Resources) {
             const filteredUsers: UserBasicInterface[] = [];
 
             originalUserList.Resources.map((user: UserBasicInterface) => {
@@ -232,6 +232,24 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
         setIsSelectAllUsers(!isSelectAllUsers);
     };
 
+    /**
+     * Resolve the content of the empty placeholder
+     * in the transfer list.
+     *
+     * @returns string - Placeholder content
+     */
+    const getEmptyPlaceholderContent = (): string => {
+        if (userListFetchRequestError) {
+            return t("roles:edit.users.placeholders.error");
+        }
+
+        if (isEmpty(searchQuery)) {
+            return t("roles:edit.users.placeholders.beginSearch");
+        } else {
+            return t("roles:edit.users.placeholders.emptySearchResult");
+        }
+    };
+
     return (
         <Modal
             data-componentid={ componentId }
@@ -269,7 +287,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                         } }
                         showSelectAllCheckbox={ !isUserListFetchRequestLoading && userList.length > 0 }
                         data-componentid={ `${ componentId }-transfer-component` }
-                        leftActionPanel={ (
+                        leftActionPanel={ availableUserStores?.length > 0 && (
                             <GridColumn width={ 1 } className="add-role-user-modal-userstore-dropdown">
                                 <Dropdown
                                     fluid
@@ -300,9 +318,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                             listType="unselected"
                             selectAllCheckboxLabel={ t("groups:edit.users.selectAllUsers") }
                             data-componentid={ `${ componentId }-unselected-transfer-list` }
-                            emptyPlaceholderContent={ isEmpty(searchQuery)
-                                ? t("roles:edit.users.placeholders.beginSearch")
-                                : t("roles:edit.users.placeholders.emptySearchResult") }
+                            emptyPlaceholderContent={ getEmptyPlaceholderContent() }
                             emptyPlaceholderDefaultContent={ t("transferList:list."
                                 + "emptyPlaceholders.default") }
                         >

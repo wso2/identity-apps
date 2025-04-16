@@ -346,6 +346,7 @@ export const roles: rolesNS = {
                     title: "No users assigned to the role."
                 },
                 emptySearchResult: "We couldn't find any results. Please try with the complete username.",
+                error: "An error occurred while fetching users.",
                 errorPlaceholder: {
                     action: "Refresh",
                     subtitles: {
