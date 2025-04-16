@@ -380,6 +380,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                     bordered={ false }
                 >
                     <TransferList
+                        bordered={ false }
                         isListEmpty={ groupsList?.length === 0 }
                         isLoading={ isLoading }
                         listType="unselected"

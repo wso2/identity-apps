@@ -258,8 +258,6 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                     <TransferComponent
                         compact
                         basic
-                        bordered={ false }
-                        listBordered={ true }
                         className="one-column-selection"
                         selectionComponent
                         searchPlaceholder={ t("groups:edit.users.searchUsers") }
