@@ -17,7 +17,6 @@
  */
 
 import { AsgardeoSPAClient, DecodedIDTokenPayload } from "@asgardeo/auth-react";
-import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { store } from "@wso2is/admin.core.v1/store";
 import { getProfileInfo, getProfileSchemas } from "@wso2is/admin.users.v1/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
