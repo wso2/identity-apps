@@ -39,6 +39,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             __experimental__platformIdP: null,
             accountApp: {
                 basePath: "",
+                centralAppPath: "",
                 displayName: "",
                 path: "",
                 tenantQualifiedPath: ""

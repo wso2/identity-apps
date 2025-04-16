@@ -39,8 +39,8 @@ const useDynamicForm = (fields) => {
         setFormState((prev) => {
             const updatedErrors = { ...prev.errors };
 
-            if (error) {
-                updatedErrors[identifier] = error[0] && error[0].error || "Unknown error.";
+            if (error && error.length > 0) {
+                updatedErrors[identifier] = error[error.length - 1];
             } else {
                 delete updatedErrors[identifier];
             }
@@ -74,10 +74,6 @@ const useDynamicForm = (fields) => {
 
     const handleSubmit = (onSubmit) => (event) => {
         event.preventDefault();
-
-        if (!formState.isValid) {
-            return;
-        }
 
         let errors = [];
 

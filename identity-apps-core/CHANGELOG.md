@@ -1,5 +1,38 @@
 # @wso2is/identity-apps-core
 
+## 2.23.3
+
+### Patch Changes
+
+- [#8035](https://github.com/wso2/identity-apps/pull/8035) [`4591b3ea74dda325425f08630075ebac8d1fa1e4`](https://github.com/wso2/identity-apps/commit/4591b3ea74dda325425f08630075ebac8d1fa1e4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update admin invitation flow styling
+
+- Updated dependencies [[`4591b3ea74dda325425f08630075ebac8d1fa1e4`](https://github.com/wso2/identity-apps/commit/4591b3ea74dda325425f08630075ebac8d1fa1e4)]:
+  - @wso2is/theme@2.7.3
+
+## 2.23.2
+
+### Patch Changes
+
+- [#8016](https://github.com/wso2/identity-apps/pull/8016) [`2bc210fce9c48f32e571fd415cd12f4c5d957924`](https://github.com/wso2/identity-apps/commit/2bc210fce9c48f32e571fd415cd12f4c5d957924) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with form submit
+
+## 2.23.1
+
+### Patch Changes
+
+- [#8014](https://github.com/wso2/identity-apps/pull/8014) [`138996caee82130d30cfedf7acc62bdce351140a`](https://github.com/wso2/identity-apps/commit/138996caee82130d30cfedf7acc62bdce351140a) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with password validation
+
+## 2.23.0
+
+### Minor Changes
+
+- [#8012](https://github.com/wso2/identity-apps/pull/8012) [`5e8c6e7c10e4ee98139f0211deb99acecea39238`](https://github.com/wso2/identity-apps/commit/5e8c6e7c10e4ee98139f0211deb99acecea39238) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Drop action ID in Google signup request
+
+## 2.22.8
+
+### Patch Changes
+
+- [#7977](https://github.com/wso2/identity-apps/pull/7977) [`6d8d15189fd5e090ded37fc16fe6d7bf136a19c4`](https://github.com/wso2/identity-apps/commit/6d8d15189fd5e090ded37fc16fe6d7bf136a19c4) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve username validation
+
 ## 2.22.7
 
 ### Patch Changes

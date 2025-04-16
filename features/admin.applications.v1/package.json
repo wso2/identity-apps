@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.applications.v1",
-    "version": "2.34.0",
+    "version": "2.34.3",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -25,7 +25,7 @@
         "@wso2is/admin.connections.v1": "^2.33.87",
         "@wso2is/admin.console-settings.v1": "^2.25.203",
         "@wso2is/admin.core.v1": "^2.40.6",
-        "@wso2is/admin.extensions.v1": "^2.37.2",
+        "@wso2is/admin.extensions.v1": "^2.37.4",
         "@wso2is/admin.feature-gate.v1": "^1.4.203",
         "@wso2is/admin.identity-providers.v1": "^2.26.203",
         "@wso2is/admin.login-flow.ai.v1": "^2.27.98",
@@ -60,7 +60,7 @@
         "redux": "^4.0.4",
         "semantic-ui-react": "^2.1.3",
         "slashes": "^2.0.2",
-        "@wso2is/admin.application-templates.v1": "^1.5.0",
+        "@wso2is/admin.application-templates.v1": "^1.5.1",
         "@wso2is/admin.template-core.v1": "^1.5.157"
     },
     "devDependencies": {
