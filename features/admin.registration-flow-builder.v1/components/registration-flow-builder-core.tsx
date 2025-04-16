@@ -260,7 +260,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             },
             deletable: false,
             id: INITIAL_FLOW_START_STEP_ID,
-            position: { x: -50, y: 330 },
+            position: { x: -300, y: 330 },
             type: StaticStepTypes.Start
         };
 
@@ -524,14 +524,14 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 },
                 deletable: true,
                 id: INITIAL_FLOW_VIEW_STEP_ID,
-                position: { x: 300, y: 200 },
+                position: { x: -300, y: 330 },
                 type: StepTypes.View
             },
             {
                 data: {},
                 deletable: false,
                 id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
-                position: { x: 850, y: 408 },
+                position: { x: 1200, y: 408 },
                 type: StaticStepTypes.UserOnboard
             }
         ]);
