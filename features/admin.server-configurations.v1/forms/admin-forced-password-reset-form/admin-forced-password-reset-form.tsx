@@ -175,8 +175,8 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
                 }
             >
                 <Heading as="h6" className="sub-header">
-                    { t( t("extensions:manage.serverConfigurations.accountRecovery.forcedPasswordRecovery.form." +
-                        "subheading")) }
+                    { t("extensions:manage.serverConfigurations.accountRecovery.forcedPasswordRecovery.form." +
+                        "subheading") }
                 </Heading>
                 {
                     EMAIL_RECOVERY_RADIO_OPTIONS.map((option: RadioChild) => (
