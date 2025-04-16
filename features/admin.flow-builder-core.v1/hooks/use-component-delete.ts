@@ -36,7 +36,7 @@ export interface UseComponentDelete {
 /**
  * Custom React hook to provide functionality for deleting a component from a step node.
  *
- * It leverages the `useReactFlow` hook from @xyflow/react to update node data and
+ * It leverages the `useReactFlow` hook from `@xyflow/react` to update node data and
  * performs a deep recursive deletion by matching component IDs.
  *
  * @returns An object with a `deleteComponent` function to remove a component from a step.
