@@ -1,5 +1,16 @@
 # @wso2is/identity-apps-core
 
+## 2.23.4
+
+### Patch Changes
+
+- [#8032](https://github.com/wso2/identity-apps/pull/8032) [`9054c4791f8a6393b404df463a6b1824e4819242`](https://github.com/wso2/identity-apps/commit/9054c4791f8a6393b404df463a6b1824e4819242) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Remove search from language switcher
+
+* [#8043](https://github.com/wso2/identity-apps/pull/8043) [`9c1ce998f2bbbad563170846d13a7e983f67063c`](https://github.com/wso2/identity-apps/commit/9c1ce998f2bbbad563170846d13a7e983f67063c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update self registration flow styling
+
+* Updated dependencies [[`9c1ce998f2bbbad563170846d13a7e983f67063c`](https://github.com/wso2/identity-apps/commit/9c1ce998f2bbbad563170846d13a7e983f67063c)]:
+  - @wso2is/theme@2.7.4
+
 ## 2.23.3
 
 ### Patch Changes

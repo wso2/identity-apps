@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.52.11
+
+### Patch Changes
+
+- [#7992](https://github.com/wso2/identity-apps/pull/7992) [`f93070869e72ecdd12393fc3a46fd9a13eaf56f3`](https://github.com/wso2/identity-apps/commit/f93070869e72ecdd12393fc3a46fd9a13eaf56f3) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Facilitate 'Ask Password' Email Resend and Alter 'Reset Password' Button Logic
+
+- Updated dependencies [[`f93070869e72ecdd12393fc3a46fd9a13eaf56f3`](https://github.com/wso2/identity-apps/commit/f93070869e72ecdd12393fc3a46fd9a13eaf56f3), [`9c1ce998f2bbbad563170846d13a7e983f67063c`](https://github.com/wso2/identity-apps/commit/9c1ce998f2bbbad563170846d13a7e983f67063c)]:
+  - @wso2is/admin.users.v1@2.30.123
+  - @wso2is/admin.core.v1@2.43.4
+  - @wso2is/i18n@2.22.10
+  - @wso2is/theme@2.7.4
+
 ## 2.52.10
 
 ### Patch Changes

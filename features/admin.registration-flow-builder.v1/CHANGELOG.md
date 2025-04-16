@@ -1,5 +1,15 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.5.6
+
+### Patch Changes
+
+- [#8042](https://github.com/wso2/identity-apps/pull/8042) [`7a7541c1c12150815af396417c4318e402f15cb2`](https://github.com/wso2/identity-apps/commit/7a7541c1c12150815af396417c4318e402f15cb2) Thanks [@brionmario](https://github.com/brionmario)! - Fix dnd issues in the sortable
+
+- Updated dependencies [[`f93070869e72ecdd12393fc3a46fd9a13eaf56f3`](https://github.com/wso2/identity-apps/commit/f93070869e72ecdd12393fc3a46fd9a13eaf56f3), [`7a7541c1c12150815af396417c4318e402f15cb2`](https://github.com/wso2/identity-apps/commit/7a7541c1c12150815af396417c4318e402f15cb2)]:
+  - @wso2is/admin.core.v1@2.43.4
+  - @wso2is/admin.flow-builder-core.v1@0.4.5
+
 ## 0.5.5
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.22.10
+
+### Patch Changes
+
+- [#7992](https://github.com/wso2/identity-apps/pull/7992) [`f93070869e72ecdd12393fc3a46fd9a13eaf56f3`](https://github.com/wso2/identity-apps/commit/f93070869e72ecdd12393fc3a46fd9a13eaf56f3) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Facilitate 'Ask Password' Email Resend and Alter 'Reset Password' Button Logic
+
 ## 2.22.9
 
 ### Patch Changes
