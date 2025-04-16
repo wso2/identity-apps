@@ -2886,6 +2886,9 @@ export interface Extensions {
                             enableEmailOTPBasedReset: {
                                 label: string;
                             },
+                            enableSMSOTPBasedReset: {
+                                label: string;
+                            },
                             expiryTime: {
                                 label: string;
                                 hint: string;
@@ -3148,6 +3151,7 @@ export interface Extensions {
                         emailResetWarning: {
                             emailLink: string;
                             emailOTP: string;
+                            smsOTP: string;
                         }
                         passwordResetConfigDisabled: string;
                     };

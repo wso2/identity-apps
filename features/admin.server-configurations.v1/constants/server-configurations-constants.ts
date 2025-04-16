@@ -379,6 +379,7 @@ export class ServerConfigurationsConstants {
     public static readonly ADMIN_FORCE_PASSWORD_RESET_CONNECTOR_ID: string = "YWRtaW4tZm9yY2VkLXBhc3N3b3JkLXJlc2V0";
     public static readonly ADMIN_FORCE_PASSWORD_RESET_EMAIL_LINK: string = "Recovery.AdminPasswordReset.RecoveryLink";
     public static readonly ADMIN_FORCE_PASSWORD_RESET_EMAIL_OTP: string = "Recovery.AdminPasswordReset.OTP";
+    public static readonly ADMIN_FORCE_PASSWORD_RESET_SMS_OTP: string = "Recovery.AdminPasswordReset.SMSOTP";
     public static readonly OFFLINE_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.Offline";
     public static readonly ADMIN_FORCED_PASSWORD_RESET_EXPIRY_TIME: string = "Recovery.AdminPasswordReset.ExpiryTime";
 

@@ -61,7 +61,6 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
 
     const [ initialConnectorValues, setInitialConnectorValues ]
         = useState<AdminForcedPasswordResetFormValuesInterface>(undefined);
-    const [ isForcePasswordResetEnabled, setIsForcePasswordResetEnabled ] = useState<boolean>(false);
     const [ resetOption, setResetOption ] = useState<string>(AdminForcedPasswordResetOption.EMAIL_LINK);
 
     const EMAIL_RECOVERY_RADIO_OPTIONS: RadioChild[] = [
@@ -74,6 +73,11 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
             label: "extensions:manage.serverConfigurations.accountRecovery.forcedPasswordRecovery.form.fields." +
                 "enableEmailOTPBasedReset.label",
             value: AdminForcedPasswordResetOption.EMAIL_OTP
+        },
+        {
+            label: "extensions:manage.serverConfigurations.accountRecovery.forcedPasswordRecovery.form.fields." +
+                "enableSMSOTPBasedReset.label",
+            value: AdminForcedPasswordResetOption.SMS_OTP
         }
     ];
 
@@ -111,6 +115,13 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
                         };
 
                         break;
+                    case ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_SMS_OTP:
+                        resolvedInitialValues = {
+                            ...resolvedInitialValues,
+                            enableSmsOtp: CommonUtils.parseBoolean(property.value)
+                        };
+
+                        break;
                     default:
                         // Invalid type is not handled since the form is generated based on the allowed fields.
                         break;
@@ -119,9 +130,9 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
         });
 
         setInitialConnectorValues(resolvedInitialValues);
-        setIsForcePasswordResetEnabled(resolvedInitialValues?.enableEmailLink || resolvedInitialValues?.enableEmailOtp);
-        setResetOption(resolvedInitialValues?.enableEmailLink ?
-            AdminForcedPasswordResetOption.EMAIL_LINK : AdminForcedPasswordResetOption.EMAIL_OTP);
+        setResetOption(resolvedInitialValues?.enableEmailOtp ? AdminForcedPasswordResetOption.EMAIL_OTP
+            : (resolvedInitialValues?.enableSmsOtp ? AdminForcedPasswordResetOption.SMS_OTP
+                : AdminForcedPasswordResetOption.EMAIL_LINK));
     }, [ initialValues ]);
 
     /**
@@ -136,11 +147,14 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
                 ? values.expiryTime
                 : initialConnectorValues?.expiryTime,
             "Recovery.AdminPasswordReset.OTP": resetOption !== undefined
-                ? (resetOption === AdminForcedPasswordResetOption.EMAIL_OTP && isForcePasswordResetEnabled)
+                ? (resetOption === AdminForcedPasswordResetOption.EMAIL_OTP)
                 : initialConnectorValues?.enableEmailOtp,
             "Recovery.AdminPasswordReset.RecoveryLink": resetOption !== undefined
-                ? (resetOption === AdminForcedPasswordResetOption.EMAIL_LINK && isForcePasswordResetEnabled)
-                : initialConnectorValues?.enableEmailLink
+                ? (resetOption === AdminForcedPasswordResetOption.EMAIL_LINK)
+                : initialConnectorValues?.enableEmailLink,
+            "Recovery.AdminPasswordReset.SMSOTP": resetOption !== undefined
+                ? (resetOption === AdminForcedPasswordResetOption.SMS_OTP)
+                : initialConnectorValues?.enableSmsOtp
         };
 
         return data;
@@ -160,30 +174,13 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
                     onSubmit(getUpdatedConfigurations(values))
                 }
             >
-                <Field.Checkbox
-                    ariaLabel="forcedPasswordRecovery"
-                    name="forcedPasswordRecovery"
-                    className="toggle"
-                    label={ t("extensions:manage.serverConfigurations.accountRecovery.forcedPasswordRecovery.form." +
-                        "heading.label") }
-                    initialValue={ isForcePasswordResetEnabled }
-                    listen={ (value: boolean) => setIsForcePasswordResetEnabled(value) }
-                    readOnly={ readOnly }
-                    disabled={ !isConnectorEnabled }
-                    width={ 16 }
-                    data-componentid={ `${ testId }-enable-admin-forced-password-reset` }
-                    hint={  t("extensions:manage.serverConfigurations.accountRecovery.forcedPasswordRecovery.form." +
-                        "heading.hint")
-                    }
-                />
-                <Heading as="h6" className="sub-configuration-field sub-header">
+                <Heading as="h6" className="sub-header">
                     { t( t("extensions:manage.serverConfigurations.accountRecovery.forcedPasswordRecovery.form." +
                         "subheading")) }
                 </Heading>
                 {
                     EMAIL_RECOVERY_RADIO_OPTIONS.map((option: RadioChild) => (
                         <Field.Radio
-                            className="sub-configuration-field"
                             key={ option.value }
                             ariaLabel={ t(option.label) }
                             label={ t(option.label) }
@@ -192,14 +189,13 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
                             value={ option.value }
                             checked={ resetOption === option.value }
                             listen={ () => setResetOption(option.value) }
-                            disabled={ !isForcePasswordResetEnabled }
                             readOnly={ readOnly }
                             data-componentid={ `${ testId }-email-recovery-option-${ option.value }` }
                         />
                     ))
                 }
                 <Field.Input
-                    className="sub-configuration-field sub-header"
+                    className="sub-header"
                     ariaLabel="expiryTime"
                     inputType="number"
                     name="expiryTime"
@@ -227,13 +223,12 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
                     readOnly={ readOnly }
                     width={ 10 }
                     labelPosition="right"
-                    disabled={ !isForcePasswordResetEnabled }
                     data-componentid={ `${ testId }-expiry-time` }
                 >
                     <input/>
                     <label className="ui label">mins</label>
                 </Field.Input>
-                <Hint className="sub-configuration-field">
+                <Hint>
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "forcedPasswordRecovery.form.fields.expiryTime.hint") }
                 </Hint>

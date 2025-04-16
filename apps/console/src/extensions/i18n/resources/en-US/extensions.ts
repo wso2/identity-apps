@@ -3364,6 +3364,9 @@ export const extensions: Extensions = {
                             enableEmailOTPBasedReset: {
                                 label: "Email OTP"
                             },
+                            enableSMSOTPBasedReset: {
+                                label: "SMS OTP"
+                            },
                             expiryTime: {
                                 label: "Reset link/OTP expiry time",
                                 hint: "Password Reset Link/OTP expiry time in minutes.",
@@ -3735,7 +3738,9 @@ export const extensions: Extensions = {
                             emailLink: "An email with a link to reset the password will be sent to the provided " +
                             "email address for the user to set their own password.",
                             emailOTP: "An email with a OTP to reset the password will be sent to the provided " +
-                            "email address for the user to set their own password."
+                            "email address for the user to set their own password.",
+                            smsOTP: "An SMS with a OTP to reset the password will be sent to the provided " +
+                            "mobile number for the user to set their own password."
                         },
                         passwordResetConfigDisabled: "Password reset via recovery email is not enabled. Please make " +
                             "sure to enable it from <1> " +

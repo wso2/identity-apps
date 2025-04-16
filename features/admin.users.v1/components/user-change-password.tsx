@@ -28,6 +28,8 @@ import {
     ConnectorPropertyInterface,
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1";
+import { AdminForcedPasswordResetOption }
+    from "@wso2is/admin.server-configurations.v1/models/admin-forced-password-reset";
 import { useUserStoreRegEx } from "@wso2is/admin.userstores.v1/api/use-get-user-store-regex";
 import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
@@ -51,6 +53,7 @@ import { useSelector } from "react-redux";
 import { Grid, Icon, Modal, SemanticCOLORS } from "semantic-ui-react";
 import { updateUserInfo } from "../api";
 import { getConfiguration } from "../utils";
+
 
 /**
  * Prop types for the change user password component.
@@ -114,13 +117,14 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     const [ isConfirmPasswordMatch, setIsConfirmPasswordMatch ] = useState<boolean>(undefined);
     const [ password, setPassword ] = useState<string>("");
     const [ passwordResetOption, setPasswordResetOption ] = useState("setPassword");
+    const [ adminForcedPasswordResetOption, setAdminForcedPasswordResetOption ]
+        = useState(AdminForcedPasswordResetOption.EMAIL_LINK);
     const [ triggerSubmit, setTriggerSubmit ] = useTrigger();
     const [
         governanceConnectorProperties,
         setGovernanceConnectorProperties
     ] = useState<ConnectorPropertyInterface[]>(undefined);
     const [ isForcePasswordResetEnable, setIsForcePasswordResetEnable ] = useState<boolean>(false);
-    const [ isForcePasswordResetEmailLinkEnable, setIsForcePasswordResetEmailLinkEnable ] = useState<boolean>(false);
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
@@ -176,17 +180,23 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
 
             let isEmailLinkEnabled: boolean = false;
             let isEmailOtpEnabled: boolean = false;
+            let isSmsOtpEnabled: boolean = false;
 
             for (const property of governanceConnectorProperties) {
                 if (property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_LINK) {
                     isEmailLinkEnabled = CommonUtils.parseBoolean(property.value);
                 } else if (property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_OTP) {
                     isEmailOtpEnabled = CommonUtils.parseBoolean(property.value);
+                } else if( property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_SMS_OTP) {
+                    isSmsOtpEnabled = CommonUtils.parseBoolean(property.value);
                 }
             }
 
-            setIsForcePasswordResetEnable(isEmailLinkEnabled || isEmailOtpEnabled);
-            setIsForcePasswordResetEmailLinkEnable(isEmailLinkEnabled);
+            setIsForcePasswordResetEnable(isEmailLinkEnabled || isEmailOtpEnabled || isSmsOtpEnabled);
+            setAdminForcedPasswordResetOption(
+                isEmailOtpEnabled ? AdminForcedPasswordResetOption.EMAIL_OTP
+                    : (isSmsOtpEnabled ? AdminForcedPasswordResetOption.SMS_OTP
+                        : AdminForcedPasswordResetOption.EMAIL_LINK));
         }
     }, [ governanceConnectorProperties ]);
 
@@ -295,11 +305,8 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
 
     const resolveConfigurationList = (): ReactNode => {
         if (isForcePasswordResetEnable) {
-            const warningMessage: string = isForcePasswordResetEmailLinkEnable
-                ? "extensions:manage.users.editUserProfile.resetPassword.changePasswordModal.emailResetWarning."
-                    + "emailLink"
-                : "extensions:manage.users.editUserProfile.resetPassword.changePasswordModal.emailResetWarning."
-                    + "emailOTP";
+            const warningMessage: string = "extensions:manage.users.editUserProfile.resetPassword.changePasswordModal."
+            + "emailResetWarning." + adminForcedPasswordResetOption.toString();
 
             return (
                 <Grid.Row>
