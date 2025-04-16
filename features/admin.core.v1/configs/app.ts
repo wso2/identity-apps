@@ -300,7 +300,6 @@ export class Config {
             saml2Meta: `${ this.resolveServerHost(false, true) }/identity/metadata/saml2`,
             wellKnown: `${ this.resolveServerHost(false, true) }/oauth2/token/.well-known/openid-configuration`
         };
-        console.log(serviceResourceEndpoints);
 
         return serviceResourceEndpoints;
     }
