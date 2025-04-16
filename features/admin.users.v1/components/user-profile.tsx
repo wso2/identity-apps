@@ -2842,7 +2842,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const isAdminPasswordResetEmailLinkEnabled = (): boolean => {
         const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
             (property: ConnectorPropertyInterface) =>
-                property.name === ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET
+                property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_LINK
         );
 
         return property?.value === "true";
@@ -2856,7 +2856,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const isAdminPasswordResetEmailOTPEnabled = (): boolean => {
         const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
             (property: ConnectorPropertyInterface) =>
-                property.name === ServerConfigurationsConstants.OTP_PASSWORD_RESET
+                property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_OTP
         );
 
         return property?.value === "true";
