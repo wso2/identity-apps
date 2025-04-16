@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/console",
-    "version": "2.52.11",
+    "version": "2.52.12",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -91,7 +91,7 @@
         "@wso2is/admin.subscription.v1": "^1.5.203",
         "@wso2is/admin.tenants.v1": "^2.29.9",
         "@wso2is/admin.username-validation.v1": "^1.5.203",
-        "@wso2is/admin.users.v1": "^2.30.123",
+        "@wso2is/admin.users.v1": "^2.30.124",
         "@wso2is/admin.validation.v1": "^2.27.142",
         "@wso2is/admin.userstores.v1": "^2.27.29",
         "@wso2is/admin.workflow-approvals.v1": "^2.25.203",

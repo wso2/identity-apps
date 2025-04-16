@@ -1,5 +1,14 @@
 # @wso2is/admin.users.v1
 
+## 2.30.124
+
+### Patch Changes
+
+- [#8049](https://github.com/wso2/identity-apps/pull/8049) [`7202dbe3ed43b86bbd8b5a299083c569c20724d1`](https://github.com/wso2/identity-apps/commit/7202dbe3ed43b86bbd8b5a299083c569c20724d1) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix resolving extended multi valued schemas in user profile
+
+- Updated dependencies [[`7202dbe3ed43b86bbd8b5a299083c569c20724d1`](https://github.com/wso2/identity-apps/commit/7202dbe3ed43b86bbd8b5a299083c569c20724d1)]:
+  - @wso2is/admin.users.v1@2.30.124
+
 ## 2.30.123
 
 ### Patch Changes
