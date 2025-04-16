@@ -94,7 +94,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         state
     } = useAuthContext();
 
-    const dispatch: string = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const { onSignIn } = useSignIn();
 
