@@ -314,11 +314,13 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 <Popup
                                                                     content={
                                                                         hasAttributeDialectsUpdatePermissions
+                                                                        && !isSubOrganization()
                                                                             ? t("common:edit")
                                                                             : t("common:view")
                                                                     }
                                                                     trigger={
                                                                         hasAttributeDialectsUpdatePermissions
+                                                                        && !isSubOrganization()
                                                                             ? <Icon color="grey" name="pencil" />
                                                                             : <Icon color="grey" name="eye" />
                                                                     }
