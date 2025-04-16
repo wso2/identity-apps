@@ -16,10 +16,17 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
+import AlertTitle from "@oxygen-ui/react/AlertTitle";
+import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
-import { EmphasizedSegment } from "@wso2is/react-components";
+import { EmphasizedSegment, Message } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+import { Trans } from "react-i18next";
+import { Icon } from "semantic-ui-react";
+import { useAsyncOperation } from "../../hooks/use-async-status";
 import { ApplicationInterface } from "../../models/application";
 import { ApplicationShareForm } from "../forms/share-application-form";
 
@@ -54,14 +61,57 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
 
     const { application, onUpdate, readOnly } = props;
 
+    const { isInProgress } = useAsyncOperation(application);
+
     return (
-        <EmphasizedSegment className="advanced-configuration-section" padded="very">
-            <ApplicationShareForm
-                application={ application }
-                onApplicationSharingCompleted={ () => onUpdate(application?.id) }
-                readOnly={ readOnly }
-            />
-        </EmphasizedSegment>
+        <>
+            { isInProgress && (
+                <div className="banner-wrapper">
+                    <Alert
+                        // className={ classes }
+                        severity="warning"
+                        action={
+                            (
+                                <Box display="flex">
+                                    <Button
+                                        className="banner-view-hide-details">
+                                        {
+                                            "Cancel Update"
+                                        }
+                                    </Button>
+                                    <Button
+                                        className="ignore-once-button">
+                                        <Icon
+                                            link
+                                            // onClick={ () => setDisplayBanner(false) }
+                                            size="small"
+                                            color="grey"
+                                            name="close"
+                                            // data-componentid={ `${componentId}-close-btn` }
+                                        />
+                                    </Button>
+                                </Box>
+                            )
+                        }
+                    >
+                        <AlertTitle className="alert-title">
+                            <Trans components={ { strong: <strong/> } } >
+                                Update In Progress.
+                            </Trans>
+                        </AlertTitle>
+                        Updating shared access is in progress.
+                    </Alert>
+                </div>
+            ) }
+            <EmphasizedSegment className="advanced-configuration-section" padded="very">
+                <p>test</p>
+                <ApplicationShareForm
+                    application={ application }
+                    onApplicationSharingCompleted={ () => onUpdate(application?.id)}
+                    readOnly={ readOnly }
+                />
+            </EmphasizedSegment>
+        </>
     );
 };
 
