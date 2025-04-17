@@ -69,6 +69,9 @@ export interface AdminForcedPasswordResetFormValuesInterface {
     enableSmsOtp: boolean;
 }
 
+/**
+ * Interface for admin forced password reset form config.
+ */
 export interface AdminForcedPasswordResetFormUpdatableConfigInterface {
     /**
      * Enable email link based forced password reset.
@@ -88,6 +91,9 @@ export interface AdminForcedPasswordResetFormUpdatableConfigInterface {
     "Recovery.AdminPasswordReset.ExpiryTime": number;
 }
 
+/**
+ * Enum for admin forced password reset options.
+ */
 export enum AdminForcedPasswordResetOption {
     EMAIL_LINK = "emailLink",
     EMAIL_OTP = "emailOTP",

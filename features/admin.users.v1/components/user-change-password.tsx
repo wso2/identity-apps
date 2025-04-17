@@ -28,8 +28,9 @@ import {
     ConnectorPropertyInterface,
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1";
-import { AdminForcedPasswordResetOption }
-    from "@wso2is/admin.server-configurations.v1/models/admin-forced-password-reset";
+import {
+    AdminForcedPasswordResetOption
+} from "@wso2is/admin.server-configurations.v1/models/admin-forced-password-reset";
 import { useUserStoreRegEx } from "@wso2is/admin.userstores.v1/api/use-get-user-store-regex";
 import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
@@ -53,7 +54,6 @@ import { useSelector } from "react-redux";
 import { Grid, Icon, Modal, SemanticCOLORS } from "semantic-ui-react";
 import { updateUserInfo } from "../api";
 import { getConfiguration } from "../utils";
-
 
 /**
  * Prop types for the change user password component.
