@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,9 @@ import {
     SmsOTPAuthenticator
 } from "@wso2is/admin.connections.v1/components/authenticators/sms-otp/sms-otp-authenticator";
 import {
+    SIWEAuthenticatorForm
+} from "@wso2is/admin.connections.v1/components/edit/forms/authenticators/swe-authenticator-form";
+import {
     CommonAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
 import {
@@ -33,7 +36,6 @@ import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { ElementType, ReactElement } from "react";
 import { IdentityProviderConfig } from "./models";
 import QuickStartTab from "../components/component-extensions/application/quick-start-tab";
-import { SIWEAuthenticatorForm } from "../identity-provider-templates/templates/swe/swe-authenticator-form";
 import SIWEIdPTemplate from "../identity-provider-templates/templates/swe/swe.json";
 
 export const identityProviderConfig: IdentityProviderConfig = {
