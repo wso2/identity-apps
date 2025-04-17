@@ -44,18 +44,14 @@ const FORM_ID: string = "governance-connectors-ask-password-form";
  * @param props - Props injected to the component.
  * @returns Admin Forced Password Form component.
  */
-export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPasswordResetFormPropsInterface> = (
-    props: AdminForcedPasswordResetFormPropsInterface
-): ReactElement => {
-
-    const {
-        initialValues,
-        onSubmit,
-        readOnly,
-        isConnectorEnabled,
-        isSubmitting,
-        ["data-componentid"]: testId
-    } = props;
+export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPasswordResetFormPropsInterface> = ({
+    initialValues,
+    onSubmit,
+    readOnly,
+    isConnectorEnabled,
+    isSubmitting,
+    ["data-componentid"]: componentId = "ask-password-edit-form"
+} : AdminForcedPasswordResetFormPropsInterface): ReactElement => {
 
     const { t } = useTranslation();
 
@@ -190,7 +186,7 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
                             checked={ resetOption === option.value }
                             listen={ () => setResetOption(option.value) }
                             readOnly={ readOnly }
-                            data-componentid={ `${ testId }-email-recovery-option-${ option.value }` }
+                            data-componentid={ `${ componentId }-email-recovery-option-${ option.value }` }
                         />
                     ))
                 }
@@ -223,7 +219,7 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
                     readOnly={ readOnly }
                     width={ 10 }
                     labelPosition="right"
-                    data-componentid={ `${ testId }-expiry-time` }
+                    data-componentid={ `${ componentId }-expiry-time` }
                 >
                     <input/>
                     <label className="ui label">mins</label>
@@ -238,7 +234,7 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
                     buttonType="primary_btn"
                     ariaLabel="Self registration update button"
                     name="update-button"
-                    data-testid={ `${testId}-submit-button` }
+                    data-componentid={ `${ componentId }-submit-button` }
                     disabled={ !isConnectorEnabled || isSubmitting }
                     loading={ isSubmitting }
                     label={ t("common:update") }
@@ -247,11 +243,4 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
             </Form>
         </div>
     );
-};
-
-/**
- * Default props for the component.
- */
-AdminForcedPasswordResetForm.defaultProps = {
-    "data-componentid": "ask-password-edit-form"
 };
