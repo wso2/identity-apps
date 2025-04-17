@@ -28,7 +28,12 @@ import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
+import {
+    AlertLevels,
+    FeatureAccessConfigInterface,
+    IdentifiableComponentInterface,
+    RolesMemberInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import {
@@ -84,6 +89,15 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
+
+    const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.consoleSettings
+    );
+
+    const isUserstoreSelectionInAdministratorsEnabled: boolean =
+        !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
+            "consoleSettings.userstoreSelectionInAdministrators"
+        );
 
     const [ selectedUserStoreDomainName, setSelectedUserStoreDomainName ] = useState<string>(
         isEmpty(activeUserStore) ? userstoresConfig?.primaryUserstoreName : activeUserStore
@@ -553,8 +567,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 totalListSize={ selectedUsersFromUserStore?.length }
                 isLoading={ isUserStoresLoading || isSubmitting }
                 showPaginationPageLimit={ !isReadOnly }
-                rightActionPanel={ !isPrivilegedUsersToggleVisible ||
-                selectedUserStoreDomainName !== PRIMARY_USERSTORE && (
+                rightActionPanel={ ((!isPrivilegedUsersToggleVisible && isUserstoreSelectionInAdministratorsEnabled) ||
+                    selectedUserStoreDomainName !== PRIMARY_USERSTORE) && (
                     <Dropdown
                         data-componentid={ `${ componentId }-list-usertore-dropdown` }
                         selection
@@ -590,7 +604,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         handleCloseAddNewUserModal={ handleCloseAddNewUserModal }
                         role={ role }
                         userstore={ selectedUserStoreDomainName }
-                        availableUserStores={ (!isPrivilegedUsersToggleVisible ||
+                        availableUserStores={ ((!isPrivilegedUsersToggleVisible &&
+                            isUserstoreSelectionInAdministratorsEnabled) ||
                             selectedUserStoreDomainName !== PRIMARY_USERSTORE)
                             ? availableUserStores
                             : []
