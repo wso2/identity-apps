@@ -494,7 +494,10 @@ export const claims: ClaimsNS = {
                 required: "Required",
                 requiredHint: "If selected, the user must specify a value for this attribute in the profile. Read-only attributes cannot be marked as required.",
                 selfRegistration: "Self-Registration",
-                selfRegistrationReadOnlyHint: "Read-only configuration is not applicable in the self-registration profile."
+                selfRegistrationReadOnlyHint: "Read-only configuration is not applicable in the self-registration profile.",
+                signInAssertion: "Sign-in Assertion",
+                signInAssertionReadOnlyHint: "Read-only configuration is not applicable in the sign-in assertion profile.",
+                signInAssertionRequiredHint: "Required configuration is not applicable in the sign-in assertion profile."
             },
             readOnly: {
                 label: "Make this attribute read-only on the user's profile"

@@ -141,6 +141,10 @@ export interface ProfileSchema {
          * Attribute profile for self registration
          */
         selfRegister?: ProfileAttributeInterface;
+        /**
+         * Attribute profile for sign in assertion
+         */
+        signInAssertion?: ProfileAttributeInterface;
     }
 }
 

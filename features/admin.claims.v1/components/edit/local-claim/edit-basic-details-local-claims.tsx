@@ -606,6 +606,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         supportedByDefault: values?.selfRegistrationSupportedByDefault !== undefined ?
                             (isSelfRegistrationRequired || !!values.selfRegistrationSupportedByDefault)
                             : claim?.profiles?.selfRegistration?.supportedByDefault
+                    },
+                    signInAssertion: {
+                        supportedByDefault: values?.signInAssertionSupportedByDefault !== undefined ?
+                            !!values.signInAssertionSupportedByDefault
+                            : false
                     }
                 },
                 properties: claim?.properties,
@@ -734,6 +739,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         }
                     />
                 </TableCell>
+                <TableCell align="center">
+                    <Field.Checkbox
+                        ariaLabel="Display by default in sign-in assertion"
+                        name="signInAssertionSupportedByDefault"
+                        defaultValue={ claim?.profiles?.signInAssertion?.supportedByDefault ?? true }
+                        data-componentid={ `${testId}-form-sign-in-assertion-supported-by-default-checkbox` }
+                        readOnly={ isSupportedByDefaultCheckboxDisabled }
+                    />
+                </TableCell>
             </TableRow>
         );
     };
@@ -815,6 +829,23 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         }
                     />
                 </TableCell>
+                <TableCell align="center">
+                    <Tooltip
+                        trigger={ (
+                            <Field.Checkbox
+                                ariaLabel="Required in sign-in assertion"
+                                name="signInAssertionRequired"
+                                defaultValue={ claim?.profiles?.signInAssertion?.required ?? false }
+                                data-componentid={ `${testId}-form-sign-in-assertion-required-checkbox` }
+                                readOnly
+                            />
+                        ) }
+                        content={
+                            t("claims:local.forms.profiles.signInAssertionRequiredHint")
+                        }
+                        compact
+                    />
+                </TableCell>
             </TableRow>
         );
     };
@@ -876,6 +907,23 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         ) }
                         content={
                             t("claims:local.forms.profiles.selfRegistrationReadOnlyHint")
+                        }
+                        compact
+                    />
+                </TableCell>
+                <TableCell align="center">
+                    <Tooltip
+                        trigger={ (
+                            <Field.Checkbox
+                                ariaLabel="Read-only in sign-in assertion"
+                                name="signInAssertionReadOnly"
+                                defaultValue={ claim?.profiles?.signInAssertion?.readOnly ?? false }
+                                data-componentid={ `${testId}-form-sign-in-assertion-readOnly-checkbox` }
+                                readOnly
+                            />
+                        ) }
+                        content={
+                            t("claims:local.forms.profiles.signInAssertionReadOnlyHint")
                         }
                         compact
                     />
@@ -1219,6 +1267,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                                 </TableCell>
                                                 <TableCell align="center">
                                                     { t("claims:local.forms.profiles.selfRegistration") }
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    { t("claims:local.forms.profiles.signInAssertion") }
                                                 </TableCell>
                                             </TableRow>
                                         </TableHead>

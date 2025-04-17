@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,7 +22,6 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { OIDCScopesClaimsListInterface } from "@wso2is/admin.oidc-scopes.v1";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { ExternalClaim, FeatureAccessConfigInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -140,6 +139,10 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
 
     const OPENID: string = "openid";
 
+    const localClaimsMap: Map<string, ExtendedClaimInterface> = new Map(
+        claims.map((claim: ExtendedClaimInterface) => [ claim.claimURI, claim ])
+    );
+
     const [ availableExternalClaims, setAvailableExternalClaims ] = useState<ExtendedExternalClaimInterface[]>([]);
 
     const [
@@ -216,8 +219,9 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
 
     useEffect(() => {
         if (externalClaims) {
-            setAvailableExternalClaims([ ...applicationConfig.attributeSettings
-                .attributeSelection.getExternalClaims(externalClaims) ]);
+            setAvailableExternalClaims([ ...externalClaims.filter((claim: ExtendedExternalClaimInterface) => {
+                return localClaimsMap.get(claim.mappedLocalClaimURI)?.profiles?.signInAssertion?.supportedByDefault;
+            }) ]);
         }
     }, [ externalClaims ]);
 
@@ -436,21 +440,22 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         const initialSelectedClaims: ExtendedExternalClaimInterface[] = [];
         const initialAvailableClaims: ExtendedExternalClaimInterface[] = [];
 
-        applicationConfig.attributeSettings.attributeSelection.getExternalClaims(externalClaims)
-            .map((claim: ExternalClaim) => {
-                if (initialRequest.includes(claim.mappedLocalClaimURI)) {
-                    const newClaim: ExtendedExternalClaimInterface = {
-                        ...claim,
-                        mandatory: checkInitialRequestMandatory(claim.mappedLocalClaimURI),
-                        requested: true
-                    };
+        externalClaims.filter((claim: ExtendedExternalClaimInterface) => {
+            return localClaimsMap.get(claim.mappedLocalClaimURI)?.profiles?.signInAssertion?.supportedByDefault;
+        }).map((claim: ExternalClaim) => {
+            if (initialRequest.includes(claim.mappedLocalClaimURI)) {
+                const newClaim: ExtendedExternalClaimInterface = {
+                    ...claim,
+                    mandatory: checkInitialRequestMandatory(claim.mappedLocalClaimURI),
+                    requested: true
+                };
 
-                    initialSelectedClaims.push(newClaim);
+                initialSelectedClaims.push(newClaim);
 
-                } else {
-                    initialAvailableClaims.push(claim);
-                }
-            });
+            } else {
+                initialAvailableClaims.push(claim);
+            }
+        });
 
         const tempFilterSelectedExternalClaims: ExtendedExternalClaimInterface[] = [ ...filterSelectedExternalClaims ];
 
@@ -669,50 +674,41 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                 <Table.Body>
                     <>
                         {
-                            claimsGroupedByScopes.map((claim: ExtendedExternalClaimInterface) => {
-                                return (
-                                    <AttributeListItem
-                                        key={ claim.id }
-                                        data-testid={ `${ testId }-${ claim.claimURI }` }
-                                        claimURI={ claim.claimURI }
-                                        displayName={ claim.claimURI }
-                                        mappedURI={ claim.mappedLocalClaimURI }
-                                        localDialect={
-                                            selectedDialect.localDialect
-                                        }
-                                        initialMandatory={
-                                            (selectedSubjectValue
-                                        === claim.mappedLocalClaimURI &&
-                                        !onlyOIDCConfigured)
-                                                ? true
-                                                : claim.mandatory
-                                        }
-                                        selectMandatory={ updateMandatory }
-                                        selectRequested={ updateRequested }
-                                        initialRequested={ claim.requested }
-                                        readOnly={
-                                            (selectedSubjectValue
-                                        === claim.mappedLocalClaimURI &&
-                                        !onlyOIDCConfigured
-                                        || !checkMapping(claim))
-                                                ? true
-                                                : readOnly
-                                        }
-                                        localClaimDisplayName={
-                                            claim.localClaimDisplayName
-                                        }
-                                        subject={ selectedSubjectValue
-                                        === claim.mappedLocalClaimURI &&
-                                        selectedSubjectValue !== defaultSubjectAttribute }
-                                        isOIDCMapping={
-                                            checkMapping(claim)
-                                                ? false
-                                                : true
-                                        }
-                                        onlyOIDCConfigured = { onlyOIDCConfigured }
-                                    />
-                                );
-                            })
+                            claimsGroupedByScopes
+                                .filter((claim: ExtendedExternalClaimInterface) => {
+                                    const localClaim: ExtendedClaimInterface =
+                                        localClaimsMap.get(claim.mappedLocalClaimURI);
+
+                                    return localClaim.profiles?.signInAssertion?.supportedByDefault;
+                                })
+                                .map((claim: ExtendedExternalClaimInterface) => {
+                                    return (
+                                        <AttributeListItem
+                                            key={ claim.id }
+                                            data-testid={ `${ testId }-${ claim.claimURI }` }
+                                            claimURI={ claim.claimURI }
+                                            displayName={ claim.claimURI }
+                                            mappedURI={ claim.mappedLocalClaimURI }
+                                            localDialect={ selectedDialect.localDialect }
+                                            initialMandatory={
+                                                (selectedSubjectValue === claim.mappedLocalClaimURI &&
+                                                !onlyOIDCConfigured) ? true : claim.mandatory
+                                            }
+                                            selectMandatory={ updateMandatory }
+                                            selectRequested={ updateRequested }
+                                            initialRequested={ claim.requested }
+                                            readOnly={
+                                                (selectedSubjectValue === claim.mappedLocalClaimURI &&
+                                                !onlyOIDCConfigured || !checkMapping(claim)) ? true : readOnly
+                                            }
+                                            localClaimDisplayName={ claim.localClaimDisplayName }
+                                            subject={ selectedSubjectValue === claim.mappedLocalClaimURI &&
+                                                selectedSubjectValue !== defaultSubjectAttribute }
+                                            isOIDCMapping={ checkMapping(claim) ? false : true }
+                                            onlyOIDCConfigured = { onlyOIDCConfigured }
+                                        />
+                                    );
+                                })
                         }
                     </>
                 </Table.Body>
