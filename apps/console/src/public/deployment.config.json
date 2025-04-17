@@ -5,7 +5,7 @@
     },
     "accountApp": {
         "clientID": "MY_ACCOUNT",
-        "impersonationRoleName": "impersonate-myaccount",
+        "impersonationRoleName": "impersonator",
         "path": "/myaccount/overview"
     },
     "adminApp": {

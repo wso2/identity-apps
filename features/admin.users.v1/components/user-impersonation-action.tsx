@@ -17,27 +17,27 @@
  */
 
 import { HttpResponse, useAuthContext } from "@asgardeo/auth-react";
-import Divider from "@oxygen-ui/react/Divider";
+import Button from "@oxygen-ui/react/Button";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1";
+import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface, ProfileInfoInterface,
     RolesMemberInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import { t } from "i18next";
 import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { ApplicationManagementConstants } from "../../admin.applications.v1/constants/application-management";
-import { SCIMConfigs } from "../../admin.extensions.v1";
-import { administratorConfig } from "../../admin.extensions.v1/configs/administrator";
-import { useUserDetails } from "../../admin.users.v1/api";
-import { UserManagementConstants } from "../../admin.users.v1/constants";
-import { UserManagementUtils } from "../../admin.users.v1/utils/user-management-utils";
+import { useUserDetails } from "../api";
+import { UserManagementConstants } from "../constants";
+import { UserManagementUtils } from "../utils/user-management-utils";
 
 /**
  * Props for Impersonate User Action component.
  */
-interface ImpersonateUserActionInterface extends IdentifiableComponentInterface {
+interface UserImpersonationActionInterface extends IdentifiableComponentInterface {
     /**
      * User profile
      */
@@ -55,8 +55,8 @@ interface ImpersonateUserActionInterface extends IdentifiableComponentInterface 
 /**
  * Impersonate User Action component.
  */
-export const ImpersonateUserAction: FunctionComponent<ImpersonateUserActionInterface> = (
-    props: ImpersonateUserActionInterface
+export const UserImpersonationAction: FunctionComponent<UserImpersonationActionInterface> = (
+    props: UserImpersonationActionInterface
 ): ReactElement => {
 
     const {
@@ -68,6 +68,7 @@ export const ImpersonateUserAction: FunctionComponent<ImpersonateUserActionInter
 
     const { httpRequest } = useAuthContext();
     const dispatch: Dispatch<any> = useDispatch();
+    const { t } = useTranslation();
 
     // State to manage the impersonation process.
     const [ impersonationInProgress, setImpersonationInProgress ] = useState<boolean>(false);
@@ -108,7 +109,8 @@ export const ImpersonateUserAction: FunctionComponent<ImpersonateUserActionInter
     }, [ isAuthenticatedUserFetchRequestLoading ]);
 
     useEffect(() => {
-        if (impersonation_artifacts != undefined && impersonation_artifacts != null) {
+        if (impersonation_artifacts != undefined && impersonation_artifacts != null 
+                && !impersonation_artifacts.includes("oauth2_error")) {
             const id_token: any = new URLSearchParams(impersonation_artifacts)
                 .get(UserManagementConstants.ID_TOKEN);
             const subject_token: any = new URLSearchParams(impersonation_artifacts)
@@ -122,11 +124,24 @@ export const ImpersonateUserAction: FunctionComponent<ImpersonateUserActionInter
     }, [ impersonation_artifacts ]);
 
     const handleInitImpersonateIframeMessage = (event: CompositionEvent) => {
-        if (event.data === "impersonation-authorize-request-complete") {
+        if (event.data === "impersonation-authorize-request-complete"
+                && sessionStorage.getItem(IMPERSONATION_ARTIFACTS) != null) {
             impersonation_artifacts = sessionStorage.getItem(IMPERSONATION_ARTIFACTS).substring(1);
-            if (impersonation_artifacts != undefined) {
-                sessionStorage.removeItem(IMPERSONATION_ARTIFACTS);
+            sessionStorage.removeItem(IMPERSONATION_ARTIFACTS);
+
+            if (impersonation_artifacts.includes("error")) {
+                setImpersonationInProgress(false);
+                dispatch(addAlert({
+                    description: t(
+                        "users:notifications.impersonateUser.error.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "users:notifications.impersonateUser.error.message"
+                    )
+                }));
             }
+
             const id_token: any = new URLSearchParams(impersonation_artifacts).get(UserManagementConstants.ID_TOKEN);
             const subject_token: any
                 = new URLSearchParams(impersonation_artifacts).get(UserManagementConstants.SUBJECT_TOKEN);
@@ -208,19 +223,6 @@ export const ImpersonateUserAction: FunctionComponent<ImpersonateUserActionInter
     }, [ idToken, subjectToken ]);
 
     /**
-     * This function handles impersonation of the user.
-     */
-    const handleUserImpersonation = async (): Promise<void> => {
-
-        const codeVerifier: string = UserManagementUtils.generateCodeVerifier();
-        const codeChallenge: string = await UserManagementUtils.getCodeChallangeForTheVerifier(codeVerifier);
-
-        setCodeVerifier(codeVerifier);
-        setCodeChallenge(codeChallenge);
-        setImpersonationInProgress(true);
-    };
-
-    /**
      * This function returns the username or the default email of the current user (if the username is empty).
      *
      * @param user - user that the username will be extracted from.
@@ -242,33 +244,67 @@ export const ImpersonateUserAction: FunctionComponent<ImpersonateUserActionInter
         return username;
     };
 
-    const resolveUserActions = (): ReactElement => {
+    const resolvedUsername: string = resolveUsernameOrDefaultEmail(user, false);
+    const isUserCurrentLoggedInUser: boolean = authenticatedUser?.includes(resolvedUsername);
 
-        const resolvedUsername: string = resolveUsernameOrDefaultEmail(user, false);
-        const isUserCurrentLoggedInUser: boolean = authenticatedUser?.includes(resolvedUsername);
+    const isLoggedInUserAuthorizedToImpersonate = (): boolean => {
 
-        const isLoggedInUserAuthorizedToImpersonate = (): boolean => {
+        for (let index: number = 0; index < authenticatedUserRoles?.length; index++) {
+            const authenticatedUserRole: RolesMemberInterface = authenticatedUserRoles[index];
 
-            for (let index: number = 0; index < authenticatedUserRoles?.length; index++) {
-                const authenticatedUserRole: RolesMemberInterface = authenticatedUserRoles[index];
-
-                if (authenticatedUserRole.display === accountAppImpersonateRoleName) {
-                    return true;
-                }
+            if (authenticatedUserRole.display === accountAppImpersonateRoleName) {
+                return true;
             }
+        }
 
-            return false;
-        };
+        return false;
+    };
 
-        const isMyAccountImpersonatable = (): boolean => {
+    const isMyAccountImpersonatable = (): boolean => {
 
-            // Load My Account Application and check
-            // 1. If it has skip login consent.
-            // 2. If it has disabled application.
-            // 3. If it has shared with the sub org.
+        // Load My Account Application and check
+        // 1. If it has skip login consent.
+        // 2. If it has disabled application.
+        // 3. If it has shared with the sub org.
 
-            return !isUserCurrentLoggedInUser && isLoggedInUserAuthorizedToImpersonate();
-        };
+        return !isUserCurrentLoggedInUser && isLoggedInUserAuthorizedToImpersonate();
+    };
+
+    /**
+     * This function handles impersonation of the user.
+     */
+    const handleUserImpersonation = async (): Promise<void> => {
+
+        const codeVerifier: string = UserManagementUtils.generateCodeVerifier();
+        const codeChallenge: string = await UserManagementUtils.getCodeChallangeForTheVerifier(codeVerifier);
+
+        setCodeVerifier(codeVerifier);
+        setCodeChallenge(codeChallenge);
+        setImpersonationInProgress(true);
+    };
+
+    const resolveIframe = (): ReactElement => {
+
+        if (impersonationInProgress && codeChallenge != undefined && codeChallenge != null) {
+            return (
+                <iframe
+                    hidden
+                    src={ "https://localhost:9001/console/resources/users/init-impersonate.html"
+                        + `?userId=${encodeURIComponent(user.id)}`
+                        + `&codeChallenge=${encodeURIComponent(codeChallenge)}`
+                        + `&clientId=${encodeURIComponent(accountAppClientID)}`
+                    }
+                />
+            );
+        }
+
+        return null;
+    };
+
+    /**
+     * This function returns impersonate user action in the danger zone.
+     */
+    const resolveUserActions = (): ReactElement => {
 
         return (
             (
@@ -306,21 +342,7 @@ export const ImpersonateUserAction: FunctionComponent<ImpersonateUserActionInter
                                 )
                             }
                         </DangerZoneGroup>
-                        {
-                            impersonationInProgress && codeChallenge != undefined && codeChallenge != null && (
-                                <div>
-                                    <iframe
-                                        hidden
-                                        src={ "https://localhost:9001/console/resources/users/init-impersonate.html"
-                                            + `?userId=${encodeURIComponent(user.id)}`
-                                            + `&codeChallenge=${encodeURIComponent(codeChallenge)}`
-                                            + `&clientId=${encodeURIComponent(accountAppClientID)}`
-                                        }
-                                    />
-                                </div>
-                            )
-                        }
-                        <Divider hidden/>
+                        { resolveIframe() }
                     </React.Fragment>
                 ) : null
         );
@@ -332,6 +354,8 @@ export const ImpersonateUserAction: FunctionComponent<ImpersonateUserActionInter
 /**
  * Default props for the component.
  */
-ImpersonateUserAction.defaultProps = {
+UserImpersonationAction.defaultProps = {
     "data-componentid": "impersonate-user-action"
 };
+
+export default UserImpersonationAction;

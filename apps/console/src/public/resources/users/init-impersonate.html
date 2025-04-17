@@ -16,23 +16,26 @@
     <body onload="authenticate()">
         <script>
             var hash = window.location.hash;
-            const params = new URLSearchParams(window.location.search);
-            const userId = params.get("userId");
-            const code_challenge = params.get("codeChallenge");
-            const client_id = params.get("clientId");
-            const authorization_endpoint = sessionStorage.getItem("authorization_endpoint");
-
             function authenticate() {
-
-                const requestUrl = authorization_endpoint
-                    + "?client_id=" + client_id +
-                    "&redirect_uri=" + window.location.origin + window.location.pathname +
-                    "&state=sample_state&scope=internal_user_impersonate&response_type=id_token%20subject_token" +
-                    "&requested_subject=" + userId +
-                    "&nonce=2131236&code_challenge=" + code_challenge + "&code_challenge_method=S256";
-                
                 if (!hash) {
-                    window.location.href = requestUrl;
+                    if (window.location.href.includes("oauth2_error.do")) {
+                        if (sessionStorage.getItem("impersonation_artifacts") === null) {
+                            sessionStorage.setItem("impersonation_artifacts", "oauth2_error");
+                        }
+                        window.parent.postMessage("impersonation-authorize-request-complete", "*");
+                    } else {
+                        const params = new URLSearchParams(window.location.search);
+                        const userId = params.get("userId");
+                        const code_challenge = params.get("codeChallenge");
+                        const client_id = params.get("clientId");
+                        const authorization_endpoint = sessionStorage.getItem("authorization_endpoint");
+                        window.location.href = authorization_endpoint
+                            + "?client_id=" + client_id +
+                            "&redirect_uri=" + window.location.origin + window.location.pathname +
+                            "&state=sample_state&scope=internal_user_impersonate&response_type=id_token%20subject_token" +
+                            "&requested_subject=" + userId +
+                            "&nonce=2131236&code_challenge=" + code_challenge + "&code_challenge_method=S256";
+                    }
                 } else {
                     if (sessionStorage.getItem("impersonation_artifacts") === null) {
                         sessionStorage.setItem("impersonation_artifacts", hash);
