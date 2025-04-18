@@ -59,7 +59,7 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
         = useState<AdminForcedPasswordResetFormValuesInterface>(undefined);
     const [ resetOption, setResetOption ] = useState<string>(AdminForcedPasswordResetOption.EMAIL_LINK);
 
-    const EMAIL_RECOVERY_RADIO_OPTIONS: RadioChild[] = [
+    const RECOVERY_RADIO_OPTIONS: RadioChild[] = [
         {
             label: "extensions:manage.serverConfigurations.accountRecovery.forcedPasswordRecovery.form.fields." +
                 "enableEmailLinkBasedReset.label",
@@ -126,9 +126,16 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
         });
 
         setInitialConnectorValues(resolvedInitialValues);
-        setResetOption(resolvedInitialValues?.enableEmailOtp ? AdminForcedPasswordResetOption.EMAIL_OTP
-            : (resolvedInitialValues?.enableSmsOtp ? AdminForcedPasswordResetOption.SMS_OTP
-                : AdminForcedPasswordResetOption.EMAIL_LINK));
+
+        // Set the default value for the reset option.
+        let resetOptionValue: string = AdminForcedPasswordResetOption.EMAIL_LINK;
+
+        if (resolvedInitialValues?.enableSmsOtp) {
+            resetOptionValue = AdminForcedPasswordResetOption.SMS_OTP;
+        } else if (resolvedInitialValues?.enableEmailOtp) {
+            resetOptionValue = AdminForcedPasswordResetOption.EMAIL_OTP;
+        }
+        setResetOption(resetOptionValue);
     }, [ initialValues ]);
 
     /**
@@ -145,6 +152,7 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
             "Recovery.AdminPasswordReset.OTP": resetOption !== undefined
                 ? (resetOption === AdminForcedPasswordResetOption.EMAIL_OTP)
                 : initialConnectorValues?.enableEmailOtp,
+            "Recovery.AdminPasswordReset.Offline": false,
             "Recovery.AdminPasswordReset.RecoveryLink": resetOption !== undefined
                 ? (resetOption === AdminForcedPasswordResetOption.EMAIL_LINK)
                 : initialConnectorValues?.enableEmailLink,
@@ -175,8 +183,9 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
                         "subheading") }
                 </Heading>
                 {
-                    EMAIL_RECOVERY_RADIO_OPTIONS.map((option: RadioChild) => (
+                    RECOVERY_RADIO_OPTIONS.map((option: RadioChild) => (
                         <Field.Radio
+                            className="ui radio checkbox"
                             key={ option.value }
                             ariaLabel={ t(option.label) }
                             label={ t(option.label) }

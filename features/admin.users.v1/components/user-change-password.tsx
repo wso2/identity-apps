@@ -199,10 +199,14 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             }
 
             setIsForcePasswordResetEnable(isEmailLinkEnabled || isEmailOtpEnabled || isSmsOtpEnabled);
-            setAdminForcedPasswordResetOption(
-                isEmailOtpEnabled ? AdminForcedPasswordResetOption.EMAIL_OTP
-                    : (isSmsOtpEnabled ? AdminForcedPasswordResetOption.SMS_OTP
-                        : AdminForcedPasswordResetOption.EMAIL_LINK));
+            let resetOption: AdminForcedPasswordResetOption = AdminForcedPasswordResetOption.EMAIL_LINK;
+
+            if (isSmsOtpEnabled) {
+                resetOption = AdminForcedPasswordResetOption.SMS_OTP;
+            } else if (isEmailOtpEnabled) {
+                resetOption = AdminForcedPasswordResetOption.EMAIL_OTP;
+            }
+            setAdminForcedPasswordResetOption(resetOption);
         }
     }, [ governanceConnectorProperties ]);
 
@@ -319,7 +323,8 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                         <Message
                             hideDefaultIcon
-                            icon="mail"
+                            icon={ adminForcedPasswordResetOption === AdminForcedPasswordResetOption.SMS_OTP
+                                ? "mobile" : "mail" }
                             content=
                                 {
                                     t(warningMessage)

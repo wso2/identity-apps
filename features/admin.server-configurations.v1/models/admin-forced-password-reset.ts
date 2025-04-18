@@ -86,6 +86,10 @@ export interface AdminForcedPasswordResetFormUpdatableConfigInterface {
      */
     "Recovery.AdminPasswordReset.SMSOTP": boolean;
     /**
+     * Enable offline OTP based forced password reset.
+     */
+    "Recovery.AdminPasswordReset.Offline": boolean;
+    /**
      * Expiry time of force password link/OTP.
      */
     "Recovery.AdminPasswordReset.ExpiryTime": number;
