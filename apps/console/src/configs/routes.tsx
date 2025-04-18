@@ -887,10 +887,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
-                        import(
-                            // eslint-disable-next-line max-len
-                            "@wso2is/admin.server-configurations.v1/pages/registration-flow-builder/registration-flow-builder-page"
-                        )
+                        import("@wso2is/admin.registration-flow-builder.v1/pages/registration-flow-builder-page.tsx")
                     ),
                     exact: true,
                     icon: {
