@@ -540,6 +540,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     : claim?.displayName,
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
+                multiValued: values?.multiValued !== undefined
+                    ? !!values.multiValued : claim?.multiValued,
                 properties: claim?.properties,
                 readOnly: values?.readOnly !== undefined
                     ? !!values.readOnly
@@ -573,6 +575,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     : claim?.displayName,
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
+                multiValued: values?.multiValued !== undefined
+                    ? !!values.multiValued : claim?.multiValued,
                 profiles: {
                     console: {
                         readOnly: values?.consoleReadOnly !== undefined ?
@@ -952,6 +956,16 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         data-testid={ `${ testId }-form-description-input` }
                         hint={ t("claims:local.forms.descriptionHint") }
                         readOnly={ isSubOrganization() || isReadOnly }
+                    />
+                    <Field.Checkbox
+                        ariaLabel={ t("claims:local.forms.multiValued.label") }
+                        name="multiValued"
+                        label={ t("claims:local.forms.multiValued.label") }
+                        required={ false }
+                        defaultValue={ claim?.multiValued }
+                        data-testid={ `${testId}-form-multi-valued-input` }
+                        hint={ t("claims:local.forms.multiValuedHint") }
+                        readOnly={ isReadOnly }
                     />
                     { !attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims
                         && (
