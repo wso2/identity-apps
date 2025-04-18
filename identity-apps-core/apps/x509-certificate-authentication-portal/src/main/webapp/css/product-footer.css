@@ -1,4 +1,6 @@
-.flex-wrap {
+.ida-flex {
     display: flex;
+}
+.ida-flex-wrap {
     flex-wrap: wrap;
 }
