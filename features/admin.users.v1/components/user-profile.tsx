@@ -46,6 +46,7 @@ import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
 import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -2799,6 +2800,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const handleResendCode = (recoveryScenario: string) => {
         setIsSubmitting(true);
 
+        const resolvedUsername: string = getUserNameWithoutDomain(user?.userName);
+
         const requestData: ResendCodeRequestData = {
             properties: [
                 {
@@ -2808,7 +2811,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             ],
             user: {
                 realm: user[ SCIMConfigs.scim.systemSchema ]?.userSource,
-                username: user?.userName
+                username: resolvedUsername
             }
         };
 
