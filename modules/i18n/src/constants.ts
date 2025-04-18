@@ -350,6 +350,11 @@ export class I18nModuleConstants {
     public static readonly POLICY_ADMINISTRATION_NAMESPACE: string = "policyAdministration";
 
     /**
+     * Registration Flow namespace.
+     */
+    public static readonly REGISTRATION_FLOW_NAMESPACE: string = "registrationFlow";
+
+    /**
      * Remote User Stores namespace.
      */
     public static readonly REMOTE_USER_STORES_NAMESPACE: string = "remoteUserStores";
