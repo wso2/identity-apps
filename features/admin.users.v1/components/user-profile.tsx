@@ -2799,6 +2799,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const handleResendCode = (recoveryScenario: string) => {
         setIsSubmitting(true);
 
+        const usernameSegments: string[] = user?.userName?.split("/");
+        const resolvedUsername: string = usernameSegments?.length > 1
+            ? usernameSegments[1]
+            : usernameSegments[0];
+
         const requestData: ResendCodeRequestData = {
             properties: [
                 {
@@ -2808,7 +2813,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             ],
             user: {
                 realm: user[ SCIMConfigs.scim.systemSchema ]?.userSource,
-                username: user?.userName
+                username: resolvedUsername
             }
         };
 
