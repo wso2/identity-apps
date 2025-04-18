@@ -92,6 +92,9 @@ export interface ApplicationShareFormPropsInterface
      * Make the form read only.
      */
     readOnly?: boolean;
+    isSharingInProgress?: boolean;
+    onOperationStarted?: () => void;
+    operationStatus?: "IDLE" | "ONGOING" | "SUCCESS" | "FAILED" | "PARTIAL";
 }
 
 export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsInterface> = (
@@ -103,7 +106,10 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         triggerApplicationShare,
         onApplicationSharingCompleted,
         [ "data-componentid" ]: componentId,
-        readOnly
+        readOnly,
+        isSharingInProgress,
+        onOperationStarted,
+        operationStatus
     } = props;
 
     const dispatch: Dispatch = useDispatch();
@@ -166,6 +172,17 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         isOrganizationsFetchRequestValidating,
         isSharedOrganizationsFetchRequestValidating
     ]);
+
+    /**
+     * Listen for status updates from the parent.
+     */
+    useEffect(() => {
+        if (props.operationStatus === "PARTIAL") {
+            // Operation completed — do anything you want here
+            // e.g., reset form, show notification, update internal state
+            onApplicationSharingCompleted?.();
+        }
+    }, [ props.operationStatus ]);
 
     /**
      * Fetches the organization list.
@@ -302,8 +319,10 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
     }, [ triggerApplicationShare ]);
 
     const handleShareApplication: () => Promise<void> = useCallback(async () => {
+        onOperationStarted?.();
         let shareAppData: ShareApplicationRequestInterface;
         let removedOrganization: OrganizationInterface[];
+
 
         if (shareType === ShareType.SHARE_ALL) {
             shareAppData = {
@@ -723,6 +742,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         <Divider hidden />
                         <PrimaryButton
                             data-componentid={ `${ componentId }-update-button` }
+                            disabled={ isSharingInProgress }
                             onClick={ handleShareApplication }
                         >
                             { t("common:update") }

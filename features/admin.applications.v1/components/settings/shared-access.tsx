@@ -22,13 +22,46 @@ import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
-import { EmphasizedSegment, Message } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import { EmphasizedSegment } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 import { Icon } from "semantic-ui-react";
-import { useAsyncOperation } from "../../hooks/use-async-status";
+import { useOperationStatusPoller } from "../../hooks/use-operation-status-poller";
 import { ApplicationInterface } from "../../models/application";
 import { ApplicationShareForm } from "../forms/share-application-form";
+
+// export const getOperationStatusFromAPI = async (): Promise<"ONGOING" | "COMPLETED"> => {
+//     // Example placeholder API call
+//     const response = await fetch("/api/application-operation/status");
+//     const data = await response.json();
+//     return data.status; // Make sure it returns "ONGOING" or "COMPLETED"
+// };
+
+let mockStatus: "IDLE" | "ONGOING" | "SUCCESS" | "FAILED" | "PARTIAL" = "IDLE";
+
+export const getOperationStatusFromAPI: () => Promise<"IDLE" | "ONGOING" | "SUCCESS" | "FAILED" | "PARTIAL"> = (() => {
+    let initialized: boolean = false;
+
+    return async (): Promise<"IDLE" | "ONGOING" | "SUCCESS" | "FAILED" | "PARTIAL"> => {
+        console.log("Mock status check initiated with status:", mockStatus);
+        if (!initialized) {
+            initialized = true;
+            mockStatus = "ONGOING";
+            console.log("Mock status set to ONGOING");
+            setTimeout(() => {
+                mockStatus = "PARTIAL";
+                console.log("Mock status changed to PARTIAL");
+                initialized = false;
+            }, 10000); // Simulates operation completion in 20 seconds
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        console.log("Mock status check:", mockStatus);
+
+        return mockStatus;
+    };
+})();
 
 /**
  * Proptypes for the shared access component.
@@ -60,12 +93,48 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
 ): ReactElement => {
 
     const { application, onUpdate, readOnly } = props;
+    const [ showBanner, setShowBanner ] = useState(false);
+    const [ sharingState, setSharingState ] = useState("IDLE");
 
-    const { isInProgress } = useAsyncOperation(application);
+    const { status, startPolling } = useOperationStatusPoller({
+        fetchStatus: getOperationStatusFromAPI,
+        onCompleted: () => {
+            setShowBanner(false);
+            // status = "IDLE";
+            // console.log("Operation completed, status reset to IDLE");
+            mockStatus = "IDLE";
+            console.log("Mock status reset to IDLE");
+        },
+        pollingInterval: 5000
+    });
+
+    const handleChildStartedOperation = () => {
+        setSharingState("ONGOING");
+        setShowBanner(true);
+        startPolling();
+    };
+
+    // Check on component mount if there's an ongoing operation
+    useEffect(() => {
+        const checkInitialOperationStatus = async () => {
+            try {
+                const initialStatus = await getOperationStatusFromAPI();
+
+                if (initialStatus === "ONGOING") {
+                    setShowBanner(true);
+                    startPolling();
+                }
+            } catch (error) {
+                console.error("Failed to fetch initial operation status:", error);
+            }
+        };
+
+        // checkInitialOperationStatus();
+    }, []);
 
     return (
         <>
-            { isInProgress && (
+            { sharingState === "ONGOING" && (
                 <div className="banner-wrapper">
                     <Alert
                         // className={ classes }
@@ -104,11 +173,12 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
                 </div>
             ) }
             <EmphasizedSegment className="advanced-configuration-section" padded="very">
-                <p>test</p>
                 <ApplicationShareForm
                     application={ application }
-                    onApplicationSharingCompleted={ () => onUpdate(application?.id)}
+                    onApplicationSharingCompleted={ () => onUpdate(application?.id) }
                     readOnly={ readOnly }
+                    onOperationStarted={ handleChildStartedOperation }
+                    operationStatus={ status }
                 />
             </EmphasizedSegment>
         </>
