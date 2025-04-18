@@ -330,7 +330,7 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
                 image={ (
                     <UserAvatar
                         editable={ !isReadOnly }
-                        hoverable={ false }
+                        hoverable={ !isReadOnly }
                         name={ resolveUserDisplayName(user) }
                         size="tiny"
                         image={ user?.profileUrl }
