@@ -957,7 +957,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         hint={ t("claims:local.forms.descriptionHint") }
                         readOnly={ isSubOrganization() || isReadOnly }
                     />
-
                     <Field.Checkbox
                         ariaLabel={ t("claims:local.forms.multiValued.label") }
                         name="multiValued"
@@ -968,7 +967,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         hint={ t("claims:local.forms.multiValuedHint") }
                         readOnly={ isReadOnly }
                     />
-
                     { !attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims
                         && (
                             <Field.Input
