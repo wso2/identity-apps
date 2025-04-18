@@ -1,5 +1,14 @@
 # @wso2is/admin.users.v1
 
+## 2.30.126
+
+### Patch Changes
+
+- [#8060](https://github.com/wso2/identity-apps/pull/8060) [`641ad36b0f3e943d10a9be03196839731fd0b9ba`](https://github.com/wso2/identity-apps/commit/641ad36b0f3e943d10a9be03196839731fd0b9ba) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix handleResendCode bug
+
+- Updated dependencies [[`641ad36b0f3e943d10a9be03196839731fd0b9ba`](https://github.com/wso2/identity-apps/commit/641ad36b0f3e943d10a9be03196839731fd0b9ba)]:
+  - @wso2is/admin.users.v1@2.30.126
+
 ## 2.30.125
 
 ### Patch Changes
