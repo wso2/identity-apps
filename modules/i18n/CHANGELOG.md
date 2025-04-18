@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.22.12
+
+### Patch Changes
+
+- [#7993](https://github.com/wso2/identity-apps/pull/7993) [`2aca657fd60a32bf39a7d608f4d65eace3a99b95`](https://github.com/wso2/identity-apps/commit/2aca657fd60a32bf39a7d608f4d65eace3a99b95) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Improve user assignment UI in roles edit page and improvements to transfer components
+
 ## 2.22.11
 
 ### Patch Changes

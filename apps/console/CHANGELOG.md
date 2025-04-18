@@ -1,5 +1,23 @@
 # @wso2is/console
 
+## 2.53.1
+
+### Patch Changes
+
+- [#8057](https://github.com/wso2/identity-apps/pull/8057) [`b0d1cfa9142126be2870b6af6ef8fd1b99788cd9`](https://github.com/wso2/identity-apps/commit/b0d1cfa9142126be2870b6af6ef8fd1b99788cd9) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix logo overflow in jsp pages
+
+* [#7993](https://github.com/wso2/identity-apps/pull/7993) [`2aca657fd60a32bf39a7d608f4d65eace3a99b95`](https://github.com/wso2/identity-apps/commit/2aca657fd60a32bf39a7d608f4d65eace3a99b95) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Improve user assignment UI in roles edit page and improvements to transfer components
+
+* Updated dependencies [[`b0d1cfa9142126be2870b6af6ef8fd1b99788cd9`](https://github.com/wso2/identity-apps/commit/b0d1cfa9142126be2870b6af6ef8fd1b99788cd9), [`2aca657fd60a32bf39a7d608f4d65eace3a99b95`](https://github.com/wso2/identity-apps/commit/2aca657fd60a32bf39a7d608f4d65eace3a99b95)]:
+  - @wso2is/theme@2.7.5
+  - @wso2is/admin.console-settings.v1@2.25.207
+  - @wso2is/admin.applications.v1@2.34.4
+  - @wso2is/admin.groups.v1@2.27.118
+  - @wso2is/react-components@2.9.13
+  - @wso2is/admin.roles.v2@2.27.150
+  - @wso2is/admin.users.v1@2.30.125
+  - @wso2is/i18n@2.22.12
+
 ## 2.53.0
 
 ### Minor Changes
