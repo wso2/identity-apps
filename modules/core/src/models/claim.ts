@@ -39,6 +39,7 @@ export interface Claim {
         console?: AttributeProfileConfig;
         endUser?: AttributeProfileConfig;
         selfRegistration?: AttributeProfileConfig;
+        signInAssertion?: AttributeProfileConfig;
     }
 }
 

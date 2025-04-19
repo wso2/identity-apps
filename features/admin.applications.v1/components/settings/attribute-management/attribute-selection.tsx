@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -139,6 +139,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+
+    const localClaimsMap: Map<string, ExtendedClaimInterface> = new Map(
+        claims.map((claim: ExtendedClaimInterface) => [ claim.claimURI, claim ])
+    );
 
     const [ availableClaims, setAvailableClaims ] = useState<ExtendedClaimInterface[]>([]);
     const [ availableExternalClaims, setAvailableExternalClaims ] = useState<ExtendedExternalClaimInterface[]>([]);
@@ -368,21 +372,22 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             const initialSelectedClaims: ExtendedClaimInterface[] = [];
             const initialAvailableClaims: ExtendedClaimInterface[] = [];
 
-            applicationConfig.attributeSettings.attributeSelection.getClaims(claims)
-                .map((claim: ExtendedClaimInterface) => {
-                    if (initialRequest.includes(claim.claimURI) &&
-                        !(claim.claimURI === defaultSubjectAttribute && isSubjectClaimSetToDefaultWithoutMapping())) {
-                        const newClaim: ExtendedClaimInterface = {
-                            ...claim,
-                            mandatory: checkInitialRequestMandatory(claim.claimURI),
-                            requested: checkInitialRequested(claim.claimURI)
-                        };
+            claims.filter((claim: ExtendedClaimInterface) => {
+                return claim?.profiles?.signInAssertion?.supportedByDefault;
+            }).map((claim: ExtendedClaimInterface) => {
+                if (initialRequest.includes(claim.claimURI) &&
+                    !(claim.claimURI === defaultSubjectAttribute && isSubjectClaimSetToDefaultWithoutMapping())) {
+                    const newClaim: ExtendedClaimInterface = {
+                        ...claim,
+                        mandatory: checkInitialRequestMandatory(claim.claimURI),
+                        requested: checkInitialRequested(claim.claimURI)
+                    };
 
-                        initialSelectedClaims.push(newClaim);
-                    } else {
-                        initialAvailableClaims.push(claim);
-                    }
-                });
+                    initialSelectedClaims.push(newClaim);
+                } else {
+                    initialAvailableClaims.push(claim);
+                }
+            });
             setSelectedClaims(initialSelectedClaims);
             setClaims(initialAvailableClaims);
             setAvailableClaims(initialAvailableClaims);
@@ -437,21 +442,24 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             const initialSelectedClaims: ExtendedExternalClaimInterface[] = [];
             const initialAvailableClaims: ExtendedExternalClaimInterface[] = [];
 
-            applicationConfig.attributeSettings.attributeSelection.getExternalClaims(externalClaims)
-                .map((claim: ExtendedExternalClaimInterface) => {
-                    if (initialRequest.includes(claim.mappedLocalClaimURI)) {
-                        const newClaim: ExtendedExternalClaimInterface = {
-                            ...claim,
-                            mandatory: checkInitialRequestMandatory(claim.mappedLocalClaimURI),
-                            requested: true
-                        };
+            externalClaims.filter((claim: ExtendedExternalClaimInterface) => {
+                const localClaim: ExtendedClaimInterface = localClaimsMap.get(claim.mappedLocalClaimURI);
 
-                        initialSelectedClaims.push(newClaim);
+                return localClaim?.profiles?.signInAssertion?.supportedByDefault;
+            }).map((claim: ExtendedExternalClaimInterface) => {
+                if (initialRequest.includes(claim.mappedLocalClaimURI)) {
+                    const newClaim: ExtendedExternalClaimInterface = {
+                        ...claim,
+                        mandatory: checkInitialRequestMandatory(claim.mappedLocalClaimURI),
+                        requested: true
+                    };
 
-                    } else {
-                        initialAvailableClaims.push(claim);
-                    }
-                });
+                    initialSelectedClaims.push(newClaim);
+
+                } else {
+                    initialAvailableClaims.push(claim);
+                }
+            });
             const tempFilterSelectedExternalClaims: ExtendedExternalClaimInterface[] =
             [ ...filterSelectedExternalClaims ];
 
@@ -506,11 +514,16 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     useEffect(() => {
         if (claims) {
-            setAvailableClaims([ ...applicationConfig.attributeSettings.attributeSelection.getClaims(claims) ]);
+            setAvailableClaims([ ...claims.filter((claim: ExtendedClaimInterface) => {
+                return claim?.profiles?.signInAssertion?.supportedByDefault;
+            }) ]);
         }
         if (externalClaims) {
-            setAvailableExternalClaims([ ...applicationConfig.attributeSettings
-                .attributeSelection.getExternalClaims(externalClaims) ]);
+            setAvailableExternalClaims([ ...externalClaims.filter((claim: ExtendedExternalClaimInterface) => {
+                const localClaim: ExtendedClaimInterface = localClaimsMap.get(claim.mappedLocalClaimURI);
+
+                return localClaim?.profiles?.signInAssertion?.supportedByDefault;
+            }) ]);
         }
     }, [ claims, externalClaims ]);
 
@@ -541,7 +554,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     setInitialSelectedClaims={ setSelectedClaims }
                     showAddModal={ showSelectionModal }
                     setShowAddModal={ setShowSelectionModal }
-                    availableClaims={ applicationConfig.attributeSettings.attributeSelection.getClaims(claims) }
+                    availableClaims={
+                        claims.filter((claim: ExtendedClaimInterface) => {
+                            return claim?.profiles?.signInAssertion?.supportedByDefault;
+                        })
+                    }
                     setAvailableClaims={ setClaims }
                     createMapping={ createMapping }
                     removeMapping={ removeMapping }
@@ -559,8 +576,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 setInitialSelectedExternalClaims={ setSelectedExternalClaims }
                 showAddModal={ showSelectionModal }
                 setShowAddModal={ setShowSelectionModal }
-                availableExternalClaims={ applicationConfig.attributeSettings
-                    .attributeSelection.getExternalClaims(externalClaims) }
+                availableExternalClaims={ externalClaims.filter((claim: ExtendedExternalClaimInterface) => {
+                    return localClaimsMap.get(claim.mappedLocalClaimURI)?.profiles?.signInAssertion?.supportedByDefault;
+                }) }
                 setAvailableExternalClaims={ setExternalClaims }
                 data-testid={ `${ testId }-wizard-other-dialects` }
             />

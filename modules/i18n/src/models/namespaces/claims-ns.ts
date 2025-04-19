@@ -545,6 +545,9 @@ export interface ClaimsNS {
                 readonly: string;
                 readonlyHint: string;
                 selfRegistrationReadOnlyHint: string;
+                signInAssertionReadOnlyHint: string;
+                signInAssertionRequiredHint: string;
+                signInAssertion: string;
             };
         };
         dangerZone: {
