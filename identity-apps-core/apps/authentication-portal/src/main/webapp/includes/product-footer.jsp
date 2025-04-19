@@ -45,6 +45,9 @@
     }
 %>
 
+<%-- Custom styles --%>
+<link href="css/product-footer.css" rel="stylesheet">
+
 <%-- footer --%>
 <footer class="footer">
     <div class="ui container fluid">
@@ -70,7 +73,7 @@
                     <% } %>
                 </a>
             </div>
-            <div class="right menu">
+            <div class="right menu ida-flex ida-flex-wrap">
             <%
                 if (!StringUtils.isBlank(privacyPolicyURL)) {
             %>
