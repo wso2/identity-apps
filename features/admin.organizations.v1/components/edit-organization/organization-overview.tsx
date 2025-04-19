@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,8 +17,8 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import {
     AlertLevels,
@@ -471,6 +471,25 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                         "domain.ariaLabel"
                                         ) }
                                         inputType="url"
+                                        maxLength={ 32 }
+                                        minLength={ 3 }
+                                    />
+                                ) }
+                                { organization?.orgHandle && (
+                                    <Field.Input
+                                        data-testid={ `${ testId }-overview-form-org-handle-input` }
+                                        name="orgHandle"
+                                        label={ t(
+                                            "organizations:edit.fields.orgHandle.label"
+                                        ) }
+                                        required={ false }
+                                        requiredErrorMessage=""
+                                        value={ organization?.orgHandle || organization?.id }
+                                        readOnly={ true }
+                                        ariaLabel={ t(
+                                            "organizations:edit.fields.orgHandle.ariaLabel"
+                                        ) }
+                                        inputType="copy_input"
                                         maxLength={ 32 }
                                         minLength={ 3 }
                                     />

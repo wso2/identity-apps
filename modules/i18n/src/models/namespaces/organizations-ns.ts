@@ -214,6 +214,11 @@ export interface organizationsNS {
                 placeholder: string;
                 ariaLabel: string;
             };
+            orgHandle: {
+                label: string;
+                placeholder: string;
+                ariaLabel: string;
+            };
             description: {
                 label: string;
                 placeholder: string;
@@ -263,6 +268,14 @@ export interface organizationsNS {
     forms: {
         addOrganization: {
             name: {
+                validation: {
+                    duplicate: string;
+                    empty: string;
+                };
+                label: string;
+                placeholder: string;
+            };
+            orgHandle: {
                 validation: {
                     duplicate: string;
                     empty: string;
