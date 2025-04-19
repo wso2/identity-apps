@@ -2790,7 +2790,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         if (!recoveryScenario) return null;
 
         return (
-            <a className="link pointing" onClick={ () => handleResendCode(recoveryScenario) }>
+            <a
+                className="link pointing"
+                onClick={ () => handleResendCode(recoveryScenario) }
+                data-testid={ `${ testId }-resend-link` }
+            >
                 { t("user:resendCode.resend") }
             </a>
         );
