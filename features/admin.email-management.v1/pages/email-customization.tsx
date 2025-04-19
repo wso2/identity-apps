@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -37,12 +37,13 @@ import {
     ResourceTab,
     useDocumentation
 } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import {
     createNewEmailTemplate,
     deleteEmailTemplate,
@@ -79,6 +80,9 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     const [ showReplicatePreviousTemplateModal, setShowReplicatePreviousTemplateModal ] = useState(false);
     const [ showUpdateTemplateFromRootOrgModal, setShowUpdateTemplateFromRootOrgModal ] = useState(false);
     const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
+    const [ isSystemTemplate, setIsSystemTemplate ] = useState(false);
+    const [ isInheritedTemplate, setIsInheritedTemplate ] = useState(false);
+    const [ error, setError ] = useState<AxiosError>();
 
     const emailTemplates: Record<string, string>[] = useSelector(
         (state: AppState) => state.config.deployment.extensions.emailTemplates) as Record<string, string>[];
@@ -115,6 +119,8 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         ) && hasUsersCreateEmailTemplatesPermissions;
     }, [ emailTemplatesFeatureConfig, allowedScopes ]);
 
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
     const {
         data: emailTemplatesList,
         isLoading: isEmailTemplatesListLoading,
@@ -126,7 +132,13 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         isLoading: isEmailTemplateLoading,
         error: emailTemplateError,
         mutate: emailTemplateMutate
-    } = useEmailTemplate(selectedEmailTemplateId, selectedLocale, !!selectedEmailTemplateId);
+    } = useEmailTemplate(
+        selectedEmailTemplateId,
+        selectedLocale,
+        isSystemTemplate,
+        isInheritedTemplate,
+        !!selectedEmailTemplateId
+    );
 
     useEffect(() => {
         // we don't have a good displayName and description coming from the backend
@@ -194,15 +206,25 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     }, [ emailTemplatesListError ]);
 
     useEffect(() => {
-        if (!emailTemplateError || !selectedEmailTemplateId) {
+        if (!emailTemplateError || !selectedEmailTemplateId || emailTemplateError === error) {
             return;
         }
+
+        setError(emailTemplateError);
 
         // Show the replicate previous template modal and set the "isTemplateNotAvailable" flag to identify whether the
         // current template is a new template or not
         if (emailTemplateError.response.status === 404) {
             setIsTemplateNotAvailable(true);
-            if (hasEmailTemplateCreatePermissions) {
+            if (isSubOrganization() && !isInheritedTemplate) {
+                setIsInheritedTemplate(true);
+
+                return;
+            } else if (!isSystemTemplate && selectedLocale === EmailManagementConstants.DEAFULT_LOCALE) {
+                setIsSystemTemplate(true);
+
+                return;
+            } else if (hasEmailTemplateCreatePermissions) {
                 setShowReplicatePreviousTemplateModal(true);
 
                 return;
@@ -230,7 +252,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             level: AlertLevels.ERROR,
             message: t("extensions:develop.emailTemplates.notifications.getEmailTemplate.error.message")
         }));
-    }, [ emailTemplateError ]);
+    }, [ emailTemplateError, isSystemTemplate, isInheritedTemplate ]);
 
     // This is used to check whether the URL contains a template ID, and if so, set it as the selected template.
     useEffect(() => {
@@ -247,6 +269,8 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
 
     const handleTemplateIdChange = (templateId: string) => {
         setIsTemplateNotAvailable(false);
+        setIsSystemTemplate(false);
+        setIsInheritedTemplate(false);
         setCurrentEmailTemplate(undefined);
         setSelectedLocale(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
         setSelectedEmailTemplateId(templateId);
@@ -261,6 +285,8 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     const handleLocaleChange = (locale: string) => {
         setCurrentEmailTemplate({ ...selectedEmailTemplate });
         setIsTemplateNotAvailable(false);
+        setIsSystemTemplate(false);
+        setIsInheritedTemplate(false);
         setSelectedLocale(locale);
     };
 
@@ -274,7 +300,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             template.contentType = EmailManagementConstants.DEFAULT_CONTENT_TYPE;
         }
 
-        if (isTemplateNotAvailable) {
+        if (isSystemTemplate || isInheritedTemplate) {
             createNewEmailTemplate(selectedEmailTemplateId, template)
                 .then((_response: EmailTemplate) => {
                     dispatch(addAlert<AlertInterface>({
@@ -284,6 +310,8 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                         message: t("extensions:develop.emailTemplates.notifications.updateEmailTemplate" +
                             ".success.message")
                     }));
+                    setIsSystemTemplate(false);
+                    setIsInheritedTemplate(false);
                 }).catch((error: IdentityAppsApiException) => {
                     dispatch(addAlert<AlertInterface>({
                         description: t("extensions:develop.emailTemplates.notifications.updateEmailTemplate" +
@@ -303,6 +331,8 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                         message: t("extensions:develop.emailTemplates.notifications.updateEmailTemplate" +
                             ".success.message")
                     }));
+                    setIsSystemTemplate(false);
+                    setIsInheritedTemplate(false);
                 }).catch((error: IdentityAppsApiException) => {
                     dispatch(addAlert<AlertInterface>({
                         description: t("extensions:develop.emailTemplates.notifications.updateEmailTemplate" +
@@ -327,6 +357,8 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                     message: t("extensions:develop.emailTemplates.notifications.deleteEmailTemplate" +
                         ".success.message")
                 }));
+                setIsSystemTemplate(true);
+                setIsInheritedTemplate(false);
             }).catch((error: IdentityAppsApiException) => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.emailTemplates.notifications.deleteEmailTemplate" +
@@ -343,6 +375,8 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     const replicatePreviousTemplate = () => {
         setSelectedEmailTemplate(currentEmailTemplate);
         setShowReplicatePreviousTemplateModal(false);
+        setIsSystemTemplate(true);
+        setIsInheritedTemplate(false);
     };
 
     const cancelReplicationOfPreviousTemplate = () => {
