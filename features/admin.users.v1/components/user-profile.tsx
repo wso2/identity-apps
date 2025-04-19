@@ -46,7 +46,7 @@ import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
 import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
+import { getUserNameWithoutDomain, resolveUserstore } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -218,6 +218,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     );
     const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
@@ -2801,6 +2803,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         setIsSubmitting(true);
 
         const resolvedUsername: string = getUserNameWithoutDomain(user?.userName);
+        const userStoreDomain: string = resolveUserstore(user?.userName, primaryUserStoreDomainName);
 
         const requestData: ResendCodeRequestData = {
             properties: [
@@ -2810,7 +2813,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 }
             ],
             user: {
-                realm: user[ SCIMConfigs.scim.systemSchema ]?.userSource,
+                realm: userStoreDomain,
                 username: resolvedUsername
             }
         };
