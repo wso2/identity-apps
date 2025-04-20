@@ -37,6 +37,7 @@ import "./configuration-details-form.scss";
 import { useTranslation } from "react-i18next";
 import ApprovalStep from "./approval-step";
 import { templateNameMap } from "../../constants/workflow-model-constants";
+import { MultiStepApprovalTemplate } from "../../models";
 import { ApprovalSteps, ConfigurationsFormValuesInterface } from "../../models/ui";
 
 export interface ConfigurationsPropsInterface extends IdentifiableComponentInterface {
@@ -49,13 +50,6 @@ export interface ConfigurationsPropsInterface extends IdentifiableComponentInter
 export interface ConfigurationsFormRef {
     triggerSubmit: () => void;
 }
-
-export type MultiStepApprovalTemplate = {
-    id: string;
-    stepNumber: number;
-    roles: string[];
-    users: string[];
-};
 
 const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<ConfigurationsFormRef> &
     ConfigurationsPropsInterface> = forwardRef(
@@ -191,8 +185,8 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                             className="add-rule-btn"
                             data-componentid={ `${testId}-button-add-new-step` }
                         >
-                            <div 
-                                className="flex-row-gap-10" 
+                            <div
+                                className="flex-row-gap-10"
                                 data-componentid={ `${testId}-button-add-new-step-content` }
                             >
                                 <PlusIcon />

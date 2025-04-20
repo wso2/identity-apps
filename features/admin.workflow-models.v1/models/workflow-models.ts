@@ -90,3 +90,10 @@ export interface OptionDetails {
 export const workflowEngineOptions: WorkflowEngineTypeDropdownOption[] = [
     { key: "engine_1", text: "Simple Workflow Engine", value: "workflowImplSimple" }
 ];
+
+export type MultiStepApprovalTemplate = {
+    id: string;
+    stepNumber: number;
+    roles: string[];
+    users: string[];
+};
