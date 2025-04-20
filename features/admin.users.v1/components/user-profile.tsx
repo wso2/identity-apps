@@ -68,6 +68,7 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
+    LinkButton,
     Popup,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
@@ -2790,13 +2791,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         if (!recoveryScenario) return null;
 
         return (
-            <a
-                className="link pointing"
+            <LinkButton
                 onClick={ () => handleResendCode(recoveryScenario) }
+                aria-disabled={ isSubmitting }
+                disabled={ isSubmitting }
                 data-testid={ `${ testId }-resend-link` }
             >
                 { t("user:resendCode.resend") }
-            </a>
+            </LinkButton>
         );
     };
 
