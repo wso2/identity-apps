@@ -19,7 +19,6 @@
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { RemoteUserStoreConstants } from "@wso2is/admin.remote-userstores.v1/constants/remote-user-stores-constants";
-import { ApprovalProcessesConstants } from "@wso2is/admin.workflow-models.v1/constants/workflow-model-constants"
 import { RouteInterface } from "@wso2is/core/models";
 import { lazy } from "react";
 import { CommonConfig } from "./models";
@@ -116,20 +115,6 @@ export const commonConfig: CommonConfig = {
                 name: "console:develop.features.applications.resident.provisioning.outbound.heading",
                 order: 6,
                 path: AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
-                protected: true,
-                showOnSidePanel: false
-            },
-            {
-                category: "extensions:manage.sidePanel.categories.userManagement",
-                component: lazy(() => import("@wso2is/admin.workflow-models.v1/pages/workflow-model-create-page")),
-                exact: true,
-                icon: {
-                    icon: getSidePanelIcons().childIcon
-                },
-                id: "approvalProcessCreate",
-                name: "console:manage.features.sidePanel.createWorkflows",
-                order: 7,
-                path: ApprovalProcessesConstants.getPaths().get("APPROVAL_PROCESS_CREATE"),
                 protected: true,
                 showOnSidePanel: false
             }
