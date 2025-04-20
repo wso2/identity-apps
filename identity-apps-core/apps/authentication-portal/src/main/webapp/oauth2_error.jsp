@@ -34,8 +34,8 @@
     if (StringUtils.isNotBlank(errorMsg)) {
         String[] error = errorMsg.split(regex);
         if (error.length > 1) {
-            errorMsgContext = errorMsg.split(regex)[0] + regex;
-            errorMsgApp = errorMsg.split(regex)[1];
+            errorMsgContext = error[0] + regex;
+            errorMsgApp = error[1];
         }
     }
 %>
