@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.23.6
+
+### Patch Changes
+
+- [#8068](https://github.com/wso2/identity-apps/pull/8068) [`3519546de64992f57c8397da7bf24ecfe406af2e`](https://github.com/wso2/identity-apps/commit/3519546de64992f57c8397da7bf24ecfe406af2e) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Fix NPE issue when accessing oauth2_error.jsp with missing parameters
+
 ## 2.23.5
 
 ### Patch Changes
