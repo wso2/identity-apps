@@ -225,7 +225,8 @@ export class Config {
                 I18nConstants.POLICY_ADMINISTRATION_NAMESPACE,
                 I18nConstants.REMOTE_USER_STORES_NAMESPACE,
                 I18nConstants.RULES_NAMESPACE,
-                I18nConstants.PUSH_PROVIDERS_NAMESPACE
+                I18nConstants.PUSH_PROVIDERS_NAMESPACE,
+                I18nConstants.WORKFLOW_MODELS_NAMESPACE
             ],
             preload: []
         };

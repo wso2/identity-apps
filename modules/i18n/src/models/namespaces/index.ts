@@ -69,3 +69,4 @@ export * from "./remote-user-stores-ns";
 export * from "./rules-ns";
 export * from "./custom-authentication-ns";
 export * from "./push-providers-ns";
+export * from "./workflow-models-ns";

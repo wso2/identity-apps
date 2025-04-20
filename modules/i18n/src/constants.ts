@@ -365,6 +365,11 @@ export class I18nModuleConstants {
     public static readonly RULES_NAMESPACE: string = "rules";
 
     /**
+     * Workflow Models namespace.
+     */
+    public static readonly WORKFLOW_MODELS_NAMESPACE: string = "workflowModels";
+
+    /**
      * Constant representing the locale preference key.
      * This key is used to store the user's language preference in cookies or local storage.
      */
