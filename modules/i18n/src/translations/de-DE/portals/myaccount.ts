@@ -1523,6 +1523,42 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        selfSignUp: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}.",
+                        message: "Fehler beim Abrufen der Einstellungen für die Selbstregistrierung"
+                    },
+                    genericError: {
+                        description: "Beim Abrufen der Einstellungen für die Selbstregistrierung ist ein Fehler aufgetreten.",
+                        message: "Etwas ist schiefgelaufen"
+                    },
+                    success: {
+                        description: "Einstellungen für die Selbstregistrierung erfolgreich abgerufen.",
+                        message: "Einstellungen für die Selbstregistrierung erfolgreich abgerufen"
+                    }
+                }
+            }
+        },
+        systemNotificationAlert: {
+            resend: "Erneut senden",
+            selfSignUp: {
+                awaitingAccountConfirmation: "Ihr Konto ist noch nicht aktiv. Wir haben einen " +
+                    "Aktivierungslink an Ihre registrierte E-Mail-Adresse gesendet. " +
+                    "Benötigen Sie einen neuen Link?",
+                notifications: {
+                    resendError: {
+                        description: "Beim erneuten Senden der Kontobestätigungs-E-Mail ist ein Fehler aufgetreten.",
+                        message: "Etwas ist schiefgelaufen"
+                    },
+                    resendSuccess: {
+                        description: "Kontobestätigungs-E-Mail erfolgreich erneut gesendet.",
+                        message: "Kontobestätigungs-E-Mail erfolgreich erneut gesendet"
+                    }
+                }
+            }
+        },
         "userAvatar": {
             "infoPopover": "Dieses Bild wurde von <1>Gravatar abgerufen</1> Service.",
             "urlUpdateHeader": "Geben Sie eine Bild-URL ein, um Ihr Profilbild festzulegen"

@@ -78,6 +78,21 @@ export interface MyAccountNS {
                 notifications?: Notification;
             }
         }
+        selfSignUp: {
+            preference?: {
+                notifications?: Notification;
+            }
+        },
+        systemNotificationAlert: {
+            resend: string;
+            selfSignUp: {
+                awaitingAccountConfirmation: string;
+                notifications: {
+                    resendSuccess: NotificationItem;
+                    resendError: NotificationItem;
+                }
+            }
+        }
         accountRecovery: {
             SMSRecovery: {
                 descriptions: {

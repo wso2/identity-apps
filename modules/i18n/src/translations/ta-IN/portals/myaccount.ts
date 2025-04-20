@@ -1684,6 +1684,41 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        selfSignUp: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}.",
+                        message: "சுய பதிவு விருப்பத்தைப் பெறுவதில் பிழை"
+                    },
+                    genericError: {
+                        description: "சுய பதிவு விருப்பத்தைப் பெறும்போது பிழை ஏற்பட்டது.",
+                        message: "ஏதோ தவறு நடந்துவிட்டது"
+                    },
+                    success: {
+                        description: "சுய பதிவு விருப்பம் வெற்றிகரமாகப் பெறப்பட்டது.",
+                        message: "சுய பதிவு விருப்பம் பெறுதல் வெற்றிகரமானது"
+                    }
+                }
+            }
+        },
+        systemNotificationAlert: {
+            resend: "மீண்டும் அனுப்பு",
+            selfSignUp: {
+                awaitingAccountConfirmation: "உங்கள் கணக்கு இன்னும் செயலில் இல்லை. உங்கள் பதிவு செய்யப்பட்ட " +
+                    "மின்னஞ்சல் முகவரிக்குச் செயல்படுத்தும் இணைப்பை அனுப்பியுள்ளோம். புதிய இணைப்பு தேவையா?",
+                notifications: {
+                    resendError: {
+                        description: "கணக்கு உறுதிப்படுத்தல் மின்னஞ்சலை மீண்டும் அனுப்பும்போது பிழை ஏற்பட்டது.",
+                        message: "ஏதோ தவறு நடந்துவிட்டது"
+                    },
+                    resendSuccess: {
+                        description: "கணக்கு உறுதிப்படுத்தல் மின்னஞ்சல் வெற்றிகரமாக மீண்டும் அனுப்பப்பட்டது.",
+                        message: "கணக்கு உறுதிப்படுத்தல் மின்னஞ்சல் மீண்டும் அனுப்புதல் வெற்றிகரமானது"
+                    }
+                }
+            }
+        },
         userAvatar: {
             infoPopover: "இந்த படம் <1>Gravatar</1> சேவையிலிருந்து மீட்டெடுக்கப்பட்டது.",
             urlUpdateHeader: "உங்கள் சுயவிவரப் படத்தை அமைக்க பட URL ஐ உள்ளிடவும்"

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,8 +17,9 @@
  */
 
 import { AsgardeoSPAClient, HttpError, HttpInstance, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
-import { MobileVerificationRecoveryScenario } from "../constants";
-import { HttpMethods, SMSOTPProperty } from "../models";
+import { RecoveryScenario } from "../constants";
+import { HttpMethods } from "../models";
+import { RecoveryProperty } from "../models/verification-resend";
 import { store } from "../store";
 
 /**
@@ -27,47 +28,15 @@ import { store } from "../store";
 const httpClient: HttpInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Validate the user-entered verification code.
- *
- * @param code - The verification code
+ * Resends the verification link/code for the authenticated user. This supports scenarios such as resending the
+ * verification link/code for account confirmation during self sign up, mobile verification, etc.
  */
-export const validateSMSOTPCode = (code: string): Promise<any> => {
-    const requestConfig: HttpRequestConfig = {
-        data: {
-            code: code,
-            properties: []
-        },
-        headers: {
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.POST,
-        url: store.getState().config.endpoints.smsOtpValidate
-    };
+export const resendVerificationLinkOrCode = ( recoveryScenario: RecoveryScenario): Promise<void> => {
+    const properties: RecoveryProperty[] = [];
 
-    return httpClient(requestConfig)
-        .then((response: HttpResponse) => {
-            if (response.status == 202) {
-                return true;
-            }
-
-            return Promise.reject(`An error occurred. The server returned ${response.status}`);
-        })
-        .catch((error: HttpError) => {
-            return Promise.reject(error);
-        });
-};
-
-/**
- * Resend SMS OTP verification code for the authenticated user.
- */
-export const resendSMSOTPCode = (
-    recoveryScenario: string = MobileVerificationRecoveryScenario.MOBILE_VERIFICATION_ON_UPDATE
-): Promise<any> => {
-    const properties: SMSOTPProperty[] = [];
-
-    const propertyData: SMSOTPProperty = {
+    const propertyData: RecoveryProperty = {
         key: "RecoveryScenario",
-        value: recoveryScenario
+        value: recoveryScenario.toString()
     };
 
     properties.push(propertyData);
@@ -87,7 +56,7 @@ export const resendSMSOTPCode = (
             if (response.status !== 201) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             } else {
-                return Promise.resolve(response);
+                return Promise.resolve();
             }
         })
         .catch((error: HttpError) => {

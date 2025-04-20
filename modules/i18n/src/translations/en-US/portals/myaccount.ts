@@ -1647,6 +1647,41 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        selfSignUp: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}.",
+                        message: "Error retrieving self sign up preference"
+                    },
+                    genericError: {
+                        description: "Error occurred while retrieving self sign up preference.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved the self sign up preference.",
+                        message: "Self sign up preference retrieval successful"
+                    }
+                }
+            }
+        },
+        systemNotificationAlert: {
+            resend: "Resend",
+            selfSignUp: {
+                awaitingAccountConfirmation: "Your account is not yet active. We've sent an " +
+                    "activation link to your registered email address. Need a new link?",
+                notifications: {
+                    resendError: {
+                        description: "Error occurred while resending the account confirmation email.",
+                        message: "Something went wrong"
+                    },
+                    resendSuccess: {
+                        description: "Successfully resent the account confirmation email.",
+                        message: "Account confirmation email resent successfully"
+                    }
+                }
+            }
+        },
         userAvatar: {
             infoPopover: "This image has been retrieved from <1>Gravatar</1> service.",
             urlUpdateHeader: "Enter an image URL to set your profile picture"

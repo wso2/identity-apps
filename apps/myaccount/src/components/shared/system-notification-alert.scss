@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,19 +16,11 @@
  * under the License.
  */
 
-export * from "./avatar";
-export * from "./advanced-search-with-basic-filters";
-export * from "./alert";
-export * from "./app-avatar";
-export * from "./header";
-export * from "./edit-section";
-export * from "./empty-placeholder";
-export * from "./global-loader";
-export * from "./icon";
-export * from "./page-header";
-export * from "./pre-loader";
-export * from "./protected-route";
-export * from "./settings-section";
-export * from "./user-avatar";
-export * from "./modal";
-export * from "./system-notification-alert";
+.system-notification-alert {
+    .button.link-button {
+        padding: 0;
+        font-size: inherit;
+        margin-left: 0.2em;
+        font-weight: 500;
+    }
+}

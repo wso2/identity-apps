@@ -1639,6 +1639,41 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        selfSignUp: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}.",
+                        message: "ස්වයං ලියාපදිංචි වීමේ මනාපය ලබා ගැනීමේ දෝෂයකි"
+                    },
+                    genericError: {
+                        description: "ස්වයං ලියාපදිංචි වීමේ මනාපය ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                        message: "යමක් වැරදී ඇත"
+                    },
+                    success: {
+                        description: "ස්වයං ලියාපදිංචි වීමේ මනාපය සාර්ථකව ලබා ගන්නා ලදී.",
+                        message: "ස්වයං ලියාපදිංචි වීමේ මනාපය ලබා ගැනීම සාර්ථකයි"
+                    }
+                }
+            }
+        },
+        systemNotificationAlert: {
+            resend: "නැවත යවන්න",
+            selfSignUp: {
+                awaitingAccountConfirmation: "ඔබගේ ගිණුම තවමත් සක්‍රිය නොවේ. අපි ඔබගේ ලියාපදිංචි " +
+                    "විද්‍යුත් තැපැල් ලිපිනයට සක්‍රිය කිරීමේ සබැඳියක් යවා ඇත. නව සබැඳියක් අවශ්‍යද?",
+                notifications: {
+                    resendError: {
+                        description: "ගිණුම් තහවුරු කිරීමේ විද්‍යුත් තැපෑල නැවත යැවීමේදී දෝෂයක් ඇති විය.",
+                        message: "යමක් වැරදී ඇත"
+                    },
+                    resendSuccess: {
+                        description: "ගිණුම් තහවුරු කිරීමේ විද්‍යුත් තැපෑල සාර්ථකව නැවත යවන ලදී.",
+                        message: "ගිණුම් තහවුරු කිරීමේ විද්‍යුත් තැපෑල නැවත යැවීම සාර්ථකයි"
+                    }
+                }
+            }
+        },
         userAvatar: {
             infoPopover: "මෙම පින්තූරය <1>Gravatar</1> සේවාවෙන් ලබාගෙන ඇත.",
             urlUpdateHeader: "ඔබගේ පැතිකඩ පින්තූරය සැකසීමට රූප URL එකක් ඇතුළත් කරන්න"

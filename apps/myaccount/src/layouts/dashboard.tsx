@@ -22,7 +22,11 @@ import Container from "@oxygen-ui/react/Container";
 import Navbar from "@oxygen-ui/react/Navbar";
 import Snackbar from "@oxygen-ui/react/Snackbar";
 import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
-import { AlertInterface, AnnouncementBannerInterface, ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
+import {
+    AlertInterface,
+    AnnouncementBannerInterface,
+    ChildRouteInterface,
+    RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import {
     RouteUtils as CommonRouteUtils,
@@ -50,6 +54,7 @@ import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Dispatch } from "redux";
 import { fetchApplications } from "../api";
 import { Header, ProtectedRoute } from "../components";
+import { SystemNotificationAlert } from "../components/shared";
 import { getDashboardLayoutRoutes, getEmptyPlaceholderIllustrations } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
@@ -292,6 +297,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                             />
                         ) }
                     >
+                        <SystemNotificationAlert/>
                         <Suspense fallback={ <ContentLoader /> }>
                             <Switch>
                                 { dashboardLayoutRoutes.map((route: RouteInterface, index: number) =>

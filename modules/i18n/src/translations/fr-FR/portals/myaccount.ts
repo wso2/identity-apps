@@ -1682,6 +1682,41 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        selfSignUp: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}.",
+                        message: "Erreur lors de la récupération des préférences d'auto-inscription"
+                    },
+                    genericError: {
+                        description: "Une erreur s'est produite lors de la récupération des préférences d'auto-inscription.",
+                        message: "Quelque chose s'est mal passé"
+                    },
+                    success: {
+                        description: "Préférences d'auto-inscription récupérées avec succès.",
+                        message: "Récupération des préférences d'auto-inscription réussie"
+                    }
+                }
+            }
+        },
+        systemNotificationAlert: {
+            resend: "Renvoyer",
+            selfSignUp: {
+                awaitingAccountConfirmation: "Votre compte n'est pas encore actif. Nous avons envoyé un " +
+                    "lien d'activation à votre adresse e-mail enregistrée. Besoin d'un nouveau lien ?",
+                notifications: {
+                    resendError: {
+                        description: "Une erreur s'est produite lors du renvoi de l'e-mail de confirmation de compte.",
+                        message: "Quelque chose s'est mal passé"
+                    },
+                    resendSuccess: {
+                        description: "E-mail de confirmation de compte renvoyé avec succès.",
+                        message: "E-mail de confirmation de compte renvoyé avec succès"
+                    }
+                }
+            }
+        },
         userAvatar: {
             infoPopover: "Cette image a été récupérée à partir du service <1>Gravatar</1>.",
             urlUpdateHeader: "Entrez l'URL d'une image pour mettre à jour votre image de profil"
