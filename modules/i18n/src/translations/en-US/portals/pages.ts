@@ -34,7 +34,7 @@ export const pages: pagesNS = {
         subTitle: "Review operational tasks that requires your approval",
         title: "Approvals"
     },
-    approvalProcesses: {
+    workflowModels: {
         subTitle: "Create and manage workflow models.",
         title: "Workflow Models"
     },

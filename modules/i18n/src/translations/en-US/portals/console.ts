@@ -8469,7 +8469,226 @@ export const console: ConsoleNS = {
                         }
                     }
                 }
-            }
+            },
+            workflowModels: {
+                advancedSearch: {
+                    error: "Filter query format incorrect",
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Name, Description etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "E.g. PRIMARY, SECONDARY etc."
+                            }
+                        }
+                    },
+                    placeholder: "Search by workflow model name"
+                },
+                confirmation: {
+                    confirm: "Confirm",
+                    content: "If you delete this workflow model, the data in this workflow model will also be deleted. "
+                        + "Please proceed with caution.",
+                    header: "Are you sure?",
+                    hint: "Please confirm your action.",
+                    message: "This action is irreversible and will permanently delete the"
+                        + " selected workflow model and the data in it."
+                },
+                dangerZone: {
+                    delete: {
+                        actionTitle: "Delete Workflow Model",
+                        header: "Delete Workflow Model",
+                        subheader: "Once you delete a workflow model, there is no going back. "
+                            + "Please be certain."
+                    },
+                    disable: {
+                        actionTitle: "Enable Workflow Model",
+                        header: "Enable Workflow Model",
+                        subheader: "Disabling a workflow model can make you lose access to the users in the workflow model. " +
+                            "Proceed with caution."
+                    }
+                },
+                forms: {
+                    connection: {
+                        updatePassword: "Update connection password",
+                        connectionErrorMessage: "Please ensure the provided connection "
+                            + "URL, name, password and driver name are correct",
+                        testButton: "Test Connection"
+                    },
+                    custom: {
+                        placeholder: "Enter a {{name}}",
+                        requiredErrorMessage: "{{name}} is required"
+                    },
+                    general: {
+                        description: {
+                            label: "Description",
+                            placeholder: "Enter a description",
+                            validationErrorMessages: {
+                                invalidInputErrorMessage: "Description cannot contain the pattern {{invalidString}}."
+                            }
+                        },
+                        name: {
+                            label: "Name",
+                            placeholder: "Enter a name",
+                            requiredErrorMessage: "Name is a required field",
+                            validationErrorMessages: {
+                                alreadyExistsErrorMessage: "A workflow model with this name already exists.",
+                                maxCharLimitErrorMessage: "Workflow model name cannot exceed {{maxLength}} characters.",
+                                invalidInputErrorMessage: "Workflow model name cannot contain the pattern {{invalidString}}."
+                            }
+                        },
+                        type: {
+                            label: "Type",
+                            requiredErrorMessage: "Select a Type"
+                        }
+                    }
+                },
+                notifications: {
+                    addWorkflowModel: {
+                        genericError: {
+                            description: "There was an error while creating the workflow model.",
+                            message: "Something went wrong!"
+                        },
+                        success: {
+                            description: "The workflow model has been added successfully!",
+                            message: "Workflow model added successfully!"
+                        }
+                    },
+                    apiLimitReachedError: {
+                        error: {
+                            description: "You have reached the maximum number of workflow models allowed.",
+                            message: "Failed to create the workflow model"
+                        }
+                    },
+                    delay: {
+                        description: "It may take a while for the workflow model list to be updated. "
+                            + "Refresh in a few seconds to get the updated workflow model list.",
+                        message: "Updating workflow model list takes time"
+                    },
+                    deleteWorkflowModel: {
+                        genericError: {
+                            description: "There was an error while deleting the workflow model.",
+                            message: "Something went wrong!"
+                        },
+                        success: {
+                            description: "The workflow model has been deleted successfully!",
+                            message: "Workflow Model deleted successfully!"
+                        }
+                    },
+                    fetchWorkflowModelMetadata: {
+                        genericError: {
+                            description: "An error occurred while fetching the type meta data.",
+                            message: "Something went wrong"
+                        }
+                    },
+                    fetchWorkflowModelTemplates: {
+                        genericError: {
+                            description: "An error occurred while fetching the workflow model type details.",
+                            message: "Something went wrong"
+                        }
+                    },
+                    fetchWorkflowModelTypes: {
+                        genericError: {
+                            description: "An error occurred while fetching the workflow model types.",
+                            message: "Something went wrong"
+                        }
+                    },
+                    fetchWorkflowModels: {
+                        genericError: {
+                            description: "An error occurred while fetching workflow models.",
+                            message: "Something went wrong"
+                        }
+                    },
+                    testConnection: {
+                        genericError: {
+                            description: "An error occurred while testing the connection to the workflow model",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The connection is healthy.",
+                            message: "Connection successful!"
+                        }
+                    },
+                    updateDelay: {
+                        description: "It might take some time for the updated properties to appear.",
+                        message: "Updating properties takes time"
+                    },
+                    updateWorkflowModel: {
+                        genericError: {
+                            description: "An error occurred while updating the workflow model.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "This workflow model has been updated successfully!",
+                            message: "Workflow model updated successfully!"
+                        }
+                    }
+                },
+                pageLayout: {
+                    edit: {
+                        back: "Go back to workflow models",
+                        description: "Edit workflow model",
+                        tabs: {
+                            connection: "Connection",
+                            general: "General",
+                            group: "Group",
+                            user: "User"
+                        }
+                    },
+                    list: {
+                        description: "Create and manage workflow models.",
+                        primaryAction: "New Workflow Model",
+                        title: "Workflow Models"
+                    },
+                    templates: {
+                        back: "Go back to workflow models",
+                        description: "Please choose one of the following workflow model types.",
+                        templateHeading: "Quick Setup",
+                        templateSubHeading: "Predefined set of templates to speed up your workflow model creation.",
+                        title: "Select Workflow Model Type"
+                    }
+                },
+                placeholders: {
+                    emptyList: {
+                        action: "New Workflow Model",
+                        subtitles: "There are currently no workflow models available. "
+                            + "You can add a new workflow model easily by following the "
+                            + "steps in the workflow model creation wizard.",
+                        title: "Add a new workflow model"
+                    },
+                    emptyListReadOnly: {
+                        subtitles: "There are currently no workflow models available.",
+                        title: "No workflow models"
+                    },
+                    emptySearch: {
+                        action: "Clear search query",
+                        subtitles: "We couldn't find any results for {{searchQuery}}. "
+                            + "Please try a different search term.",
+                        title: "No results found"
+                    }
+                },
+                sqlEditor: {
+                    create: "Create",
+                    darkMode: "Dark Mode",
+                    delete: "Delete",
+                    read: "Read",
+                    reset: "Reset Changes",
+                    title: "SQL Query Types",
+                    update: "Update"
+                },
+                wizard: {
+                    header: "Add {{type}} Workflow Model",
+                    steps: {
+                        general: "General",
+                        group: "Group",
+                        summary: "Summary",
+                        user: "User"
+                    }
+                }
+            },
         },
         notifications: {
             endSession: {

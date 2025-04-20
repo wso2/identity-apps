@@ -29,7 +29,7 @@ export interface pagesNS {
         title: string;
         subTitle: string;
     };
-    approvalProcesses: {
+    workflowModels: {
         title: string;
         subTitle: string;
     };
