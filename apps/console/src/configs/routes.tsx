@@ -1175,6 +1175,18 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("WORKFLOW_MODEL_EDIT"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.workflow-models.v1/pages/workflow-model-create-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "workflowModelCreate",
+                    name: "console:manage.features.sidePanel.createWorkflows",
+                    path: AppConstants.getPaths().get("WORKFLOW_MODEL_CREATE"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() => import("@wso2is/admin.workflow-models.v1/pages/workflow-models")),
