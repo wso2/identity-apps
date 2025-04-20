@@ -551,3 +551,10 @@ export enum ShareWithOrgStatus {
     FALSE,
     UNDEFINED
 }
+
+export enum ApplicationShareStatus {
+    FAILED = "FAILED",
+    SUCCESS = "SUCCESS",
+    ALL = "ALL"
+}
+
