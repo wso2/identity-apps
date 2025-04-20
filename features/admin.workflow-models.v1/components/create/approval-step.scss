@@ -1,0 +1,32 @@
+.approval-step-card {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.approval-step-heading {
+    margin-bottom: 16px;
+}
+
+.delete-button {
+    position: absolute;
+    right: 14px;
+    top: 4px;
+}
+
+.rules-component {
+    .box-container {
+        margin-top: 30px;
+        background-color: #f9fafb;
+        border-radius: 8px;
+        padding: 20px;
+    }
+}
+
+.box-container {
+    position: relative;
+}
+
+.list-item-roles {
+    margin-top: 16px;
+}
