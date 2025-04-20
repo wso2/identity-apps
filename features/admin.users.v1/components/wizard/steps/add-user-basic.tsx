@@ -964,11 +964,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                         validation={ async (value: string, validation: Validation) => {
                             setBasicDetailsLoading(true);
 
-                            // Check username validity against userstore regex.
-                            if (value && (
-                                !SharedUserStoreUtils.validateInputAgainstRegEx(
-                                    value, userStoreUsernameRegEx))
-                                    || !FormValidation.email(value)) {
+                            if (value && !FormValidation.email(value)) {
                                 validation.isValid = false;
                                 validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
                                 scrollToInValidField("email");
