@@ -1,16 +1,5 @@
 # @wso2is/console
 
-## 2.53.3
-
-### Patch Changes
-
-- [#8065](https://github.com/wso2/identity-apps/pull/8065) [`a6297d1713befa866b9e2b3c32614a35939f6288`](https://github.com/wso2/identity-apps/commit/a6297d1713befa866b9e2b3c32614a35939f6288) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Extract user store domain from username and if not found default to primary store in handleResendCode
-
-* [#8069](https://github.com/wso2/identity-apps/pull/8069) [`c390ae5a3274dbbe5507268cd29c3d82b024809b`](https://github.com/wso2/identity-apps/commit/c390ae5a3274dbbe5507268cd29c3d82b024809b) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add test id
-
-* Updated dependencies [[`a6297d1713befa866b9e2b3c32614a35939f6288`](https://github.com/wso2/identity-apps/commit/a6297d1713befa866b9e2b3c32614a35939f6288), [`c390ae5a3274dbbe5507268cd29c3d82b024809b`](https://github.com/wso2/identity-apps/commit/c390ae5a3274dbbe5507268cd29c3d82b024809b)]:
-  - @wso2is/admin.users.v1@2.30.127
-
 ## 2.53.2
 
 ### Patch Changes
