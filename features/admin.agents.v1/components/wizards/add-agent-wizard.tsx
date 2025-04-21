@@ -99,6 +99,41 @@ export default function AddAgentWizard({
                                     message: "Something went wrong"
                                 }));
                             });
+
+                            // try {
+                            //     if (!localStorage.getItem("agents")) {
+                            //         localStorage.setItem("agents", JSON.stringify([]));
+                            //     }
+
+                            //     if(!localStorage.getItem("agent_application")) {
+                            //         const agentApp = applicationListData.applications.find(application => application.name === "Agent Application");
+
+                            //         localStorage.setItem("agent_application", agentApp.id);
+                            //     }
+
+                            //     const agents: any = JSON.parse(localStorage.getItem("agents"));
+
+                            //     const newAgent = {
+                            //         description: values.description,
+                            //         id: uuidv4(),
+                            //         name: values.name
+                            //     };
+
+                            //     agents.push(newAgent);
+                            //     setNewAgent(newAgent);
+
+                            //     localStorage.setItem("agents", JSON.stringify(agents));
+
+
+                            // } catch (err) {
+                            //     console.log(err);
+                            //     dispatch(addAlert({
+                            //         description: "Error while creating the agent",
+                            //         level: AlertLevels.ERROR,
+                            //         message: "Something went wrong"
+                            //     }));
+                            // }
+
                         } }
                         render={ ({ handleSubmit }: FormRenderProps) => {
                             return (<form id="addAgentForm" onSubmit={ handleSubmit }>
