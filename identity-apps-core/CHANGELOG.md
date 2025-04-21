@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.23.7
+
+### Patch Changes
+
+- [#8063](https://github.com/wso2/identity-apps/pull/8063) [`3478bf849aa907b8b942335fad6a1b95845cdb6f`](https://github.com/wso2/identity-apps/commit/3478bf849aa907b8b942335fad6a1b95845cdb6f) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Fix footer not being stacked on mobile view
+
 ## 2.23.6
 
 ### Patch Changes
