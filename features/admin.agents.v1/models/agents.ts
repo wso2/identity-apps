@@ -20,3 +20,22 @@ export enum IntegrationType {
     INTERNAL = "internal",
     EXTERNAL = "external"
 }
+
+enum AgentCredentialType {
+    MTLS = "MTLS",
+    CLIENT_CREDENTIALS = "CLIENT_CREDENTIALS"
+}
+
+export interface AgentCredential {
+    credentialType: AgentCredentialType;
+    [key: string]: any
+}
+
+export interface AddAgentInterface {
+    name: string;
+    description: string;
+    version: string;
+    url: string;
+    owner: string;
+    credential: AgentCredential;
+}
