@@ -32,6 +32,8 @@ const httpClient: HttpClientInstance =
  * @returns response.
  */
 export const addAgent = (data: any): Promise<AxiosResponse> => {
+    debugger;
+    
     const requestConfig: AxiosRequestConfig = {
         data,
         headers: {
