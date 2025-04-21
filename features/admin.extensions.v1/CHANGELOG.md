@@ -1,5 +1,14 @@
 # @wso2is/admin.extensions.v1
 
+## 2.37.6
+
+### Patch Changes
+
+- [#8047](https://github.com/wso2/identity-apps/pull/8047) [`65f16ea68c15ad70f7be5db409bad7f45ab32aed`](https://github.com/wso2/identity-apps/commit/65f16ea68c15ad70f7be5db409bad7f45ab32aed) Thanks [@hwupathum](https://github.com/hwupathum)! - Update email template endpoint to use notification template API
+
+- Updated dependencies [[`aea8528039221e26e5e115ce6426948c5e3f1a2b`](https://github.com/wso2/identity-apps/commit/aea8528039221e26e5e115ce6426948c5e3f1a2b)]:
+  - @wso2is/admin.roles.v2@2.27.151
+
 ## 2.37.5
 
 ### Patch Changes

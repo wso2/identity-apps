@@ -1,5 +1,11 @@
 # @wso2is/admin.email-management.v1
 
+## 2.25.204
+
+### Patch Changes
+
+- [#8047](https://github.com/wso2/identity-apps/pull/8047) [`65f16ea68c15ad70f7be5db409bad7f45ab32aed`](https://github.com/wso2/identity-apps/commit/65f16ea68c15ad70f7be5db409bad7f45ab32aed) Thanks [@hwupathum](https://github.com/hwupathum)! - Update email template endpoint to use notification template API
+
 ## 2.25.203
 
 ### Patch Changes
