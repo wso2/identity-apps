@@ -48,12 +48,29 @@ export enum WorkflowModelEditTabIDs {
     CONFIGURATIONS = "configurations",
 }
 
+/**
+ * Maps engine keys to human-readable names.
+ */
 export const engineNameMap: Record<string, string> = {
     "workflowImplSimple": "Simple Workflow Engine"
 };
 
+/**
+ * Maps template keys to human-readable names.
+ */
 export const templateNameMap: Record<string, string> = {
     "MultiStepApprovalTemplate": "Multi Step User/Role Approval Template"
 };
+
+export const ENTITY_TYPES: any = {
+    USERS: "users",
+    ROLES: "roles"
+} as const;
+
+export type EntityType = (typeof ENTITY_TYPES)[keyof typeof ENTITY_TYPES];
+
+export const RETRY_INTERVAL: number = 2000;
+export const RETRY_COUNT_LIMIT: number = 10;
+
 
 export default WorkflowModelConstants;

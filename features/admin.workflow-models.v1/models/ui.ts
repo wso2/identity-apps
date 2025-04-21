@@ -16,23 +16,62 @@
  * under the License.
  */
 
+/**
+ * Form values interface for general workflow details.
+ */
 export interface GeneralDetailsFormValuesInterface {
+    /**
+     * Name of the workflow.
+     */
     name: string;
+
+    /**
+     * Description of the workflow.
+     */
     description: string;
+
+    /**
+     * Engine used for the workflow.
+     */
     engine: string;
 }
 
+/**
+ * Form values interface for workflow configurations.
+ */
 export interface ConfigurationsFormValuesInterface {
-    approvalSteps: ApprovalSteps[]
+    /**
+     * List of approval steps in the workflow.
+     */
+    approvalSteps: ApprovalSteps[];
 }
 
+/**
+ * Interface for approval step configurations.
+ */
 export interface ApprovalSteps {
-    roles: string[]
-    users: string[]
+    /**
+     * Roles assigned to the approval step.
+     */
+    roles: string[];
+
+    /**
+     * Users assigned to the approval step.
+     */
+    users: string[];
 }
 
+/**
+ * Interface for the complete form data for the workflow model.
+ */
 export interface WorkflowModelFormDataInterface {
+    /**
+     * General details of the workflow.
+     */
     generalDetails: Partial<GeneralDetailsFormValuesInterface>;
+
+    /**
+     * Configurations of the workflow, including approval steps.
+     */
     configurations: Partial<ConfigurationsFormValuesInterface>;
 }
-

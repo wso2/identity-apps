@@ -19,23 +19,45 @@ import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { RolesInterface } from "@wso2is/core/models";
 import { ApprovalSteps } from "./ui";
 
+/**
+ * Props for the editable sections of an approval step.
+ */
 export interface StepEditSectionsInterface {
 
     /**
-     * Show if the user is read only.
+     * Whether the step is in read-only mode.
      */
     isReadOnly: boolean;
 
     /**
-     * active user store
+     * Active user store identifier.
      *
-     * Note: used to conditionally determine whether the userstore is handled
-     * outside the component.
+     * Used to determine if user store logic is handled outside the component.
      */
-    activeUserStore?: string
-    activeRoleType?: string
+    activeUserStore?: string;
+
+    /**
+     * Type of the active role store.
+     */
+    activeRoleType?: string;
+
+    /**
+     * Initial values for the approval step.
+     */
     initialValues?: ApprovalSteps;
+
+    /**
+     * Callback to handle user updates.
+     */
     onUsersChange?: (users: UserBasicInterface[]) => void;
+
+    /**
+     * Callback to handle role updates.
+     */
     onRolesChange?: (roles: RolesInterface[]) => void;
+
+    /**
+     * Whether to show validation error messages.
+     */
     showValidationError?: boolean;
 }

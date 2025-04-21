@@ -15,8 +15,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+/**
+ * Interface for role dropdown items.
+ */
 export interface RoleDropdownItem {
+    /**
+     * Unique key identifying the dropdown item.
+     */
     key: string;
+
+    /**
+     * Text label to display for the dropdown item.
+     */
     text: string;
+
+    /**
+     * Value associated with the dropdown item.
+     */
     value: string;
 }

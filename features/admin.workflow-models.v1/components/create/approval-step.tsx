@@ -33,17 +33,57 @@ import { MultiStepApprovalTemplate } from "../../models";
 import { ApprovalSteps } from "../../models/ui";
 import "./approval-step.scss";
 
-interface ApprovalStepProps extends IdentifiableComponentInterface{
+/**
+ * Props for the approval step component.
+ */
+interface ApprovalStepProps extends IdentifiableComponentInterface {
+
+    /**
+     * Step index in the workflow.
+     */
     index: number;
+
+    /**
+     * Step configuration details.
+     */
     step: MultiStepApprovalTemplate;
+
+    /**
+     * Whether the step is read-only.
+     */
     isReadOnly?: boolean;
+
+    /**
+     * Initial values for the step.
+     */
     initialValues?: ApprovalSteps;
+
+    /**
+     * Whether to show validation errors.
+     */
     showValidationError?: boolean;
+
+    /**
+     * Whether the step has any errors.
+     */
     hasErrors?: boolean;
+
+    /**
+     * Callback to update users assigned to the step.
+     */
     updateUsers: (users: UserBasicInterface[]) => void;
+
+    /**
+     * Callback to update roles assigned to the step.
+     */
     updateRoles?: (roles: RolesInterface[]) => void;
+
+    /**
+     * Callback to delete the step.
+     */
     onDelete: (stepId: string) => void;
 }
+
 
 const ApprovalStep: FunctionComponent<ApprovalStepProps> = (
     props: ApprovalStepProps

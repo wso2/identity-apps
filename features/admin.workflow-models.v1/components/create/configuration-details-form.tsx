@@ -36,16 +36,36 @@ import React, {
 import "./configuration-details-form.scss";
 import { useTranslation } from "react-i18next";
 import ApprovalStep from "./approval-step";
-import { templateNameMap } from "../../constants/workflow-model-constants";
+import { ENTITY_TYPES, EntityType, templateNameMap } from "../../constants/workflow-model-constants";
 import { MultiStepApprovalTemplate } from "../../models";
 import { ApprovalSteps, ConfigurationsFormValuesInterface } from "../../models/ui";
 
+/**
+ * Props for the configurations form component.
+ */
 export interface ConfigurationsPropsInterface extends IdentifiableComponentInterface {
+
+    /**
+     * Whether the form is in read-only mode.
+     */
     isReadOnly?: boolean;
+
+    /**
+     * Whether the form has validation errors.
+     */
     hasErrors?: boolean;
+
+    /**
+     * Callback to handle form submission.
+     */
     onSubmit?: (values: ConfigurationsFormValuesInterface) => void;
+
+    /**
+     * Initial values for the form.
+     */
     initialValues?: Partial<ConfigurationsFormValuesInterface>;
 }
+
 
 export interface ConfigurationsFormRef {
     triggerSubmit: () => void;
@@ -128,36 +148,35 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
 
             // Handle step deletion
             const handleDelete = (stepId: string, index: number) => {
-                setSteps((prevSteps: MultiStepApprovalTemplate[]) => {
-                // Create a new array with the deleted step removed and re-number the steps
-                    const newSteps: MultiStepApprovalTemplate[] = prevSteps
-                        .filter((step: MultiStepApprovalTemplate) => step.id !== stepId)
-                        .map((step: MultiStepApprovalTemplate, index: number) => ({
-                            ...step,
-                            stepNumber: index + 1 // Reassign step numbers
-                        }));
+                setSteps(prevSteps => {
+                    return prevSteps.reduce((acc, step) => {
+                        if (step.id !== stepId) {
+                            // Use the current length of accumulator to determine the new stepNumber
+                            acc.push({ ...step, stepNumber: acc.length + 1 });
+                        }
 
-                    return newSteps;
+
+                        return acc;
+                    }, [] as MultiStepApprovalTemplate[]);
                 });
 
-                temporarySteps.current.approvalSteps =
-                temporarySteps.current.approvalSteps.filter((_: any, i: number) => i !== index);
+                temporarySteps.current.approvalSteps.splice(index, 1);
             };
 
             // Handle changes in users or roles for specific steps
             const handleStepChange: (
                 index: number,
                 updatedEntities: UserBasicInterface[] | RolesInterface[],
-                type: "users" | "roles"
+                type: EntityType
             ) => void = useCallback(
                 (
                     index: number,
                     updatedEntities: UserBasicInterface[] | RolesInterface[],
-                    type: "users" | "roles"
+                    type: EntityType
                 ) => {
                     const updatedStep:  MultiStepApprovalTemplate = {
                         ...temporarySteps.current.approvalSteps[index],
-                        [type]: type === "users"
+                        [type]: type === ENTITY_TYPES.USERS
                             ?(updatedEntities as UserBasicInterface[]).map((user:UserBasicInterface) => (user.userName))
                             : (updatedEntities as RolesInterface[]).map((role: RolesInterface) => (role.displayName))
                     };
@@ -169,7 +188,7 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
 
 
             return (
-                <div data-componentid={ `${testId}-multi-step-approval-template-container` }>
+                <>
                     <Box
                         className={ `box-container-heading ${steps.length > 0 ? "has-steps" : ""}` }
                         sx={ { position: "relative" } }
@@ -208,18 +227,18 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                                 onDelete={ () => handleDelete(step.id, index) }
                                 updateUsers={
                                     (updateUsers: UserBasicInterface[]) =>
-                                        handleStepChange(index, updateUsers, "users")
+                                        handleStepChange(index, updateUsers, ENTITY_TYPES.USERS)
                                 }
                                 updateRoles={
                                     (updateRoles: RolesInterface[]) =>
-                                        handleStepChange(index, updateRoles, "roles")
+                                        handleStepChange(index, updateRoles, ENTITY_TYPES.ROLES)
                                 }
                                 showValidationError={ isLastStep && !isValidStep }
                                 data-componentid={ `${testId}-approval-step-${index}` }
                             />
                         );
                     }) }
-                </div>
+                </>
             );
         }
     );

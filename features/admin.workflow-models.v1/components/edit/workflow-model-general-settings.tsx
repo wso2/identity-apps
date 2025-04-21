@@ -37,9 +37,24 @@ import GeneralWorkflowModelDetailsForm, {
  * Props for the workflow model general settings component.
  */
 export interface WorkflowModelGeneralSettingsInterface extends IdentifiableComponentInterface {
+    /**
+     * Workflow model details.
+     */
     workflowModel: WorkflowDetails;
+
+    /**
+     * ID of the workflow model.
+     */
     workflowModelId: string;
+
+    /**
+     * Whether the form is read-only.
+     */
     isReadOnly?: boolean;
+
+    /**
+     * Called on form submit.
+     */
     onSubmit?: (values: GeneralDetailsFormValuesInterface | ConfigurationsFormValuesInterface) => void;
 }
 

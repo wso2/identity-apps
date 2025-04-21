@@ -16,6 +16,12 @@
  * under the License.
  */
 
+/**
+ * Interface for defining endpoints related to workflows.
+ */
 export interface WorkflowsResourceEndpointsInterface {
+    /**
+     * The endpoint URL for accessing workflows.
+     */
     workflows: string;
 }
