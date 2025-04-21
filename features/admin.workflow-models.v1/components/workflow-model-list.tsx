@@ -38,7 +38,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { getTableIcons } from "../configs";
-import WorkflowModelConstants from "../constants/workflow-model-constants";
+import WorkflowModelConstants, { engineNameMap, templateNameMap } from "../constants/workflow-model-constants";
 import { WorkflowListItemInterface } from "../models";
 
 interface WorkflowModelListProps extends SBACInterface<FeatureConfigInterface>,
@@ -51,14 +51,6 @@ LoadableComponentInterface, IdentifiableComponentInterface {
     searchQuery?: string;
     showListItemActions?: boolean;
 }
-
-const engineNameMap: Record<string, string> = {
-    "workflowImplSimple": "Simple Workflow Engine"
-};
-
-const templateNameMap: Record<string, string> = {
-    "MultiStepApprovalTemplate": "Multi Step User/Role Approval Template"
-};
 
 export const WorkflowModelList: React.FunctionComponent<WorkflowModelListProps> = (
     props: WorkflowModelListProps

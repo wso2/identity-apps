@@ -28,6 +28,7 @@ import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { BareFetcher, PublicConfiguration } from "swr/dist/_internal";
+import { RETRY_COUNT_LIMIT, RETRY_INTERVAL } from "../constants/workflow-model-constants";
 import { WorkflowDetails } from "../models";
 
 /**
@@ -51,8 +52,6 @@ export const useGetWorkflowModelDetails = <Data = WorkflowDetails, Error = Reque
         url: `${store.getState()?.config?.endpoints?.workflows}/${workflowModelId}`
     };
 
-    const RETRY_INTERVAL: number = 2000;
-    const RETRY_COUNT_LIMIT: number = 10;
     const [ remainingRetryCount, setRemainingRetryCount ] = useState(RETRY_COUNT_LIMIT);
     const retryTimeout: MutableRefObject<number> = useRef<number | null>(null);
 
