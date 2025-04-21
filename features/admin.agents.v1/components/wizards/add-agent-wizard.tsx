@@ -27,6 +27,8 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
+import { addAgent } from "../../api/agents";
+import { AddAgentInterface } from "../../models/agents";
 
 interface AddAgentWizardProps extends IdentifiableComponentInterface {
     isOpen: boolean;
@@ -76,40 +78,27 @@ export default function AddAgentWizard({
                 { !showSecret ?
                     (<FinalForm
                         onSubmit={ (values: any) => {
-                            try {
-                                if (!localStorage.getItem("agents")) {
-                                    localStorage.setItem("agents", JSON.stringify([]));
-                                }
+                            const addAgentPayload: AddAgentInterface = {
+                                description: values?.description,
+                                name: values?.name,
+                                version: "1.0.0"
+                            };
 
-                                if(!localStorage.getItem("agent_application")) {
-                                    const agentApp = applicationListData.applications.find(application => application.name === "Agent Application");
-
-                                    localStorage.setItem("agent_application", agentApp.id);
-                                }
-
-                                const agents: any = JSON.parse(localStorage.getItem("agents"));
-
-                                const newAgent = {
-                                    description: values.description,
-                                    id: uuidv4(),
-                                    name: values.name
-                                };
-
-                                agents.push(newAgent);
-                                setNewAgent(newAgent);
-
-                                localStorage.setItem("agents", JSON.stringify(agents));
+                            addAgent(addAgentPayload).then(response => {
+                                dispatch(addAlert({
+                                    description: "New agent created successfully",
+                                    level: AlertLevels.SUCCESS,
+                                    message: "Created successfully"
+                                }));
 
                                 setShowSecret(true);
-                            } catch (err) {
-                                console.log(err);
+                            }).catch(err => {
                                 dispatch(addAlert({
-                                    description: "Error while creating the agent",
+                                    description: "Creating agent failed",
                                     level: AlertLevels.ERROR,
                                     message: "Something went wrong"
                                 }));
-                            }
-
+                            });
                         } }
                         render={ ({ handleSubmit }: FormRenderProps) => {
                             return (<form id="addAgentForm" onSubmit={ handleSubmit }>
@@ -154,46 +143,46 @@ export default function AddAgentWizard({
             <Modal.Actions>
                 { showSecret ? (<>
                     <Button
-                    primary={ true }
-                    type="submit"
-                    onClick={ () => {
-                        onClose(newAgent.id);
+                        primary={ true }
+                        type="submit"
+                        onClick={ () => {
+                            onClose(newAgent.id);
 
-                        dispatch(addAlert({
-                            description: "Agent created successfully",
-                            level: AlertLevels.SUCCESS,
-                            message: "Created successfully"
-                        }));
-                    } }
-                    data-testid={ `${componentId}-confirmation-modal-actions-continue-button` }
-                >
+                            dispatch(addAlert({
+                                description: "Agent created successfully",
+                                level: AlertLevels.SUCCESS,
+                                message: "Created successfully"
+                            }));
+                        } }
+                        data-testid={ `${componentId}-confirmation-modal-actions-continue-button` }
+                    >
                                 Done
-                </Button>
-                
+                    </Button>
+
                 </>) : (
                     <>
-                    <Button
-                    className="link-button"
-                    onClick={ onClose }
-                    data-testid={ `${componentId}-confirmation-modal-actions-cancel-button` }
-                >
+                        <Button
+                            className="link-button"
+                            onClick={ onClose }
+                            data-testid={ `${componentId}-confirmation-modal-actions-cancel-button` }
+                        >
                                 Cancel
-                </Button>
-                <Button
-                    primary={ true }
-                    type="submit"
-                    onClick={ () => {
-                        document
-                            .getElementById("addAgentForm")
-                            .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-                    } }
-                    data-testid={ `${componentId}-confirmation-modal-actions-continue-button` }
-                >
+                        </Button>
+                        <Button
+                            primary={ true }
+                            type="submit"
+                            onClick={ () => {
+                                document
+                                    .getElementById("addAgentForm")
+                                    .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+                            } }
+                            data-testid={ `${componentId}-confirmation-modal-actions-continue-button` }
+                        >
                                 Create
-                </Button>
+                        </Button>
                     </>
-                )}
-                
+                ) }
+
             </Modal.Actions>
         </Modal>
     );
