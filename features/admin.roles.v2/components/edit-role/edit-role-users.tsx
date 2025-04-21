@@ -148,6 +148,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
     useEffect(() => {
         if (!role?.users?.length) {
+            setSelectedUsersFromUserStore([]);
+
             return;
         }
 
