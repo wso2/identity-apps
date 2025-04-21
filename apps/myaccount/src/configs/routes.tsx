@@ -20,28 +20,7 @@ import { HomeIcon, ShieldCheckIcon, TilesIcon, UserDocumentIcon } from "@oxygen-
 import { RouteInterface } from "@wso2is/core/models";
 import React,{ FunctionComponent, lazy } from "react";
 import { AppConstants } from "../constants";
-import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../layouts";
-
-/**
- * Get default page layout routes.
- *
- * @returns Default Layout routes.
- */
-export const getDefaultLayoutRoutes = (): RouteInterface[] => {
-
-    return [
-        {
-            component: lazy(() => import("../pages/privacy")),
-            exact: true,
-            icon: null,
-            id: "privacy",
-            name: "common:privacy",
-            path: AppConstants.getPaths().get("PRIVACY"),
-            protected: true,
-            showOnSidePanel: false
-        }
-    ];
-};
+import { AppLayout, AuthLayout, DashboardLayout, ErrorLayout } from "../layouts";
 
 /**
  * Get error page layout routes.
@@ -182,7 +161,6 @@ export const getAppLayoutRoutes = (): RouteInterface[] => {
 
     return [
         ...getLayoutAssignedToRoutes(getAuthLayoutRoutes(), AuthLayout),
-        ...getLayoutAssignedToRoutes(getDefaultLayoutRoutes(), DefaultLayout),
         ...getLayoutAssignedToRoutes(getErrorLayoutRoutes(), ErrorLayout),
         {
             component: DashboardLayout,
