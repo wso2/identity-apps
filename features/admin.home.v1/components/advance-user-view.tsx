@@ -17,23 +17,14 @@
  */
 
 import { GearIcon } from "@oxygen-ui/react-icons";
-import { FeatureAccessConfigInterface, FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
-import {
-    getApplicationDetails,
-    getInboundProtocolConfig,
-    useApplicationList
-} from "@wso2is/admin.applications.v1/api/application";
+import { FeatureAccessConfigInterface, Show } from "@wso2is/access-control";
 import TryItCreateWizard from "@wso2is/admin.applications.v1/components/try-it/try-it-create-wizard";
 import {
     MinimalAppCreateWizard
 } from "@wso2is/admin.applications.v1/components/wizard/minimal-application-create-wizard";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
-import TryItApplicationConstants from "@wso2is/admin.applications.v1/constants/try-it-constants";
-import {
-    ApplicationListItemInterface,
-    ApplicationTemplateListItemInterface
-} from "@wso2is/admin.applications.v1/models/application";
-import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
+import useTryItApplication from "@wso2is/admin.applications.v1/hooks/use-try-it-application";
+import { ApplicationTemplateListItemInterface } from "@wso2is/admin.applications.v1/models/application";
 import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -47,7 +38,6 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Popup, Text } from "@wso2is/react-components";
-import axios from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -59,9 +49,12 @@ import { getGettingStartedCardIllustrations } from "../configs/ui";
 import HomeConstants from "../constants/home-constants";
 
 /**
- * Proptypes for the overview page component.
+ * Proptypes for the `AdvanceUserView` component.
  */
-interface AdvanceUserViewInterface extends IdentifiableComponentInterface {
+export interface AdvanceUserViewInterface extends IdentifiableComponentInterface {
+    /**
+     * Callback function triggered after an application is successfully created.
+     */
     onApplicationCreate?: () => void;
 }
 
@@ -72,20 +65,14 @@ interface AdvanceUserViewInterface extends IdentifiableComponentInterface {
  *
  * @returns AdvanceUserView component
  */
-const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
-    props: AdvanceUserViewInterface
-): ReactElement => {
-
-    const {
-        onApplicationCreate
-    } = props;
-
+const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = ({
+    onApplicationCreate,
+    "data-componentid": _componentId = "getting-started-page"
+}: AdvanceUserViewInterface): ReactElement => {
     const { t } = useTranslation();
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoRequestLoading);
-    const asgardeoTryItURL: string = useSelector((state: AppState) =>
-        state.config.deployment.extensions.asgardeoTryItURL) as string;
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
@@ -98,48 +85,26 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
         return state?.config?.ui?.features?.loginAndRegistration;
     });
 
-    const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
-
     const showFeatureAnnouncementBanner: boolean = !homeFeatureConfig?.disabledFeatures?.includes(
         HomeConstants.FEATURE_DICTIONARY.FEATURE_ANNOUNCEMENT
     );
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
-    const [ isPlaygroundExist, setisPlaygroundExist ] = useState(undefined);
     const [ showWizardLogin, setShowWizardLogin ] = useState<boolean>(false);
-    const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
-    const [
-        isTryItApplicationSearchRequestLoading,
-        setIsTryItApplicationSearchRequestLoading
-    ] = useState<boolean>(false);
 
     const { organizationType } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const {
-        data: tryItApplicationSearchResults,
-        isLoading: _isTryItApplicationSearchRequestLoading,
-        error: tryItApplicationSearchRequestError,
-        isValidating: isTryItApplicationSearchRequestValidating,
-        mutate: mutateTryItApplicationSearchResults
-    } = useApplicationList(
-        null,
-        null,
-        null,
-        `name eq ${ TryItApplicationConstants.DISPLAY_NAME }`,
-        saasFeatureStatus !== FeatureStatus.DISABLED
-    );
-
-    useEffect(() => {
-        checkTryItApplicationExistence();
-    }, [ tryItApplicationSearchResults ]);
-
-    useEffect(() => {
-        // Add debug logs here one a logger is added.
-        // Tracked here https://github.com/wso2/product-is/issues/11650.
-    }, [ tryItApplicationSearchRequestError ]);
+        isTryItApplicationAvailable,
+        onTryItApplicationCreate,
+        isTryItApplicationRetrieveRequestLoading,
+        tryItApplicationAccessUrl,
+        tryItApplicationClientId,
+        tryItApplicationId
+    } = useTryItApplication();
 
     /**
      * Monitor `profileInfo.id` and publish the event to avoid an event without `UUID`.
@@ -155,10 +120,10 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
     }, [ profileInfo?.id ]);
 
     const handleTryLoginClick = () => {
-        if(isPlaygroundExist){
-            window.open(asgardeoTryItURL+"?client_id="+getTryItClientId(tenantDomain)+"&org="+tenantDomain);
+        if(isTryItApplicationAvailable){
+            window.open(tryItApplicationAccessUrl+"?client_id="+getTryItClientId(tenantDomain)+"&org="+tenantDomain);
             eventPublisher.publish("tryit-try-login-overview", {
-                "client-id": inboundProtocolConfig?.oauth2?.clientId
+                "client-id": tryItApplicationClientId
             });
         } else{
             eventPublisher.publish("application-quick-start-click-add-user");
@@ -170,62 +135,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
         eventPublisher.publish("tryit-customize-login-flow", {
             "client-id": getTryItClientId(tenantDomain)
         });
-        history.push(AppConstants.getPaths()
-            .get("APPLICATION_EDIT").replace(":id", `${ tryItApplicationSearchResults.applications[0].id }#tab=2`) );
-    };
-
-    /**
-     * Checking whether the playground application already exist or not
-     */
-    const checkTryItApplicationExistence = () => {
-
-        setIsTryItApplicationSearchRequestLoading(true);
-
-        if (!tryItApplicationSearchResults?.applications || isTryItApplicationSearchRequestValidating) {
-            return;
-        }
-
-        if (tryItApplicationSearchResults.applications.length <= 0) {
-            setisPlaygroundExist(false);
-            setIsTryItApplicationSearchRequestLoading(false);
-
-            return;
-        }
-
-        const applicationDetailPromises: Promise<any>[] = [];
-        let protocolConfigs: any = {};
-
-        tryItApplicationSearchResults.applications.forEach((application: ApplicationListItemInterface) => {
-            applicationDetailPromises.push(getApplicationDetails(application.id));
-        });
-
-        axios.all(applicationDetailPromises)
-            .then(axios.spread((...responses: any[]) => {
-                getInboundProtocolConfig(
-                    responses[0].id,
-                    ApplicationManagementUtils.mapProtocolTypeToName(responses[0].inboundProtocols[0].type)
-                )
-                    .then((response: any) => {
-                        protocolConfigs = {
-                            ...protocolConfigs,[responses[0].inboundProtocols[0].type]:response
-                        };
-                        setInboundProtocolConfig(protocolConfigs);
-                    })
-                    .finally(() =>{
-                        if (protocolConfigs?.oauth2?.clientId === getTryItClientId(tenantDomain)) {
-                            setisPlaygroundExist(true);
-                        } else{
-                            setisPlaygroundExist(false);
-                        }
-                    });
-            }))
-            .catch(() => {
-                // Add debug logs here one a logger is added.
-                // Tracked here https://github.com/wso2/product-is/issues/11650.
-            })
-            .finally(() => {
-                setIsTryItApplicationSearchRequestLoading(false);
-            });
+        history.push(AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", `${ tryItApplicationId }#tab=2`) );
     };
 
     const renderManageUsersCard = (): ReactElement => (
@@ -366,9 +276,10 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                             </div>
                             <div className="try-it-card-actions">
                                 {
-                                    (isTryItApplicationSearchRequestLoading ||
-                                        isTryItApplicationSearchRequestValidating ||
-                                        isPlaygroundExist === undefined)
+                                    (
+                                        isTryItApplicationRetrieveRequestLoading ||
+                                        isTryItApplicationAvailable === undefined
+                                    )
                                         ? (
                                             <Button
                                                 loading
@@ -400,7 +311,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                                                     inverted
                                                 />
                                                 {
-                                                    isPlaygroundExist && (
+                                                    isTryItApplicationAvailable && (
                                                         <Popup
                                                             position="top center"
                                                             trigger={ (
@@ -560,9 +471,9 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                         data-componentId="login-playground-wizard-modal"
                         closeWizard={ () => setShowWizardLogin(false) }
                         applicationName="Asgardeo Login Playground"
+                        applicationAccessUrl={ tryItApplicationAccessUrl }
                         onApplicationCreate={ () => {
-                            setisPlaygroundExist(true);
-                            mutateTryItApplicationSearchResults();
+                            onTryItApplicationCreate();
 
                             if (onApplicationCreate) {
                                 onApplicationCreate();
@@ -573,13 +484,6 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
             }
         </div>
     );
-};
-
-/**
- * Default props for the component.
- */
-AdvanceUserView.defaultProps = {
-    "data-componentid": "getting-started-page"
 };
 
 /**

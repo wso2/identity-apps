@@ -18,17 +18,22 @@
 
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import Link from "@oxygen-ui/react/Link";
+import { ArrowUpRightFromSquareIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import FlowBuilderHeader from "@wso2is/admin.flow-builder-core.v1/components/builder-layout/flow-builder-header";
 import FlowBuilderLayout from "@wso2is/admin.flow-builder-core.v1/components/builder-layout/flow-builder-layout";
 import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import RegistrationFlowBuilder from "../components/registration-flow-builder";
+import RegistrationFlowBuilderConstants from "../constants/registration-flow-builder-constants";
 import useRegistrationFlowBuilder from "../hooks/use-registration-flow-builder";
 import RegistrationFlowBuilderProvider from "../providers/registration-flow-builder-provider";
-import { useTranslation } from "react-i18next";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderPage}
@@ -74,6 +79,13 @@ const RegistrationFlowBuilderLayout: FunctionComponent<RegistrationFlowBuilderPa
 }: RegistrationFlowBuilderPageProps): ReactElement => {
     const { t } = useTranslation();
     const { isPublishing, onPublish } = useRegistrationFlowBuilder();
+    const registrationFlowBuilderFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state?.config?.ui?.features?.registrationFlowBuilder;
+    });
+
+    const showFlowPreviewApp: boolean = !registrationFlowBuilderFeatureConfig?.disabledFeatures?.includes(
+        RegistrationFlowBuilderConstants.FEATURE_DICTIONARY.FLOW_PREVIEW_APP
+    );
 
     return (
         <FlowBuilderLayout
@@ -93,7 +105,18 @@ const RegistrationFlowBuilderLayout: FunctionComponent<RegistrationFlowBuilderPa
                         }
                     ] }
                     actions={
-                        (<Box>
+                        (<Box display="flex" gap={ 2 }>
+                            { showFlowPreviewApp && (
+                                <Link
+                                    component="button"
+                                    onClick={ () => {
+                                        window.open("I'm a button.");
+                                    } }
+                                >
+                                    Preview
+                                    <ArrowUpRightFromSquareIcon />
+                                </Link>
+                            ) }
                             <Button variant="contained" onClick={ () => onPublish() } loading={ isPublishing }>
                                 { t("registrationFlow:builder.header.actions.publish.text") }
                             </Button>
