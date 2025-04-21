@@ -112,7 +112,7 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({ isLoading, tenant }: T
             key={ tenant.id }
             className="tenant-card"
             data-componentid={ `${tenant.id}-tenant-card` }
-            onClick={ () => null }
+            // onClick={ () => null }
         >
             <CardContent className="tenant-card-header">
                 <Avatar variant="rounded" randomBackgroundColor backgroundColorRandomizer={ tenant.id }>
