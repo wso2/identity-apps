@@ -35,7 +35,6 @@ export interface AddAgentInterface {
     name: string;
     description: string;
     version: string;
-    url: string;
-    owner: string;
-    credential: AgentCredential;
+    url?: string;
+    owner?: string;
 }

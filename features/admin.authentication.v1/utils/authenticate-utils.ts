@@ -64,7 +64,10 @@ export class AuthenticateUtils {
                 tokenEndpoint: window["AppUtils"]?.getConfig()?.idpConfigs?.tokenEndpointURL
             },
             periodicTokenRefresh: window["AppUtils"]?.getConfig()?.idpConfigs?.periodicTokenRefresh,
-            resourceServerURLs: AuthenticateUtils.resolveBaseUrls(),
+            resourceServerURLs: [
+                ...AuthenticateUtils.resolveBaseUrls(),
+                "http://localhost:3000"
+            ],
             responseMode: window["AppUtils"]?.getConfig()?.idpConfigs?.responseMode ?? responseModeFallback,
             scope: window["AppUtils"]?.getConfig()?.idpConfigs?.scope ?? [ TokenConstants.SYSTEM_SCOPE ],
             sendCookiesInRequests: true,
