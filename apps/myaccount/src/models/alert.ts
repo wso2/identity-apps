@@ -26,6 +26,15 @@ export interface AlertInterface extends Notification {
 }
 
 /**
+ * System Notification Alert State model.
+ */
+export interface SystemNotificationAlertState {
+    isVisible: boolean;
+    severity: AlertLevels;
+    message: React.ReactNode | null;
+}
+
+/**
  * Enum for Alert levels.
  * @readonly
  */
@@ -35,3 +44,4 @@ export enum AlertLevels {
     INFO = "info",
     WARNING = "warning"
 }
+

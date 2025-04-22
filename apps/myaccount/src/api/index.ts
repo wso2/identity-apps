@@ -32,4 +32,3 @@ export * from "./typingdna-data";
 export * from "./multi-factor-backup-code";
 export * from "./multi-factor-common";
 export * from "./validation";
-export * from "./verification-resend";

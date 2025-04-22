@@ -19,7 +19,7 @@
 import { AsgardeoSPAClient, HttpError, HttpInstance, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
 import { RecoveryScenario } from "../constants";
 import { HttpMethods } from "../models";
-import { RecoveryProperty } from "../models/verification-resend";
+import { RecoveryProperty } from "../models/resend-verification";
 import { store } from "../store";
 
 /**
@@ -31,15 +31,13 @@ const httpClient: HttpInstance = AsgardeoSPAClient.getInstance().httpRequest.bin
  * Resends the verification link/code for the authenticated user. This supports scenarios such as resending the
  * verification link/code for account confirmation during self sign up, mobile verification, etc.
  */
-export const resendVerificationLinkOrCode = ( recoveryScenario: RecoveryScenario): Promise<void> => {
-    const properties: RecoveryProperty[] = [];
-
-    const propertyData: RecoveryProperty = {
-        key: "RecoveryScenario",
-        value: recoveryScenario.toString()
-    };
-
-    properties.push(propertyData);
+export const resendVerificationLinkOrCode = (recoveryScenario: RecoveryScenario): Promise<void> => {
+    const properties: RecoveryProperty[] = [
+        {
+            key: "RecoveryScenario",
+            value: recoveryScenario.toString()
+        }
+    ];
     const requestConfig: HttpRequestConfig = {
         data: {
             properties: properties

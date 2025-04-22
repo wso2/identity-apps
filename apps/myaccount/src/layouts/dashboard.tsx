@@ -26,7 +26,8 @@ import {
     AlertInterface,
     AnnouncementBannerInterface,
     ChildRouteInterface,
-    RouteInterface } from "@wso2is/core/models";
+    RouteInterface
+} from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import {
     RouteUtils as CommonRouteUtils,
@@ -54,7 +55,7 @@ import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Dispatch } from "redux";
 import { fetchApplications } from "../api";
 import { Header, ProtectedRoute } from "../components";
-import { SystemNotificationAlert } from "../components/shared";
+import { SystemNotificationAlert } from "../components/shared/system-notification-alert";
 import { getDashboardLayoutRoutes, getEmptyPlaceholderIllustrations } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
@@ -297,7 +298,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                             />
                         ) }
                     >
-                        <SystemNotificationAlert/>
+                        <SystemNotificationAlert />
                         <Suspense fallback={ <ContentLoader /> }>
                             <Switch>
                                 { dashboardLayoutRoutes.map((route: RouteInterface, index: number) =>

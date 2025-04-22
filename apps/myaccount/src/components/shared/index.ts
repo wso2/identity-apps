@@ -31,4 +31,3 @@ export * from "./protected-route";
 export * from "./settings-section";
 export * from "./user-avatar";
 export * from "./modal";
-export * from "./system-notification-alert";
