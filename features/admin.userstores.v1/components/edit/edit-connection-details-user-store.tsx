@@ -36,6 +36,7 @@ import {
     RequiredBinary,
     TestConnection,
     TypeProperty,
+    UserStore,
     UserstoreType
 } from "../../models";
 
@@ -63,6 +64,7 @@ interface EditConnectionDetailsPropsInterface extends TestableComponentInterface
      * Readonly attribute for the component.
      */
     readOnly?: boolean;
+    userStore: UserStore;
 }
 
 /**
@@ -82,7 +84,8 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
         readOnly,
         type,
         update,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        userStore
     } = props;
 
     const [ formValue, setFormValue ] = useState<Map<string, FormValue>>(null);
@@ -441,6 +444,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                             setIsTesting(true);
                                             if (type.typeName.includes(JDBC)) {
                                                 const testData: TestConnection = {
+                                                    domain: userStore.name,
                                                     connectionPassword: formValue?.get("password").toString()
                                                         ?? properties?.required
                                                             .find(
