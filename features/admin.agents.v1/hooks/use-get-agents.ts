@@ -16,24 +16,33 @@
  * under the License.
  */
 
-import { useEffect, useState } from "react";
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { HttpMethods } from "@wso2is/core/models";
 
-export default function useGetAgents(trigger: boolean) {
-    const [ agentList, setAgentList ] = useState([]);
+const useGetAgents = <Data = any,
+Error = RequestErrorInterface> (): RequestResultInterface<Data, Error> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: "http://localhost:3000/agents"
+    };
 
-    useEffect(() => {
-        const agents: any[] = JSON.parse(localStorage.getItem("agents"));
-
-        setAgentList(agents);
-    }, [ trigger ]);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
 
     return {
-        data: {
-            Resources: agentList,
-            count: agentList?.length,
-            totalResults: agentList?.length
-        },
-        error: null,
-        isLoading: false
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate: mutate
     };
-}
+};
+
+export default useGetAgents;
