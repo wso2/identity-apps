@@ -84,8 +84,8 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
         readOnly,
         type,
         update,
-        [ "data-testid" ]: testId,
-        userStore
+        userStore,
+        [ "data-testid" ]: testId
     } = props;
 
     const [ formValue, setFormValue ] = useState<Map<string, FormValue>>(null);
