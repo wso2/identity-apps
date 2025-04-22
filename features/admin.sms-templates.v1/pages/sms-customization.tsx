@@ -25,6 +25,7 @@ import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/bran
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import TemplateHeader from "@wso2is/common.templates.v1/components/template-header";
 import {
     AlertInterface,
     AlertLevels,
@@ -374,13 +375,15 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 bottomMargin={ false }
                 data-componentid={ componentId }
             >
-                <SMSCustomizationHeader
-                    selectedSmsTemplateId={ selectedSmsTemplateId }
-                    selectedSmsTemplateDescription={ selectedSmsTemplateDescription }
+                <TemplateHeader
+                    templateType="sms"
+                    selectedTemplateId={ selectedSmsTemplateId }
+                    selectedTemplateDescription={ selectedSmsTemplateDescription }
                     selectedLocale={ selectedLocale }
-                    smsTemplatesList={ availableSmsTemplatesList }
+                    templatesList={ availableSmsTemplatesList }
                     onTemplateSelected={ handleTemplateIdChange }
                     onLocaleChanged={ handleLocaleChange }
+                    data-componentid={ "sms-customization-header" }
                 />
 
                 <Card className="p-0 mb-5">
