@@ -20,6 +20,7 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { AddAgentInterface } from "../models/agents";
 
 const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
@@ -31,9 +32,7 @@ const httpClient: HttpClientInstance =
  *
  * @returns response.
  */
-export const addAgent = (data: any): Promise<AxiosResponse> => {
-    debugger;
-    
+export const addAgent = (data: any): Promise<AddAgentInterface> => {
     const requestConfig: AxiosRequestConfig = {
         data,
         headers: {
@@ -56,7 +55,7 @@ export const addAgent = (data: any): Promise<AxiosResponse> => {
                     response.config);
             }
 
-            return Promise.resolve(response);
+            return Promise.resolve(response?.data as AddAgentInterface);
         })
         .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);

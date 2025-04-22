@@ -43,21 +43,7 @@ export default function AddAgentWizard({
     const dispatch: any = useDispatch();
 
     const [ showSecret, setShowSecret ] = useState(false);
-    const [ newAgent, setNewAgent ] = useState<
-    { description: any; id: string; name: any; }>();
-
-    const {
-        data: applicationListData,
-        isLoading: isApplicationListRequestLoading,
-        error: applicationListFetchRequestError
-    } = useApplicationList(
-        null,
-        null,
-        null,
-        null,
-        true,
-        true
-    );
+    const [ newAgent, setNewAgent ] = useState<AddAgentInterface>();
 
     return (
         <Modal
@@ -71,9 +57,7 @@ export default function AddAgentWizard({
             closeOnDimmerClick={ false }
             closeOnEscape
         >
-            <Modal.Header>
-                Create Agent
-            </Modal.Header>
+            <Modal.Header>Create Agent</Modal.Header>
             <Modal.Content>
                 { !showSecret ?
                     (<FinalForm
@@ -84,124 +68,94 @@ export default function AddAgentWizard({
                                 version: "1.0.0"
                             };
 
-                            addAgent(addAgentPayload).then(response => {
-                                dispatch(addAlert({
-                                    description: "New agent created successfully",
-                                    level: AlertLevels.SUCCESS,
-                                    message: "Created successfully"
-                                }));
-
-                                setShowSecret(true);
-                            }).catch(err => {
-                                dispatch(addAlert({
-                                    description: "Creating agent failed",
-                                    level: AlertLevels.ERROR,
-                                    message: "Something went wrong"
-                                }));
-                            });
-
-                            // try {
-                            //     if (!localStorage.getItem("agents")) {
-                            //         localStorage.setItem("agents", JSON.stringify([]));
-                            //     }
-
-                            //     if(!localStorage.getItem("agent_application")) {
-                            //         const agentApp = applicationListData.applications.find(application => application.name === "Agent Application");
-
-                            //         localStorage.setItem("agent_application", agentApp.id);
-                            //     }
-
-                            //     const agents: any = JSON.parse(localStorage.getItem("agents"));
-
-                            //     const newAgent = {
-                            //         description: values.description,
-                            //         id: uuidv4(),
-                            //         name: values.name
-                            //     };
-
-                            //     agents.push(newAgent);
-                            //     setNewAgent(newAgent);
-
-                            //     localStorage.setItem("agents", JSON.stringify(agents));
-
-
-                            // } catch (err) {
-                            //     console.log(err);
-                            //     dispatch(addAlert({
-                            //         description: "Error while creating the agent",
-                            //         level: AlertLevels.ERROR,
-                            //         message: "Something went wrong"
-                            //     }));
-                            // }
-
+                            addAgent(addAgentPayload)
+                                .then(response => {
+                                    setNewAgent(response);
+                                    setShowSecret(true);
+                                })
+                                .catch(err => {
+                                    dispatch(
+                                        addAlert({
+                                            description: "Creating agent failed",
+                                            level: AlertLevels.ERROR,
+                                            message: "Something went wrong"
+                                        })
+                                    );
+                                });
                         } }
                         render={ ({ handleSubmit }: FormRenderProps) => {
-                            return (<form id="addAgentForm" onSubmit={ handleSubmit }>
-                                <FinalFormField
-                                    name="name"
-                                    label="Name"
-                                    autoComplete="new-password"
-                                    component={ TextFieldAdapter }
-                                />
-                                <FinalFormField
-                                    label="Description"
-                                    name="description"
-                                    className="mt-3"
-                                    multiline
-                                    rows={ 4 }
-                                    maxRows={ 4 }
-                                    autoComplete="new-password"
-                                    placeholder="Enter a description for the agent"
-                                    component={ TextFieldAdapter }
-                                />
-                            </form>);
+                            return (
+                                <form id="addAgentForm" onSubmit={ handleSubmit }>
+                                    <FinalFormField
+                                        name="name"
+                                        label="Name"
+                                        autoComplete="new-password"
+                                        component={ TextFieldAdapter }
+                                    />
+                                    <FinalFormField
+                                        label="Description"
+                                        name="description"
+                                        className="mt-3"
+                                        multiline
+                                        rows={ 4 }
+                                        maxRows={ 4 }
+                                        autoComplete="new-password"
+                                        placeholder="Enter a description for the agent"
+                                        component={ TextFieldAdapter }
+                                    />
+                                </form>
+                            );
                         } }
-                    />)
-                    : (
-                        <>
-                            <Message warning>
-                    Make sure to copy your personal access token now as you will not be able to see this again.
-                            </Message>
+                    />
+                ) : (
+                    <>
+                        <Message warning>
+                            Make sure to copy the agent secret now as you will not be able to see this again.
+                        </Message>
 
-                            <CopyInputField
-                                secret
-                                value={ "sdjskjksjkdjkjsdk" }
-                                hideSecretLabel={ "Hide secret" }
-                                showSecretLabel={ "Show secret" }
-                                data-componentid={ "client-secret-readonly-input" }
-                            />
-                        </>
-                    ) }
-
+                        <CopyInputField
+                            secret
+                            value={ "sdjskjksjkdjkjsdk" }
+                            hideSecretLabel={ "Hide secret" }
+                            showSecretLabel={ "Show secret" }
+                            data-componentid={ "client-secret-readonly-input" }
+                        />
+                    </>
+                ) }
             </Modal.Content>
 
             <Modal.Actions>
-                { showSecret ? (<>
-                    <Button
-                        primary={ true }
-                        type="submit"
-                        onClick={ () => {
-                            onClose(newAgent.id);
+                { showSecret ? (
+                    <>
+                        <Button
+                            primary={ true }
+                            type="submit"
+                            onClick={ () => {
+                                if (newAgent) {
+                                    onClose(newAgent?.id);
 
-                            dispatch(addAlert({
-                                description: "Agent created successfully",
-                                level: AlertLevels.SUCCESS,
-                                message: "Created successfully"
-                            }));
-                        } }
-                        data-testid={ `${componentId}-confirmation-modal-actions-continue-button` }
-                    >
-                                Done
-                    </Button>
-
-                </>) : (
+                                    dispatch(
+                                        addAlert({
+                                            description: "Agent created successfully",
+                                            level: AlertLevels.SUCCESS,
+                                            message: "Created successfully"
+                                        })
+                                    );
+                                }
+                            } }
+                            data-testid={ `${componentId}-confirmation-modal-actions-continue-button` }
+                        >
+                            Done
+                        </Button>
+                    </>
+                ) : (
                     <>
                         <Button
                             className="link-button"
                             onClick={ onClose }
                             data-testid={ `${componentId}-confirmation-modal-actions-cancel-button` }
                         >
-                                Cancel
+                            Cancel
                         </Button>
                         <Button
                             primary={ true }
@@ -213,11 +167,10 @@ export default function AddAgentWizard({
                             } }
                             data-testid={ `${componentId}-confirmation-modal-actions-continue-button` }
                         >
-                                Create
+                            Create
                         </Button>
                     </>
                 ) }
-
             </Modal.Actions>
         </Modal>
     );
