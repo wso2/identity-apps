@@ -32,6 +32,7 @@ export interface AgentCredential {
 }
 
 export interface AddAgentInterface {
+    id?: string;
     name: string;
     description: string;
     version: string;
