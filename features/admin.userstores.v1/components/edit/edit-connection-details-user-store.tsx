@@ -444,7 +444,6 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                             setIsTesting(true);
                                             if (type.typeName.includes(JDBC)) {
                                                 const testData: TestConnection = {
-                                                    domain: userStore.name,
                                                     connectionPassword: formValue?.get("password").toString()
                                                         ?? properties?.required
                                                             .find(
@@ -455,6 +454,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                             .find(
                                                                 (property: TypeProperty) => property.name === "url"
                                                             )?.value,
+                                                    domain: userStore.name,
                                                     driverName: formValue?.get("driverName").toString()
                                                         ?? properties?.required
                                                             .find((property: TypeProperty) =>
