@@ -187,6 +187,19 @@ export interface emailTemplatesNS {
             };
         };
     };
+    form: {
+        inputs: {
+            locale: {
+                label: string;
+                placeholder: string;
+            };
+            template: {
+                label: string;
+                placeholder: string;
+                hint: string;
+            };
+        };
+    };
     placeholders: {
         emptyList: {
             action: string;

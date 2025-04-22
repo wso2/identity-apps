@@ -21,6 +21,7 @@ import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/bran
 import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import TemplateHeader from "@wso2is/common.templates.v1/components/template-header";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -452,13 +453,15 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                 bottomMargin={ false }
                 data-componentid={ componentId }
             >
-                <EmailCustomizationHeader
-                    selectedEmailTemplateId={ selectedEmailTemplateId }
-                    selectedEmailTemplateDescription={ selectedEmailTemplateDescription }
+                <TemplateHeader
+                    templateType="email"
+                    selectedTemplateId={ selectedEmailTemplateId }
+                    selectedTemplateDescription={ selectedEmailTemplateDescription }
                     selectedLocale={ selectedLocale }
-                    emailTemplatesList={ availableEmailTemplatesList }
+                    templatesList={ availableEmailTemplatesList }
                     onTemplateSelected={ handleTemplateIdChange }
                     onLocaleChanged={ handleLocaleChange }
+                    data-componentid={ "email-customization-header" }
                 />
                 <ResourceTab
                     attached="top"

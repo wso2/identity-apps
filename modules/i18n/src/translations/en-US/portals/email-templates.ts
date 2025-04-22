@@ -18,6 +18,19 @@
 import { emailTemplatesNS } from "../../../models";
 
 export const emailTemplates: emailTemplatesNS = {
+    form: {
+        inputs: {
+            locale: {
+                label: "Locale",
+                placeholder: "Select Locale"
+            },
+            template: {
+                hint: "Select the Email template",
+                label: "Email Template",
+                placeholder: "Select the Email template"
+            }
+        }
+    },
     buttons: {
         deleteTemplate: "Delete Template",
         editTemplate: "Edit Template",
