@@ -21,6 +21,7 @@ import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/vi
 import {
     BlockTypes,
     ButtonTypes,
+    ButtonVariants,
     Element,
     ElementTypes,
     InputVariants
@@ -653,6 +654,24 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         // Set the `"action": { "type": "EXECUTOR", "executor": { "name": "PasswordOnboardExecutor"}, "next": "" }`
         modifiedComponents = modifiedComponents.map((component: Element) => {
             if (component.type === BlockTypes.Form) {
+                // Set all the `PRIMARY` buttons inside the form type to `submit`.
+                component.components = component.components.map((formComponent: Element) => {
+                    if (
+                        formComponent.type === ElementTypes.Button &&
+                                        formComponent.variant === ButtonVariants.Primary
+                    ) {
+                        return {
+                            ...formComponent,
+                            config: {
+                                ...formComponent.config,
+                                type: ButtonTypes.Submit
+                            }
+                        };
+                    }
+
+                    return formComponent;
+                });
+
                 const hasPasswordField: boolean = component.components?.some(
                     (formComponent: Element) =>
                         formComponent.type === ElementTypes.Input && formComponent.variant === InputVariants.Password
