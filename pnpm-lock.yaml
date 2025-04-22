@@ -534,7 +534,7 @@ importers:
         specifier: ^2.33.91
         version: link:../../features/admin.connections.v1
       '@wso2is/admin.console-settings.v1':
-        specifier: ^2.25.207
+        specifier: ^2.25.208
         version: link:../../features/admin.console-settings.v1
       '@wso2is/admin.core.v1':
         specifier: ^2.43.4
@@ -627,13 +627,13 @@ importers:
         specifier: ^1.5.157
         version: link:../../features/admin.template-core.v1
       '@wso2is/admin.tenants.v1':
-        specifier: ^2.29.9
+        specifier: ^2.29.10
         version: link:../../features/admin.tenants.v1
       '@wso2is/admin.username-validation.v1':
         specifier: ^1.5.203
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.30.128
+        specifier: ^2.30.129
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.29
@@ -5419,7 +5419,7 @@ importers:
         specifier: ^2.32.128
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.30.125
+        specifier: ^2.30.129
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.29
@@ -17866,7 +17866,7 @@ importers:
         specifier: ^2.26.203
         version: link:../admin.organizations.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.30.113
+        specifier: ^2.30.129
         version: link:../admin.users.v1
       '@wso2is/admin.validation.v1':
         specifier: ^2.27.141
@@ -18408,10 +18408,10 @@ importers:
         specifier: ^2.34.4
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.tenants.v1':
-        specifier: ^2.29.6
+        specifier: ^2.29.10
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.30.128
+        specifier: ^2.30.129
         version: 'link:'
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.30
