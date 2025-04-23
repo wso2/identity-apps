@@ -20,7 +20,7 @@ import Alert from "@oxygen-ui/react/Alert";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import "./system-notification-alert.scss";
-import { useResendAccountConfirmationAlert } from "../../hooks/use-resend-account-confirmation-alert";
+import { useSystemNotificationAlert } from "../../hooks/use-system-notification-alert";
 import { SystemNotificationAlertState } from "../../models";
 
 /**
@@ -37,8 +37,7 @@ export type SystemNotificationAlertProps = IdentifiableComponentInterface;
 export const SystemNotificationAlert: FunctionComponent<SystemNotificationAlertProps> = ({
     ["data-componentid"]: componentId = "system-notification-alert"
 }: SystemNotificationAlertProps): ReactElement | null => {
-    const systemNotificationAlertState: SystemNotificationAlertState =
-        useResendAccountConfirmationAlert();
+    const systemNotificationAlertState: SystemNotificationAlertState = useSystemNotificationAlert();
 
     if (!systemNotificationAlertState?.isVisible) return null;
 

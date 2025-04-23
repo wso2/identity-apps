@@ -298,8 +298,8 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                             />
                         ) }
                     >
-                        <SystemNotificationAlert />
                         <Suspense fallback={ <ContentLoader /> }>
+                            <SystemNotificationAlert />
                             <Switch>
                                 { dashboardLayoutRoutes.map((route: RouteInterface, index: number) =>
                                     route.redirectTo

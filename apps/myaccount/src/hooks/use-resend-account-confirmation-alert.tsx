@@ -17,9 +17,9 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
-import {  LinkButton } from "@wso2is/react-components";
+import { LinkButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -162,13 +162,12 @@ export const useResendAccountConfirmationAlert = (
             });
     };
 
-    /*
-    * The resending capability is available only when account confirmation is configured
-    * to use an Email Link. The rationale for excluding Email OTP and SMS OTP confirmation
-    * methods is that their respective code validations must occur during the initial
-    * user registration flow itself rather in a later stage via MyAccount.
-    *
-    */
+    /**
+     * The resending capability is available only when account confirmation is configured
+     * to use an Email Link. The rationale for excluding Email OTP and SMS OTP confirmation
+     * methods is that their respective code validations must occur during the initial
+     * user registration flow itself rather in a later stage via MyAccount.
+     */
     const isAlertVisible: boolean =
         isAccountStatePendingSelfRegistration &&
         isPreferredChannelEmail &&
@@ -177,7 +176,7 @@ export const useResendAccountConfirmationAlert = (
 
     const alertSeverity: AlertLevels = AlertLevels.WARNING;
 
-    const alertMessage: React.ReactNode = useMemo(() => {
+    const alertMessage: ReactNode = useMemo(() => {
         if (!isAlertVisible) return null;
 
         return (
