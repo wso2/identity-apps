@@ -16,10 +16,9 @@
  * under the License.
  */
 
+import { SelectChangeEvent } from "@mui/material";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
-import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import TemplateHeader from "@wso2is/common.templates.v1/components/template-header";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -32,7 +31,6 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    ConfirmationModal,
     DocumentationLink,
     PageLayout,
     ResourceTab,
@@ -54,9 +52,9 @@ import {
 } from "../api";
 import { EmailCustomizationForm, EmailTemplatePreview } from "../components";
 import EmailCustomizationFooter from "../components/email-customization-footer";
-import EmailCustomizationHeader from "../components/email-customization-header";
 import { EmailManagementConstants } from "../constants/email-management-constants";
 import { EmailTemplate, EmailTemplateType } from "../models";
+import { TemplateManagementConstants } from "@wso2is/common.templates.v1/constants/template-management-constants";
 
 type EmailCustomizationPageInterface = IdentifiableComponentInterface;
 
@@ -70,19 +68,18 @@ type EmailCustomizationPageInterface = IdentifiableComponentInterface;
 const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface> = (
     props: EmailCustomizationPageInterface
 ): ReactElement => {
-    const { ["data-componentid"]: componentId } = props;
+    const { ["data-componentid"]: componentId = "email-customization-page" } = props;
 
     const [ availableEmailTemplatesList, setAvailableEmailTemplatesList ] = useState<EmailTemplateType[]>([]);
     const [ selectedEmailTemplateId, setSelectedEmailTemplateId ] = useState<string>();
     const [ selectedEmailTemplateDescription, setSelectedEmailTemplateDescription ] = useState<string>();
-    const [ selectedLocale, setSelectedLocale ] = useState(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
+    const [ selectedLocale, setSelectedLocale ] = useState(TemplateManagementConstants.DEAFULT_LOCALE);
     const [ selectedEmailTemplate, setSelectedEmailTemplate ] = useState<EmailTemplate>();
     const [ currentEmailTemplate, setCurrentEmailTemplate ] = useState<EmailTemplate>();
-    const [ showReplicatePreviousTemplateModal, setShowReplicatePreviousTemplateModal ] = useState(false);
-    const [ showUpdateTemplateFromRootOrgModal, setShowUpdateTemplateFromRootOrgModal ] = useState(false);
     const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
     const [ isSystemTemplate, setIsSystemTemplate ] = useState(false);
     const [ isInheritedTemplate, setIsInheritedTemplate ] = useState(false);
+    const [ shouldFetch, setShouldFetch ] = useState(true);
     const [ error, setError ] = useState<AxiosError>();
 
     const emailTemplates: Record<string, string>[] = useSelector(
@@ -92,7 +89,6 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     const emailTemplatesFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.emailTemplates);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -138,7 +134,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         selectedLocale,
         isSystemTemplate,
         isInheritedTemplate,
-        !!selectedEmailTemplateId
+        shouldFetch
     );
 
     useEffect(() => {
@@ -188,17 +184,6 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             return;
         }
 
-        if (emailTemplatesListError.response.data.description) {
-            dispatch(addAlert({
-                description: emailTemplatesListError.response?.data?.description,
-                level: AlertLevels.ERROR,
-                message: emailTemplatesListError.response.data.message ??
-                    t("extensions:develop.emailTemplates.notifications.getEmailTemplateList.error.message")
-            }));
-
-            return;
-        }
-
         dispatch(addAlert({
             description: t("extensions:develop.emailTemplates.notifications.getEmailTemplateList.error.description"),
             level: AlertLevels.ERROR,
@@ -213,46 +198,28 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
 
         setError(emailTemplateError);
 
-        // Show the replicate previous template modal and set the "isTemplateNotAvailable" flag to identify whether the
-        // current template is a new template or not
         if (emailTemplateError.response.status === 404) {
             setIsTemplateNotAvailable(true);
             if (isSubOrganization() && !isInheritedTemplate) {
                 setIsInheritedTemplate(true);
 
                 return;
-            } else if (!isSystemTemplate && selectedLocale === EmailManagementConstants.DEAFULT_LOCALE) {
+            } else if (!isSystemTemplate || selectedLocale !== TemplateManagementConstants.DEAFULT_LOCALE) {
                 setIsSystemTemplate(true);
-
-                return;
-            } else if (hasEmailTemplateCreatePermissions) {
-                setShowReplicatePreviousTemplateModal(true);
 
                 return;
             } else {
                 setCurrentEmailTemplate(undefined);
             }
-            setShowUpdateTemplateFromRootOrgModal(true);
-
-            return;
         }
 
-        if (emailTemplateError.response.data.description) {
-            dispatch(addAlert({
-                description: emailTemplateError.response?.data?.description,
+        dispatch(
+            addAlert({
+                description: t("extensions:develop.emailTemplates.notifications.getEmailTemplate.error.description"),
                 level: AlertLevels.ERROR,
-                message: emailTemplateError.response.data.message ??
-                    t("extensions:develop.emailTemplates.notifications.getEmailTemplate.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("extensions:develop.emailTemplates.notifications.getEmailTemplate.error.description"),
-            level: AlertLevels.ERROR,
-            message: t("extensions:develop.emailTemplates.notifications.getEmailTemplate.error.message")
-        }));
+                message: t("extensions:develop.emailTemplates.notifications.getEmailTemplate.error.message")
+            })
+        );
     }, [ emailTemplateError, isSystemTemplate, isInheritedTemplate ]);
 
     // This is used to check whether the URL contains a template ID, and if so, set it as the selected template.
@@ -268,30 +235,41 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         }
     }, [ window.location.hash ]);
 
-    const handleTemplateIdChange = (templateId: string) => {
+    const handleTemplateIdChange = (event: SelectChangeEvent<string>): void => {
+        const templateId: string = event.target.value;
+
+        setShouldFetch(false);
         setIsTemplateNotAvailable(false);
         setIsSystemTemplate(false);
         setIsInheritedTemplate(false);
         setCurrentEmailTemplate(undefined);
-        setSelectedLocale(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
+        setSelectedLocale(TemplateManagementConstants.DEAFULT_LOCALE);
         setSelectedEmailTemplateId(templateId);
-        setSelectedEmailTemplateDescription(availableEmailTemplatesList?.find(
-            (template: EmailTemplateType) => template.id === templateId)?.description);
+        setSelectedEmailTemplateDescription(
+            availableEmailTemplatesList?.find((template: EmailTemplateType) => template.id === templateId)?.description
+        );
+        setShouldFetch(true);
     };
 
     const handleTemplateChange = (updatedTemplateAttributes: Partial<EmailTemplate>) => {
         setSelectedEmailTemplate({ ...selectedEmailTemplate, ...updatedTemplateAttributes });
+        setIsTemplateNotAvailable(false);
     };
 
-    const handleLocaleChange = (locale: string) => {
+    const handleLocaleChange = (event: SelectChangeEvent<string>): void => {
+        const locale: string = event.target.value;
+
+        setShouldFetch(false);
         setCurrentEmailTemplate({ ...selectedEmailTemplate });
         setIsTemplateNotAvailable(false);
         setIsSystemTemplate(false);
         setIsInheritedTemplate(false);
         setSelectedLocale(locale);
+        setShouldFetch(true);
     };
 
     const handleSubmit = () => {
+        setShouldFetch(false);
         const template: EmailTemplate = {
             ...selectedEmailTemplate,
             id: selectedLocale.replace("-", "_")
@@ -313,15 +291,17 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                     }));
                     setIsSystemTemplate(false);
                     setIsInheritedTemplate(false);
-                }).catch((error: IdentityAppsApiException) => {
+                    setShouldFetch(true);
+                    emailTemplateMutate();
+                }).catch(() => {
                     dispatch(addAlert<AlertInterface>({
                         description: t("extensions:develop.emailTemplates.notifications.updateEmailTemplate" +
                             ".error.description"),
                         level: AlertLevels.ERROR,
-                        message: error.message ?? t("extensions:develop.emailTemplates.notifications" +
+                        message: t("extensions:develop.emailTemplates.notifications" +
                             ".updateEmailTemplate.error.message")
                     }));
-                }).finally(() => emailTemplateMutate());
+                });
         } else {
             updateEmailTemplate(selectedEmailTemplateId, template, selectedLocale)
                 .then((_response: EmailTemplate) => {
@@ -334,6 +314,8 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                     }));
                     setIsSystemTemplate(false);
                     setIsInheritedTemplate(false);
+                    setShouldFetch(true);
+                    emailTemplateMutate();
                 }).catch((error: IdentityAppsApiException) => {
                     dispatch(addAlert<AlertInterface>({
                         description: t("extensions:develop.emailTemplates.notifications.updateEmailTemplate" +
@@ -342,13 +324,14 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                         message: error.message ?? t("extensions:develop.emailTemplates.notifications" +
                             ".updateEmailTemplate.error.message")
                     }));
-                }).finally(() => emailTemplateMutate());
+                });
         }
 
         setIsTemplateNotAvailable(false);
     };
 
     const handleDeleteRequest = () => {
+        setShouldFetch(false);
         deleteEmailTemplate(selectedEmailTemplateId, selectedLocale)
             .then((_response: AxiosResponse) => {
                 dispatch(addAlert<AlertInterface>({
@@ -358,36 +341,20 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                     message: t("extensions:develop.emailTemplates.notifications.deleteEmailTemplate" +
                         ".success.message")
                 }));
+                setSelectedLocale(TemplateManagementConstants.DEAFULT_LOCALE);
                 setIsSystemTemplate(true);
                 setIsInheritedTemplate(false);
-            }).catch((error: IdentityAppsApiException) => {
-                dispatch(addAlert<AlertInterface>({
-                    description: t("extensions:develop.emailTemplates.notifications.deleteEmailTemplate" +
-                        ".error.description"),
-                    level: AlertLevels.ERROR,
-                    message: error.message ?? t("extensions:develop.emailTemplates.notifications" +
-                        ".deleteEmailTemplate.error.message")
-                }));
-            }).finally(() => {
-                setSelectedLocale(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
+                setShouldFetch(true);
+                emailTemplateMutate();
+            }).catch(() => {
+                dispatch(
+                    addAlert<AlertInterface>({
+                        description: t("extensions:develop.emailTemplates.notifications.deleteEmailTemplate" +
+                            ".error.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("extensions:develop.emailTemplates.notifications.deleteEmailTemplate.error.message")
+                    }));
             });
-    };
-
-    const replicatePreviousTemplate = () => {
-        setSelectedEmailTemplate(currentEmailTemplate);
-        setShowReplicatePreviousTemplateModal(false);
-        setIsSystemTemplate(true);
-        setIsInheritedTemplate(false);
-    };
-
-    const cancelReplicationOfPreviousTemplate = () => {
-        setSelectedEmailTemplate(undefined);
-        setCurrentEmailTemplate(undefined);
-        setShowReplicatePreviousTemplateModal(false);
-    };
-
-    const alertUpdateTemplateFromRootOrg = () => {
-        setShowUpdateTemplateFromRootOrgModal(false);
     };
 
     const resolveTabPanes = ():  TabProps[ "panes" ] => {
@@ -486,67 +453,9 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                         )
                     }
                 </Show>
-
-                <ConfirmationModal
-                    type="info"
-                    open={ showReplicatePreviousTemplateModal }
-                    primaryAction={ t("common:confirm") }
-                    secondaryAction={ t("common:cancel") }
-                    onSecondaryActionClick={ (): void => cancelReplicationOfPreviousTemplate() }
-                    onPrimaryActionClick={ (): void => replicatePreviousTemplate() }
-                    data-componentid={ `${ componentId }-replicate-previous-template-confirmation-modal` }
-                    closeOnDimmerClick={ false }
-                >
-                    <ConfirmationModal.Header
-                        data-componentid={ `${ componentId }-replicate-previous-template-confirmation-modal-header` }
-                    >
-                        { t("extensions:develop.emailTemplates.modal.replicateContent.header") }
-                    </ConfirmationModal.Header>
-                    <ConfirmationModal.Message
-                        attached
-                        info
-                        data-componentid={ `${ componentId }-replicate-previous-template-confirmation-modal-message` }
-                    >
-                        { t("extensions:develop.emailTemplates.modal.replicateContent.message") }
-                    </ConfirmationModal.Message>
-                </ConfirmationModal>
-
-                <ConfirmationModal
-                    type="info"
-                    open={ showUpdateTemplateFromRootOrgModal }
-                    primaryAction={ t("common:okay") }
-                    onPrimaryActionClick={ (): void => alertUpdateTemplateFromRootOrg() }
-                    data-componentid={ `${ componentId }-update-template-from-root-org-modal` }
-                    closeOnDimmerClick={ true }
-                >
-                    <ConfirmationModal.Header
-                        data-componentid={ `${ componentId }-update-template-from-root-org-modal-header` }
-                    >
-                        { t("extensions:develop.emailTemplates.modal.updateFromRootOrg.header") }
-                    </ConfirmationModal.Header>
-                    <ConfirmationModal.Message
-                        attached
-                        info
-                        data-componentid={ `${ componentId }-update-template-from-root-org-modal-message` }
-                    >
-                        { t("extensions:develop.emailTemplates.modal.updateFromRootOrg.message") }
-                    </ConfirmationModal.Message>
-                    <ConfirmationModal.Content
-                        data-testid={ `${ componentId }-update-template-from-root-org-modal-content` }
-                    >
-                        { t("extensions:develop.emailTemplates.modal.updateFromRootOrg.content") }
-                    </ConfirmationModal.Content>
-                </ConfirmationModal>
             </PageLayout>
         </BrandingPreferenceProvider>
     );
-};
-
-/**
- * Default props for the component.
- */
-EmailCustomizationPage.defaultProps = {
-    "data-componentid": "email-customization-page"
 };
 
 export default EmailCustomizationPage;

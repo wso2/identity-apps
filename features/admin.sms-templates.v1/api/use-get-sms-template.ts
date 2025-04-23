@@ -23,8 +23,8 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { SMSTemplateConstants } from "../constants/sms-template-constants";
 import { SMSTemplate } from "../models/sms-templates";
+import { TemplateManagementConstants } from "@wso2is/common.templates.v1/constants/template-management-constants";
 
 /**
  * Hook to get the SMS template for a given template type.
@@ -37,7 +37,7 @@ import { SMSTemplate } from "../models/sms-templates";
  */
 const useGetSmsTemplate = <Data = SMSTemplate, Error = RequestErrorInterface>(
     templateType: string,
-    locale: string = SMSTemplateConstants.DEAFULT_LOCALE,
+    locale: string = TemplateManagementConstants.DEAFULT_LOCALE,
     fetchSystemTemplate: boolean = false,
     fetchInheritedTemplate: boolean = false,
     shouldFetch: boolean = true
@@ -64,7 +64,7 @@ const useGetSmsTemplate = <Data = SMSTemplate, Error = RequestErrorInterface>(
     if (fetchSystemTemplate) {
         requestConfig.url =
             store.getState().config.endpoints.smsTemplates +
-            `/template-types/${templateType}/system-templates/${SMSTemplateConstants.DEAFULT_LOCALE_FORMATTED}`;
+            `/template-types/${templateType}/system-templates/${TemplateManagementConstants.DEAFULT_LOCALE_FORMATTED}`;
     }
 
     const { data, error, isValidating, isLoading, mutate } = useRequest<Data, Error>(

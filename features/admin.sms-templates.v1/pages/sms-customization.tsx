@@ -46,11 +46,10 @@ import useGetSmsTemplate from "../api/use-get-sms-template";
 import useGetSmsTemplatesList from "../api/use-get-sms-templates-list";
 import SMSCustomizationFooter from "../components/sms-customization-footer";
 import SMSCustomizationForm from "../components/sms-customization-form";
-import SMSCustomizationHeader from "../components/sms-customization-header";
 import SMSTemplatePreview from "../components/sms-template-preview";
-import { SMSTemplateConstants } from "../constants/sms-template-constants";
 import { SMSTemplate, SMSTemplateType } from "../models/sms-templates";
 import "./sms-customization.scss";
+import { TemplateManagementConstants } from "@wso2is/common.templates.v1/constants/template-management-constants";
 
 type SMSCustomizationPageInterface = IdentifiableComponentInterface;
 
@@ -71,7 +70,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     const [ isInheritedTemplate, setIsInheritedTemplate ] = useState(false);
     const [ shouldFetch, setShouldFetch ] = useState(true);
     const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
-    const [ selectedLocale, setSelectedLocale ] = useState(SMSTemplateConstants.DEAFULT_LOCALE);
+    const [ selectedLocale, setSelectedLocale ] = useState(TemplateManagementConstants.DEAFULT_LOCALE);
     const [ selectedSmsTemplateId, setSelectedSmsTemplateId ] = useState<string>();
     const [ selectedSmsTemplateDescription, setSelectedSmsTemplateDescription ] = useState<string>();
     const [ selectedSmsTemplate, setSelectedSmsTemplate ] = useState<SMSTemplate>();
@@ -191,7 +190,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 setIsInheritedTemplate(true);
 
                 return;
-            } else if (!isSystemTemplate || selectedLocale !== SMSTemplateConstants.DEAFULT_LOCALE) {
+            } else if (!isSystemTemplate || selectedLocale !== TemplateManagementConstants.DEAFULT_LOCALE) {
                 setIsSystemTemplate(true);
 
                 return;
@@ -217,7 +216,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         setIsSystemTemplate(false);
         setIsInheritedTemplate(false);
         setCurrentSmsTemplate(undefined);
-        setSelectedLocale(SMSTemplateConstants.DEAFULT_LOCALE);
+        setSelectedLocale(TemplateManagementConstants.DEAFULT_LOCALE);
         setSelectedSmsTemplateId(templateId);
         setSelectedSmsTemplateDescription(
             availableSmsTemplatesList?.find((template: SMSTemplateType) => template.id === templateId)?.description
@@ -315,7 +314,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                         message: t("smsTemplates:notifications.deleteSmsTemplate.success.message")
                     })
                 );
-                setSelectedLocale(SMSTemplateConstants.DEAFULT_LOCALE);
+                setSelectedLocale(TemplateManagementConstants.DEAFULT_LOCALE);
                 setIsSystemTemplate(false);
                 setIsInheritedTemplate(false);
                 setShouldFetch(true);
@@ -337,7 +336,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
 
         if (isSystemTemplate || isInheritedTemplate) {
             return null;
-        } else if (selectedLocale !== SMSTemplateConstants.DEAFULT_LOCALE) {
+        } else if (selectedLocale !== TemplateManagementConstants.DEAFULT_LOCALE) {
             zoneType = "remove";
         }
 
