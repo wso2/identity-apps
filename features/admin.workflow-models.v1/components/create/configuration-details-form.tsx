@@ -69,6 +69,7 @@ export interface ConfigurationsPropsInterface extends IdentifiableComponentInter
 
 export interface ConfigurationsFormRef {
     triggerSubmit: () => void;
+    setValues?: (values: ConfigurationsFormValuesInterface) => void;
 }
 
 const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<ConfigurationsFormRef> &
@@ -148,8 +149,18 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
 
             // Handle step deletion
             const handleDelete = (stepId: string, index: number) => {
-                setSteps(prevSteps => {
-                    return prevSteps.reduce((acc, step) => {
+                const lastStep: any = temporarySteps.current.approvalSteps[steps.length - 2];
+
+                const hasValidRoles: boolean = lastStep?.roles?.length > 0;
+                const hasValidUsers: boolean = lastStep?.users?.length > 0;
+
+                if (hasValidRoles || hasValidUsers && steps.length > 0) {
+                    setValidStep(true);
+
+                }
+
+                setSteps((prevSteps: MultiStepApprovalTemplate[]) => {
+                    return prevSteps.reduce((acc: MultiStepApprovalTemplate[], step: MultiStepApprovalTemplate) => {
                         if (step.id !== stepId) {
                             // Use the current length of accumulator to determine the new stepNumber
                             acc.push({ ...step, stepNumber: acc.length + 1 });
@@ -190,8 +201,7 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
             return (
                 <>
                     <Box
-                        className={ `box-container-heading ${steps.length > 0 ? "has-steps" : ""}` }
-                        sx={ { position: "relative" } }
+                        className={ "box-container-heading" }
                         data-componentid={ `${testId}-box-template-heading` }
                     >
                         <label data-componentid={ `${testId}-label-template-name` }>
@@ -216,6 +226,7 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
 
                     { steps.map((step: MultiStepApprovalTemplate, index: number) => {
                         const isLastStep: boolean = index === steps.length - 1;
+                        console.log("Step index:", index, "isLastStep:", isLastStep, "isValidStep:", isValidStep);
 
                         return (
                             <ApprovalStep

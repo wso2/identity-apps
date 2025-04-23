@@ -19,7 +19,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment, 
+import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment,
     Popup, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -51,6 +51,10 @@ export interface WorkflowModelGeneralSettingsInterface extends IdentifiableCompo
      * Whether the form is read-only.
      */
     isReadOnly?: boolean;
+    /**
+     * Whether the form has unresolved errors.
+     */
+    hasErrors?: boolean;
 
     /**
      * Called on form submit.
@@ -62,6 +66,7 @@ export const WorkflowModelGeneralSettings: FunctionComponent<WorkflowModelGenera
     props: WorkflowModelGeneralSettingsInterface
 ): ReactElement => {
     const {
+        workflowModelId,
         workflowModel,
         isReadOnly = false,
         onSubmit,
@@ -180,34 +185,23 @@ export const WorkflowModelGeneralSettings: FunctionComponent<WorkflowModelGenera
                             ref={ generalWorkflowModelDetailsFormRef }
                             isReadOnly={ !true }
                             initialValues={ formValues }
+                            workflowModelId={ workflowModelId }
                             onSubmit={ handleSubmit }
                             data-componentid={ `${componentId}-general-details-form` }
                         />
                     </Grid.Row>
-                    <Popup
-                        trigger={
-                            (<div
-                                className="mb-1x mt-1x inline-button button-width"
-                                data-componentid={ `${componentId}-update-button-wrapper` }
-                            >
-                                <PrimaryButton
-                                    type="submit"
-                                    disabled={ false }
-                                    onClick={ () => {
-                                        generalWorkflowModelDetailsFormRef.current?.triggerSubmit();
-                                    } }
-                                    data-componentid={ `${componentId}-update-button` }
-                                >
-                                    { "Update" }
-                                </PrimaryButton>
-                            </div>)
-                        }
-                        content={ t("extensions:manage.features.userStores.edit.general.disable.buttonDisableHint") }
-                        size="mini"
-                        wide
-                        readOnly={ isReadOnly }
-                        data-componentid={ `${componentId}-update-popup` }
-                    />
+
+                    <PrimaryButton
+                        type="submit"
+                        disabled={ false }
+                        onClick={ () => {
+                            generalWorkflowModelDetailsFormRef.current?.triggerSubmit();
+                        } }
+                        data-componentid={ `${componentId}-update-button` }
+                    >
+                        { t("common:update") }
+                    </PrimaryButton>
+
                 </Grid>
             </EmphasizedSegment>
 
@@ -216,9 +210,9 @@ export const WorkflowModelGeneralSettings: FunctionComponent<WorkflowModelGenera
                 data-componentid={ `${componentId}-danger-zone-group` }
             >
                 <DangerZone
-                    actionTitle={ "Delete Workflow Model" }
-                    header={ "Delete Workflow Model" }
-                    subheader={ "Once you delete a workflow model, there is no going back. Please be certain" }
+                    actionTitle={ t("workflowModels:form.dangerZone.delete.actionTitle") }
+                    header={ t("workflowModels:form.dangerZone.delete.header") }
+                    subheader={ t("workflowModels:form.dangerZone.delete.subheader") }
                     onActionClick={ () => setShowWorkflowModelDeleteConfirmationModal(true) }
                     data-componentid={ `${componentId}-danger-zone` }
                 />

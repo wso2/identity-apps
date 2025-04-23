@@ -16,7 +16,7 @@
  * under the License.
  */
 import { EmphasizedSegment, Popup, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { WorkflowModelGeneralSettingsInterface } from "./workflow-model-general-settings";
@@ -30,13 +30,12 @@ export const WorkflowModelConfigurationSettings: FunctionComponent<WorkflowModel
     const {
         workflowModel,
         isReadOnly = false,
+        // hasErrors,
         onSubmit,
         ["data-componentid"]: componentId
     } = props;
-    const configurationsFormRef: MutableRefObject<ConfigurationsFormRef> = useRef<ConfigurationsFormRef>(null);
-    const { t } = useTranslation();
 
-    const configurationDetails: Partial<ConfigurationsFormValuesInterface> = {
+    const configurationDetails: ConfigurationsFormValuesInterface = {
         approvalSteps: workflowModel.template?.steps.map((step: WorkflowTemplateParameters) => {
             const stepData: ApprovalSteps = {
                 roles: [],
@@ -54,10 +53,26 @@ export const WorkflowModelConfigurationSettings: FunctionComponent<WorkflowModel
             return stepData;
         })
     };
+    const configurationsFormRef: MutableRefObject<ConfigurationsFormRef> = useRef<ConfigurationsFormRef>(null);
+    const { t } = useTranslation();
+    const [ hasErrors, setHasErrors ] = useState<boolean>(false);
+    const [ formValues, setFormValues ] = useState<ConfigurationsFormValuesInterface>(configurationDetails);
 
-    const handleSubmit = (values: any) => {
+    const handleSubmit = (values: ConfigurationsFormValuesInterface) => {
+        const hasInvalidSteps: boolean = values.approvalSteps.some(
+            (step: ApprovalSteps) => step.users.length === 0 && step.roles.length === 0
+        );
+
+        if (hasInvalidSteps) {
+            setHasErrors(true);
+            setFormValues(values);
+
+            return;
+        }
+        setHasErrors(false);
         onSubmit(values);
     };
+
 
     return (
         <EmphasizedSegment
@@ -68,35 +83,26 @@ export const WorkflowModelConfigurationSettings: FunctionComponent<WorkflowModel
                     <ConfigurationsForm
                         ref={ configurationsFormRef }
                         isReadOnly={ false }
-                        initialValues={ configurationDetails }
+                        initialValues={ formValues }
                         onSubmit={ handleSubmit }
+                        hasErrors={ hasErrors }
                         data-componentid={ `${componentId}-configurations-form` }
                     />
                 </Grid.Row>
             </Grid>
-            <Popup
-                trigger={
-                    (<div
-                        className="mb-1x mt-1x inline-button button-width"
-                        data-componentid={ `${componentId}-update-button-wrapper` }
-                    >
-                        <PrimaryButton
-                            type="submit"
-                            disabled={ false }
-                            onClick={ () => {
-                                configurationsFormRef.current?.triggerSubmit();
-                            } }
-                            data-componentid={ `${componentId}-update-button` }
-                        >
-                            { "Update" }
-                        </PrimaryButton>
-                    </div>)
-                }
-                content={ t("extensions:manage.features.userStores.edit.general.disable.buttonDisableHint") }
-                size="mini"
-                wide
-                data-componentid={ `${componentId}-update-popup` }
-            />
+
+            <PrimaryButton
+                type="submit"
+                disabled={ false }
+                onClick={ () => {
+                    configurationsFormRef.current?.triggerSubmit();
+                } }
+                data-componentid={ `${componentId}-update-button` }
+            >
+                { t("common:update") }
+            </PrimaryButton>
+
+
         </EmphasizedSegment>
 
     );

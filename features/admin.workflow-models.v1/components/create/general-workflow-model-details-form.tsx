@@ -17,7 +17,8 @@
  */
 
 import { SelectChangeEvent } from "@mui/material";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import { SelectFieldAdapter } from "@wso2is/form/src";
 import React, {
@@ -26,10 +27,15 @@ import React, {
     ReactElement,
     RefAttributes,
     forwardRef,
+    useEffect,
     useImperativeHandle,
-    useRef
+    useRef,
+    useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { useGetWorkflows } from "../../api";
 import { WORKFLOW_MODEL_VALIDATION_REGEX_PATTERNS } from "../../constants/workflow-model-constants";
 import { workflowEngineOptions } from "../../models";
 import { GeneralDetailsFormValuesInterface } from "../../models/ui";
@@ -58,6 +64,10 @@ interface GeneralWorkflowModelDetailsPropsInterface extends IdentifiableComponen
      * Initial values for the form.
      */
     initialValues?: Partial<GeneralDetailsFormValuesInterface>;
+    /**
+     * Workflow model ID.
+     */
+    workflowModelId?: string;
 }
 
 export interface GeneralWorkflowModelDetailsFormRef {
@@ -68,6 +78,7 @@ const GeneralWorkflowModelDetailsForm: ForwardRefExoticComponent<RefAttributes<G
     GeneralWorkflowModelDetailsPropsInterface> = forwardRef(
         (
             {
+                workflowModelId,
                 isReadOnly,
                 onSubmit,
                 initialValues,
@@ -78,6 +89,12 @@ const GeneralWorkflowModelDetailsForm: ForwardRefExoticComponent<RefAttributes<G
         ): ReactElement => {
             const triggerFormSubmit: any = useRef<() => void>();
             const { t } = useTranslation();
+            const [ filterQuery, setFilterQuery ] = useState<string>("");
+            const dispatch: Dispatch = useDispatch();
+            const {
+                data: workflows,
+                error: workflowsError
+            } = useGetWorkflows(11, 0, filterQuery, true);
 
             useImperativeHandle(ref, () => ({
                 triggerSubmit: () => {
@@ -86,6 +103,29 @@ const GeneralWorkflowModelDetailsForm: ForwardRefExoticComponent<RefAttributes<G
                     }
                 }
             }));
+
+            useEffect(() => {
+                if (workflowsError) {
+                    dispatch(
+                        addAlert({
+                            description:
+                                        workflowsError?.response?.data?.description ??
+                                        workflowsError?.response?.data?.detail ??
+                                        t(
+                                            "console:manage.features.workflowModels.notifications." +
+                                                "fetchWorkflowModels.genericError.description"
+                                        ),
+                            level: AlertLevels.ERROR,
+                            message:
+                                        workflowsError?.response?.data?.message ??
+                                        t(
+                                            "console:manage.features.workflowModels.notifications." +
+                                                "fetchWorkflows.genericError.message"
+                                        )
+                        })
+                    );
+                }
+            },[ workflowsError ]);
 
             const validateForm = (
                 values: GeneralDetailsFormValuesInterface
@@ -123,6 +163,19 @@ const GeneralWorkflowModelDetailsForm: ForwardRefExoticComponent<RefAttributes<G
                         error.name =
                         t("workflowModels:forms.general.name.validationErrorMessages.invalidInputErrorMessage",
                             { invalidString });
+                    }
+                    setFilterQuery(values?.name);
+                    const nameExists: boolean = workflows?.some(
+                        (workflow: { id: string, name: string }) => {
+                            return workflow.name === values.name &&
+                                (workflowModelId ? workflowModelId !== workflow.id : true);
+                        }
+                    ) ?? false;
+
+                    if (nameExists) {
+                        error.name = t(
+                            "workflowModels:forms.general.name.validationErrorMessages.alreadyExistsErrorMessage"
+                        );
                     }
                 }
 
