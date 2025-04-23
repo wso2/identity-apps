@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.24.0
+
+### Minor Changes
+
+- [#8082](https://github.com/wso2/identity-apps/pull/8082) [`e0d131587fa454244a9075d8abca98b29a3c6f79`](https://github.com/wso2/identity-apps/commit/e0d131587fa454244a9075d8abca98b29a3c6f79) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add custom layout inheritance support for sub organizations
+
 ## 2.23.8
 
 ### Patch Changes
