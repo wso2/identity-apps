@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.53.8
+
+### Patch Changes
+
+- [#8081](https://github.com/wso2/identity-apps/pull/8081) [`ac30550f78156ddb2c0aaf8b57b2a5f840b9226b`](https://github.com/wso2/identity-apps/commit/ac30550f78156ddb2c0aaf8b57b2a5f840b9226b) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Fix Test Connection failure in Edit User Store view by including domain in payload.
+
+* [#8086](https://github.com/wso2/identity-apps/pull/8086) [`055774218bd6ee3ff33056d4dc45df7d2a3d2403`](https://github.com/wso2/identity-apps/commit/055774218bd6ee3ff33056d4dc45df7d2a3d2403) Thanks [@brionmario](https://github.com/brionmario)! - Set all the `PRIMARY` buttons inside the form type to `submit`.
+
+* Updated dependencies [[`ac30550f78156ddb2c0aaf8b57b2a5f840b9226b`](https://github.com/wso2/identity-apps/commit/ac30550f78156ddb2c0aaf8b57b2a5f840b9226b)]:
+  - @wso2is/admin.userstores.v1@2.27.31
+
 ## 2.53.7
 
 ### Patch Changes
