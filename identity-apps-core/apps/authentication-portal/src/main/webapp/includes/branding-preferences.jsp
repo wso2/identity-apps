@@ -639,7 +639,7 @@
                         String cookiePolicyURLInput = brandingPreference.getJSONObject(URLS_KEY).getString(COOKIE_POLICY_URL_KEY);
                         if (!StringUtils.isBlank(cookiePolicyURLInput) && !cookiePolicyURLInput.toLowerCase().contains("javascript:") &&
                             !cookiePolicyURLInput.toLowerCase().contains("data:")) {
-                                cookiePolicyURLInput = cookiePolicyURLInput;
+                                cookiePolicyURL = cookiePolicyURLInput;
                         }
                     }
 
