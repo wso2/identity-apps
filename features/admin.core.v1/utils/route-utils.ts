@@ -268,6 +268,13 @@ export class RouteUtils {
             order: 2
         };
 
+        const workflows: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: SquareUserIcon,
+            id: "workflows",
+            name: "Workflows",
+            order: 3
+        };
+
         const branding: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: PaletteIcon,
             id: "customization",
@@ -427,6 +434,18 @@ export class RouteUtils {
                 order: 3,
                 parent: userManagement,
                 selected: history.location.pathname.includes("approvals")
+            },
+            {
+                category: manage,
+                id: "workflowModels",
+                order: 1,
+                parent: workflows
+            },
+            {
+                category: manage,
+                id: "workflowModelAssociations",
+                order: 2,
+                parent: workflows
             },
             {
                 category: build,
