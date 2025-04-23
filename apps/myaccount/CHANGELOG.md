@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.19.6
+
+### Patch Changes
+
+- [#8085](https://github.com/wso2/identity-apps/pull/8085) [`85a377b991db3cde146c56bb5d37c56bb8efff36`](https://github.com/wso2/identity-apps/commit/85a377b991db3cde146c56bb5d37c56bb8efff36) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Remove base64 encoding for push discovery data in QR code
+
+* [#8071](https://github.com/wso2/identity-apps/pull/8071) [`988621e009d2cfb65e7a3200f82eaa7a10fdd716`](https://github.com/wso2/identity-apps/commit/988621e009d2cfb65e7a3200f82eaa7a10fdd716) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Notify users of unverified accounts in MyAccount
+
+* Updated dependencies [[`988621e009d2cfb65e7a3200f82eaa7a10fdd716`](https://github.com/wso2/identity-apps/commit/988621e009d2cfb65e7a3200f82eaa7a10fdd716)]:
+  - @wso2is/core@2.7.4
+  - @wso2is/i18n@2.22.13
+
 ## 2.19.5
 
 ### Patch Changes

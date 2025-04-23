@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.23.8
+
+### Patch Changes
+
+- [#8087](https://github.com/wso2/identity-apps/pull/8087) [`5de646f4ee571cbb6f0ffd6967773810fae2fcf3`](https://github.com/wso2/identity-apps/commit/5de646f4ee571cbb6f0ffd6967773810fae2fcf3) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Fix cookie policy branding.
+
 ## 2.23.7
 
 ### Patch Changes

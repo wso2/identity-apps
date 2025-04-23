@@ -609,7 +609,7 @@ importers:
         specifier: ^2.25.203
         version: link:../../features/admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.34.4
+        specifier: ^2.35.0
         version: link:../../features/admin.server-configurations.v1
       '@wso2is/admin.session-management.v1':
         specifier: ^2.25.203
@@ -633,7 +633,7 @@ importers:
         specifier: ^1.5.203
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.30.129
+        specifier: ^2.31.0
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.31
@@ -651,7 +651,7 @@ importers:
         specifier: ^0.2.0
         version: link:../../features/common.ui.v1
       '@wso2is/core':
-        specifier: ^2.7.3
+        specifier: ^2.7.4
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.4.40
@@ -663,7 +663,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.22.12
+        specifier: ^2.22.13
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.13
@@ -970,13 +970,13 @@ importers:
         specifier: ^0.2.0
         version: link:../../features/common.ui.v1
       '@wso2is/core':
-        specifier: ^2.7.0
+        specifier: ^2.7.4
         version: link:../../modules/core
       '@wso2is/forms':
         specifier: ^2.3.23
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.22.9
+        specifier: ^2.22.13
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.12
@@ -16090,10 +16090,10 @@ importers:
         specifier: ^2.26.203
         version: link:../admin.organizations.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.34.4
+        specifier: ^2.35.0
         version: 'link:'
       '@wso2is/admin.users.v1':
-        specifier: ^2.30.128
+        specifier: ^2.31.0
         version: link:../admin.users.v1
       '@wso2is/admin.validation.v1':
         specifier: ^2.27.142
@@ -16102,7 +16102,7 @@ importers:
         specifier: ^0.2.0
         version: link:../common.ui.v1
       '@wso2is/core':
-        specifier: ^2.7.0
+        specifier: ^2.7.4
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.4.40
@@ -16114,7 +16114,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.22.6
+        specifier: ^2.22.13
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.12
@@ -18405,13 +18405,13 @@ importers:
         specifier: ^2.27.150
         version: link:../admin.roles.v2
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.34.4
+        specifier: ^2.35.0
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.tenants.v1':
         specifier: ^2.29.10
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.30.129
+        specifier: ^2.31.0
         version: 'link:'
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.30
@@ -18420,7 +18420,7 @@ importers:
         specifier: ^2.27.142
         version: link:../admin.validation.v1
       '@wso2is/core':
-        specifier: ^2.7.2
+        specifier: ^2.7.4
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.4.40
@@ -18432,7 +18432,7 @@ importers:
         specifier: ^2.3.23
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.22.12
+        specifier: ^2.22.13
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.13
@@ -21287,7 +21287,7 @@ importers:
         specifier: ^29.5.12
         version: 29.5.14
       '@wso2is/core':
-        specifier: ^2.7.3
+        specifier: ^2.7.4
         version: link:../core
       babel-jest:
         specifier: ^26.3.0

@@ -1,5 +1,14 @@
 # @wso2is/i18n
 
+## 2.22.13
+
+### Patch Changes
+
+- [#8071](https://github.com/wso2/identity-apps/pull/8071) [`988621e009d2cfb65e7a3200f82eaa7a10fdd716`](https://github.com/wso2/identity-apps/commit/988621e009d2cfb65e7a3200f82eaa7a10fdd716) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Notify users of unverified accounts in MyAccount
+
+- Updated dependencies [[`988621e009d2cfb65e7a3200f82eaa7a10fdd716`](https://github.com/wso2/identity-apps/commit/988621e009d2cfb65e7a3200f82eaa7a10fdd716)]:
+  - @wso2is/core@2.7.4
+
 ## 2.22.12
 
 ### Patch Changes
