@@ -1528,6 +1528,41 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        selfSignUp: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}。",
+                        message: "获取自助注册偏好设置时出错"
+                    },
+                    genericError: {
+                        description: "获取自助注册偏好设置时发生错误。",
+                        message: "出了些问题"
+                    },
+                    success: {
+                        description: "成功获取自助注册偏好设置。",
+                        message: "自助注册偏好设置获取成功"
+                    }
+                }
+            }
+        },
+        systemNotificationAlert: {
+            resend: "重新发送",
+            selfSignUp: {
+                awaitingAccountConfirmation: "您的帐户尚未激活。我们已向您的注册邮箱发送了" +
+                    "激活链接。需要新链接吗？",
+                notifications: {
+                    resendError: {
+                        description: "重新发送帐户确认电子邮件时发生错误。",
+                        message: "出了些问题"
+                    },
+                    resendSuccess: {
+                        description: "帐户确认电子邮件已成功重新发送。",
+                        message: "帐户确认电子邮件重新发送成功"
+                    }
+                }
+            }
+        },
         "userAvatar": {
             "infoPopover": "该图像已从<1> Gravatar服务中检索。",
             "urlUpdateHeader": "输入图像URL设置您的个人资料图片"

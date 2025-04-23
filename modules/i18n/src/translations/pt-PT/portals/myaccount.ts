@@ -1637,6 +1637,41 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        selfSignUp: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}.",
+                        message: "Erro ao obter a preferência de auto-registo"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao obter a preferência de auto-registo.",
+                        message: "Algo correu mal"
+                    },
+                    success: {
+                        description: "Preferência de auto-registo obtida com sucesso.",
+                        message: "Obtenção da preferência de auto-registo bem-sucedida"
+                    }
+                }
+            }
+        },
+        systemNotificationAlert: {
+            resend: "Reenviar",
+            selfSignUp: {
+                awaitingAccountConfirmation: "A sua conta ainda não está ativa. Enviámos uma " +
+                    "ligação de ativação para o seu endereço de e-mail registado. Precisa de uma nova ligação?",
+                notifications: {
+                    resendError: {
+                        description: "Ocorreu um erro ao reenviar o e-mail de confirmação da conta.",
+                        message: "Algo correu mal"
+                    },
+                    resendSuccess: {
+                        description: "E-mail de confirmação de conta reenviado com sucesso.",
+                        message: "E-mail de confirmação de conta reenviado com sucesso"
+                    }
+                }
+            }
+        },
         userAvatar: {
             infoPopover: "Esta imagem foi recuperada do serviço <1>Gravatar</1>.",
             urlUpdateHeader: "Insira um URL da imagem para definir sua foto de perfil"

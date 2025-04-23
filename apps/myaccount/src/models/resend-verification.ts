@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,33 +16,7 @@
  * under the License.
  */
 
-import { ReactNode } from "react";
-import { Notification } from "react-notification-system";
-
-/**
- * Alert interface.
- */
-export interface AlertInterface extends Notification {
-    description: string;
+export interface RecoveryProperty {
+    key: string;
+    value: string;
 }
-
-/**
- * System Notification Alert State model.
- */
-export interface SystemNotificationAlertState {
-    isVisible: boolean;
-    severity: AlertLevels;
-    message: ReactNode;
-}
-
-/**
- * Enum for Alert levels.
- * @readonly
- */
-export enum AlertLevels {
-    SUCCESS = "success",
-    ERROR = "error",
-    INFO = "info",
-    WARNING = "warning"
-}
-
