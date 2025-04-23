@@ -49,7 +49,6 @@ const WorkflowModels: FunctionComponent<WorkflowsPageInterface> = ( props: Workf
 
     const dispatch: Dispatch = useDispatch();
     const [ workflowModels, setWorkflowModels ] = useState<WorkflowListItemInterface[]>([]);
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ listOffset, setListOffset ] = useState(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(10);
     const [ inputValue, setInputValue ] = useState<string>("");
@@ -64,10 +63,12 @@ const WorkflowModels: FunctionComponent<WorkflowsPageInterface> = ( props: Workf
     } = useGetWorkflows(listItemLimit, listOffset, searchQuery, true);
 
     useEffect(() => {
-        const updatedResources: WorkflowListItemInterface[] = data;
+        if (data) {
+            const updatedResources: WorkflowListItemInterface[] = data;
 
-        setWorkflowModels(updatedResources);
-        setWorkflowModelsLoading(false);
+            setWorkflowModels(updatedResources);
+            setWorkflowModelsLoading(false);
+        }
     }, [ data ]);
 
     useEffect(() => {
@@ -86,7 +87,7 @@ const WorkflowModels: FunctionComponent<WorkflowsPageInterface> = ( props: Workf
                         workflowsError?.response?.data?.message ??
                         t(
                             "console:manage.features.workflowModels.notifications." +
-                                "fetchWorkflows.genericError.message"
+                                "fetchWorkflowModels.genericError.message"
                         )
                 })
             );
@@ -121,7 +122,6 @@ const WorkflowModels: FunctionComponent<WorkflowsPageInterface> = ( props: Workf
     const handleClearSearch = () => {
         setInputValue("");
         setSearchQuery("");
-        setTriggerClearQuery(!triggerClearQuery);
     };
 
     const handleAlerts = (alert: AlertInterface) => {
@@ -150,7 +150,8 @@ const WorkflowModels: FunctionComponent<WorkflowsPageInterface> = ( props: Workf
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.workflowModels.notifications." + "deleteWorkflowModel.error.message"
+                        "console:manage.features.workflowModels.notifications." +
+                        "deleteWorkflowModel.genericError.message"
                     )
                 });
             });
@@ -242,10 +243,10 @@ const WorkflowModels: FunctionComponent<WorkflowsPageInterface> = ( props: Workf
                     <EmptyPlaceholder
                         data-componentid={ `${componentId}-empty-placeholder` }
                         subtitle={ [
-                            t("console:manage.features.workflows.placeholders.workflowsError.subtitles.0"),
-                            t("console:manage.features.workflowModels.placeholders.workflowsError.subtitles.1")
+                            t("workflowModels:form.placeholders.workflowModelError.subtitles.0"),
+                            t("workflowModels:form.placeholders.workflowModelError.subtitles.1")
                         ] }
-                        title={ t("console:manage.features.workflowModels.placeholders.workflowsError.title") }
+                        title={ t("workflowModels:form.placeholders.workflowModelError.title") }
                         image={ getEmptyPlaceholderIllustrations().genericError }
                         imageSize="tiny"
                     />
