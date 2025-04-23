@@ -31,7 +31,7 @@ export interface AlertInterface extends Notification {
 export interface SystemNotificationAlertState {
     isVisible: boolean;
     severity: AlertLevels;
-    message: React.ReactNode | null;
+    message: React.ReactNode;
 }
 
 /**

@@ -38,7 +38,7 @@ export const SystemNotificationAlert: FunctionComponent<SystemNotificationAlertP
     ["data-componentid"]: componentId = "system-notification-alert"
 }: SystemNotificationAlertProps): ReactElement | null => {
     const systemNotificationAlertState: SystemNotificationAlertState =
-        useResendAccountConfirmationAlert(componentId);
+        useResendAccountConfirmationAlert();
 
     if (!systemNotificationAlertState?.isVisible) return null;
 
