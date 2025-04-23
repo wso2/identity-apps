@@ -154,6 +154,11 @@ export interface WorkflowModelPayload {
      * Subject of the approval task.
      */
     approvalTask: string;
+
+    /**
+     * Description of the approval task.
+     */
+    approvalTaskDescription: string;
 }
 
 /**

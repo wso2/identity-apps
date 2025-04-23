@@ -50,7 +50,7 @@ import { ApprovalSteps, ConfigurationsFormValuesInterface, GeneralDetailsFormVal
     from "../models/ui";
 
 /**
- * Interface which captures create role props.
+ * Interface which captures create workflow model props.
  */
 type CreateWorkflowModelProps = IdentifiableComponentInterface;
 
@@ -132,8 +132,8 @@ FunctionComponent<CreateWorkflowModelProps> = (props: CreateWorkflowModelProps):
             description: workflowModelFormData.generalDetails.description,
             engine: "workflowImplSimple",
             template: workflowTemplate,
-            // eslint-disable-next-line sort-keys
-            approvalTask: "Approval Required"
+            approvalTask: "Approval Required",
+            approvalTaskDescription: "Approval is needed to complete this task"
         };
 
         handleWorkflowModelRegistration(workflowModelPayload);
@@ -291,6 +291,7 @@ FunctionComponent<CreateWorkflowModelProps> = (props: CreateWorkflowModelProps):
                                 || isWorkflowModelCreateRequestLoading }
                                     onClick={ () => {
                                         setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
+                                        setHasErrors(false);
                                     } }
                                     data-componentid={ `${componentId}-previous-button` }
                                 >

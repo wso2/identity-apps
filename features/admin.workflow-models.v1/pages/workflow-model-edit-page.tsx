@@ -30,7 +30,7 @@ import { updateWorkflowModel, useGetWorkflowModelDetails } from "../api";
 import WorkflowModelConfigurationSettings from "../components/edit/workflow-model-configuration-settings";
 import WorkflowModelGeneralSettings from "../components/edit/workflow-model-general-settings";
 import { WorkflowModelEditTabIDs } from "../constants/workflow-model-constants";
-import { WorkflowModelPayload, WorkflowTemplate } from "../models";
+import { OptionDetails, WorkflowModelPayload, WorkflowTemplate } from "../models";
 import {
     ApprovalSteps,
     ConfigurationsFormValuesInterface,
@@ -59,8 +59,8 @@ const WorkflowModelEditPage: FunctionComponent<WorkflowModelEditPagePropsInterfa
     } = useGetWorkflowModelDetails(workflowModelId);
 
     /**
-         * Handles the workflow model details request error.
-         */
+    * Handles the workflow model details request error.
+    */
     useEffect(() => {
         if (workflowModelDetailsRequestError) {
             // Since workflow model creation can be delayed,
@@ -94,7 +94,7 @@ const WorkflowModelEditPage: FunctionComponent<WorkflowModelEditPagePropsInterfa
                         users: []
                     };
 
-                    step.options?.forEach(option => {
+                    step.options?.forEach((option: OptionDetails )=> {
                         if (option.entity === "roles") {
                             stepData.roles = option.values;
                         } else if (option.entity === "users") {
@@ -152,7 +152,8 @@ const WorkflowModelEditPage: FunctionComponent<WorkflowModelEditPagePropsInterfa
             description: updatedApprovalProcessFormData.generalDetails.description,
             engine: "workflowImplSimple",
             template: workflowTemplate,
-            approvalTask: "Approval Required"
+            approvalTask: "Approval Required",
+            approvalTaskDescription: "Approval is needed to complete this task"
         };
 
         handleWorkflowModelUpdate(workflowModelPayload);
