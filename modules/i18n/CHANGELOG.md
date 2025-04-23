@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.22.14
+
+### Patch Changes
+
+- [#8090](https://github.com/wso2/identity-apps/pull/8090) [`e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af`](https://github.com/wso2/identity-apps/commit/e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Disable the multi valued check box for the system claims
+
 ## 2.22.13
 
 ### Patch Changes

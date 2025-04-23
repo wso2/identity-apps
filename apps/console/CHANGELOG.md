@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.54.1
+
+### Patch Changes
+
+- [#8090](https://github.com/wso2/identity-apps/pull/8090) [`e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af`](https://github.com/wso2/identity-apps/commit/e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Disable the multi valued check box for the system claims
+
+- Updated dependencies [[`e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af`](https://github.com/wso2/identity-apps/commit/e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af)]:
+  - @wso2is/admin.claims.v1@2.27.119
+  - @wso2is/i18n@2.22.14
+
 ## 2.54.0
 
 ### Minor Changes
