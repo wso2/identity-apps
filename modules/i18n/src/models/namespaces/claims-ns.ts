@@ -512,6 +512,7 @@ export interface ClaimsNS {
                 placeholder: string;
             };
             multiValuedHint: string;
+            multiValuedDisabledHint: string;
             displayOrderHint: string;
             required: {
                 label: string;
