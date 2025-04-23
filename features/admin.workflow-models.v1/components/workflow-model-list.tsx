@@ -41,16 +41,47 @@ import { getTableIcons } from "../configs";
 import WorkflowModelConstants, { engineNameMap, templateNameMap } from "../constants/workflow-model-constants";
 import { WorkflowListItemInterface } from "../models";
 
-interface WorkflowModelListProps extends SBACInterface<FeatureConfigInterface>,
-LoadableComponentInterface, IdentifiableComponentInterface {
+/**
+ * Props interface for the Workflow Model List component.
+ */
+interface WorkflowModelListProps
+    extends SBACInterface<FeatureConfigInterface>,
+        LoadableComponentInterface,
+        IdentifiableComponentInterface {
 
+    /**
+     * Optional number specifying the default limit for list items shown.
+     */
     defaultListItemLimit?: number;
+
+    /**
+     * Array of workflow model objects to be rendered in the list.
+     */
     workflowModelList: WorkflowListItemInterface[];
-    handleWorkflowModelDelete?: (group: WorkflowListItemInterface) => void;
+
+    /**
+     * Optional callback to handle the deletion of a workflow model item.
+     *
+     * @param group - The workflow model item to be deleted.
+     */
+    handleWorkflowModelDelete?: (workflow: WorkflowListItemInterface) => void;
+
+    /**
+     * Optional callback to be triggered when the search query is cleared.
+     */
     onSearchQueryClear?: () => void;
+
+    /**
+     * Current search query string used to filter the list.
+     */
     searchQuery?: string;
+
+    /**
+     * Flag to control whether action buttons (e.g., edit/delete) should be shown for each list item.
+     */
     showListItemActions?: boolean;
 }
+
 
 export const WorkflowModelList: React.FunctionComponent<WorkflowModelListProps> = (
     props: WorkflowModelListProps
