@@ -168,6 +168,16 @@
                 "description": "This SMS is sent to verify the user's mobile number after an update.",
                 "displayName": "Verify Mobile On Update",
                 "id": "dmVyaWZ5TW9iaWxlT25VcGRhdGU"
+            },
+            {
+                "description": "This SMS is sent to provide a one-time password when admin initiates a password reset for a user",
+                "displayName": "Admin forced Password Reset",
+                "id": "YWRtaW5Gb3JjZWRQYXNzd29yZFJlc2V0"
+            },
+            {
+                "description": "This SMS is sent to provide a one-time password when admin resends a password reset request",
+                "displayName": "Admin Resent Password Reset",
+                "id": "cmVzZW5kQWRtaW5Gb3JjZWRQYXNzd29yZFJlc2V0"
             }
         ]
     },

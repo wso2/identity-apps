@@ -2756,6 +2756,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         // to determine the scenario.
         if (accountLocked && accountLockedReason) {
             if (accountLockedReason === AccountLockedReason.PENDING_ADMIN_FORCED_USER_PASSWORD_RESET) {
+                if (isAdminPasswordResetSMSOTPEnabled()) {
+                    return RecoveryScenario.ADMIN_FORCED_PASSOWRD_RESET_VIA_SMS_OTP;
+                }
                 if (isAdminPasswordResetEmailLinkEnabled()) {
                     return RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK;
                 }
@@ -2855,7 +2858,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const isAdminPasswordResetEmailLinkEnabled = (): boolean => {
         const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
             (property: ConnectorPropertyInterface) =>
-                property.name === ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET
+                property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_LINK
         );
 
         return property?.value === "true";
@@ -2869,7 +2872,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const isAdminPasswordResetEmailOTPEnabled = (): boolean => {
         const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
             (property: ConnectorPropertyInterface) =>
-                property.name === ServerConfigurationsConstants.OTP_PASSWORD_RESET
+                property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_OTP
+        );
+
+        return property?.value === "true";
+    };
+
+    /**
+     * Checks if admin forced password reset via SMS OTP is enabled.
+     *
+     * @returns true if enabled, false otherwise
+     */
+    const isAdminPasswordResetSMSOTPEnabled = (): boolean => {
+        const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
+            (property: ConnectorPropertyInterface) =>
+                property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_SMS_OTP
         );
 
         return property?.value === "true";
