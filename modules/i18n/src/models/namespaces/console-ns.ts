@@ -6654,6 +6654,7 @@ export interface ConsoleNS {
                 addEmailTemplateLocale: string;
                 approvals: string;
                 workflowModels: string;
+                workflowModelAssociations: string;
                 attributeDialects: string;
                 categories: {
                     attributes: string;
@@ -8155,21 +8156,7 @@ export interface ConsoleNS {
             };
             workflowModels: {
                 advancedSearch: {
-                    form: {
-                        inputs: {
-                            filterAttribute: {
-                                placeholder: string;
-                            };
-                            filterCondition: {
-                                placeholder: string;
-                            };
-                            filterValue: {
-                                placeholder: string;
-                            };
-                        };
-                    };
                     placeholder: string;
-                    error: string;
                 };
                 notifications: {
                     fetchWorkflowModels: {
@@ -8304,15 +8291,6 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    connection: {
-                        updatePassword: string;
-                        testButton: string;
-                        connectionErrorMessage: string;
-                    };
-                    custom: {
-                        placeholder: string;
-                        requiredErrorMessage: string;
-                    };
                 };
                 dangerZone: {
                     delete: {
@@ -8334,6 +8312,157 @@ export interface ConsoleNS {
                         summary: string;
                     };
                     header: string;
+                };
+                placeholders: {
+                    emptySearch: {
+                        action: string;
+                        title: string;
+                        subtitles: string;
+                    };
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitles: string;
+                    };
+                    emptyListReadOnly: {
+                        title: string;
+                        subtitles: string;
+                    };
+                };
+                sqlEditor: {
+                    reset: string;
+                    title: string;
+                    create: string;
+                    update: string;
+                    read: string;
+                    delete: string;
+                    darkMode: string;
+                };
+            };
+            workflowModelAssociations: {
+                advancedSearch: {
+                    placeholder: string;
+                };
+                notifications: {
+                    fetchWorkflowModelAssociations: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteWorkflowModelAssociation: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    delay: {
+                        message: string;
+                        description: string;
+                    };
+                    updateWorkflowModelAssociation: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    testConnection: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    addWorkflowModelAssociation: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    apiLimitReachedError: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateDelay: {
+                        message: string;
+                        description: string;
+                    };
+                };
+                confirmation: {
+                    hint: string;
+                    header: string;
+                    message: string;
+                    content: string;
+                    confirm: string;
+                };
+                pageLayout: {
+                    list: {
+                        title: string;
+                        description: string;
+                        primaryAction: string;
+                    };
+                    edit: {
+                        description: string;
+                        back: string;
+                        tabs: {
+                            general: string;
+                            connection: string;
+                            user: string;
+                            group: string;
+                        };
+                    };
+                };
+                forms: {
+                    general: {
+                        name: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                            validationErrorMessages: {
+                                [key: string]: string;
+                            };
+                        };
+                        type: {
+                            label: string;
+                            requiredErrorMessage: string;
+                        };
+                        description: {
+                            label: string;
+                            placeholder: string;
+                            validationErrorMessages: {
+                                invalidInputErrorMessage: string;
+                            };
+                        };
+                    };
+                };
+                dangerZone: {
+                    delete: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                    };
+                    disable: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                    };
                 };
                 placeholders: {
                     emptySearch: {

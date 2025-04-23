@@ -6703,6 +6703,7 @@ export const console: ConsoleNS = {
                 addEmailTemplateLocale: "Add Email Template Locale",
                 approvals: "Approvals",
                 workflowModels: "Workflow Models",
+                workflowModelAssociations: "Workflow Associations",
                 attributeDialects: "Attributes",
                 categories: {
                     attributes: "User Attributes",
@@ -8472,20 +8473,6 @@ export const console: ConsoleNS = {
             },
             workflowModels: {
                 advancedSearch: {
-                    error: "Filter query format incorrect",
-                    form: {
-                        inputs: {
-                            filterAttribute: {
-                                placeholder: "E.g. Name, Description etc."
-                            },
-                            filterCondition: {
-                                placeholder: "E.g. Starts with etc."
-                            },
-                            filterValue: {
-                                placeholder: "E.g. PRIMARY, SECONDARY etc."
-                            }
-                        }
-                    },
                     placeholder: "Search by workflow model name"
                 },
                 confirmation: {
@@ -8512,20 +8499,10 @@ export const console: ConsoleNS = {
                     }
                 },
                 forms: {
-                    connection: {
-                        updatePassword: "Update connection password",
-                        connectionErrorMessage: "Please ensure the provided connection "
-                            + "URL, name, password and driver name are correct",
-                        testButton: "Test Connection"
-                    },
-                    custom: {
-                        placeholder: "Enter a {{name}}",
-                        requiredErrorMessage: "{{name}} is required"
-                    },
                     general: {
                         description: {
                             label: "Description",
-                            placeholder: "Enter a description",
+                            placeholder: "Approval Process 1",
                             validationErrorMessages: {
                                 invalidInputErrorMessage: "Description cannot contain the pattern {{invalidString}}."
                             }
@@ -8689,6 +8666,167 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            workflowModelAssociations: {
+                advancedSearch: {
+                    placeholder: "Search by workflow model association name"
+                },
+                confirmation: {
+                    confirm: "Confirm",
+                    content: "If you delete this workflow model association, the data in this workflow model association will also be deleted. "
+                        + "Please proceed with caution.",
+                    header: "Are you sure?",
+                    hint: "Please confirm your action.",
+                    message: "This action is irreversible and will permanently delete the"
+                        + " selected workflow model association and the data in it."
+                },
+                dangerZone: {
+                    delete: {
+                        actionTitle: "Delete Workflow Model Association",
+                        header: "Delete Workflow Model Association",
+                        subheader: "Once you delete a workflow model association, there is no going back. "
+                            + "Please be certain."
+                    },
+                    disable: {
+                        actionTitle: "Enable Workflow Model Association",
+                        header: "Enable Workflow Model Association",
+                        subheader: "Disabling a workflow model association can make you lose access to the users in the workflow model association. " +
+                            "Proceed with caution."
+                    }
+                },
+                forms: {
+                    general: {
+                        description: {
+                            label: "Description",
+                            placeholder: "Sample Association 1",
+                            validationErrorMessages: {
+                                invalidInputErrorMessage: "Description cannot contain the pattern {{invalidString}}."
+                            }
+                        },
+                        name: {
+                            label: "Name",
+                            placeholder: "Sample Association 1",
+                            requiredErrorMessage: "Name is a required field",
+                            validationErrorMessages: {
+                                alreadyExistsErrorMessage: "A workflow model association with this name already exists.",
+                                maxCharLimitErrorMessage: "Workflow model association name cannot exceed {{maxLength}} characters.",
+                                invalidInputErrorMessage: "Workflow model association name cannot contain the pattern {{invalidString}}."
+                            }
+                        },
+                        type: {
+                            label: "Type",
+                            requiredErrorMessage: "Select a Type"
+                        }
+                    }
+                },
+                notifications: {
+                    addWorkflowModelAssociation: {
+                        genericError: {
+                            description: "There was an error while creating the workflow model.",
+                            message: "Something went wrong!"
+                        },
+                        success: {
+                            description: "The workflow model association has been added successfully!",
+                            message: "Workflow model association added successfully!"
+                        }
+                    },
+                    apiLimitReachedError: {
+                        error: {
+                            description: "You have reached the maximum number of workflow model associations allowed.",
+                            message: "Failed to create the workflow model association"
+                        }
+                    },
+                    delay: {
+                        description: "It may take a while for the workflow model list to be updated. "
+                            + "Refresh in a few seconds to get the updated workflow model list.",
+                        message: "Updating workflow model list takes time"
+                    },
+                    deleteWorkflowModelAssociation: {
+                        genericError: {
+                            description: "There was an error while deleting the workflow model association.",
+                            message: "Something went wrong!"
+                        },
+                        success: {
+                            description: "The workflow model association has been deleted successfully!",
+                            message: "Workflow Model Association deleted successfully!"
+                        }
+                    },
+                    fetchWorkflowModelAssociations: {
+                        genericError: {
+                            description: "An error occurred while fetching workflow model associations.",
+                            message: "Something went wrong"
+                        }
+                    },
+                    testConnection: {
+                        genericError: {
+                            description: "An error occurred while testing the connection to the workflow model association",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The connection is healthy.",
+                            message: "Connection successful!"
+                        }
+                    },
+                    updateDelay: {
+                        description: "It might take some time for the updated properties to appear.",
+                        message: "Updating properties takes time"
+                    },
+                    updateWorkflowModelAssociation: {
+                        genericError: {
+                            description: "An error occurred while updating the workflow model association.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "This workflow model association has been updated successfully!",
+                            message: "Workflow model association updated successfully!"
+                        }
+                    }
+                },
+                pageLayout: {
+                    edit: {
+                        back: "Go back to workflow model associations",
+                        description: "Edit workflow model association",
+                        tabs: {
+                            connection: "Connection",
+                            general: "General",
+                            group: "Group",
+                            user: "User"
+                        }
+                    },
+                    list: {
+                        description: "Create and manage workflow model associations.",
+                        primaryAction: "New Workflow Model Association",
+                        title: "Workflow Model Association"
+                    }
+                },
+                placeholders: {
+                    emptyList: {
+                        action: "New Workflow Model Association",
+                        subtitles: "There are currently no workflow model associations available. "
+                            + "You can add a new workflow model association easily by following the "
+                            + "steps in the workflow model association creation wizard.",
+                        title: "Add a new workflow model association"
+                    },
+                    emptyListReadOnly: {
+                        subtitles: "There are currently no workflow model associations available.",
+                        title: "No workflow model associations"
+                    },
+                    emptySearch: {
+                        action: "Clear search query",
+                        subtitles: "We couldn't find any results for {{searchQuery}}. "
+                            + "Please try a different search term.",
+                        title: "No results found"
+                    }
+                },
+                sqlEditor: {
+                    create: "Create",
+                    darkMode: "Dark Mode",
+                    delete: "Delete",
+                    read: "Read",
+                    reset: "Reset Changes",
+                    title: "SQL Query Types",
+                    update: "Update"
+                }
+            }
         },
         notifications: {
             endSession: {

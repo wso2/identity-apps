@@ -269,6 +269,13 @@ export interface workflowModelsNS {
             title: string;
             subtitles: string;
         };
+        workflowModelError: {
+            subtitles: {
+                0: string,
+                1: string;
+            },
+            title: string;
+        }
     };
     sqlEditor: {
         reset: string;

@@ -35,6 +35,151 @@ export const workflowModels: workflowModelsNS = {
         },
         placeholder: "Search by workflow model name"
     },
+    confirmation: {
+        confirm: "Confirm",
+        content:
+            "If you delete this workflow model, the user data in this workflow model will also be deleted. " +
+            "Please proceed with caution.",
+        header: "Are you sure?",
+        hint: "Please confirm your action.",
+        message:
+            "This action is irreversible and will permanently delete the" +
+            " selected workflow model and the data in it."
+    },
+    form: {
+        dangerZone: {
+            delete: {
+                actionTitle: "Delete Workflow Model",
+                header: "Delete Workflow Model",
+                subheader: "Once you delete a workflow model, there is no going back. " + "Please be certain."
+            },
+            disable: {
+                actionTitle: "Enable Workflow Model",
+                header: "Enable Workflow Model",
+                subheader:
+                "Disabling a Workflow Model can make you lose access to the users in the workflow model. " +
+                "Proceed with caution."
+            }
+        },
+        fields: {
+            description: {
+                label: "Description",
+                placeholder: "Describe the purpose of this workflow model"
+            },
+            engine: {
+                label: "Workflow Engine",
+                placeholder: "Select the suitable workflow engine",
+                validation: {
+                    required: "Workflow engine is required"
+                }
+            },
+            name: {
+                label: "Name",
+                placeholder: "Sample Workflow Model",
+                validation: {
+                    required: "Name is required"
+                }
+            }
+        },
+        placeholders: {
+            emptyList: {
+                action: "New Workflow Model",
+                subtitles:
+                "There are currently no workflow models available. " +
+                "You can add a new user store easily by following the " +
+                "steps in the user store creation wizard.",
+                title: "Add a new user store"
+            },
+            emptyListReadOnly: {
+                subtitles: "There are currently no workflow models available.",
+                title: "No workflow models"
+            },
+            emptySearch: {
+                action: "Clear search query",
+                subtitles: "We couldn't find any results for {{searchQuery}}. " + "Please try a different search term.",
+                title: "No results found"
+            },
+            workflowModelError: {
+                subtitles: {
+                    0: "Couldn't fetch workflow models",
+                    1: "Please try again"
+                },
+                title: "Something went wrong"
+            }
+        },
+        sqlEditor: {
+            create: "Create",
+            darkMode: "Dark Mode",
+            delete: "Delete",
+            read: "Read",
+            reset: "Reset Changes",
+            title: "SQL Query Types",
+            update: "Update"
+        },
+        wizard: {
+            header: "Add {{type}} Workflow Model",
+            steps: {
+                general: "General",
+                group: "Group",
+                summary: "Summary",
+                user: "User"
+            }
+        }
+    } ,
+    forms: {
+        configurations: {
+            template: {
+                label: "Add Approval Step",
+                placeholder: "Type role/s to search and assign",
+                roles: {
+                    label: "Roles"
+                },
+                users: {
+                    label: "Users"
+                }
+            }
+        },
+        connection: {
+            connectionErrorMessage:
+            "Please ensure the provided connection " + "URL, name, password and driver name are correct",
+            testButton: "Test Connection",
+            updatePassword: "Update connection password"
+        },
+        custom: {
+            placeholder: "Enter a {{name}}",
+            requiredErrorMessage: "{{name}} is required"
+        },
+        general: {
+            description: {
+                label: "Description",
+                placeholder: "Sample description",
+                validationErrorMessages: {
+                    allSymbolsErrorMessage: "Description should have a combination of " +
+                    "alphanumerics and special characters. Please try a different name.",
+                    invalidInputErrorMessage: "Description cannot contain the pattern {{invalidString}}.",
+                    invalidSymbolsErrorMessage: "The name you entered contains disallowed characters. It can not contain '/' or '_'."
+                }
+            },
+            engine: {
+                label: "Workflow Engine",
+                placeholder: "Select the suitable engine",
+                requiredErrorMessage: "Workflow engine is required"
+            },
+            name: {
+                label: "Name",
+                placeholder: "Approval Workflow Model",
+                requiredErrorMessage: "Name is a required field",
+                validationErrorMessages: {
+                    allSymbolsErrorMessage: "The workflow model name should have a combination of " +
+                    "alphanumerics and special characters. Please try a different name.",
+                    alreadyExistsErrorMessage: "A workflow model with this name already exists.",
+                    invalidInputErrorMessage: "Workflow model name cannot contain the pattern {{invalidString}}.",
+                    invalidSymbolsErrorMessage: "The name you entered contains disallowed characters. It can not contain '/' or '_'.",
+                    maxCharLimitErrorMessage: "Workflow model name cannot exceed {{maxLength}} characters."
+                }
+            }
+        }
+    },
     notifications: {
         addWorkflowModel: {
             genericError: {
@@ -156,142 +301,5 @@ export const workflowModels: workflowModelsNS = {
             primaryAction: "New Workflow Model",
             title: "Workflow Models"
         }
-    },
-    confirmation: {
-        confirm: "Confirm",
-        content:
-            "If you delete this workflow model, the user data in this workflow model will also be deleted. " +
-            "Please proceed with caution.",
-        header: "Are you sure?",
-        hint: "Please confirm your action.",
-        message:
-            "This action is irreversible and will permanently delete the" +
-            " selected workflow model and the data in it."
-    },
-    forms: {
-        connection: {
-            connectionErrorMessage:
-            "Please ensure the provided connection " + "URL, name, password and driver name are correct",
-            testButton: "Test Connection",
-            updatePassword: "Update connection password"
-        },
-        custom: {
-            placeholder: "Enter a {{name}}",
-            requiredErrorMessage: "{{name}} is required"
-        },
-        general: {
-            description: {
-                label: "Description",
-                placeholder: "Enter a description",
-                validationErrorMessages: {
-                    allSymbolsErrorMessage: "Description should have a combination of " +
-                    "alphanumerics and special characters. Please try a different name.",
-                    invalidInputErrorMessage: "Description cannot contain the pattern {{invalidString}}.",
-                    invalidSymbolsErrorMessage: "The name you entered contains disallowed characters. It can not contain '/' or '_'."
-                }
-            },
-            name: {
-                label: "Name",
-                placeholder: "Enter a name",
-                requiredErrorMessage: "Name is a required field",
-                validationErrorMessages: {
-                    allSymbolsErrorMessage: "The workflow model name should have a combination of " +
-                    "alphanumerics and special characters. Please try a different name.",
-                    alreadyExistsErrorMessage: "A workflow model with this name already exists.",
-                    invalidInputErrorMessage: "Workflow model name cannot contain the pattern {{invalidString}}.",
-                    invalidSymbolsErrorMessage: "The name you entered contains disallowed characters. It can not contain '/' or '_'.",
-                    maxCharLimitErrorMessage: "Workflow model name cannot exceed {{maxLength}} characters."
-                }
-            },
-            engine: {
-                label: "Workflow Engine",
-                placeholder: "Select the suitable engine",
-                requiredErrorMessage: "Workflow engine is required"
-            }
-        },
-        configurations: {
-            template: {
-                label: "Add Approval Step",
-                placeholder: "Type role/s to search and assign",
-                roles: {
-                    label: "Roles"
-                },
-                users: {
-                    label: "Users"
-                }
-            }
-        }
-    },
-    form: {
-        fields: {
-            name: {
-                label: "Name",
-                placeholder: "Sample Workflow Model",
-                validation: {
-                    required: "Name is required"
-                }
-            },
-            engine: {
-                label: "Workflow Engine",
-                placeholder: "Select the suitable workflow engine",
-                validation: {
-                    required: "Workflow engine is required"
-                }
-            },
-            description: {
-                label: "Description",
-                placeholder: "Describe the purpose of this workflow model"
-            }
-        },
-        dangerZone: {
-            delete: {
-                actionTitle: "Delete Workflow Model",
-                header: "Delete Workflow Model",
-                subheader: "Once you delete a workflow model, there is no going back. " + "Please be certain."
-            },
-            disable: {
-                actionTitle: "Enable Workflow Model",
-                header: "Enable Workflow Model",
-                subheader:
-                "Disabling a Workflow Model can make you lose access to the users in the workflow model. " +
-                "Proceed with caution."
-            }
-        },
-        placeholders: {
-            emptyList: {
-                action: "New Workflow Model",
-                subtitles:
-                "There are currently no workflow models available. " +
-                "You can add a new user store easily by following the " +
-                "steps in the user store creation wizard.",
-                title: "Add a new user store"
-            },
-            emptyListReadOnly: {
-                subtitles: "There are currently no workflow models available.",
-                title: "No workflow models"
-            },
-            emptySearch: {
-                action: "Clear search query",
-                subtitles: "We couldn't find any results for {{searchQuery}}. " + "Please try a different search term.",
-                title: "No results found"
-            }
-        },
-        sqlEditor: {
-            create: "Create",
-            darkMode: "Dark Mode",
-            delete: "Delete",
-            read: "Read",
-            reset: "Reset Changes",
-            title: "SQL Query Types",
-            update: "Update"
-        },
-        wizard: {
-            header: "Add {{type}} Workflow Model",
-            steps: {
-                general: "General",
-                group: "Group",
-                summary: "Summary",
-                user: "User"
-            }
-        }
-    } };
+    }
+};
