@@ -114,9 +114,9 @@ export class CommonAuthenticatorConstants {
      * Set of keys used to enable/disable sub-features.
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>([
-        [ ConnectionsFeatureDictionaryKeys.FederationHub, "connections.federationHub" ],
-        [ ConnectionsFeatureDictionaryKeys.SAMLArtifactBinding, "connections.saml.artifactBinding" ],
+        [ ConnectionsFeatureDictionaryKeys.FederationHub, "identityProviders.federationHub" ],
+        [ ConnectionsFeatureDictionaryKeys.SAMLArtifactBinding, "identityProviders.saml.artifactBinding" ],
         [ ConnectionsFeatureDictionaryKeys.SAMLAttributeConsumingServiceIndex,
-            "connections.saml.attributeConsumingServiceIndex" ]
+            "identityProviders.saml.attributeConsumingServiceIndex" ]
     ]);
 }
