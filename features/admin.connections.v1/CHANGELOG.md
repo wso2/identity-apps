@@ -1,5 +1,16 @@
 # @wso2is/admin.connections.v1
 
+## 2.33.92
+
+### Patch Changes
+
+- [#8095](https://github.com/wso2/identity-apps/pull/8095) [`1aeb47990369ab1ccb4bc271a078d8115c210fb1`](https://github.com/wso2/identity-apps/commit/1aeb47990369ab1ccb4bc271a078d8115c210fb1) Thanks [@savindi7](https://github.com/savindi7)! - Deprecate configs in Connections.
+
+- Updated dependencies [[`1aeb47990369ab1ccb4bc271a078d8115c210fb1`](https://github.com/wso2/identity-apps/commit/1aeb47990369ab1ccb4bc271a078d8115c210fb1)]:
+  - @wso2is/admin.connections.v1@2.33.92
+  - @wso2is/admin.extensions.v1@2.37.7
+  - @wso2is/i18n@2.22.15
+
 ## 2.33.91
 
 ### Patch Changes
