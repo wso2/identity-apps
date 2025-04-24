@@ -65,6 +65,7 @@ export interface CommonNS {
     dangerZone: string;
     darkMode: string;
     delete: string;
+    deprecated: string;
     description: string;
     deviceModel: string;
     docs: string;

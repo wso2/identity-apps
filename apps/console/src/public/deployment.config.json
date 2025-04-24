@@ -822,7 +822,11 @@
                 "scopes": {}
             },
             "identityProviders": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "connections.federationHub",
+                    "connections.saml.artifactBinding",
+                    "connections.saml.attributeConsumingServiceIndex"
+                ],
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {

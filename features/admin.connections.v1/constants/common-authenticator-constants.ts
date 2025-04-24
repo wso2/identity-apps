@@ -17,6 +17,15 @@
  */
 
 /**
+ * Keys used in feature dictionary.
+ */
+export enum ConnectionsFeatureDictionaryKeys {
+    FederationHub = "CONNECTIONS_FEDERATION_HUB",
+    SAMLArtifactBinding = "CONNECTIONS_SAML_ARTIFACT_BINDING",
+    SAMLAttributeConsumingServiceIndex = "CONNECTIONS_SAML_ATTRIBUTE_CONSUMING_SERVICE_INDEX",
+}
+
+/**
  * This class contains the constants for the Common for Authenticators.
  */
 export class CommonAuthenticatorConstants {
@@ -100,4 +109,14 @@ export class CommonAuthenticatorConstants {
     public static readonly DISPLAY_NAME_REGEX: RegExp = /^.{3,}$/;
 
     public static readonly TEMPLATE_ID_FIELD: string = "templateId";
+
+    /**
+     * Set of keys used to enable/disable sub-features.
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>([
+        [ ConnectionsFeatureDictionaryKeys.FederationHub, "connections.federationHub" ],
+        [ ConnectionsFeatureDictionaryKeys.SAMLArtifactBinding, "connections.saml.artifactBinding" ],
+        [ ConnectionsFeatureDictionaryKeys.SAMLAttributeConsumingServiceIndex,
+            "connections.saml.attributeConsumingServiceIndex" ]
+    ]);
 }
