@@ -20,6 +20,7 @@ import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Link from "@oxygen-ui/react/Link";
 import { ArrowUpRightFromSquareIcon } from "@oxygen-ui/react-icons";
+import useTryItApplication from "@wso2is/admin.applications.v1/hooks/use-try-it-application";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -79,6 +80,7 @@ const RegistrationFlowBuilderLayout: FunctionComponent<RegistrationFlowBuilderPa
 }: RegistrationFlowBuilderPageProps): ReactElement => {
     const { t } = useTranslation();
     const { isPublishing, onPublish } = useRegistrationFlowBuilder();
+    const { tryItApplicationAccessUrl, tryItApplicationId } = useTryItApplication();
     const registrationFlowBuilderFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state?.config?.ui?.features?.registrationFlowBuilder;
     });
@@ -86,6 +88,14 @@ const RegistrationFlowBuilderLayout: FunctionComponent<RegistrationFlowBuilderPa
     const showFlowPreviewApp: boolean = !registrationFlowBuilderFeatureConfig?.disabledFeatures?.includes(
         RegistrationFlowBuilderConstants.FEATURE_DICTIONARY.FLOW_PREVIEW_APP
     );
+
+    const resolveTryItApplicationSelfRegistrationURL = (): string => {
+        const url: URL = new URL(tryItApplicationAccessUrl);
+
+        url.searchParams.set("spId", tryItApplicationId);
+
+        return url.toString();
+    };
 
     return (
         <FlowBuilderLayout
@@ -110,7 +120,7 @@ const RegistrationFlowBuilderLayout: FunctionComponent<RegistrationFlowBuilderPa
                                 <Link
                                     component="button"
                                     onClick={ () => {
-                                        window.open("I'm a button.");
+                                        window.open(resolveTryItApplicationSelfRegistrationURL(), "_blank");
                                     } }
                                 >
                                     Preview

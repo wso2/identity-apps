@@ -434,12 +434,9 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = ({
                             </Grid.Row>
                             {
                                 organizationType !== OrganizationType.SUBORGANIZATION && (
-                                    <Show
-                                        when={ featureConfig?.applications?.scopes?.create }
-                                        featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }
-                                    >
-                                        { featureConfig.tryIt?.enabled && renderTryItCard() }
-                                    </Show>
+                                    <>
+                                        { renderTryItCard() }
+                                    </>
                                 )
                             }
                         </Grid>
