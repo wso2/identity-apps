@@ -2562,12 +2562,6 @@ export const extensions: Extensions = {
                     message: "Template is not available for selected locale.",
                     content: "The selected locale is not available for the selected template currently. Please contact admins for more infomation."
                 }
-            },
-            dangerZone: {
-                heading: "Remove Template",
-                message: "This action will remove the selected template and you will lose any changes you've done to this template.",
-                action: "Remove Template",
-                actionDisabledHint: "You cannot delete a template with the default locale."
             }
         }
     },

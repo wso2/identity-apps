@@ -83,15 +83,8 @@ export interface SMSTemplatesNS {
         }
     };
     dangerZone: {
-        remove : {
-            heading: string;
-            message: string;
-            action: string;
-        };
-        revert : {
-            heading: string;
-            message: string;
-            action: string;
-        }
+        heading: string;
+        message: string;
+        action: string;
     }
 }

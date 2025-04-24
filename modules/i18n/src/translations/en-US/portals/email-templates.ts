@@ -18,6 +18,12 @@
 import { emailTemplatesNS } from "../../../models";
 
 export const emailTemplates: emailTemplatesNS = {
+    dangerZone: {
+        action: "Revert",
+        heading: "Revert to default",
+        message: "This action will revert the selected template to " +
+            "default and you will lose any changes you've done to this template."
+    },
     form: {
         inputs: {
             locale: {

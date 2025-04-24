@@ -33,9 +33,9 @@ import { TemplateType } from "../models/templates";
 interface TemplateHeaderProps extends IdentifiableComponentInterface {
 
     /**
-     * Template type.
+     * Template type - "email" or "sms"
      */
-    templateType: string;
+    templateType: "email" | "sms";
 
     /**
      * Selected template id.

@@ -26,6 +26,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import TemplateHeader from "@wso2is/common.templates.v1/components/template-header";
+import TemplateDangerZone from "@wso2is/common.templates.v1/components/template-danger-zone";
 import {
     AlertInterface,
     AlertLevels,
@@ -331,32 +332,6 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
             });
     };
 
-    const renderDangerZone = (): ReactElement => {
-        let zoneType: string = "revert";
-
-        if (isSystemTemplate || isInheritedTemplate) {
-            return null;
-        } else if (selectedLocale !== TemplateManagementConstants.DEAFULT_LOCALE) {
-            zoneType = "remove";
-        }
-
-        const props: any = {
-            actionTitle: t(`smsTemplates:dangerZone.${zoneType}.action`),
-            header: t(`smsTemplates:dangerZone.${zoneType}.heading`),
-            subheader: t(`smsTemplates:dangerZone.${zoneType}.message`)
-        };
-
-        return (
-            <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
-                <DangerZone
-                    { ...props }
-                    data-componentid={ `${componentId}-remove-sms-provider-config` }
-                    onActionClick={ handleDeleteRequest }
-                />
-            </DangerZoneGroup>
-        );
-    };
-
     return (
         <BrandingPreferenceProvider>
             <PageLayout
@@ -427,7 +402,15 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                     </Grid>
                 </Card>
 
-                <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>{ renderDangerZone() }</Show>
+                <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>
+                    <TemplateDangerZone 
+                        templateType="sms"
+                        isSystemTemplate={ isSystemTemplate }
+                        isInheritedTemplate={ isInheritedTemplate }
+                        selectedLocale={ selectedLocale }
+                        onDeleteRequest={ handleDeleteRequest }
+                    />
+                </Show>
             </PageLayout>
         </BrandingPreferenceProvider>
     );

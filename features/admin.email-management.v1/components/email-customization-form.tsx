@@ -16,15 +16,13 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
-import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import {
     CodeEditor,
-    ContentLoader, DangerZone,
+    ContentLoader,
     DocumentationLink,
     Heading,
     Message,
@@ -253,20 +251,6 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                         </Grid.Row>
                     </Grid>
                 </Form>
-
-                <Show
-                    when={ featureConfig?.emailTemplates?.scopes?.delete }
-                >
-                    <DangerZone
-                        data-componentid={ `${ componentId }-revert-email-provider-config` }
-                        actionTitle={ t("extensions:develop.emailTemplates.dangerZone.action") }
-                        header={ t("extensions:develop.emailTemplates.dangerZone.heading") }
-                        subheader={ t("extensions:develop.emailTemplates.dangerZone.message") }
-                        isButtonDisabled={ selectedLocale === I18nConstants.DEFAULT_FALLBACK_LANGUAGE }
-                        buttonDisableHint={ t("extensions:develop.emailTemplates.dangerZone.actionDisabledHint") }
-                        onActionClick={ onDeleteRequested }
-                    />
-                </Show>
             </>
         )
     );

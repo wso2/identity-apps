@@ -260,4 +260,9 @@ export interface emailTemplatesNS {
         placeholder: string;
         error: string;
     };
+    dangerZone: {
+        heading: string;
+        message: string;
+        action: string;
+    }
 }

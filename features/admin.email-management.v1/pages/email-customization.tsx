@@ -21,6 +21,7 @@ import { Show, useRequiredScopes } from "@wso2is/access-control";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import TemplateHeader from "@wso2is/common.templates.v1/components/template-header";
+import TemplateDangerZone from "@wso2is/common.templates.v1/components/template-danger-zone";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -55,6 +56,7 @@ import EmailCustomizationFooter from "../components/email-customization-footer";
 import { EmailManagementConstants } from "../constants/email-management-constants";
 import { EmailTemplate, EmailTemplateType } from "../models";
 import { TemplateManagementConstants } from "@wso2is/common.templates.v1/constants/template-management-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 
 type EmailCustomizationPageInterface = IdentifiableComponentInterface;
 
@@ -89,6 +91,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     const emailTemplatesFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.emailTemplates);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -452,6 +455,16 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                             />
                         )
                     }
+                </Show>
+
+                <Show when={ featureConfig?.emailTemplates?.scopes?.delete }>
+                    <TemplateDangerZone 
+                        templateType="email"
+                        isSystemTemplate={ isSystemTemplate }
+                        isInheritedTemplate={ isInheritedTemplate }
+                        selectedLocale={ selectedLocale }
+                        onDeleteRequest={ handleDeleteRequest }
+                    />
                 </Show>
             </PageLayout>
         </BrandingPreferenceProvider>
