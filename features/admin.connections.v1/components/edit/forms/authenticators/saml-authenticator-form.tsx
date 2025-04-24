@@ -19,16 +19,21 @@
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { FeatureAccessConfigInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, Field, Form, composeValidators } from "@wso2is/form";
-import { Code, FormInputLabel, FormSection } from "@wso2is/react-components";
+import { Code, FormInputLabel, FormSection, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid, SemanticWIDTHS } from "semantic-ui-react";
+import {
+    CommonAuthenticatorConstants,
+    ConnectionsFeatureDictionaryKeys
+} from "../../../../constants/common-authenticator-constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormInitialValuesInterface
@@ -142,6 +147,21 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
     const disabledFeatures: string[] = useSelector((state: AppState) =>
         state.config.ui.features?.identityProviders?.disabledFeatures);
+
+    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state.config.ui.features?.identityProviders);
+
+    const isArtifactBindingFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig,
+        CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(ConnectionsFeatureDictionaryKeys.SAMLArtifactBinding)
+    );
+
+    const isAttributeConsumingServiceIndexEnabled: boolean = isFeatureEnabled(
+        featureConfig,
+        CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
+            ConnectionsFeatureDictionaryKeys.SAMLAttributeConsumingServiceIndex
+        )
+    );
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const { t } = useTranslation();
@@ -883,7 +903,10 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         </SectionRow>
                     ) }
 
-                    { identityProviderConfig.extendedSamlConfig.attributeConsumingServiceIndexEnabled && (
+                    { (
+                        identityProviderConfig.extendedSamlConfig.attributeConsumingServiceIndexEnabled &&
+                        isAttributeConsumingServiceIndexEnabled
+                    ) && (
                         <SectionRow>
                             <Field.Input
                                 name="AttributeConsumingServiceIndex"
@@ -902,6 +925,9 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                 hint={ t(`${ I18N_TARGET_KEY }.attributeConsumingServiceIndex.hint`) }
                                 readOnly={ readOnly }
                             />
+                            <Hint warning>
+                                { t("common:deprecated") }
+                            </Hint>
                         </SectionRow>
                     ) }
 
@@ -988,9 +1014,15 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 <Divider hidden/>
             </FormSection>
 
-            { identityProviderConfig.extendedSamlConfig.isArtifactBindingEnabled && (
+            { (
+                identityProviderConfig.extendedSamlConfig.isArtifactBindingEnabled &&
+                isArtifactBindingFeatureEnabled
+            ) && (
                 <FormSection heading="Artifact Binding">
                     <Grid>
+                        <Hint warning>
+                            { t("common:deprecated") }
+                        </Hint>
                         <SectionRow>
                             <Field.Checkbox
                                 required={ false }
