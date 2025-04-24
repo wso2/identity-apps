@@ -903,10 +903,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         </SectionRow>
                     ) }
 
-                    { (
-                        identityProviderConfig.extendedSamlConfig.attributeConsumingServiceIndexEnabled &&
-                        isAttributeConsumingServiceIndexEnabled
-                    ) && (
+                    { isAttributeConsumingServiceIndexEnabled && (
                         <SectionRow>
                             <Field.Input
                                 name="AttributeConsumingServiceIndex"
@@ -1014,10 +1011,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 <Divider hidden/>
             </FormSection>
 
-            { (
-                identityProviderConfig.extendedSamlConfig.isArtifactBindingEnabled &&
-                isArtifactBindingFeatureEnabled
-            ) && (
+            { isArtifactBindingFeatureEnabled && (
                 <FormSection heading="Artifact Binding">
                     <Grid>
                         <Hint warning>
