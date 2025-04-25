@@ -26,9 +26,9 @@ import { useTranslation } from "react-i18next";
 interface TemplateDangerZoneProps extends IdentifiableComponentInterface {
 
     /**
-     * Template type - "email" or "sms"
+     * Template channel.
      */
-    templateType: "email" | "sms";
+    templateChannel: "email" | "sms";
 
     /**
      * Is the template a system template.
@@ -57,7 +57,7 @@ export const TemplateDangerZone: FunctionComponent<TemplateDangerZoneProps> = (
     props: TemplateDangerZoneProps
 ): ReactElement => {
     const {
-        templateType,
+        templateChannel,
         isSystemTemplate,
         isInheritedTemplate,
         onDeleteRequest,
@@ -76,16 +76,16 @@ export const TemplateDangerZone: FunctionComponent<TemplateDangerZoneProps> = (
         header: string;
         subheader: string;
     } = {
-        actionTitle: t(`${templateType}Templates:dangerZone.action`),
-        header: t(`${templateType}Templates:dangerZone.heading`),
-        subheader: t(`${templateType}Templates:dangerZone.message`)
+        actionTitle: t(`${templateChannel}Templates:dangerZone.action`),
+        header: t(`${templateChannel}Templates:dangerZone.heading`),
+        subheader: t(`${templateChannel}Templates:dangerZone.message`)
     };
 
     return (
         <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
             <DangerZone
                 { ...dangerZoneProps }
-                data-componentid={ `${componentId}-remove-${templateType}-template` }
+                data-componentid={ `${componentId}-remove-${templateChannel}-template` }
                 onActionClick={ onDeleteRequest }
             />
         </DangerZoneGroup>

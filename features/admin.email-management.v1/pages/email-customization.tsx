@@ -422,7 +422,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                 data-componentid={ componentId }
             >
                 <TemplateHeader
-                    templateType="email"
+                    templateChannel="email"
                     selectedTemplateId={ selectedEmailTemplateId }
                     selectedTemplateDescription={ selectedEmailTemplateDescription }
                     selectedLocale={ selectedLocale }
@@ -457,7 +457,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
 
                 <Show when={ featureConfig?.emailTemplates?.scopes?.delete }>
                     <TemplateDangerZone
-                        templateType="email"
+                        templateChannel="email"
                         isSystemTemplate={ isSystemTemplate }
                         isInheritedTemplate={ isInheritedTemplate }
                         onDeleteRequest={ handleDeleteRequest }

@@ -348,7 +348,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 data-componentid={ componentId }
             >
                 <TemplateHeader
-                    templateType="sms"
+                    templateChannel="sms"
                     selectedTemplateId={ selectedSmsTemplateId }
                     selectedTemplateDescription={ selectedSmsTemplateDescription }
                     selectedLocale={ selectedLocale }
@@ -402,7 +402,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
 
                 <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>
                     <TemplateDangerZone
-                        templateType="sms"
+                        templateChannel="sms"
                         isSystemTemplate={ isSystemTemplate }
                         isInheritedTemplate={ isInheritedTemplate }
                         onDeleteRequest={ handleDeleteRequest }

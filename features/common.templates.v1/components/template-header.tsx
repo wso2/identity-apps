@@ -33,9 +33,9 @@ import { TemplateType } from "../models/templates";
 interface TemplateHeaderProps extends IdentifiableComponentInterface {
 
     /**
-     * Template type - "email" or "sms"
+     * Template channel
      */
-    templateType: "email" | "sms";
+    templateChannel: "email" | "sms";
 
     /**
      * Selected template id.
@@ -81,7 +81,7 @@ const TemplateHeader: FunctionComponent<TemplateHeaderProps> = (
     props: TemplateHeaderProps
 ): ReactElement => {
     const {
-        templateType,
+        templateChannel,
         selectedTemplateId,
         selectedTemplateDescription,
         selectedLocale,
@@ -151,11 +151,11 @@ const TemplateHeader: FunctionComponent<TemplateHeaderProps> = (
                         } }
                         ariaLabel= "Template Dropdown"
                         required={ true }
-                        data-componentid={ `${componentId}-${templateType}-template-list` }
+                        data-componentid={ `${componentId}-${templateChannel}-template-list` }
                         name="selectedTemplate"
                         type={ "dropdown" }
-                        label={ t(`${templateType}Templates:form.inputs.template.label`) }
-                        placeholder={ t(`${templateType}Templates:form.inputs.template.placeholder`) }
+                        label={ t(`${templateChannel}Templates:form.inputs.template.label`) }
+                        placeholder={ t(`${templateChannel}Templates:form.inputs.template.placeholder`) }
                         component={ SelectFieldAdapter }
                         options={ templateListOptions }
                         onChange={ onTemplateSelected }
@@ -173,11 +173,11 @@ const TemplateHeader: FunctionComponent<TemplateHeaderProps> = (
                         } }
                         ariaLabel= "Template Locale Dropdown"
                         required={ true }
-                        data-componentid={ `${componentId}-${templateType}-template-locale` }
+                        data-componentid={ `${componentId}-${templateChannel}-template-locale` }
                         name="selectedTemplateLocale"
                         type={ "dropdown" }
-                        label={ t(`${templateType}Templates:form.inputs.locale.label`) }
-                        placeholder={ t(`${templateType}Templates:form.inputs.locale.placeholder`) }
+                        label={ t(`${templateChannel}Templates:form.inputs.locale.label`) }
+                        placeholder={ t(`${templateChannel}Templates:form.inputs.locale.placeholder`) }
                         value={ selectedLocale }
                         defaultValue={ selectedLocale }
                         component={ SelectFieldAdapter }
