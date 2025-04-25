@@ -300,8 +300,6 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         }
 
         setIsTemplateNotAvailable(false);
-        setIsSystemTemplate(false);
-        setIsInheritedTemplate(false);
     };
 
     const handleDeleteRequest = (): void => {
