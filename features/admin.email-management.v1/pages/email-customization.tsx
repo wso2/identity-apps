@@ -19,9 +19,11 @@
 import { SelectChangeEvent } from "@mui/material";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import TemplateHeader from "@wso2is/common.templates.v1/components/template-header";
 import TemplateDangerZone from "@wso2is/common.templates.v1/components/template-danger-zone";
+import TemplateHeader from "@wso2is/common.templates.v1/components/template-header";
+import { TemplateManagementConstants } from "@wso2is/common.templates.v1/constants/template-management-constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -55,8 +57,6 @@ import { EmailCustomizationForm, EmailTemplatePreview } from "../components";
 import EmailCustomizationFooter from "../components/email-customization-footer";
 import { EmailManagementConstants } from "../constants/email-management-constants";
 import { EmailTemplate, EmailTemplateType } from "../models";
-import { TemplateManagementConstants } from "@wso2is/common.templates.v1/constants/template-management-constants";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 
 type EmailCustomizationPageInterface = IdentifiableComponentInterface;
 
@@ -389,12 +389,10 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                     <EmailCustomizationForm
                         isEmailTemplatesListLoading={ isEmailTemplatesListLoading || isEmailTemplateLoading }
                         selectedEmailTemplate={ currentEmailTemplate }
-                        selectedLocale={ selectedLocale }
                         onTemplateChanged={
                             (updatedTemplateAttributes: Partial<EmailTemplate>) =>
                                 handleTemplateChange(updatedTemplateAttributes) }
                         onSubmit={ handleSubmit }
-                        onDeleteRequested={ handleDeleteRequest }
                         readOnly={ isReadOnly || (isTemplateNotAvailable && !hasEmailTemplateCreatePermissions) }
                     />
                 </ResourceTab.Pane>
@@ -458,11 +456,10 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                 </Show>
 
                 <Show when={ featureConfig?.emailTemplates?.scopes?.delete }>
-                    <TemplateDangerZone 
+                    <TemplateDangerZone
                         templateType="email"
                         isSystemTemplate={ isSystemTemplate }
                         isInheritedTemplate={ isInheritedTemplate }
-                        selectedLocale={ selectedLocale }
                         onDeleteRequest={ handleDeleteRequest }
                     />
                 </Show>

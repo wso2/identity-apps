@@ -25,8 +25,9 @@ import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/bran
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import TemplateHeader from "@wso2is/common.templates.v1/components/template-header";
 import TemplateDangerZone from "@wso2is/common.templates.v1/components/template-danger-zone";
+import TemplateHeader from "@wso2is/common.templates.v1/components/template-header";
+import { TemplateManagementConstants } from "@wso2is/common.templates.v1/constants/template-management-constants";
 import {
     AlertInterface,
     AlertLevels,
@@ -34,7 +35,7 @@ import {
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DangerZone, DangerZoneGroup, DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
+import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -50,7 +51,6 @@ import SMSCustomizationForm from "../components/sms-customization-form";
 import SMSTemplatePreview from "../components/sms-template-preview";
 import { SMSTemplate, SMSTemplateType } from "../models/sms-templates";
 import "./sms-customization.scss";
-import { TemplateManagementConstants } from "@wso2is/common.templates.v1/constants/template-management-constants";
 
 type SMSCustomizationPageInterface = IdentifiableComponentInterface;
 
@@ -401,11 +401,10 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 </Card>
 
                 <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>
-                    <TemplateDangerZone 
+                    <TemplateDangerZone
                         templateType="sms"
                         isSystemTemplate={ isSystemTemplate }
                         isInheritedTemplate={ isInheritedTemplate }
-                        selectedLocale={ selectedLocale }
                         onDeleteRequest={ handleDeleteRequest }
                     />
                 </Show>

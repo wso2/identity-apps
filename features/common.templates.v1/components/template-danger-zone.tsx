@@ -15,11 +15,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { TemplateManagementConstants } from "../constants/template-management-constants";
 
 /**
  * Props interface for the TemplateDangerZone component.
@@ -42,11 +41,6 @@ interface TemplateDangerZoneProps extends IdentifiableComponentInterface {
     isInheritedTemplate: boolean;
 
     /**
-     * Currently selected locale.
-     */
-    selectedLocale: string;
-
-    /**
      * Callback for the delete/revert action.
      */
     onDeleteRequest: () => void;
@@ -66,7 +60,6 @@ export const TemplateDangerZone: FunctionComponent<TemplateDangerZoneProps> = (
         templateType,
         isSystemTemplate,
         isInheritedTemplate,
-        selectedLocale,
         onDeleteRequest,
         ["data-componentid"]: componentId
     } = props;
@@ -78,7 +71,11 @@ export const TemplateDangerZone: FunctionComponent<TemplateDangerZoneProps> = (
         return null;
     }
 
-    const dangerZoneProps = {
+    const dangerZoneProps: {
+        actionTitle: string;
+        header: string;
+        subheader: string;
+    } = {
         actionTitle: t(`${templateType}Templates:dangerZone.action`),
         header: t(`${templateType}Templates:dangerZone.heading`),
         subheader: t(`${templateType}Templates:dangerZone.message`)

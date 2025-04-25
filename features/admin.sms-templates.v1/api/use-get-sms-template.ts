@@ -22,9 +22,9 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
+import { TemplateManagementConstants } from "@wso2is/common.templates.v1/constants/template-management-constants";
 import { HttpMethods } from "@wso2is/core/models";
 import { SMSTemplate } from "../models/sms-templates";
-import { TemplateManagementConstants } from "@wso2is/common.templates.v1/constants/template-management-constants";
 
 /**
  * Hook to get the SMS template for a given template type.

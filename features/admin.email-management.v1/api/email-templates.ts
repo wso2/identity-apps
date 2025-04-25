@@ -24,11 +24,11 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
+import { TemplateManagementConstants } from "@wso2is/common.templates.v1/constants/template-management-constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { EmailTemplate, EmailTemplateType } from "../models/email-templates";
-import { TemplateManagementConstants } from "@wso2is/common.templates.v1/constants/template-management-constants";
 
 /**
  * Get an axios instance.
