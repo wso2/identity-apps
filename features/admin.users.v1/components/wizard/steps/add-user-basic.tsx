@@ -45,6 +45,7 @@ import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem, UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 import { ValidationDataInterface, ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { ProfileConstants } from "@wso2is/core/constants";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     IdentifiableComponentInterface,
     MultiValueAttributeInterface,
@@ -199,11 +200,11 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.attributeDialects?.disabledFeatures?.includes(
         ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
     );
-    const isDistinctAttributeProfileForUserCreationDisabled: boolean = featureConfig?.users?.disabledFeatures?.includes(
-        UserManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG
+    const isAttributeProfileForUserCreationEnabled: boolean = isFeatureEnabled(
+        featureConfig?.users,
+        UserManagementConstants.ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG
     );
     const isMultipleEmailAndMobileNumberEnabled: boolean = UIConfig?.isMultipleEmailsAndMobileNumbersEnabled;
-
     const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
     const MOBILE_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
     const EMAIL_ADDRESSES_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES");
@@ -212,11 +213,11 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS");
     const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string =
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES");
-    const META_VERSION: string = ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION");
 
     // List of SCIM2 schemas that should not be displayed in the user creation wizard.
     // These schemas are either not required or hard-coded in the wizard UI.
     const hiddenSchemas: string[] = [
+        ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"),
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME"),
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT"),
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE"),
@@ -348,36 +349,42 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
 
 
     useEffect(() => {
+        if (!isAttributeProfileForUserCreationEnabled) {
+            return;
+        }
+
         const filteredSchemas: ProfileSchemaInterface[] = [];
         const simpleMultiValuedExtendedSchemas: ProfileSchemaInterface[] = [];
+        const flattenedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ]);
 
         if (isMultipleEmailAndMobileNumberEnabled) {
             // If this feature is enabled, we need to show the email and mobile number attributes
-            // as multi-valued attributes.
-            const emailSchema: ProfileSchemaInterface = profileSchemas
+            // as multi-valued input fields.
+            const emailSchema: ProfileSchemaInterface = flattenedSchemas
                 .find((schema: ProfileSchemaInterface) => schema.name === EMAIL_ATTRIBUTE);
-            const mobileSchema: ProfileSchemaInterface = profileSchemas
+            const mobileSchema: ProfileSchemaInterface = flattenedSchemas
                 .find((schema: ProfileSchemaInterface) => schema.name === MOBILE_ATTRIBUTE);
-            const emailAddressesSchema: ProfileSchemaInterface = profileSchemas
+            const emailAddressesSchema: ProfileSchemaInterface = flattenedSchemas
                 .find((schema: ProfileSchemaInterface) => schema.name === EMAIL_ADDRESSES_ATTRIBUTE);
-            const mobileNumbersSchema: ProfileSchemaInterface = profileSchemas
+            const mobileNumbersSchema: ProfileSchemaInterface = flattenedSchemas
                 .find((schema: ProfileSchemaInterface) => schema.name === MOBILE_NUMBERS_ATTRIBUTE);
 
-            // If email and mobile attributes are displayed in the wizard AND isMultipleEmailAndMobileNumberEnabled
-            // Then we need to emailAddresses and mobileNumbers attributes
-            if (isFieldDisplayableInUserCreationWizard(emailSchema, isDistinctAttributeProfilesDisabled) &&
-                !isFieldDisplayableInUserCreationWizard(emailAddressesSchema, isDistinctAttributeProfilesDisabled)) {
-                filteredSchemas.push(emailAddressesSchema);
+            // If emailaddresses and mobilenumbers are displayed in the wizard AND isMultipleEmailAndMobileNumberEnabled
+            // We need the email and mobile attributes regardless whether they are displayed or not.
+            // These attributes will be used to set the primary email and mobile number.
+            if (isFieldDisplayableInUserCreationWizard(emailAddressesSchema, isDistinctAttributeProfilesDisabled) &&
+                !isFieldDisplayableInUserCreationWizard(emailSchema, isDistinctAttributeProfilesDisabled)) {
+                filteredSchemas.push(emailSchema);
             }
 
-            if (isFieldDisplayableInUserCreationWizard(mobileSchema, isDistinctAttributeProfilesDisabled) &&
-                !isFieldDisplayableInUserCreationWizard(mobileNumbersSchema, isDistinctAttributeProfilesDisabled)) {
-                filteredSchemas.push(mobileNumbersSchema);
+            if (isFieldDisplayableInUserCreationWizard(mobileNumbersSchema, isDistinctAttributeProfilesDisabled) &&
+                !isFieldDisplayableInUserCreationWizard(mobileSchema, isDistinctAttributeProfilesDisabled)) {
+                filteredSchemas.push(mobileSchema);
             }
         }
 
-        for (const schema of ProfileUtils.flattenSchemas([ ...profileSchemas ])) {
-            if (isEmpty(schema) || schema.name === META_VERSION ||
+        for (const schema of flattenedSchemas) {
+            if (isEmpty(schema) ||
                 !isFieldDisplayableInUserCreationWizard(schema, isDistinctAttributeProfilesDisabled)) {
                 continue;
             }
@@ -411,6 +418,10 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     * This is used to persist wizard data when the user clicks on the back button.
     */
     useEffect(() => {
+        if (!isAttributeProfileForUserCreationEnabled) {
+            return;
+        }
+
         mapUserToSchema(profileSchema, initialValues);
     }, [ profileSchema, initialValues ]);
 
@@ -418,6 +429,10 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
      * This will map multi-valued attributes to the schema and form values.
      */
     useEffect(() => {
+        if (!isAttributeProfileForUserCreationEnabled) {
+            return;
+        }
+
         mapMultiValuedAttributeValues(profileInfo);
     }, [ profileInfo ]);
 
@@ -569,7 +584,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         };
 
         // Include dynamic form values based on attribute profiles.
-        if (!isDistinctAttributeProfileForUserCreationDisabled) {
+        if (isAttributeProfileForUserCreationEnabled) {
             formValues = {
                 ...formValues,
                 ...getDynamicFormValues(values)
@@ -1378,15 +1393,17 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const resolveEmailField = (): ReactNode => {
         const emailFieldComponentId: string = "user-mgt-add-user-form-alphanumeric-email-input";
         // Return multiple email input field if the emailAddress is displayed.
-        const emailAddressesSchema: ProfileSchemaInterface = profileSchema?.find(
+        const emailAddressesSchema: ProfileSchemaInterface = !isEmpty(profileSchema) && profileSchema.find(
             (schema: ProfileSchemaInterface) => schema.name === EMAIL_ADDRESSES_ATTRIBUTE);
 
-        const fieldName: string = t("user:profile.fields." +
-            emailAddressesSchema.name.replace(".", "_"), { defaultValue: emailAddressesSchema.displayName }
-        );
-
-        if (isMultipleEmailAndMobileNumberEnabled && emailAddressesSchema &&
+        if (isAttributeProfileForUserCreationEnabled &&
+            isMultipleEmailAndMobileNumberEnabled &&
+            emailAddressesSchema &&
             isFieldDisplayableInUserCreationWizard(emailAddressesSchema, isDistinctAttributeProfilesDisabled)) {
+
+            const fieldName: string = t("user:profile.fields." +
+                emailAddressesSchema.name.replace(".", "_"), { defaultValue: emailAddressesSchema.displayName }
+            );
 
             return resolveMultiValuedAttributesFormField(
                 emailAddressesSchema,
@@ -2424,10 +2441,10 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                         ) : null
                 }
                 {
-                    resolveMobileField()
+                    isAttributeProfileForUserCreationEnabled && resolveMobileField()
                 }
                 {
-                    !isDistinctAttributeProfileForUserCreationDisabled && profileSchema &&
+                    isAttributeProfileForUserCreationEnabled && profileSchema &&
                     profileSchema.map((schema: ProfileSchemaInterface, index: number) =>
                         resolveDynamicForm(schema, index)
                     )

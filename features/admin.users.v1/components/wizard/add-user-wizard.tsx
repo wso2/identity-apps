@@ -17,7 +17,6 @@
  */
 
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userConfig } from "@wso2is/admin.extensions.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
@@ -30,9 +29,12 @@ import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
+    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
+    MultiValueAttributeInterface,
     RolesInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
@@ -62,6 +64,7 @@ import {
 } from "../../constants";
 import {
     AddUserWizardStateInterface,
+    EmailsInterface,
     PayloadInterface,
     UserDetailsInterface,
     WizardStepInterface,
@@ -128,7 +131,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ submitGroupList, setSubmitGroupList ] = useTrigger();
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const userFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features.users);
 
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
@@ -147,8 +151,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ submitStep, setSubmitStep ] = useState<WizardStepsFormTypes>(undefined);
     const [ selectedGroupsList, setSelectedGroupList ] = useState<GroupsInterface[]>([]);
 
-    const isDistinctAttributeProfileForUserCreationDisabled: boolean = featureConfig?.users?.disabledFeatures?.includes(
-        UserManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG
+    const isAttributeProfileForUserCreationEnabled: boolean = isFeatureEnabled(
+        userFeatureConfig,
+        UserManagementConstants.ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG
     );
 
     const excludedAttributes: string = "members";
@@ -512,7 +517,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             };
         }
 
-        if (!isDistinctAttributeProfileForUserCreationDisabled) {
+        if (isAttributeProfileForUserCreationEnabled) {
             const combinedUserDetails: UserDetailsInterface = omit({
                 ...userInfo,
                 ...userDetails
@@ -522,8 +527,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             if (isEmpty(userInfo?.email) && userInfo?.emails.length > 0) {
                 delete combinedUserDetails.email;
 
-                const primaryEmail: string = userInfo.emails.find((subAttribute: any) =>
-                    typeof subAttribute === "string");
+                // Primary will be the string value in the emails array.
+                const primaryEmail: string = userInfo.emails.find(
+                    (subAttribute: (string | MultiValueAttributeInterface | EmailsInterface)) =>
+                        typeof subAttribute === "string") as string;
 
                 if (primaryEmail) {
                     combinedUserDetails.emails = [
