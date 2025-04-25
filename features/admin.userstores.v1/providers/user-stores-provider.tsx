@@ -184,6 +184,15 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
         }, delay);
     };
 
+    /**
+     * Utility function to filter the user stores.
+     *
+     * @param includeHiddenUserStores - Whether to include hidden user stores or not.
+     * @param includeDisabledUserStores - Whether to include disabled user stores or not.
+     * @param includeReadOnlyUserStores - Whether to include read only user stores or not.
+     * @param includePrimaryUserStore - Whether to include the primary user store or not.
+     * @returns filtered user stores.
+     */
     const filterUserStores = (
         includeHiddenUserStores: boolean = false,
         includeDisabledUserStores: boolean = false,
