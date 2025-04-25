@@ -100,7 +100,10 @@ export class ProfileConstants {
         .set("VERIFIED_EMAIL_ADDRESSES", "verifiedEmailAddresses")
         .set("VERIFIED_MOBILE_NUMBERS", "verifiedMobileNumbers")
         .set("FIRST_NAME", "name.givenName")
-        .set("LAST_NAME", "name.familyName");
+        .set("LAST_NAME", "name.familyName")
+        .set("ACCOUNT_STATE", "accountState")
+        .set("PREFERRED_CHANNEL", "preferredChannel")
+        .set("EMAIL_VERIFIED", "emailVerified");
 
     /**
      * States if the SCIM schema is mutable.
@@ -124,4 +127,8 @@ export class ProfileConstants {
     public static readonly ENABLE_MOBILE_VERIFICATION: string = "UserClaimUpdate.MobileNumber.EnableVerification";
 
     public static readonly ENABLE_EMAIL_VERIFICATION: string = "UserClaimUpdate.Email.EnableVerification";
+
+    // Self sign up
+    public static readonly SELF_SIGN_UP_CONNECTOR: string = "self-sign-up";
+    public static readonly SELF_SIGN_UP_ENABLE_SEND_OTP_IN_EMAIL: string = "SelfRegistration.OTP.SendOTPInEmail";
 }

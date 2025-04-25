@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.7.6
+
+### Patch Changes
+
+- [#8083](https://github.com/wso2/identity-apps/pull/8083) [`ca2ef3a78d5a6571fc482b4df8da9cc792a711f1`](https://github.com/wso2/identity-apps/commit/ca2ef3a78d5a6571fc482b4df8da9cc792a711f1) Thanks [@piraveena](https://github.com/piraveena)! - Add Logos of Signicat
+
 ## 2.7.5
 
 ### Patch Changes

@@ -1,5 +1,84 @@
 # @wso2is/console
 
+## 2.54.4
+
+### Patch Changes
+
+- [#8098](https://github.com/wso2/identity-apps/pull/8098) [`ad35a9374eb80a5d4556c8922764d507e1613768`](https://github.com/wso2/identity-apps/commit/ad35a9374eb80a5d4556c8922764d507e1613768) Thanks [@savindi7](https://github.com/savindi7)! - Update deprecated feature names.
+
+- Updated dependencies [[`ad35a9374eb80a5d4556c8922764d507e1613768`](https://github.com/wso2/identity-apps/commit/ad35a9374eb80a5d4556c8922764d507e1613768)]:
+  - @wso2is/admin.connections.v1@2.33.93
+  - @wso2is/admin.extensions.v1@2.37.8
+  - @wso2is/i18n@2.22.16
+
+## 2.54.3
+
+### Patch Changes
+
+- [#8095](https://github.com/wso2/identity-apps/pull/8095) [`1aeb47990369ab1ccb4bc271a078d8115c210fb1`](https://github.com/wso2/identity-apps/commit/1aeb47990369ab1ccb4bc271a078d8115c210fb1) Thanks [@savindi7](https://github.com/savindi7)! - Deprecate configs in Connections.
+
+- Updated dependencies [[`1aeb47990369ab1ccb4bc271a078d8115c210fb1`](https://github.com/wso2/identity-apps/commit/1aeb47990369ab1ccb4bc271a078d8115c210fb1)]:
+  - @wso2is/admin.connections.v1@2.33.92
+  - @wso2is/admin.extensions.v1@2.37.7
+  - @wso2is/i18n@2.22.15
+
+## 2.54.2
+
+### Patch Changes
+
+- [#8083](https://github.com/wso2/identity-apps/pull/8083) [`ca2ef3a78d5a6571fc482b4df8da9cc792a711f1`](https://github.com/wso2/identity-apps/commit/ca2ef3a78d5a6571fc482b4df8da9cc792a711f1) Thanks [@piraveena](https://github.com/piraveena)! - Add Logos of Signicat
+
+- Updated dependencies [[`ca2ef3a78d5a6571fc482b4df8da9cc792a711f1`](https://github.com/wso2/identity-apps/commit/ca2ef3a78d5a6571fc482b4df8da9cc792a711f1)]:
+  - @wso2is/theme@2.7.6
+
+## 2.54.1
+
+### Patch Changes
+
+- [#8090](https://github.com/wso2/identity-apps/pull/8090) [`e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af`](https://github.com/wso2/identity-apps/commit/e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Disable the multi valued check box for the system claims
+
+- Updated dependencies [[`e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af`](https://github.com/wso2/identity-apps/commit/e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af)]:
+  - @wso2is/admin.claims.v1@2.27.119
+  - @wso2is/i18n@2.22.14
+
+## 2.54.0
+
+### Minor Changes
+
+- [#7995](https://github.com/wso2/identity-apps/pull/7995) [`c639a98a6e09992cbb3e37c315ea507b8212bb35`](https://github.com/wso2/identity-apps/commit/c639a98a6e09992cbb3e37c315ea507b8212bb35) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the forced password reset configuration page and force password reset modal message to support email Link and email OTP.
+
+### Patch Changes
+
+- Updated dependencies [[`988621e009d2cfb65e7a3200f82eaa7a10fdd716`](https://github.com/wso2/identity-apps/commit/988621e009d2cfb65e7a3200f82eaa7a10fdd716), [`c639a98a6e09992cbb3e37c315ea507b8212bb35`](https://github.com/wso2/identity-apps/commit/c639a98a6e09992cbb3e37c315ea507b8212bb35)]:
+  - @wso2is/core@2.7.4
+  - @wso2is/i18n@2.22.13
+  - @wso2is/admin.server-configurations.v1@2.35.0
+  - @wso2is/admin.users.v1@2.31.0
+
+## 2.53.8
+
+### Patch Changes
+
+- [#8081](https://github.com/wso2/identity-apps/pull/8081) [`ac30550f78156ddb2c0aaf8b57b2a5f840b9226b`](https://github.com/wso2/identity-apps/commit/ac30550f78156ddb2c0aaf8b57b2a5f840b9226b) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Fix Test Connection failure in Edit User Store view by including domain in payload.
+
+* [#8086](https://github.com/wso2/identity-apps/pull/8086) [`055774218bd6ee3ff33056d4dc45df7d2a3d2403`](https://github.com/wso2/identity-apps/commit/055774218bd6ee3ff33056d4dc45df7d2a3d2403) Thanks [@brionmario](https://github.com/brionmario)! - Set all the `PRIMARY` buttons inside the form type to `submit`.
+
+* Updated dependencies [[`ac30550f78156ddb2c0aaf8b57b2a5f840b9226b`](https://github.com/wso2/identity-apps/commit/ac30550f78156ddb2c0aaf8b57b2a5f840b9226b)]:
+  - @wso2is/admin.userstores.v1@2.27.31
+
+## 2.53.7
+
+### Patch Changes
+
+- [#8079](https://github.com/wso2/identity-apps/pull/8079) [`6210f70a92166a192b748a35541b26ed26c9c039`](https://github.com/wso2/identity-apps/commit/6210f70a92166a192b748a35541b26ed26c9c039) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix tenant domain validation
+
+* [#8062](https://github.com/wso2/identity-apps/pull/8062) [`7c400d20c1e92560bf974fbd74ee3999a32d1f1e`](https://github.com/wso2/identity-apps/commit/7c400d20c1e92560bf974fbd74ee3999a32d1f1e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Disable profile image updating of administrators
+
+* Updated dependencies [[`6210f70a92166a192b748a35541b26ed26c9c039`](https://github.com/wso2/identity-apps/commit/6210f70a92166a192b748a35541b26ed26c9c039), [`7c400d20c1e92560bf974fbd74ee3999a32d1f1e`](https://github.com/wso2/identity-apps/commit/7c400d20c1e92560bf974fbd74ee3999a32d1f1e)]:
+  - @wso2is/admin.tenants.v1@2.29.10
+  - @wso2is/admin.console-settings.v1@2.25.208
+  - @wso2is/admin.users.v1@2.30.129
+
 ## 2.53.6
 
 ### Patch Changes

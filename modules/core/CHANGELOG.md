@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.7.4
+
+### Patch Changes
+
+- [#8071](https://github.com/wso2/identity-apps/pull/8071) [`988621e009d2cfb65e7a3200f82eaa7a10fdd716`](https://github.com/wso2/identity-apps/commit/988621e009d2cfb65e7a3200f82eaa7a10fdd716) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Notify users of unverified accounts in MyAccount
+
 ## 2.7.3
 
 ### Patch Changes
