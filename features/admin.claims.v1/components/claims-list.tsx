@@ -68,6 +68,7 @@ import React,{
     SetStateAction,
     SyntheticEvent,
     useEffect,
+    useMemo,
     useRef,
     useState
 } from "react";
@@ -223,7 +224,6 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const [ deleteConfirm, setDeleteConfirm ] = useState(false);
     const [ deleteType, setDeleteType ] = useState<ListType>(null);
     const [ deleteItem, setDeleteItem ] = useState<Claim | ExternalClaim | ClaimDialect>(null);
-    const [ userStores, setUserStores ] = useState<UserStoreListItem[]>([]);
     const [ editClaim, setEditClaim ] = useState("");
     const [ editExternalClaim, setEditExternalClaim ] = useState<AddExternalClaim>(undefined);
 
@@ -232,7 +232,14 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const hasAttributeDeletePermissions: boolean = useRequiredScopes(featureConfig?.attributeDialects?.scopes?.delete);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
-    const isReadOnly: boolean = isSubOrganization() || !hasAttributeUpdatePermissions;
+    const { filterUserStores, userStoresList: userStores, mutateUserStoreList } = useUserStores();
+
+    const configuredUserStoreCount: number = useMemo(
+        () => filterUserStores(false, false, true, true)?.length,
+        [ userStores ]
+    );
+    const isReadOnly: boolean = !hasAttributeUpdatePermissions
+        || (isSubOrganization() && configuredUserStoreCount < 1);
 
     const dispatch: ThunkDispatch<AppState, any, any> = useDispatch();
 
@@ -248,10 +255,6 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const { t } = useTranslation();
 
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
-    const {
-        isLoading: isUserStoresLoading,
-        userStoresList
-    } = useUserStores();
 
     const OIDC: string = "oidc";
 
@@ -261,10 +264,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     });
 
     useEffect(() => {
-        if (isLocalClaim(list) && !isUserStoresLoading && userStoresList?.length > 0) {
-            setUserStores(userStoresList);
-        }
-    }, [ JSON.stringify(list), isUserStoresLoading, userStoresList ]);
+        mutateUserStoreList();
+    }, []);
 
     /**
      * This check if the input claim is mapped to attribute from every userstore.

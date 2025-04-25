@@ -59,6 +59,9 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
 
     const userStoreFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userStores);
+    const hiddenUserStoreNames: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
+    const primaryUserStoreDomainName: string = useSelector(
+        (state: AppState) => state?.config?.ui?.primaryUserStoreDomainName);
 
     const hasUserStoresReadPermission: boolean = useRequiredScopes(userStoreFeatureConfig?.scopes?.read);
 
@@ -159,6 +162,16 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
     };
 
     /**
+     * Utility function to check if the user store is hidden.
+     *
+     * @param userStoreName - Name of the user store to be evaluated.
+     * @returns whether the user store is hidden or not.
+     */
+    const isUserStoreHidden = (userStoreName: string): boolean => {
+        return hiddenUserStoreNames.includes(userStoreName.toUpperCase());
+    };
+
+    /**
      * Utility function to mutate the user store list.
      * Since there is a delay in updating user stores,
      * capability to mutate the user store list with a delay is added.
@@ -171,10 +184,51 @@ const UserStoresProvider: FunctionComponent<UserStoresProviderProps> = (
         }, delay);
     };
 
+    const filterUserStores = (
+        includeHiddenUserStores: boolean = false,
+        includeDisabledUserStores: boolean = false,
+        includeReadOnlyUserStores: boolean = true,
+        includePrimaryUserStore: boolean = false
+    ): UserStoreListItem[] => {
+        const filteredUserStores: UserStoreListItem[] = [];
+
+        if (!fetchedUserStores) {
+            return filteredUserStores;
+        }
+
+        if (includePrimaryUserStore
+            && userstoresConfig?.primaryUserstoreName === primaryUserStoreDomainName
+            && shouldFetchPrimaryUserStore
+            && primaryUserStoreDetails) {
+            filteredUserStores.push(primaryUserStoreDetails as unknown as UserStoreListItem);
+        }
+
+        for (const userStore of fetchedUserStores) {
+            if (!includeHiddenUserStores && isUserStoreHidden(userStore.name)) {
+                continue;
+            }
+
+            if (!includeDisabledUserStores && !userStore.enabled) {
+                continue;
+            }
+
+            if (!includeReadOnlyUserStores && isUserStoreReadOnly(userStore.name)) {
+                continue;
+            }
+
+            filteredUserStores.push(userStore);
+        }
+
+        return filteredUserStores;
+    };
+
     return (
         <UserStoresContext.Provider
             value={ {
+                filterUserStores,
+                hiddenUserStoreNamesList: hiddenUserStoreNames,
                 isLoading: isUserStoreGetRequestLoading || !readOnlyUserStoreNames,
+                isUserStoreHidden,
                 isUserStoreReadOnly,
                 mutateUserStoreList,
                 readOnlyUserStoreNamesList: readOnlyUserStoreNames,
