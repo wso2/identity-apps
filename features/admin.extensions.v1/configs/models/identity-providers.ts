@@ -22,12 +22,6 @@ import { ReactElement, ReactNode } from "react";
 
 export interface ExtendedSamlConfigInterface {
     saml2WebSSOUserIdLocationEnabled: boolean;
-    authContextComparisonLevelEnabled: boolean;
-    responseAuthenticationContextClassEnabled: boolean;
-    forceAuthenticationEnabled: boolean;
-    includeAuthenticationContextEnabled: boolean;
-    isAssertionEncryptionEnabled: boolean;
-    includeNameIDPolicyEnabled: boolean;
     enableAssertionSigningEnabled: boolean;
     includePublicCertEnabled: boolean;
 }
