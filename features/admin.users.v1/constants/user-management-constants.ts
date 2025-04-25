@@ -176,6 +176,9 @@ export class UserManagementConstants {
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS"),
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES")
     ];
+
+    public static readonly DISTINCT_ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG: string
+        = "users.distinct.attribute.profiles.for.user.creation";
 }
 
 /**

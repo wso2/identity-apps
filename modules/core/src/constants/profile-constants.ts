@@ -98,7 +98,9 @@ export class ProfileConstants {
         .set("EMAIL_ADDRESSES", "emailAddresses")
         .set("MOBILE_NUMBERS", "mobileNumbers")
         .set("VERIFIED_EMAIL_ADDRESSES", "verifiedEmailAddresses")
-        .set("VERIFIED_MOBILE_NUMBERS", "verifiedMobileNumbers");
+        .set("VERIFIED_MOBILE_NUMBERS", "verifiedMobileNumbers")
+        .set("FIRST_NAME", "name.givenName")
+        .set("LAST_NAME", "name.familyName");
 
     /**
      * States if the SCIM schema is mutable.

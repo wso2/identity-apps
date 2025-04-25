@@ -152,6 +152,7 @@ export interface AddUserWizardStateInterface {
     passwordOption: string;
     groups: GroupsInterface[];
     roles: RolesInterface[];
+    emails?: (EmailsInterface | string | MultiValueAttributeInterface)[];
 }
 
 /**
@@ -166,7 +167,7 @@ export interface EmailsInterface {
  * Captures user details
  */
 export interface UserDetailsInterface {
-    emails: EmailsInterface[];
+    emails: (EmailsInterface | string | MultiValueAttributeInterface)[];
     name?: NameInterface;
     userName: string;
     password?: string;

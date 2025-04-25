@@ -17,6 +17,8 @@
  */
 
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { userConfig } from "@wso2is/admin.extensions.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
@@ -40,10 +42,12 @@ import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2
 import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import intersection from "lodash-es/intersection";
+import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
+import omit from "lodash-es/omit";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddUserUpdated } from "./steps/add-user-basic";
@@ -124,6 +128,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ submitGroupList, setSubmitGroupList ] = useTrigger();
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
@@ -140,6 +146,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ newUserId, setNewUserId ] = useState<string>("");
     const [ submitStep, setSubmitStep ] = useState<WizardStepsFormTypes>(undefined);
     const [ selectedGroupsList, setSelectedGroupList ] = useState<GroupsInterface[]>([]);
+
+    const isDistinctAttributeProfileForUserCreationDisabled: boolean = featureConfig?.users?.disabledFeatures?.includes(
+        UserManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG
+    );
 
     const excludedAttributes: string = "members";
 
@@ -500,6 +510,48 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 },
                 userName: username
             };
+        }
+
+        if (!isDistinctAttributeProfileForUserCreationDisabled) {
+            const combinedUserDetails: UserDetailsInterface = omit({
+                ...userInfo,
+                ...userDetails
+            }, "passwordOption", "newPassword", "userType", "domain", "firstName", "lastName");
+
+            // If email value is not present, use the emails value.
+            if (isEmpty(userInfo?.email) && userInfo?.emails.length > 0) {
+                delete combinedUserDetails.email;
+
+                const primaryEmail: string = userInfo.emails.find((subAttribute: any) =>
+                    typeof subAttribute === "string");
+
+                if (primaryEmail) {
+                    combinedUserDetails.emails = [
+                        {
+                            primary: true,
+                            value: primaryEmail
+                        },
+                        ...userInfo?.emails
+                    ];
+                }
+                else {
+                    // This means that the user has not provided any email value.
+                    // This is an invalid case. Therefore, we need to throw an error.
+                    dispatch(addAlert({
+                        description: t(
+                            "users:notifications.addUser.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "users:notifications.addUser.genericError.message"
+                        )
+                    }));
+
+                    return;
+                }
+            }
+
+            userDetails = { ...combinedUserDetails };
         }
 
         setIsSubmitting(true);
