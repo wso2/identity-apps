@@ -29,18 +29,7 @@ import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } fr
  */
 export const getDefaultLayoutRoutes = (): RouteInterface[] => {
 
-    return [
-        {
-            component: lazy(() => import("../pages/privacy")),
-            exact: true,
-            icon: null,
-            id: "privacy",
-            name: "common:privacy",
-            path: AppConstants.getPaths().get("PRIVACY"),
-            protected: true,
-            showOnSidePanel: false
-        }
-    ];
+    return [];
 };
 
 /**
