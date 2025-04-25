@@ -2036,6 +2036,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         let maxAllowedLimit: number = 0;
 
         const resolvedComponentId: string =  customComponentId ?? `${ componentId }-${ schema.name }-input`;
+        const resolvedLabel: string = schema.name === "profileUrl" ? "Profile Image URL" : fieldName;
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             primaryAttributeValue = primaryValues[EMAIL_ATTRIBUTE];
@@ -2071,7 +2072,13 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
 
         return (
             <div key={ key }>
+                <div className="multi-attribute-label required field" >
+                    <label>
+                        { resolvedLabel }
+                    </label>
+                </div>
                 <Field
+                    className="multi-attribute-field"
                     action={ {
                         icon: "plus",
                         onClick: (event: React.MouseEvent) => {
@@ -2091,7 +2098,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                     disabled={ multiValuedAttributeValues[schema?.name]?.length >= maxAllowedLimit }
                     data-componentid={ resolvedComponentId }
                     name={ schema.name }
-                    label={ schema.name === "profileUrl" ? "Profile Image URL" : fieldName }
                     placeholder={ "Enter your" + " " + fieldName }
                     type="text"
                     value={ multiValuedInputFieldValue[schema.name] }
