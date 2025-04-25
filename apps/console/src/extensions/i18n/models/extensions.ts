@@ -2870,6 +2870,31 @@ export interface Extensions {
                         recoveryOptionHeading: string;
                     },
                     heading: string;
+                };
+                forcedPasswordRecovery: {
+                    form: {
+                        fields: {
+                            enableEmailLinkBasedReset: {
+                                label: string;
+                            },
+                            enableEmailOTPBasedReset: {
+                                label: string;
+                            },
+                            enableSMSOTPBasedReset: {
+                                label: string;
+                            },
+                            expiryTime: {
+                                label: string;
+                                hint: string;
+                                placeholder: string;
+                            }
+                        },
+                        heading: {
+                            label: string;
+                            hint: string;
+                        }
+                        subheading: string;
+                    }
                 }
             };
             accountSecurity: {
@@ -3117,7 +3142,11 @@ export interface Extensions {
                 resetPassword: {
                     changePasswordModal: {
                         emailUnavailableWarning: string;
-                        emailResetWarning: string;
+                        emailResetWarning: {
+                            emailLink: string;
+                            emailOTP: string;
+                            smsOTP: string;
+                        }
                         passwordResetConfigDisabled: string;
                     };
                 };

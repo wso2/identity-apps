@@ -473,6 +473,7 @@ export const claims: ClaimsNS = {
                 label: "Allow multiple values for this attribute",
                 placeholder: "Select a user attribute"
             },
+            multiValuedDisabledHint: "This setting cannot be modified for system claims.",
             multiValuedHint: "Select this option if the attribute can have multiple values.",
             name: {
                 label: "Attribute Display Name",

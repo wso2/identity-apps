@@ -1,5 +1,32 @@
 # @wso2is/i18n
 
+## 2.22.16
+
+### Patch Changes
+
+- [#8098](https://github.com/wso2/identity-apps/pull/8098) [`ad35a9374eb80a5d4556c8922764d507e1613768`](https://github.com/wso2/identity-apps/commit/ad35a9374eb80a5d4556c8922764d507e1613768) Thanks [@savindi7](https://github.com/savindi7)! - Update deprecated feature names.
+
+## 2.22.15
+
+### Patch Changes
+
+- [#8095](https://github.com/wso2/identity-apps/pull/8095) [`1aeb47990369ab1ccb4bc271a078d8115c210fb1`](https://github.com/wso2/identity-apps/commit/1aeb47990369ab1ccb4bc271a078d8115c210fb1) Thanks [@savindi7](https://github.com/savindi7)! - Deprecate configs in Connections.
+
+## 2.22.14
+
+### Patch Changes
+
+- [#8090](https://github.com/wso2/identity-apps/pull/8090) [`e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af`](https://github.com/wso2/identity-apps/commit/e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Disable the multi valued check box for the system claims
+
+## 2.22.13
+
+### Patch Changes
+
+- [#8071](https://github.com/wso2/identity-apps/pull/8071) [`988621e009d2cfb65e7a3200f82eaa7a10fdd716`](https://github.com/wso2/identity-apps/commit/988621e009d2cfb65e7a3200f82eaa7a10fdd716) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Notify users of unverified accounts in MyAccount
+
+- Updated dependencies [[`988621e009d2cfb65e7a3200f82eaa7a10fdd716`](https://github.com/wso2/identity-apps/commit/988621e009d2cfb65e7a3200f82eaa7a10fdd716)]:
+  - @wso2is/core@2.7.4
+
 ## 2.22.12
 
 ### Patch Changes

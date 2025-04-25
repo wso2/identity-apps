@@ -1528,6 +1528,40 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        selfSignUp: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "セルフサインアップ設定の取得エラー"
+                    },
+                    genericError: {
+                        description: "セルフサインアップ設定の取得中にエラーが発生しました。",
+                        message: "問題が発生しました。"
+                    },
+                    success: {
+                        description: "セルフサインアップ設定を正常に取得しました。",
+                        message: "セルフサインアップ設定の取得に成功しました。"
+                    }
+                }
+            }
+        },
+        systemNotificationAlert: {
+            resend: "再送信",
+            selfSignUp: {
+                awaitingAccountConfirmation: "アカウントはまだ有効ではありません。登録されたメールアドレスに有効化（アクティベーション）リンクを送信しました。新しいリンクが必要ですか？",
+                notifications: {
+                    resendError: {
+                        description: "アカウント確認メールの再送信中にエラーが発生しました。",
+                        message: "問題が発生しました。"
+                    },
+                    resendSuccess: {
+                        description: "アカウント確認メールを正常に再送信しました。",
+                        message: "アカウント確認メールの再送信に成功しました。"
+                    }
+                }
+            }
+        },
         "userAvatar": {
             "infoPopover": "この画像は、<1>グラバタールサービスから取得されました。",
             "urlUpdateHeader": "画像URLを入力して、プロフィール画像を設定します"

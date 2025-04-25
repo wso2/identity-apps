@@ -69,6 +69,7 @@ export const common: CommonNS = {
     dangerZone: "අන්තරා කලාපය",
     darkMode: "අඳුරු තේමාව",
     delete: "මකන්න",
+    deprecated: "මෙම වින්‍යාසය අහෝසි කර ඇති අතර අනාගත නිකුතුවකින් ඉවත් කෙරෙනු ඇත.",
     description: "විස්තරය",
     deviceModel: "උපාංග ආකෘතිය",
     disable: "අක්‍රීය",

@@ -1,5 +1,11 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.5.7
+
+### Patch Changes
+
+- [#8086](https://github.com/wso2/identity-apps/pull/8086) [`055774218bd6ee3ff33056d4dc45df7d2a3d2403`](https://github.com/wso2/identity-apps/commit/055774218bd6ee3ff33056d4dc45df7d2a3d2403) Thanks [@brionmario](https://github.com/brionmario)! - Set all the `PRIMARY` buttons inside the form type to `submit`.
+
 ## 0.5.6
 
 ### Patch Changes
