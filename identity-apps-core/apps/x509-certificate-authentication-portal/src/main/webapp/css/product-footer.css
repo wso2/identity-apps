@@ -1,6 +1,5 @@
-.ida-flex {
+.centered-flex-wrap {
     display: flex;
-}
-.ida-flex-wrap {
     flex-wrap: wrap;
+    justify-content: center;
 }
