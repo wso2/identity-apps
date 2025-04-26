@@ -73,7 +73,7 @@
                     <% } %>
                 </a>
             </div>
-            <div class="right menu ida-flex ida-flex-wrap">
+            <div class="right menu centered-flex-wrap">
             <%
                 if (!StringUtils.isBlank(privacyPolicyURL)) {
             %>
