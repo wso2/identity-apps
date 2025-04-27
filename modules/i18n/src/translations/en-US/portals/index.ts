@@ -42,6 +42,7 @@ export * from "./server-configs";
 export * from "./saml2-config";
 export * from "./session-management";
 export * from "./ws-federation-config";
+export * from "./fine-grained-authz-config";
 export * from "./insights";
 export * from "./sms-providers";
 export * from "./claims";

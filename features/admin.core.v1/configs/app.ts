@@ -202,6 +202,7 @@ export class Config {
                 I18nConstants.SAML2_CONFIG_NAMESPACE,
                 I18nConstants.SESSION_MANAGEMENT_NAMESPACE,
                 I18nConstants.WS_FEDERATION_CONFIG_NAMESPACE,
+                I18nConstants.FINE_GRAINED_AUTHZ_NAMESPACE,
                 I18nConstants.INSIGHTS_NAMESPACE,
                 I18nConstants.SMS_PROVIDERS_NAMESPACE,
                 I18nConstants.SMS_TEMPLATES_NAMESPACE,

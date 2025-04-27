@@ -86,10 +86,10 @@ export const FineGrainedAuthzConfigurationPage: FunctionComponent<FineGrainedAut
             fineGrainedAuthzConfigFetchRequestError
         ) {
             dispatch(addAlert({
-                description: t("fineGrainedAuthzConfiguration: notifications." +
+                description: t("fineGrainedAuthzConfig: notifications." +
                     "getConfiguration.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("fineGrainedAuthzConfiguration: notifications." 
+                message: t("fineGrainedAuthzConfig: notifications." 
                     + "getConfiguration.error.message")
             }));
 
@@ -111,10 +111,10 @@ export const FineGrainedAuthzConfigurationPage: FunctionComponent<FineGrainedAut
     const handleUpdateError = () => {
         dispatch(
             addAlert({
-                description: t("fineGrainedAuthzConfiguration:notifications." +
+                description: t("fineGrainedAuthzConfig:notifications." +
                 "updateConfiguration.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("fineGrainedAuthzConfiguration:notifications." +
+                message: t("fineGrainedAuthzConfig:notifications." +
                 "updateConfiguration.error.message")
             })
         );
@@ -126,10 +126,10 @@ export const FineGrainedAuthzConfigurationPage: FunctionComponent<FineGrainedAut
         const handleUpdateSuccess = () => {
             dispatch(
                 addAlert({
-                    description: t("fineGrainedAuthzConfiguration:notifications." +
+                    description: t("fineGrainedAuthzConfig:notifications." +
                     "updateConfiguration.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("fineGrainedAuthzConfiguration:notifications." +
+                    message: t("fineGrainedAuthzConfig:notifications." +
                     "updateConfiguration.success.message")
                 })
             );

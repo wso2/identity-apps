@@ -183,6 +183,11 @@ export class I18nConstants {
     public static readonly WS_FEDERATION_CONFIG_NAMESPACE: string = I18nModuleConstants.WS_FEDERATION_CONFIG_NAMESPACE;
 
     /**
+     * Fine Grained Authorization namespace.
+     */
+    public static readonly FINE_GRAINED_AUTHZ_NAMESPACE: string = I18nModuleConstants.FINE_GRAINED_AUTHZ_NAMESPACE;
+
+    /**
      * insights namespace.
      */
     public static readonly INSIGHTS_NAMESPACE: string = I18nModuleConstants.INSIGHTS_NAMESPACE;
@@ -329,6 +334,7 @@ export class I18nConstants {
         [ I18nConstants.SAML2_CONFIG_NAMESPACE, "portals" ],
         [ I18nConstants.SESSION_MANAGEMENT_NAMESPACE, "portals" ],
         [ I18nConstants.WS_FEDERATION_CONFIG_NAMESPACE, "portals" ],
+        [ I18nConstants.FINE_GRAINED_AUTHZ_NAMESPACE, "portals" ],
         [ I18nConstants.INSIGHTS_NAMESPACE, "portals" ],
         [ I18nConstants.SMS_PROVIDERS_NAMESPACE, "portals" ],
         [ I18nConstants.SMS_TEMPLATES_NAMESPACE, "portals" ],

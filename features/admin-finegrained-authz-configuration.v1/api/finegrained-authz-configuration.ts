@@ -77,7 +77,7 @@ export const updateFineGrainedAuthzConfig = (data: FineGrainedAuthzConfigAPIResp
         url: Config.getServiceResourceEndpoints().fineGrainedAuthzConfigurations
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200 && response.status !== 201) {
                 throw new IdentityAppsApiException(
