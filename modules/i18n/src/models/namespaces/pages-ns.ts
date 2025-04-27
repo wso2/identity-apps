@@ -75,6 +75,10 @@ export interface pagesNS {
         title: string;
         subTitle: string;
     };
+    fineGrainedAuthzConfiguration: {
+        title: string;
+        subTitle: string;
+    };
     organizations: {
         title: string;
         subTitle: string;

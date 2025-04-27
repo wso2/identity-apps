@@ -414,6 +414,8 @@ export class AppConstants {
             [ "OUTBOUND_PROVISIONING_SETTINGS",
                 `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ],
             [ "IMPERSONATION", `${AppConstants.getAdminViewBasePath()}/login-and-registration/impersonation` ],
+            ["FINE_GRAINED_AUTHORIZATION",
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/fine-grained-authorization`],
             [ "ACTIONS",
                 `${AppConstants.getAdminViewBasePath()}/actions` ],
             [ "PRE_ISSUE_ACCESS_TOKEN_EDIT",

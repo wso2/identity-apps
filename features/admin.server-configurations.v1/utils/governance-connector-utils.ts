@@ -432,6 +432,14 @@ export class GovernanceConnectorUtils {
                         status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
                             .LOGIN_AND_REGISTRATION_ORGANIZATION_IMPERSONATION,
                         testId: "impersonation-card"
+                    },
+                    {
+                        description: I18n.instance.t("pages:fineGrainedAuthzConfiguration.subTitle"),
+                        header: I18n.instance.t("pages:fineGrainedAuthzConfiguration.title"),
+                        id: ServerConfigurationsConstants.FINE_GRAINED_AUTHZ,
+                        route: AppConstants.getPaths().get("FINE_GRAINED_AUTHORIZATION"),
+                        status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                            .LOGIN_AND_REGISTRATION_ORGANIZATION_FINE_GRAINED_AUTHZ
                     }
                 ],
                 displayOrder: 0,

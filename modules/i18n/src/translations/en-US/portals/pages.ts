@@ -80,6 +80,10 @@ export const pages: pagesNS = {
         subTitle: "Configure impersonation settings for organization.",
         title: "Impersonation"
     },
+    fineGrainedAuthzConfiguration: {
+        subTitle: "Configure fine-grained authorization for the organization.",
+        title: "Fine Grained Authorization"
+    },
     invite: {
         subTitle: "Invite and manage admins and developers.",
         title: "Admins & Developers"

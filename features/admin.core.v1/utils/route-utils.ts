@@ -325,6 +325,7 @@ export class RouteUtils {
             AppConstants.getPaths().get("IMPERSONATION"),
             AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
             AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
+            AppConstants.getPaths().get("FINE_GRAINED_AUTHORIZATION"),
             AppConstants.getPaths().get("PRIVATE_KEY_JWT_CONFIG_EDIT")
         ];
 
