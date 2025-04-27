@@ -33,8 +33,8 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * * Get Fine Grained Authz configurations.
- * * @returns the Fine Grained Authz configurations of the tenant.
+ * Get Fine Grained Authz configurations.
+ * @returns the Fine Grained Authz configurations of the tenant.
  */
 export const useFineGrainedAuthzConfig = <
     Data = FineGrainedAuthzConfigAPIResponseInterface, Error = RequestErrorInterface
