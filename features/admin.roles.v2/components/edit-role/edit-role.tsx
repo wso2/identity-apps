@@ -97,10 +97,6 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
             || roleObject?.meta?.systemRole;
     }, [ featureConfig, allowedScopes ]);
 
-    const isRolePermissionAssigned = useMemo(() => {
-        return roleObject?.permissions && roleObject.permissions.length > 0;
-    }, [ roleObject ]);
-
     const isUserReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(usersFeatureConfig,
             UserManagementConstants.FEATURE_DICTIONARY.get("USER_CREATE")) ||
@@ -157,7 +153,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RoleGroupsList
-                            isReadOnly={ isReadOnly || isUserReadOnly }
+                            isReadOnly={ isReadOnly }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 2 }
