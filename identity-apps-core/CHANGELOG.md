@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.24.1
+
+### Patch Changes
+
+- [#8106](https://github.com/wso2/identity-apps/pull/8106) [`eb751d0d67c4986a6a3f3c6a38f744efbfcd3c8d`](https://github.com/wso2/identity-apps/commit/eb751d0d67c4986a6a3f3c6a38f744efbfcd3c8d) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Fix left aligned footer after branding.
+
 ## 2.24.0
 
 ### Minor Changes
