@@ -22,7 +22,6 @@
 <%@ page import="java.nio.file.Files, java.nio.file.Paths, java.io.IOException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
-<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
@@ -69,7 +68,6 @@
     String state = request.getParameter("state");
     String code = request.getParameter("code");
     String spId = request.getParameter("spId");
-    String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     
     try {
         byte[] jsonData = Files.readAllBytes(Paths.get(jsonFilePath));
@@ -101,7 +99,6 @@
             console.log("Got recaptcha token:", token);
         };
     </script>
-    <script src="<%=(reCaptchaAPI)%>" async defer></script>
 </head>
 <body class="login-portal layout authentication-portal-layout">
   <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
@@ -176,7 +173,6 @@
                 const registrationFlowApiProxyPath = authPortalURL + "/util/self-registration-api.jsp";
                 const code = "<%= code != null ? code : null %>";
                 const state = "<%= state != null ? state : null %>";
-                const reCaptchaAPI = "<%= reCaptchaAPI %>";
                 
                 const locale = "en-US";
                 const translations = <%= translationsJson %>;
@@ -327,7 +323,7 @@
                             handleFlowRequest: (actionId, formValues) => {
                                 setComponents([]);
                                 localStorage.setItem("actionTrigger", actionId);
-                                c({
+                                setPostBody({
                                     flowId: flowData.flowId,
                                     actionId,
                                     inputs: formValues
