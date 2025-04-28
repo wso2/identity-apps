@@ -2397,7 +2397,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                     )
                 }
                 {
-                    isAttributeProfileForUserCreationEnabled && resolveMobileField()
+                    isAttributeProfileForUserCreationEnabled && profileSchema && resolveMobileField()
                 }
                 {
                     isAttributeProfileForUserCreationEnabled && profileSchema &&
