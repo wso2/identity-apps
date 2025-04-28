@@ -2397,6 +2397,15 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                     )
                 }
                 {
+                    isAttributeProfileForUserCreationEnabled && resolveMobileField()
+                }
+                {
+                    isAttributeProfileForUserCreationEnabled && profileSchema &&
+                    profileSchema.map((schema: ProfileSchemaInterface, index: number) =>
+                        resolveDynamicForm(schema, index)
+                    )
+                }
+                {
                     !hiddenFields.includes(HiddenFieldNames.PASSWORD)
                         ? (
                             <Grid.Row columns={ 1 }>
@@ -2445,15 +2454,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 </Grid.Column>
                             </Grid.Row>
                         ) : null
-                }
-                {
-                    isAttributeProfileForUserCreationEnabled && resolveMobileField()
-                }
-                {
-                    isAttributeProfileForUserCreationEnabled && profileSchema &&
-                    profileSchema.map((schema: ProfileSchemaInterface, index: number) =>
-                        resolveDynamicForm(schema, index)
-                    )
                 }
             </Grid>
         </Forms>
