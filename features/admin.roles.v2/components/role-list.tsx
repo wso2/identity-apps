@@ -103,6 +103,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const isEditingSystemRolesAllowed: boolean =
         useSelector((state: AppState) => state?.config?.ui?.isSystemRolesEditAllowed);
+    const accountAppImpersonateRoleName: string = useSelector(
+        (state: AppState) => state.config.deployment.accountApp.impersonationRoleName);
 
     const isReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(userRolesFeatureConfig,
@@ -318,7 +320,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         RoleConstants.FEATURE_DICTIONARY.get("ROLE_DELETE"))
                     || !hasRequiredScopes(userRolesFeatureConfig,
                         userRolesFeatureConfig?.scopes?.delete, allowedScopes)
-                    || isSharedRole;
+                    || isSharedRole || role?.displayName === accountAppImpersonateRoleName;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
