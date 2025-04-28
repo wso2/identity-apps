@@ -4,6 +4,8 @@
         "homeRealmId": ""
     },
     "accountApp": {
+        "clientID": "MY_ACCOUNT",
+        "impersonationRoleName": "Impersonator",
         "path": "/myaccount/overview"
     },
     "adminApp": {

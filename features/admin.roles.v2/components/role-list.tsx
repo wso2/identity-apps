@@ -319,7 +319,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     || !hasRequiredScopes(userRolesFeatureConfig,
                         userRolesFeatureConfig?.scopes?.delete, allowedScopes)
                     || isSharedRole
-                    || role?.displayName === "impersonate-myaccount";
+                    || role?.displayName === t("user:editUser." +
+                        "userActionZoneGroup.impersonateUserZone.actionTitle");
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
