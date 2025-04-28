@@ -110,7 +110,7 @@
     PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
     boolean isSelfRegistrationLockOnCreationEnabled = preferenceRetrievalClient.checkSelfRegistrationLockOnCreation(tenantDomain);
     String callback = Encode.forHtmlAttribute(request.getParameter("callback"));
-    String backToUrl = callback;
+    String backToUrl = "";
     String sp = Encode.forHtmlAttribute(request.getParameter("sp"));
     String previousStep = Encode.forHtmlAttribute(request.getParameter("previous_step"));
     String username = request.getParameter("username");
@@ -310,14 +310,27 @@
     }
 
     /**
-    * If backToUrl is null get to access url of the application.
+    * If backToUrl is null retrieve access url of the application.
     */
-    if (StringUtils.equalsIgnoreCase(backToUrl,"null")) {
+    if (StringUtils.isBlank(backToUrl)) {
         try {
                 // Retrieve application access url to redirect user back to the application.
                 backToUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
             } catch (Exception e) {
                 backToUrl = null;
+        }
+    }
+
+    /**
+    * Fallback: if the application access URL is unavailable, validate and use the callback URL.
+    */
+    if (StringUtils.isBlank(backToUrl) && StringUtils.isNotBlank(callback)) {
+        try {
+            if (preferenceRetrievalClient.checkIfSelfRegCallbackURLValid(tenantDomain, callback)) {
+                backToUrl = callback;
+            }
+        } catch (PreferenceRetrievalClientException e) {
+            backToUrl = null;
         }
     }
 
