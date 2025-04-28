@@ -32,7 +32,7 @@ export interface AuthenticationTypeDropdownOption {
  */
 export enum AuthenticationType {
     BASIC = "BASIC",
-    CLIENT_CREDENTIAL = "CLIENT CREDENTIAL"
+    CLIENT_CREDENTIAL = "CLIENT_CREDENTIAL"
 }
 
 export class EmailProviderConstants {
@@ -42,6 +42,16 @@ export class EmailProviderConstants {
     public static readonly EMAIL_PROVIDER_CONFIG_NAME: string = "EmailPublisher";
     public static readonly REPLY_TO_ADDRESS_KEY: string = "mail.smtp.replyTo";
     public static readonly SIGNATURE_KEY: string = "mail.smtp.signature";
+    public static readonly USERNAME: string = "userName";
+    public static readonly PASSWORD: string = "password";
+    public static readonly CLIENT_ID: string = "clientId";
+    public static readonly CLIENT_SECRET: string = "clientSecret";
+    public static readonly TOKEN_ENDPOINT: string = "tokenEndpoint";
+    public static readonly SCOPES: string = "scopes";
+    public static readonly AUTHENTICATION_TYPE: string = "authenticationType";
+
+    public static readonly AUTHENTICATION_TYPE_BASIC: string = "BASIC";
+    public static readonly AUTHENTICATION_TYPE_CLIENT_CREDENTIAL: string = "CLIENT_CREDENTIAL";
 
 	public static readonly EMAIL_PROVIDER_CONFIG_FETCH_ERROR_CODE: string = "ASG-EPC-00001";
     public static readonly EMAIL_PROVIDER_CONFIG_FETCH_INVALID_STATUS_CODE_ERROR_CODE: string = "ASG-EPC-00002";

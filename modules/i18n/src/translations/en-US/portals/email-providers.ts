@@ -24,6 +24,7 @@ export const emailProviders: EmailProviderNS = {
             info: {
                 message: "If you are changing the authentication, be aware that the authentication" +
                 " secrets of the external endpoint need to be updated.",
+                title: "<strong>{{ authType }}</strong> authentication scheme is configured."
             },
             label: "Authentication",
             types: {
@@ -56,7 +57,7 @@ export const emailProviders: EmailProviderNS = {
                                 empty: "Token Endpoint is a required field."
                             }
                         },
-                        clientId: {
+                        clientID: {
                             label: "Client ID",
                             placeholder: "Client ID",
                             validations: {
@@ -64,8 +65,15 @@ export const emailProviders: EmailProviderNS = {
                             }
                         },
                         clientSecret: {
-                            label: "CLient Secret",
+                            label: "Client Secret",
                             placeholder: "Client Secret",
+                            validations: {
+                                empty: "Client Secret is a required field."
+                            }
+                        },
+                        scopes: {
+                            label: "Scopes",
+                            placeholder: "Scopes",
                             validations: {
                                 empty: "Client Secret is a required field."
                             }
@@ -79,7 +87,7 @@ export const emailProviders: EmailProviderNS = {
                 create: "Once added, these secrets will not be displayed. You will only be able to reset them.",
                 update: "Once updated, these secrets will not be displayed. You will only be able to reset them again."
             },
-            label: "Authentication Scheme",
+            label: "Authentication",
             placeholder: "Select Authentication Scheme",
             validations: {
                 empty: "Authentication Scheme is a required field."
@@ -87,11 +95,11 @@ export const emailProviders: EmailProviderNS = {
         },
         authenticationTypeDropdown: {
             authProperties: {
-                clientId: {
-                    label: "Client Id",
-                    placeholder: "Client Id",
+                clientID: {
+                    label: "Client ID",
+                    placeholder: "Client ID",
                     validations: {
-                        required: "Client Id is a required field."
+                        required: "Client ID is a required field."
                     }
                 },
                 clientSecret: {
@@ -106,6 +114,13 @@ export const emailProviders: EmailProviderNS = {
                     placeholder: "Token Endpoint",
                     validations: {
                         required: "Token Endpoint is a required field."
+                    }
+                },
+                scopes: {
+                    label: "Scopes",
+                    placeholder: "Scopes",
+                    validations: {
+                        required: "Scopes is a required field."
                     }
                 },
                 password: {
@@ -123,12 +138,15 @@ export const emailProviders: EmailProviderNS = {
                     }
                 }
             },
-            hint: "Once added, these secrets will not be displayed. You will only be able to reset them.",
-            label: "Authentication Type",
-            placeholder: "Select Authentication Type",
-            title: "Authentication Scheme",
+            hint: {
+                create: "Once added, these secrets will not be displayed. You will only be able to reset them.",
+                update: "Once updated, these secrets will not be displayed. You will only be able to reset them again."
+            },
+            label: "Authentication Scheme",
+            placeholder: "Select Authentication Scheme",
+            title: "Authentication",
             validations: {
-                required: "Authentication Type is a required field."
+                required: "Authentication Scheme is a required field."
             }
         }
     }

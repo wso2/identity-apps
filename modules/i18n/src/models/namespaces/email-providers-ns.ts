@@ -21,6 +21,7 @@ export interface EmailProviderNS {
         authentication: {
             info: {
                 message: string;
+                title: string;
             };
             label: string;
             types: {
@@ -34,7 +35,7 @@ export interface EmailProviderNS {
                                 empty: string
                             };
                         };
-                        clientId: {
+                        clientID: {
                             label: string;
                             placeholder: string;
                             validations: {
@@ -42,6 +43,13 @@ export interface EmailProviderNS {
                             };
                         };
                         clientSecret: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string
+                            };
+                        };
+                        scopes: {
                             label: string;
                             placeholder: string;
                             validations: {
@@ -87,7 +95,10 @@ export interface EmailProviderNS {
             title: string;
             label: string;
             placeholder: string;
-            hint: string;
+            hint: {
+                create: string;
+                update: string;
+            };
             authProperties: {
                 username: {
                     label: string;
@@ -103,7 +114,7 @@ export interface EmailProviderNS {
                         required: string;
                     };
                 };
-                clientId: {
+                clientID: {
                     label: string;
                     placeholder: string;
                     validations: {
@@ -118,6 +129,13 @@ export interface EmailProviderNS {
                     };
                 };
                 tokenEndpoint: {
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+                scopes: {
                     label: string;
                     placeholder: string;
                     validations: {

@@ -17,7 +17,10 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
+import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Box from "@oxygen-ui/react/Box";
+import Alert from "@oxygen-ui/react/Alert";
+import Button from "@oxygen-ui/react/Button";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -41,6 +44,7 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
+import { Hint } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     MutableRefObject,
@@ -52,7 +56,7 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, DropdownProps, Grid, Placeholder, Ref, Icon } from "semantic-ui-react";
+import { Divider, Grid, Placeholder, Ref, Icon } from "semantic-ui-react";
 import { deleteEmailProviderConfigurations, updateEmailProviderConfigurations, useEmailProviderConfig } from "../api";
 import { 
     AuthenticationTypeDropdownOption,
@@ -66,6 +70,7 @@ import {
     EmailProviderConfigPropertiesInterface,
     EmailProvidersPageInterface
 } from "../models";
+import { FormApi } from "final-form";
 
 const FORM_ID: string = "email-provider-config-form";
 
@@ -91,6 +96,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
 
     const pageContextRef : MutableRefObject<HTMLElement> = useRef(null);
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
+    const formState: MutableRefObject<FormApi> = useRef<FormApi>(null);
 
     const hasEmailTemplatesReadPermissions: boolean =  useRequiredScopes(featureConfig?.emailTemplates?.scopes?.read);
     const hasEmailProviderUpdatePermissions: boolean = useRequiredScopes(featureConfig?.emailProviders?.scopes?.update);
@@ -100,6 +106,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
     const [ emailProviderConfig , setEmailProviderConfig ] =
         useState<EmailProviderConfigFormValuesInterface>(undefined);
     const [ isOpenRevertConfigModal, setOpenRevertConfigModal ] = useState<boolean>(false);
+    const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
 
     const {
         data: originalEmailProviderConfig,
@@ -140,15 +147,13 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             setEmailProviderConfig({
                 displayName: displayNameProperty?.value,
                 fromAddress: originalEmailProviderConfig[0].fromAddress,
-                password: originalEmailProviderConfig[0].password,
                 replyToAddress: replyToProperty?.value,
                 smtpPort: originalEmailProviderConfig[0].smtpPort,
                 smtpServerHost: originalEmailProviderConfig[0].smtpServerHost,
-                userName: originalEmailProviderConfig[0].userName
+                authType: originalEmailProviderConfig[0].authType
             });
         }
     }, [ originalEmailProviderConfig ]);
-
 
     const renderInputAdornmentOfSecret = (showSecret: boolean, onClick: () => void): ReactElement => (
         <InputAdornment position="end">
@@ -164,11 +169,89 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
         </InputAdornment>
     );
 
-    /**
-     * This method renders property fields of each endpoint authentication type.
-     *
-     * @returns property fields of the selected authentication type.
-     */
+    const handleAuthenticationChange = (): void => {
+        handleDropdownChange(AuthenticationType.BASIC);
+        setIsAuthenticationUpdateFormState(true);
+    };
+
+    const handleAuthenticationChangeCancel = (): void => {
+        setIsAuthenticationUpdateFormState(false);
+        if (formState.current) {
+            formState.current.change("userName", "");
+            formState.current.change("password", "");
+            formState.current.change("clientId", "");
+            formState.current.change("clientSecret", "");
+            formState.current.change("tokenEndpoint", "");
+            formState.current.change("scopes", "");
+        }
+    };
+
+    const renderAuthenticationSectionInfoBox = (): ReactElement => {
+        const resolveAuthTypeDisplayName = (): string => {
+            if (originalEmailProviderConfig[0]) {
+                switch (originalEmailProviderConfig[0].authType) {
+                    case AuthenticationType.BASIC:
+                        return t("emailProviders:fields.authentication.types.basic.name");
+                    case AuthenticationType.CLIENT_CREDENTIAL:
+                        console.log("client credential");
+                        return t("emailProviders:fields.authentication.types.client_credential.name");
+                    default:
+                        return;
+                }
+            }
+        };
+
+        return (
+            <Alert className="alert-nutral" icon={ false }>
+                <AlertTitle
+                    className="alert-title"
+                    data-componentid={ `${componentId}-authentication-info-box-title` }
+                >
+                    <Trans
+                        i18nKey={
+                                t("actions:fields.authentication.info.title.otherAuthType",
+                                    { authType: resolveAuthTypeDisplayName() } )
+                        }
+                        components={ { strong: <strong/> } }
+                    />
+                </AlertTitle>
+                <Trans
+                    i18nKey={ t("actions:fields.authentication.info.message") }
+                >
+                    If you are changing the authentication, be aware that the authentication secrets of
+                    the external endpoint need to be updated.
+                </Trans>
+                <div>
+                    <Button
+                        onClick={ handleAuthenticationChange }
+                        variant="outlined"
+                        size="small"
+                        className={ "secondary-button" }
+                        data-componentid={ `${ componentId }-change-authentication-button` }
+                    >
+                        { t("actions:buttons.changeAuthentication") }
+                    </Button>
+                </div>
+            </Alert>
+        );
+    };
+
+    const showAuthSecretsHint = (): ReactElement => {
+        if (originalEmailProviderConfig[0]) {
+            return (
+                <Hint className="hint-text" compact>
+                    { t("emailProviders:fields.authenticationTypeDropdown.hint.update") }
+                </Hint>
+            );
+        } else {
+            return (
+                <Hint className="hint-text" compact>
+                    { t("emailProviders:fields.authenticationTypeDropdown.hint.create") }
+                </Hint>
+            );
+        }
+    };
+
     const renderEndpointAuthPropertyFields = (): ReactElement => {
         switch (endpointAuthType) {
             case AuthenticationType.BASIC:
@@ -177,7 +260,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                         <Field.Input
                             ariaLabel="username"
                             className="addon-field-wrapper"
-                            name="usernameAuthProperty"
+                            name="userName"
                             label={ t(
                                 "emailProviders:fields.authenticationTypeDropdown.authProperties.username.label"
                             ) }
@@ -195,7 +278,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                             maxLength={ 100 }
                             minLength={ 0 }
                             data-componentid={ `${componentId}-endpoint-authentication-property-username` }
-                            width={ 15 }
+                            width={ 16 }
                         />
                         <Field.Input
                             ariaLabel="password"
@@ -206,7 +289,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                             placeholder={ t(
                                 "emailProviders:fields.authenticationTypeDropdown.authProperties.password.placeholder"
                             ) }
-                            name="passwordAuthProperty"
+                            name="password"
                             inputType="password"
                             type={ showSecondarySecret ? "text" : "password" }
                             InputProps={ {
@@ -218,7 +301,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                             maxLength={ 100 }
                             minLength={ 0 }
                             data-componentid={ `${componentId}-endpoint-authentication-property-password` }
-                            width={ 15 }
+                            width={ 16 }
                         />
                     </>
                 );
@@ -226,9 +309,9 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                 return (
                     <>
                         <Field.Input
-                            ariaLabel="clientId"
+                            ariaLabel="clientID"
                             className="addon-field-wrapper"
-                            name="clientIdProperty"
+                            name="clientId"
                             inputType="password"
                             type={ showPrimarySecret ? "text" : "password" }
                             InputProps={ {
@@ -237,21 +320,21 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                 )
                             } }
                             label={ t(
-                                "emailProviders:fields.authenticationTypeDropdown.authProperties.clientId.label"
+                                "emailProviders:fields.authenticationTypeDropdown.authProperties.clientID.label"
                             ) }
                             placeholder={ t(
-                                "emailProviders:fields.authenticationTypeDropdown.authProperties.clientId.placeholder"
+                                "emailProviders:fields.authenticationTypeDropdown.authProperties.clientID.placeholder"
                             ) }
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
                             data-componentid={ `${componentId}-endpoint-authentication-property-value` }
-                            width={ 15 }
+                            width={ 16 }
                         />
                         <Field.Input
                             ariaLabel="clientSecret"
                             className="addon-field-wrapper"
-                            name="clientSecretProperty"
+                            name="clientSecret"
                             inputType="password"
                             type={ showSecondarySecret ? "text" : "password" }
                             InputProps={ {
@@ -269,19 +352,13 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                             maxLength={ 100 }
                             minLength={ 0 }
                             data-componentid={ `${componentId}-endpoint-authentication-property-value` }
-                            width={ 15 }
+                            width={ 16 }
                         />
                         <Field.Input
-                            ariaLabel="value"
-                            className="addon-field-wrapper"
-                            name="tokenEndpointProperty"
+                            ariaLabel="tokenEndpoint"
+                            name="tokenEndpoint"
                             inputType="text"
                             type={ "text" }
-                            InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(showSecondarySecret, () =>
-                                    setShowSecondarySecret(!showSecondarySecret)
-                                )
-                            } }
                             label={ t(
                                 "emailProviders:fields.authenticationTypeDropdown.authProperties.tokenEndpoint.label"
                             ) }
@@ -292,7 +369,24 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                             maxLength={ 100 }
                             minLength={ 0 }
                             data-componentid={ `${componentId}-endpoint-authentication-property-value` }
-                            width={ 15 }
+                            width={ 16 }
+                        />
+                        <Field.Input
+                            ariaLabel="scopes"
+                            name="scopes"
+                            inputType="text"
+                            type={ "text" }
+                            label={ t(
+                                "emailProviders:fields.authenticationTypeDropdown.authProperties.scopes.label"
+                            ) }
+                            placeholder={ t(
+                                "emailProviders:fields.authenticationTypeDropdown.authProperties.scopes.placeholder"
+                            ) }
+                            required={ true }
+                            maxLength={ 100 }
+                            minLength={ 0 }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-value` }
+                            width={ 16 }
                         />
                     </>
                 );
@@ -300,15 +394,14 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                 break;
         }
     };
-
+    
     /**
      * This method handles authentication type dropdown changes.
      *
-     * @param event - event associated with the dropdown change.
-     * @param data - data changed by the event
+     * @param value - The selected value.
      */
-    const handleDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
-        setEndpointAuthType(data.value as AuthenticationType);
+    const handleDropdownChange = (value: string) => {
+        setEndpointAuthType(value as AuthenticationType);
     };
 
     /**
@@ -396,16 +489,9 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             name: EmailProviderConstants.EMAIL_PROVIDER_CONFIG_NAME,
             properties: [],
             smtpPort: values?.smtpPort,
-            smtpServerHost: values?.smtpServerHost
+            smtpServerHost: values?.smtpServerHost,
+            authType: values?.authType
         };
-
-        if (values.userName) {
-            updateValues.userName = values.userName;
-        }
-
-        if (values.password) {
-            updateValues.password = values.password;
-        }
 
         if (values.replyToAddress) {
             updateValues?.properties?.push({
@@ -418,6 +504,36 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             updateValues?.properties?.push({
                 key: EmailProviderConstants.SIGNATURE_KEY,
                 value: values.displayName
+            });
+        }
+
+        if (values.authType === AuthenticationType.BASIC) {
+            updateValues?.properties?.push({
+                key: EmailProviderConstants.USERNAME,
+                value: values.userName
+            });
+            updateValues?.properties?.push({
+                key: EmailProviderConstants.PASSWORD,
+                value: values.password
+            });
+        }
+
+        if (values.authType === AuthenticationType.CLIENT_CREDENTIAL) {
+            updateValues?.properties?.push({
+                key: EmailProviderConstants.CLIENT_ID,
+                value: values.clientId
+            });
+            updateValues?.properties?.push({
+                key: EmailProviderConstants.CLIENT_SECRET,
+                value: values.clientSecret
+            });
+            updateValues?.properties?.push({
+                key: EmailProviderConstants.TOKEN_ENDPOINT,
+                value: values.tokenEndpoint
+            });
+            updateValues?.properties?.push({
+                key: EmailProviderConstants.SCOPES,
+                value: values.scopes
             });
         }
 
@@ -485,7 +601,12 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             replyToAddress: undefined,
             smtpPort: undefined,
             smtpServerHost: undefined,
-            userName: undefined
+            userName: undefined,
+            authType: undefined,
+            clientId: undefined,   
+            clientSecret: undefined,
+            tokenEndpoint: undefined,
+            scopes: undefined
         };
 
         if (!values?.fromAddress) {
@@ -508,18 +629,6 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
 
         if (!values?.replyToAddress) {
             error.replyToAddress = t(
-                "extensions:develop.emailProviders.form.validations.required"
-            );
-        }
-
-        if (!values?.userName) {
-            error.userName = t(
-                "extensions:develop.emailProviders.form.validations.required"
-            );
-        }
-
-        if (!values?.password) {
-            error.password = t(
                 "extensions:develop.emailProviders.form.validations.required"
             );
         }
@@ -549,6 +658,52 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             );
         }
 
+        if (!values?.authType && !(values?.authType === AuthenticationType.BASIC || 
+            values?.authType === AuthenticationType.CLIENT_CREDENTIAL)) {
+            error.authType = t( 
+                "extensions:develop.emailProviders.form.validations.required"
+            )
+        }
+
+        if (values?.authType === AuthenticationType.BASIC) {
+            if (!values?.userName) {
+                error.userName = t(
+                    "extensions:develop.emailProviders.form.validations.required"
+                );
+            }
+
+            if (!values?.password) {
+                error.password = t(
+                    "extensions:develop.emailProviders.form.validations.required"
+                );
+            }
+        }
+        
+        if (values?.authType === AuthenticationType.CLIENT_CREDENTIAL) {
+            if (!values?.clientId) {
+                error.clientId = t(
+                    "extensions:develop.emailProviders.form.validations.required"
+                );
+            }
+
+            if (!values?.clientSecret) {
+                error.clientSecret = t(
+                    "extensions:develop.emailProviders.form.validations.required"
+                );
+            }
+
+            if (!values?.tokenEndpoint) {
+                error.tokenEndpoint = t(
+                    "extensions:develop.emailProviders.form.validations.required"
+                );
+            }
+
+            if (!values?.scopes) {
+                error.scopes = t(
+                    "extensions:develop.emailProviders.form.validations.required"
+                );
+            }
+        }
         return error;
     };
 
@@ -652,6 +807,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                 noValidate={ true }
                                                 validate={ validateForm }
                                                 autoComplete="new-password"
+                                                formState={ formState }
                                             >
                                                 <Grid>
                                                     { /* To be added with email template feature
@@ -808,59 +964,6 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                             />
                                                         </Grid.Column>
                                                     </Grid.Row>
-                                                    {/* <Grid.Row columns={ 2 } key={ 3 }>
-                                                        <Grid.Column key="userName">
-                                                            <Field.Input
-                                                                ariaLabel="Username Field"
-                                                                inputType="default"
-                                                                name="userName"
-                                                                label={ t("extensions:develop.emailProviders.form" +
-                                                                    ".userName.label") }
-                                                                placeholder={
-                                                                    t("extensions:develop.emailProviders.form" +
-                                                                    ".userName.placeholder")
-                                                                }
-                                                                hint={ t("extensions:develop.emailProviders.form" +
-                                                                    ".userName.hint") }
-                                                                required={ true }
-                                                                value={ emailProviderConfig?.userName }
-                                                                readOnly={ !hasEmailProviderUpdatePermissions }
-                                                                maxLength={ EmailProviderConstants
-                                                                    .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
-                                                                minLength={ EmailProviderConstants
-                                                                    .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
-                                                                width={ 16 }
-                                                                data-componentid={ `${componentId}-smtp-username` }
-                                                                autoComplete="new-password"
-                                                            />
-                                                        </Grid.Column>
-                                                        <Grid.Column key="password">
-                                                            <Field.Input
-                                                                ariaLabel="Password Field"
-                                                                inputType="password"
-                                                                type="password"
-                                                                name="password"
-                                                                label={ t("extensions:develop.emailProviders.form" +
-                                                                    ".password.label") }
-                                                                placeholder={
-                                                                    t("extensions:develop.emailProviders.form" +
-                                                                    ".password.placeholder")
-                                                                }
-                                                                hint={ t("extensions:develop.emailProviders.form" +
-                                                                    ".password.hint") }
-                                                                required={ true }
-                                                                value={ emailProviderConfig?.password }
-                                                                readOnly={ !hasEmailProviderUpdatePermissions }
-                                                                maxLength={ EmailProviderConstants
-                                                                    .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
-                                                                minLength={ EmailProviderConstants
-                                                                    .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
-                                                                width={ 16 }
-                                                                data-componentid={ `${componentId}-smtp-password` }
-                                                                autoComplete="new-password"
-                                                            />
-                                                        </Grid.Column>
-                                                    </Grid.Row> */}
                                                     <Grid.Row columns={ 2 } key={ 3 }>
                                                         <Grid.Column key="displayName">
                                                             <Field.Input
@@ -889,44 +992,61 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                         </Grid.Column>
                                                     </Grid.Row>
                                                 </Grid>
+                                                <Divider className="divider-container" />
+                                                <Heading className="heading-container" as="h5">
+                                                    { t("emailProviders:fields.authenticationTypeDropdown.title") }
+                                                </Heading>
 
-            <Divider className="divider-container" />
-            <Heading className="heading-container" as="h5">
-                { t("emailProviders:fields.authenticationTypeDropdown.title") }
-            </Heading>
-            <Box className="box-container">
-                <Field.Dropdown
-                    ariaLabel="authenticationType"
-                    name="authenticationType"
-                    label={ t(
-                        "emailProviders:fields.authenticationTypeDropdown.label"
-                    ) }
-                    placeholder={ t(
-                        "emailProviders:fields.authenticationTypeDropdown.placeholder"
-                    ) }
-                    // hint={ t(
-                    //     "emailProviders:fields.authenticationTypeDropdown.hint"
-                    // ) }
-                    required={ true }
-                    value={ endpointAuthType }
-                    options={ [
-                        ...EmailProviderConstants.AUTH_TYPES.map((option: AuthenticationTypeDropdownOption) => ({
-                            text: t(option.text),
-                            value: option.value.toString()
-                        }))
-                    ] }
-                    onChange={ handleDropdownChange }
-                    enableReinitialize={ true }
-                    data-componentid={ `${componentId}-create-wizard-endpoint-authentication-dropdown` }
-                    width={ 15 }
-                />
-                <div className="box-field">{ renderEndpointAuthPropertyFields() }</div>
-            </Box>
+                                                {(!originalEmailProviderConfig[0] || isAuthenticationUpdateFormState) && (
+                                                    <Box className="box-container">
+                                                        <div className="box-field">
+                                                            <Field.Dropdown
+                                                                ariaLabel="authType"
+                                                                name="authType"
+                                                                label={ t(
+                                                                    "emailProviders:fields.authenticationTypeDropdown.label"
+                                                                ) }
+                                                                placeholder={ t(
+                                                                    "emailProviders:fields.authenticationTypeDropdown.placeholder"
+                                                                ) }
+                                                                displayEmpty={ true }
+                                                                required={ true }
+                                                                value={ endpointAuthType }
+                                                                options={ [
+                                                                    ...EmailProviderConstants.AUTH_TYPES.map((option: AuthenticationTypeDropdownOption) => ({
+                                                                        text: t(option.text),
+                                                                        value: option.value.toString()
+                                                                    }))
+                                                                ] }
+                                                                listen={ handleDropdownChange }
+                                                                enableReinitialize={ true }
+                                                                data-componentid={ `${componentId}-create-wizard-endpoint-authentication-dropdown` }
+                                                                width={ 16 }
+                                                            />
+                                                            { showAuthSecretsHint() }
+
+                                                            { renderEndpointAuthPropertyFields() }
+                                                            
+                                                            {isAuthenticationUpdateFormState && (
+                                                                <Button
+                                                                    onClick={ handleAuthenticationChangeCancel }
+                                                                    variant="outlined"
+                                                                    size="small"
+                                                                    className="secondary-button"
+                                                                    data-componentid={ `${componentId}-cancel-edit-authentication-button` }
+                                                                >
+                                                                    { t("actions:buttons.cancel") }
+                                                                </Button>
+                                                            )}
+                                                        </div>
+                                                    </Box>
+                                                )}
+                                             
+                                    {((originalEmailProviderConfig[0]) && !isAuthenticationUpdateFormState) &&  renderAuthenticationSectionInfoBox()}
                                             </Form>
                                             {
                                                 hasEmailProviderUpdatePermissions && (
                                                     <>
-                                                        <Divider hidden />
                                                         <Grid.Row columns={ 1 } className="mt-6">
                                                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                                 <PrimaryButton
@@ -991,6 +1111,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                     setIsSubmitting(false);
                                                     setOpenRevertConfigModal(false);
                                                 });
+                                                setIsAuthenticationUpdateFormState(false);
                                             } }
                                             closeOnDimmerClick={ false }
                                         >
