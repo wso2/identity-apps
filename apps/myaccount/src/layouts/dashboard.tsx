@@ -96,6 +96,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>();
     const [ showAnnouncement, setShowAnnouncement ] = useState<boolean>(true);
     const [ dashboardLayoutRoutes, setDashboardLayoutRoutes ] = useState<RouteInterface[]>(getDashboardLayoutRoutes());
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
     useEffect(() => {
         const localeCookie: string = CookieStorageUtils.getItem("ui_lang");
@@ -161,15 +162,24 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
         }
 
         const routes: RouteInterface[] = getDashboardLayoutRoutes().filter((route: RouteInterface) => {
-            if (route.path === AppConstants.getPaths().get("APPLICATIONS") && !isApplicationsPageVisible) {
-                return false;
+
+            if (allowedScopes.includes("internal_user_impersonate")) {
+                if (route.path === "/") {
+                    route.redirectTo = AppConstants.getPaths().get("APPLICATIONS");
+                } else if (route.path != AppConstants.getPaths().get("APPLICATIONS")) {
+                    return false;
+                }
+            } else {
+                if (route.path === AppConstants.getPaths().get("APPLICATIONS") && !isApplicationsPageVisible) {
+                    return false;
+                }
             }
 
             return route;
         });
 
         setDashboardLayoutRoutes(filterRoutes(routes, config.ui?.features));
-    }, [ AppConstants.getTenantQualifiedAppBasename(), config, isApplicationsPageVisible ]);
+    }, [ AppConstants.getTenantQualifiedAppBasename(), config, isApplicationsPageVisible, allowedScopes ]);
 
     /**
      * On location change, update the selected route.
