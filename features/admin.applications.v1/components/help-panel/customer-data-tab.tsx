@@ -42,7 +42,8 @@ const CustomerDataTabPane = ({
         } catch (error) {
             console.error("Failed to fetch new write key:", error);
         } finally {
-            setIsLoading(false);
+            setIsLoading(false);  
+            // 👈 Ensure loading state is reset after fetching
         }
     };
 
