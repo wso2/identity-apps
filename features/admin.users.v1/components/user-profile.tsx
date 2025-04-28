@@ -162,7 +162,7 @@ interface UserProfilePropsInterface extends TestableComponentInterface {
      */
     editUserDisclaimerMessage?: ReactNode;
     /**
-     * Admin user typeisLoading: isAuthenticatedUserFetchRequestLoading
+     * Admin user type
      */
     adminUserType?: string;
     /**

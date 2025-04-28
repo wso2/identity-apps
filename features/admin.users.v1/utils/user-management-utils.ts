@@ -98,15 +98,15 @@ export class UserManagementUtils {
     /**
      * Generates code challange for code verifier.
      *
-     * @param plain - The code verifier.
+     * @param codeVerifier - The code verifier.
      * @returns A generated code challange.
      */
-    public static sha256 = async (plain: string) => {
+    public static getCodeChallangeForTheVerifier = async (codeVerifier: string) => {
         const encoder: TextEncoder = new TextEncoder();
-        const data: Uint8Array = encoder.encode(plain);
-        const hash: ArrayBuffer = await window.crypto.subtle.digest("SHA-256", data);
+        const encodedCodeVerifier: Uint8Array = encoder.encode(codeVerifier);
+        const hashedCodeVerifier: ArrayBuffer = await window.crypto.subtle.digest("SHA-256", encodedCodeVerifier);
 
-        return btoa(String.fromCharCode(...new Uint8Array(hash)))
+        return btoa(String.fromCharCode(...new Uint8Array(hashedCodeVerifier)))
             .replace(/\+/g, "-")
             .replace(/\//g, "_")
             .replace(/=+$/, "");

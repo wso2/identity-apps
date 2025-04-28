@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,7 @@ export interface DangerZoneGroupProps extends TestableComponentInterface, Identi
     /**
      * Danger zone section heading.
      */
-    sectionHeader: string;
+    sectionHeader?: string;
     /**
      * Danger zone style class name.
      */
@@ -52,10 +52,10 @@ export const DangerZoneGroup: FunctionComponent<PropsWithChildren<DangerZoneGrou
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
-    const defaultClassName = className ? className : "danger-zone";
+    const defaultClassName = className ?? "danger-zone";
 
     return (
-        <div className= { className ? className : defaultClassName + "-wrapper" }>
+        <div className= { (className ?? defaultClassName) + "-wrapper" }>
             <Header
                 as="h5"
                 className="bold-text"

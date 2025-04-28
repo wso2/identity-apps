@@ -184,6 +184,9 @@ export class ApplicationManagementConstants {
     public static readonly UMA_TICKET: string = "urn:ietf:params:oauth:grant-type:uma-ticket";
     public static readonly DEVICE_GRANT: string = "urn:ietf:params:oauth:grant-type:device_code";
     public static readonly OAUTH2_TOKEN_EXCHANGE: string = "urn:ietf:params:oauth:grant-type:token-exchange";
+    public static readonly TOKEN_TYPE_ACCESS_TOKEN: string = "urn:ietf:params:oauth:token-type:access_token";
+    public static readonly TOKEN_TYPE_JWT_TOKEN: string = "urn:ietf:params:oauth:token-type:jwt";
+    public static readonly TOKEN_TYPE_ID_TOKEN: string = "urn:ietf:params:oauth:token-type:id_token";
     public static readonly ACCOUNT_SWITCH_GRANT: string = "account_switch";
     public static readonly CODE_TOKEN: string = "code token";
     public static readonly CODE_IDTOKEN: string = "code id_token";
