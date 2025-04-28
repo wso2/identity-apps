@@ -222,157 +222,6 @@ export interface ConsoleNS {
                 };
             };
         };
-        privacy: {
-            about: {
-                description: string;
-                heading: string;
-            };
-            privacyPolicy: {
-                collectionOfPersonalInfo: {
-                    description: {
-                        list1: {
-                            0: string;
-                            1: string;
-                            2: string;
-                        };
-                        para1: string;
-                    };
-                    heading: string;
-                    trackingTechnologies: {
-                        description: {
-                            list1: {
-                                0: string;
-                                1: string;
-                                2: string;
-                                3: string;
-                            };
-                            para1: string;
-                        };
-                        heading: string;
-                    };
-                };
-                description: {
-                    para1: string;
-                    para2: string;
-                    para3: string;
-                };
-                disclaimer: {
-                    description: {
-                        list1: {
-                            0: string;
-                            1: string;
-                        };
-                    };
-                    heading: string;
-                };
-                disclosureOfPersonalInfo: {
-                    description: string;
-                    heading: string;
-                    legalProcess: {
-                        description: string;
-                        heading: string;
-                    };
-                };
-                heading: string;
-                moreInfo: {
-                    changesToPolicy: {
-                        description: {
-                            para1: string;
-                            para2: string;
-                        };
-                        heading: string;
-                    };
-                    contactUs: {
-                        description: {
-                            para1: string;
-                        };
-                        heading: string;
-                    };
-                    heading: string;
-                    yourChoices: {
-                        description: {
-                            para1: string;
-                            para2: string;
-                        };
-                        heading: string;
-                    };
-                };
-                storageOfPersonalInfo: {
-                    heading: string;
-                    howLong: {
-                        description: {
-                            list1: {
-                                0: string;
-                                1: string;
-                            };
-                            para1: string;
-                            para2: string;
-                        };
-                        heading: string;
-                    };
-                    requestRemoval: {
-                        description: {
-                            para1: string;
-                            para2: string;
-                        };
-                        heading: string;
-                    };
-                    where: {
-                        description: {
-                            para1: string;
-                            para2: string;
-                        };
-                        heading: string;
-                    };
-                };
-                useOfPersonalInfo: {
-                    description: {
-                        list1: {
-                            0: string;
-                            1: string;
-                            2: string;
-                        };
-                        para1: string;
-                        para2: string;
-                        subList1: {
-                            heading: string;
-                            list: {
-                                0: string;
-                                1: string;
-                                2: string;
-                            };
-                        };
-                        subList2: {
-                            heading: string;
-                            list: {
-                                0: string;
-                                1: string;
-                            };
-                        };
-                    };
-                    heading: string;
-                };
-                whatIsPersonalInfo: {
-                    description: {
-                        list1: {
-                            0: string;
-                            1: string;
-                            2: string;
-                            3: string;
-                        };
-                        list2: {
-                            0: string;
-                            1: string;
-                            2: string;
-                            3: string;
-                        };
-                        para1: string;
-                        para2: string;
-                    };
-                    heading: string;
-                };
-            };
-        };
         quickStart: {
             greeting: {
                 alternativeHeading: string;
@@ -1376,6 +1225,9 @@ export interface ConsoleNS {
                         };
                     };
                     certificateSection: {
+                        heading: string;
+                        description: string;
+                        info: string;
                         certificateEditSwitch: {
                             jwks: string;
                             pem: string;
@@ -6502,6 +6354,19 @@ export interface ConsoleNS {
                     title: string;
                     pageTitle: string;
                     description: string;
+                    descriptionWithLogType: string;
+                    backButtonText: string;
+                    testButtonText: string;
+                    logTypes: {
+                        audit: {
+                            name: string;
+                            description: string;
+                        };
+                        diagnostics: {
+                            name: string;
+                            description: string;
+                        }
+                    };
                     fields: {
                         logTypes: {
                             label: string;
@@ -6513,11 +6378,28 @@ export interface ConsoleNS {
                         };
                         remoteURL: {
                             label: string;
+                            placeholder: string;
+                            error: {
+                                required: string;
+                                invalid: string;
+                            };
+                        };
+                        publishInterval: {
+                            label: string;
+                            placeholder: string;
+                            error: {
+                                required: string;
+                                invalid: string;
+                            };
                         };
                         advanced: {
                             title: string;
                             connectionTimeout: {
                                 label: string;
+                                placeholder: string;
+                                error: {
+                                    invalid: string;
+                                };
                             };
                             verifyHostname: {
                                 label: string;
@@ -6526,9 +6408,11 @@ export interface ConsoleNS {
                                 title: string;
                                 serverUsername: {
                                     label: string;
+                                    placeholder: string;
                                 };
                                 serverPassword: {
                                     label: string;
+                                    placeholder: string;
                                 };
                             };
                             sslConfig: {

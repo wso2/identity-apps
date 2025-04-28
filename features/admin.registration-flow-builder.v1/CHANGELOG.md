@@ -1,5 +1,54 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.5.7
+
+### Patch Changes
+
+- [#8086](https://github.com/wso2/identity-apps/pull/8086) [`055774218bd6ee3ff33056d4dc45df7d2a3d2403`](https://github.com/wso2/identity-apps/commit/055774218bd6ee3ff33056d4dc45df7d2a3d2403) Thanks [@brionmario](https://github.com/brionmario)! - Set all the `PRIMARY` buttons inside the form type to `submit`.
+
+## 0.5.6
+
+### Patch Changes
+
+- [#8042](https://github.com/wso2/identity-apps/pull/8042) [`7a7541c1c12150815af396417c4318e402f15cb2`](https://github.com/wso2/identity-apps/commit/7a7541c1c12150815af396417c4318e402f15cb2) Thanks [@brionmario](https://github.com/brionmario)! - Fix dnd issues in the sortable
+
+- Updated dependencies [[`f93070869e72ecdd12393fc3a46fd9a13eaf56f3`](https://github.com/wso2/identity-apps/commit/f93070869e72ecdd12393fc3a46fd9a13eaf56f3), [`7a7541c1c12150815af396417c4318e402f15cb2`](https://github.com/wso2/identity-apps/commit/7a7541c1c12150815af396417c4318e402f15cb2)]:
+  - @wso2is/admin.core.v1@2.43.4
+  - @wso2is/admin.flow-builder-core.v1@0.4.5
+
+## 0.5.5
+
+### Patch Changes
+
+- [#8003](https://github.com/wso2/identity-apps/pull/8003) [`beb66226b10a981b51dcd1494219fe5c223185df`](https://github.com/wso2/identity-apps/commit/beb66226b10a981b51dcd1494219fe5c223185df) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve registration AI loading screen
+
+- Updated dependencies [[`beb66226b10a981b51dcd1494219fe5c223185df`](https://github.com/wso2/identity-apps/commit/beb66226b10a981b51dcd1494219fe5c223185df)]:
+  - @wso2is/common.ai.v1@2.27.2
+
+## 0.5.4
+
+### Patch Changes
+
+- [#7937](https://github.com/wso2/identity-apps/pull/7937) [`89d7a7a45270f553eed7a1cd48559d9e67a80915`](https://github.com/wso2/identity-apps/commit/89d7a7a45270f553eed7a1cd48559d9e67a80915) Thanks [@brionmario](https://github.com/brionmario)! - Fix edge generation issues in AI flows on refresh
+
+## 0.5.3
+
+### Patch Changes
+
+- [#7912](https://github.com/wso2/identity-apps/pull/7912) [`431e4c6310b8d3cc80eb21fe377bdecaf1cf5148`](https://github.com/wso2/identity-apps/commit/431e4c6310b8d3cc80eb21fe377bdecaf1cf5148) Thanks [@brionmario](https://github.com/brionmario)! - Fix action type selection issues
+
+- Updated dependencies [[`431e4c6310b8d3cc80eb21fe377bdecaf1cf5148`](https://github.com/wso2/identity-apps/commit/431e4c6310b8d3cc80eb21fe377bdecaf1cf5148)]:
+  - @wso2is/admin.flow-builder-core.v1@0.4.2
+
+## 0.5.2
+
+### Patch Changes
+
+- [#7903](https://github.com/wso2/identity-apps/pull/7903) [`d6b9e16942e72fb36d6be9e4e8b0c06f20269848`](https://github.com/wso2/identity-apps/commit/d6b9e16942e72fb36d6be9e4e8b0c06f20269848) Thanks [@brionmario](https://github.com/brionmario)! - Fix minor issues
+
+- Updated dependencies [[`d6b9e16942e72fb36d6be9e4e8b0c06f20269848`](https://github.com/wso2/identity-apps/commit/d6b9e16942e72fb36d6be9e4e8b0c06f20269848)]:
+  - @wso2is/admin.flow-builder-core.v1@0.4.1
+
 ## 0.5.1
 
 ### Patch Changes

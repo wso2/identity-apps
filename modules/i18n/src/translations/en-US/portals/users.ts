@@ -84,6 +84,12 @@ export const users: usersNS = {
                 "session. They will loose the progress of any ongoing tasks. Please proceed with caution.",
             header: "Are you sure?",
             message: "This action is irreversible and will permanently terminate the session."
+        },
+        unassignGroup: {
+            assertionHint: "Please confirm your action.",
+            content: "If you proceed with this action, the user will be unassigned from the selected group. " +
+                "Note that this may affect the user when performing certain tasks.",
+            header: "Are you sure?"
         }
     },
     consumerUsers: {

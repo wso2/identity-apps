@@ -1,5 +1,33 @@
 # @wso2is/admin.logs.v1
 
+## 1.6.2
+
+### Patch Changes
+
+- [#8022](https://github.com/wso2/identity-apps/pull/8022) [`daafbd3f4f87ca806cdbf84c3d0f2330f50abd60`](https://github.com/wso2/identity-apps/commit/daafbd3f4f87ca806cdbf84c3d0f2330f50abd60) Thanks [@Avarjana](https://github.com/Avarjana)! - Fix bug in remote log publish form
+
+- Updated dependencies [[`f2e6bfadec1e4ef53cc1c713b1285b0c6b3bfaa5`](https://github.com/wso2/identity-apps/commit/f2e6bfadec1e4ef53cc1c713b1285b0c6b3bfaa5)]:
+  - @wso2is/i18n@2.22.8
+
+## 1.6.1
+
+### Patch Changes
+
+- [#7989](https://github.com/wso2/identity-apps/pull/7989) [`27ce9546324f2edbf8d9282831a16d3863a64223`](https://github.com/wso2/identity-apps/commit/27ce9546324f2edbf8d9282831a16d3863a64223) Thanks [@Avarjana](https://github.com/Avarjana)! - Fix form submit logic in Remote Log Publish
+
+## 1.6.0
+
+### Minor Changes
+
+- [#7782](https://github.com/wso2/identity-apps/pull/7782) [`1314db3d54db923ab2974d33557a13af1e5c61ab`](https://github.com/wso2/identity-apps/commit/1314db3d54db923ab2974d33557a13af1e5c61ab) Thanks [@Avarjana](https://github.com/Avarjana)! - Introduce remote log publish feature
+
+### Patch Changes
+
+- Updated dependencies [[`1314db3d54db923ab2974d33557a13af1e5c61ab`](https://github.com/wso2/identity-apps/commit/1314db3d54db923ab2974d33557a13af1e5c61ab)]:
+  - @wso2is/admin.core.v1@2.43.2
+  - @wso2is/admin.feature-gate.v1@1.6.1
+  - @wso2is/i18n@2.22.7
+
 ## 1.5.204
 
 ### Patch Changes

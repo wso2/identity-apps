@@ -1,5 +1,55 @@
 # @wso2is/myaccount
 
+## 2.19.7
+
+### Patch Changes
+
+- [#8080](https://github.com/wso2/identity-apps/pull/8080) [`54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b`](https://github.com/wso2/identity-apps/commit/54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b) Thanks [@hwupathum](https://github.com/hwupathum)! - Remove in-app privacy pages in Console & My Account
+
+- Updated dependencies [[`54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b`](https://github.com/wso2/identity-apps/commit/54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b)]:
+  - @wso2is/i18n@2.22.17
+
+## 2.19.6
+
+### Patch Changes
+
+- [#8085](https://github.com/wso2/identity-apps/pull/8085) [`85a377b991db3cde146c56bb5d37c56bb8efff36`](https://github.com/wso2/identity-apps/commit/85a377b991db3cde146c56bb5d37c56bb8efff36) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Remove base64 encoding for push discovery data in QR code
+
+* [#8071](https://github.com/wso2/identity-apps/pull/8071) [`988621e009d2cfb65e7a3200f82eaa7a10fdd716`](https://github.com/wso2/identity-apps/commit/988621e009d2cfb65e7a3200f82eaa7a10fdd716) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Notify users of unverified accounts in MyAccount
+
+* Updated dependencies [[`988621e009d2cfb65e7a3200f82eaa7a10fdd716`](https://github.com/wso2/identity-apps/commit/988621e009d2cfb65e7a3200f82eaa7a10fdd716)]:
+  - @wso2is/core@2.7.4
+  - @wso2is/i18n@2.22.13
+
+## 2.19.5
+
+### Patch Changes
+
+- [#8038](https://github.com/wso2/identity-apps/pull/8038) [`f44217d609d530a8588ffcc0c2684569852e7c35`](https://github.com/wso2/identity-apps/commit/f44217d609d530a8588ffcc0c2684569852e7c35) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Support custom multi valued attributes and complex attributes in myaccount
+
+- Updated dependencies [[`f44217d609d530a8588ffcc0c2684569852e7c35`](https://github.com/wso2/identity-apps/commit/f44217d609d530a8588ffcc0c2684569852e7c35)]:
+  - @wso2is/i18n@2.22.9
+
+## 2.19.4
+
+### Patch Changes
+
+- [#8006](https://github.com/wso2/identity-apps/pull/8006) [`83edb4cd6bd35342dfc94d5c6e9a994b489e117c`](https://github.com/wso2/identity-apps/commit/83edb4cd6bd35342dfc94d5c6e9a994b489e117c) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - [development] Update webpack rewrite logic to facilitate pre-auth in myaccount local development
+
+* [#8010](https://github.com/wso2/identity-apps/pull/8010) [`549c16c3f48ed28b4d1c72513887d45046edb45c`](https://github.com/wso2/identity-apps/commit/549c16c3f48ed28b4d1c72513887d45046edb45c) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Redirect to central server when access my account with super tenant path
+
+## 2.19.3
+
+### Patch Changes
+
+- [#7936](https://github.com/wso2/identity-apps/pull/7936) [`8c77be8232c791ea1badaa04ee40ec8b35b5edb6`](https://github.com/wso2/identity-apps/commit/8c77be8232c791ea1badaa04ee40ec8b35b5edb6) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Add global configuration and support configurations in authentication and recovery portals to show/hide cookie consent banner
+
+## 2.19.2
+
+### Patch Changes
+
+- [#7944](https://github.com/wso2/identity-apps/pull/7944) [`31a39f054c4ae66f9688ca9fc8fd2446b50b1499`](https://github.com/wso2/identity-apps/commit/31a39f054c4ae66f9688ca9fc8fd2446b50b1499) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add functionality to conditionally execute the head-script
+
 ## 2.19.1
 
 ### Patch Changes

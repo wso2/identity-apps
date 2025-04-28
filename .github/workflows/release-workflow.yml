@@ -25,13 +25,7 @@ on:
         branches: [ master ]
         paths-ignore:
             - "LICENSE"
-        workflow_dispatch:
-
-permissions:
-    contents: write
-    issues: write
-    pull-requests: write
-    packages: write
+    workflow_dispatch:
 
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
@@ -167,11 +161,6 @@ jobs:
                   key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
                   restore-keys: |
                       ${{ runner.os }}-maven-
-
-            - name: 🔍 Check GitHub API Rate Limit
-              id: check-rate-limit
-              run: |
-                curl -s -H "Authorization: token ${{ env.GH_TOKEN }}" https://api.github.com/rate_limit | jq .
 
             - name: 📣 Create Release Pull Request or Publish to npm
               if: ${{ env.SHOULD_GENERATE_CHANGESET == 'true' }}

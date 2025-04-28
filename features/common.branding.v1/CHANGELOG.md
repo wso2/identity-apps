@@ -1,5 +1,11 @@
 # @wso2is/common.branding.v1
 
+## 2.27.0
+
+### Minor Changes
+
+- [#7901](https://github.com/wso2/identity-apps/pull/7901) [`d7eb376080cc93f307ce6f57b680d0cdd7d9fad5`](https://github.com/wso2/identity-apps/commit/d7eb376080cc93f307ce6f57b680d0cdd7d9fad5) Thanks [@Malith-19](https://github.com/Malith-19)! - Add password recovery email otp support.
+
 ## 2.26.60
 
 ### Patch Changes

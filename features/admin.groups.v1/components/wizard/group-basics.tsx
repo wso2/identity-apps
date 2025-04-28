@@ -16,21 +16,19 @@
  * under the License.
  */
 
-import { UserStoreDetails } from "@wso2is/admin.core.v1/models/user-store";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
+import { useUserStoreRegEx } from "@wso2is/admin.userstores.v1/api/use-get-user-store-regex";
 import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
-import { UserStoreDropdownItem, UserStoreListItem, UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
+import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { StringUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { searchGroupList } from "../../api/groups";
@@ -71,13 +69,17 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
         userStoresList
     } = useUserStores();
 
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
-
-    const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
     const [ basicDetails, setBasicDetails ] = useState<any>(null);
 
     const groupName: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
+
+    const {
+        data: userStoreRegEx,
+        isLoading: isUserStoreRegExLoading
+    } = useUserStoreRegEx(
+        userStore,
+        USERSTORE_REGEX_PROPERTIES.RolenameRegEx
+    );
 
     const userStoreOptions: UserStoreDropdownItem[] = useMemo(() => {
         const storeOptions: UserStoreDropdownItem[] = [
@@ -130,42 +132,6 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
         const domain: string = values?.get("domain")?.toString();
 
         setUserStore(domain);
-    };
-
-    /**
-     * The following function validates role name against the user store regEx.
-     */
-    const validateGroupNamePattern = async (): Promise<string> => {
-
-        let userStoreRegEx: string = "";
-
-        if (userStore && !StringUtils.isEqualCaseInsensitive(userStore, primaryUserStoreDomainName)) {
-            await SharedUserStoreUtils.getUserStoreRegEx(userStore,
-                USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
-                .then((response: string) => {
-                    setRegExLoading(true);
-                    userStoreRegEx = response;
-                });
-        } else {
-            await SharedUserStoreUtils.getPrimaryUserStore().then((response: void | UserStoreDetails) => {
-                setRegExLoading(true);
-                if (response && response.properties) {
-                    userStoreRegEx = response?.properties?.filter((property: UserStoreProperty) => {
-                        return property.name === USERSTORE_REGEX_PROPERTIES.RolenameRegEx;
-                    })[ 0 ].value;
-                }
-            });
-        }
-
-        setRegExLoading(false);
-
-        return new Promise((resolve: (value: string) => void, reject: (reason: string) => void) => {
-            if (userStoreRegEx !== "") {
-                resolve(userStoreRegEx);
-            } else {
-                reject("");
-            }
-        });
     };
 
     /**
@@ -230,22 +196,19 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                 "roleBasicDetails.roleName.validations.empty", { type: "Group" }) }
                             validation={ async (value: string, validation: Validation) => {
                                 let isGroupNameValid: boolean = true;
-                                let userstoreRegex: string = "";
 
-                                await validateGroupNamePattern().then((regex: string) => {
-                                    userstoreRegex = regex;
-                                    isGroupNameValid = SharedUserStoreUtils.validateInputAgainstRegEx(value, regex);
-                                });
+                                isGroupNameValid = SharedUserStoreUtils
+                                    .validateInputAgainstRegEx(value, userStoreRegEx);
 
                                 if (!isGroupNameValid) {
                                     validation.isValid = false;
-                                    if (userstoreRegex === groupConfig.defaultUserstoreRegex) {
+                                    if (userStoreRegEx === groupConfig.defaultUserstoreRegex) {
                                         // If the userstore regex is the default regex, show the default error message.
                                         validation.errorMessages.push(t(groupConfig?.groupPrimaryUserstoreRegexHint));
                                     } else {
                                         // If the userstore regex is a custom regex, show the custom regex.
                                         validation.errorMessages.push(t("groups:groupCreateWizard" +
-                                            ".groupNameRegexCustomHint", { regex: userstoreRegex }));;
+                                            ".groupNameRegexCustomHint", { regex: userStoreRegEx }));;
                                     }
                                 }
 
@@ -277,7 +240,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
                             } }
                             value={  initialValues?.basicDetails?.groupName }
-                            loading={ isRegExLoading }
+                            loading={ isUserStoreRegExLoading }
                         />
                         <Hint>
                             { t(groupConfig?.groupPrimaryUserstoreRegexHint) }

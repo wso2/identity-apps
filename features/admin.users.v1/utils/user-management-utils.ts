@@ -467,3 +467,12 @@ export const resolveUserSearchAttributes = (
 
     return searchAttributes;
 };
+
+/**
+ * Generates a comma-separated string of non-empty attributes from the given iterator.
+ *
+ * @param attributeIterator - An iterator that provides string attributes.
+ * @returns The comma-separated string of non-empty attribute values.
+ */
+export const generateAttributesString = (attributeIterator: IterableIterator<string>) =>
+    Array.from(attributeIterator).filter((attr: string) => attr !== "").join(",");

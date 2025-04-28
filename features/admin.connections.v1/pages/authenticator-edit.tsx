@@ -26,7 +26,7 @@ import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import { ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import ExtensionTemplatesProvider from "@wso2is/admin.template-core.v1/provider/extension-templates-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AppAvatar,
@@ -53,7 +53,8 @@ import { CustomAuthConnectionInterface } from "../models/connection";
 /**
  * Proptypes for the Custom Local Authenticator edit page component.
  */
-type AuthenticatorEditPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps;
+type AuthenticatorEditPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps &
+    TestableComponentInterface;
 
 /**
  * Custom Local Authenticator Edit page.
@@ -64,7 +65,8 @@ type AuthenticatorEditPagePropsInterface = IdentifiableComponentInterface & Rout
  */
 export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPagePropsInterface> = ({
     location,
-    "data-componentid": _componentId = "authenticator-edit-page"
+    "data-componentid": componentId = "authenticator-edit-page",
+    "data-testid": testId = "authenticator-edit-page"
 }: AuthenticatorEditPagePropsInterface): ReactElement => {
     const dispatch: Dispatch = useDispatch();
 
@@ -361,20 +363,21 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
                 description={ resolveAuthenticatorDescription(connector) }
                 image={ resolveConnectorImage(connector) }
                 backButton={ {
-                    "data-componentid": `${_componentId}-page-back-button`,
+                    "data-componentid": `${componentId}-back-button`,
                     onClick: handleBackButtonClick,
                     text: t("console:develop.pages.authenticationProviderTemplate.backButton")
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }
-                data-componentid={ `${_componentId}-page-layout` }
+                data-componentid={ `${componentId}-page-layout` }
             >
                 <EditConnection
                     identityProvider={ connector }
                     isLoading={ isConnectorDetailsFetchRequestLoading }
                     onDelete={ handleIdentityProviderDelete }
                     onUpdate={ handleAuthenticatorUpdate }
-                    data-componentid={ _componentId }
+                    data-componentid={ componentId }
+                    data-testid={ testId }
                     template={ template }
                     type={ templateId }
                     isReadOnly={ isReadOnly }

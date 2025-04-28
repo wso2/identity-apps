@@ -16,6 +16,8 @@
   ~ under the License.
 --%>
 
+<%@ page import="org.apache.commons.httpclient.HttpURL" %>
+<%@ page import="org.apache.commons.httpclient.HttpsURL" %>
 <%@ page import="org.apache.cxf.jaxrs.client.JAXRSClientFactory" %>
 <%@ page import="org.apache.cxf.jaxrs.provider.json.JSONProvider" %>
 <%@ page import="org.apache.cxf.jaxrs.client.WebClient" %>
@@ -577,7 +579,11 @@
                 int serverPort = request.getServerPort();
                 String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
                 String prmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
-                urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
+                if ((scheme == "http" && serverPort == HttpURL.DEFAULT_PORT) || (scheme == "https" && serverPort == HttpsURL.DEFAULT_PORT)) {
+                    urlWithoutEncoding = scheme + "://" + serverName + uri + "?" + prmstr;
+                } else {
+                    urlWithoutEncoding = scheme + "://" + serverName + ":" + serverPort + uri + "?" + prmstr;
+                }
             }
             urlWithoutEncoding = IdentityManagementEndpointUtil.replaceUserTenantHintPlaceholder(
                     urlWithoutEncoding, userTenantDomain);

@@ -1,5 +1,11 @@
 # @wso2is/admin.administration.v1
 
+## 1.4.1
+
+### Patch Changes
+
+- [#8000](https://github.com/wso2/identity-apps/pull/8000) [`99a079f023375040cb40085709b1d010fdd1ee8d`](https://github.com/wso2/identity-apps/commit/99a079f023375040cb40085709b1d010fdd1ee8d) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - "Fix my account redirection url with central deployment"
+
 ## 1.4.0
 
 ### Minor Changes

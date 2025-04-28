@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,8 +17,8 @@
  */
 
 import Collapse from "@mui/material/Collapse";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     shareApplication,
     stopSharingApplication,
@@ -618,6 +618,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                                     </Message>
                                 ) }
                                 <TransferComponent
+                                    bordered={ false }
                                     className="pl-2"
                                     disabled={ shareType !== ShareType.SHARE_SELECTED }
                                     selectionComponent

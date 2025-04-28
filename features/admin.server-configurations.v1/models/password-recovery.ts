@@ -58,9 +58,13 @@ export interface PasswordRecoveryFormValuesInterface {
      */
     notifySuccess: boolean;
     /**
-     * Whether email based recovery is enabled.
+     * Whether email link based recovery is enabled.
      */
-    enableEmailBasedRecovery: boolean;
+    enableEmailLinkBasedRecovery: boolean;
+    /**
+     * Whether email OTP based recovery is enabled.
+     */
+    enableEmailOtpBasedRecovery: boolean;
     /**
      * Whether SMS based recovery is enabled.
      */
@@ -132,6 +136,10 @@ export interface PasswordRecoveryFormUpdatableConfigsInterface {
      */
     "Recovery.Notification.Password.emailLink.Enable": boolean;
     /**
+     * Enable email OTP based recovery.
+     */
+    "Recovery.Notification.Password.OTP.SendOTPInEmail": boolean;
+    /**
      * Expire time for the SMS OTP.
      */
     "Recovery.Notification.Password.ExpiryTime.smsOtp": number;
@@ -167,4 +175,9 @@ export interface PasswordRecoveryFormUpdatableConfigsInterface {
      * Notify user on successful password recovery.
      */
     "Recovery.NotifySuccess": boolean;
+}
+
+export enum EmailRecoveryOption {
+    EMAIL_OTP = "emailOTP",
+    EMAIL_LINK = "emailLink"
 }

@@ -169,6 +169,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                      description: values.get("description")?.toString(),
                      displayName: values.get("name").toString(),
                      displayOrder: values.get("displayOrder") ? parseInt(values.get("displayOrder")?.toString()) : 0,
+                     multiValued: values.get("multiValued")?.length > 0,
                      readOnly: values.get("readOnly")?.length > 0,
                      regEx: values.get("regularExpression")?.toString(),
                      required: values.get("required")?.length > 0,
@@ -221,8 +222,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                         loading={ validateMapping }
                                         listen={ (values: Map<string, FormValue>) => {
                                             setClaimID(values.get("claimURI").toString());
-                                            setOidcMapping(values.get("claimURI").toString().replace(/\./g,""));
-                                            setScimMapping(values.get("claimURI").toString().replace(/\./g,""));
+                                            setOidcMapping(values.get("claimURI").toString());
+                                            setScimMapping(values.get("claimURI").toString());
                                             setIsScimMappingRemoved(false);
                                         } }
                                         onMouseOver={ () => {
@@ -241,7 +242,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                             let isAttributeValid: boolean = true;
 
                                             // TODO : Discuss on max characters for attribute name
-                                            if (!value.match(/^\w+$/) || value.length > 30) {
+                                            if (!value.match(/^\w+(\.\w+)?$/) || value.length > 30) {
                                                 isAttributeValid = false;
                                             }
 
@@ -352,9 +353,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                         </Grid.Column>
                                                         <Grid.Column width={ 11 }>
                                                             <InlineEditInput
-                                                                maxLength={ 30 }
+                                                                maxLength={ 50 }
                                                                 text={ oidcMapping }
-                                                                validation="^[A-za-z0-9#_]+$"
                                                                 errorHandler={ (status: boolean) => {
                                                                     setShowOIDCMappingError(status);
                                                                 } }

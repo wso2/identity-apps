@@ -474,7 +474,7 @@
                 "enabled": {% if console.ai.enabled is defined %} {{ console.ai.enabled }},
                     {% else %}
                         {% if ai_services.key is defined and ai_services.key|length > 0 %} true,
-                        {% else %} false,                     
+                        {% else %} false,
                         {% endif %}
                 {% endif %}
                 "scopes": {
@@ -2022,8 +2022,10 @@
         {% if console.ui.is_feature_gate_enabled is defined %}
         "isFeatureGateEnabled": {{ console.ui.is_feature_gate_enabled }},
         {% endif %}
-        {% if console.ui.is_cookie_consent_banner_enabled is defined %}
-        "isCookieConsentBannerEnabled": {{ console.ui.is_cookie_consent_banner_enabled }},
+        {% set cookie_consent = console.ui.is_cookie_consent_banner_enabled if console.ui.is_cookie_consent_banner_enabled is defined
+            else ui.is_cookie_consent_banner_enabled %}
+        {% if cookie_consent is defined %}
+        "isCookieConsentBannerEnabled": {{ cookie_consent }},
         {% endif %}
         {% if console.ui.cookie_policy_url is defined %}
         "cookiePolicyUrl": "{{ console.ui.cookie_policy_url }}",

@@ -17,6 +17,8 @@
  */
 
 import { useCallback, useState } from "react";
+import { DEFAULT_ALPHANUMERIC_REGEX, DEFAULT_EMAIL_REGEX } from "../constants/validation-constants";
+import { validateWithRegex } from "../utils/validation-utils";
 
 /**
  * A custom hook for validating form fields using a flexible “rules” approach.
@@ -173,6 +175,22 @@ const useFieldValidation = (validationConfig) => {
                 break;
             }
 
+            case "EmailFormatValidator": {
+                if (!validateWithRegex(value, DEFAULT_EMAIL_REGEX)) {
+                    return "Must use a valid email address.";
+                }
+
+                break;
+            }
+
+            case "AlphanumericValidator": {
+                if (!validateWithRegex(value, DEFAULT_ALPHANUMERIC_REGEX)) {
+                    return "Must contain only alphanumeric characters.";
+                }
+
+                break;
+            }
+
             default:
                 return null;
         }
@@ -193,13 +211,11 @@ const useFieldValidation = (validationConfig) => {
 
         const validations = validationConfig || [];
 
-        for (const validation of validations) {
-            for (const rule of validation) {
-                const error = validateRule(rule, value, compareValue);
+        for (const rule of validations) {
+            const error = validateRule(rule, value, compareValue);
 
-                if (error) {
-                    validationErrors.push(error);
-                }
+            if (error) {
+                validationErrors.push(error);
             }
         }
 

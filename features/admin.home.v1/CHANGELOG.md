@@ -1,5 +1,20 @@
 # @wso2is/admin.home.v1
 
+## 1.7.2
+
+### Patch Changes
+
+- [#7928](https://github.com/wso2/identity-apps/pull/7928) [`81785d68f11ffad8547312e786ad2d7d71b235b6`](https://github.com/wso2/identity-apps/commit/81785d68f11ffad8547312e786ad2d7d71b235b6) Thanks [@brionmario](https://github.com/brionmario)! - Update banner illustration
+
+## 1.7.1
+
+### Patch Changes
+
+- [#7903](https://github.com/wso2/identity-apps/pull/7903) [`d6b9e16942e72fb36d6be9e4e8b0c06f20269848`](https://github.com/wso2/identity-apps/commit/d6b9e16942e72fb36d6be9e4e8b0c06f20269848) Thanks [@brionmario](https://github.com/brionmario)! - Fix minor issues
+
+- Updated dependencies [[`d6b9e16942e72fb36d6be9e4e8b0c06f20269848`](https://github.com/wso2/identity-apps/commit/d6b9e16942e72fb36d6be9e4e8b0c06f20269848)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.5.2
+
 ## 1.7.0
 
 ### Minor Changes

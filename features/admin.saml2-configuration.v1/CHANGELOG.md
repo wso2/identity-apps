@@ -1,5 +1,11 @@
 # @wso2is/admin.saml2-configuration.v1
 
+## 2.25.204
+
+### Patch Changes
+
+- [#7964](https://github.com/wso2/identity-apps/pull/7964) [`b786b83ec4778f8298997587f89c9de8d5605006`](https://github.com/wso2/identity-apps/commit/b786b83ec4778f8298997587f89c9de8d5605006) Thanks [@savindi7](https://github.com/savindi7)! - Fix null check in Gov Connectors.
+
 ## 2.25.203
 
 ### Patch Changes

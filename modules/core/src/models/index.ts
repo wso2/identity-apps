@@ -27,7 +27,6 @@ export * from "./reducer-state";
 export * from "./roles";
 export * from "./route";
 export * from "./storage";
-export * from "./tenants";
 export * from "./ua-parser";
 export * from "./userstores";
 export * from "./url-components";

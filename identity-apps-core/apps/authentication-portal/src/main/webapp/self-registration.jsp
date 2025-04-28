@@ -22,6 +22,7 @@
 <%@ page import="java.nio.file.Files, java.nio.file.Paths, java.io.IOException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.SelfRegistrationMgtClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
@@ -47,11 +48,27 @@
 %>
 
 <%
+    String accessedURL = request.getRequestURL().toString();
+    String servletPath = request.getServletPath();
+    String contextPath = request.getContextPath();
+    String subPath = servletPath + contextPath;
+    String baseURL = accessedURL.substring(0, accessedURL.length() - subPath.length());
+    String authenticationPortalURL = baseURL + contextPath;
+    
+    if (tenantDomain != null 
+        && !tenantDomain.isEmpty()
+        && !tenantDomain.equalsIgnoreCase(IdentityManagementEndpointConstants.SUPER_TENANT)) {
+        authenticationPortalURL = baseURL + "/t/" + tenantDomain + contextPath;
+    } 
+%>
+
+<%
     String local = "en-US";
     String jsonFilePath = application.getRealPath("/i18n/translations/" + local + ".json");
     String translationsJson = "{}";
     String state = request.getParameter("state");
     String code = request.getParameter("code");
+    String spId = request.getParameter("spId");
     
     try {
         byte[] jsonData = Files.readAllBytes(Paths.get(jsonFilePath));
@@ -125,6 +142,8 @@
     <script src="${pageContext.request.contextPath}/libs/react/react.production.min.js"></script>
     <script src="${pageContext.request.contextPath}/libs/react/react-dom.production.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/react-ui-core.min.js"></script>
+    <script type="text/javascript" src="js/error-utils.js"></script>
+    <script type="text/javascript" src="js/constants.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -143,8 +162,10 @@
 
             const Content = () => {
                 const baseUrl = "<%= identityServerEndpointContextParam %>";
+                const authenticationEndpoint = baseUrl + "${pageContext.request.contextPath}";
                 const defaultMyAccountUrl = "<%= myaccountUrl %>";
-                const apiUrl = baseUrl + "${pageContext.request.contextPath}/util/self-registration-api.jsp";
+                const authPortalURL = "<%= authenticationPortalURL %>";
+                const registrationFlowApiProxyPath = authPortalURL + "/util/self-registration-api.jsp";
                 const code = "<%= code != null ? code : null %>";
                 const state = "<%= state != null ? state : null %>";
                 
@@ -156,15 +177,15 @@
                 const [ loading, setLoading ] = useState(true);
                 const [ error, setError ] = useState(null);
                 const [ postBody, setPostBody ] = useState(undefined);
+                const [ flowError, setFlowError ] = useState(undefined);
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
-                    const actionTrigger = localStorage.getItem("actionTrigger");
 
                     if (code !== "null" && state !== "null") {
                         setPostBody({
                             flowId: savedFlowId,
-                            actionId: actionTrigger,
+                            actionId: "",
                             inputs: { 
                                 code,
                                 state 
@@ -183,7 +204,7 @@
                     if (!postBody) return;
                     setLoading(true);
 
-                    fetch(apiUrl, {
+                    fetch(registrationFlowApiProxyPath, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(postBody)
@@ -226,6 +247,21 @@
                     .finally(() => setLoading(false));
                 }, [ postBody ]);
 
+                useEffect(() => {
+                    if (error && error.code) {
+                        const errorDetails = getI18nKeyForError(error.code);
+                        const errorPageURL = authPortalURL + "/registration_error.do?" + "ERROR_MSG="
+                            + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
+                            + "<%= spId %>" + "&" + "REG_PORTAL_URL=" + authPortalURL + "/register.do";
+                        
+                        window.location.href = errorPageURL;
+                    }
+
+                    if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error) {
+                        setFlowError(flowData.data.additionalData.error);
+                    }
+                }, [ error, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
+
                 const handleFlowStatus = (flow) => {
                     if (!flow) return false;
 
@@ -262,14 +298,6 @@
                     }
                 };
 
-                if (error) {
-                    return createElement(
-                        "div",
-                        { className: "ui visible negative message" },
-                        "An error occurred while processing the registration flow. Please try again later."
-                    );
-                }
-
                 if (loading || (!components || components.length === 0)) {
                     return createElement(
                         "div",
@@ -296,7 +324,7 @@
                                     inputs: formValues
                                 });
                             },
-                            error: flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error
+                            error: flowError
                         }
                     )
                 );

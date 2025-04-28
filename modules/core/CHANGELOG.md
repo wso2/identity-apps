@@ -1,5 +1,29 @@
 # @wso2is/core
 
+## 2.7.4
+
+### Patch Changes
+
+- [#8071](https://github.com/wso2/identity-apps/pull/8071) [`988621e009d2cfb65e7a3200f82eaa7a10fdd716`](https://github.com/wso2/identity-apps/commit/988621e009d2cfb65e7a3200f82eaa7a10fdd716) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Notify users of unverified accounts in MyAccount
+
+## 2.7.3
+
+### Patch Changes
+
+- [#7968](https://github.com/wso2/identity-apps/pull/7968) [`43bde29076aefa01ee70595cb7d63588034d750e`](https://github.com/wso2/identity-apps/commit/43bde29076aefa01ee70595cb7d63588034d750e) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Provide first class support to configure claims as multi valued
+
+## 2.7.2
+
+### Patch Changes
+
+- [#8027](https://github.com/wso2/identity-apps/pull/8027) [`913fa68968a319095b93afaa24e8f71a1a7642a6`](https://github.com/wso2/identity-apps/commit/913fa68968a319095b93afaa24e8f71a1a7642a6) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Support multivalued attributes in console user profile
+
+## 2.7.1
+
+### Patch Changes
+
+- [#7942](https://github.com/wso2/identity-apps/pull/7942) [`35e540cbc7983691a759254f9c647cd126c37092`](https://github.com/wso2/identity-apps/commit/35e540cbc7983691a759254f9c647cd126c37092) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix organization dropdown searching issue
+
 ## 2.7.0
 
 ### Minor Changes

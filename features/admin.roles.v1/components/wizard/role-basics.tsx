@@ -17,16 +17,15 @@
  */
 
 import { SharedUserStoreConstants } from "@wso2is/admin.core.v1/constants/user-store-constants";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
+import { useUserStoreRegEx } from "@wso2is/admin.userstores.v1/api/use-get-user-store-regex";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { StringUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
+import { userstoresConfig } from "../../../admin.extensions.v1";
 import { searchRoleList } from "../../api/roles";
 import { CreateRoleFormData, SearchRoleInterface } from "../../models/roles";
 
@@ -57,33 +56,22 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
     const { t } = useTranslation();
 
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
-
     const [ isRoleNamePatternValid, setIsRoleNamePatternValid ] = useState<boolean>(true);
-    const [ userStore ] = useState<string>(primaryUserStoreDomainName);
-    const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
+
+    const {
+        data: userStoreRegEx,
+        isLoading: isUserStoreRegExLoading
+    } = useUserStoreRegEx(
+        userstoresConfig.primaryUserstoreName,
+        SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx
+    );
 
     /**
      * The following function validates role name against the user store regEx.
      *
      * @param roleName - User input role name
      */
-    const validateRoleNamePattern = async (roleName: string): Promise<void> => {
-        let userStoreRegEx: string = "";
-
-        if (!StringUtils.isEqualCaseInsensitive(userStore, primaryUserStoreDomainName)) {
-            await SharedUserStoreUtils.getUserStoreRegEx(
-                userStore,
-                SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx
-            )
-                .then((response: string) => {
-                    setRegExLoading(true);
-                    userStoreRegEx = response;
-                });
-        } else {
-            userStoreRegEx = SharedUserStoreConstants.PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
-        }
+    const validateRoleNamePattern = (roleName: string): void => {
         setIsRoleNamePatternValid(SharedUserStoreUtils.validateInputAgainstRegEx(roleName, userStoreRegEx));
     };
 
@@ -145,7 +133,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                     );
                                 }
 
-                                await validateRoleNamePattern(value.toString());
+                                validateRoleNamePattern(value.toString());
 
                                 if (!isRoleNamePatternValid) {
                                     validation.isValid = false;
@@ -156,7 +144,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                 }
                             } }
                             value={ initialValues && initialValues.roleName }
-                            loading={ isRegExLoading }
+                            loading={ isUserStoreRegExLoading }
                         />
                     </GridColumn>
                 </GridRow>

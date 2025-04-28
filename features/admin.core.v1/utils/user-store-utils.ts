@@ -46,6 +46,8 @@ export class SharedUserStoreUtils {
      *
      * @param userstore - userstore name.
      * @param regExName - regEx pattern.
+     *
+     *  @deprecated This method is deprecated. Use the `useUserStoreRegEx()` hook.
      */
     public static async getUserStoreRegEx(userstore: string, regExName: string): Promise<string> {
         let usernameRegEx: UserStoreProperty = null;

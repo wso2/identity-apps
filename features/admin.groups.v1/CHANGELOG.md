@@ -1,5 +1,64 @@
 # @wso2is/admin.groups.v1
 
+## 2.27.118
+
+### Patch Changes
+
+- [#7993](https://github.com/wso2/identity-apps/pull/7993) [`2aca657fd60a32bf39a7d608f4d65eace3a99b95`](https://github.com/wso2/identity-apps/commit/2aca657fd60a32bf39a7d608f4d65eace3a99b95) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Improve user assignment UI in roles edit page and improvements to transfer components
+
+- Updated dependencies [[`b0d1cfa9142126be2870b6af6ef8fd1b99788cd9`](https://github.com/wso2/identity-apps/commit/b0d1cfa9142126be2870b6af6ef8fd1b99788cd9), [`2aca657fd60a32bf39a7d608f4d65eace3a99b95`](https://github.com/wso2/identity-apps/commit/2aca657fd60a32bf39a7d608f4d65eace3a99b95)]:
+  - @wso2is/theme@2.7.5
+  - @wso2is/admin.applications.v1@2.34.4
+  - @wso2is/react-components@2.9.13
+  - @wso2is/admin.roles.v2@2.27.150
+  - @wso2is/admin.users.v1@2.30.125
+  - @wso2is/i18n@2.22.12
+
+## 2.27.117
+
+### Patch Changes
+
+- [#7987](https://github.com/wso2/identity-apps/pull/7987) [`22c135c791784fc9a235aa21c5593e90aa4ddf29`](https://github.com/wso2/identity-apps/commit/22c135c791784fc9a235aa21c5593e90aa4ddf29) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix Users not being searchable via API in group creation wizard
+
+- Updated dependencies [[`5161765cb3777121c140698e69908a25196fbb62`](https://github.com/wso2/identity-apps/commit/5161765cb3777121c140698e69908a25196fbb62), [`22c135c791784fc9a235aa21c5593e90aa4ddf29`](https://github.com/wso2/identity-apps/commit/22c135c791784fc9a235aa21c5593e90aa4ddf29)]:
+  - @wso2is/admin.applications.v1@2.34.0
+  - @wso2is/admin.extensions.v1@2.37.2
+  - @wso2is/admin.users.v1@2.30.120
+
+## 2.27.116
+
+### Patch Changes
+
+- [#7956](https://github.com/wso2/identity-apps/pull/7956) [`098e5843006ceb640b421ee1a801d1492ba7df7a`](https://github.com/wso2/identity-apps/commit/098e5843006ceb640b421ee1a801d1492ba7df7a) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Remove unwanted logic in groups listing UI and fix pagination bug
+
+* [#7953](https://github.com/wso2/identity-apps/pull/7953) [`172423b550da4224d5c71f559b5d81b4bae2b5d6`](https://github.com/wso2/identity-apps/commit/172423b550da4224d5c71f559b5d81b4bae2b5d6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Optimize user creation wizard by removing unnecessary states and fix UI bugs in console settings
+
+* Updated dependencies [[`172423b550da4224d5c71f559b5d81b4bae2b5d6`](https://github.com/wso2/identity-apps/commit/172423b550da4224d5c71f559b5d81b4bae2b5d6)]:
+  - @wso2is/admin.users.v1@2.30.119
+
+## 2.27.115
+
+### Patch Changes
+
+- [#7946](https://github.com/wso2/identity-apps/pull/7946) [`f7c26d3eff8818c63211d90c91d11b109710aaae`](https://github.com/wso2/identity-apps/commit/f7c26d3eff8818c63211d90c91d11b109710aaae) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add BE-based pagination support for groups listing UI
+
+- Updated dependencies [[`8b6bf7c6048b61562bd933051cd35f6c344e7842`](https://github.com/wso2/identity-apps/commit/8b6bf7c6048b61562bd933051cd35f6c344e7842), [`f7c26d3eff8818c63211d90c91d11b109710aaae`](https://github.com/wso2/identity-apps/commit/f7c26d3eff8818c63211d90c91d11b109710aaae)]:
+  - @wso2is/i18n@2.22.6
+  - @wso2is/admin.roles.v2@2.27.149
+  - @wso2is/admin.users.v1@2.30.118
+
+## 2.27.114
+
+### Patch Changes
+
+- [#7840](https://github.com/wso2/identity-apps/pull/7840) [`ece68642860ae99847f1cd7fa745e881211b0577`](https://github.com/wso2/identity-apps/commit/ece68642860ae99847f1cd7fa745e881211b0577) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor fetch APIs in userstore.ts to SWR hooks
+
+- Updated dependencies [[`ece68642860ae99847f1cd7fa745e881211b0577`](https://github.com/wso2/identity-apps/commit/ece68642860ae99847f1cd7fa745e881211b0577)]:
+  - @wso2is/admin.organizations.v1@2.26.204
+  - @wso2is/admin.userstores.v1@2.27.30
+  - @wso2is/admin.users.v1@2.30.115
+  - @wso2is/admin.core.v1@2.43.1
+
 ## 2.27.113
 
 ### Patch Changes

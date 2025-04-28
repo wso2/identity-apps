@@ -1,5 +1,11 @@
 # @wso2is/common.ai.v1
 
+## 2.27.2
+
+### Patch Changes
+
+- [#8003](https://github.com/wso2/identity-apps/pull/8003) [`beb66226b10a981b51dcd1494219fe5c223185df`](https://github.com/wso2/identity-apps/commit/beb66226b10a981b51dcd1494219fe5c223185df) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve registration AI loading screen
+
 ## 2.27.1
 
 ### Patch Changes

@@ -3222,17 +3222,17 @@ export const extensions: Extensions = {
                                 label: "Enable SMS based recovery"
                             },
                             expiryTime: {
-                                hint: "Password recovery link expiry time in minutes.",
-                                label: "Recovery link expiry time",
+                                hint: "Password recovery link/OTP expiry time in minutes.",
+                                label: "Recovery link/OTP expiry time",
                                 placeholder: "Enter expiry time",
                                 validations: {
-                                    invalid: "Recovery link expiry time should be an integer.",
-                                    empty: "Recovery link expiry time cannot be empty.",
+                                    invalid: "Recovery link/OTP expiry time should be an integer.",
+                                    empty: "Recovery link/OTP expiry time cannot be empty.",
                                     range:
-                                        "Recovery link expiry time should be between 1 minute & 10080 minutes " +
+                                        "Recovery link/OTP expiry time should be between 1 minute & 10080 minutes " +
                                         "(7 days).",
                                     maxLengthReached:
-                                        "Recovery link expiry time should be a number with 5 or less " + "digits."
+                                        "Recovery link/OTP expiry time should be a number with 5 or less " + "digits."
                                 }
                             },
                             notifySuccess: {
@@ -3304,14 +3304,23 @@ export const extensions: Extensions = {
                                 }
                             },
                             enableEmailBasedRecovery: {
-                                hint: "This specifies whether to send an recovery link to the email address.",
-                                label: "Enable email link based recovery"
+                                hint: "This specifies whether to send an recovery link/OTP to the email address.",
+                                label: "Enable email based recovery"
+                            },
+                            emailRecoveryOptions: {
+                                header: "Choose Email recovery option",
+                                emailLink: {
+                                    label: "Email Link"
+                                },
+                                emailOtp: {
+                                    label: "Email OTP"
+                                }
                             }
                         },
                         smsProviderWarning:
                             "Ensure that an <1>SMS Provider</1> is configured for the OTP feature to work properly."
                     },
-                    recoveryOptionSubHeadingEmailLink: "Email Link",
+                    recoveryOptionSubHeadingEmail: "Email",
                     recoveryOptionSubHeadingSMS: "SMS OTP",
                     recoveryOptionHeading: "Recovery Option Selection",
                     otpConfigHeading: "OTP Code Configuration",
@@ -3345,6 +3354,31 @@ export const extensions: Extensions = {
                         recoveryOptionHeading: "Select Recovery Option"
                     },
                     heading: "Enable self-service username recovery for users on the login page."
+                },
+                forcedPasswordRecovery: {
+                    form: {
+                        fields: {
+                            enableEmailLinkBasedReset: {
+                                label: "Email Link"
+                            },
+                            enableEmailOTPBasedReset: {
+                                label: "Email OTP"
+                            },
+                            enableSMSOTPBasedReset: {
+                                label: "SMS OTP"
+                            },
+                            expiryTime: {
+                                label: "Reset link/OTP expiry time",
+                                hint: "Password Reset Link/OTP expiry time in minutes.",
+                                placeholder: "Enter expiry time"
+                            }
+                        },
+                        heading: {
+                            label: "Enable password reset via recovery Email",
+                            hint: "User gets notified with a link/OTP to reset password."
+                        },
+                        subheading: "Choose password reset option"
+                    }
                 },
                 subHeading: "Account Recovery related settings."
             },
@@ -3700,8 +3734,14 @@ export const extensions: Extensions = {
                     changePasswordModal: {
                         emailUnavailableWarning: "WARNING: Cannot find an email address for the user account." +
                             "Please provide an email address to proceed with inviting the user to reset the password.",
-                        emailResetWarning: "An email with a link to reset the password will be sent to the provided " +
+                        emailResetWarning: {
+                            emailLink: "An email with a link to reset the password will be sent to the provided " +
                             "email address for the user to set their own password.",
+                            emailOTP: "An email with a OTP to reset the password will be sent to the provided " +
+                            "email address for the user to set their own password.",
+                            smsOTP: "An SMS with a OTP to reset the password will be sent to the provided " +
+                            "mobile number for the user to set their own password."
+                        },
                         passwordResetConfigDisabled: "Password reset via recovery email is not enabled. Please make " +
                             "sure to enable it from <1> " +
                             " Login and Registration </1> configurations."

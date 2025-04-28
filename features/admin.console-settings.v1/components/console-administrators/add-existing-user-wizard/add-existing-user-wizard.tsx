@@ -41,6 +41,7 @@ import "./add-existing-user-wizard.scss";
  */
 export interface AddExistingUserWizardPropsInterface extends IdentifiableComponentInterface, ModalProps {
     onSuccess?: () => void;
+    selectedUserStore: string;
 }
 
 interface AddExistingUserWizardFormValuesInterface {
@@ -73,6 +74,7 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
     const {
         onClose,
         onSuccess,
+        selectedUserStore,
         ["data-componentid"]: componentId,
         ...rest
     } = props;
@@ -91,7 +93,7 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
         null,
         null,
         null,
-        null,
+        selectedUserStore,
         UserManagementConstants.GROUPS_ATTRIBUTE,
         true
     );

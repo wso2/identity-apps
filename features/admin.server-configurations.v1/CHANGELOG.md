@@ -1,5 +1,60 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.35.0
+
+### Minor Changes
+
+- [#7995](https://github.com/wso2/identity-apps/pull/7995) [`c639a98a6e09992cbb3e37c315ea507b8212bb35`](https://github.com/wso2/identity-apps/commit/c639a98a6e09992cbb3e37c315ea507b8212bb35) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the forced password reset configuration page and force password reset modal message to support email Link and email OTP.
+
+### Patch Changes
+
+- Updated dependencies [[`988621e009d2cfb65e7a3200f82eaa7a10fdd716`](https://github.com/wso2/identity-apps/commit/988621e009d2cfb65e7a3200f82eaa7a10fdd716), [`c639a98a6e09992cbb3e37c315ea507b8212bb35`](https://github.com/wso2/identity-apps/commit/c639a98a6e09992cbb3e37c315ea507b8212bb35)]:
+  - @wso2is/core@2.7.4
+  - @wso2is/i18n@2.22.13
+  - @wso2is/admin.server-configurations.v1@2.35.0
+  - @wso2is/admin.users.v1@2.31.0
+
+## 2.34.4
+
+### Patch Changes
+
+- [#8067](https://github.com/wso2/identity-apps/pull/8067) [`6fbc0298456c0f38657c8cacd94116adc2f97030`](https://github.com/wso2/identity-apps/commit/6fbc0298456c0f38657c8cacd94116adc2f97030) Thanks [@Malith-19](https://github.com/Malith-19)! - Improve the connector edit page and username recovery form formmattings.
+
+- Updated dependencies [[`6fbc0298456c0f38657c8cacd94116adc2f97030`](https://github.com/wso2/identity-apps/commit/6fbc0298456c0f38657c8cacd94116adc2f97030), [`ef219b69cd4a6ddedc9bc9d9b27ecfb5de34f8c2`](https://github.com/wso2/identity-apps/commit/ef219b69cd4a6ddedc9bc9d9b27ecfb5de34f8c2)]:
+  - @wso2is/admin.server-configurations.v1@2.34.4
+  - @wso2is/admin.users.v1@2.30.128
+
+## 2.34.3
+
+### Patch Changes
+
+- [#7958](https://github.com/wso2/identity-apps/pull/7958) [`e4418cdc61d2d0740114f82b0c60274ebc78c401`](https://github.com/wso2/identity-apps/commit/e4418cdc61d2d0740114f82b0c60274ebc78c401) Thanks [@Malith-19](https://github.com/Malith-19)! - Add test component ids for password recovery form.
+
+- Updated dependencies [[`e4418cdc61d2d0740114f82b0c60274ebc78c401`](https://github.com/wso2/identity-apps/commit/e4418cdc61d2d0740114f82b0c60274ebc78c401)]:
+  - @wso2is/admin.server-configurations.v1@2.34.3
+
+## 2.34.2
+
+### Patch Changes
+
+- [#7947](https://github.com/wso2/identity-apps/pull/7947) [`8b6bf7c6048b61562bd933051cd35f6c344e7842`](https://github.com/wso2/identity-apps/commit/8b6bf7c6048b61562bd933051cd35f6c344e7842) Thanks [@savindi7](https://github.com/savindi7)! - Update governance connector names.
+
+- Updated dependencies [[`8b6bf7c6048b61562bd933051cd35f6c344e7842`](https://github.com/wso2/identity-apps/commit/8b6bf7c6048b61562bd933051cd35f6c344e7842), [`f7c26d3eff8818c63211d90c91d11b109710aaae`](https://github.com/wso2/identity-apps/commit/f7c26d3eff8818c63211d90c91d11b109710aaae)]:
+  - @wso2is/admin.server-configurations.v1@2.34.2
+  - @wso2is/i18n@2.22.6
+  - @wso2is/admin.validation.v1@2.27.142
+  - @wso2is/admin.users.v1@2.30.118
+
+## 2.34.1
+
+### Patch Changes
+
+- [#7901](https://github.com/wso2/identity-apps/pull/7901) [`d7eb376080cc93f307ce6f57b680d0cdd7d9fad5`](https://github.com/wso2/identity-apps/commit/d7eb376080cc93f307ce6f57b680d0cdd7d9fad5) Thanks [@Malith-19](https://github.com/Malith-19)! - Add password recovery email otp support.
+
+- Updated dependencies [[`d7eb376080cc93f307ce6f57b680d0cdd7d9fad5`](https://github.com/wso2/identity-apps/commit/d7eb376080cc93f307ce6f57b680d0cdd7d9fad5)]:
+  - @wso2is/admin.server-configurations.v1@2.34.1
+  - @wso2is/i18n@2.22.4
+
 ## 2.34.0
 
 ### Minor Changes

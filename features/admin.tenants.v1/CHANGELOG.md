@@ -1,5 +1,41 @@
 # @wso2is/admin.tenants.v1
 
+## 2.29.10
+
+### Patch Changes
+
+- [#8079](https://github.com/wso2/identity-apps/pull/8079) [`6210f70a92166a192b748a35541b26ed26c9c039`](https://github.com/wso2/identity-apps/commit/6210f70a92166a192b748a35541b26ed26c9c039) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix tenant domain validation
+
+- Updated dependencies [[`7c400d20c1e92560bf974fbd74ee3999a32d1f1e`](https://github.com/wso2/identity-apps/commit/7c400d20c1e92560bf974fbd74ee3999a32d1f1e)]:
+  - @wso2is/admin.users.v1@2.30.129
+
+## 2.29.9
+
+### Patch Changes
+
+- [#7782](https://github.com/wso2/identity-apps/pull/7782) [`1314db3d54db923ab2974d33557a13af1e5c61ab`](https://github.com/wso2/identity-apps/commit/1314db3d54db923ab2974d33557a13af1e5c61ab) Thanks [@Avarjana](https://github.com/Avarjana)! - Introduce remote log publish feature
+
+- Updated dependencies [[`1314db3d54db923ab2974d33557a13af1e5c61ab`](https://github.com/wso2/identity-apps/commit/1314db3d54db923ab2974d33557a13af1e5c61ab)]:
+  - @wso2is/admin.core.v1@2.43.2
+  - @wso2is/admin.feature-gate.v1@1.6.1
+  - @wso2is/i18n@2.22.7
+
+## 2.29.8
+
+### Patch Changes
+
+- [#7942](https://github.com/wso2/identity-apps/pull/7942) [`35e540cbc7983691a759254f9c647cd126c37092`](https://github.com/wso2/identity-apps/commit/35e540cbc7983691a759254f9c647cd126c37092) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix organization dropdown searching issue
+
+- Updated dependencies [[`ddb77655f38e23d9fcb5715a03a69e6d7fdb2bc9`](https://github.com/wso2/identity-apps/commit/ddb77655f38e23d9fcb5715a03a69e6d7fdb2bc9), [`35e540cbc7983691a759254f9c647cd126c37092`](https://github.com/wso2/identity-apps/commit/35e540cbc7983691a759254f9c647cd126c37092)]:
+  - @wso2is/theme@2.7.2
+  - @wso2is/core@2.7.1
+
+## 2.29.7
+
+### Patch Changes
+
+- [#7925](https://github.com/wso2/identity-apps/pull/7925) [`d7e7edd99abee149892b912e9d9fe92a3202f989`](https://github.com/wso2/identity-apps/commit/d7e7edd99abee149892b912e9d9fe92a3202f989) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix sub org display name not showing issue
+
 ## 2.29.6
 
 ### Patch Changes

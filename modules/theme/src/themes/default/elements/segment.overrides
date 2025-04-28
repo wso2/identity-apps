@@ -197,8 +197,9 @@
 
 .ui.segment {
     &.transfer-segment {
-        margin-top: @userRolesListSegmentMarginTop;
         width: @TransferComponentSegmentWidth;
+        box-shadow: none;
+        border: none;
     }
 
     &.transfer-list-segment {
@@ -207,6 +208,11 @@
         box-shadow: none;
         padding: 0;
         height: @TransferListSegmentHeight;
+
+        &.bordered {
+            border: @defaultBorderWidth solid @defaultBorderColor !important;
+            padding: 0px 10px;
+        }
 
         .ui.table {
             font-size: @TransferComponentSegmentTableFontSize;

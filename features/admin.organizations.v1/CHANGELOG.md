@@ -1,5 +1,17 @@
 # @wso2is/admin.organizations.v1
 
+## 2.26.204
+
+### Patch Changes
+
+- [#7840](https://github.com/wso2/identity-apps/pull/7840) [`ece68642860ae99847f1cd7fa745e881211b0577`](https://github.com/wso2/identity-apps/commit/ece68642860ae99847f1cd7fa745e881211b0577) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor fetch APIs in userstore.ts to SWR hooks
+
+- Updated dependencies [[`ece68642860ae99847f1cd7fa745e881211b0577`](https://github.com/wso2/identity-apps/commit/ece68642860ae99847f1cd7fa745e881211b0577)]:
+  - @wso2is/admin.userstores.v1@2.27.30
+  - @wso2is/admin.groups.v1@2.27.114
+  - @wso2is/admin.users.v1@2.30.115
+  - @wso2is/admin.core.v1@2.43.1
+
 ## 2.26.203
 
 ### Patch Changes

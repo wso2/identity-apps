@@ -85,7 +85,9 @@ export class ApplicationManagementConstants {
         .set("APPLICATIONS_SETTINGS", "applications.settings")
         .set("TRUSTED_APPS", "applications.trustedApps")
         .set("APPLICATION_ACCESSTOKEN_ATTRIBUTES", "applications.accessTokenAttributes")
-        .set("APPLICATION_OUTDATED_APP_BANNER", "applications.outdatedAppBanner");
+        .set("APPLICATION_OUTDATED_APP_BANNER", "applications.outdatedAppBanner")
+        .set("APPLICATION_EDIT_ACCESS_CONFIG_BACK_CHANNEL_LOGOUT",
+            "applications.edit.accessConfiguration.backChannelLogout");
 
     /**
      * Key for the URL search param for application state.

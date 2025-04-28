@@ -168,8 +168,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         isLoading: isGroupListLoading
     } = useGroupList(
         null,
-        "members,roles",
         null,
+        null,
+        null,
+        "members,roles",
         !isRuleBasedPasswordExpiryDisabled
     );
 

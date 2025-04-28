@@ -1,5 +1,59 @@
 # @wso2is/admin.core.v1
 
+## 2.43.5
+
+### Patch Changes
+
+- [#8080](https://github.com/wso2/identity-apps/pull/8080) [`54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b`](https://github.com/wso2/identity-apps/commit/54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b) Thanks [@hwupathum](https://github.com/hwupathum)! - Remove in-app privacy pages in Console & My Account
+
+- Updated dependencies [[`f09d6502a5796e8bbddbb0c17b113d3c3dd95360`](https://github.com/wso2/identity-apps/commit/f09d6502a5796e8bbddbb0c17b113d3c3dd95360), [`54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b`](https://github.com/wso2/identity-apps/commit/54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b)]:
+  - @wso2is/admin.connections.v1@2.33.94
+  - @wso2is/admin.extensions.v1@2.37.9
+  - @wso2is/i18n@2.22.17
+
+## 2.43.4
+
+### Patch Changes
+
+- [#7992](https://github.com/wso2/identity-apps/pull/7992) [`f93070869e72ecdd12393fc3a46fd9a13eaf56f3`](https://github.com/wso2/identity-apps/commit/f93070869e72ecdd12393fc3a46fd9a13eaf56f3) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Facilitate 'Ask Password' Email Resend and Alter 'Reset Password' Button Logic
+
+- Updated dependencies [[`f93070869e72ecdd12393fc3a46fd9a13eaf56f3`](https://github.com/wso2/identity-apps/commit/f93070869e72ecdd12393fc3a46fd9a13eaf56f3), [`7a7541c1c12150815af396417c4318e402f15cb2`](https://github.com/wso2/identity-apps/commit/7a7541c1c12150815af396417c4318e402f15cb2)]:
+  - @wso2is/admin.users.v1@2.30.123
+  - @wso2is/i18n@2.22.10
+  - @wso2is/admin.registration-flow-builder.v1@0.5.6
+
+## 2.43.3
+
+### Patch Changes
+
+- [#8000](https://github.com/wso2/identity-apps/pull/8000) [`99a079f023375040cb40085709b1d010fdd1ee8d`](https://github.com/wso2/identity-apps/commit/99a079f023375040cb40085709b1d010fdd1ee8d) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - "Fix my account redirection url with central deployment"
+
+## 2.43.2
+
+### Patch Changes
+
+- [#7782](https://github.com/wso2/identity-apps/pull/7782) [`1314db3d54db923ab2974d33557a13af1e5c61ab`](https://github.com/wso2/identity-apps/commit/1314db3d54db923ab2974d33557a13af1e5c61ab) Thanks [@Avarjana](https://github.com/Avarjana)! - Introduce remote log publish feature
+
+- Updated dependencies [[`1314db3d54db923ab2974d33557a13af1e5c61ab`](https://github.com/wso2/identity-apps/commit/1314db3d54db923ab2974d33557a13af1e5c61ab)]:
+  - @wso2is/admin.logs.v1@1.6.0
+  - @wso2is/admin.feature-gate.v1@1.6.1
+  - @wso2is/admin.tenants.v1@2.29.9
+  - @wso2is/i18n@2.22.7
+
+## 2.43.1
+
+### Patch Changes
+
+- [#7840](https://github.com/wso2/identity-apps/pull/7840) [`ece68642860ae99847f1cd7fa745e881211b0577`](https://github.com/wso2/identity-apps/commit/ece68642860ae99847f1cd7fa745e881211b0577) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor fetch APIs in userstore.ts to SWR hooks
+
+- Updated dependencies [[`db0e5b5e8d544e7a9593825720f9457423e15aae`](https://github.com/wso2/identity-apps/commit/db0e5b5e8d544e7a9593825720f9457423e15aae), [`ece68642860ae99847f1cd7fa745e881211b0577`](https://github.com/wso2/identity-apps/commit/ece68642860ae99847f1cd7fa745e881211b0577)]:
+  - @wso2is/admin.actions.v1@1.12.3
+  - @wso2is/admin.organizations.v1@2.26.204
+  - @wso2is/admin.userstores.v1@2.27.30
+  - @wso2is/admin.groups.v1@2.27.114
+  - @wso2is/admin.roles.v1@2.25.204
+  - @wso2is/admin.users.v1@2.30.115
+
 ## 2.43.0
 
 ### Minor Changes

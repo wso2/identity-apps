@@ -18,18 +18,21 @@
 
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import Chip from "@oxygen-ui/react/Chip";
 import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronRightIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import useNewRegistrationPortalFeatureStatus from
     "@wso2is/admin.registration-flow-builder.v1/api/use-new-registration-portal-feature-status";
 import AIText from "@wso2is/common.ai.v1/components/ai-text";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import BackgroundBlob from "./background-blob.png";
 import SignUpBox from "./sign-up-box";
 import { ReactComponent as PreviewFeaturesIcon } from "../../../themes/default/assets/images/icons/flask-icon.svg";
@@ -50,9 +53,14 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
     "data-componentid": componentId = "new-feature-announcement",
     ...rest
 }: NewFeatureAnnouncementProps): ReactElement => {
+    const { t } = useTranslation();
+
     const { setShowPreviewFeaturesModal } = useFeatureGate();
 
-    const { data: isNewRegistrationPortalEnabled } = useNewRegistrationPortalFeatureStatus();
+    const {
+        data: isNewRegistrationPortalEnabled,
+        isLoading: isNewRegistrationPortalEnabledRequestLoading
+    } = useNewRegistrationPortalFeatureStatus();
 
     return (
         <Paper
@@ -63,7 +71,13 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
         >
             <Box className="new-feature-announcement-content">
                 <Box>
-                    <Typography variant="h3">Design seamless self-registration experiences</Typography>
+                    <Typography variant="h3">
+                        Design seamless self-registration experiences{ " " }
+                        <Chip
+                            label={ t(FeatureStatusLabel.PREVIEW) }
+                            className="oxygen-menu-item-chip oxygen-chip-experimental"
+                        />
+                    </Typography>
                     <Typography variant="body2">
                         Effortlessly design your user self-registration flows with the{ " " }
                         new AI-powered visual designer <AIText />
@@ -90,7 +104,11 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                         </Box>
                     </Button>
                 ) : (
-                    <Button variant="contained" onClick={ () => setShowPreviewFeaturesModal(true) }>
+                    <Button
+                        variant="contained"
+                        onClick={ () => setShowPreviewFeaturesModal(true) }
+                        loading={ isNewRegistrationPortalEnabledRequestLoading }
+                    >
                         <Box display="flex" alignItems="center" gap={ 1 }>
                             <PreviewFeaturesIcon /> Enable and try out
                         </Box>

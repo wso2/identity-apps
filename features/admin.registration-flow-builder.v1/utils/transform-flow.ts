@@ -19,6 +19,7 @@
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import { ActionTypes } from "@wso2is/admin.flow-builder-core.v1/models/actions";
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
+import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
 import { StaticStepTypes, Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { Node } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -33,22 +34,18 @@ const DISPLAY_ONLY_COMPONENT_PROPERTIES: string[] = [
     "resourceType"
 ];
 
-const processNavigation = (resource, resourceId, navigations) => {
-    if (resource?.action) {
-        let action: any = { ...resource.action };
-
-        if (resource?.action?.type === ActionTypes.Executor) {
-            action = {
-                ...resource?.action,
-                next: navigations[resourceId]
-            };
-        }
-
+const processNavigation = (resource: Element, resourceId: string, navigations: Record<string, string>) => {
+    // There's an `action` object in the resource and also the resource has a navigation edge.
+    if (resource?.action && navigations[resourceId]) {
         return {
             ...resource,
-            action
+            action: { ...resource.action, next: navigations[resourceId] }
         };
-    } else if (navigations[resourceId] && resource?.category === ElementCategories.Action) {
+    }
+
+    // There's no `action` object in the resource,
+    // but there's a navigation edge associated with the resource and the element is an action.
+    if (navigations[resourceId] && resource?.category === ElementCategories.Action) {
         return {
             ...resource,
             action: {
@@ -84,13 +81,13 @@ const transformFlow = (flowState: any) => {
         const { data, id, position, measured, type } = node;
 
         const processComponents = (components: Element[]) => {
-            const _components: Element[] = components?.map((component: any) => {
+            const _components: Element[] = components?.map((component: Element) => {
                 if (component.components) {
                     component.components = processComponents(component.components);
                 }
 
                 return processNavigation(
-                    omit(component, DISPLAY_ONLY_COMPONENT_PROPERTIES),
+                    omit(component, DISPLAY_ONLY_COMPONENT_PROPERTIES) as Element,
                     component.id,
                     stepNavigationMap
                 );

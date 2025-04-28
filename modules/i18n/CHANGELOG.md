@@ -1,5 +1,107 @@
 # @wso2is/i18n
 
+## 2.22.17
+
+### Patch Changes
+
+- [#8080](https://github.com/wso2/identity-apps/pull/8080) [`54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b`](https://github.com/wso2/identity-apps/commit/54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b) Thanks [@hwupathum](https://github.com/hwupathum)! - Remove in-app privacy pages in Console & My Account
+
+## 2.22.16
+
+### Patch Changes
+
+- [#8098](https://github.com/wso2/identity-apps/pull/8098) [`ad35a9374eb80a5d4556c8922764d507e1613768`](https://github.com/wso2/identity-apps/commit/ad35a9374eb80a5d4556c8922764d507e1613768) Thanks [@savindi7](https://github.com/savindi7)! - Update deprecated feature names.
+
+## 2.22.15
+
+### Patch Changes
+
+- [#8095](https://github.com/wso2/identity-apps/pull/8095) [`1aeb47990369ab1ccb4bc271a078d8115c210fb1`](https://github.com/wso2/identity-apps/commit/1aeb47990369ab1ccb4bc271a078d8115c210fb1) Thanks [@savindi7](https://github.com/savindi7)! - Deprecate configs in Connections.
+
+## 2.22.14
+
+### Patch Changes
+
+- [#8090](https://github.com/wso2/identity-apps/pull/8090) [`e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af`](https://github.com/wso2/identity-apps/commit/e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Disable the multi valued check box for the system claims
+
+## 2.22.13
+
+### Patch Changes
+
+- [#8071](https://github.com/wso2/identity-apps/pull/8071) [`988621e009d2cfb65e7a3200f82eaa7a10fdd716`](https://github.com/wso2/identity-apps/commit/988621e009d2cfb65e7a3200f82eaa7a10fdd716) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Notify users of unverified accounts in MyAccount
+
+- Updated dependencies [[`988621e009d2cfb65e7a3200f82eaa7a10fdd716`](https://github.com/wso2/identity-apps/commit/988621e009d2cfb65e7a3200f82eaa7a10fdd716)]:
+  - @wso2is/core@2.7.4
+
+## 2.22.12
+
+### Patch Changes
+
+- [#7993](https://github.com/wso2/identity-apps/pull/7993) [`2aca657fd60a32bf39a7d608f4d65eace3a99b95`](https://github.com/wso2/identity-apps/commit/2aca657fd60a32bf39a7d608f4d65eace3a99b95) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Improve user assignment UI in roles edit page and improvements to transfer components
+
+## 2.22.11
+
+### Patch Changes
+
+- [#7968](https://github.com/wso2/identity-apps/pull/7968) [`43bde29076aefa01ee70595cb7d63588034d750e`](https://github.com/wso2/identity-apps/commit/43bde29076aefa01ee70595cb7d63588034d750e) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Provide first class support to configure claims as multi valued
+
+- Updated dependencies [[`43bde29076aefa01ee70595cb7d63588034d750e`](https://github.com/wso2/identity-apps/commit/43bde29076aefa01ee70595cb7d63588034d750e)]:
+  - @wso2is/core@2.7.3
+
+## 2.22.10
+
+### Patch Changes
+
+- [#7992](https://github.com/wso2/identity-apps/pull/7992) [`f93070869e72ecdd12393fc3a46fd9a13eaf56f3`](https://github.com/wso2/identity-apps/commit/f93070869e72ecdd12393fc3a46fd9a13eaf56f3) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Facilitate 'Ask Password' Email Resend and Alter 'Reset Password' Button Logic
+
+## 2.22.9
+
+### Patch Changes
+
+- [#8038](https://github.com/wso2/identity-apps/pull/8038) [`f44217d609d530a8588ffcc0c2684569852e7c35`](https://github.com/wso2/identity-apps/commit/f44217d609d530a8588ffcc0c2684569852e7c35) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Support custom multi valued attributes and complex attributes in myaccount
+
+## 2.22.8
+
+### Patch Changes
+
+- [#8018](https://github.com/wso2/identity-apps/pull/8018) [`f2e6bfadec1e4ef53cc1c713b1285b0c6b3bfaa5`](https://github.com/wso2/identity-apps/commit/f2e6bfadec1e4ef53cc1c713b1285b0c6b3bfaa5) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Improve the certificates section of the identity provider to state the flows where certificate validation is applicable.
+
+## 2.22.7
+
+### Patch Changes
+
+- [#7782](https://github.com/wso2/identity-apps/pull/7782) [`1314db3d54db923ab2974d33557a13af1e5c61ab`](https://github.com/wso2/identity-apps/commit/1314db3d54db923ab2974d33557a13af1e5c61ab) Thanks [@Avarjana](https://github.com/Avarjana)! - Introduce remote log publish feature
+
+## 2.22.6
+
+### Patch Changes
+
+- [#7947](https://github.com/wso2/identity-apps/pull/7947) [`8b6bf7c6048b61562bd933051cd35f6c344e7842`](https://github.com/wso2/identity-apps/commit/8b6bf7c6048b61562bd933051cd35f6c344e7842) Thanks [@savindi7](https://github.com/savindi7)! - Update governance connector names.
+
+* [#7946](https://github.com/wso2/identity-apps/pull/7946) [`f7c26d3eff8818c63211d90c91d11b109710aaae`](https://github.com/wso2/identity-apps/commit/f7c26d3eff8818c63211d90c91d11b109710aaae) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add BE-based pagination support for groups listing UI
+
+## 2.22.5
+
+### Patch Changes
+
+- [#7929](https://github.com/wso2/identity-apps/pull/7929) [`cb0ee2cf165319ca096aa44d358799060f08bbf9`](https://github.com/wso2/identity-apps/commit/cb0ee2cf165319ca096aa44d358799060f08bbf9) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor user group assignment view to be consistent with other tabs
+
+## 2.22.4
+
+### Patch Changes
+
+- [#7901](https://github.com/wso2/identity-apps/pull/7901) [`d7eb376080cc93f307ce6f57b680d0cdd7d9fad5`](https://github.com/wso2/identity-apps/commit/d7eb376080cc93f307ce6f57b680d0cdd7d9fad5) Thanks [@Malith-19](https://github.com/Malith-19)! - Add password recovery email otp support.
+
+## 2.22.3
+
+### Patch Changes
+
+- [#7894](https://github.com/wso2/identity-apps/pull/7894) [`f1752da359591d2cafc68bfc1b6e85e0a65b7807`](https://github.com/wso2/identity-apps/commit/f1752da359591d2cafc68bfc1b6e85e0a65b7807) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add SMS otp authenticator resend attempt config to UI
+
+* [#7895](https://github.com/wso2/identity-apps/pull/7895) [`21c34e780c2b03b1219a59cbf264c3d34946ee36`](https://github.com/wso2/identity-apps/commit/21c34e780c2b03b1219a59cbf264c3d34946ee36) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Enhance Pre-Update Profile UI to align with recent API improvements
+
+- [#7773](https://github.com/wso2/identity-apps/pull/7773) [`18c5d10a5be7de56943e604d531fa8409c9b791d`](https://github.com/wso2/identity-apps/commit/18c5d10a5be7de56943e604d531fa8409c9b791d) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Disable policy edit button in the active policy list in Policy Administration page and change tooltip text
+
 ## 2.22.2
 
 ### Patch Changes

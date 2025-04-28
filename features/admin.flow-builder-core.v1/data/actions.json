@@ -8,7 +8,9 @@
         },
         "types": [
             {
-                "type": "NEXT",
+                "action": {
+                    "type": "NEXT"
+                },
                 "display": {
                     "label": "Next",
                     "image": "https://www.svgrepo.com/show/305382/arrowhead-right-outline.svg",

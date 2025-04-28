@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,7 +28,8 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useS
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { getAType, getUserstoreTypes } from "../api";
+import { getUserStoreMetaDataType } from "../api";
+import useGetUserStoreTypes from "../api/use-get-user-store-types";
 import { AddUserStore } from "../components";
 import { getUserstoreTemplateIllustrations } from "../configs";
 import {
@@ -39,7 +40,7 @@ import {
     USERSTORE_TYPE_IMAGES,
     USER_STORE_TYPE_DESCRIPTIONS
 } from "../constants";
-import { TypeResponse, UserstoreType } from "../models";
+import { UserStoreType, UserstoreType } from "../models";
 
 /**
  * Props for the Userstore templates page.
@@ -81,6 +82,12 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
 
     const { t } = useTranslation();
 
+    const {
+        data: userStoreTypes,
+        isLoading: isUserStoreTypesFetchRequestLoading,
+        error: userStoreTypesFetchRequestError
+    } = useGetUserStoreTypes();
+
     useEffect(() => {
         selectedType && setOpenModal(true);
     }, [ selectedType ]);
@@ -93,75 +100,86 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
      * Fetches the list of userstore types.
      */
     useEffect(() => {
-        getUserstoreTypes().then(async (response: TypeResponse[]) => {
-            setIsLoading(true);
-            const typeRequests: Promise<UserstoreType>[] = response.map((type: TypeResponse) => {
-                return getAType(type.typeId, null);
-            });
-            const results: (void | UserstoreType)[] = await Promise.all(
-                typeRequests.map((response: Promise<UserstoreType>) => response.catch((error: AxiosError) => {
-                    dispatch(addAlert({
-                        description: t("userstores:notifications." +
-                                "fetchUserstoreTemplates.genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: error?.message
-                            || t("userstores:notifications." +
-                                "fetchUserstoreTemplates.genericError.message")
-                    }));
-                }))
-            );
+        if (!isUserStoreTypesFetchRequestLoading && userStoreTypes) {
+            getUserStoreMetaDataTypes();
+        }
+    }, [ isUserStoreTypesFetchRequestLoading, userStoreTypes ]);
 
-            let filteredResults: (UserstoreType | void)[] = [];
-
-            filteredResults = results.filter(
-                (type: UserstoreType) =>
-                    !REMOTE_USER_STORE_TYPES.includes(type?.typeName)
-            );
-
-            const userstoreTypes: UserstoreTypeListItem[] = [];
-            const uniqueUserstoreTypes: UserstoreTypeListItem[] = [];
-            const rawUserstoreTypes: UserstoreType[] = [];
-
-            filteredResults.forEach((type: UserstoreType) => {
-                if (type && !userstoresConfig.shouldShowUserstore(type.typeName)) {
-                    rawUserstoreTypes.push(type);
-                    if (type.typeName.toLowerCase().includes("unique")) {
-                        uniqueUserstoreTypes.push(
-                            {
-                                description: type.description
-                                    ?? USER_STORE_TYPE_DESCRIPTIONS[ type.typeName ],
-                                id: type.typeId,
-                                image: USERSTORE_TYPE_IMAGES[ type.typeName ],
-                                name: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ]
-                            }
-                        );
-                    } else {
-                        userstoreTypes.push(
-                            {
-                                description: USER_STORE_TYPE_DESCRIPTIONS[ type.typeName ]
-                                    ?? DEFAULT_DESCRIPTION_CUSTOM_USERSTORE,
-                                id: type.typeId,
-                                image: USERSTORE_TYPE_IMAGES[ type.typeName ] ?? DEFAULT_USERSTORE_TYPE_IMAGE,
-                                name: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ] ?? type.typeName
-                            }
-                        );
-                    }
-                }
-            });
-            setUserstoreTypes(uniqueUserstoreTypes.concat(userstoreTypes));
-            setRawUserstoreTypes(rawUserstoreTypes);
-        }).catch((error: AxiosError) => {
+    /**
+     * Handles the error scenario of the userstore types fetch request
+     */
+    useEffect(() => {
+        if (userStoreTypesFetchRequestError) {
             dispatch(addAlert({
                 description: t("userstores:notifications." +
                     "fetchUserstoreTypes.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: error?.message || t("userstores:notifications." +
+                message: userStoreTypesFetchRequestError?.message || t("userstores:notifications." +
                     "fetchUserstoreTypes.genericError.message")
             }));
-        }).finally(() => {
-            setIsLoading(false);
+        }
+    }, [ userStoreTypesFetchRequestError ]);
+
+    const getUserStoreMetaDataTypes = async () => {
+        setIsLoading(true);
+        const typeRequests: Promise<UserstoreType>[] = userStoreTypes.map((type: UserStoreType) => {
+            return getUserStoreMetaDataType(type.typeId, null);
         });
-    }, []);
+
+        const results: (void | UserstoreType)[] = await Promise.all(
+            typeRequests.map((response: Promise<UserstoreType>) => response.catch((error: AxiosError) => {
+                dispatch(addAlert({
+                    description: t("userstores:notifications." +
+                            "fetchUserstoreTemplates.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                        || t("userstores:notifications." +
+                            "fetchUserstoreTemplates.genericError.message")
+                }));
+            }))
+        );
+
+        let filteredResults: (UserstoreType | void)[] = [];
+
+        filteredResults = results.filter(
+            (type: UserstoreType) =>
+                !REMOTE_USER_STORE_TYPES.includes(type?.typeName)
+        );
+
+        const userstoreTypes: UserstoreTypeListItem[] = [];
+        const uniqueUserstoreTypes: UserstoreTypeListItem[] = [];
+        const rawUserstoreTypes: UserstoreType[] = [];
+
+        filteredResults.forEach((type: UserstoreType) => {
+            if (type && !userstoresConfig.shouldShowUserstore(type.typeName)) {
+                rawUserstoreTypes.push(type);
+                if (type.typeName.toLowerCase().includes("unique")) {
+                    uniqueUserstoreTypes.push(
+                        {
+                            description: type.description
+                                ?? USER_STORE_TYPE_DESCRIPTIONS[ type.typeName ],
+                            id: type.typeId,
+                            image: USERSTORE_TYPE_IMAGES[ type.typeName ],
+                            name: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ]
+                        }
+                    );
+                } else {
+                    userstoreTypes.push(
+                        {
+                            description: USER_STORE_TYPE_DESCRIPTIONS[ type.typeName ]
+                                ?? DEFAULT_DESCRIPTION_CUSTOM_USERSTORE,
+                            id: type.typeId,
+                            image: USERSTORE_TYPE_IMAGES[ type.typeName ] ?? DEFAULT_USERSTORE_TYPE_IMAGE,
+                            name: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ] ?? type.typeName
+                        }
+                    );
+                }
+            }
+        });
+        setUserstoreTypes(uniqueUserstoreTypes.concat(userstoreTypes));
+        setRawUserstoreTypes(rawUserstoreTypes);
+        setIsLoading(false);
+    };
 
     return (
         <>
