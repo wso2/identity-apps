@@ -176,6 +176,10 @@ export class UserManagementConstants {
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS"),
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES")
     ];
+
+    // Impersonation related constants.
+    public static readonly ID_TOKEN: string = "id_token";
+    public static readonly SUBJECT_TOKEN: string = "subject_token";
 }
 
 /**
