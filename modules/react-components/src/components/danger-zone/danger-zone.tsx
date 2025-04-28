@@ -35,6 +35,10 @@ export interface DangerZoneProps extends TestableComponentInterface, Identifiabl
      */
     buttonText?: string;
     /**
+     * Danger zone style class name.
+     */
+    className?: string;
+    /**
      * Heading for the danger zone.
      */
     header: string;
@@ -55,6 +59,10 @@ export interface DangerZoneProps extends TestableComponentInterface, Identifiabl
      * Button disable state.
      */
     isButtonDisabled?: boolean;
+    /**
+     * Button loading state.
+     */
+    isButtonLoading?: boolean;
     /**
      * Button disable hint.
      */
@@ -103,24 +111,26 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
     const {
         actionTitle,
         buttonText,
+        className,
         header,
         subheader,
         onActionClick,
         toggle,
         isButtonDisabled,
+        isButtonLoading,
         buttonDisableHint,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
-
     const { isMobileViewport } = useMediaContext();
+    const defaultClassName = className ?? "danger-zone";
 
     return (
-        <Segment data-testid={ testId } data-componentid={ componentId } className="danger-zone" padded clearing>
+        <Segment data-testid={ testId } data-componentid={ componentId } className={ defaultClassName } padded clearing>
             <div className="header-wrapper">
                 <Header
                     as="h5"
-                    color="red"
+                    className="header"
                     floated="left"
                     data-componentid={ `${ componentId }-header` }
                     data-testid={ `${ testId }-header` }
@@ -145,7 +155,7 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                                     id={ toggle?.id }
                                     onChange={ toggle?.onChange }
                                     checked={ toggle?.checked }
-                                    className="danger-zone toggle-switch"
+                                    className={ defaultClassName + " toggle-switch" }
                                     data-componentid={ `${ componentId }-toggle` }
                                     data-testid={ `${ testId }-toggle` }
                                     disabled={ toggle?.disabled }
@@ -172,9 +182,12 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                                         data-componentid={ componentId + "-delete-button" }
                                         data-testid={ testId + "-delete-button" }
                                         fluid={ isMobileViewport }
-                                        negative
+                                        negative = { className ? false: true }
+                                        primary = { !className ? false: true }
                                         onClick={ onActionClick }
                                         disabled={ isButtonDisabled }
+                                        loading={ isButtonLoading }
+                                        basic={ className ? true: false }
                                     >
                                         { buttonText ?? actionTitle }
                                     </Button>
