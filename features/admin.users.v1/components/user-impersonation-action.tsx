@@ -18,7 +18,6 @@
 
 import { HttpResponse, useAuthContext } from "@asgardeo/auth-react";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { SCIMConfigs } from "@wso2is/admin.extensions.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface, ProfileInfoInterface,
@@ -32,6 +31,11 @@ import { ApplicationManagementConstants } from "../../admin.applications.v1/cons
 import { useUserDetails } from "../api";
 import { UserManagementConstants } from "../constants";
 import { UserManagementUtils } from "../utils/user-management-utils";
+import { useMyAccountApplicationData } from "../../admin.applications.v1/api/application";
+import { useGetApplication } from "../../admin.applications.v1/api/use-get-application";
+import { ApplicationListItemInterface } from "../../admin.applications.v1/models/application";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 
 /**
  * Props for Impersonate User Action component.
@@ -69,14 +73,17 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const dispatch: Dispatch<any> = useDispatch();
     const { t } = useTranslation();
 
-    // State to manage the impersonation process.
     const [ impersonationInProgress, setImpersonationInProgress ] = useState<boolean>(false);
     const [ codeVerifier, setCodeVerifier ] = useState<string>(undefined);
     const [ codeChallenge, setCodeChallenge ] = useState<string>(undefined);
     const [ idToken, setIdToken ] = useState(undefined);
     const [ subjectToken, setSubjectToken ] = useState(undefined);
     const [ authenticatedUserRoles, setAuthenticatedUserRoles ] = useState<RolesMemberInterface[]>([]);
+    const [ myAccountAppId, setMyAccountAppId ] = useState<string>(null);
+    const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
 
+    const consoleUrl: string = useSelector((state: AppState) => state?.config?.deployment?.clientHost);
+    const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
     const authenticatedUserProfileInfo: ProfileInfoInterface = useSelector((state: AppState) =>
         state?.profile?.profileInfo);
@@ -88,14 +95,23 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         state.config.deployment.accountApp.clientID);
     const accountAppImpersonateRoleName: string = useSelector((state: AppState) =>
         state.config.deployment.accountApp.impersonationRoleName);
-    const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
-        role.display === administratorConfig.adminRoleName) ?? false;
 
+    const {
+        data: myAccountApplicationData,
+        isLoading: isMyAccountApplicationDataFetchRequestLoading
+    } = useMyAccountApplicationData("advancedConfigurations,templateId,clientId,issuer");
+    const {
+        data: myAccountApplication,
+        isLoading: isMyAccountApplicationGetRequestLoading
+    } = useGetApplication(myAccountAppId , !!myAccountAppId);
     const {
         data: authenticatedUserProfileInfoData,
         isLoading: isAuthenticatedUserFetchRequestLoading
     } = useUserDetails(authenticatedUserProfileInfo?.id);
 
+    const isSubOrgUser: boolean = (organizationType === OrganizationType.SUBORGANIZATION);
+    const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
+        role.display === administratorConfig.adminRoleName) ?? false;
     const IMPERSONATION_ARTIFACTS: string = "impersonation_artifacts";
     let impersonation_artifacts: any = sessionStorage.getItem(IMPERSONATION_ARTIFACTS);
 
@@ -121,6 +137,18 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
             }
         }
     }, [ impersonation_artifacts ]);
+
+    useEffect(() => {
+        window.addEventListener("message", handleInitImpersonateIframeMessage);
+
+        return () => window.removeEventListener("message", handleInitImpersonateIframeMessage);
+    }, []);
+
+    useEffect(() => {
+        if (idToken && subjectToken) {
+            sendTokenRequest(idToken, subjectToken);
+        }
+    }, [ idToken, subjectToken ]);
 
     const handleInitImpersonateIframeMessage = (event: CompositionEvent) => {
         if (event.data === "impersonation-authorize-request-complete"
@@ -152,74 +180,105 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         }
     };
 
+    /**
+     * Set the application id for My Account.
+     */
     useEffect(() => {
-        window.addEventListener("message", handleInitImpersonateIframeMessage);
+        if (myAccountApplicationData?.applications?.length === 1) {
+            myAccountApplicationData.applications.forEach((
+                item: ApplicationListItemInterface
+            ) => {
+                setMyAccountAppId(item?.id);
+            });
+        }
+    }, [ myAccountApplicationData ]);
 
-        return () => window.removeEventListener("message", handleInitImpersonateIframeMessage);
-    }, []);
-
+    /**
+     * Sets the initial spinner.
+     */
     useEffect(() => {
+        let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
 
-        if (idToken && subjectToken) {
+        if (!isMyAccountApplicationGetRequestLoading
+                && !isMyAccountApplicationDataFetchRequestLoading
+        ) {
+            if (myAccountApplication) {
+                status = myAccountApplication?.applicationEnabled;
+            }
+        }
 
-            const formData: any = {
-                actor_token: idToken,
-                actor_token_type: ApplicationManagementConstants.TOKEN_TYPE_ID_TOKEN,
-                client_id: accountAppClientID,
-                code_verifier: codeVerifier,
-                grant_type: ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
-                requested_token_type: ApplicationManagementConstants.TOKEN_TYPE_ACCESS_TOKEN,
-                subject_token: subjectToken,
-                subject_token_type: ApplicationManagementConstants.TOKEN_TYPE_JWT_TOKEN
-            };
+        setMyAccountStatus(status);
+    }, [
+        isMyAccountApplicationGetRequestLoading,
+        isMyAccountApplicationDataFetchRequestLoading,
+        myAccountAppId
+    ]);
 
-            const urlEncodedData: any = new URLSearchParams(formData).toString();
+    /**
+     * This function sends the token request to the server.
+     * 
+     * @param idToken       - The ID token received from the impersonation request.
+     * @param subjectToken  - The subject token received from the impersonation request.
+     */
+    const sendTokenRequest = (idToken: any, subjectToken: any) => {
 
-            const requestConfig: any = {
-                attachToken: false,
-                data: urlEncodedData,
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                method: "post",
-                shouldEncodeToFormData: false,
-                url: sessionStorage.getItem("token_endpoint")
-            };
-
-            httpRequest(requestConfig)
-                .then((response: HttpResponse) => {
-                    if (response.status === 200) {
-                        setImpersonationInProgress(false);
-                        setIdToken(undefined);
-                        setSubjectToken(undefined);
-                        setCodeChallenge(undefined);
-                        setCodeVerifier(undefined);
-                        dispatch(addAlert({
-                            description: t(
-                                "users:notifications.impersonateUser.success.description"
-                            ),
-                            level: AlertLevels.SUCCESS,
-                            message: t(
-                                "users:notifications.impersonateUser.success.message"
-                            )
-                        }));
-                        window.open(consumerAccountURL, "_blank");
-                    }
-                })
-                .catch(() => {
+        const formData: any = {
+            actor_token: idToken,
+            actor_token_type: ApplicationManagementConstants.TOKEN_TYPE_ID_TOKEN,
+            client_id: accountAppClientID,
+            code_verifier: codeVerifier,
+            grant_type: ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
+            requested_token_type: ApplicationManagementConstants.TOKEN_TYPE_ACCESS_TOKEN,
+            subject_token: subjectToken,
+            subject_token_type: ApplicationManagementConstants.TOKEN_TYPE_JWT_TOKEN
+        };
+    
+        const urlEncodedData: any = new URLSearchParams(formData).toString();
+    
+        const requestConfig: any = {
+            attachToken: false,
+            data: urlEncodedData,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            method: "post",
+            shouldEncodeToFormData: false,
+            url: sessionStorage.getItem("token_endpoint")
+        };
+    
+        httpRequest(requestConfig)
+            .then((response: HttpResponse) => {
+                if (response.status === 200) {
                     setImpersonationInProgress(false);
+                    setIdToken(undefined);
+                    setSubjectToken(undefined);
+                    setCodeChallenge(undefined);
+                    setCodeVerifier(undefined);
                     dispatch(addAlert({
                         description: t(
-                            "users:notifications.impersonateUser.error.description"
+                            "users:notifications.impersonateUser.success.description"
                         ),
-                        level: AlertLevels.ERROR,
+                        level: AlertLevels.SUCCESS,
                         message: t(
-                            "users:notifications.impersonateUser.error.message"
+                            "users:notifications.impersonateUser.success.message"
                         )
                     }));
-                });
-        }
-    }, [ idToken, subjectToken ]);
+                    window.open(consumerAccountURL, "_blank");
+                }
+            })
+            .catch(() => {
+                setImpersonationInProgress(false);
+                dispatch(addAlert({
+                    description: t(
+                        "users:notifications.impersonateUser.error.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "users:notifications.impersonateUser.error.message"
+                    )
+                }));
+            });
+    };
 
     /**
      * This function returns the username or the default email of the current user (if the username is empty).
@@ -246,6 +305,9 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const resolvedUsername: string = resolveUsernameOrDefaultEmail(user, false);
     const isUserCurrentLoggedInUser: boolean = authenticatedUser?.includes(resolvedUsername);
 
+    /**
+     * This function checks the authenticated user is authorized to perform impersonation.
+     */
     const isLoggedInUserAuthorizedToImpersonate = (): boolean => {
 
         for (let index: number = 0; index < authenticatedUserRoles?.length; index++) {
@@ -259,14 +321,17 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         return false;
     };
 
+    /**
+     * This function returns if the impersonation action is enabled for the current user.
+     *  1. My Account is enabled.
+     *  2. The user is not the current logged in user.
+     *  3. The user is not a sub organization user.
+     *  4. The user is authorized to impersonate.
+     */
     const isMyAccountImpersonatable = (): boolean => {
 
-        // Load My Account Application and check
-        // 1. If it has skip login consent.
-        // 2. If it has disabled application.
-        // 3. If it has shared with the sub org.
-
-        return !isUserCurrentLoggedInUser && isLoggedInUserAuthorizedToImpersonate();
+        return isMyAccountEnabled && !isUserCurrentLoggedInUser && !isSubOrgUser
+            && isLoggedInUserAuthorizedToImpersonate();
     };
 
     /**
@@ -282,13 +347,16 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         setImpersonationInProgress(true);
     };
 
+    /**
+     * This function resolves the iframe for the impersonation.
+     */
     const resolveIframe = (): ReactElement => {
 
         if (impersonationInProgress && codeChallenge != undefined && codeChallenge != null) {
             return (
                 <iframe
                     hidden
-                    src={ "https://localhost:9001/console/resources/users/init-impersonate.html"
+                    src={ `${consoleUrl}/resources/users/init-impersonate.html`
                         + `?userId=${encodeURIComponent(user.id)}`
                         + `&codeChallenge=${encodeURIComponent(codeChallenge)}`
                         + `&clientId=${encodeURIComponent(accountAppClientID)}`
@@ -306,14 +374,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const resolveUserActions = (): ReactElement => {
 
         return (
-            (
-                !isReadOnly
-                || isUserManagedByParentOrg
-                || user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
-            ) && (
-                !isCurrentUserAdmin
-                || !isUserCurrentLoggedInUser
-            ) && isLoggedInUserAuthorizedToImpersonate() && isFeatureEnabled(userFeatureConfig, "IMPERSONATE_USER") ?
+            !isUserCurrentLoggedInUser && !isSubOrgUser && isFeatureEnabled(userFeatureConfig, "IMPERSONATE_USER") ?
                 (
                     <React.Fragment>
                         <DangerZoneGroup
@@ -322,7 +383,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
                             {
                                 !isUserManagedByParentOrg && (
                                     <DangerZone
-                                        data-componentid={ `${ componentId }-danger-zone-toggle` }
+                                        data-componentid={ `${ componentId }-danger-zone-button` }
                                         className="action-zone"
                                         actionTitle={ t("user:editUser." +
                                             "userActionZoneGroup.impersonateUserZone.actionTitle") }
