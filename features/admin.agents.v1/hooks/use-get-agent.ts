@@ -16,23 +16,35 @@
  * under the License.
  */
 
-export default function useGetAgent(id: string) {
-    const agentList: any[] = JSON.parse(localStorage.getItem("agents"));
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { HttpMethods } from "@wso2is/core/models";
 
-    const agent = agentList.find(agent => agent.id === id)
+const useGetAgent = <Data = any,
+Error = RequestErrorInterface> (id: string): RequestResultInterface<Data, Error> => {
 
-    if (agent) {
-        return {
-            data: agent,
-            error: null,
-            isLoading: false
-        };
-    } else {
-        return {
-            data: null,
-            error: "Invalid ID",
-            isLoading: false
-        };
-    }
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.users + "/" + id
+    };
 
-}
+    const { data, isLoading, isValidating, error, mutate } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data: data as Data,
+        error,
+        isLoading,
+        isValidating,
+        mutate
+    };
+
+};
+
+export default useGetAgent;
