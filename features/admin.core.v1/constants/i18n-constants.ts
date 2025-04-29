@@ -198,7 +198,7 @@ export class I18nConstants {
     public static readonly PUSH_PROVIDERS_NAMESPACE: string = I18nModuleConstants.PUSH_PROVIDERS_NAMESPACE;
 
     /**
-     * Push Providers namespace.
+     * Email Providers namespace.
      */
     public static readonly EMAIL_PROVIDERS_NAMESPACE: string = I18nModuleConstants.EMAIL_PROVIDERS_NAMESPACE;
 

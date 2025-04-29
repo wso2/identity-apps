@@ -193,7 +193,6 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                     case AuthenticationType.BASIC:
                         return t("emailProviders:fields.authentication.types.basic.name");
                     case AuthenticationType.CLIENT_CREDENTIAL:
-                        console.log("client credential");
                         return t("emailProviders:fields.authentication.types.client_credential.name");
                     default:
                         return;

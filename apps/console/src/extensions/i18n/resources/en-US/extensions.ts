@@ -1647,7 +1647,7 @@ export const extensions: Extensions = {
             goBack: "Go back to Notification Providers",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
-                content: "If you delete this configuration, the emails will be sent from the Asgardeo Email Address. " +
+                content: "If you delete this configuration, users will no longer receive emails from Identity Server. " +
                     "Please proceed with caution.",
                 header: "Are you sure?",
                 message: "This action is irreversible and will permanently delete the email provider configurations."
