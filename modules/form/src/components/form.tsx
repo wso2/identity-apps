@@ -196,7 +196,9 @@ export const Form: ForwardRefExoticComponent<PropsWithChildren<FormPropsInterfac
 
                     const { handleSubmit, form } = formRenderProps;
 
-                    formState.current = form;
+                    if (formState) {
+                        formState.current = form;
+                    }
 
                     if (triggerSubmit && typeof triggerSubmit === "function") {
                         triggerSubmit(handleSubmit);
