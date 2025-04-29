@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.54.7
+
+### Patch Changes
+
+- [#8101](https://github.com/wso2/identity-apps/pull/8101) [`113a190bd422fc412db1ae38aa1ff721a66942e6`](https://github.com/wso2/identity-apps/commit/113a190bd422fc412db1ae38aa1ff721a66942e6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add support to dynamically display attributes in user creation wizard
+
+* [#8119](https://github.com/wso2/identity-apps/pull/8119) [`f96770ea91030a913ba1e5c36fd38abb6f0ad23a`](https://github.com/wso2/identity-apps/commit/f96770ea91030a913ba1e5c36fd38abb6f0ad23a) Thanks [@Malith-19](https://github.com/Malith-19)! - Update admin forced password reset sms template display names.
+
+* Updated dependencies [[`113a190bd422fc412db1ae38aa1ff721a66942e6`](https://github.com/wso2/identity-apps/commit/113a190bd422fc412db1ae38aa1ff721a66942e6), [`1f79ebd46eb773a39abb7c04b4db40cfbf9acd53`](https://github.com/wso2/identity-apps/commit/1f79ebd46eb773a39abb7c04b4db40cfbf9acd53)]:
+  - @wso2is/admin.users.v1@2.31.1
+  - @wso2is/core@2.7.5
+  - @wso2is/admin.email-providers.v1@2.26.0
+
 ## 2.54.6
 
 ### Patch Changes
