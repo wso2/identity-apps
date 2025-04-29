@@ -16,14 +16,11 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
+import { addUser, deleteUser, updateUserInfo } from "@wso2is/admin.users.v1/api/users";
+import { UserDetailsInterface } from "@wso2is/admin.users.v1/models/user";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { AddAgentInterface } from "../models/agents";
-
-const httpClient: HttpClientInstance =
-    AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+import { AxiosError, AxiosResponse } from "axios";
 
 /**
  * Add an agent.
@@ -32,34 +29,32 @@ const httpClient: HttpClientInstance =
  *
  * @returns response.
  */
-export const addAgent = (data: any): Promise<AddAgentInterface> => {
-    const requestConfig: AxiosRequestConfig = {
-        data,
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.POST,
-        url: "http://localhost:3000/agents"
-    };
+export const addAgent = (data: UserDetailsInterface): Promise<any> => {
+    return addUser(data).then((response: AxiosResponse) => {
+        if (response.status !== 201) {
+            throw new IdentityAppsApiException(
+                "Error when creating the agent",
+                null,
+                response.status,
+                response.request
+            );
+        }
 
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 201) {
-                throw new IdentityAppsApiException(
-                    "Error when creating the agent",
-                    null,
-                    response.status,
-                    response.request,
-                    response,
-                    response.config);
-            }
+        return Promise.resolve(response?.data);
+    }).catch((error: AxiosError) => {
+        return Promise.reject(error?.response?.data);
+    });
+};
 
-            return Promise.resolve(response?.data as AddAgentInterface);
-        })
-        .catch((error: AxiosError) => {
-            return Promise.reject(error?.response?.data);
-        });
+/**
+ * Updates an agent.
+ *
+ * @param data - Updated agent information
+ *
+ * @returns response.
+ */
+export const updateAgent = (agentId: string, data: PatchRoleDataInterface): Promise<any> => {
+    return updateUserInfo(agentId, data);
 };
 
 /**
@@ -69,68 +64,19 @@ export const addAgent = (data: any): Promise<AddAgentInterface> => {
  *
  * @returns response.
  */
-export const deleteAgent = (data: any): Promise<AxiosResponse> => {
-    const requestConfig: AxiosRequestConfig = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.DELETE,
-        url: "http://localhost:3000/agents/" + data.id
-    };
+export const deleteAgent = (agentId: string): Promise<AxiosResponse> => {
+    return deleteUser(agentId).then((response: AxiosResponse) => {
+        if (response.status !== 204) {
+            throw new IdentityAppsApiException(
+                "Error when deleting the agent",
+                null,
+                response.status,
+                response.request
+            );
+        }
 
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 201) {
-                throw new IdentityAppsApiException(
-                    "Error when creating the agent",
-                    null,
-                    response.status,
-                    response.request,
-                    response,
-                    response.config);
-            }
-
-            return Promise.resolve(response);
-        })
-        .catch((error: AxiosError) => {
-            return Promise.reject(error?.response?.data);
-        });
-};
-
-/**
- * Updates an agent.
- *
- * @param data - Adds this data.
- *
- * @returns response.
- */
-export const updateAgent = (data: any): Promise<AxiosResponse> => {
-    const requestConfig: AxiosRequestConfig = {
-        data,
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.PUT,
-        url: "http://localhost:3000/agents/" + data.id
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 201) {
-                throw new IdentityAppsApiException(
-                    "Error when creating the agent",
-                    null,
-                    response.status,
-                    response.request,
-                    response,
-                    response.config);
-            }
-
-            return Promise.resolve(response);
-        })
-        .catch((error: AxiosError) => {
-            return Promise.reject(error?.response?.data);
-        });
+        return Promise.resolve(response);
+    }).catch((error: AxiosError) => {
+        return Promise.reject(error?.response?.data);
+    });
 };

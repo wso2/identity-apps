@@ -27,17 +27,18 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Icon, Input, Label, Table } from "semantic-ui-react";
+import useGetAgent from "../../hooks/use-get-agent";
 
-export default function AgentGroups() {
+interface AgentGroupViewProps {
+    agentId: string;
+}
+
+export default function AgentGroups({ agentId }: AgentGroupViewProps) {
     const { t } = useTranslation();
 
-    const assignedGroups: any = [
-        {
-            "display": "HumanResources",
-            "value": "9fd55b9d-f1a1-41f5-be20-a54088693c1e",
-            "$ref": "https://localhost:9443/scim2/Groups/9fd55b9d-f1a1-41f5-be20-a54088693c1e"
-        }
-    ]
+    const {
+        data: agentInfo
+    } = useGetAgent(agentId);
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
@@ -47,7 +48,7 @@ export default function AgentGroups() {
 
             <Table.Body>
                 {
-                    assignedGroups?.map((group: RolesMemberInterface, index: number) => {
+                    agentInfo?.groups?.map((group: RolesMemberInterface, index: number) => {
                         const userGroup: string[] = group?.display?.split("/");
 
                         if (userGroup[0] !== APPLICATION_DOMAIN &&

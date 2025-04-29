@@ -16,13 +16,18 @@
  * under the License.
  */
 
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form/src";
 import { DangerZone, DangerZoneGroup, EmphasizedSegment, Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Button, Form, Grid } from "semantic-ui-react";
+import { Form, Grid } from "semantic-ui-react";
+import { deleteAgent, updateAgent } from "../../api/agents";
+import useGetAgent from "../../hooks/use-get-agent";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 
 interface AgentOverviewProps extends IdentifiableComponentInterface {
     agentId: string;
@@ -34,55 +39,57 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
 
     const [ initialValues, setInitialValues ] = useState<any>();
 
+    const {
+        data: agentInfo
+    } = useGetAgent(agentId);
+
     useEffect(() => {
-        if (agentId) {
-            const agents: any = JSON.parse(localStorage.getItem("agents"));
-
-            const agent: any = agents.find((agent: any) => agent.id === agentId);
-
-            if (agent) {
-                setInitialValues({
-                    description: agent.description,
-                    logo: agent.logo,
-                    name: agent.name,
-                    manager: "paul@wso2.com"
-                });
-            }
+        if (agentInfo) {
+            setInitialValues({
+                description: agentInfo?.description,
+                logo: agentInfo?.logo,
+                name: agentInfo.name?.givenName
+            });
         }
-    },[ agentId ]);
+    }, [ agentInfo ]);
 
     return (
         <>
             <EmphasizedSegment padded="very" style={ { border: "none", padding: "21px" } }>
                 <FinalForm
                     onSubmit={ (values: any) => {
-                        try {
-                            const agents: any = JSON.parse(localStorage.getItem("agents"));
 
-                            const editingAgent: any = agents.find((agent: any) => agent.id === agentId);
+                        const data: PatchRoleDataInterface = {
+                            Operations: [
+                                {
+                                    op: "replace",
+                                    value: {
+                                        description: values?.description,
+                                        logo: values?.logo,
+                                        name: {
+                                            givenName: values?.name
+                                        }
+                                    }
+                                }
+                            ],
+                            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+                        };
 
-                            editingAgent.name = values.name;
-                            editingAgent.description = values.description;
-                            editingAgent.logo = values.logo;
-
-                            const updatedAgentList: any = agents.filter((agent: any) => agent.id !== agentId);
-
-                            updatedAgentList.push(editingAgent);
-
-                            localStorage.setItem("agents", JSON.stringify(updatedAgentList));
-
+                        updateAgent(agentId, data).then((_response: any) => {
                             dispatch(addAlert({
                                 description: "Agent information updated successfully.",
                                 level: AlertLevels.SUCCESS,
                                 message: "Updated successfully"
                             }));
-                        } catch (err) {
+                        }).catch((_err: unknown) => {
                             dispatch(addAlert({
                                 description: "An error occurred when updating agent information.",
                                 level: AlertLevels.ERROR,
                                 message: "Something went wrong"
                             }));
-                        }
+                        });
+
+
 
                     } }
                     render={ ({ handleSubmit }: FormRenderProps) => {
@@ -90,7 +97,10 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                             <Grid>
                                 <Grid.Row>
                                     <Grid.Column computer={ 12 }>
-                                        <form onSubmit={ handleSubmit } style={ { display: "flex", flexDirection: "column" } }>
+                                        <form
+                                            onSubmit={ handleSubmit }
+                                            style={ { display: "flex", flexDirection: "column" } }
+                                        >
                                             <FinalFormField
                                                 name="name"
                                                 label="Name"
@@ -132,43 +142,60 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                 ></FinalForm>
             </EmphasizedSegment>
 
-            <DangerZoneGroup sectionHeader={ "Danger Zone" }
+            <DangerZoneGroup
+                sectionHeader={ "Danger Zone" }
             >
-                    {/* <DangerZone
+                { /* <DangerZone
                         actionTitle={ "Transfer ownership" }
                         header={ "Transfer Ownership" }
                         subheader={ "Transfer ownership of this agent to another user in the organization." }
                         onActionClick={ (): void => null }
                         data-testid={ `danger-zone-disable` }
-                    /> */}
+                    /> */ }
 
-                    <DangerZone
-                        actionTitle={
-                            "Disable agent"
-                        }
-                        header={
-                            "Disable agent"
-                        }
-                        subheader={
-                            "Once disabled, this agent will not be able to connect to any application or connection. Please be certain before you proceed"
-                        }
-                        onActionClick={ (): void => null }
-                        data-testid={ `-danger-zone` }
-                    />
+                <DangerZone
+                    actionTitle={
+                        "Disable agent"
+                    }
+                    header={
+                        "Disable agent"
+                    }
+                    subheader={
+                        "Once disabled, this agent will not be able to connect to any application or connection. " +
+                        "Please be certain before you proceed"
+                    }
+                    onActionClick={ (): void => null }
+                    data-testid={ "-danger-zone" }
+                />
 
-                    <DangerZone
-                        actionTitle={
-                            "Delete agent"
-                        }
-                        header={
-                            "Delete agent"
-                        }
-                        subheader={
-                            "This action will remove the agent's association with this organization. Please be certain before you proceed"
-                        }
-                        onActionClick={ (): void => null }
-                        data-testid={ `-danger-zone` }
-                    />
+                <DangerZone
+                    actionTitle={
+                        "Delete agent"
+                    }
+                    header={
+                        "Delete agent"
+                    }
+                    subheader={
+                        "This action will remove the agent's association with this organization. " +
+                        "Please be certain before you proceed"
+                    }
+                    onActionClick={ () => deleteAgent(agentId).then(() => {
+                        dispatch(addAlert({
+                            description: "Agent deleted successfully.",
+                            level: AlertLevels.SUCCESS,
+                            message: "Deleted successfully"
+                        }));
+                        history.push(AppConstants.getPaths().get("AGENTS"));
+                    }).catch((_error: any) => {
+                        dispatch(addAlert({
+                            description: "An error occurred when deleting agent.",
+                            level: AlertLevels.ERROR,
+                            message: "Something went wrong"
+                        }));
+                    })
+                    }
+                    data-testid={ "-danger-zone" }
+                />
 
             </DangerZoneGroup>
         </>

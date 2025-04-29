@@ -30,7 +30,6 @@ import AgentIntegrations from "../components/edit/agent-integrations";
 import AgentOverview from "../components/edit/agent-overview";
 import AgentRoles from "../components/edit/agent-roles";
 import useGetAgent from "../hooks/use-get-agent";
-import AgentLogs from "../components/edit/agent-logs";
 
 interface EditAgentPageProps extends IdentifiableComponentInterface {
 
@@ -91,18 +90,13 @@ export default function EditAgent({
         {
             componentId: "roles",
             menuItem: "Roles",
-            render: () =>  <ResourceTab.Pane><AgentRoles /></ResourceTab.Pane>
+            render: () =>  <ResourceTab.Pane><AgentRoles agentId={ agentId }/></ResourceTab.Pane>
         },
         {
             componentId: "groups",
             menuItem: "Groups",
-            render: () =>  <ResourceTab.Pane><AgentGroups /></ResourceTab.Pane>
-        },
-        // {
-        //     componentId: "logs",
-        //     menuItem: "Audit Logs",
-        //     render: () => <AgentLogs />
-        // }
+            render: () =>  <ResourceTab.Pane><AgentGroups agentId={ agentId } /></ResourceTab.Pane>
+        }
     ];
 
     const handleBackButtonClick = () => {
@@ -112,7 +106,7 @@ export default function EditAgent({
     return (
         <TabPageLayout
             pageTitle="Edit agent"
-            title={ agentInfo?.name }
+            title={ agentInfo?.name?.givenName }
             description={ agentInfo?.id }
             isLoading={ isAgentInfoLoading }
             backButton={ {
@@ -123,14 +117,14 @@ export default function EditAgent({
             image={ agentInfo?.logo
                 ? (
                     <AppAvatar
-                        name={ agentInfo?.name }
+                        name={ agentInfo?.name?.givenName }
                         image={ agentInfo?.logo }
                         size="tiny"
                     />
                 )
                 : (
                     <AnimatedAvatar
-                        name={ agentInfo?.name }
+                        name={ agentInfo?.name?.givenName }
                         size="tiny"
                         floated="left"
                     />
