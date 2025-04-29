@@ -106,6 +106,6 @@ export class EmailProviderConstants {
             key: AuthenticationType.CLIENT_CREDENTIAL,
             text: "emailProviders:fields.authentication.types.client_credential.name",
             value: AuthenticationType.CLIENT_CREDENTIAL
-        },
+        }
     ];
 }

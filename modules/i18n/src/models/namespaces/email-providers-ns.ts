@@ -90,8 +90,7 @@ export interface EmailProviderNS {
                 empty: string;
             };
         };
-        authenticationTypeDropdown: {
-                    
+        authenticationTypeDropdown: {     
             title: string;
             label: string;
             placeholder: string;

@@ -54,28 +54,28 @@ export const emailProviders: EmailProviderNS = {
                             label: "Token Endpoint",
                             placeholder: "Token Endpoint",
                             validations: {
-                                empty: "Token Endpoint is a required field."
+                                empty: "Token endpoint is a required field."
                             }
                         },
                         clientID: {
                             label: "Client ID",
                             placeholder: "Client ID",
                             validations: {
-                                empty: "Client ID is a required field."
+                                empty: "Client id is a required field."
                             }
                         },
                         clientSecret: {
                             label: "Client Secret",
                             placeholder: "Client Secret",
                             validations: {
-                                empty: "Client Secret is a required field."
+                                empty: "Client secret is a required field."
                             }
                         },
                         scopes: {
                             label: "Scopes",
                             placeholder: "Scopes",
                             validations: {
-                                empty: "Client Secret is a required field."
+                                empty: "Scopes is a required field."
                             }
                         }
                     }
@@ -85,10 +85,10 @@ export const emailProviders: EmailProviderNS = {
         authenticationType: {
             hint: {
                 create: "Once added, these secrets will not be displayed. You will only be able to reset them.",
-                update: "Once updated, these secrets will not be displayed. You will only be able to reset them again."
+                update: "Once updated, these secrets will not be displayed. You will only be able to reset them."
             },
             label: "Authentication",
-            placeholder: "Select Authentication Scheme",
+            placeholder: "Select authentication scheme",
             validations: {
                 empty: "Authentication Scheme is a required field."
             }
@@ -143,7 +143,7 @@ export const emailProviders: EmailProviderNS = {
                 update: "Once updated, these secrets will not be displayed. You will only be able to reset them again."
             },
             label: "Authentication Scheme",
-            placeholder: "Select Authentication Scheme",
+            placeholder: "Select authentication scheme",
             title: "Authentication",
             validations: {
                 required: "Authentication Scheme is a required field."
