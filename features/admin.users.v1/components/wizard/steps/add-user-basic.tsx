@@ -178,11 +178,10 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const [ multiValuedInputFieldValue, setMultiValuedInputFieldValue ] = useState<Record<string, string>>({});
     const [ multiValuedAttributeValues, setMultiValuedAttributeValues ] =
         useState<Record<string, string[]>>({});
-    const [ primaryValues, setPrimaryValues ] = useState<Record<string, string>>({}); // For multi-valued attributes.
+    const [ primaryValues, setPrimaryValues ] = useState<Record<string, string>>({});
     const [ isMultiValuedItemInvalid, setIsMultiValuedItemInvalid ] =  useState<Record<string, boolean>>({});
     const [ simpleMultiValuedExtendedProfileSchema, setSimpleMultiValuedExtendedProfileSchema ]
         = useState<ProfileSchemaInterface[]>();
-    const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
 
     const formBottomRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
@@ -196,6 +195,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
             node.children[0].children[1].children[0].role = "presentation";
         }
     }, []);
+
+    const countryList: DropdownItemProps[] = CommonUtils.getCountryList();
 
     const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.attributeDialects?.disabledFeatures?.includes(
         ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
@@ -217,7 +218,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     // List of SCIM2 schemas that should not be displayed in the user creation wizard.
     // These schemas are either not required or hard-coded in the wizard UI.
     const hiddenSchemas: string[] = [
-        ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"),
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME"),
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT"),
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE"),
@@ -302,8 +303,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
 
     useEffect(() => {
         resolveNamefieldAttributes();
-        // This will load the countries to the dropdown
-        setCountryList(CommonUtils.getCountryList());
     }, []);
 
     /**
@@ -675,9 +674,9 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 } else {
                                     opValue = {
                                         [schemaId]: {
-                                            [schemaNames[0]]: schema.type.toUpperCase() === "BOOLEAN" ?
-                                                !!values.get(schema.name)?.includes(schema.name) :
-                                                values.get(schemaNames[0])
+                                            [schemaNames[0]]: schema.type.toUpperCase() === "BOOLEAN"
+                                                ? !!values.get(schema.name)?.includes(schema.name)
+                                                : values.get(schemaNames[0])
                                         }
                                     };
                                 }
@@ -707,23 +706,21 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                     }
                                 };
                             } else if (schema.extended) {
-                                const schemaId: string = schema?.schemaId
-                                    ? schema.schemaId
-                                    : userConfig.userProfileSchema;
+                                const schemaId: string = schema?.schemaId ?? userConfig.userProfileSchema;
 
                                 opValue = {
                                     [schemaId]: {
                                         [schemaNames[0]]: {
-                                            [schemaNames[1]]: schema.type.toUpperCase() === "BOOLEAN" ?
-                                                !!values.get(schema.name)?.includes(schema.name) :
-                                                values.get(schema.name)
+                                            [schemaNames[1]]: schema.type.toUpperCase() === "BOOLEAN"
+                                                ? !!values.get(schema.name)?.includes(schema.name)
+                                                : values.get(schema.name)
                                         }
                                     }
                                 };
                             } else if (schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
                                 .get("NAME")) {
 
-                                if (values.get(schema.name) || values.get(schema.name) === "") {
+                                if (!isEmpty(values.get(schema.name))) {
                                     opValue = {
                                         name: { [schemaNames[1]]: values.get(schema.name) }
                                     };
@@ -758,9 +755,9 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                         [schemaNames[0]]: [
                                             {
                                                 type: schemaNames[1],
-                                                value: schema.type.toUpperCase() === "BOOLEAN" ?
-                                                    !!values.get(schema.name)?.includes(schema.name) :
-                                                    values.get(schema.name)
+                                                value: schema.type.toUpperCase() === "BOOLEAN"
+                                                    ? !!values.get(schema.name)?.includes(schema.name)
+                                                    : values.get(schema.name)
                                             }
                                         ]
                                     };
