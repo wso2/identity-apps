@@ -97,6 +97,11 @@ export const organizations: organizationsNS = {
                 label: "Organization Name",
                 placeholder: "Enter organization name"
             },
+            orgHandle: {
+                ariaLabel: "Organization Handle",
+                label: "Organization Handle",
+                placeholder: "Enter organization handle"
+            },
             type: {
                 ariaLabel: "Organization Type",
                 label: "Organization Type"
@@ -127,6 +132,14 @@ export const organizations: organizationsNS = {
                 validation: {
                     duplicate: "Organization name already exists",
                     empty: "Organization name is required"
+                }
+            },
+            orgHandle: {
+                label: "Organization Handle",
+                placeholder: "Enter organization handle",
+                validation: {
+                    duplicate: "Organization handle already exists",
+                    empty: "Organization handle is required"
                 }
             },
             structural: "Structural",
