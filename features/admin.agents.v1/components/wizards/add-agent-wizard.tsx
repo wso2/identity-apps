@@ -16,19 +16,15 @@
  * under the License.
  */
 
-import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import { UserDetailsInterface } from "@wso2is/admin.users.v1/models/user";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form/src";
-import { CopyInputField } from "@wso2is/react-components";
-import { Message } from "@wso2is/react-components";
-import { Button } from "@wso2is/react-components";
+import { Button, CopyInputField, Message } from "@wso2is/react-components";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Grid, Modal } from "semantic-ui-react";
-import { v4 as uuidv4 } from "uuid";
+import { Modal } from "semantic-ui-react";
 import { addAgent } from "../../api/agents";
-import { AddAgentInterface } from "../../models/agents";
 
 interface AddAgentWizardProps extends IdentifiableComponentInterface {
     isOpen: boolean;
@@ -43,7 +39,7 @@ export default function AddAgentWizard({
     const dispatch: any = useDispatch();
 
     const [ showSecret, setShowSecret ] = useState(false);
-    const [ newAgent, setNewAgent ] = useState<AddAgentInterface>();
+    const [ newAgent, setNewAgent ] = useState<UserDetailsInterface>();
 
     return (
         <Modal
@@ -57,23 +53,29 @@ export default function AddAgentWizard({
             closeOnDimmerClick={ false }
             closeOnEscape
         >
-            <Modal.Header>Create Agent</Modal.Header>
+            <Modal.Header>{ showSecret ? "Agent created successfully" : "New Agent" }</Modal.Header>
             <Modal.Content>
                 { !showSecret ?
                     (<FinalForm
                         onSubmit={ (values: any) => {
-                            const addAgentPayload: AddAgentInterface = {
+                            const addAgentPayload: UserDetailsInterface = {
                                 description: values?.description,
-                                name: values?.name,
+                                emails: [],
+                                name: {
+                                    familyName: "",
+                                    givenName: values?.name
+                                },
+                                password: "Wso2@test123",
+                                userName: "AgentStore/" + values?.username,
                                 version: "1.0.0"
                             };
 
                             addAgent(addAgentPayload)
-                                .then(response => {
+                                .then((response: UserDetailsInterface) => {
                                     setNewAgent(response);
                                     setShowSecret(true);
                                 })
-                                .catch(err => {
+                                .catch((_err: unknown) => {
                                     dispatch(
                                         addAlert({
                                             description: "Creating agent failed",
@@ -93,6 +95,12 @@ export default function AddAgentWizard({
                                         component={ TextFieldAdapter }
                                     />
                                     <FinalFormField
+                                        name="username"
+                                        label="Username"
+                                        autoComplete="new-password"
+                                        component={ TextFieldAdapter }
+                                    />
+                                    <FinalFormField
                                         label="Description"
                                         name="description"
                                         className="mt-3"
@@ -107,21 +115,29 @@ export default function AddAgentWizard({
                             );
                         } }
                     />
-                ) : (
-                    <>
-                        <Message warning>
+                    ) : (
+                        <>
+                            <Message warning>
+                            Important: Please copy and store the agent credentials securely.{ " " }
                             Make sure to copy the agent secret now as you will not be able to see this again.
-                        </Message>
+                            </Message>
 
-                        <CopyInputField
-                            secret
-                            value={ "sdjskjksjkdjkjsdk" }
-                            hideSecretLabel={ "Hide secret" }
-                            showSecretLabel={ "Show secret" }
-                            data-componentid={ "client-secret-readonly-input" }
-                        />
-                    </>
-                ) }
+                            <label>Agent ID</label>
+                            <CopyInputField
+                                value={ newAgent?.id }
+                                data-componentid={ "client-secret-readonly-input" }
+                            />
+
+                            <label>Agent secret</label>
+                            <CopyInputField
+                                secret
+                                value={ "sdjskjksjkdjkjsdk" }
+                                hideSecretLabel={ "Hide secret" }
+                                showSecretLabel={ "Show secret" }
+                                data-componentid={ "client-secret-readonly-input" }
+                            />
+                        </>
+                    ) }
             </Modal.Content>
 
             <Modal.Actions>

@@ -21,28 +21,59 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { HttpMethods } from "@wso2is/core/models";
 
-const useGetAgents = <Data = any,
-Error = RequestErrorInterface> (): RequestResultInterface<Data, Error> => {
+/**
+ * Hook to get the users list with limit and offset.
+ *
+ * @param count - The number of users to be returned.
+ * @param startIndex - The index of the first user to be returned.
+ * @param filter - The filter to be applied to the users.
+ * @param attributes - The attributes to be returned.
+ * @param domain - The user store domain name.
+ * @param excludedAttributes - The attributes to be excluded.
+ * @returns `RequestResultInterface<Data, Error>`
+ */
+export const useGetAgents = (
+    count: number,
+    startIndex: number,
+    filter: string,
+    attributes: string,
+    domain: string,
+    excludedAttributes?: string,
+    shouldFetch: boolean = true
+): RequestResultInterface<UserListInterface, RequestErrorInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            Accept: "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: "http://localhost:3000/agents"
+        params: {
+            attributes,
+            count,
+            domain,
+            excludedAttributes,
+            filter,
+            startIndex
+        },
+        url: store.getState().config.endpoints.users
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const {
+        data,
+        error,
+        isValidating,
+        mutate
+    } = useRequest<UserListInterface, RequestErrorInterface>(shouldFetch ? requestConfig : null);
 
     return {
         data,
-        error: error,
+        error,
         isLoading: !error && !data,
         isValidating,
         mutate: mutate
     };
 };
-
-export default useGetAgents;
