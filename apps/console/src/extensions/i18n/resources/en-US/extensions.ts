@@ -1647,7 +1647,7 @@ export const extensions: Extensions = {
             goBack: "Go back to Notification Providers",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
-                content: "If you delete this configuration, emails will be sent from the default email provider, if available. " +
+                content: "If you delete this configuration, emails will be sent from the default email provider. " +
                     "Please proceed with caution.",
                 header: "Are you sure?",
                 message: "This action is irreversible and will permanently delete the email provider configurations."

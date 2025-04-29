@@ -71,6 +71,7 @@ import {
     EmailProviderConfigPropertiesInterface,
     EmailProvidersPageInterface
 } from "../models";
+import "./email-providers.scss";
 
 const FORM_ID: string = "email-provider-config-form";
 
@@ -433,6 +434,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                 "notifications.updateConfiguration.success.message")
             })
         );
+        setIsAuthenticationUpdateFormState(false);
     };
 
     /**
