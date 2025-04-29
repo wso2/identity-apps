@@ -94,7 +94,7 @@ export class EmailProviderConstants {
                 "Error while updating the email provider configurations",
                 null
             )
-      };
+        };
 
     public static readonly AUTH_TYPES: AuthenticationTypeDropdownOption[] = [
         {
