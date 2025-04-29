@@ -760,7 +760,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 return errors;
             } }>
             <Grid container spacing={ { md: 3, xs: 2 } } columns={ { md: 12, sm: 8, xs: 4 } }>
-                <Grid xs={ 2 } sm={ 4 } md={ 6 }>
+                <Grid xs={ 2 } sm={ 4 } md={ 12 }>
                     <p><b>Mode of certificate configuration</b></p>
                     { (selectedProtocol === "oidc") && (
                         <FormControl>
