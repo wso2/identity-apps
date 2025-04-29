@@ -1,5 +1,29 @@
 # @wso2is/console
 
+## 2.54.6
+
+### Patch Changes
+
+- [#8105](https://github.com/wso2/identity-apps/pull/8105) [`0657f736d806026521afa9d909f9daca000be7b2`](https://github.com/wso2/identity-apps/commit/0657f736d806026521afa9d909f9daca000be7b2) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix attributes view for sub organizations
+
+- Updated dependencies [[`0657f736d806026521afa9d909f9daca000be7b2`](https://github.com/wso2/identity-apps/commit/0657f736d806026521afa9d909f9daca000be7b2)]:
+  - @wso2is/admin.userstores.v1@2.27.32
+  - @wso2is/admin.claims.v1@2.27.120
+
+## 2.54.5
+
+### Patch Changes
+
+- [#8104](https://github.com/wso2/identity-apps/pull/8104) [`f09d6502a5796e8bbddbb0c17b113d3c3dd95360`](https://github.com/wso2/identity-apps/commit/f09d6502a5796e8bbddbb0c17b113d3c3dd95360) Thanks [@savindi7](https://github.com/savindi7)! - Remove unnecessary extension configs in Connections.
+
+* [#8080](https://github.com/wso2/identity-apps/pull/8080) [`54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b`](https://github.com/wso2/identity-apps/commit/54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b) Thanks [@hwupathum](https://github.com/hwupathum)! - Remove in-app privacy pages in Console & My Account
+
+* Updated dependencies [[`f09d6502a5796e8bbddbb0c17b113d3c3dd95360`](https://github.com/wso2/identity-apps/commit/f09d6502a5796e8bbddbb0c17b113d3c3dd95360), [`54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b`](https://github.com/wso2/identity-apps/commit/54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b)]:
+  - @wso2is/admin.connections.v1@2.33.94
+  - @wso2is/admin.extensions.v1@2.37.9
+  - @wso2is/admin.core.v1@2.43.5
+  - @wso2is/i18n@2.22.17
+
 ## 2.54.4
 
 ### Patch Changes

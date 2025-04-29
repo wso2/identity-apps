@@ -187,14 +187,8 @@ export const identityProviderConfig: IdentityProviderConfig = {
         showOutboundProvisioning: true
     },
     extendedSamlConfig: {
-        authContextComparisonLevelEnabled: true,
         enableAssertionSigningEnabled: true,
-        forceAuthenticationEnabled: true,
-        includeAuthenticationContextEnabled: true,
-        includeNameIDPolicyEnabled: true,
         includePublicCertEnabled: true,
-        isAssertionEncryptionEnabled: true,
-        responseAuthenticationContextClassEnabled: true,
         saml2WebSSOUserIdLocationEnabled: true
     },
     jitProvisioningSettings: {

@@ -22,4 +22,3 @@ export * from "./consent-management";
 export * from "./errors";
 export * from "./overview";
 export * from "./personal-info";
-export * from "./privacy";

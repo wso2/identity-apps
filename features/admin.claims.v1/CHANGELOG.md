@@ -1,5 +1,15 @@
 # @wso2is/admin.claims.v1
 
+## 2.27.120
+
+### Patch Changes
+
+- [#8105](https://github.com/wso2/identity-apps/pull/8105) [`0657f736d806026521afa9d909f9daca000be7b2`](https://github.com/wso2/identity-apps/commit/0657f736d806026521afa9d909f9daca000be7b2) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix attributes view for sub organizations
+
+- Updated dependencies [[`0657f736d806026521afa9d909f9daca000be7b2`](https://github.com/wso2/identity-apps/commit/0657f736d806026521afa9d909f9daca000be7b2)]:
+  - @wso2is/admin.userstores.v1@2.27.32
+  - @wso2is/admin.claims.v1@2.27.120
+
 ## 2.27.119
 
 ### Patch Changes
