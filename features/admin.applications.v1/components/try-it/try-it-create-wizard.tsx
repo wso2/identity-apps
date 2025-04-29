@@ -45,12 +45,25 @@ import { ApplicationListInterface, MainApplicationInterface } from "../../models
 import getTryItClientId from "../../utils/get-try-it-client-id";
 
 /**
-  * Prop types of the `TryItCreateWizard` component.
-  */
-interface TryItCreateWizardPropsInterface extends TestableComponentInterface {
-     closeWizard: () => void;
-     applicationName: string;
-     onApplicationCreate: () => void;
+ * Prop types of the `TryItCreateWizard` component.
+ */
+export interface TryItCreateWizardPropsInterface extends TestableComponentInterface {
+    /**
+     * Function to close the wizard.
+     */
+    closeWizard: () => void;
+    /**
+     * Name of the application to be created.
+     */
+    applicationName: string;
+    /**
+     * Access URL of the application to be created.
+     */
+    applicationAccessUrl: string;
+    /**
+     * Callback function triggered after the application is successfully created.
+     */
+    onApplicationCreate: () => void;
 }
 
 const INTERMITTENT_REDIRECTION_TIMEOUT: number = 2000;
@@ -60,19 +73,13 @@ const INTERMITTENT_REDIRECTION_TIMEOUT: number = 2000;
  *
  * @returns Login Playground application wizard.
  */
-const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
-    props: TryItCreateWizardPropsInterface
-): ReactElement => {
-    const {
-        closeWizard,
-        [ "data-testid" ]: testId,
-        onApplicationCreate
-    } = props;
-
+const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = ({
+    closeWizard,
+    [ "data-testid" ]: testId,
+    onApplicationCreate,
+    applicationAccessUrl
+}: TryItCreateWizardPropsInterface): ReactElement => {
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
-    const asgardeoLoginPlaygroundURL: string = useSelector((state: AppState) => {
-        return state.config?.deployment?.extensions?.asgardeoTryItURL as string;
-    });
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
     const { t } = useTranslation();
@@ -283,7 +290,8 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
     };
 
     /**
-     * Checking if an app is already there called login playground or if not creating one and navigating
+     * Checking if an app is already there called login playground or if not creating one and navigating.
+     * TODO: Move this to `useTryItApplication` hook.
      */
     const isApplicationAlreadyExist: () => void = useCallback(async () => {
         const tryItAppClientId: string = getTryItClientId(tenantDomain);
@@ -301,9 +309,9 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
         const modifiedApplication: MainApplicationInterface = cloneDeep(LoginApplicationTemplate.application);
 
         modifiedApplication.inboundProtocolConfiguration.oidc.clientId = tryItAppClientId;
-        modifiedApplication.inboundProtocolConfiguration.oidc.callbackURLs = [ asgardeoLoginPlaygroundURL ];
-        modifiedApplication.inboundProtocolConfiguration.oidc.allowedOrigins = [ asgardeoLoginPlaygroundURL ];
-        modifiedApplication.accessUrl = asgardeoLoginPlaygroundURL;
+        modifiedApplication.inboundProtocolConfiguration.oidc.callbackURLs = [ applicationAccessUrl ];
+        modifiedApplication.inboundProtocolConfiguration.oidc.allowedOrigins = [ applicationAccessUrl ];
+        modifiedApplication.accessUrl = applicationAccessUrl;
 
         /**
          * Creating the try it app on demand
@@ -318,7 +326,7 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
                          * Navigate to the created playground application
                          */
                         //TODO handle with url builder
-                        window.open(asgardeoLoginPlaygroundURL
+                        window.open(applicationAccessUrl
                             + "?client_id="+getTryItClientId(tenantDomain)+ "&org=" + tenantDomain);
                         onApplicationCreate();
                         closeWizard();
@@ -377,7 +385,7 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
             /**
              * Navigate to the existing applications
              */
-            window.open(`${asgardeoLoginPlaygroundURL}?client_id=${getTryItClientId(tenantDomain)}`+
+            window.open(`${applicationAccessUrl}?client_id=${getTryItClientId(tenantDomain)}`+
                 `&org=${tenantDomain}`);
             closeWizard();
         }, INTERMITTENT_REDIRECTION_TIMEOUT);

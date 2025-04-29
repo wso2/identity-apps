@@ -65,6 +65,7 @@ export * from "./actions";
 export * from "./tenants";
 export * from "./sms-templates";
 export * from "./policy-administration";
+export * from "./registration-flow";
 export * from "./remote-user-stores";
 export * from "./rules";
 export * from "./custom-auth-connection";

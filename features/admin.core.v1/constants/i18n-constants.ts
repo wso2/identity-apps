@@ -302,6 +302,11 @@ export class I18nConstants {
         I18nModuleConstants.CUSTOM_AUTHENTICATOR_NAMESPACE;
 
     /**
+     * Registration flow namespace.
+     */
+    public static readonly REGISTRATION_FLOW_NAMESPACE: string = I18nModuleConstants.REGISTRATION_FLOW_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
@@ -357,7 +362,8 @@ export class I18nConstants {
         [ I18nConstants.POLICY_ADMINISTRATION_NAMESPACE, "portals" ],
         [ I18nConstants.REMOTE_USER_STORES_NAMESPACE, "portals" ],
         [ I18nConstants.RULES_NAMESPACE, "portals" ],
-        [ I18nConstants.PUSH_PROVIDERS_NAMESPACE, "portals" ]
+        [ I18nConstants.PUSH_PROVIDERS_NAMESPACE, "portals" ],
+        [ I18nConstants.REGISTRATION_FLOW_NAMESPACE, "portals" ]
     ]);
 
     /**
