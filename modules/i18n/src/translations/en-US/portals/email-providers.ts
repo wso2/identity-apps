@@ -50,13 +50,6 @@ export const emailProviders: EmailProviderNS = {
                 client_credential: {
                     name: "Client Credential",
                     properties: {
-                        tokenEndpoint: {
-                            label: "Token Endpoint",
-                            placeholder: "Token Endpoint",
-                            validations: {
-                                empty: "Token endpoint is a required field."
-                            }
-                        },
                         clientID: {
                             label: "Client ID",
                             placeholder: "Client ID",
@@ -76,6 +69,13 @@ export const emailProviders: EmailProviderNS = {
                             placeholder: "Scopes",
                             validations: {
                                 empty: "Scopes is a required field."
+                            }
+                        },
+                        tokenEndpoint: {
+                            label: "Token Endpoint",
+                            placeholder: "Token Endpoint",
+                            validations: {
+                                empty: "Token endpoint is a required field."
                             }
                         }
                     }
@@ -109,11 +109,11 @@ export const emailProviders: EmailProviderNS = {
                         required: "Client Secret is a required field."
                     }
                 },
-                tokenEndpoint: {
-                    label: "Token Endpoint",
-                    placeholder: "Token Endpoint",
+                password: {
+                    label: "Password",
+                    placeholder: "Password",
                     validations: {
-                        required: "Token Endpoint is a required field."
+                        required: "Password is a required field."
                     }
                 },
                 scopes: {
@@ -123,11 +123,11 @@ export const emailProviders: EmailProviderNS = {
                         required: "Scopes is a required field."
                     }
                 },
-                password: {
-                    label: "Password",
-                    placeholder: "Password",
+                tokenEndpoint: {
+                    label: "Token Endpoint",
+                    placeholder: "Token Endpoint",
                     validations: {
-                        required: "Password is a required field."
+                        required: "Token Endpoint is a required field."
                     }
                 },
                 username: {
@@ -150,4 +150,4 @@ export const emailProviders: EmailProviderNS = {
             }
         }
     }
-}
+};
