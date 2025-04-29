@@ -1,5 +1,15 @@
 # @wso2is/admin.users.v1
 
+## 2.31.1
+
+### Patch Changes
+
+- [#8101](https://github.com/wso2/identity-apps/pull/8101) [`113a190bd422fc412db1ae38aa1ff721a66942e6`](https://github.com/wso2/identity-apps/commit/113a190bd422fc412db1ae38aa1ff721a66942e6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add support to dynamically display attributes in user creation wizard
+
+- Updated dependencies [[`113a190bd422fc412db1ae38aa1ff721a66942e6`](https://github.com/wso2/identity-apps/commit/113a190bd422fc412db1ae38aa1ff721a66942e6)]:
+  - @wso2is/admin.users.v1@2.31.1
+  - @wso2is/core@2.7.5
+
 ## 2.31.0
 
 ### Minor Changes
