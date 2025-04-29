@@ -18,15 +18,25 @@
 
 import { Typography } from "@mui/material";
 import { ReadOnlyRoleList } from "@wso2is/admin.roles.v2/components/readonly-role-list";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmphasizedSegment, Message } from "@wso2is/react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import "./agent-roles.scss";
+import useGetAgent from "../../hooks/use-get-agent";
 
 
-export default function AgentRoles() {
+interface AgentRolesViewProps extends IdentifiableComponentInterface {
+    agentId: string;
+}
+
+export default function AgentRoles({ agentId }: AgentRolesViewProps) {
 
     const { t } = useTranslation();
+
+    const {
+        data: agentInfo
+    } = useGetAgent(agentId);
 
     return (
 
@@ -43,26 +53,7 @@ export default function AgentRoles() {
                 className="agent-role-message"
             />
             <ReadOnlyRoleList
-                totalRoleList={ [
-                    {
-                        display: "Customer Support",
-                        audienceType: "application",
-                        value: "0000aef5-01b6-4cca-af3f-efce472b9b38",
-                        $ref: "https://localhost:9443/scim2/v2/Roles/0000aef5-01b6-4cca-af3f-efce472b9b38",
-                        audienceDisplay: "Support Portal",
-                        orgId: "",
-                        orgName: ""
-                    },
-                    {
-                        display: "everyone",
-                        audienceType: "organization",
-                        value: "5db9f4b9-54aa-4a3f-8a03-156744d73b14",
-                        $ref: "https://localhost:9443/scim2/v2/Roles/5db9f4b9-54aa-4a3f-8a03-156744d73b14",
-                        audienceDisplay: "Super",
-                        orgId: "",
-                        orgName: ""
-                    }
-                ] }
+                totalRoleList={ agentInfo?.roles }
                 emptyRolesListPlaceholder={ null }
             />
         </EmphasizedSegment>
