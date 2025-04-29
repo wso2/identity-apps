@@ -23,13 +23,13 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { Code, Link } from "@wso2is/react-components";
+import { Code, Heading, Link } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Icon, Label, Message } from "semantic-ui-react";
+import { Divider, Icon, Label, Message } from "semantic-ui-react";
 import {
     CommonAuthenticatorFormFieldInterface,
     CommonAuthenticatorFormFieldMetaInterface,
@@ -39,6 +39,7 @@ import {
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../models";
+import { validateAMRValue } from "../../utils/connector-utils";
 
 /**
  * Interface for SMS OTP Authenticator Form props.
@@ -100,6 +101,8 @@ interface SMSOTPAuthenticatorFormInitialValuesInterface {
      * Number of SMS OTP resend attempts
      */
     SmsOTP_ResendAttemptsCount: number;
+
+    amrValue: string;
 }
 
 /**
@@ -122,6 +125,8 @@ interface SMSOTPAuthenticatorFormFieldsInterface {
      * Number of SMS OTP resend attempts
      */
     SmsOTP_ResendAttemptsCount: CommonAuthenticatorFormFieldInterface;
+
+    amrValue: string;
 }
 
 /**
@@ -230,6 +235,12 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             }
         });
 
+        resolvedInitialValues = {
+            ...resolvedInitialValues,
+            amrValue: originalInitialValues.amrValue
+        };
+        console.log("Resolved Initial Values: ", resolvedInitialValues);
+
         setIsOTPNumeric(resolvedInitialValues.SmsOTP_OtpRegex_UseNumericChars);
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
@@ -270,6 +281,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
 
         return {
             ...originalInitialValues,
+            amrValue: values.amrValue,
             properties
         };
     };
@@ -343,6 +355,10 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
 
         return errors;
     };
+
+    console.log("Google Authenticator Form Properties: ", originalInitialValues.properties);
+    console.log("Google Authenticator Form: ", originalInitialValues);
+    console.log("AMR Value: ", originalInitialValues?.amrValue);
 
     return (
         <Form
@@ -547,6 +563,45 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     }
                 </Label>
             </Field.Input>
+            <Divider />
+            <Heading as="h5">
+                {
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".smsOTP.amrHeading.heading")
+                }
+            </Heading>
+            <Field.Input
+                ariaLabel="AMR Value"
+                inputType="text"
+                icon="redo"
+                iconPosition="right"
+                name="amrValue"
+                initialValue={initialValues?.amrValue}
+                label={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".smsOTP.allowedAmrValue.label")
+                }
+                placeholder={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".smsOTP.allowedAmrValue.placeholder")
+                }
+                hint={
+                    (<Trans
+                        i18nKey={
+                            "authenticationProvider:forms.authenticatorSettings" +
+                            ".smsOTP.amrValurConstraint.hint"
+                        }
+                    >
+                        The allowed characters are
+                        <Code>letters, numbers and underscore</Code>.
+                    </Trans>)
+                }
+                validation={(value: string) => validateAMRValue(value.toString().trim())}
+                maxLength={255}
+                minLength={2}
+                width={12}
+                data-testid={`${testId}-allowed-amr-value`}
+            />
             <Field.Button
                 form={ FORM_ID }
                 size="small"

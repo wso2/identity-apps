@@ -482,6 +482,39 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     label: "Google One Tap",
                     placeholder: "Google one tap as a sign in option"
                 },
+                amrHeading: {
+                    heading: "AMR Value"
+                },
+                amrModification: {
+                    hint: "Please check this checkbox to enable modification of AMR value.",
+                    label: "Check the checkbox to enable AMR value modification.",
+                    validations: {
+                        required: "Checking the checkbox is required."
+                    }
+                },
+                amrValueConstraint: {
+                    hint: "Only letters, numbers and underscore is allowed",
+                    label: "Allowed AMR value constraint",
+                    placeholder: "Enter allowed AMR value constraint.",
+                    unit: {
+                        characters: "characters"
+                    },
+                    validations: {
+                        required: "Allowed AMR value constraint is a required field.",
+                        invalid: "Allowed AMR value constraint should be an text.",
+                        range: "Allowed AMR value constraint should be a text."
+                    }
+                },
+                allowedAmrValue: {
+                    hint: "The allowed authentication method reference value.",
+                    label: "Allowed AMR value",
+                    placeholder: "Enter allowed AMR value.",
+                    validations: {
+                        required: "Allowed AMR value is a required field.",
+                        invalid: "Allowed AMR value should be an text.",
+                        range: "Allowed AMR value should be a text."
+                    }
+                },
                 scopes: {
                     heading: "Scopes",
                     hint: "The type of access provided for the connected apps to access data " +
@@ -855,6 +888,39 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     label: "Use only numeric characters for OTP",
                     validations: {
                         required: "Use only numeric characters for OTP token is a required field."
+                    }
+                },
+                amrHeading: {
+                    heading: "AMR Value"
+                },
+                amrModification: {
+                    hint: "Please check this checkbox to enable modification of AMR value.",
+                    label: "Check the checkbox to enable AMR value modification.",
+                    validations: {
+                        required: "Checking the checkbox is required."
+                    }
+                },
+                amrValueConstraint: {
+                    hint: "Only letters, numbers and underscore is allowed",
+                    label: "Allowed AMR value constraint",
+                    placeholder: "Enter allowed AMR value constraint.",
+                    unit: {
+                        characters: "characters"
+                    },
+                    validations: {
+                        required: "Allowed AMR value constraint is a required field.",
+                        invalid: "Allowed AMR value constraint should be an text.",
+                        range: "Allowed AMR value constraint should be a text."
+                    }
+                },
+                allowedAmrValue: {
+                    hint: "The allowed authentication method reference value.",
+                    label: "Allowed AMR value",
+                    placeholder: "Enter allowed AMR value.",
+                    validations: {
+                        required: "Allowed AMR value is a required field.",
+                        invalid: "Allowed AMR value should be an text.",
+                        range: "Allowed AMR value should be a text."
                     }
                 }
             },

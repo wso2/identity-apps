@@ -18,14 +18,16 @@
 
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { validateAMRValue } from "@wso2is/admin.identity-providers.v1/components/utils/connector-utils";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
+import { Code, FormSection, GenericIcon, Heading, Hint, IconButton } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SVGAttributes, useCallback, useEffect, useState } 
+from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Icon, SemanticICONS } from "semantic-ui-react";
+import { Divider, Icon, SemanticICONS } from "semantic-ui-react";
 import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
 import { FederatedAuthenticatorConstants } from "../../../../constants/federated-authenticator-constants";
 import {
@@ -111,6 +113,10 @@ interface GoogleAuthenticatorFormInitialValuesInterface {
     * Google Authenticator Google One Tap field value.
     */
     IsGoogleOneTapEnabled: boolean;
+    /**
+     * Google Authenticator amr value field value.
+     */
+    amrValue: string;
 }
 
 /**
@@ -136,7 +142,7 @@ interface GoogleAuthenticatorFormFieldsInterface {
     /**
      * Google Authenticator Google One Tap field value.
      */
-     IsGoogleOneTapEnabled: CommonAuthenticatorFormFieldInterface;
+    IsGoogleOneTapEnabled: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -176,13 +182,16 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
         onSubmit,
         readOnly,
         isSubmitting,
-        [ "data-testid" ]: testId
+        ["data-testid"]: testId
     } = props;
+
 
     const { t } = useTranslation();
 
-    const [ formFields, setFormFields ] = useState<GoogleAuthenticatorFormFieldsInterface>(undefined);
-    const [ initialValues, setInitialValues ] = useState<GoogleAuthenticatorFormInitialValuesInterface>(undefined);
+    const [formFields, setFormFields] = useState<GoogleAuthenticatorFormFieldsInterface>(undefined);
+    const [initialValues, setInitialValues] = useState<GoogleAuthenticatorFormInitialValuesInterface>(undefined);
+    const [isResettingAMR, setIsResettingAMR] = useState(false);
+    const [isAMRFieldChanged, setIsAMRFieldChanged] = useState(false);
     /**
     * Importing all UI configurations.
     */
@@ -208,7 +217,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
             /**
             * Parsing string  to boolean only for Google One Tap value
             */
-            let localValue : any;
+            let localValue: any;
 
             if (value.key === FederatedAuthenticatorConstants.GOOGLE_ONE_TAP_ENABLED_PARAM) {
                 if (value.value === "true") {
@@ -222,7 +231,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
 
             resolvedFormFields = {
                 ...resolvedFormFields,
-                [ value.key ]: {
+                [value.key]: {
                     meta,
                     value: localValue
                 }
@@ -230,13 +239,30 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
 
             resolvedInitialValues = {
                 ...resolvedInitialValues,
-                [ value.key ]: localValue
+                [value.key]: localValue
             };
         });
 
+        resolvedInitialValues = {
+            ...resolvedInitialValues,
+            amrValue: originalInitialValues.amrValue
+        };
+
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
-    }, [ originalInitialValues ]);
+    }, [originalInitialValues]);
+
+    const handleSubmit = (values: Record<string, unknown>) => {
+
+        const submitValues = {
+            ...values,
+            amrValue: isResettingAMR ? "" : values.amrValue
+        };
+
+        onSubmit(getUpdatedConfigurations(submitValues as GoogleAuthenticatorFormInitialValuesInterface));
+        setIsResettingAMR(false);
+        setIsAMRFieldChanged(false);
+    };
 
     /**
      * Checking ability to enable Google One Tap.
@@ -267,17 +293,29 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
 
         const properties: CommonPluggableComponentPropertyInterface[] = [];
 
-        for (const [ key, value ] of Object.entries(values)) {
-            if (key !== undefined) {
+        for (const [key, value] of Object.entries(values)) {
+            if (key !== undefined && key !== "amrValue") {
                 properties.push({
                     key: key,
                     value: value
                 });
             }
         }
+        if (isResettingAMR) {
+            properties.push({
+                key: "amrValue",
+                value: ""
+            });
+        } else {
+            properties.push({
+                key: "amrValue",
+                value: values.amrValue
+            });
+        }
 
         return {
             ...originalInitialValues,
+            amrValue: values.amrValue,
             properties
         };
     };
@@ -296,8 +334,8 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.google.scopes.list.email.description"),
                 displayName: (
-                    <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { FederatedAuthenticatorConstants.GOOGLE_SCOPE_DICTIONARY.EMAIL }
+                    <Code compact withBackground={false} fontSize="inherit" fontColor="inherit">
+                        {FederatedAuthenticatorConstants.GOOGLE_SCOPE_DICTIONARY.EMAIL}
                     </Code>
                 ),
                 icon: "envelope outline"
@@ -309,8 +347,8 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.google.scopes.list.openid.description"),
                 displayName: (
-                    <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { FederatedAuthenticatorConstants.GOOGLE_SCOPE_DICTIONARY.OPENID }
+                    <Code compact withBackground={false} fontSize="inherit" fontColor="inherit">
+                        {FederatedAuthenticatorConstants.GOOGLE_SCOPE_DICTIONARY.OPENID}
                     </Code>
                 ),
                 icon: "openid"
@@ -322,8 +360,8 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.google.scopes.list.profile.description"),
                 displayName: (
-                    <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { FederatedAuthenticatorConstants.GOOGLE_SCOPE_DICTIONARY.PROFILE }
+                    <Code compact withBackground={false} fontSize="inherit" fontColor="inherit">
+                        {FederatedAuthenticatorConstants.GOOGLE_SCOPE_DICTIONARY.PROFILE}
                     </Code>
                 ),
                 icon: "user outline"
@@ -362,11 +400,53 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
         return scopes;
     };
 
+    const ArrowRotateLeft = ({ ...rest }: SVGAttributes<SVGSVGElement>): ReactElement => (
+        <svg
+            stroke="currentColor"
+            fill="currentColor"
+            strokeWidth="0"
+            viewBox="0 0 24 24"
+            height="1em"
+            width="1em"
+            style={{
+                marginRight: "0",
+                marginTop: "10px",
+                verticalAlign: "middle"
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+            {...rest}
+        >
+            <path
+                fill="none"
+                stroke="#000"
+                strokeWidth="2"
+                d="M8,3 L3,8 L8,13 M12,20 L15,20 C18.3137085,20 21,17.3137085 21,14 C21,10.6862915 18.3137085,8 15,8 L4,8"
+            ></path>
+        </svg>
+    );
+
+
+    const handleResetAMR = useCallback(() => {
+        if (!isAMRFieldChanged) {
+            console.log("Resetting AMR value");
+            setInitialValues(prevValues => ({
+                ...prevValues,
+                amrValue: originalInitialValues.name
+            }));
+            setIsResettingAMR(true);
+        }
+    }, [originalInitialValues.name]);
+
+    console.log("Google Authenticator Form Properties: ", originalInitialValues.properties);
+    console.log("Google Authenticator Form: ", originalInitialValues);
+    console.log("AMR Value: ", originalInitialValues?.amrValue);
+    console.log("Resolved Google Authenticator Form: ", formFields);
+
     return (
         <Form
             id={ FORM_ID }
             uncontrolledForm={ false }
-            onSubmit={ (values: Record<string, unknown>) => onSubmit(getUpdatedConfigurations(values as any)) }
+            onSubmit={ handleSubmit }
             initialValues={ initialValues }
         >
             <Field.Input
@@ -423,7 +503,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     t("authenticationProvider:forms.authenticatorSettings" +
                         ".google.clientSecret.placeholder")
                 }
-                hint={ (
+                hint={(
                     <Trans
                         i18nKey={
                             "authenticationProvider:forms.authenticatorSettings" +
@@ -480,8 +560,8 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CALLBACK_URL_MIN_LENGTH as number
                 }
-                width={ 16 }
-                data-testid={ `${ testId }-authorized-redirect-url` }
+                width={16}
+                data-testid={`${testId}-authorized-redirect-url`}
             />
             <Field.Input
                 ariaLabel={
@@ -502,8 +582,8 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     t("authenticationProvider:forms.authenticatorSettings" +
                         ".google.AdditionalQueryParameters.hint")
                 }
-                required={ formFields?.AdditionalQueryParameters?.meta?.isMandatory }
-                value={ formFields?.AdditionalQueryParameters?.value }
+                required={formFields?.AdditionalQueryParameters?.meta?.isMandatory}
+                value={formFields?.AdditionalQueryParameters?.value}
                 readOnly={
                     readOnly || (
                         mode === AuthenticatorSettingsFormModes.CREATE
@@ -519,33 +599,82 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     ConnectionUIConstants.GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
                         .ADDITIONAL_QUERY_PARAMS_MIN_LENGTH as number
                 }
-                width={ 16 }
-                data-testid={ `${ testId }-additional-query-parameters` }
+                width={16}
+                data-testid={`${testId}-additional-query-parameters`}
             />
-            { isEnableGoogleOneTap()
+            {isEnableGoogleOneTap()
                 ? (
                     <Field.Checkbox
                         ariaLabel="Enable Google One Tap as a sign in option"
-                        name={ FederatedAuthenticatorConstants.GOOGLE_ONE_TAP_ENABLED_PARAM }
-                        required={ false }
+                        name={FederatedAuthenticatorConstants.GOOGLE_ONE_TAP_ENABLED_PARAM}
+                        required={false}
                         toggle
                         label={
                             t("authenticationProvider:forms.authenticatorSettings" +
-                               ".google.enableGoogleOneTap.label")
+                                ".google.enableGoogleOneTap.label")
                         }
                         placeholder={
                             t("authenticationProvider:forms.authenticatorSettings" +
-                               ".google.enableGoogleOneTap.placeholder")
+                                ".google.enableGoogleOneTap.placeholder")
                         }
                         hint={
                             t("authenticationProvider:forms.authenticatorSettings" +
-                               ".google.enableGoogleOneTap.hint")
+                                ".google.enableGoogleOneTap.hint")
                         }
-                        readOnly={ readOnly }
-                        data-testid={ `${ testId }-google-one-tap` }
+                        readOnly={readOnly}
+                        data-testid={`${testId}-google-one-tap`}
                     />
                 ) : null
             }
+            <Divider />
+            <Heading as="h5">
+                {
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".smsOTP.amrHeading.heading")
+                }
+            </Heading>
+            <Field.Input
+                ariaLabel="AMR Value"
+                inputType="text"
+                name="amrValue"
+                initialValues={initialValues?.amrValue}
+                label={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".google.allowedAmrValue.label")
+                }
+                placeholder={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".google.allowedAmrValue.placeholder")
+                }
+                hint={
+                    (<Trans
+                        i18nKey={
+                            "authenticationProvider:forms.authenticatorSettings" +
+                            ".google.amrValurConstraint.hint"
+                        }
+                    >
+                        The allowed characters are
+                        <Code>letters, numbers and underscore</Code>.
+                    </Trans>)
+                }
+                validation={(value: string) => validateAMRValue(value.toString().trim())}
+                maxLength={255}
+                minLength={2}
+                width={12}
+                data-testid={`${testId}-allowed-amr-value`}
+                iconPosition="right"
+                // onChange={ () => setIsAMRFieldChanged(true) }
+            >
+                <input />
+                <IconButton
+                    onClick={(e) => {
+                        e.preventDefault();
+                        handleResetAMR();
+                    }}
+                    style={{ cursor: "pointer" }}>
+                    <ArrowRotateLeft />
+                </IconButton>
+            </Field.Input>
             {
                 (formFields?.AdditionalQueryParameters?.value
                     && !isEmpty(extractScopes(formFields.AdditionalQueryParameters.value))) && (
@@ -564,30 +693,30 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
 
                                         return (
                                             <div
-                                                key={ index }
+                                                key={index}
                                                 className="authenticator-dynamic-property"
-                                                data-testid={ scope }
+                                                data-testid={scope}
                                             >
                                                 <div className="authenticator-dynamic-property-name-container">
                                                     <GenericIcon
                                                         square
                                                         inline
                                                         transparent
-                                                        icon={ <Icon name={ scopeMeta.icon }/> }
+                                                        icon={<Icon name={scopeMeta.icon} />}
                                                         size="micro"
                                                         className="scope-icon"
                                                         spaced="right"
                                                         verticalAlign="top"
                                                     />
-                                                    <div data-testid={ `${ scope }-name` }>
-                                                        { scopeMeta.displayName }
+                                                    <div data-testid={`${scope}-name`}>
+                                                        {scopeMeta.displayName}
                                                     </div>
                                                 </div>
                                                 <div
                                                     className="authenticator-dynamic-property-description"
-                                                    data-testid={ `${ scope }-description` }
+                                                    data-testid={`${scope}-description`}
                                                 >
-                                                    { scopeMeta.description }
+                                                    {scopeMeta.description}
                                                 </div>
                                             </div>
                                         );
@@ -616,16 +745,16 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 )
             }
             <Field.Button
-                form={ FORM_ID }
+                form={FORM_ID}
                 size="small"
                 buttonType="primary_btn"
                 ariaLabel="Google authenticator update button"
                 name="update-button"
-                data-testid={ `${ testId }-submit-button` }
-                disabled={ isSubmitting }
-                loading={ isSubmitting }
-                label={ t("common:update") }
-                hidden={ readOnly }
+                data-testid={`${testId}-submit-button`}
+                disabled={isSubmitting}
+                loading={isSubmitting}
+                label={t("common:update")}
+                hidden={readOnly}
             />
         </Form>
     );

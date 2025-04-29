@@ -117,6 +117,7 @@ export interface FederatedAuthenticatorListItemInterface extends FederatedAuthen
 export interface FederatedAuthenticatorInterface extends CommonPluggableComponentInterface {
     authenticatorId?: string;
     name?: string;
+    amrValue?: string;
     isEnabled?: boolean;
     isDefault?: boolean;
     endpoint?: ExternalEndpoint;
@@ -310,6 +311,7 @@ export interface CommonPluggableComponentFormPropsInterface extends TestableComp
 
 export interface CommonPluggableComponentInterface {
     properties?: CommonPluggableComponentPropertyInterface[];
+    amrValue?: string;
 }
 
 export interface CommonPluggableComponentMetaInterface {
@@ -439,6 +441,11 @@ export interface LocalAuthenticatorInterface extends CommonPluggableComponentInt
      * Display name of the local authenticator.
      */
     displayName?: string;
+    /**
+     * Authenticator AMR value.
+     * @example [ basic, totp ]
+     */
+    amrValue?: string;
     /**
      * Description of the local authenticator.
      * This property is used only with custom local authenticators.
