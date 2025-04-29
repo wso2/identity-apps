@@ -99,6 +99,8 @@ export class ProfileConstants {
         .set("MOBILE_NUMBERS", "mobileNumbers")
         .set("VERIFIED_EMAIL_ADDRESSES", "verifiedEmailAddresses")
         .set("VERIFIED_MOBILE_NUMBERS", "verifiedMobileNumbers")
+        .set("FIRST_NAME", "name.givenName")
+        .set("LAST_NAME", "name.familyName")
         .set("ACCOUNT_STATE", "accountState")
         .set("PREFERRED_CHANNEL", "preferredChannel")
         .set("EMAIL_VERIFIED", "emailVerified");
