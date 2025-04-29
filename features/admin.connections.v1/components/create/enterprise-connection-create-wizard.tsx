@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,11 @@
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import Backdrop from "@mui/material/Backdrop";
 import Divider from "@oxygen-ui/react/Divider";
+import FormControl from "@oxygen-ui/react/FormControl";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
+import Radio from "@oxygen-ui/react/Radio";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
 import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
@@ -43,7 +47,6 @@ import {
     PrimaryButton,
     SelectionCard,
     Steps,
-    Switcher,
     XMLFileStrategy,
     useDocumentation,
     useWizardAlert
@@ -55,6 +58,7 @@ import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
 import React, {
+    ChangeEvent,
     FC,
     MutableRefObject,
     PropsWithChildren,
@@ -129,7 +133,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         title,
         subTitle,
         template,
-        [ "data-componentid" ]: componentId
+        [ "data-componentid" ]: componentId = "enterprise-idp"
     } = props;
 
     const wizardRef: MutableRefObject<any> = useRef(null);
@@ -574,22 +578,29 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 data-componentid={ `${ componentId }-form-wizard-saml-entity-id` }
             />
             <Grid container spacing={ { md: 3, xs: 2 } } columns={ { md: 12, sm: 8, xs: 4  } }>
-                <Grid xs={ 2 } sm={ 4 } md={ 6 }>
+                <Grid xs={ 2 } sm={ 4 } md={ 12 }>
                     <p><b>Mode of configuration</b></p>
-                    <Switcher
-                        compact
-                        data-componentid={ `${ componentId }-form-wizard-saml-config-switcher` }
-                        className={ "mt-1" }
-                        selectedValue={ selectedSamlConfigMode }
-                        onChange={ ({ value }: any) => setSelectedSamlConfigMode(value as any) }
-                        options={ [ {
-                            label: "Manual Configuration",
-                            value: "manual"
-                        }, {
-                            label: "File Based Configuration",
-                            value: "file"
-                        } ] }
-                    />
+                    <FormControl>
+                        <RadioGroup
+                            row
+                            name="configuration-mode"
+                            onChange={ (event: ChangeEvent<HTMLInputElement>) =>
+                                setSelectedSamlConfigMode((event.target as HTMLInputElement).value as any) }
+                            data-componentid={ `${ componentId }-form-wizard-saml-config-radio-group` }
+                            value={ selectedSamlConfigMode }
+                        >
+                            <FormControlLabel
+                                control={ <Radio /> }
+                                label="Manual Configuration"
+                                value="manual"
+                            />
+                            <FormControlLabel
+                                control={ <Radio /> }
+                                label="File Based Configuration"
+                                value="file"
+                            />
+                        </RadioGroup>
+                    </FormControl>
                 </Grid>
             </Grid>
             <Divider hidden/>
@@ -752,21 +763,26 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 <Grid xs={ 2 } sm={ 4 } md={ 6 }>
                     <p><b>Mode of certificate configuration</b></p>
                     { (selectedProtocol === "oidc") && (
-                        <Switcher
-                            compact
-                            disabledMessage="This feature will be enabled soon."
-                            className={ "mt-1" }
-                            defaultOptionValue={ "jwks" }
-                            selectedValue={ selectedCertInputType }
-                            onChange={ ({ value }: any) => setSelectedCertInputType(value as any) }
-                            options={ [ {
-                                label: "JWKS endpoint",
-                                value: "jwks"
-                            }, {
-                                label: "Use PEM certificate",
-                                value: "pem"
-                            } ] }
-                        />
+                        <FormControl>
+                            <RadioGroup
+                                row
+                                name="certificate-type"
+                                onChange={ (event: ChangeEvent<HTMLInputElement>) =>
+                                    setSelectedCertInputType((event.target as HTMLInputElement).value as any) }
+                                value={ selectedCertInputType }
+                            >
+                                <FormControlLabel
+                                    control={ <Radio /> }
+                                    label="JWKS endpoint"
+                                    value="jwks"
+                                />
+                                <FormControlLabel
+                                    control={ <Radio /> }
+                                    label="Use PEM certificate"
+                                    value="pem"
+                                />
+                            </RadioGroup>
+                        </FormControl>
                     ) }
                 </Grid>
             </Grid>
@@ -1055,15 +1071,6 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         </ModalWithSidePanel>
     );
 
-};
-
-/**
- * Default props for the enterprise identity provider
- * creation wizard.
- */
-EnterpriseConnectionCreateWizard.defaultProps = {
-    currentStep: 0,
-    "data-componentid": "enterprise-idp"
 };
 
 // OIDC form constants.
