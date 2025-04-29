@@ -19,20 +19,23 @@
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { EmptyPlaceholder } from "@wso2is/react-components";
+import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import {
-    AnimatedAvatar, AppAvatar, DataTable, TableActionsInterface, TableColumnInterface
+    AnimatedAvatar, AppAvatar, DataTable, EmptyPlaceholder, TableActionsInterface, TableColumnInterface
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { Header, SemanticICONS } from "semantic-ui-react";
+import { deleteAgent } from "../api/agents";
 
 interface AgentListProps extends IdentifiableComponentInterface {
     advancedSearch: ReactNode;
     isLoading: boolean;
+    mutateAgentList: any;
     list: any[];
-    onDelete: any;
 }
 
 interface AgentListItemInterface {
@@ -44,9 +47,11 @@ export default function AgentList ({
     advancedSearch,
     isLoading,
     list,
-    onDelete,
+    mutateAgentList,
     [ "data-componentid" ]: componentId
 }: AgentListProps) {
+    const dispatch: any = useDispatch();
+
     const { t } = useTranslation();
 
     const resolveTableActions = (): TableActionsInterface[] => {
@@ -69,15 +74,21 @@ export default function AgentList ({
                     return false;
                 },
                 icon: (): SemanticICONS => "trash alternate",
-                onClick: (_e: SyntheticEvent, _agent: AgentListItemInterface): void => {
-                    console.log("dd")
-                    const agents: any = JSON.parse(localStorage.getItem("agents"));
-
-                    const updatedAgentList: any = agents.filter((agent: any) => agent.id !== _agent.id);
-
-                    localStorage.setItem("agents", JSON.stringify(updatedAgentList));
-
-                    onDelete();
+                onClick: (_e: SyntheticEvent, _agent: UserBasicInterface): void => {
+                    deleteAgent(_agent.id).then(() => {
+                        dispatch(addAlert({
+                            description: "Agent deleted successfully.",
+                            level: AlertLevels.SUCCESS,
+                            message: "Deleted successfully"
+                        }));
+                        mutateAgentList();
+                    }).catch((_error: any) => {
+                        dispatch(addAlert({
+                            description: "An error occurred when deleting agent information.",
+                            level: AlertLevels.ERROR,
+                            message: "Something went wrong"
+                        }));
+                    });
                 },
                 popupText: (): string => t("common:delete"),
                 renderer: "semantic-icon"
@@ -97,7 +108,7 @@ export default function AgentList ({
                 dataIndex: "name",
                 id: "name",
                 key: "name",
-                render: (agent: AgentListItemInterface): ReactNode => {
+                render: (agent: UserBasicInterface): ReactNode => {
                     return (
                         <Header
                             image
@@ -108,7 +119,7 @@ export default function AgentList ({
                             <AppAvatar
                                 image={ (
                                     <AnimatedAvatar
-                                        name={ agent?.name }
+                                        name={ agent?.name?.givenName }
                                         size="mini"
                                         data-testid={ `${componentId}-item-display-name-avatar` }
                                     />
@@ -119,9 +130,7 @@ export default function AgentList ({
                             />
 
                             <Header.Content>
-                                { agent.name }
-
-
+                                { agent?.name?.givenName }
                             </Header.Content>
                         </Header>
                     );
@@ -145,7 +154,6 @@ export default function AgentList ({
      * @returns React element.
      */
     const showPlaceholders = (): ReactElement => {
-        
         if (!list || list?.length === 0) {
             return (
                 <EmptyPlaceholder
@@ -167,7 +175,7 @@ export default function AgentList ({
     return (
 
         <DataTable<AgentListItemInterface>
-            className="applications-table"
+            className="agents-table"
             externalSearch={ advancedSearch }
             isLoading={ isLoading }
             actions={ resolveTableActions() }

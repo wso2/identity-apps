@@ -72,7 +72,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
     const {
         value,
         className,
-        showSecret,
+        showSecret=true,
         hideSecretLabel,
         secret,
         showSecretLabel,

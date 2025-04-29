@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { Icon } from "semantic-ui-react";
 import AgentList from "../components/agent-list";
 import AddAgentWizard from "../components/wizards/add-agent-wizard";
-import useGetAgents from "../hooks/use-get-agents";
+import { useGetAgents } from "../hooks/use-get-agents";
 
 interface AgentPageProps extends IdentifiableComponentInterface {
 
@@ -36,16 +36,31 @@ export default function Agents ({
     "data-componentid": componentId
 }: AgentPageProps) {
     const [ isAddAgentWizardOpen,setIsAddAgentWizardOpen ] = useState(false);
-    const [ trigger, setTrigger ] = useState(false);
 
     const { t } = useTranslation();
 
-    const listItemLimit: number = 10;
+    const [ agentListMetaData, setAgentListMetaData ] =  useState({
+        attributes: "",
+        count: 10,
+        domain: "AGENTSTORE",
+        excludedAttributes: "password,secret,roles,groups",
+        filter: "",
+        startIndex: 1
+    });
 
     const {
         data: agentList,
-        isLoading: isAgentListLoading
-    } = useGetAgents();
+        isLoading: isAgentListLoading,
+        mutate: mutateAgentList
+    } = useGetAgents(
+        agentListMetaData.count,
+        agentListMetaData.startIndex,
+        agentListMetaData.filter === "" ? null : agentListMetaData.filter,
+        agentListMetaData.attributes === "" ? null : agentListMetaData.attributes,
+        "AGENTSTORE",
+        agentListMetaData.excludedAttributes,
+        true
+    );
 
     return (
         <PageLayout
@@ -108,9 +123,9 @@ export default function Agents ({
                         data-testid={ `${ componentId }-list-advanced-search` }
                     />
                 ) }
-                currentListSize={ agentList?.count }
+                currentListSize={ agentList?.totalResults }
                 isLoading={ isAgentListLoading }
-                listItemLimit={ listItemLimit }
+                listItemLimit={ agentListMetaData.count }
                 onItemsPerPageDropdownChange={ () => {} }
                 onPageChange={ () => {} }
                 onSortStrategyChange={ () => {} }
@@ -118,7 +133,7 @@ export default function Agents ({
                 showTopActionPanel={ true }
                 sortOptions={ null }
                 sortStrategy={ null }
-                totalPages={ Math.ceil(agentList?.totalResults / listItemLimit) }
+                totalPages={ Math.ceil(agentList?.totalResults / agentListMetaData?.count ) }
                 totalListSize={ agentList?.totalResults }
                 paginationOptions={ {
                     disableNextButton: true
@@ -126,7 +141,6 @@ export default function Agents ({
                 data-testid={ `${ componentId }-list-layout` }
             >
                 <AgentList
-                    onDelete={ () => setTrigger(!trigger) }
                     advancedSearch={ (
                         <AdvancedSearchWithBasicFilters
                             onFilter={ () => {} }
@@ -173,6 +187,7 @@ export default function Agents ({
                             data-testid={ `${ componentId }-list-advanced-search` }
                         />
                     ) }
+                    mutateAgentList={ mutateAgentList }
                     isLoading={ isAgentListLoading }
                     list={ agentList?.Resources }
                 />
@@ -181,7 +196,6 @@ export default function Agents ({
             <AddAgentWizard
                 isOpen={ isAddAgentWizardOpen }
                 onClose={ (id: string) => {
-                    setTrigger(!trigger);
                     setIsAddAgentWizardOpen(false);
                     history.push(AppConstants.getPaths().get("AGENT_EDIT").replace(":id", id));
                 } }
