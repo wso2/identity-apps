@@ -59,15 +59,18 @@ export default function AddAgentWizard({
                     (<FinalForm
                         onSubmit={ (values: any) => {
                             const addAgentPayload: UserDetailsInterface = {
-                                description: values?.description,
                                 emails: [],
                                 name: {
                                     familyName: "",
                                     givenName: values?.name
                                 },
                                 password: "Wso2@test123",
-                                userName: "AgentStore/" + values?.username,
-                                version: "1.0.0"
+                                "urn:scim:wso2:agent:schema": {
+                                    "agentDescription": values?.description,
+                                    "agentOwner": values?.owner,
+                                    "agentUrl": values?.url
+                                },
+                                userName: "AgentStore/" + values?.username
                             };
 
                             addAgent(addAgentPayload)
