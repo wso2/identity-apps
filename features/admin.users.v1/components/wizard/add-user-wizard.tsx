@@ -20,6 +20,7 @@
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userConfig } from "@wso2is/admin.extensions.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { SCIMConfigInterface } from "@wso2is/admin.extensions.v1/configs/models/scim";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { updateGroupDetails, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
@@ -67,8 +68,8 @@ import {
     EmailsInterface,
     PayloadInterface,
     UserDetailsInterface,
-    WizardStepInterface,
-    createEmptyUserDetails } from "../../models/user";
+    WizardStepInterface
+} from "../../models/user";
 import { generatePassword, getConfiguration, getUsernameConfiguration } from "../../utils";
 
 interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
@@ -459,68 +460,46 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             username = userInfo.domain + "/" + userInfo.userName;
         }
 
-        let userDetails: UserDetailsInterface = createEmptyUserDetails();
+        let userDetails: UserDetailsInterface = {
+            emails: [
+                {
+                    primary: true,
+                    value: userInfo.email
+                }
+            ],
+            name: {
+                familyName: userInfo.lastName,
+                givenName: userInfo.firstName
+            },
+            profileUrl: userInfo.profileUrl,
+            userName: username
+        };
+
         const password: string = userInfo.newPassword;
 
         // Users who get invited offline are also considered as password-based users.
         // They will be assigned a randomly generated temporary password.
         // Temporary password can be changed via the offline invite link.
         if (askPasswordFromUser) {
-            userDetails = {
-                emails: [
-                    {
-                        primary: true,
-                        value: userInfo.email
-                    }
-                ],
-                name: {
-                    familyName: userInfo.lastName,
-                    givenName: userInfo.firstName
-                },
-                password: password,
-                profileUrl: userInfo.profileUrl,
-                userName: username
-            };
+            userDetails.password = password;
         } else if (isOfflineUser) {
-            userDetails = {
-                emails: [
-                    {
-                        primary: true,
-                        value: userInfo.email
-                    }
-                ],
-                name: {
-                    familyName: userInfo.lastName,
-                    givenName: userInfo.firstName
-                },
-                password: generateRandomPassword(),
-                profileUrl: userInfo.profileUrl,
-                userName: username
-            };
+            userDetails.password = generateRandomPassword();
         } else {
-            userDetails = {
-                emails: [
-                    {
-                        primary: true,
-                        value: userInfo.email
-                    }
-                ],
-                name: {
-                    familyName: userInfo.lastName,
-                    givenName: userInfo.firstName
-                },
-                profileUrl: userInfo.profileUrl,
-                [ SCIMConfigs.scim.systemSchema ]: {
-                    askPassword: "true"
-                },
-                userName: username
+            userDetails[ SCIMConfigs.scim.systemSchema ] = {
+                askPassword: "true"
             };
         }
 
         if (isAttributeProfileForUserCreationEnabled) {
+            const mergedSCIMSchema: SCIMConfigInterface = {
+                ...userDetails[SCIMConfigs.scim.systemSchema],
+                ...userInfo[SCIMConfigs.scim.systemSchema]
+            };
+
             const combinedUserDetails: UserDetailsInterface = omit({
                 ...userInfo,
-                ...userDetails
+                ...userDetails,
+                [SCIMConfigs.scim.systemSchema]: mergedSCIMSchema
             }, "passwordOption", "newPassword", "userType", "domain", "firstName", "lastName");
 
             // If email value is not present, use the emails value.

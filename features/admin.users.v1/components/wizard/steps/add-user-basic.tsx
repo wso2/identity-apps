@@ -196,8 +196,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         }
     }, []);
 
-    const countryList: DropdownItemProps[] = CommonUtils.getCountryList();
-
     const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.attributeDialects?.disabledFeatures?.includes(
         ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
     );
@@ -257,6 +255,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     } = useGetUserStore(
         userStore
     );
+
+    const countryList: DropdownItemProps[] = useMemo(() => CommonUtils.getCountryList(), []);
 
     const userStoreUsernameRegEx: string = useMemo(() => {
         if (originalUserStore) {
