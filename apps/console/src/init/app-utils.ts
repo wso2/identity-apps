@@ -181,7 +181,12 @@ export const AppUtils: any = (function() {
         },
 
         getClientId: function() {
-            return _config.clientID;
+
+            if(_config.tenantContext?.enableTenantQualifiedUrls || this.isSuperTenant()) {
+                return _config.clientID;
+            }
+
+            return _config.clientID + "_" + this.getTenantName();
         },
 
         getClientOriginWithTenant: function() {
