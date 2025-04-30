@@ -312,13 +312,11 @@
     /**
     * If backToUrl is null retrieve access url of the application.
     */
-    if (StringUtils.isBlank(backToUrl)) {
-        try {
-                // Retrieve application access url to redirect user back to the application.
-                backToUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
-            } catch (Exception e) {
-                backToUrl = null;
-        }
+    try {
+        // Retrieve application access url to redirect user back to the application.
+        backToUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
+    } catch (Exception e) {
+        backToUrl = null;
     }
 
     /**
