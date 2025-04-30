@@ -183,6 +183,35 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
+            category: "console:develop.features.sidePanel.categories.application",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.api-resources.v2/pages/api-resource-edit")
+                    ),
+                    exact: true,
+                    id: "mcpServers-edit",
+                    name: "extensions:develop.sidePanel.apiResources",
+                    path: AppConstants.getPaths().get("MCP_SERVER_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.api-resources.v2/pages/mcp-servers")
+            ),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().apiResources
+            },
+            id: "mcpServers",
+            name: "MCP Servers",
+            order: 2,
+            path: AppConstants.getPaths().get("MCP_SERVERS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
             component: lazy(() =>
                 import("@wso2is/admin.home.v1/pages/home-page")),
             exact: false,

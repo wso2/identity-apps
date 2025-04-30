@@ -268,6 +268,13 @@ export class RouteUtils {
             order: 2
         };
 
+        const resourceServers: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: DatabaseDocumentIcon,
+            id: "resourceServers",
+            name: "Resource Servers",
+            order: 2
+        };
+
         const branding: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: PaletteIcon,
             id: "customization",
@@ -365,7 +372,15 @@ export class RouteUtils {
                 category: build,
                 id: "apiResources",
                 order: 2,
-                selected: history.location.pathname.includes("/api-resources")
+                selected: history.location.pathname.includes("/api-resources"),
+                parent: resourceServers
+            },
+            {
+                category: build,
+                id: "mcpServers",
+                order: 2,
+                selected: history.location.pathname.includes("/mcp-servers"),
+                parent: resourceServers
             },
             {
                 category: organizations,
