@@ -45,6 +45,7 @@ export const getServerConfigurationsResourceEndpoints = (
         }/connectors/${ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID}`,
         governanceConnectorCategories: `${ serverHost }/api/server/v1/identity-governance`,
         impersonationConfigurations: `${ serverHost }/api/server/v1/configs/impersonation`,
+        fineGrainedAuthzConfigurations: `${ serverHost }/api/server/v1/configs/fine-grained-api-authorization`,
         loginPolicies: `${ serverHost }/api/server/v1/identity-governance/${
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
         }`,

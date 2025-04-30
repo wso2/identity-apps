@@ -40,6 +40,7 @@ export * from "./server-configs-ns";
 export * from "./saml2-config-ns";
 export * from "./session-management-ns";
 export * from "./ws-federation-config-ns";
+export * from "./fine-grained-authz-config-ns";
 export * from "./insights-ns";
 export * from "./sms-providers-ns";
 export * from "./claims-ns";

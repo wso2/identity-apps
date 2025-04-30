@@ -237,6 +237,15 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
+                    component: lazy(() => import("@wso2is/admin-finegrained-authz-configuration.v1/pages/finegrained-authz-configuration")),
+                    exact: true,
+                    id: "fineGrainedAuthzConfiguration",
+                    name: "console:fineGrainedAuthzConfig.title",
+                    path: AppConstants.getPaths().get("FINE_GRAINED_AUTHORIZATION"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
                     component: lazy(() =>
                         import(
                             "@wso2is/admin.server-configurations.v1/" +

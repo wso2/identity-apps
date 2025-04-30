@@ -187,6 +187,11 @@ export class I18nModuleConstants {
     public static readonly WS_FEDERATION_CONFIG_NAMESPACE: string = "wsFederationConfig";
 
     /**
+     * Fine Grained Authorization namespace.
+     */
+    public static readonly FINE_GRAINED_AUTHZ_NAMESPACE: string = "fineGrainedAuthzConfig";
+
+    /**
      * insights namespace.
      */
     public static readonly INSIGHTS_NAMESPACE: string = "insights";
