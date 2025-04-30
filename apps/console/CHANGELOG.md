@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.54.8
+
+### Patch Changes
+
+- [#8117](https://github.com/wso2/identity-apps/pull/8117) [`56e7b6a4fb3ef7b538f0c3a13d4f7a832194d9aa`](https://github.com/wso2/identity-apps/commit/56e7b6a4fb3ef7b538f0c3a13d4f7a832194d9aa) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Replace Switcher component with RadioGroups
+
+- Updated dependencies [[`56e7b6a4fb3ef7b538f0c3a13d4f7a832194d9aa`](https://github.com/wso2/identity-apps/commit/56e7b6a4fb3ef7b538f0c3a13d4f7a832194d9aa)]:
+  - @wso2is/admin.connections.v1@2.33.95
+
 ## 2.54.7
 
 ### Patch Changes
