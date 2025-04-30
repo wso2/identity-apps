@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.24.2
+
+### Patch Changes
+
+- [#8113](https://github.com/wso2/identity-apps/pull/8113) [`0d4ab197b0321c1b4c334e980354cea91093ad95`](https://github.com/wso2/identity-apps/commit/0d4ab197b0321c1b4c334e980354cea91093ad95) Thanks [@Thumimku](https://github.com/Thumimku)! - Add config support to have custom error page in webapps
+
 ## 2.24.1
 
 ### Patch Changes

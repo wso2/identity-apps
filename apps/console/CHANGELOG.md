@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.54.9
+
+### Patch Changes
+
+- [#8123](https://github.com/wso2/identity-apps/pull/8123) [`c3174cd64845726fa59675a8db877be3211704ea`](https://github.com/wso2/identity-apps/commit/c3174cd64845726fa59675a8db877be3211704ea) Thanks [@lashinijay](https://github.com/lashinijay)! - Refactor Email Provider Configuration revert message
+
 ## 2.54.8
 
 ### Patch Changes
