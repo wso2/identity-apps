@@ -947,3 +947,29 @@ export interface ShareApplicationStatusResponseSummary {
     successAppShare: number;
     failedAppShare: number;
 }
+
+export interface ApplicationShareUnitStatusResponse {
+    unitOperationId: string;
+    operationId: string;
+    residentResourceId: string;
+    targetOrgId: string;
+    targetOrgName: string;
+    status: string;
+    statusMessage: string;
+    createdTime: string;
+}
+
+export interface SharedAccessStatusResponse {
+    operationId: string;
+    correlationId: string;
+    operationType: string;
+    subjectType: string;
+    subjectId: string;
+    initiatedOrgId: string;
+    initiatedUserId: string;
+    status: string;
+    policy: string;
+    createdTime: string;
+    modifiedTime: string;
+    unitOperationRef: string;
+}

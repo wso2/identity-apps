@@ -37,6 +37,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    ConfirmationModal,
     ContentLoader,
     Heading,
     Hint,
@@ -53,6 +54,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, {
     FormEvent,
     FunctionComponent,
+    ReactElement,
     useCallback,
     useEffect,
     useMemo,
@@ -127,6 +129,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
     const [ sharedWithAll, setSharedWithAll ] = useState<boolean>(false);
     const [ filter, setFilter ] = useState<string>();
     const { isOrganizationManagementEnabled } = useGlobalVariables();
+    const [ showConfirmationModal, setShowConfirmationModal ] = useState(false);
 
     const {
         data: organizations,
@@ -318,6 +321,45 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         }
     }, [ triggerApplicationShare ]);
 
+    const handleInterruptOngoingShare = () => {
+        setShowConfirmationModal(true);
+    };
+
+    const renderConfirmationModal = (): ReactElement | null => {
+            return (
+                <>
+                    <ConfirmationModal
+                        data-componentid={ `${componentId}-select-multiple-invite-confirmation-modal` }
+                        onClose={ (): void => {
+                            setShowConfirmationModal(false);
+                        } }
+                        type="warning"
+                        open={ showConfirmationModal }
+                        assertionHint="Please confirm your action." 
+                        assertionType="checkbox"
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
+                        onPrimaryActionClick={ (): void => {
+                        } }
+                        onSecondaryActionClick={ (): void => {
+                            setShowConfirmationModal(false);
+                        } }
+                        closeOnDimmerClick={ false }
+                    >
+                        <ConfirmationModal.Header>
+                            { "Are you sure?" }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message attached warning>
+                            { "Updating the shared access is in progress. Cancelling this will terminate the execution of the rest of the workflow." }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                                This action is irreversible and this will permanently delete the previous update.
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>  
+                </>
+            );
+        };
+
     const handleShareApplication: () => Promise<void> = useCallback(async () => {
         onOperationStarted?.();
         let shareAppData: ShareApplicationRequestInterface;
@@ -357,26 +399,24 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         }
 
         if (shareType === ShareType.SHARE_ALL || shareType === ShareType.SHARE_SELECTED) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "applications:edit.sections.shareApplication" +
+                        ".addAsyncSharingNotification.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "applications:edit.sections.shareApplication" +
+                        ".addAsyncSharingNotification.message"
+                    )
+                })
+            );
             shareApplication(
                 currentOrganization.id,
                 application.id,
                 shareAppData
             )
-                .then(() => {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "applications:edit.sections.shareApplication" +
-                                ".addSharingNotification.success.description"
-                            ),
-                            level: AlertLevels.SUCCESS,
-                            message: t(
-                                "applications:edit.sections.shareApplication" +
-                                ".addSharingNotification.success.message"
-                            )
-                        })
-                    );
-                })
                 .catch((error: AxiosError) => {
                     if (error.response.data.message) {
                         dispatch(
@@ -590,6 +630,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
             <Heading ellipsis as="h6">
                 { t("applications:edit.sections.sharedAccess.subTitle") }
             </Heading>
+            { renderConfirmationModal() }
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={ 8 }>
@@ -742,8 +783,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         <Divider hidden />
                         <PrimaryButton
                             data-componentid={ `${ componentId }-update-button` }
-                            disabled={ isSharingInProgress }
-                            onClick={ handleShareApplication }
+                            onClick={ isSharingInProgress ? handleInterruptOngoingShare : handleShareApplication }
                         >
                             { t("common:update") }
                         </PrimaryButton>
