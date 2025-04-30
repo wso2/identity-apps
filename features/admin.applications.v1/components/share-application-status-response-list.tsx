@@ -16,13 +16,9 @@
  * under the License.
  */
 
-import Alert from "@oxygen-ui/react/Alert";
-import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Button from "@oxygen-ui/react/Button";
 import {
     DataTable,
-    EmptyPlaceholder,
-    LinkButton,
     ListLayout,
     TableColumnInterface
 } from "@wso2is/react-components";
@@ -38,11 +34,12 @@ import {
     Label,
     Icon
 } from "semantic-ui-react";
-import { ShareApplicationStatusResponse, ShareApplicationStatusResponseSummary } from "../models/application";
+import { ApplicationShareUnitStatusResponse, ShareApplicationStatusResponseSummary } from "../models/application";
 import { ApplicationShareStatus } from "../constants/application-management";
+import "./share-application-status-response-list.scss";
 
 interface ShareApplicationStatusResponseListProps {
-    responseList: ShareApplicationStatusResponse[];
+    responseList: ApplicationShareUnitStatusResponse[];
     isLoading?: boolean;
     ["data-componentid"]?: string;
     shareApplicationSummary?: ShareApplicationStatusResponseSummary;
@@ -72,8 +69,8 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
         ["data-componentid"]: componentId
     } = props;
 
-    const [ filteredResponseList, setFilteredResponseList ] = useState<ShareApplicationStatusResponse[]>(responseList);
-    const [ selectedStatus, setSelectedStatus ] = useState<ApplicationShareStatus>(ApplicationShareStatus.FAILED);
+    const [ filteredResponseList, setFilteredResponseList ] = useState<ApplicationShareUnitStatusResponse[]>(responseList);
+    const [ selectedStatus, setSelectedStatus ] = useState<ApplicationShareStatus>(ApplicationShareStatus.FAIL);
     const [ successShareCount, setSuccessShareCount ] = useState<number>();
     const [ failedShareCount, setfailedShareCount ] = useState<number>();
     
@@ -87,7 +84,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
         {
             key: 2,
             text: "FAIL",
-            value: ApplicationShareStatus.FAILED
+            value: ApplicationShareStatus.FAIL
         }
     ];
 
@@ -95,23 +92,58 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
         const newStatus = data.value as ApplicationShareStatus;
         setSelectedStatus(newStatus);
     };
-    
+
+    const OrgIdDisplay = ({ id }: { id: string }) => {
+        const [ isHovered, setIsHovered ] = useState(false);
+        const [ isCopied, setIsCopied ] = useState(false);
+
+        const handleCopy = () => {
+            navigator.clipboard.writeText(id);
+            setIsCopied(true);
+
+            setTimeout(() => setIsCopied(false), 1000);
+        };
+
+        return (
+            <div
+                className="org-id-wrapper"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => {
+                    setIsHovered(false);
+                    setIsCopied(false);
+                }}
+            >
+                <span className="ellipsis-text" title={id}>
+                    {id}
+                </span>
+                <span className="copy-icon-container">
+                    <Icon
+                        name={isCopied ? "copy" : "copy outline"}
+                        title={isCopied ? "Copied!" : "Copy"}
+                        className={`copy-icon ${isHovered ? "visible" : ""}`}
+                        onClick={handleCopy}
+                    />
+                </span>
+            </div>
+        );
+    };
 
     const resolveTableColumns = (): TableColumnInterface[] => {
 
         const defaultColumns: TableColumnInterface[] = [
             {
                 allowToggleVisibility: false,
-                dataIndex: "resourceIdentifier",
-                id: "resourceIdentifier",
-                key: "resourceIdentifier",
-                render: (response: ShareApplicationStatusResponse): ReactNode => {
+                dataIndex: "targetOrgId",
+                id: "targetOrgId",
+                key: "targetOrgId",
+                render: (response: ApplicationShareUnitStatusResponse): ReactNode => {
                     return (
-                        <Header as="h6" data-componentid={ `${componentId}-application-item-heading` }>
-                            <Header.Content>
-                                {
-                                    response.resourceIdentifier
-                                }
+                        <Header className="share-application-status-response-list-header" data-componentid={ `${componentId}-application-item-heading` }>
+                            <Header.Subheader className="share-application-status-response-list-org-handler">
+                                {response.targetOrgName}
+                            </Header.Subheader>
+                            <Header.Content className="share-application-status-response-list-org-id">
+                                <OrgIdDisplay id={response.targetOrgId} />
                             </Header.Content>
                         </Header>
                     );
@@ -123,17 +155,10 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                 dataIndex: "status",
                 id: "status",
                 key: "status",
-                render: (response: ShareApplicationStatusResponse): ReactNode => {
+                render: (response: ApplicationShareUnitStatusResponse): ReactNode => {
                     return (
-                        <Header as="h6" data-componentid={ `${componentId}-status-item-heading` } >
+                        <Header className="share-application-status-response-list-status-icon" as="h6" data-componentid={ `${componentId}-status-item-heading` } >
                             <Header.Content>
-                                {/* <Label
-                                    data-componentid={ `${componentId}-bulk-label` }
-                                    content={ response.status }
-                                    size="small"
-                                    color={ response.status === ApplicationShareStatus.SUCCESS ? "green" : "red" }
-                                    className={ "group-label" }
-                                /> */}
                                 <Icon
                                     name="circle"
                                     color={response.status === ApplicationShareStatus.SUCCESS ? "green" : "red"}
@@ -148,19 +173,21 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
             },
             {
                 allowToggleVisibility: false,
-                dataIndex: "message",
-                id: "message",
-                key: "message",
-                render: (response: ShareApplicationStatusResponse): ReactNode => {
+                dataIndex: "statusMessage",
+                id: "statusMessage",
+                key: "statusMessage",
+                render: (response: ApplicationShareUnitStatusResponse): ReactNode => {
                     return (
                         <Header as="h6" data-componentid={ `${componentId}-status-item-heading` }>
                             <Header.Content>
-                                { response.message }
+                                { response.status === "SUCCESS"
+                                    ? "Application shared successfully."
+                                    : response.statusMessage }
                             </Header.Content>
                         </Header>
                     );
                 },
-                title: "title:message"
+                title: "title:statusMessage"
             }
         ];
 
@@ -183,7 +210,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
         ).length;
     
         const failedCount = responseList.filter(
-            (item) => item.status === ApplicationShareStatus.FAILED
+            (item) => item.status === ApplicationShareStatus.FAIL
         ).length;
     
         setSuccessShareCount(successCount);
@@ -194,7 +221,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
     return (
         <>
             <Grid.Row columns={2} verticalAlign="middle">
-                <Grid.Column width={8} color="gray">
+                <Grid.Column width={8}>
                     {successShareCount} success | {failedShareCount} failed
                 </Grid.Column>
 
@@ -209,9 +236,9 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                             value={selectedStatus}
                             style={{ marginRight: "1rem" }}
                         />
-                        <Button onClick={() => console.log("Button clicked")}>
+                        {/* <Button onClick={() => console.log("Button clicked")}>
                             Download
-                        </Button>
+                        </Button> */}
                     </div>
                 </Grid.Column>
             </Grid.Row>
@@ -230,7 +257,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                 onPageChange={() => null}
                 disableRightActionPanel={false}
             >
-                <DataTable<ShareApplicationStatusResponse>
+                <DataTable<ApplicationShareUnitStatusResponse>
                     className="addon-field-wrapper"
                     isLoading={isLoading}
                     actions={[]}

@@ -33,6 +33,7 @@ export interface ApplicationsResourceEndpointsInterface {
      * Below route is to fetch the group list as metadata from the application API.
      */
     groupMetadata: string;
+    asyncStatus: string;
 }
 
 export interface UpdateClaimConfiguration {

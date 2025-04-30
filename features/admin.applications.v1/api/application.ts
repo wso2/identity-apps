@@ -1245,3 +1245,53 @@ export const useMyAccountStatus = <Data = MyAccountPortalStatusInterface, Error 
         mutate
     };
 };
+
+export const getApplicationUnitShares = (operationId: string): Promise<any> => {
+    const requestConfig: AxiosRequestConfig = {
+        data: operationId,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.asyncStatus + "/" + operationId + "/unit-operations?limit=1000"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if ((response.status !== 200)) {
+                return Promise.reject(new Error("Failed to fetch shared access status units."));
+            }
+            console.log(response);
+
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+export const getSharedAccessStatus = (applicationId: string): Promise<any> => {
+    const requestConfig: AxiosRequestConfig = {
+        data: applicationId,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.asyncStatus + "/?filter=subjectId eq " + applicationId + " &limit=1000"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if ((response.status !== 200)) {
+                return Promise.reject(new Error("Failed to fetch shared access status."));
+            }
+            console.log(response);
+
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
