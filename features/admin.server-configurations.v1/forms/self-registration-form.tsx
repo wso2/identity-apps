@@ -62,6 +62,10 @@ interface SelfRegistrationFormInitialValuesInterface {
      */
     autoLogin: boolean;
     /**
+     * Callback regex.
+     */
+    callbackRegex: string;
+    /**
      * Dynamic properties.
      */
     [ key: string ]: string | boolean;
@@ -104,6 +108,7 @@ const allowedConnectorFields: string[] = [
     ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
     ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED,
     ServerConfigurationsConstants.VERIFICATION_CODE_EXPIRY_TIME,
+    ServerConfigurationsConstants.CALLBACK_REGEX,
     ServerConfigurationsConstants.RE_CAPTCHA,
     NOTIFY_ACCOUNT_CONFIRMATION,
     AUTO_LOGIN_ENABLE,
@@ -235,6 +240,12 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                     verificationLinkExpiryTime: property.value
                 };
             }
+            if (property.name === ServerConfigurationsConstants.CALLBACK_REGEX) {
+                resolvedInitialFormValues = {
+                    ...resolvedInitialFormValues,
+                    callbackRegex: property.value
+                };
+            }
             if (property.name === ACCOUNT_CONFIRMATION) {
                 if (property.value === "false") {
                     setEnableAccountConfirmation(false);
@@ -302,11 +313,15 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             "SelfRegistration.SendConfirmationOnCreation": string | boolean;
             "SelfRegistration.ShowUsernameUnavailability": string | boolean;
             "SelfRegistration.VerificationCode.ExpiryTime": string | boolean | unknown;
+            "SelfRegistration.CallbackRegex": string | unknown;
             "SelfRegistration.Notification.InternallyManage"?: string | boolean;
         } = {
             "SelfRegistration.AutoLogin.Enable": values.autoLogin !== undefined
                 ? !!enableAutoLogin
                 : initialConnectorValues?.get("SelfRegistration.AutoLogin.Enable").value,
+            "SelfRegistration.CallbackRegex": values?.callbackRegex !== undefined
+                ? values?.callbackRegex
+                : initialConnectorValues?.get("SelfRegistration.CallbackRegex").value,
             "SelfRegistration.LockOnCreation": values.accountActivateImmediately === true ||
             enableAccountConfirmation == false
                 ? false
@@ -709,6 +724,23 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                     "Enable sending notification for self sign up confirmation.")
                 }
             />
+            <Field.Input
+                ariaLabel="callbackRegex"
+                inputType="text"
+                name="callbackRegex"
+                width={ 10 }
+                label={ t("governanceConnectors:connectorCategories.userOnboarding.connectors.selfSignUp." +
+                    "properties.selfRegistrationCallbackRegex.label") }
+                required={ false }
+                hidden={ false }
+                placeholder={ t("governanceConnectors:connectorCategories.userOnboarding.connectors.selfSignUp." +
+                    "properties.selfRegistrationCallbackRegex.hint") }
+                readOnly={ readOnly }
+                disabled={ !isConnectorEnabled || isSubmitting }
+                data-testid={ `${testId}-callback-regex` }
+            >
+                <input/>
+            </Field.Input>
             <Field.Button
                 form={ FORM_ID }
                 size="small"
