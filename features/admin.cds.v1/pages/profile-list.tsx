@@ -39,13 +39,27 @@ const UsersPage = ({ router }) => {
         }
     };
 
+    const handleDeleteProfile = async (profileId: string) => {
+        const confirmed = window.confirm(`Are you sure you want to delete profile ${profileId}?`);
+        if (!confirmed) return;
+    
+        try {
+            await axios.delete(`http://localhost:8900/api/v1/profiles/${profileId}`);
+            setProfiles(prev => prev.filter(p => p.profile_id !== profileId));
+        } catch (err) {
+            console.error(`Failed to delete profile ${profileId}`, err);
+            alert("Failed to delete profile. Check console for details.");
+        }
+    };
+    
+
     const fetchPropertiesForScope = async (scope: string, index: number) => {
         try {
             const response = await axios.get(
-                `http://localhost:8900/api/v1/enrichment-rules?filter=trait_name+sw+${scope}`
+                `http://localhost:8900/api/v1/enrichment-rules?filter=property_name+sw+${scope}`
             );
             const props = response.data?.map((r: any) => {
-                const name = r.trait_name || "";
+                const name = r.property_name || "";
                 const parts = name.split(".");
                 return parts.length > 1 ? parts[1] : name;
             }) || [];
@@ -275,34 +289,38 @@ const UsersPage = ({ router }) => {
 
                                 return (
                                     <TableRow
-                                        key={index}
-                                        onClick={() => handleRowClick(profile.profile_id)}
-                                        sx={{
-                                            cursor: "pointer",
-                                            "&:hover": { backgroundColor: "#f5f5f5" }
-                                        }}
-                                    >
-                                        <TableCell>
-                                            <Typography>{profile.profile_id}</Typography>
-                                            {username && (
-                                                <Typography variant="caption" color="text.secondary">
-                                                    {username}
-                                                </Typography>
-                                            )}
-                                        </TableCell>
-                                        <TableCell>
-                                            {userId ? (
-                                                <>
-                                                    <Chip label="Registered User" color="success" size="small" />
-                                                    <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: "block" }}>
-                                                        {userId}
+                                            key={index}
+                                            sx={{
+                                                "&:hover": { backgroundColor: "#f5f5f5" }
+                                            }}
+                                        >
+                                            <TableCell onClick={() => handleRowClick(profile.profile_id)} sx={{ cursor: "pointer" }}>
+                                                <Typography>{profile.profile_id}</Typography>
+                                                {username && (
+                                                    <Typography variant="caption" color="text.secondary">
+                                                        {username}
                                                     </Typography>
-                                                </>
-                                            ) : (
-                                                <Chip label="Anonymous Profile" color="primary" size="small" />
-                                            )}
-                                        </TableCell>
-                                    </TableRow>
+                                                )}
+                                            </TableCell>
+                                            <TableCell onClick={() => handleRowClick(profile.profile_id)} sx={{ cursor: "pointer" }}>
+                                                {userId ? (
+                                                    <>
+                                                        <Chip label="Registered User" color="success" size="small" />
+                                                        <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: "block" }}>
+                                                            {userId}
+                                                        </Typography>
+                                                    </>
+                                                ) : (
+                                                    <Chip label="Anonymous Profile" color="primary" size="small" />
+                                                )}
+                                            </TableCell>
+                                            <TableCell width={50}>
+                                                <IconButton color="error" onClick={() => handleDeleteProfile(profile.profile_id)}>
+                                                    <Delete />
+                                                </IconButton>
+                                            </TableCell>
+                                        </TableRow>
+
                                 );
                             })}
                         </TableBody>

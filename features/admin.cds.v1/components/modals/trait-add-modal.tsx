@@ -19,15 +19,15 @@ interface TraitTrigger {
 }
 
 interface TraitFormData {
-    trait_name: string;
+    property_name: string;
     description: string;
-    trait_type: "static" | "computed";
+    property_type: "static" | "computed";
     value?: string;
     value_type: string;
     computation?: string;
-    source_field?: string;
-    source_field_one?: string;
-    source_field_two?: string;
+    source_fields?: string[];   // updated
+    source_field_one?: string;  // for UI only
+    source_field_two?: string;  // for UI only
     time_range?: string;
     merge_strategy: string;
     trigger: TraitTrigger;
@@ -94,25 +94,34 @@ const AddTraitModal: React.FC<AddTraitModalProps> = ({
 
     const handleFinalSubmit = () => {
         const finalPayload = {
-            ...form,
-            trait_name: fullTraitName,
-            value: form.trait_type === "static" ? form.value : undefined,
-            computation: form.trait_type === "computed" ? form.computation : undefined,
-            source_field: form.computation === "copy" ? form.source_field : undefined,
-            source_field_one: form.computation === "concat" ? form.source_field_one : undefined,
-            source_field_two: form.computation === "concat" ? form.source_field_two : undefined,
+            property_name: fullTraitName,
+            description: form.description,
+            property_type: form.property_type,
+            value_type: form.value_type,
+            merge_strategy: form.merge_strategy,
+            enabled: form.enabled,
+            trigger: form.trigger,
+            value: form.property_type === "static" ? form.value : undefined,
+            computation: form.property_type === "computed" ? form.computation : undefined,
+            source_fields: form.computation === "copy"
+                ? form.source_fields
+                : form.computation === "concat"
+                    ? (form.source_field_one && form.source_field_two
+                        ? [form.source_field_one, form.source_field_two]
+                        : undefined)
+                    : undefined,
             time_range: form.computation === "count" ? form.time_range : undefined
         };
         onSubmit(finalPayload);
-    };
+    };    
 
     useEffect(() => {
         const fetchExistingTraits = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:8900/api/v1/enrichment-rules?filter=trait_name+sw+${propertyGroup}`
+                    `http://localhost:8900/api/v1/enrichment-rules?filter=property_name+sw+${propertyGroup}`
                 );
-                const traits = response.data.map((rule: any) => rule.trait_name);
+                const traits = response.data.map((rule: any) => rule.property_name);
                 setExistingTraitNames(traits);
             } catch (err) {
                 console.error("Failed to fetch traits", err);
@@ -142,19 +151,17 @@ const AddTraitModal: React.FC<AddTraitModalProps> = ({
                             </TextField>
                         </Grid>
                         <Grid item xs={4}>
-                            <TextField
+                        <TextField
                                 label="Property Name"
                                 fullWidth
                                 value={propertySuffix}
                                 onChange={(e) => setPropertySuffix(e.target.value)}
-                                error={nameExists}
-                                helperText={nameExists ? "Trait name already exists." : " "}
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
                                             {propertySuffix && (
                                                 nameExists ? (
-                                                    <ErrorIcon color="error" />
+                                                    <ErrorIcon color="warning" />
                                                 ) : (
                                                     <CheckCircle color="success" />
                                                 )
@@ -163,6 +170,11 @@ const AddTraitModal: React.FC<AddTraitModalProps> = ({
                                     )
                                 }}
                             />
+                            {propertySuffix && nameExists && (
+                                <Typography variant="caption" sx={{ color: "orange", mt: 0.5 }}>
+                                    ⚠️ This property has been enriched by another enrichment rule.
+                                </Typography>
+                            )}
                         </Grid>
 
                         <Grid item xs={12}>
@@ -182,20 +194,20 @@ const AddTraitModal: React.FC<AddTraitModalProps> = ({
                         <Grid item xs={12}><Typography variant="subtitle1">🧮 Computation</Typography></Grid>
 
                         <Grid item xs={4}>
-                            <TextField select label="Trait Type" fullWidth value={form.trait_type}
-                                       onChange={(e) => updateForm("trait_type", e.target.value)}>
+                            <TextField select label="Property Type" fullWidth value={form.property_type}
+                                       onChange={(e) => updateForm("property_type", e.target.value)}>
                                 {traitTypes.map(t => <MenuItem key={t} value={t}>{t}</MenuItem>)}
                             </TextField>
                         </Grid>
 
-                        {form.trait_type === "static" && (
+                        {form.property_type === "static" && (
                             <Grid item xs={12}>
                                 <TextField label="Value" fullWidth value={form.value}
                                            onChange={(e) => updateForm("value", e.target.value)} />
                             </Grid>
                         )}
 
-                        {form.trait_type === "computed" && (
+                        {form.property_type === "computed" && (
                             <>
                                 <Grid item xs={4}>
                                     <TextField select label="Computation" fullWidth value={form.computation}
@@ -203,10 +215,15 @@ const AddTraitModal: React.FC<AddTraitModalProps> = ({
                                         {computationMethods.map(m => <MenuItem key={m} value={m}>{m}</MenuItem>)}
                                     </TextField>
                                 </Grid>
+
                                 {form.computation === "copy" && (
                                     <Grid item xs={12}>
-                                        <TextField label="Source Field" fullWidth value={form.source_field}
-                                                   onChange={(e) => updateForm("source_field", e.target.value)} />
+                                       <TextField
+                                            label="Source Field"
+                                            fullWidth
+                                            value={form.source_fields?.[0] || ""}
+                                            onChange={(e) => updateForm("source_fields", [e.target.value])}
+                                        />
                                     </Grid>
                                 )}
                                 {form.computation === "concat" && (
@@ -294,7 +311,7 @@ const AddTraitModal: React.FC<AddTraitModalProps> = ({
                 {step === 2 && (
                     <>
                         <Button onClick={() => setStep(1)}>Back</Button>
-                        <Button variant="contained" onClick={handleFinalSubmit} disabled={nameExists}>
+                        <Button variant="contained" onClick={handleFinalSubmit}>
                             Create
                         </Button>
                     </>

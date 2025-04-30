@@ -72,8 +72,8 @@ const IdentityResolutionPage = () => {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell><strong>Rule Name</strong></TableCell>
-                                        <TableCell><strong>Attribute Scope</strong></TableCell>
-                                        <TableCell><strong>Attribute</strong></TableCell>
+                                        <TableCell><strong>Property Scope</strong></TableCell>
+                                        <TableCell><strong>Property</strong></TableCell>
                                         <TableCell><strong>Priority</strong></TableCell>
                                         <TableCell><strong>Status</strong></TableCell>
                                         <TableCell></TableCell>
@@ -82,7 +82,7 @@ const IdentityResolutionPage = () => {
 
                                 <TableBody>
                                     {rules.map(rule => {
-                                        const attribute = rule.attribute || "";
+                                        const attribute = rule.property || "";
                                         let scopeLabel = "Unknown";
                                         let attributeSuffix = attribute;
 

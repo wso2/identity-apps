@@ -6,7 +6,7 @@ import {
 import { Add, Delete } from "@mui/icons-material";
 import axios from "axios";
 import AddTraitModal from "../components/modals/trait-add-modal";
-import { Chip } from "@oxygen-ui/react";
+import { Chip, Grid } from "@oxygen-ui/react";
 
 interface Condition {
     field: string;
@@ -21,9 +21,9 @@ interface TraitTrigger {
 }
 
 interface TraitFormData {
-    trait_name: string;
+    property_name: string;
     description: string;
-    trait_type: "static" | "computed";
+    property_type: "static" | "computed";
     value?: string;
     value_type: string;
     computation?: string;
@@ -41,9 +41,9 @@ const ProfileTraitsPage: React.FC = () => {
     const [openModal, setOpenModal] = useState(false);
 
     const defaultForm: TraitFormData = {
-        trait_name: "",
+        property_name: "",
         description: "",
-        trait_type: "static",
+        property_type: "static",
         value: "",
         value_type: "string",
         computation: "",
@@ -151,7 +151,7 @@ const ProfileTraitsPage: React.FC = () => {
                             </TableHead>
                             <TableBody>
                                 {rules.map((rule) => {
-                                    const [scopeKey, attr] = rule.trait_name?.split(".") || [];
+                                    const [scopeKey, attr] = rule.property_name?.split(".") || [];
                                     const scopeMap: Record<string, string> = {
                                         identity_attributes: "Identity Attribute",
                                         application_data: "Application Data",
@@ -178,7 +178,7 @@ const ProfileTraitsPage: React.FC = () => {
                                         >
                                             <TableCell>
                                                 <Typography variant="subtitle1" fontWeight="bold">
-                                                    {attr || rule.trait_name}
+                                                    {attr || rule.property_name}
                                                 </Typography>
                                                 <Chip
                                                     size="small"
@@ -190,7 +190,7 @@ const ProfileTraitsPage: React.FC = () => {
                                                     }}
                                                 />
                                             </TableCell>
-                                            <TableCell>{rule.trait_type}</TableCell>
+                                            <TableCell>{rule.property_type}</TableCell>
                                             <TableCell>{rule.value_type}</TableCell>
                                             <TableCell>
                                                 <Chip size="small" label={rule.merge_strategy} variant="outlined" />
@@ -218,7 +218,7 @@ const ProfileTraitsPage: React.FC = () => {
                                                 </Box>
                                             </TableCell>
                                             <TableCell>
-                                                <IconButton color="error" onClick={() => handleDelete(rule.trait_id!)}>
+                                                <IconButton color="error" onClick={() => handleDelete(rule.rule_id!)}>
                                                     <Delete />
                                                 </IconButton>
                                             </TableCell>
