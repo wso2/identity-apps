@@ -79,14 +79,9 @@ const CustomerDataTabPane = ({
                                     <CopyInputField
                                         value={ currentKey }
                                         secret
-                                        fluid
-                                        isSecretVisible={ isSecretVisible }
-                                        setIsSecretVisible={ setIsSecretVisible }
                                         showSecretLabel="View"
                                         hideSecretLabel="Hide"
-                                        inputStyle={ commonInputStyle }
                                         data-componentid="customer-data-write-key"
-                                        loading={ isLoading }
                                     />
                                 </Grid.Column>
                                 <Grid.Column width={4} textAlign="right">
@@ -110,9 +105,6 @@ const CustomerDataTabPane = ({
                         <Heading as="h5">Publishing Endpoint</Heading>
                         <CopyInputField
                             value={ publishingEndpoint }
-                            readOnly
-                            fluid
-                            inputStyle={ commonInputStyle }
                             data-componentid="customer-data-publishing-endpoint"
                         />
 
@@ -121,9 +113,6 @@ const CustomerDataTabPane = ({
                         <Heading as="h5">Profile Endpoint</Heading>
                         <CopyInputField
                             value={ profileEndpoint }
-                            readOnly
-                            fluid
-                            inputStyle={ commonInputStyle }
                             data-componentid="customer-data-profile-endpoint"
                         />
 
@@ -134,45 +123,44 @@ const CustomerDataTabPane = ({
                         </Heading>
 
                         <p><strong>Step 1: Import SDK</strong></p>
-                        <Code language="javascript">
-{`import { CustomerDataTracker } from '@asgardeo/customer-data-tracker';`}
+                        <Code >
+                            {`import { CustomerDataTracker } from '@asgardeo/customer-data-tracker';`}
                         </Code>
 
                         <p><strong>Step 2: Configuration</strong></p>
-                        <Code language="javascript">
-{`const trackerConfig = {
-    writeKey: "${currentKey}",
-    appId: "${appId}",
-    orgName: "${orgName}",
-    publishing_endpoint: "${publishingEndpoint}",
-    gather_consent: "true",
-    auto_track_page_event: "true"
-};`}
+                        <Code >
+                            {`const trackerConfig = {
+                                writeKey: "${currentKey}",
+                                appId: "${appId}",
+                                orgName: "${orgName}",
+                                publishing_endpoint: "${publishingEndpoint}",
+                                gather_consent: "true",
+                                auto_track_page_event: "true"
+                            };`}
                         </Code>
 
                         <p><strong>Step 3: Initiate Tracker</strong></p>
-                        <Code language="jsx">
-{`<CustomerDataTracker config={trackerConfig}>
-    <App />
-</CustomerDataTracker>`}
+                        <Code>
+                            {`<CustomerDataTracker config={trackerConfig}>
+                                <App />
+                            </CustomerDataTracker>`}
                         </Code>
 
                         <p><strong>Step 4: Publish Events</strong></p>
-                        <Code language="javascript">
-{`tracker.track("category_searched", {
-    action: "select_category",
-    objecttype: "category",
-    objectname: "cat"
-});
+                        <Code>
+                            {`tracker.track("category_searched", {
+                                action: "select_category",
+                                objecttype: "category",
+                                objectname: "cat"
+                            });
+                            tracker.identify("signed-up", {
+                                region: "us",
+                                username: "hello@wso2.com"
+                            });
 
-tracker.identify("signed-up", {
-    region: "us",
-    username: "hello@wso2.com"
-});
-
-tracker.page("page_visited", {
-    page_title: "select_category"
-});`}
+                            tracker.page("page_visited", {
+                                page_title: "select_category"
+                            });`}
                         </Code>
 
                         <Divider hidden />

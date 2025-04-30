@@ -966,7 +966,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 componentId: "customer-data",
                 "data-tabid": "customer-data",
                 menuItem: t("applications:edit.sections.customerData.tabName", "Customer Data"),
-                icon: "profile",
                 render: CustomerDataTabPane
             });
             
