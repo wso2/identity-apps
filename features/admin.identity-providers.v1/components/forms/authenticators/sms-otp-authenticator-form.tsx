@@ -23,11 +23,11 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { Code, Heading, Link } from "@wso2is/react-components";
+import { Code, Heading, IconButton, Link } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, SVGAttributes, useCallback, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider, Icon, Label, Message } from "semantic-ui-react";
 import {
@@ -182,11 +182,59 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
     // SMS OTP length unit is set to digits or characters according to the state of this variable
     const [ isOTPNumeric, setIsOTPNumeric ] = useState<boolean>();
 
+    // AMR value field state
+    const [isResettingAMR, setIsResettingAMR] = useState(false);
+    const [isAMRFieldChanged, setIsAMRFieldChanged] = useState(false);
+
+
+    const handleResetAMR = useCallback(() => {
+        setInitialValues(prevValues => ({
+            ...prevValues,
+            amrValue: originalInitialValues.name || ""
+        }));
+        setIsResettingAMR(true);
+        setIsAMRFieldChanged(false);
+    }, [originalInitialValues.name]);
+
+    const handleSubmit = (values: Record<string, unknown>) => {
+        const submitValues = {
+            ...values,
+            amrValue: isAMRFieldChanged ? values.amrValue : ""
+        };
+    
+        onSubmit(getUpdatedConfigurations(submitValues as SMSOTPAuthenticatorFormInitialValuesInterface));
+        setIsResettingAMR(false);
+        setIsAMRFieldChanged(false);
+    };
+
+    const ArrowRotateLeft = ({ ...rest }: SVGAttributes<SVGSVGElement>): ReactElement => (
+        <svg
+            stroke="currentColor"
+            fill="currentColor"
+            strokeWidth="0"
+            viewBox="0 0 24 24"
+            height="1em"
+            width="1em"
+            style={{
+                marginRight: "0",
+                verticalAlign: "middle"
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+            {...rest}
+        >
+            <path
+                fill="none"
+                stroke="#000"
+                strokeWidth="2"
+                d="M8,3 L3,8 L8,13 M12,20 L15,20 C18.3137085,20 21,17.3137085 21,14 C21,10.6862915 18.3137085,8 15,8 L4,8"
+            ></path>
+        </svg>
+    );
+
     /**
      * Flattens and resolved form initial values and field metadata.
      */
     useEffect(() => {
-
         if (isEmpty(originalInitialValues?.properties)) {
             return;
         }
@@ -239,7 +287,6 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             ...resolvedInitialValues,
             amrValue: originalInitialValues.amrValue
         };
-        console.log("Resolved Initial Values: ", resolvedInitialValues);
 
         setIsOTPNumeric(resolvedInitialValues.SmsOTP_OtpRegex_UseNumericChars);
         setFormFields(resolvedFormFields);
@@ -257,11 +304,11 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
 
         const properties: CommonPluggableComponentPropertyInterface[] = [];
 
-        for (const [ name, value ] of Object.entries(values)) {
-            if (name !== undefined) {
+        for (const [name, value] of Object.entries(values)) {
+            if (name !== undefined && name !== "amrValue") {
                 const moderatedName: string = name.replace(/_/g, ".");
 
-                if (name === LocalAuthenticatorConstants.MODERATED_SMS_OTP_EXPIRY_TIME_KEY){
+                if (name === LocalAuthenticatorConstants.MODERATED_SMS_OTP_EXPIRY_TIME_KEY) {
                     const timeInSeconds: number = value * 60;
 
                     properties.push({
@@ -277,6 +324,18 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     value: isBoolean(value) ? value.toString() : value
                 });
             }
+        }
+
+        if (isResettingAMR) {
+            properties.push({
+                name: "amrValue",
+                value: ""
+            });
+        } else {
+            properties.push({
+                name: "amrValue",
+                value: values.amrValue
+            });
         }
 
         return {
@@ -573,10 +632,8 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             <Field.Input
                 ariaLabel="AMR Value"
                 inputType="text"
-                icon="redo"
-                iconPosition="right"
                 name="amrValue"
-                initialValue={initialValues?.amrValue}
+                value={initialValues?.amrValue || ''}
                 label={
                     t("authenticationProvider:forms.authenticatorSettings" +
                         ".smsOTP.allowedAmrValue.label")
@@ -601,7 +658,29 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 minLength={2}
                 width={12}
                 data-testid={`${testId}-allowed-amr-value`}
-            />
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setIsAMRFieldChanged(true);
+                    setInitialValues(prev => ({
+                        ...prev,
+                        amrValue: event.target.value
+                    }));
+                }}
+            >
+                <input />
+                <IconButton
+                    title={t("branding:brandingCustomText.form.genericFieldResetTooltip")}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        handleResetAMR();
+                    }}
+                    style={{
+                        backgroundColor: "white",
+                        cursor: "pointer"
+                    }}
+                >
+                    <ArrowRotateLeft />
+                </IconButton>
+            </Field.Input>
             <Field.Button
                 form={ FORM_ID }
                 size="small"

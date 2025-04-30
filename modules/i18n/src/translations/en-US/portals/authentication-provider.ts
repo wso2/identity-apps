@@ -483,7 +483,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     placeholder: "Google one tap as a sign in option"
                 },
                 amrHeading: {
-                    heading: "AMR Value"
+                    heading: "Authentication Method Reference (AMR)"
                 },
                 amrModification: {
                     hint: "Please check this checkbox to enable modification of AMR value.",

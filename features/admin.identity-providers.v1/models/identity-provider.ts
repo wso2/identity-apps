@@ -311,6 +311,7 @@ export interface CommonPluggableComponentFormPropsInterface extends TestableComp
 
 export interface CommonPluggableComponentInterface {
     properties?: CommonPluggableComponentPropertyInterface[];
+    name?: string;
     amrValue?: string;
 }
 

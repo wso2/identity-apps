@@ -23,8 +23,8 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Code, FormSection, GenericIcon, Heading, Hint, IconButton } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, SVGAttributes, useCallback, useEffect, useState } 
-from "react";
+import React,
+{ FunctionComponent, ReactElement, ReactNode, SVGAttributes, useCallback, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Icon, SemanticICONS } from "semantic-ui-react";
@@ -252,13 +252,16 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
         setInitialValues(resolvedInitialValues);
     }, [originalInitialValues]);
 
+    /**
+     * Handles form submit.
+     * @param values - Form values. 
+     */
     const handleSubmit = (values: Record<string, unknown>) => {
-
         const submitValues = {
             ...values,
-            amrValue: isResettingAMR ? "" : values.amrValue
+            amrValue: isAMRFieldChanged ? values.amrValue : ""
         };
-
+    
         onSubmit(getUpdatedConfigurations(submitValues as GoogleAuthenticatorFormInitialValuesInterface));
         setIsResettingAMR(false);
         setIsAMRFieldChanged(false);
@@ -410,7 +413,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
             width="1em"
             style={{
                 marginRight: "0",
-                marginTop: "10px",
+                
                 verticalAlign: "middle"
             }}
             xmlns="http://www.w3.org/2000/svg"
@@ -427,20 +430,14 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
 
 
     const handleResetAMR = useCallback(() => {
-        if (!isAMRFieldChanged) {
-            console.log("Resetting AMR value");
-            setInitialValues(prevValues => ({
-                ...prevValues,
-                amrValue: originalInitialValues.name
-            }));
-            setIsResettingAMR(true);
-        }
+        console.log("Resetting AMR value");
+        setInitialValues(prevValues => ({
+            ...prevValues,
+            amrValue: originalInitialValues.name || ""
+        }));
+        setIsResettingAMR(true);
+        setIsAMRFieldChanged(false);
     }, [originalInitialValues.name]);
-
-    console.log("Google Authenticator Form Properties: ", originalInitialValues.properties);
-    console.log("Google Authenticator Form: ", originalInitialValues);
-    console.log("AMR Value: ", originalInitialValues?.amrValue);
-    console.log("Resolved Google Authenticator Form: ", formFields);
 
     return (
         <Form
@@ -637,7 +634,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 ariaLabel="AMR Value"
                 inputType="text"
                 name="amrValue"
-                initialValues={initialValues?.amrValue}
+                value={initialValues?.amrValue || ''}
                 label={
                     t("authenticationProvider:forms.authenticatorSettings" +
                         ".google.allowedAmrValue.label")
@@ -663,15 +660,28 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 width={12}
                 data-testid={`${testId}-allowed-amr-value`}
                 iconPosition="right"
-                // onChange={ () => setIsAMRFieldChanged(true) }
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setIsAMRFieldChanged(true);
+                    setInitialValues(prev => ({
+                        ...prev,
+                        amrValue: event.target.value
+                    }));
+                }}
             >
                 <input />
                 <IconButton
+                    title={
+                        t("branding:brandingCustomText.form.genericFieldResetTooltip")
+                    }
                     onClick={(e) => {
                         e.preventDefault();
                         handleResetAMR();
                     }}
-                    style={{ cursor: "pointer" }}>
+                    style={{
+                        backgroundColor: "white",
+                        cursor: "pointer"
+                    }}
+                >
                     <ArrowRotateLeft />
                 </IconButton>
             </Field.Input>
