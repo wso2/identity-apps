@@ -11,6 +11,7 @@
 <%= htmlWebpackPlugin.options.serverConfiguration %>
 <%= htmlWebpackPlugin.options.proxyContextPathConstant %>
 <%= htmlWebpackPlugin.options.importUtil %>
+<%= htmlWebpackPlugin.options.importIdentityTenantUtil %>
 <%= htmlWebpackPlugin.options.importOwaspEncode %>
 
 <script>
@@ -236,6 +237,42 @@
                 }
 
                 /**
+                 * Check if the current tenant is super tenant.
+                 *
+                 * @returns {boolean}
+                 */
+                function isSuperTenant() {
+                    if (getTenantName()) {
+                        return false;
+                    }
+
+                    var tenantName;
+                    if (startupConfig.superTenantProxy) {
+                        tenantName = startupConfig.superTenantProxy;
+                    } else {
+                        tenantName = startupConfig.superTenant;
+                    }
+
+                    return tenantName === startupConfig.superTenant;
+                }
+
+                /**
+                 * Get the tenant qualified client id.
+                 *
+                 * @returns {string}
+                 */
+                function resolveClientId() {
+                    var enableTenantQualifiedUrls = "<%= htmlWebpackPlugin.options.isTenantQualifiedUrlsEnabled %>";
+                    var defaultClientId = "<%= htmlWebpackPlugin.options.clientID %>";
+
+                    if (enableTenantQualifiedUrls === true || isSuperTenant()) {
+                        return defaultClientId;
+                    } else {
+                        return defaultClientId + "_" + getTenantName();
+                    }
+                }
+
+                /**
                  * Construct the sign-in redirect URL.
                  *
                  * @returns {string} Contructed URL.
@@ -344,7 +381,7 @@
                 var authConfig = {
                     signInRedirectURL: signInRedirectURL(),
                     signOutRedirectURL: getSignOutRedirectURL(),
-                    clientID: "<%= htmlWebpackPlugin.options.clientID %>",
+                    clientID: resolveClientId(),
                     baseUrl: getApiPath(),
                     responseMode: "form_post",
                     scope: ["openid SYSTEM"],
