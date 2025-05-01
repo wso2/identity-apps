@@ -28,6 +28,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { updateApplicationConfigurations } from "../../api/application";
 import { AdvancedConfigurationsInterface, ApplicationTemplateListItemInterface } from "../../models/application";
+import { AdvancedConfigurationsFinalForm } from "../forms/advanced-configurations-final-form";
 import { AdvancedConfigurationsForm } from "../forms/advanced-configurations-form";
 
 /**
@@ -139,7 +140,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
 
     return (
         <EmphasizedSegment className="advanced-configuration-section" padded="very">
-            <AdvancedConfigurationsForm
+            {/* <AdvancedConfigurationsForm
                 config={ advancedConfigurations }
                 onSubmit={ handleAdvancedConfigFormSubmit }
                 readOnly={
@@ -148,6 +149,17 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
                 }
                 template={ template }
                 onAlertFired={ handleAlerts }
+                data-testid={ `${ componentId }-form` }
+                isSubmitting={ isSubmitting }
+            /> */}
+            <AdvancedConfigurationsFinalForm
+                config={ advancedConfigurations }
+                onSubmit={ handleAdvancedConfigFormSubmit }
+                readOnly={
+                    readOnly
+                    || !hasApplicationUpdatePermissions
+                }
+                template={ template }
                 data-testid={ `${ componentId }-form` }
                 isSubmitting={ isSubmitting }
             />
