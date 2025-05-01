@@ -38,6 +38,7 @@ import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.application.mgt.ApplicationMgtUtil;
 import org.wso2.carbon.identity.core.URLBuilderException;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
+import org.wso2.carbon.identity.core.util.IdentityTenantUtil;
 import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
 import org.wso2.carbon.identity.oauth.OAuthUtil;
 import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
@@ -310,7 +311,7 @@ public class AppPortalUtils {
                 List<String> allowedGrantTypes = Arrays.asList(AppsCommonDataHolder.getInstance()
                     .getOAuthAdminService().getAllowedGrantTypes());
                 grantTypes = grantTypes.stream().filter(allowedGrantTypes::contains).collect(Collectors.toList());
-                String consumerKey = appPortal.getConsumerKey();
+                String consumerKey = resolveClientID(appPortal.getConsumerKey(), tenantInfoBean.getTenantDomain());
                 try {
                     AppPortalUtils.createOAuth2Application(appPortal.getName(), appPortal.getPath(), consumerKey,
                         consumerSecret, tenantInfoBean.getAdmin(), tenantInfoBean.getTenantId(),
@@ -419,6 +420,22 @@ public class AppPortalUtils {
         } finally {
             IdentityApplicationManagementUtil.removeAllowUpdateSystemApplicationThreadLocal();
             PrivilegedCarbonContext.endTenantFlow();
+        }
+    }
+
+    /**
+     * Resolve tenant qualified client ID.
+     *
+     * @param consumerKey consumer key.
+     * @param tenantDomain tenant domain.
+     * @return client ID.
+     */
+    public static String resolveClientID(String consumerKey, String tenantDomain) {
+
+        if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled() || SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
+            return consumerKey;
+        } else {
+            return consumerKey + "_" + tenantDomain;
         }
     }
 
