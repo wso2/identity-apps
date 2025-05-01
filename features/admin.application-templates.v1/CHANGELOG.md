@@ -1,5 +1,14 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.5.3
+
+### Patch Changes
+
+- [#8125](https://github.com/wso2/identity-apps/pull/8125) [`992ab1300824c7a009577ba87344248c12406745`](https://github.com/wso2/identity-apps/commit/992ab1300824c7a009577ba87344248c12406745) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improvements to MCP client application template
+
+- Updated dependencies [[`992ab1300824c7a009577ba87344248c12406745`](https://github.com/wso2/identity-apps/commit/992ab1300824c7a009577ba87344248c12406745)]:
+  - @wso2is/admin.applications.v1@2.34.5
+
 ## 1.5.2
 
 ### Patch Changes
