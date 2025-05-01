@@ -262,6 +262,41 @@
                         : "";
                 };
 
+                 /**
+                 * Check if the current tenant is super tenant.
+                 *
+                 * @returns {boolean}
+                 */
+                function isSuperTenant() {
+                    if (getTenantName()) {
+                        return false;
+                    }
+
+                    if (!getTenantName()) {
+                        if (startupConfig.superTenantProxy) {
+                            return startupConfig.superTenantProxy;
+                        } else {
+                            return startupConfig.superTenant;
+                        }
+                    }
+                }
+
+                /**
+                 * Get the tenant qualified client id.
+                 *
+                 * @returns {string}
+                 */
+                function resolveConsoleClientId() {
+                    var enableTenantQualifiedUrls = "<%= htmlWebpackPlugin.options.enableTenantQualifiedUrls %>";
+                    var defaultClientId = "<%= htmlWebpackPlugin.options.clientID %>";
+
+                    if (enableTenantQualifiedUrls == "true" || isSuperTenant()) {
+                        return defaultClientId;
+                    } else {
+                        return defaultClientId + "_" + getTenantName();
+                    }
+                }
+
                 /**
                  * Construct the sign-in redirect URL.
                  *
@@ -341,7 +376,7 @@
                 var authConfig = {
                     signInRedirectURL: signInRedirectURL(),
                     signOutRedirectURL: getSignOutRedirectURL(),
-                    clientID: "<%= htmlWebpackPlugin.options.clientID %>",
+                    clientID: resolveConsoleClientId(),
                     baseUrl: getApiPath(),
                     responseMode: "form_post",
                     scope: ["openid SYSTEM profile"],
