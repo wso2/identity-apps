@@ -257,13 +257,16 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 clientID: DeploymentConfig.clientID,
                 contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=ISO-8859-1\" " +
                     "pageEncoding=\"ISO-8859-1\"%>",
-                enableTenantQualifiedUrls: DeploymentConfig.tenantContext.enableTenantQualifiedUrls || true,
                 filename: ABSOLUTE_PATHS.indexTemplateInDistribution,
                 getAdaptiveAuthenticationAvailability: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
                     "authentication.framework.util.FrameworkUtils.isAdaptiveAuthenticationAvailable\"%>"
                     : "",
                 hash: true,
+                importIdentityTenantUtil: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"" +
+                "static org.wso2.carbon.identity.core.util.IdentityTenantUtil.isTenantQualifiedUrlsEnabled\" %>"
+                    : "",
                 importOwaspEncode: "<%@ page import=\"org.owasp.encoder.Encode\" %>",
                 importSuperTenantConstant: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
@@ -300,6 +303,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 serverUrl: !isDeployedOnExternalTomcatServer
                     ? "<%=getServerURL(\"\", true, true)%>"
                     : "",
+                isTenantQualifiedUrlsEnabled: !isDeployedOnExternalTomcatServer
+                    ? "<%=isTenantQualifiedUrlsEnabled()%>"
+                    : "",
                 sessionState: "<%=Encode.forHtml(request.getParameter(\"session_state\"))%>",
                 superTenantConstant: !isDeployedOnExternalTomcatServer
                     ? "<%=SUPER_TENANT_DOMAIN_NAME%>"
@@ -321,7 +327,6 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
             (new HtmlWebpackPlugin({
                 basename: DeploymentConfig.appBaseName,
                 clientID: DeploymentConfig.clientID,
-                enableTenantQualifiedUrls: DeploymentConfig.tenantContext.enableTenantQualifiedUrls || true,
                 filename: ABSOLUTE_PATHS.indexTemplateInDistribution,
                 hash: true,
                 inject: !isDeployedOnExternalStaticServer,

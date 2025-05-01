@@ -11,6 +11,7 @@
 <%= htmlWebpackPlugin.options.serverConfiguration %>
 <%= htmlWebpackPlugin.options.proxyContextPathConstant %>
 <%= htmlWebpackPlugin.options.importUtil %>
+<%= htmlWebpackPlugin.options.importIdentityTenantUtil %>
 <%= htmlWebpackPlugin.options.importOwaspEncode %>
 
 <script>
@@ -272,13 +273,14 @@
                         return false;
                     }
 
-                    if (!getTenantName()) {
-                        if (startupConfig.superTenantProxy) {
-                            return startupConfig.superTenantProxy;
-                        } else {
-                            return startupConfig.superTenant;
-                        }
+                    var tenantName;
+                    if (startupConfig.superTenantProxy) {
+                        tenantName = startupConfig.superTenantProxy;
+                    } else {
+                        tenantName = startupConfig.superTenant;
                     }
+
+                    return tenantName === startupConfig.superTenant;
                 }
 
                 /**
@@ -286,11 +288,11 @@
                  *
                  * @returns {string}
                  */
-                function resolveConsoleClientId() {
-                    var enableTenantQualifiedUrls = "<%= htmlWebpackPlugin.options.enableTenantQualifiedUrls %>";
+                function resolveClientId() {
+                    var enableTenantQualifiedUrls = "<%= htmlWebpackPlugin.options.isTenantQualifiedUrlsEnabled %>";
                     var defaultClientId = "<%= htmlWebpackPlugin.options.clientID %>";
 
-                    if (enableTenantQualifiedUrls == "true" || isSuperTenant()) {
+                    if (enableTenantQualifiedUrls === true || isSuperTenant()) {
                         return defaultClientId;
                     } else {
                         return defaultClientId + "_" + getTenantName();
@@ -376,7 +378,7 @@
                 var authConfig = {
                     signInRedirectURL: signInRedirectURL(),
                     signOutRedirectURL: getSignOutRedirectURL(),
-                    clientID: resolveConsoleClientId(),
+                    clientID: resolveClientId(),
                     baseUrl: getApiPath(),
                     responseMode: "form_post",
                     scope: ["openid SYSTEM profile"],
