@@ -733,14 +733,20 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                     "properties.selfRegistrationCallbackRegex.label") }
                 required={ false }
                 hidden={ false }
-                placeholder={ t("governanceConnectors:connectorCategories.userOnboarding.connectors.selfSignUp." +
+                hint={ t("governanceConnectors:connectorCategories.userOnboarding.connectors.selfSignUp." +
                     "properties.selfRegistrationCallbackRegex.hint") }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled || isSubmitting }
                 data-testid={ `${testId}-callback-regex` }
-            >
-                <input/>
-            </Field.Input>
+                maxLength={
+                    GovernanceConnectorConstants
+                        .SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS.REGEX_MAX_LENGTH
+                }
+                minLength={
+                    GovernanceConnectorConstants
+                        .SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS.REGEX_MIN_LENGTH
+                }
+            />
             <Field.Button
                 form={ FORM_ID }
                 size="small"

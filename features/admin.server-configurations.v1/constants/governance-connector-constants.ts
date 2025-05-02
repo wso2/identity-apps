@@ -44,11 +44,15 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MAX_VALUE: number;
         EXPIRY_TIME_MIN_LENGTH: number;
         EXPIRY_TIME_MIN_VALUE: number;
+        REGEX_MAX_LENGTH: number;
+        REGEX_MIN_LENGTH: number;
     } = {
             EXPIRY_TIME_MAX_LENGTH: 5,
             EXPIRY_TIME_MAX_VALUE: 10080,
             EXPIRY_TIME_MIN_LENGTH: 1,
-            EXPIRY_TIME_MIN_VALUE: 1
+            EXPIRY_TIME_MIN_VALUE: 1,
+            REGEX_MAX_LENGTH: 255,
+            REGEX_MIN_LENGTH: 1
         };
 
     /**
