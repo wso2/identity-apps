@@ -1707,7 +1707,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;
         } else {
             attributeValueList = profileInfo?.get(schema.name) ? profileInfo?.get(schema.name).split(",") : [];
-            primaryAttributeSchema = schema;
             maxAllowedLimit = ProfileConstants.MAX_MULTI_VALUES_ALLOWED;
         }
 
@@ -1719,21 +1718,23 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             attributeValueList.unshift(primaryAttributeValue);
         }
         const showAccordion: boolean = attributeValueList.length >= 1;
+        const isEmailOrMobile: boolean = schema.name === EMAIL_ADDRESSES_ATTRIBUTE
+            || schema.name === MOBILE_NUMBERS_ATTRIBUTE;
 
         const showPendingEmailPopup = (value: string): boolean => {
-            return verificationEnabled
+            return isEmailOrMobile && verificationEnabled
                 && schema.name === EMAIL_ADDRESSES_ATTRIBUTE
                 && pendingEmailAddress
                 && value === pendingEmailAddress;
         };
 
         const showVerifiedPopup = (value: string): boolean => {
-            return verificationEnabled &&
+            return isEmailOrMobile && verificationEnabled &&
                 (verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
         };
 
         const showPrimaryChip = (value: string): boolean => {
-            if (isEmpty(primaryAttributeValue)) {
+            if (!isEmailOrMobile) {
                 return false;
             }
 
@@ -1741,7 +1742,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         };
 
         const showMakePrimaryButton = (value: string): boolean => {
-            if (isEmpty(primaryAttributeValue)) {
+            if (!isEmailOrMobile) {
                 return false;
             }
             if (verificationEnabled) {
@@ -1752,7 +1753,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         };
 
         const showVerifyButton = (value: string): boolean =>
-            verificationEnabled && !verifiedAttributeValueList.includes(value) && value !== primaryAttributeValue;
+            isEmailOrMobile && verificationEnabled
+            && !verifiedAttributeValueList.includes(value) && value !== primaryAttributeValue;
 
         const showDeleteButton = (value: string): boolean => {
             return !((primaryAttributeSchema?.required && value === primaryAttributeValue) ||
@@ -1780,7 +1782,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     maxLength={
                         schema.name === EMAIL_ADDRESSES_ATTRIBUTE
                             ? EMAIL_MAX_LENGTH
-                            : primaryAttributeSchema.maxLength ?? ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                            : primaryAttributeSchema?.maxLength ?? ProfileConstants.CLAIM_VALUE_MAX_LENGTH
                     }
                     data-componentid={
                         `${testId}-editing-section-${
