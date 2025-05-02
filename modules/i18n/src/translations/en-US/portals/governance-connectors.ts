@@ -119,7 +119,7 @@ export const governanceConnectors: governanceConnectorsNS = {
                             label: "User self registration SMS OTP regex"
                         },
                         selfRegistrationCallbackRegex: {
-                            hint: "This prefix will be used to validate the callback URL.",
+                            hint: "This regex pattern will be used to validate the callback URL.",
                             label: "User self registration callback URL regex"
                         },
                         urlListPurposeSelfSignUp: {
@@ -176,7 +176,7 @@ export const governanceConnectors: governanceConnectorsNS = {
                             label: "Lite user registration SMS OTP regex"
                         },
                         liteRegistrationCallbackRegex: {
-                            hint: "This prefix will be used to validate the callback URL.",
+                            hint: "This regex pattern will be used to validate the callback URL.",
                             label: "Lite user registration callback URL regex"
                         },
                         urlListPurposeLiteUserSignUp: {
