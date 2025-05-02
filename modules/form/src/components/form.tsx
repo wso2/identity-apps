@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,7 +22,6 @@ import React, {
     PropsWithChildren,
     ReactElement,
     ReactNode,
-    RefObject,
     cloneElement,
     forwardRef,
     useImperativeHandle,
@@ -51,7 +50,6 @@ export interface FormPropsInterface extends FormProps {
      * Check whether form has uncontrolled elements.
      */
     uncontrolledForm: boolean;
-    formState?: RefObject<FormApi<Record<string, any>>>;
 }
 
 const FIELD_COMPACT_DESCRIPTION: string = "field-compact-description";
@@ -64,7 +62,7 @@ export const Form: ForwardRefExoticComponent<PropsWithChildren<FormPropsInterfac
     forwardRef((props: PropsWithChildren<FormProps>, ref: React.ForwardedRef<unknown>): ReactElement => {
 
         const { id, noValidate, triggerSubmit, ...other } = props;
-        const { children, onSubmit, uncontrolledForm, formState, ...rest } = other;
+        const { children, onSubmit, uncontrolledForm, ...rest } = other;
 
         const formRef: React.MutableRefObject<any> = useRef(null);
         const childNodes: ReactNode[] = React.Children.toArray(children);
@@ -194,11 +192,7 @@ export const Form: ForwardRefExoticComponent<PropsWithChildren<FormPropsInterfac
                 keepDirtyOnReinitialize={ true }
                 render={ (formRenderProps: FormRenderProps) => {
 
-                    const { handleSubmit, form } = formRenderProps;
-
-                    if (formState) {
-                        formState.current = form;
-                    }
+                    const { handleSubmit } = formRenderProps;
 
                     if (triggerSubmit && typeof triggerSubmit === "function") {
                         triggerSubmit(handleSubmit);
