@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.54.13
+
+### Patch Changes
+
+- [#8134](https://github.com/wso2/identity-apps/pull/8134) [`69cf55ba97fab4f8329edc0c877fd17ab162cb33`](https://github.com/wso2/identity-apps/commit/69cf55ba97fab4f8329edc0c877fd17ab162cb33) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - revert email provider UI enhancement
+
 ## 2.54.12
 
 ### Patch Changes
