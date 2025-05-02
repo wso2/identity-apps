@@ -43,6 +43,7 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { CookieStorageUtils, StringUtils, URLUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleConstants, LanguageChangeException, LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
+import { useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
 import React, {
@@ -86,6 +87,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     props: HeaderPropsInterface
 ): ReactElement => {
     const { handleSidePanelToggleClick } = props;
+
+    const { isMobileViewport } = useMediaContext();
 
     const dispatch: ThunkDispatch<AppState, void, Action> = useDispatch();
 
@@ -360,7 +363,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         <Image
                             src={ theme?.images?.myAccountLogo?.imgURL
                                     ?? resolveAppLogoFilePath(
-                                        window[ "AppUtils" ].getConfig().ui.appLogoPath,
+                                        window[ "AppUtils" ].getConfig().ui.appMobileLogoPath,
                                         `${ window[ "AppUtils" ].getConfig().clientOrigin
                                         }/` +
                                         `${ StringUtils.removeSlashesFromPath(
@@ -402,7 +405,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         onClick={ handleLanguageSwitching }
                         data-componentid="app-header-language-switcher-trigger"
                     >
-                        { supportedI18nLanguages[ I18n.instance?.language ]?.name }
+                        {
+                            isMobileViewport
+                                ? <Flag countryCode={ supportedI18nLanguages[I18n.instance?.language]?.flag } />
+                                : supportedI18nLanguages[I18n.instance?.language]?.name
+                        }
                     </Button>
                     <Menu
                         open={ openLanguageSwitcher }
@@ -460,6 +467,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 onActionClick: () =>
                     history.push(AppConstants.getAppLogoutPath()),
                 triggerOptions: {
+                    "children": isMobileViewport ? "" : resolveUsername(),
                     "data-componentid": "app-header-user-avatar",
                     "data-testid": "app-header-user-avatar"
                 }
