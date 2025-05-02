@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.7.6
+
+### Patch Changes
+
+- [#8118](https://github.com/wso2/identity-apps/pull/8118) [`c4aee527f3dad357cd7a62293d67ef6e884d927a`](https://github.com/wso2/identity-apps/commit/c4aee527f3dad357cd7a62293d67ef6e884d927a) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix identity claims display based on config
+
 ## 2.7.5
 
 ### Patch Changes

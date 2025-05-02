@@ -1,5 +1,17 @@
 # @wso2is/admin.alternative-login-identifier.v1
 
+## 1.5.204
+
+### Patch Changes
+
+- [#8118](https://github.com/wso2/identity-apps/pull/8118) [`c4aee527f3dad357cd7a62293d67ef6e884d927a`](https://github.com/wso2/identity-apps/commit/c4aee527f3dad357cd7a62293d67ef6e884d927a) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix identity claims display based on config
+
+- Updated dependencies [[`b279be403444037048c9bff8cfdfe881ee97ec15`](https://github.com/wso2/identity-apps/commit/b279be403444037048c9bff8cfdfe881ee97ec15), [`c4aee527f3dad357cd7a62293d67ef6e884d927a`](https://github.com/wso2/identity-apps/commit/c4aee527f3dad357cd7a62293d67ef6e884d927a)]:
+  - @wso2is/admin.users.v1@2.31.2
+  - @wso2is/admin.applications.v1@2.34.6
+  - @wso2is/admin.claims.v1@2.27.121
+  - @wso2is/core@2.7.6
+
 ## 1.5.203
 
 ### Patch Changes
