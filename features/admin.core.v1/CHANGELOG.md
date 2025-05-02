@@ -1,5 +1,16 @@
 # @wso2is/admin.core.v1
 
+## 2.43.6
+
+### Patch Changes
+
+- [#8132](https://github.com/wso2/identity-apps/pull/8132) [`0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a`](https://github.com/wso2/identity-apps/commit/0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a) Thanks [@lashinijay](https://github.com/lashinijay)! - Revert onboarding multiple authentication schemes for email provider
+
+- Updated dependencies [[`0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a`](https://github.com/wso2/identity-apps/commit/0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a)]:
+  - @wso2is/admin.email-providers.v1@2.26.1
+  - @wso2is/admin.extensions.v1@2.37.10
+  - @wso2is/i18n@2.22.18
+
 ## 2.43.5
 
 ### Patch Changes
