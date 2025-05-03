@@ -25,30 +25,14 @@ const ApplicationShareStatusWizard: React.FC<ApplicationShareStatusWizardProps> 
     const [ applicationShareStatusResponse, setApplicationShareStatusResponse ] = useState<ApplicationShareUnitStatusResponse[]>([]);
     const [ applicationShareStatusResponseSummary, setApplicationShareStatusResponseSummary ] = useState<ShareApplicationStatusResponseSummary>(initialApplicationShareStatusResponseSummary);
 
-    useEffect(() => {
-    
-        getApplicationUnitShares(operationId)
-            .then((response: any) => {
-                console.log(response);
-                setApplicationShareStatusResponse(response.data.unitOperations);
-                setHasLoaded(true);
-            })
-            .catch(() => {
-                console.log("error");
-            })
-            .finally(() => {
-                setHasLoaded(true); 
-            });
-    }, []);
-    
-
     return (
         <>
             <ShareApplicationStatusResponseList
                 isLoading={ !hasLoaded }
+                operationId={ operationId }
                 data-componentid={ `${componentId}-manual-response-list` }
                 hasError={ hasError }
-                responseList={ applicationShareStatusResponse }
+                // responseList={ applicationShareStatusResponse }
                 shareApplicationSummary={ applicationShareStatusResponseSummary }
                 successAlert={ (
                     <Alert severity="success">

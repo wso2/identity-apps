@@ -329,17 +329,18 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
             return (
                 <>
                     <ConfirmationModal
-                        data-componentid={ `${componentId}-select-multiple-invite-confirmation-modal` }
+                        data-componentid={ `${componentId}-in-progress-reshare-confirmation-modal` }
                         onClose={ (): void => {
                             setShowConfirmationModal(false);
                         } }
                         type="warning"
                         open={ showConfirmationModal }
-                        assertionHint="Please confirm your action." 
+                        assertionHint={ t("applications:confirmations.InProgressReshare.assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
                         onPrimaryActionClick={ (): void => {
+                            handleShareApplication();
                         } }
                         onSecondaryActionClick={ (): void => {
                             setShowConfirmationModal(false);
@@ -347,13 +348,13 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header>
-                            { "Are you sure?" }
+                            { t("applications:confirmations.InProgressReshare.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message attached warning>
-                            { "Updating the shared access is in progress. Cancelling this will terminate the execution of the rest of the workflow." }
+                            { t("applications:confirmations.InProgressReshare.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                                This action is irreversible and this will permanently delete the previous update.
+                            { t("applications:confirmations.InProgressReshare.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>  
                 </>
@@ -405,7 +406,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         "applications:edit.sections.shareApplication" +
                         ".addAsyncSharingNotification.description"
                     ),
-                    level: AlertLevels.ERROR,
+                    level: AlertLevels.INFO,
                     message: t(
                         "applications:edit.sections.shareApplication" +
                         ".addAsyncSharingNotification.message"

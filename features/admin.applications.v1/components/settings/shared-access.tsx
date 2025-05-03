@@ -77,7 +77,7 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
     const [ showStatusModal, setShowStatusModal ] = useState(false);
     const [ componentId, SetComponentId ] = useState();
 
-    const { status, startPolling } = useOperationStatusPoller({
+    const { status, startPolling } = useOperationStatusPoller({  // use-application-sharing-operation-status
         applicationId: application.id,
         pollingInterval: 5000,
         onCompleted: (finalStatus) => {
@@ -90,7 +90,7 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
         },
         onError: (error) => {
             console.error("Polling error:", error);
-        }
+        }//enabled
     });
 
     const handleChildStartedOperation = () => {

@@ -358,6 +358,12 @@ export const applications: ApplicationsNS = {
             header: "Are you sure?",
             message: "If you revoke this application, authentication flows for this application will " +
                 "stop working. Please proceed with caution."
+        },
+        InProgressReshare: {
+            assertionHint: "Please confirm your action.",
+            content: "This action is irreversible and this will permanently delete the previous update.",
+            header: "Are you sure?",
+            message: "Updating the shared access is in progress. Cancelling this will terminate the execution of the rest of the workflow."
         }
     },
     dangerZoneGroup: {
@@ -606,6 +612,10 @@ export const applications: ApplicationsNS = {
                         message: "Application shared!"
                     }
                 },
+                addAsyncSharingNotification: {
+                    description: "Application sharing may take a while.",
+                    message: "Application sharing in progress."
+                },
                 getSharedOrganizations: {
                     genericError: {
                         description: "Getting shared organization list failed!",
@@ -632,6 +642,20 @@ export const applications: ApplicationsNS = {
                     success: {
                         description: "Application sharing stopped with all the organizations successfully",
                         message: "Application sharing stopped successfully!"
+                    }
+                },
+                completedSharingNotification: {
+                    failure: {
+                        description: "Application sharing ended with failure for all organizations.",
+                        message: "Application sharing failed."
+                    },
+                    success: {
+                        description: "Application sharing ended with success for all organizations.",
+                        message: "Application sharing successful."
+                    },
+                    partialSuccess: {
+                        description: "Application sharing ended with partial success for some organizations.",
+                        message: "Application sharing partially successful."
                     }
                 },
                 switchToSelectiveShareFromSharingWithAllSuborgsWarning: "Switching from sharing the app with all organizations to " +
