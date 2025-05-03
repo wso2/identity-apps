@@ -973,3 +973,13 @@ export interface SharedAccessStatusResponse {
     modifiedTime: string;
     unitOperationRef: string;
 }
+
+export interface ApplicationShareStatusUnitLinkInterface {
+    href: string;
+    rel: string;
+}
+
+export interface ApplicationShareStatusUnitListInterface {
+    links: ApplicationShareStatusUnitLinkInterface[];
+    unitOperations: ApplicationShareUnitStatusResponse[];
+}

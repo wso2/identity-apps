@@ -16,13 +16,32 @@
  * under the License.
  */
 
+
+ .share-application-status-response-list-header {
+   display: flex;
+   flex-direction: column; 
+   align-items: left; 
+   text-align: left;
+   justify-content: left;
+ }
+
 .share-application-status-response-list-org-handler {
-    font-size: 15px;
-    margin-top: 5px;
+   font-size: 15px;
+   margin-top: 5px;
+   color: black;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   max-width: 250px;
+   display: inline-block;
+   vertical-align: middle;
+   flex-shrink: 1;
+   line-height: 2.0;
  }
  
 .share-application-status-response-list-org-id {
     font-size: 11px;
+    color: gray;
  }
 
 .org-id-wrapper {
@@ -40,11 +59,11 @@
    display: inline-block;
    vertical-align: middle;
    flex-shrink: 1;
-   line-height: 3.5;
+   line-height: 2.0;
 }
 
 .copy-icon-container {
-   width: 30px;
+   width: 10px;
    display: flex;
    align-items: center;
    justify-content: center;
@@ -64,4 +83,17 @@
 .copy-icon.visible {
    opacity: 1;
    visibility: visible;
+}
+
+.custom-list-layout-override {
+   display: block !important; 
+   margin-right: 0px !important;
+   width: 100% !important;
+ }
+
+ .infinite-scroll-loader {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   height: 100px; 
 }
