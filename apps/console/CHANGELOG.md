@@ -1,5 +1,38 @@
 # @wso2is/console
 
+## 2.54.13
+
+### Patch Changes
+
+- [#8134](https://github.com/wso2/identity-apps/pull/8134) [`69cf55ba97fab4f8329edc0c877fd17ab162cb33`](https://github.com/wso2/identity-apps/commit/69cf55ba97fab4f8329edc0c877fd17ab162cb33) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - revert email provider UI enhancement
+
+## 2.54.12
+
+### Patch Changes
+
+- [#8132](https://github.com/wso2/identity-apps/pull/8132) [`0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a`](https://github.com/wso2/identity-apps/commit/0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a) Thanks [@lashinijay](https://github.com/lashinijay)! - Revert onboarding multiple authentication schemes for email provider
+
+- Updated dependencies [[`0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a`](https://github.com/wso2/identity-apps/commit/0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a)]:
+  - @wso2is/admin.email-providers.v1@2.26.1
+  - @wso2is/admin.extensions.v1@2.37.10
+  - @wso2is/admin.core.v1@2.43.6
+  - @wso2is/form@2.6.36
+  - @wso2is/i18n@2.22.18
+
+## 2.54.11
+
+### Patch Changes
+
+- [#8130](https://github.com/wso2/identity-apps/pull/8130) [`b279be403444037048c9bff8cfdfe881ee97ec15`](https://github.com/wso2/identity-apps/commit/b279be403444037048c9bff8cfdfe881ee97ec15) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix issue in showing make primary button in user profile multivalued field
+
+- Updated dependencies [[`b279be403444037048c9bff8cfdfe881ee97ec15`](https://github.com/wso2/identity-apps/commit/b279be403444037048c9bff8cfdfe881ee97ec15), [`c4aee527f3dad357cd7a62293d67ef6e884d927a`](https://github.com/wso2/identity-apps/commit/c4aee527f3dad357cd7a62293d67ef6e884d927a)]:
+  - @wso2is/admin.users.v1@2.31.2
+  - @wso2is/admin.actions.v1@1.12.5
+  - @wso2is/admin.alternative-login-identifier.v1@1.5.204
+  - @wso2is/admin.applications.v1@2.34.6
+  - @wso2is/admin.claims.v1@2.27.121
+  - @wso2is/core@2.7.6
+
 ## 2.54.10
 
 ### Patch Changes
