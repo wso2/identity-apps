@@ -1,0 +1,583 @@
+/*============================
+        Theme Overriding
+==============================*/
+
+:root {
+    --fp-primary-color: rgba(45, 177, 70, 0.69);
+    --fp-secondary-color: rgb(243, 102, 131);
+    --fp-primary-background-color: #ffffff;
+    --fp-primary-text-color: rgba(0, 0, 0, .87);
+    --fp-heading-text-color: rgba(0, 0, 0, .87);
+    --fp-main-box-background-color: #ffffff;
+    --fp-main-box-border-color: rgba(34, 36, 38, .15);
+    --fp-input-field-base-text-color: rgba(0, 0, 0, .87);
+    --fp-input-field-base-background-color: #ffffff;
+    --fp-input-field-base-label-text-color: rgba(0, 0, 0, .87);
+    --fp-input-field-base-border-color: rgba(34, 36, 38, .15);
+    --fp-header-background-color: #f2f2f2;
+    --fp-divider-color: rgba(34, 36, 38, .15);
+    --fp-negative-message-background-color: #FFF6F6;
+    --fp-negative-message-header-color: #912D2B;
+    --fp-negative-message-border-color: transparent;
+    --fp-positive-message-background-color: #FCFFF5;
+    --fp-positive-message-header-color: #1A531B;
+    --fp-positive-message-border-color: transparent;
+    --fp-info-message-background-color: #F8FFFF;
+    --fp-info-message-header-color: #0E566C;
+    --fp-info-message-border-color: transparent;
+    --fp-warning-message-background-color: #FFFAF3;
+    --fp-warning-message-header-color: #573A08;
+    --fp-warning-message-border-color: transparent;
+}
+
+/*-----------------------------
+            Page
+------------------------------*/
+
+/* Default Page */
+.login-portal.layout {
+    color: var(--fp-primary-text-color);
+    background: var(--fp-primary-background-color);
+}
+
+/*-----------------------------
+            Typography
+------------------------------*/
+
+.ui.header {
+    color: var(--fp-heading-text-color);
+}
+
+/* Primary Text */
+.text-typography.primary {
+    color: var(--fp-primary-color);
+}
+
+/*-----------------------------
+            Icons
+------------------------------*/
+
+/* Primary Icons */
+i.icon.primary {
+    color: var(--fp-primary-color);
+}
+
+/*-----------------------------
+            Buttons
+------------------------------*/
+
+/* Primary */
+.ui.primary.button {
+    background: var(--fp-primary-color);
+    color: white;
+}
+
+.ui.primary.button:hover,
+.ui.primary.button:focus,
+.ui.primary.button:active {
+    background: var(--fp-primary-color);
+    filter: brightness(0.85);
+}
+
+/* Secondary */
+.ui.secondary.button {
+    background: var(--fp-secondary-color);
+    color: white;
+}
+
+.ui.secondary.button:hover,
+.ui.secondary.button:focus,
+.ui.secondary.button:active {
+    background: var(--fp-secondary-color);
+    filter: brightness(0.85);
+}
+
+.login-portal.layout .center-segment>.ui.container>.ui.segment .external-login .ui.button,
+.login-portal.layout .center-segment>.ui.container>.ui.segment .social-login .ui.button {
+    background: #e0e1e2;
+}
+
+/*-----------------------------
+            Inputs
+------------------------------*/
+
+/* Input */
+.ui.form input:not([type]),
+.ui.form input[type=date],
+.ui.form input[type=datetime-local],
+.ui.form input[type=email],
+.ui.form input[type=file],
+.ui.form input[type=number],
+.ui.form input[type=password],
+.ui.form input[type=search],
+.ui.form input[type=tel],
+.ui.form input[type=text],
+.ui.form input[type=time],
+.ui.form input[type=url],
+.ui.form .field.error input:not([type]),
+.ui.form .field.error input[type=date],
+.ui.form .field.error input[type=datetime-local],
+.ui.form .field.error input[type=email],
+.ui.form .field.error input[type=file],
+.ui.form .field.error input[type=number],
+.ui.form .field.error input[type=password],
+.ui.form .field.error input[type=search],
+.ui.form .field.error input[type=tel],
+.ui.form .field.error input[type=text],
+.ui.form .field.error input[type=time],
+.ui.form .field.error input[type=url],
+.ui.form .field.error select,
+.ui.form .field.error textarea,
+.ui.form .fields.error .field input:not([type]),
+.ui.form .fields.error .field input[type=date],
+.ui.form .fields.error .field input[type=datetime-local],
+.ui.form .fields.error .field input[type=email],
+.ui.form .fields.error .field input[type=file],
+.ui.form .fields.error .field input[type=number],
+.ui.form .fields.error .field input[type=password],
+.ui.form .fields.error .field input[type=search],
+.ui.form .fields.error .field input[type=tel],
+.ui.form .fields.error .field input[type=text],
+.ui.form .fields.error .field input[type=time],
+.ui.form .fields.error .field input[type=url],
+.ui.form .fields.error .field select,
+.ui.form .fields.error .field textarea,
+.ui.form .field.error input:not([type]):focus,
+.ui.form .field.error input[type=date]:focus,
+.ui.form .field.error input[type=datetime-local]:focus,
+.ui.form .field.error input[type=email]:focus,
+.ui.form .field.error input[type=file]:focus,
+.ui.form .field.error input[type=number]:focus,
+.ui.form .field.error input[type=password]:focus,
+.ui.form .field.error input[type=search]:focus,
+.ui.form .field.error input[type=tel]:focus,
+.ui.form .field.error input[type=text]:focus,
+.ui.form .field.error input[type=time]:focus,
+.ui.form .field.error input[type=url]:focus,
+.ui.form .field.error select:focus,
+.ui.form .field.error textarea:focus,
+.ui.form input:not([type]):focus,
+.ui.form input[type=date]:focus,
+.ui.form input[type=datetime-local]:focus,
+.ui.form input[type=email]:focus,
+.ui.form input[type=file]:focus,
+.ui.form input[type=number]:focus,
+.ui.form input[type=password]:focus,
+.ui.form input[type=search]:focus,
+.ui.form input[type=tel]:focus,
+.ui.form input[type=text]:focus,
+.ui.form input[type=time]:focus,
+.ui.form input[type=url]:focus,
+.ui.input.addon-wrapper,
+.ui.input.addon-wrapper:focus-within,
+.ui.selection.dropdown,
+.ui.selection.dropdown:hover {
+    color: var(--fp-input-field-base-text-color);
+    background: var(--fp-input-field-base-background-color);
+    border-color: var(--fp-input-field-base-border-color);
+}
+
+/* Autofilled */
+.ui.form .field.field input:-webkit-autofill {
+    color: var(--fp-input-field-base-text-color) !important;
+    -webkit-text-fill-color: var(--fp-input-field-base-text-color) !important;
+    box-shadow: 0 0 0 100px var(--fp-input-field-base-background-color) inset !important;
+    -webkit-box-shadow: 0 0 0 100px var(--fp-input-field-base-background-color) inset !important;
+    border-color: var(--fp-input-field-base-border-color) !important;
+}
+
+/* Autofilled:Focus */
+.ui.form .field.field input:-webkit-autofill:focus {
+    color: var(--fp-input-field-base-text-color) !important;
+    -webkit-text-fill-color: var(--fp-input-field-base-text-color) !important;
+    box-shadow: 0 0 0 100px var(--fp-input-field-base-background-color) inset !important;
+    -webkit-box-shadow: 0 0 0 100px var(--fp-input-field-base-background-color) inset !important;
+    border-color: var(--fp-input-field-base-border-color) !important;
+}
+
+/* Autofilled:Error */
+.ui.form .error.error input:-webkit-autofill {
+    color: var(--fp-input-field-base-text-color) !important;
+    -webkit-text-fill-color: var(--fp-input-field-base-text-color) !important;
+    box-shadow: 0 0 0 100px var(--fp-input-field-base-background-color) inset !important;
+    -webkit-box-shadow: 0 0 0 100px var(--fp-input-field-base-background-color) inset !important;
+    border-color: var(--fp-input-field-base-border-color) !important;
+}
+
+/* Input Labels */
+.ui.form .field>label {
+    color: var(--fp-input-field-base-label-text-color);
+}
+
+/* Input Addon Icons */
+.ui.form .field .ui.input {
+    color: var(--fp-input-field-base-text-color);
+}
+
+/* Dropdowns */
+.ui.selection.active.dropdown .menu {
+    background: var(--fp-input-field-base-border-color);
+}
+
+.ui.selection.dropdown .menu>.item {
+    color: var(--fp-input-field-base-text-color);
+    background: var(--fp-input-field-base-background-color);
+    border-color: var(--fp-input-field-base-border-color);
+}
+
+/* Checkbox */
+.ui.checkbox .box:before,
+.ui.checkbox label:before {
+    background: var(--fp-input-field-base-background-color);
+    border-color: var(--fp-input-field-base-border-color);
+}
+
+.ui.checkbox input:focus~.box:before,
+.ui.checkbox input:focus~label:before {
+    background: var(--fp-input-field-base-background-color);
+    border-color: var(--fp-input-field-base-border-color);
+}
+
+.ui.checkbox input:checked:focus~.box:before,
+.ui.checkbox input:checked:focus~label:before,
+.ui.checkbox input:not([type=radio]):indeterminate:focus~.box:before,
+.ui.checkbox input:not([type=radio]):indeterminate:focus~label:before {
+    background: var(--fp-input-field-base-background-color);
+    border-color: var(--fp-input-field-base-border-color);
+}
+
+.ui.checkbox input:checked~label:before {
+    background: var(--fp-input-field-base-background-color);
+    border-color: var(--fp-input-field-base-border-color);
+}
+
+.ui.checkbox .box:hover::before,
+.ui.checkbox label:hover::before {
+    background: var(--fp-input-field-base-background-color);
+    border-color: var(--fp-input-field-base-border-color);
+}
+
+.ui.checkbox input:checked~.box:after,
+.ui.checkbox input:checked~label:after {
+    color: var(--fp-input-field-base-text-color);
+}
+
+.ui.checkbox input:checked:focus~.box:after,
+.ui.checkbox input:checked:focus~label:after,
+.ui.checkbox input:not([type=radio]):indeterminate:focus~.box:after,
+.ui.checkbox input:not([type=radio]):indeterminate:focus~label:after {
+    color: var(--fp-input-field-base-text-color);
+}
+
+/*-----------------------------
+        Anchor Tags
+------------------------------*/
+
+/* Anchor Tags */
+a {
+    color: var(--fp-primary-color);
+}
+
+a:hover,
+a:focus,
+a:active {
+    color: var(--fp-primary-color);
+    filter: brightness(0.85);
+}
+
+/*-----------------------------
+            Footer
+------------------------------*/
+
+.login-portal.layout footer {
+    margin-top: 30px;
+}
+
+.theme-icon.inline {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+.theme-icon.inline i {
+    align-self: flex-end;
+    margin-right: 10px;
+    color: var(--fp-secondary-color);
+}
+
+.theme-icon.inline p {
+    font-weight: bold;
+}
+
+/*-----------------------------
+        Login Box
+------------------------------*/
+
+.login-portal.layout .center-segment>.ui.container>.ui.segment {
+    background: var(--fp-main-box-background-color);
+    border-color: var(--fp-main-box-border-color);
+    color: var(--fp-primary-text-color);
+}
+
+.login-portal.layout .center-segment>.ui.container>.ui.segment .ui.checkbox label,
+.login-portal.layout .center-segment>.ui.container>.ui.segment .ui.checkbox+label {
+    color: var(--fp-primary-text-color);
+}
+
+.login-portal.layout .center-segment>.ui.container>.ui.segment .ui.list .list>.item .header,
+.ui.list>.item .header {
+    color: var(--fp-primary-text-color);
+}
+
+/* Misc Text */
+.ui.divider {
+    color: var(--fp-primary-text-color);
+}
+
+/*-----------------------------
+        Policy Page
+------------------------------*/
+
+.login-portal.layout .policy-page .ui.container .ui.segment {
+    background: var(--fp-main-box-background-color);
+    border-color: var(--fp-main-box-border-color);
+    color: var(--fp-primary-text-color);
+}
+
+.login-portal.layout .ui.segment.toc ul.ui.list.nav>li>a {
+    color: var(--fp-primary-text-color);
+}
+
+.login-portal.layout .ui.segment.toc ul.ui.list.nav>li:before {
+    color: var(--fp-primary-text-color);
+}
+
+.login-portal.layout .ui.segment.toc ul.ui.list.nav>li:hover a {
+    color: var(--fp-primary-color);
+}
+
+.login-portal.layout .ui.segment.toc ul.ui.list.nav>li:hover:before {
+    color: var(--fp-primary-color);
+}
+
+/*-----------------------------
+        Messages
+------------------------------*/
+
+/* Positive */
+.ui.positive.message {
+    background-color: var(--fp-positive-message-background-color);
+    color: var(--fp-primary-text-color) !important;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--fp-positive-message-border-color);
+}
+
+.ui.positive.message .header {
+    color: var(--fp-positive-message-header-color);
+}
+
+/* Negative */
+.ui.negative.message {
+    background-color: var(--fp-negative-message-background-color);
+    color: var(--fp-primary-text-color) !important;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--fp-negative-message-border-color);
+}
+
+.ui.negative.message .header {
+    color: var(--fp-negative-message-header-color);
+}
+
+/* Info */
+.ui.info.message {
+    background-color: var(--fp-info-message-background-color) !important;
+    color: var(--fp-primary-text-color) !important;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--fp-info-message-border-color);
+}
+
+.ui.info.message .header {
+    color: var(--fp-info-message-header-color);
+}
+
+/* Warning */
+.ui.warning.message {
+    background-color: var(--fp-warning-message-background-color) !important;
+    color: var(--fp-primary-text-color) !important;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--fp-warning-message-border-color);
+}
+
+.ui.warning.message .header {
+    color: var(--fp-warning-message-header-color);
+}
+
+/*============================
+    Custom Layout Styles
+==============================*/
+
+/*-----------------------------
+            Header
+------------------------------*/
+
+.fp-header {
+    min-height: 70px;
+    width: 100%;
+    background-color: var(--fp-header-background-color);
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, .12), 0 1px 1px 0 rgba(0, 0, 0, .24);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    margin-bottom: 30px;
+}
+
+.fp-header>.fp-header-theme {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fp-header>.fp-header-theme>.fp-checkbox {
+    visibility: hidden;
+}
+
+.fp-header>.fp-header-theme>.fp-theme-checkbox-label {
+    width: 70px;
+    height: 30px;
+    border-radius: 20px;
+    position: relative;
+    background-color: #33334b;
+    font-size: 1.5rem;
+}
+
+.fp-header>.fp-header-theme>.fp-theme-checkbox-label>.sun {
+    color: orange;
+    position: absolute;
+    left: 3px;
+    top: 6px;
+}
+
+.fp-header>.fp-header-theme>.fp-theme-checkbox-label>.moon {
+    color: yellow;
+    position: absolute;
+    right: 3px;
+    top: 6px;
+}
+
+.fp-header>.fp-header-theme>.fp-theme-checkbox-label>.fp-theme-indicator {
+    position: absolute;
+    left: 4px;
+    top: 2.5px;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 0.9rem;
+    background-color: white;
+    transition: transform 0.2s linear;
+}
+
+.fp-header>.fp-header-theme>.fp-checkbox:checked+.fp-theme-checkbox-label .fp-theme-indicator {
+    transform: translateX(35px);
+}
+
+/*-----------------------------
+        Main Middle Box
+------------------------------*/
+
+body.animating.in.dimmable, body.dimmed.dimmable {
+    background: var(--fp-primary-background-color) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+}
+
+body.animating.in.dimmable > .center-segment, body.dimmed.dimmable > .center-segment {
+    margin: auto;
+}
+
+.center-segment>.ui.segment.fp-container {
+    display: flex;
+    border-radius: 8px;
+    max-height: 690px;
+    background: var(--fp-main-box-background-color);
+    border-color: var(--fp-main-box-border-color);
+}
+
+.center-segment>.ui.segment.fp-container>.fp-info-container {
+    width: 450px;
+    align-self: center;
+}
+
+.center-segment>.ui.segment.fp-container>.fp-info-container>.fp-info-content {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.center-segment>.ui.segment.fp-container>.fp-info-container>.fp-info-content>p {
+    font-size: 1.5rem;
+}
+
+.center-segment>.ui.segment.fp-container>.fp-info-container>.fp-info-content .fp-service-item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.center-segment>.ui.segment.fp-container>.fp-info-container>.fp-info-content .fp-service-item i {
+    margin-right: 20px;
+    color: var(--fp-primary-color);
+}
+
+.center-segment>.ui.segment.fp-container>.fp-info-container>.fp-info-illustration>img {
+    width: 100%;
+}
+
+.center-segment>.ui.segment.fp-container>.fp-divider {
+    height: inherit;
+    border-left: 1px solid var(--fp-divider-color);
+    margin-left: 2rem;
+}
+
+.center-segment>.ui.segment.fp-container>.fp-content-container {
+    width: 550px;
+    height: inherit;
+    overflow-y: auto;
+}
+
+.center-segment>.ui.segment.fp-container>.fp-content-container .ui.segment {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+}
+
+@media only screen and (max-width: 1100px) {
+    .center-segment>.ui.segment.fp-container>.fp-info-container {
+        display: none;
+    }
+
+    .center-segment>.ui.segment.fp-container>.fp-divider {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    .center-segment>.ui.segment.fp-container>.fp-content-container {
+        width: auto;
+    }
+
+    .center-segment>.ui.segment.fp-container {
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+}
