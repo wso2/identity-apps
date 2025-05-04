@@ -274,6 +274,7 @@
                     }
 
                     var tenantName;
+
                     if (startupConfig.superTenantProxy) {
                         tenantName = startupConfig.superTenantProxy;
                     } else {

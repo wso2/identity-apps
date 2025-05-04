@@ -175,6 +175,20 @@ export const AppUtils: AppUtilsInterface = (function() {
         },
 
         /**
+         * Get the client ID of my account.
+         *
+         * @returns client ID of my account.
+         */
+        getClientId: function() {
+
+            if(_config.tenantContext?.enableTenantQualifiedUrls || this.isSuperTenant()) {
+                return _config.clientID;
+            }
+
+            return _config.clientID + "_" + this.getTenantName();
+        },
+
+        /**
          * Get the client origin with the tenant.
          *
          * @returns
@@ -435,20 +449,6 @@ export const AppUtils: AppUtilsInterface = (function() {
             return _config.tenantResolutionStrategy !== undefined
                 ? _config.tenantResolutionStrategy
                 : tenantResolutionStrategyFallback;
-        },
-
-        /**
-         * Get the client ID of my account.
-         *
-         * @returns client ID of my account.
-         */
-        getClientId: function() {
-
-            if(_config.tenantContext?.enableTenantQualifiedUrls || this.isSuperTenant()) {
-                return _config.clientID;
-            }
-
-            return _config.clientID + "_" + this.getTenantName();
         },
 
         /**

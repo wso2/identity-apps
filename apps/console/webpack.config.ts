@@ -284,6 +284,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 isAdaptiveAuthenticationAvailable: !isDeployedOnExternalTomcatServer
                     ? "<%= isAdaptiveAuthenticationAvailable() %>"
                     : "false",
+                isTenantQualifiedUrlsEnabled: !isDeployedOnExternalTomcatServer
+                    ? "<%=isTenantQualifiedUrlsEnabled()%>"
+                    : "",
                 minify: false,
                 proxyContextPath: !isDeployedOnExternalTomcatServer
                     ? "<%=ServerConfiguration.getInstance().getFirstProperty(PROXY_CONTEXT_PATH)%>"
@@ -302,9 +305,6 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     : "",
                 serverUrl: !isDeployedOnExternalTomcatServer
                     ? "<%=getServerURL(\"\", true, true)%>"
-                    : "",
-                isTenantQualifiedUrlsEnabled: !isDeployedOnExternalTomcatServer
-                    ? "<%=isTenantQualifiedUrlsEnabled()%>"
                     : "",
                 sessionState: "<%=Encode.forHtml(request.getParameter(\"session_state\"))%>",
                 superTenantConstant: !isDeployedOnExternalTomcatServer
