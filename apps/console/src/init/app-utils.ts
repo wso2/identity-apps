@@ -76,7 +76,7 @@ export const AppUtils: any = (function() {
     const USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER: string = "${userTenantDomain}";
     const SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER: string = "${superTenantDomain}";
     const MYACCOUNT_CONSUMER_KEY: string = "MY_ACCOUNT";
-    const IMPERSONATOR_ROLE_NAME: string = "impersonator";
+    const IMPERSONATOR_ROLE_NAME: string = "Impersonator";
 
     return {
         /**
