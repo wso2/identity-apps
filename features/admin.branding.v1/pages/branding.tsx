@@ -21,6 +21,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import BrandingPageLayout from "../components/branding-page-layout";
 import BrandingPreferenceProvider from "../providers/branding-preference-provider";
+import CustomPageEditorProvider from "../providers/custom-page-provider";
 
 /**
  * Prop-types for the branding page component.
@@ -38,7 +39,9 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
     return (
         <BrandingPreferenceProvider>
             <AIBrandingPreferenceProvider>
-                <BrandingPageLayout />
+                <CustomPageEditorProvider>
+                    <BrandingPageLayout />
+                </CustomPageEditorProvider>
             </AIBrandingPreferenceProvider>
         </BrandingPreferenceProvider>
     );

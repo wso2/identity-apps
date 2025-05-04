@@ -16,7 +16,6 @@
  * under the License.
  */
 
-// import Button from "@oxygen-ui/react/Button";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
 import { BrandingPreferenceInterface, PreviewScreenType } from "@wso2is/common.branding.v1/models";
@@ -53,6 +52,7 @@ import { ReactComponent as CustomLayoutWarningImg } from
     "../../../themes/wso2is/assets/images/branding/custom-layout-warning.svg";
 import { useLayout, useLayoutStyle } from "../../api/layout";
 import { usePreviewContent, usePreviewStyle } from "../../api/preview-skeletons";
+import useCustomPageEditor from "../../hooks/use-custom-page-editor";
 import { BrandingPreferenceMeta } from "../../meta/branding-preference-meta";
 import { LAYOUT_DATA, PredefinedLayouts } from "../../meta/layouts";
 
@@ -76,6 +76,7 @@ interface BrandingPreferencePreviewInterface extends IdentifiableComponentInterf
      * On preview resize callback.
      */
     onPreviewResize: (width: number) => void;
+    //setCustomLayoutMode: (value: boolean) => void;
 }
 
 /**
@@ -126,6 +127,8 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         isLoading: isPreviewScreenSkeletonContentLoading
     } = usePreviewContent(screenType);
     const { data: previewScreenSkeletonStyles } = usePreviewStyle(screenType);
+
+    const { setCustomLayoutMode } = useCustomPageEditor();
 
     /**
      * Update the iframe styles to achieve responsiveness.
@@ -348,12 +351,6 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         `
     ];
 
-    const handleClick = () => {
-        //console.log("Edit button clicked");
-        // e.g. openEditorModal();
-        window.location.href = "https://www.youtube.com";
-    };
-
     return (
         <div
             className="branding-preference-preview-container"
@@ -422,7 +419,7 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                                         />
                                         <PrimaryButton
                                             className="floating-editor-button"
-                                            onClick={ handleClick }
+                                            onClick={ () => setCustomLayoutMode(true) }
                                         >
                                             Create
                                         </PrimaryButton>
