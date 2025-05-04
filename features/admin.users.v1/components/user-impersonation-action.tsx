@@ -94,7 +94,15 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         state.config.deployment.accountApp.clientID);
     const accountAppImpersonateRoleName: string = useSelector((state: AppState) =>
         state.config.deployment.accountApp.impersonationRoleName);
+    const accountAppName: string = useSelector((state: AppState) =>
+        state.config.deployment.accountApp.appName);
+    const getUserId = (userId: string): string => {
+        const tenantAwareUserId: string = userId.split("@").length > 1 ? userId.split("@")[0] : userId;
+        const userDomainAwareUserId: string = tenantAwareUserId.split("/").length > 1 ?
+            tenantAwareUserId.split("/")[1] : tenantAwareUserId;
 
+        return userDomainAwareUserId;
+    };
     const {
         data: myAccountApplicationData,
         isLoading: isMyAccountApplicationDataFetchRequestLoading
@@ -106,7 +114,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const {
         data: authenticatedUserProfileInfoData,
         isLoading: isAuthenticatedUserFetchRequestLoading
-    } = useUserDetails(authenticatedUserProfileInfo?.id);
+    } = useUserDetails(getUserId(authenticatedUserProfileInfo?.id));
 
     const isSubOrgUser: boolean = (organizationType === OrganizationType.SUBORGANIZATION);
     const IMPERSONATION_ARTIFACTS: string = "impersonation_artifacts";
@@ -114,14 +122,14 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
 
     useEffect(() => {
         if (!isAuthenticatedUserFetchRequestLoading) {
-            if (authenticatedUserProfileInfoData) {
+            if (authenticatedUserProfileInfoData != undefined) {
                 setAuthenticatedUserRoles(authenticatedUserProfileInfoData?.roles);
             }
         }
     }, [ isAuthenticatedUserFetchRequestLoading ]);
 
     useEffect(() => {
-        if (impersonation_artifacts != undefined && impersonation_artifacts != null 
+        if (impersonation_artifacts != undefined && impersonation_artifacts != null
                 && !impersonation_artifacts.includes("oauth2_error")) {
             const id_token: any = new URLSearchParams(impersonation_artifacts)
                 .get(UserManagementConstants.ID_TOKEN);
@@ -310,7 +318,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         for (let index: number = 0; index < authenticatedUserRoles?.length; index++) {
             const authenticatedUserRole: RolesMemberInterface = authenticatedUserRoles[index];
 
-            if (authenticatedUserRole.display === accountAppImpersonateRoleName) {
+            if (authenticatedUserRole.display === accountAppImpersonateRoleName 
+                    && authenticatedUserRole.audienceDisplay === accountAppName) {
                 return true;
             }
         }
@@ -342,19 +351,27 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         setCodeVerifier(codeVerifier);
         setCodeChallenge(codeChallenge);
         setImpersonationInProgress(true);
-        setTimeout(() => {
-            setImpersonationInProgress(false);
-            dispatch(addAlert({
-                description: t(
-                    "users:notifications.impersonateUser.error.description"
-                ),
-                level: AlertLevels.ERROR,
-                message: t(
-                    "users:notifications.impersonateUser.error.message"
-                )
-            }));
-        }, 5000);
     };
+
+    /**
+     * This function handles the impersonation error.
+     */
+    useEffect(() => {
+        if (impersonationInProgress && codeChallenge != undefined && codeChallenge != null) {
+            setTimeout(() => {
+                setImpersonationInProgress(false);
+                dispatch(addAlert({
+                    description: t(
+                        "users:notifications.impersonateUser.error.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "users:notifications.impersonateUser.error.message"
+                    )
+                }));
+            }, 5000);
+        }
+    }, [ impersonationInProgress ]);
 
     /**
      * This function resolves the iframe for the impersonation.
@@ -383,7 +400,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const resolveUserActions = (): ReactElement => {
 
         return (
-            !isUserCurrentLoggedInUser && !isSubOrgUser && isFeatureEnabled(userFeatureConfig, "IMPERSONATE_USER") ?
+            !isSubOrgUser && isFeatureEnabled(userFeatureConfig, "IMPERSONATE_USER") ?
                 (
                     <React.Fragment>
                         <DangerZoneGroup

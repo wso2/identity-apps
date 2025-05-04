@@ -77,6 +77,7 @@ export const AppUtils: any = (function() {
     const SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER: string = "${superTenantDomain}";
     const MYACCOUNT_CONSUMER_KEY: string = "MY_ACCOUNT";
     const IMPERSONATOR_ROLE_NAME: string = "Impersonator";
+    const MYACCOUNT_APP_NAME: string = "My Account";
 
     return {
         /**
@@ -234,7 +235,9 @@ export const AppUtils: any = (function() {
                         _config.accountAppOrigin + this.getTenantPath(true) + _config.accountApp.path,
                     tenantQualifiedPath: this.getTenantQualifiedAccountAppPath(skipTenant
                         ? ""
-                        : _config.accountApp.path)
+                        : _config.accountApp.path),
+                    appName: MYACCOUNT_APP_NAME
+                
                 },
                 adminApp: {
                     basePath: this.constructAppPaths(""),
