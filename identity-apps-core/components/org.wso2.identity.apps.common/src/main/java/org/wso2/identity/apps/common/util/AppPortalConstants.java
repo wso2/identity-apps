@@ -47,6 +47,7 @@ public class AppPortalConstants {
 
     public static final String CONSOLE_PORTAL_PATH = "Console.AppBaseName";
     public static final String MYACCOUNT_PORTAL_PATH = "MyAccount.AppBaseName";
+    public static final String USER_SESSION_IMPERSONATION = "OAuth.UserSessionImpersonation";
 
     private AppPortalConstants() {
 
