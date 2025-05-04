@@ -119,6 +119,8 @@ const VERIFIED_MOBILE_NUMBERS_ATTRIBUTE: string =
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS");
 const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string =
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES");
+const EMAIL_VERIFIED_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_VERIFIED");
+const MOBILE_VERIFIED_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_VERIFIED");
 
 /**
  * Prop types for the basic details component.
@@ -1915,6 +1917,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         let primaryAttributeSchema: ProfileSchemaInterface;
         let maxAllowedLimit: number = 0;
         let verificationPendingValue: string = "";
+        let primaryVerified: boolean = false;
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             attributeValueList = multiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] ?? [];
@@ -1926,6 +1929,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 schema.name === EMAIL_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
             verificationPendingValue = getVerificationPendingAttributeValue(EMAIL_ADDRESSES_ATTRIBUTE);
+            primaryVerified = user[userConfig.userProfileSchema]?.get(EMAIL_VERIFIED_ATTRIBUTE) === true ||
+                user[userConfig.userProfileSchema]?.get(EMAIL_VERIFIED_ATTRIBUTE) === "true";
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             attributeValueList = multiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] ?? [];
@@ -1937,6 +1942,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 schema.name === MOBILE_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;
             verificationPendingValue = getVerificationPendingAttributeValue(MOBILE_NUMBERS_ATTRIBUTE);
+            primaryVerified = user[userConfig.userProfileSchema]?.get(MOBILE_VERIFIED_ATTRIBUTE) === true ||
+                user[userConfig.userProfileSchema]?.get(MOBILE_VERIFIED_ATTRIBUTE) === "true";
+
         } else {
             attributeValueList = multiValuedAttributeValues[schema.name] ?? [];
             maxAllowedLimit = ProfileConstants.MAX_MULTI_VALUES_ALLOWED;
@@ -1947,19 +1955,40 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             || schema.name === MOBILE_NUMBERS_ATTRIBUTE;
 
         const showVerifiedPopup = (value: string): boolean => {
+            const isPrimaryAndVerified: boolean = value === fetchedPrimaryAttributeValue && primaryVerified;
+
             return isEmailOrMobile && verificationEnabled &&
-                (verifiedAttributeValueList.includes(value) || value === fetchedPrimaryAttributeValue);
+                (verifiedAttributeValueList.includes(value) || isPrimaryAndVerified);
         };
 
         const showPrimaryPopup = (value: string): boolean => {
             if (!isEmailOrMobile) {
                 return false;
             }
-            if (verificationEnabled && !verifiedAttributeValueList.includes(value)) {
-                return value === fetchedPrimaryAttributeValue;
+
+            const isFetchedPrimary : boolean = value === fetchedPrimaryAttributeValue;
+            const isCurrentPrimary : boolean = value === primaryAttributeValue;
+            const isVerified : boolean =
+                !verificationEnabled ||                       // verification disabled → treat as verified.
+                verifiedAttributeValueList.includes(value) || // explicitly verified via list.
+                (isFetchedPrimary && primaryVerified);        // legacy single‑value flow
+
+            /* ───────── SINGLE VALUE ─────────
+            * Show the popup if that lone value is either:
+            *   • already stored as primary in the database, OR
+            *   • the user later set as primary while it is verified.
+            */
+            if (attributeValueList.length === 1) {
+                return isFetchedPrimary || (isCurrentPrimary && isVerified);
             }
 
-            return value === primaryAttributeValue;
+            /* ───── MULTIPLE VALUES ─────
+            * Show the popup on exactly one row — the one that is the
+            * current primary *and* meets at least ONE of these:
+            *   • it is verified, OR
+            *   • the database has flagged it as primary.
+            */
+            return isCurrentPrimary && (isVerified || isFetchedPrimary);
         };
 
         const showPendingVerificationPopup = (value: string): boolean => {
@@ -1970,11 +1999,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         const showMakePrimaryButton = (value: string): boolean => {
+            const isPrimaryAndVerified: boolean = value === fetchedPrimaryAttributeValue && primaryVerified;
+
             if (!isEmailOrMobile) {
                 return false;
             }
             if (verificationEnabled) {
-                return verifiedAttributeValueList.includes(value) && value !== primaryAttributeValue;
+                return (verifiedAttributeValueList.includes(value) || isPrimaryAndVerified)
+                    && value !== primaryAttributeValue;
             }
 
             return value !== primaryAttributeValue;
@@ -1983,7 +2015,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         const showVerifyButton = (value: string): boolean =>
             schema.name === EMAIL_ADDRESSES_ATTRIBUTE
             && verificationEnabled
-            && !(verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
+            && !(verifiedAttributeValueList.includes(value) ||
+                (value === fetchedPrimaryAttributeValue && primaryVerified));
 
         const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
         const resolvedMultiValueAttributeRequiredValue: boolean

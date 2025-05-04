@@ -84,6 +84,7 @@ import {
     UIConstants
 } from "../../constants";
 import { commonConfig, profileConfig } from "../../extensions";
+import { SCIMConfigs } from "../../extensions/configs/scim";
 import {
     AlertInterface,
     AlertLevels,
@@ -112,6 +113,10 @@ const VERIFIED_MOBILE_NUMBERS_ATTRIBUTE: string =
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS");
 const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string =
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES");
+const EMAIL_VERIFIED_ATTRIBUTE: string =
+    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get(MyAccountProfileConstants.EMAIL_VERIFIED);
+const MOBILE_VERIFIED_ATTRIBUTE: string =
+    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get(MyAccountProfileConstants.PHONE_VERIFIED);
 const EMAIL_MAX_LENGTH: number = 50;
 
 /**
@@ -677,21 +682,26 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 let isVerificationEnabled: boolean = false;
                 let verifiedAttributeName: string = "";
                 let verifiedValues: string[] = [];
+                let primaryVerified: boolean = false;
 
                 if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
                     primaryValue = getExistingPrimaryEmail();
                     isVerificationEnabled = isEmailVerificationEnabled;
                     verifiedAttributeName = VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE;
                     verifiedValues = profileInfo.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
+                    primaryVerified = isPrimaryClaimVerified(EMAIL_VERIFIED_ATTRIBUTE);
                 } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
                     primaryValue = profileInfo.get(MOBILE_ATTRIBUTE);
                     isVerificationEnabled = isMobileVerificationEnabled;
                     verifiedAttributeName = VERIFIED_MOBILE_NUMBERS_ATTRIBUTE;
                     verifiedValues = profileInfo.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
+                    primaryVerified = isPrimaryClaimVerified(MOBILE_VERIFIED_ATTRIBUTE);
                 }
 
-                // If the verification is enabled and existing primary value is not in the verified list, add it.
-                if (isVerificationEnabled && primaryValue && !verifiedValues.includes(primaryValue)) {
+                // If the verification is enabled and existing verified primary value is not in the
+                // verified list, add it.
+                if (isVerificationEnabled && primaryValue && primaryVerified
+                    && !verifiedValues.includes(primaryValue)) {
                     value[schema.schemaId] = {
                         [verifiedAttributeName]: [ ...verifiedValues, primaryValue ]
                     };
@@ -1063,6 +1073,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
             const existingPrimaryEmail: string = getExistingPrimaryEmail();
             const existingEmailList: string[] = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
+            const isPrimaryEmailVerified: boolean = isPrimaryClaimVerified(EMAIL_VERIFIED_ATTRIBUTE);
 
             if (existingPrimaryEmail && !existingEmailList.includes(existingPrimaryEmail)) {
                 existingEmailList.push(existingPrimaryEmail);
@@ -1080,7 +1091,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 const existingVerifiedEmails: string[] =
                     profileInfo.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
 
-                if (existingPrimaryEmail && !existingVerifiedEmails.includes(existingPrimaryEmail)) {
+                if (existingPrimaryEmail && isPrimaryEmailVerified
+                    && !existingVerifiedEmails.includes(existingPrimaryEmail)) {
                     existingVerifiedEmails.push(existingPrimaryEmail);
                     data.Operations.push({
                         op: "replace",
@@ -1110,6 +1122,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
             const existingPrimaryMobile: string = profileInfo.get(MOBILE_ATTRIBUTE);
             const existingMobileList: string[] = profileInfo?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
+            const isPrimaryMobileVerified: boolean = isPrimaryClaimVerified(MOBILE_VERIFIED_ATTRIBUTE);
 
             if (existingPrimaryMobile && !existingMobileList.includes(existingPrimaryMobile)) {
                 existingMobileList.push(existingPrimaryMobile);
@@ -1127,7 +1140,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 const existingVerifiedMobiles: string[] =
                     profileInfo.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
 
-                if (existingPrimaryMobile && !existingVerifiedMobiles.includes(existingPrimaryMobile)) {
+                if (existingPrimaryMobile && isPrimaryMobileVerified
+                    &&!existingVerifiedMobiles.includes(existingPrimaryMobile)) {
                     existingVerifiedMobiles.push(existingPrimaryMobile);
                     data.Operations.push({
                         op: "replace",
@@ -1675,6 +1689,21 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 .find((subAttribute: string) => typeof subAttribute === "string");
     };
 
+    /**
+     * Checks if the primary claim is verified.
+     *
+     * @param claimKey - The claim key to check.
+     * @returns True if the primary claim is verified, false otherwise.
+     */
+    const isPrimaryClaimVerified = (claimKey: string): boolean => {
+        const systemSchema: string | undefined = SCIMConfigs?.scim?.systemSchema;
+
+        if (!systemSchema) { return false; }
+        const claimValue: boolean | string = profileDetails?.profileInfo?.[systemSchema]?.[claimKey];
+
+        return claimValue === true || claimValue === "true";
+    };
+
     const generateMultiValuedField = (schema: ProfileSchema, fieldName: string): JSX.Element => {
 
         let primaryAttributeSchema: ProfileSchema;
@@ -1684,6 +1713,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         let verificationEnabled: boolean = false;
         let pendingEmailAddress: string = "";
         let maxAllowedLimit: number = 0;
+        let primaryVerified: boolean = false;
 
         const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
 
@@ -1697,6 +1727,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             verificationEnabled = isEmailVerificationEnabled;
             primaryAttributeSchema = getSchemaFromName(EMAIL_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
+            primaryVerified = isPrimaryClaimVerified(EMAIL_VERIFIED_ATTRIBUTE);
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             attributeValueList = profileInfo?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
@@ -1705,6 +1736,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             verificationEnabled = isMobileVerificationEnabled;
             primaryAttributeSchema = getSchemaFromName(MOBILE_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;
+            primaryVerified = isPrimaryClaimVerified(MOBILE_VERIFIED_ATTRIBUTE);
+
         } else {
             attributeValueList = profileInfo?.get(schema.name) ? profileInfo?.get(schema.name).split(",") : [];
             maxAllowedLimit = ProfileConstants.MAX_MULTI_VALUES_ALLOWED;
@@ -1730,7 +1763,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         const showVerifiedPopup = (value: string): boolean => {
             return isEmailOrMobile && verificationEnabled &&
-                (verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
+                (verifiedAttributeValueList.includes(value) ||
+                (value === primaryAttributeValue && primaryVerified));
         };
 
         const showPrimaryChip = (value: string): boolean => {
@@ -1754,7 +1788,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         const showVerifyButton = (value: string): boolean =>
             isEmailOrMobile && verificationEnabled
-            && !verifiedAttributeValueList.includes(value) && value !== primaryAttributeValue;
+            && !verifiedAttributeValueList.includes(value)
+            && !(value === primaryAttributeValue && primaryVerified);
 
         const showDeleteButton = (value: string): boolean => {
             return !((primaryAttributeSchema?.required && value === primaryAttributeValue) ||
@@ -2197,6 +2232,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         let primaryAttributeValue: string = "";
         let pendingEmailAddress: string = "";
         let verificationEnabled: boolean = false;
+        let primaryVerified: boolean = false;
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             verificationEnabled = isEmailVerificationEnabled;
@@ -2206,12 +2242,15 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 ? profileDetails?.profileInfo?.pendingEmails[0]?.value
                 : null;
             primaryAttributeValue = getExistingPrimaryEmail();
+            primaryVerified = isPrimaryClaimVerified(EMAIL_VERIFIED_ATTRIBUTE);
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             verificationEnabled = isMobileVerificationEnabled;
             attributeValueList = profileInfo.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
             verifiedAttributeValueList = profileInfo.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
             primaryAttributeValue = profileInfo.get(MOBILE_ATTRIBUTE);
+            primaryVerified = isPrimaryClaimVerified(MOBILE_VERIFIED_ATTRIBUTE);
+
         } else {
             attributeValueList = profileInfo?.get(schema.name) ? profileInfo?.get(schema.name).split(",") : [];
         }
@@ -2234,7 +2273,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         const showVerifiedPopup = (value: string): boolean => {
             return verificationEnabled &&
-                (verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
+                (verifiedAttributeValueList.includes(value) ||
+                (value === primaryAttributeValue && primaryVerified));
         };
 
         const showPrimaryChip = (value: string): boolean => {
