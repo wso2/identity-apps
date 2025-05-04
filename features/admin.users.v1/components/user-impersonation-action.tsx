@@ -65,7 +65,6 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const {
         [ "data-componentid" ]: componentId,
         user,
-        isReadOnly,
         isUserManagedByParentOrg
     } = props;
 
@@ -110,8 +109,6 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     } = useUserDetails(authenticatedUserProfileInfo?.id);
 
     const isSubOrgUser: boolean = (organizationType === OrganizationType.SUBORGANIZATION);
-    const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
-        role.display === administratorConfig.adminRoleName) ?? false;
     const IMPERSONATION_ARTIFACTS: string = "impersonation_artifacts";
     let impersonation_artifacts: any = sessionStorage.getItem(IMPERSONATION_ARTIFACTS);
 
@@ -232,9 +229,9 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
             subject_token: subjectToken,
             subject_token_type: ApplicationManagementConstants.TOKEN_TYPE_JWT_TOKEN
         };
-    
+
         const urlEncodedData: any = new URLSearchParams(formData).toString();
-    
+
         const requestConfig: any = {
             attachToken: false,
             data: urlEncodedData,
@@ -245,7 +242,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
             shouldEncodeToFormData: false,
             url: sessionStorage.getItem("token_endpoint")
         };
-    
+
         httpRequest(requestConfig)
             .then((response: HttpResponse) => {
                 if (response.status === 200) {
@@ -345,6 +342,18 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         setCodeVerifier(codeVerifier);
         setCodeChallenge(codeChallenge);
         setImpersonationInProgress(true);
+        setTimeout(() => {
+            setImpersonationInProgress(false);
+            dispatch(addAlert({
+                description: t(
+                    "users:notifications.impersonateUser.error.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "users:notifications.impersonateUser.error.message"
+                )
+            }));
+        }, 5000);
     };
 
     /**
