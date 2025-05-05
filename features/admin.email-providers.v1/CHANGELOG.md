@@ -1,5 +1,27 @@
 # @wso2is/admin.email-providers.v1
 
+## 2.26.1
+
+### Patch Changes
+
+- [#8132](https://github.com/wso2/identity-apps/pull/8132) [`0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a`](https://github.com/wso2/identity-apps/commit/0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a) Thanks [@lashinijay](https://github.com/lashinijay)! - Revert onboarding multiple authentication schemes for email provider
+
+- Updated dependencies [[`0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a`](https://github.com/wso2/identity-apps/commit/0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a)]:
+  - @wso2is/admin.core.v1@2.43.6
+  - @wso2is/form@2.6.36
+  - @wso2is/i18n@2.22.18
+
+## 2.26.0
+
+### Minor Changes
+
+- [#8114](https://github.com/wso2/identity-apps/pull/8114) [`1f79ebd46eb773a39abb7c04b4db40cfbf9acd53`](https://github.com/wso2/identity-apps/commit/1f79ebd46eb773a39abb7c04b4db40cfbf9acd53) Thanks [@lashinijay](https://github.com/lashinijay)! - Add multiple authentication schema support for email provider configurations.
+
+### Patch Changes
+
+- Updated dependencies [[`113a190bd422fc412db1ae38aa1ff721a66942e6`](https://github.com/wso2/identity-apps/commit/113a190bd422fc412db1ae38aa1ff721a66942e6)]:
+  - @wso2is/core@2.7.5
+
 ## 2.25.203
 
 ### Patch Changes

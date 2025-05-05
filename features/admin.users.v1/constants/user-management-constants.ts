@@ -180,6 +180,9 @@ export class UserManagementConstants {
     // Impersonation related constants.
     public static readonly ID_TOKEN: string = "id_token";
     public static readonly SUBJECT_TOKEN: string = "subject_token";
+  
+    public static readonly ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG: string
+        = "users.user.creation.attribute.profile";
 }
 
 /**

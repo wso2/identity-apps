@@ -1656,8 +1656,7 @@ export const extensions: Extensions = {
                 header: "Danger Zone",
                 revertConfig: {
                     heading: "Revert Configurations",
-                    subHeading: "This action will revert mail server configurations to default configurations. " +
-                        "Once reverted, you will receive emails from the Asgardeo domain.",
+                    subHeading: "This action will revert mail server configurations to default configurations.",
                     actionTitle: "Revert"
                 }
             },

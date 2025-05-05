@@ -1942,20 +1942,20 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             verificationPendingValue = getVerificationPendingAttributeValue(MOBILE_NUMBERS_ATTRIBUTE);
         } else {
             attributeValueList = multiValuedAttributeValues[schema.name] ?? [];
-            primaryAttributeSchema = profileSchema.find(
-                (schemaAttribute: ProfileSchemaInterface) => schemaAttribute.name === schema.name);
             maxAllowedLimit = ProfileConstants.MAX_MULTI_VALUES_ALLOWED;
         }
 
         const showAccordion: boolean = attributeValueList.length >= 1;
+        const isEmailOrMobile: boolean = schema.name === EMAIL_ADDRESSES_ATTRIBUTE
+            || schema.name === MOBILE_NUMBERS_ATTRIBUTE;
 
         const showVerifiedPopup = (value: string): boolean => {
-            return verificationEnabled &&
+            return isEmailOrMobile && verificationEnabled &&
                 (verifiedAttributeValueList.includes(value) || value === fetchedPrimaryAttributeValue);
         };
 
         const showPrimaryPopup = (value: string): boolean => {
-            if (isEmpty(primaryAttributeValue)) {
+            if (!isEmailOrMobile) {
                 return false;
             }
             if (verificationEnabled && !verifiedAttributeValueList.includes(value)) {
@@ -1966,14 +1966,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         const showPendingVerificationPopup = (value: string): boolean => {
-            return verificationEnabled
+            return isEmailOrMobile && verificationEnabled
                 && !isEmpty(verificationPendingValue)
                 && !verifiedAttributeValueList.includes(value)
                 && verificationPendingValue === value;
         };
 
         const showMakePrimaryButton = (value: string): boolean => {
-            if (isEmpty(primaryAttributeValue)) {
+            if (!isEmailOrMobile) {
                 return false;
             }
             if (verificationEnabled) {

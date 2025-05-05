@@ -97,7 +97,7 @@ const UserAttributeList: FunctionComponent<UserAttributeListPropsInterface> = ({
     useEffect(() => {
 
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": false,
+            "exclude-hidden-claims": false,
             filter: null,
             limit: null,
             offset: null,

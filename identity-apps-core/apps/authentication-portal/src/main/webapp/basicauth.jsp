@@ -302,7 +302,7 @@
     String resendUsername = request.getParameter("resend_username");
     String spProp = "sp";
     String spIdProp = "spId";
-    String sp = request.getParameter("sp");
+    String sp = Encode.forJava(request.getParameter("sp"));
     String spId = "";
 
     try {
@@ -567,8 +567,7 @@
             String urlWithoutEncoding = null;
             try {
                 ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
-                urlWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,
-                        request.getParameter("sp"));
+                urlWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
             } catch (ApplicationDataRetrievalClientException e) {
                 //ignored and fallback to login page url
             }
@@ -578,11 +577,11 @@
                 String serverName = request.getServerName();
                 int serverPort = request.getServerPort();
                 String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
-                String prmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
+                String paramStr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
                 if ((scheme == "http" && serverPort == HttpURL.DEFAULT_PORT) || (scheme == "https" && serverPort == HttpsURL.DEFAULT_PORT)) {
-                    urlWithoutEncoding = scheme + "://" + serverName + uri + "?" + prmstr;
+                    urlWithoutEncoding = scheme + "://" + serverName + uri + "?" + paramStr;
                 } else {
-                    urlWithoutEncoding = scheme + "://" + serverName + ":" + serverPort + uri + "?" + prmstr;
+                    urlWithoutEncoding = scheme + "://" + serverName + ":" + serverPort + uri + "?" + paramStr;
                 }
             }
             urlWithoutEncoding = IdentityManagementEndpointUtil.replaceUserTenantHintPlaceholder(
