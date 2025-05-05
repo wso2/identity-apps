@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.24.3
+
+### Patch Changes
+
+- [#8110](https://github.com/wso2/identity-apps/pull/8110) [`dc8cf53e08330f3f377c4256c0036a7c6f8b31b5`](https://github.com/wso2/identity-apps/commit/dc8cf53e08330f3f377c4256c0036a7c6f8b31b5) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add minor review suggestions
+
 ## 2.24.2
 
 ### Patch Changes
