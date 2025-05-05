@@ -982,7 +982,7 @@ importers:
         specifier: ^2.9.12
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.6.11
+        specifier: ^2.7.7
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.4.1
