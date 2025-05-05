@@ -290,7 +290,7 @@
                  * @returns {string}
                  */
                 function resolveClientId() {
-                    var enableTenantQualifiedUrls = "<%= htmlWebpackPlugin.options.isTenantQualifiedUrlsEnabled %>";
+                    var enableTenantQualifiedUrls = <%= htmlWebpackPlugin.options.isTenantQualifiedUrlsEnabled %>;
                     var defaultClientId = "<%= htmlWebpackPlugin.options.clientID %>";
 
                     if (enableTenantQualifiedUrls === true || isSuperTenant()) {

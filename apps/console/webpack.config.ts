@@ -198,6 +198,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     "authentication.framework.util.FrameworkUtils.isOrganizationManagementEnabled\"%>"
                     : "",
                 hash: true,
+                importIdentityTenantUtil: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"" +
+                    "static org.wso2.carbon.identity.core.util.IdentityTenantUtil.isTenantQualifiedUrlsEnabled\" %>"
+                    : "",
                 importStringUtils: "<%@ page import=\"org.apache.commons.lang.StringUtils\" %>",
                 importSuperTenantConstant: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
@@ -217,6 +221,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 isOrganizationManagementEnabled: !isDeployedOnExternalTomcatServer
                     ? "<%= isOrganizationManagementEnabled() %>"
                     : "false",
+                isTenantQualifiedUrlsEnabled: !isDeployedOnExternalTomcatServer
+                    ? "<%=isTenantQualifiedUrlsEnabled()%>"
+                    : "",
                 minify: false,
                 proxyContextPath: !isDeployedOnExternalTomcatServer
                     ? "<%=ServerConfiguration.getInstance().getFirstProperty(PROXY_CONTEXT_PATH)%>"
