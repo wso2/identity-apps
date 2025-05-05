@@ -58,7 +58,7 @@ export default function AgentCredentials({
                         <CopyInputField
                             secret
                             showSecret={ false }
-                            value={ "sdjskjksjkdjkjsdk" }
+                            value={ "VzP7d_.9qN|Y3LXtJWA-fUMbrgKo2x1/ETmlBcZ84.vsHnQy5u" }
                             hideSecretLabel={ "Hide secret" }
                             showSecretLabel={ "Show secret" }
                             data-componentid={ "client-secret-readonly-input" }
