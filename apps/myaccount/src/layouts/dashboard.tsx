@@ -169,10 +169,13 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
 
         const routes: RouteInterface[] = getDashboardLayoutRoutes().filter((route: RouteInterface) => {
 
+            // Impersonation scope would indicate an impersonated session.
             if (allowedScopes.includes("internal_user_impersonate")) {
                 if (route.path === "/") {
+                    // During an impersonation, default route should redirect to the applications page.
                     route.redirectTo = AppConstants.getPaths().get("APPLICATIONS");
                 } else if (route.path != AppConstants.getPaths().get("APPLICATIONS")) {
+                    // During an impersonation, only the application list page should be visible.
                     return false;
                 }
             } else {

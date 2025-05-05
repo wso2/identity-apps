@@ -95,11 +95,10 @@ export const user: userNS = {
             }
         },
         userActionZoneGroup: {
-            header: "User Action",
             impersonateUserZone: {
                 actionTitle: "Impersonate User",
                 header: "Impersonate User",
-                subheader: "Once Started impersonating a user, the initiator no longer be able to login with their identity until they terminate the existing session."
+                subheader: "Once user impersonation has started, the initiator will no longer be able to log in with their own identity until the existing session is terminated."
             }
         }
     },

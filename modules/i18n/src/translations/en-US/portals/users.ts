@@ -298,7 +298,7 @@ export const users: usersNS = {
                 message: "Something went wrong"
             },
             success: {
-                description: "Successfully impersonated the user.",
+                description: "User impersonation started successfully.",
                 message: "User impersonation successful"
             }
         },

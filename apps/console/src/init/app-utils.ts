@@ -226,6 +226,7 @@ export const AppUtils: any = (function() {
             return {
                 __experimental__platformIdP: _config.__experimental__platformIdP,
                 accountApp: {
+                    appName: MYACCOUNT_APP_NAME,
                     centralAppPath: _config.accountApp.centralAppOrigin + _config.accountApp.path,
                     clientID: MYACCOUNT_CONSUMER_KEY,
                     commonPostLogoutUrl : commonPostLogoutUrl,
@@ -235,9 +236,7 @@ export const AppUtils: any = (function() {
                         _config.accountAppOrigin + this.getTenantPath(true) + _config.accountApp.path,
                     tenantQualifiedPath: this.getTenantQualifiedAccountAppPath(skipTenant
                         ? ""
-                        : _config.accountApp.path),
-                    appName: MYACCOUNT_APP_NAME
-                
+                        : _config.accountApp.path)
                 },
                 adminApp: {
                     basePath: this.constructAppPaths(""),

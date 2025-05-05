@@ -130,6 +130,7 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
             <div className="header-wrapper">
                 <Header
                     as="h5"
+                    color="red"
                     className="header"
                     floated="left"
                     data-componentid={ `${ componentId }-header` }
@@ -182,12 +183,12 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                                         data-componentid={ componentId + "-delete-button" }
                                         data-testid={ testId + "-delete-button" }
                                         fluid={ isMobileViewport }
-                                        negative = { className ? false: true }
-                                        primary = { !className ? false: true }
+                                        negative={ !className }
+                                        primary={ !!className }
                                         onClick={ onActionClick }
                                         disabled={ isButtonDisabled }
                                         loading={ isButtonLoading }
-                                        basic={ className ? true: false }
+                                        basic={ !!className }
                                     >
                                         { buttonText ?? actionTitle }
                                     </Button>

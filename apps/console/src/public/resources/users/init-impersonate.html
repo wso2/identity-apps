@@ -40,8 +40,8 @@
                         const authorization_endpoint = sessionStorage.getItem("authorization_endpoint");
                         window.location.href = authorization_endpoint
                             + "?client_id=" + client_id +
-                            "&redirect_uri=" + window.location.origin + window.location.pathname +
-                            "&state=sample_state&scope=internal_user_impersonate&response_type=id_token%20subject_token" +
+                            "&redirect_uri=" + window.location.href +
+                            "&scope=internal_user_impersonate&response_type=id_token%20subject_token" +
                             "&requested_subject=" + userId +
                             "&nonce=" + getNonce() + "&code_challenge=" + code_challenge + "&code_challenge_method=S256";
                     }

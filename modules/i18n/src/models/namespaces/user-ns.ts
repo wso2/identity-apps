@@ -89,7 +89,6 @@ export interface userNS {
             };
         };
         userActionZoneGroup: {
-            header: string;
             impersonateUserZone: {
                 actionTitle: string;
                 header: string;

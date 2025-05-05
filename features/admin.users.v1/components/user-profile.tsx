@@ -81,6 +81,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
+import { UserImpersonationAction } from "./user-impersonation-action";
 import { resendCode, updateUserInfo } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
@@ -110,7 +111,6 @@ import {
     isMultipleEmailsAndMobileNumbersEnabled,
     isSchemaReadOnly
 } from "../utils/user-management-utils";
-import UserImpersonationAction from "./user-impersonation-action";
 
 const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
 const MOBILE_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
@@ -1596,8 +1596,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             >
                                 <UserImpersonationAction
                                     user={ user }
-                                    isReadOnly= { !hasUsersUpdatePermissions }
-                                    isUserManagedByParentOrg= { user?.isUserManagedByParentOrg }
+                                    isReadOnly={ !hasUsersUpdatePermissions }
+                                    isUserManagedByParentOrg={ user?.isUserManagedByParentOrg }
                                     data-componentid="user-mgt-edit-user-impersonate-action"
                                 />
                                 <Divider hidden/>

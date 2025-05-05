@@ -17,25 +17,29 @@
  */
 
 import { HttpResponse, useAuthContext } from "@asgardeo/auth-react";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface, ProfileInfoInterface,
-    RolesMemberInterface } from "@wso2is/core/models";
+import {
+    AlertLevels,
+    FeatureAccessConfigInterface,
+    IdentifiableComponentInterface,
+    ProfileInfoInterface,
+    RolesMemberInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { AuthenticateUtils } from "@wso2is/core/utils";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { ApplicationManagementConstants } from "../../admin.applications.v1/constants/application-management";
-import { useUserDetails } from "../api";
-import { UserManagementConstants } from "../constants";
-import { UserManagementUtils } from "../utils/user-management-utils";
 import { useMyAccountApplicationData } from "../../admin.applications.v1/api/application";
 import { useGetApplication } from "../../admin.applications.v1/api/use-get-application";
+import { ApplicationManagementConstants } from "../../admin.applications.v1/constants/application-management";
 import { ApplicationListItemInterface } from "../../admin.applications.v1/models/application";
-import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
-import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useUserDetails } from "../api";
+import { UserManagementConstants } from "../constants";
 
 /**
  * Props for Impersonate User Action component.
@@ -221,7 +225,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
 
     /**
      * This function sends the token request to the server.
-     * 
+     *
      * @param idToken       - The ID token received from the impersonation request.
      * @param subjectToken  - The subject token received from the impersonation request.
      */
@@ -318,7 +322,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         for (let index: number = 0; index < authenticatedUserRoles?.length; index++) {
             const authenticatedUserRole: RolesMemberInterface = authenticatedUserRoles[index];
 
-            if (authenticatedUserRole.display === accountAppImpersonateRoleName 
+            if (authenticatedUserRole.display === accountAppImpersonateRoleName
                     && authenticatedUserRole.audienceDisplay === accountAppName) {
                 return true;
             }
@@ -345,8 +349,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
      */
     const handleUserImpersonation = async (): Promise<void> => {
 
-        const codeVerifier: string = UserManagementUtils.generateCodeVerifier();
-        const codeChallenge: string = await UserManagementUtils.getCodeChallangeForTheVerifier(codeVerifier);
+        const codeVerifier: string = AuthenticateUtils.generateCodeVerifier();
+        const codeChallenge: string = await AuthenticateUtils.getCodeChallangeForTheVerifier(codeVerifier);
 
         setCodeVerifier(codeVerifier);
         setCodeChallenge(codeChallenge);

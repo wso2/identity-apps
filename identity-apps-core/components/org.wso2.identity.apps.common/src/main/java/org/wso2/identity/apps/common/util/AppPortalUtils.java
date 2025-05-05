@@ -136,8 +136,8 @@ public class AppPortalUtils {
             callbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(callbackUrl, applicationName);
 
             // Add console url when impersonation is enabled.
-            boolean isUserSessionImpersonationEnabled = IdentityUtil.getProperty(USER_SESSION_IMPERSONATION) != null &&
-                Boolean.parseBoolean(IdentityUtil.getProperty(USER_SESSION_IMPERSONATION));
+            boolean isUserSessionImpersonationEnabled = Boolean.parseBoolean(IdentityUtil
+                .getProperty(USER_SESSION_IMPERSONATION));
             if (isUserSessionImpersonationEnabled && MYACCOUNT_APP.equals(applicationName)) {
                 consoleCallbackUrl = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(consoleCallbackUrl);
                 consoleCallbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(consoleCallbackUrl, CONSOLE_APP);
