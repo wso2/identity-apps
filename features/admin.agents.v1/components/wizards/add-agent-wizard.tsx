@@ -41,6 +41,21 @@ export default function AddAgentWizard({
     const [ showSecret, setShowSecret ] = useState(false);
     const [ newAgent, setNewAgent ] = useState<UserDetailsInterface>();
 
+    const sanitizeAgentUsername = (str) => {
+        // Step 1: Remove disallowed characters
+        let cleaned = str.replace(/[^a-zA-Z0-9._\-|/]/g, "");
+
+        // Step 2: Truncate to 30 characters
+        cleaned = cleaned.slice(0, 30);
+
+        // Step 3: Ensure minimum length of 3
+        if (cleaned.length < 3) {
+            throw new Error("Formatted string is shorter than 3 characters.");
+        }
+
+        return cleaned;
+    };
+
     return (
         <Modal
             data-testid={ componentId }
@@ -65,12 +80,12 @@ export default function AddAgentWizard({
                                     givenName: values?.name
                                 },
                                 password: "Wso2@test123",
-                                "urn:scim:wso2:agent:schema": {
+                                "urn:scim:schemas:extension:custom:User": {
                                     "agentDescription": values?.description,
                                     "agentOwner": values?.owner,
                                     "agentUrl": values?.url
                                 },
-                                userName: "AgentStore/" + values?.username
+                                userName: "AGENT/" + sanitizeAgentUsername(values?.name?.toLowerCase())
                             };
 
                             addAgent(addAgentPayload)
@@ -98,12 +113,6 @@ export default function AddAgentWizard({
                                         component={ TextFieldAdapter }
                                     />
                                     <FinalFormField
-                                        name="username"
-                                        label="Username"
-                                        autoComplete="new-password"
-                                        component={ TextFieldAdapter }
-                                    />
-                                    <FinalFormField
                                         label="Description"
                                         name="description"
                                         className="mt-3"
@@ -126,19 +135,26 @@ export default function AddAgentWizard({
                             </Message>
 
                             <label>Agent ID</label>
-                            <CopyInputField
-                                value={ newAgent?.id }
-                                data-componentid={ "client-secret-readonly-input" }
-                            />
-
+                            <div style={ { marginTop: "1%" } }>
+                                <CopyInputField
+                                    className="agent-id-input"
+                                    value={ newAgent?.id }
+                                    data-componentid={ "client-secret-readonly-input" }
+                                />
+                            </div>
+                            <div style={ { marginTop: "2%" } }></div>
                             <label>Agent secret</label>
-                            <CopyInputField
-                                secret
-                                value={ "sdjskjksjkdjkjsdk" }
-                                hideSecretLabel={ "Hide secret" }
-                                showSecretLabel={ "Show secret" }
-                                data-componentid={ "client-secret-readonly-input" }
-                            />
+                            <div style={ { marginTop: "1%" } }>
+                                <CopyInputField
+                                    className="agent-secret-input"
+                                    secret
+                                    value={ "VzP7d_.9qN|Y3LXtJWA-fUMbrgKo2x1/ETmlBcZ84.vsHnQy5u" }
+                                    hideSecretLabel={ "Hide secret" }
+                                    showSecretLabel={ "Show secret" }
+                                    data-componentid={ "client-secret-readonly-input" }
+                                />
+                            </div>
+
                         </>
                     ) }
             </Modal.Content>
