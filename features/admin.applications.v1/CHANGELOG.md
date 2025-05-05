@@ -1,5 +1,11 @@
 # @wso2is/admin.applications.v1
 
+## 2.34.7
+
+### Patch Changes
+
+- [#8142](https://github.com/wso2/identity-apps/pull/8142) [`3e3aefe0906bb9d221e608f716a80aba403120e8`](https://github.com/wso2/identity-apps/commit/3e3aefe0906bb9d221e608f716a80aba403120e8) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix hidden claims filtering in applications
+
 ## 2.34.6
 
 ### Patch Changes
