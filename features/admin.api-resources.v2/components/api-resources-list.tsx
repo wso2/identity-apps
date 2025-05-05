@@ -40,8 +40,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { deleteAPIResource } from "../api";
-import { APIResourcesConstants } from "../constants";
 import { APIResourceInterface } from "../models";
+import useApiResourcesPageContent from "../pages/use-api-resources-page-content";
 import { APIResourceUtils } from "../utils/api-resource-utils";
 
 /**
@@ -109,6 +109,11 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const {
+        addNewResourceButtonText,
+        resourceEditPath
+    } = useApiResourcesPageContent();
 
     const [ loading, setLoading ] = useState<boolean>(false);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
@@ -328,7 +333,7 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
                                 data-testid={ `${componentId}-add-api-resources-button` }
                             >
                                 <Icon name="add" />
-                                { t("extensions:develop.apiResource.addApiResourceButton") }
+                                { addNewResourceButtonText }
                             </PrimaryButton>
                         ) : null }
                 />
@@ -380,9 +385,11 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
      *
      */
     const handleAPIResourceEdit = (apiResource: APIResourceInterface, e: SyntheticEvent<Element, Event>): void => {
-        history.push(APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT")
-            .replace(":categoryId", categoryId)
-            .replace(":id", apiResource.id));
+        history.push(
+            resourceEditPath
+                .replace(":categoryId", categoryId)
+                .replace(":id", apiResource.id)
+        );
         onListItemClick && onListItemClick(e, apiResource);
     };
 

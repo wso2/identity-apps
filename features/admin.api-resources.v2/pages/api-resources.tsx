@@ -43,6 +43,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Icon, List, PaginationProps } from "semantic-ui-react";
+import useApiResourcesPageContent from "./use-api-resources-page-content";
 import { useAPIResources } from "../api";
 import { APIResourcesList } from "../components";
 import { AddAPIResource } from "../components/wizard";
@@ -73,6 +74,16 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
 
+    const {
+        resourceServerListTitle,
+        resourceServerListPageTitle,
+        addNewResourceButtonText,
+        isApiServer,
+        resourceServerListDescription,
+        defaultSearchFilter,
+        resourceSearchBarPlaceholder
+    } = useApiResourcesPageContent();
+
     const [ activePage, setActivePage ] = useState<number>(1);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isListUpdated, setListUpdated ] = useState<boolean>(false);
@@ -83,7 +94,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     const [ before, setBefore ] = useState<string>(undefined);
     const [ nextAfter, setNextAfter ] = useState<string>(undefined);
     const [ nextBefore, setNextBefore ] = useState<string>(undefined);
-    const [ filter, setFilter ] = useState<string>(`type eq ${ APIResourcesConstants.BUSINESS }`);
+    const [ filter, setFilter ] = useState<string>(defaultSearchFilter);
     const [ attributes ] = useState<string>(APIResourcesConstants.PROPERTIES);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -171,7 +182,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
      * The following useEffect is used to update the filter value
      */
     useEffect(() => {
-        const typeFilter: string = `type eq ${ APIResourcesConstants.BUSINESS }`;
+        const typeFilter: string = defaultSearchFilter;
 
         if (searchQuery) {
             setFilter(`${ searchQuery } and ${ typeFilter }`);
@@ -247,21 +258,14 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                             onClick={ () => setShowWizard(true) }
                         >
                             <Icon name="add" />
-                            { t("extensions:develop.apiResource.addApiResourceButton") }
+                            { addNewResourceButtonText }
                         </PrimaryButton>
                     )
             }
-            pageTitle={ t("extensions:develop.apiResource.pageHeader.title") }
-            title={ t("extensions:develop.apiResource.pageHeader.title") }
+            pageTitle={ resourceServerListPageTitle }
+            title={ resourceServerListTitle }
             description={ organizationType !== OrganizationType.SUBORGANIZATION ? (
-                <>
-                    { t("extensions:develop.apiResource.pageHeader.description") }
-                    <DocumentationLink
-                        link={ getLink("develop.apiResources.learnMore") }
-                    >
-                        { t("common:learnMore") }
-                    </DocumentationLink>
-                </>
+                resourceServerListDescription
             ) : (
                 <>
                     { t("extensions:develop.apiResource.pageHeader.subOrgDescription") }
@@ -278,94 +282,101 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
             actionColumnWidth="5"
         >
             {
-                organizationType !== OrganizationType.SUBORGANIZATION &&
-                (
-                    <EmphasizedSegment
-                        onClick={ () => {
-                            history.push(APIResourcesConstants.getPaths().get("API_RESOURCES_CATEGORY")
-                                .replace(":categoryId", APIResourceType.MANAGEMENT));
-                        } }
-                        className="clickable"
-                        data-componentid={ `${ componentId }-management-api-container` }
-                    >
-                        <List>
-                            <List.Item>
-                                <Grid container direction="row" xs={ 12 } alignItems="center">
-                                    <Grid xs={ 10 } alignContent="center">
-                                        <GenericIcon
-                                            verticalAlign="middle"
-                                            fill="primary"
-                                            transparent
-                                            icon={ <BuildingGearIcon size="medium" /> }
-                                            spaced="right"
-                                            floated="left"
-                                            className="mt-1"
-                                        />
-                                        <List.Header>
-                                            { t("extensions:develop.apiResource.managementAPI.header") }
-                                        </List.Header>
-                                        <List.Description>
-                                            { t("extensions:develop.apiResource.managementAPI.description") }
-                                        </List.Description>
+                isApiServer ? (
+                    <>
+                        {
+                            organizationType !== OrganizationType.SUBORGANIZATION &&
+                        (
+                            <EmphasizedSegment
+                                onClick={ () => {
+                                    history.push(APIResourcesConstants.getPaths().get("API_RESOURCES_CATEGORY")
+                                        .replace(":categoryId", APIResourceType.MANAGEMENT));
+                                } }
+                                className="clickable"
+                                data-componentid={ `${ componentId }-management-api-container` }
+                            >
+                                <List>
+                                    <List.Item>
+                                        <Grid container direction="row" xs={ 12 } alignItems="center">
+                                            <Grid xs={ 10 } alignContent="center">
+                                                <GenericIcon
+                                                    verticalAlign="middle"
+                                                    fill="primary"
+                                                    transparent
+                                                    icon={ <BuildingGearIcon size="medium" /> }
+                                                    spaced="right"
+                                                    floated="left"
+                                                    className="mt-1"
+                                                />
+                                                <List.Header>
+                                                    { t("extensions:develop.apiResource.managementAPI.header") }
+                                                </List.Header>
+                                                <List.Description>
+                                                    { t("extensions:develop.apiResource.managementAPI.description") }
+                                                </List.Description>
+                                            </Grid>
+                                            <Grid xs={ 2 }>
+                                                <GenericIcon
+                                                    verticalAlign="middle"
+                                                    fill="primary"
+                                                    transparent
+                                                    icon={ <ChevronRightIcon /> }
+                                                    spaced="right"
+                                                    floated="right"
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                    </List.Item>
+                                </List>
+                            </EmphasizedSegment>
+                        )
+                        }
+                        <EmphasizedSegment
+                            onClick={ () => {
+                                history.push(APIResourcesConstants.getPaths().get("API_RESOURCES_CATEGORY")
+                                    .replace(":categoryId", APIResourceType.ORGANIZATION));
+                            } }
+                            className="clickable"
+                            data-componentid={ `${ componentId }-organization-api-container` }
+                        >
+                            <List>
+                                <List.Item>
+                                    <Grid container direction="row" xs={ 12 } alignItems="center">
+                                        <Grid xs={ 10 } alignContent="center">
+                                            <GenericIcon
+                                                verticalAlign="middle"
+                                                fill="primary"
+                                                transparent
+                                                icon={ <HierarchyIcon size="medium" /> }
+                                                spaced="right"
+                                                floated="left"
+                                                className="mt-1"
+                                            />
+                                            <List.Header>
+                                                { t("extensions:develop.apiResource.organizationAPI.header") }
+                                            </List.Header>
+                                            <List.Description>
+                                                { t("extensions:develop.apiResource.organizationAPI.description") }
+                                            </List.Description>
+                                        </Grid>
+                                        <Grid xs={ 2 }>
+                                            <GenericIcon
+                                                verticalAlign="middle"
+                                                fill="primary"
+                                                transparent
+                                                icon={ <ChevronRightIcon /> }
+                                                spaced="right"
+                                                floated="right"
+                                            />
+                                        </Grid>
                                     </Grid>
-                                    <Grid xs={ 2 }>
-                                        <GenericIcon
-                                            verticalAlign="middle"
-                                            fill="primary"
-                                            transparent
-                                            icon={ <ChevronRightIcon /> }
-                                            spaced="right"
-                                            floated="right"
-                                        />
-                                    </Grid>
-                                </Grid>
-                            </List.Item>
-                        </List>
-                    </EmphasizedSegment>
-                )
+                                </List.Item>
+                            </List>
+                        </EmphasizedSegment>
+                    </>
+                ) : null
             }
-            <EmphasizedSegment
-                onClick={ () => {
-                    history.push(APIResourcesConstants.getPaths().get("API_RESOURCES_CATEGORY")
-                        .replace(":categoryId", APIResourceType.ORGANIZATION));
-                } }
-                className="clickable"
-                data-componentid={ `${ componentId }-organization-api-container` }
-            >
-                <List>
-                    <List.Item>
-                        <Grid container direction="row" xs={ 12 } alignItems="center">
-                            <Grid xs={ 10 } alignContent="center">
-                                <GenericIcon
-                                    verticalAlign="middle"
-                                    fill="primary"
-                                    transparent
-                                    icon={ <HierarchyIcon size="medium" /> }
-                                    spaced="right"
-                                    floated="left"
-                                    className="mt-1"
-                                />
-                                <List.Header>
-                                    { t("extensions:develop.apiResource.organizationAPI.header") }
-                                </List.Header>
-                                <List.Description>
-                                    { t("extensions:develop.apiResource.organizationAPI.description") }
-                                </List.Description>
-                            </Grid>
-                            <Grid xs={ 2 }>
-                                <GenericIcon
-                                    verticalAlign="middle"
-                                    fill="primary"
-                                    transparent
-                                    icon={ <ChevronRightIcon /> }
-                                    spaced="right"
-                                    floated="right"
-                                />
-                            </Grid>
-                        </Grid>
-                    </List.Item>
-                </List>
-            </EmphasizedSegment>
+
             <Divider hidden/>
             <ListLayout
                 advancedSearch={ (
@@ -390,7 +401,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                             t("applications:advancedSearch.form.inputs.filterValue" +
                                 ".placeholder")
                         }
-                        placeholder={ "Search APIs by name" }
+                        placeholder={ resourceSearchBarPlaceholder }
                         style={ { minWidth: "425px" } }
                         defaultSearchAttribute="name"
                         defaultSearchOperator="co"

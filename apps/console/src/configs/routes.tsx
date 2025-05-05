@@ -198,7 +198,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 }
             ],
             component: lazy(() =>
-                import("@wso2is/admin.api-resources.v2/pages/mcp-servers")
+                import("@wso2is/admin.api-resources.v2/pages/api-resources")
             ),
             exact: true,
             icon: {
