@@ -42,7 +42,7 @@ export default function Agents ({
     const [ agentListMetaData, setAgentListMetaData ] =  useState({
         attributes: "",
         count: 10,
-        domain: "AGENTSTORE",
+        domain: "AGENT",
         excludedAttributes: "password,secret,roles,groups",
         filter: "",
         startIndex: 1
@@ -57,7 +57,7 @@ export default function Agents ({
         agentListMetaData.startIndex,
         agentListMetaData.filter === "" ? null : agentListMetaData.filter,
         agentListMetaData.attributes === "" ? null : agentListMetaData.attributes,
-        "AGENTSTORE",
+        "AGENT",
         agentListMetaData.excludedAttributes,
         true
     );
