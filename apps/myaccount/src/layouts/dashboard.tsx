@@ -41,7 +41,8 @@ import {
     ContentLoader,
     EmptyPlaceholder,
     ErrorBoundary,
-    LinkButton
+    LinkButton,
+    useMediaContext
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
@@ -88,6 +89,8 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
+
+    const { isMobileViewport } = useMediaContext();
 
     const { setPreferences, leftNavbarCollapsed } = useUserPreferences();
 
@@ -273,7 +276,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                             }
                         ] }
                         fill={ "solid" }
-                        open={ !leftNavbarCollapsed as boolean }
+                        open={ isMobileViewport ? false : !leftNavbarCollapsed }
                         collapsible={ false }
                     />
                 ) }
