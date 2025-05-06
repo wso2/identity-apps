@@ -464,3 +464,13 @@ export const RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP: Record<string, strin
 export enum AttributeDataType {
     COMPLEX = "COMPLEX"
 }
+
+
+export const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
+export const MOBILE_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
+export const EMAIL_ADDRESSES_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES");
+export const MOBILE_NUMBERS_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS");
+export const VERIFIED_MOBILE_NUMBERS_ATTRIBUTE: string =
+    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS");
+export const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string =
+    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES");

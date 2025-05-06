@@ -37,6 +37,7 @@ import { UserRolesList } from "./user-roles-list";
 import { UserSessions } from "./user-sessions";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import useUserManagement from "../hooks/use-user-management";
+import { UserProfileUpdated } from "./user-profile-updated";
 
 interface EditUserPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -183,6 +184,41 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserProfile
+                        adminUsername={ adminUsername }
+                        onAlertFired={ handleAlerts }
+                        user={ user }
+                        handleUserUpdate={ handleUserUpdate }
+                        isReadOnly={ isReadOnly }
+                        connectorProperties={ connectorProperties }
+                        isReadOnlyUserStoresLoading={ isUserStoresLoading }
+                        isReadOnlyUserStore={ isReadOnlyUserStore }
+                        isUserManagedByParentOrg={ isUserManagedByParentOrg }
+                        adminUserType={ AdminAccountTypes.INTERNAL }
+                        allowDeleteOnly={
+                            user[ SCIMConfigs.scim.systemSchema ]?.isReadOnlyUser === "true"
+                        }
+                        editUserDisclaimerMessage={ (
+                            <Grid>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                        <Message
+                                            type="info"
+                                            content={ t("extensions:manage.users.editUserProfile.disclaimerMessage") }
+                                        />
+                                        <Divider hidden />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        ) }
+                    />
+                </ResourceTab.Pane>
+            )
+        },
+        {
+            menuItem: "Updated User Profile",
+            render: () => (
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
+                    <UserProfileUpdated
                         adminUsername={ adminUsername }
                         onAlertFired={ handleAlerts }
                         user={ user }

@@ -16,14 +16,9 @@
  * under the License.
  */
 
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableRow from "@mui/material/TableRow";
 import Alert from "@oxygen-ui/react/Alert";
-import OxygenButton from "@oxygen-ui/react/Button";
-import Chip from "@oxygen-ui/react/Chip";
+import Flag from "@oxygen-ui/react/CountryFlag";
+import OxygenGrid from '@oxygen-ui/react/Grid';
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
@@ -50,17 +45,15 @@ import { getUserNameWithoutDomain, resolveUserstore } from "@wso2is/core/helpers
 import {
     AlertInterface,
     AlertLevels,
+    IdentifiableComponentInterface,
     MultiValueAttributeInterface,
-    PatchOperationRequest,
     ProfileInfoInterface,
     ProfileSchemaInterface,
     RolesMemberInterface,
     SharedProfileValueResolvingMethod,
-    TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
-import { Field, Forms, Validation } from "@wso2is/forms";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
     ConfirmationModal,
@@ -69,17 +62,16 @@ import {
     DangerZoneGroup,
     EmphasizedSegment,
     LinkButton,
-    Popup,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
+import { Button, CheckboxProps, Divider, DropdownItemProps, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { resendCode, updateUserInfo } from "../api";
 import {
@@ -89,15 +81,20 @@ import {
     AdminAccountTypes,
     AttributeDataType,
     CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP,
+    EMAIL_ADDRESSES_ATTRIBUTE,
+    EMAIL_ATTRIBUTE,
     LocaleJoiningSymbol,
+    MOBILE_ATTRIBUTE,
+    MOBILE_NUMBERS_ATTRIBUTE,
     PASSWORD_RESET_PROPERTIES,
     RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP,
     RecoveryScenario,
-    UserManagementConstants
+    UserManagementConstants,
+    VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
+    VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
 } from "../constants";
 import {
     AccountConfigSettingsInterface,
-    PatchUserOperationValue,
     ResendCodeRequestData,
     SchemaAttributeValueInterface,
     SubValueInterface
@@ -106,24 +103,33 @@ import "./user-profile.scss";
 import {
     constructPatchOpValueForMultiValuedAttribute,
     constructPatchOperationForMultiValuedVerifiedAttribute,
+    flattenValues,
     getDisplayOrder,
     isMultipleEmailsAndMobileNumbersEnabled,
-    isSchemaReadOnly
+    isSchemaReadOnly,
+    normalizeLocaleFormat
 } from "../utils/user-management-utils";
-
-const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
-const MOBILE_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
-const EMAIL_ADDRESSES_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES");
-const MOBILE_NUMBERS_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS");
-const VERIFIED_MOBILE_NUMBERS_ATTRIBUTE: string =
-    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS");
-const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string =
-    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES");
+import {
+    AutocompleteFieldAdapter,
+    CheckboxFieldAdapter,
+    FinalForm,
+    FinalFormField,
+    FormRenderProps,
+    FormState,
+    TextFieldAdapter
+} from "@wso2is/form/src";
+import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
+import ListItem from "@oxygen-ui/react/ListItem";
+import ListItemText from "@oxygen-ui/react/ListItemText";
+import InputAdornment from "@oxygen-ui/react/InputAdornment";
+import Tooltip from "@oxygen-ui/react/Tooltip";
+import { CircleInfoIcon } from "@oxygen-ui/react-icons";
+import MultiValuedFormFields from "./user-profile/multi-valued-form-field";
 
 /**
  * Prop types for the basic details component.
  */
-interface UserProfilePropsInterface extends TestableComponentInterface {
+interface UserProfilePropsInterface extends IdentifiableComponentInterface {
     /**
      * System admin username
      */
@@ -184,7 +190,7 @@ interface UserProfilePropsInterface extends TestableComponentInterface {
  * @param props - Props injected to the basic details component.
  * @returns The react component for the user profile.
  */
-export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
+export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = (
     props: UserProfilePropsInterface
 ): ReactElement => {
 
@@ -202,7 +208,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         editUserDisclaimerMessage,
         adminUserType = "None",
         isUserManagedByParentOrg,
-        [ "data-testid" ]: testId = "user-mgt-user-profile"
+        [ "data-componentid" ]: componentId = "user-mgt-user-profile"
     } = props;
 
     const { t } = useTranslation();
@@ -249,7 +255,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         isMobileVerificationEnabled: "false"
     });
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
-    const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ adminRoleId, setAdminRoleId ] = useState<string>("");
     const [ associationType, setAssociationType ] = useState<string>("");
@@ -269,12 +274,40 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ multiValuedInputFieldValue, setMultiValuedInputFieldValue ] = useState<Record<string, string>>({});
     const [ multiValuedAttributeValues, setMultiValuedAttributeValues ] =
         useState<Record<string, string[]>>({});
-    const [ primaryValues, setPrimaryValues ] = useState<Record<string, string>>({}); // For multi-valued attributes.
-    const [ isMultiValuedItemInvalid, setIsMultiValuedItemInvalid ] =  useState<Record<string, boolean>>({});
+    const [ primaryValues, setPrimaryValues ] = useState<Record<string, string>>({});
 
     const isMultipleEmailAndMobileNumberEnabled: boolean = useMemo(() => {
         return isMultipleEmailsAndMobileNumbersEnabled(profileInfo, profileSchema);
     }, [ profileSchema, profileInfo ]);
+
+    const countryList: DropdownItemProps[] = useMemo(() => CommonUtils.getCountryList(), []);
+
+    const supportedI18nLanguagesArray: DropdownItemProps[] = useMemo(() => {
+        return supportedI18nLanguages
+            ? Object.keys(supportedI18nLanguages).map((key: string) => ({
+                "data-componentId": `${ componentId }-profile-form-locale-dropdown-${
+                    supportedI18nLanguages[key].code }`,
+                flag: supportedI18nLanguages[key].flag ?? UserManagementConstants.GLOBE,
+                key: supportedI18nLanguages[key].code,
+                text:
+                    supportedI18nLanguages[key].name === UserManagementConstants.GLOBE
+                        ? supportedI18nLanguages[key].code
+                        : `${supportedI18nLanguages[key].name}, ${supportedI18nLanguages[key].code}`,
+                value: supportedI18nLanguages[key].code
+            }))
+            : [];
+    }, [supportedI18nLanguages]);
+
+    const hiddenSchemas: string[] = [
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("GROUPS"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD"),
+        !commonConfig.userEditSection.showEmail && ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")
+    ];
 
     useEffect(() => {
         if (connectorProperties && Array.isArray(connectorProperties) && connectorProperties?.length > 0) {
@@ -303,8 +336,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      *  .
      */
     useEffect(() => {
-        // This will load the countries to the dropdown
-        setCountryList(CommonUtils.getCountryList());
         // This will load authenticated user's association type to the current organization.
         setAssociationType(getAssociationType(authUserTenants, currentOrganization));
 
@@ -343,15 +374,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     useEffect(() => {
         mapUserToSchema(profileSchema, user);
     }, [ profileSchema, user ]);
-
-    /**
-     * This will add role attribute to countries search input to prevent autofill suggestions.
-     */
-    const onCountryRefChange: any = useCallback((node: any) => {
-        if (node !== null) {
-            node.children[0].children[1].children[0].role = "presentation";
-        }
-    }, []);
 
     /**
      * The following function maps profile details to the SCIM schemas.
@@ -772,44 +794,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
-     * The function returns the normalized format of locale.
-     *
-     * @param locale - locale value.
-     * @param localeJoiningSymbol - symbol used to join language and region parts of locale.
-     * @param updateSupportedLanguage - If supported languages needs to be updated with the given localString or not.
-     */
-    const normalizeLocaleFormat = (
-        locale: string,
-        localeJoiningSymbol: LocaleJoiningSymbol,
-        updateSupportedLanguage: boolean
-    ): string => {
-        if (!locale) {
-            return locale;
-        }
-
-        const separatorIndex: number = locale.search(/[-_]/);
-
-        let normalizedLocale: string = locale;
-
-        if (separatorIndex !== -1) {
-            const language: string = locale.substring(0, separatorIndex).toLowerCase();
-            const region: string = locale.substring(separatorIndex + 1).toUpperCase();
-
-            normalizedLocale = `${language}${localeJoiningSymbol}${region}`;
-        }
-
-        if (updateSupportedLanguage && !supportedI18nLanguages[normalizedLocale]) {
-            supportedI18nLanguages[normalizedLocale] = {
-                code: normalizedLocale,
-                name: UserManagementConstants.GLOBE,
-                namespaces: []
-            };
-        }
-
-        return normalizedLocale;
-    };
-
-    /**
      * This function returns the ID of the administrator role.
      *
      */
@@ -1041,9 +1025,25 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      *
      * @param values - submit values.
      */
-    const handleSubmit = (values: Map<string, string | string[]>): void => {
+    const handleSubmit = (formValues: ProfileInfoInterface): void => {
 
-        console.log("old-values", values);
+        console.log("structured-values", formValues);
+
+        // Process country and local value before flattening
+        const countryValue: DropdownItemProps = formValues["country"];
+        const localeValue: DropdownItemProps = formValues["locale"];
+
+        if (!isEmpty(countryValue)) {
+            formValues["country"] = countryValue.value;
+        }
+
+        if (!isEmpty(localeValue)) {
+            formValues["locale"] = localeValue.value;
+        }
+
+        const values: Map<string, string> = flattenValues(formValues);
+
+        console.log("flattened-values", values);
 
 
         const data: PatchRoleDataInterface = {
@@ -1157,7 +1157,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             ? { [schemaNames[0]]: normalizeLocaleFormat(
                                                 values.get(schemaNames[0]) as string,
                                                 LocaleJoiningSymbol.UNDERSCORE,
-                                                false
+                                                false,
+                                                supportedI18nLanguages
                                             ) }
                                             : { [schemaNames[0]]: values.get(schemaNames[0]) };
                                 }
@@ -1334,7 +1335,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             ? { [schemaNames[0]]: normalizeLocaleFormat(
                                                 values.get(schemaNames[0]) as string,
                                                 LocaleJoiningSymbol.UNDERSCORE,
-                                                false
+                                                false,
+                                                supportedI18nLanguages
                                             ) }
                                             : { [schemaNames[0]]: values.get(schemaNames[0]) };
                                 }
@@ -1398,6 +1400,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 data.Operations.push(operation);
             });
         }
+
+        console.log("new-data", data);
+
+
+        return
 
         setIsSubmitting(true);
 
@@ -1614,7 +1621,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                 <Show when={ featureConfig?.users?.scopes?.update }>
                                                     { isSetPassword ? (
                                                         <DangerZone
-                                                            data-testid={ `${ testId }-set-password` }
+                                                            data-componentId={ `${ componentId }-set-password` }
                                                             actionTitle={ t("user:editUser." +
                                                                 "dangerZoneGroup.passwordSetZone.actionTitle") }
                                                             header={ t("user:editUser." +
@@ -1627,7 +1634,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                         />
                                                     ) : (
                                                         <DangerZone
-                                                            data-testid={ `${ testId }-change-password` }
+                                                            data-componentId={ `${ componentId }-change-password` }
                                                             actionTitle={ t("user:editUser." +
                                                                 "dangerZoneGroup.passwordResetZone.actionTitle") }
                                                             header={ t("user:editUser." +
@@ -1652,7 +1659,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         !allowDeleteOnly && configSettings?.accountDisable === "true" && (
                                             <DangerZone
-                                                data-testid={ `${ testId }-account-disable-button` }
+                                                data-componentId={ `${ componentId }-account-disable-button` }
                                                 actionTitle={ t("user:editUser." +
                                                 "dangerZoneGroup.disableUserZone.actionTitle") }
                                                 header={ t("user:editUser.dangerZoneGroup." +
@@ -1671,7 +1678,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         !allowDeleteOnly && !isUserManagedByParentOrg  && (
                                             <DangerZone
-                                                data-testid={ `${ testId }-danger-zone-toggle` }
+                                                data-componentId={ `${ componentId }-danger-zone-toggle` }
                                                 actionTitle={ t("user:editUser." +
                                                     "dangerZoneGroup.lockUserZone.actionTitle") }
                                                 header={
@@ -1700,7 +1707,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     associationType !== UserManagementConstants.GUEST_ADMIN_ASSOCIATION_TYPE &&
                                     (
                                         <DangerZone
-                                            data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
+                                            data-componentId={ `${ componentId }-revoke-admin-privilege-danger-zone` }
                                             actionTitle={ t("user:editUser.dangerZoneGroup." +
                                             "deleteAdminPriviledgeZone.actionTitle") }
                                             header={ t("user:editUser.dangerZoneGroup." +
@@ -1715,7 +1722,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     )
                                     }
                                     <DangerZone
-                                        data-testid={ `${ testId }-danger-zone` }
+                                        data-componentId={ `${ componentId }-danger-zone` }
                                         actionTitle={ t("user:editUser.dangerZoneGroup." +
                                         "deleteUserZone.actionTitle") }
                                         header={ t("user:editUser.dangerZoneGroup." +
@@ -1740,169 +1747,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         ) : null }
             </>
         );
-    };
-
-    /**
-     * Delete a multi-valued item.
-     *
-     * @param schema - schema of the attribute
-     * @param attributeValue - value of the attribute
-     */
-    const handleMultiValuedItemDelete = (schema: ProfileSchemaInterface, attributeValue: string) => {
-
-        const filteredValues: string[] =
-            multiValuedAttributeValues[schema?.name]?.filter((value: string) => value !== attributeValue) || [];
-
-        setMultiValuedAttributeValues((prevValues: Record<string, string[]>) => ({
-            ...prevValues,
-            [schema.name]: filteredValues
-        }));
-
-        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            if (primaryValues[EMAIL_ATTRIBUTE] === attributeValue) {
-                setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
-                    ...prevPrimaryValues,
-                    [EMAIL_ATTRIBUTE]: ""
-                }));
-            }
-        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            if (primaryValues[MOBILE_ATTRIBUTE] === attributeValue) {
-                setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
-                    ...prevPrimaryValues,
-                    [MOBILE_ATTRIBUTE]: ""
-                }));
-            }
-        }
-
-        setIsFormStale(true);
-    };
-
-    /**
-     * Verify an email address or mobile number.
-     *
-     * @param schema - Schema of the attribute
-     * @param attributeValue - Value of the attribute
-     */
-    const handleVerify = (schema: ProfileSchemaInterface, attributeValue: string) => {
-        setIsSubmitting(true);
-        const data: PatchOperationRequest<PatchUserOperationValue> = {
-            Operations: [
-                {
-                    op: "replace",
-                    value: {}
-                }
-            ],
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
-        };
-        let translationKey: string = "";
-
-        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            translationKey = "user:profile.notifications.verifyEmail.";
-            const verifiedEmailList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
-                get("VERIFIED_EMAIL_ADDRESSES"))?.split(",") || [];
-
-            verifiedEmailList.push(attributeValue);
-            data.Operations[0].value = {
-                [schema.schemaId]: {
-                    [VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE]:
-                        verifiedEmailList
-                }
-            };
-        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            translationKey = "user:profile.notifications.verifyMobile.";
-            const verifiedMobileList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
-                get("VERIFIED_MOBILE_NUMBERS"))?.split(",") || [];
-
-            verifiedMobileList.push(attributeValue);
-            data.Operations[0].value = {
-                [schema.schemaId]: {
-                    [VERIFIED_MOBILE_NUMBERS_ATTRIBUTE]:
-                        verifiedMobileList
-                }
-            };
-        }
-
-        setIsSubmitting(true);
-        updateUserInfo(user.id, data)
-            .then(() => {
-                onAlertFired({
-                    description: t(
-                        `${translationKey}success.description`
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        `${translationKey}success.message`
-                    )
-                });
-
-                handleUserUpdate(user.id);
-            })
-            .catch((error: AxiosError) => {
-                if (error?.response?.data?.detail || error?.response?.data?.description) {
-                    dispatch(addAlert({
-                        description: error?.response?.data?.detail || error?.response?.data?.description,
-                        level: AlertLevels.ERROR,
-                        message: `${translationKey}error.message`
-                    }));
-
-                    return;
-                }
-                dispatch(addAlert({
-                    description: t(`${translationKey}genericError.description`),
-                    level: AlertLevels.ERROR,
-                    message: t(`${translationKey}genericError.message`)
-                }));
-            })
-            .finally(() => {
-                setIsSubmitting(false);
-            });
-    };
-
-    /**
-     * Assign primary email address or mobile number the multi-valued attribute.
-     *
-     * @param schemaName - Name of the primary attribute schema.
-     * @param attributeValue - Value of the attribute
-     */
-    const handleMakePrimary = (schemaName: string, attributeValue: string) => {
-
-        setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
-            ...prevPrimaryValues,
-            [schemaName]: attributeValue
-        }));
-        setIsFormStale(true);
-    };
-
-    /**
-     * Handle the add multi-valued attribute item.
-     *
-     * @param schema - Schema of the attribute
-     * @param attributeValue - Value of the attribute
-     */
-    const handleAddMultiValuedItem = (schema: ProfileSchemaInterface, attributeValue: string) => {
-
-        if (isEmpty(attributeValue)) return;
-
-        setMultiValuedAttributeValues((prevValues: Record<string, string[]>) => ({
-            ...prevValues,
-            [schema.name]: [ ...(prevValues[schema.name] || []), attributeValue ]
-        }));
-
-        const updatePrimaryValue = (primaryKey: string) => {
-            if (isEmpty(primaryValues[primaryKey])) {
-                setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
-                    ...prevPrimaryValues,
-                    [primaryKey]: attributeValue
-                }));
-            }
-        };
-
-        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            updatePrimaryValue(EMAIL_ATTRIBUTE);
-        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            updatePrimaryValue(MOBILE_ATTRIBUTE);
-        }
-        setIsFormStale(true);
     };
 
     const resolveMultiValuedAttributesFormField = (
@@ -1947,595 +1791,34 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             maxAllowedLimit = ProfileConstants.MAX_MULTI_VALUES_ALLOWED;
         }
 
-        const showAccordion: boolean = attributeValueList.length >= 1;
-
-        const showVerifiedPopup = (value: string): boolean => {
-            return verificationEnabled &&
-                (verifiedAttributeValueList.includes(value) || value === fetchedPrimaryAttributeValue);
-        };
-
-        const showPrimaryPopup = (value: string): boolean => {
-            if (isEmpty(primaryAttributeValue)) {
-                return false;
-            }
-            if (verificationEnabled && !verifiedAttributeValueList.includes(value)) {
-                return value === fetchedPrimaryAttributeValue;
-            }
-
-            return value === primaryAttributeValue;
-        };
-
-        const showPendingVerificationPopup = (value: string): boolean => {
-            return verificationEnabled
-                && !isEmpty(verificationPendingValue)
-                && !verifiedAttributeValueList.includes(value)
-                && verificationPendingValue === value;
-        };
-
-        const showMakePrimaryButton = (value: string): boolean => {
-            if (isEmpty(primaryAttributeValue)) {
-                return false;
-            }
-            if (verificationEnabled) {
-                return verifiedAttributeValueList.includes(value) && value !== primaryAttributeValue;
-            }
-
-            return value !== primaryAttributeValue;
-        };
-
-        const showVerifyButton = (value: string): boolean =>
-            schema.name === EMAIL_ADDRESSES_ATTRIBUTE
-            && verificationEnabled
-            && !(verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
-
-        const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
-        const resolvedMultiValueAttributeRequiredValue: boolean
-            = schema?.profiles?.console?.required ?? schema.required;
-        const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
-        const resolvedPrimarySchemaRequiredValue: boolean
-            = primaryAttributeSchema?.profiles?.console?.required ?? primaryAttributeSchema?.required;
-        const resolvedRequiredValue: boolean = (resolvedMultiValueAttributeRequiredValue
-            || resolvedPrimarySchemaRequiredValue);
-
-        const showDeleteButton = (value: string): boolean => {
-            return !(value === primaryAttributeValue && resolvedPrimarySchemaRequiredValue);
-        };
+        const showAttributes: boolean = attributeValueList.length >= 1;
 
         return (
-            <div key={ key }>
-                <Field
-                    action={ {
-                        icon: "plus",
-                        onClick: (event: React.MouseEvent) => {
-                            event.preventDefault();
-                            const value: string = multiValuedInputFieldValue[schema.name];
-
-                            if (isMultiValuedItemInvalid[schema.name] || isEmpty(value)
-                                || multiValuedAttributeValues[schema.name]?.includes(value)
-                            ) return;
-                            handleAddMultiValuedItem(schema, value);
-                            setMultiValuedInputFieldValue({
-                                ...multiValuedInputFieldValue,
-                                [schema.name]: ""
-                            });
-                        }
-                    } }
-                    disabled={ isSubmitting
-                        || isReadOnly
-                        || multiValuedAttributeValues[schema?.name]?.length >= maxAllowedLimit
-                    }
-                    data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
-                    name={ schema.name }
-                    label={ schema.name === "profileUrl" ? "Profile Image URL" :
-                        (  (!commonConfig.userEditSection.showEmail && schema.name === "userName")
-                            ? fieldName +" (Email)"
-                            : fieldName
-                        )
-                    }
-                    placeholder={ "Enter your" + " " + fieldName }
-                    type="text"
-                    value={ multiValuedInputFieldValue[schema.name] }
-                    readOnly={ (isUserManagedByParentOrg &&
-                        sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                        || isReadOnly
-                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
-                    }
-                    required={ !(isUserManagedByParentOrg &&
-                        sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                       && resolvedRequiredValue && isEmpty(multiValuedAttributeValues[schema?.name]) }
-                    requiredErrorMessage={ t("user:profile.forms.generic.inputs.validations.empty", { fieldName }) }
-                    validation={ (value: string, validation: Validation) => {
-                        if (isEmpty(value) && resolvedRequiredValue
-                            && isEmpty(multiValuedAttributeValues[schema?.name])) {
-                            setIsMultiValuedItemInvalid({
-                                ...isMultiValuedItemInvalid,
-                                [schema.name]: true
-                            });
-                            validation.isValid = false;
-                            validation.errorMessages
-                                .push(t("user:profile.forms.generic.inputs.validations.empty", { fieldName }));
-                        }
-
-                        if (!RegExp(primaryAttributeSchema?.regEx).test(value)) {
-                            setIsMultiValuedItemInvalid({
-                                ...isMultiValuedItemInvalid,
-                                [schema.name]: true
-                            });
-                            validation.isValid = false;
-                            validation.errorMessages
-                                .push(t("users:forms.validation.formatError", {
-                                    field: fieldName
-                                }));
-                        } else {
-                            setIsMultiValuedItemInvalid({
-                                ...isMultiValuedItemInvalid,
-                                [schema.name]: false
-                            });
-                        }
-                    } }
-                    displayErrorOn="blur"
-                    listen={ (values: ProfileInfoInterface) => {
-                        setMultiValuedInputFieldValue({
-                            ...multiValuedInputFieldValue,
-                            [schema.name]: values.get(schema.name)
-                        });
-                    } }
-                    maxLength={
-                        fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url")
-                            ? ProfileConstants.URI_CLAIM_VALUE_MAX_LENGTH
-                            : (
-                                schema.maxLength
-                                    ? schema.maxLength
-                                    : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
-                            )
-                    }
-                    controlled
-                />
-                <div hidden={ !showAccordion }>
-                    <TableContainer
-                        component={ Paper }
-                        elevation={ 0 }
-                        data-componentid={ `${testId}-profile-form-${schema.name}-accordion` }
-                    >
-                        <Table
-                            className="multi-value-table"
-                            size="small"
-                            aria-label="multi-attribute value table"
-                        >
-                            <TableBody>
-                                { multiValuedAttributeValues[schema?.name]?.map(
-                                    (value: string, index: number) => (
-                                        <TableRow key={ index } className="multi-value-table-data-row">
-                                            <TableCell align="left">
-                                                <div className="table-c1">
-                                                    <label
-                                                        className="c1-value"
-                                                        data-componentid={
-                                                            `${testId}-profile-form-${schema.name}` +
-                                                                    `-value-${index}`
-                                                        }
-                                                    >
-                                                        { value }
-                                                    </label>
-                                                    {
-                                                        showVerifiedPopup(value)
-                                                                && (
-                                                                    <div
-                                                                        className="verified-icon"
-                                                                        data-componentid={
-                                                                            `${testId}-profile-form-${schema.name}` +
-                                                                            `-verified-icon-${index}`
-                                                                        }
-                                                                    >
-                                                                        <Popup
-                                                                            name="verified-popup"
-                                                                            size="tiny"
-                                                                            trigger={
-                                                                                (
-                                                                                    <Icon
-                                                                                        name="check"
-                                                                                        color="green"
-                                                                                    />
-                                                                                )
-                                                                            }
-                                                                            header= { t("common:verified") }
-                                                                            inverted
-                                                                        />
-                                                                    </div>
-                                                                )
-                                                    }
-                                                    {
-                                                        showPrimaryPopup(value)
-                                                                && (
-                                                                    <div
-                                                                        data-componentid={
-                                                                            `${testId}-profile-form-${schema.name}` +
-                                                                            `-primary-icon-${index}`
-                                                                        }
-                                                                    >
-                                                                        <Chip
-                                                                            label={ t("common:primary") }
-                                                                            size="medium"
-                                                                        />
-                                                                    </div>
-                                                                )
-                                                    }
-                                                    {
-                                                        showPendingVerificationPopup(value)
-                                                            && (
-                                                                <div
-                                                                    className="verified-icon"
-                                                                    data-componentid={
-                                                                        `${testId}-profile-form-${schema.name}` +
-                                                                        `-pending-verification-icon-${index}`
-                                                                    }
-                                                                >
-                                                                    <Popup
-                                                                        name="pending-verification-popup"
-                                                                        size="tiny"
-                                                                        trigger={
-                                                                            (
-                                                                                <Icon
-                                                                                    name="info circle"
-                                                                                    color="yellow"
-                                                                                />
-                                                                            )
-                                                                        }
-                                                                        header= { t("user:profile.tooltips." +
-                                                                            "confirmationPending") }
-                                                                        inverted
-                                                                    />
-                                                                </div>
-                                                            )
-                                                    }
-                                                </div>
-                                            </TableCell>
-                                            <TableCell align="right">
-                                                <div className="table-c2">
-                                                    { showVerifyButton(value) && (
-                                                        <OxygenButton
-                                                            variant="text"
-                                                            size="small"
-                                                            className="text-btn"
-                                                            onClick={ () => handleVerify(schema, value) }
-                                                            data-componentid={
-                                                                `${testId}-profile-form` +
-                                                                        `-${schema.name}-verify-button-${index}`
-                                                            }
-                                                            disabled={ isSubmitting || isReadOnly }
-                                                        >
-                                                            { t("common:verify") }
-                                                        </OxygenButton>
-                                                    ) }
-                                                    { showMakePrimaryButton(value) && (
-                                                        <OxygenButton
-                                                            variant="text"
-                                                            size="small"
-                                                            className="text-btn"
-                                                            onClick={ () =>
-                                                                handleMakePrimary(primaryAttributeSchema?.name, value)
-                                                            }
-                                                            data-componentid={
-                                                                `${testId}-profile-form` +
-                                                                        `-${schema.name}-make-primary-button-${index}`
-                                                            }
-                                                            disabled={ isSubmitting || isReadOnly }
-                                                        >
-                                                            { t("common:makePrimary") }
-                                                        </OxygenButton>
-                                                    ) }
-                                                    <IconButton
-                                                        size="small"
-                                                        hidden={ !showDeleteButton(value) }
-                                                        onClick={ () => {
-                                                            handleMultiValuedItemDelete(schema, value);
-                                                        } }
-                                                        data-componentid={
-                                                            `${testId}-profile-form` +
-                                                                    `-${schema.name}-delete-button-${index}`
-                                                        }
-                                                        disabled={ isSubmitting || isReadOnly }
-                                                    >
-                                                        <Popup
-                                                            trigger={ (
-                                                                <Icon name="trash alternate" />
-                                                            ) }
-                                                            header={ t("common:delete") }
-                                                            size="tiny"
-                                                            inverted
-                                                        />
-                                                    </IconButton>
-                                                </div>
-                                            </TableCell>
-                                        </TableRow>
-                                    )
-                                ) }
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
-            </div>
+            <MultiValuedFormFields
+                schema={ schema }
+                fieldName={ fieldName }
+                key={ key }
+                isUserManagedByParentOrg={ isUserManagedByParentOrg }
+                profileInfo={ profileInfo }
+                user={ user }
+                multiValuedAttributeValues={ multiValuedAttributeValues }
+                setMultiValuedAttributeValues={ setMultiValuedAttributeValues }
+                verificationEnabled={ verificationEnabled }
+                verificationPendingValue={ verificationPendingValue }
+                verifiedAttributeValueList={ verifiedAttributeValueList }
+                primaryValues={ primaryValues }
+                setPrimaryValues={ setPrimaryValues }
+                primaryAttributeValue={ primaryAttributeValue }
+                primaryAttributeSchema={ primaryAttributeSchema }
+                fetchedPrimaryAttributeValue= { fetchedPrimaryAttributeValue }
+                handleUserUpdate={ handleUserUpdate }
+                multiValuedInputFieldValue={ multiValuedInputFieldValue }
+                showAttributes={ showAttributes }
+                maxAllowedLimit={ maxAllowedLimit }
+                setIsFormStale={ setIsFormStale }
+                isReadOnly={ isReadOnly }
+            />
         );
-    };
-
-    /**
-     * Resolves the required value of the attribute based on the shared profile value resolving method
-     * and the schema.
-     *
-     * @param schema - Schema of the attribute.
-     * @param sharedProfileValueResolvingMethod - Shared profile value resolving method of the attribute.
-     * @returns True if the attribute is required.
-     */
-    const resolveRequiredValue = (
-        schema: ProfileSchemaInterface,
-        sharedProfileValueResolvingMethod: string
-    ): boolean => {
-
-        if (isUserManagedByParentOrg &&
-            sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN) {
-            return false;
-        }
-
-        return schema?.profiles?.console?.required ?? schema.required;
-    };
-
-    const resolveFormField = (schema: ProfileSchemaInterface, fieldName: string, key: number): ReactElement => {
-        const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
-        const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
-        const resolvedRequiredValue: boolean = resolveRequiredValue(schema, sharedProfileValueResolvingMethod);
-
-        if (schema.type.toUpperCase() === "BOOLEAN") {
-            return (
-                <Field
-                    data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
-                    name={ schema.name }
-                    required={ resolvedRequiredValue }
-                    requiredErrorMessage={ fieldName + " " + "is required" }
-                    type="checkbox"
-                    value={ profileInfo.get(schema.name) ? [ schema.name ] : [] }
-                    children={ [
-                        {
-                            label: fieldName,
-                            value: schema.name
-                        }
-                    ] }
-                    readOnly={ (isUserManagedByParentOrg &&
-                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                        || isReadOnly
-                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
-                    }
-                    key={ key }
-                />
-            );
-        } else if (schema.name === "country") {
-            return (
-                <Field
-                    ref = { onCountryRefChange }
-                    data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
-                    name={ schema.name }
-                    label={ fieldName }
-                    required={ resolvedRequiredValue }
-                    requiredErrorMessage={ fieldName + " " + "is required" }
-                    placeholder={ "Select your" + " " + fieldName }
-                    type="dropdown"
-                    value={ profileInfo.get(schema.name) }
-                    children={ [ {
-                        "data-testid": `${ testId }-profile-form-country-dropdown-empty` as string,
-                        key: "empty-country" as string,
-                        text: "Select your country" as string,
-                        value: "" as string
-                    } ].concat(
-                        countryList
-                            ? countryList.map((list: DropdownItemProps) => {
-                                return {
-                                    "data-testid": `${ testId }-profile-form-country-dropdown-` +  list.value as string,
-                                    flag: list.flag,
-                                    key: list.key as string,
-                                    text: list.text as string,
-                                    value: list.value as string
-                                };
-                            })
-                            : []
-                    ) }
-                    key={ key }
-                    disabled={ (isUserManagedByParentOrg &&
-                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                        || isReadOnly
-                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
-                    }
-                    readOnly={ (isUserManagedByParentOrg &&
-                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                        || isReadOnly
-                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
-                    }
-                    clearable={ !resolvedRequiredValue }
-                    search
-                    selection
-                    fluid
-                />
-            );
-        } else if (schema?.name === "locale") {
-            return (
-                <Field
-                    data-testid={ `${ testId }-profile-form-${ schema?.name }-input` }
-                    name={ schema?.name }
-                    label={ fieldName }
-                    required={ resolvedRequiredValue }
-                    requiredErrorMessage={
-                        t("user:profile.forms.generic.inputs.validations.empty", { fieldName })
-                    }
-                    placeholder={
-                        t("user:profile.forms.generic.inputs.dropdownPlaceholder",
-                            { fieldName })
-                    }
-                    type="dropdown"
-                    value={ normalizeLocaleFormat(profileInfo.get(schema?.name), LocaleJoiningSymbol.HYPHEN, true) }
-                    children={ [ {
-                        "data-testid": `${ testId }-profile-form-locale-dropdown-empty` as string,
-                        key: "empty-locale" as string,
-                        text: t("user:profile.forms.generic.inputs.dropdownPlaceholder",
-                            { fieldName }) as string,
-                        value: "" as string
-                    } ].concat(
-                        supportedI18nLanguages
-                            ? Object.keys(supportedI18nLanguages).map((key: string) => {
-                                return {
-                                    "data-testid": `${ testId }-profile-form-locale-dropdown-`
-                                        +  supportedI18nLanguages[key].code as string,
-                                    flag: supportedI18nLanguages[key].flag ?? UserManagementConstants.GLOBE,
-                                    key: supportedI18nLanguages[key].code as string,
-                                    text: supportedI18nLanguages[key].name === UserManagementConstants.GLOBE
-                                        ? supportedI18nLanguages[key].code
-                                        : `${supportedI18nLanguages[key].name as string},
-                                            ${supportedI18nLanguages[key].code as string}`,
-                                    value: supportedI18nLanguages[key].code as string
-                                };
-                            })
-                            : []
-                    ) }
-                    key={ key }
-                    disabled={ false }
-                    readOnly={ (isUserManagedByParentOrg &&
-                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                        || isReadOnly
-                        || schema?.mutability === ProfileConstants.READONLY_SCHEMA
-                    }
-                    clearable={ !resolvedRequiredValue }
-                    search
-                    selection
-                    fluid
-                />
-            );
-        } else if (schema?.extended && schema?.multiValued) {
-            return resolveMultiValuedAttributesFormField(schema, fieldName, key);
-        } else if (schema?.name === "dateOfBirth") {
-            return (
-                <Field
-                    data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
-                    name={ schema.name }
-                    label={ fieldName }
-                    required={ resolvedRequiredValue }
-                    requiredErrorMessage={ fieldName + " is required" }
-                    placeholder="YYYY-MM-DD"
-                    type="text"
-                    value={ profileInfo.get(schema.name) }
-                    key={ key }
-                    readOnly={ (isUserManagedByParentOrg &&
-                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                        || isReadOnly
-                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
-                    }
-                    validation={ (value: string, validation: Validation) => {
-                        if (!RegExp(schema.regEx).test(value)) {
-                            validation.isValid = false;
-                            validation.errorMessages
-                                .push(t("users:forms.validation.dateFormatError", {
-                                    field: fieldName
-                                }));
-                        }
-                    } }
-                    maxLength={ schema.maxLength
-                        ? schema.maxLength
-                        : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
-                    }
-                />
-            );
-        } else if (schema?.name === EMAIL_ATTRIBUTE || schema?.name === MOBILE_ATTRIBUTE) {
-            let isVerificationPending: boolean = false;
-            let initialValue: string = profileInfo.get(schema?.name);
-
-            if (schema?.name === EMAIL_ATTRIBUTE) {
-                isVerificationPending = configSettings?.isEmailVerificationEnabled === "true"
-                    && !isEmpty(getVerificationPendingAttributeValue(EMAIL_ATTRIBUTE));
-            } else {
-                isVerificationPending = configSettings?.isMobileVerificationEnabled === "true"
-                    && !isEmpty(getVerificationPendingAttributeValue(MOBILE_ATTRIBUTE));
-            }
-
-            if (isVerificationPending) {
-                initialValue = getVerificationPendingAttributeValue(schema?.name);
-            }
-
-            return (
-                <Field
-                    data-testid={ `${testId}-profile-form-${schema.name}-input` }
-                    name={ schema.name }
-                    label={ fieldName }
-                    icon={ isVerificationPending
-                        ? generatePendingVerificationTooltip()
-                        : null }
-                    required={ resolvedRequiredValue }
-                    requiredErrorMessage={ fieldName + " is required" }
-                    placeholder={ "Enter your " + fieldName }
-                    type="text"
-                    value={ initialValue }
-                    key={ key }
-                    disabled={ schema.name === "userName" }
-                    readOnly={ (isUserManagedByParentOrg &&
-                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                        || isReadOnly
-                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
-                    }
-                    validation={ (value: string, validation: Validation) => {
-                        if (!RegExp(schema.regEx).test(value)) {
-                            validation.isValid = false;
-                            validation.errorMessages
-                                .push(t("users:forms.validation.formatError", {
-                                    field: fieldName
-                                }));
-                        }
-                    } }
-                    maxLength={
-                        schema.maxLength
-                            ? schema.maxLength
-                            : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
-                    }
-                />
-            );
-        } else {
-            return (
-                <Field
-                    data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
-                    name={ schema.name }
-                    label={ schema.name === "profileUrl" ? "Profile Image URL" :
-                        (  (!commonConfig.userEditSection.showEmail && schema.name === "userName")
-                            ? fieldName + " (Email)"
-                            : fieldName
-                        )
-                    }
-                    required={ resolvedRequiredValue }
-                    requiredErrorMessage={ fieldName + " is required" }
-                    placeholder={ "Enter your " + fieldName }
-                    type="text"
-                    value={ profileInfo.get(schema.name) }
-                    key={ key }
-                    disabled={ schema.name === "userName" }
-                    readOnly={ (isUserManagedByParentOrg &&
-                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                        || isReadOnly
-                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
-                    }
-                    validation={ (value: string, validation: Validation) => {
-                        if (!RegExp(schema.regEx).test(value)) {
-                            validation.isValid = false;
-                            validation.errorMessages
-                                .push(t("users:forms.validation.formatError", {
-                                    field: fieldName
-                                }));
-                        }
-                    } }
-                    maxLength={
-                        fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url")
-                            ? ProfileConstants.URI_CLAIM_VALUE_MAX_LENGTH
-                            : (
-                                schema.maxLength
-                                    ? schema.maxLength
-                                    : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
-                            )
-                    }
-                />
-            );
-        }
     };
 
     /**
@@ -2582,6 +1865,47 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
+     * Form validator to validate the value against the schema regex.
+     * @param value - Input value.
+     * @returns An error if the value is not valid else undefined.
+     */
+    const validateInput = async (
+        value: string,
+        schema: ProfileSchemaInterface,
+        fieldName: string,
+        required: boolean = false
+    ):
+        Promise<string | undefined> => {
+        if (required && isEmpty(value) ) {
+            console.log("required", value);
+
+            return t("user:profile.forms.validation.empty", { field: fieldName });
+        }
+
+        if (!value) {
+            return undefined;
+        }
+
+        if (!RegExp(schema.regEx).test(value)) {
+            return (
+                t("users:forms.validation.dateFormatError", { field: fieldName })
+            );
+        }
+    };
+
+    const generatePendingVerificationTooltip = (): ReactNode => (
+        <Tooltip
+            title={ t("user:profile.tooltips.confirmationPending") }
+            data-componentid={ `${ componentId }-profile-form-email-pending-verification-icon` }
+            placement="top"
+        >
+            <span>
+                <CircleInfoIcon />
+            </span>
+        </Tooltip>
+    );
+
+    /**
      * This function generates the user profile details form based on the input Profile Schema
      *
      * @param schema - The profile schema to be used to generate the form.
@@ -2615,101 +1939,356 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         const domainName: string[] = profileInfo?.get(schema.name)?.toString().split("/");
         const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
-        const resolvedRequiredValue: boolean = schema?.profiles?.console?.required ?? schema.required;
+        const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
+        const resolvedComponentId: string = `${ componentId }-${ schema.name }-input`;
+
+        const resolvedRequiredValue = (): boolean => {
+            if (isUserManagedByParentOrg &&
+                sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN) {
+                return false;
+            }
+
+            return schema?.profiles?.console?.required ?? schema.required;
+        };
+
+        if (schema.name === "userName" && domainName?.length > 1) {
+            if ( adminUserType === "internal" ) {
+                return (
+                    <>
+                        <FinalFormField
+                            data-componentId={ `${ componentId }-profile-form-${ schema.name }-input` }
+                            key={ key }
+                            ariaLabel="userID"
+                            data-componentid={ `${componentId}-userID` }
+                            required={ resolvedRequiredValue }
+                            name={ schema.name }
+                            type="text"
+                            label={ !commonConfig.userEditSection.showEmail
+                                ? fieldName + " (Email)"
+                                : fieldName
+                            }
+                            placeholder={ "Enter your" + " " + fieldName }
+                            component={ TextFieldAdapter }
+                            minLength={ 0 }
+                            maxLength={
+                                schema.maxLength
+                                    ? schema.maxLength
+                                    : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                            }
+                            readOnly={ true }
+                            initialValue={ domainName[1] }
+                        />
+                        <Divider hidden/>
+                    </>
+                );
+            }
+
+            return (
+                <>
+                    <FinalFormField
+                        data-componentId={ `${ componentId }-profile-form-${ schema.name }-input` }
+                        key={ key }
+                        ariaLabel="userID"
+                        data-componentid={ `${componentId}-userID` }
+                        required={ resolvedRequiredValue }
+                        name={ schema.name }
+                        type="text"
+                        label={ !commonConfig.userEditSection.showEmail
+                            ? fieldName + " (Email)"
+                            : fieldName
+                        }
+                        placeholder={ "Enter your" + " " + fieldName }
+                        component={ TextFieldAdapter }
+                        minLength={ 0 }
+                        maxLength={
+                            schema.maxLength
+                                ? schema.maxLength
+                                : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                        }
+                        readOnly={ isReadOnly ||
+                            resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
+                        initialValue={ domainName[1] }
+                    />
+                    <Divider hidden/>
+                </>
+            );
+        }
+
+        if (schema.type.toUpperCase() === "BOOLEAN") {
+            return (
+                <>
+                    <FinalFormField
+                        key={ key }
+                        component={ CheckboxFieldAdapter }
+                        data-componentid={ resolvedComponentId }
+                        initialValue={ profileInfo.get(schema.name).toUpperCase() === "TRUE" }
+                        ariaLabel={ fieldName }
+                        label={ fieldName }
+                        name={ schema.name }
+                        readOnly={ (isUserManagedByParentOrg &&
+                            sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                            || isReadOnly
+                            || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                        }
+                        required={ resolvedRequiredValue }
+                    />
+                    <Divider hidden/>
+                </>
+            );
+        }
+
+        if (schema?.extended && schema?.multiValued) {
+            return resolveMultiValuedAttributesFormField(schema, fieldName, key);
+        }
+
+        if (schema.name === "country") {
+            const selectedCountry: DropdownItemProps = countryList.find(
+                (country: DropdownItemProps) =>
+                    country.value === profileInfo.get(schema.name)
+            );
+
+            return (
+                <>
+                    <FinalFormField
+                        key={ key }
+                        component={ AutocompleteFieldAdapter }
+                        data-componentid={ resolvedComponentId }
+                        initialValue={ selectedCountry }
+                        ariaLabel={ fieldName }
+                        name={ schema.name }
+                        label={ fieldName }
+                        placeholder={
+                            t("user:profile.forms.generic.inputs.dropdownPlaceholder",
+                                { fieldName })
+                        }
+                        options={ countryList }
+                        getOptionLabel={ (option: DropdownItemProps) => option.value }
+                        renderOption={ (props: any, option: DropdownItemProps)  => {
+                            const { key, ...optionProps } = props;
+
+                            return (
+                                <ListItem
+                                    key={ key }
+                                    data-componentid={ `${ componentId }-profile-form-country-dropdown-${
+                                        option.value }` }
+                                    { ...optionProps }
+                                >
+                                    <ListItemIcon>
+                                        <Flag countryCode={ option.flag as string } />
+                                    </ListItemIcon>
+                                    <ListItemText>
+                                        { option.text }
+                                    </ListItemText>
+                                </ListItem>
+                            );
+                        } }
+                        isOptionEqualToValue={
+                            (option: DropdownItemProps, value: DropdownItemProps) =>
+                                option.value === value.value
+                        }
+                        readOnly={ (isUserManagedByParentOrg &&
+                            sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                            || isReadOnly
+                            || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                        }
+                        required={ resolvedRequiredValue }
+                        disableClearable={ resolvedRequiredValue }
+                    />
+                    <Divider hidden/>
+                </>
+            );
+        }
+
+        if (schema?.name === "locale") {
+            const normalizedLocale: string = normalizeLocaleFormat(profileInfo.get(schema?.name),
+                LocaleJoiningSymbol.HYPHEN, true, supportedI18nLanguages);
+
+            const selectedLocale: DropdownItemProps = supportedI18nLanguagesArray.find(
+                (locale: DropdownItemProps) =>
+                    locale.value === normalizedLocale
+            );
+
+            return (
+                <>
+                    <FinalFormField
+                        key={ key }
+                        component={ AutocompleteFieldAdapter }
+                        data-componentid={ resolvedComponentId }
+                        initialValue={ selectedLocale }
+                        ariaLabel={ fieldName }
+                        name={ schema.name }
+                        label={ fieldName }
+                        placeholder={
+                            t("user:profile.forms.generic.inputs.dropdownPlaceholder",
+                                { fieldName })
+                        }
+                        options={ supportedI18nLanguagesArray }
+                        getOptionLabel={ (option: DropdownItemProps) => option.text }
+                        renderOption={ (props: any, option: DropdownItemProps)  => {
+                            const { key, ...optionProps } = props;
+
+                            return (
+                                <ListItem
+                                    key={ key }
+                                    data-componentid={ `${ componentId }-profile-form-locale-dropdown-${
+                                        option.value }` }
+                                    { ...optionProps }
+                                >
+                                    <ListItemIcon>
+                                        <Flag countryCode={ option.flag as string } />
+                                    </ListItemIcon>
+                                    <ListItemText>
+                                        { option.text }
+                                    </ListItemText>
+                                </ListItem>
+                            );
+                        } }
+                        isOptionEqualToValue={
+                            (option: DropdownItemProps, value: DropdownItemProps) =>
+                                option.text === value.text
+                        }
+                        readOnly={ (isUserManagedByParentOrg &&
+                            sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                            || isReadOnly
+                            || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                        }
+                        required={ resolvedRequiredValue }
+                        disableClearable={ resolvedRequiredValue }
+                    />
+                    <Divider hidden/>
+                </>
+            );
+        }
+
+        if (schema?.name === "dateOfBirth") {
+            return (
+                <>
+                    <FinalFormField
+                        key={ key }
+                        component={ TextFieldAdapter }
+                        data-componentid={ resolvedComponentId }
+                        initialValue={ profileInfo.get(schema.name) }
+                        ariaLabel={ fieldName }
+                        name={ schema.name }
+                        label={ fieldName }
+                        placeholder="YYYY-MM-DD"
+                        type="date"
+                        validate={ (value: string) => validateInput(value, schema, fieldName) }
+                        maxLength={ schema.maxLength
+                            ? schema.maxLength
+                            : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                        }
+                        readOnly={ (isUserManagedByParentOrg &&
+                            sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                            || isReadOnly
+                            || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                        }
+                        required={ resolvedRequiredValue }
+
+                    />
+                    <Divider hidden/>
+                </>
+            );
+        }
+
+        if (schema?.name === EMAIL_ATTRIBUTE || schema?.name === MOBILE_ATTRIBUTE) {
+            let isVerificationPending: boolean = false;
+            let initialValue: string = profileInfo.get(schema?.name);
+
+            if (schema?.name === EMAIL_ATTRIBUTE) {
+                isVerificationPending = configSettings?.isEmailVerificationEnabled === "true"
+                    && !isEmpty(getVerificationPendingAttributeValue(EMAIL_ATTRIBUTE));
+            } else {
+                isVerificationPending = configSettings?.isMobileVerificationEnabled === "true"
+                    && !isEmpty(getVerificationPendingAttributeValue(MOBILE_ATTRIBUTE));
+            }
+
+            if (isVerificationPending) {
+                initialValue = getVerificationPendingAttributeValue(schema?.name);
+            }
+
+            return (
+                <>
+                    <FinalFormField
+                        key={ key }
+                        component={ TextFieldAdapter }
+                        data-componentid={ resolvedComponentId }
+                        initialValue={ initialValue }
+                        ariaLabel={ fieldName }
+                        name={ schema.name }
+                        type="text"
+                        label={ fieldName }
+                        placeholder={
+                            t("user:profile.forms.generic.inputs.dropdownPlaceholder",
+                                { fieldName })
+                        }
+                        validate={ (value: string) => validateInput(value, schema, fieldName) }
+                        maxLength={
+                            schema.maxLength
+                                ? schema.maxLength
+                                : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                        }
+                        readOnly={ (isUserManagedByParentOrg &&
+                            sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                            || isReadOnly
+                            || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                            || schema.name === "userName"
+                        }
+                        required={ resolvedRequiredValue }
+                        endAdornment={ isVerificationPending
+                            ? (
+                                <InputAdornment position="end">
+                                    { generatePendingVerificationTooltip() }
+                                </InputAdornment>
+                            )
+                            : null
+                        }
+                    />
+                    <Divider hidden/>
+                </>
+            );
+        }
 
         return (
-            <Grid.Row columns={ 1 } key={ key }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    {
-                        schema.name === "userName" && domainName.length > 1 ? (
-                            <>
-                                {
-                                    adminUserType === "internal" ? (
-                                        <Form.Field>
-                                            <label>
-                                                { !commonConfig.userEditSection.showEmail
-                                                    ? fieldName + " (Email)"
-                                                    : fieldName
-                                                }
-                                            </label>
-                                            <Input
-                                                data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
-                                                name={ schema.name }
-                                                required={ resolvedRequiredValue }
-                                                requiredErrorMessage={ fieldName + " " + "is required" }
-                                                placeholder={ "Enter your" + " " + fieldName }
-                                                type="text"
-                                                value={ domainName[1] }
-                                                key={ key }
-                                                readOnly
-                                                maxLength={
-                                                    schema.maxLength
-                                                        ? schema.maxLength
-                                                        : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
-                                                }
-                                            />
-                                        </Form.Field>
-                                    ) : (
-                                        <Form.Field>
-                                            <label>
-                                                { !commonConfig.userEditSection.showEmail
-                                                    ? fieldName + " (Email)"
-                                                    : fieldName
-                                                }
-                                            </label>
-                                            <Input
-                                                data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
-                                                name={ schema.name }
-                                                label={ domainName[0] + " / " }
-                                                required={ resolvedRequiredValue }
-                                                requiredErrorMessage={ fieldName + " " + "is required" }
-                                                placeholder={ "Enter your" + " " + fieldName }
-                                                type="text"
-                                                value={ domainName[1] }
-                                                key={ key }
-                                                readOnly={ isReadOnly ||
-                                                    resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
-                                                maxLength={
-                                                    schema.maxLength
-                                                        ? schema.maxLength
-                                                        : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
-                                                }
-                                            />
-                                        </Form.Field>
-                                    )
-                                }
-                            </>
-                        ) : (
-                            resolveFormField(schema, fieldName, key)
+            <>
+                <FinalFormField
+                    key={ key }
+                    component={ TextFieldAdapter }
+                    data-componentid={ resolvedComponentId }
+                    initialValue={ profileInfo.get(schema.name) }
+                    ariaLabel={ fieldName }
+                    name={ schema.name }
+                    type="text"
+                    label={ schema.name === "profileUrl" ? "Profile Image URL" :
+                        (  (!commonConfig.userEditSection.showEmail && schema.name === "userName")
+                            ? fieldName + " (Email)"
+                            : fieldName
                         )
                     }
-                </Grid.Column>
-            </Grid.Row>
-        );
-    };
-
-    const generatePendingVerificationTooltip = (): JSX.Element => {
-
-        return (
-            <div
-                className="verification-pending-icon"
-                data-componentid={ `${testId}-profile-form-email-pending-verification-icon` }
-            >
-                <Popup
-                    name="pending-verification-popup"
-                    size="tiny"
-                    trigger={
-                        (
-                            <Icon
-                                name="info circle"
-                                color="yellow"
-                            />
-                        )
+                    placeholder={
+                        t("user:profile.forms.generic.inputs.dropdownPlaceholder",
+                            { fieldName })
                     }
-                    header= { t("user:profile.tooltips.confirmationPending") }
-                    inverted
+                    validate={ (value: string) => validateInput(value, schema, fieldName, resolvedRequiredValue()) }
+                    maxLength={
+                        fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url")
+                            ? ProfileConstants.URI_CLAIM_VALUE_MAX_LENGTH
+                            : (
+                                schema.maxLength
+                                    ? schema.maxLength
+                                    : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                            )
+                    }
+                    readOnly={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                        || schema.name === "userName"
+                    }
+                    required={ resolvedRequiredValue }
                 />
-            </div>
+                <Divider hidden/>
+            </>
         );
     };
 
@@ -2801,7 +2380,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 onClick={ () => handleResendCode(recoveryScenario) }
                 aria-disabled={ isSubmitting }
                 disabled={ isSubmitting }
-                data-testid={ `${ testId }-resend-link` }
+                data-componentId={ `${ componentId }-resend-link` }
             >
                 { t("user:resendCode.resend") }
             </LinkButton>
@@ -2895,310 +2474,312 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         return property?.value === "true";
     };
 
+    if (isReadOnlyUserStoresLoading || isEmpty(profileInfo)) {
+        return (
+            <ContentLoader />
+        );
+    }
+
     return (
-        !isReadOnlyUserStoresLoading && !isEmpty(profileInfo)
-            ? (<>
-                {
-                    (accountLocked || accountDisabled) && (
-                        <Alert severity="warning" className="user-profile-alert">
-                            { t(resolveUserAccountLockedReason()) }
-                            <ResendLink />
-                        </Alert>
-                    )
-                }
-                {
-                    (!accountLocked && isPendingAskPasswordState) && (
-                        <Alert severity="warning" className="user-profile-alert">
-                            { t("user:profile.accountState.pendingAskPassword") }
-                            <ResendLink />
-                        </Alert>
-                    )
-                }
-                <EmphasizedSegment padded="very">
-                    {
-                        isReadOnly
-                        && !isReadOnlyUserStore
-                        && (!isEmpty(tenantAdmin) || tenantAdmin !== null)
-                        && !user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
-                        && editUserDisclaimerMessage
-                    }
-                    <Forms
-                        data-testid={ `${ testId }-form` }
-                        onSubmit={ (values: Map<string, string | string[]>) => handleSubmit(values) }
-                        onStaleChange={ (stale: boolean) => setIsFormStale(stale) }
+        <>
+            {
+                (accountLocked || accountDisabled) && (
+                    <Alert severity="warning" className="user-profile-alert">
+                        { t(resolveUserAccountLockedReason()) }
+                        <ResendLink />
+                    </Alert>
+                )
+            }
+            {
+                (!accountLocked && isPendingAskPasswordState) && (
+                    <Alert severity="warning" className="user-profile-alert">
+                        { t("user:profile.accountState.pendingAskPassword") }
+                        <ResendLink />
+                    </Alert>
+                )
+            }
+            <EmphasizedSegment padded="very">
+                <OxygenGrid container>
+                    <OxygenGrid lg={ 8 } md={ 16 }>
+                        {
+                            isReadOnly
+                            && !isReadOnlyUserStore
+                            && (!isEmpty(tenantAdmin) || tenantAdmin !== null)
+                            && !user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
+                            && editUserDisclaimerMessage
+                        }
+                        <FinalForm
+                            // initialValues={ {
+                            //     userID: user.id
+                            // } }
+                            keepDirtyOnReinitialize={ true }
+                            onSubmit={ handleSubmit }
+                            render={ ({ handleSubmit }: FormRenderProps) => {
+                                return (
+                                    <form
+                                        id={ "user-profile-form" }
+                                        onSubmit={ handleSubmit }
+                                        className="user-profile-form"
+                                    >
+                                        {
+                                            user.id && (
+                                                <>
+                                                    <FinalFormField
+                                                        key="userID"
+                                                        data-componentid={ `${ componentId }-userID` }
+                                                        component={ TextFieldAdapter }
+                                                        initialValue={ user.id }
+                                                        label={ t("user:profile.fields.userId") }
+                                                        ariaLabel="userID"
+                                                        name="userID"
+                                                        type="text"
+                                                        maxLength={ 100 }
+                                                        minLength={ 0 }
+                                                        readOnly={ true }
+                                                    />
+                                                    <Divider hidden/>
+                                                </>
+                                            )
+                                        }
+                                        {
+                                            profileSchema &&
+                                            profileSchema.map((schema: ProfileSchemaInterface, index: number) => {
+                                                if (hiddenSchemas.includes(schema.name) ||
+                                                    !isFieldDisplayable(schema)) {
+
+                                                    return;
+                                                }
+
+                                                return generateProfileEditForm(schema, index);
+                                            })
+                                        }
+                                        {
+                                            oneTimePassword && (
+                                                <>
+                                                    <FinalFormField
+                                                        key="oneTimePassword"
+                                                        data-componentid={ `${ componentId }-one-time-password` }
+                                                        component={ TextFieldAdapter }
+                                                        label={ t("user:profile.fields." +
+                                                            "oneTimePassword") }
+                                                        initialValue={ oneTimePassword }
+                                                        ariaLabel="oneTimePassword"
+                                                        name="oneTimePassword"
+                                                        type="text"
+                                                        required={ false }
+                                                        readOnly={ true }
+                                                    />
+                                                    <Divider hidden/>
+                                                </>
+                                            )
+                                        }
+                                        {
+                                            createdDate && (
+                                                <>
+                                                    <FinalFormField
+                                                        key="createdDate"
+                                                        data-componentid={ `${ componentId }-created-date` }
+                                                        component={ TextFieldAdapter }
+                                                        label={ t("user:profile.fields.createdDate") }
+                                                        initialValue={ createdDate
+                                                            ? moment(createdDate).format("YYYY-MM-DD")
+                                                            : ""
+                                                        }
+                                                        ariaLabel="createdDate"
+                                                        name="createdDate"
+                                                        type="text"
+                                                        required={ false }
+                                                        readOnly={ true }
+                                                    />
+                                                    <Divider hidden/>
+                                                </>
+                                            )
+                                        }
+                                        {
+                                            modifiedDate && (
+                                                <>
+                                                    <FinalFormField
+                                                        key="modifiedDate"
+                                                        data-componentid={ `${ componentId }-modified-date` }
+                                                        component={ TextFieldAdapter }
+                                                        label={ t("user:profile.fields.modifiedDate") }
+                                                        initialValue={ modifiedDate
+                                                            ? moment(modifiedDate).format("YYYY-MM-DD")
+                                                            : ""
+                                                        }
+                                                        ariaLabel="modifiedDate"
+                                                        name="modifiedDate"
+                                                        type="text"
+                                                        required={ false }
+                                                        readOnly={ true }
+                                                    />
+                                                    <Divider hidden/>
+                                                </>
+                                            )
+                                        }
+                                        {
+                                            !isReadOnly && (
+                                                <Button
+                                                    data-componentid={ `${ componentId }-form-update-button` }
+                                                    primary
+                                                    type="submit"
+                                                    size="small"
+                                                    className="form-button"
+                                                    loading={ isSubmitting }
+                                                    // disabled={ isSubmitting || !isFormStale }
+                                                >
+                                                    { t("common:update") }
+                                                </Button>
+                                            )
+                                        }
+                                    </form>
+                                );
+                            } }
+
+                        />
+                    </OxygenGrid>
+                </OxygenGrid>
+            </EmphasizedSegment>
+            <Divider hidden />
+            { resolveDangerActions() }
+            {
+                deletingUser && (
+                    <ConfirmationModal
+                        data-componentId={ `${componentId}-confirmation-modal` }
+                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                        type="negative"
+                        open={ showDeleteConfirmationModal }
+                        assertionHint={ t("user:deleteUser.confirmationModal." +
+                            "assertionHint") }
+                        assertionType="checkbox"
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
+                        onSecondaryActionClick={ (): void => {
+                            setShowDeleteConfirmationModal(false);
+                            setAlert(null);
+                        } }
+                        onPrimaryActionClick={ (): void => handleUserDelete(deletingUser) }
+                        closeOnDimmerClick={ false }
                     >
-                        <Grid className="user-profile-form form-container with-max-width">
-                            {
-                                user.id && (
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                            <Form.Field>
-                                                <label>
-                                                    { t("user:profile.fields.userId") }
-                                                </label>
-                                                <Input
-                                                    name="userID"
-                                                    type="text"
-                                                    value={ user.id }
-                                                    readOnly={ true }
-                                                />
-                                            </Form.Field>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                )
-                            }
-                            {
-                                profileSchema
-                                && profileSchema.map((schema: ProfileSchemaInterface, index: number) => {
-                                    if (!(schema.name === ProfileConstants?.
-                                        SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
-                                        || schema.name === ProfileConstants?.
-                                            SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
-                                        || schema.name === ProfileConstants?.
-                                            SCIM2_SCHEMA_DICTIONARY.get("GROUPS")
-                                        || schema.name === ProfileConstants?.
-                                            SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
-                                        || schema.name === ProfileConstants?.
-                                            SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
-                                        || schema.name === ProfileConstants?.
-                                            SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
-                                        || schema.name === ProfileConstants?.
-                                            SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD")
-                                        || (!commonConfig.userEditSection.showEmail &&
-                                            schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("EMAILS")))
-                                        && isFieldDisplayable(schema)) {
-                                        return (
-                                            generateProfileEditForm(schema, index)
-                                        );
-                                    }
-                                })
-                            }
-                            {
-                                oneTimePassword && (
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                            <Field
-                                                data-testid={ `${ testId }-profile-form-one-time-pw }
-                                                -input` }
-                                                name="oneTimePassword"
-                                                label={ t("user:profile.fields." +
-                                                    "oneTimePassword") }
-                                                required={ false }
-                                                requiredErrorMessage=""
-                                                type="text"
-                                                hidden={ oneTimePassword === undefined }
-                                                value={ oneTimePassword && oneTimePassword }
-                                                readOnly={ true }
-                                            />
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                )
-                            }
-                            {
-                                createdDate && (
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                            <Form.Field>
-                                                <label>
-                                                    { t("user:profile.fields." +
-                                                        "createdDate") }
-                                                </label>
-                                                <Input
-                                                    name="createdDate"
-                                                    type="text"
-                                                    value={ createdDate ?
-                                                        moment(createdDate).format("YYYY-MM-DD") : "" }
-                                                    readOnly={ true }
-                                                />
-                                            </Form.Field>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                )
-                            }
-                            {
-                                modifiedDate && (
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                            <Form.Field>
-                                                <label>
-                                                    { t("user:profile.fields.modifiedDate") }
-                                                </label>
-                                                <Input
-                                                    name="modifiedDate"
-                                                    type="text"
-                                                    value={ modifiedDate ?
-                                                        moment(modifiedDate).format("YYYY-MM-DD") : "" }
-                                                    readOnly={ true }
-                                                />
-                                            </Form.Field>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                )
-                            }
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    {
-                                        !isReadOnly && (
-                                            <Button
-                                                data-testid={ `${ testId }-form-update-button` }
-                                                primary
-                                                type="submit"
-                                                size="small"
-                                                className="form-button"
-                                                loading={ isSubmitting }
-                                                disabled={ isSubmitting || !isFormStale }
-                                            >
-                                                { t("common:update") }
-                                            </Button>
-                                        )
-                                    }
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </Forms>
-                </EmphasizedSegment>
-                <Divider hidden />
-                { resolveDangerActions() }
-                {
-                    deletingUser && (
-                        <ConfirmationModal
-                            data-testid={ `${testId}-confirmation-modal` }
-                            onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                            type="negative"
-                            open={ showDeleteConfirmationModal }
-                            assertionHint={ t("user:deleteUser.confirmationModal." +
-                                "assertionHint") }
-                            assertionType="checkbox"
-                            primaryAction={ t("common:confirm") }
-                            secondaryAction={ t("common:cancel") }
-                            onSecondaryActionClick={ (): void => {
-                                setShowDeleteConfirmationModal(false);
-                                setAlert(null);
-                            } }
-                            onPrimaryActionClick={ (): void => handleUserDelete(deletingUser) }
-                            closeOnDimmerClick={ false }
+                        <ConfirmationModal.Header data-componentId={ `${componentId}-confirmation-modal-header` }>
+                            { t("user:deleteUser.confirmationModal.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message
+                            data-componentId={ `${componentId}-confirmation-modal-message` }
+                            attached
+                            negative
                         >
-                            <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
-                                { t("user:deleteUser.confirmationModal.header") }
-                            </ConfirmationModal.Header>
-                            <ConfirmationModal.Message
-                                data-testid={ `${testId}-confirmation-modal-message` }
-                                attached
-                                negative
-                            >
-                                { commonConfig.userEditSection.isGuestUser
-                                    ? t("extensions:manage.guest.deleteUser.confirmationModal.message")
-                                    : t("user:deleteUser.confirmationModal.message")
-                                }
-                            </ConfirmationModal.Message>
-                            <ConfirmationModal.Content>
-                                <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                                { commonConfig.userEditSection.isGuestUser
-                                    ? t("extensions:manage.guest.deleteUser.confirmationModal.content")
-                                    : t("user:deleteUser.confirmationModal.content")
-                                }
-                            </ConfirmationModal.Content>
-                        </ConfirmationModal>
-                    )
-                }
-                {
-                    deletingUser && (
-                        <ConfirmationModal
-                            data-testid={ `${testId}-admin-privilege-revoke-confirmation-modal` }
-                            onClose={ (): void => setShowAdminRevokeConfirmationModal(false) }
-                            type="negative"
-                            open={ showAdminRevokeConfirmationModal }
-                            assertionHint={ t("user:revokeAdmin.confirmationModal." +
-                                "assertionHint") }
-                            assertionType="checkbox"
-                            primaryAction={ t("common:confirm") }
-                            secondaryAction={ t("common:cancel") }
-                            onSecondaryActionClick={ (): void => {
-                                setShowAdminRevokeConfirmationModal(false);
-                                setAlert(null);
-                            } }
-                            onPrimaryActionClick={ (): void => handleUserAdminRevoke(deletingUser) }
-                            closeOnDimmerClick={ false }
+                            { commonConfig.userEditSection.isGuestUser
+                                ? t("extensions:manage.guest.deleteUser.confirmationModal.message")
+                                : t("user:deleteUser.confirmationModal.message")
+                            }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
+                            { commonConfig.userEditSection.isGuestUser
+                                ? t("extensions:manage.guest.deleteUser.confirmationModal.content")
+                                : t("user:deleteUser.confirmationModal.content")
+                            }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
+            }
+            {
+                deletingUser && (
+                    <ConfirmationModal
+                        data-componentId={ `${componentId}-admin-privilege-revoke-confirmation-modal` }
+                        onClose={ (): void => setShowAdminRevokeConfirmationModal(false) }
+                        type="negative"
+                        open={ showAdminRevokeConfirmationModal }
+                        assertionHint={ t("user:revokeAdmin.confirmationModal." +
+                            "assertionHint") }
+                        assertionType="checkbox"
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
+                        onSecondaryActionClick={ (): void => {
+                            setShowAdminRevokeConfirmationModal(false);
+                            setAlert(null);
+                        } }
+                        onPrimaryActionClick={ (): void => handleUserAdminRevoke(deletingUser) }
+                        closeOnDimmerClick={ false }
+                    >
+                        <ConfirmationModal.Header
+                            data-componentId={ `${componentId}-admin-privilege-revoke-confirmation-modal-header` }
                         >
-                            <ConfirmationModal.Header
-                                data-testid={ `${testId}-admin-privilege-revoke-confirmation-modal-header` }
-                            >
-                                { t("user:revokeAdmin.confirmationModal.header") }
-                            </ConfirmationModal.Header>
-                            <ConfirmationModal.Content>
-                                <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                                { t("user:revokeAdmin.confirmationModal.content") }
-                            </ConfirmationModal.Content>
-                        </ConfirmationModal>
-                    )
-                }
-                {
-                    editingAttribute && (
-                        <ConfirmationModal
-                            data-testid={ `${testId}-confirmation-modal` }
-                            onClose={ (): void => {
-                                setShowLockDisableConfirmationModal(false);
-                                setEditingAttribute(undefined);
-                            } }
-                            type="warning"
-                            open={ showLockDisableConfirmationModal }
-                            assertion={ resolveUsernameOrDefaultEmail(user, false) }
-                            assertionHint={ editingAttribute.name === ProfileConstants
+                            { t("user:revokeAdmin.confirmationModal.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Content>
+                            <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
+                            { t("user:revokeAdmin.confirmationModal.content") }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
+            }
+            {
+                editingAttribute && (
+                    <ConfirmationModal
+                        data-componentId={ `${componentId}-confirmation-modal` }
+                        onClose={ (): void => {
+                            setShowLockDisableConfirmationModal(false);
+                            setEditingAttribute(undefined);
+                        } }
+                        type="warning"
+                        open={ showLockDisableConfirmationModal }
+                        assertion={ resolveUsernameOrDefaultEmail(user, false) }
+                        assertionHint={ editingAttribute.name === ProfileConstants
+                            .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                            ? t("user:lockUser.confirmationModal.assertionHint")
+                            : t("user:disableUser.confirmationModal.assertionHint") }
+                        assertionType="checkbox"
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
+                        onSecondaryActionClick={ (): void => {
+                            setEditingAttribute(undefined);
+                            setShowLockDisableConfirmationModal(false);
+                        } }
+                        onPrimaryActionClick={ () =>
+                            handleDangerActions(editingAttribute.name, editingAttribute.value)
+                        }
+                        closeOnDimmerClick={ false }
+                    >
+                        <ConfirmationModal.Header data-componentId={ `${componentId}-confirmation-modal-header` }>
+                            { editingAttribute.name === ProfileConstants
                                 .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
-                                ? t("user:lockUser.confirmationModal.assertionHint")
-                                : t("user:disableUser.confirmationModal.assertionHint") }
-                            assertionType="checkbox"
-                            primaryAction={ t("common:confirm") }
-                            secondaryAction={ t("common:cancel") }
-                            onSecondaryActionClick={ (): void => {
-                                setEditingAttribute(undefined);
-                                setShowLockDisableConfirmationModal(false);
-                            } }
-                            onPrimaryActionClick={ () =>
-                                handleDangerActions(editingAttribute.name, editingAttribute.value)
+                                ? t("user:lockUser.confirmationModal.header")
+                                : t("user:disableUser.confirmationModal.header")
                             }
-                            closeOnDimmerClick={ false }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message
+                            data-componentId={ `${componentId}-disable-confirmation-modal-message` }
+                            attached
+                            warning
                         >
-                            <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
-                                { editingAttribute.name === ProfileConstants
-                                    .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
-                                    ? t("user:lockUser.confirmationModal.header")
-                                    : t("user:disableUser.confirmationModal.header")
-                                }
-                            </ConfirmationModal.Header>
-                            <ConfirmationModal.Message
-                                data-testid={ `${testId}-disable-confirmation-modal-message` }
-                                attached
-                                warning
-                            >
-                                { editingAttribute.name === ProfileConstants
-                                    .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
-                                    ? t("user:lockUser.confirmationModal.message")
-                                    : t("user:disableUser.confirmationModal.message")
-                                }
-                            </ConfirmationModal.Message>
-                            <ConfirmationModal.Content>
-                                { editingAttribute.name === ProfileConstants
-                                    .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
-                                    ? t("user:lockUser.confirmationModal.content")
-                                    : t("user:disableUser.confirmationModal.content")
-                                }
-                            </ConfirmationModal.Content>
-                        </ConfirmationModal>
-                    )
-                }
-                <ChangePasswordComponent
-                    handleForcePasswordResetTrigger={ null }
-                    connectorProperties={ connectorProperties }
-                    handleCloseChangePasswordModal={ () => setOpenChangePasswordModal(false) }
-                    openChangePasswordModal={ openChangePasswordModal }
-                    onAlertFired={ onAlertFired }
-                    user={ user }
-                    handleUserUpdate={ handleUserUpdate }
-                    isResetPassword={ !isSetPassword }
-                />
-            </>)
-            : <ContentLoader dimmer/>
+                            { editingAttribute.name === ProfileConstants
+                                .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                                ? t("user:lockUser.confirmationModal.message")
+                                : t("user:disableUser.confirmationModal.message")
+                            }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            { editingAttribute.name === ProfileConstants
+                                .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                                ? t("user:lockUser.confirmationModal.content")
+                                : t("user:disableUser.confirmationModal.content")
+                            }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
+            }
+            <ChangePasswordComponent
+                handleForcePasswordResetTrigger={ null }
+                connectorProperties={ connectorProperties }
+                handleCloseChangePasswordModal={ () => setOpenChangePasswordModal(false) }
+                openChangePasswordModal={ openChangePasswordModal }
+                onAlertFired={ onAlertFired }
+                user={ user }
+                handleUserUpdate={ handleUserUpdate }
+                isResetPassword={ !isSetPassword }
+            />
+        </>
     );
 };

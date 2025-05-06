@@ -595,3 +595,31 @@ export const groupByTopLevelKey = <T extends Record<string, JsonValue>>(inputArr
 
     return grouped as T;
 };
+
+/**
+ * Flattens a nested object into a map with dot-separated keys.
+ *
+ * @param obj - The object to flatten.
+ * @param prefix - The prefix for the keys (used for recursion).
+ * @returns A map with dot-separated keys and their corresponding values.
+ */
+export const flattenValues = (obj: Record<string, any>, prefix: string = ""): Map<string, string> => {
+    const map: Map<string, string> = new Map<string, string>();
+
+    for (const key in obj) {
+        if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
+
+        const value: any = obj[key];
+        const path: string = prefix ? `${prefix}.${key}` : key;
+
+        if (typeof value === "object" && !isEmpty(value) && !Array.isArray(value)) {
+            const subMap: Map<string, string> = flattenValues(value, path);
+
+            subMap.forEach((v: string, k: string) => map.set(k, v));
+        } else {
+            map.set(path, value?.toString() ?? "");
+        }
+    }
+
+    return map;
+};

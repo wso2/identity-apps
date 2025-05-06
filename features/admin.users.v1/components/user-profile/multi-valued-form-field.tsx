@@ -1,0 +1,644 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import TableContainer from "@mui/material/TableContainer";
+import Button from "@oxygen-ui/react/Button";
+import Chip from "@oxygen-ui/react/Chip";
+import Grid from "@oxygen-ui/react/Grid";
+import IconButton from "@oxygen-ui/react/IconButton";
+import InputAdornment from "@oxygen-ui/react/InputAdornment";
+import Paper from "@oxygen-ui/react/Paper";
+import Table from "@oxygen-ui/react/Table";
+import TableBody from "@oxygen-ui/react/TableBody";
+import TableCell from "@oxygen-ui/react/TableCell";
+import TableRow from "@oxygen-ui/react/TableRow";
+import Tooltip from "@oxygen-ui/react/Tooltip";
+import { PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
+import { ProfileConstants } from "@wso2is/core/constants";
+import {
+    AlertInterface,
+    AlertLevels,
+    IdentifiableComponentInterface,
+    PatchOperationRequest,
+    ProfileInfoInterface,
+    ProfileSchemaInterface,
+    SharedProfileValueResolvingMethod
+} from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { FinalFormField, TextFieldAdapter } from "@wso2is/form";
+import { Popup } from "@wso2is/react-components";
+import { AxiosError } from "axios";
+import isEmpty from "lodash-es/isEmpty";
+import React, { useState } from "react";
+import { useFormState } from "react-final-form";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { Icon } from "semantic-ui-react";
+import { updateUserInfo } from "../../api/users";
+import {
+    EMAIL_ADDRESSES_ATTRIBUTE,
+    EMAIL_ATTRIBUTE,
+    MOBILE_ATTRIBUTE,
+    MOBILE_NUMBERS_ATTRIBUTE,
+    VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
+    VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
+} from "../../constants/user-management-constants";
+import { PatchUserOperationValue } from "../../models/user";
+import "./multi-valued-form-field.scss";
+
+
+interface MultiValuedFormFieldProps extends IdentifiableComponentInterface {
+    /**
+     * The schema of the profile.
+     */
+    schema: ProfileSchemaInterface;
+    /**
+     * The name of the field.
+     */
+    fieldName: string;
+    /**
+     * The key for the field.
+     */
+    key: number;
+    /**
+     * Is user managed by parent organization.
+     */
+    isUserManagedByParentOrg?: boolean
+    /**
+     * Profile information.
+     */
+    profileInfo: Map<string, string>;
+    /**
+     * User profile
+     */
+    user: ProfileInfoInterface;
+    /**
+     * Is the field read only.
+     */
+    isReadOnly: boolean;
+    /**
+     * Multi valued attribute values.
+     */
+    multiValuedAttributeValues: Record<string, string[]>;
+    /**
+     * Set multi valued attribute values.
+     */
+    setMultiValuedAttributeValues: (values: Record<string, string[]> | any) => void;
+    verificationEnabled: boolean;
+    verifiedAttributeValueList: string[]
+    fetchedPrimaryAttributeValue: string;
+    primaryAttributeValue: string;
+    verificationPendingValue: string;
+    primaryAttributeSchema: ProfileSchemaInterface;
+    /**
+     * Handle user update callback.
+     */
+    handleUserUpdate: (userId: string) => void;
+    primaryValues: Record<string, string>;
+    setPrimaryValues: (values: Record<string, string> | any) => void;
+    multiValuedInputFieldValue: Record<string, string>;
+    showAttributes: boolean;
+    maxAllowedLimit: number;
+    setIsFormStale: (value: boolean) => void;
+}
+
+const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
+    const {
+        "data-componentid": componentId = "user-mgt-user-profile",
+        schema,
+        fieldName,
+        key,
+        profileInfo,
+        user,
+        isUserManagedByParentOrg,
+        multiValuedAttributeValues,
+        setMultiValuedAttributeValues,
+        verifiedAttributeValueList,
+        verificationEnabled,
+        fetchedPrimaryAttributeValue,
+        primaryAttributeValue,
+        verificationPendingValue,
+        primaryAttributeSchema,
+        handleUserUpdate,
+        primaryValues,
+        setPrimaryValues,
+        showAttributes,
+        maxAllowedLimit,
+        setIsFormStale,
+        isReadOnly
+    } = props;
+
+    const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
+    const { values } = useFormState();
+
+    const [ multiValuedInputFieldValue, setMultiValuedInputFieldValue ] = useState<Record<string, string>>({});
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
+    const resolvedComponentId: string = `${ componentId }-${ schema.name }-input`;
+    const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
+    const resolvedMultiValueAttributeRequiredValue: boolean
+        = schema?.profiles?.console?.required ?? schema.required;
+    const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
+    const resolvedPrimarySchemaRequiredValue: boolean
+        = primaryAttributeSchema?.profiles?.console?.required ?? primaryAttributeSchema?.required;
+    const resolvedRequiredValue: boolean = (resolvedMultiValueAttributeRequiredValue
+        || resolvedPrimarySchemaRequiredValue);
+
+    const handleAlerts = (alert: AlertInterface) => {
+        dispatch(addAlert<AlertInterface>(alert));
+    };
+
+    /**
+     * Verify an email address or mobile number.
+     *
+     * @param schema - Schema of the attribute
+     * @param attributeValue - Value of the attribute
+     */
+    const handleVerify = (schema: ProfileSchemaInterface, attributeValue: string) => {
+        setIsSubmitting(true);
+        const data: PatchOperationRequest<PatchUserOperationValue> = {
+            Operations: [
+                {
+                    op: "replace",
+                    value: {}
+                }
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        };
+        let translationKey: string = "";
+
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+            translationKey = "user:profile.notifications.verifyEmail.";
+            const verifiedEmailList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
+                get("VERIFIED_EMAIL_ADDRESSES"))?.split(",") || [];
+
+            verifiedEmailList.push(attributeValue);
+            data.Operations[0].value = {
+                [schema.schemaId]: {
+                    [VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE]:
+                        verifiedEmailList
+                }
+            };
+        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+            translationKey = "user:profile.notifications.verifyMobile.";
+            const verifiedMobileList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
+                get("VERIFIED_MOBILE_NUMBERS"))?.split(",") || [];
+
+            verifiedMobileList.push(attributeValue);
+            data.Operations[0].value = {
+                [schema.schemaId]: {
+                    [VERIFIED_MOBILE_NUMBERS_ATTRIBUTE]:
+                        verifiedMobileList
+                }
+            };
+        }
+
+        setIsSubmitting(true);
+        updateUserInfo(user.id, data)
+            .then(() => {
+                handleAlerts({
+                    description: t(
+                        `${translationKey}success.description`
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        `${translationKey}success.message`
+                    )
+                });
+
+                handleUserUpdate(user.id);
+            })
+            .catch((error: AxiosError) => {
+                if (error?.response?.data?.detail || error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.detail || error?.response?.data?.description,
+                        level: AlertLevels.ERROR,
+                        message: `${translationKey}error.message`
+                    }));
+
+                    return;
+                }
+                dispatch(addAlert({
+                    description: t(`${translationKey}genericError.description`),
+                    level: AlertLevels.ERROR,
+                    message: t(`${translationKey}genericError.message`)
+                }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
+    };
+
+    /**
+     * Assign primary email address or mobile number the multi-valued attribute.
+     *
+     * @param schemaName - Name of the primary attribute schema.
+     * @param attributeValue - Value of the attribute
+     */
+    const handleMakePrimary = (schemaName: string, attributeValue: string) => {
+
+        setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
+            ...prevPrimaryValues,
+            [schemaName]: attributeValue
+        }));
+        setIsFormStale(true);
+    };
+
+    /**
+     * Delete a multi-valued item.
+     *
+     * @param schema - schema of the attribute
+     * @param attributeValue - value of the attribute
+     */
+    const handleMultiValuedItemDelete = (schema: ProfileSchemaInterface, attributeValue: string) => {
+
+        const filteredValues: string[] =
+            multiValuedAttributeValues[schema?.name]?.filter((value: string) => value !== attributeValue) || [];
+
+        setMultiValuedAttributeValues((prevValues: Record<string, string[]>) => ({
+            ...prevValues,
+            [schema.name]: filteredValues
+        }));
+
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+            if (primaryValues[EMAIL_ATTRIBUTE] === attributeValue) {
+                setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
+                    ...prevPrimaryValues,
+                    [EMAIL_ATTRIBUTE]: ""
+                }));
+            }
+        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+            if (primaryValues[MOBILE_ATTRIBUTE] === attributeValue) {
+                setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
+                    ...prevPrimaryValues,
+                    [MOBILE_ATTRIBUTE]: ""
+                }));
+            }
+        }
+
+        setIsFormStale(true);
+    };
+
+    /**
+     * Handle the add multi-valued attribute item.
+     *
+     * @param schema - Schema of the attribute
+     * @param attributeValue - Value of the attribute
+     */
+    const handleAddMultiValuedItem = (schema: ProfileSchemaInterface, attributeValue: string) => {
+
+        if (isEmpty(attributeValue)) return;
+
+        setMultiValuedAttributeValues((prevValues: Record<string, string[]>) => ({
+            ...prevValues,
+            [schema.name]: [ ...(prevValues[schema.name] || []), attributeValue ]
+        }));
+
+        const updatePrimaryValue = (primaryKey: string) => {
+            if (isEmpty(primaryValues[primaryKey])) {
+                setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
+                    ...prevPrimaryValues,
+                    [primaryKey]: attributeValue
+                }));
+            }
+        };
+
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+            updatePrimaryValue(EMAIL_ATTRIBUTE);
+        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+            updatePrimaryValue(MOBILE_ATTRIBUTE);
+        }
+        setIsFormStale(true);
+    };
+
+    /**
+     * Form validator to validate the value against the schema regex.
+     * @param value - Input value.
+     * @returns An error if the value is not valid else undefined.
+     */
+    const validateInput = async (value: string): Promise<string | undefined> => {
+        if (isEmpty(value)) {
+            return undefined;
+        }
+
+        if (!RegExp(primaryAttributeSchema?.regEx).test(value)) {
+            return (
+                t("users:forms.validation.formatError", {
+                    field: fieldName
+                })
+            );
+        }
+    };
+
+    const showVerifiedPopup = (value: string): boolean => {
+        return verificationEnabled &&
+            (verifiedAttributeValueList.includes(value) || value === fetchedPrimaryAttributeValue);
+    };
+
+    const showVerifyButton = (value: string): boolean =>
+        schema.name === EMAIL_ADDRESSES_ATTRIBUTE
+        && verificationEnabled
+        && !(verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
+
+    const showPendingVerificationPopup = (value: string): boolean => {
+        return verificationEnabled
+            && !isEmpty(verificationPendingValue)
+            && !verifiedAttributeValueList.includes(value)
+            && verificationPendingValue === value;
+    };
+
+    const showPrimaryPopup = (value: string): boolean => {
+        if (isEmpty(primaryAttributeValue)) {
+            return false;
+        }
+        if (verificationEnabled && !verifiedAttributeValueList.includes(value)) {
+            return value === fetchedPrimaryAttributeValue;
+        }
+
+        return value === primaryAttributeValue;
+    };
+
+    const showMakePrimaryButton = (value: string): boolean => {
+        if (isEmpty(primaryAttributeValue)) {
+            return false;
+        }
+        if (verificationEnabled) {
+            return verifiedAttributeValueList.includes(value) && value !== primaryAttributeValue;
+        }
+
+        return value !== primaryAttributeValue;
+    };
+
+    const showDeleteButton = (value: string): boolean => {
+        return !(value === primaryAttributeValue && resolvedPrimarySchemaRequiredValue);
+    };
+
+    return (
+        <Grid direction="row">
+            <Grid>
+                <FinalFormField
+                    key={ key }
+                    component={ TextFieldAdapter }
+                    data-componentid={ resolvedComponentId }
+                    initialValue={ multiValuedInputFieldValue[schema.name] }
+                    className
+                    ariaLabel={ fieldName }
+                    type="text"
+                    name={ schema.name }
+                    label={ schema.name === "profileUrl" ? "Profile Image URL" :
+                        (  (!commonConfig.userEditSection.showEmail && schema.name === "userName")
+                            ? fieldName +" (Email)"
+                            : fieldName
+                        )
+                    }
+                    placeholder={
+                        t("user:profile.forms.generic.inputs.dropdownPlaceholder",
+                            { fieldName })
+                    }
+                    validate={ (value: string) => validateInput(value) }
+                    endAdornment={ (
+                        <InputAdornment position="end">
+                            <Tooltip title="Add">
+                                <IconButton
+                                    data-componentid={ `${ componentId }-multivalue-add-icon` }
+                                    size="large"
+                                    onClick={ () => {
+                                        // Getting the value from the form
+                                        const attributeValue: string = values[schema.name];
+
+                                        if (isEmpty(attributeValue) ||
+                                        multiValuedAttributeValues[schema.name]?.includes(attributeValue)) {
+                                            return;
+                                        }
+
+                                        handleAddMultiValuedItem(schema, attributeValue);
+                                        setMultiValuedInputFieldValue({
+                                            ...multiValuedInputFieldValue,
+                                            [schema.name]: ""
+                                        });
+                                    } }
+                                >
+                                    <PlusIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </InputAdornment>
+                    ) }
+                    maxLength={
+                        fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url")
+                            ? ProfileConstants.URI_CLAIM_VALUE_MAX_LENGTH
+                            : (
+                                schema.maxLength
+                                    ? schema.maxLength
+                                    : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                            )
+                    }
+                    readOnly={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                    }
+                    required={ resolvedRequiredValue && isEmpty(multiValuedAttributeValues[schema?.name]) }
+                    disabled={ isSubmitting
+                        || isReadOnly
+                        || multiValuedAttributeValues[schema?.name]?.length >= maxAllowedLimit
+                    }
+                />
+            </Grid>
+            {
+                showAttributes && (
+                    <Grid xs={ 12 }>
+                        <TableContainer
+                            component={ Paper }
+                            elevation={ 0 }
+                            className="multi-valued-table-container"
+                        >
+                            <Table
+                                className="multi-value-table"
+                                size="small"
+                                aria-label="multi-attribute value table"
+                            >
+                                <TableBody>
+                                    { multiValuedAttributeValues[schema?.name]?.map(
+                                        (value: string, index: number) => (
+                                            <TableRow key={ index } className="multi-value-table-data-row">
+                                                <TableCell align="left">
+                                                    <Grid
+                                                        direction="row"
+                                                        gap={ 1 }
+                                                        container
+                                                    >
+                                                        <label
+                                                            data-componentid={
+                                                                `${componentId}-${schema.name}` +
+                                                                        `-value-${index}`
+                                                            }
+                                                        >
+                                                            { value }
+                                                        </label>
+                                                        {
+                                                            showVerifiedPopup(value)
+                                                                && (
+                                                                    <div
+                                                                        className="verified-icon"
+                                                                        data-componentid={
+                                                                            `${componentId}-profile-form-${
+                                                                                schema.name}-verified-icon-${index}`
+                                                                        }
+                                                                    >
+                                                                        <Popup
+                                                                            name="verified-popup"
+                                                                            size="tiny"
+                                                                            trigger={
+                                                                                (
+                                                                                    <Icon
+                                                                                        name="check"
+                                                                                        color="green"
+                                                                                    />
+                                                                                )
+                                                                            }
+                                                                            header= { t("common:verified") }
+                                                                            inverted
+                                                                        />
+                                                                    </div>
+                                                                )
+                                                        }
+                                                        {
+                                                            showPrimaryPopup(value)
+                                                                && (
+                                                                    <div
+                                                                        data-componentid={
+                                                                            `${componentId}-profile-form-${
+                                                                                schema.name}-primary-icon-${index}`
+                                                                        }
+                                                                    >
+                                                                        <Chip
+                                                                            label={ t("common:primary") }
+                                                                            size="medium"
+                                                                        />
+                                                                    </div>
+                                                                )
+                                                        }
+                                                        {
+                                                            showPendingVerificationPopup(value)
+                                                                && (
+                                                                    <div
+                                                                        className="verified-icon"
+                                                                        data-componentid={
+                                                                            `${componentId}-profile-form-${
+                                                                                schema.name}-pending-verification` +
+                                                                                `-icon-${index}`
+                                                                        }
+                                                                    >
+                                                                        <Popup
+                                                                            name="pending-verification-popup"
+                                                                            size="tiny"
+                                                                            trigger={
+                                                                                (
+                                                                                    <Icon
+                                                                                        name="info circle"
+                                                                                        color="yellow"
+                                                                                    />
+                                                                                )
+                                                                            }
+                                                                            header= { t("user:profile.tooltips." +
+                                                                                "confirmationPending") }
+                                                                            inverted
+                                                                        />
+                                                                    </div>
+                                                                )
+                                                        }
+                                                    </Grid>
+                                                </TableCell>
+                                                <TableCell align="right">
+                                                    <Grid
+                                                        direction="row"
+                                                        gap={ 1 }
+                                                        justifyContent="flex-end"
+                                                        container
+                                                    >
+                                                        { showVerifyButton(value) && (
+                                                            <Button
+                                                                variant="text"
+                                                                size="small"
+                                                                className="text-btn"
+                                                                onClick={ () => handleVerify(schema, value) }
+                                                                data-componentid={
+                                                                    `${componentId}-profile-form` +
+                                                                            `-${schema.name}-verify-button-${index}`
+                                                                }
+                                                                disabled={ isSubmitting || isReadOnly }
+                                                            >
+                                                                { t("common:verify") }
+                                                            </Button>
+                                                        ) }
+                                                        { showMakePrimaryButton(value) && (
+                                                            <Button
+                                                                variant="text"
+                                                                size="small"
+                                                                className="text-btn"
+                                                                onClick={ () =>
+                                                                    handleMakePrimary(
+                                                                        primaryAttributeSchema?.name, value)
+                                                                }
+                                                                data-componentid={
+                                                                    `${componentId}-profile-form-${
+                                                                        schema.name}-make-primary-button-${index}`
+                                                                }
+                                                                disabled={ isSubmitting || isReadOnly }
+                                                            >
+                                                                { t("common:makePrimary") }
+                                                            </Button>
+                                                        ) }
+                                                        {
+                                                            showDeleteButton(value) && (
+                                                                <Tooltip title={ t("common:delete") }>
+                                                                    <IconButton
+                                                                        size="small"
+                                                                        onClick={ () => {
+                                                                            handleMultiValuedItemDelete(schema, value);
+                                                                        } }
+                                                                        data-componentid={
+                                                                            `${componentId}-profile-form` +
+                                                                                `-${schema.name}-delete-button-${index}`
+                                                                        }
+                                                                        disabled={ isSubmitting || isReadOnly }
+                                                                    >
+                                                                        <TrashIcon />
+                                                                    </IconButton>
+                                                                </Tooltip>
+                                                            )
+                                                        }
+                                                    </Grid>
+                                                </TableCell>
+                                            </TableRow>
+                                        )
+                                    ) }
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Grid>
+                )
+            }
+        </Grid>
+    );
+};
+
+export default MultiValuedFormField;
